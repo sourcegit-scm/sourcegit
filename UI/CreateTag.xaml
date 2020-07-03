@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="SourceGit.UI.CreateTag"
+             x:Name="me"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:helpers="clr-namespace:SourceGit.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="224" d:DesignWidth="500" Width="500" Height="224">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Create Tag"/>
+
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="New Tag At :"/>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+            <Path Width="12" x:Name="basedOnType" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Commit}"/>
+            <Label x:Name="basedOnDesc" VerticalAlignment="Center" Content="xxx"/>
+        </StackPanel>
+
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Tag Name :"/>
+        <TextBox Grid.Row="3" Grid.Column="1"
+                 x:Name="tagName"
+                 Height="24" 
+                 helpers:TextBoxHelper.Placeholder="Recommanded format ：v1.0.0-alpha">
+            <TextBox.Text>
+                <Binding ElementName="me" Path="TagName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <helpers:TagNameRule x:Name="nameValidator"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4" Content="Tag Message :"/>
+        <TextBox Grid.Row="4" Grid.Column="1"
+                 x:Name="tagMessage"
+                 Height="56"
+                 AcceptsReturn="True"
+                 helpers:TextBoxHelper.Placeholder="Optional"/>
+
+        <Grid Grid.Row="6" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+        </Grid>
+    </Grid>
+</UserControl>
+

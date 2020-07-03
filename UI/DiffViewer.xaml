@@ -1,0 +1,139 @@
+<UserControl x:Class="SourceGit.UI.DiffViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             FontFamily="Consolas">
+    <Border BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="0,0,0,1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4">
+                    <StackPanel x:Name="orgFileNamePanel" Orientation="Horizontal">
+                        <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.File}"/>
+                        <TextBlock x:Name="orgFileName" Margin="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
+                        <TextBlock Margin="8,0" VerticalAlignment="Center" Text="→" Foreground="{StaticResource Brush.FG}"/>
+                    </StackPanel>
+                    <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.File}"/>
+                    <TextBlock x:Name="fileName" Margin="4,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Row="1" ClipToBounds="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MinWidth="100"/>
+                    <ColumnDefinition Width="2"/>
+                    <ColumnDefinition Width="*" MinWidth="100"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox
+                            x:Name="leftLineNumber"
+                            Grid.Column="0"
+                            AcceptsReturn="True"
+                            AcceptsTab="True"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            IsReadOnly="True"
+                            Margin="4,0,4,0"                   
+                            FontSize="13"
+                            HorizontalContentAlignment="Right"
+                            VerticalAlignment="Stretch"/>
+
+                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Brush.Border2}"/>
+
+                    <RichTextBox
+                            x:Name="leftText"
+                            Grid.Column="2"
+                            AcceptsReturn="True"
+                            AcceptsTab="True"
+                            IsReadOnly="True"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            Foreground="{StaticResource Brush.FG}"
+                            Height="Auto"
+                            FontSize="13"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Auto"
+                            RenderOptions.ClearTypeHint="Enabled"
+                            ScrollViewer.ScrollChanged="OnViewerScroll"
+                            PreviewMouseWheel="OnViewerMouseWheel"
+                            SizeChanged="LeftSizeChanged"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                        <RichTextBox.Document>
+                            <FlowDocument PageWidth="0"/>
+                        </RichTextBox.Document>
+                    </RichTextBox>
+                </Grid>
+
+                <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border2}"/>
+
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox
+                            x:Name="rightLineNumber"
+                            Grid.Column="0"
+                            AcceptsReturn="True"
+                            AcceptsTab="True"
+                            IsReadOnly="True"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            Margin="4,0,4,0"                   
+                            FontSize="13"
+                            HorizontalContentAlignment="Right"
+                            VerticalAlignment="Stretch"/>
+
+                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Brush.Border2}"/>
+
+                    <RichTextBox
+                            x:Name="rightText"
+                            Grid.Column="2"
+                            AcceptsReturn="True"
+                            AcceptsTab="True"
+                            IsReadOnly="True"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            Foreground="{StaticResource Brush.FG}"
+                            Height="Auto"
+                            FontSize="13"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Auto"
+                            RenderOptions.ClearTypeHint="Enabled"
+                            ScrollViewer.ScrollChanged="OnViewerScroll"
+                            PreviewMouseWheel="OnViewerMouseWheel"
+                            SizeChanged="RightSizeChanged"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                        <RichTextBox.Document>
+                            <FlowDocument PageWidth="0"/>
+                        </RichTextBox.Document>
+                    </RichTextBox>
+                </Grid>
+            </Grid>
+
+            <Border x:Name="mask" Grid.RowSpan="2" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
+                    <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Diff}"/>
+                    <Label Margin="0,8,0,0" Content="SELECT FILE TO VIEW CHANGES" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

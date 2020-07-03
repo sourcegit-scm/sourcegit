@@ -1,0 +1,114 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- 错误Tooltip -->
+    <ControlTemplate x:Key="Template.Validation.Tooltip" TargetType="{x:Type ToolTip}">
+        <Border x:Name="Root" Margin="5,0,0,0" Opacity="0" Padding="0,0,20,20" RenderTransformOrigin="0,0">
+            <Border.RenderTransform>
+                <TranslateTransform x:Name="xform" X="-25" />
+            </Border.RenderTransform>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="OpenStates">
+                    <VisualStateGroup.Transitions>
+                        <VisualTransition GeneratedDuration="0" />
+                        <VisualTransition GeneratedDuration="0:0:0.2" To="Open">
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="X" Storyboard.TargetName="xform">
+                                    <DoubleAnimation.EasingFunction>
+                                        <BackEase Amplitude=".3" EasingMode="EaseOut" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Root" />
+                            </Storyboard>
+                        </VisualTransition>
+                    </VisualStateGroup.Transitions>
+                    <VisualState x:Name="Closed">
+                        <Storyboard>
+                            <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Root" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Open">
+                        <Storyboard>
+                            <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="X" Storyboard.TargetName="xform" />
+                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Root" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <FrameworkElement.Effect>
+                <DropShadowEffect  BlurRadius="11" ShadowDepth="6" Opacity="0.4" />
+            </FrameworkElement.Effect>
+            <Border Background="#FFDC000C" BorderThickness="1" BorderBrush="#FFBC000C">
+                <TextBlock Foreground="White" MaxWidth="250" Margin="8,4,8,4" TextWrapping="Wrap" Text="{Binding [0].ErrorContent}" UseLayoutRounding="false" />
+            </Border>
+        </Border>
+    </ControlTemplate>
+
+    <!-- 验证错误模板 -->
+    <ControlTemplate x:Key="Template.Validation.Error">
+        <AdornedElementPlaceholder x:Name="Target">
+            <Border BorderBrush="#FFDB000C" BorderThickness="1" x:Name="root">
+                <ToolTipService.ToolTip>
+                    <ToolTip x:Name="validationTooltip" 
+                            Placement="Right" 
+                            PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                            Template="{StaticResource Template.Validation.Tooltip}"
+                            Style="{x:Null}"/>
+                </ToolTipService.ToolTip>
+                <Grid Background="Transparent" HorizontalAlignment="Right" Height="12" Width="12" Margin="1,-4,-4,0" VerticalAlignment="Top">
+                    <Path Data="M 1,0 L6,0 A 2,2 90 0 1 8,2 L8,7 z" Fill="#FFDC000C" Margin="1,3,0,0" />
+                </Grid>
+            </Border>
+        </AdornedElementPlaceholder>
+
+        <ControlTemplate.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding ElementName=Target, Path=AdornedElement.IsKeyboardFocusWithin, Mode=OneWay}" Value="True" />
+                    <Condition Binding="{Binding ElementName=Target, Path=AdornedElement.(Validation.HasError), Mode=OneWay}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter TargetName="validationTooltip" Property="IsOpen" Value="True"/>
+            </MultiDataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <!-- 修改默认 -->
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.FG}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource Brush.FG}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border1}"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource Template.Validation.Error}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="Border" 
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      Margin="{TemplateBinding Padding}"
+                                      VerticalAlignment="Center"
+                                      Background="{x:Null}"
+                                      BorderThickness="0"
+                                      IsTabStop="False"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                        
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Brush.Accent1}"/>
+                        </Trigger>
+                        <Trigger Property="AcceptsReturn" Value="True">
+                            <Setter TargetName="PART_ContentHost" Property="VerticalAlignment" Value="Top"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

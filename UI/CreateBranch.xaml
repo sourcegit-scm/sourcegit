@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="SourceGit.UI.CreateBranch"
+             x:Name="me"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:helpers="clr-namespace:SourceGit.Helpers"
+             xmlns:converters="clr-namespace:SourceGit.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="192" d:DesignWidth="500" Height="224" Width="500">
+    <UserControl.Resources>
+        <converters:InverseBool x:Key="InverseBool"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Create Local Branch"/>
+
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Based On :"/>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+            <Path x:Name="basedOnType" Width="12" Style="{StaticResource Style.Icon}"/>
+            <Label x:Name="basedOnDesc" VerticalAlignment="Center" Content="master"/>
+        </StackPanel>
+
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="New Branch Name :"/>
+        <TextBox Grid.Row="3" Grid.Column="1"
+                 x:Name="txtName"
+                 VerticalContentAlignment="Center" 
+                 Height="24" 
+                 helpers:TextBoxHelper.Placeholder="Enter branch name.">
+            <TextBox.Text>
+                <Binding ElementName="me" Path="BranchName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <helpers:BranchNameRule x:Name="nameValidator"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="Local Changes :"/>
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+            <RadioButton Content="Stash &amp; Reapply" GroupName="LocalChanges" IsChecked="{Binding AutoStash, ElementName=me}"/>
+            <RadioButton Content="Discard" Margin="8,0,0,0" GroupName="LocalChanges" IsChecked="{Binding AutoStash, ElementName=me, Mode=OneWay, Converter={StaticResource InverseBool}}"/>
+        </StackPanel>
+
+        <CheckBox Grid.Row="5" Grid.Column="1"
+                  x:Name="chkCheckout"
+                  VerticalAlignment="Center"
+                  IsChecked="True"
+                  Content="Check out after created"/>
+
+        <Grid Grid.Row="7" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+        </Grid>
+
+        <Grid Grid.Row="0" Grid.RowSpan="8" Grid.ColumnSpan="2" x:Name="status" Visibility="Collapsed" Background="{StaticResource Brush.BG1}" Opacity=".9">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Path x:Name="statusIcon" Width="48" Height="48" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
+                    <Path.RenderTransform>
+                        <RotateTransform Angle="0"/>
+                    </Path.RenderTransform>
+                </Path>
+
+                <Label x:Name="statusMsg" Margin="0,8,0,0"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
+

@@ -1,0 +1,379 @@
+<UserControl x:Class="SourceGit.UI.WorkingCopy"
+             x:Name="me"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:source="clr-namespace:SourceGit"
+             xmlns:local="clr-namespace:SourceGit.UI"
+             xmlns:helpers="clr-namespace:SourceGit.Helpers"
+             xmlns:converters="clr-namespace:SourceGit.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
+        <converters:InverseBoolToCollapsed x:Key="InverseBoolToCollapsed"/>
+        <converters:FileStatusToColor x:Key="UnstagedStatusConverter" OnlyWorkTree="True"/>
+        <converters:FileStatusToIcon x:Key="UnstagedStatusIconConverter" OnlyWorkTree="True"/>
+        <converters:FileStatusToColor x:Key="StagedStatusConverter"/>
+        <converters:FileStatusToIcon x:Key="StagedStatusIconConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource Brush.BG3}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Unstaged changes -->
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ToggleButton 
+                        Grid.Column="0" 
+                        x:Name="toggleUnstangedMode"
+                        Margin="4,0,0,0" 
+                        ToolTip="SWITCH TO LIST/TREE VIEW"
+                        Style="{StaticResource Style.ToggleButton.ListOrTree}" 
+                        IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIUseListInUnstaged, Mode=TwoWay}"/>
+                    <Label Grid.Column="1" Content="UNSTAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG2}"/>
+                    <Button Grid.Column="3" Click="Stage" Margin="4,0" ToolTip="STAGE" Background="Transparent">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.StageSelected}" Fill="{StaticResource Brush.FG2}"/>
+                    </Button>
+                    <Button Grid.Column="4" Click="StageAll" Margin="4,0" ToolTip="STAGE ALL" Background="Transparent">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.StageAll}" Fill="{StaticResource Brush.FG2}"/>
+                    </Button>
+                </Grid>
+
+                <TreeView 
+                    Grid.Row="1" 
+                    x:Name="unstagedTree" 
+                    Background="{StaticResource Brush.BG2}"
+                    Visibility="{Binding ElementName=toggleUnstangedMode, Path=IsChecked, Converter={StaticResource InverseBoolToCollapsed}}"
+                    FontFamily="Consolas" 
+                    PreviewMouseWheel="TreeMouseWheel"
+                    helpers:TreeViewHelper.EnableMultiSelection="True"
+                    helpers:TreeViewHelper.MultiSelectionChanged="UnstagedTreeMultiSelectionChanged">
+                    <TreeView.Resources>
+                        <RoutedUICommand x:Key="SelectWholeTreeCommand" Text="SelectWholeTree"/>
+                    </TreeView.Resources>
+
+                    <TreeView.InputBindings>
+                        <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectWholeTreeCommand}"/>
+                    </TreeView.InputBindings>
+
+                    <TreeView.CommandBindings>
+                        <CommandBinding Command="{StaticResource SelectWholeTreeCommand}" Executed="SelectWholeTree"/>
+                    </TreeView.CommandBindings>
+
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.MultiSelectionItemContainerStyle}">
+                            <Setter Property="IsExpanded" Value="{Binding IsNodeExpanded, Mode=TwoWay}"/>
+                            <EventSetter Event="ContextMenuOpening" Handler="UnstagedTreeContextMenuOpening"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal" Height="24">
+                                <Border x:Name="status" Width="14" Height="14" Visibility="Collapsed" Background="{Binding Change, Converter={StaticResource UnstagedStatusConverter}}" CornerRadius="2" Margin="0,0,4,0">
+                                    <TextBlock Text="{Binding Change, Converter={StaticResource UnstagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+                                <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
+                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
+                            </StackPanel>
+
+                            <HierarchicalDataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsFile}" Value="True">
+                                    <Setter TargetName="status" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="icon" Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsFile}" Value="False"/>
+                                        <Condition Binding="{Binding IsNodeExpanded}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                                </MultiDataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+
+                <DataGrid
+                    Grid.Row="1"
+                    x:Name="unstagedList"
+                    Visibility="{Binding ElementName=toggleUnstangedMode, Path=IsChecked, Converter={StaticResource BoolToCollapsed}}"
+                    RowHeight="24"
+                    SelectionChanged="UnstagedListSelectionChanged"
+                    SelectionMode="Extended"
+                    SelectionUnit="FullRow"
+                    Background="{StaticResource Brush.BG2}">
+                    <DataGrid.Resources>
+                        <Style x:Key="Style.DataGridText.VerticalCenter" TargetType="{x:Type TextBlock}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+
+                        <RoutedUICommand x:Key="SelectWholeDataGridCommand" Text="SelectWholeDataGrid"/>
+                    </DataGrid.Resources>
+
+                    <DataGrid.InputBindings>
+                        <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectWholeDataGridCommand}"/>
+                    </DataGrid.InputBindings>
+
+                    <DataGrid.CommandBindings>
+                        <CommandBinding Command="{StaticResource SelectWholeDataGridCommand}" Executed="SelectWholeDataGrid"/>
+                    </DataGrid.CommandBindings>
+
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="22">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Width="14" Height="14" x:Name="status" Background="{Binding ., Converter={StaticResource UnstagedStatusConverter}}" CornerRadius="2" Margin="2,0,4,0">
+                                        <TextBlock Text="{Binding ., Converter={StaticResource UnstagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Width="*" Binding="{Binding Path}" Foreground="{StaticResource Brush.FG}" FontFamily="Consolas" ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
+                    </DataGrid.Columns>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                            <EventSetter Event="ContextMenuOpening" Handler="UnstagedListContextMenuOpening"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                </DataGrid>
+            </Grid>
+
+            <!-- Splitter -->
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+
+            <!-- Staged changes -->
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ToggleButton
+                        Grid.Column="0" 
+                        x:Name="toggleStagedMode"
+                        Margin="4,0,0,0"
+                        ToolTip="SWITCH TO LIST/TREE VIEW"
+                        Style="{StaticResource Style.ToggleButton.ListOrTree}"
+                        IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIUseListInStaged, Mode=TwoWay}"/>
+                    <Label Grid.Column="1" Content="STAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG2}"/>
+                    <Button Grid.Column="3" Click="Unstage" ToolTip="UNSTAGE" Margin="4,0" Background="Transparent">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.UnstageSelected}" Fill="{StaticResource Brush.FG2}"/>
+                    </Button>
+                    <Button Grid.Column="4" Click="UnstageAll" ToolTip="UNSTAGE ALL" Margin="4,0" Background="Transparent">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.UnstageAll}" Fill="{StaticResource Brush.FG2}"/>
+                    </Button>
+                </Grid>
+
+                <TreeView
+                    Grid.Row="1" 
+                    x:Name="stageTree" 
+                    Background="{StaticResource Brush.BG2}"
+                    Visibility="{Binding ElementName=toggleStagedMode, Path=IsChecked, Converter={StaticResource InverseBoolToCollapsed}}"
+                    FontFamily="Consolas" 
+                    PreviewMouseWheel="TreeMouseWheel"
+                    helpers:TreeViewHelper.EnableMultiSelection="True"
+                    helpers:TreeViewHelper.MultiSelectionChanged="StageTreeMultiSelectionChanged">
+                    <TreeView.Resources>
+                        <RoutedUICommand x:Key="SelectWholeTreeCommand" Text="SelectWholeTree"/>
+                    </TreeView.Resources>
+
+                    <TreeView.InputBindings>
+                        <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectWholeTreeCommand}"/>
+                    </TreeView.InputBindings>
+
+                    <TreeView.CommandBindings>
+                        <CommandBinding Command="{StaticResource SelectWholeTreeCommand}" Executed="SelectWholeTree"/>
+                    </TreeView.CommandBindings>
+
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.MultiSelectionItemContainerStyle}">
+                            <Setter Property="IsExpanded" Value="{Binding IsNodeExpanded, Mode=TwoWay}"/>
+                            <EventSetter Event="ContextMenuOpening" Handler="StageTreeContextMenuOpening"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal" Height="24">
+                                <Border x:Name="status" Width="14" Height="14" Visibility="Collapsed" Background="{Binding Change, Converter={StaticResource StagedStatusConverter}}" CornerRadius="2" Margin="0,0,4,0">
+                                    <TextBlock Text="{Binding Change, Converter={StaticResource StagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+                                <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
+                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
+                            </StackPanel>
+
+                            <HierarchicalDataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsFile}" Value="True">
+                                    <Setter TargetName="status" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="icon" Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsFile}" Value="False"/>
+                                        <Condition Binding="{Binding IsNodeExpanded}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                                </MultiDataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+
+                <DataGrid
+                    Grid.Row="1"
+                    x:Name="stageList"
+                    Visibility="{Binding ElementName=toggleStagedMode, Path=IsChecked, Converter={StaticResource BoolToCollapsed}}"
+                    RowHeight="24"
+                    SelectionChanged="StagedListSelectionChanged"
+                    SelectionMode="Extended"
+                    SelectionUnit="FullRow"
+                    Background="{StaticResource Brush.BG2}">
+                    <DataGrid.Resources>
+                        <Style x:Key="Style.DataGridText.VerticalCenter" TargetType="{x:Type TextBlock}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+
+                        <RoutedUICommand x:Key="SelectWholeDataGridCommand" Text="SelectWholeDataGrid"/>
+                    </DataGrid.Resources>
+
+                    <DataGrid.InputBindings>
+                        <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectWholeDataGridCommand}"/>
+                    </DataGrid.InputBindings>
+
+                    <DataGrid.CommandBindings>
+                        <CommandBinding Command="{StaticResource SelectWholeDataGridCommand}" Executed="SelectWholeDataGrid"/>
+                    </DataGrid.CommandBindings>
+
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="22">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Width="14" Height="14" x:Name="status" Background="{Binding ., Converter={StaticResource StagedStatusConverter}}" CornerRadius="2" Margin="2,0,4,0">
+                                        <TextBlock Text="{Binding ., Converter={StaticResource StagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Width="*" Binding="{Binding Path}" Foreground="{StaticResource Brush.FG}" FontFamily="Consolas" ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
+                    </DataGrid.Columns>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                            <EventSetter Event="ContextMenuOpening" Handler="StagedListContextMenuOpening"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                </DataGrid>
+            </Grid>
+        </Grid>
+
+        <!-- Splitter -->
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.BG4}"/>
+
+        <!-- Right -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="66"/>
+                <RowDefinition Height="36"/>
+            </Grid.RowDefinitions>
+
+            <!-- Diff -->
+            <local:DiffViewer Grid.Row="0" x:Name="diffViewer" Margin="8,8,8,4"/>
+
+            <!-- Merge -->
+            <Grid Grid.Row="0" x:Name="mergePanel" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Conflict}" Margin="0,0,0,16"/>
+                    <Label Content="CONFLICTS DETECTED" FontSize="20" HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}" Margin="0,0,0,24"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4">
+                        <Button Click="UseTheirs" Style="{StaticResource Style.Button.Bordered}" Content="USE THEIRS" Height="24"/>
+                        <Button Click="UseMine" Style="{StaticResource Style.Button.Bordered}" Content="USE MINE" Height="24" Margin="8,0"/>
+                        <Button Click="OpenMergeTool" Style="{StaticResource Style.Button.Bordered}" Content="OPEN MERGE" Height="24"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <!-- Commit Message -->
+            <TextBox
+                x:Name="txtCommitMsg"
+                Grid.Row="1"
+                Height="64"
+                Margin="8,0"
+                Padding="2"
+                AcceptsReturn="True"
+                AcceptsTab="True"
+                TextWrapping="Wrap"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                helpers:TextBoxHelper.Placeholder="Enter commit message"
+                helpers:TextBoxHelper.PlaceholderBaseline="Top"
+                TextChanged="CommitMessageChanged">
+                <TextBox.Text>
+                    <Binding ElementName="me" Path="CommitMessage" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <helpers:CommitSubjectRequiredRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- Commit Options -->
+            <Grid Grid.Row="2" Margin="8,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Width="16" Height="16" Margin="0,0,8,0" Click="OpenCommitMessageSelector" ToolTip="MESSAGE HISTORIES">
+                    <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.List}"/>
+                </Button>
+
+                <CheckBox Grid.Column="1" x:Name="chkAmend" HorizontalAlignment="Left" Content="Amend" Checked="StartAmend"/>
+
+                <Button Grid.Column="3" Height="26" Click="Commit" Style="{StaticResource Style.Button.AccentBordered}" Content="COMMIT"/>
+                <Button Grid.Column="4" x:Name="btnCommitAndPush" Height="26" Click="CommitAndPush" Style="{StaticResource Style.Button.Bordered}" Content="COMMIT &amp; PUSH" Margin="8,0,0,0"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
+

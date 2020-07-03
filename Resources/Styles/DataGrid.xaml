@@ -1,0 +1,44 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="Style.DataGridCell" TargetType="{x:Type DataGridCell}">
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <Style x:Key="Style.DataGridRow" TargetType="{x:Type DataGridRow}">
+        <Setter Property="BorderThickness" Value="0"/>
+        
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Brush.Accent2}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style TargetType="{x:Type DataGrid}">
+        <Style.Resources>
+            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+        </Style.Resources>
+        
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="CanUserResizeRows" Value="False"/>
+        <Setter Property="CanUserReorderColumns" Value="False"/>
+        <Setter Property="CanUserResizeColumns" Value="False" />
+        <Setter Property="CanUserSortColumns" Value="False"/>
+        <Setter Property="AllowDrop" Value="False"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.FG}"/>
+        <Setter Property="TextElement.FontFamily" Value="Consolas"/>
+        <Setter Property="EnableColumnVirtualization" Value="True"/>
+        <Setter Property="EnableRowVirtualization" Value="True"/>
+        <Setter Property="RowBackground" Value="Transparent"/>
+        <Setter Property="HeadersVisibility" Value="None"/>
+        <Setter Property="GridLinesVisibility" Value="None"/>
+        <Setter Property="CellStyle" Value="{StaticResource Style.DataGridCell}"/>
+        <Setter Property="RowStyle" Value="{StaticResource Style.DataGridRow}"/>
+    </Style>
+</ResourceDictionary>

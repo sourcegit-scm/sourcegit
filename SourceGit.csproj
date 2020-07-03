@@ -1,0 +1,515 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6B38FAF0-57D6-44E6-9B21-9BEAC481EF9E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SourceGit</RootNamespace>
+    <AssemblyName>SourceGit</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SourceGit.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>App.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Converters\FileStatusToColor.cs" />
+    <Compile Include="Converters\FileStatusToIcon.cs" />
+    <Compile Include="Converters\InverseBool.cs" />
+    <Compile Include="Converters\InverseBoolToCollapsed.cs" />
+    <Compile Include="Git\Blame.cs" />
+    <Compile Include="Git\Branch.cs" />
+    <Compile Include="Git\Decorator.cs" />
+    <Compile Include="Git\MergeTool.cs" />
+    <Compile Include="Git\Remote.cs" />
+    <Compile Include="Git\Stash.cs" />
+    <Compile Include="Git\Tag.cs" />
+    <Compile Include="Helpers\CommitGraph.cs" />
+    <Compile Include="Helpers\TreeViewHelper.cs" />
+    <Compile Include="Helpers\Validations.cs" />
+    <Compile Include="UI\Apply.xaml.cs">
+      <DependentUpon>Apply.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Blame.xaml.cs">
+      <DependentUpon>Blame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CherryPick.xaml.cs">
+      <DependentUpon>CherryPick.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Clone.xaml.cs">
+      <DependentUpon>Clone.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CommitViewer.xaml.cs">
+      <DependentUpon>CommitViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CreateBranch.xaml.cs">
+      <DependentUpon>CreateBranch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CreateTag.xaml.cs">
+      <DependentUpon>CreateTag.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dashboard.xaml.cs">
+      <DependentUpon>Dashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DeleteBranch.xaml.cs">
+      <DependentUpon>DeleteBranch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DeleteRemote.xaml.cs">
+      <DependentUpon>DeleteRemote.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DeleteTag.xaml.cs">
+      <DependentUpon>DeleteTag.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DiffViewer.xaml.cs">
+      <DependentUpon>DiffViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Discard.xaml.cs">
+      <DependentUpon>Discard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Fetch.xaml.cs">
+      <DependentUpon>Fetch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FileHistories.xaml.cs">
+      <DependentUpon>FileHistories.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\GitFlowFinishBranch.xaml.cs">
+      <DependentUpon>GitFlowFinishBranch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\GitFlowSetup.xaml.cs">
+      <DependentUpon>GitFlowSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\GitFlowStartBranch.xaml.cs">
+      <DependentUpon>GitFlowStartBranch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Histories.xaml.cs">
+      <DependentUpon>Histories.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Init.xaml.cs">
+      <DependentUpon>Init.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\InteractiveRebase.xaml.cs">
+      <DependentUpon>InteractiveRebase.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Manager.xaml.cs">
+      <DependentUpon>Manager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Merge.xaml.cs">
+      <DependentUpon>Merge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PopupManager.xaml.cs">
+      <DependentUpon>PopupManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Preference.xaml.cs">
+      <DependentUpon>Preference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pull.xaml.cs">
+      <DependentUpon>Pull.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Push.xaml.cs">
+      <DependentUpon>Push.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PushTag.xaml.cs">
+      <DependentUpon>PushTag.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Rebase.xaml.cs">
+      <DependentUpon>Rebase.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Remote.xaml.cs">
+      <DependentUpon>Remote.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\RenameBranch.xaml.cs">
+      <DependentUpon>RenameBranch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Reset.xaml.cs">
+      <DependentUpon>Reset.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Revert.xaml.cs">
+      <DependentUpon>Revert.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Stash.xaml.cs">
+      <DependentUpon>Stash.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Stashes.xaml.cs">
+      <DependentUpon>Stashes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\WorkingCopy.xaml.cs">
+      <DependentUpon>WorkingCopy.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Resources\Controls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Border.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\CheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ContextMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\DataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\HyperLink.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Label.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Path.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\RadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ScrollBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\TabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ToggleButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Tooltip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\TreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Themes\Dark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Themes\Light.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Apply.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Blame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CherryPick.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Clone.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CommitViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CreateBranch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CreateTag.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Dashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\DeleteBranch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\DeleteRemote.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\DeleteTag.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\DiffViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Discard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Fetch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\FileHistories.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\GitFlowFinishBranch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\GitFlowSetup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\GitFlowStartBranch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Histories.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Init.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\InteractiveRebase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Launcher.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converters\PercentToDouble.cs" />
+    <Compile Include="Git\Change.cs" />
+    <Compile Include="Git\Commit.cs" />
+    <Compile Include="Git\Preference.cs" />
+    <Compile Include="Git\Repository.cs" />
+    <Compile Include="Git\User.cs" />
+    <Compile Include="Converters\BoolToCollapsed.cs" />
+    <Compile Include="Converters\IndentToMargin.cs" />
+    <Compile Include="Helpers\TextBoxHelper.cs" />
+    <Compile Include="Converters\TreeViewItemDepthToMargin.cs" />
+    <Compile Include="UI\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Launcher.xaml.cs">
+      <DependentUpon>Launcher.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="UI\Manager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Merge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\PopupManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Preference.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pull.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Push.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\PushTag.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Rebase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Remote.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\RenameBranch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Reset.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Revert.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Stash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Stashes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\WorkingCopy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="App.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>@echo off &amp;setlocal
+setlocal enabledelayedexpansion
+
+set file=$(SolutionDir)Properties\AssemblyInfo.cs
+set temp=$(SolutionDir)Properties\AssemblyInfo.cs.tmp
+set bak=$(SolutionDir)Properties\AssemblyInfo.cs.bk
+
+echo BACKUP AssemblyInfo
+copy /Y %25file%25 %25bak%25
+
+echo Find Version
+git describe &gt; VERSION
+set /P version=&lt;VERSION
+
+set search=1.0.0.0
+(for /f "delims=" %25%25i in (%25file%25) do (
+    set "line=%25%25i"
+    set "line=!line:%25search%25=%25version%25!"
+    echo(!line!
+))&gt;"%25temp%25"
+del /f %25file%25
+del /f VERSION
+move %25temp%25 %25file%25
+endlocal</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>del /f $(SolutionDir)Properties\AssemblyInfo.cs
+move $(SolutionDir)Properties\AssemblyInfo.cs.bk $(SolutionDir)Properties\AssemblyInfo.cs</PostBuildEvent>
+  </PropertyGroup>
+</Project>

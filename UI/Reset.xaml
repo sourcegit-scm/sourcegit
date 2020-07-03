@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="SourceGit.UI.Reset"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="192" d:DesignWidth="500" Height="192" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Reset Current Branch To Revision"/>
+
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Current Branch :"/>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+            <Path Width="12" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
+            <Label x:Name="branch"/>
+        </StackPanel>
+
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Move To :"/>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+            <Path Width="12" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Commit}"/>
+            <Label x:Name="desc"/>
+        </StackPanel>
+
+        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="Reset Mode :"/>
+        <ComboBox x:Name="combMode" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Height="20">
+                        <Path Width="12" Height="12" Margin="4,0,0,0" Fill="{Binding Color}" Style="{StaticResource Style.Icon}" Data="M 0,0 A 180,180 180 1 1 1,1 Z"/>
+                        <Label Content="{Binding Name}" Padding="4,0"/>
+                        <Label Content="{Binding Desc}" Foreground="{StaticResource Brush.FG2}" FontSize="11" Padding="4,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <Grid Grid.Row="6" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+        </Grid>
+
+        <Grid Grid.Row="0" Grid.RowSpan="7" Grid.ColumnSpan="2" x:Name="status" Visibility="Collapsed" Background="{StaticResource Brush.BG1}" Opacity=".9">
+            <Path x:Name="statusIcon" Width="48" Height="48" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
+                <Path.RenderTransform>
+                    <RotateTransform Angle="0"/>
+                </Path.RenderTransform>
+            </Path>
+        </Grid>
+    </Grid>
+</UserControl>
+

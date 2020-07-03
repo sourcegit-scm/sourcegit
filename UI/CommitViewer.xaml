@@ -1,0 +1,408 @@
+<UserControl x:Class="SourceGit.UI.CommitViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:source="clr-namespace:SourceGit"
+             xmlns:local="clr-namespace:SourceGit.UI"
+             xmlns:git="clr-namespace:SourceGit.Git"
+             xmlns:converters="clr-namespace:SourceGit.Converters"
+             xmlns:helpers="clr-namespace:SourceGit.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Unloaded="Cleanup">
+    <TabControl>
+        <TabItem Header="INFORMATION">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition x:Name="committerRow" Height="Auto"/>
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="96"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="96"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- SHA -->
+                <Label Grid.Row="0" Grid.Column="0" Content="SHA" HorizontalAlignment="Right" Opacity=".5"/>
+                <TextBox Grid.Row="0" Grid.Column="1" 
+                     x:Name="SHA" 
+                     IsReadOnly="True" 
+                     Background="Transparent" 
+                     BorderThickness="0"
+                     Margin="11,0,0,0"/>
+
+                <!-- Refs -->
+                <Label x:Name="lblRefs" Grid.Row="0" Grid.Column="2" Content="REFS" HorizontalAlignment="Right" Opacity=".5"/>
+                <ItemsControl Grid.Row="0" Grid.Column="3" x:Name="refs" Margin="8,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="BG" Height="16" Margin="2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Background="{StaticResource Brush.BG5}">
+                                        <Path x:Name="Icon" Width="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
+                                    </Border>
+
+                                    <Label x:Name="Name" Grid.Column="1" Content="{Binding Name}" FontSize="11" Padding="4,0" Foreground="Black"/>
+                                </Grid>
+                            </Border>
+
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.Tag}">
+                                    <Setter TargetName="BG" Property="Background" Value="#FF02C302"/>
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Tag}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.LocalBranchHead}">
+                                    <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Branch}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.RemoteBranchHead}">
+                                    <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Remote}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.CurrentBranchHead}">
+                                    <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Check}"/>
+                                    <Setter TargetName="Icon" Property="Fill" Value="Orange"/>
+                                    <Setter TargetName="Name" Property="FontWeight" Value="Bold"/>
+                                    <Setter TargetName="Name" Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- PARENTS -->
+                <Label Grid.Row="1" Grid.Column="0" Content="PARENTS" HorizontalAlignment="Right" Opacity=".5"/>
+                <ItemsControl Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" x:Name="parents" Margin="8,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Label Margin="0,0,8,0">
+                                <Hyperlink 
+                                     RequestNavigate="NavigateParent" 
+                                     NavigateUri="{Binding .}"
+                                     ToolTip="NAVIGATE TO COMMIT">
+                                    <Run Text="{Binding .}"/>
+                                </Hyperlink>
+                            </Label>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- AUTHOR -->
+                <Label Grid.Row="2" Grid.Column="0" Content="AUTHOR" HorizontalAlignment="Right" Opacity=".5"/>
+                <TextBox Grid.Row="2" Grid.Column="1" x:Name="author"
+                     IsReadOnly="True" 
+                     Background="Transparent"
+                     AcceptsReturn="True"
+                     BorderThickness="0"
+                     Margin="11,0,0,0"/>
+
+                <!-- AUTHOR TIME -->
+                <Label Grid.Row="2" Grid.Column="2" Content="AUTHOR TIME" HorizontalAlignment="Right" Opacity=".5"/>
+                <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" x:Name="authorTime"
+                     IsReadOnly="True" 
+                     Background="Transparent"
+                     AcceptsReturn="True"
+                     BorderThickness="0"
+                     Margin="8,0,0,0"/>
+
+                <!-- COMMITTER -->
+                <Label Grid.Row="3" Grid.Column="0" Content="COMMITTER" HorizontalAlignment="Right" Opacity=".5"/>
+                <TextBox Grid.Row="3" Grid.Column="1" x:Name="committer"
+                     IsReadOnly="True" 
+                     Background="Transparent"
+                     AcceptsReturn="True"
+                     BorderThickness="0"
+                     Margin="11,0,0,0"/>
+
+                <!-- COMMIT TIME -->
+                <Label Grid.Row="3" Grid.Column="2" Content="COMMIT TIME" HorizontalAlignment="Right" Opacity=".5"/>
+                <TextBox Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" x:Name="committerTime"
+                     IsReadOnly="True" 
+                     Background="Transparent"
+                     AcceptsReturn="True"
+                     BorderThickness="0"
+                     Margin="8,0,0,0"/>
+
+                <Rectangle Grid.Row="4" Grid.ColumnSpan="4" Height="1" Margin="8,0" Fill="{StaticResource Brush.Border2}"/>
+
+                <!-- SUBJECT -->
+                <Label Grid.Row="5" Grid.Column="0" Content="SUBJECT" HorizontalAlignment="Right" Opacity=".5"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" 
+                         x:Name="subject"
+                         IsReadOnly="True"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Margin="8,0,16,0"/>
+
+                <!-- MESSAGE -->
+                <Label Grid.Row="6" Grid.Column="0" Content="DESCRIPTION" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".5"/>
+                <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" 
+                     x:Name="message"
+                     IsReadOnly="True"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     VerticalAlignment="Center"
+                     FontSize="11"
+                     Margin="11,8,0,0"/>
+
+                <Rectangle Grid.Row="7" Grid.ColumnSpan="4" Height="1" Margin="8,0" Fill="{StaticResource Brush.Border2}"/>
+
+                <!-- CHANGELIST -->
+                <Label Grid.Row="8" Grid.Column="0" Content="CHANGED" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".5"/>
+                <DataGrid
+                    Grid.Row="8"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    x:Name="changeList1"
+                    RowHeight="20"
+                    Margin="11,2,0,2">
+                    <DataGrid.Resources>
+                        <converters:FileStatusToColor x:Key="StatusColorConverter"/>
+                        <converters:FileStatusToIcon x:Key="StatusIconConverter"/>
+
+                        <Style x:Key="Style.DataGridText.VerticalCenter" TargetType="{x:Type TextBlock}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="22">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Width="14" Height="14" x:Name="status" Background="{Binding ., Converter={StaticResource StatusColorConverter}}" CornerRadius="2" Margin="2,0,4,0">
+                                        <TextBlock Text="{Binding ., Converter={StaticResource StatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Width="*" Binding="{Binding Path}" Foreground="{StaticResource Brush.FG}" FontFamily="Consolas" ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
+                    </DataGrid.Columns>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                            <EventSetter Event="ContextMenuOpening" Handler="ChangeListContextMenuOpening"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                </DataGrid>
+            </Grid>
+        </TabItem>
+
+        <!-- CHANGES -->
+        <TabItem Header="CHANGES">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" MinWidth="200"/>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" Margin="2,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="24"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.Resources>
+                        <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
+                        <converters:InverseBoolToCollapsed x:Key="InverseBoolToCollapsed"/>
+                    </Grid.Resources>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="24"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}" Background="{StaticResource Brush.BG3}"/>
+                        <Path Grid.Column="0" Width="14" Height="14" Fill="{StaticResource Brush.FG2}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
+                        <TextBox Grid.Column="1" x:Name="txtChangeFilter" BorderThickness="0" helpers:TextBoxHelper.Placeholder="Search File ..." TextChanged="SearchChangeFileTextChanged"/>
+                        <ToggleButton
+                            Grid.Column="2" 
+                            x:Name="toggleSwitchMode"
+                            Margin="4,0,0,0" 
+                            ToolTip="SWITCH TO LIST/TREE VIEW"
+                            Style="{StaticResource Style.ToggleButton.ListOrTree}" 
+                            IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIUseListInChanges, Mode=TwoWay}"/>
+                    </Grid>
+
+                    <TreeView
+                        Grid.Row="1" 
+                        x:Name="changeTree" 
+                        FontFamily="Consolas" 
+                        Visibility="{Binding ElementName=toggleSwitchMode, Path=IsChecked, Converter={StaticResource InverseBoolToCollapsed}}"
+                        Background="{StaticResource Brush.BG2}"
+                        SelectedItemChanged="ChangeTreeItemSelected" 
+                        PreviewMouseWheel="TreeMouseWheel">
+                        <TreeView.Resources>
+                            <converters:FileStatusToColor x:Key="StatusColorConverter"/>
+                            <converters:FileStatusToIcon x:Key="StatusIconConverter"/>
+                        </TreeView.Resources>
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
+                                <Setter Property="IsExpanded" Value="{Binding IsNodeExpanded, Mode=TwoWay}"/>
+                                <EventSetter Event="ContextMenuOpening" Handler="TreeContextMenuOpening"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal" Height="24">
+                                    <Border x:Name="status" Width="14" Height="14" Visibility="Collapsed" Background="{Binding Change, Converter={StaticResource StatusColorConverter}}" CornerRadius="2" Margin="0,0,4,0">
+                                        <TextBlock Text="{Binding Change, Converter={StaticResource StatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Border>
+                                    <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
+                                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
+                                </StackPanel>
+
+                                <HierarchicalDataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsFile}" Value="True">
+                                        <Setter TargetName="status" Property="Visibility" Value="Visible"/>
+                                        <Setter TargetName="icon" Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsFile}" Value="False"/>
+                                            <Condition Binding="{Binding IsNodeExpanded}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                                    </MultiDataTrigger>
+                                </HierarchicalDataTemplate.Triggers>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+
+                    <DataGrid
+                        Grid.Row="1"
+                        x:Name="changeList2"
+                        Visibility="{Binding ElementName=toggleSwitchMode, Path=IsChecked, Converter={StaticResource BoolToCollapsed}}"
+                        RowHeight="24"
+                        SelectionChanged="ChangeListSelectionChanged"
+                        SelectionMode="Single"
+                        SelectionUnit="FullRow"
+                        Background="{StaticResource Brush.BG2}">
+                        <DataGrid.Resources>
+                            <converters:FileStatusToColor x:Key="StatusColorConverter"/>
+                            <converters:FileStatusToIcon x:Key="StatusIconConverter"/>
+
+                            <Style x:Key="Style.DataGridText.VerticalCenter" TargetType="{x:Type TextBlock}">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGrid.Resources>
+
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="22">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Width="14" Height="14" x:Name="status" Background="{Binding ., Converter={StaticResource StatusColorConverter}}" CornerRadius="2" Margin="2,0,4,0">
+                                            <TextBlock Text="{Binding ., Converter={StaticResource StatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding Path}" Foreground="{StaticResource Brush.FG}" FontFamily="Consolas" ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
+                        </DataGrid.Columns>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                                <EventSetter Event="ContextMenuOpening" Handler="ChangeListContextMenuOpening"/>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+                </Grid>
+                
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+
+                <local:DiffViewer Grid.Column="2" x:Name="diffViewer" Background="{StaticResource Brush.BG3}"/>
+            </Grid>
+        </TabItem>
+
+        <!-- FILE TREE -->
+        <TabItem Header="FILES">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" MinWidth="200" MaxWidth="400"/>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Margin="2" Background="{StaticResource Brush.BG2}">
+                    <TreeView x:Name="fileTree" SelectedItemChanged="FileTreeItemSelected" FontFamily="Consolas" PreviewMouseWheel="TreeMouseWheel">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
+                                <Setter Property="IsExpanded" Value="{Binding IsNodeExpanded, Mode=TwoWay}"/>
+                                <EventSetter Event="ContextMenuOpening" Handler="TreeContextMenuOpening"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal" Height="24">
+                                    <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
+                                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" Margin="6,0,0,0" FontSize="11"/>
+                                </StackPanel>
+
+                                <HierarchicalDataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsFile}" Value="True">
+                                        <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.File}"/>
+                                        <Setter TargetName="icon" Property="Fill" Value="{StaticResource Brush.FG}"/>
+                                        <Setter TargetName="icon" Property="Opacity" Value=".75"/>
+                                    </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsFile}" Value="False"/>
+                                            <Condition Binding="{Binding IsNodeExpanded}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                                    </MultiDataTrigger>
+                                </HierarchicalDataTemplate.Triggers>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </Border>
+
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+
+                <Border Grid.Column="2" BorderThickness="1" Margin="2,0" BorderBrush="{StaticResource Brush.Border2}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <TextBlock FontSize="10pt"
+                             FontFamily="Consolas"
+                             Padding="8"
+                             Opacity="0.8"
+                             Background="{StaticResource Brush.BG2}"
+                             Foreground="{StaticResource Brush.FG}"
+                             x:Name="filePreview"/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</UserControl>

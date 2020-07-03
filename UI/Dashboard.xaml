@@ -1,0 +1,450 @@
+<UserControl x:Class="SourceGit.UI.Dashboard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:source="clr-namespace:SourceGit"
+             xmlns:local="clr-namespace:SourceGit.UI"
+             xmlns:git="clr-namespace:SourceGit.Git"
+             xmlns:converters="clr-namespace:SourceGit.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Unloaded="Cleanup">
+    <UserControl.Resources>
+        <RoutedUICommand x:Key="OpenSearchBarCommand" Text="OpenSearchBar"/>
+        <RoutedUICommand x:Key="HideSearchBarCommand" Text="HideSearchBar"/>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="F" Modifiers="Ctrl" Command="{StaticResource OpenSearchBarCommand}"/>
+        <KeyBinding Key="ESC" Command="{StaticResource HideSearchBarCommand}"/>
+    </UserControl.InputBindings>
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{StaticResource OpenSearchBarCommand}" Executed="OpenSearchBar"/>
+        <CommandBinding Command="{StaticResource HideSearchBarCommand}" Executed="HideSearchBar"/>
+    </UserControl.CommandBindings>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- TitleBar -->
+        <Grid Grid.Row="0" Panel.ZIndex="9999">
+            <Border Background="{StaticResource Brush.BG1}">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" Direction="270" Opacity=".3"/>
+                </Border.Effect>
+            </Border>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <!-- Navigation -->
+                <StackPanel Grid.Column="0" Margin="8,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Click="Close" ToolTip="Back To Welcome" Padding="0">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Manager}"/>
+                            <Label Content="Repositories"/>
+                        </StackPanel>
+                    </Button>
+                    <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Navigator}"/>
+                    <Path Margin="6,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
+                    <Label x:Name="repoName"/>
+                </StackPanel>
+                
+                <!-- Common Git Options -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Click="OpenFetch" Margin="4,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Fetch}"/>
+                            <Label Content="Fetch"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenPull" Margin="4,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}"/>
+                            <Label Content="Pull"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenPush" Margin="4,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Push}"/>
+                            <Label Content="Push"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenStash" Margin="2,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.SaveStash}"/>
+                            <Label Content="Stash"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenApply" Margin="4,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Apply}"/>
+                            <Label Content="Apply"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- External Options -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Click="OpenSearch" Margin="4,0" ToolTip="Search Commit">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
+                            <Label Content="Search"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenExplorer" Margin="4,0" ToolTip="Open In File Browser">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
+                            <Label Content="Explore"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenTerminal" Margin="4,0" ToolTip="Open Git Bash">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Terminal}"/>
+                            <Label Content="Terminal"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        
+        <!-- Main body -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Left panel -->
+            <Grid Grid.Column="0" x:Name="main" Background="{StaticResource Brush.BG4}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.Resources>
+                    <converters:BoolToCollapsed x:Key="Bool2Collapsed"/>
+                </Grid.Resources>
+                
+                <!-- WORKSPACE -->
+                <Label Grid.Row="0" Margin="4,0,0,0" Content="WORKSPACE" Style="{StaticResource Style.Label.GroupHeader}" />
+                <ListView
+                    Grid.Row="1"
+                    x:Name="workspace"
+                    Background="{StaticResource Brush.BG3}"
+                    Style="{StaticResource Style.ListView.Borderless}">
+                    <ListViewItem x:Name="historiesSwitch" Selected="SwitchHistories" IsSelected="True">
+                        <StackPanel Margin="16,0,0,0" Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Histories}"/>
+                            <Label Margin="4,0,0,0" Content="Histories"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem x:Name="workingCopySwitch" Selected="SwitchWorkingCopy">
+                        <Grid Margin="16,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Grid.Column="0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.WorkingCopy}"/>
+                            <Label Grid.Column="1" Margin="4,0,0,0" Content="Commit"/>
+                            <Border Grid.Column="2" x:Name="localChangesBadge" Style="{StaticResource Style.Border.Badge}">
+                                <Label x:Name="localChangesCount" Margin="4,-2,4,-2" Content="999" FontSize="10"/>
+                            </Border>
+                        </Grid>
+                    </ListViewItem>
+
+                    <ListViewItem x:Name="stashesSwitch" Selected="SwitchStashes">
+                        <Grid Margin="16,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Grid.Column="0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Stashes}"/>
+                            <Label Grid.Column="1" Margin="4,0,0,0" Content="Stashes"/>
+                            <Border Grid.Column="2" x:Name="stashBadge" Style="{StaticResource Style.Border.Badge}">
+                                <Label x:Name="stashCount" Margin="4,-2,4,-2" Content="999" FontSize="10"/>
+                            </Border>
+                        </Grid>
+                    </ListViewItem>
+                </ListView>
+                
+                <!-- LOCAL BRANCHES -->
+                <Grid Grid.Row="2" Margin="4,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="16"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="LOCAL BRANCHES" Style="{StaticResource Style.Label.GroupHeader}"/>
+                    <Button Grid.Column="1" Click="OpenGitFlow" Background="Transparent" ToolTip="GIT FLOW">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{DynamicResource Icon.Flow}"/>
+                    </Button>
+                    <Button Grid.Column="3" Click="OpenNewBranch" Background="Transparent" ToolTip="NEW BRANCH">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{DynamicResource Icon.Branch.Add}"/>
+                    </Button>
+                </Grid>
+                <TreeView
+                    Grid.Row="3"
+                    x:Name="localBranchTree"
+                    Background="{StaticResource Brush.BG3}"
+                    FontFamily="Consolas"
+                    LostFocus="TreeLostFocus"
+                    SelectedItemChanged="LocalBranchSelected"
+                    PreviewMouseWheel="TreeMouseWheel">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                            <EventSetter Event="ContextMenuOpening" Handler="LocalBranchContextMenuOpening"/>
+                            <EventSetter Event="MouseDoubleClick" Handler="LocalBranchMouseDoubleClick"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <Grid Height="24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Path Grid.Column="0" Width="10" x:Name="icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
+                                <Label Grid.Column="1" x:Name="name" Content="{Binding Name}" Padding="4,0,0,0"/>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                    <Border Style="{StaticResource Style.Border.Badge}" Visibility="{Binding TrackVisibility}">
+                                        <Label Margin="4,-2,4,-2" Content="{Binding Branch.UpstreamTrack}" FontSize="10"/>
+                                    </Border>
+                                    <ToggleButton
+                                        Visibility="{Binding FilterVisibility}"
+                                        IsChecked="{Binding IsFiltered, Mode=OneWay}"
+                                        Checked="FilterChanged"
+                                        Unchecked="FilterChanged"
+                                        Style="{StaticResource Style.ToggleButton.Filter}"
+                                        ToolTip="FILTER"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <HierarchicalDataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                    <Setter TargetName="name" Property="FontWeight" Value="ExtraBold"/>
+                                    <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Check}"/>
+                                </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Branch}" Value="{x:Null}"/>
+                                        <Condition Binding="{Binding IsExpanded}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Folder.Fill}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Branch}" Value="{x:Null}"/>
+                                        <Condition Binding="{Binding IsExpanded}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                                </MultiDataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+                
+                <!-- REMOTES -->
+                <Grid Grid.Row="4" Margin="4,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="REMOTES" Style="{StaticResource Style.Label.GroupHeader}"/>
+                    <Button Grid.Column="1" Click="OpenRemote" ToolTip="ADD REMOTE">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{DynamicResource Icon.Remote.Add}"/>
+                    </Button>
+                </Grid>
+                <TreeView
+                    Grid.Row="5"
+                    x:Name="remoteBranchTree"
+                    Background="{StaticResource Brush.BG3}"
+                    FontFamily="Consolas"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    SelectedItemChanged="RemoteBranchSelected"
+                    LostFocus="TreeLostFocus"
+                    PreviewMouseWheel="TreeMouseWheel">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                            <EventSetter Event="ContextMenuOpening" Handler="RemoteContextMenuOpening"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type local:RemoteNode}" ItemsSource="{Binding Children}">
+                            <Grid Height="24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Path Grid.Column="0" Width="10" x:Name="icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Remote}"/>
+                                <TextBlock Grid.Column="1" x:Name="name" Text="{Binding Name}" Padding="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}" ClipToBounds="True"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        
+                        <HierarchicalDataTemplate DataType="{x:Type local:BranchNode}" ItemsSource="{Binding Children}">
+                            <Grid Height="24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Path Grid.Column="0" Width="10" x:Name="icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
+                                <TextBlock Grid.Column="1" x:Name="name" Text="{Binding Name}" Padding="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}" ClipToBounds="True"/>
+                                <ToggleButton
+                                    Grid.Column="2"
+                                    Visibility="{Binding FilterVisibility}"
+                                    IsChecked="{Binding IsFiltered, Mode=OneWay}"
+                                    Checked="FilterChanged"
+                                    Unchecked="FilterChanged"
+                                    Style="{StaticResource Style.ToggleButton.Filter}"
+                                    ToolTip="FILTER"/>
+                            </Grid>
+
+                            <HierarchicalDataTemplate.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Branch}" Value="{x:Null}"/>
+                                        <Condition Binding="{Binding IsExpanded}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Folder.Fill}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Branch}" Value="{x:Null}"/>
+                                        <Condition Binding="{Binding IsExpanded}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                                </MultiDataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+                
+                <!-- TAGS -->
+                <ToggleButton
+                    x:Name="tagListToggle" 
+                    Grid.Row="6" 
+                    Style="{StaticResource Style.ToggleButton.Expender}"
+                    IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIShowTags, Mode=TwoWay}">
+                    <Grid Margin="4,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" x:Name="tagCount" Content="TAGS" Style="{StaticResource Style.Label.GroupHeader}"/>
+                        <Button Grid.Column="1" Click="OpenNewTag" ToolTip="NEW TAG">
+                            <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Tag.Add}"/>
+                        </Button>
+                    </Grid>
+                </ToggleButton>
+                <ListView
+                    Grid.Row="7"
+                    x:Name="tagList"
+                    Visibility="{Binding ElementName=tagListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
+                    Background="{StaticResource Brush.BG3}"
+                    Height="200"
+                    LostFocus="TagLostFocus"
+                    SelectionChanged="TagSelectionChanged"
+                    ContextMenuOpening="TagContextMenuOpening"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Style="{StaticResource Style.ListView.Borderless}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type git:Tag}">
+                            <Grid Margin="16, 0, 0, 0" Height="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Path Grid.Column="0" Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Tag}"/>
+                                <Label Grid.Column="1" Margin="4,0,0,0" Content="{Binding Name}" Padding="4,0,0,0"/>
+                                <ToggleButton 
+                                            Grid.Column="2" 
+                                            IsChecked="{Binding IsFiltered, Mode=TwoWay}" 
+                                            Checked="FilterChanged" 
+                                            Unchecked="FilterChanged" 
+                                            Style="{StaticResource Style.ToggleButton.Filter}"
+                                            ToolTip="FILTER"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+            <!-- Splitter -->
+            <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+
+            <!-- Right -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Abort panel -->
+                <Grid x:Name="abortPanel" Grid.Row="0" Background="LightGoldenrodYellow" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" x:Name="txtMergeProcessing" FontWeight="DemiBold" Foreground="{StaticResource Brush.BG4}"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button x:Name="btnResolve" Click="Resolve" Content="RESOLVE" Margin="4">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style.Button.Bordered}">
+                                    <Setter Property="Background" Value="{StaticResource Brush.BG1}"/>
+                                    <Setter Property="Margin" Value="2"/>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button x:Name="btnContinue" Click="Continue" Content="CONTINUE" Style="{StaticResource Style.Button.AccentBordered}" Margin="4"/>
+                        <Button Grid.Column="3" Click="Abort" Content="ABORT" Style="{StaticResource Style.Button.Bordered}" Foreground="{StaticResource Brush.BG1}" Margin="4"/>
+                    </StackPanel>
+                    
+                </Grid>
+                
+                <!-- Others -->
+                <local:Histories Grid.Row="1" x:Name="histories" Visibility="Visible"/>
+                <local:WorkingCopy Grid.Row="1" x:Name="commits" Visibility="Collapsed"/>
+                <local:Stashes Grid.Row="1" x:Name="stashes" Visibility="Collapsed"/>
+            </Grid>
+        </Grid>
+        
+        <!-- Popups -->
+        <local:PopupManager Grid.Row="1"/>
+    </Grid>
+</UserControl>

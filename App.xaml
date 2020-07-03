@@ -1,0 +1,16 @@
+<Application x:Class="SourceGit.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Startup="OnAppStartup" 
+             Deactivated="OnAppDeactivated"
+             Exit="OnAppExit">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Icons.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Controls.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Themes/Dark.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

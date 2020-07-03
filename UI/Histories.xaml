@@ -1,0 +1,187 @@
+<UserControl x:Class="SourceGit.UI.Histories"
+             x:Name="me"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SourceGit.UI"
+             xmlns:git="clr-namespace:SourceGit.Git"
+             xmlns:helpers="clr-namespace:SourceGit.Helpers"
+             xmlns:sourcegit="clr-namespace:SourceGit"
+             xmlns:converters="clr-namespace:SourceGit.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Unloaded="Cleanup">
+    <Grid x:Name="layout">
+        <!-- List Panel (SearchBar + DataGrid) -->
+        <Grid x:Name="commitListPanel" Background="{StaticResource Brush.BG2}" ClipToBounds="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Loading Tip -->
+            <Path x:Name="loading" Grid.RowSpan="2" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
+                <Path.RenderTransform>
+                    <RotateTransform Angle="0"/>
+                </Path.RenderTransform>
+
+                <Path.Style>
+                    <Style BasedOn="{StaticResource Style.Icon}" TargetType="{x:Type Path}">
+                        <Setter Property="Width" Value="48"/>
+                        <Setter Property="Height" Value="48"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Fill" Value="{StaticResource Brush.FG2}"/>
+                    </Style>
+                </Path.Style>
+            </Path>
+
+            <!-- SearchBar -->
+            <Grid x:Name="searchBar" Margin="0,-32,0,0" Grid.Row="0">
+                <TextBox x:Name="txtSearch" Margin="4" Height="24" Padding="0,0,16,0" helpers:TextBoxHelper.Placeholder="SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT" PreviewKeyDown="PreviewSearchKeyDown"/>
+                <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" Style="{StaticResource Style.Button.HighlightHover}" ToolTip="CLEAR" Click="ClearSearch">
+                    <Path Width="10" Height="10" Fill="{StaticResource Brush.Border1}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
+                </Button>
+            </Grid>
+
+            <!-- Commit DataGrid -->
+            <DataGrid
+                Grid.Row="1"
+                x:Name="commitList"
+                RowHeight="{x:Static helpers:CommitGraphMaker.UNIT_HEIGHT}"
+                ScrollViewer.ScrollChanged="CommitListScrolled"
+                SelectionChanged="CommitSelectChanged"
+                SelectionUnit="FullRow">
+                <DataGrid.Resources>
+                    <converters:IndentToMargin x:Key="CommitTitleMargin"/>
+
+                    <Style x:Key="Style.DataGridText" TargetType="{x:Type TextBlock}">
+                        <Setter Property="FontFamily" Value="Consolas"/>
+                        <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Padding" Value="16,0"/>
+                    </Style>
+                    <Style x:Key="Style.DataGridText.NoPadding" TargetType="{x:Type TextBlock}">
+                        <Setter Property="FontFamily" Value="Consolas"/>
+                        <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="*" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="{Binding GraphOffset, Converter={StaticResource CommitTitleMargin}}">
+                                    <ItemsControl x:Name="Decorator" ItemsSource="{Binding Decorators}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type git:Decorator}">
+                                                <Border x:Name="BG" Height="16" Margin="2,0">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="18"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Border Grid.Column="0" Background="{StaticResource Brush.BG5}">
+                                                            <Path x:Name="Icon" Width="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
+                                                        </Border>
+
+                                                        <TextBlock x:Name="Name" Grid.Column="1" Text="{Binding Name}" FontSize="11" Padding="4,0" Foreground="Black" VerticalAlignment="Center" TextWrapping="NoWrap"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.Tag}">
+                                                        <Setter TargetName="BG" Property="Background" Value="#FF02C302"/>
+                                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Tag}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.LocalBranchHead}">
+                                                        <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
+                                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Branch}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.RemoteBranchHead}">
+                                                        <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
+                                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Remote}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.CurrentBranchHead}">
+                                                        <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
+                                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Check}"/>
+                                                        <Setter TargetName="Icon" Property="Fill" Value="Orange"/>
+                                                        <Setter TargetName="Name" Property="FontWeight" Value="Bold"/>
+                                                        <Setter TargetName="Name" Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <TextBlock Text="{Binding Subject}" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                </StackPanel>
+
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding HasDecorators}" Value="False">
+                                        <Setter TargetName="Decorator" Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Width="100" IsReadOnly="True" Binding="{Binding Committer.Name}" ElementStyle="{StaticResource Style.DataGridText}"/>
+                    <DataGridTextColumn Width="84" IsReadOnly="True" Binding="{Binding ShortSHA}" ElementStyle="{StaticResource Style.DataGridText}"/>
+                    <DataGridTextColumn Width="128" IsReadOnly="True" Binding="{Binding Committer.Time}" ElementStyle="{StaticResource Style.DataGridText.NoPadding}"/>
+                </DataGrid.Columns>
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                        <EventSetter Event="ContextMenuOpening" Handler="CommitContextMenuOpening"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMerged}" Value="False">
+                                <Setter Property="Opacity" Value=".4"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+            </DataGrid>
+
+            <!-- Commit Graph -->
+            <Border Grid.Row="1" Margin="0,0,310,0" ClipToBounds="True" IsHitTestVisible="False">
+                <Canvas x:Name="commitGraph"/>
+            </Border>
+        </Grid>
+
+        <!-- Split -->
+        <GridSplitter x:Name="splitter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.BG1}"/>
+
+        <!-- Detail for selected commit -->
+        <Grid x:Name="commitDetailPanel" Background="{StaticResource Brush.BG1}">
+            <!-- Selected commit detail -->
+            <local:CommitViewer x:Name="commitViewer"/>
+            
+            <!-- Mask for select multi rows in commit list -->
+            <Border x:Name="mask4MultiSelection" Background="{StaticResource Brush.BG1}" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
+                    <Path Width="160" Height="160" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
+                    <Label x:Name="txtTotalSelected" Margin="0,16,0,0" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- SWITCH LAYOUT -->
+            <ToggleButton
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Margin="0,4,8,0"
+                Style="{StaticResource Style.ToggleButton.Orientation}"
+                ToolTip="Toggle Horizontal/Vertical Layout"
+                IsChecked="{Binding Source={x:Static sourcegit:App.Preference}, Path=UIUseHorizontalLayout, Mode=TwoWay}"
+                Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
+        </Grid>
+    </Grid>
+</UserControl>

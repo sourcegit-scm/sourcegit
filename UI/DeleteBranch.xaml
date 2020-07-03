@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="SourceGit.UI.DeleteBranch"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SourceGit.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="160" d:DesignWidth="500" Height="128" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Confirm To Delete Branch"/>
+
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Branch :"/>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+            <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}" Margin="4,0"/>
+            <Label x:Name="branchName"/>
+        </StackPanel>
+
+        <Grid Grid.Row="4" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" Click="Sure" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+        </Grid>
+
+        <Grid Grid.Row="0" Grid.RowSpan="5" Grid.ColumnSpan="2" x:Name="status" Visibility="Collapsed" Background="{StaticResource Brush.BG1}" Opacity=".9">
+            <Path x:Name="statusIcon" Width="48" Height="48" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
+                <Path.RenderTransform>
+                    <RotateTransform Angle="0"/>
+                </Path.RenderTransform>
+            </Path>
+        </Grid>
+    </Grid>
+</UserControl>
