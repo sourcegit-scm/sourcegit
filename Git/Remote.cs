@@ -54,7 +54,11 @@ namespace SourceGit.Git {
         /// <param name="url"></param>
         public static void Add(Repository repo, string name, string url) {
             var errs = repo.RunCommand($"remote add {name} {url}", null);
-            if (errs != null) App.RaiseError(errs);
+            if (errs != null) {
+                App.RaiseError(errs);
+            } else {
+                repo.Fetch(null, true, null);
+            }
         }
 
         /// <summary>
