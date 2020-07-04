@@ -1,5 +1,7 @@
 using Microsoft.Win32;
 using System;
+using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,9 +13,28 @@ namespace SourceGit.UI {
     public partial class Preference : UserControl {
 
         /// <summary>
+        ///     Git global user name.
+        /// </summary>
+        public string GlobalUser {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Git global user email.
+        /// </summary>
+        public string GlobalUserEmail {
+            get;
+            set;
+        }
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         public Preference() {
+            GlobalUser = GetConfig("user.name");
+            GlobalUserEmail = GetConfig("user.email");
+
             InitializeComponent();
 
             int mergeType = App.Preference.MergeTool;
@@ -33,6 +54,12 @@ namespace SourceGit.UI {
         ///     Close this dialog
         /// </summary>
         private void Close(object sender, RoutedEventArgs e) {
+            var oldUser = GetConfig("user.name");
+            if (oldUser != GlobalUser) SetConfig("user.name", GlobalUser);
+
+            var oldEmail = GetConfig("user.email");
+            if (oldEmail != GlobalUserEmail) SetConfig("user.email", GlobalUserEmail);
+
             PopupManager.Close();
         }
 
@@ -110,5 +137,42 @@ namespace SourceGit.UI {
                 App.Preference.MergeExecutable = dialog.FileName;
             }
         }
+
+        #region CONFIG
+        private string GetConfig(string key) {
+            if (!App.IsGitConfigured) return "";
+
+            var startInfo = new ProcessStartInfo();
+            startInfo.FileName = App.Preference.GitExecutable;
+            startInfo.Arguments = $"config --global {key}";
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.StandardOutputEncoding = Encoding.UTF8;
+
+            var proc = new Process() { StartInfo = startInfo };
+            proc.Start();
+            var output = proc.StandardOutput.ReadToEnd();
+            proc.WaitForExit();
+            proc.Close();
+
+            return output.Trim();
+        }
+
+        private void SetConfig(string key, string val) {
+            if (!App.IsGitConfigured) return;
+
+            var startInfo = new ProcessStartInfo();
+            startInfo.FileName = App.Preference.GitExecutable;
+            startInfo.Arguments = $"config --global {key} \"{val}\"";
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+
+            var proc = new Process() { StartInfo = startInfo };
+            proc.Start();
+            proc.WaitForExit();
+            proc.Close();
+        }
+        #endregion
     }
 }
