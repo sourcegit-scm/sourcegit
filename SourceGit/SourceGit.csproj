@@ -9,6 +9,7 @@
         <Company>Leo</Company>
         <Description>OpenSource GIT client for Windows</Description>
         <Copyright>Copyright © sourcegit 2020. All rights reserved.</Copyright>
+        <ApplicationManifest>App.manifest</ApplicationManifest>
     </PropertyGroup>
     <ItemGroup>
         <Resource Include="App.ico" />
