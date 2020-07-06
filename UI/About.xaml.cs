@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Navigation;
@@ -15,7 +15,7 @@ namespace SourceGit.UI {
         /// </summary>
         public string Version {
             get {
-                return FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
+                return "VERSION : " + FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
             }
         }
 
