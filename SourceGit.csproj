@@ -483,33 +483,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>@echo off &amp;setlocal
-setlocal enabledelayedexpansion
-
-set file=$(SolutionDir)Properties\AssemblyInfo.cs
-set temp=$(SolutionDir)Properties\AssemblyInfo.cs.tmp
-set bak=$(SolutionDir)Properties\AssemblyInfo.cs.bk
-
-echo BACKUP AssemblyInfo
-copy /Y %25file%25 %25bak%25
-
-echo Find Version
-git describe &gt; VERSION
-set /P version=&lt;VERSION
-
-set search=1.0.0.0
-(for /f "delims=" %25%25i in (%25file%25) do (
-    set "line=%25%25i"
-    set "line=!line:%25search%25=%25version%25!"
-    echo(!line!
-))&gt;"%25temp%25"
-del /f %25file%25
-del /f VERSION
-move %25temp%25 %25file%25
-endlocal</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>del /f $(SolutionDir)Properties\AssemblyInfo.cs
-move $(SolutionDir)Properties\AssemblyInfo.cs.bk $(SolutionDir)Properties\AssemblyInfo.cs</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
