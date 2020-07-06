@@ -207,14 +207,13 @@ namespace SourceGit.Git {
         /// </summary>
         /// <param name="err"></param>
         public void AssertCommand(string err) {
-            if (!string.IsNullOrEmpty(err)) {
-                App.RaiseError(err);
-            } else {
-                Branches(true);
-                OnBranchChanged?.Invoke();
-                OnCommitsChanged?.Invoke();
-                OnWorkingCopyChanged?.Invoke();
-            }
+            if (!string.IsNullOrEmpty(err)) App.RaiseError(err);
+
+            Branches(true);
+            OnBranchChanged?.Invoke();
+            OnCommitsChanged?.Invoke();
+            OnWorkingCopyChanged?.Invoke();
+            OnTagChanged?.Invoke();
 
             isWatcherDisabled = false;
         }
