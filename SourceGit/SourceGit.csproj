@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <PropertyGroup>
         <TargetFramework>net461</TargetFramework>
-        <LangVersion>latest</LangVersion>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
         <UseWindowsForms>true</UseWindowsForms>
         <ApplicationIcon>App.ico</ApplicationIcon>
-        <Company>Leo</Company>
+        <Company>sourcegit</Company>
         <Description>OpenSource GIT client for Windows</Description>
         <Copyright>Copyright © sourcegit 2020. All rights reserved.</Copyright>
         <ApplicationManifest>App.manifest</ApplicationManifest>
+        <Version>2.0.0-preview</Version>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
     <ItemGroup>
         <Resource Include="App.ico" />
