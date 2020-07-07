@@ -1,10 +1,7 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace SourceGit.UI {
 
@@ -80,16 +77,7 @@ namespace SourceGit.UI {
             if (remote == null || branch == null) return;
 
             PopupManager.Lock();
-
-            status.Visibility = Visibility.Visible;
-            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
-            anim.RepeatBehavior = RepeatBehavior.Forever;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
-
-            await Task.Run(() => repo.Pull(remote, branch.Substring(branch.IndexOf('/')+1), msg => Dispatcher.Invoke(() => statusMsg.Content = msg), rebase, autoStash));
-
-            status.Visibility = Visibility.Collapsed;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+            await Task.Run(() => repo.Pull(remote, branch.Substring(branch.IndexOf('/')+1), PopupManager.UpdateStatus, rebase, autoStash));
             PopupManager.Close(true);
         }
 

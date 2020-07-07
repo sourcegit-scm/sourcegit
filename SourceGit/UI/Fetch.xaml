@@ -62,17 +62,5 @@
             <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
             <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
-
-        <Grid Grid.Row="0" Grid.RowSpan="7" Grid.ColumnSpan="2" x:Name="status" Visibility="Collapsed" Background="{StaticResource Brush.BG1}" Opacity=".9">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Path x:Name="statusIcon" Width="48" Height="48" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
-                    <Path.RenderTransform>
-                        <RotateTransform Angle="0"/>
-                    </Path.RenderTransform>
-                </Path>
-
-                <Label x:Name="statusMsg" Margin="0,8,0,0"/>
-            </StackPanel>
-        </Grid>
     </Grid>
 </UserControl>

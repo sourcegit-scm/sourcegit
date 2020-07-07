@@ -1,10 +1,7 @@
-using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace SourceGit.UI {
 
@@ -40,11 +37,6 @@ namespace SourceGit.UI {
         private async void Sure(object sender, RoutedEventArgs e) {
             PopupManager.Lock();
 
-            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
-            anim.RepeatBehavior = RepeatBehavior.Forever;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
-            status.Visibility = Visibility.Visible;
-
             var master = txtMaster.Text;
             var dev = txtDevelop.Text;
             var feature = txtFeature.Text;
@@ -53,9 +45,6 @@ namespace SourceGit.UI {
             var version = txtVersion.Text;
 
             await Task.Run(() => repo.EnableGitFlow(master, dev, feature, release, hotfix, version));
-
-            status.Visibility = Visibility.Collapsed;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
             PopupManager.Close(true);
         }
 

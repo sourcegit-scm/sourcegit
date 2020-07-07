@@ -1,10 +1,8 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace SourceGit.UI {
 
@@ -100,11 +98,6 @@ namespace SourceGit.UI {
 
             PopupManager.Lock();
 
-            status.Visibility = Visibility.Visible;
-            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
-            anim.RepeatBehavior = RepeatBehavior.Forever;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
-
             bool checkout = chkCheckout.IsChecked == true;
             await Task.Run(() => {
                 if (checkout) {
@@ -126,8 +119,6 @@ namespace SourceGit.UI {
                 }
             });
 
-            status.Visibility = Visibility.Collapsed;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
             PopupManager.Close(true);
         }
 

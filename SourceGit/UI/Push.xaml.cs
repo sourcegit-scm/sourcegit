@@ -1,11 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace SourceGit.UI {
 
@@ -55,17 +52,9 @@ namespace SourceGit.UI {
             var remote = upstream.Substring(0, remoteIdx);
             var remoteBranch = upstream.Substring(remoteIdx + 1);
 
-            push.status.Visibility = Visibility.Visible;
-            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
-            anim.RepeatBehavior = RepeatBehavior.Forever;
-            push.statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
-
             Task.Run(() => {
-                repo.Push(remote, current.Name, remoteBranch, msg => push.Dispatcher.Invoke(() => push.statusMsg.Content = msg));
-
+                repo.Push(remote, current.Name, remoteBranch, PopupManager.UpdateStatus);
                 push.Dispatcher.Invoke(() => {
-                    push.status.Visibility = Visibility.Collapsed;
-                    push.statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
                     PopupManager.Close(true);
                 });                
             });            
@@ -108,16 +97,7 @@ namespace SourceGit.UI {
             }
 
             PopupManager.Lock();
-
-            status.Visibility = Visibility.Visible;
-            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
-            anim.RepeatBehavior = RepeatBehavior.Forever;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
-
-            await Task.Run(() => repo.Push(remote, localBranch.Name, remoteBranch, msg => Dispatcher.Invoke(() => statusMsg.Content = msg), tags, track, force));
-
-            status.Visibility = Visibility.Collapsed;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+            await Task.Run(() => repo.Push(remote, localBranch.Name, remoteBranch, PopupManager.UpdateStatus, tags, track, force));
             PopupManager.Close(true);
         }
 

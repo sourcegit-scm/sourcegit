@@ -1,9 +1,7 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace SourceGit.UI {
 
@@ -63,7 +61,7 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Start(object sender, RoutedEventArgs e) {
+        private async void Start(object sender, RoutedEventArgs e) {
             txtUrl.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtUrl)) return;
 
@@ -83,24 +81,16 @@ namespace SourceGit.UI {
 
             PopupManager.Lock();
 
-            status.Visibility = Visibility.Visible;
-            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
-            anim.RepeatBehavior = RepeatBehavior.Forever;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
-
-            Task.Run(() => {
-                var repo = Git.Repository.Clone(RemoteUri, ParentFolder, repoName, msg => Dispatcher.Invoke(() => statusMsg.Content = msg));
-                if (repo == null) {
-                    PopupManager.Unlock();
-                    Dispatcher.Invoke(() => {
-                        status.Visibility = Visibility.Collapsed;
-                        statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
-                    });
-                } else {
-                    Dispatcher.Invoke(() => PopupManager.Close(true));
-                    repo.Open();
-                }
+            var repo = await Task.Run(() => {
+                return Git.Repository.Clone(RemoteUri, ParentFolder, repoName, PopupManager.UpdateStatus);
             });
+
+            if (repo == null) {
+                PopupManager.Unlock();
+            } else {
+                PopupManager.Close(true);
+                repo.Open();
+            }
         }
 
         /// <summary>

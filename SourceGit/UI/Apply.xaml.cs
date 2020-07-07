@@ -1,10 +1,7 @@
 using Microsoft.Win32;
-using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace SourceGit.UI {
 
@@ -87,16 +84,9 @@ namespace SourceGit.UI {
 
             PopupManager.Lock();
 
-            status.Visibility = Visibility.Visible;
-            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
-            anim.RepeatBehavior = RepeatBehavior.Forever;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
-
             var mode = combWhitespaceOptions.SelectedItem as WhitespaceOption;
             await Task.Run(() => repo.Apply(PatchFile, mode.Arg));
 
-            status.Visibility = Visibility.Collapsed;
-            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
             PopupManager.Close(true);
         }
 

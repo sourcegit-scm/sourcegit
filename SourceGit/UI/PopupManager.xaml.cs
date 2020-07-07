@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace SourceGit.UI {
@@ -34,6 +35,7 @@ namespace SourceGit.UI {
             anim.From = gone;
             anim.To = new Thickness(0);
 
+            instance.statusMsg.Content = "";
             instance.popupContent.Child = elem;
             instance.popupContent.Margin = gone;
             instance.Visibility = Visibility.Visible;
@@ -52,14 +54,35 @@ namespace SourceGit.UI {
         ///     Lock
         /// </summary>
         public static void Lock() {
+            if (instance == null) return;
             locked = true;
+
+            instance.status.Visibility = Visibility.Visible;
+            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
+            anim.RepeatBehavior = RepeatBehavior.Forever;
+            instance.statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
         }
 
         /// <summary>
         ///     Unlock
         /// </summary>
         public static void Unlock() {
+            if (instance == null) return;
             locked = false;
+            instance.statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+            instance.status.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        ///     Update status description
+        /// </summary>
+        /// <param name="desc"></param>
+        public static void UpdateStatus(string desc) {
+            if (instance == null) return;
+
+            instance.Dispatcher.Invoke(() => {
+                instance.statusMsg.Content = desc;
+            });
         }
 
         /// <summary>
@@ -81,6 +104,8 @@ namespace SourceGit.UI {
                 instance.popupContent.Child = null;
             };
             instance.popupContent.BeginAnimation(MarginProperty, anim);
+            instance.statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+            instance.status.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>

@@ -49,11 +49,11 @@
 
                 <!-- Logo & TITLE -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                    <Image 
-                        Source="pack://application:,,,/Resources/App.png" 
-                        Width="20" Height="20" Margin="6,-1,2,0" 
-                        VerticalAlignment="Center"
-                        RenderOptions.BitmapScalingMode="HighQuality"
+                    <Path
+                        Width="20" Height="20" Margin="6,-1,2,0"
+                        Style="{StaticResource Style.Icon}" 
+                        Data="{StaticResource Icon.Git}" 
+                        Fill="#FFF05133"
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         MouseLeftButtonDown="LogoMouseButtonDown"/>
                     <Label Content="SOURCE GIT - INTERACTIVE REBASE" FontWeight="Light"/>
