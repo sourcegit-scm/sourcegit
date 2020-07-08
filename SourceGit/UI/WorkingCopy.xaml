@@ -368,7 +368,7 @@
                     <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.List}"/>
                 </Button>
 
-                <CheckBox Grid.Column="1" x:Name="chkAmend" HorizontalAlignment="Left" Content="Amend" Checked="StartAmend"/>
+                <CheckBox Grid.Column="1" x:Name="chkAmend" HorizontalAlignment="Left" Content="Amend" Checked="StartAmend" Unchecked="EndAmend"/>
 
                 <Button Grid.Column="3" Height="26" Click="Commit" Style="{StaticResource Style.Button.AccentBordered}" Content="COMMIT"/>
                 <Button Grid.Column="4" x:Name="btnCommitAndPush" Height="26" Click="CommitAndPush" Style="{StaticResource Style.Button.Bordered}" Content="COMMIT &amp; PUSH" Margin="8,0,0,0"/>

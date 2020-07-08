@@ -79,7 +79,7 @@ namespace SourceGit.UI {
 
             Dispatcher.Invoke(() => {
                 var current = Repo.CurrentBranch();
-                if (current != null && !string.IsNullOrEmpty(current.Upstream)) {
+                if (current != null && !string.IsNullOrEmpty(current.Upstream) && chkAmend.IsChecked != true) {
                     btnCommitAndPush.Visibility = Visibility.Visible;
                 } else {
                     btnCommitAndPush.Visibility = Visibility.Collapsed;
@@ -750,6 +750,18 @@ namespace SourceGit.UI {
             }
 
             txtCommitMsg.Text = commits[0].Subject;
+            btnCommitAndPush.Visibility = Visibility.Collapsed;
+        }
+
+        private void EndAmend(object sender, RoutedEventArgs e) {
+            if (!IsLoaded) return;
+            
+            var current = Repo.CurrentBranch();
+            if (current != null && !string.IsNullOrEmpty(current.Upstream)) {
+                btnCommitAndPush.Visibility = Visibility.Visible;
+            } else {
+                btnCommitAndPush.Visibility = Visibility.Collapsed;
+            }
         }
 
         private async void Commit(object sender, RoutedEventArgs e) {
