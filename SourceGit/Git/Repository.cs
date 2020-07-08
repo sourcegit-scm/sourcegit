@@ -658,7 +658,7 @@ namespace SourceGit.Git {
                     if (change.WorkTree == Change.Status.Untracked || change.WorkTree == Change.Status.Added) {
                         RunCommand($"clean -qfd -- \"{change.Path}\"", null);
                     } else {
-                        RunCommand($"restore -- \"{change.Path}\"", null);
+                        RunCommand($"checkout -f -- \"{change.Path}\"", null);
                     }
                 }
             }
