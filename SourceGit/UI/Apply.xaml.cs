@@ -85,7 +85,8 @@ namespace SourceGit.UI {
             PopupManager.Lock();
 
             var mode = combWhitespaceOptions.SelectedItem as WhitespaceOption;
-            await Task.Run(() => repo.Apply(PatchFile, mode.Arg));
+            var ignoreSpaceChanges = chkIgnoreWhitespace.IsChecked == true;
+            await Task.Run(() => repo.Apply(PatchFile, ignoreSpaceChanges, mode.Arg));
 
             PopupManager.Close(true);
         }

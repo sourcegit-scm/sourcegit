@@ -502,11 +502,16 @@ namespace SourceGit.Git {
         ///     Apply patch.
         /// </summary>
         /// <param name="patch"></param>
+        /// <param name="ignoreSpaceChanges"></param>
         /// <param name="whitespaceMode"></param>
-        public void Apply(string patch, string whitespaceMode) {
+        public void Apply(string patch, bool ignoreSpaceChanges, string whitespaceMode) {
             isWatcherDisabled = true;
 
-            var errs = RunCommand($"apply --whitespace={whitespaceMode} \"{patch}\"", null);
+            var args = "apply ";
+            if (ignoreSpaceChanges) args += "--ignore-whitespace ";
+            else args += $"--whitespace={whitespaceMode} ";
+
+            var errs = RunCommand($"{args} \"{patch}\"", null);
             if (errs != null) {
                 App.RaiseError(errs);
             } else {

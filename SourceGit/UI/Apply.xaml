@@ -5,12 +5,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:helpers="clr-namespace:SourceGit.Helpers"
+             xmlns:converters="clr-namespace:SourceGit.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="192" d:DesignWidth="500" Height="160" Width="500">
+             Height="192" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="16"/>
@@ -21,6 +23,10 @@
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
+        <Grid.Resources>
+            <converters:InverseBool x:Key="InverseBool"/>
+        </Grid.Resources>
 
         <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Apply Patch"/>
 
@@ -51,7 +57,7 @@
         </Grid>
 
         <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Whitespace :"/>
-        <ComboBox x:Name="combWhitespaceOptions" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
+        <ComboBox x:Name="combWhitespaceOptions" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" IsEnabled="{Binding ElementName=chkIgnoreWhitespace, Path=IsChecked, Converter={StaticResource InverseBool}}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="20">
@@ -62,7 +68,12 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <Grid Grid.Row="5" Grid.ColumnSpan="2">
+        <CheckBox Grid.Row="4" Grid.Column="1"
+                  x:Name="chkIgnoreWhitespace"
+                  IsChecked="True"
+                  Content="Ignore whitespace changes"/>
+
+        <Grid Grid.Row="6" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>
