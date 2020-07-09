@@ -106,7 +106,7 @@
 
         <!-- 合并工具配置 -->
         <Label Grid.Row="12" Grid.ColumnSpan="2" Content="MERGE TOOL" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
-        <Label Grid.Row="13" Grid.Column="0" Content="Choose Merger :" HorizontalAlignment="Right"/>
+        <Label Grid.Row="13" Grid.Column="0" Content="Merger :" HorizontalAlignment="Right"/>
         <ComboBox Grid.Row="13" Grid.Column="1"
              Height="24"
              Padding="2,0,0,0"
