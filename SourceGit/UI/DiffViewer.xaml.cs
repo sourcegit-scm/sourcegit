@@ -39,6 +39,8 @@ namespace SourceGit.UI {
         /// <param name="orgPath"></param>
         public void Diff(Git.Repository repo, string options, string path, string orgPath = null) {
             SetTitle(path, orgPath);
+
+            loading.Visibility = Visibility.Visible;
             Task.Run(() => {
                 var args = $"{options} -- ";
                 if (!string.IsNullOrEmpty(orgPath)) args += $"{orgPath} ";
