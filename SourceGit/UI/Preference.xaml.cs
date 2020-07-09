@@ -1,5 +1,6 @@
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
@@ -29,11 +30,34 @@ namespace SourceGit.UI {
         }
 
         /// <summary>
+        ///     Git core.autocrlf setting.
+        /// </summary>
+        public string AutoCRLF {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Options for core.autocrlf
+        /// </summary>
+        public class AutoCRLFOption {
+            public string Value { get; set; }
+            public string Desc { get; set; }
+            
+            public AutoCRLFOption(string v, string d) {
+                Value = v;
+                Desc = d;
+            }
+        }
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         public Preference() {
             GlobalUser = GetConfig("user.name");
             GlobalUserEmail = GetConfig("user.email");
+            AutoCRLF = GetConfig("core.autocrlf");
+            if (string.IsNullOrEmpty(AutoCRLF)) AutoCRLF = "false";
 
             InitializeComponent();
 
@@ -41,6 +65,14 @@ namespace SourceGit.UI {
             var merger = Git.MergeTool.Supported[mergeType];
             txtMergePath.IsReadOnly = !merger.IsConfigured;
             txtMergeParam.Text = merger.Parameter;
+
+            var crlfOptions = new List<AutoCRLFOption>() {
+                new AutoCRLFOption("true", "Commit as LF, checkout as CRLF"),
+                new AutoCRLFOption("input", "Only convert for commit"),
+                new AutoCRLFOption("false", "Do NOT convert"),
+            };
+            cmbAutoCRLF.ItemsSource = crlfOptions;
+            cmbAutoCRLF.SelectedItem = crlfOptions.Find(o => o.Value == AutoCRLF);
         }
 
         /// <summary>
@@ -59,6 +91,9 @@ namespace SourceGit.UI {
 
             var oldEmail = GetConfig("user.email");
             if (oldEmail != GlobalUserEmail) SetConfig("user.email", GlobalUserEmail);
+
+            var oldAutoCRLF = GetConfig("core.autocrlf");
+            if (oldAutoCRLF != AutoCRLF) SetConfig("core.autocrlf", AutoCRLF);
 
             PopupManager.Close();
         }
@@ -136,6 +171,20 @@ namespace SourceGit.UI {
                 txtMergePath.Text = dialog.FileName;
                 App.Preference.MergeExecutable = dialog.FileName;
             }
+        }
+
+        /// <summary>
+        ///     Set core.autocrlf
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AutoCRLFSelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (e.AddedItems.Count != 1) return;
+
+            var mode = e.AddedItems[0] as AutoCRLFOption;
+            if (mode == null) return;
+
+            AutoCRLF = mode.Value;
         }
 
         #region CONFIG
