@@ -133,18 +133,15 @@ namespace SourceGit.UI {
                 return;
             }
 
-            List<string> data;
             switch (node.Change.WorkTree) {
             case Git.Change.Status.Added:
             case Git.Change.Status.Untracked:
-                data = Repo.Diff("", "--no-index", node.FilePath, "/dev/null");
+                diffViewer.Diff(Repo, "--no-index", node.FilePath, "/dev/null");
                 break;
             default:
-                data = Repo.Diff("", "", node.FilePath, node.Change.OriginalPath);
+                diffViewer.Diff(Repo, "", node.FilePath, node.Change.OriginalPath);
                 break;
             }
-
-            diffViewer.SetData(data, node.FilePath, node.Change.OriginalPath);
         }
 
         private void UnstagedListSelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -164,18 +161,15 @@ namespace SourceGit.UI {
                 return;
             }
 
-            List<string> data;
             switch (change.WorkTree) {
             case Git.Change.Status.Added:
             case Git.Change.Status.Untracked:
-                data = Repo.Diff("", "--no-index", change.Path, "/dev/null");
+                diffViewer.Diff(Repo, "--no-index", change.Path, "/dev/null");
                 break;
             default:
-                data = Repo.Diff("", "", change.Path, change.OriginalPath);
+                diffViewer.Diff(Repo, "", change.Path, change.OriginalPath);
                 break;
             }
-
-            diffViewer.SetData(data, change.Path, change.OriginalPath);
         }
 
         private void SaveAsPatchFromUnstagedChanges(string path, List<Git.Change> changes) {
@@ -513,8 +507,7 @@ namespace SourceGit.UI {
             if (!node.IsFile) return;
 
             mergePanel.Visibility = Visibility.Collapsed;
-            List<string> data = Repo.Diff("", "--cached", node.FilePath, node.Change.OriginalPath);
-            diffViewer.SetData(data, node.FilePath, node.Change.OriginalPath);
+            diffViewer.Diff(Repo, "--cached", node.FilePath, node.Change.OriginalPath);
             e.Handled = true;
         }
 
@@ -531,8 +524,7 @@ namespace SourceGit.UI {
 
             var change = selected[0] as Git.Change;
             mergePanel.Visibility = Visibility.Collapsed;
-            List<string> data = Repo.Diff("", "--cached", change.Path, change.OriginalPath);
-            diffViewer.SetData(data, change.Path, change.OriginalPath);
+            diffViewer.Diff(Repo, "--cached", change.Path, change.OriginalPath);
             e.Handled = true;
         }
 
@@ -667,7 +659,7 @@ namespace SourceGit.UI {
         private async void Unstage(object sender, RoutedEventArgs e) {
             var files = new List<string>();
 
-            if (App.Preference.UIUseListInUnstaged) {
+            if (App.Preference.UIUseListInStaged) {
                 var selected = stageList.SelectedItems;
                 foreach (var one in selected) {
                     var node = one as Git.Change;

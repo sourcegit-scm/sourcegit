@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -17,136 +16,11 @@ namespace SourceGit.UI {
         private double minWidth = 0;
 
         /// <summary>
-        ///     Line mode.
-        /// </summary>
-        public enum LineMode {
-            Normal,
-            Indicator,
-            Empty,
-            Added,
-            Deleted,
-        }
-
-        /// <summary>
         ///     Constructor
         /// </summary>
         public DiffViewer() {
             InitializeComponent();
             Reset();
-        }
-
-        /// <summary>
-        ///     
-        /// </summary>
-        /// <param name="lines"></param>
-        /// <param name="file"></param>
-        /// <param name="orgFile"></param>
-        public void SetData(List<string> lines, string file, string orgFile = null) {
-            minWidth = Math.Max(leftText.ActualWidth, rightText.ActualWidth) - 16;
-
-            fileName.Text = file;
-            if (!string.IsNullOrEmpty(orgFile)) {
-                orgFileNamePanel.Visibility = Visibility.Visible;
-                orgFileName.Text = orgFile;
-            } else {
-                orgFileNamePanel.Visibility = Visibility.Collapsed;
-            }
-
-            leftText.Document.Blocks.Clear();
-            rightText.Document.Blocks.Clear();
-
-            leftLineNumber.Text = "";
-            rightLineNumber.Text = "";
-
-            Regex regex = new Regex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@", RegexOptions.None);
-            bool started = false;
-
-            List<Paragraph> leftData = new List<Paragraph>();
-            List<Paragraph> rightData = new List<Paragraph>();
-            List<string> leftNumbers = new List<string>();
-            List<string> rightNumbers = new List<string>();
-
-            int leftLine = 0;
-            int rightLine = 0;
-            bool bLastLeft = true;
-
-            foreach (var line in lines) {
-                if (!started) {
-                    var match = regex.Match(line);
-                    if (!match.Success) continue;
-
-                    MakeParagraph(leftData, line, LineMode.Indicator);
-                    MakeParagraph(rightData, line, LineMode.Indicator);
-                    leftNumbers.Add("");
-                    rightNumbers.Add("");
-
-                    leftLine = int.Parse(match.Groups[1].Value);
-                    rightLine = int.Parse(match.Groups[2].Value);
-                    started = true;
-                    continue;
-                }
-
-                if (line[0] == '-') {
-                    MakeParagraph(leftData, line.Substring(1), LineMode.Deleted);
-                    leftNumbers.Add(leftLine.ToString());
-                    leftLine++;
-                    bLastLeft = true;
-                } else if (line[0] == '+') {
-                    MakeParagraph(rightData, line.Substring(1), LineMode.Added);
-                    rightNumbers.Add(rightLine.ToString());
-                    rightLine++;
-                    bLastLeft = false;
-                } else if (line[0] == '\\') {
-                    if (bLastLeft) {
-                        MakeParagraph(leftData, line.Substring(1), LineMode.Indicator);
-                        leftNumbers.Add("");
-                    } else {
-                        MakeParagraph(rightData, line.Substring(1), LineMode.Indicator);
-                        rightNumbers.Add("");
-                    }
-                } else {
-                    FitBothSide(leftData, leftNumbers, rightData, rightNumbers);
-                    bLastLeft = true;
-
-                    var match = regex.Match(line);
-                    if (match.Success) {
-                        MakeParagraph(leftData, line, LineMode.Indicator);
-                        MakeParagraph(rightData, line, LineMode.Indicator);
-                        leftNumbers.Add("");
-                        rightNumbers.Add("");
-
-                        leftLine = int.Parse(match.Groups[1].Value);
-                        rightLine = int.Parse(match.Groups[2].Value);
-                    } else {
-                        var data = line.Substring(1);
-                        MakeParagraph(leftData, data, LineMode.Normal);
-                        MakeParagraph(rightData, data, LineMode.Normal);
-                        leftNumbers.Add(leftLine.ToString());
-                        rightNumbers.Add(rightLine.ToString());
-                        leftLine++;
-                        rightLine++;
-                    }
-                }
-            }
-
-            FitBothSide(leftData, leftNumbers, rightData, rightNumbers);
-
-            if (leftData.Count == 0) {
-                MakeParagraph(leftData, "NOT SUPPORTED OR NO DATA", LineMode.Indicator);
-                MakeParagraph(rightData, "NOT SUPPORTED OR NO DATA", LineMode.Indicator);
-                leftNumbers.Add("");
-                rightNumbers.Add("");
-            }
-
-            leftLineNumber.Text = string.Join("\n", leftNumbers);
-            rightLineNumber.Text = string.Join("\n", rightNumbers);
-            leftText.Document.PageWidth = minWidth + 16;
-            rightText.Document.PageWidth = minWidth + 16;
-            leftText.Document.Blocks.AddRange(leftData);
-            rightText.Document.Blocks.AddRange(rightData);
-            leftText.ScrollToHome();
-
-            mask.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -157,12 +31,71 @@ namespace SourceGit.UI {
         }
 
         /// <summary>
+        ///     Diff with options.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="options"></param>
+        /// <param name="path"></param>
+        /// <param name="orgPath"></param>
+        public void Diff(Git.Repository repo, string options, string path, string orgPath = null) {
+            SetTitle(path, orgPath);
+            Task.Run(() => {
+                var args = $"{options} -- ";
+                if (!string.IsNullOrEmpty(orgPath)) args += $"{orgPath} ";
+                args += $"\"{path}\"";
+
+                var rs = Git.Diff.Run(repo, args);
+                SetData(rs);
+            });
+        }
+
+        #region LAYOUT
+        /// <summary>
+        ///     Show diff title
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="orgFile"></param>
+        private void SetTitle(string file, string orgFile) {
+            fileName.Text = file;
+            if (!string.IsNullOrEmpty(orgFile)) {
+                orgFileNamePanel.Visibility = Visibility.Visible;
+                orgFileName.Text = orgFile;
+            } else {
+                orgFileNamePanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        ///     Show diff content.
+        /// </summary>
+        /// <param name="rs"></param>
+        private void SetData(Git.Diff.Result rs) {
+            Dispatcher.Invoke(() => {
+                loading.Visibility = Visibility.Collapsed;
+                mask.Visibility = Visibility.Collapsed;
+
+                minWidth = Math.Max(leftText.ActualWidth, rightText.ActualWidth) - 16;
+
+                leftLineNumber.Text = "";
+                rightLineNumber.Text = "";
+                leftText.Document.Blocks.Clear();
+                rightText.Document.Blocks.Clear();
+
+                foreach (var b in rs.Blocks) ShowBlock(b);
+
+                leftText.Document.PageWidth = minWidth + 16;
+                rightText.Document.PageWidth = minWidth + 16;
+                leftText.ScrollToHome();
+            });
+        }
+
+        /// <summary>
         ///     Make paragraph.
         /// </summary>
-        /// <param name="collection"></param>
-        /// <param name="content"></param>
-        /// <param name="mode"></param>
-        private void MakeParagraph(List<Paragraph> collection, string content, LineMode mode) {
+        /// <param name="b"></param>
+        private void ShowBlock(Git.Diff.Block b) {
+            var content = b.Builder.ToString();
+
             Paragraph p = new Paragraph(new Run(content));
             p.Margin = new Thickness(0);
             p.Padding = new Thickness();
@@ -170,21 +103,21 @@ namespace SourceGit.UI {
             p.Background = Brushes.Transparent;
             p.Foreground = FindResource("Brush.FG") as SolidColorBrush;
             p.FontStyle = FontStyles.Normal;
-            
-            switch (mode) {
-            case LineMode.Normal:
+
+            switch (b.Mode) {
+            case Git.Diff.LineMode.Normal:
                 break;
-            case LineMode.Indicator:
+            case Git.Diff.LineMode.Indicator:
                 p.Foreground = Brushes.Gray;
                 p.FontStyle = FontStyles.Italic;
                 break;
-            case LineMode.Empty:
+            case Git.Diff.LineMode.Empty:
                 p.Background = new SolidColorBrush(Color.FromArgb(40, 0, 0, 0));
                 break;
-            case LineMode.Added:
+            case Git.Diff.LineMode.Added:
                 p.Background = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
                 break;
-            case LineMode.Deleted:
+            case Git.Diff.LineMode.Deleted:
                 p.Background = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
                 break;
             }
@@ -200,39 +133,49 @@ namespace SourceGit.UI {
                 TextFormattingMode.Ideal);
 
             if (minWidth < formatter.Width) minWidth = formatter.Width;
-            collection.Add(p);
-        }
+            
+            switch (b.Side) {
+            case Git.Diff.Side.Left:
+                leftText.Document.Blocks.Add(p);
+                for (int i = 0; i < b.Count; i++) {
+                    if (b.CanShowNumber) leftLineNumber.AppendText($"{i + b.LeftStart}\n");
+                    else leftLineNumber.AppendText("\n");
+                }
+                break;
+            case Git.Diff.Side.Right:
+                rightText.Document.Blocks.Add(p);
+                for (int i = 0; i < b.Count; i++) {
+                    if (b.CanShowNumber) rightLineNumber.AppendText($"{i + b.RightStart}\n");
+                    else rightLineNumber.AppendText("\n");
+                }
+                break;
+            default:
+                leftText.Document.Blocks.Add(p);
 
-        /// <summary>
-        ///     Fit both side with empty lines.
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="leftNumbers"></param>
-        /// <param name="right"></param>
-        /// <param name="rightNumbers"></param>
-        private void FitBothSide(List<Paragraph> left, List<string> leftNumbers, List<Paragraph> right, List<string> rightNumbers) {
-            int leftCount = left.Count;
-            int rightCount = right.Count;
-            int diff = 0;
-            List<Paragraph> fitContent = null;
-            List<string> fitNumber = null;
+                var cp = new Paragraph(new Run(content));
+                cp.Margin = new Thickness(0);
+                cp.Padding = new Thickness();
+                cp.LineHeight = 1;
+                cp.Background = p.Background;
+                cp.Foreground = p.Foreground;
+                cp.FontStyle = p.FontStyle;
+                rightText.Document.Blocks.Add(cp);
 
-            if (leftCount > rightCount) {
-                diff = leftCount - rightCount;
-                fitContent = right;
-                fitNumber = rightNumbers;
-            } else if (rightCount > leftCount) {
-                diff = rightCount - leftCount;
-                fitContent = left;
-                fitNumber = leftNumbers;
+                for (int i = 0; i < b.Count; i++) {
+                    if (b.Mode != Git.Diff.LineMode.Indicator) {
+                        leftLineNumber.AppendText($"{i + b.LeftStart}\n");
+                        rightLineNumber.AppendText($"{i + b.RightStart}\n");
+                    } else {
+                        leftLineNumber.AppendText("\n");
+                        rightLineNumber.AppendText("\n");
+                    }
+                }
+                break;
             }
-
-            for (int i = 0; i < diff; i++) {
-                MakeParagraph(fitContent, "", LineMode.Empty);
-                fitNumber.Add("");
-            }
         }
+        #endregion        
 
+        #region EVENTS
         /// <summary>
         ///     Sync scroll both sides.
         /// </summary>
@@ -290,5 +233,6 @@ namespace SourceGit.UI {
                 rightText.Document.PageWidth = rightText.ActualWidth;
             }
         }
+        #endregion
     }
 }

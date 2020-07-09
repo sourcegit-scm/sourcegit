@@ -186,7 +186,7 @@ namespace SourceGit.UI {
             Task.Run(() => LayoutChanges());
         }
 
-        private async void ChangeTreeItemSelected(object sender, RoutedPropertyChangedEventArgs<object> e) {
+        private void ChangeTreeItemSelected(object sender, RoutedPropertyChangedEventArgs<object> e) {
             diffViewer.Reset();
 
             var node = e.NewValue as Node;
@@ -197,16 +197,10 @@ namespace SourceGit.UI {
                 start = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
             }
 
-            List<string> data = new List<string>();
-
-            await Task.Run(() => {
-                data = repo.Diff(start, commit.SHA, node.FilePath, node.OriginalPath);
-            });
-
-            diffViewer.SetData(data, node.FilePath, node.OriginalPath);
+            diffViewer.Diff(repo, $"{start} {commit.SHA}", node.FilePath, node.OriginalPath);
         }
 
-        private async void ChangeListSelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void ChangeListSelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (e.AddedItems.Count != 1) return;
 
             var change = e.AddedItems[0] as Git.Change;
@@ -217,13 +211,7 @@ namespace SourceGit.UI {
                 start = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
             }
 
-            List<string> data = new List<string>();
-
-            await Task.Run(() => {
-                data = repo.Diff(start, commit.SHA, change.Path, change.OriginalPath);
-            });
-
-            diffViewer.SetData(data, change.Path, change.OriginalPath);
+            diffViewer.Diff(repo, $"{start} {commit.SHA}", change.Path, change.OriginalPath);
         }
 
         private void ChangeListContextMenuOpening(object sender, ContextMenuEventArgs e) {

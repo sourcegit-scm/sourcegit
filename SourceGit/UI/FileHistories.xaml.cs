@@ -95,18 +95,14 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void CommitSelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void CommitSelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (e.AddedItems.Count != 1) return;
 
             var commit = e.AddedItems[0] as Git.Commit;
             var start = $"{commit.SHA}^";
             if (commit.Parents.Count == 0) start = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
 
-            List<string> data = new List<string>();
-            await Task.Run(() => {
-                data = repo.Diff(start, commit.SHA, file);
-            });
-            diff.SetData(data, $"{file} @ {commit.ShortSHA}");
+            diff.Diff(repo, $"{start} {commit.SHA}", file);
         }
 
         /// <summary>

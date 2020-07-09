@@ -828,26 +828,6 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
-        ///     Diff
-        /// </summary>
-        /// <param name="startRevision"></param>
-        /// <param name="endRevision"></param>
-        /// <param name="file"></param>
-        /// <param name="orgFile"></param>
-        /// <returns></returns>
-        public List<string> Diff(string startRevision, string endRevision, string file, string orgFile = null) {
-            var args = $"diff --ignore-cr-at-eol {startRevision} {endRevision} -- ";
-            if (!string.IsNullOrEmpty(orgFile)) args += $"\"{orgFile}\" ";
-            args += $"\"{file}\"";
-
-            var data = new List<string>();
-            var errs = RunCommand(args, line => data.Add(line));
-
-            if (errs != null) App.RaiseError(errs);
-            return data;
-        }
-
-        /// <summary>
         ///     Blame file.
         /// </summary>
         /// <param name="file"></param>

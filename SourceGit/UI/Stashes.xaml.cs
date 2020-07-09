@@ -82,8 +82,7 @@ namespace SourceGit.UI {
             var change = e.AddedItems[0] as Git.Change;
             if (change == null) return;
 
-            var data = repo.Diff($"{selectedStash}^", selectedStash, change.Path, change.OriginalPath);
-            diff.SetData(data, change.Path, change.OriginalPath);
+            diff.Diff(repo, $"{selectedStash}^ {selectedStash}", change.Path, change.OriginalPath);
         }
 
         /// <summary>

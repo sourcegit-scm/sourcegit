@@ -134,6 +134,10 @@
                     <Label Margin="0,8,0,0" Content="SELECT FILE TO VIEW CHANGES" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
+
+            <Border x:Name="loading" Grid.RowSpan="2" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
+                <Label Content="LOADING ..." FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
+            </Border>
         </Grid>
     </Border>
 </UserControl>
