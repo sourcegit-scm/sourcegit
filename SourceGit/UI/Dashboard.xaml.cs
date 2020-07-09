@@ -197,6 +197,7 @@ namespace SourceGit.UI {
         private void UpdateBranches(bool force = true) {
             Task.Run(() => {
                 var branches = repo.Branches(force);
+                var remotes = repo.Remotes(true);
                 var localBranchNodes = new List<BranchNode>();
                 var remoteNodes = new List<RemoteNode>();
                 var remoteMap = new Dictionary<string, RemoteNode>();
@@ -230,6 +231,17 @@ namespace SourceGit.UI {
                         }
 
                         MakeBranchNode(b, remote.Children, folders, states, "remotes");
+                    }
+                }
+
+                foreach (var r in remotes) {
+                    if (!remoteMap.ContainsKey(r.Name)) {
+                        var remote = new RemoteNode() {
+                            Name = r.Name,
+                            IsExpanded = false,
+                            Children = new List<BranchNode>(),
+                        };
+                        remoteNodes.Add(remote);
                     }
                 }
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Git {
@@ -57,7 +57,7 @@ namespace SourceGit.Git {
             if (errs != null) {
                 App.RaiseError(errs);
             } else {
-                repo.Fetch(null, true, null);
+                repo.Fetch(new Remote() { Name = name }, true, null);
             }
         }
 
