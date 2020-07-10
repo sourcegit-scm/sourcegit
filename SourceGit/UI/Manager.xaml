@@ -22,34 +22,11 @@
                 </Border.Effect>
             </Border>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <!-- Navigation -->
-                <StackPanel Grid.Column="0" Margin="8,0,0,0" Orientation="Horizontal">
-                    <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Manager}"/>
-                    <Label Content="Repositories"/>
-                </StackPanel>
-                
-                <!-- Options -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Button Click="OpenOrAddRepo" Style="{StaticResource Style.Button}">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
-                            <Label Content="Open Folder"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="CloneRepo" Style="{StaticResource Style.Button}" Margin="8,0,0,0">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Clone}"/>
-                            <Label Content="Clone"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
+            <!-- Navigation -->
+            <StackPanel Grid.Column="0" Margin="8,0,0,0" Orientation="Horizontal">
+                <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Manager}"/>
+                <Label Content="Repositories"/>
+            </StackPanel>
         </Grid>
         
         <!-- Main Body -->
@@ -96,7 +73,23 @@
                 </ListView>
 
                 <!-- Repositories' tree -->
-                <Label Grid.Row="2" Margin="8,8,0,0" Content="REPOSITORIES" Style="{StaticResource Style.Label.GroupHeader}"/>
+                <Grid Grid.Row="2" Margin="8,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="REPOSITORIES" Style="{StaticResource Style.Label.GroupHeader}"/>
+
+                    <Button Grid.Column="1" Click="CloneRepo" Style="{StaticResource Style.Button}" ToolTip="Clone">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}" Opacity=".8"/>
+                    </Button>
+
+                    <Button Grid.Column="2" Click="OpenOrAddRepo" Style="{StaticResource Style.Button}" Margin="8,0,2,0"  ToolTip="Open Repository">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}" Opacity=".8"/>
+                    </Button>
+                </Grid>
                 <TreeView
                     x:Name="repositories"
                     Grid.Row="3"
@@ -218,8 +211,8 @@
                 <!-- Mask -->
                 <Border x:Name="briefMask" Background="{StaticResource Brush.BG3}" IsHitTestVisible="False">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
-                        <Path Width="160" Height="160" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Book}"/>
-                        <Label Margin="0,8,0,0" Content="DRAG &amp; DROP FOLDER TO LEFT" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                        <Path Width="160" Height="160" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
+                        <Label Margin="0,32,0,0" Content="WELCOME TO SOURCE GIT :-)" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Border>
             </Grid>
