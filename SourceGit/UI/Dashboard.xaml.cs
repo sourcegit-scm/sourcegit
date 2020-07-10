@@ -311,6 +311,8 @@ namespace SourceGit.UI {
         }
 
         private void OpenSearch(object sender, RoutedEventArgs e) {
+            if (PopupManager.IsLocked()) return;
+
             workspace.SelectedItem = historiesSwitch;
             if (histories.searchBar.Margin.Top == 0) {
                 histories.HideSearchBar();
