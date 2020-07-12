@@ -729,10 +729,6 @@ namespace SourceGit.UI {
             e.Handled = true;
         }
 
-        private void CommitMessageChanged(object sender, TextChangedEventArgs e) {
-            (sender as TextBox).ScrollToEnd();
-        }
-
         private void StartAmend(object sender, RoutedEventArgs e) {
             var commits = Repo.Commits("-n 1");
             if (commits.Count == 0) {
