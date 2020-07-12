@@ -11,7 +11,7 @@ namespace SourceGit.Helpers {
     public static class TextBoxHelper {
 
         /// <summary>
-        ///     Auto scroll on text changed.
+        ///     Auto scroll on text changed or selection changed.
         /// </summary>
         public static readonly DependencyProperty AutoScrollProperty = DependencyProperty.RegisterAttached(
             "AutoScroll",
@@ -216,8 +216,7 @@ namespace SourceGit.Helpers {
                         textBox.ScrollToVerticalOffset(textBox.VerticalOffset + rect.Top);
                     } else if (rect.Bottom >= textBox.ActualHeight) {
                         textBox.ScrollToVerticalOffset(textBox.VerticalOffset + rect.Bottom);
-                    }
-                    
+                    }                    
                 }
             }
         }
