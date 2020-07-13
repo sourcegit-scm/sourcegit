@@ -392,16 +392,24 @@
                 <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
 
                 <Border Grid.Column="2" BorderThickness="1" Margin="2,0" BorderBrush="{StaticResource Brush.Border2}">
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                        <TextBlock FontSize="10pt"
-                             FontFamily="Consolas"
-                             Padding="8"
-                             Opacity="0.8"
-                             Background="{StaticResource Brush.BG2}"
-                             Foreground="{StaticResource Brush.FG}"
-                             x:Name="filePreview"/>
-                    </ScrollViewer>
-                </Border>
+                    <Grid>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <TextBlock 
+                                FontSize="10pt"
+                                FontFamily="Consolas"
+                                Padding="8"
+                                Opacity="0.8"
+                                Background="{StaticResource Brush.BG2}"
+                                Foreground="{StaticResource Brush.FG}"
+                                x:Name="filePreview"/>
+                        </ScrollViewer>
+
+                        <StackPanel x:Name="maskPreviewNotSupported" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
+                            <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}" Fill="{StaticResource Brush.FG2}"/>
+                            <Label Margin="0,16,0,0" Content="BINARY FILE DETECTED" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>               
             </Grid>
         </TabItem>
     </TabControl>

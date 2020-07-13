@@ -345,13 +345,20 @@ namespace SourceGit.UI {
 
         private async void FileTreeItemSelected(object sender, RoutedPropertyChangedEventArgs<object> e) {
             filePreview.Text = "";
+            maskPreviewNotSupported.Visibility = Visibility.Collapsed;
 
             var node = e.NewValue as Node;
             if (node == null || !node.IsFile) return;
 
             await Task.Run(() => {
-                var data = commit.GetTextFileContent(repo, node.FilePath);
-                Dispatcher.Invoke(() => filePreview.Text = data);
+                var isBinary = false;
+                var data = commit.GetTextFileContent(repo, node.FilePath, out isBinary);
+
+                if (isBinary) {
+                    Dispatcher.Invoke(() => maskPreviewNotSupported.Visibility = Visibility.Visible);
+                } else {
+                    Dispatcher.Invoke(() => filePreview.Text = data);
+                }
             });
         }
         #endregion

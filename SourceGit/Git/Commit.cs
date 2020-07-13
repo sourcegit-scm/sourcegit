@@ -190,19 +190,19 @@ namespace SourceGit.Git {
         /// <param name="repo"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public string GetTextFileContent(Repository repo, string file) {
+        public string GetTextFileContent(Repository repo, string file, out bool isBinary) {
             var data = new List<string>();
-            var isBinary = false;
             var count = 0;
+            var binary = false;
 
             var errs = repo.RunCommand($"show {SHA}:\"{file}\"", line => {
-                if (isBinary) return;
+                if (binary) return;
 
                 count++;
                 if (data.Count >= 1000) return;
 
                 if (line.IndexOf('\0') >= 0) {
-                    isBinary = true;
+                    binary = true;
                     data.Clear();
                     data.Add("BINARY FILE PREVIEW NOT SUPPORTED!");
                     return;
@@ -211,10 +211,12 @@ namespace SourceGit.Git {
                 data.Add(line);
             });
 
-            if (!isBinary && count > 1000) {
+            if (!binary && count > 1000) {
                 data.Add("...");
                 data.Add($"Total {count} lines. Hide {count-1000} lines.");
             }
+
+            isBinary = binary;
 
             if (errs != null) App.RaiseError(errs);
             return string.Join("\n", data);
