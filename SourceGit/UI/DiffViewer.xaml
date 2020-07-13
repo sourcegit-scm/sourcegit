@@ -156,7 +156,7 @@
             <Border x:Name="noChange" Grid.Row="1" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Check}"/>
-                    <Label Margin="0,8,0,0" Content="SAME OR ONLY EOL CHANGES" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                    <Label Margin="0,8,0,0" Content="NO CHANGES OR ONLY EOL CHANGES" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
