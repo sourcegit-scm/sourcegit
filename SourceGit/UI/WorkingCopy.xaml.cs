@@ -683,6 +683,17 @@ namespace SourceGit.UI {
         #endregion
 
         #region COMMIT_PANEL
+        private void CommitMsgPreviewMouseWheel(object sender, MouseWheelEventArgs e) {
+            var textBox = sender as TextBox;
+            if (textBox == null) return;
+
+            if (e.Delta > 0) {
+                textBox.LineUp();
+            } else {
+                textBox.LineDown();
+            }
+        }
+
         private void OpenCommitMessageSelector(object sender, RoutedEventArgs e) {
             var anchor = sender as Button;
 

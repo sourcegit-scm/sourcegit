@@ -343,7 +343,8 @@
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 helpers:TextBoxHelper.Placeholder="Enter commit message"
-                helpers:TextBoxHelper.PlaceholderBaseline="Top">
+                helpers:TextBoxHelper.PlaceholderBaseline="Top"
+                PreviewMouseWheel="CommitMsgPreviewMouseWheel">
                 <TextBox.Text>
                     <Binding ElementName="me" Path="CommitMessage" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
