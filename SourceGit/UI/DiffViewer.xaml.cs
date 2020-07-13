@@ -16,6 +16,16 @@ namespace SourceGit.UI {
         private double minWidth = 0;
 
         /// <summary>
+        ///     Diff options.
+        /// </summary>
+        public class Option {
+            public string[] RevisionRange = new string[] { };
+            public string Path = "";
+            public string OrgPath = null;
+            public string ExtraArgs = "";
+        }
+
+        /// <summary>
         ///     Constructor
         /// </summary>
         public DiffViewer() {
@@ -28,26 +38,33 @@ namespace SourceGit.UI {
         /// </summary>
         public void Reset() {
             mask.Visibility = Visibility.Visible;
+            sizer.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
         ///     Diff with options.
         /// </summary>
         /// <param name="repo"></param>
-        /// <param name="options"></param>
-        /// <param name="path"></param>
-        /// <param name="orgPath"></param>
-        public void Diff(Git.Repository repo, string options, string path, string orgPath = null) {
-            SetTitle(path, orgPath);
+        /// <param name="opts"></param>
+        public void Diff(Git.Repository repo, Option opts) {
+            SetTitle(opts.Path, opts.OrgPath);
 
             loading.Visibility = Visibility.Visible;
+            sizer.Visibility = Visibility.Collapsed;
+
             Task.Run(() => {
-                var args = $"{options} -- ";
-                if (!string.IsNullOrEmpty(orgPath)) args += $"{orgPath} ";
-                args += $"\"{path}\"";
+                var args = $"{opts.ExtraArgs} ";
+                if (opts.RevisionRange.Length > 0) args += $"{opts.RevisionRange[0]} ";
+                if (opts.RevisionRange.Length > 1) args += $"{opts.RevisionRange[1]} -- ";
+                if (!string.IsNullOrEmpty(opts.OrgPath)) args += $"\"{opts.OrgPath}\" ";
+                args += $"\"{opts.Path}\"";
 
                 var rs = Git.Diff.Run(repo, args);
-                SetData(rs);
+                if (rs.IsBinary) {
+                    SetSizeChangeData(Git.Diff.GetSizeChange(repo, opts.RevisionRange, opts.Path, opts.OrgPath));
+                } else {
+                    SetData(rs);
+                }                
             });
         }
 
@@ -65,6 +82,20 @@ namespace SourceGit.UI {
             } else {
                 orgFileNamePanel.Visibility = Visibility.Collapsed;
             }
+        }
+
+        /// <summary>
+        ///     Show size changes.
+        /// </summary>
+        /// <param name="bc"></param>
+        private void SetSizeChangeData(Git.Diff.BinaryChange bc) {
+            Dispatcher.Invoke(() => {
+                loading.Visibility = Visibility.Collapsed;
+                mask.Visibility = Visibility.Collapsed;
+                sizer.Visibility = Visibility.Visible;
+                txtNewSize.Content = $"{bc.Size} Bytes";
+                txtOldSize.Content = $"{bc.PreSize} Bytes";
+            });
         }
 
         /// <summary>
@@ -175,7 +206,7 @@ namespace SourceGit.UI {
                 break;
             }
         }
-        #endregion        
+        #endregion
 
         #region EVENTS
         /// <summary>

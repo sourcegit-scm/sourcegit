@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Xml.Serialization;
 
@@ -875,6 +876,20 @@ namespace SourceGit.Git {
 
             if (errs != null) App.RaiseError(errs);
             return blame;
+        }
+
+        /// <summary>
+        ///     Get file size.
+        /// </summary>
+        /// <param name="sha"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public long GetFileSize(string sha, string path) {
+            long size = 0;
+            RunCommand($"cat-file -s {sha}:\"{path}\"", line => {
+                if (!long.TryParse(line, out size)) size = 0;
+            });
+            return size;
         }
         #endregion
 

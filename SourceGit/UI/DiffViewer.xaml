@@ -128,6 +128,29 @@
                 </Grid>
             </Grid>
 
+            <Border x:Name="sizer" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <Label Content="BINARY DIFF" Margin="0,0,0,32" FontSize="18" FontWeight="UltraBold" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Center"/>
+                    <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Binary}" Fill="{StaticResource Brush.FG2}"/>
+                    <Grid Margin="0,16,0,0" HorizontalAlignment="Center" TextElement.FontSize="18" TextElement.FontWeight="UltraBold">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="32"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="64"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Content="OLD :" Foreground="{StaticResource Brush.FG2}"/>
+                        <Label Grid.Row="0" Grid.Column="1" x:Name="txtOldSize" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="NEW :" Foreground="{StaticResource Brush.FG2}"/>
+                        <Label Grid.Row="1" Grid.Column="1" x:Name="txtNewSize" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
             <Border x:Name="mask" Grid.RowSpan="2" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Diff}"/>

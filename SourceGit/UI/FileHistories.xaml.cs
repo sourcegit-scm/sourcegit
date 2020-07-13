@@ -102,7 +102,10 @@ namespace SourceGit.UI {
             var start = $"{commit.SHA}^";
             if (commit.Parents.Count == 0) start = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
 
-            diff.Diff(repo, $"{start} {commit.SHA}", file);
+            diff.Diff(repo, new DiffViewer.Option() {
+                RevisionRange = new string[] { start, commit.SHA },
+                Path = file
+            });
         }
 
         /// <summary>

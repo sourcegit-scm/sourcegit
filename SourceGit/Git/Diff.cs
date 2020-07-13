@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -28,6 +29,14 @@ namespace SourceGit.Git {
             Left,
             Right,
             Both,
+        }
+
+        /// <summary>
+        ///     Binary change.
+        /// </summary>
+        public class BinaryChange {
+            public long Size = 0;
+            public long PreSize = 0;
         }
 
         /// <summary>
@@ -215,11 +224,7 @@ namespace SourceGit.Git {
             rs.Fit();
 
             if (rs.IsBinary) {
-                var b = new Block();
-                b.Mode = LineMode.Indicator;
-                b.Append("BINARY FILES NOT SUPPORTED!!!");
-                rs.Blocks.Clear();
-                rs.Blocks.Add(b);
+                rs.Blocks.Clear();                
             } else if (rs.Blocks.Count == 0) {
                 var b = new Block();
                 b.Mode = LineMode.Indicator;
@@ -228,6 +233,39 @@ namespace SourceGit.Git {
             }
 
             return rs;
+        }
+
+        /// <summary>
+        ///     Get file size changes for binary file.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="revisions"></param>
+        /// <param name="path"></param>
+        /// <param name="orgPath"></param>
+        /// <returns></returns>
+        public static BinaryChange GetSizeChange(Repository repo, string[] revisions, string path, string orgPath = null) {
+            var change = new BinaryChange();
+
+            if (revisions.Length == 0) { // Compare working copy with HEAD
+                change.Size = new FileInfo(Path.Combine(repo.Path, path)).Length;
+                change.PreSize = repo.GetFileSize("HEAD", path);
+            } else if (revisions.Length == 1) { // Compare HEAD with given revision.
+                change.Size = repo.GetFileSize("HEAD", path);
+                if (!string.IsNullOrEmpty(orgPath)) {
+                    change.PreSize = repo.GetFileSize(revisions[0], orgPath);
+                } else {
+                    change.PreSize = repo.GetFileSize(revisions[0], path);
+                }
+            } else {
+                change.Size = repo.GetFileSize(revisions[1], path);
+                if (!string.IsNullOrEmpty(orgPath)) {
+                    change.PreSize = repo.GetFileSize(revisions[0], orgPath);
+                } else {
+                    change.PreSize = repo.GetFileSize(revisions[0], path);
+                }
+            }
+
+            return change;
         }
     }
 }

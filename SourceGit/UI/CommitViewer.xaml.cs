@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
@@ -197,7 +196,11 @@ namespace SourceGit.UI {
                 start = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
             }
 
-            diffViewer.Diff(repo, $"{start} {commit.SHA}", node.FilePath, node.OriginalPath);
+            diffViewer.Diff(repo, new DiffViewer.Option() {
+                RevisionRange = new string[] { start, commit.SHA },
+                Path = node.FilePath,
+                OrgPath = node.OriginalPath
+            });
         }
 
         private void ChangeListSelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -211,7 +214,11 @@ namespace SourceGit.UI {
                 start = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
             }
 
-            diffViewer.Diff(repo, $"{start} {commit.SHA}", change.Path, change.OriginalPath);
+            diffViewer.Diff(repo, new DiffViewer.Option() {
+                RevisionRange = new string[] { start, commit.SHA },
+                Path = change.Path,
+                OrgPath = change.OriginalPath
+            });
         }
 
         private void ChangeListContextMenuOpening(object sender, ContextMenuEventArgs e) {

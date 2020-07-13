@@ -82,7 +82,11 @@ namespace SourceGit.UI {
             var change = e.AddedItems[0] as Git.Change;
             if (change == null) return;
 
-            diff.Diff(repo, $"{selectedStash}^ {selectedStash}", change.Path, change.OriginalPath);
+            diff.Diff(repo, new DiffViewer.Option() {
+                RevisionRange = new string[] { $"{selectedStash}^", selectedStash },
+                Path = change.Path,
+                OrgPath = change.OriginalPath
+            });
         }
 
         /// <summary>

@@ -133,15 +133,18 @@ namespace SourceGit.UI {
                 return;
             }
 
+            DiffViewer.Option opt;
             switch (node.Change.WorkTree) {
             case Git.Change.Status.Added:
             case Git.Change.Status.Untracked:
-                diffViewer.Diff(Repo, "--no-index", node.FilePath, "/dev/null");
+                opt = new DiffViewer.Option() { ExtraArgs = "--no-index", Path = node.FilePath, OrgPath = "/dev/null" };
                 break;
             default:
-                diffViewer.Diff(Repo, "", node.FilePath, node.Change.OriginalPath);
+                opt = new DiffViewer.Option() { Path = node.FilePath, OrgPath = node.Change.OriginalPath };
                 break;
             }
+
+            diffViewer.Diff(Repo, opt);
         }
 
         private void UnstagedListSelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -161,15 +164,18 @@ namespace SourceGit.UI {
                 return;
             }
 
+            DiffViewer.Option opt;
             switch (change.WorkTree) {
             case Git.Change.Status.Added:
             case Git.Change.Status.Untracked:
-                diffViewer.Diff(Repo, "--no-index", change.Path, "/dev/null");
+                opt = new DiffViewer.Option() { ExtraArgs = "--no-index", Path = change.Path, OrgPath = "/dev/null" };
                 break;
             default:
-                diffViewer.Diff(Repo, "", change.Path, change.OriginalPath);
+                opt = new DiffViewer.Option() { Path = change.Path, OrgPath = change.OriginalPath };
                 break;
             }
+
+            diffViewer.Diff(Repo, opt);
         }
 
         private void SaveAsPatchFromUnstagedChanges(string path, List<Git.Change> changes) {
@@ -507,7 +513,11 @@ namespace SourceGit.UI {
             if (!node.IsFile) return;
 
             mergePanel.Visibility = Visibility.Collapsed;
-            diffViewer.Diff(Repo, "--cached", node.FilePath, node.Change.OriginalPath);
+            diffViewer.Diff(Repo, new DiffViewer.Option() {
+                ExtraArgs = "--cached",
+                Path = node.FilePath,
+                OrgPath = node.Change.OriginalPath
+            });
             e.Handled = true;
         }
 
@@ -524,7 +534,11 @@ namespace SourceGit.UI {
 
             var change = selected[0] as Git.Change;
             mergePanel.Visibility = Visibility.Collapsed;
-            diffViewer.Diff(Repo, "--cached", change.Path, change.OriginalPath);
+            diffViewer.Diff(Repo, new DiffViewer.Option() {
+                ExtraArgs = "--cached",
+                Path = change.Path,
+                OrgPath = change.OriginalPath
+            });
             e.Handled = true;
         }
 
