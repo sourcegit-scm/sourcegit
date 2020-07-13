@@ -8,7 +8,7 @@
     <Border BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="26"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -24,7 +24,9 @@
                 </StackPanel>
             </Border>
 
-            <Grid Grid.Row="1" ClipToBounds="True">
+            <Path x:Name="loading" Grid.Row="0" HorizontalAlignment="Left" Width="10" Height="10" Margin="8,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}" Visibility="Collapsed"/>
+
+            <Grid x:Name="textChange" Grid.Row="1" ClipToBounds="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" MinWidth="100"/>
                     <ColumnDefinition Width="2"/>
@@ -128,7 +130,7 @@
                 </Grid>
             </Grid>
 
-            <Border x:Name="sizer" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
+            <Border x:Name="sizeChange" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <Label Content="BINARY DIFF" Margin="0,0,0,32" FontSize="18" FontWeight="UltraBold" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Center"/>
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Binary}" Fill="{StaticResource Brush.FG2}"/>
@@ -151,15 +153,18 @@
                 </StackPanel>
             </Border>
 
+            <Border x:Name="noChange" Grid.Row="1" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
+                    <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Check}"/>
+                    <Label Margin="0,8,0,0" Content="SAME OR ONLY EOL CHANGES" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
             <Border x:Name="mask" Grid.RowSpan="2" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Diff}"/>
                     <Label Margin="0,8,0,0" Content="SELECT FILE TO VIEW CHANGES" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
-            </Border>
-
-            <Border x:Name="loading" Grid.RowSpan="2" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
-                <Label Content="LOADING ..." FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
             </Border>
         </Grid>
     </Border>

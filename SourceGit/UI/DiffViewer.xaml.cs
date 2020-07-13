@@ -38,7 +38,6 @@ namespace SourceGit.UI {
         /// </summary>
         public void Reset() {
             mask.Visibility = Visibility.Visible;
-            sizer.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -50,7 +49,10 @@ namespace SourceGit.UI {
             SetTitle(opts.Path, opts.OrgPath);
 
             loading.Visibility = Visibility.Visible;
-            sizer.Visibility = Visibility.Collapsed;
+            mask.Visibility = Visibility.Collapsed;
+            textChange.Visibility = Visibility.Collapsed;
+            sizeChange.Visibility = Visibility.Collapsed;
+            noChange.Visibility = Visibility.Collapsed;
 
             Task.Run(() => {
                 var args = $"{opts.ExtraArgs} ";
@@ -62,9 +64,11 @@ namespace SourceGit.UI {
                 var rs = Git.Diff.Run(repo, args);
                 if (rs.IsBinary) {
                     SetSizeChangeData(Git.Diff.GetSizeChange(repo, opts.RevisionRange, opts.Path, opts.OrgPath));
-                } else {
+                } else if (rs.Blocks.Count > 0) {
                     SetData(rs);
-                }                
+                } else {
+                    SetSame();
+                }
             });
         }
 
@@ -91,10 +95,19 @@ namespace SourceGit.UI {
         private void SetSizeChangeData(Git.Diff.BinaryChange bc) {
             Dispatcher.Invoke(() => {
                 loading.Visibility = Visibility.Collapsed;
-                mask.Visibility = Visibility.Collapsed;
-                sizer.Visibility = Visibility.Visible;
+                sizeChange.Visibility = Visibility.Visible;
                 txtNewSize.Content = $"{bc.Size} Bytes";
                 txtOldSize.Content = $"{bc.PreSize} Bytes";
+            });
+        }
+
+        /// <summary>
+        ///     Show no changes or only eol changes.
+        /// </summary>
+        private void SetSame() {
+            Dispatcher.Invoke(() => {
+                loading.Visibility = Visibility.Collapsed;
+                noChange.Visibility = Visibility.Visible;
             });
         }
 
@@ -105,7 +118,7 @@ namespace SourceGit.UI {
         private void SetData(Git.Diff.Result rs) {
             Dispatcher.Invoke(() => {
                 loading.Visibility = Visibility.Collapsed;
-                mask.Visibility = Visibility.Collapsed;
+                textChange.Visibility = Visibility.Visible;
 
                 minWidth = Math.Max(leftText.ActualWidth, rightText.ActualWidth) - 16;
 

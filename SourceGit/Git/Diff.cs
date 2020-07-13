@@ -223,15 +223,7 @@ namespace SourceGit.Git {
             rs.Add(current);
             rs.Fit();
 
-            if (rs.IsBinary) {
-                rs.Blocks.Clear();                
-            } else if (rs.Blocks.Count == 0) {
-                var b = new Block();
-                b.Mode = LineMode.Indicator;
-                b.Append("NO CHANGES OR ONLY WHITESPACE CHANGES!!!");
-                rs.Blocks.Add(b);
-            }
-
+            if (rs.IsBinary) rs.Blocks.Clear();
             return rs;
         }
 

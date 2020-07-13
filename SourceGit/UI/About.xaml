@@ -10,7 +10,7 @@
 
     <!-- Enable WindowChrome Feature -->
     <WindowChrome.WindowChrome>
-        <WindowChrome UseAeroCaptionButtons="False" CornerRadius="0" CaptionHeight="32" GlassFrameThickness="0 0 0 1" ResizeBorderThickness="8" NonClientFrameEdges="None" />
+        <WindowChrome UseAeroCaptionButtons="False" CornerRadius="0" CaptionHeight="32"/>
     </WindowChrome.WindowChrome>
 
     <!-- Window Layout -->
