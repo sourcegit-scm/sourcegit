@@ -211,6 +211,7 @@
                     <DataGrid.RowStyle>
                         <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
                             <EventSetter Event="ContextMenuOpening" Handler="ChangeListContextMenuOpening"/>
+                            <EventSetter Event="MouseDoubleClick" Handler="ChangeListMouseDoubleClick"/>
                         </Style>
                     </DataGrid.RowStyle>
                 </DataGrid>

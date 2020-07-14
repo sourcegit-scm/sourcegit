@@ -280,6 +280,18 @@ namespace SourceGit.UI {
             menu.IsOpen = true;
             e.Handled = true;
         }
+
+        private void ChangeListMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var row = sender as DataGridRow;
+            if (row == null) return;
+
+            var change = row.DataContext as Git.Change;
+            if (change == null) return;
+
+            var viewer = new FileHistories(repo, change.Path);
+            viewer.Show();
+        }
         #endregion
 
         #region FILES
@@ -466,5 +478,6 @@ namespace SourceGit.UI {
             e.Handled = true;
         }
         #endregion
+
     }
 }
