@@ -148,7 +148,8 @@
                     Grid.Row="1"
                     x:Name="workspace"
                     Background="{StaticResource Brush.BG3}"
-                    Style="{StaticResource Style.ListView.Borderless}">
+                    Style="{StaticResource Style.ListView.Borderless}"
+                    SelectionMode="Single">
                     <ListViewItem x:Name="historiesSwitch" Selected="SwitchHistories" IsSelected="True">
                         <StackPanel Margin="16,0,0,0" Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Histories}"/>
