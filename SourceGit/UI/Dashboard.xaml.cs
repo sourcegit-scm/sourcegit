@@ -838,7 +838,7 @@ namespace SourceGit.UI {
         }
 
         private void TagLostFocus(object sender, RoutedEventArgs e) {
-            (sender as ListView).UnselectAll();
+            (sender as DataGrid).UnselectAll();
         }
 
         private void TagSelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -849,7 +849,7 @@ namespace SourceGit.UI {
         }
 
         private void TagContextMenuOpening(object sender, ContextMenuEventArgs e) {
-            var tag = (sender as ListView).SelectedItem as Git.Tag;
+            var tag = (sender as DataGrid).SelectedItem as Git.Tag;
             if (tag == null) return;
 
             var createBranch = new MenuItem();

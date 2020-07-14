@@ -369,40 +369,53 @@
                         </Button>
                     </Grid>
                 </ToggleButton>
-                <ListView
+                <DataGrid
                     Grid.Row="7"
                     x:Name="tagList"
                     Visibility="{Binding ElementName=tagListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
                     Background="{StaticResource Brush.BG3}"
+                    RowHeight="24"
                     Height="200"
                     LostFocus="TagLostFocus"
                     SelectionChanged="TagSelectionChanged"
-                    ContextMenuOpening="TagContextMenuOpening"
-                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ContextMenuOpening="TagContextMenuOpening"                    
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    Style="{StaticResource Style.ListView.Borderless}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate DataType="{x:Type git:Tag}">
-                            <Grid Margin="16, 0, 0, 0" Height="20">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="16"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+                    SelectionMode="Single"
+                    SelectionUnit="FullRow">
+                    <DataGrid.Resources>
+                        <Style x:Key="Style.DataGridText.TagName" TargetType="{x:Type TextBlock}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                        </Style>
+                    </DataGrid.Resources>
 
-                                <Path Grid.Column="0" Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Tag}"/>
-                                <Label Grid.Column="1" Margin="4,0,0,0" Content="{Binding Name}" Padding="4,0,0,0"/>
-                                <ToggleButton 
-                                            Grid.Column="2" 
-                                            IsChecked="{Binding IsFiltered, Mode=TwoWay}" 
-                                            Checked="FilterChanged" 
-                                            Unchecked="FilterChanged" 
-                                            Style="{StaticResource Style.ToggleButton.Filter}"
-                                            ToolTip="FILTER"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="26">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Tag}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Width="*" IsReadOnly="True" Binding="{Binding Name}" ElementStyle="{StaticResource Style.DataGridText.TagName}"/>
+
+                        <DataGridTemplateColumn Width="16">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ToggleButton 
+                                        Grid.Column="2" 
+                                        IsChecked="{Binding IsFiltered, Mode=TwoWay}" 
+                                        Checked="FilterChanged" 
+                                        Unchecked="FilterChanged" 
+                                        Style="{StaticResource Style.ToggleButton.Filter}"
+                                        ToolTip="FILTER"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
 
             <!-- Splitter -->
