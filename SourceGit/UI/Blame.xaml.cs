@@ -84,7 +84,9 @@ namespace SourceGit.UI {
                             p.Background = BG[i % 2];
                             p.Foreground = FindResource("Brush.FG") as SolidColorBrush;
                             p.FontStyle = FontStyles.Normal;
-                            p.MouseRightButtonDown += (sender, ev) => {
+                            p.ContextMenuOpening += (sender, ev) => {
+                                if (!content.Selection.IsEmpty) return;
+
                                 Hyperlink link = new Hyperlink(new Run(frag.CommitSHA));
                                 link.ToolTip = "CLICK TO GO";
                                 link.Click += (o, e) => {
@@ -105,6 +107,7 @@ namespace SourceGit.UI {
                                 authorName.Content = frag.Author;
                                 authorTime.Content = frag.Time;
                                 popup.IsOpen = true;
+                                ev.Handled = true;
                             };
 
                             var formatter = new FormattedText(

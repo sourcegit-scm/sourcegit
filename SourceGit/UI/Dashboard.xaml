@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:source="clr-namespace:SourceGit"
              xmlns:local="clr-namespace:SourceGit.UI"
-             xmlns:git="clr-namespace:SourceGit.Git"
              xmlns:converters="clr-namespace:SourceGit.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
