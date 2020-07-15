@@ -361,6 +361,8 @@ namespace SourceGit.Git {
         }
 
         private void OnFSChanged(object sender, FileSystemEventArgs e) {
+            if (string.IsNullOrEmpty(e.Name)) return;
+
             if (e.Name.StartsWith(".git", StringComparison.Ordinal)) {
                 if (e.Name.Equals(".git") || e.Name.StartsWith(".git\\index")) return;
 
