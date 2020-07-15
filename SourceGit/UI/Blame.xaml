@@ -150,6 +150,13 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             FontFamily="Consolas">
+                        <RichTextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="ApplicationCommands.Copy"/>
+                                <MenuItem Command="ApplicationCommands.Cut"/>
+                                <MenuItem Command="ApplicationCommands.Paste"/>
+                            </ContextMenu>
+                        </RichTextBox.ContextMenu>
                         <FlowDocument PageWidth="0"/>
                     </RichTextBox>
 

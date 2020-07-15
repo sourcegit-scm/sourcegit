@@ -77,6 +77,13 @@
                         <RichTextBox.Document>
                             <FlowDocument PageWidth="0"/>
                         </RichTextBox.Document>
+                        <RichTextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="ApplicationCommands.Copy"/>
+                                <MenuItem Command="ApplicationCommands.Cut"/>
+                                <MenuItem Command="ApplicationCommands.Paste"/>
+                            </ContextMenu>
+                        </RichTextBox.ContextMenu>
                     </RichTextBox>
                 </Grid>
 
@@ -126,6 +133,13 @@
                         <RichTextBox.Document>
                             <FlowDocument PageWidth="0"/>
                         </RichTextBox.Document>
+                        <RichTextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="ApplicationCommands.Copy"/>
+                                <MenuItem Command="ApplicationCommands.Cut"/>
+                                <MenuItem Command="ApplicationCommands.Paste"/>
+                            </ContextMenu>
+                        </RichTextBox.ContextMenu>
                     </RichTextBox>
                 </Grid>
             </Grid>
