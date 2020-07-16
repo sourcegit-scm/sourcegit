@@ -119,16 +119,8 @@ namespace SourceGit {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAppDeactivated(object sender, EventArgs e) {
-            GC.Collect();
-        }
-
-        /// <summary>
-        ///     Quit event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnAppExit(object sender, ExitEventArgs e) {
             Git.Preference.Save();
+            GC.Collect();
         }
     }
 }

@@ -134,10 +134,14 @@ namespace SourceGit.Git {
                 return;
             }
 
-            var stream = new FileStream(SAVE_PATH, FileMode.Open);
-            var reader = new XmlSerializer(typeof(Preference));
-            instance = (Preference)reader.Deserialize(stream);
-            stream.Close();
+            try {
+                var stream = new FileStream(SAVE_PATH, FileMode.Open);
+                var reader = new XmlSerializer(typeof(Preference));
+                instance = (Preference)reader.Deserialize(stream);
+                stream.Close();
+            } catch {
+                instance = new Preference();
+            }            
         }
 
         /// <summary>
