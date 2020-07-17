@@ -82,11 +82,11 @@
 
                     <Label Grid.Column="0" Content="REPOSITORIES" Style="{StaticResource Style.Label.GroupHeader}"/>
 
-                    <Button Grid.Column="1" Click="CloneRepo" Style="{StaticResource Style.Button}" ToolTip="Clone">
+                    <Button Grid.Column="1" Click="CloneRepo" Style="{StaticResource Style.Button}" ToolTip="Clone Remote Repository">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}" Opacity=".8"/>
                     </Button>
 
-                    <Button Grid.Column="2" Click="OpenOrAddRepo" Style="{StaticResource Style.Button}" Margin="8,0,2,0"  ToolTip="Open Repository">
+                    <Button Grid.Column="2" Click="OpenOrAddRepo" Style="{StaticResource Style.Button}" Margin="8,0,2,0"  ToolTip="Open Local Repository">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}" Opacity=".8"/>
                     </Button>
                 </Grid>
