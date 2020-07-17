@@ -147,6 +147,7 @@
                             ScrollViewer.ScrollChanged="SyncScrollChanged"
                             PreviewMouseWheel="MouseWheelOnContent"
                             SizeChanged="ContentSizeChanged"
+                            SelectionChanged="ContentSelectionChanged"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             FontFamily="Consolas">

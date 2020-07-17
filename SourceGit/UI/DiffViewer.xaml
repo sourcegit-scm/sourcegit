@@ -48,7 +48,7 @@
                             BorderThickness="0"
                             Background="Transparent"
                             IsReadOnly="True"
-                            Margin="4,0,4,0"                   
+                            Margin="4,0,4,0"
                             FontSize="13"
                             HorizontalContentAlignment="Right"
                             VerticalAlignment="Stretch"/>
@@ -72,6 +72,7 @@
                             ScrollViewer.ScrollChanged="OnViewerScroll"
                             PreviewMouseWheel="OnViewerMouseWheel"
                             SizeChanged="LeftSizeChanged"
+                            SelectionChanged="OnViewerSelectionChanged"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch">
                         <RichTextBox.Document>
@@ -126,6 +127,7 @@
                             ScrollViewer.ScrollChanged="OnViewerScroll"
                             PreviewMouseWheel="OnViewerMouseWheel"
                             SizeChanged="RightSizeChanged"
+                            SelectionChanged="OnViewerSelectionChanged"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch">
                         <RichTextBox.Document>

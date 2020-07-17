@@ -268,15 +268,51 @@ namespace SourceGit.UI {
             e.Handled = true;
         }
 
+        /// <summary>
+        ///     Fix document size for left side.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LeftSizeChanged(object sender, SizeChangedEventArgs e) {
             if (leftText.Document.PageWidth < leftText.ActualWidth) {
                 leftText.Document.PageWidth = leftText.ActualWidth;
             }
         }
 
+        /// <summary>
+        ///     Fix document size for right side.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RightSizeChanged(object sender, SizeChangedEventArgs e) {
             if (rightText.Document.PageWidth < rightText.ActualWidth) {
                 rightText.Document.PageWidth = rightText.ActualWidth;
+            }
+        }
+
+        /// <summary>
+        ///     Auto scroll when selection changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnViewerSelectionChanged(object sender, RoutedEventArgs e) {
+            var doc = sender as RichTextBox;
+            if (doc == null || doc.IsFocused == false) return;
+
+            if (Mouse.LeftButton == MouseButtonState.Pressed && !doc.Selection.IsEmpty) {
+                var p = Mouse.GetPosition(doc);
+
+                if (p.X <= 8) {
+                    doc.LineLeft();
+                } else if (p.X >= doc.ActualWidth - 8) {
+                    doc.LineRight();
+                }
+
+                if (p.Y <= 8) {
+                    doc.LineUp();
+                } else if (p.Y >= doc.ActualHeight - 8) {
+                    doc.LineDown();
+                }
             }
         }
         #endregion
