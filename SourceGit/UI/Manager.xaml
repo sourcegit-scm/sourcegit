@@ -38,22 +38,22 @@
             </Grid.ColumnDefinitions>
             
             <!-- Left panel -->
-            <Grid Grid.Column="0">
+            <Grid Grid.Column="0" Background="{StaticResource Brush.BG4}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="32"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="32"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <!-- Recent Opened Repositories -->
-                <Label Grid.Row="0" Margin="8,8,0,0" Content="RECENTLY OPENED" Style="{StaticResource Style.Label.GroupHeader}"/>
+                <Label Grid.Row="0" Margin="8,4,0,0" Content="RECENTLY OPENED" Style="{StaticResource Style.Label.GroupHeader}"/>
                 <ListView
                     x:Name="recentOpened"
                     Grid.Row="1"
                     Height="Auto"
                     Margin="0,4"
-                    Background="Transparent"
+                    Background="{StaticResource Brush.BG3}"
                     BorderThickness="0"
                     Style="{StaticResource Style.ListView.Borderless}"
                     ItemContainerStyle="{StaticResource Style.ListViewItem.Borderless}"
@@ -73,7 +73,7 @@
                 </ListView>
 
                 <!-- Repositories' tree -->
-                <Grid Grid.Row="2" Margin="8,8,0,0">
+                <Grid Grid.Row="2" Margin="8,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -96,6 +96,7 @@
                     Margin="0, 4"
                     AllowDrop="True"
                     ContextMenuOpening="TreeContextMenuOpening"
+                    Background="{StaticResource Brush.BG3}"
                     Drop="TreeDrop" 
                     GotFocus="TreeGotFocus" 
                     MouseMove="TreeMouseMove">

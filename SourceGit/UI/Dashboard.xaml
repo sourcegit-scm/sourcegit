@@ -142,7 +142,7 @@
                 </Grid.Resources>
                 
                 <!-- WORKSPACE -->
-                <Label Grid.Row="0" Margin="4,0,0,0" Content="WORKSPACE" Style="{StaticResource Style.Label.GroupHeader}" />
+                <Label Grid.Row="0" Margin="4,4,0,0" Content="WORKSPACE" Style="{StaticResource Style.Label.GroupHeader}" />
                 <ListView
                     Grid.Row="1"
                     x:Name="workspace"
