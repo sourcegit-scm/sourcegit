@@ -391,8 +391,8 @@ namespace SourceGit.Git {
         /// <param name="name">Local name</param>
         /// <param name="onProgress"></param>
         /// <returns></returns>
-        public static Repository Clone(string url, string folder, string name, Action<string> onProgress) {
-            var errs = RunCommand(folder, $"-c credential.helper=manager clone --progress --verbose --recurse-submodules {url} {name}", line => {
+        public static Repository Clone(string url, string folder, string rName, string lName, Action<string> onProgress) {
+            var errs = RunCommand(folder, $"-c credential.helper=manager clone --progress --verbose --origin {rName} --recurse-submodules {url} {lName}", line => {
                 if (line != null) onProgress?.Invoke(line);
             }, true);
 
@@ -401,7 +401,7 @@ namespace SourceGit.Git {
                 return null;
             }
 
-            var path = new DirectoryInfo(folder + "/" + name).FullName;
+            var path = new DirectoryInfo(folder + "/" + lName).FullName;
             var repo = Preference.Instance.AddRepository(path, "");
             return repo;
         }

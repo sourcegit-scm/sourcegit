@@ -26,6 +26,11 @@ namespace SourceGit.UI {
         public string LocalName { get; set; }
 
         /// <summary>
+        ///     Remote name.
+        /// </summary>
+        public string RemoteName { get; set; }
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         public Clone() {
@@ -79,10 +84,24 @@ namespace SourceGit.UI {
                 repoName = LocalName;
             }
 
+            string rName;
+            if (string.IsNullOrWhiteSpace(RemoteName))
+            {
+                var from = RemoteUri.LastIndexOfAny(new char[] { '\\', '/' });
+                if (from <= 0) return;
+
+                var name = RemoteUri.Substring(from + 1);
+                rName = name.Replace(".git", "");
+            }
+            else
+            {
+                rName = RemoteName;
+            }
+
             PopupManager.Lock();
 
             var repo = await Task.Run(() => {
-                return Git.Repository.Clone(RemoteUri, ParentFolder, repoName, PopupManager.UpdateStatus);
+                return Git.Repository.Clone(RemoteUri, ParentFolder, rName, repoName, PopupManager.UpdateStatus);
             });
 
             if (repo == null) {

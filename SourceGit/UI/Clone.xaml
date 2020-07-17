@@ -6,11 +6,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:helpers="clr-namespace:SourceGit.Helpers"
              mc:Ignorable="d" 
-             Width="500" Height="192">
+             Width="500" Height="224">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
@@ -70,7 +71,15 @@
                  Text="{Binding LocalName, ElementName=me, Mode=TwoWay}">
         </TextBox>
 
-        <Grid Grid.Row="6" Grid.ColumnSpan="2">
+        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="Remote Name :"/>
+        <TextBox Grid.Row="5" Grid.Column="1" 
+                 VerticalContentAlignment="Center" 
+                 Height="24" 
+                 helpers:TextBoxHelper.Placeholder="Remote name. Optional."
+                 Text="{Binding RemoteName, ElementName=me, Mode=TwoWay}">
+        </TextBox>
+
+        <Grid Grid.Row="7" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>
