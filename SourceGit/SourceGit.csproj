@@ -12,6 +12,10 @@
         <Version>2.0.0-preview</Version>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <PlatformTarget>AnyCPU</PlatformTarget>
+      <Prefer32Bit>true</Prefer32Bit>
+    </PropertyGroup>
     <ItemGroup>
         <Resource Include="App.ico" />
     </ItemGroup>
