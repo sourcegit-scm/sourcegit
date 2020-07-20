@@ -333,7 +333,7 @@ namespace SourceGit.UI {
             foreach (var p in leftText.Document.Blocks) {
                 var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
                 var block = p.DataContext as Git.Diff.Block;
-                if (rect.Top > 0 && block.IsLeftDelete) {
+                if (rect.Top > 17 && block.IsLeftDelete) {
                     next = p as Paragraph;
                     minTop = rect.Top;
                     break;
@@ -343,7 +343,7 @@ namespace SourceGit.UI {
             foreach (var p in rightText.Document.Blocks) {
                 var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
                 var block = p.DataContext as Git.Diff.Block;
-                if (rect.Top > 0 && block.IsRightAdded) {
+                if (rect.Top > 17 && block.IsRightAdded) {
                     if (next == null || minTop > rect.Top) {
                         next = p as Paragraph;
                         minTop = rect.Top;
@@ -354,7 +354,7 @@ namespace SourceGit.UI {
             }
 
             if (next != null) {
-                rightText.ScrollToVerticalOffset(rightText.VerticalOffset + minTop);
+                rightText.ScrollToVerticalOffset(rightText.VerticalOffset + minTop - 16);
             }
         }
 
@@ -371,7 +371,7 @@ namespace SourceGit.UI {
             do {
                 var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
                 var block = p.DataContext as Git.Diff.Block;
-                if (rect.Top < 0 && block.IsLeftDelete) {
+                if (rect.Top < 15 && block.IsLeftDelete) {
                     next = p;
                     maxTop = rect.Top;
                     break;
@@ -384,7 +384,7 @@ namespace SourceGit.UI {
             do {
                 var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
                 var block = p.DataContext as Git.Diff.Block;
-                if (rect.Top < 0 && block.IsRightAdded) {
+                if (rect.Top < 15 && block.IsRightAdded) {
                     if (next == null || maxTop < rect.Top) {
                         next = p;
                         maxTop = rect.Top;
@@ -397,7 +397,7 @@ namespace SourceGit.UI {
             } while (p != null);
 
             if (next != null) {
-                rightText.ScrollToVerticalOffset(rightText.VerticalOffset + maxTop);
+                rightText.ScrollToVerticalOffset(rightText.VerticalOffset + maxTop - 16);
             }
         }
         #endregion
