@@ -245,10 +245,10 @@ namespace SourceGit.UI {
                         List<Git.Commit> found = new List<Git.Commit>();
 
                         foreach (var commit in cachedCommits) {
-                            if (commit.Subject.IndexOf(search) >= 0 ||
-                                (commit.Author != null && commit.Author.Name == search) ||
-                                (commit.Committer != null && commit.Committer.Name == search) ||
-                                commit.Message.IndexOf(search) >= 0) {
+                            if (commit.Subject.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                (commit.Author != null && commit.Author.Name.Equals(search, StringComparison.OrdinalIgnoreCase)) ||
+                                (commit.Committer != null && commit.Committer.Name.Equals(search, StringComparison.OrdinalIgnoreCase)) ||
+                                commit.Message.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) {
                                 found.Add(commit);
                             }
                         }
