@@ -96,18 +96,20 @@ namespace SourceGit.UI {
             Dispatcher.Invoke(() => {
                 loading.Visibility = Visibility.Collapsed;
                 sizeChange.Visibility = Visibility.Visible;
+                diffNavigation.Visibility = Visibility.Collapsed;
                 txtNewSize.Content = $"{bc.Size} Bytes";
                 txtOldSize.Content = $"{bc.PreSize} Bytes";
             });
         }
 
         /// <summary>
-        ///     Show no changes or only eol changes.
+        ///     Show no changes or only EOL changes.
         /// </summary>
         private void SetSame() {
             Dispatcher.Invoke(() => {
                 loading.Visibility = Visibility.Collapsed;
                 noChange.Visibility = Visibility.Visible;
+                diffNavigation.Visibility = Visibility.Collapsed;
             });
         }
 
@@ -119,6 +121,7 @@ namespace SourceGit.UI {
             Dispatcher.Invoke(() => {
                 loading.Visibility = Visibility.Collapsed;
                 textChange.Visibility = Visibility.Visible;
+                diffNavigation.Visibility = Visibility.Visible;
 
                 minWidth = Math.Max(leftText.ActualWidth, rightText.ActualWidth) - 16;
 
@@ -149,6 +152,7 @@ namespace SourceGit.UI {
             p.Background = Brushes.Transparent;
             p.Foreground = FindResource("Brush.FG") as SolidColorBrush;
             p.FontStyle = FontStyles.Normal;
+            p.DataContext = b;
 
             switch (b.Mode) {
             case Git.Diff.LineMode.Normal:
@@ -205,6 +209,7 @@ namespace SourceGit.UI {
                 cp.Background = p.Background;
                 cp.Foreground = p.Foreground;
                 cp.FontStyle = p.FontStyle;
+                cp.DataContext = b;
                 rightText.Document.Blocks.Add(cp);
 
                 for (int i = 0; i < b.Count; i++) {
@@ -237,8 +242,8 @@ namespace SourceGit.UI {
                     rightText.ScrollToVerticalOffset(e.VerticalOffset);
                 }
 
-                leftLineNumber.Margin = new Thickness(4, -e.VerticalOffset, 4, 0);
-                rightLineNumber.Margin = new Thickness(4, -e.VerticalOffset, 4, 0);
+                leftLineNumber.Margin = new Thickness(0, -e.VerticalOffset, 0, 0);
+                rightLineNumber.Margin = new Thickness(0, -e.VerticalOffset, 0, 0);
             } else {
                 if (leftText.HorizontalOffset != e.HorizontalOffset) {
                     leftText.ScrollToHorizontalOffset(e.HorizontalOffset);
@@ -313,6 +318,86 @@ namespace SourceGit.UI {
                 } else if (p.Y >= doc.ActualHeight - 8) {
                     doc.LineDown();
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Go to next difference.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Go2Next(object sender, RoutedEventArgs e) {
+            Paragraph next = null;
+            double minTop = 0;
+            
+            foreach (var p in leftText.Document.Blocks) {
+                var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+                var block = p.DataContext as Git.Diff.Block;
+                if (rect.Top > 0 && block.IsLeftDelete) {
+                    next = p as Paragraph;
+                    minTop = rect.Top;
+                    break;
+                }
+            }
+
+            foreach (var p in rightText.Document.Blocks) {
+                var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+                var block = p.DataContext as Git.Diff.Block;
+                if (rect.Top > 0 && block.IsRightAdded) {
+                    if (next == null || minTop > rect.Top) {
+                        next = p as Paragraph;
+                        minTop = rect.Top;
+                    }
+
+                    break;
+                }
+            }
+
+            if (next != null) {
+                rightText.ScrollToVerticalOffset(rightText.VerticalOffset + minTop);
+            }
+        }
+
+        /// <summary>
+        ///     Go to previous difference.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Go2Prev(object sender, RoutedEventArgs e) {
+            Paragraph next = null;
+            double maxTop = 0;
+
+            var p = leftText.Document.Blocks.LastBlock as Paragraph;
+            do {
+                var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+                var block = p.DataContext as Git.Diff.Block;
+                if (rect.Top < 0 && block.IsLeftDelete) {
+                    next = p;
+                    maxTop = rect.Top;
+                    break;
+                }
+
+                p = p.PreviousBlock as Paragraph;
+            } while (p != null);
+
+            p = rightText.Document.Blocks.LastBlock as Paragraph;
+            do {
+                var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+                var block = p.DataContext as Git.Diff.Block;
+                if (rect.Top < 0 && block.IsRightAdded) {
+                    if (next == null || maxTop < rect.Top) {
+                        next = p;
+                        maxTop = rect.Top;
+                    }
+
+                    break;
+                }
+
+                p = p.PreviousBlock as Paragraph;
+            } while (p != null);
+
+            if (next != null) {
+                rightText.ScrollToVerticalOffset(rightText.VerticalOffset + maxTop);
             }
         }
         #endregion
