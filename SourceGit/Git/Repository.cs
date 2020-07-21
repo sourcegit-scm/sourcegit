@@ -50,6 +50,10 @@ namespace SourceGit.Git {
         ///     Last 10 Commit message.
         /// </summary>
         public List<string> CommitMsgRecords { get; set; } = new List<string>();
+        /// <summary>
+        ///     Commit template.
+        /// </summary>
+        public string CommitTemplate { get; set; }
         #endregion
 
         #region PROPERTIES_RUNTIME

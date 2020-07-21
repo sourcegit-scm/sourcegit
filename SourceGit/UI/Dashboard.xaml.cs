@@ -321,6 +321,10 @@ namespace SourceGit.UI {
             }
         }
 
+        private void OpenConfigure(object sender, RoutedEventArgs e) {
+            Configure.Show(repo);
+        }
+
         private void OpenExplorer(object sender, RoutedEventArgs e) {
             Process.Start(repo.Path);
         }

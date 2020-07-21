@@ -697,6 +697,15 @@ namespace SourceGit.UI {
         #endregion
 
         #region COMMIT_PANEL
+        private void CommitMsgGotFocus(object sender, RoutedEventArgs e) {
+            var textBox = sender as TextBox;
+            if (textBox == null) return;
+
+            if (string.IsNullOrEmpty(textBox.Text) && !string.IsNullOrEmpty(Repo.CommitTemplate)) {
+                textBox.Text = Repo.CommitTemplate;
+            }
+        }
+
         private void CommitMsgPreviewMouseWheel(object sender, MouseWheelEventArgs e) {
             var textBox = sender as TextBox;
             if (textBox == null) return;

@@ -94,13 +94,19 @@
 
                 <!-- External Options -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Click="OpenSearch" Margin="4,0" ToolTip="Search Commit">
+                    <Button Click="OpenSearch" Margin="4,0,0,0" ToolTip="Search Commit">
                         <StackPanel Orientation="Horizontal">
-                            <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
                             <Label Content="Search"/>
                         </StackPanel>
                     </Button>
-                    <Button Click="OpenExplorer" Margin="4,0" ToolTip="Open In File Browser">
+                    <Button Click="OpenConfigure" Margin="4,0,0,0" ToolTip="Configure This Repository">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Setting}"/>
+                            <Label Content="Configure"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenExplorer" Margin="4,0,0,0" ToolTip="Open In File Browser">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
                             <Label Content="Explore"/>
