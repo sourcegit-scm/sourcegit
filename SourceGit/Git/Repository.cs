@@ -686,7 +686,7 @@ namespace SourceGit.Git {
         public bool DoCommit(string message, bool amend) {
             isWatcherDisabled = true;
 
-            var file = System.IO.Path.Combine(Path, ".git", "COMMITMESSAGE");
+            var file = System.IO.Path.GetTempFileName();
             File.WriteAllText(file, message);
 
             var args = $"commit --file=\"{file}\"";
