@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -33,8 +31,8 @@ namespace SourceGit.UI {
         public Configure(Git.Repository repo) {
             this.repo = repo;
 
-            UserName = GetConfig("user.name");
-            UserEmail = GetConfig("user.email");
+            UserName = repo.GetConfig("user.name");
+            UserEmail = repo.GetConfig("user.email");
             CommitTemplate = repo.CommitTemplate;
 
             InitializeComponent();
@@ -50,11 +48,11 @@ namespace SourceGit.UI {
 
         #region EVENTS
         private void Save(object sender, RoutedEventArgs e) {
-            var oldUser = GetConfig("user.name");
-            if (oldUser != UserName) SetConfig("user.name", UserName);
+            var oldUser = repo.GetConfig("user.name");
+            if (oldUser != UserName) repo.SetConfig("user.name", UserName);
 
-            var oldEmail = GetConfig("user.email");
-            if (oldEmail != UserEmail) SetConfig("user.email", UserEmail);
+            var oldEmail = repo.GetConfig("user.email");
+            if (oldEmail != UserEmail) repo.SetConfig("user.email", UserEmail);
 
             if (CommitTemplate != repo.CommitTemplate) {
                 repo.CommitTemplate = CommitTemplate;
@@ -66,45 +64,6 @@ namespace SourceGit.UI {
 
         private void Close(object sender, RoutedEventArgs e) {
             PopupManager.Close();
-        }
-        #endregion
-
-        #region CONFIGURE
-        private string GetConfig(string key) {
-            if (!App.IsGitConfigured) return "";
-
-            var startInfo = new ProcessStartInfo();
-            startInfo.FileName = App.Preference.GitExecutable;
-            startInfo.Arguments = $"config {key}";
-            startInfo.WorkingDirectory = repo.Path;
-            startInfo.UseShellExecute = false;
-            startInfo.CreateNoWindow = true;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.StandardOutputEncoding = Encoding.UTF8;
-
-            var proc = new Process() { StartInfo = startInfo };
-            proc.Start();
-            var output = proc.StandardOutput.ReadToEnd();
-            proc.WaitForExit();
-            proc.Close();
-
-            return output.Trim();
-        }
-
-        private void SetConfig(string key, string val) {
-            if (!App.IsGitConfigured) return;
-
-            var startInfo = new ProcessStartInfo();
-            startInfo.FileName = App.Preference.GitExecutable;
-            startInfo.Arguments = $"config {key} \"{val}\"";
-            startInfo.WorkingDirectory = repo.Path;
-            startInfo.UseShellExecute = false;
-            startInfo.CreateNoWindow = true;
-
-            var proc = new Process() { StartInfo = startInfo };
-            proc.Start();
-            proc.WaitForExit();
-            proc.Close();
         }
         #endregion
     }
