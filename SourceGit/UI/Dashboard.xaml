@@ -51,9 +51,18 @@
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Manager}"/>
                             <Label Content="Repositories"/>
+                            <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Navigator}"/>
+                        </StackPanel>
+                    </Button>                    
+                    
+                    <Button x:Name="btnParent" Click="GotoParent" ToolTip="Open Parent Repository" Padding="0" Margin="6,0,0,0" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
+                            <Label x:Name="txtParent"/>
+                            <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Navigator}"/>
                         </StackPanel>
                     </Button>
-                    <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Navigator}"/>
+                    
                     <Path Margin="6,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
                     <Label x:Name="repoName"/>
                 </StackPanel>
@@ -133,13 +142,16 @@
             <!-- Left panel -->
             <Grid Grid.Column="0" x:Name="main" Background="{StaticResource Brush.BG4}">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="24"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="1"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
@@ -194,7 +206,7 @@
                 </ListView>
                 
                 <!-- LOCAL BRANCHES -->
-                <Grid Grid.Row="2" Margin="4,0,0,0">
+                <Grid Grid.Row="2" Margin="4,0,2,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="16"/>
@@ -275,7 +287,7 @@
                 </TreeView>
                 
                 <!-- REMOTES -->
-                <Grid Grid.Row="4" Margin="4,0,0,0">
+                <Grid Grid.Row="4" Margin="4,0,2,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="16"/>
@@ -362,7 +374,7 @@
                     Grid.Row="6" 
                     Style="{StaticResource Style.ToggleButton.Expender}"
                     IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIShowTags, Mode=TwoWay}">
-                    <Grid Margin="4,0,0,0">
+                    <Grid Margin="4,0,2,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="16"/>
@@ -374,8 +386,9 @@
                         </Button>
                     </Grid>
                 </ToggleButton>
+                <Rectangle Grid.Row="7" Height="1" Fill="{StaticResource Brush.BG3}"/>
                 <DataGrid
-                    Grid.Row="7"
+                    Grid.Row="8"
                     x:Name="tagList"
                     Visibility="{Binding ElementName=tagListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
                     Background="{StaticResource Brush.BG3}"
@@ -383,12 +396,12 @@
                     Height="200"
                     LostFocus="TagLostFocus"
                     SelectionChanged="TagSelectionChanged"
-                    ContextMenuOpening="TagContextMenuOpening"                    
+                    ContextMenuOpening="TagContextMenuOpening"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     SelectionMode="Single"
                     SelectionUnit="FullRow">
-                    <DataGrid.Resources>
+                    <DataGrid.Resources>                        
                         <Style x:Key="Style.DataGridText.TagName" TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
@@ -419,6 +432,63 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- SUBMODULES -->
+                <ToggleButton
+                    x:Name="submoduleListToggle" 
+                    Grid.Row="9" 
+                    Style="{StaticResource Style.ToggleButton.Expender}"
+                    IsChecked="False">
+                    <Grid Margin="4,0,2,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" x:Name="submoduleCount" Content="SUBMODULES" Style="{StaticResource Style.Label.GroupHeader}"/>
+                        <Button Grid.Column="1" Click="OpenAddSubmodule" ToolTip="ADD SUBMODULE">
+                            <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Submodule}"/>
+                        </Button>
+                    </Grid>
+                </ToggleButton>
+                <DataGrid
+                    Grid.Row="11"
+                    x:Name="submoduleList"
+                    Visibility="{Binding ElementName=submoduleListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
+                    Background="{StaticResource Brush.BG3}"
+                    RowHeight="24"
+                    Height="200"
+                    LostFocus="SubmoduleLostFocus"
+                    ContextMenuOpening="SubmoduleContextMenuOpening"                    
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    SelectionMode="Single"
+                    SelectionUnit="FullRow">
+                    <DataGrid.Resources>
+                        <Style x:Key="Style.DataGridText.SubmodulePath" TargetType="{x:Type TextBlock}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                            <EventSetter Event="MouseDoubleClick" Handler="SubmoduleMouseDoubleClick"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="26">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Submodule}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Width="*" IsReadOnly="True" Binding="{Binding}" ElementStyle="{StaticResource Style.DataGridText.SubmodulePath}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

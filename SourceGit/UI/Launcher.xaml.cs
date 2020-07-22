@@ -53,7 +53,6 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         private void ShowDashboard(Git.Repository repo) {
             Dispatcher.Invoke(() => {
-                if (body.Content is Dashboard) return;
                 body.Content = new Dashboard(repo);
             });
         }

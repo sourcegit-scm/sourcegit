@@ -55,7 +55,8 @@ namespace SourceGit.UI {
             opened.OnTagChanged = UpdateTags;
             opened.OnStashChanged = UpdateStashes;
             opened.OnBranchChanged = () => UpdateBranches(false);
-            opened.OnCommitsChanged = UpdateHistories; 
+            opened.OnCommitsChanged = UpdateHistories;
+            opened.OnSubmoduleChanged = UpdateSubmodules;
             opened.OnNavigateCommit = commit => {
                 Dispatcher.Invoke(() => {
                     workspace.SelectedItem = historiesSwitch;
@@ -70,11 +71,19 @@ namespace SourceGit.UI {
             histories.Repo = opened;
             commits.Repo = opened;
 
+            if (repo.Parent != null) {
+                btnParent.Visibility = Visibility.Visible;
+                txtParent.Content = repo.Parent.Name;
+            } else {
+                btnParent.Visibility = Visibility.Collapsed;
+            }
+
             UpdateBranches();
             UpdateHistories();
             UpdateLocalChanges();
             UpdateStashes();
             UpdateTags();
+            UpdateSubmodules();
         }
 
         #region DATA_UPDATE
@@ -270,6 +279,16 @@ namespace SourceGit.UI {
             });
         }
 
+        private void UpdateSubmodules() {
+            Task.Run(() => {
+                var submodules = repo.Submodules();
+                Dispatcher.Invoke(() => {
+                    submoduleCount.Content = $"SUBMODULES ({submodules.Count})";
+                    submoduleList.ItemsSource = submodules;
+                });
+            });
+        }
+
         private void Cleanup(object sender, RoutedEventArgs e) {
             localBranchTree.ItemsSource = null;
             remoteBranchTree.ItemsSource = null;
@@ -288,6 +307,12 @@ namespace SourceGit.UI {
             cachedRemotes.Clear();
 
             repo.Close();
+        }
+
+        private void GotoParent(object sender, RoutedEventArgs e) {
+            if (repo.Parent == null) return;
+            repo.Parent.Open();
+            e.Handled = true;
         }
 
         private void OpenFetch(object sender, RoutedEventArgs e) {
@@ -894,6 +919,58 @@ namespace SourceGit.UI {
             menu.IsOpen = true;
 
             e.Handled = true;
+        }
+        #endregion
+
+        #region SUBMODULES
+        private void OpenAddSubmodule(object sender, RoutedEventArgs e) {
+            AddSubmodule.Show(repo);
+        }
+
+        private void SubmoduleLostFocus(object sender, RoutedEventArgs e) {
+            (sender as DataGrid).UnselectAll();
+        }
+
+        private void SubmoduleContextMenuOpening(object sender, ContextMenuEventArgs e) {
+            var path = (sender as DataGrid).SelectedItem as string;
+            if (path == null) return;
+
+            var open = new MenuItem();
+            open.Header = "Open Submodule Repository";
+            open.Click += (o, ev) => {
+                var sub = new Git.Repository();
+                sub.Path = Path.Combine(repo.Path, path);
+                sub.Name = Path.GetFileName(path);
+                sub.Parent = repo;
+                sub.Open();
+
+                ev.Handled = true;
+            };
+
+            var copy = new MenuItem();
+            copy.Header = "Copy Relative Path";
+            copy.Click += (o, ev) => {
+                Clipboard.SetText(path);
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(open);
+            menu.Items.Add(copy);
+            menu.IsOpen = true;
+
+            e.Handled = true;
+        }
+
+        private void SubmoduleMouseDoubleClick(object sender, MouseButtonEventArgs e) {
+            var path = (sender as DataGridRow).DataContext as string;
+            if (path == null) return;
+
+            var sub = new Git.Repository();
+            sub.Path = Path.Combine(repo.Path, path);
+            sub.Name = Path.GetFileName(path);
+            sub.Parent = repo;
+            sub.Open();
         }
         #endregion
 

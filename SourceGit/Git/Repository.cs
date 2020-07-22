@@ -23,6 +23,7 @@ namespace SourceGit.Git {
         [XmlIgnore] public Action OnStashChanged = null;
         [XmlIgnore] public Action OnBranchChanged = null;
         [XmlIgnore] public Action OnCommitsChanged = null;
+        [XmlIgnore] public Action OnSubmoduleChanged = null;
         #endregion
 
         #region PROPERTIES_SAVED
@@ -57,6 +58,8 @@ namespace SourceGit.Git {
         #endregion
 
         #region PROPERTIES_RUNTIME
+        [XmlIgnore] public Repository Parent = null;
+
         private List<Remote> cachedRemotes = new List<Remote>();
         private List<Branch> cachedBranches = new List<Branch>();
         private List<Tag> cachedTags = new List<Tag>();
@@ -306,6 +309,7 @@ namespace SourceGit.Git {
             OnStashChanged = null;
             OnWorkingCopyChanged = null;
             OnNavigateCommit = null;
+            OnSubmoduleChanged = null;
 
             cachedBranches.Clear();
             cachedRemotes.Clear();
@@ -718,7 +722,7 @@ namespace SourceGit.Git {
         /// <returns>Changes.</returns>
         public List<Change> LocalChanges() {
             List<Change> changes = new List<Change>();
-            RunCommand("status -uall --porcelain", line => {
+            RunCommand("status -uall --ignore-submodules=dirty --porcelain", line => {
                 if (!string.IsNullOrEmpty(line)) {
                     var change = Change.Parse(line);
                     if (change != null) changes.Add(change);
@@ -831,6 +835,46 @@ namespace SourceGit.Git {
             if (current != null) stashes.Add(current);
             if (errs != null) App.RaiseError(errs);
             return stashes;
+        }
+
+        /// <summary>
+        ///     Get all submodules
+        /// </summary>
+        /// <returns></returns>
+        public List<string> Submodules() {
+            var test = new Regex(@"^[\-\+ ][0-9a-f]+\s(.*)\(.*\)$");
+            var modules = new List<string>();
+
+            var errs = RunCommand("submodule status", line => {
+                var match = test.Match(line);
+                if (!match.Success) return;
+
+                modules.Add(match.Groups[1].Value);
+            });
+
+            return modules;
+        }
+
+        /// <summary>
+        ///     Add submodule
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="localPath"></param>
+        /// <param name="recursive"></param>
+        /// <param name="onProgress"></param>
+        public void AddSubmodule(string url, string localPath, bool recursive, Action<string> onProgress) {
+            isWatcherDisabled = true;
+
+            var errs = RunCommand($"submodule add {url} {localPath}", onProgress, true);
+            if (errs == null) {
+                if (recursive) RunCommand($"submodule update --init --recursive -- {localPath}", onProgress, true);
+                OnWorkingCopyChanged?.Invoke();
+                OnSubmoduleChanged?.Invoke();
+            } else {
+                App.RaiseError(errs);
+            }
+
+            isWatcherDisabled = false;
         }
 
         /// <summary>

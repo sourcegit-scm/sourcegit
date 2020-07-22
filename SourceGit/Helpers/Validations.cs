@@ -121,4 +121,16 @@ namespace SourceGit.Helpers {
             return !succ ? new ValidationResult(false, "Invalid path for patch file") : ValidationResult.ValidResult;
         }
     }
+
+    /// <summary>
+    ///     Required for submodule path.
+    /// </summary>
+    public class SubmodulePathRequiredRule : ValidationRule {
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
+            var regex = new Regex(@"^[\w\-\._/]+$");
+            var path = value as string;
+            var succ = !string.IsNullOrEmpty(path) && regex.IsMatch(path.Trim());
+            return !succ ? new ValidationResult(false, "Invalid path for submodules") : ValidationResult.ValidResult;
+        }
+    }
 }

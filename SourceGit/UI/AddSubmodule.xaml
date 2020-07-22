@@ -1,0 +1,72 @@
+<UserControl x:Class="SourceGit.UI.AddSubmodule"
+             x:Name="me"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:helpers="clr-namespace:SourceGit.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="192" d:DesignWidth="500" Height="192" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Add Submodule"/>
+
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="URL :"/>
+        <TextBox x:Name="txtRepoUrl" Grid.Row="2" Grid.Column="1" 
+                 Height="24"
+                 helpers:TextBoxHelper.Placeholder="Git Repository URL">
+            <TextBox.Text>
+                <Binding Path="RepoURL" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                    <Binding.ValidationRules>
+                        <helpers:RemoteUriRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Parent Folder :"/>
+        <TextBox Grid.Row="3" Grid.Column="1"
+                 x:Name="txtPath"
+                 Height="24"
+                 helpers:TextBoxHelper.Placeholder="Relative foler to store this module. Optional.">
+            <TextBox.Text>
+                <Binding Path="LocalPath" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                    <Binding.ValidationRules>
+                        <helpers:SubmodulePathRequiredRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <CheckBox Grid.Row="4" Grid.Column="1"
+                  x:Name="chkRecursive"
+                  IsChecked="True"
+                  Content="Fetch nested submodules"/>
+
+        <Grid Grid.Row="6" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" Click="Sure" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+        </Grid>
+    </Grid>
+</UserControl>
