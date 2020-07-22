@@ -13,6 +13,22 @@ namespace SourceGit.Git {
         private static readonly string GPGSIG_END = " -----END PGP SIGNATURE-----";
 
         /// <summary>
+        ///     Object in commit.
+        /// </summary>
+        public class Object {
+            public enum Type {
+                Tag,
+                Blob,
+                Tree,
+                Commit,
+            }
+
+            public string Path { get; set; }
+            public Type Kind { get; set; }
+            public string SHA { get; set; }
+        }
+
+        /// <summary>
         ///     SHA
         /// </summary>
         public string SHA { get; set; }
@@ -173,11 +189,27 @@ namespace SourceGit.Git {
         /// </summary>
         /// <param name="repo"></param>
         /// <returns></returns>
-        public List<string> GetFiles(Repository repo) {
-            var files = new List<string>();
+        public List<Object> GetFiles(Repository repo) {
+            var files = new List<Object>();
+            var test = new Regex(@"^\d+\s+(\w+)\s+([0-9a-f]+)\s+(.*)$");
 
-            var errs = repo.RunCommand($"ls-tree --name-only -r {SHA}", line => {
-                files.Add(line);
+            var errs = repo.RunCommand($"ls-tree -r {SHA}", line => {
+                var match = test.Match(line);
+                if (!match.Success) return;
+
+                var obj = new Object();
+                obj.Path = match.Groups[3].Value;
+                obj.Kind = Object.Type.Blob;
+                obj.SHA = match.Groups[2].Value;
+
+                switch (match.Groups[1].Value) {
+                case "tag": obj.Kind = Object.Type.Tag; break;
+                case "blob": obj.Kind = Object.Type.Blob; break;
+                case "tree": obj.Kind = Object.Type.Tree; break;
+                case "commit": obj.Kind = Object.Type.Commit; break;
+                }
+
+                files.Add(obj);
             });
 
             if (errs != null) App.RaiseError(errs);

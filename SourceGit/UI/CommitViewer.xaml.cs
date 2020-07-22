@@ -30,6 +30,7 @@ namespace SourceGit.UI {
             public bool IsFile { get; set; } = false;
             public bool IsNodeExpanded { get; set; } = true;
             public Git.Change Change { get; set; } = null;
+            public Git.Commit.Object CommitObject { get; set; } = null;
             public List<Node> Children { get; set; } = new List<Node>();
         }
 
@@ -295,25 +296,26 @@ namespace SourceGit.UI {
         #endregion
 
         #region FILES
-        private void SetRevisionFiles(List<string> files) {
+        private void SetRevisionFiles(List<Git.Commit.Object> files) {
             List<Node> fileTreeSource = new List<Node>();
             Dictionary<string, Node> folders = new Dictionary<string, Node>();
 
-            foreach (var path in files) {
-                var sepIdx = path.IndexOf("/");
+            foreach (var obj in files) {
+                var sepIdx = obj.Path.IndexOf("/");
                 if (sepIdx == -1) {
                     Node node = new Node();
-                    node.FilePath = path;
-                    node.Name = path;
+                    node.FilePath = obj.Path;
+                    node.Name = obj.Path;
                     node.IsFile = true;
                     node.IsNodeExpanded = false;
+                    node.CommitObject = obj;
                     fileTreeSource.Add(node);
                 } else {
                     Node lastFolder = null;
                     var start = 0;
 
                     while (sepIdx != -1) {
-                        var folder = path.Substring(0, sepIdx);
+                        var folder = obj.Path.Substring(0, sepIdx);
                         if (folders.ContainsKey(folder)) {
                             lastFolder = folders[folder];
                         } else if (lastFolder == null) {
@@ -334,14 +336,15 @@ namespace SourceGit.UI {
                         }
 
                         start = sepIdx + 1;
-                        sepIdx = path.IndexOf('/', start);
+                        sepIdx = obj.Path.IndexOf('/', start);
                     }
 
                     Node node = new Node();
-                    node.FilePath = path;
-                    node.Name = path.Substring(start);
+                    node.FilePath = obj.Path;
+                    node.Name = obj.Path.Substring(start);
                     node.IsFile = true;
                     node.IsNodeExpanded = false;
+                    node.CommitObject = obj;
                     lastFolder.Children.Add(node);
                 }
             }
@@ -358,20 +361,37 @@ namespace SourceGit.UI {
         private async void FileTreeItemSelected(object sender, RoutedPropertyChangedEventArgs<object> e) {
             filePreview.Text = "";
             maskPreviewNotSupported.Visibility = Visibility.Collapsed;
+            maskRevision.Visibility = Visibility.Collapsed;
 
             var node = e.NewValue as Node;
-            if (node == null || !node.IsFile) return;
+            if (node == null || !node.IsFile || node.CommitObject == null) return;
 
-            await Task.Run(() => {
-                var isBinary = false;
-                var data = commit.GetTextFileContent(repo, node.FilePath, out isBinary);
+            switch (node.CommitObject.Kind) {
+            case Git.Commit.Object.Type.Blob:
+                await Task.Run(() => {
+                    var isBinary = false;
+                    var data = commit.GetTextFileContent(repo, node.FilePath, out isBinary);
 
-                if (isBinary) {
-                    Dispatcher.Invoke(() => maskPreviewNotSupported.Visibility = Visibility.Visible);
-                } else {
-                    Dispatcher.Invoke(() => filePreview.Text = data);
-                }
-            });
+                    if (isBinary) {
+                        Dispatcher.Invoke(() => maskPreviewNotSupported.Visibility = Visibility.Visible);
+                    } else {
+                        Dispatcher.Invoke(() => filePreview.Text = data);
+                    }
+                });
+                break;
+            case Git.Commit.Object.Type.Tag:
+                maskRevision.Visibility = Visibility.Visible;
+                iconPreviewRevision.Data = FindResource("Icon.Tag") as Geometry;
+                txtPreviewRevision.Content = "TAG: " + node.CommitObject.SHA;
+                break;
+            case Git.Commit.Object.Type.Commit:
+                maskRevision.Visibility = Visibility.Visible;
+                iconPreviewRevision.Data = FindResource("Icon.Submodule") as Geometry;
+                txtPreviewRevision.Content = "SUBMODULE: " + node.CommitObject.SHA;
+                break;
+            default:
+                return;
+            }            
         }
         #endregion
 
@@ -424,7 +444,7 @@ namespace SourceGit.UI {
             var node = item.DataContext as Node;
             if (node == null || !node.IsFile) return;
 
-            item.IsSelected = true;           
+            item.IsSelected = true;    
 
             ContextMenu menu = new ContextMenu();
             if (node.Change == null || node.Change.Index != Git.Change.Status.Deleted) {
@@ -455,6 +475,7 @@ namespace SourceGit.UI {
 
                 MenuItem saveAs = new MenuItem();
                 saveAs.Header = "Save As ...";
+                saveAs.IsEnabled = node.CommitObject == null || node.CommitObject.Kind == Git.Commit.Object.Type.Blob;
                 saveAs.Click += (obj, ev) => {
                     var dialog = new System.Windows.Forms.FolderBrowserDialog();
                     dialog.Description = node.FilePath;

@@ -405,6 +405,11 @@
                                 x:Name="filePreview"/>
                         </ScrollViewer>
 
+                        <StackPanel x:Name="maskRevision" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
+                            <Path x:Name="iconPreviewRevision" Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Submodule}" Fill="{StaticResource Brush.FG2}"/>
+                            <Label x:Name="txtPreviewRevision" Margin="0,16,0,0" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
+                        </StackPanel>
+
                         <StackPanel x:Name="maskPreviewNotSupported" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
                             <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}" Fill="{StaticResource Brush.FG2}"/>
                             <Label Margin="0,16,0,0" Content="BINARY FILE DETECTED" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
