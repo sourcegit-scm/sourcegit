@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -255,7 +257,8 @@ namespace SourceGit.UI {
         }
 
         private void Start(object sender, RoutedEventArgs e) {
-            var stream = new FileStream(App.InteractiveRebaseTodo, FileMode.Create);
+            var temp = Path.GetTempFileName();
+            var stream = new FileStream(temp, FileMode.Create);
             var writer = new StreamWriter(stream);
 
             for (int i = Items.Count - 1; i >= 0; i--) {
@@ -263,19 +266,19 @@ namespace SourceGit.UI {
 
                 switch ((InteractiveRebaseMode)item.Mode) {
                 case InteractiveRebaseMode.Pick:
-                    writer.WriteLine($"pick {item.Commit.ShortSHA} {item.Subject}");
+                    writer.WriteLine($"p {item.Commit.ShortSHA} {item.Subject}");
                     break;
                 case InteractiveRebaseMode.Reword:
-                    writer.WriteLine($"reword {item.Commit.ShortSHA} {item.Subject}");
+                    writer.WriteLine($"r {item.Commit.ShortSHA} {item.Subject}");
                     break;
                 case InteractiveRebaseMode.Squash:
-                    writer.WriteLine($"squash {item.Commit.ShortSHA} {item.Subject}");
+                    writer.WriteLine($"s {item.Commit.ShortSHA} {item.Subject}");
                     break;
                 case InteractiveRebaseMode.Fixup:
-                    writer.WriteLine($"fixup {item.Commit.ShortSHA} {item.Subject}");
+                    writer.WriteLine($"f {item.Commit.ShortSHA} {item.Subject}");
                     break;
                 case InteractiveRebaseMode.Drop:
-                    writer.WriteLine($"drop {item.Commit.ShortSHA} {item.Subject}");
+                    writer.WriteLine($"d {item.Commit.ShortSHA} {item.Subject}");
                     break;
                 }
             }
@@ -286,7 +289,8 @@ namespace SourceGit.UI {
             stream.Close();
 
             repo.SetWatcherEnabled(false);
-            var errs = repo.RunCommand($"-c sequence.editor=\"\\\"{App.InteractiveRebaseScript}\\\"\" rebase -i {from}^", null);
+            var editor = Process.GetCurrentProcess().MainModule.FileName;
+            var errs = repo.RunCommand($"-c sequence.editor=\"\\\"{editor}\\\" --interactive-rebase \\\"{temp}\\\"\" rebase -i {from}^", null);
             repo.AssertCommand(errs);
 
             Close();

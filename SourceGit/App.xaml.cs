@@ -29,22 +29,6 @@ namespace SourceGit {
         }
 
         /// <summary>
-        ///     Interactive rebase sequence file.
-        /// </summary>
-        public static string InteractiveRebaseScript {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        ///     TODO file for interactive rebase.
-        /// </summary>
-        public static string InteractiveRebaseTodo {
-            get;
-            private set;
-        }
-
-        /// <summary>
         ///     Error handler.
         /// </summary>
         public static Action<string> OnError {
@@ -66,6 +50,22 @@ namespace SourceGit {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAppStartup(object sender, StartupEventArgs e) {
+            // Use this app as a sequence editor?
+            var args = e.Args;
+            if (args.Length > 1) {
+                if (args[0] == "--interactive-rebase") {
+                    if (args.Length < 3) {
+                        Environment.Exit(1);
+                        return;
+                    }
+
+                    File.WriteAllText(args[2], File.ReadAllText(args[1]));
+                }
+
+                Environment.Exit(0);
+                return;
+            }
+
             // Try auto configure git via registry.
             if (!IsGitConfigured) {
                 var root = RegistryKey.OpenBaseKey(
@@ -79,23 +79,6 @@ namespace SourceGit {
                         "bin", 
                         "git.exe");
                 }
-            }
-
-            // Files for interactive rebase.
-            InteractiveRebaseScript = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SourceGit",
-                "rebase.bat");
-            InteractiveRebaseTodo = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SourceGit",
-                "REBASE_TODO");
-            if (!File.Exists(InteractiveRebaseScript)) {
-                var folder = Path.GetDirectoryName(InteractiveRebaseScript);
-                if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
-
-                File.WriteAllText(InteractiveRebaseScript, $"@echo off\ntype \"{InteractiveRebaseTodo}\" > .git\\rebase-merge\\git-rebase-todo");
-                File.WriteAllText(InteractiveRebaseTodo, "");
             }
 
             // Apply themes

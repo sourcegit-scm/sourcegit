@@ -59,11 +59,13 @@ namespace SourceGit.Git {
 
         #region PROPERTIES_RUNTIME
         [XmlIgnore] public Repository Parent = null;
+        [XmlIgnore] public string GitDir = null;
 
         private List<Remote> cachedRemotes = new List<Remote>();
         private List<Branch> cachedBranches = new List<Branch>();
         private List<Tag> cachedTags = new List<Tag>();
-        private FileSystemWatcher watcher = null;
+        private FileSystemWatcher gitDirWatcher = null;
+        private FileSystemWatcher workingCopyWatcher = null;
         private DispatcherTimer timer = null;
         private bool isWatcherDisabled = false;
         private long nextUpdateTags = 0;
@@ -276,16 +278,41 @@ namespace SourceGit.Git {
             LastOpenTime = DateTime.Now.ToFileTime();
             isWatcherDisabled = false;
 
-            watcher = new FileSystemWatcher();
-            watcher.Path = Path;
-            watcher.Filter = "*";
-            watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
-            watcher.IncludeSubdirectories = true;
-            watcher.Created += OnFSChanged;
-            watcher.Renamed += OnFSChanged;
-            watcher.Changed += OnFSChanged;
-            watcher.Deleted += OnFSChanged;
-            watcher.EnableRaisingEvents = true;
+            GitDir = ".git";
+            RunCommand("rev-parse --git-dir", line => {
+                GitDir = line;
+            });
+            if (!System.IO.Path.IsPathRooted(GitDir)) GitDir = System.IO.Path.Combine(Path, GitDir);
+            
+            var checkGitDir = new DirectoryInfo(GitDir);
+            if (!checkGitDir.Exists) {
+                App.RaiseError("GIT_DIR for this repository NOT FOUND!");
+                return;
+            } else {
+                GitDir = checkGitDir.FullName;
+            }
+
+            gitDirWatcher = new FileSystemWatcher();
+            gitDirWatcher.Path = GitDir;
+            gitDirWatcher.Filter = "*";
+            gitDirWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
+            gitDirWatcher.IncludeSubdirectories = true;
+            gitDirWatcher.Created += OnGitDirFSChanged;
+            gitDirWatcher.Renamed += OnGitDirFSChanged;
+            gitDirWatcher.Changed += OnGitDirFSChanged;
+            gitDirWatcher.Deleted += OnGitDirFSChanged;
+            gitDirWatcher.EnableRaisingEvents = true;
+
+            workingCopyWatcher = new FileSystemWatcher();
+            workingCopyWatcher.Path = Path;
+            workingCopyWatcher.Filter = "*";
+            workingCopyWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
+            workingCopyWatcher.IncludeSubdirectories = true;
+            workingCopyWatcher.Created += OnWorkingCopyFSChanged;
+            workingCopyWatcher.Renamed += OnWorkingCopyFSChanged;
+            workingCopyWatcher.Changed += OnWorkingCopyFSChanged;
+            workingCopyWatcher.Deleted += OnWorkingCopyFSChanged;
+            workingCopyWatcher.EnableRaisingEvents = true;
 
             timer = new DispatcherTimer();
             timer.Tick += Tick;
@@ -315,11 +342,14 @@ namespace SourceGit.Git {
             cachedRemotes.Clear();
             cachedTags.Clear();
 
-            watcher.EnableRaisingEvents = false;
-            watcher.Dispose();
+            gitDirWatcher.EnableRaisingEvents = false;
+            workingCopyWatcher.EnableRaisingEvents = false;
+            gitDirWatcher.Dispose();
+            workingCopyWatcher.Dispose();
             timer.Stop();
 
-            watcher = null;
+            gitDirWatcher = null;
+            workingCopyWatcher = null;
             timer = null;
             featurePrefix = null;
             releasePrefix = null;
@@ -367,26 +397,26 @@ namespace SourceGit.Git {
             }
         }
 
-        private void OnFSChanged(object sender, FileSystemEventArgs e) {
+        private void OnGitDirFSChanged(object sender, FileSystemEventArgs e) {
             if (string.IsNullOrEmpty(e.Name)) return;
+            if (e.Name.StartsWith("index")) return;
 
-            if (e.Name.StartsWith(".git", StringComparison.Ordinal)) {
-                if (e.Name.Equals(".git") || e.Name.StartsWith(".git\\index")) return;
-
-                if (e.Name.Equals(".gitignore") || e.Name.Equals(".gitattributes")) {
-                    nextUpdateLocalChanges = DateTime.Now.AddSeconds(1.5).ToFileTime();
-                } else if (e.Name.StartsWith(".git\\refs\\tags", StringComparison.Ordinal)) {
-                    nextUpdateTags = DateTime.Now.AddSeconds(.5).ToFileTime();
-                } else if (e.Name.StartsWith(".git\\refs\\stash", StringComparison.Ordinal)) {
-                    nextUpdateStashes = DateTime.Now.AddSeconds(.5).ToFileTime();
-                } else if (e.Name.EndsWith("_HEAD", StringComparison.Ordinal) || 
-                    e.Name.StartsWith(".git\\refs\\heads", StringComparison.Ordinal) || 
-                    e.Name.StartsWith(".git\\refs\\remotes", StringComparison.Ordinal)) {
-                    nextUpdateTree = DateTime.Now.AddSeconds(.5).ToFileTime();
-                }
-            } else {
-                nextUpdateLocalChanges = DateTime.Now.AddSeconds(1.5).ToFileTime();
+            if (e.Name.StartsWith("refs\\tags", StringComparison.Ordinal)) {
+                nextUpdateTags = DateTime.Now.AddSeconds(.5).ToFileTime();
+            } else if (e.Name.StartsWith("refs\\stash", StringComparison.Ordinal)) {
+                nextUpdateStashes = DateTime.Now.AddSeconds(.5).ToFileTime();
+            } else if (e.Name.EndsWith("_HEAD", StringComparison.Ordinal) ||
+                e.Name.StartsWith("refs\\heads", StringComparison.Ordinal) ||
+                e.Name.StartsWith("refs\\remotes", StringComparison.Ordinal)) {
+                nextUpdateTree = DateTime.Now.AddSeconds(.5).ToFileTime();
             }
+        }
+
+        private void OnWorkingCopyFSChanged(object sender, FileSystemEventArgs e) {
+            if (string.IsNullOrEmpty(e.Name)) return;
+            if (e.Name == ".git" || e.Name.StartsWith(".git\\")) return;
+
+            nextUpdateLocalChanges = DateTime.Now.AddSeconds(1.5).ToFileTime();
         }
         #endregion
 

@@ -383,11 +383,10 @@ namespace SourceGit.UI {
 
         #region MERGE_ABORTS
         public void DetectMergeState() {
-            var gitDir = Path.Combine(repo.Path, ".git");
-            var cherryPickMerge = Path.Combine(gitDir, "CHERRY_PICK_HEAD");
-            var rebaseMerge = Path.Combine(gitDir, "REBASE_HEAD");
-            var revertMerge = Path.Combine(gitDir, "REVERT_HEAD");
-            var otherMerge = Path.Combine(gitDir, "MERGE_HEAD");
+            var cherryPickMerge = Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD");
+            var rebaseMerge = Path.Combine(repo.GitDir, "REBASE_HEAD");
+            var revertMerge = Path.Combine(repo.GitDir, "REVERT_HEAD");
+            var otherMerge = Path.Combine(repo.GitDir, "MERGE_HEAD");
 
             if (File.Exists(cherryPickMerge)) {
                 abortCommand = "cherry-pick";

@@ -96,7 +96,7 @@ namespace SourceGit.UI {
         /// </summary>
         public void LoadMergeMessage() {            
             if (string.IsNullOrEmpty(txtCommitMsg.Text)) {
-                var mergeMsgFile = Path.Combine(Repo.Path, ".git", "MERGE_MSG");
+                var mergeMsgFile = Path.Combine(Repo.GitDir, "MERGE_MSG");
                 if (!File.Exists(mergeMsgFile)) return;
 
                 var content = File.ReadAllText(mergeMsgFile);
