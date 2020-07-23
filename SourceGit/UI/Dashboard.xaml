@@ -459,7 +459,7 @@
                     Visibility="{Binding ElementName=submoduleListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
                     Background="{StaticResource Brush.BG3}"
                     RowHeight="24"
-                    Height="200"
+                    Height="100"
                     LostFocus="SubmoduleLostFocus"
                     ContextMenuOpening="SubmoduleContextMenuOpening"                    
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
