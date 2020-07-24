@@ -85,12 +85,9 @@ namespace SourceGit.UI {
             }
 
             string rName;
-            if (string.IsNullOrWhiteSpace(RemoteName))
-            {
+            if (string.IsNullOrWhiteSpace(RemoteName)){
                 rName = null;
-            }
-            else
-            {
+            } else {
                 rName = RemoteName;
             }
 
