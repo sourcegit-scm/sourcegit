@@ -6,11 +6,12 @@
              xmlns:git="clr-namespace:SourceGit.Git"
              xmlns:converters="clr-namespace:SourceGit.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="192" d:DesignWidth="500" Height="192" Width="500">
+             d:DesignHeight="192" d:DesignWidth="500" Height="224" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
@@ -41,17 +42,24 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <CheckBox Grid.Row="3" Grid.Column="1"
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Recurse Submodules :"/>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+            <RadioButton x:Name="RbtnRrsSubModYes" Content="Yes" GroupName="RecurseSubmodules"/>
+            <RadioButton x:Name="RbtnRrsSubModDemand" Content="On-Demand" Margin="8,0,0,0" GroupName="RecurseSubmodules" IsChecked="True"/>
+            <RadioButton x:Name="RbtnRrsSubModNo" Content="No" Margin="8,0,0,0" GroupName="RecurseSubmodules"/>
+        </StackPanel>
+
+        <CheckBox Grid.Row="4" Grid.Column="1"
                   x:Name="chkFetchAll"
                   IsChecked="True"
                   Content="Fetch all remotes"/>
 
-        <CheckBox Grid.Row="4" Grid.Column="1"
+        <CheckBox Grid.Row="5" Grid.Column="1"
                   x:Name="chkPrune"
                   IsChecked="True"
                   Content="Prune remote dead branches"/>
 
-        <Grid Grid.Row="6" Grid.ColumnSpan="2">
+        <Grid Grid.Row="7" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>

@@ -57,7 +57,7 @@ namespace SourceGit.Git {
             if (errs != null) {
                 App.RaiseError(errs);
             } else {
-                repo.Fetch(new Remote() { Name = name }, true, null);
+                repo.Fetch(new Remote() { Name = name }, "--recurse-submodules=on-demand", true, null);
             }
         }
 

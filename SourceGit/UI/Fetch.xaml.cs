@@ -51,13 +51,22 @@ namespace SourceGit.UI {
         private async void Start(object sender, RoutedEventArgs e) {
             bool prune = chkPrune.IsChecked == true;
 
+            string subMod;
+            if (RbtnRrsSubModYes.IsChecked == true) {
+                subMod = "--recurse-submodules=yes";
+            } else if (RbtnRrsSubModNo.IsChecked == true) {
+                subMod = "--recurse-submodules=no";
+            } else  {
+                subMod = "--recurse-submodules=on-demand";
+            }
+
             PopupManager.Lock();
 
             if (chkFetchAll.IsChecked == true) {
-                await Task.Run(() => repo.Fetch(null, prune, PopupManager.UpdateStatus));
+                await Task.Run(() => repo.Fetch(null, subMod, prune, PopupManager.UpdateStatus));
             } else {
                 var remote = combRemotes.SelectedItem as Git.Remote;
-                await Task.Run(() => repo.Fetch(remote, prune, PopupManager.UpdateStatus));
+                await Task.Run(() => repo.Fetch(remote, subMod, prune, PopupManager.UpdateStatus));
             }
 
             PopupManager.Close(true);

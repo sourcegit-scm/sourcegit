@@ -4,11 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="248" d:DesignWidth="500" Height="248" Width="500">
+             d:DesignHeight="248" d:DesignWidth="500" Height="280" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
@@ -60,19 +61,26 @@
             <Label x:Name="txtInto" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <CheckBox Grid.Row="5" Grid.Column="1"
+        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="Recurse Submodules :"/>
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+            <RadioButton x:Name="RbtnRrsSubModYes" Content="Yes" GroupName="RecurseSubmodules"/>
+            <RadioButton x:Name="RbtnRrsSubModDemand" Content="On-Demand" Margin="8,0,0,0" GroupName="RecurseSubmodules" IsChecked="True"/>
+            <RadioButton x:Name="RbtnRrsSubModNo" Content="No" Margin="8,0,0,0" GroupName="RecurseSubmodules"/>
+        </StackPanel>
+
+        <CheckBox Grid.Row="6" Grid.Column="1"
                   x:Name="chkRebase"
                   IsChecked="True"
                   VerticalAlignment="Center"
                   Content="Use rebase instead of merge"/>
 
-        <CheckBox Grid.Row="6" Grid.Column="1"
+        <CheckBox Grid.Row="7" Grid.Column="1"
                   x:Name="chkAutoStash"
                   IsChecked="True"
                   VerticalAlignment="Center"
                   Content="Stash &amp; reapply local changes"/>
 
-        <Grid Grid.Row="8" Grid.ColumnSpan="2">
+        <Grid Grid.Row="9" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>

@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:git="clr-namespace:SourceGit.Git"
              mc:Ignorable="d" 
-             d:DesignHeight="248" d:DesignWidth="500" Height="248" Width="500">
+             d:DesignHeight="248" d:DesignWidth="500" Height="280" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
@@ -70,17 +71,25 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <CheckBox Grid.Row="5" Grid.Column="1"
+        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="Recurse Submodules :"/>
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+            <RadioButton x:Name="RbtnRrsSubModCheck" Content="Check" GroupName="RecurseSubmodules"/>
+            <RadioButton x:Name="RbtnRrsSubModDemand" Content="On-Demand" Margin="8,0,0,0" GroupName="RecurseSubmodules" />
+            <RadioButton x:Name="RbtnRrsSubModOnly" Content="Only" Margin="8,0,0,0" GroupName="RecurseSubmodules"/>
+            <RadioButton x:Name="RbtnRrsSubModNo" Content="No" Margin="8,0,0,0" GroupName="RecurseSubmodules" IsChecked="True"/>
+        </StackPanel>
+
+        <CheckBox Grid.Row="6" Grid.Column="1"
                   x:Name="chkTags"
                   VerticalAlignment="Center"
                   Content="Push all tags"/>
 
-        <CheckBox Grid.Row="6" Grid.Column="1"
+        <CheckBox Grid.Row="7" Grid.Column="1"
                   x:Name="chkForce"
                   VerticalAlignment="Center"
                   Content="Force push"/>
 
-        <Grid Grid.Row="8" Grid.ColumnSpan="2">
+        <Grid Grid.Row="9" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>

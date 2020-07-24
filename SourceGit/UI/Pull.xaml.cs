@@ -76,8 +76,17 @@ namespace SourceGit.UI {
 
             if (remote == null || branch == null) return;
 
+            string subMod;
+            if (RbtnRrsSubModYes.IsChecked == true) {
+                subMod = "--recurse-submodules=yes";
+            } else if (RbtnRrsSubModNo.IsChecked == true) {
+                subMod = "--recurse-submodules=no";
+            } else {
+                subMod = "--recurse-submodules=on-demand";
+            }
+
             PopupManager.Lock();
-            await Task.Run(() => repo.Pull(remote, branch.Substring(branch.IndexOf('/')+1), PopupManager.UpdateStatus, rebase, autoStash));
+            await Task.Run(() => repo.Pull(remote, branch.Substring(branch.IndexOf('/')+1), subMod, PopupManager.UpdateStatus, rebase, autoStash));
             PopupManager.Close(true);
         }
 
