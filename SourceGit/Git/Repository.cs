@@ -430,7 +430,14 @@ namespace SourceGit.Git {
         /// <param name="onProgress"></param>
         /// <returns></returns>
         public static Repository Clone(string url, string folder, string rName, string lName, Action<string> onProgress) {
-            var errs = RunCommand(folder, $"-c credential.helper=manager clone --progress --verbose --origin {rName} --recurse-submodules {url} {lName}", line => {
+            string RemoteName;
+            if (rName != null) {
+                RemoteName = $" --origin {rName}";
+            } else {
+                RemoteName = null;
+            }
+
+            var errs = RunCommand(folder, $"-c credential.helper=manager clone --progress --verbose {RemoteName} --recurse-submodules {url} {lName}", line => {
                 if (line != null) onProgress?.Invoke(line);
             }, true);
 

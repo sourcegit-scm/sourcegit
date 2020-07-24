@@ -87,11 +87,7 @@ namespace SourceGit.UI {
             string rName;
             if (string.IsNullOrWhiteSpace(RemoteName))
             {
-                var from = RemoteUri.LastIndexOfAny(new char[] { '\\', '/' });
-                if (from <= 0) return;
-
-                var name = RemoteUri.Substring(from + 1);
-                rName = name.Replace(".git", "");
+                rName = null;
             }
             else
             {
