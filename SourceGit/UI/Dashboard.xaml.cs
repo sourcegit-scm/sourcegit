@@ -223,7 +223,7 @@ namespace SourceGit.UI {
                 foreach (var b in branches) {
                     if (b.IsLocal) {
                         MakeBranchNode(b, localBranchNodes, folders, states, "locals");            
-                    } else {
+                    } else if (!string.IsNullOrEmpty(b.Remote)) {
                         RemoteNode remote = null;
 
                         if (!remoteMap.ContainsKey(b.Remote)) {
@@ -924,6 +924,13 @@ namespace SourceGit.UI {
         #region SUBMODULES
         private void OpenAddSubmodule(object sender, RoutedEventArgs e) {
             AddSubmodule.Show(repo);
+        }
+
+        private void UpdateSubmodule(object sender, RoutedEventArgs e) {
+            Waiting.Show(() => {
+                var errs = repo.RunCommand("submodule update", PopupManager.UpdateStatus, true);
+                if (errs != null) App.RaiseError(errs);
+            });
         }
 
         private void SubmoduleLostFocus(object sender, RoutedEventArgs e) {

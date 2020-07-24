@@ -445,11 +445,16 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="16"/>
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0" x:Name="submoduleCount" Content="SUBMODULES" Style="{StaticResource Style.Label.GroupHeader}"/>
                         <Button Grid.Column="1" Click="OpenAddSubmodule" ToolTip="ADD SUBMODULE">
                             <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Submodule}"/>
+                        </Button>
+                        <Button Grid.Column="3" Click="UpdateSubmodule" ToolTip="UPDATE SUBMODULE">
+                            <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}"/>
                         </Button>
                     </Grid>
                 </ToggleButton>

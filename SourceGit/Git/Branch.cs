@@ -26,27 +26,27 @@ namespace SourceGit.Git {
         /// <summary>
         ///     Branch name
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         /// <summary>
         ///     Full name.
         /// </summary>
-        public string FullName { get; set; }
+        public string FullName { get; set; } = "";
 
         /// <summary>
         ///     Head ref
         /// </summary>
-        public string Head { get; set; }
+        public string Head { get; set; } = "";
 
         /// <summary>
         ///     Subject for head ref.
         /// </summary>
-        public string HeadSubject { get; set; }
+        public string HeadSubject { get; set; } = "";
 
         /// <summary>
         ///     Is local branch
         /// </summary>
-        public bool IsLocal { get; set; }
+        public bool IsLocal { get; set; } = false;
 
         /// <summary>
         ///     Branch type.
@@ -56,7 +56,7 @@ namespace SourceGit.Git {
         /// <summary>
         ///     Remote name. Only used for remote branch
         /// </summary>
-        public string Remote { get; set; }
+        public string Remote { get; set; } = "";
 
         /// <summary>
         ///     Upstream. Only used for local branches.
