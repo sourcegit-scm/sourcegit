@@ -908,6 +908,22 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
+        ///     Update submodule.
+        /// </summary>
+        public void UpdateSubmodule() {
+            isWatcherDisabled = true;
+
+            var errs = RunCommand("submodule update", null);
+            if (errs != null) {
+                App.RaiseError(errs);
+            } else {
+                OnSubmoduleChanged?.Invoke();
+            }
+
+            isWatcherDisabled = false;
+        }
+
+        /// <summary>
         ///     Blame file.
         /// </summary>
         /// <param name="file"></param>
