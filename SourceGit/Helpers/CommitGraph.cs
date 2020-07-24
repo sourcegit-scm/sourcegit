@@ -186,6 +186,7 @@ namespace SourceGit.Helpers {
                                 if (!currentMap.ContainsKey(major.Next)) currentMap.Add(major.Next, major);
                             } else {
                                 major.Next = "ENDED";
+                                ended.Add(l);
                             }
 
                             major.AddPoint(offsetX, offsetY);
