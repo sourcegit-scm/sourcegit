@@ -475,6 +475,8 @@ namespace SourceGit.Git {
                 if (line != null) onProgress?.Invoke(line);
             }, true);
 
+            OnSubmoduleChanged?.Invoke();
+
             AssertCommand(errs);
         }
 
@@ -515,6 +517,8 @@ namespace SourceGit.Git {
             var errs = RunCommand(args + remote + " " + branch, line => {
                 if (line != null) onProgress?.Invoke(line);
             }, true);
+
+            OnSubmoduleChanged?.Invoke();
 
             AssertCommand(errs);
 
