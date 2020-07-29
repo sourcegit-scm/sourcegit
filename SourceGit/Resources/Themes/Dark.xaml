@@ -12,5 +12,5 @@
     <SolidColorBrush x:Key="Brush.FG2" Color="#40F1F1F1"/>
     <SolidColorBrush x:Key="Brush.Badge" Color="#FF8F8F8F"/>
     <SolidColorBrush x:Key="Brush.Accent1" Color="#FF007ACC"/>
-    <SolidColorBrush x:Key="Brush.Accent2" Color="#33007ACC"/>
+    <SolidColorBrush x:Key="Brush.Accent2" Color="#4C007ACC"/>
 </ResourceDictionary>

@@ -86,8 +86,6 @@
                                     <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
                                     <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Check}"/>
                                     <Setter TargetName="Icon" Property="Fill" Value="Orange"/>
-                                    <Setter TargetName="Name" Property="FontWeight" Value="Bold"/>
-                                    <Setter TargetName="Name" Property="Foreground" Value="{StaticResource Brush.FG}"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
