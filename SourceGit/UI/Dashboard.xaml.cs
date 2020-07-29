@@ -204,6 +204,8 @@ namespace SourceGit.UI {
         }
 
         private void UpdateBranches(bool force = true) {
+            bool IsDetached = false;
+            Git.Branch branch = null;
             Task.Run(() => {
                 var branches = repo.Branches(force);
                 var remotes = repo.Remotes(true);
@@ -222,7 +224,8 @@ namespace SourceGit.UI {
 
                 foreach (var b in branches) {
                     if (b.IsLocal) {
-                        MakeBranchNode(b, localBranchNodes, folders, states, "locals");            
+                        MakeBranchNode(b, localBranchNodes, folders, states, "locals");
+                        branch = b;
                     } else if (!string.IsNullOrEmpty(b.Remote)) {
                         RemoteNode remote = null;
 
@@ -240,6 +243,10 @@ namespace SourceGit.UI {
                         }
 
                         MakeBranchNode(b, remote.Children, folders, states, "remotes");
+                    } else {
+                        /// 对于 SUBMODULE HEAD 出于游离状态（detached on commit id）
+                        /// 此时，分支既不是 本地分支，也不是远程分支
+                        IsDetached = b.IsCurrent;
                     }
                 }
 
@@ -264,6 +271,8 @@ namespace SourceGit.UI {
                     localBranchTree.ItemsSource = localBranchNodes;
                     remoteBranchTree.ItemsSource = remoteNodes;
                 });
+
+                if (IsDetached && branch != null) repo.Checkout(branch.Name);
             });
         }
 

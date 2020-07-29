@@ -927,7 +927,7 @@ namespace SourceGit.Git {
         public void UpdateSubmodule() {
             isWatcherDisabled = true;
 
-            var errs = RunCommand("submodule update", null);
+            var errs = RunCommand("submodule update --rebase --remote", null);
             if (errs != null) {
                 App.RaiseError(errs);
             } else {
