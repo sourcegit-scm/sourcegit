@@ -53,7 +53,7 @@ namespace SourceGit.UI {
             var remoteBranch = upstream.Substring(remoteIdx + 1);
 
             Task.Run(() => {
-                repo.Push(remote, current.Name, remoteBranch, "--recurse-submodules=no", PopupManager.UpdateStatus);
+                repo.Push(remote, current.Name, remoteBranch, PopupManager.UpdateStatus);
                 push.Dispatcher.Invoke(() => {
                     PopupManager.Close(true);
                 });                
@@ -91,25 +91,13 @@ namespace SourceGit.UI {
             var tags = chkTags.IsChecked == true;
             var force = chkForce.IsChecked == true;
 
-            string subMod;
-            if (RbtnRrsSubModCheck.IsChecked == true) {
-                subMod = "--recurse-submodules=check";
-            } else if (RbtnRrsSubModDemand.IsChecked == true) {
-                subMod = "--recurse-submodules=on-demand";
-            }
-            else if (RbtnRrsSubModOnly.IsChecked == true) {
-                subMod = "--recurse-submodules=only";
-            } else{ 
-                subMod = "--recurse-submodules=no";
-            }
-
             remoteBranch = remoteBranch.Substring($"{remote}/".Length);
             if (remoteBranch.Contains(" (new)")) {
                 remoteBranch = remoteBranch.Substring(0, remoteBranch.Length - 6);
             }
 
             PopupManager.Lock();
-            await Task.Run(() => repo.Push(remote, localBranch.Name, remoteBranch, subMod, PopupManager.UpdateStatus, tags, track, force));
+            await Task.Run(() => repo.Push(remote, localBranch.Name, remoteBranch, PopupManager.UpdateStatus, tags, track, force));
             PopupManager.Close(true);
         }
 

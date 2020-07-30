@@ -455,13 +455,12 @@ namespace SourceGit.Git {
         ///     Fetch remote changes
         /// </summary>
         /// <param name="remote"></param>
-        /// <param name="submod">submod</param>
         /// <param name="prune"></param>
         /// <param name="onProgress"></param>
-        public void Fetch(Remote remote, string submod, bool prune, Action<string> onProgress) {
+        public void Fetch(Remote remote, bool prune, Action<string> onProgress) {
             isWatcherDisabled = true;
 
-            var args = $"-c credential.helper=manager fetch --progress --verbose {submod} ";
+            var args = "-c credential.helper=manager fetch --progress --verbose ";
 
             if (prune) args += "--prune ";
 
@@ -485,15 +484,14 @@ namespace SourceGit.Git {
         /// </summary>
         /// <param name="remote">remote</param>
         /// <param name="branch">branch</param>
-        /// <param name="submod">submod</param>
         /// <param name="onProgress">Progress message handler.</param>
         /// <param name="rebase">Use rebase instead of merge.</param>
         /// <param name="autostash">Auto stash local changes.</param>
         /// <param name="onProgress">Progress message handler.</param>
-        public void Pull(string remote, string branch, string submod, Action<string> onProgress, bool rebase = false, bool autostash = false) {
+        public void Pull(string remote, string branch, Action<string> onProgress, bool rebase = false, bool autostash = false) {
             isWatcherDisabled = true;
 
-            var args = $"-c credential.helper=manager pull --verbose --progress {submod} ";
+            var args = "-c credential.helper=manager pull --verbose --progress ";
             var needPopStash = false;
 
             if (rebase) args += "--rebase ";
@@ -531,15 +529,14 @@ namespace SourceGit.Git {
         /// <param name="remote">Remote</param>
         /// <param name="localBranch">Local branch name</param>
         /// <param name="remoteBranch">Remote branch name</param>
-        /// <param name="submod">submod</param>
         /// <param name="onProgress">Progress message handler.</param>
         /// <param name="withTags">Push tags</param>
         /// <param name="track">Create track reference</param>
         /// <param name="force">Force push</param>
-        public void Push(string remote, string localBranch, string remoteBranch,  string submod, Action<string> onProgress, bool withTags = false, bool track = false, bool force = false) {
+        public void Push(string remote, string localBranch, string remoteBranch, Action<string> onProgress, bool withTags = false, bool track = false, bool force = false) {
             isWatcherDisabled = true;
 
-            var args = $"-c credential.helper=manager push --progress --verbose {submod} ";
+            var args = "-c credential.helper=manager push --progress --verbose ";
 
             if (withTags) args += "--tags ";
             if (track) args += "-u ";
