@@ -6,8 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SourceGit.UI"
         xmlns:git="clr-namespace:SourceGit.Git"
-        mc:Ignorable="d"
-         Height="600" Width="800">
+        mc:Ignorable="d"        
+        Title="File Histories"
+        Height="600" Width="800">
 
     <!-- Enable WindowChrome -->
     <WindowChrome.WindowChrome>

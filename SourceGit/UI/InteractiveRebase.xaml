@@ -6,7 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SourceGit.UI"
         xmlns:helpers="clr-namespace:SourceGit.Helpers"
-        mc:Ignorable="d"
+        mc:Ignorable="d"        
+        Title="Interactive Rebase"
         Height="600" Width="800">
 
     <!-- Enable WindowChrome -->

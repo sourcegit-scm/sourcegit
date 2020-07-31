@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Height="280" Width="400"
+        Title="About"
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 
     <!-- Enable WindowChrome Feature -->
@@ -25,15 +26,19 @@
             <Grid Grid.Row="0" Background="{StaticResource Brush.BG4}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- LOGO -->
+                <Path Width="20" Height="20" Margin="6,-1,2,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}"/>
+
                 <!-- Title -->
-                <Label Content="ABOUT" FontWeight="Light"/>
+                <Label Grid.Column="1" Content="ABOUT" FontWeight="Light"/>
 
                 <!-- Close Button -->
-                <Button Click="Quit" Width="32" Grid.Column="2" WindowChrome.IsHitTestVisibleInChrome="True">
+                <Button Click="Quit" Width="32" Grid.Column="3" WindowChrome.IsHitTestVisibleInChrome="True">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style.Button.HighlightHover}">
                             <Style.Triggers>
