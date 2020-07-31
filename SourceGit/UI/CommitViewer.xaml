@@ -35,7 +35,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- SHA -->
-                <Label Grid.Row="0" Grid.Column="0" Content="SHA" HorizontalAlignment="Right" Opacity=".5"/>
+                <Label Grid.Row="0" Grid.Column="0" Content="SHA" HorizontalAlignment="Right" Opacity=".6"/>
                 <TextBox Grid.Row="0" Grid.Column="1" 
                      x:Name="SHA" 
                      IsReadOnly="True" 
@@ -44,7 +44,7 @@
                      Margin="11,0,0,0"/>
 
                 <!-- Refs -->
-                <Label x:Name="lblRefs" Grid.Row="0" Grid.Column="2" Content="REFS" HorizontalAlignment="Right" Opacity=".5"/>
+                <Label x:Name="lblRefs" Grid.Row="0" Grid.Column="2" Content="REFS" HorizontalAlignment="Right" Opacity=".6"/>
                 <ItemsControl Grid.Row="0" Grid.Column="3" x:Name="refs" Margin="8,0,0,0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -93,7 +93,7 @@
                 </ItemsControl>
 
                 <!-- PARENTS -->
-                <Label Grid.Row="1" Grid.Column="0" Content="PARENTS" HorizontalAlignment="Right" Opacity=".5"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="PARENTS" HorizontalAlignment="Right" Opacity=".6"/>
                 <ItemsControl Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" x:Name="parents" Margin="8,0,0,0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -116,7 +116,7 @@
                 </ItemsControl>
 
                 <!-- AUTHOR -->
-                <Label Grid.Row="2" Grid.Column="0" Content="AUTHOR" HorizontalAlignment="Right" Opacity=".5"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="AUTHOR" HorizontalAlignment="Right" Opacity=".6"/>
                 <TextBox Grid.Row="2" Grid.Column="1" x:Name="author"
                      IsReadOnly="True" 
                      Background="Transparent"
@@ -125,7 +125,7 @@
                      Margin="11,0,0,0"/>
 
                 <!-- AUTHOR TIME -->
-                <Label Grid.Row="2" Grid.Column="2" Content="AUTHOR TIME" HorizontalAlignment="Right" Opacity=".5"/>
+                <Label Grid.Row="2" Grid.Column="2" Content="AUTHOR TIME" HorizontalAlignment="Right" Opacity=".6"/>
                 <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" x:Name="authorTime"
                      IsReadOnly="True" 
                      Background="Transparent"
@@ -134,7 +134,7 @@
                      Margin="8,0,0,0"/>
 
                 <!-- COMMITTER -->
-                <Label Grid.Row="3" Grid.Column="0" Content="COMMITTER" HorizontalAlignment="Right" Opacity=".5"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="COMMITTER" HorizontalAlignment="Right" Opacity=".6"/>
                 <TextBox Grid.Row="3" Grid.Column="1" x:Name="committer"
                      IsReadOnly="True" 
                      Background="Transparent"
@@ -143,7 +143,7 @@
                      Margin="11,0,0,0"/>
 
                 <!-- COMMIT TIME -->
-                <Label Grid.Row="3" Grid.Column="2" Content="COMMIT TIME" HorizontalAlignment="Right" Opacity=".5"/>
+                <Label Grid.Row="3" Grid.Column="2" Content="COMMIT TIME" HorizontalAlignment="Right" Opacity=".6"/>
                 <TextBox Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" x:Name="committerTime"
                      IsReadOnly="True" 
                      Background="Transparent"
@@ -154,7 +154,7 @@
                 <Rectangle Grid.Row="4" Grid.ColumnSpan="4" Height="1" Margin="8,0" Fill="{StaticResource Brush.Border2}"/>
 
                 <!-- SUBJECT -->
-                <Label Grid.Row="5" Grid.Column="0" Content="SUBJECT" HorizontalAlignment="Right" Opacity=".5"/>
+                <Label Grid.Row="5" Grid.Column="0" Content="SUBJECT" HorizontalAlignment="Right" Opacity=".6"/>
                 <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" 
                          x:Name="subject"
                          IsReadOnly="True"
@@ -163,7 +163,7 @@
                          Margin="8,0,16,0"/>
 
                 <!-- MESSAGE -->
-                <Label Grid.Row="6" Grid.Column="0" Content="DESCRIPTION" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".5"/>
+                <Label Grid.Row="6" Grid.Column="0" Content="DESCRIPTION" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".6"/>
                 <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" 
                      x:Name="message"
                      IsReadOnly="True"
@@ -176,7 +176,7 @@
                 <Rectangle Grid.Row="7" Grid.ColumnSpan="4" Height="1" Margin="8,0" Fill="{StaticResource Brush.Border2}"/>
 
                 <!-- CHANGELIST -->
-                <Label Grid.Row="8" Grid.Column="0" Content="CHANGED" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".5"/>
+                <Label Grid.Row="8" Grid.Column="0" Content="CHANGED" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".6"/>
                 <DataGrid
                     Grid.Row="8"
                     Grid.Column="1"

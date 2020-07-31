@@ -54,16 +54,16 @@
                     <ToggleButton 
                         Grid.Column="0" 
                         x:Name="toggleUnstangedMode"
-                        Margin="4,0,0,0" 
+                        Margin="4,0,4,0" 
                         ToolTip="SWITCH TO LIST/TREE VIEW"
                         Style="{StaticResource Style.ToggleButton.ListOrTree}" 
                         IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIUseListInUnstaged, Mode=TwoWay}"/>
-                    <Label Grid.Column="1" Content="UNSTAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG2}"/>
+                    <Label Grid.Column="1" Content="UNSTAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG}" Opacity=".4"/>
                     <Button Grid.Column="3" Click="Stage" Margin="4,0" ToolTip="STAGE" Background="Transparent">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.StageSelected}" Fill="{StaticResource Brush.FG2}"/>
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.StageSelected}" Opacity=".4"/>
                     </Button>
                     <Button Grid.Column="4" Click="StageAll" Margin="4,0" ToolTip="STAGE ALL" Background="Transparent">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.StageAll}" Fill="{StaticResource Brush.FG2}"/>
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.StageAll}" Opacity=".4"/>
                     </Button>
                 </Grid>
 
@@ -189,16 +189,16 @@
                     <ToggleButton
                         Grid.Column="0" 
                         x:Name="toggleStagedMode"
-                        Margin="4,0,0,0"
+                        Margin="4,0,4,0"
                         ToolTip="SWITCH TO LIST/TREE VIEW"
                         Style="{StaticResource Style.ToggleButton.ListOrTree}"
                         IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIUseListInStaged, Mode=TwoWay}"/>
-                    <Label Grid.Column="1" Content="STAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG2}"/>
+                    <Label Grid.Column="1" Content="STAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG}"  Opacity=".4"/>
                     <Button Grid.Column="3" Click="Unstage" ToolTip="UNSTAGE" Margin="4,0" Background="Transparent">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.UnstageSelected}" Fill="{StaticResource Brush.FG2}"/>
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.UnstageSelected}" Opacity=".4"/>
                     </Button>
                     <Button Grid.Column="4" Click="UnstageAll" ToolTip="UNSTAGE ALL" Margin="4,0" Background="Transparent">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.UnstageAll}" Fill="{StaticResource Brush.FG2}"/>
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.UnstageAll}" Opacity=".4"/>
                     </Button>
                 </Grid>
 

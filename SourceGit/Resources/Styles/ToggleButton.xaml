@@ -94,8 +94,8 @@
                             Width="12"
                             Style="{DynamicResource Style.Icon}"
                             Fill="Transparent"
-                            Stroke="{DynamicResource Brush.FG2}"
-                            StrokeThickness="1"
+                            Stroke="{DynamicResource Brush.FG}"
+                            StrokeThickness=".4"
                             Data="{DynamicResource Icon.Tree}"/>
                     </Grid>
 
