@@ -65,8 +65,8 @@
                         <DataTemplate DataType="{x:Type git:Repository}">
                             <StackPanel Orientation="Horizontal" Height="24">
                                 <Path Height="12" Margin="16,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-                                <Label Margin="4,0,0,0" Content="{Binding Name}"/>
-                                <Label FontSize="11" Content="{Binding Path}" Opacity=".5"/>
+                                <TextBlock Margin="4,0" Text="{Binding Name}" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
+                                <TextBlock FontSize="10" Text="{Binding Path}" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -117,13 +117,13 @@
 
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <Grid>
+                            <Grid Height="26">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="16"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Path x:Name="icon" Grid.Column="0" Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Fill}"/>
-                                <Label x:Name="name" Grid.Column="1" Margin="4,0,0,0" Content="{Binding Name}" />
+                                <TextBlock x:Name="name" Grid.Column="1" Margin="4,0,0,0" Text="{Binding Name}" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
                                 <TextBox x:Name="editName" Grid.Column="1" Margin="4,0,0,0" Text="{Binding Name}" Loaded="TreeNodeRenameStart" KeyDown="TreeNodeRenameKeyDown" LostFocus="TreeNodeRenameEnd"/>
                             </Grid>
 
