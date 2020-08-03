@@ -12,7 +12,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Unloaded="Cleanup">
-    <Grid x:Name="layout">
+    <Grid x:Name="layout" Background="{StaticResource Brush.BG1}">
         <!-- List Panel (SearchBar + DataGrid) -->
         <Grid x:Name="commitListPanel" Background="{StaticResource Brush.BG2}" ClipToBounds="True">
             <Grid.RowDefinitions>
@@ -156,10 +156,10 @@
         </Grid>
 
         <!-- Split -->
-        <GridSplitter x:Name="splitter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.BG1}"/>
+        <GridSplitter x:Name="splitter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
 
         <!-- Detail for selected commit -->
-        <Grid x:Name="commitDetailPanel" Background="{StaticResource Brush.BG1}">
+        <Grid x:Name="commitDetailPanel">
             <!-- Selected commit detail -->
             <local:CommitViewer x:Name="commitViewer"/>
             
