@@ -80,7 +80,7 @@ namespace SourceGit.UI {
         /// <param name="orgFile"></param>
         private void SetTitle(string file, string orgFile) {
             fileName.Text = file;
-            if (!string.IsNullOrEmpty(orgFile)) {
+            if (!string.IsNullOrEmpty(orgFile) && orgFile != "/dev/null") {
                 orgFileNamePanel.Visibility = Visibility.Visible;
                 orgFileName.Text = orgFile;
             } else {
