@@ -114,7 +114,7 @@
                                 </Setter.Value>
                             </Setter>
 
-                            <EventSetter Event="PreviewMouseMove" Handler="TabsPreviewMouseMove"/>
+                            <EventSetter Event="MouseMove" Handler="TabsMouseMove"/>
                             <EventSetter Event="Drop" Handler="TabsDrop"/>
                         </Style>
                     </TabControl.ItemContainerStyle>

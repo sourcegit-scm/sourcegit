@@ -180,12 +180,13 @@ namespace SourceGit.UI {
         #endregion
 
         #region DRAG_DROP
-        private void TabsPreviewMouseMove(object sender, MouseEventArgs e) {
+        private void TabsMouseMove(object sender, MouseEventArgs e) {
             var tab = e.Source as TabItem;
             if (tab == null || (tab.DataContext as Tab).Repo == null) return;
 
             if (Mouse.LeftButton == MouseButtonState.Pressed) {
                 DragDrop.DoDragDrop(tab, tab, DragDropEffects.All);
+                e.Handled = true;
             }
         }
 
