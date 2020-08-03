@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace SourceGit.UI {
 
@@ -176,19 +175,6 @@ namespace SourceGit.UI {
         /// </summary>
         private void Quit(object sender, RoutedEventArgs e) {
             App.Current.Shutdown();
-        }
-
-        /// <summary>
-        ///     Show system menu when user click logo.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LogoMouseButtonDown(object sender, MouseButtonEventArgs e) {
-            var element = e.OriginalSource as FrameworkElement;
-            if (element == null) return;
-
-            var pos = PointToScreen(new Point(0, 33));
-            SystemCommands.ShowSystemMenu(this, pos);
         }
         #endregion
     }
