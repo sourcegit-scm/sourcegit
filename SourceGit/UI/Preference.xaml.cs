@@ -11,7 +11,7 @@ namespace SourceGit.UI {
     /// <summary>
     ///     Preference window.
     /// </summary>
-    public partial class Preference : UserControl {
+    public partial class Preference : Window {
 
         /// <summary>
         ///     Git global user name.
@@ -76,13 +76,6 @@ namespace SourceGit.UI {
         }
 
         /// <summary>
-        ///     Show preference.
-        /// </summary>
-        public static void Show() {
-            PopupManager.Show(new Preference());
-        }
-
-        /// <summary>
         ///     Close this dialog
         /// </summary>
         private void Close(object sender, RoutedEventArgs e) {
@@ -95,7 +88,7 @@ namespace SourceGit.UI {
             var oldAutoCRLF = GetConfig("core.autocrlf");
             if (oldAutoCRLF != AutoCRLF) SetConfig("core.autocrlf", AutoCRLF);
 
-            PopupManager.Close();
+            Close();
         }
 
         /// <summary>

@@ -40,7 +40,8 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="preferRemote"></param>
         public static void Show(Git.Repository repo, string preferRemote = null) {
-            PopupManager.Show(new Fetch(repo, preferRemote));
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(new Fetch(repo, preferRemote));
         }
 
         /// <summary>
@@ -51,16 +52,17 @@ namespace SourceGit.UI {
         private async void Start(object sender, RoutedEventArgs e) {
             bool prune = chkPrune.IsChecked == true;
 
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Lock();
 
             if (chkFetchAll.IsChecked == true) {
-                await Task.Run(() => repo.Fetch(null, prune, PopupManager.UpdateStatus));
+                await Task.Run(() => repo.Fetch(null, prune, msg => popup?.UpdateStatus(msg)));
             } else {
                 var remote = combRemotes.SelectedItem as Git.Remote;
-                await Task.Run(() => repo.Fetch(remote, prune, PopupManager.UpdateStatus));
+                await Task.Run(() => repo.Fetch(remote, prune, msg => popup?.UpdateStatus(msg)));
             }
 
-            PopupManager.Close(true);
+            popup?.Close(true);
         }
 
         /// <summary>
@@ -69,7 +71,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
     }
 }

@@ -10,14 +10,12 @@ namespace SourceGit.UI {
     ///     Common popup manager.
     /// </summary>
     public partial class PopupManager : UserControl {
-        private static PopupManager instance = null;
-        private static bool locked = false;
+        private bool locked = false;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         public PopupManager() {
-            instance = this;
             InitializeComponent();
         }
 
@@ -25,8 +23,8 @@ namespace SourceGit.UI {
         ///     Show content as popup.
         /// </summary>
         /// <param name="elem"></param>
-        public static void Show(UIElement elem) {
-            if (instance == null || locked) return;
+        public void Show(UIElement elem) {
+            if (locked) return;
 
             var gone = new Thickness(0, -(double)elem.GetValue(HeightProperty) - 16, 0, 0);
 
@@ -35,53 +33,49 @@ namespace SourceGit.UI {
             anim.From = gone;
             anim.To = new Thickness(0);
 
-            instance.statusMsg.Content = "";
-            instance.popupContent.Child = elem;
-            instance.popupContent.Margin = gone;
-            instance.Visibility = Visibility.Visible;
-            instance.popupContent.BeginAnimation(MarginProperty, anim);
+            statusMsg.Content = "";
+            popupContent.Child = elem;
+            popupContent.Margin = gone;
+            Visibility = Visibility.Visible;
+            popupContent.BeginAnimation(MarginProperty, anim);
         }
 
         /// <summary>
         ///     Is current locked.
         /// </summary>
         /// <returns></returns>
-        public static bool IsLocked() {
+        public bool IsLocked() {
             return locked;
         }
 
         /// <summary>
         ///     Lock
         /// </summary>
-        public static void Lock() {
-            if (instance == null) return;
+        public void Lock() {
             locked = true;
+            status.Visibility = Visibility.Visible;
 
-            instance.status.Visibility = Visibility.Visible;
             DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
             anim.RepeatBehavior = RepeatBehavior.Forever;
-            instance.statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
+            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
         }
 
         /// <summary>
         ///     Unlock
         /// </summary>
-        public static void Unlock() {
-            if (instance == null) return;
+        public void Unlock() {
             locked = false;
-            instance.statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
-            instance.status.Visibility = Visibility.Collapsed;
+            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+            status.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
         ///     Update status description
         /// </summary>
         /// <param name="desc"></param>
-        public static void UpdateStatus(string desc) {
-            if (instance == null) return;
-
-            instance.Dispatcher.Invoke(() => {
-                instance.statusMsg.Content = desc;
+        public void UpdateStatus(string desc) {
+            Dispatcher.Invoke(() => {
+                statusMsg.Content = desc;
             });
         }
 
@@ -89,23 +83,23 @@ namespace SourceGit.UI {
         ///     Close current popup.
         /// </summary>
         /// <param name="unlockFirst"></param>
-        public static void Close(bool unlockFirst = false) {
-            if (instance == null) return;
-            if (instance.popupContent.Child == null) return;
+        public void Close(bool unlockFirst = false) {
+            if (popupContent.Child == null) return;
             if (locked && !unlockFirst) return;
             locked = false;
 
             ThicknessAnimation anim = new ThicknessAnimation();
             anim.Duration = TimeSpan.FromMilliseconds(150);
             anim.From = new Thickness(0);
-            anim.To = new Thickness(0, -(double)instance.popupContent.Child.GetValue(HeightProperty) - 16, 0, 0);
+            anim.To = new Thickness(0, -(double)popupContent.Child.GetValue(HeightProperty) - 16, 0, 0);
             anim.Completed += (obj, ev) => {
-                instance.Visibility = Visibility.Collapsed;
-                instance.popupContent.Child = null;
+                Visibility = Visibility.Collapsed;
+                popupContent.Child = null;
             };
-            instance.popupContent.BeginAnimation(MarginProperty, anim);
-            instance.statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
-            instance.status.Visibility = Visibility.Collapsed;
+            
+            popupContent.BeginAnimation(MarginProperty, anim);            
+            statusIcon.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+            status.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>

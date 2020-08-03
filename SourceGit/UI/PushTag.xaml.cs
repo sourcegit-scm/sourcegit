@@ -32,7 +32,8 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="tag"></param>
         public static void Show(Git.Repository repo, Git.Tag tag) {
-            PopupManager.Show(new PushTag(repo, tag));
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(new PushTag(repo, tag));
         }
 
         /// <summary>
@@ -44,9 +45,10 @@ namespace SourceGit.UI {
             var remote = combRemotes.SelectedItem as Git.Remote;
             if (remote == null) return;
 
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Lock();
             await Task.Run(() => Git.Tag.Push(repo, tag.Name, remote.Name));
-            PopupManager.Close(true);
+            popup?.Close(true);
         }
 
         /// <summary>
@@ -55,7 +57,8 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Close();
         }
     }
 }

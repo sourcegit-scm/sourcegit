@@ -30,7 +30,8 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="commit"></param>
         public static void Show(Git.Repository repo, Git.Commit commit) {
-            PopupManager.Show(new Revert(repo, commit));
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(new Revert(repo, commit));
         }
 
         /// <summary>
@@ -40,10 +41,10 @@ namespace SourceGit.UI {
         /// <param name="e"></param>
         private async void Sure(object sender, RoutedEventArgs e) {
             bool autoCommit = chkCommit.IsChecked == true;
-
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Lock();
             await Task.Run(() => repo.Revert(sha, autoCommit));
-            PopupManager.Close(true);
+            popup?.Close(true);
         }
 
         /// <summary>
@@ -52,7 +53,8 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Close();
         }
     }
 }

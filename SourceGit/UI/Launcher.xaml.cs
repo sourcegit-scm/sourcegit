@@ -1,4 +1,3 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +9,16 @@ namespace SourceGit.UI {
     ///     Main window for this app.
     /// </summary>
     public partial class Launcher : Window {
+
+        /// <summary>
+        ///     Tab data.
+        /// </summary>
+        public class Tab {
+            public string Title { get; set; }
+            public bool IsActive { get; set; }
+            public Git.Repository Repo { get; set; }
+            public object Page { get; set; }
+        }
 
         /// <summary>
         ///     Alert data.
@@ -25,36 +34,81 @@ namespace SourceGit.UI {
         public ObservableCollection<Alert> Alerts { get; set; } = new ObservableCollection<Alert>();
 
         /// <summary>
+        ///     Opened tabs.
+        /// </summary>
+        public ObservableCollection<Tab> Tabs { get; set; } = new ObservableCollection<Tab>();
+
+        /// <summary>
         ///     Constructor
         /// </summary>
         public Launcher() {
-            Git.Repository.OnOpen = ShowDashboard;
-            Git.Repository.OnClose = ShowManager;
+            App.OnError = msg => {
+                ShowAlert(new Alert() { Title = "ERROR", Message = msg });
+            };
 
-            App.OnError = msg => ShowAlert(new Alert() { Title = "ERROR", Message = msg });
+            Git.Repository.OnOpen = repo => {
+                Dispatcher.Invoke(() => {
+                    foreach (var item in openedTabs.Items) {
+                        var opened = item as Tab;
+                        if (opened != null && opened.Repo != null && repo.Path == opened.Repo.Path) {
+                            openedTabs.SelectedItem = opened;
+                            return;
+                        }
+                    }
+
+                    var tab = new Tab() {
+                        Title = repo.Parent == null ? repo.Name : $"{repo.Parent.Name} : {repo.Name}",
+                        Repo = repo,
+                        Page = new Dashboard(repo),
+                    };
+
+                    Tabs.Add(tab);
+                    openedTabs.SelectedItem = tab;
+                });
+            };
+
+            Tabs.Add(new Tab() {
+                Title = "Repositories",
+                Page = new Manager(),
+            });
 
             InitializeComponent();
-            ShowManager();
+            openedTabs.SelectedItem = Tabs[0];
+        }
+
+        /// <summary>
+        ///     Get popup manager from given active page.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <returns></returns>
+        public PopupManager GetPopupManager(Git.Repository repo) {
+            if (repo == null) return (Tabs[0].Page as Manager).popupManager;
+
+            foreach (var tab in Tabs) {
+                if (tab.Repo != null && tab.Repo.Path == repo.Path) {
+                    return (tab.Page as Dashboard).popupManager;
+                }
+            }
+
+            return null;
         }
 
         #region LAYOUT_CONTENT
         /// <summary>
-        ///     Show manager.
+        ///     Close repository tab.
         /// </summary>
-        private void ShowManager() {
-            Dispatcher.Invoke(() => {
-                body.Content = new Manager();
-            });
-        }
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseRepo(object sender, RoutedEventArgs e) {
+            var tab = (sender as Button).DataContext as Tab;
+            if (tab == null || tab.Repo == null) return;
 
-        /// <summary>
-        ///     Show dashboard.
-        /// </summary>
-        /// <param name="repo"></param>
-        private void ShowDashboard(Git.Repository repo) {
-            Dispatcher.Invoke(() => {
-                body.Content = new Dashboard(repo);
-            });
+            var popup = (tab.Page as Dashboard).popupManager;
+            if (popup.IsLocked()) popup.Close(true);
+            Tabs.Remove(tab);
+
+            tab.Page = null;
+            tab.Repo.Close();
         }
 
         /// <summary>
@@ -63,7 +117,9 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ShowPreference(object sender, RoutedEventArgs e) {
-            Preference.Show();
+            var dialog = new Preference();
+            dialog.Owner = this;
+            dialog.ShowDialog();
         }
 
         /// <summary>

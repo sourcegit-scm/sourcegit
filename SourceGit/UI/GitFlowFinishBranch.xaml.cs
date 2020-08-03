@@ -36,7 +36,8 @@ namespace SourceGit.UI {
                 txtBranchType.Content = "Hotfix :";
                 break;
             default:
-                PopupManager.Close();
+                var popup = App.Launcher.GetPopupManager(repo);
+                popup?.Close();
                 return;
             }
 
@@ -49,7 +50,8 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="branch"></param>
         public static void Show(Git.Repository repo, Git.Branch branch) {
-            PopupManager.Show(new GitFlowFinishBranch(repo, branch));
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(new GitFlowFinishBranch(repo, branch));
         }
 
         /// <summary>
@@ -58,9 +60,10 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Sure(object sender, RoutedEventArgs e) {
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Lock();
             await Task.Run(() => repo.FinishGitFlowBranch(branch));
-            PopupManager.Close(true);
+            popup?.Close(true);
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
     }
 }

@@ -67,16 +67,8 @@ namespace SourceGit.UI {
             InitializeComponent();
 
             repo = opened;
-            repoName.Content = repo.Name;
             histories.Repo = opened;
             commits.Repo = opened;
-
-            if (repo.Parent != null) {
-                btnParent.Visibility = Visibility.Visible;
-                txtParent.Content = repo.Parent.Name;
-            } else {
-                btnParent.Visibility = Visibility.Collapsed;
-            }
 
             UpdateBranches();
             UpdateHistories();
@@ -84,6 +76,17 @@ namespace SourceGit.UI {
             UpdateStashes();
             UpdateTags();
             UpdateSubmodules();
+        }
+
+        /// <summary>
+        ///     Cleanup all items
+        /// </summary>
+        public void Cleanup() {
+            localBranchTree.ItemsSource = null;
+            remoteBranchTree.ItemsSource = null;
+            tagList.ItemsSource = null;
+            cachedLocalBranches.Clear();
+            cachedRemotes.Clear();
         }
 
         #region DATA_UPDATE
@@ -244,8 +247,8 @@ namespace SourceGit.UI {
 
                         MakeBranchNode(b, remote.Children, folders, states, "remotes");
                     } else {
-                        /// ¶ÔÓÚ SUBMODULE HEAD ³öÓÚÓÎÀë×´Ì¬£¨detached on commit id£©
-                        /// ´ËÊ±£¬·ÖÖ§¼È²»ÊÇ ±¾µØ·ÖÖ§£¬Ò²²»ÊÇÔ¶³Ì·ÖÖ§
+                        /// å¯¹äºŽ SUBMODULE HEAD å‡ºäºŽæ¸¸ç¦»çŠ¶æ€ï¼ˆdetached on commit idï¼‰
+                        /// æ­¤æ—¶ï¼Œåˆ†æ”¯æ—¢ä¸æ˜¯ æœ¬åœ°åˆ†æ”¯ï¼Œä¹Ÿä¸æ˜¯è¿œç¨‹åˆ†æ”¯
                         IsDetached = b.IsCurrent;
                     }
                 }
@@ -297,33 +300,9 @@ namespace SourceGit.UI {
                 });
             });
         }
-
-        private void Cleanup(object sender, RoutedEventArgs e) {
-            localBranchTree.ItemsSource = null;
-            remoteBranchTree.ItemsSource = null;
-            tagList.ItemsSource = null;
-            cachedLocalBranches.Clear();
-            cachedRemotes.Clear();
-        }
         #endregion
 
         #region TOOLBAR
-        private void Close(object sender, RoutedEventArgs e) {
-            if (PopupManager.IsLocked()) return;
-            PopupManager.Close();
-
-            cachedLocalBranches.Clear();
-            cachedRemotes.Clear();
-
-            repo.Close();
-        }
-
-        private void GotoParent(object sender, RoutedEventArgs e) {
-            if (repo.Parent == null) return;
-            repo.Parent.Open();
-            e.Handled = true;
-        }
-
         private void OpenFetch(object sender, RoutedEventArgs e) {
             Fetch.Show(repo);
         }
@@ -345,7 +324,7 @@ namespace SourceGit.UI {
         }
 
         private void OpenSearch(object sender, RoutedEventArgs e) {
-            if (PopupManager.IsLocked()) return;
+            if (popupManager.IsLocked()) return;
 
             workspace.SelectedItem = historiesSwitch;
             if (histories.searchBar.Margin.Top == 0) {
@@ -936,7 +915,7 @@ namespace SourceGit.UI {
         }
 
         private void UpdateSubmodule(object sender, RoutedEventArgs e) {
-            Waiting.Show(() => repo.UpdateSubmodule());
+            Waiting.Show(repo, () => repo.UpdateSubmodule());
         }
 
         private void SubmoduleLostFocus(object sender, RoutedEventArgs e) {

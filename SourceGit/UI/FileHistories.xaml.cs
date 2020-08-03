@@ -29,7 +29,7 @@ namespace SourceGit.UI {
             InitializeComponent();
 
             // Move to center
-            var parent = App.Current.MainWindow;
+            var parent = App.Launcher;
             Left = parent.Left + (parent.Width - Width) * 0.5;
             Top = parent.Top + (parent.Height - Height) * 0.5;
 

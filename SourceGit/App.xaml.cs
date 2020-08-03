@@ -37,6 +37,14 @@ namespace SourceGit {
         }
 
         /// <summary>
+        ///     Get main window.
+        /// </summary>
+        public static UI.Launcher Launcher {
+            get;
+            private set;
+        }
+
+        /// <summary>
         ///     Raise error message.
         /// </summary>
         /// <param name="message"></param>
@@ -92,8 +100,8 @@ namespace SourceGit {
             }
 
             // Show main window
-            var launcher = new UI.Launcher();
-            launcher.Show();
+            Launcher = new UI.Launcher();
+            Launcher.Show();
         }
 
         /// <summary>

@@ -58,7 +58,9 @@ namespace SourceGit.UI {
             dialog.basedOnDesc.Content = branch.Name;
 
             if (!branch.IsLocal) dialog.txtName.Text = branch.Name.Substring(branch.Remote.Length + 1);
-            PopupManager.Show(dialog);
+
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(dialog);
         }
 
         /// <summary>
@@ -71,7 +73,9 @@ namespace SourceGit.UI {
             dialog.based = tag.Name;
             dialog.basedOnType.Data = dialog.FindResource("Icon.Tag") as Geometry;
             dialog.basedOnDesc.Content = tag.Name;
-            PopupManager.Show(dialog);
+
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(dialog);
         }
 
         /// <summary>
@@ -84,7 +88,9 @@ namespace SourceGit.UI {
             dialog.based = commit.SHA;
             dialog.basedOnType.Data = dialog.FindResource("Icon.Commit") as Geometry;
             dialog.basedOnDesc.Content = $"{commit.ShortSHA}  {commit.Subject}";
-            PopupManager.Show(dialog);
+
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(dialog);
         }
 
         /// <summary>
@@ -96,7 +102,8 @@ namespace SourceGit.UI {
             txtName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtName)) return;
 
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Lock();
 
             bool checkout = chkCheckout.IsChecked == true;
             await Task.Run(() => {
@@ -119,7 +126,7 @@ namespace SourceGit.UI {
                 }
             });
 
-            PopupManager.Close(true);
+            popup?.Close(true);
         }
 
         /// <summary>
@@ -128,7 +135,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
     }
 }

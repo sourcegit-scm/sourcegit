@@ -7,8 +7,7 @@
              xmlns:local="clr-namespace:SourceGit.UI"
              xmlns:converters="clr-namespace:SourceGit.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Unloaded="Cleanup">
+             d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <RoutedUICommand x:Key="OpenSearchBarCommand" Text="OpenSearchBar"/>
         <RoutedUICommand x:Key="HideSearchBarCommand" Text="HideSearchBar"/>
@@ -34,41 +33,19 @@
         <Grid Grid.Row="0" Panel.ZIndex="9999">
             <Border Background="{StaticResource Brush.BG1}">
                 <Border.Effect>
-                    <DropShadowEffect ShadowDepth="2" Direction="270" Opacity=".3"/>
+                    <DropShadowEffect ShadowDepth="2" Direction="270" Opacity=".5" Color="Black"/>
                 </Border.Effect>
             </Border>
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
-                <!-- Navigation -->
-                <StackPanel Grid.Column="0" Margin="8,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button Click="Close" ToolTip="Back To Welcome" Padding="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Manager}"/>
-                            <Label Content="Repositories"/>
-                            <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Navigator}"/>
-                        </StackPanel>
-                    </Button>                    
-                    
-                    <Button x:Name="btnParent" Click="GotoParent" ToolTip="Open Parent Repository" Padding="0" Margin="6,0,0,0" Visibility="Collapsed">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-                            <Label x:Name="txtParent"/>
-                            <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Navigator}"/>
-                        </StackPanel>
-                    </Button>
-                    
-                    <Path Margin="6,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-                    <Label x:Name="repoName"/>
-                </StackPanel>
-                
                 <!-- Common Git Options -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="6,0">
                     <Button Click="OpenFetch" Margin="4,0">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Fetch}"/>
@@ -87,12 +64,18 @@
                             <Label Content="Push"/>
                         </StackPanel>
                     </Button>
-                    <Button Click="OpenStash" Margin="2,0,0,0">
+
+                    <Rectangle Margin="4,0,8,0" Width="1" Height="20" Fill="{StaticResource Brush.Border1}"/>
+                    
+                    <Button Click="OpenStash" Margin="4,0">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.SaveStash}"/>
                             <Label Content="Stash"/>
                         </StackPanel>
                     </Button>
+
+                    <Rectangle Margin="4,0,8,0" Width="1" Height="20" Fill="{StaticResource Brush.Border1}"/>
+                    
                     <Button Click="OpenApply" Margin="4,0">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Apply}"/>
@@ -539,6 +522,6 @@
         </Grid>
         
         <!-- Popups -->
-        <local:PopupManager Grid.Row="1"/>
+        <local:PopupManager x:Name="popupManager" Grid.Row="1"/>
     </Grid>
 </UserControl>

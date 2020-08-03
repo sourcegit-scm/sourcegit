@@ -42,7 +42,8 @@ namespace SourceGit.UI {
         ///     Show clone dialog.
         /// </summary>
         public static void Show() {
-            PopupManager.Show(new Clone());
+            var popup = App.Launcher.GetPopupManager(null);
+            popup?.Show(new Clone());
         }
 
         /// <summary>
@@ -91,16 +92,17 @@ namespace SourceGit.UI {
                 rName = RemoteName;
             }
 
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(null);
+            popup.Lock();
 
             var repo = await Task.Run(() => {
-                return Git.Repository.Clone(RemoteUri, ParentFolder, rName, repoName, PopupManager.UpdateStatus);
+                return Git.Repository.Clone(RemoteUri, ParentFolder, rName, repoName, popup.UpdateStatus);
             });
 
             if (repo == null) {
-                PopupManager.Unlock();
+                popup.Unlock();
             } else {
-                PopupManager.Close(true);
+                popup.Close(true);
                 repo.Open();
             }
         }
@@ -111,7 +113,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(null).Close();
         }
     }
 }

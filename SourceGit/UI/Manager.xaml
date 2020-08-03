@@ -8,37 +8,17 @@
     xmlns:git="clr-namespace:SourceGit.Git"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="32"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
-        <!-- Toolbar -->
-        <Grid Grid.Row="0" Panel.ZIndex="9999">
-            <Border Background="{StaticResource Brush.BG1}">
-                <Border.Effect>
-                    <DropShadowEffect ShadowDepth="2" Direction="270" Opacity=".3"/>
-                </Border.Effect>
-            </Border>
-
-            <!-- Navigation -->
-            <StackPanel Grid.Column="0" Margin="8,0,0,0" Orientation="Horizontal">
-                <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Manager}"/>
-                <Label Content="Repositories"/>
-            </StackPanel>
-        </Grid>
-        
+    <Grid>        
         <!-- Main Body -->
-        <Grid Grid.Row="1">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" MinWidth="200" MaxWidth="360"/>
                 <ColumnDefinition Width="2"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <!-- Left panel -->
-            <Grid Grid.Column="0">
+            <Grid Grid.Column="0" Background="{StaticResource Brush.BG1}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="32"/>
                     <RowDefinition Height="Auto"/>
@@ -148,7 +128,7 @@
                 </TreeView>
             </Grid>
 
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="Transparent"/>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="{StaticResource Brush.BG1}"/>
 
             <!-- Right Panel -->
             <Grid Grid.Column="2" Background="{StaticResource Brush.BG3}">
@@ -161,7 +141,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Name & Path & OpenButton -->
                     <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
@@ -176,7 +156,7 @@
                             <Path Width="20" Height="20" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
                         </Button>
                     </Grid>
-                    
+
                     <!-- Status of selected repository -->
                     <Label Grid.Row="1" Content="STATUS" FontSize="16" Margin="0,16,0,4" FontWeight="Bold" Opacity=".8"/>
                     <StackPanel Grid.Row="2" Orientation="Horizontal">
@@ -198,16 +178,16 @@
                     <Border Grid.Row="4" Margin="6,0,0,0" BorderBrush="{StaticResource Brush.BG4}" BorderThickness="1">
                         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                             <TextBlock FontSize="10pt"
-                               FontFamily="Consolas"
-                               Padding="8"
-                               Opacity="0.8"
-                               Background="{StaticResource Brush.BG2}"
-                               Foreground="{StaticResource Brush.FG}"
-                               x:Name="readme"/>
+                                FontFamily="Consolas"
+                                Padding="8"
+                                Opacity="0.8"
+                                Background="{StaticResource Brush.BG2}"
+                                Foreground="{StaticResource Brush.FG}"
+                                x:Name="readme"/>
                         </ScrollViewer>
                     </Border>
                 </Grid>
-                
+
                 <!-- Mask -->
                 <Border x:Name="briefMask" Background="{StaticResource Brush.BG3}" IsHitTestVisible="False">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
@@ -217,8 +197,8 @@
                 </Border>
             </Grid>
         </Grid>
-
-        <!-- Popups -->
-        <local:PopupManager Grid.Row="1"/>
+        
+        <!-- Popup -->
+        <local:PopupManager x:Name="popupManager"/>
     </Grid>
 </UserControl>

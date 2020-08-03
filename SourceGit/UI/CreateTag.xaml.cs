@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -51,7 +51,9 @@ namespace SourceGit.UI {
             dialog.based = branch.Head;
             dialog.basedOnType.Data = dialog.FindResource("Icon.Branch") as Geometry;
             dialog.basedOnDesc.Content = branch.Name;
-            PopupManager.Show(dialog);
+
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(dialog);
         }
 
         /// <summary>
@@ -64,7 +66,9 @@ namespace SourceGit.UI {
             dialog.based = commit.SHA;
             dialog.basedOnType.Data = dialog.FindResource("Icon.Commit") as Geometry;
             dialog.basedOnDesc.Content = $"{commit.ShortSHA}  {commit.Subject}";
-            PopupManager.Show(dialog);
+
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(dialog);
         }
 
         /// <summary>
@@ -77,7 +81,9 @@ namespace SourceGit.UI {
             if (Validation.GetHasError(tagName)) return;
 
             Git.Tag.Add(repo, TagName, based, tagMessage.Text);
-            PopupManager.Close();
+
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Close();
         }
 
         /// <summary>
@@ -86,7 +92,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
     }
 }

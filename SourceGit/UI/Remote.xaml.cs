@@ -44,7 +44,7 @@ namespace SourceGit.UI {
         /// <param name="opened"></param>
         /// <param name="editing"></param>
         public static void Show(Git.Repository opened, Git.Remote editing = null) {
-            PopupManager.Show(new Remote(opened, editing));
+            App.Launcher.GetPopupManager(opened)?.Show(new Remote(opened, editing));
         }
 
         /// <summary>
@@ -59,7 +59,8 @@ namespace SourceGit.UI {
             txtUrl.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtUrl)) return;
 
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Lock();
 
             await Task.Run(() => {
                 if (remote != null) {
@@ -69,7 +70,7 @@ namespace SourceGit.UI {
                 }
             });
 
-            PopupManager.Close(true);
+            popup?.Close(true);
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
     }
 }

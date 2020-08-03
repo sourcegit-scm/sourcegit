@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace SourceGit.UI {
@@ -29,7 +29,8 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="commit"></param>
         public static void Show(Git.Repository repo, Git.Commit commit) {
-            PopupManager.Show(new CherryPick(repo, commit));
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(new CherryPick(repo, commit));
         }
 
         /// <summary>
@@ -39,7 +40,9 @@ namespace SourceGit.UI {
         /// <param name="e"></param>
         private void Start(object sender, RoutedEventArgs e) {
             repo.CherryPick(commitSHA, chkCommitChanges.IsChecked != true);
-            PopupManager.Close();
+
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Close();
         }
 
         /// <summary>
@@ -48,7 +51,8 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Close();
         }
     }
 }

@@ -29,7 +29,8 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="prefer"></param>
         public static void Show(Git.Repository repo, Git.Branch prefer = null) {
-            PopupManager.Show(new Push(repo, prefer));
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(new Push(repo, prefer));
         }
 
         /// <summary>
@@ -44,8 +45,9 @@ namespace SourceGit.UI {
             }
 
             var push = new Push(repo, current);
-            PopupManager.Show(push);
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(push);
+            popup?.Lock();
 
             var upstream = current.Upstream.Substring(13);
             var remoteIdx = upstream.IndexOf('/');
@@ -53,9 +55,9 @@ namespace SourceGit.UI {
             var remoteBranch = upstream.Substring(remoteIdx + 1);
 
             Task.Run(() => {
-                repo.Push(remote, current.Name, remoteBranch, PopupManager.UpdateStatus);
+                repo.Push(remote, current.Name, remoteBranch, msg => popup?.UpdateStatus(msg));
                 push.Dispatcher.Invoke(() => {
-                    PopupManager.Close(true);
+                    popup?.Close(true);
                 });                
             });            
         }
@@ -96,9 +98,10 @@ namespace SourceGit.UI {
                 remoteBranch = remoteBranch.Substring(0, remoteBranch.Length - 6);
             }
 
-            PopupManager.Lock();
-            await Task.Run(() => repo.Push(remote, localBranch.Name, remoteBranch, PopupManager.UpdateStatus, tags, track, force));
-            PopupManager.Close(true);
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Lock();
+            await Task.Run(() => repo.Push(remote, localBranch.Name, remoteBranch, msg => popup?.UpdateStatus(msg), tags, track, force));
+            popup?.Close(true);
         }
 
         /// <summary>
@@ -107,7 +110,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
 
         /// <summary>

@@ -40,17 +40,19 @@ namespace SourceGit.UI {
         /// <param name="opened"></param>
         /// <param name="targets"></param>
         public static void Show(Git.Repository opened, List<Git.Change> targets) {
-            PopupManager.Show(new Discard(opened, targets));
+            var popup = App.Launcher.GetPopupManager(opened);
+            popup?.Show(new Discard(opened, targets));
         }
 
         private async void Sure(object sender, RoutedEventArgs e) {
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Lock();
             await Task.Run(() => repo.Discard(changes));
-            PopupManager.Close(true);
+            popup?.Close(true);
         }
 
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
     }
 }

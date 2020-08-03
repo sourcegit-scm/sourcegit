@@ -16,7 +16,6 @@ namespace SourceGit.Git {
 
         #region HOOKS
         public static Action<Repository> OnOpen = null;
-        public static Action OnClose = null;
         [XmlIgnore] public Action<string> OnNavigateCommit = null;
         [XmlIgnore] public Action OnWorkingCopyChanged = null;
         [XmlIgnore] public Action OnTagChanged = null;
@@ -355,7 +354,7 @@ namespace SourceGit.Git {
             releasePrefix = null;
             hotfixPrefix = null;
 
-            OnClose?.Invoke();
+            GC.Collect();
         }
         #endregion
 

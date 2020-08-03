@@ -53,7 +53,8 @@ namespace SourceGit.UI {
         /// <param name="source"></param>
         /// <param name="dest"></param>
         public static void Show(Git.Repository opened, string source, string dest) {
-            PopupManager.Show(new Merge(opened, source, dest));
+            var popup = App.Launcher.GetPopupManager(opened);
+            popup?.Show(new Merge(opened, source, dest));
         }
 
         /// <summary>
@@ -64,13 +65,14 @@ namespace SourceGit.UI {
         /// <param name="dest"></param>
         public static void StartDirectly(Git.Repository opened, string source, string dest) {
             var merge = new Merge(opened, source, dest);
-            PopupManager.Show(merge);
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(opened);
+            popup?.Show(merge);
+            popup?.Lock();
 
             Task.Run(() => {
                 opened.Merge(source, "");
                 merge.Dispatcher.Invoke(() => {
-                    PopupManager.Close(true);
+                    popup?.Close(true);
                 });
             });
         }
@@ -81,13 +83,14 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Start(object sender, RoutedEventArgs e) {
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Lock();
 
             var branch = sourceBranch.Content as string;
             var opt = combOptions.SelectedItem as Option;
             await Task.Run(() => repo.Merge(branch, opt.Arg));
 
-            PopupManager.Close(true);
+            popup?.Close(true);
         }
 
         /// <summary>
@@ -96,7 +99,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
     }
 }

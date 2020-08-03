@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:source="clr-namespace:SourceGit"
+        xmlns:local="clr-namespace:SourceGit.UI"
         mc:Ignorable="d"
         MinWidth="800" MinHeight="600"
         Title="Source Git"
@@ -33,23 +34,23 @@
                 </Style.Triggers>
             </Style>
         </Border.Style>
-
-        <Grid>
+        
+        <!-- Window Content -->
+        <Grid Background="{StaticResource Brush.BG4}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Titlebar -->
-            <Grid Grid.Row="0" Background="{StaticResource Brush.BG4}">
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="110"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Logo & Title -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <!-- LOGO & Title -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32">
                     <Path
                         Width="20" Height="20" Margin="6,-1,2,0"
                         Style="{StaticResource Style.Icon}" 
@@ -60,8 +61,103 @@
                     <Label Content="SOURCE GIT" FontWeight="Light"/>
                 </StackPanel>
 
-                <!-- Commands -->
-                <StackPanel Grid.Column="2" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
+                <!-- Tabs -->
+                <TabControl
+                    x:Name="openedTabs"
+                    Grid.Column="1"
+                    Padding="0" 
+                    ItemsSource="{Binding ElementName=me, Path=Tabs}">
+                    <TabControl.Style>
+                        <Style TargetType="{x:Type TabControl}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TabControl}">
+                                        <Grid KeyboardNavigation.TabNavigation="Local" Height="32">
+                                            <StackPanel Orientation="Horizontal"
+                                                x:Name="HeaderPanel" 
+                                                Grid.Row="0" 
+                                                Margin="0,6,0,0" 
+                                                IsItemsHost="True" 
+                                                KeyboardNavigation.TabIndex="1" 
+                                                Background="Transparent" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.Style>
+
+                    <TabControl.ItemContainerStyle>
+                        <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="IsSelected" Value="{Binding IsActive, Mode=TwoWay}"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                        <Grid x:Name="Container" Opacity=".7" Height="26" WindowChrome.IsHitTestVisibleInChrome="True">
+                                            <Border x:Name="BG" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
+                                                <Border.Effect>
+                                                    <DropShadowEffect ShadowDepth="2" Direction="90" Color="Black" Opacity=".3"/>
+                                                </Border.Effect>
+                                            </Border>
+
+                                            <ContentPresenter 
+                                                x:Name="ContentSite" 
+                                                VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                TextElement.Foreground="{DynamicResource Brush.FG}"
+                                                TextElement.FontWeight="Bold"
+                                                ContentSource="Header"
+                                                Margin="4,0"
+                                                RecognizesAccessKey="True" />
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.BG1}"/>
+                                                <Setter TargetName="BG" Property="BorderThickness" Value="1,1,1,0"/>
+                                                <Setter TargetName="Container" Property="Opacity" Value="1"/>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.BG5}"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.ItemContainerStyle>
+
+                    <TabControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="6,0">
+                                <Path Grid.Column="0" Width="14" Height="14" x:Name="Icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Brush.FG}" Margin="8,0,0,0"/>
+                                <Button x:Name="Closer" Margin="8,0,0,0" Grid.Column="2" Click="CloseRepo" ToolTip="CLOSE">
+                                    <Path Width="8" Height="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
+                                </Button>
+                            </StackPanel>
+
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Repo}" Value="{x:Null}">
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Manager}"/>
+                                    <Setter TargetName="Closer" Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                </TabControl>
+
+                <!-- Window Command -->
+                <StackPanel
+                    Grid.Column="2"
+                    Margin="32,0,0,0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Height="32"
+                    WindowChrome.IsHitTestVisibleInChrome="True">
                     <Button Click="ShowPreference" Width="24" ToolTip="PREFERENCE">
                         <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Preference}"/>
                     </Button>
@@ -105,11 +201,32 @@
                 </StackPanel>
             </Grid>
 
-            <!-- Body -->
-            <ContentControl Grid.Row="1" x:Name="body"/>
+            <!-- Pages -->
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding ElementName=me, Path=Tabs}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.Resources>
+                    <BooleanToVisibilityConverter x:Key="Bool2Visible"/>
+                </ItemsControl.Resources>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ContentControl Content="{Binding Page}" Visibility="{Binding IsActive, Converter={StaticResource Bool2Visible}}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
             <!-- Alerts -->
-            <ScrollViewer Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer
+                Grid.Row="1"
+                Margin="0,32,0,0"
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                HorizontalScrollBarVisibility="Disabled" 
+                VerticalScrollBarVisibility="Auto"
+                Panel.ZIndex="100">
                 <ItemsControl Margin="4" Width="300" Height="Auto" ItemsSource="{Binding Alerts, ElementName=me}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>

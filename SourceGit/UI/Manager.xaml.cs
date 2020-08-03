@@ -33,11 +33,6 @@ namespace SourceGit.UI {
         ///     Constructor.
         /// </summary>
         public Manager() {
-            Loaded += async (o, e) => {
-                await Task.Delay(500);
-                GC.Collect();
-            };
-
             InitializeComponent();
             UpdateRecentOpened();
             UpdateTree();

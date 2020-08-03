@@ -52,7 +52,8 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="opened"></param>
         public static void Show(Git.Repository opened) {
-            PopupManager.Show(new Apply(opened));
+            var popup = App.Launcher.GetPopupManager(opened);
+            popup?.Show(new Apply(opened));
         }
 
         /// <summary>
@@ -82,13 +83,14 @@ namespace SourceGit.UI {
             txtPatchFile.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtPatchFile)) return;
 
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Lock();
 
             var mode = combWhitespaceOptions.SelectedItem as WhitespaceOption;
             var ignoreSpaceChanges = chkIgnoreWhitespace.IsChecked == true;
             await Task.Run(() => repo.Apply(PatchFile, ignoreSpaceChanges, mode.Arg));
 
-            PopupManager.Close(true);
+            popup?.Close(true);
         }
 
         /// <summary>
@@ -97,7 +99,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
     }
 }

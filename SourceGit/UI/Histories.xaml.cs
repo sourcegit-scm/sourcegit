@@ -526,7 +526,7 @@ namespace SourceGit.UI {
                     }
 
                     var dialog = new InteractiveRebase(Repo, commit);
-                    dialog.Owner = App.Current.MainWindow;
+                    dialog.Owner = App.Launcher;
                     dialog.ShowDialog();
                 } else {
                     Rebase.Show(Repo, commit);

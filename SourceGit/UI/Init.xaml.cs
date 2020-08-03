@@ -25,7 +25,8 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="path"></param>
         public static void Show(string path) {
-            PopupManager.Show(new Init(path));
+            var popup = App.Launcher.GetPopupManager(null);
+            popup.Show(new Init(path));
         }
 
         /// <summary>
@@ -34,7 +35,8 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Sure(object sender, RoutedEventArgs e) {
-            PopupManager.Lock();
+            var popup = App.Launcher.GetPopupManager(null);
+            popup.Lock();
 
             await Task.Run(() => {
                 var errs = Git.Repository.RunCommand(workingDir, "init -q", null);
@@ -45,7 +47,7 @@ namespace SourceGit.UI {
                 }
             });
 
-            PopupManager.Close(true);
+            popup.Close(true);
 
             var repo = App.Preference.FindRepository(workingDir);
             if (repo != null) repo.Open();
@@ -57,7 +59,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(null).Close();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -28,7 +28,8 @@ namespace SourceGit.UI {
         /// <param name="repo">Opened repository</param>
         /// <param name="files">Special files to stash</param>
         public static void Show(Git.Repository repo, List<string> files) {
-            PopupManager.Show(new Stash(repo, files));
+            var popup = App.Launcher.GetPopupManager(repo);
+            popup?.Show(new Stash(repo, files));
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace SourceGit.UI {
             string message = txtName.Text;
 
             Git.Stash.Push(repo, includeUntracked, message, files);
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            PopupManager.Close();
+            App.Launcher.GetPopupManager(repo)?.Close();
         }
     }
 }
