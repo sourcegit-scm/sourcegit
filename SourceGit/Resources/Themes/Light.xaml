@@ -5,6 +5,7 @@
     <SolidColorBrush x:Key="Brush.BG3" Color="WhiteSmoke"/>
     <SolidColorBrush x:Key="Brush.BG4" Color="#FFE6E7E8"/>
     <SolidColorBrush x:Key="Brush.BG5" Color="#FFBDBDBD"/>
+    <SolidColorBrush x:Key="Brush.BG6" Color="#FFCFCFCF"/>
     <SolidColorBrush x:Key="Brush.Border1" Color="#FF898989"/>
     <SolidColorBrush x:Key="Brush.Border2" Color="#FFCFCFCF"/>
     <SolidColorBrush x:Key="Brush.FG" Color="#FF1F1F1F"/>

@@ -36,7 +36,7 @@
         </Border.Style>
         
         <!-- Window Content -->
-        <Grid Background="{StaticResource Brush.BG4}">
+        <Grid Background="{StaticResource Brush.BG6}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="*"/>
