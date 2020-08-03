@@ -68,7 +68,7 @@ namespace SourceGit.UI {
             };
 
             Tabs.Add(new Tab() {
-                Title = "Repositories",
+                Title = "SOURCE GIT",
                 Page = new Manager(),
             });
 

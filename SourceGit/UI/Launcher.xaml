@@ -44,27 +44,14 @@
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="110"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- LOGO & Title -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32">
-                    <Path
-                        Width="20" Height="20" Margin="6,-1,2,0"
-                        Style="{StaticResource Style.Icon}" 
-                        Data="{StaticResource Icon.Git}" 
-                        Fill="#FFF05133"
-                        WindowChrome.IsHitTestVisibleInChrome="True"
-                        MouseLeftButtonDown="LogoMouseButtonDown"/>
-                    <Label Content="SOURCE GIT" FontWeight="Light"/>
-                </StackPanel>
-
                 <!-- Tabs -->
                 <TabControl
                     x:Name="openedTabs"
-                    Grid.Column="1"
+                    Grid.Column="0"
                     Padding="0" 
                     ItemsSource="{Binding ElementName=me, Path=Tabs}">
                     <TabControl.Style>
@@ -76,7 +63,7 @@
                                             <StackPanel Orientation="Horizontal"
                                                 x:Name="HeaderPanel" 
                                                 Grid.Row="0" 
-                                                Margin="0,6,0,0" 
+                                                Margin="4,4,0,0" 
                                                 IsItemsHost="True" 
                                                 KeyboardNavigation.TabIndex="1" 
                                                 Background="Transparent" />
@@ -93,7 +80,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type TabItem}">
-                                        <Grid x:Name="Container" Opacity=".7" Height="26" WindowChrome.IsHitTestVisibleInChrome="True">
+                                        <Grid x:Name="Container" Opacity=".7" Height="28" WindowChrome.IsHitTestVisibleInChrome="True">
                                             <Border x:Name="BG" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
                                                 <Border.Effect>
                                                     <DropShadowEffect ShadowDepth="2" Direction="90" Color="Black" Opacity=".3"/>
@@ -141,7 +128,8 @@
 
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding Repo}" Value="{x:Null}">
-                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Manager}"/>
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Git}"/>
+                                    <Setter TargetName="Icon" Property="Fill" Value="#FFF05133"/>
                                     <Setter TargetName="Closer" Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>
@@ -151,7 +139,7 @@
 
                 <!-- Window Command -->
                 <StackPanel
-                    Grid.Column="2"
+                    Grid.Column="1"
                     Margin="32,0,0,0"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
