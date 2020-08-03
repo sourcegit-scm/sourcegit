@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SourceGit.UI {
 
@@ -175,6 +176,35 @@ namespace SourceGit.UI {
         /// </summary>
         private void Quit(object sender, RoutedEventArgs e) {
             App.Current.Shutdown();
+        }
+        #endregion
+
+        #region DRAG_DROP
+        private void TabsPreviewMouseMove(object sender, MouseEventArgs e) {
+            var tab = e.Source as TabItem;
+            if (tab == null || (tab.DataContext as Tab).Repo == null) return;
+
+            if (Mouse.LeftButton == MouseButtonState.Pressed) {
+                DragDrop.DoDragDrop(tab, tab, DragDropEffects.All);
+            }
+        }
+
+        private void TabsDrop(object sender, DragEventArgs e) {
+            var tabItemSrc = e.Data.GetData(typeof(TabItem)) as TabItem;
+            var tabItemDst = e.Source as TabItem;
+            if (tabItemSrc.Equals(tabItemDst)) return;
+
+            var tabSrc = tabItemSrc.DataContext as Tab;
+            var tabDst = tabItemDst.DataContext as Tab;
+            if (tabDst.Repo == null) {
+                Tabs.Remove(tabSrc);
+                Tabs.Insert(1, tabSrc);
+            } else {
+                int dstIdx = Tabs.IndexOf(tabDst);
+
+                Tabs.Remove(tabSrc);
+                Tabs.Insert(dstIdx, tabSrc);
+            }
         }
         #endregion
     }

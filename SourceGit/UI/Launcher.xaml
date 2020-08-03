@@ -5,7 +5,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:source="clr-namespace:SourceGit"
-        xmlns:local="clr-namespace:SourceGit.UI"
         mc:Ignorable="d"
         MinWidth="800" MinHeight="600"
         Title="Source Git"
@@ -52,7 +51,7 @@
                 <TabControl
                     x:Name="openedTabs"
                     Grid.Column="0"
-                    Padding="0" 
+                    Padding="0"
                     ItemsSource="{Binding ElementName=me, Path=Tabs}">
                     <TabControl.Style>
                         <Style TargetType="{x:Type TabControl}">
@@ -76,6 +75,7 @@
 
                     <TabControl.ItemContainerStyle>
                         <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="AllowDrop" Value="True"/>
                             <Setter Property="IsSelected" Value="{Binding IsActive, Mode=TwoWay}"/>
                             <Setter Property="Template">
                                 <Setter.Value>
@@ -113,6 +113,9 @@
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
+
+                            <EventSetter Event="PreviewMouseMove" Handler="TabsPreviewMouseMove"/>
+                            <EventSetter Event="Drop" Handler="TabsDrop"/>
                         </Style>
                     </TabControl.ItemContainerStyle>
 
