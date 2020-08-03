@@ -62,7 +62,7 @@
                                             <StackPanel Orientation="Horizontal"
                                                 x:Name="HeaderPanel" 
                                                 Grid.Row="0" 
-                                                Margin="4,4,0,0" 
+                                                Margin="6,4,0,0" 
                                                 IsItemsHost="True" 
                                                 KeyboardNavigation.TabIndex="1" 
                                                 Background="Transparent" />
