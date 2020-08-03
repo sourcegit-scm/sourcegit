@@ -39,13 +39,29 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <!-- Common Git Options -->
+                <!-- Browser -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="6,0">
+                    <Button Click="OpenExplorer" Margin="4,0,0,0" ToolTip="Open In File Browser">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
+                            <Label Content="Explore"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenConfigure" Margin="4,0,0,0" ToolTip="Configure This Repository">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Setting}"/>
+                            <Label Content="Configure"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                
+                <!-- Common Git Options -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="6,0">
                     <Button Click="OpenFetch" Margin="4,0">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Fetch}"/>
@@ -64,19 +80,13 @@
                             <Label Content="Push"/>
                         </StackPanel>
                     </Button>
-
-                    <Rectangle Margin="4,0,8,0" Width="1" Height="20" Fill="{StaticResource Brush.Border1}"/>
-                    
                     <Button Click="OpenStash" Margin="4,0">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.SaveStash}"/>
                             <Label Content="Stash"/>
                         </StackPanel>
-                    </Button>
-
-                    <Rectangle Margin="4,0,8,0" Width="1" Height="20" Fill="{StaticResource Brush.Border1}"/>
-                    
-                    <Button Click="OpenApply" Margin="4,0">
+                    </Button>                    
+                    <Button Click="OpenApply">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Apply}"/>
                             <Label Content="Apply"/>
@@ -86,22 +96,10 @@
 
                 <!-- External Options -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Click="OpenSearch" Margin="4,0,0,0" ToolTip="Search Commit">
+                    <Button Click="OpenSearch" Margin="4,0" ToolTip="Search Commit">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
                             <Label Content="Search"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="OpenConfigure" Margin="4,0,0,0" ToolTip="Configure This Repository">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Setting}"/>
-                            <Label Content="Configure"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="OpenExplorer" Margin="4,0,0,0" ToolTip="Open In File Browser">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
-                            <Label Content="Explore"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenTerminal" Margin="4,0" ToolTip="Open Git Bash">
