@@ -87,6 +87,26 @@
                                                 </Border.Effect>
                                             </Border>
 
+                                            <Path
+                                                x:Name="CornerLeft"
+                                                Width="4"
+                                                Height="4"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom"
+                                                Margin="-4,0,0,0"
+                                                Data="M 0,4 L 4,4 4,0 C 4,0 4,4 0,4 Z"
+                                                Fill="Transparent"/>
+
+                                            <Path
+                                                x:Name="CornerRight"
+                                                Width="4"
+                                                Height="4"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Margin="0,0,-4,0"
+                                                Data="M 0,0 L 0,4 4,4 C 4,4 0,4 0,0 Z"
+                                                Fill="Transparent"/>
+
                                             <ContentPresenter 
                                                 x:Name="ContentSite" 
                                                 VerticalAlignment="Center" HorizontalAlignment="Center" 
@@ -101,6 +121,8 @@
                                                 <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.BG1}"/>
                                                 <Setter TargetName="BG" Property="BorderThickness" Value="1,1,1,0"/>
                                                 <Setter TargetName="Container" Property="Opacity" Value="1"/>
+                                                <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.BG1}"/>
+                                                <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG1}"/>
                                             </Trigger>
                                             <MultiTrigger>
                                                 <MultiTrigger.Conditions>
