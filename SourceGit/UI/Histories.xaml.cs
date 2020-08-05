@@ -41,6 +41,10 @@ namespace SourceGit.UI {
         /// </summary>
         public Histories() {
             InitializeComponent();
+
+            mask4MultiSelection.Visibility = Visibility.Visible;
+            txtTotalSelected.Content = "SELECT COMMIT TO VIEW DETAIL";
+
             ChangeOrientation(null, null);
         }
 
