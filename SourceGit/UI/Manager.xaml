@@ -128,7 +128,7 @@
                 </TreeView>
             </Grid>
 
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="{StaticResource Brush.BG1}"/>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="{StaticResource Brush.BG3}"/>
 
             <!-- Right Panel -->
             <Grid Grid.Column="2" Background="{StaticResource Brush.BG3}">
