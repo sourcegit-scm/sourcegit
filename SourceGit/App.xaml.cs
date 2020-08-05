@@ -54,8 +54,8 @@ namespace SourceGit {
             if (main == null) return null;
             if (repo == null) return (main.Tabs[0].Page as UI.Manager).popupManager;
 
-            for (int i = 1; i < main.openedTabs.Items.Count; i++) {
-                var opened = main.openedTabs.Items[i] as UI.Launcher.Tab;
+            for (int i = 1; i < main.Tabs.Count; i++) {
+                var opened = main.Tabs[i];
                 if (opened.Repo.Path == repo.Path) {
                     return (opened.Page as UI.Dashboard).popupManager;
                 }

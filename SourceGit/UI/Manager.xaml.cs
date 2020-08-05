@@ -402,7 +402,7 @@ namespace SourceGit.UI {
             }
 
             var repo = App.Preference.AddRepository(path, "");
-            repo.Open();
+            if (!(App.Current.MainWindow as Launcher).GotoRepo(repo)) repo.Open();
         }
 
         /// <summary>

@@ -958,7 +958,8 @@ namespace SourceGit.UI {
             sub.Path = Path.Combine(repo.Path, path);
             sub.Name = Path.GetFileName(path);
             sub.Parent = repo;
-            sub.Open();
+
+            if (!(App.Current.MainWindow as Launcher).GotoRepo(sub)) sub.Open();            
         }
         #endregion
 

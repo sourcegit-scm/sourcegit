@@ -48,14 +48,6 @@ namespace SourceGit.UI {
 
             Git.Repository.OnOpen = repo => {
                 Dispatcher.Invoke(() => {
-                    for (int i = 1; i < openedTabs.Items.Count; i++) {
-                        var opened = openedTabs.Items[i] as Tab;
-                        if (opened.Repo.Path == repo.Path) {
-                            openedTabs.SelectedItem = opened;
-                            return;
-                        }
-                    }
-
                     var tab = new Tab() {
                         Title = repo.Parent == null ? repo.Name : $"{repo.Parent.Name} : {repo.Name}",
                         Repo = repo,
@@ -74,6 +66,23 @@ namespace SourceGit.UI {
 
             InitializeComponent();
             openedTabs.SelectedItem = Tabs[0];
+        }
+
+        /// <summary>
+        ///     Goto opened repository.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <returns></returns>
+        public bool GotoRepo(Git.Repository repo) {
+            for (int i = 1; i < Tabs.Count; i++) {
+                var opened = Tabs[i];
+                if (opened.Repo.Path == repo.Path) {
+                    openedTabs.SelectedItem = opened;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #region LAYOUT_CONTENT
