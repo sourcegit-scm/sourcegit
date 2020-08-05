@@ -191,5 +191,23 @@ namespace SourceGit.UI {
             }
         }
         #endregion
+
+        #region TAB_SCROLL
+        private void OpenedTabsSizeChanged(object sender, SizeChangedEventArgs e) {
+            if (openedTabs.ActualWidth > openedTabsColumn.ActualWidth) {
+                openedTabsOpts.Visibility = Visibility.Visible;
+            } else {
+                openedTabsOpts.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void ScrollToLeft(object sender, RoutedEventArgs e) {
+            openedTabsScroller.LineLeft();
+        }
+
+        private void ScrollToRight(object sender, RoutedEventArgs e) {
+            openedTabsScroller.LineRight();
+        }
+        #endregion
     }
 }

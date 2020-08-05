@@ -43,132 +43,140 @@
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition x:Name="openedTabsColumn" Width="*"/>
+                    <ColumnDefinition Width="32"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Tabs -->
-                <TabControl
-                    x:Name="openedTabs"
-                    Grid.Column="0"
-                    Padding="0"
-                    ItemsSource="{Binding ElementName=me, Path=Tabs}">
-                    <TabControl.Style>
-                        <Style TargetType="{x:Type TabControl}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type TabControl}">
-                                        <Grid KeyboardNavigation.TabNavigation="Local" Height="32">
-                                            <StackPanel Orientation="Horizontal"
-                                                x:Name="HeaderPanel" 
-                                                Grid.Row="0" 
-                                                Margin="6,4,0,0" 
-                                                IsItemsHost="True" 
-                                                KeyboardNavigation.TabIndex="1" 
-                                                Background="Transparent" />
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </TabControl.Style>
+                <ScrollViewer x:Name="openedTabsScroller" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                    <TabControl x:Name="openedTabs" Padding="0" ItemsSource="{Binding ElementName=me, Path=Tabs}" SizeChanged="OpenedTabsSizeChanged">
+                        <TabControl.Style>
+                            <Style TargetType="{x:Type TabControl}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type TabControl}">
+                                            <Grid KeyboardNavigation.TabNavigation="Local" Height="32">
+                                                <StackPanel Orientation="Horizontal"
+                                                    x:Name="HeaderPanel" 
+                                                    Grid.Row="0" 
+                                                    Margin="6,4,0,0" 
+                                                    IsItemsHost="True" 
+                                                    KeyboardNavigation.TabIndex="1" 
+                                                    Background="Transparent" />
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </TabControl.Style>
 
-                    <TabControl.ItemContainerStyle>
-                        <Style TargetType="{x:Type TabItem}">
-                            <Setter Property="AllowDrop" Value="True"/>
-                            <Setter Property="IsSelected" Value="{Binding IsActive, Mode=TwoWay}"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type TabItem}">
-                                        <Grid x:Name="Container" Opacity=".7" Height="28" WindowChrome.IsHitTestVisibleInChrome="True">
-                                            <Border x:Name="BG" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
-                                                <Border.Effect>
-                                                    <DropShadowEffect ShadowDepth="2" Direction="90" Color="Black" Opacity=".3"/>
-                                                </Border.Effect>
-                                            </Border>
+                        <TabControl.ItemContainerStyle>
+                            <Style TargetType="{x:Type TabItem}">
+                                <Setter Property="AllowDrop" Value="True"/>
+                                <Setter Property="IsSelected" Value="{Binding IsActive, Mode=TwoWay}"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type TabItem}">
+                                            <Grid x:Name="Container" Opacity=".7" Height="28" WindowChrome.IsHitTestVisibleInChrome="True">
+                                                <Border x:Name="BG" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
+                                                    <Border.Effect>
+                                                        <DropShadowEffect ShadowDepth="2" Direction="90" Color="Black" Opacity=".3"/>
+                                                    </Border.Effect>
+                                                </Border>
 
-                                            <Path
-                                                x:Name="CornerLeft"
-                                                Width="4"
-                                                Height="4"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Bottom"
-                                                Margin="-4,0,0,0"
-                                                Data="M 0,4 L 4,4 4,0 C 4,0 4,4 0,4 Z"
-                                                Fill="Transparent"/>
+                                                <Path
+                                                    x:Name="CornerLeft"
+                                                    Width="4"
+                                                    Height="4"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Bottom"
+                                                    Margin="-4,0,0,0"
+                                                    Data="M 0,4 L 4,4 4,0 C 4,0 4,4 0,4 Z"
+                                                    Fill="Transparent"/>
 
-                                            <Path
-                                                x:Name="CornerRight"
-                                                Width="4"
-                                                Height="4"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Bottom"
-                                                Margin="0,0,-4,0"
-                                                Data="M 0,0 L 0,4 4,4 C 4,4 0,4 0,0 Z"
-                                                Fill="Transparent"/>
+                                                <Path
+                                                    x:Name="CornerRight"
+                                                    Width="4"
+                                                    Height="4"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Bottom"
+                                                    Margin="0,0,-4,0"
+                                                    Data="M 0,0 L 0,4 4,4 C 4,4 0,4 0,0 Z"
+                                                    Fill="Transparent"/>
 
-                                            <ContentPresenter 
-                                                x:Name="ContentSite" 
-                                                VerticalAlignment="Center" HorizontalAlignment="Center" 
-                                                TextElement.Foreground="{DynamicResource Brush.FG}"
-                                                TextElement.FontWeight="Bold"
-                                                ContentSource="Header"
-                                                Margin="4,0"
-                                                RecognizesAccessKey="True" />
-                                        </Grid>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.BG1}"/>
-                                                <Setter TargetName="BG" Property="BorderThickness" Value="1,1,1,0"/>
-                                                <Setter TargetName="Container" Property="Opacity" Value="1"/>
-                                                <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.BG1}"/>
-                                                <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG1}"/>
-                                            </Trigger>
-                                            <MultiTrigger>
-                                                <MultiTrigger.Conditions>
-                                                    <Condition Property="IsSelected" Value="False"/>
-                                                    <Condition Property="IsMouseOver" Value="True"/>
-                                                </MultiTrigger.Conditions>
-                                                <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.BG5}"/>
-                                            </MultiTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
+                                                <ContentPresenter 
+                                                    x:Name="ContentSite" 
+                                                    VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                    TextElement.Foreground="{DynamicResource Brush.FG}"
+                                                    TextElement.FontWeight="Bold"
+                                                    ContentSource="Header"
+                                                    Margin="4,0"
+                                                    RecognizesAccessKey="True" />
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.BG1}"/>
+                                                    <Setter TargetName="BG" Property="BorderThickness" Value="1,1,1,0"/>
+                                                    <Setter TargetName="Container" Property="Opacity" Value="1"/>
+                                                    <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.BG1}"/>
+                                                    <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG1}"/>
+                                                </Trigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="IsSelected" Value="False"/>
+                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.BG5}"/>
+                                                </MultiTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
 
-                            <EventSetter Event="MouseMove" Handler="TabsMouseMove"/>
-                            <EventSetter Event="Drop" Handler="TabsDrop"/>
-                        </Style>
-                    </TabControl.ItemContainerStyle>
+                                <EventSetter Event="MouseMove" Handler="TabsMouseMove"/>
+                                <EventSetter Event="Drop" Handler="TabsDrop"/>
+                            </Style>
+                        </TabControl.ItemContainerStyle>
 
-                    <TabControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="6,0">
-                                <Path Grid.Column="0" Width="14" Height="14" x:Name="Icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Brush.FG}" Margin="8,0,0,0"/>
-                                <Button x:Name="Closer" Margin="8,0,0,0" Grid.Column="2" Click="CloseRepo" ToolTip="CLOSE">
-                                    <Path Width="8" Height="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
-                                </Button>
-                            </StackPanel>
+                        <TabControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="6,0">
+                                    <Path Grid.Column="0" Width="14" Height="14" x:Name="Icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Brush.FG}" Margin="8,0,0,0"/>
+                                    <Button x:Name="Closer" Margin="8,0,0,0" Grid.Column="2" Click="CloseRepo" ToolTip="CLOSE">
+                                        <Path Width="8" Height="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
+                                    </Button>
+                                </StackPanel>
 
-                            <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding Repo}" Value="{x:Null}">
-                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Git}"/>
-                                    <Setter TargetName="Icon" Property="Fill" Value="#FFF05133"/>
-                                    <Setter TargetName="Closer" Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </DataTemplate.Triggers>
-                        </DataTemplate>
-                    </TabControl.ItemTemplate>
-                </TabControl>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Repo}" Value="{x:Null}">
+                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Git}"/>
+                                        <Setter TargetName="Icon" Property="Fill" Value="#FFF05133"/>
+                                        <Setter TargetName="Closer" Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                    </TabControl>
+                </ScrollViewer>
+                
+                <!-- Tab scroller -->
+                <StackPanel x:Name="openedTabsOpts" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal" Height="28" Margin="4,0,0,0" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button Click="ScrollToLeft">
+                        <Path Width="10" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.ScrollLeft}"/>
+                    </Button>
+                    <Button Click="ScrollToRight">
+                        <Path Width="10" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.ScrollRight}"/>
+                    </Button>
+                </StackPanel>
 
                 <!-- Window Command -->
                 <StackPanel
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Margin="32,0,0,0"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
                     Height="32"
                     WindowChrome.IsHitTestVisibleInChrome="True">
                     <Button Click="ShowPreference" Width="24" ToolTip="PREFERENCE">
