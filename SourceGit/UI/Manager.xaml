@@ -73,7 +73,8 @@
                 <TreeView
                     x:Name="repositories"
                     Grid.Row="3"
-                    Margin="0, 4"
+                    Margin="0,4"
+                    Padding="0"
                     AllowDrop="True"
                     ContextMenuOpening="TreeContextMenuOpening"
                     Drop="TreeDrop" 

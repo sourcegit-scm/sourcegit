@@ -207,6 +207,7 @@
                 <TreeView
                     Grid.Row="3"
                     x:Name="localBranchTree"
+                    Padding="0"
                     Background="{StaticResource Brush.BG3}"
                     FontFamily="Consolas"
                     LostFocus="TreeLostFocus"
@@ -282,7 +283,8 @@
                 </Grid>
                 <TreeView
                     Grid.Row="5"
-                    x:Name="remoteBranchTree"
+                    x:Name="remoteBranchTree"                    
+                    Padding="0"
                     Background="{StaticResource Brush.BG3}"
                     FontFamily="Consolas"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
