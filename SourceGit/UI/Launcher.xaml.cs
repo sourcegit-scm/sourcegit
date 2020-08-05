@@ -15,6 +15,7 @@ namespace SourceGit.UI {
         /// </summary>
         public class Tab {
             public string Title { get; set; }
+            public string Tooltip { get; set; }
             public bool IsActive { get; set; }
             public Git.Repository Repo { get; set; }
             public object Page { get; set; }
@@ -50,6 +51,7 @@ namespace SourceGit.UI {
                 Dispatcher.Invoke(() => {
                     var tab = new Tab() {
                         Title = repo.Parent == null ? repo.Name : $"{repo.Parent.Name} : {repo.Name}",
+                        Tooltip = repo.Path,
                         Repo = repo,
                         Page = new Dashboard(repo),
                     };
@@ -61,6 +63,7 @@ namespace SourceGit.UI {
 
             Tabs.Add(new Tab() {
                 Title = "SOURCE GIT",
+                Tooltip = "Welcome Page",
                 Page = new Manager(),
             });
 

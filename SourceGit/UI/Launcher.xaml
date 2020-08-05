@@ -143,8 +143,15 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="6,0">
                                     <Path Grid.Column="0" Width="14" Height="14" x:Name="Icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Brush.FG}" Margin="8,0,0,0"/>
-                                    <Button x:Name="Closer" Margin="8,0,0,0" Grid.Column="2" Click="CloseRepo" ToolTip="CLOSE">
+                                    <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Brush.FG}" Margin="8,0,0,0" FontWeight="Bold">
+                                        <TextBlock.ToolTip>
+                                            <ToolTip Content="{Binding Tooltip}" FontWeight="Normal"/>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                    <Button x:Name="Closer" Margin="8,0,0,0" Grid.Column="2" Click="CloseRepo">
+                                        <Button.ToolTip>
+                                            <ToolTip Content="CLOSE" FontWeight="Normal"/>
+                                        </Button.ToolTip>
                                         <Path Width="8" Height="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
                                     </Button>
                                 </StackPanel>
