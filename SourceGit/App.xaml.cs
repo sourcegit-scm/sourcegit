@@ -37,19 +37,31 @@ namespace SourceGit {
         }
 
         /// <summary>
-        ///     Get main window.
-        /// </summary>
-        public static UI.Launcher Launcher {
-            get;
-            private set;
-        }
-
-        /// <summary>
         ///     Raise error message.
         /// </summary>
         /// <param name="message"></param>
         public static void RaiseError(string message) {
             OnError?.Invoke(message);
+        }
+
+        /// <summary>
+        ///     Get popup manager by repository
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <returns></returns>
+        public static UI.PopupManager GetPopupManager(Git.Repository repo) {
+            var main = Current.MainWindow as UI.Launcher;
+            if (main == null) return null;
+            if (repo == null) return (main.Tabs[0].Page as UI.Manager).popupManager;
+
+            for (int i = 1; i < main.openedTabs.Items.Count; i++) {
+                var opened = main.openedTabs.Items[i] as UI.Launcher.Tab;
+                if (opened.Repo.Path == repo.Path) {
+                    return (opened.Page as UI.Dashboard).popupManager;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -100,8 +112,8 @@ namespace SourceGit {
             }
 
             // Show main window
-            Launcher = new UI.Launcher();
-            Launcher.Show();
+            Current.MainWindow = new UI.Launcher();
+            Current.MainWindow.Show();
         }
 
         /// <summary>

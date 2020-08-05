@@ -59,7 +59,7 @@ namespace SourceGit.UI {
             var current = repo.CurrentBranch();
             if (current == null) return;
 
-            App.Launcher.GetPopupManager(repo)?.Show(new Reset(repo, current, commit));
+            App.GetPopupManager(repo)?.Show(new Reset(repo, current, commit));
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace SourceGit.UI {
             var mode = combMode.SelectedItem as Mode;
             if (mode == null) return;
 
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Lock();
             await Task.Run(() => repo.Reset(revision, mode.Arg));
             popup?.Close(true);
@@ -83,7 +83,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
     }
 }

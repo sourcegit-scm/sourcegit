@@ -38,7 +38,7 @@ namespace SourceGit.UI {
             dialog.type.Data = dialog.FindResource("Icon.Branch") as Geometry;
             dialog.desc.Content = branch.Name;
 
-            var popup = App.Launcher.GetPopupManager(opened);
+            var popup = App.GetPopupManager(opened);
             popup?.Show(dialog);
         }
 
@@ -57,7 +57,7 @@ namespace SourceGit.UI {
             dialog.type.Data = dialog.FindResource("Icon.Commit") as Geometry;
             dialog.desc.Content = $"{commit.ShortSHA}  {commit.Subject}";
 
-            var popup = App.Launcher.GetPopupManager(opened);
+            var popup = App.GetPopupManager(opened);
             popup?.Show(dialog);
         }
 
@@ -67,7 +67,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Start(object sender, RoutedEventArgs e) {
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Lock();
 
             var autoStash = chkAutoStash.IsChecked == true;
@@ -77,7 +77,7 @@ namespace SourceGit.UI {
         }
 
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
     }
 }

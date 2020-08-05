@@ -48,9 +48,9 @@ namespace SourceGit.UI {
 
             Git.Repository.OnOpen = repo => {
                 Dispatcher.Invoke(() => {
-                    foreach (var item in openedTabs.Items) {
-                        var opened = item as Tab;
-                        if (opened != null && opened.Repo != null && repo.Path == opened.Repo.Path) {
+                    for (int i = 1; i < openedTabs.Items.Count; i++) {
+                        var opened = openedTabs.Items[i] as Tab;
+                        if (opened.Repo.Path == repo.Path) {
                             openedTabs.SelectedItem = opened;
                             return;
                         }
@@ -74,23 +74,6 @@ namespace SourceGit.UI {
 
             InitializeComponent();
             openedTabs.SelectedItem = Tabs[0];
-        }
-
-        /// <summary>
-        ///     Get popup manager from given active page.
-        /// </summary>
-        /// <param name="repo"></param>
-        /// <returns></returns>
-        public PopupManager GetPopupManager(Git.Repository repo) {
-            if (repo == null) return (Tabs[0].Page as Manager).popupManager;
-
-            foreach (var tab in Tabs) {
-                if (tab.Repo != null && tab.Repo.Path == repo.Path) {
-                    return (tab.Page as Dashboard).popupManager;
-                }
-            }
-
-            return null;
         }
 
         #region LAYOUT_CONTENT

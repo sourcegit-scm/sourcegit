@@ -59,7 +59,7 @@ namespace SourceGit.UI {
 
             if (!branch.IsLocal) dialog.txtName.Text = branch.Name.Substring(branch.Remote.Length + 1);
 
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Show(dialog);
         }
 
@@ -74,7 +74,7 @@ namespace SourceGit.UI {
             dialog.basedOnType.Data = dialog.FindResource("Icon.Tag") as Geometry;
             dialog.basedOnDesc.Content = tag.Name;
 
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Show(dialog);
         }
 
@@ -89,7 +89,7 @@ namespace SourceGit.UI {
             dialog.basedOnType.Data = dialog.FindResource("Icon.Commit") as Geometry;
             dialog.basedOnDesc.Content = $"{commit.ShortSHA}  {commit.Subject}";
 
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Show(dialog);
         }
 
@@ -102,7 +102,7 @@ namespace SourceGit.UI {
             txtName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtName)) return;
 
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Lock();
 
             bool checkout = chkCheckout.IsChecked == true;
@@ -135,7 +135,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
     }
 }

@@ -38,7 +38,7 @@ namespace SourceGit.UI {
         /// <param name="opened"></param>
         /// <param name="branch"></param>
         public static void Show(Git.Repository opened, Git.Branch branch) {
-            App.Launcher.GetPopupManager(opened)?.Show(new RenameBranch(opened, branch));
+            App.GetPopupManager(opened)?.Show(new RenameBranch(opened, branch));
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace SourceGit.UI {
             txtNewName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtNewName)) return;
 
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Lock();
             await Task.Run(() => branch.Rename(repo, NewName));
             popup?.Close(true);
@@ -62,7 +62,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
     }
 }

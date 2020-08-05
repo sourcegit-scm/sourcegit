@@ -34,7 +34,7 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="repo"></param>
         public static void Show(Git.Repository repo) {
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Show(new AddSubmodule(repo));
         }
 
@@ -58,7 +58,7 @@ namespace SourceGit.UI {
             if (Validation.GetHasError(txtPath)) return;
 
             var recursive = chkRecursive.IsChecked == true;
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
 
             popup?.Lock();
             await Task.Run(() => repo.AddSubmodule(RepoURL, LocalPath, recursive, msg => {
@@ -68,7 +68,7 @@ namespace SourceGit.UI {
         }
 
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
         #endregion
     }

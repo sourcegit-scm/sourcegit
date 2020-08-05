@@ -29,7 +29,7 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="commit"></param>
         public static void Show(Git.Repository repo, Git.Commit commit) {
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Show(new CherryPick(repo, commit));
         }
 
@@ -41,7 +41,7 @@ namespace SourceGit.UI {
         private void Start(object sender, RoutedEventArgs e) {
             repo.CherryPick(commitSHA, chkCommitChanges.IsChecked != true);
 
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Close();
         }
 
@@ -51,7 +51,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Close();
         }
     }

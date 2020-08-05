@@ -42,7 +42,7 @@ namespace SourceGit.UI {
         ///     Show clone dialog.
         /// </summary>
         public static void Show() {
-            var popup = App.Launcher.GetPopupManager(null);
+            var popup = App.GetPopupManager(null);
             popup?.Show(new Clone());
         }
 
@@ -92,7 +92,7 @@ namespace SourceGit.UI {
                 rName = RemoteName;
             }
 
-            var popup = App.Launcher.GetPopupManager(null);
+            var popup = App.GetPopupManager(null);
             popup.Lock();
 
             var repo = await Task.Run(() => {
@@ -113,7 +113,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(null).Close();
+            App.GetPopupManager(null).Close();
         }
     }
 }

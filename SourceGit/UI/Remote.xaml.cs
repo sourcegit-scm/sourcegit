@@ -44,7 +44,7 @@ namespace SourceGit.UI {
         /// <param name="opened"></param>
         /// <param name="editing"></param>
         public static void Show(Git.Repository opened, Git.Remote editing = null) {
-            App.Launcher.GetPopupManager(opened)?.Show(new Remote(opened, editing));
+            App.GetPopupManager(opened)?.Show(new Remote(opened, editing));
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace SourceGit.UI {
             txtUrl.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtUrl)) return;
 
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Lock();
 
             await Task.Run(() => {
@@ -79,7 +79,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
     }
 }

@@ -43,7 +43,7 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="repo"></param>
         public static void Show(Git.Repository repo) {
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Show(new Configure(repo));
         }
 
@@ -64,7 +64,7 @@ namespace SourceGit.UI {
         }
 
         private void Close(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
         #endregion
     }

@@ -29,7 +29,7 @@ namespace SourceGit.UI {
         /// <param name="opened"></param>
         /// <param name="remote"></param>
         public static void Show(Git.Repository opened, string remote) {
-            var popup = App.Launcher.GetPopupManager(opened);
+            var popup = App.GetPopupManager(opened);
             popup?.Show(new DeleteRemote(opened, remote));
         }
 
@@ -39,7 +39,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Sure(object sender, RoutedEventArgs e) {
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Lock();
             await Task.Run(() => Git.Remote.Delete(repo, remote));
             popup?.Close(true);
@@ -51,7 +51,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
     }
 }

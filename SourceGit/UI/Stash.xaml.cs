@@ -28,7 +28,7 @@ namespace SourceGit.UI {
         /// <param name="repo">Opened repository</param>
         /// <param name="files">Special files to stash</param>
         public static void Show(Git.Repository repo, List<string> files) {
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Show(new Stash(repo, files));
         }
 
@@ -42,7 +42,7 @@ namespace SourceGit.UI {
             string message = txtName.Text;
 
             Git.Stash.Push(repo, includeUntracked, message, files);
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
     }
 }

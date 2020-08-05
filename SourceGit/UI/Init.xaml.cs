@@ -25,7 +25,7 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="path"></param>
         public static void Show(string path) {
-            var popup = App.Launcher.GetPopupManager(null);
+            var popup = App.GetPopupManager(null);
             popup.Show(new Init(path));
         }
 
@@ -35,7 +35,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Sure(object sender, RoutedEventArgs e) {
-            var popup = App.Launcher.GetPopupManager(null);
+            var popup = App.GetPopupManager(null);
             popup.Lock();
 
             await Task.Run(() => {
@@ -59,7 +59,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(null).Close();
+            App.GetPopupManager(null).Close();
         }
     }
 }

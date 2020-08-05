@@ -78,17 +78,6 @@ namespace SourceGit.UI {
             UpdateSubmodules();
         }
 
-        /// <summary>
-        ///     Cleanup all items
-        /// </summary>
-        public void Cleanup() {
-            localBranchTree.ItemsSource = null;
-            remoteBranchTree.ItemsSource = null;
-            tagList.ItemsSource = null;
-            cachedLocalBranches.Clear();
-            cachedRemotes.Clear();
-        }
-
         #region DATA_UPDATE
         private void UpdateHistories() {
             Dispatcher.Invoke(() => {
@@ -299,6 +288,14 @@ namespace SourceGit.UI {
                     submoduleList.ItemsSource = submodules;
                 });
             });
+        }
+
+        private void Cleanup(object sender, RoutedEventArgs e) {
+            localBranchTree.ItemsSource = null;
+            remoteBranchTree.ItemsSource = null;
+            tagList.ItemsSource = null;
+            cachedLocalBranches.Clear();
+            cachedRemotes.Clear();
         }
         #endregion
 

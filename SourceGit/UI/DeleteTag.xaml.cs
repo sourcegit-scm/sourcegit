@@ -30,7 +30,7 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="tag"></param>
         public static void Show(Git.Repository repo, Git.Tag tag) {
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Show(new DeleteTag(repo, tag));
         }
 
@@ -40,7 +40,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Start(object sender, RoutedEventArgs e) {
-            var popup = App.Launcher.GetPopupManager(repo);
+            var popup = App.GetPopupManager(repo);
             popup?.Lock();
 
             var push = chkWithRemote.IsChecked == true;
@@ -55,7 +55,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.Launcher.GetPopupManager(repo)?.Close();
+            App.GetPopupManager(repo)?.Close();
         }
     }
 }
