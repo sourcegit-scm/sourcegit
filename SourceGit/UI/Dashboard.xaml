@@ -493,7 +493,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- Abort panel -->
-                <Grid x:Name="abortPanel" Grid.Row="0" Background="LightGoldenrodYellow" Visibility="Collapsed">
+                <Grid x:Name="abortPanel" Grid.Row="0" Background="{StaticResource Brush.BG7}" Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
