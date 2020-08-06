@@ -87,6 +87,42 @@ namespace SourceGit.UI {
                 e.Handled = true;
             }
         }
+
+        private void RecentsContextMenuOpening(object sender, ContextMenuEventArgs e) {
+            var repo = (sender as ListViewItem).DataContext as Git.Repository;
+            if (repo == null) return;
+
+            var open = new MenuItem();
+            open.Header = "Open";
+            open.Click += (o, ev) => {
+                CheckAndOpenRepo(repo.Path);
+                ev.Handled = true;
+            };
+
+            var explore = new MenuItem();
+            explore.Header = "Open Container Folder";
+            explore.Click += (o, ev) => {
+                Process.Start(repo.Path);
+                ev.Handled = true;
+            };
+
+            var delete = new MenuItem();
+            delete.Header = "Delete";
+            delete.Click += (o, ev) => {
+                App.Preference.RemoveRepository(repo.Path);
+                UpdateRecentOpened();
+                UpdateTree();
+                HideBrief();
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(open);
+            menu.Items.Add(explore);
+            menu.Items.Add(delete);
+            menu.IsOpen = true;
+            e.Handled = true;
+        }
         #endregion
 
         #region EVENT_TREEVIEW
@@ -299,6 +335,7 @@ namespace SourceGit.UI {
             delete.Header = "Delete";
             delete.Click += (o, ev) => {
                 DeleteNode(node);
+                HideBrief();
                 ev.Handled = true;
             };
 
@@ -363,10 +400,6 @@ namespace SourceGit.UI {
 
         private void HideBrief() {
             briefMask.Visibility = Visibility.Visible;
-        }
-
-        private void OpenRepo(object sender, RoutedEventArgs e) {
-            CheckAndOpenRepo(repoPath.Content as string);
         }
         #endregion
 
