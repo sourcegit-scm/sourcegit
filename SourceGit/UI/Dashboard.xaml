@@ -31,14 +31,14 @@
         </Grid.RowDefinitions>
         
         <!-- TitleBar -->
-        <Grid Grid.Row="0" Panel.ZIndex="9999">
-            <Border Background="{StaticResource Brush.BG1}">
+        <Grid Grid.Row="0" Panel.ZIndex="100">
+            <Border Background="{StaticResource Brush.BG1}" Margin="0,2,0,0">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="2" Direction="270" Opacity=".5" Color="Black"/>
                 </Border.Effect>
             </Border>
 
-            <Grid>
+            <Grid Background="{StaticResource Brush.BG1}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
