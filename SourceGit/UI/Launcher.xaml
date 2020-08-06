@@ -81,7 +81,7 @@
                                             <Grid x:Name="Container" Opacity=".7" Height="28" WindowChrome.IsHitTestVisibleInChrome="True">
                                                 <Border x:Name="BG" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
                                                     <Border.Effect>
-                                                        <DropShadowEffect ShadowDepth="2" Direction="90" Color="Black" Opacity=".3"/>
+                                                        <DropShadowEffect ShadowDepth="2" Direction="30" Color="Black" Opacity=".3"/>
                                                     </Border.Effect>
                                                 </Border>
 
