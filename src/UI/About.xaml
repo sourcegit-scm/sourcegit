@@ -1,0 +1,82 @@
+<Window x:Class="SourceGit.UI.About"
+        x:Name="me"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Height="280" Width="400"
+        Title="About"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+
+    <!-- Enable WindowChrome Feature -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome UseAeroCaptionButtons="False" CornerRadius="0" CaptionHeight="32"/>
+    </WindowChrome.WindowChrome>
+
+    <!-- Window Layout -->
+    <Border Background="{StaticResource Brush.BG1}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Titlebar -->
+            <Grid Grid.Row="0" Background="{StaticResource Brush.BG4}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- LOGO -->
+                <Path Width="20" Height="20" Margin="6,-1,2,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}"/>
+
+                <!-- Title -->
+                <Label Grid.Column="1" Content="ABOUT" FontWeight="Light"/>
+
+                <!-- Close Button -->
+                <Button Click="Quit" Width="32" Grid.Column="3" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style.Button.HighlightHover}">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="90"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="32"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="24"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0">
+                    <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
+                </StackPanel>
+
+                <Label Grid.Row="1" Content="SourceGit - OPEN SOURCE GIT CLIENT" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" FontSize="18" FontWeight="Bold"/>
+                <Label Grid.Row="2" Content="{Binding ElementName=me, Path=Version}" HorizontalContentAlignment="Center" FontSize="11"/>
+
+                <Label Grid.Row="3" HorizontalContentAlignment="Center" FontSize="11">
+                    <Hyperlink RequestNavigate="OpenSource" NavigateUri="https://gitee.com/sourcegit/SourceGit.git">
+                        <Run Text="https://gitee.com/sourcegit/SourceGit.git"/>
+                    </Hyperlink>
+                </Label>
+
+                <Label Grid.Row="4" Content="Copyright © sourcegit 2020. All rights reserved." HorizontalContentAlignment="Center" FontSize="11"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

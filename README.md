@@ -6,11 +6,11 @@
 
 * DarkTheme
 
-![Preview_Dark](./Preview_Dark.png)
+![Theme Dark](./screenshots/theme_dark.png)
 
 * LightTheme
 
-![Preview_Light](./Preview_Light.png)
+![Theme Light](./screenshots/theme_light.png)
 
 
 ## Thanks
