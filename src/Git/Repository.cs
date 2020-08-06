@@ -927,6 +927,7 @@ namespace SourceGit.Git {
             if (errs != null) {
                 App.RaiseError(errs);
             } else {
+                OnWorkingCopyChanged?.Invoke();
                 OnSubmoduleChanged?.Invoke();
             }
 
