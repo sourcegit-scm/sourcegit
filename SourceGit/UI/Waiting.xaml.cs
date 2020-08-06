@@ -23,7 +23,7 @@ namespace SourceGit.UI {
         /// <param name="job"></param>
         public static void Show(Git.Repository repo, Action job) {
             var dialog = new Waiting();
-            var popup = App.GetPopupManager(repo);
+            var popup = repo.GetPopupManager();
 
             popup?.Show(dialog);
             popup?.Lock();

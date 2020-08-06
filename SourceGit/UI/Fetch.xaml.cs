@@ -40,8 +40,7 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="preferRemote"></param>
         public static void Show(Git.Repository repo, string preferRemote = null) {
-            var popup = App.GetPopupManager(repo);
-            popup?.Show(new Fetch(repo, preferRemote));
+            repo.GetPopupManager()?.Show(new Fetch(repo, preferRemote));
         }
 
         /// <summary>
@@ -52,7 +51,7 @@ namespace SourceGit.UI {
         private async void Start(object sender, RoutedEventArgs e) {
             bool prune = chkPrune.IsChecked == true;
 
-            var popup = App.GetPopupManager(repo);
+            var popup = repo.GetPopupManager();
             popup?.Lock();
 
             if (chkFetchAll.IsChecked == true) {
@@ -71,7 +70,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.GetPopupManager(repo)?.Close();
+            repo.GetPopupManager()?.Close();
         }
     }
 }

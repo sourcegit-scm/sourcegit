@@ -61,7 +61,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void CloneRepo(object sender, RoutedEventArgs e) {
-            if (MakeSureReady()) Clone.Show();
+            if (MakeSureReady()) popupManager.Show(new Clone(popupManager));
         }
         #endregion
 
@@ -350,7 +350,7 @@ namespace SourceGit.UI {
         private void ShowBrief(Git.Repository repo) {
             if (repo == null || !Git.Repository.IsValid(repo.Path)) {
                 if (Directory.Exists(repo.Path)) {
-                    Init.Show(repo.Path);
+                    popupManager.Show(new Init(popupManager, repo.Path));
                 } else {
                     App.RaiseError("Path is NOT valid git repository or has been removed.");
                     App.Preference.RemoveRepository(repo.Path);
@@ -426,7 +426,7 @@ namespace SourceGit.UI {
 
             if (!Git.Repository.IsValid(path)) {
                 if (Directory.Exists(path)) {
-                    Init.Show(path);
+                    popupManager.Show(new Init(popupManager, path));
                     return;
                 }
 
@@ -435,7 +435,7 @@ namespace SourceGit.UI {
             }
 
             var repo = App.Preference.AddRepository(path, "");
-            if (!(App.Current.MainWindow as Launcher).GotoRepo(repo)) repo.Open();
+            if (!repo.BringUpTab()) repo.Open();
         }
 
         /// <summary>

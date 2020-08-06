@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -109,6 +110,44 @@ namespace SourceGit.UI {
         /// <param name="e"></param>
         private void Close(object sender, RoutedEventArgs e) {
             Close();
+        }
+    }
+
+    /// <summary>
+    ///     Extension methods for Git.Repository
+    /// </summary>
+    public static class RepositoryPopupBindings {
+        private static Dictionary<string, PopupManager> popups = new Dictionary<string, PopupManager>();
+
+        /// <summary>
+        ///     Set popup manager for given repo.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="popup"></param>
+        public static void SetPopupManager(this Git.Repository repo, PopupManager popup) {
+            if (popups.ContainsKey(repo.Path)) popups[repo.Path] = popup;
+            else popups.Add(repo.Path, popup);
+        }
+
+        /// <summary>
+        ///     Remove popup manager by given repo.
+        /// </summary>
+        /// <param name="repo"></param>
+        public static void RemovePopup(this Git.Repository repo) {
+            if (popups.ContainsKey(repo.Path)) {
+                popups[repo.Path].Unlock();
+                popups.Remove(repo.Path);
+            }
+        }
+
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <returns></returns>
+        public static PopupManager GetPopupManager(this Git.Repository repo) {
+            if (popups.ContainsKey(repo.Path)) return popups[repo.Path];
+            return null;
         }
     }
 }

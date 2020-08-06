@@ -29,8 +29,7 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="prefer"></param>
         public static void Show(Git.Repository repo, Git.Branch prefer = null) {
-            var popup = App.GetPopupManager(repo);
-            popup?.Show(new Push(repo, prefer));
+            repo.GetPopupManager()?.Show(new Push(repo, prefer));
         }
 
         /// <summary>
@@ -45,7 +44,7 @@ namespace SourceGit.UI {
             }
 
             var push = new Push(repo, current);
-            var popup = App.GetPopupManager(repo);
+            var popup = repo.GetPopupManager();
             popup?.Show(push);
             popup?.Lock();
 
@@ -98,7 +97,7 @@ namespace SourceGit.UI {
                 remoteBranch = remoteBranch.Substring(0, remoteBranch.Length - 6);
             }
 
-            var popup = App.GetPopupManager(repo);
+            var popup = repo.GetPopupManager();
             popup?.Lock();
             await Task.Run(() => repo.Push(remote, localBranch.Name, remoteBranch, msg => popup?.UpdateStatus(msg), tags, track, force));
             popup?.Close(true);
@@ -110,7 +109,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.GetPopupManager(repo)?.Close();
+            repo.GetPopupManager()?.Close();
         }
 
         /// <summary>

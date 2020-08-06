@@ -9,6 +9,7 @@ namespace SourceGit.UI {
     ///     Clone dialog.
     /// </summary>
     public partial class Clone : UserControl {
+        private PopupManager popup = null;
 
         /// <summary>
         ///     Remote repository
@@ -33,17 +34,10 @@ namespace SourceGit.UI {
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public Clone() {
+        public Clone(PopupManager mgr) {
             ParentFolder = App.Preference.GitDefaultCloneDir;
+            popup = mgr;
             InitializeComponent();
-        }
-
-        /// <summary>
-        ///     Show clone dialog.
-        /// </summary>
-        public static void Show() {
-            var popup = App.GetPopupManager(null);
-            popup?.Show(new Clone());
         }
 
         /// <summary>
@@ -92,7 +86,6 @@ namespace SourceGit.UI {
                 rName = RemoteName;
             }
 
-            var popup = App.GetPopupManager(null);
             popup.Lock();
 
             var repo = await Task.Run(() => {
@@ -113,7 +106,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.GetPopupManager(null).Close();
+            popup.Close();
         }
     }
 }

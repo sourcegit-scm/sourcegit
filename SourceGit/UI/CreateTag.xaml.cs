@@ -52,8 +52,7 @@ namespace SourceGit.UI {
             dialog.basedOnType.Data = dialog.FindResource("Icon.Branch") as Geometry;
             dialog.basedOnDesc.Content = branch.Name;
 
-            var popup = App.GetPopupManager(repo);
-            popup?.Show(dialog);
+            repo.GetPopupManager()?.Show(dialog);
         }
 
         /// <summary>
@@ -67,8 +66,7 @@ namespace SourceGit.UI {
             dialog.basedOnType.Data = dialog.FindResource("Icon.Commit") as Geometry;
             dialog.basedOnDesc.Content = $"{commit.ShortSHA}  {commit.Subject}";
 
-            var popup = App.GetPopupManager(repo);
-            popup?.Show(dialog);
+            repo.GetPopupManager()?.Show(dialog);
         }
 
         /// <summary>
@@ -82,8 +80,7 @@ namespace SourceGit.UI {
 
             Git.Tag.Add(repo, TagName, based, tagMessage.Text);
 
-            var popup = App.GetPopupManager(repo);
-            popup?.Close();
+            repo.GetPopupManager()?.Close();
         }
 
         /// <summary>
@@ -92,7 +89,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.GetPopupManager(repo)?.Close();
+            repo.GetPopupManager()?.Close();
         }
     }
 }

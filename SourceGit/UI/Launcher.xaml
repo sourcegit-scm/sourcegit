@@ -255,7 +255,7 @@
                 HorizontalScrollBarVisibility="Disabled" 
                 VerticalScrollBarVisibility="Auto"
                 Panel.ZIndex="100">
-                <ItemsControl Margin="4" Width="300" Height="Auto" ItemsSource="{Binding Alerts, ElementName=me}">
+                <ItemsControl Margin="4" Width="300" Height="Auto" ItemsSource="{Binding Errors, ElementName=me}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid x:Name="item" Height="Auto" Width="300" Margin="0,8,0,0">
@@ -272,12 +272,12 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <Label Grid.Row="0" Content="{Binding Title}" FontWeight="DemiBold"/>
-                                    <TextBlock Grid.Row="1" Margin="6,8" Text="{Binding Message}" Foreground="{StaticResource Brush.FG}" TextWrapping="Wrap"/>
+                                    <Label Grid.Row="0" Content="ERROR" FontWeight="DemiBold"/>
+                                    <TextBlock Grid.Row="1" Margin="6,8" Text="{Binding}" Foreground="{StaticResource Brush.FG}" TextWrapping="Wrap"/>
                                     <Button 
                                         Grid.Row="2"
                                         Margin="4,0"
-                                        Click="RemoveAlert"
+                                        Click="RemoveError"
                                         Content="CLOSE"
                                         Style="{StaticResource Style.Button.AccentBordered}"
                                         BorderBrush="{StaticResource Brush.FG}"

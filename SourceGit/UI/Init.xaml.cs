@@ -8,25 +8,19 @@ namespace SourceGit.UI {
     ///     `git init` confirm panel.
     /// </summary>
     public partial class Init : UserControl {
+        private PopupManager popup = null;
         private string workingDir = null;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
+        /// <param name="mgr"></param>
         /// <param name="path"></param>
-        public Init(string path) {
+        public Init(PopupManager mgr, string path) {
+            popup = mgr;
             workingDir = path;
             InitializeComponent();
             txtPath.Content = path;
-        }
-
-        /// <summary>
-        ///     Show this dialog.
-        /// </summary>
-        /// <param name="path"></param>
-        public static void Show(string path) {
-            var popup = App.GetPopupManager(null);
-            popup.Show(new Init(path));
         }
 
         /// <summary>
@@ -35,7 +29,6 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Sure(object sender, RoutedEventArgs e) {
-            var popup = App.GetPopupManager(null);
             popup.Lock();
 
             await Task.Run(() => {
@@ -59,7 +52,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.GetPopupManager(null).Close();
+            popup.Close();
         }
     }
 }

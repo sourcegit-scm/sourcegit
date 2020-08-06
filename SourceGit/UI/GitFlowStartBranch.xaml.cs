@@ -51,8 +51,7 @@ namespace SourceGit.UI {
                 nameValidator.Prefix = hotfixPrefix;
                 break;
             default:
-                var popup = App.GetPopupManager(repo);
-                popup?.Close();
+                repo.GetPopupManager()?.Close();
                 return;
             }            
         }
@@ -63,8 +62,7 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="type"></param>
         public static void Show(Git.Repository repo, Git.Branch.Type type) {
-            var popup = App.GetPopupManager(repo);
-            popup?.Show(new GitFlowStartBranch(repo, type));
+            repo.GetPopupManager()?.Show(new GitFlowStartBranch(repo, type));
         }
 
         /// <summary>
@@ -76,7 +74,7 @@ namespace SourceGit.UI {
             txtName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtName)) return;
 
-            var popup = App.GetPopupManager(repo);
+            var popup = repo.GetPopupManager();
             popup?.Lock();
             await Task.Run(() => repo.StartGitFlowBranch(type, SubName));
             popup?.Close(true);
@@ -88,7 +86,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e) {
-            App.GetPopupManager(repo)?.Close();
+            repo.GetPopupManager()?.Close();
         }
     }
 }

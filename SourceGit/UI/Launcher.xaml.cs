@@ -22,17 +22,9 @@ namespace SourceGit.UI {
         }
 
         /// <summary>
-        ///     Alert data.
-        /// </summary>
-        public class Alert {
-            public string Title { get; set; }
-            public string Message { get; set; }
-        }
-
-        /// <summary>
         ///     Alerts.
         /// </summary>
-        public ObservableCollection<Alert> Alerts { get; set; } = new ObservableCollection<Alert>();
+        public ObservableCollection<string> Errors { get; set; } = new ObservableCollection<string>();
 
         /// <summary>
         ///     Opened tabs.
@@ -43,19 +35,17 @@ namespace SourceGit.UI {
         ///     Constructor
         /// </summary>
         public Launcher() {
-            App.OnError = msg => {
-                ShowAlert(new Alert() { Title = "ERROR", Message = msg });
-            };
-
             Git.Repository.OnOpen = repo => {
                 Dispatcher.Invoke(() => {
+                    var page = new Dashboard(repo);
                     var tab = new Tab() {
                         Title = repo.Parent == null ? repo.Name : $"{repo.Parent.Name} : {repo.Name}",
                         Tooltip = repo.Path,
                         Repo = repo,
-                        Page = new Dashboard(repo),
+                        Page = page,
                     };
 
+                    repo.SetPopupManager(page.popupManager);
                     Tabs.Add(tab);
                     openedTabs.SelectedItem = tab;
                 });
@@ -71,23 +61,6 @@ namespace SourceGit.UI {
             openedTabs.SelectedItem = Tabs[0];
         }
 
-        /// <summary>
-        ///     Goto opened repository.
-        /// </summary>
-        /// <param name="repo"></param>
-        /// <returns></returns>
-        public bool GotoRepo(Git.Repository repo) {
-            for (int i = 1; i < Tabs.Count; i++) {
-                var opened = Tabs[i];
-                if (opened.Repo.Path == repo.Path) {
-                    openedTabs.SelectedItem = opened;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         #region LAYOUT_CONTENT
         /// <summary>
         ///     Close repository tab.
@@ -98,12 +71,11 @@ namespace SourceGit.UI {
             var tab = (sender as Button).DataContext as Tab;
             if (tab == null || tab.Repo == null) return;
 
-            var popup = (tab.Page as Dashboard).popupManager;
-            if (popup.IsLocked()) popup.Close(true);
             Tabs.Remove(tab);
-
             tab.Page = null;
+            tab.Repo.RemovePopup();
             tab.Repo.Close();
+            tab.Repo = null;
         }
 
         /// <summary>
@@ -129,21 +101,13 @@ namespace SourceGit.UI {
         }
 
         /// <summary>
-        ///     Show alert.
-        /// </summary>
-        /// <param name="alert"></param>
-        private void ShowAlert(Alert alert) {
-            Dispatcher.Invoke(() => Alerts.Add(alert));
-        }
-
-        /// <summary>
         ///     Remove an alert.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RemoveAlert(object sender, RoutedEventArgs e) {
-            var alert = (sender as Button).DataContext as Alert;
-            Alerts.Remove(alert);
+        private void RemoveError(object sender, RoutedEventArgs e) {
+            var alert = (sender as Button).DataContext as string;
+            Errors.Remove(alert);
         }
         #endregion
 
@@ -221,5 +185,30 @@ namespace SourceGit.UI {
             openedTabsScroller.LineRight();
         }
         #endregion
+    }
+
+    /// <summary>
+    ///     Extension methods for repository.
+    /// </summary>
+    public static class RepositoryTabBindings {
+
+        /// <summary>
+        ///     Bring up tab of repository if it was opened before.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <returns></returns>
+        public static bool BringUpTab(this Git.Repository repo) {
+            var main = App.Current.MainWindow as Launcher;
+
+            for (int i = 1; i < main.Tabs.Count; i++) {
+                var opened = main.Tabs[i];
+                if (opened.Repo.Path == repo.Path) {
+                    main.openedTabs.SelectedItem = opened;
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

@@ -29,39 +29,12 @@ namespace SourceGit {
         }
 
         /// <summary>
-        ///     Error handler.
-        /// </summary>
-        public static Action<string> OnError {
-            get;
-            set;
-        }
-
-        /// <summary>
         ///     Raise error message.
         /// </summary>
         /// <param name="message"></param>
-        public static void RaiseError(string message) {
-            OnError?.Invoke(message);
-        }
-
-        /// <summary>
-        ///     Get popup manager by repository
-        /// </summary>
-        /// <param name="repo"></param>
-        /// <returns></returns>
-        public static UI.PopupManager GetPopupManager(Git.Repository repo) {
+        public static void RaiseError(string msg) {
             var main = Current.MainWindow as UI.Launcher;
-            if (main == null) return null;
-            if (repo == null) return (main.Tabs[0].Page as UI.Manager).popupManager;
-
-            for (int i = 1; i < main.Tabs.Count; i++) {
-                var opened = main.Tabs[i];
-                if (opened.Repo.Path == repo.Path) {
-                    return (opened.Page as UI.Dashboard).popupManager;
-                }
-            }
-
-            return null;
+            main.Dispatcher.Invoke(() => main.Errors.Add(msg));
         }
 
         /// <summary>
