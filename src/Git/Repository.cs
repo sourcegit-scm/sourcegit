@@ -516,10 +516,8 @@ namespace SourceGit.Git {
             }, true);
 
             OnSubmoduleChanged?.Invoke();
-
             AssertCommand(errs);
-
-            if (needPopStash) RunCommand("stash pop -q stash@{0}", null);
+            if (needPopStash && errs == null) RunCommand("stash pop -q stash@{0}", null);
         }
 
         /// <summary>
