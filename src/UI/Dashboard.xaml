@@ -32,7 +32,7 @@
         
         <!-- TitleBar -->
         <Grid Grid.Row="0" Panel.ZIndex="100">
-            <Border Background="{StaticResource Brush.BG1}" Margin="0,2,0,0">
+            <Border Background="{StaticResource Brush.BG1}" Margin="0,16,0,0">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="2" Direction="270" Opacity=".5" Color="Black"/>
                 </Border.Effect>
@@ -210,6 +210,8 @@
                     Padding="0"
                     Background="{StaticResource Brush.BG3}"
                     FontFamily="Consolas"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
                     LostFocus="TreeLostFocus"
                     SelectedItemChanged="LocalBranchSelected"
                     PreviewMouseWheel="TreeMouseWheel">
@@ -230,7 +232,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Path Grid.Column="0" Width="10" x:Name="icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
-                                <Label Grid.Column="1" x:Name="name" Content="{Binding Name}" Padding="4,0,0,0"/>
+                                <TextBlock Grid.Column="1" x:Name="name" Text="{Binding Name}" Padding="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}" ClipToBounds="True"/>
                                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                                     <Border Style="{StaticResource Style.Border.Badge}" Visibility="{Binding TrackVisibility}">
                                         <Label Margin="4,-2,4,-2" Content="{Binding Branch.UpstreamTrack}" FontSize="10"/>

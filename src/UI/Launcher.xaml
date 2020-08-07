@@ -35,7 +35,7 @@
         </Border.Style>
         
         <!-- Window Content -->
-        <Grid>
+        <Grid Background="{StaticResource Brush.BG1}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="*"/>
@@ -50,21 +50,18 @@
 
                 <!-- Tabs -->
                 <ScrollViewer x:Name="openedTabsScroller" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
-                    <TabControl x:Name="openedTabs" Padding="0" ItemsSource="{Binding ElementName=me, Path=Tabs}" SizeChanged="OpenedTabsSizeChanged">
+                    <TabControl x:Name="openedTabs" Padding="0" SnapsToDevicePixels="True" ItemsSource="{Binding ElementName=me, Path=Tabs}" SizeChanged="OpenedTabsSizeChanged">
                         <TabControl.Style>
                             <Style TargetType="{x:Type TabControl}">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabControl}">
-                                            <Grid KeyboardNavigation.TabNavigation="Local" Height="32">
-                                                <StackPanel Orientation="Horizontal"
-                                                    x:Name="HeaderPanel" 
-                                                    Grid.Row="0" 
-                                                    Margin="6,4,0,0" 
-                                                    IsItemsHost="True" 
-                                                    KeyboardNavigation.TabIndex="1" 
-                                                    Background="Transparent" />
-                                            </Grid>
+                                            <StackPanel Orientation="Horizontal"                                                    
+                                                        x:Name="HeaderPanel"
+                                                        Margin="6,4,0,0"
+                                                        IsItemsHost="True"
+                                                        SnapsToDevicePixels="True"
+                                                        KeyboardNavigation.TabIndex="1"/>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
@@ -75,11 +72,13 @@
                             <Style TargetType="{x:Type TabItem}">
                                 <Setter Property="AllowDrop" Value="True"/>
                                 <Setter Property="IsSelected" Value="{Binding IsActive, Mode=TwoWay}"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="Padding" Value="0"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabItem}">
-                                            <Grid x:Name="Container" Opacity=".7" Height="28" WindowChrome.IsHitTestVisibleInChrome="True">
-                                                <Border x:Name="BG" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
+                                            <Grid x:Name="Container" Opacity=".7" SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True">
+                                                <Border x:Name="BG" SnapsToDevicePixels="True" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
                                                     <Border.Effect>
                                                         <DropShadowEffect ShadowDepth="2" Direction="30" Color="Black" Opacity=".3"/>
                                                     </Border.Effect>
@@ -87,24 +86,24 @@
 
                                                 <Path
                                                     x:Name="CornerLeft"
-                                                    Width="4"
-                                                    Height="4"
+                                                    Width="6"
+                                                    Height="6"
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Bottom"
-                                                    Margin="-4,0,0,0"
-                                                    Data="M 0,4 L 4,4 4,0 C 4,0 4,4 0,4 Z"
+                                                    Margin="-5,0,0,0"
+                                                    Data="M 0,6 L 6,6 6,0 C 6,0 6,6 0,6 Z"
                                                     Fill="Transparent"/>
 
                                                 <Path
                                                     x:Name="CornerRight"
-                                                    Width="4"
-                                                    Height="4"
+                                                    Width="6"
+                                                    Height="6"
                                                     HorizontalAlignment="Right"
                                                     VerticalAlignment="Bottom"
-                                                    Margin="0,0,-4,0"
-                                                    Data="M 0,0 L 0,4 4,4 C 4,4 0,4 0,0 Z"
+                                                    Margin="0,0,-5,0"
+                                                    Data="M 0,0 L 0,6 6,6 C 6,6 0,6 0,0 Z"
                                                     Fill="Transparent"/>
-
+                                                
                                                 <ContentPresenter 
                                                     x:Name="ContentSite" 
                                                     VerticalAlignment="Center" HorizontalAlignment="Center" 
@@ -141,7 +140,7 @@
 
                         <TabControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="6,0">
+                                <StackPanel Orientation="Horizontal" Margin="6,0" VerticalAlignment="Center">
                                     <Path Grid.Column="0" Width="14" Height="14" x:Name="Icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Brush.FG}" Margin="8,0,0,0" FontWeight="Bold">
                                         <TextBlock.ToolTip>

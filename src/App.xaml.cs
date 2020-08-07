@@ -33,8 +33,9 @@ namespace SourceGit {
         /// </summary>
         /// <param name="message"></param>
         public static void RaiseError(string msg) {
-            var main = Current.MainWindow as UI.Launcher;
-            main.Dispatcher.Invoke(() => main.Errors.Add(msg));
+            Current.Dispatcher.Invoke(() => {
+                (Current.MainWindow as UI.Launcher).Errors.Add(msg);
+            });
         }
 
         /// <summary>
