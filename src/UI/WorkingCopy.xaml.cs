@@ -282,6 +282,17 @@ namespace SourceGit.UI {
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
                 menu.Items.Add(new Separator());
+                if (node.Change != null) {
+                    var history = new MenuItem();
+                    history.Header = "Histories ...";
+                    history.Click += (o, e) => {
+                        var viewer = new FileHistories(Repo, node.FilePath);
+                        viewer.Show();
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(history);
+                    menu.Items.Add(new Separator());
+                }
                 menu.Items.Add(copyPath);
                 menu.IsOpen = true;
             } else if (selected.Count > 1) {
@@ -413,6 +424,17 @@ namespace SourceGit.UI {
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
                 menu.Items.Add(new Separator());
+                if (change != null) {
+                    var history = new MenuItem();
+                    history.Header = "Histories ...";
+                    history.Click += (o, e) => {
+                        var viewer = new FileHistories(Repo, change.Path);
+                        viewer.Show();
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(history);
+                    menu.Items.Add(new Separator());
+                }
                 menu.Items.Add(copyPath);
                 menu.IsOpen = true;
             } else if (selected.Count > 1) {

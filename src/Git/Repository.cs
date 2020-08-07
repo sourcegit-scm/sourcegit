@@ -474,7 +474,6 @@ namespace SourceGit.Git {
             }, true);
 
             OnSubmoduleChanged?.Invoke();
-
             AssertCommand(errs);
         }
 
