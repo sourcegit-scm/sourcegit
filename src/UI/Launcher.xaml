@@ -18,7 +18,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Window Layout -->
-    <Border Background="{StaticResource Brush.BG1}">
+    <Border>
 
         <!-- Fix Maximize BUG -->
         <Border.Style>
@@ -35,13 +35,13 @@
         </Border.Style>
         
         <!-- Window Content -->
-        <Grid Background="{StaticResource Brush.BG6}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" Background="{StaticResource Brush.BG6}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="openedTabsColumn" Width="*"/>
                     <ColumnDefinition Width="32"/>
