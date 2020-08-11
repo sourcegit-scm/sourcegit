@@ -588,7 +588,17 @@ namespace SourceGit.Git {
             isWatcherDisabled = true;
 
             var errs = RunCommand($"checkout {option}", null);
-            AssertCommand(errs);
+            if (errs != null) {
+                App.RaiseError(errs);
+            } else {
+                Branches(true);
+                OnBranchChanged?.Invoke();
+                OnCommitsChanged?.Invoke();
+                OnWorkingCopyChanged?.Invoke();
+                OnTagChanged?.Invoke();
+            }
+
+            isWatcherDisabled = false;
         }
 
         /// <summary>
