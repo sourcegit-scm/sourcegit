@@ -503,7 +503,7 @@
 
                     <Label Grid.Column="0" x:Name="txtMergeProcessing" FontWeight="DemiBold" Foreground="{StaticResource Brush.BG4}"/>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button x:Name="btnResolve" Click="Resolve" Content="RESOLVE" Margin="4">
+                        <Button x:Name="btnResolve" Click="Resolve" Content="RESOLVE" Margin="2">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style.Button.Bordered}">
                                     <Setter Property="Background" Value="{StaticResource Brush.BG1}"/>
@@ -511,8 +511,8 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <Button x:Name="btnContinue" Click="Continue" Content="CONTINUE" Style="{StaticResource Style.Button.AccentBordered}" Margin="4"/>
-                        <Button Grid.Column="3" Click="Abort" Content="ABORT" Style="{StaticResource Style.Button.Bordered}" Foreground="{StaticResource Brush.BG1}" Margin="4"/>
+                        <Button x:Name="btnContinue" Click="Continue" Content="CONTINUE" Style="{StaticResource Style.Button.AccentBordered}" Margin="2"/>
+                        <Button Grid.Column="3" Click="Abort" Content="ABORT" Style="{StaticResource Style.Button.Bordered}" Foreground="{StaticResource Brush.BG1}" Margin="2"/>
                     </StackPanel>
                     
                 </Grid>

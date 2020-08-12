@@ -80,7 +80,7 @@
                                             <Grid x:Name="Container" Opacity=".7" SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True">
                                                 <Border x:Name="BG" SnapsToDevicePixels="True" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
                                                     <Border.Effect>
-                                                        <DropShadowEffect ShadowDepth="2" Direction="30" Color="Black" Opacity=".3"/>
+                                                        <DropShadowEffect BlurRadius="8" ShadowDepth="0" Direction="270" Opacity=".5"/>
                                                     </Border.Effect>
                                                 </Border>
 
@@ -277,6 +277,7 @@
                                         Grid.Row="2"
                                         Margin="4,0"
                                         Click="RemoveError"
+                                        Height="25"
                                         Content="CLOSE"
                                         Style="{StaticResource Style.Button.AccentBordered}"
                                         BorderBrush="{StaticResource Brush.FG}"
