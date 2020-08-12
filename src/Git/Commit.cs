@@ -11,6 +11,7 @@ namespace SourceGit.Git {
     public class Commit {
         private static readonly string GPGSIG_START = "gpgsig -----BEGIN PGP SIGNATURE-----";
         private static readonly string GPGSIG_END = " -----END PGP SIGNATURE-----";
+        private static readonly Regex REG_TESTBINARY = new Regex(@"^\-\s+\-\s+.*$");
 
         /// <summary>
         ///     Object in commit.
@@ -227,30 +228,36 @@ namespace SourceGit.Git {
             var count = 0;
             var binary = false;
 
-            var errs = repo.RunCommand($"show {SHA}:\"{file}\"", line => {
-                if (binary) return;
-
-                count++;
-                if (data.Count >= 1000) return;
-
-                if (line.IndexOf('\0') >= 0) {
-                    binary = true;
-                    data.Clear();
-                    data.Add("BINARY FILE PREVIEW NOT SUPPORTED!");
-                    return;
-                }
-
-                data.Add(line);
+            repo.RunCommand($"diff 4b825dc642cb6eb9a060e54bf8d69288fbee4904 {SHA} --numstat -- \"{file}\"", line => {
+                if (REG_TESTBINARY.IsMatch(line)) binary = true;
             });
+
+            if (!binary) {
+                var errs = repo.RunCommand($"show {SHA}:\"{file}\"", line => {
+                    if (binary) return;
+
+                    count++;
+                    if (data.Count >= 1000) return;
+
+                    if (line.IndexOf('\0') >= 0) {
+                        binary = true;
+                        data.Clear();
+                        data.Add("BINARY FILE PREVIEW NOT SUPPORTED!");
+                        return;
+                    }
+
+                    data.Add(line);
+                });
+
+                if (errs != null) App.RaiseError(errs);
+            }            
 
             if (!binary && count > 1000) {
                 data.Add("...");
                 data.Add($"Total {count} lines. Hide {count-1000} lines.");
             }
 
-            isBinary = binary;
-
-            if (errs != null) App.RaiseError(errs);
+            isBinary = binary;            
             return string.Join("\n", data);
         }
 
