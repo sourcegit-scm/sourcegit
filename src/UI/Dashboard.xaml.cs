@@ -413,7 +413,32 @@ namespace SourceGit.UI {
             await Task.Run(() => {
                 repo.SetWatcherEnabled(false);
                 var errs = repo.RunCommand($"-c core.editor=true {abortCommand} --continue", null);
-                repo.AssertCommand(errs);
+                if (errs != null) {
+                    App.RaiseError(errs);
+                } else {
+                    var cherryPickMerge = Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD");
+                    var rebaseMerge = Path.Combine(repo.GitDir, "REBASE_HEAD");
+                    var revertMerge = Path.Combine(repo.GitDir, "REVERT_HEAD");
+                    var otherMerge = Path.Combine(repo.GitDir, "MERGE_HEAD");
+
+                    if (File.Exists(cherryPickMerge)) {
+                        File.Delete(cherryPickMerge);
+                    } else if (File.Exists(rebaseMerge)) {
+                        File.Delete(rebaseMerge);
+                    } else if (File.Exists(revertMerge)) {
+                        File.Delete(revertMerge);
+                    } else if (File.Exists(otherMerge)) {
+                        File.Delete(otherMerge);
+                    }
+
+                    repo.Branches(true);
+                    UpdateBranches();
+                    UpdateHistories();
+                    UpdateLocalChanges();
+                    UpdateTags();
+                }
+
+                repo.SetWatcherEnabled(true);
             });
 
             commits.ClearMessage();
