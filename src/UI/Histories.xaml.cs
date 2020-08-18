@@ -552,7 +552,7 @@ namespace SourceGit.UI {
 
             // Revert commit
             var revert = new MenuItem();
-            revert.Header = "Revert commit";
+            revert.Header = "Revert Commit";
             revert.Visibility = !commit.IsMerged ? Visibility.Collapsed : Visibility.Visible;
             revert.Click += (o, e) => {
                 Revert.Show(Repo, commit);
