@@ -34,7 +34,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="20">
                         <Path Margin="4,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Remote}"/>
-                        <Label Content="{Binding}" Padding="8,0,0,0"/>
+                        <TextBlock Text="{Binding}" Padding="8,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
@@ -48,7 +48,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="20">
                         <Path Margin="4,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
-                        <Label Content="{Binding}" Padding="8,0,0,0"/>
+                        <TextBlock Text="{Binding}" Padding="8,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
@@ -57,7 +57,7 @@
         <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Into :"/>
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
             <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
-            <Label x:Name="txtInto" VerticalAlignment="Center"/>
+            <TextBlock x:Name="txtInto" Text="master" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
         </StackPanel>
 
         <CheckBox Grid.Row="5" Grid.Column="1"

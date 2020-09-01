@@ -24,7 +24,7 @@
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Remote :"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Remote}" Margin="4,0"/>
-            <Label x:Name="remoteName"/>
+            <TextBlock x:Name="remoteName" Text="origin" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
         </StackPanel>
 
         <Grid Grid.Row="4" Grid.ColumnSpan="2">

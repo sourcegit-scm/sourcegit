@@ -29,7 +29,7 @@ namespace SourceGit.UI {
             InitializeComponent();
 
             nameValidator.Repo = opened;
-            txtOldName.Content = target.Name;
+            txtOldName.Text = target.Name;
         }
 
         /// <summary>

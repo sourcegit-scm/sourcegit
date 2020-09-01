@@ -27,7 +27,7 @@
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Branch :"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
-            <Label x:Name="txtOldName"/>
+            <TextBlock x:Name="txtOldName" Text="Old name" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
         </StackPanel>
 
         <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="New Name :"/>

@@ -40,8 +40,8 @@ namespace SourceGit.UI {
             repo = opened;
             revision = commit.SHA;
 
-            branch.Content = current.Name;
-            desc.Content = $"{commit.ShortSHA}  {commit.Subject}";
+            branch.Text = current.Name;
+            desc.Text = $"{commit.ShortSHA}  {commit.Subject}";
             combMode.ItemsSource = new Mode[] {
                 new Mode(Brushes.Green, "Soft", "Keep all changes. Stage differences", "--soft"),
                 new Mode(Brushes.Yellow, "Mixed", "Keep all changes. Unstage differences", "--mixed"),

@@ -20,7 +20,7 @@ namespace SourceGit.UI {
 
             repo = opened;
             commitSHA = commit.SHA;
-            desc.Content = $"{commit.ShortSHA}  {commit.Subject}";
+            desc.Text = $"{commit.ShortSHA}  {commit.Subject}";
         }
 
         /// <summary>

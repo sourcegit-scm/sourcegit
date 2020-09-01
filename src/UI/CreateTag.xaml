@@ -28,7 +28,7 @@
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="New Tag At :"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path Width="12" x:Name="basedOnType" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Commit}"/>
-            <Label x:Name="basedOnDesc" VerticalAlignment="Center" Content="xxx"/>
+            <TextBlock x:Name="basedOnDesc" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center" Text="xxx"/>
         </StackPanel>
 
         <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Tag Name :"/>

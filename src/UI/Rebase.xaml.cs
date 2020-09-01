@@ -34,9 +34,9 @@ namespace SourceGit.UI {
 
             var dialog = new Rebase(opened);
             dialog.based = branch.Head;
-            dialog.branch.Content = current.Name;
+            dialog.branch.Text = current.Name;
             dialog.type.Data = dialog.FindResource("Icon.Branch") as Geometry;
-            dialog.desc.Content = branch.Name;
+            dialog.desc.Text = branch.Name;
 
             opened.GetPopupManager()?.Show(dialog);
         }
@@ -52,9 +52,9 @@ namespace SourceGit.UI {
 
             var dialog = new Rebase(opened);
             dialog.based = commit.SHA;
-            dialog.branch.Content = current.Name;
+            dialog.branch.Text = current.Name;
             dialog.type.Data = dialog.FindResource("Icon.Commit") as Geometry;
-            dialog.desc.Content = $"{commit.ShortSHA}  {commit.Subject}";
+            dialog.desc.Text = $"{commit.ShortSHA}  {commit.Subject}";
 
             opened.GetPopupManager()?.Show(dialog);
         }

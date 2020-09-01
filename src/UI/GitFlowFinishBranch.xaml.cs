@@ -40,7 +40,7 @@ namespace SourceGit.UI {
                 return;
             }
 
-            txtBranchName.Content = branch.Name;
+            txtBranchName.Text = branch.Name;
         }
 
         /// <summary>

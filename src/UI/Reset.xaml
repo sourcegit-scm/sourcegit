@@ -26,13 +26,13 @@
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Current Branch :"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path Width="12" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
-            <Label x:Name="branch"/>
+            <TextBlock x:Name="branch" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
         </StackPanel>
 
         <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Move To :"/>
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
             <Path Width="12" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Commit}"/>
-            <Label x:Name="desc"/>
+            <TextBlock x:Name="desc" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
         </StackPanel>
 
         <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="Reset Mode :"/>

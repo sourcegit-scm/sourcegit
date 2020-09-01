@@ -21,7 +21,7 @@ namespace SourceGit.UI {
             sha = commit.SHA;
 
             InitializeComponent();
-            txtDesc.Content = $"{commit.ShortSHA}  {commit.Subject}";
+            txtDesc.Text = $"{commit.ShortSHA}  {commit.Subject}";
         }
 
         /// <summary>

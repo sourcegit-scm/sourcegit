@@ -58,7 +58,7 @@ namespace SourceGit.UI {
                 preferBranch = upstream;
             }
 
-            txtInto.Content = current.Name;
+            txtInto.Text = current.Name;
             combRemotes.ItemsSource = remotes;
             combRemotes.SelectedItem = preferRemote;
         }

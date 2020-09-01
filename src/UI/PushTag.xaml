@@ -25,7 +25,7 @@
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Tag :"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Tag}" Margin="4,0"/>
-            <Label x:Name="tagName"/>
+            <TextBlock x:Name="tagName" Text="v1.0" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
         </StackPanel>
 
         <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Remote :"/>
@@ -36,7 +36,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="20">
                         <Path Margin="4,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Remote}"/>
-                        <Label Content="{Binding Name}" Padding="8,0,0,0"/>
+                        <TextBlock Text="{Binding Name}" Padding="8,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>

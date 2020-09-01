@@ -21,7 +21,7 @@ namespace SourceGit.UI {
             this.tag = tag;
 
             InitializeComponent();
-            tagName.Content = tag.Name;
+            tagName.Text = tag.Name;
         }
 
         /// <summary>

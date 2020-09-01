@@ -20,7 +20,7 @@ namespace SourceGit.UI {
             InitializeComponent();
             repo = opened;
             remote = target;
-            remoteName.Content = target;
+            remoteName.Text = target;
         }
 
         /// <summary>

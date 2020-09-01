@@ -50,7 +50,7 @@ namespace SourceGit.UI {
             var dialog = new CreateTag(repo);
             dialog.based = branch.Head;
             dialog.basedOnType.Data = dialog.FindResource("Icon.Branch") as Geometry;
-            dialog.basedOnDesc.Content = branch.Name;
+            dialog.basedOnDesc.Text = branch.Name;
 
             repo.GetPopupManager()?.Show(dialog);
         }
@@ -64,7 +64,7 @@ namespace SourceGit.UI {
             var dialog = new CreateTag(repo);
             dialog.based = commit.SHA;
             dialog.basedOnType.Data = dialog.FindResource("Icon.Commit") as Geometry;
-            dialog.basedOnDesc.Content = $"{commit.ShortSHA}  {commit.Subject}";
+            dialog.basedOnDesc.Text = $"{commit.ShortSHA}  {commit.Subject}";
 
             repo.GetPopupManager()?.Show(dialog);
         }

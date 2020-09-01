@@ -35,8 +35,8 @@ namespace SourceGit.UI {
             InitializeComponent();
 
             repo = opened;
-            sourceBranch.Content = source;
-            targetBranch.Content = dest;
+            sourceBranch.Text = source;
+            targetBranch.Text = dest;
             combOptions.ItemsSource = new Option[] {
                 new Option("Default", "Fast-forward if possible", ""),
                 new Option("No Fast-forward", "Always create a merge commit", "--no-ff"),
@@ -85,7 +85,7 @@ namespace SourceGit.UI {
             var popup = repo.GetPopupManager();
             popup?.Lock();
 
-            var branch = sourceBranch.Content as string;
+            var branch = sourceBranch.Text;
             var opt = combOptions.SelectedItem as Option;
             await Task.Run(() => repo.Merge(branch, opt.Arg));
 
