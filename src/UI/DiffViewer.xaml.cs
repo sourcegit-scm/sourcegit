@@ -57,7 +57,10 @@ namespace SourceGit.UI {
             Task.Run(() => {
                 var args = $"{opts.ExtraArgs} ";
                 if (opts.RevisionRange.Length > 0) args += $"{opts.RevisionRange[0]} ";
-                if (opts.RevisionRange.Length > 1) args += $"{opts.RevisionRange[1]} -- ";
+                if (opts.RevisionRange.Length > 1) args += $"{opts.RevisionRange[1]} ";
+
+                args += "-- ";
+
                 if (!string.IsNullOrEmpty(opts.OrgPath)) args += $"\"{opts.OrgPath}\" ";
                 args += $"\"{opts.Path}\"";
 
