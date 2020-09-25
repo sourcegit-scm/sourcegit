@@ -6,16 +6,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Navigation;
 
 namespace SourceGit.UI {
 
     /// <summary>
-    ///     Commit detail viewer
+    ///     Diff with selected 2 commits.
     /// </summary>
-    public partial class CommitViewer : UserControl {
+    public partial class TwoCommitsDiff : UserControl {
         private Git.Repository repo = null;
-        private Git.Commit commit = null;
+        private string sha1 = null;
+        private string sha2 = null;
         private List<Git.Change> cachedChanges = new List<Git.Change>();
         private List<Git.Change> displayChanges = new List<Git.Change>();
         private string changeFilter = null;
@@ -37,75 +37,44 @@ namespace SourceGit.UI {
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public CommitViewer() {
+        public TwoCommitsDiff() {
             InitializeComponent();
         }
 
-        #region DATA
-        public void SetData(Git.Repository opened, Git.Commit selected) {
-            repo = opened;
-            commit = selected;
+        /// <summary>
+        ///     Show.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="sha1"></param>
+        /// <param name="sha2"></param>
+        public void SetData(Git.Repository repo, string sha1, string sha2) {
+            this.repo = repo;
+            this.sha1 = sha1;
+            this.sha2 = sha2;
 
-            SetBaseInfo(commit);
-
-            Task.Run(() => {
-                cachedChanges.Clear();
-                cachedChanges = commit.GetChanges(repo);
-
-                Dispatcher.Invoke(() => {
-                    changeList1.ItemsSource = null;
-                    changeList1.ItemsSource = cachedChanges;
-                });
-
-                LayoutChanges();
-                SetRevisionFiles(commit.GetFiles(repo));
-            });
+            txtTitle.Content = $"COMMIT: {sha1} -> {sha2}";
+            Task.Run(() => LoadChanges(true));
         }
 
-        private void Cleanup(object sender, RoutedEventArgs e) {
-            fileTree.ItemsSource = null;
-            changeList1.ItemsSource = null;
-            changeList2.ItemsSource = null;
-            displayChanges.Clear();
+        /// <summary>
+        ///     Cleanup.
+        /// </summary>
+        public void Cleanup() {
+            repo = null;
             cachedChanges.Clear();
-            diffViewer.Reset();
-        }
-        #endregion
-
-        #region BASE_INFO
-        private void SetBaseInfo(Git.Commit commit) {
-            var parentIds = new List<string>();
-            foreach (var p in commit.Parents) parentIds.Add(p.Substring(0, 8));
-
-            SHA.Text = commit.SHA;
-            refs.ItemsSource = commit.Decorators;
-            parents.ItemsSource = parentIds;
-            author.Text = $"{commit.Author.Name} <{commit.Author.Email}>";
-            authorTime.Text = commit.Author.Time;
-            committer.Text = $"{commit.Committer.Name} <{commit.Committer.Email}>";
-            committerTime.Text = commit.Committer.Time;
-            subject.Text = commit.Subject;
-            message.Text = commit.Message.Trim();
-
-            if (commit.Decorators.Count == 0) lblRefs.Visibility = Visibility.Collapsed;
-            else lblRefs.Visibility = Visibility.Visible;
-
-            if (commit.Committer.Email == commit.Author.Email && commit.Committer.Time == commit.Author.Time) {
-                committerRow.Height = new GridLength(0);
-            } else {
-                committerRow.Height = GridLength.Auto;
-            }
+            displayChanges.Clear();
         }
 
-        private void NavigateParent(object sender, RequestNavigateEventArgs e) {
-            repo.OnNavigateCommit?.Invoke(e.Uri.OriginalString);
-            e.Handled = true;
-        }
+        private void LoadChanges(bool reload = false) {
+            if (reload) {
+                cachedChanges.Clear();
 
-        #endregion
+                repo.RunCommand($"diff --name-status {sha1} {sha2}", line => {
+                    var c = Git.Change.Parse(line, true);
+                    if (c != null) cachedChanges.Add(c);
+                });
+            }            
 
-        #region CHANGES
-        private void LayoutChanges() {
             displayChanges.Clear();
 
             if (string.IsNullOrEmpty(changeFilter)) {
@@ -183,7 +152,7 @@ namespace SourceGit.UI {
 
         private void SearchChangeFileTextChanged(object sender, TextChangedEventArgs e) {
             changeFilter = txtChangeFilter.Text.ToUpper();
-            Task.Run(() => LayoutChanges());
+            Task.Run(() => LoadChanges());
         }
 
         private void ChangeTreeItemSelected(object sender, RoutedPropertyChangedEventArgs<object> e) {
@@ -192,13 +161,8 @@ namespace SourceGit.UI {
             var node = e.NewValue as Node;
             if (node == null || !node.IsFile) return;
 
-            var start = $"{commit.SHA}^";
-            if (commit.Parents.Count == 0) {
-                start = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
-            }
-
             diffViewer.Diff(repo, new DiffViewer.Option() {
-                RevisionRange = new string[] { start, commit.SHA },
+                RevisionRange = new string[] { sha1, sha2 },
                 Path = node.FilePath,
                 OrgPath = node.OriginalPath
             });
@@ -210,13 +174,8 @@ namespace SourceGit.UI {
             var change = e.AddedItems[0] as Git.Change;
             if (change == null) return;
 
-            var start = $"{commit.SHA}^";
-            if (commit.Parents.Count == 0) {
-                start = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
-            }
-
             diffViewer.Diff(repo, new DiffViewer.Option() {
-                RevisionRange = new string[] { start, commit.SHA },
+                RevisionRange = new string[] { sha1, sha2 },
                 Path = change.Path,
                 OrgPath = change.OriginalPath
             });
@@ -240,14 +199,6 @@ namespace SourceGit.UI {
                 };
                 menu.Items.Add(history);
 
-                MenuItem blame = new MenuItem();
-                blame.Header = "Blame";
-                blame.Click += (obj, ev) => {
-                    Blame viewer = new Blame(repo, path, commit.SHA);
-                    viewer.Show();
-                };
-                menu.Items.Add(blame);
-
                 MenuItem explore = new MenuItem();
                 explore.Header = "Reveal in File Explorer";
                 explore.Click += (o, ev) => {
@@ -256,20 +207,6 @@ namespace SourceGit.UI {
                     e.Handled = true;
                 };
                 menu.Items.Add(explore);
-
-                MenuItem saveAs = new MenuItem();
-                saveAs.Header = "Save As ...";
-                saveAs.Click += (obj, ev) => {
-                    var dialog = new System.Windows.Forms.FolderBrowserDialog();
-                    dialog.Description = change.Path;
-                    dialog.ShowNewFolderButton = true;
-
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                        var savePath = Path.Combine(dialog.SelectedPath, Path.GetFileName(path));
-                        repo.RunAndRedirect($"show {commit.SHA}:\"{path}\"", savePath);
-                    }
-                };
-                menu.Items.Add(saveAs);
             }
 
             MenuItem copyPath = new MenuItem();
@@ -292,116 +229,7 @@ namespace SourceGit.UI {
             var viewer = new FileHistories(repo, change.Path);
             viewer.Show();
         }
-        #endregion
 
-        #region FILES
-        private void SetRevisionFiles(List<Git.Commit.Object> files) {
-            List<Node> fileTreeSource = new List<Node>();
-            Dictionary<string, Node> folders = new Dictionary<string, Node>();
-
-            foreach (var obj in files) {
-                var sepIdx = obj.Path.IndexOf("/");
-                if (sepIdx == -1) {
-                    Node node = new Node();
-                    node.FilePath = obj.Path;
-                    node.Name = obj.Path;
-                    node.IsFile = true;
-                    node.IsNodeExpanded = false;
-                    node.CommitObject = obj;
-                    fileTreeSource.Add(node);
-                } else {
-                    Node lastFolder = null;
-                    var start = 0;
-
-                    while (sepIdx != -1) {
-                        var folder = obj.Path.Substring(0, sepIdx);
-                        if (folders.ContainsKey(folder)) {
-                            lastFolder = folders[folder];
-                        } else if (lastFolder == null) {
-                            lastFolder = new Node();
-                            lastFolder.FilePath = folder;
-                            lastFolder.Name = folder.Substring(start);
-                            lastFolder.IsNodeExpanded = false;
-                            fileTreeSource.Add(lastFolder);
-                            folders.Add(folder, lastFolder);
-                        } else {
-                            var folderNode = new Node();
-                            folderNode.FilePath = folder;
-                            folderNode.Name = folder.Substring(start);
-                            folderNode.IsNodeExpanded = false;
-                            folders.Add(folder, folderNode);
-                            lastFolder.Children.Add(folderNode);
-                            lastFolder = folderNode;
-                        }
-
-                        start = sepIdx + 1;
-                        sepIdx = obj.Path.IndexOf('/', start);
-                    }
-
-                    Node node = new Node();
-                    node.FilePath = obj.Path;
-                    node.Name = obj.Path.Substring(start);
-                    node.IsFile = true;
-                    node.IsNodeExpanded = false;
-                    node.CommitObject = obj;
-                    lastFolder.Children.Add(node);
-                }
-            }
-
-            folders.Clear();
-            SortTreeNodes(fileTreeSource);
-
-            Dispatcher.Invoke(() => {
-                fileTree.ItemsSource = fileTreeSource;
-                filePreview.Text = "";
-            });
-        }
-
-        private async void FileTreeItemSelected(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            filePreview.Text = "";
-            maskPreviewNotSupported.Visibility = Visibility.Collapsed;
-            maskRevision.Visibility = Visibility.Collapsed;
-
-            var node = e.NewValue as Node;
-            if (node == null || !node.IsFile || node.CommitObject == null) return;
-
-            switch (node.CommitObject.Kind) {
-            case Git.Commit.Object.Type.Blob:
-                if (repo.IsLFSFiltered(node.FilePath)) {
-                    var obj = repo.GetLFSObject(commit.SHA, node.FilePath);
-                    maskRevision.Visibility = Visibility.Visible;
-                    iconPreviewRevision.Data = FindResource("Icon.LFS") as Geometry;
-                    txtPreviewRevision.Content = $"LFS SIZE: {obj.Size} Bytes";
-                } else {
-                    await Task.Run(() => {
-                        var isBinary = false;
-                        var data = commit.GetTextFileContent(repo, node.FilePath, out isBinary);
-
-                        if (isBinary) {
-                            Dispatcher.Invoke(() => maskPreviewNotSupported.Visibility = Visibility.Visible);
-                        } else {
-                            Dispatcher.Invoke(() => filePreview.Text = data);
-                        }
-                    });
-                }
-                break;
-            case Git.Commit.Object.Type.Tag:
-                maskRevision.Visibility = Visibility.Visible;
-                iconPreviewRevision.Data = FindResource("Icon.Tag") as Geometry;
-                txtPreviewRevision.Content = "TAG: " + node.CommitObject.SHA;
-                break;
-            case Git.Commit.Object.Type.Commit:
-                maskRevision.Visibility = Visibility.Visible;
-                iconPreviewRevision.Data = FindResource("Icon.Submodule") as Geometry;
-                txtPreviewRevision.Content = "SUBMODULE: " + node.CommitObject.SHA;
-                break;
-            default:
-                return;
-            }            
-        }
-        #endregion
-
-        #region TREE_COMMON
         private void SortTreeNodes(List<Node> list) {
             list.Sort((l, r) => {
                 if (l.IsFile) {
@@ -450,7 +278,7 @@ namespace SourceGit.UI {
             var node = item.DataContext as Node;
             if (node == null || !node.IsFile) return;
 
-            item.IsSelected = true;    
+            item.IsSelected = true;
 
             ContextMenu menu = new ContextMenu();
             if (node.Change == null || node.Change.Index != Git.Change.Status.Deleted) {
@@ -462,14 +290,6 @@ namespace SourceGit.UI {
                 };
                 menu.Items.Add(history);
 
-                MenuItem blame = new MenuItem();
-                blame.Header = "Blame";
-                blame.Click += (obj, ev) => {
-                    Blame viewer = new Blame(repo, node.FilePath, commit.SHA);
-                    viewer.Show();
-                };
-                menu.Items.Add(blame);
-
                 MenuItem explore = new MenuItem();
                 explore.Header = "Reveal in File Explorer";
                 explore.Click += (o, ev) => {
@@ -478,21 +298,6 @@ namespace SourceGit.UI {
                     e.Handled = true;
                 };
                 menu.Items.Add(explore);
-
-                MenuItem saveAs = new MenuItem();
-                saveAs.Header = "Save As ...";
-                saveAs.IsEnabled = node.CommitObject == null || node.CommitObject.Kind == Git.Commit.Object.Type.Blob;
-                saveAs.Click += (obj, ev) => {
-                    var dialog = new System.Windows.Forms.FolderBrowserDialog();
-                    dialog.Description = node.FilePath;
-                    dialog.ShowNewFolderButton = true;
-
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                        var path = Path.Combine(dialog.SelectedPath, node.Name);
-                        repo.RunAndRedirect($"show {commit.SHA}:\"{node.FilePath}\"", path);
-                    }
-                };
-                menu.Items.Add(saveAs);
             }
 
             MenuItem copyPath = new MenuItem();
@@ -501,10 +306,9 @@ namespace SourceGit.UI {
                 Clipboard.SetText(node.FilePath);
             };
             menu.Items.Add(copyPath);
+
             menu.IsOpen = true;
             e.Handled = true;
         }
-        #endregion
-
     }
 }

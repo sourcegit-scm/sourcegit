@@ -161,13 +161,16 @@
         <!-- Detail for selected commit -->
         <Grid x:Name="commitDetailPanel">
             <!-- Selected commit detail -->
-            <local:CommitViewer x:Name="commitViewer"/>
-            
+            <local:CommitViewer x:Name="commitViewer" Visibility="Collapsed"/>
+
+            <!-- Diff with selected 2 commit -->
+            <local:TwoCommitsDiff x:Name="twoCommitDiff" Visibility="Collapsed"/>
+
             <!-- Mask for select multi rows in commit list -->
-            <Border x:Name="mask4MultiSelection" Background="{StaticResource Brush.BG1}" Visibility="Collapsed">
+            <Border x:Name="mask4MultiSelection" Background="{StaticResource Brush.BG1}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
                     <Path Width="160" Height="160" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-                    <Label x:Name="txtTotalSelected" Margin="0,16,0,0" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                    <Label x:Name="txtTotalSelected" Content="SELECT COMMIT TO VIEW DETAIL" Margin="0,16,0,0" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
 

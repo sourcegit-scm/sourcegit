@@ -41,10 +41,6 @@ namespace SourceGit.UI {
         /// </summary>
         public Histories() {
             InitializeComponent();
-
-            mask4MultiSelection.Visibility = Visibility.Visible;
-            txtTotalSelected.Content = "SELECT COMMIT TO VIEW DETAIL";
-
             ChangeOrientation(null, null);
         }
 
@@ -271,14 +267,22 @@ namespace SourceGit.UI {
 
         private void CommitSelectChanged(object sender, SelectionChangedEventArgs e) {
             mask4MultiSelection.Visibility = Visibility.Collapsed;
+            commitViewer.Visibility = Visibility.Collapsed;
+            twoCommitDiff.Visibility = Visibility.Collapsed;
 
             var selected = commitList.SelectedItems;
             if (selected.Count == 1) {
-                var commit = selected[0] as Git.Commit;
-                if (commit != null) commitViewer.SetData(Repo, commit);
-            } else if (selected.Count > 1) {
+                commitViewer.Visibility = Visibility.Visible;
+                commitViewer.SetData(Repo, selected[0] as Git.Commit);
+            } else if (selected.Count == 2) {
+                twoCommitDiff.Visibility = Visibility.Visible;
+                twoCommitDiff.SetData(Repo, (selected[0] as Git.Commit).ShortSHA, (selected[1] as Git.Commit).ShortSHA);
+            } else if (selected.Count > 2) {
                 mask4MultiSelection.Visibility = Visibility.Visible;
                 txtTotalSelected.Content = $"SELECTED {selected.Count} COMMITS";
+            } else {
+                mask4MultiSelection.Visibility = Visibility.Visible;
+                txtTotalSelected.Content = $"SELECT COMMIT TO VIEW DETAIL";
             }
         }
 
