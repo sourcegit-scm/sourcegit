@@ -11,11 +11,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="4,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="32.5"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" x:Name="txtTitle" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Grid.Row="0" x:Name="txtTitle" FontFamily="Consolas" FontWeight="Bold" Foreground="{StaticResource Brush.FG}" Opacity=".7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

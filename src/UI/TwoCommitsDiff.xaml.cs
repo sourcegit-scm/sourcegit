@@ -52,7 +52,7 @@ namespace SourceGit.UI {
             this.sha1 = sha1;
             this.sha2 = sha2;
 
-            txtTitle.Content = $"COMMIT: {sha1} -> {sha2}";
+            txtTitle.Content = $"COMMIT : {sha1} -> {sha2}";
             Task.Run(() => LoadChanges(true));
         }
 
