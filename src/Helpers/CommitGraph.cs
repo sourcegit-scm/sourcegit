@@ -259,7 +259,11 @@ namespace SourceGit.Helpers {
             // 处理尚未终结的线
             for (int i = 0; i < unsolved.Count; i++) {
                 var path = unsolved[i];
-                path.AddPoint((i + 0.5) * UNIT_WIDTH, (commits.Count - 0.5) * UNIT_HEIGHT, true);
+                var endY = (commits.Count - 0.5) * UNIT_HEIGHT;
+
+                if (path.Points.Count == 1 && path.Points[0].Y == endY) continue; 
+
+                path.AddPoint((i + 0.5) * UNIT_WIDTH, endY, true);
                 maker.Lines.Add(path);
             }
             unsolved.Clear();
