@@ -219,17 +219,6 @@ namespace SourceGit.UI {
             e.Handled = true;
         }
 
-        private void ChangeListMouseDoubleClick(object sender, MouseButtonEventArgs e) {
-            var row = sender as DataGridRow;
-            if (row == null) return;
-
-            var change = row.DataContext as Git.Change;
-            if (change == null) return;
-
-            var viewer = new FileHistories(repo, change.Path);
-            viewer.Show();
-        }
-
         private void SortTreeNodes(List<Node> list) {
             list.Sort((l, r) => {
                 if (l.IsFile) {
