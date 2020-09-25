@@ -64,11 +64,22 @@ namespace SourceGit.UI {
                 if (!string.IsNullOrEmpty(opts.OrgPath)) args += $"\"{opts.OrgPath}\" ";
                 args += $"\"{opts.Path}\"";
 
-                var rs = Git.Diff.Run(repo, args);
+                if (repo.IsLFSFiltered(opts.Path)) {
+                    var lc = Git.Diff.GetLFSChange(repo, args);
+                    if (lc.IsValid) {
+                        SetLFSChange(lc);
+                    } else {
+                        SetSame();
+                    }
+
+                    return;
+                }
+
+                var rs = Git.Diff.GetTextChange(repo, args);
                 if (rs.IsBinary) {
-                    SetSizeChangeData(Git.Diff.GetSizeChange(repo, opts.RevisionRange, opts.Path, opts.OrgPath));
+                    SetBinaryChange(Git.Diff.GetSizeChange(repo, opts.RevisionRange, opts.Path, opts.OrgPath));
                 } else if (rs.Blocks.Count > 0) {
-                    SetData(rs);
+                    SetTextChange(rs);
                 } else {
                     SetSame();
                 }
@@ -92,35 +103,10 @@ namespace SourceGit.UI {
         }
 
         /// <summary>
-        ///     Show size changes.
-        /// </summary>
-        /// <param name="bc"></param>
-        private void SetSizeChangeData(Git.Diff.BinaryChange bc) {
-            Dispatcher.Invoke(() => {
-                loading.Visibility = Visibility.Collapsed;
-                sizeChange.Visibility = Visibility.Visible;
-                diffNavigation.Visibility = Visibility.Collapsed;
-                txtNewSize.Content = $"{bc.Size} Bytes";
-                txtOldSize.Content = $"{bc.PreSize} Bytes";
-            });
-        }
-
-        /// <summary>
-        ///     Show no changes or only EOL changes.
-        /// </summary>
-        private void SetSame() {
-            Dispatcher.Invoke(() => {
-                loading.Visibility = Visibility.Collapsed;
-                noChange.Visibility = Visibility.Visible;
-                diffNavigation.Visibility = Visibility.Collapsed;
-            });
-        }
-
-        /// <summary>
         ///     Show diff content.
         /// </summary>
         /// <param name="rs"></param>
-        private void SetData(Git.Diff.Result rs) {
+        private void SetTextChange(Git.Diff.TextChange rs) {
             Dispatcher.Invoke(() => {
                 loading.Visibility = Visibility.Collapsed;
                 textChange.Visibility = Visibility.Visible;
@@ -138,6 +124,50 @@ namespace SourceGit.UI {
                 leftText.Document.PageWidth = minWidth + 16;
                 rightText.Document.PageWidth = minWidth + 16;
                 leftText.ScrollToHome();
+            });
+        }
+
+        /// <summary>
+        ///     Show size changes.
+        /// </summary>
+        /// <param name="bc"></param>
+        private void SetBinaryChange(Git.Diff.BinaryChange bc) {
+            Dispatcher.Invoke(() => {
+                loading.Visibility = Visibility.Collapsed;
+                sizeChange.Visibility = Visibility.Visible;
+                diffNavigation.Visibility = Visibility.Collapsed;
+                txtSizeChangeTitle.Content = "BINARY DIFF";
+                txtNewSize.Content = $"{bc.Size} Bytes";
+                txtOldSize.Content = $"{bc.PreSize} Bytes";
+            });
+        }
+
+        /// <summary>
+        ///     Show size changes.
+        /// </summary>
+        /// <param name="lc"></param>
+        private void SetLFSChange(Git.Diff.LFSChange lc) {
+            Dispatcher.Invoke(() => {
+                var oldSize = lc.Old == null ? 0 : lc.Old.Size;
+                var newSize = lc.New == null ? 0 : lc.New.Size;
+
+                loading.Visibility = Visibility.Collapsed;
+                sizeChange.Visibility = Visibility.Visible;
+                diffNavigation.Visibility = Visibility.Collapsed;
+                txtSizeChangeTitle.Content = "LFS OBJECT CHANGE";
+                txtNewSize.Content = $"{newSize} Bytes";
+                txtOldSize.Content = $"{oldSize} Bytes";
+            });
+        }
+
+        /// <summary>
+        ///     Show no changes or only EOL changes.
+        /// </summary>
+        private void SetSame() {
+            Dispatcher.Invoke(() => {
+                loading.Visibility = Visibility.Collapsed;
+                noChange.Visibility = Visibility.Visible;
+                diffNavigation.Visibility = Visibility.Collapsed;
             });
         }
 

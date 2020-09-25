@@ -32,14 +32,6 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
-        ///     Binary change.
-        /// </summary>
-        public class BinaryChange {
-            public long Size = 0;
-            public long PreSize = 0;
-        }
-
-        /// <summary>
         ///     Block
         /// </summary>
         public class Block {
@@ -63,9 +55,9 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
-        ///     Diff result.
+        ///     Text file change.
         /// </summary>
-        public class Result {
+        public class TextChange {
             public bool IsValid = false;
             public bool IsBinary = false;
             public List<Block> Blocks = new List<Block>();
@@ -120,13 +112,30 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
+        ///     Binary change.
+        /// </summary>
+        public class BinaryChange {
+            public long Size = 0;
+            public long PreSize = 0;
+        }
+
+        /// <summary>
+        ///     Change for LFS object information.
+        /// </summary>
+        public class LFSChange {
+            public LFSObject Old;
+            public LFSObject New;
+            public bool IsValid => Old != null || New != null;
+        }
+
+        /// <summary>
         ///     Run diff process.
         /// </summary>
         /// <param name="repo"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static Result Run(Repository repo, string args) {
-            var rs = new Result();
+        public static TextChange GetTextChange(Repository repo, string args) {
+            var rs = new TextChange();
             var current = new Block();
             var left = 0;
             var right = 0;
@@ -258,6 +267,38 @@ namespace SourceGit.Git {
             }
 
             return change;
+        }
+
+        /// <summary>
+        ///     Get LFS object changes.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static LFSChange GetLFSChange(Repository repo, string args) {
+            var rc = new LFSChange();
+
+            repo.RunCommand($"diff --ignore-cr-at-eol {args}", line => {
+                if (line[0] == '-') {
+                    if (rc.Old == null) rc.Old = new LFSObject();
+                    line = line.Substring(1);
+                    if (line.StartsWith("oid sha256:")) {
+                        rc.Old.OID = line.Substring(11);
+                    } else if (line.StartsWith("size ")) {
+                        rc.Old.Size = int.Parse(line.Substring(5));
+                    }
+                } else if (line[0] == '+') {
+                    if (rc.New == null) rc.New = new LFSObject();
+                    line = line.Substring(1);
+                    if (line.StartsWith("oid sha256:")) {
+                        rc.New.OID = line.Substring(11);
+                    } else if (line.StartsWith("size ")) {
+                        rc.New.Size = int.Parse(line.Substring(5));
+                    }
+                }
+            });
+
+            return rc;
         }
     }
 }

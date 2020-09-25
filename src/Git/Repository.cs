@@ -999,10 +999,45 @@ namespace SourceGit.Git {
         /// <returns></returns>
         public long GetFileSize(string sha, string path) {
             long size = 0;
+
             RunCommand($"cat-file -s {sha}:\"{path}\"", line => {
                 if (!long.TryParse(line, out size)) size = 0;
             });
+
             return size;
+        }
+        
+        /// <summary>
+        ///     Detect if a file is managed by LFS.
+        /// </summary>
+        /// <param name="path">File path</param>
+        /// <returns></returns>
+        public bool IsLFSFiltered(string path) {
+            bool ok = false;
+            RunCommand($"check-attr -a -z \"{path}\"", line => {
+                ok = ok || line.Contains("filter\0lfs");
+            });
+            return ok;
+        }
+
+        /// <summary>
+        ///     Get LFS object information.
+        /// </summary>
+        /// <param name="sha"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public LFSObject GetLFSObject(string sha, string path) {
+            LFSObject obj = new LFSObject();
+
+            RunCommand($"show {sha}:\"{path}\"", line => {
+                if (line.StartsWith("oid")) {
+                    obj.OID = line.Substring(3).Replace("sha256:", "").Trim();
+                } else if (line.StartsWith("size")) {
+                    obj.Size = int.Parse(line.Substring(4).Trim());
+                }                
+            });
+
+            return obj;
         }
         #endregion
 

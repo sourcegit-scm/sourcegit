@@ -368,16 +368,23 @@ namespace SourceGit.UI {
 
             switch (node.CommitObject.Kind) {
             case Git.Commit.Object.Type.Blob:
-                await Task.Run(() => {
-                    var isBinary = false;
-                    var data = commit.GetTextFileContent(repo, node.FilePath, out isBinary);
+                if (repo.IsLFSFiltered(node.FilePath)) {
+                    var obj = repo.GetLFSObject(commit.SHA, node.FilePath);
+                    maskRevision.Visibility = Visibility.Visible;
+                    iconPreviewRevision.Data = FindResource("Icon.LFS") as Geometry;
+                    txtPreviewRevision.Content = $"LFS SIZE: {obj.Size} Bytes";
+                } else {
+                    await Task.Run(() => {
+                        var isBinary = false;
+                        var data = commit.GetTextFileContent(repo, node.FilePath, out isBinary);
 
-                    if (isBinary) {
-                        Dispatcher.Invoke(() => maskPreviewNotSupported.Visibility = Visibility.Visible);
-                    } else {
-                        Dispatcher.Invoke(() => filePreview.Text = data);
-                    }
-                });
+                        if (isBinary) {
+                            Dispatcher.Invoke(() => maskPreviewNotSupported.Visibility = Visibility.Visible);
+                        } else {
+                            Dispatcher.Invoke(() => filePreview.Text = data);
+                        }
+                    });
+                }
                 break;
             case Git.Commit.Object.Type.Tag:
                 maskRevision.Visibility = Visibility.Visible;
