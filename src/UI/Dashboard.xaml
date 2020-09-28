@@ -53,12 +53,6 @@
                             <Label Content="Explore"/>
                         </StackPanel>
                     </Button>
-                    <Button Click="OpenConfigure" Margin="4,0,0,0" ToolTip="Configure This Repository">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Setting}"/>
-                            <Label Content="Configure"/>
-                        </StackPanel>
-                    </Button>
                 </StackPanel>
                 
                 <!-- Common Git Options -->
@@ -97,6 +91,12 @@
 
                 <!-- External Options -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Click="OpenConfigure" Margin="4,0,0,0" ToolTip="Configure This Repository">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Setting}"/>
+                            <Label Content="Configure"/>
+                        </StackPanel>
+                    </Button>
                     <Button Click="OpenSearch" Margin="4,0" ToolTip="Search Commit">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
