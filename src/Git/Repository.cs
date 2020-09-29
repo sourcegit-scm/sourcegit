@@ -390,7 +390,17 @@ namespace SourceGit.Git {
 
             if (nextUpdateTree > 0 && now >= nextUpdateTree) {
                 nextUpdateTree = 0;
-                Branches(true);
+
+                var branches = Branches(true);
+                var badFilters = new List<string>();
+                foreach (var filter in LogFilters) {
+                    if (filter.StartsWith("refs/heads/") || filter.StartsWith("refs/remotes/")) {
+                        var idx = branches.FindIndex(b => b.FullName == filter);
+                        if (idx < 0) badFilters.Add(filter);
+                    }
+                }
+                foreach (var bad in badFilters) LogFilters.Remove(bad);
+
                 OnBranchChanged?.Invoke();
                 OnCommitsChanged?.Invoke();
             }

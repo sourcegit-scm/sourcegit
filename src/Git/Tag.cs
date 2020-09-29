@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -101,6 +101,7 @@ namespace SourceGit.Git {
                 }
             }
 
+            repo.LogFilters.Remove(name);
             repo.OnCommitsChanged?.Invoke();
         }
 
