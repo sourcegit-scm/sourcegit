@@ -263,8 +263,7 @@ namespace SourceGit.Git {
             return !string.IsNullOrEmpty(url)
                 && (url.StartsWith("http://", StringComparison.Ordinal)
                 || url.StartsWith("https://", StringComparison.Ordinal)
-                || url.StartsWith("git://", StringComparison.Ordinal)
-                || url.StartsWith("ssh://", StringComparison.Ordinal)
+                || url.StartsWith("git@", StringComparison.Ordinal)
                 || url.StartsWith("file://", StringComparison.Ordinal));
         }
         #endregion
