@@ -31,6 +31,7 @@ namespace SourceGit.Helpers {
     /// </summary>
     public class RemoteNameRule : ValidationRule {
         public Git.Repository Repo { get; set; }
+        public Git.Remote Old { get; set; }
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
             var regex = new Regex(@"^[\w\-\.]+$");
@@ -40,9 +41,11 @@ namespace SourceGit.Helpers {
             if (string.IsNullOrEmpty(name)) return new ValidationResult(false, "Remote name can NOT be null");
             if (!regex.IsMatch(name)) return new ValidationResult(false, $"Bad name for remote. Regex: ^[\\w\\-\\.]+$");
 
-            foreach (var t in remotes) {
-                if (t.Name == name) {
-                    return new ValidationResult(false, $"Remote '{name}' already exists");
+            if (Old == null || name != Old.Name) {
+                foreach (var t in remotes) {
+                    if (t.Name == name) {
+                        return new ValidationResult(false, $"Remote '{name}' already exists");
+                    }
                 }
             }
 
