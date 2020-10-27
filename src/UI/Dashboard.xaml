@@ -49,8 +49,15 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="6,0">
                     <Button Click="OpenExplorer" Margin="4,0,0,0" ToolTip="Open In File Browser">
                         <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
-                            <Label Content="Explore"/>
+                            <Path Width="16" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
+                            <Label Content="Open"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="OpenTerminal" Margin="4,0" ToolTip="Open Git Bash">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Terminal}"/>
+                            <Label Content="Terminal"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -91,22 +98,16 @@
 
                 <!-- External Options -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Click="OpenConfigure" Margin="4,0,0,0" ToolTip="Configure This Repository">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Setting}"/>
-                            <Label Content="Configure"/>
-                        </StackPanel>
-                    </Button>
                     <Button Click="OpenSearch" Margin="4,0" ToolTip="Search Commit">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
                             <Label Content="Search"/>
                         </StackPanel>
                     </Button>
-                    <Button Click="OpenTerminal" Margin="4,0" ToolTip="Open Git Bash">
+                    <Button Click="OpenConfigure" Margin="4,0" ToolTip="Configure This Repository">
                         <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Terminal}"/>
-                            <Label Content="Terminal"/>
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Setting}"/>
+                            <Label Content="Configure"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
