@@ -70,7 +70,7 @@
 
                         <TabControl.ItemContainerStyle>
                             <Style TargetType="{x:Type TabItem}">
-                                <Setter Property="AllowDrop" Value="True"/>
+                                <Setter Property="AllowDrop" Value="{Binding AllowDragDrop}"/>
                                 <Setter Property="IsSelected" Value="{Binding IsActive, Mode=TwoWay}"/>
                                 <Setter Property="Margin" Value="0"/>
                                 <Setter Property="Padding" Value="0"/>
@@ -103,15 +103,26 @@
                                                     Margin="0,0,-5,0"
                                                     Data="M 0,0 L 0,6 6,6 C 6,6 0,6 0,0 Z"
                                                     Fill="Transparent"/>
-                                                
-                                                <ContentPresenter 
-                                                    x:Name="ContentSite" 
-                                                    VerticalAlignment="Center" HorizontalAlignment="Center" 
-                                                    TextElement.Foreground="{DynamicResource Brush.FG}"
-                                                    TextElement.FontWeight="Bold"
-                                                    ContentSource="Header"
-                                                    Margin="4,0"
-                                                    RecognizesAccessKey="True" />
+
+                                                <StackPanel Orientation="Horizontal" Margin="8,0" VerticalAlignment="Center">
+                                                    <Path Grid.Column="0" Width="14" Height="14" x:Name="Icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
+
+                                                    <ContentPresenter 
+                                                        x:Name="ContentSite" 
+                                                        VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                        TextElement.Foreground="{DynamicResource Brush.FG}"
+                                                        TextElement.FontWeight="Bold"
+                                                        ContentSource="Header"
+                                                        Margin="8,0"
+                                                        RecognizesAccessKey="True" />
+
+                                                    <Button x:Name="Closer" Background="Transparent" Grid.Column="2" Click="CloseRepo" Visibility="Hidden">
+                                                        <Button.ToolTip>
+                                                            <ToolTip Content="CLOSE" FontWeight="Normal"/>
+                                                        </Button.ToolTip>
+                                                        <Path Width="8" Height="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
+                                                    </Button>
+                                                </StackPanel>
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
@@ -121,6 +132,17 @@
                                                     <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.BG1}"/>
                                                     <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG1}"/>
                                                 </Trigger>
+                                                <Trigger Property="AllowDrop" Value="False">
+                                                    <Setter TargetName="Icon" Property="Fill" Value="#FFF05133"/>
+                                                    <Setter TargetName="Closer" Property="Visibility" Value="Collapsed"/>
+                                                </Trigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="AllowDrop" Value="True"/>
+                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Closer" Property="Visibility" Value="Visible"/>
+                                                </MultiTrigger>
                                                 <MultiTrigger>
                                                     <MultiTrigger.Conditions>
                                                         <Condition Property="IsSelected" Value="False"/>
@@ -140,28 +162,11 @@
 
                         <TabControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="6,0" VerticalAlignment="Center">
-                                    <Path Grid.Column="0" Width="14" Height="14" x:Name="Icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Brush.FG}" Margin="8,0,0,0" FontWeight="Bold">
-                                        <TextBlock.ToolTip>
-                                            <ToolTip Content="{Binding Tooltip}" FontWeight="Normal"/>
-                                        </TextBlock.ToolTip>
-                                    </TextBlock>
-                                    <Button x:Name="Closer" Margin="8,0,0,0" Grid.Column="2" Click="CloseRepo">
-                                        <Button.ToolTip>
-                                            <ToolTip Content="CLOSE" FontWeight="Normal"/>
-                                        </Button.ToolTip>
-                                        <Path Width="8" Height="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
-                                    </Button>
-                                </StackPanel>
-
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding Repo}" Value="{x:Null}">
-                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Git}"/>
-                                        <Setter TargetName="Icon" Property="Fill" Value="#FFF05133"/>
-                                        <Setter TargetName="Closer" Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
+                                <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Brush.FG}" FontWeight="Bold">
+                                    <TextBlock.ToolTip>
+                                        <ToolTip Content="{Binding Tooltip}" FontWeight="Normal"/>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
                             </DataTemplate>
                         </TabControl.ItemTemplate>
                     </TabControl>
