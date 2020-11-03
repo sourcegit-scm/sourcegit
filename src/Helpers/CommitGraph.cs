@@ -141,11 +141,6 @@ namespace SourceGit.Helpers {
         public List<Dot> Dots { get; set; } = new List<Dot>();
 
         /// <summary>
-        ///     Highlight commit id.
-        /// </summary>
-        public string Highlight { get; set; }
-
-        /// <summary>
         ///     Parse commits.
         /// </summary>
         /// <param name="commits"></param>
@@ -167,11 +162,6 @@ namespace SourceGit.Helpers {
 
                 // 更新Y坐标
                 offsetY += UNIT_HEIGHT;
-
-                // 找到当前的分支的HEAD，用于默认选中
-                if (maker.Highlight == null && commit.IsHEAD) {
-                    maker.Highlight = commit.SHA;
-                }
 
                 // 找到第一个依赖于本提交的树，将其他依赖于本提交的树标记为终止，并对已存在的线路调整（防止线重合）
                 double offsetX = -HALF_WIDTH;
@@ -267,11 +257,6 @@ namespace SourceGit.Helpers {
                 maker.Lines.Add(path);
             }
             unsolved.Clear();
-
-            // 处理默认选中异常
-            if (maker.Highlight == null && commits.Count > 0) {
-                maker.Highlight = commits[0].SHA;
-            }
 
             return maker;
         }

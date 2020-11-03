@@ -169,7 +169,6 @@ namespace SourceGit.UI {
                 maker.Dots.Clear();
 
                 commitList.ItemsSource = new List<Git.Commit>(cachedCommits);
-                // Navigate(maker.Highlight);
                 SetLoadingEnabled(false);
             });
         }
