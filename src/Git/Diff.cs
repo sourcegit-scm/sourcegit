@@ -295,6 +295,8 @@ namespace SourceGit.Git {
                     } else if (line.StartsWith("size ")) {
                         rc.New.Size = int.Parse(line.Substring(5));
                     }
+                } else if (line.StartsWith(" size ")) {
+                    rc.New.Size = rc.Old.Size = int.Parse(line.Substring(6));
                 }
             });
 
