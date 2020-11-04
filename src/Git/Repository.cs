@@ -836,6 +836,18 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
+        ///     Get all remote branches
+        /// </summary>
+        /// <returns>All remote branches</returns>
+        public List<Branch> RemoteBranches() {
+            var ret = new List<Branch>();
+            foreach (var b in cachedBranches) {
+                if (!b.IsLocal) ret.Add(b);
+            }
+            return ret;
+        }
+
+        /// <summary>
         ///     Get current branch
         /// </summary>
         /// <returns></returns>

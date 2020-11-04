@@ -61,7 +61,9 @@
                 <Path Grid.Column="2" Width="8" Height="8" Style="{DynamicResource Style.Icon}" Data="M 0 0 L 0 7 L 4 3.5 Z"/>
                 <Popup Name="Popup" Placement="Right" HorizontalOffset="-2" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
                     <Border Name="SubmenuBorder" SnapsToDevicePixels="True" Background="{DynamicResource Brush.BG1}" BorderBrush="{DynamicResource Brush.Border1}" BorderThickness="1">
-                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                        </ScrollViewer>
                     </Border>
                 </Popup>
             </Grid>

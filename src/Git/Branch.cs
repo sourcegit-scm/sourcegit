@@ -154,6 +154,19 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
+        ///     Change upstream
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="upstream"></param>
+        public void SetUpstream(Repository repo, string upstream) {
+            var errs = repo.RunCommand($"branch {Name} -u {upstream}", null);
+            if (errs != null) App.RaiseError(errs);
+
+            repo.Branches(true);
+            repo.OnBranchChanged?.Invoke();
+        }
+
+        /// <summary>
         ///     Delete branch.
         /// </summary>
         /// <param name="repo"></param>

@@ -641,14 +641,14 @@ namespace SourceGit.UI {
             if (branch.Kind != Git.Branch.Type.Normal) {
                 menu.Items.Add(new Separator());
 
-                var icon = new System.Windows.Shapes.Path();
-                icon.Style = FindResource("Style.Icon") as Style;
-                icon.Data = FindResource("Icon.Flow") as Geometry;
-                icon.Width = 10;
+                var flowIcon = new System.Windows.Shapes.Path();
+                flowIcon.Style = FindResource("Style.Icon") as Style;
+                flowIcon.Data = FindResource("Icon.Flow") as Geometry;
+                flowIcon.Width = 10;
 
                 var finish = new MenuItem();
                 finish.Header = $"Git Flow - Finish '{branch.Name}'";
-                finish.Icon = icon;
+                finish.Icon = flowIcon;
                 finish.Click += (o, e) => {
                     GitFlowFinishBranch.Show(repo, branch);
                     e.Handled = true;
@@ -692,6 +692,39 @@ namespace SourceGit.UI {
             };
             menu.Items.Add(createTag);
             menu.Items.Add(new Separator());
+
+            var remoteBranches = repo.RemoteBranches();
+            if (remoteBranches.Count > 0) {
+                var trackingIcon = new System.Windows.Shapes.Path();
+                trackingIcon.Style = FindResource("Style.Icon") as Style;
+                trackingIcon.Data = FindResource("Icon.Branch") as Geometry;
+                trackingIcon.VerticalAlignment = VerticalAlignment.Bottom;
+                trackingIcon.Width = 10;
+
+                var currentTrackingIcon = new System.Windows.Shapes.Path();
+                currentTrackingIcon.Style = FindResource("Style.Icon") as Style;
+                currentTrackingIcon.Data = FindResource("Icon.Check") as Geometry;
+                currentTrackingIcon.VerticalAlignment = VerticalAlignment.Center;
+                currentTrackingIcon.Width = 10;
+
+                var tracking = new MenuItem();
+                tracking.Header = "Tracking ...";
+                tracking.Icon = trackingIcon;
+
+                foreach (var b in remoteBranches) {
+                    var target = new MenuItem();
+                    target.Header = b.Name;
+                    if (branch.Upstream == b.FullName) target.Icon = currentTrackingIcon;
+                    target.Click += (o, e) => {
+                        branch.SetUpstream(repo, b.Name);
+                        e.Handled = true;
+                    };
+                    tracking.Items.Add(target);
+                }
+
+                menu.Items.Add(tracking);
+                menu.Items.Add(new Separator());
+            }
 
             var copy = new MenuItem();
             copy.Header = "Copy Branch Name";
