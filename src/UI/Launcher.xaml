@@ -93,7 +93,7 @@
                                                     Margin="-5,0,0,0"
                                                     Data="M 0,6 L 6,6 6,0 C 6,0 6,6 0,6 Z"
                                                     Fill="Transparent"/>
-
+                                                
                                                 <Path
                                                     x:Name="CornerRight"
                                                     Width="6"
@@ -148,7 +148,10 @@
                                                         <Condition Property="IsSelected" Value="False"/>
                                                         <Condition Property="IsMouseOver" Value="True"/>
                                                     </MultiTrigger.Conditions>
+                                                    <Setter Property="Panel.ZIndex" Value="-1"/>
                                                     <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.BG5}"/>
+                                                    <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.BG5}"/>
+                                                    <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG5}"/>
                                                 </MultiTrigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
