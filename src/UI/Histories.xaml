@@ -41,13 +41,13 @@
             <Grid x:Name="searchBar" Margin="0,-32,0,0" Grid.Row="0">
                 <TextBox x:Name="txtSearch" Margin="4" Height="24" Padding="0,0,22,0" helpers:TextBoxHelper.Placeholder="SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT" PreviewKeyDown="PreviewSearchKeyDown"/>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="8,0">
-                    <Button Style="{StaticResource Style.Button.HighlightHover}" ToolTip="CLEAR" Click="ClearSearch">
-                        <Path Width="10" Height="10" Fill="{StaticResource Brush.Border1}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Clear}"/>
+                    <Button ToolTip="CLEAR" Click="ClearSearch">
+                        <Path Width="12" Height="12" Fill="{StaticResource Brush.FG2}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Clear}"/>
                     </Button>
-                    <Button Margin="8,0,0,0" Style="{StaticResource Style.Button.HighlightHover}" ToolTip="CLOSE" Click="HideSearchBarByButton">
-                        <Path Width="10" Height="10" Fill="{StaticResource Brush.Border1}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Collapse}"/>
+                    <Button Margin="8,0,0,0" ToolTip="CLOSE" Click="HideSearchBarByButton">
+                        <Path Width="12" Height="12" Fill="{StaticResource Brush.FG2}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Collapse}"/>
                     </Button>
-                </StackPanel>                
+                </StackPanel>
             </Grid>
 
             <!-- Commit DataGrid -->
