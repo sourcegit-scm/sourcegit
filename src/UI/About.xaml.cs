@@ -15,7 +15,8 @@ namespace SourceGit.UI {
         /// </summary>
         public string Version {
             get {
-                return "VERSION : " + FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
+                Assembly asm = Assembly.GetExecutingAssembly();
+                return "VERSION : " + asm.GetName().Version;
             }
         }
 

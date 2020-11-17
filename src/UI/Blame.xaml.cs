@@ -117,8 +117,7 @@ namespace SourceGit.UI {
                                 new Typeface(content.FontFamily, p.FontStyle, p.FontWeight, p.FontStretch),
                                 content.FontSize,
                                 Brushes.Black,
-                                new NumberSubstitution(),
-                                TextFormattingMode.Ideal);
+                                VisualTreeHelper.GetDpi(this).PixelsPerDip);
                             if (minWidth < formatter.Width) {
                                 content.Document.PageWidth = formatter.Width + 16;
                                 minWidth = formatter.Width;
