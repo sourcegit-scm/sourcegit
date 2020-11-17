@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -119,10 +120,15 @@ namespace SourceGit.UI {
                 leftText.Document.Blocks.Clear();
                 rightText.Document.Blocks.Clear();
 
-                foreach (var b in rs.Blocks) ShowBlock(b);
+                var leftLineNumberBuilder = new StringBuilder();
+                var rightLineNumberBuilder = new StringBuilder();
+
+                foreach (var b in rs.Blocks) ShowBlock(b, leftLineNumberBuilder, rightLineNumberBuilder);
 
                 leftText.Document.PageWidth = minWidth + 16;
                 rightText.Document.PageWidth = minWidth + 16;
+                leftLineNumber.Text = leftLineNumberBuilder.ToString();
+                rightLineNumber.Text = rightLineNumberBuilder.ToString();
                 leftText.ScrollToHome();
             });
         }
@@ -175,7 +181,7 @@ namespace SourceGit.UI {
         ///     Make paragraph.
         /// </summary>
         /// <param name="b"></param>
-        private void ShowBlock(Git.Diff.Block b) {
+        private void ShowBlock(Git.Diff.Block b, StringBuilder leftNumber, StringBuilder rightNumber) {
             var content = b.Builder.ToString();
 
             Paragraph p = new Paragraph(new Run(content));
@@ -220,15 +226,15 @@ namespace SourceGit.UI {
             case Git.Diff.Side.Left:
                 leftText.Document.Blocks.Add(p);
                 for (int i = 0; i < b.Count; i++) {
-                    if (b.CanShowNumber) leftLineNumber.AppendText($"{i + b.LeftStart}\n");
-                    else leftLineNumber.AppendText("\n");
+                    if (b.CanShowNumber) leftNumber.AppendLine($"{i + b.LeftStart}");
+                    else leftNumber.AppendLine();
                 }
                 break;
             case Git.Diff.Side.Right:
                 rightText.Document.Blocks.Add(p);
                 for (int i = 0; i < b.Count; i++) {
-                    if (b.CanShowNumber) rightLineNumber.AppendText($"{i + b.RightStart}\n");
-                    else rightLineNumber.AppendText("\n");
+                    if (b.CanShowNumber) rightNumber.AppendLine($"{i + b.RightStart}");
+                    else rightNumber.AppendLine();
                 }
                 break;
             default:
@@ -246,11 +252,11 @@ namespace SourceGit.UI {
 
                 for (int i = 0; i < b.Count; i++) {
                     if (b.Mode != Git.Diff.LineMode.Indicator) {
-                        leftLineNumber.AppendText($"{i + b.LeftStart}\n");
-                        rightLineNumber.AppendText($"{i + b.RightStart}\n");
+                        leftNumber.AppendLine($"{i + b.LeftStart}");
+                        rightNumber.AppendLine($"{i + b.RightStart}");
                     } else {
-                        leftLineNumber.AppendText("\n");
-                        rightLineNumber.AppendText("\n");
+                        leftNumber.AppendLine();
+                        rightNumber.AppendLine();
                     }
                 }
                 break;

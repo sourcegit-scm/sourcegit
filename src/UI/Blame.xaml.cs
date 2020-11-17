@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,7 +56,7 @@ namespace SourceGit.UI {
                     content.Document.Blocks.Clear();
 
                     if (blame.IsBinary) {
-                        lineNumber.Text = "0";
+                        lineNumber.Text = "";
 
                         Paragraph p = new Paragraph(new Run("BINARY FILE BLAME NOT SUPPORTED!!!"));
                         p.Margin = new Thickness(0);
@@ -67,9 +68,9 @@ namespace SourceGit.UI {
 
                         content.Document.Blocks.Add(p);
                     } else {
-                        List<string> numbers = new List<string>();
-                        for (int i = 0; i < blame.LineCount; i++) numbers.Add(i.ToString());
-                        lineNumber.Text = string.Join("\n", numbers);
+                        var numbers = new StringBuilder();
+                        for (int i = 0; i < blame.LineCount; i++) numbers.AppendLine(i.ToString());
+                        lineNumber.Text = numbers.ToString();
                         numbers.Clear();
 
                         for (int i = 0; i < blame.Blocks.Count; i++) {
