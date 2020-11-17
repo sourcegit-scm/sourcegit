@@ -2,6 +2,8 @@
     <PropertyGroup>
         <TargetFramework>net5.0-windows</TargetFramework>
         <OutputType>WinExe</OutputType>
+        <SelfContained>false</SelfContained>
+        <PublishSingleFile>true</PublishSingleFile>
         <UseWPF>true</UseWPF>
         <UseWindowsForms>true</UseWindowsForms>
         <ApplicationIcon>App.ico</ApplicationIcon>
