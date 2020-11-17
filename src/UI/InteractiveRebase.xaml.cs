@@ -135,7 +135,8 @@ namespace SourceGit.UI {
         public InteractiveRebase(Git.Repository opened, Git.Commit start) {
             repo = opened;
             Items = new ObservableCollection<InteractiveRebaseItem>();
-            from = start.ShortSHA;
+            from = $"{start.ShortSHA}^";
+            if (start.Parents.Count == 0) from = start.ShortSHA;
 
             InitializeComponent();
 
@@ -144,7 +145,7 @@ namespace SourceGit.UI {
 
             Task.Run(() => {
                 var commits = repo.Commits($"{start.SHA}..HEAD");
-                commits.Add(start);
+                if (start.Parents.Count > 0) commits.Add(start);
 
                 Dispatcher.Invoke(() => {
                     Items.Clear();
@@ -290,7 +291,7 @@ namespace SourceGit.UI {
 
             repo.SetWatcherEnabled(false);
             var editor = Process.GetCurrentProcess().MainModule.FileName;
-            var errs = repo.RunCommand($"-c sequence.editor=\"\\\"{editor}\\\" --interactive-rebase \\\"{temp}\\\"\" rebase -i {from}^", null);
+            var errs = repo.RunCommand($"-c sequence.editor=\"\\\"{editor}\\\" --interactive-rebase \\\"{temp}\\\"\" rebase -i {from}", null);
             repo.AssertCommand(errs);
 
             Close();
