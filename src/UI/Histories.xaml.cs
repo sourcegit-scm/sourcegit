@@ -217,6 +217,10 @@ namespace SourceGit.UI {
             searchBar.BeginAnimation(Grid.MarginProperty, anim);
         }
 
+        private void HideSearchBarByButton(object sender, RoutedEventArgs e) {
+            HideSearchBar();
+        }
+
         private void ClearSearch(object sender, RoutedEventArgs e) {
             txtSearch.Text = "";
             if (isSearchMode) {
