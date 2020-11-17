@@ -2,6 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0-windows</TargetFramework>
         <OutputType>WinExe</OutputType>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <SelfContained>false</SelfContained>
         <PublishSingleFile>true</PublishSingleFile>
         <UseWPF>true</UseWPF>
