@@ -102,7 +102,7 @@ namespace SourceGit.UI {
             var explore = new MenuItem();
             explore.Header = "Open Container Folder";
             explore.Click += (o, ev) => {
-                Process.Start(repo.Path);
+                Process.Start("explorer", repo.Path);
                 ev.Handled = true;
             };
 
@@ -303,7 +303,7 @@ namespace SourceGit.UI {
                 var explore = new MenuItem();
                 explore.Header = "Open Container Folder";
                 explore.Click += (o, ev) => {
-                    Process.Start(node.Id);
+                    Process.Start("explorer", node.Id);
                     ev.Handled = true;
                 };
 

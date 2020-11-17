@@ -226,7 +226,7 @@ namespace SourceGit.UI {
                 explore.Header = "Reveal in File Explorer";
                 explore.Click += (o, e) => {
                     if (node.IsFile) Process.Start("explorer", $"/select,{path}");
-                    else Process.Start(path);
+                    else Process.Start("explorer", path);
                     e.Handled = true;
                 };
 

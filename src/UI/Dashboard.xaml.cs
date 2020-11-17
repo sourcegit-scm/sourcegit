@@ -336,7 +336,7 @@ namespace SourceGit.UI {
         }
 
         private void OpenExplorer(object sender, RoutedEventArgs e) {
-            Process.Start(repo.Path);
+            Process.Start("explorer", repo.Path);
         }
 
         private void OpenTerminal(object sender, RoutedEventArgs e) {
