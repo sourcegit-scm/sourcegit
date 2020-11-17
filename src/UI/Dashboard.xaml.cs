@@ -236,8 +236,6 @@ namespace SourceGit.UI {
 
                         MakeBranchNode(b, remote.Children, folders, states, "remotes");
                     } else {
-                        /// 对于 SUBMODULE HEAD 出于游离状态（detached on commit id）
-                        /// 此时，分支既不是 本地分支，也不是远程分支
                         isDetached = b.IsCurrent;
                     }
                 }
@@ -418,6 +416,7 @@ namespace SourceGit.UI {
                 } else {
                     var cherryPickMerge = Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD");
                     var rebaseMerge = Path.Combine(repo.GitDir, "REBASE_HEAD");
+                    var rebaseApply = Path.Combine(repo.GitDir, "rebase-apply");
                     var revertMerge = Path.Combine(repo.GitDir, "REVERT_HEAD");
                     var otherMerge = Path.Combine(repo.GitDir, "MERGE_HEAD");
 
@@ -429,6 +428,8 @@ namespace SourceGit.UI {
                         File.Delete(revertMerge);
                     } else if (File.Exists(otherMerge)) {
                         File.Delete(otherMerge);
+                    } else if (Directory.Exists(rebaseApply)) {
+                        Directory.Delete(rebaseApply);
                     }
 
                     repo.Branches(true);
