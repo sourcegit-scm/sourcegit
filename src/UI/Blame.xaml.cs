@@ -71,7 +71,6 @@ namespace SourceGit.UI {
                         var numbers = new StringBuilder();
                         for (int i = 0; i < blame.LineCount; i++) numbers.AppendLine(i.ToString());
                         lineNumber.Text = numbers.ToString();
-                        numbers.Clear();
 
                         for (int i = 0; i < blame.Blocks.Count; i++) {
                             var frag = blame.Blocks[i];
