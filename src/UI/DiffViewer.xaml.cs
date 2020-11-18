@@ -218,7 +218,8 @@ namespace SourceGit.UI {
                 new Typeface(leftText.FontFamily, p.FontStyle, p.FontWeight, p.FontStretch),
                 leftText.FontSize,
                 Brushes.Black,
-                VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                new NumberSubstitution(),
+                TextFormattingMode.Ideal);
 
             if (minWidth < formatter.Width) minWidth = formatter.Width;
             
