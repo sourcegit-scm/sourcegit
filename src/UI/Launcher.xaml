@@ -48,6 +48,12 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
+                <Border Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="0,0,0,-1" Height="1" Background="{StaticResource Brush.BG1}">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0" Opacity="1"/>
+                    </Border.Effect>
+                </Border>
+
                 <!-- Tabs -->
                 <ScrollViewer x:Name="openedTabsScroller" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
                     <TabControl x:Name="openedTabs" Padding="0" SnapsToDevicePixels="True" ItemsSource="{Binding ElementName=me, Path=Tabs}" SizeChanged="OpenedTabsSizeChanged">
@@ -80,7 +86,7 @@
                                             <Grid x:Name="Container" Opacity=".7" SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True">
                                                 <Border x:Name="BG" SnapsToDevicePixels="True" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
                                                     <Border.Effect>
-                                                        <DropShadowEffect BlurRadius="8" ShadowDepth="0" Direction="270" Opacity=".5"/>
+                                                        <DropShadowEffect ShadowDepth="0" Opacity=".5"/>
                                                     </Border.Effect>
                                                 </Border>
 
@@ -93,7 +99,7 @@
                                                     Margin="-5,0,0,0"
                                                     Data="M 0,6 L 6,6 6,0 C 6,0 6,6 0,6 Z"
                                                     Fill="Transparent"/>
-                                                
+
                                                 <Path
                                                     x:Name="CornerRight"
                                                     Width="6"
