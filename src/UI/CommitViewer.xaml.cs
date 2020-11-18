@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
 namespace SourceGit.UI {
@@ -14,6 +18,11 @@ namespace SourceGit.UI {
     ///     Commit detail viewer
     /// </summary>
     public partial class CommitViewer : UserControl {
+        private static readonly string AVATAR_PATH = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "SourceGit",
+            "avatars");
+
         private Git.Repository repo = null;
         private Git.Commit commit = null;
         private List<Git.Change> cachedChanges = new List<Git.Change>();
@@ -87,13 +96,41 @@ namespace SourceGit.UI {
             subject.Text = commit.Subject;
             message.Text = commit.Message.Trim();
 
-            if (commit.Decorators.Count == 0) lblRefs.Visibility = Visibility.Collapsed;
-            else lblRefs.Visibility = Visibility.Visible;
+            byte[] hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(commit.Author.Email.ToLower().Trim()));
+            string md5 = "";
+            for (int i = 0; i < hash.Length; i++) md5 += hash[i].ToString("x2");
+            md5 = md5.ToLower();
 
-            if (commit.Committer.Email == commit.Author.Email && commit.Committer.Time == commit.Author.Time) {
-                committerRow.Height = new GridLength(0);
+            if (!Directory.Exists(AVATAR_PATH)) Directory.CreateDirectory(AVATAR_PATH);
+
+            string filePath = Path.Combine(AVATAR_PATH, md5);
+            if (File.Exists(filePath)) {
+                avatar.Source = new BitmapImage(new Uri(filePath));
             } else {
+                var bitmap = new BitmapImage(new Uri("https://www.gravatar.com/avatar/" + md5 + "?d=identicon"));
+                bitmap.DownloadCompleted += (o, e) => {
+                    var owner = o as BitmapImage;
+                    if (owner != null) {
+                        var encoder = new PngBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(owner));
+                        using (var fs = new FileStream(filePath, FileMode.Create)) {
+                            encoder.Save(fs);
+                        }
+                    }
+                };
+                avatar.Source = bitmap;
+            }
+
+            if (commit.Decorators.Count == 0) {
+                refRow.Height = new GridLength(0);
                 committerRow.Height = GridLength.Auto;
+            } else {
+                refRow.Height = GridLength.Auto;
+                if (commit.Committer.Email == commit.Author.Email && commit.Committer.Time == commit.Author.Time) {
+                    committerRow.Height = new GridLength(0);
+                } else {
+                    committerRow.Height = GridLength.Auto;
+                }
             }
         }
 
