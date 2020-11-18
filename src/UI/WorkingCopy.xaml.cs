@@ -883,11 +883,13 @@ namespace SourceGit.UI {
                 if (node == null || !node.IsFile) return;
 
                 file = node.FilePath;
-            }            
+            }
 
-            await Task.Run(() => {
-                Repo.RunCommand($"-c mergetool.sourcegit.cmd=\"\\\"{mergeExe}\\\" {mergeParam}\" -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit {file}", null);
-            });
+            var cmd = $"-c mergetool.sourcegit.cmd=\"\\\"{mergeExe}\\\" {mergeParam}\" ";
+            cmd += "-c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true ";
+            cmd += $"mergetool --tool=sourcegit {file}";
+
+            await Task.Run(() => Repo.RunCommand(cmd, null));
         }
 
         private async void UseTheirs(object sender, RoutedEventArgs e) {
