@@ -185,32 +185,6 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
-        ///     Create process and redirect output to file.
-        /// </summary>
-        /// <param name="args">Git command arguments.</param>
-        /// <param name="redirectTo">File path to redirect output into.</param>
-        public void RunAndRedirect(string args, string redirectTo) {
-            var startInfo = new ProcessStartInfo();
-            startInfo.FileName = Preference.Instance.GitExecutable;
-            startInfo.Arguments = "--no-pager " + args;
-            startInfo.WorkingDirectory = Path;
-            startInfo.UseShellExecute = false;
-            startInfo.CreateNoWindow = true;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
-
-            var proc = new Process() { StartInfo = startInfo };
-            proc.Start();
-
-            using (var writer = new FileStream(redirectTo, FileMode.OpenOrCreate)) {
-                proc.StandardOutput.BaseStream.CopyTo(writer);
-            }
-
-            proc.WaitForExit();
-            proc.Close();
-        }
-
-        /// <summary>
         ///     Assert command result and then update branches and commits.
         /// </summary>
         /// <param name="err"></param>

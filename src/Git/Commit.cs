@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -259,6 +260,39 @@ namespace SourceGit.Git {
 
             isBinary = binary;            
             return string.Join("\n", data);
+        }
+
+        /// <summary>
+        ///     Save file to.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="file"></param>
+        /// <param name="saveTo"></param>
+        public void SaveFileTo(Repository repo, string file, string saveTo) {
+            var tmp = Path.GetTempFileName();
+            var bat = tmp + ".bat";
+            var cmd = "";
+
+            if (repo.IsLFSFiltered(file)) {
+                cmd += $"git --no-pager show {SHA}:\"{file}\" > {tmp}.lfs\n";
+                cmd += $"git --no-pager lfs smudge < {tmp}.lfs > {saveTo}\n";
+            } else {
+                cmd = $"git --no-pager show {SHA}:\"{file}\" > {saveTo}\n";
+            }
+
+            File.WriteAllText(bat, cmd);
+
+            var starter = new ProcessStartInfo();
+            starter.FileName = bat;
+            starter.WorkingDirectory = repo.Path;
+            starter.CreateNoWindow = true;
+            starter.WindowStyle = ProcessWindowStyle.Hidden;
+
+            var proc = Process.Start(starter);
+            proc.WaitForExit();
+            proc.Close();
+
+            File.Delete(bat);
         }
 
         private static void ParseSHA(Commit commit, string data) {

@@ -298,12 +298,12 @@ namespace SourceGit.UI {
                 saveAs.Header = "Save As ...";
                 saveAs.Click += (obj, ev) => {
                     var dialog = new System.Windows.Forms.FolderBrowserDialog();
-                    dialog.Description = change.Path;
+                    dialog.Description = path;
                     dialog.ShowNewFolderButton = true;
 
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                         var savePath = Path.Combine(dialog.SelectedPath, Path.GetFileName(path));
-                        repo.RunAndRedirect($"show {commit.SHA}:\"{path}\"", savePath);
+                        commit.SaveFileTo(repo, path, savePath);
                     }
                 };
                 menu.Items.Add(saveAs);
@@ -526,7 +526,7 @@ namespace SourceGit.UI {
 
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                         var path = Path.Combine(dialog.SelectedPath, node.Name);
-                        repo.RunAndRedirect($"show {commit.SHA}:\"{node.FilePath}\"", path);
+                        commit.SaveFileTo(repo, node.FilePath, path);
                     }
                 };
                 menu.Items.Add(saveAs);
