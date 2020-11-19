@@ -280,12 +280,9 @@ namespace SourceGit.UI {
             } else if (selected.Count == 2) {
                 twoCommitDiff.Visibility = Visibility.Visible;
                 twoCommitDiff.SetData(Repo, (selected[0] as Git.Commit).ShortSHA, (selected[1] as Git.Commit).ShortSHA);
-            } else if (selected.Count > 2) {
-                mask4MultiSelection.Visibility = Visibility.Visible;
-                txtTotalSelected.Content = $"SELECTED {selected.Count} COMMITS";
             } else {
                 mask4MultiSelection.Visibility = Visibility.Visible;
-                txtTotalSelected.Content = $"SELECT COMMIT TO VIEW DETAIL";
+                txtTotalSelected.Content = $"SELECTED {selected.Count} COMMITS";
             }
         }
 

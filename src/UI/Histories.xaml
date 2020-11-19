@@ -175,7 +175,7 @@
             <Border x:Name="mask4MultiSelection" Background="{StaticResource Brush.BG1}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
                     <Path Width="160" Height="160" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-                    <Label x:Name="txtTotalSelected" Content="SELECT COMMIT TO VIEW DETAIL" Margin="0,16,0,0" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                    <Label x:Name="txtTotalSelected" Content="SELECT TO VIEW DETAIL" FontFamily="Consolas" Margin="0,16,0,0" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
