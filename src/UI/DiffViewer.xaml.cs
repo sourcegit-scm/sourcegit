@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace SourceGit.UI {
     /// </summary>
     public partial class DiffViewer : UserControl {
         private double minWidth = 0;
+        private Git.Diff.TextChange textChangeData = null;
 
         /// <summary>
         ///     Diff options.
@@ -49,6 +51,8 @@ namespace SourceGit.UI {
         public void Diff(Git.Repository repo, Option opts) {
             SetTitle(opts.Path, opts.OrgPath);
 
+            textChangeData = null;
+
             loading.Visibility = Visibility.Visible;
             mask.Visibility = Visibility.Collapsed;
             textChange.Visibility = Visibility.Collapsed;
@@ -80,7 +84,8 @@ namespace SourceGit.UI {
                 if (rs.IsBinary) {
                     SetBinaryChange(Git.Diff.GetSizeChange(repo, opts.RevisionRange, opts.Path, opts.OrgPath));
                 } else if (rs.Blocks.Count > 0) {
-                    SetTextChange(rs);
+                    textChangeData = rs;
+                    SetTextChange();
                 } else {
                     SetSame();
                 }
@@ -107,28 +112,41 @@ namespace SourceGit.UI {
         ///     Show diff content.
         /// </summary>
         /// <param name="rs"></param>
-        private void SetTextChange(Git.Diff.TextChange rs) {
+        private void SetTextChange() {
+            if (textChangeData == null) return;
+
             Dispatcher.Invoke(() => {
                 loading.Visibility = Visibility.Collapsed;
                 textChange.Visibility = Visibility.Visible;
-                diffNavigation.Visibility = Visibility.Visible;
+                textChangeOptions.Visibility = Visibility.Visible;
+
+                if (App.Preference.UIUseOneSideDiff) {
+                    twoSideLeft.Width = new GridLength(0);
+                    twoSideLeft.MinWidth = 0;
+                    twoSideSplittter.Width = new GridLength(0);
+                } else {
+                    twoSideLeft.Width = new GridLength(1, GridUnitType.Star);
+                    twoSideLeft.MinWidth = 100;
+                    twoSideSplittter.Width = new GridLength(2);
+                }
 
                 minWidth = Math.Max(leftText.ActualWidth, rightText.ActualWidth) - 16;
 
-                leftLineNumber.Text = "";
-                rightLineNumber.Text = "";
+                leftLineNumber.ItemsSource = null;
+                rightLineNumber.ItemsSource = null;
+
                 leftText.Document.Blocks.Clear();
                 rightText.Document.Blocks.Clear();
 
-                var leftLineNumberBuilder = new StringBuilder();
-                var rightLineNumberBuilder = new StringBuilder();
+                var lLineNumbers = new List<string>();
+                var rLineNumbers = new List<string>();
 
-                foreach (var b in rs.Blocks) ShowBlock(b, leftLineNumberBuilder, rightLineNumberBuilder);
+                foreach (var b in textChangeData.Blocks) ShowBlock(b, lLineNumbers, rLineNumbers);
 
-                leftText.Document.PageWidth = minWidth + 16;
+                if (!App.Preference.UIUseOneSideDiff) leftText.Document.PageWidth = minWidth + 16;
                 rightText.Document.PageWidth = minWidth + 16;
-                leftLineNumber.Text = leftLineNumberBuilder.ToString();
-                rightLineNumber.Text = rightLineNumberBuilder.ToString();
+                leftLineNumber.ItemsSource = lLineNumbers;
+                rightLineNumber.ItemsSource = rLineNumbers;
                 leftText.ScrollToHome();
             });
         }
@@ -141,7 +159,7 @@ namespace SourceGit.UI {
             Dispatcher.Invoke(() => {
                 loading.Visibility = Visibility.Collapsed;
                 sizeChange.Visibility = Visibility.Visible;
-                diffNavigation.Visibility = Visibility.Collapsed;
+                textChangeOptions.Visibility = Visibility.Collapsed;
                 txtSizeChangeTitle.Content = "BINARY DIFF";
                 txtNewSize.Content = $"{bc.Size} Bytes";
                 txtOldSize.Content = $"{bc.PreSize} Bytes";
@@ -159,7 +177,7 @@ namespace SourceGit.UI {
 
                 loading.Visibility = Visibility.Collapsed;
                 sizeChange.Visibility = Visibility.Visible;
-                diffNavigation.Visibility = Visibility.Collapsed;
+                textChangeOptions.Visibility = Visibility.Collapsed;
                 txtSizeChangeTitle.Content = "LFS OBJECT CHANGE";
                 txtNewSize.Content = $"{newSize} Bytes";
                 txtOldSize.Content = $"{oldSize} Bytes";
@@ -173,44 +191,34 @@ namespace SourceGit.UI {
             Dispatcher.Invoke(() => {
                 loading.Visibility = Visibility.Collapsed;
                 noChange.Visibility = Visibility.Visible;
-                diffNavigation.Visibility = Visibility.Collapsed;
+                textChangeOptions.Visibility = Visibility.Collapsed;
             });
         }
 
         /// <summary>
-        ///     Make paragraph.
+        ///     Make paragraph for two-sides diff
         /// </summary>
         /// <param name="b"></param>
-        private void ShowBlock(Git.Diff.Block b, StringBuilder leftNumber, StringBuilder rightNumber) {
+        /// <param name="leftNumber"></param>
+        /// <param name="rightNumber"></param>
+        private void ShowBlock(Git.Diff.Block b, List<string> leftNumber, List<string> rightNumber) {
+            bool useOneSide = App.Preference.UIUseOneSideDiff;
+            if (useOneSide && b.Mode == Git.Diff.LineMode.Empty) return;
+
             var content = b.Builder.ToString();
 
+            // Make paragraph element
             Paragraph p = new Paragraph(new Run(content));
             p.Margin = new Thickness(0);
-            p.Padding = new Thickness();
+            p.Padding = new Thickness(0);
             p.LineHeight = 1;
-            p.Background = Brushes.Transparent;
-            p.Foreground = FindResource("Brush.FG") as SolidColorBrush;
-            p.FontStyle = FontStyles.Normal;
+            p.Background = GetBlockBackground(b);
+            p.Foreground = b.Mode == Git.Diff.LineMode.Indicator ? Brushes.Gray : FindResource("Brush.FG") as SolidColorBrush;
+            p.FontStyle = b.Mode == Git.Diff.LineMode.Indicator ? FontStyles.Italic : FontStyles.Normal;
             p.DataContext = b;
+            p.ContextMenuOpening += OnParagraphContextMenuOpening;
 
-            switch (b.Mode) {
-            case Git.Diff.LineMode.Normal:
-                break;
-            case Git.Diff.LineMode.Indicator:
-                p.Foreground = Brushes.Gray;
-                p.FontStyle = FontStyles.Italic;
-                break;
-            case Git.Diff.LineMode.Empty:
-                p.Background = new SolidColorBrush(Color.FromArgb(40, 0, 0, 0));
-                break;
-            case Git.Diff.LineMode.Added:
-                p.Background = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
-                break;
-            case Git.Diff.LineMode.Deleted:
-                p.Background = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
-                break;
-            }
-
+            // Calculate with
             var formatter = new FormattedText(
                 content,
                 CultureInfo.CurrentUICulture,
@@ -220,52 +228,195 @@ namespace SourceGit.UI {
                 Brushes.Black,
                 new NumberSubstitution(),
                 TextFormattingMode.Ideal);
-
             if (minWidth < formatter.Width) minWidth = formatter.Width;
-            
+
+            // Line numbers
             switch (b.Side) {
             case Git.Diff.Side.Left:
-                leftText.Document.Blocks.Add(p);
                 for (int i = 0; i < b.Count; i++) {
-                    if (b.CanShowNumber) leftNumber.AppendLine($"{i + b.LeftStart}");
-                    else leftNumber.AppendLine();
+                    if (b.CanShowNumber) leftNumber.Add($"{i + b.LeftStart}");
+                    else leftNumber.Add("");
+
+                    if (useOneSide) rightNumber.Add("");
                 }
                 break;
             case Git.Diff.Side.Right:
-                rightText.Document.Blocks.Add(p);
                 for (int i = 0; i < b.Count; i++) {
-                    if (b.CanShowNumber) rightNumber.AppendLine($"{i + b.RightStart}");
-                    else rightNumber.AppendLine();
+                    if (b.CanShowNumber) rightNumber.Add($"{i + b.RightStart}");
+                    else rightNumber.Add("");
+
+                    if (useOneSide) leftNumber.Add("");
                 }
                 break;
             default:
-                leftText.Document.Blocks.Add(p);
-
-                var cp = new Paragraph(new Run(content));
-                cp.Margin = new Thickness(0);
-                cp.Padding = new Thickness();
-                cp.LineHeight = 1;
-                cp.Background = p.Background;
-                cp.Foreground = p.Foreground;
-                cp.FontStyle = p.FontStyle;
-                cp.DataContext = b;
-                rightText.Document.Blocks.Add(cp);
-
                 for (int i = 0; i < b.Count; i++) {
-                    if (b.Mode != Git.Diff.LineMode.Indicator) {
-                        leftNumber.AppendLine($"{i + b.LeftStart}");
-                        rightNumber.AppendLine($"{i + b.RightStart}");
+                    if (b.CanShowNumber) {
+                        leftNumber.Add($"{i + b.LeftStart}");
+                        rightNumber.Add($"{i + b.RightStart}");
                     } else {
-                        leftNumber.AppendLine();
-                        rightNumber.AppendLine();
+                        leftNumber.Add("");
+                        rightNumber.Add("");
                     }
                 }
                 break;
             }
+            
+            // Add this paragraph to document.
+            if (App.Preference.UIUseOneSideDiff) {
+                rightText.Document.Blocks.Add(p);
+            } else {
+                switch (b.Side) {
+                case Git.Diff.Side.Left:
+                    leftText.Document.Blocks.Add(p);
+                    break;
+                case Git.Diff.Side.Right:
+                    rightText.Document.Blocks.Add(p);
+                    break;
+                default:
+                    leftText.Document.Blocks.Add(p);
+
+                    var cp = new Paragraph(new Run(content));
+                    cp.Margin = new Thickness(0);
+                    cp.Padding = new Thickness();
+                    cp.LineHeight = 1;
+                    cp.Background = p.Background;
+                    cp.Foreground = p.Foreground;
+                    cp.FontStyle = p.FontStyle;
+                    cp.DataContext = b;
+                    cp.ContextMenuOpening += OnParagraphContextMenuOpening;
+
+                    rightText.Document.Blocks.Add(cp);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Get background color of block.
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private Brush GetBlockBackground(Git.Diff.Block b) {
+            Border border = new Border();
+            border.BorderThickness = new Thickness(0);
+            border.BorderBrush = Brushes.LightBlue;
+            border.Height = b.Count * 16 - 1;
+            border.Width = minWidth - 1;
+
+            switch (b.Mode) {
+            case Git.Diff.LineMode.Empty:
+                border.Background = new SolidColorBrush(Color.FromArgb(40, 0, 0, 0));
+                break;
+            case Git.Diff.LineMode.Added:
+                border.Background = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
+                break;
+            case Git.Diff.LineMode.Deleted:
+                border.Background = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
+                break;
+            default:
+                border.Background = Brushes.Transparent;
+                break;
+            }
+
+            VisualBrush highlight = new VisualBrush();
+            highlight.TileMode = TileMode.None;
+            highlight.Stretch = Stretch.Fill;
+            highlight.Visual = border;
+            return highlight;
         }
         #endregion
 
         #region EVENTS
+        /// <summary>
+        ///     Context menu for text-change paragraph
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnParagraphContextMenuOpening(object sender, ContextMenuEventArgs ev) {
+            var paragraph = sender as Paragraph;
+
+            var doc = (paragraph.Parent as FlowDocument);
+            if (doc != null) {
+                var textBox = doc.Parent as RichTextBox;
+                if (textBox != null && !textBox.Selection.IsEmpty) {
+                    var copyItem = new MenuItem();
+                    copyItem.Header = "Copy";
+                    copyItem.Click += (o, e) => {
+                        Clipboard.SetText(textBox.Selection.Text);
+                        e.Handled = true;
+                    };
+
+                    var copyMenu = new ContextMenu();
+                    copyMenu.Items.Add(copyItem);
+                    copyMenu.IsOpen = true;
+                    ev.Handled = true;
+                    return;
+                }
+            }
+
+            var block = paragraph.DataContext as Git.Diff.Block;
+            if (block.Mode == Git.Diff.LineMode.Empty || block.Mode == Git.Diff.LineMode.Indicator) {
+                ev.Handled = true;
+                return;
+            }
+
+            var highlight = paragraph.Background as VisualBrush;
+            if (highlight != null) {
+                (highlight.Visual as Border).BorderThickness = new Thickness(.5);
+            }
+            
+            paragraph.ContextMenu = new ContextMenu();
+            paragraph.ContextMenu.Closed += (o, e) => {
+                if (paragraph.ContextMenu == (o as ContextMenu)) {
+                    if (highlight != null) {
+                        (highlight.Visual as Border).BorderThickness = new Thickness(0);
+                    }
+                    paragraph.ContextMenu = null;
+                }
+            };
+
+            var copy = new MenuItem();
+            copy.Header = "Copy";
+            copy.Click += (o, e) => {
+                Clipboard.SetText(block.Builder.ToString());
+                e.Handled = true;
+            };
+            paragraph.ContextMenu.Items.Add(copy);
+
+            paragraph.ContextMenu.IsOpen = true;
+            ev.Handled = true;
+        }
+
+        /// <summary>
+        ///     Fix document size.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e) {
+            var text = sender as RichTextBox;
+            if (text.Document.PageWidth < text.ActualWidth) {
+                text.Document.PageWidth = text.ActualWidth;
+            }
+        }
+
+        /// <summary>
+        ///     Scroll using mouse wheel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnViewerMouseWheel(object sender, MouseWheelEventArgs e) {
+            var text = sender as RichTextBox;
+            if (text == null) return;
+
+            if (e.Delta > 0) {
+                text.LineUp();
+            } else {
+                text.LineDown();
+            }
+
+            e.Handled = true;
+        }
+
         /// <summary>
         ///     Sync scroll both sides.
         /// </summary>
@@ -291,46 +442,6 @@ namespace SourceGit.UI {
                 if (rightText.HorizontalOffset != e.HorizontalOffset) {
                     rightText.ScrollToHorizontalOffset(e.HorizontalOffset);
                 }
-            }
-        }
-
-        /// <summary>
-        ///     Scroll using mouse wheel.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnViewerMouseWheel(object sender, MouseWheelEventArgs e) {
-            var text = sender as RichTextBox;
-            if (text == null) return;
-
-            if (e.Delta > 0) {
-                text.LineUp();
-            } else {
-                text.LineDown();
-            }
-
-            e.Handled = true;
-        }
-
-        /// <summary>
-        ///     Fix document size for left side.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LeftSizeChanged(object sender, SizeChangedEventArgs e) {
-            if (leftText.Document.PageWidth < leftText.ActualWidth) {
-                leftText.Document.PageWidth = leftText.ActualWidth;
-            }
-        }
-
-        /// <summary>
-        ///     Fix document size for right side.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RightSizeChanged(object sender, SizeChangedEventArgs e) {
-            if (rightText.Document.PageWidth < rightText.ActualWidth) {
-                rightText.Document.PageWidth = rightText.ActualWidth;
             }
         }
 
@@ -366,33 +477,45 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Go2Next(object sender, RoutedEventArgs e) {
-            Paragraph next = null;
             double minTop = 0;
-            
-            foreach (var p in leftText.Document.Blocks) {
-                var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
-                var block = p.DataContext as Git.Diff.Block;
-                if (rect.Top > 17 && block.IsLeftDelete) {
-                    next = p as Paragraph;
-                    minTop = rect.Top;
-                    break;
-                }
-            }
 
-            foreach (var p in rightText.Document.Blocks) {
-                var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
-                var block = p.DataContext as Git.Diff.Block;
-                if (rect.Top > 17 && block.IsRightAdded) {
-                    if (next == null || minTop > rect.Top) {
+            if (App.Preference.UIUseOneSideDiff) {
+                foreach (var p in rightText.Document.Blocks) {
+                    var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+                    var block = p.DataContext as Git.Diff.Block;
+                    if (rect.Top > 17 && (block.IsLeftDelete || block.IsRightAdded)) {
+                        minTop = rect.Top;
+                        break;
+                    }
+                }
+            } else {
+                Paragraph next = null;
+
+                foreach (var p in leftText.Document.Blocks) {
+                    var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+                    var block = p.DataContext as Git.Diff.Block;
+                    if (rect.Top > 17 && block.IsLeftDelete) {
                         next = p as Paragraph;
                         minTop = rect.Top;
+                        break;
                     }
+                }
 
-                    break;
+                foreach (var p in rightText.Document.Blocks) {
+                    var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+                    var block = p.DataContext as Git.Diff.Block;
+                    if (rect.Top > 17 && block.IsRightAdded) {
+                        if (next == null || minTop > rect.Top) {
+                            next = p as Paragraph;
+                            minTop = rect.Top;
+                        }
+
+                        break;
+                    }
                 }
             }
 
-            if (next != null) {
+            if (minTop > 0) {
                 rightText.ScrollToVerticalOffset(rightText.VerticalOffset + minTop - 16);
             }
         }
@@ -403,41 +526,61 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Go2Prev(object sender, RoutedEventArgs e) {
-            Paragraph next = null;
-            double maxTop = 0;
+            double maxTop = double.MaxValue;
 
-            var p = leftText.Document.Blocks.LastBlock as Paragraph;
-            do {
-                var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
-                var block = p.DataContext as Git.Diff.Block;
-                if (rect.Top < 15 && block.IsLeftDelete) {
-                    next = p;
-                    maxTop = rect.Top;
-                    break;
-                }
-
-                p = p.PreviousBlock as Paragraph;
-            } while (p != null);
-
-            p = rightText.Document.Blocks.LastBlock as Paragraph;
-            do {
-                var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
-                var block = p.DataContext as Git.Diff.Block;
-                if (rect.Top < 15 && block.IsRightAdded) {
-                    if (next == null || maxTop < rect.Top) {
-                        next = p;
+            if (App.Preference.UIUseOneSideDiff) {
+                var p = rightText.Document.Blocks.LastBlock as Paragraph;
+                do {
+                    var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+                    var block = p.DataContext as Git.Diff.Block;
+                    if (rect.Top < 15 && (block.IsLeftDelete || block.IsRightAdded)) {
                         maxTop = rect.Top;
+                        break;
                     }
 
-                    break;
-                }
+                    p = p.PreviousBlock as Paragraph;
+                } while (p != null);
+            } else {
+                Paragraph next = null;
 
-                p = p.PreviousBlock as Paragraph;
-            } while (p != null);
+                var p = leftText.Document.Blocks.LastBlock as Paragraph;
+                do {
+                    var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+                    var block = p.DataContext as Git.Diff.Block;
+                    if (rect.Top < 15 && block.IsLeftDelete) {
+                        next = p;
+                        maxTop = rect.Top;
+                        break;
+                    }
 
-            if (next != null) {
+                    p = p.PreviousBlock as Paragraph;
+                } while (p != null);
+
+                p = rightText.Document.Blocks.LastBlock as Paragraph;
+                do {
+                    var rect = p.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+                    var block = p.DataContext as Git.Diff.Block;
+                    if (rect.Top < 15 && block.IsRightAdded) {
+                        if (next == null || maxTop < rect.Top) maxTop = rect.Top;
+                        break;
+                    }
+
+                    p = p.PreviousBlock as Paragraph;
+                } while (p != null);
+            }
+
+            if (maxTop != double.MaxValue) {
                 rightText.ScrollToVerticalOffset(rightText.VerticalOffset + maxTop - 16);
             }
+        }
+
+        /// <summary>
+        ///     Chang diff mode.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChangeDiffMode(object sender, RoutedEventArgs e) {
+            SetTextChange();
         }
         #endregion
     }

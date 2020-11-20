@@ -110,6 +110,10 @@ namespace SourceGit.Git {
         ///     Use list instead of tree in change view.
         /// </summary>
         public bool UIUseListInChanges { get; set; }
+        /// <summary>
+        ///     Use one side diff instead of two sides.
+        /// </summary>
+        public bool UIUseOneSideDiff { get; set; }
         #endregion
 
         #region SETTING_REPOS
