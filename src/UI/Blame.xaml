@@ -110,30 +110,49 @@
             <Border Grid.Row="2" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}" ClipToBounds="True">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="4"/>
                         <ColumnDefinition Width="1"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox
-                            x:Name="lineNumber"
-                            Grid.Column="0"
-                            AcceptsReturn="True"
-                            AcceptsTab="True"
-                            BorderThickness="0"
-                            Background="Transparent"
-                            IsReadOnly="True"
-                            Margin="4,0,4,0"                   
-                            FontSize="13"
-                            HorizontalContentAlignment="Right"
-                            VerticalAlignment="Stretch"
-                            FontFamily="Consolas"/>
+                    <ItemsControl
+                        Grid.Column="1"
+                        x:Name="lineNumber"
+                        Padding="0"
+                        Margin="0"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        VirtualizingPanel.ScrollUnit="Item"
+                        VirtualizingPanel.IsVirtualizing="True"
+                        VirtualizingPanel.VirtualizationMode="Recycling">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Brush.Border2}"/>
+                        <ItemsControl.Template>
+                            <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding .}" Padding="0" Margin="0" FontFamily="Consolas" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Rectangle Grid.Column="3" Width="1" Fill="{StaticResource Brush.Border2}"/>
 
                     <RichTextBox
                             x:Name="content"
-                            Grid.Column="2"
+                            Grid.Column="4"
                             AcceptsReturn="True"
                             AcceptsTab="True"
                             IsReadOnly="True"

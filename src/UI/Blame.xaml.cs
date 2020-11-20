@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,7 +55,7 @@ namespace SourceGit.UI {
                     content.Document.Blocks.Clear();
 
                     if (blame.IsBinary) {
-                        lineNumber.Text = "";
+                        lineNumber.ItemsSource = null;
 
                         Paragraph p = new Paragraph(new Run("BINARY FILE BLAME NOT SUPPORTED!!!"));
                         p.Margin = new Thickness(0);
@@ -68,9 +67,14 @@ namespace SourceGit.UI {
 
                         content.Document.Blocks.Add(p);
                     } else {
-                        var numbers = new StringBuilder();
-                        for (int i = 0; i < blame.LineCount; i++) numbers.AppendLine(i.ToString());
-                        lineNumber.Text = numbers.ToString();
+                        List<string> numbers = new List<string>();
+                        for (int i = 0; i < blame.LineCount; i++) numbers.Add(i.ToString());
+                        lineNumber.ItemsSource = numbers;
+
+                        var fg = FindResource("Brush.FG") as SolidColorBrush;
+                        var tf = new Typeface(content.FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+                        var ns = new NumberSubstitution();
+                        var mp = new Thickness(0);
 
                         for (int i = 0; i < blame.Blocks.Count; i++) {
                             var frag = blame.Blocks[i];
@@ -78,11 +82,11 @@ namespace SourceGit.UI {
 
                             Paragraph p = new Paragraph(new Run(frag.Content));
                             p.DataContext = frag;
-                            p.Margin = new Thickness(0);
-                            p.Padding = new Thickness(0);
+                            p.Margin = mp;
+                            p.Padding = mp;
                             p.LineHeight = 1;
                             p.Background = BG[i % 2];
-                            p.Foreground = FindResource("Brush.FG") as SolidColorBrush;
+                            p.Foreground = fg;
                             p.FontStyle = FontStyles.Normal;
                             p.ContextMenuOpening += (sender, ev) => {
                                 if (!content.Selection.IsEmpty) return;
@@ -114,10 +118,10 @@ namespace SourceGit.UI {
                                 frag.Content,
                                 CultureInfo.CurrentUICulture,
                                 FlowDirection.LeftToRight,
-                                new Typeface(content.FontFamily, p.FontStyle, p.FontWeight, p.FontStretch),
+                                tf,
                                 content.FontSize,
                                 Brushes.Black,
-                                new NumberSubstitution(),
+                                ns,
                                 TextFormattingMode.Ideal);
                             if (minWidth < formatter.Width) {
                                 content.Document.PageWidth = formatter.Width + 16;
