@@ -126,7 +126,7 @@
 
                     <!-- Refs -->
                     <Label Grid.Row="2" Grid.Column="0" Content="REFS" HorizontalAlignment="Right" Opacity=".6"/>
-                    <ItemsControl Grid.Row="2" Grid.Column="1" x:Name="refs" Margin="8,0,0,0">
+                    <ItemsControl Grid.Row="2" Grid.Column="1" x:Name="refs" Margin="11,0,0,0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
