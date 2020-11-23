@@ -45,8 +45,9 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectParentFolder(object sender, RoutedEventArgs e) {
-            var dialog = new FolderDailog("Select folder to store repository", null);
-            dialog.Open(path => txtParentFolder.Text = path);
+            FolderDailog.Open("Select folder to store repository", path => {
+                txtParentFolder.Text = path;
+            });
         }
 
         /// <summary>

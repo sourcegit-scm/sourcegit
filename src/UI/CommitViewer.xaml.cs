@@ -297,8 +297,7 @@ namespace SourceGit.UI {
                 MenuItem saveAs = new MenuItem();
                 saveAs.Header = "Save As ...";
                 saveAs.Click += (obj, ev) => {
-                    var dialog = new FolderDailog("Save To ...", null);
-                    dialog.Open(saveTo => {
+                    FolderDailog.Open("Save file to ...", saveTo => {
                         var savePath = Path.Combine(saveTo, Path.GetFileName(path));
                         commit.SaveFileTo(repo, path, savePath);
                     });
@@ -503,8 +502,7 @@ namespace SourceGit.UI {
                 saveAs.Header = "Save As ...";
                 saveAs.IsEnabled = node.CommitObject == null || node.CommitObject.Kind == Git.Commit.Object.Type.Blob;
                 saveAs.Click += (obj, ev) => {
-                    var dialog = new FolderDailog("Save To ...", null);
-                    dialog.Open(saveTo => {
+                    FolderDailog.Open("Save file to ...", saveTo => {
                         var path = Path.Combine(saveTo, node.Name);
                         commit.SaveFileTo(repo, node.FilePath, path);
                     });

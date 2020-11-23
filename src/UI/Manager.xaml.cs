@@ -44,8 +44,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OpenOrAddRepo(object sender, RoutedEventArgs e) {
-            var dialog = new FolderDailog("Open or init local repository", null);
-            dialog.Open(path => {
+            FolderDailog.Open("Open or init local repository", path => {
                 CheckAndOpenRepo(path);
             });
         }

@@ -92,8 +92,8 @@ namespace SourceGit.UI {
         ///     Constructor
         /// </summary>
         /// <param name="title"></param>
-        /// <param name="initPath"></param>
-        public FolderDailog(string title, string initPath) {
+        /// <param name="cb"></param>
+        public FolderDailog(string title, Action<string> onOK) {
             InitializeComponent();
 
             // Move to center.
@@ -104,46 +104,23 @@ namespace SourceGit.UI {
             var drives = DriveInfo.GetDrives();
             foreach (var drive in drives) {
                 var node = new Node(drive.Name, drive.Name);
-
                 node.CollectChildren();
-                if (initPath != null && initPath.StartsWith(drive.Name)) InitializePath(node, initPath);
-
                 root.Children.Add(node);
             }
 
+            cb = onOK; 
+            btnSure.IsEnabled = false;
             txtTitle.Content = title.ToUpper();
             treePath.ItemsSource = root.Children;
-
-            if (selected != null) {
-                Helpers.TreeViewHelper.SelectOneByContext(treePath, selected);
-            } else {
-                btnSure.IsEnabled = false;
-            }
         }
 
         /// <summary>
-        ///     Set callbacks on click OK.
+        ///     Open dialog.
         /// </summary>
+        /// <param name="title"></param>
         /// <param name="onOK"></param>
-        public void Open(Action<string> onOK) {
-            cb = onOK;
-            Show();
-        }
-
-        /// <summary>
-        ///     Initialize given path.
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="initPath"></param>
-        private void InitializePath(Node parent, string initPath) {
-            foreach (var child in parent.Children) {
-                child.CollectChildren();
-                if (child.Path == initPath) {
-                    selected = child;
-                } else if (initPath.StartsWith(child.Path)) {
-                    InitializePath(child, initPath);
-                }
-            }
+        public static void Open(string title, Action<string> onOK) {
+            new FolderDailog(title, onOK).Show();
         }
 
         #region EVENTS

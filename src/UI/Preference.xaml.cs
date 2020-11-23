@@ -116,8 +116,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectDefaultClonePath(object sender, RoutedEventArgs e) {
-            var dialog = new FolderDailog("Select Folder To Clone Repository Into As Default", null);
-            dialog.Open(path => {
+            FolderDailog.Open("Select default clone path", path => {
                 txtGitCloneDir.Text = path;
                 App.Preference.GitDefaultCloneDir = path;
             });
