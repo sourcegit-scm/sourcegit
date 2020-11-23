@@ -22,164 +22,70 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
-                <!-- Base information -->
-                <Grid Grid.Row="0">
+                <!-- Author and committer -->
+                <Grid Grid.Row="0" Margin="0,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="72"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
+                    
+                    <!-- Author -->
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition x:Name="refRow" Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition x:Name="committerRow" Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Width="64" Height="64" x:Name="authorAvatar" HorizontalAlignment="Right"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="15,0,0,0" Text="AUTHOR" Opacity=".6" Foreground="{StaticResource Brush.FG}"/>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="12,0,0,0">
+                            <TextBox x:Name="authorName" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG}" BorderThickness="0"/>
+                            <TextBox x:Name="authorEmail" Margin="4,0,0,0" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG2}" BorderThickness="0"/>
+                        </StackPanel>
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" x:Name="authorTime" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG2}" FontSize="11" BorderThickness="0"/>
+                    </Grid>
+
+                    <!-- Committer -->
+                    <Grid Grid.Column="1" x:Name="committerPanel">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="96"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="96"/>
-                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- SHA -->
-                        <Label Grid.Row="0" Grid.Column="0" Content="SHA" HorizontalAlignment="Right" Opacity=".6"/>
-                        <TextBox 
-                            Grid.Row="0" Grid.Column="1" 
-                            x:Name="SHA" 
-                            IsReadOnly="True" 
-                            Background="Transparent" 
-                            BorderThickness="0"
-                            Margin="11,0,0,0"/>
+                        <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Width="64" Height="64" x:Name="committerAvatar" HorizontalAlignment="Right"/>
 
-                        <!-- PARENTS -->
-                        <Label Grid.Row="0" Grid.Column="2" Content="PARENTS" HorizontalAlignment="Right" Opacity=".6"/>
-                        <ItemsControl Grid.Row="0" Grid.Column="3" x:Name="parents" Margin="8,0,0,0">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Label Margin="0,0,8,0">
-                                        <Hyperlink RequestNavigate="NavigateParent" NavigateUri="{Binding .}" ToolTip="NAVIGATE TO COMMIT">
-                                            <Run Text="{Binding .}"/>
-                                        </Hyperlink>
-                                    </Label>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <!-- Refs -->
-                        <Label Grid.Row="1" Grid.Column="0" Content="REFS" HorizontalAlignment="Right" Opacity=".6"/>
-                        <ItemsControl Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" x:Name="refs" Margin="8,0,0,0">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border x:Name="BG" Height="16" Margin="2">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="18"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <Border Grid.Column="0" Background="{StaticResource Brush.BG5}">
-                                                <Path x:Name="Icon" Width="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
-                                            </Border>
-
-                                            <Label x:Name="Name" Grid.Column="1" Content="{Binding Name}" FontSize="11" Padding="4,0" Foreground="Black"/>
-                                        </Grid>
-                                    </Border>
-
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.Tag}">
-                                            <Setter TargetName="BG" Property="Background" Value="#FF02C302"/>
-                                            <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Tag}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.LocalBranchHead}">
-                                            <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
-                                            <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Branch}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.RemoteBranchHead}">
-                                            <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
-                                            <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Remote}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.CurrentBranchHead}">
-                                            <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
-                                            <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Check}"/>
-                                            <Setter TargetName="Icon" Property="Fill" Value="Orange"/>
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <!-- AUTHOR -->
-                        <Label Grid.Row="2" Grid.Column="0" Content="AUTHOR" HorizontalAlignment="Right" Opacity=".6"/>
-                        <TextBox
-                            x:Name="author"
-                            Grid.Row="2" Grid.Column="1"
-                            IsReadOnly="True" 
-                            Background="Transparent"
-                            AcceptsReturn="True"
-                            BorderThickness="0"
-                            Margin="11,0,0,0"/>
-
-                        <!-- AUTHOR TIME -->
-                        <Label Grid.Row="2" Grid.Column="2" Content="AUTHOR TIME" HorizontalAlignment="Right" Opacity=".6"/>
-                        <TextBox 
-                            Grid.Row="2" Grid.Column="3"
-                            x:Name="authorTime"
-                            IsReadOnly="True" 
-                            Background="Transparent"
-                            AcceptsReturn="True"
-                            BorderThickness="0"
-                            Margin="8,0,0,0"/>
-
-                        <!-- COMMITTER -->
-                        <Label Grid.Row="3" Grid.Column="0" Content="COMMIT" HorizontalAlignment="Right" Opacity=".6"/>
-                        <TextBox 
-                            Grid.Row="3" Grid.Column="1"
-                            x:Name="committer"
-                            IsReadOnly="True" 
-                            Background="Transparent"
-                            AcceptsReturn="True"
-                            BorderThickness="0"
-                            Margin="11,0,0,0"/>
-
-                        <!-- COMMIT TIME -->
-                        <Label Grid.Row="3" Grid.Column="2" Content="COMMIT TIME" HorizontalAlignment="Right" Opacity=".6"/>
-                        <TextBox 
-                            Grid.Row="3" Grid.Column="3"
-                            x:Name="committerTime"
-                            IsReadOnly="True" 
-                            Background="Transparent"
-                            AcceptsReturn="True"
-                            BorderThickness="0"
-                            Margin="8,0,0,0"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="15,0,0,0" Text="COMMITTER" Opacity=".6" Foreground="{StaticResource Brush.FG}"/>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="12,0,0,0" Orientation="Horizontal">
+                            <TextBox x:Name="committerName" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG}" BorderThickness="0" FontSize="13"/>
+                            <TextBox x:Name="committerEmail" Margin="4,0,0,0" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG2}" BorderThickness="0"/>
+                        </StackPanel>
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" x:Name="committerTime" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG2}" FontSize="11" BorderThickness="0"/>
                     </Grid>
-
-                    <Border Grid.Column="1" Padding="8,8,8,0">
-                        <Image x:Name="avatar" VerticalAlignment="Top"/>
-                    </Border>
                 </Grid>
 
                 <Rectangle Grid.Row="1" Height="1" Margin="8" Fill="{StaticResource Brush.Border2}"/>
-                
-                <!-- Commit message -->
+
+                <!-- Base information -->
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition x:Name="refRow" Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition x:Name="descRow" Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -187,25 +93,105 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- SUBJECT -->
-                    <Label Grid.Row="0" Grid.Column="0" Content="SUBJECT" HorizontalAlignment="Right" Opacity=".6"/>
+                    <!-- SHA -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="SHA" HorizontalAlignment="Right" Opacity=".6"/>
                     <TextBox 
-                        Grid.Row="0" Grid.Column="1"
+                        Grid.Row="0" Grid.Column="1" 
+                        x:Name="SHA" 
+                        IsReadOnly="True" 
+                        Background="Transparent" 
+                        FontFamily="Consolas"
+                        BorderThickness="0"
+                        Margin="11,0,0,0"/>
+
+                    <!-- PARENTS -->
+                    <Label Grid.Row="1" Grid.Column="0" Content="PARENTS" HorizontalAlignment="Right" Opacity=".6"/>
+                    <ItemsControl Grid.Row="1" Grid.Column="1" x:Name="parents" Margin="8,0,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Label Margin="0,0,8,0" FontFamily="Consolas">
+                                    <Hyperlink RequestNavigate="NavigateParent" NavigateUri="{Binding .}" ToolTip="NAVIGATE TO COMMIT">
+                                        <Run Text="{Binding .}"/>
+                                    </Hyperlink>
+                                </Label>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Refs -->
+                    <Label Grid.Row="2" Grid.Column="0" Content="REFS" HorizontalAlignment="Right" Opacity=".6"/>
+                    <ItemsControl Grid.Row="2" Grid.Column="1" x:Name="refs" Margin="8,0,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border x:Name="BG" Height="16" Margin="2">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="18"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Column="0" Background="{StaticResource Brush.BG5}">
+                                            <Path x:Name="Icon" Width="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
+                                        </Border>
+
+                                        <Label x:Name="Name" Grid.Column="1" Content="{Binding Name}" FontSize="11" Padding="4,0" Foreground="Black"/>
+                                    </Grid>
+                                </Border>
+
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.Tag}">
+                                        <Setter TargetName="BG" Property="Background" Value="#FF02C302"/>
+                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Tag}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.LocalBranchHead}">
+                                        <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
+                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Branch}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.RemoteBranchHead}">
+                                        <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
+                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Remote}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Type}" Value="{x:Static git:DecoratorType.CurrentBranchHead}">
+                                        <Setter TargetName="BG" Property="Background" Value="#FFFFB835"/>
+                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Check}"/>
+                                        <Setter TargetName="Icon" Property="Fill" Value="Orange"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- SUBJECT -->
+                    <Label Grid.Row="3" Grid.Column="0" Content="SUBJECT" HorizontalAlignment="Right" Opacity=".6"/>
+                    <TextBox 
+                        Grid.Row="3" Grid.Column="1"
                         x:Name="subject"
                         IsReadOnly="True"
                         Background="Transparent"
+                        FontFamily="Consolas"
                         BorderThickness="0"
-                        Margin="8,0,16,0"/>
+                        Margin="11,0,16,0"/>
 
                     <!-- MESSAGE -->
-                    <Label Grid.Row="1" Grid.Column="0" Content="DESCRIPTION" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".6"/>
+                    <Label Grid.Row="4" Grid.Column="0" Content="DESCRIPTION" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".6"/>
                     <TextBox 
-                        Grid.Row="1" Grid.Column="1"
+                        Grid.Row="4" Grid.Column="1"
                         x:Name="message"
                         IsReadOnly="True"
                         Background="Transparent"
                         BorderThickness="0"
-                        VerticalAlignment="Center"
                         FontSize="11"
                         Margin="11,8,0,0"/>
                 </Grid>

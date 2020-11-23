@@ -89,14 +89,55 @@ namespace SourceGit.UI {
             SHA.Text = commit.SHA;
             refs.ItemsSource = commit.Decorators;
             parents.ItemsSource = parentIds;
-            author.Text = $"{commit.Author.Name} <{commit.Author.Email}>";
-            authorTime.Text = commit.Author.Time;
-            committer.Text = $"{commit.Committer.Name} <{commit.Committer.Email}>";
-            committerTime.Text = commit.Committer.Time;
             subject.Text = commit.Subject;
-            message.Text = commit.Message.Trim();
 
-            byte[] hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(commit.Author.Email.ToLower().Trim()));
+            var commitMsg = commit.Message.Trim();
+            if (string.IsNullOrEmpty(commitMsg)) {
+                descRow.Height = new GridLength(0);
+            } else {
+                descRow.Height = GridLength.Auto;
+                message.Text = commitMsg;
+            }
+
+            authorName.Text = commit.Author.Name;
+            authorEmail.Text = commit.Author.Email;
+            authorTime.Text = commit.Author.Time;
+
+            if (commit.Committer.Email == commit.Author.Email) {
+                if (commit.Committer.Time == commit.Author.Time) {
+                    committerPanel.Visibility = Visibility.Hidden;
+
+                    SetAvatar(authorAvatar, commit.Author.Email);
+                } else {
+                    committerPanel.Visibility = Visibility.Visible;
+
+                    committerName.Text = commit.Committer.Name;
+                    committerEmail.Text = commit.Committer.Email;
+                    committerTime.Text = commit.Committer.Time;
+
+                    SetAvatar(authorAvatar, commit.Author.Email);
+                    SetAvatar(committerAvatar, commit.Committer.Email, false);
+                }
+            } else {
+                committerPanel.Visibility = Visibility.Visible;
+
+                committerName.Text = commit.Committer.Name;
+                committerEmail.Text = commit.Committer.Email;
+                committerTime.Text = commit.Committer.Time;
+
+                SetAvatar(authorAvatar, commit.Author.Email);
+                SetAvatar(committerAvatar, commit.Committer.Email);
+            }
+
+            if (commit.Decorators.Count == 0) {
+                refRow.Height = new GridLength(0);
+            } else {
+                refRow.Height = GridLength.Auto;
+            }
+        }
+
+        private void SetAvatar(Image img, string email, bool save = true) {
+            byte[] hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(email.ToLower().Trim()));
             string md5 = "";
             for (int i = 0; i < hash.Length; i++) md5 += hash[i].ToString("x2");
             md5 = md5.ToLower();
@@ -105,32 +146,23 @@ namespace SourceGit.UI {
 
             string filePath = Path.Combine(AVATAR_PATH, md5);
             if (File.Exists(filePath)) {
-                avatar.Source = new BitmapImage(new Uri(filePath));
+                img.Source = new BitmapImage(new Uri(filePath));
             } else {
                 var bitmap = new BitmapImage(new Uri("https://www.gravatar.com/avatar/" + md5 + "?d=mp"));
-                bitmap.DownloadCompleted += (o, e) => {
-                    var owner = o as BitmapImage;
-                    if (owner != null) {
-                        var encoder = new PngBitmapEncoder();
-                        encoder.Frames.Add(BitmapFrame.Create(owner));
-                        using (var fs = new FileStream(filePath, FileMode.Create)) {
-                            encoder.Save(fs);
+                if (save) {
+                    bitmap.DownloadCompleted += (o, e) => {
+                        var owner = o as BitmapImage;
+                        if (owner != null) {
+                            var encoder = new PngBitmapEncoder();
+                            encoder.Frames.Add(BitmapFrame.Create(owner));
+                            using (var fs = new FileStream(filePath, FileMode.Create)) {
+                                encoder.Save(fs);
+                            }
                         }
-                    }
-                };
-                avatar.Source = bitmap;
-            }
-
-            if (commit.Decorators.Count == 0) {
-                refRow.Height = new GridLength(0);
-                committerRow.Height = GridLength.Auto;
-            } else {
-                refRow.Height = GridLength.Auto;
-                if (commit.Committer.Email == commit.Author.Email && commit.Committer.Time == commit.Author.Time) {
-                    committerRow.Height = new GridLength(0);
-                } else {
-                    committerRow.Height = GridLength.Auto;
+                    };
                 }
+                img.Source = bitmap;
+
             }
         }
 
