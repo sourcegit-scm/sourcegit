@@ -126,12 +126,12 @@
                             Fill="Transparent"
                             Stroke="{DynamicResource Brush.FG}"
                             StrokeThickness=".4"
-                            Data="{DynamicResource Icon.SplitHorizontal}"/>
+                            Data="{DynamicResource Icon.SplitVertical}"/>
                     </Grid>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Icon" Property="Data" Value="{DynamicResource Icon.SplitVertical}"/>
+                            <Setter TargetName="Icon" Property="Data" Value="{DynamicResource Icon.SplitHorizontal}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
