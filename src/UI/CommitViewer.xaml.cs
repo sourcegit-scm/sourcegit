@@ -297,14 +297,11 @@ namespace SourceGit.UI {
                 MenuItem saveAs = new MenuItem();
                 saveAs.Header = "Save As ...";
                 saveAs.Click += (obj, ev) => {
-                    var dialog = new System.Windows.Forms.FolderBrowserDialog();
-                    dialog.Description = path;
-                    dialog.ShowNewFolderButton = true;
-
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                        var savePath = Path.Combine(dialog.SelectedPath, Path.GetFileName(path));
+                    var dialog = new FolderDailog("Save To ...", null);
+                    dialog.Open(saveTo => {
+                        var savePath = Path.Combine(saveTo, Path.GetFileName(path));
                         commit.SaveFileTo(repo, path, savePath);
-                    }
+                    });
                 };
                 menu.Items.Add(saveAs);
             }
@@ -453,22 +450,8 @@ namespace SourceGit.UI {
             }
         }
 
-        private ScrollViewer GetScrollViewer(FrameworkElement owner) {
-            if (owner == null) return null;
-            if (owner is ScrollViewer) return owner as ScrollViewer;
-
-            int n = VisualTreeHelper.GetChildrenCount(owner);
-            for (int i = 0; i < n; i++) {
-                var child = VisualTreeHelper.GetChild(owner, i) as FrameworkElement;
-                var deep = GetScrollViewer(child);
-                if (deep != null) return deep;
-            }
-
-            return null;
-        }
-
         private void TreeMouseWheel(object sender, MouseWheelEventArgs e) {
-            var scroll = GetScrollViewer(sender as TreeView);
+            var scroll = Helpers.TreeViewHelper.GetScrollViewer(sender as TreeView);
             if (scroll == null) return;
 
             if (e.Delta > 0) {
@@ -520,14 +503,11 @@ namespace SourceGit.UI {
                 saveAs.Header = "Save As ...";
                 saveAs.IsEnabled = node.CommitObject == null || node.CommitObject.Kind == Git.Commit.Object.Type.Blob;
                 saveAs.Click += (obj, ev) => {
-                    var dialog = new System.Windows.Forms.FolderBrowserDialog();
-                    dialog.Description = node.FilePath;
-                    dialog.ShowNewFolderButton = true;
-
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                        var path = Path.Combine(dialog.SelectedPath, node.Name);
+                    var dialog = new FolderDailog("Save To ...", null);
+                    dialog.Open(saveTo => {
+                        var path = Path.Combine(saveTo, node.Name);
                         commit.SaveFileTo(repo, node.FilePath, path);
-                    }
+                    });
                 };
                 menu.Items.Add(saveAs);
             }

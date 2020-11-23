@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,14 +45,8 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectParentFolder(object sender, RoutedEventArgs e) {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog();
-            dialog.Description = "Git Repository URL";
-            dialog.RootFolder = Environment.SpecialFolder.MyComputer;
-            dialog.ShowNewFolderButton = true;
-
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                txtParentFolder.Text = dialog.SelectedPath;
-            }
+            var dialog = new FolderDailog("Select folder to store repository", null);
+            dialog.Open(path => txtParentFolder.Text = path);
         }
 
         /// <summary>

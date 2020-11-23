@@ -586,12 +586,10 @@ namespace SourceGit.UI {
             var patch = new MenuItem();
             patch.Header = "Save As Patch";
             patch.Click += (o, e) => {
-                var dialog = new System.Windows.Forms.FolderBrowserDialog();
-                dialog.ShowNewFolderButton = true;
-
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                    Repo.RunCommand($"format-patch {commit.SHA} -1 -o \"{dialog.SelectedPath}\"", null);
-                }
+                var dialog = new FolderDailog("Save To ...", null);
+                dialog.Open(saveTo => {
+                    Repo.RunCommand($"format-patch {commit.SHA} -1 -o \"{saveTo}\"", null);
+                });
             };
             menu.Items.Add(patch);
             menu.Items.Add(new Separator());

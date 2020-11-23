@@ -123,6 +123,25 @@ namespace SourceGit.Helpers {
         }
 
         /// <summary>
+        ///     Find ScrollViewer of a tree view
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public static ScrollViewer GetScrollViewer(FrameworkElement owner) {
+            if (owner == null) return null;
+            if (owner is ScrollViewer) return owner as ScrollViewer;
+
+            int n = VisualTreeHelper.GetChildrenCount(owner);
+            for (int i = 0; i < n; i++) {
+                var child = VisualTreeHelper.GetChild(owner, i) as FrameworkElement;
+                var deep = GetScrollViewer(child);
+                if (deep != null) return deep;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         ///     Select all items in tree.
         /// </summary>
         /// <param name="tree"></param>

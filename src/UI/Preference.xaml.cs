@@ -116,15 +116,11 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectDefaultClonePath(object sender, RoutedEventArgs e) {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog();
-            dialog.Description = "Select Folder To Clone Repository Into As Default";
-            dialog.RootFolder = Environment.SpecialFolder.MyComputer;
-            dialog.ShowNewFolderButton = true;
-
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                txtGitCloneDir.Text = dialog.SelectedPath;
-                App.Preference.GitDefaultCloneDir = dialog.SelectedPath;
-            }
+            var dialog = new FolderDailog("Select Folder To Clone Repository Into As Default", null);
+            dialog.Open(path => {
+                txtGitCloneDir.Text = path;
+                App.Preference.GitDefaultCloneDir = path;
+            });
         }
 
         /// <summary>

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -45,14 +44,10 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OpenOrAddRepo(object sender, RoutedEventArgs e) {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog();
-            dialog.Description = "Open or init local repository";
-            dialog.RootFolder = Environment.SpecialFolder.MyComputer;
-            dialog.ShowNewFolderButton = true;
-
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                CheckAndOpenRepo(dialog.SelectedPath);
-            }
+            var dialog = new FolderDailog("Open or init local repository", null);
+            dialog.Open(path => {
+                CheckAndOpenRepo(path);
+            });
         }
 
         /// <summary>

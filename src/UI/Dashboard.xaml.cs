@@ -1054,22 +1054,8 @@ namespace SourceGit.UI {
             if (item != null) item.IsSelected = false;
         }
 
-        private ScrollViewer GetScrollViewer(FrameworkElement owner) {
-            if (owner == null) return null;
-            if (owner is ScrollViewer) return owner as ScrollViewer;
-
-            int n = VisualTreeHelper.GetChildrenCount(owner);
-            for (int i = 0; i < n; i++) {
-                var child = VisualTreeHelper.GetChild(owner, i) as FrameworkElement;
-                var deep = GetScrollViewer(child);
-                if (deep != null) return deep;
-            }
-
-            return null;
-        }
-
         private void TreeMouseWheel(object sender, MouseWheelEventArgs e) {
-            var scroll = GetScrollViewer(sender as TreeView);
+            var scroll = Helpers.TreeViewHelper.GetScrollViewer(sender as TreeView);
             if (scroll == null) return;
 
             if (e.Delta > 0) {

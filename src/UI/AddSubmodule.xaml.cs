@@ -38,17 +38,6 @@ namespace SourceGit.UI {
         }
 
         #region EVENTS
-        private void SelectFolder(object sender, RoutedEventArgs e) {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog();
-            dialog.Description = "Select Folder To Clone Repository";
-            dialog.SelectedPath = repo.Path;
-            dialog.ShowNewFolderButton = true;
-
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                txtPath.Text = dialog.SelectedPath;
-            }
-        }
-
         private async void Sure(object sender, RoutedEventArgs e) {
             txtRepoUrl.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtRepoUrl)) return;

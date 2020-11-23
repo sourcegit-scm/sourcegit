@@ -3,7 +3,6 @@
         <TargetFramework>net46</TargetFramework>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
-        <UseWindowsForms>true</UseWindowsForms>
         <ApplicationIcon>App.ico</ApplicationIcon>
         <Company>sourcegit</Company>
         <Description>OpenSource GIT client for Windows</Description>
