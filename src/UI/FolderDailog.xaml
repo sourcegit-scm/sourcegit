@@ -65,8 +65,8 @@
                 <TreeView x:Name="treePath" FontFamily="Consolas" PreviewMouseWheel="OnTreeMouseWheel" SelectedItemChanged="OnTreeSelectedChanged">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
-                            <Setter Property="IsExpanded" Value="{Binding IsOpened, Mode=TwoWay}"/>
                             <EventSetter Event="Expanded" Handler="OnTreeNodeExpanded"/>
+                            <EventSetter Event="Collapsed" Handler="OnTreeNodeCollapsed"/>
                         </Style>
                     </TreeView.ItemContainerStyle>
                     

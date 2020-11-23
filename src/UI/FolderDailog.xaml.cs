@@ -1,19 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SourceGit.UI {
 
@@ -29,9 +20,34 @@ namespace SourceGit.UI {
         ///     Tree node.
         /// </summary>
         public class Node : INotifyPropertyChanged {
+            private bool isOpened = false;
+
+            /// <summary>
+            ///     Display name.
+            /// </summary>
             public string Name { get; set; }
+
+            /// <summary>
+            ///     Full path in file-system.
+            /// </summary>
             public string Path { get; set; }
-            public bool IsOpened { get; set; }
+
+            /// <summary>
+            ///     Is opened.
+            /// </summary>
+            public bool IsOpened {
+                get { return isOpened; }
+                set {
+                    if (isOpened != value) {
+                        isOpened = value;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsOpened"));
+                    }
+                }
+            }
+
+            /// <summary>
+            ///     Children nodes.
+            /// </summary>
             public ObservableCollection<Node> Children { get; set; }
 
             /// <summary>
@@ -48,7 +64,7 @@ namespace SourceGit.UI {
             public Node(string name, string path) {
                 Name = name;
                 Path = path;
-                IsOpened = false;
+                isOpened = false;
                 Children = new ObservableCollection<Node>();
             }
 
@@ -174,10 +190,22 @@ namespace SourceGit.UI {
             var node = item.DataContext as Node;
             if (node == null) return;
 
+            node.IsOpened = true;
             foreach (var c in node.Children) {
                 c.CollectChildren();
             }
 
+            e.Handled = true;
+        }
+
+        private void OnTreeNodeCollapsed(object sender, RoutedEventArgs e) {
+            var item = sender as TreeViewItem;
+            if (item == null) return;
+
+            var node = item.DataContext as Node;
+            if (node == null) return;
+
+            node.IsOpened = false;
             e.Handled = true;
         }
         #endregion
