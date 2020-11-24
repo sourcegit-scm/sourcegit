@@ -69,7 +69,7 @@
 
                         <TextBlock Grid.Row="0" Grid.Column="1" Margin="15,0,0,0" Text="COMMITTER" Opacity=".6" Foreground="{StaticResource Brush.FG}"/>
                         <StackPanel Grid.Row="1" Grid.Column="1" Margin="12,0,0,0" Orientation="Horizontal">
-                            <TextBox x:Name="committerName" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG}" BorderThickness="0" FontSize="13"/>
+                            <TextBox x:Name="committerName" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG}" BorderThickness="0"/>
                             <TextBox x:Name="committerEmail" Margin="4,0,0,0" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG2}" BorderThickness="0"/>
                         </StackPanel>
                         <TextBox Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" x:Name="committerTime" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG2}" FontSize="11" BorderThickness="0"/>
