@@ -551,7 +551,10 @@ namespace SourceGit.UI {
             menu.IsOpen = true;
             e.Handled = true;
         }
-        #endregion
 
+        private void TreeRequestBringIntoView(object sender, RequestBringIntoViewEventArgs e) {
+            e.Handled = true;
+        }
+        #endregion
     }
 }

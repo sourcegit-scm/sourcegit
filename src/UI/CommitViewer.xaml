@@ -299,6 +299,7 @@
                             <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
                                 <Setter Property="IsExpanded" Value="{Binding IsNodeExpanded, Mode=TwoWay}"/>
                                 <EventSetter Event="ContextMenuOpening" Handler="TreeContextMenuOpening"/>
+                                <EventSetter Event="RequestBringIntoView" Handler="TreeRequestBringIntoView"/>
                             </Style>
                         </TreeView.ItemContainerStyle>
                         <TreeView.ItemTemplate>
@@ -388,6 +389,7 @@
                             <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
                                 <Setter Property="IsExpanded" Value="{Binding IsNodeExpanded, Mode=TwoWay}"/>
                                 <EventSetter Event="ContextMenuOpening" Handler="TreeContextMenuOpening"/>
+                                <EventSetter Event="RequestBringIntoView" Handler="TreeRequestBringIntoView"/>
                             </Style>
                         </TreeView.ItemContainerStyle>
                         <TreeView.ItemTemplate>

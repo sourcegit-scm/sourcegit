@@ -15,100 +15,36 @@ namespace SourceGit.Git {
         ///     Line mode.
         /// </summary>
         public enum LineMode {
+            None,
             Normal,
             Indicator,
-            Empty,
             Added,
             Deleted,
         }
 
         /// <summary>
-        ///     Side
+        ///     Line change.
         /// </summary>
-        public enum Side {
-            Left,
-            Right,
-            Both,
-        }
-
-        /// <summary>
-        ///     Block
-        /// </summary>
-        public class Block {
-            public Side Side = Side.Both;
+        public class LineChange {
             public LineMode Mode = LineMode.Normal;
-            public int LeftStart = 0;
-            public int RightStart = 0;
-            public int Count = 0;
-            public StringBuilder Builder = new StringBuilder();
+            public string Content = "";
+            public string OldLine = "";
+            public string NewLine = "";
 
-            public bool IsLeftDelete => Side == Side.Left && Mode == LineMode.Deleted;
-            public bool IsRightAdded => Side == Side.Right && Mode == LineMode.Added;
-            public bool IsBothSideNormal => Side == Side.Both && Mode == LineMode.Normal;
-            public bool CanShowNumber => Mode != LineMode.Indicator && Mode != LineMode.Empty;
-
-            public void Append(string data) {
-                if (Count > 0) Builder.AppendLine();
-                Builder.Append(data);
-                Count++;
+            public LineChange(LineMode mode, string content, string oldLine = "", string newLine = "") {
+                Mode = mode;
+                Content = content;
+                OldLine = oldLine;
+                NewLine = newLine;
             }
         }
 
         /// <summary>
-        ///     Text file change.
+        ///     Text change.
         /// </summary>
         public class TextChange {
-            public bool IsValid = false;
+            public List<LineChange> Lines = new List<LineChange>();
             public bool IsBinary = false;
-            public List<Block> Blocks = new List<Block>();
-            public int LeftLineCount = 0;
-            public int RightLineCount = 0;
-
-            public void SetBinary() {
-                IsValid = true;
-                IsBinary = true;
-            }
-
-            public void Add(Block b) {
-                if (b.Count == 0) return;
-
-                switch (b.Side) {
-                case Side.Left:
-                    LeftLineCount += b.Count;
-                    break;
-                case Side.Right:
-                    RightLineCount += b.Count;
-                    break;
-                default:
-                    LeftLineCount += b.Count;
-                    RightLineCount += b.Count;
-                    break;
-                }
-
-                Blocks.Add(b);
-            }
-
-            public void Fit() {
-                if (LeftLineCount > RightLineCount) {
-                    var b = new Block();
-                    b.Side = Side.Right;
-                    b.Mode = LineMode.Empty;
-
-                    var delta = LeftLineCount - RightLineCount;
-                    for (int i = 0; i < delta; i++) b.Append("");
-
-                    Add(b);
-                } else if (LeftLineCount < RightLineCount) {
-                    var b = new Block();
-                    b.Side = Side.Left;
-                    b.Mode = LineMode.Empty;
-
-                    var delta = RightLineCount - LeftLineCount;
-                    for (int i = 0; i < delta; i++) b.Append("");
-
-                    Add(b);
-                }
-            }
         }
 
         /// <summary>
@@ -136,103 +72,49 @@ namespace SourceGit.Git {
         /// <returns></returns>
         public static TextChange GetTextChange(Repository repo, string args) {
             var rs = new TextChange();
-            var current = new Block();
-            var left = 0;
-            var right = 0;
+            var started = false;
+            var oldLine = 0;
+            var newLine = 0;
 
             repo.RunCommand($"diff --ignore-cr-at-eol {args}", line => {
                 if (rs.IsBinary) return;
 
-                if (!rs.IsValid) {
+                if (!started) {
                     var match = REG_INDICATOR.Match(line);
                     if (!match.Success) {
-                        if (line.StartsWith("Binary ")) rs.SetBinary();
+                        if (line.StartsWith("Binary ")) rs.IsBinary = true;
                         return;
                     }
 
-                    rs.IsValid = true;
-                    left = int.Parse(match.Groups[1].Value);
-                    right = int.Parse(match.Groups[2].Value);
-                    current.Mode = LineMode.Indicator;
-                    current.Append(line);
+                    started = true;
+                    oldLine = int.Parse(match.Groups[1].Value);
+                    newLine = int.Parse(match.Groups[2].Value);
+                    rs.Lines.Add(new LineChange(LineMode.Indicator, line));
                 } else {
                     if (line[0] == '-') {
-                        if (current.IsLeftDelete) {
-                            current.Append(line.Substring(1));
-                        } else {
-                            rs.Add(current);
-
-                            current = new Block();
-                            current.Side = Side.Left;
-                            current.Mode = LineMode.Deleted;
-                            current.LeftStart = left;
-                            current.Append(line.Substring(1));
-                        }
-
-                        left++;
+                        rs.Lines.Add(new LineChange(LineMode.Deleted, line.Substring(1), $"{oldLine}", ""));
+                        oldLine++;
                     } else if (line[0] == '+') {
-                        if (current.IsRightAdded) {
-                            current.Append(line.Substring(1));
-                        } else {
-                            rs.Add(current);
-
-                            current = new Block();
-                            current.Side = Side.Right;
-                            current.Mode = LineMode.Added;
-                            current.RightStart = right;
-                            current.Append(line.Substring(1));
-                        }
-
-                        right++;
+                        rs.Lines.Add(new LineChange(LineMode.Added, line.Substring(1), "", $"{newLine}"));
+                        newLine++;
                     } else if (line[0] == '\\') {
-                        var tmp = new Block();
-                        tmp.Side = current.Side;
-                        tmp.Mode = LineMode.Indicator;
-                        tmp.Append(line.Substring(1));
-
-                        rs.Add(current);
-                        rs.Add(tmp);
-                        rs.Fit();
-
-                        current = new Block();
-                        current.LeftStart = left;
-                        current.RightStart = right;
+                        rs.Lines.Add(new LineChange(LineMode.Indicator, line.Substring(1)));
                     } else {
                         var match = REG_INDICATOR.Match(line);
                         if (match.Success) {
-                            rs.Add(current);
-                            rs.Fit();
-
-                            left = int.Parse(match.Groups[1].Value);
-                            right = int.Parse(match.Groups[2].Value);
-
-                            current = new Block();
-                            current.Mode = LineMode.Indicator;
-                            current.Append(line);
+                            oldLine = int.Parse(match.Groups[1].Value);
+                            newLine = int.Parse(match.Groups[2].Value);
+                            rs.Lines.Add(new LineChange(LineMode.Indicator, line));
                         } else {
-                            if (current.IsBothSideNormal) {
-                                current.Append(line.Substring(1));
-                            } else {
-                                rs.Add(current);
-                                rs.Fit();
-
-                                current = new Block();
-                                current.LeftStart = left;
-                                current.RightStart = right;
-                                current.Append(line.Substring(1));
-                            }
-
-                            left++;
-                            right++;
+                            rs.Lines.Add(new LineChange(LineMode.Normal, line.Substring(1), $"{oldLine}", $"{newLine}"));
+                            oldLine++;
+                            newLine++;
                         }
                     }
                 }
             });
 
-            rs.Add(current);
-            rs.Fit();
-
-            if (rs.IsBinary) rs.Blocks.Clear();
+            if (rs.IsBinary) rs.Lines.Clear();
             return rs;
         }
 

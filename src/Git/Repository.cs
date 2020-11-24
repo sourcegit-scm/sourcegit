@@ -945,7 +945,6 @@ namespace SourceGit.Git {
         public Blame BlameFile(string file, string revision) {
             var regex = new Regex(@"^\^?([0-9a-f]+)\s+.*\((.*)\s+(\d+)\s+[\-\+]?\d+\s+\d+\) (.*)");
             var blame = new Blame();
-            var current = null as Blame.Block;
 
             var errs = RunCommand($"blame -t {revision} -- \"{file}\"", line => {
                 if (blame.IsBinary) return;
@@ -953,7 +952,7 @@ namespace SourceGit.Git {
 
                 if (line.IndexOf('\0') >= 0) {
                     blame.IsBinary = true;
-                    blame.Blocks.Clear();
+                    blame.Lines.Clear();
                     return;
                 }
 
@@ -961,25 +960,19 @@ namespace SourceGit.Git {
                 if (!match.Success) return;
 
                 var commit = match.Groups[1].Value;
+                var author = match.Groups[2].Value;
+                var timestamp = int.Parse(match.Groups[3].Value);
                 var data = match.Groups[4].Value;
-                if (current != null && current.CommitSHA == commit) {
-                    current.Content = current.Content + "\n" + data;
-                } else {
-                    var timestamp = int.Parse(match.Groups[3].Value);
-                    var when = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestamp).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+                var when = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestamp).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
 
-                    current = new Blame.Block() {
-                        CommitSHA = commit,
-                        Author = match.Groups[2].Value,
-                        Time = when,
-                        Content = data,
-                    };
+                var blameLine = new Blame.Line() {
+                    CommitSHA = commit,
+                    Author = author,
+                    Time = when,
+                    Content = data,
+                };
 
-                    if (current.Author == null) current.Author = "";
-                    blame.Blocks.Add(current);
-                }
-
-                blame.LineCount++;
+                blame.Lines.Add(blameLine);
             });
 
             if (errs != null) App.RaiseError(errs);

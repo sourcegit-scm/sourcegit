@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace SourceGit.Git {
 
@@ -8,9 +8,9 @@ namespace SourceGit.Git {
     public class Blame {
 
         /// <summary>
-        ///     Block content.
+        ///     Line content.
         /// </summary>
-        public class Block {
+        public class Line {
             public string CommitSHA { get; set; }
             public string Author { get; set; }
             public string Time { get; set; }
@@ -18,18 +18,13 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
-        ///     Blocks
+        ///     Lines
         /// </summary>
-        public List<Block> Blocks { get; set; } = new List<Block>();
+        public List<Line> Lines { get; set; } = new List<Line>();
 
         /// <summary>
         ///     Is binary file?
         /// </summary>
         public bool IsBinary { get; set; } = false;
-
-        /// <summary>
-        ///     Line count.
-        /// </summary>
-        public int LineCount { get; set; } = 0;
     }
 }

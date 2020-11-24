@@ -7,11 +7,28 @@
              mc:Ignorable="d"
              FontFamily="Consolas">
     <Border BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}">
-        <Grid>
+        <Grid x:Name="area" SizeChanged="OnSizeChanged">
             <Grid.RowDefinitions>
                 <RowDefinition Height="26"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+
+            <Grid.Resources>
+                <Style x:Key="Style.DataGridText.LineNumber" TargetType="{x:Type TextBlock}">
+                    <Setter Property="FontFamily" Value="Consolas"/>
+                    <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Padding" Value="8,0"/>
+                </Style>
+
+                <Style x:Key="Style.DataGridText.Block" TargetType="{x:Type TextBlock}">
+                    <Setter Property="FontFamily" Value="Consolas"/>
+                    <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Padding" Value="0"/>
+                </Style>
+            </Grid.Resources>
 
             <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="0,0,0,1">
                 <Grid Margin="8,4">
@@ -52,140 +69,106 @@
                 </Grid>
             </Border>
 
-            <Grid x:Name="textChange" Grid.Row="1" ClipToBounds="True">
+            <Grid Grid.Row="1" x:Name="textChangeTwoSides">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="4"/>
-                    <ColumnDefinition Width="1"/>
-                    <ColumnDefinition x:Name="twoSideLeft"/>
-                    <ColumnDefinition x:Name="twoSideSplittter" Width="1"/>
-                    <ColumnDefinition Width="4"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="4"/>
-                    <ColumnDefinition Width="1"/>
-                    <ColumnDefinition Width="*" MinWidth="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <ItemsControl
+                <DataGrid
+                    Grid.Column="0"
+                    x:Name="textChangeOldSide"
+                    GridLinesVisibility="Vertical"
+                    VerticalGridLinesBrush="{StaticResource Brush.Border2}"
+                    FrozenColumnCount="1"
+                    ScrollViewer.ScrollChanged="OnTwoSidesScroll"
+                    ContextMenuOpening="OnTextChangeContextMenuOpening">
+                    
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                            <EventSetter Event="RequestBringIntoView" Handler="OnLineRequestBringIntoView"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding OldLine}" ElementStyle="{StaticResource Style.DataGridText.LineNumber}"/>
+
+                        <DataGridTemplateColumn Width="Auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Border Background="{Binding BG}" BorderThickness="0"/>
+                                        <TextBlock Text="{Binding Content}" Background="Transparent" Foreground="{Binding FG}" FontFamily="Consolas" FontSize="12" FontStyle="{Binding Style}" Margin="0" Padding="0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <DataGrid
                     Grid.Column="1"
-                    x:Name="leftLineNumber"
-                    Padding="0"
-                    Margin="0"
-                    BorderThickness="0"
-                    Background="Transparent"
-                    VirtualizingPanel.ScrollUnit="Item"
-                    VirtualizingPanel.IsVirtualizing="True"
-                    VirtualizingPanel.VirtualizationMode="Recycling">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+                    x:Name="textChangeNewSide"
+                    GridLinesVisibility="Vertical"
+                    VerticalGridLinesBrush="{StaticResource Brush.Border2}"
+                    FrozenColumnCount="1"
+                    ScrollViewer.ScrollChanged="OnTwoSidesScroll"
+                    ContextMenuOpening="OnTextChangeContextMenuOpening">
 
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="{x:Type ItemsControl}">
-                            <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
-                                <ItemsPresenter/>
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                            <EventSetter Event="RequestBringIntoView" Handler="OnLineRequestBringIntoView"/>
+                        </Style>
+                    </DataGrid.RowStyle>
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding .}" Padding="0" Margin="0" FontFamily="Consolas" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding NewLine}" ElementStyle="{StaticResource Style.DataGridText.LineNumber}"/>
 
-                <Rectangle Grid.Column="3" Width="1" Fill="{StaticResource Brush.Border2}"/>
-
-                <RichTextBox
-                    x:Name="leftText"
-                    Grid.Column="4"
-                    AcceptsReturn="True"
-                    AcceptsTab="True"
-                    IsReadOnly="True"
-                    BorderThickness="0"
-                    Background="Transparent"
-                    Foreground="{StaticResource Brush.FG}"
-                    Height="Auto"
-                    FontSize="13"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Auto"
-                    RenderOptions.ClearTypeHint="Enabled"
-                    ScrollViewer.ScrollChanged="OnViewerScroll"
-                    PreviewMouseWheel="OnViewerMouseWheel"
-                    SizeChanged="OnSizeChanged"
-                    SelectionChanged="OnViewerSelectionChanged"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch">
-                    <RichTextBox.Document>
-                        <FlowDocument PageWidth="0"/>
-                    </RichTextBox.Document>
-                </RichTextBox>
-
-                <Rectangle Grid.Column="5" Width="1" Fill="{StaticResource Brush.Border2}"/>
-
-                <ItemsControl
-                    Grid.Column="7"
-                    x:Name="rightLineNumber"
-                    Padding="0"
-                    Margin="0"
-                    BorderThickness="0"
-                    Background="Transparent"
-                    VirtualizingPanel.ScrollUnit="Item"
-                    VirtualizingPanel.IsVirtualizing="True"
-                    VirtualizingPanel.VirtualizationMode="Recycling">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="{x:Type ItemsControl}">
-                            <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
-                                <ItemsPresenter/>
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding .}" Padding="0" Margin="0" FontFamily="Consolas" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-
-                <Rectangle Grid.Column="9" Width="1" Fill="{StaticResource Brush.Border2}"/>
-
-                <RichTextBox
-                    x:Name="rightText"
-                    Grid.Column="10"
-                    AcceptsReturn="True"
-                    AcceptsTab="True"
-                    IsReadOnly="True"
-                    BorderThickness="0"
-                    Background="Transparent"
-                    Foreground="{StaticResource Brush.FG}"
-                    Height="Auto"
-                    FontSize="13"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Auto"
-                    RenderOptions.ClearTypeHint="Enabled"
-                    ScrollViewer.ScrollChanged="OnViewerScroll"
-                    PreviewMouseWheel="OnViewerMouseWheel"
-                    SizeChanged="OnSizeChanged"
-                    SelectionChanged="OnViewerSelectionChanged"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch">
-                    <RichTextBox.Document>
-                        <FlowDocument PageWidth="0"/>
-                    </RichTextBox.Document>
-                </RichTextBox>
+                        <DataGridTemplateColumn Width="Auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Border Background="{Binding BG}" BorderThickness="0"/>
+                                        <TextBlock Text="{Binding Content}" Background="Transparent" Foreground="{Binding FG}" FontFamily="Consolas" FontSize="12" FontStyle="{Binding Style}" Margin="0" Padding="0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
 
+            <DataGrid
+                Grid.Row="1"
+                x:Name="textChangeOneSide"                
+                GridLinesVisibility="Vertical"
+                VerticalGridLinesBrush="{StaticResource Brush.Border2}"
+                FrozenColumnCount="2"
+                ContextMenuOpening="OnTextChangeContextMenuOpening">
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                        <EventSetter Event="RequestBringIntoView" Handler="OnLineRequestBringIntoView"/>
+                    </Style>
+                </DataGrid.RowStyle>
+                
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding OldLine}" ElementStyle="{StaticResource Style.DataGridText.LineNumber}"/>
+                    <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding NewLine}" ElementStyle="{StaticResource Style.DataGridText.LineNumber}"/>
+
+                    <DataGridTemplateColumn Width="Auto" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border Background="{Binding BG}" BorderThickness="0"/>
+                                    <TextBlock Text="{Binding Content}" Background="Transparent" Foreground="{Binding FG}" FontFamily="Consolas" FontSize="12" FontStyle="{Binding Style}" Margin="0" Padding="0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>                
+            </DataGrid>
+                
             <Border x:Name="sizeChange" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <Label x:Name="txtSizeChangeTitle" Content="BINARY DIFF" Margin="0,0,0,32" FontSize="18" FontWeight="UltraBold" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Center"/>

@@ -107,80 +107,60 @@
             </Border>
 
             <!-- Content -->
-            <Border Grid.Row="2" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}" ClipToBounds="True">
+            <Border Grid.Row="2" x:Name="area" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}" ClipToBounds="True" SizeChanged="ContentSizeChanged">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="4"/>
-                        <ColumnDefinition Width="1"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style x:Key="Style.DataGridText.LineNumber" TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontFamily" Value="Consolas"/>
+                            <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="8,0"/>
+                        </Style>
 
-                    <ItemsControl
-                        Grid.Column="1"
-                        x:Name="lineNumber"
-                        Padding="0"
-                        Margin="0"
-                        BorderThickness="0"
-                        Background="Transparent"
-                        VirtualizingPanel.ScrollUnit="Item"
-                        VirtualizingPanel.IsVirtualizing="True"
-                        VirtualizingPanel.VirtualizationMode="Recycling">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel Orientation="Vertical"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
+                        <Style x:Key="Style.DataGridText.Block" TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontFamily" Value="Consolas"/>
+                            <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </Grid.Resources>
+                    
+                    <!-- Blame -->
+                    <DataGrid
+                        Grid.Column="0"
+                        x:Name="blame"
+                        GridLinesVisibility="Vertical"
+                        VerticalGridLinesBrush="{StaticResource Brush.Border2}"
+                        FrozenColumnCount="1"
+                        SelectionUnit="FullRow"
+                        SelectionMode="Single">
 
-                        <ItemsControl.Template>
-                            <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
-                                    <ItemsPresenter/>
-                                </ScrollViewer>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                                <EventSetter Event="RequestBringIntoView" Handler="OnBlameRequestBringIntoView"/>
+                                <EventSetter Event="ContextMenuOpening" Handler="OnBlameContextMenuOpening"/>
+                            </Style>
+                        </DataGrid.RowStyle>
 
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding .}" Padding="0" Margin="0" FontFamily="Consolas" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding LineNumber}" ElementStyle="{StaticResource Style.DataGridText.LineNumber}"/>
 
-                    <Rectangle Grid.Column="3" Width="1" Fill="{StaticResource Brush.Border2}"/>
-
-                    <RichTextBox
-                            x:Name="content"
-                            Grid.Column="4"
-                            AcceptsReturn="True"
-                            AcceptsTab="True"
-                            IsReadOnly="True"
-                            BorderThickness="0"
-                            Background="Transparent"
-                            Foreground="{StaticResource Brush.FG}"
-                            Height="Auto"
-                            FontSize="13"
-                            HorizontalScrollBarVisibility="Auto"
-                            VerticalScrollBarVisibility="Auto"
-                            RenderOptions.ClearTypeHint="Enabled"
-                            ScrollViewer.ScrollChanged="SyncScrollChanged"
-                            PreviewMouseWheel="MouseWheelOnContent"
-                            SizeChanged="ContentSizeChanged"
-                            SelectionChanged="ContentSelectionChanged"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            FontFamily="Consolas">
-                        <RichTextBox.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Command="ApplicationCommands.Copy"/>
-                            </ContextMenu>
-                        </RichTextBox.ContextMenu>
-                        <FlowDocument PageWidth="0"/>
-                    </RichTextBox>
+                            <DataGridTemplateColumn Width="1" MinWidth="1" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Border Background="{Binding BG}" BorderThickness="0"/>
+                                            <TextBlock Text="{Binding Line.Content}" Background="Transparent" Foreground="{StaticResource Brush.FG}" FontFamily="Consolas" FontSize="12" Margin="0" Padding="0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
 
                     <!-- Loading tip -->
-                    <Path x:Name="loading" Grid.ColumnSpan="5" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
+                    <Path x:Name="loading" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
                         <Path.RenderTransform>
                             <RotateTransform Angle="0"/>
                         </Path.RenderTransform>
@@ -197,7 +177,7 @@
                     </Path>
 
                     <!-- Popup to show commit info -->
-                    <Popup x:Name="popup" Grid.ColumnSpan="5" Placement="MousePoint" IsOpen="False" StaysOpen="False" Focusable="True">
+                    <Popup x:Name="popup" Placement="MousePoint" IsOpen="False" StaysOpen="False" Focusable="True">
                         <Border BorderBrush="{StaticResource Brush.Accent1}" BorderThickness="1" Background="{StaticResource Brush.BG1}">
                             <Grid Margin="4">
                                 <Grid.RowDefinitions>
