@@ -398,6 +398,9 @@ namespace SourceGit.UI {
                 commits.LoadMergeMessage();
             } else {
                 abortPanel.Visibility = Visibility.Collapsed;
+
+                var rebaseApply = Path.Combine(repo.GitDir, "rebase-apply");
+                if (Directory.Exists(rebaseApply)) Directory.Delete(rebaseApply);
             }
         }
 
