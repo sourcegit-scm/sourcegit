@@ -6,29 +6,27 @@
              xmlns:sourcegit="clr-namespace:SourceGit"
              mc:Ignorable="d"
              FontFamily="Consolas">
+    <UserControl.Resources>
+        <Style x:Key="Style.DataGridRow.TextChange" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+            <EventSetter Event="RequestBringIntoView" Handler="OnLineRequestBringIntoView"/>
+        </Style>
+
+        <Style x:Key="Style.DataGridText.LineNumber" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+    </UserControl.Resources>
+    
     <Border BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}">
-        <Grid x:Name="area" SizeChanged="OnSizeChanged">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="26"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <Grid.Resources>
-                <Style x:Key="Style.DataGridText.LineNumber" TargetType="{x:Type TextBlock}">
-                    <Setter Property="FontFamily" Value="Consolas"/>
-                    <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
-                    <Setter Property="HorizontalAlignment" Value="Right"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="Padding" Value="8,0"/>
-                </Style>
-
-                <Style x:Key="Style.DataGridText.Block" TargetType="{x:Type TextBlock}">
-                    <Setter Property="FontFamily" Value="Consolas"/>
-                    <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="Padding" Value="0"/>
-                </Style>
-            </Grid.Resources>
 
             <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="0,0,0,1">
                 <Grid Margin="8,4">
@@ -69,106 +67,13 @@
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="1" x:Name="textChangeTwoSides">
+            <Grid Grid.Row="1" x:Name="editorContainer" SizeChanged="OnSizeChanged">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-
-                <DataGrid
-                    Grid.Column="0"
-                    x:Name="textChangeOldSide"
-                    GridLinesVisibility="Vertical"
-                    VerticalGridLinesBrush="{StaticResource Brush.Border2}"
-                    FrozenColumnCount="1"
-                    ScrollViewer.ScrollChanged="OnTwoSidesScroll"
-                    ContextMenuOpening="OnTextChangeContextMenuOpening">
-                    
-                    <DataGrid.RowStyle>
-                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
-                            <EventSetter Event="RequestBringIntoView" Handler="OnLineRequestBringIntoView"/>
-                        </Style>
-                    </DataGrid.RowStyle>
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding OldLine}" ElementStyle="{StaticResource Style.DataGridText.LineNumber}"/>
-
-                        <DataGridTemplateColumn Width="Auto" IsReadOnly="True">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Border Background="{Binding BG}" BorderThickness="0"/>
-                                        <TextBlock Text="{Binding Content}" Background="Transparent" Foreground="{Binding FG}" FontFamily="Consolas" FontSize="12" FontStyle="{Binding Style}" Margin="0" Padding="0"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-
-                <DataGrid
-                    Grid.Column="1"
-                    x:Name="textChangeNewSide"
-                    GridLinesVisibility="Vertical"
-                    VerticalGridLinesBrush="{StaticResource Brush.Border2}"
-                    FrozenColumnCount="1"
-                    ScrollViewer.ScrollChanged="OnTwoSidesScroll"
-                    ContextMenuOpening="OnTextChangeContextMenuOpening">
-
-                    <DataGrid.RowStyle>
-                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
-                            <EventSetter Event="RequestBringIntoView" Handler="OnLineRequestBringIntoView"/>
-                        </Style>
-                    </DataGrid.RowStyle>
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding NewLine}" ElementStyle="{StaticResource Style.DataGridText.LineNumber}"/>
-
-                        <DataGridTemplateColumn Width="Auto" IsReadOnly="True">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Border Background="{Binding BG}" BorderThickness="0"/>
-                                        <TextBlock Text="{Binding Content}" Background="Transparent" Foreground="{Binding FG}" FontFamily="Consolas" FontSize="12" FontStyle="{Binding Style}" Margin="0" Padding="0"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
             </Grid>
 
-            <DataGrid
-                Grid.Row="1"
-                x:Name="textChangeOneSide"                
-                GridLinesVisibility="Vertical"
-                VerticalGridLinesBrush="{StaticResource Brush.Border2}"
-                FrozenColumnCount="2"
-                ContextMenuOpening="OnTextChangeContextMenuOpening">
-
-                <DataGrid.RowStyle>
-                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
-                        <EventSetter Event="RequestBringIntoView" Handler="OnLineRequestBringIntoView"/>
-                    </Style>
-                </DataGrid.RowStyle>
-                
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding OldLine}" ElementStyle="{StaticResource Style.DataGridText.LineNumber}"/>
-                    <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding NewLine}" ElementStyle="{StaticResource Style.DataGridText.LineNumber}"/>
-
-                    <DataGridTemplateColumn Width="Auto" IsReadOnly="True">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Border Background="{Binding BG}" BorderThickness="0"/>
-                                    <TextBlock Text="{Binding Content}" Background="Transparent" Foreground="{Binding FG}" FontFamily="Consolas" FontSize="12" FontStyle="{Binding Style}" Margin="0" Padding="0"/>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>                
-            </DataGrid>
-                
             <Border x:Name="sizeChange" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <Label x:Name="txtSizeChangeTitle" Content="BINARY DIFF" Margin="0,0,0,32" FontSize="18" FontWeight="UltraBold" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Center"/>

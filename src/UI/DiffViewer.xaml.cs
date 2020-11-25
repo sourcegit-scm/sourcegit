@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -18,6 +20,7 @@ namespace SourceGit.UI {
         private Brush bgAdded = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
         private Brush bgDeleted = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
         private Brush bgNormal = Brushes.Transparent;
+        private List<DataGrid> editors = new List<DataGrid>();
 
         /// <summary>
         ///     Diff options.
@@ -69,10 +72,11 @@ namespace SourceGit.UI {
 
             loading.Visibility = Visibility.Visible;
             mask.Visibility = Visibility.Collapsed;
-            textChangeOneSide.Visibility = Visibility.Collapsed;
-            textChangeTwoSides.Visibility = Visibility.Collapsed;
             sizeChange.Visibility = Visibility.Collapsed;
             noChange.Visibility = Visibility.Collapsed;
+
+            foreach (var editor in editors) editorContainer.Children.Remove(editor);
+            editors.Clear();
 
             Task.Run(() => {
                 var args = $"{opts.ExtraArgs} ";
@@ -132,6 +136,8 @@ namespace SourceGit.UI {
 
             var fgCommon = FindResource("Brush.FG") as Brush;
             var fgIndicator = FindResource("Brush.FG2") as Brush;
+            var lastOldLine = "";
+            var lastNewLine = "";
 
             if (App.Preference.UIUseOneSideDiff) {
                 var blocks = new List<ChangeBlock>();
@@ -146,18 +152,31 @@ namespace SourceGit.UI {
                     block.OldLine = line.OldLine;
                     block.NewLine = line.NewLine;
 
+                    if (line.OldLine.Length > 0) lastOldLine = line.OldLine;
+                    if (line.NewLine.Length > 0) lastNewLine = line.NewLine;
+
                     blocks.Add(block);
                 }
 
                 Dispatcher.Invoke(() => {
                     loading.Visibility = Visibility.Collapsed;
                     textChangeOptions.Visibility = Visibility.Visible;
-                    textChangeOneSide.Visibility = Visibility.Visible;
-                    textChangeTwoSides.Visibility = Visibility.Collapsed;
 
-                    ResetDataGrid(textChangeOneSide);
-                    textChangeOneSide.ItemsSource = blocks;
-                    OnSizeChanged(null, null);
+                    var formatted = new FormattedText(
+                        lastOldLine + lastNewLine,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                        12.0,
+                        fgCommon);
+
+                    var minWidth = editorContainer.ActualWidth - formatted.Width - 16 - 12;
+                    var editor = CreateTextEditor(new string[] { "OldLine", "NewLine" });
+                    editor.Columns[2].MinWidth = minWidth;
+                    editor.ItemsSource = blocks;
+                    editor.SetValue(Grid.ColumnSpanProperty, 2);
+                    editorContainer.Children.Add(editor);
+                    editors.Add(editor);
                 });
             } else {
                 var oldSideBlocks = new List<ChangeBlock>();
@@ -172,6 +191,9 @@ namespace SourceGit.UI {
                     block.Style = line.Mode == Git.Diff.LineMode.Indicator ? FontStyles.Italic : FontStyles.Normal;
                     block.OldLine = line.OldLine;
                     block.NewLine = line.NewLine;
+
+                    if (line.OldLine.Length > 0) lastOldLine = line.OldLine;
+                    if (line.NewLine.Length > 0) lastNewLine = line.NewLine;
 
                     switch (line.Mode) {
                     case Git.Diff.LineMode.Added:
@@ -210,16 +232,38 @@ namespace SourceGit.UI {
                 Dispatcher.Invoke(() => {
                     loading.Visibility = Visibility.Collapsed;
                     textChangeOptions.Visibility = Visibility.Visible;
-                    textChangeOneSide.Visibility = Visibility.Collapsed;
-                    textChangeTwoSides.Visibility = Visibility.Visible;
 
-                    ResetDataGrid(textChangeOldSide);
-                    ResetDataGrid(textChangeNewSide);
+                    var number = lastOldLine;
+                    if (lastOldLine.Length > lastNewLine.Length) number = lastNewLine;
 
-                    textChangeOldSide.ItemsSource = oldSideBlocks;
-                    textChangeNewSide.ItemsSource = newSideBlocks;
+                    var formatted = new FormattedText(
+                        number,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                        12.0,
+                        fgCommon);
 
-                    OnSizeChanged(null, null);
+                    var minWidth = editorContainer.ActualWidth / 2 - formatted.Width - 16 - 12;
+
+                    var oldEditor = CreateTextEditor(new string[] { "OldLine" });
+                    oldEditor.SetValue(Grid.ColumnProperty, 0);
+                    oldEditor.ContextMenuOpening += OnTextChangeContextMenuOpening;
+                    oldEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTwoSidesScroll));
+                    oldEditor.Columns[1].MinWidth = minWidth;
+                    oldEditor.ItemsSource = oldSideBlocks;
+                    var newEditor = CreateTextEditor(new string[] { "NewLine" });
+                    newEditor.SetValue(Grid.ColumnProperty, 1);
+                    newEditor.ContextMenuOpening += OnTextChangeContextMenuOpening;
+                    newEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTwoSidesScroll));
+                    newEditor.Columns[1].MinWidth = minWidth;
+                    newEditor.ItemsSource = newSideBlocks;
+
+                    editorContainer.Children.Add(oldEditor);
+                    editorContainer.Children.Add(newEditor);
+
+                    editors.Add(oldEditor);
+                    editors.Add(newEditor);
                 });
             }
         }
@@ -310,14 +354,47 @@ namespace SourceGit.UI {
             return child;
         }
 
-        private void ResetDataGrid(DataGrid dg) {
-            dg.ItemsSource = null;
-            dg.Items.Clear();
+        private DataGrid CreateTextEditor(string[] lineNumbers) {
+            var grid = new DataGrid();
+            grid.SetValue(Grid.RowProperty, 1);
+            grid.GridLinesVisibility = DataGridGridLinesVisibility.Vertical;
+            grid.VerticalGridLinesBrush = FindResource("Brush.Border2") as Brush;
+            grid.FrozenColumnCount = lineNumbers.Length;
+            grid.ContextMenuOpening += OnTextChangeContextMenuOpening;
+            grid.RowStyle = FindResource("Style.DataGridRow.TextChange") as Style;
 
-            foreach (var col in dg.Columns) {
-                col.MinWidth = 0;
-                col.Width = 0;
+            foreach (var number in lineNumbers) {
+                var colLineNumber = new DataGridTextColumn();
+                colLineNumber.Width = DataGridLength.Auto;
+                colLineNumber.IsReadOnly = true;
+                colLineNumber.Binding = new Binding(number);
+                colLineNumber.ElementStyle = FindResource("Style.DataGridText.LineNumber") as Style;
+                grid.Columns.Add(colLineNumber);
             }
+
+            var borderContent = new FrameworkElementFactory(typeof(Border));
+            borderContent.SetBinding(Border.BackgroundProperty, new Binding("BG"));
+
+            var textContent = new FrameworkElementFactory(typeof(TextBlock));
+            textContent.SetBinding(TextBlock.TextProperty, new Binding("Content"));
+            textContent.SetBinding(TextBlock.ForegroundProperty, new Binding("FG"));
+            textContent.SetBinding(TextBlock.FontStyleProperty, new Binding("Style"));
+            textContent.SetValue(TextBlock.BackgroundProperty, Brushes.Transparent);
+            textContent.SetValue(TextBlock.FontSizeProperty, 12.0);
+            textContent.SetValue(TextBlock.MarginProperty, new Thickness(0));
+            textContent.SetValue(TextBlock.PaddingProperty, new Thickness(0));
+
+            var visualTree = new FrameworkElementFactory(typeof(Grid));
+            visualTree.AppendChild(borderContent);
+            visualTree.AppendChild(textContent);
+
+            var colContent = new DataGridTemplateColumn();
+            colContent.CellTemplate = new DataTemplate();
+            colContent.CellTemplate.VisualTree = visualTree;
+            colContent.Width = DataGridLength.SizeToCells;
+            grid.Columns.Add(colContent);
+
+            return grid;
         }
         #endregion
 
@@ -329,51 +406,34 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e) {
-            var total = area.ActualWidth;
+            if (editors.Count == 0) return;
 
+            var total = editorContainer.ActualWidth;
             if (App.Preference.UIUseOneSideDiff) {
-                textChangeOneSide.Columns[0].Width = DataGridLength.Auto;
-                textChangeOneSide.Columns[1].Width = DataGridLength.Auto;
-                textChangeOneSide.Columns[2].MinWidth = 1;
-                textChangeOneSide.Columns[2].Width = 1;
-                textChangeOneSide.UpdateLayout();
-
-                var offset = textChangeOneSide.NonFrozenColumnsViewportHorizontalOffset;
-                var minWidth = total - offset;
-
-                var scroller = GetVisualChild<ScrollViewer>(textChangeOneSide);
-                if (scroller.ComputedVerticalScrollBarVisibility == Visibility.Visible) minWidth -= 8;
-
-                textChangeOneSide.Columns[2].MinWidth = minWidth;
-                textChangeOneSide.Columns[2].Width = DataGridLength.Auto;
-                textChangeOneSide.UpdateLayout();
+                var editor = editors[0];
+                var minWidth = total - editor.NonFrozenColumnsViewportHorizontalOffset;
+                var scroller = GetVisualChild<ScrollViewer>(editor);
+                if (scroller != null && scroller.ComputedVerticalScrollBarVisibility == Visibility.Visible) minWidth -= 8;
+                editor.Columns[2].MinWidth = minWidth;
+                editor.Columns[2].Width = DataGridLength.SizeToCells;
+                editor.UpdateLayout();
             } else {
-                textChangeOldSide.Columns[0].Width = DataGridLength.Auto;
-                textChangeOldSide.Columns[1].MinWidth = 1;
-                textChangeOldSide.Columns[1].Width = 1;
-                textChangeOldSide.UpdateLayout();
+                var offOld = editors[0].NonFrozenColumnsViewportHorizontalOffset;
+                var offNew = editors[1].NonFrozenColumnsViewportHorizontalOffset;
 
-                textChangeNewSide.Columns[0].Width = DataGridLength.Auto;
-                textChangeNewSide.Columns[1].MinWidth = 1;
-                textChangeNewSide.Columns[1].Width = 1;
-                textChangeNewSide.UpdateLayout();
-
-                var oldOffset = textChangeOldSide.NonFrozenColumnsViewportHorizontalOffset;
-                var newOffset = textChangeNewSide.NonFrozenColumnsViewportHorizontalOffset;
-                var minWidth = total - Math.Min(oldOffset, newOffset);
-
-                var scroller = GetVisualChild<ScrollViewer>(textChangeNewSide);
-                if (scroller.ComputedVerticalScrollBarVisibility == Visibility.Visible) minWidth -= 8;
-
-                textChangeOldSide.Columns[1].MinWidth = minWidth;
-                textChangeOldSide.Columns[1].Width = DataGridLength.Auto;
-                textChangeOldSide.UpdateLayout();
-
-                textChangeNewSide.Columns[1].MinWidth = minWidth;
-                textChangeNewSide.Columns[1].Width = DataGridLength.Auto;
-                textChangeNewSide.UpdateLayout();
+                var minWidth = total / 2 - Math.Min(offOld, offNew);
+                var scroller = GetVisualChild<ScrollViewer>(editors[0]);
+                if (scroller != null && scroller.ComputedVerticalScrollBarVisibility == Visibility.Visible) minWidth -= 8;
+                editors[0].Columns[1].MinWidth = minWidth;
+                editors[0].Columns[1].Width = DataGridLength.SizeToCells;
+                editors[1].Columns[1].MinWidth = minWidth;
+                editors[1].Columns[1].Width = DataGridLength.SizeToCells;
+                editors[0].UpdateLayout();
+                editors[1].UpdateLayout();
             }
         }
+
+
 
         /// <summary>
         ///     Prevent default auto-scrolling when click row in DataGrid.
@@ -390,24 +450,15 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTwoSidesScroll(object sender, ScrollChangedEventArgs e) {
-            var oldSideScroller = GetVisualChild<ScrollViewer>(textChangeOldSide);
-            var newSideScroller = GetVisualChild<ScrollViewer>(textChangeNewSide);
-
             if (e.VerticalChange != 0) {
-                if (oldSideScroller.VerticalOffset != e.VerticalOffset) {
-                    oldSideScroller.ScrollToVerticalOffset(e.VerticalOffset);
-                }
-
-                if (newSideScroller.VerticalOffset != e.VerticalOffset) {
-                    newSideScroller.ScrollToVerticalOffset(e.VerticalOffset);
+                foreach (var editor in editors) {
+                    var scroller = GetVisualChild<ScrollViewer>(editor);
+                    if (scroller.VerticalOffset != e.VerticalOffset) scroller.ScrollToVerticalOffset(e.VerticalOffset);
                 }
             } else {
-                if (oldSideScroller.HorizontalOffset != e.HorizontalOffset) {
-                    oldSideScroller.ScrollToHorizontalOffset(e.HorizontalOffset);
-                }
-
-                if (newSideScroller.HorizontalOffset != e.HorizontalOffset) {
-                    newSideScroller.ScrollToHorizontalOffset(e.HorizontalOffset);
+                foreach (var editor in editors) {
+                    var scroller = GetVisualChild<ScrollViewer>(editor);
+                    if (scroller.HorizontalOffset != e.HorizontalOffset) scroller.ScrollToHorizontalOffset(e.HorizontalOffset);
                 }
             }
         }
@@ -418,9 +469,9 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Go2Next(object sender, RoutedEventArgs e) {
-            var grid = textChangeOneSide;
-            if (!App.Preference.UIUseOneSideDiff) grid = textChangeNewSide;
+            if (editors.Count == 0) return;
 
+            var grid = editors[0];
             var scroller = GetVisualChild<ScrollViewer>(grid);
             var firstVisible = (int)scroller.VerticalOffset;
             var firstModeEnded = false;
@@ -444,9 +495,9 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Go2Prev(object sender, RoutedEventArgs e) {
-            var grid = textChangeOneSide;
-            if (!App.Preference.UIUseOneSideDiff) grid = textChangeNewSide;
+            if (editors.Count == 0) return;
 
+            var grid = editors[0];
             var scroller = GetVisualChild<ScrollViewer>(grid);
             var firstVisible = (int)scroller.VerticalOffset;
             var firstModeEnded = false;
@@ -470,6 +521,9 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ChangeDiffMode(object sender, RoutedEventArgs e) {
+            foreach (var editor in editors) editorContainer.Children.Remove(editor);
+            editors.Clear();
+
             SetTextChange();
         }
 
