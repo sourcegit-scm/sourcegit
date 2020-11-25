@@ -170,7 +170,7 @@ namespace SourceGit.UI {
                         12.0,
                         fgCommon);
 
-                    var minWidth = editorContainer.ActualWidth - formatted.Width - 16 - 12;
+                    var minWidth = editorContainer.ActualWidth - formatted.Width - 16 - 8;
                     var editor = CreateTextEditor(new string[] { "OldLine", "NewLine" });
                     editor.Columns[2].MinWidth = minWidth;
                     editor.ItemsSource = blocks;
@@ -244,7 +244,7 @@ namespace SourceGit.UI {
                         12.0,
                         fgCommon);
 
-                    var minWidth = editorContainer.ActualWidth / 2 - formatted.Width - 16 - 12;
+                    var minWidth = editorContainer.ActualWidth / 2 - formatted.Width - 16 - 8;
 
                     var oldEditor = CreateTextEditor(new string[] { "OldLine" });
                     oldEditor.SetValue(Grid.ColumnProperty, 0);
