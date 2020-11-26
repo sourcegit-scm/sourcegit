@@ -172,10 +172,23 @@
             <local:TwoCommitsDiff x:Name="twoCommitDiff" Visibility="Collapsed"/>
 
             <!-- Mask for select multi rows in commit list -->
-            <Border x:Name="mask4MultiSelection" Background="{StaticResource Brush.BG1}">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
+            <Border x:Name="selectionCounter" Background="{StaticResource Brush.BG1}" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".25">
                     <Path Width="160" Height="160" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
                     <Label x:Name="txtTotalSelected" Content="SELECT TO VIEW DETAIL" FontFamily="Consolas" Margin="0,16,0,0" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Usage Page -->
+            <Border x:Name="welcome" Background="{StaticResource Brush.BG1}">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".25">
+                    <Path Width="120" Height="120" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
+                    <Label Content="HISTORIES GUIDE" FontFamily="Consolas" FontWeight="ExtraBold" FontSize="24" HorizontalAlignment="Center" Margin="0,32,0,16"/>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" TextElement.FontFamily="Consolas" TextElement.FontSize="16" Margin="16,0,0,0">
+                        <Label Margin="0" Padding="1" Content="1. Select 1 commit to view detail info"/>
+                        <Label Margin="0" Padding="1" Content="2. Select 2 commits to show differences"/>
+                        <Label Margin="0" Padding="1" Content="3. Select more than 2 commits to count"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

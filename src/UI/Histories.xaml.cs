@@ -269,19 +269,22 @@ namespace SourceGit.UI {
         }
 
         private void CommitSelectChanged(object sender, SelectionChangedEventArgs e) {
-            mask4MultiSelection.Visibility = Visibility.Collapsed;
+            selectionCounter.Visibility = Visibility.Collapsed;
             commitViewer.Visibility = Visibility.Collapsed;
             twoCommitDiff.Visibility = Visibility.Collapsed;
+            welcome.Visibility = Visibility.Collapsed;
 
             var selected = commitList.SelectedItems;
-            if (selected.Count == 1) {
+            if (selected.Count == 0) {
+                welcome.Visibility = Visibility.Visible;
+            } else if (selected.Count == 1) {
                 commitViewer.Visibility = Visibility.Visible;
                 commitViewer.SetData(Repo, selected[0] as Git.Commit);
             } else if (selected.Count == 2) {
                 twoCommitDiff.Visibility = Visibility.Visible;
                 twoCommitDiff.SetData(Repo, (selected[0] as Git.Commit).ShortSHA, (selected[1] as Git.Commit).ShortSHA);
             } else {
-                mask4MultiSelection.Visibility = Visibility.Visible;
+                selectionCounter.Visibility = Visibility.Visible;
                 txtTotalSelected.Content = $"SELECTED {selected.Count} COMMITS";
             }
         }
