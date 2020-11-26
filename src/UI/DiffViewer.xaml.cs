@@ -162,16 +162,12 @@ namespace SourceGit.UI {
                     loading.Visibility = Visibility.Collapsed;
                     textChangeOptions.Visibility = Visibility.Visible;
 
-                    var formatted = new FormattedText(
-                        lastOldLine + lastNewLine,
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        new Typeface(FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
-                        12.0,
-                        fgCommon);
-
-                    var minWidth = editorContainer.ActualWidth - formatted.Width - 16 - 8;
+                    var lineNumberWidth = CalcLineNumberColWidth(lastOldLine, lastNewLine);
+                    var minWidth = editorContainer.ActualWidth - lineNumberWidth * 2;
+                    if (editorContainer.ActualHeight < lineChanges.Count * 16) minWidth -= 8;
                     var editor = CreateTextEditor(new string[] { "OldLine", "NewLine" });
+                    editor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
+                    editor.Columns[1].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                     editor.Columns[2].MinWidth = minWidth;
                     editor.ItemsSource = blocks;
                     editor.SetValue(Grid.ColumnSpanProperty, 2);
@@ -233,29 +229,22 @@ namespace SourceGit.UI {
                     loading.Visibility = Visibility.Collapsed;
                     textChangeOptions.Visibility = Visibility.Visible;
 
-                    var number = lastOldLine;
-                    if (lastOldLine.Length > lastNewLine.Length) number = lastNewLine;
-
-                    var formatted = new FormattedText(
-                        number,
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        new Typeface(FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
-                        12.0,
-                        fgCommon);
-
-                    var minWidth = editorContainer.ActualWidth / 2 - formatted.Width - 16 - 8;
+                    var lineNumberWidth = CalcLineNumberColWidth(lastOldLine, lastNewLine);
+                    var minWidth = editorContainer.ActualWidth / 2 - lineNumberWidth;
+                    if (editorContainer.ActualHeight < lineChanges.Count * 16) minWidth -= 8;
 
                     var oldEditor = CreateTextEditor(new string[] { "OldLine" });
                     oldEditor.SetValue(Grid.ColumnProperty, 0);
                     oldEditor.ContextMenuOpening += OnTextChangeContextMenuOpening;
                     oldEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTwoSidesScroll));
+                    oldEditor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                     oldEditor.Columns[1].MinWidth = minWidth;
                     oldEditor.ItemsSource = oldSideBlocks;
                     var newEditor = CreateTextEditor(new string[] { "NewLine" });
                     newEditor.SetValue(Grid.ColumnProperty, 1);
                     newEditor.ContextMenuOpening += OnTextChangeContextMenuOpening;
                     newEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTwoSidesScroll));
+                    newEditor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                     newEditor.Columns[1].MinWidth = minWidth;
                     newEditor.ItemsSource = newSideBlocks;
 
@@ -354,9 +343,15 @@ namespace SourceGit.UI {
             return child;
         }
 
+        /// <summary>
+        ///     Create text editor.
+        /// </summary>
+        /// <param name="lineNumbers"></param>
+        /// <returns></returns>
         private DataGrid CreateTextEditor(string[] lineNumbers) {
             var grid = new DataGrid();
             grid.SetValue(Grid.RowProperty, 1);
+            grid.RowHeight = 16.0;
             grid.GridLinesVisibility = DataGridGridLinesVisibility.Vertical;
             grid.VerticalGridLinesBrush = FindResource("Brush.Border2") as Brush;
             grid.FrozenColumnCount = lineNumbers.Length;
@@ -365,7 +360,6 @@ namespace SourceGit.UI {
 
             foreach (var number in lineNumbers) {
                 var colLineNumber = new DataGridTextColumn();
-                colLineNumber.Width = DataGridLength.Auto;
                 colLineNumber.IsReadOnly = true;
                 colLineNumber.Binding = new Binding(number);
                 colLineNumber.ElementStyle = FindResource("Style.DataGridText.LineNumber") as Style;
@@ -395,6 +389,27 @@ namespace SourceGit.UI {
             grid.Columns.Add(colContent);
 
             return grid;
+        }
+
+        /// <summary>
+        ///     Calculate max width for line number column.
+        /// </summary>
+        /// <param name="oldLine"></param>
+        /// <param name="newLine"></param>
+        /// <returns></returns>
+        private double CalcLineNumberColWidth(string oldLine, string newLine) {
+            var number = oldLine;
+            if (newLine.Length > oldLine.Length) number = newLine;
+
+            var formatted = new FormattedText(
+                number,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                12.0,
+                Brushes.Black);
+
+            return formatted.Width + 16;
         }
         #endregion
 

@@ -107,8 +107,8 @@
             </Border>
 
             <!-- Content -->
-            <Border Grid.Row="2" x:Name="area" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}" ClipToBounds="True" SizeChanged="ContentSizeChanged">
-                <Grid>
+            <Border Grid.Row="2" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}" ClipToBounds="True">
+                <Grid x:Name="area" SizeChanged="OnSizeChanged">
                     <Grid.Resources>
                         <Style x:Key="Style.DataGridText.LineNumber" TargetType="{x:Type TextBlock}">
                             <Setter Property="FontFamily" Value="Consolas"/>
@@ -116,13 +116,7 @@
                             <Setter Property="HorizontalAlignment" Value="Right"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Padding" Value="8,0"/>
-                        </Style>
-
-                        <Style x:Key="Style.DataGridText.Block" TargetType="{x:Type TextBlock}">
-                            <Setter Property="FontFamily" Value="Consolas"/>
-                            <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="FontSize" Value="12"/>
                         </Style>
                     </Grid.Resources>
                     
@@ -133,7 +127,9 @@
                         GridLinesVisibility="Vertical"
                         VerticalGridLinesBrush="{StaticResource Brush.Border2}"
                         FrozenColumnCount="1"
+                        RowHeight="16"
                         SelectionUnit="FullRow"
+                        FontFamily="Consolas"
                         SelectionMode="Single">
 
                         <DataGrid.RowStyle>
@@ -146,7 +142,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding LineNumber}" ElementStyle="{StaticResource Style.DataGridText.LineNumber}"/>
 
-                            <DataGridTemplateColumn Width="1" MinWidth="1" IsReadOnly="True">
+                            <DataGridTemplateColumn Width="SizeToCells" MinWidth="1" IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -86,10 +87,23 @@ namespace SourceGit.UI {
                     loading.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
                     loading.Visibility = Visibility.Collapsed;
 
+                    var formatted = new FormattedText(
+                        $"{records.Count}",
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(blame.FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                        12.0,
+                        Brushes.Black);
+
+                    var lineNumberWidth = formatted.Width + 16;
+                    var minWidth = area.ActualWidth - lineNumberWidth;
+
+                    if (records.Count * 16 > area.ActualHeight) minWidth -= 8;
+
+                    blame.Columns[0].Width = lineNumberWidth;
+                    blame.Columns[1].MinWidth = minWidth;
                     blame.ItemsSource = records;
                     blame.UpdateLayout();
-
-                    ContentSizeChanged(null, null);
                 });
             });
         }
@@ -151,10 +165,10 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ContentSizeChanged(object sender, SizeChangedEventArgs e) {
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e) {
             var total = area.ActualWidth;
             var offset = blame.NonFrozenColumnsViewportHorizontalOffset;
-            var minWidth = total - offset - 2;
+            var minWidth = total - offset;
 
             var scroller = GetVisualChild<ScrollViewer>(blame);
             if (scroller.ComputedVerticalScrollBarVisibility == Visibility.Visible) minWidth -= 8;
