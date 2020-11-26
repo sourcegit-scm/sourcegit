@@ -466,12 +466,16 @@ namespace SourceGit.UI {
             if (e.VerticalChange != 0) {
                 foreach (var editor in editors) {
                     var scroller = GetVisualChild<ScrollViewer>(editor);
-                    if (scroller.VerticalOffset != e.VerticalOffset) scroller.ScrollToVerticalOffset(e.VerticalOffset);
+                    if (scroller != null && scroller.VerticalOffset != e.VerticalOffset) {
+                        scroller.ScrollToVerticalOffset(e.VerticalOffset);
+                    }
                 }
             } else {
                 foreach (var editor in editors) {
                     var scroller = GetVisualChild<ScrollViewer>(editor);
-                    if (scroller.HorizontalOffset != e.HorizontalOffset) scroller.ScrollToHorizontalOffset(e.HorizontalOffset);
+                    if (scroller != null && scroller.HorizontalOffset != e.HorizontalOffset) {
+                        scroller.ScrollToHorizontalOffset(e.HorizontalOffset);
+                    }
                 }
             }
         }
@@ -486,6 +490,8 @@ namespace SourceGit.UI {
 
             var grid = editors[0];
             var scroller = GetVisualChild<ScrollViewer>(grid);
+            if (scroller == null) return;
+
             var firstVisible = (int)scroller.VerticalOffset;
             var firstModeEnded = false;
             var first = grid.Items[firstVisible] as ChangeBlock;
@@ -512,6 +518,8 @@ namespace SourceGit.UI {
 
             var grid = editors[0];
             var scroller = GetVisualChild<ScrollViewer>(grid);
+            if (scroller == null) return;
+
             var firstVisible = (int)scroller.VerticalOffset;
             var firstModeEnded = false;
             var first = grid.Items[firstVisible] as ChangeBlock;

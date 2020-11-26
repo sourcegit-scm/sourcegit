@@ -171,7 +171,7 @@ namespace SourceGit.UI {
             var minWidth = total - offset;
 
             var scroller = GetVisualChild<ScrollViewer>(blame);
-            if (scroller.ComputedVerticalScrollBarVisibility == Visibility.Visible) minWidth -= 8;
+            if (scroller != null && scroller.ComputedVerticalScrollBarVisibility == Visibility.Visible) minWidth -= 8;
 
             blame.Columns[1].MinWidth = minWidth;
             blame.Columns[1].Width = DataGridLength.SizeToCells;
