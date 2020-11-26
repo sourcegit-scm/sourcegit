@@ -194,36 +194,19 @@ namespace SourceGit.UI {
                     switch (line.Mode) {
                     case Git.Diff.LineMode.Added:
                         newSideBlocks.Add(block);
-
-                        var oldEmpty = new ChangeBlock();
-                        oldEmpty.Content = "";
-                        oldEmpty.Mode = Git.Diff.LineMode.None;
-                        oldEmpty.BG = bgEmpty;
-                        oldEmpty.FG = fgCommon;
-                        oldEmpty.Style = FontStyles.Normal;
-                        oldEmpty.OldLine = block.OldLine;
-                        oldEmpty.NewLine = block.NewLine;
-                        oldSideBlocks.Add(oldEmpty);
                         break;
                     case Git.Diff.LineMode.Deleted:
                         oldSideBlocks.Add(block);
-
-                        var newEmpty = new ChangeBlock();
-                        newEmpty.Content = "";
-                        newEmpty.Mode = Git.Diff.LineMode.None;
-                        newEmpty.BG = bgEmpty;
-                        newEmpty.FG = fgCommon;
-                        newEmpty.Style = FontStyles.Normal;
-                        newEmpty.OldLine = block.OldLine;
-                        newEmpty.NewLine = block.NewLine;
-                        newSideBlocks.Add(newEmpty);
                         break;
                     default:
+                        FillEmptyLines(oldSideBlocks, newSideBlocks);
                         oldSideBlocks.Add(block);
                         newSideBlocks.Add(block);
                         break;
                     }
                 }
+
+                FillEmptyLines(oldSideBlocks, newSideBlocks);
 
                 Dispatcher.Invoke(() => {
                     loading.Visibility = Visibility.Collapsed;
@@ -231,7 +214,7 @@ namespace SourceGit.UI {
 
                     var lineNumberWidth = CalcLineNumberColWidth(lastOldLine, lastNewLine);
                     var minWidth = editorContainer.ActualWidth / 2 - lineNumberWidth;
-                    if (editorContainer.ActualHeight < lineChanges.Count * 16) minWidth -= 8;
+                    if (editorContainer.ActualHeight < newSideBlocks.Count * 16) minWidth -= 8;
 
                     var oldEditor = CreateTextEditor(new string[] { "OldLine" });
                     oldEditor.SetValue(Grid.ColumnProperty, 0);
@@ -314,6 +297,43 @@ namespace SourceGit.UI {
                 return bgDeleted;
             default:
                 return bgNormal;
+            }
+        }
+
+        /// <summary>
+        ///     Fill empty lines to keep same line count in both old and current.
+        /// </summary>
+        /// <param name="old"></param>
+        /// <param name="cur"></param>
+        private void FillEmptyLines(List<ChangeBlock> old, List<ChangeBlock> cur) {
+            if (old.Count < cur.Count) {
+                int diff = cur.Count - old.Count;
+
+                for (int i = 0; i < diff; i++) {
+                    var empty = new ChangeBlock();
+                    empty.Content = "";
+                    empty.Mode = Git.Diff.LineMode.None;
+                    empty.BG = bgEmpty;
+                    empty.FG = Brushes.Transparent;
+                    empty.Style = FontStyles.Normal;
+                    empty.OldLine = "";
+                    empty.NewLine = "";
+                    old.Add(empty);
+                }
+            } else if (old.Count > cur.Count) {
+                int diff = old.Count - cur.Count;
+
+                for (int i = 0; i < diff; i++) {
+                    var empty = new ChangeBlock();
+                    empty.Content = "";
+                    empty.Mode = Git.Diff.LineMode.None;
+                    empty.BG = bgEmpty;
+                    empty.FG = Brushes.Transparent;
+                    empty.Style = FontStyles.Normal;
+                    empty.OldLine = "";
+                    empty.NewLine = "";
+                    cur.Add(empty);
+                }
             }
         }
 
