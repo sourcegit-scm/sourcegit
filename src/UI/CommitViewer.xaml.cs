@@ -148,7 +148,7 @@ namespace SourceGit.UI {
             if (File.Exists(filePath)) {
                 img.Source = new BitmapImage(new Uri(filePath));
             } else {
-                var bitmap = new BitmapImage(new Uri("https://www.gravatar.com/avatar/" + md5 + "?d=mp"));
+                var bitmap = new BitmapImage(new Uri("https://www.gravatar.com/avatar/" + md5 + "?d=404"));
                 if (save) {
                     bitmap.DownloadCompleted += (o, e) => {
                         var owner = o as BitmapImage;

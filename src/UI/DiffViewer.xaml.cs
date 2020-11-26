@@ -448,8 +448,6 @@ namespace SourceGit.UI {
             }
         }
 
-
-
         /// <summary>
         ///     Prevent default auto-scrolling when click row in DataGrid.
         /// </summary>
