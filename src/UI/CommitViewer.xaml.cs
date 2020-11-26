@@ -107,7 +107,7 @@ namespace SourceGit.UI {
                 if (commit.Committer.Time == commit.Author.Time) {
                     committerPanel.Visibility = Visibility.Hidden;
 
-                    SetAvatar(authorAvatar, commit.Author.Email);
+                    SetAvatar(authorAvatar, authorAvatarMask, commit.Author.Email);
                 } else {
                     committerPanel.Visibility = Visibility.Visible;
 
@@ -115,8 +115,8 @@ namespace SourceGit.UI {
                     committerEmail.Text = commit.Committer.Email;
                     committerTime.Text = commit.Committer.Time;
 
-                    SetAvatar(authorAvatar, commit.Author.Email);
-                    SetAvatar(committerAvatar, commit.Committer.Email, false);
+                    SetAvatar(authorAvatar, authorAvatarMask, commit.Author.Email);
+                    SetAvatar(committerAvatar, committerAvatarMask, commit.Committer.Email, false);
                 }
             } else {
                 committerPanel.Visibility = Visibility.Visible;
@@ -125,8 +125,8 @@ namespace SourceGit.UI {
                 committerEmail.Text = commit.Committer.Email;
                 committerTime.Text = commit.Committer.Time;
 
-                SetAvatar(authorAvatar, commit.Author.Email);
-                SetAvatar(committerAvatar, commit.Committer.Email);
+                SetAvatar(authorAvatar, authorAvatarMask, commit.Author.Email);
+                SetAvatar(committerAvatar, committerAvatarMask, commit.Committer.Email);
             }
 
             if (commit.Decorators.Count == 0) {
@@ -136,7 +136,7 @@ namespace SourceGit.UI {
             }
         }
 
-        private void SetAvatar(Image img, string email, bool save = true) {
+        private void SetAvatar(Image img, Border mask, string email, bool save = true) {
             byte[] hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(email.ToLower().Trim()));
             string md5 = "";
             for (int i = 0; i < hash.Length; i++) md5 += hash[i].ToString("x2");
@@ -144,9 +144,13 @@ namespace SourceGit.UI {
 
             if (!Directory.Exists(AVATAR_PATH)) Directory.CreateDirectory(AVATAR_PATH);
 
+            mask.Visibility = Visibility.Visible;
+            var sha = commit.SHA;
+
             string filePath = Path.Combine(AVATAR_PATH, md5);
             if (File.Exists(filePath)) {
                 img.Source = new BitmapImage(new Uri(filePath));
+                mask.Visibility = Visibility.Hidden;
             } else {
                 var bitmap = new BitmapImage(new Uri("https://www.gravatar.com/avatar/" + md5 + "?d=404"));
                 if (save) {
@@ -159,10 +163,11 @@ namespace SourceGit.UI {
                                 encoder.Save(fs);
                             }
                         }
+
+                        if (commit.SHA == sha) mask.Visibility = Visibility.Hidden;
                     };
                 }
                 img.Source = bitmap;
-
             }
         }
 

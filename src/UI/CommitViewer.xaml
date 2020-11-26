@@ -42,7 +42,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" Background="Gray">
+                        <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" x:Name="authorAvatarMask"  Width="64" Height="64" HorizontalAlignment="Right" Background="Gray">
                             <Path Style="{StaticResource Style.Icon}" Width="56" Height="56" Data="{StaticResource Icon.User}" VerticalAlignment="Bottom"/>
                         </Border>
 
@@ -69,7 +69,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" Background="Gray">
+                        <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" x:Name="committerAvatarMask" Width="64" Height="64" HorizontalAlignment="Right" Background="Gray">
                             <Path Style="{StaticResource Style.Icon}" Width="56" Height="56" Data="{StaticResource Icon.User}" VerticalAlignment="Bottom"/>
                         </Border>
 
