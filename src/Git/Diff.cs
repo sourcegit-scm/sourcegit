@@ -98,7 +98,7 @@ namespace SourceGit.Git {
                         rs.Lines.Add(new LineChange(LineMode.Added, line.Substring(1), "", $"{newLine}"));
                         newLine++;
                     } else if (line[0] == '\\') {
-                        rs.Lines.Add(new LineChange(LineMode.Indicator, line.Substring(1)));
+                        // IGNORE \ No new line end of file.
                     } else {
                         var match = REG_INDICATOR.Match(line);
                         if (match.Success) {

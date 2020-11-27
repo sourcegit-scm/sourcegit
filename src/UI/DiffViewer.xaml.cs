@@ -44,6 +44,18 @@ namespace SourceGit.UI {
             public FontStyle Style { get; set; }
             public string OldLine { get; set; }
             public string NewLine { get; set; }
+
+            public bool IsContent {
+                get {
+                    return Mode == Git.Diff.LineMode.Added || Mode == Git.Diff.LineMode.Deleted || Mode == Git.Diff.LineMode.Normal;
+                }
+            }
+
+            public bool IsDifference {
+                get {
+                    return Mode == Git.Diff.LineMode.Added || Mode == Git.Diff.LineMode.Deleted || Mode == Git.Diff.LineMode.None;
+                }
+            }
         }
 
         /// <summary>
@@ -148,8 +160,8 @@ namespace SourceGit.UI {
                     block.Content = line.Content;
                     block.Mode = line.Mode;
                     block.BG = GetLineBackground(line);
-                    block.FG = line.Mode == Git.Diff.LineMode.Indicator ? fgIndicator : fgCommon;
-                    block.Style = line.Mode == Git.Diff.LineMode.Indicator ? FontStyles.Italic : FontStyles.Normal;
+                    block.FG = block.IsContent ? fgCommon : fgIndicator;
+                    block.Style = block.IsContent ? FontStyles.Normal : FontStyles.Italic;
                     block.OldLine = line.OldLine;
                     block.NewLine = line.NewLine;
 
@@ -199,8 +211,8 @@ namespace SourceGit.UI {
                     block.Content = line.Content;
                     block.Mode = line.Mode;
                     block.BG = GetLineBackground(line);
-                    block.FG = line.Mode == Git.Diff.LineMode.Indicator ? fgIndicator : fgCommon;
-                    block.Style = line.Mode == Git.Diff.LineMode.Indicator ? FontStyles.Italic : FontStyles.Normal;
+                    block.FG = block.IsContent ? fgCommon : fgIndicator;
+                    block.Style = block.IsContent ? FontStyles.Normal : FontStyles.Italic;
                     block.OldLine = line.OldLine;
                     block.NewLine = line.NewLine;
 
@@ -548,7 +560,7 @@ namespace SourceGit.UI {
             var first = grid.Items[firstVisible] as ChangeBlock;
             for (int i = firstVisible + 1; i < grid.Items.Count; i++) {
                 var next = grid.Items[i] as ChangeBlock;
-                if (next.Mode != Git.Diff.LineMode.Normal && next.Mode != Git.Diff.LineMode.Indicator) {
+                if (next.IsDifference) {
                     if (firstModeEnded || next.Mode != first.Mode) {
                         scroller.ScrollToVerticalOffset(i);
                         break;
@@ -576,7 +588,7 @@ namespace SourceGit.UI {
             var first = grid.Items[firstVisible] as ChangeBlock;
             for (int i = firstVisible - 1; i >= 0; i--) {
                 var next = grid.Items[i] as ChangeBlock;
-                if (next.Mode != Git.Diff.LineMode.Normal && next.Mode != Git.Diff.LineMode.Indicator) {
+                if (next.IsDifference) {
                     if (firstModeEnded || next.Mode != first.Mode) {
                         scroller.ScrollToVerticalOffset(i);
                         break;
@@ -619,7 +631,7 @@ namespace SourceGit.UI {
                 foreach (var item in items) {
                     var block = item as ChangeBlock;
                     if (block == null) continue;
-                    if (block.Mode == Git.Diff.LineMode.None || block.Mode == Git.Diff.LineMode.Indicator) continue;
+                    if (!block.IsContent) continue;
 
                     builder.Append(block.Content);
                     builder.AppendLine();
