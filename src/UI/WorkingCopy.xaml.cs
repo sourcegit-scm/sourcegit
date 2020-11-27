@@ -495,7 +495,7 @@ namespace SourceGit.UI {
         private async void Stage(object sender, RoutedEventArgs e) {
             var files = new List<string>();
 
-            if (App.Preference.UIUseListInUnstaged) {
+            if (App.Preference.UIUnstageDisplayMode != Git.Preference.FilesDisplayMode.Tree) {
                 var selected = unstagedList.SelectedItems;
                 foreach (var one in selected) {
                     var node = one as Git.Change;
@@ -695,7 +695,7 @@ namespace SourceGit.UI {
         private async void Unstage(object sender, RoutedEventArgs e) {
             var files = new List<string>();
 
-            if (App.Preference.UIUseListInStaged) {
+            if (App.Preference.UIStagedDisplayMode != Git.Preference.FilesDisplayMode.Tree) {
                 var selected = stageList.SelectedItems;
                 foreach (var one in selected) {
                     var node = one as Git.Change;
@@ -867,7 +867,7 @@ namespace SourceGit.UI {
             }
 
             string file = null;
-            if (App.Preference.UIUseListInUnstaged) {
+            if (App.Preference.UIUnstageDisplayMode != Git.Preference.FilesDisplayMode.Tree) {
                 var selected = unstagedList.SelectedItems;
                 if (selected.Count <= 0) return;
 
@@ -894,7 +894,7 @@ namespace SourceGit.UI {
 
         private async void UseTheirs(object sender, RoutedEventArgs e) {
             var files = new List<string>();
-            if (App.Preference.UIUseListInUnstaged) {
+            if (App.Preference.UIUnstageDisplayMode != Git.Preference.FilesDisplayMode.Tree) {
                 var selected = unstagedList.SelectedItems;
                 foreach (var one in selected) {
                     var node = one as Git.Change;
@@ -923,7 +923,7 @@ namespace SourceGit.UI {
 
         private async void UseMine(object sender, RoutedEventArgs e) {
             var files = new List<string>();
-            if (App.Preference.UIUseListInUnstaged) {
+            if (App.Preference.UIUnstageDisplayMode != Git.Preference.FilesDisplayMode.Tree) {
                 var selected = unstagedList.SelectedItems;
                 foreach (var one in selected) {
                     var node = one as Git.Change;

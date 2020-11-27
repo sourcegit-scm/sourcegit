@@ -32,6 +32,15 @@ namespace SourceGit.Git {
             public bool IsExpended { get; set; }
         }
 
+        /// <summary>
+        ///     File's display mode.
+        /// </summary>
+        public enum FilesDisplayMode {
+            Tree,
+            List,
+            Grid,
+        }
+
         #region STATICS
         /// <summary>
         ///     Storage path for Preference.
@@ -99,15 +108,15 @@ namespace SourceGit.Git {
         /// </summary>
         public bool UIUseHorizontalLayout { get; set; }
         /// <summary>
-        ///     Use list instead of tree in unstaged view
+        ///     Files' display mode in unstage view.
         /// </summary>
-        public bool UIUseListInUnstaged { get; set; }
+        public FilesDisplayMode UIUnstageDisplayMode { get; set; } = FilesDisplayMode.Grid;
         /// <summary>
-        ///     Use list instead of tree in staged view.
+        ///     Files' display mode in staged view.
         /// </summary>
-        public bool UIUseListInStaged { get; set; }
+        public FilesDisplayMode UIStagedDisplayMode { get; set; } = FilesDisplayMode.Grid;
         /// <summary>
-        ///     Use list instead of tree in change view.
+        ///     Using datagrid instead of tree in changes.
         /// </summary>
         public bool UIUseListInChanges { get; set; }
         /// <summary>

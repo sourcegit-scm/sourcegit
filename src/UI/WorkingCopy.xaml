@@ -18,6 +18,12 @@
         <converters:FileStatusToIcon x:Key="UnstagedStatusIconConverter" OnlyWorkTree="True"/>
         <converters:FileStatusToColor x:Key="StagedStatusConverter"/>
         <converters:FileStatusToIcon x:Key="StagedStatusIconConverter"/>
+        <converters:FilesDisplayModeToList x:Key="FilesDisplayModeToList"/>
+        <converters:FilesDisplayModeToList x:Key="FilesDisplayModeToListOnly" TreatGridAsList="False"/>
+        <converters:FilesDisplayModeToTree x:Key="FilesDisplayModeToTree"/>
+        <converters:FilesDisplayModeToGrid x:Key="FilesDisplayModeToGrid"/>
+        <converters:PathToFileName x:Key="PathToFileName"/>
+        <converters:PathToFolderName x:Key="PathToFolderName"/>
     </UserControl.Resources>
 
     <Grid Background="{StaticResource Brush.BG3}">
@@ -51,13 +57,10 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <ToggleButton 
-                        Grid.Column="0" 
-                        x:Name="toggleUnstangedMode"
-                        Margin="4,0,4,0" 
-                        ToolTip="SWITCH TO LIST/TREE VIEW"
-                        Style="{StaticResource Style.ToggleButton.ListOrTree}" 
-                        IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIUseListInUnstaged, Mode=TwoWay}"/>
+                    <local:FilesDisplayModeSwitch
+                        Grid.Column="0"
+                        Mode="{Binding Source={x:Static source:App.Preference}, Path=UIUnstageDisplayMode, Mode=TwoWay}"
+                        Opacity=".4"/>
                     <Label Grid.Column="1" Content="UNSTAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG}" Opacity=".4"/>
                     <Button Grid.Column="3" Click="Stage" Margin="4,0" ToolTip="STAGE" Background="Transparent">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Down}" Opacity=".4"/>
@@ -71,7 +74,7 @@
                     Grid.Row="1" 
                     x:Name="unstagedTree" 
                     Background="{StaticResource Brush.BG2}"
-                    Visibility="{Binding ElementName=toggleUnstangedMode, Path=IsChecked, Converter={StaticResource InverseBoolToCollapsed}}"
+                    Visibility="{Binding Source={x:Static source:App.Preference}, Path=UIUnstageDisplayMode, Converter={StaticResource FilesDisplayModeToTree}}"
                     FontFamily="Consolas" 
                     PreviewMouseWheel="TreeMouseWheel"
                     helpers:TreeViewHelper.EnableMultiSelection="True"
@@ -124,7 +127,7 @@
                 <DataGrid
                     Grid.Row="1"
                     x:Name="unstagedList"
-                    Visibility="{Binding ElementName=toggleUnstangedMode, Path=IsChecked, Converter={StaticResource BoolToCollapsed}}"
+                    Visibility="{Binding Source={x:Static source:App.Preference}, Path=UIUnstageDisplayMode, Converter={StaticResource FilesDisplayModeToList}}"
                     RowHeight="24"
                     SelectionChanged="UnstagedListSelectionChanged"
                     SelectionMode="Extended"
@@ -133,6 +136,7 @@
                     <DataGrid.Resources>
                         <Style x:Key="Style.DataGridText.VerticalCenter" TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="4,0"/>
                         </Style>
 
                         <RoutedUICommand x:Key="SelectWholeDataGridCommand" Text="SelectWholeDataGrid"/>
@@ -156,7 +160,30 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Width="*" Binding="{Binding Path}" Foreground="{StaticResource Brush.FG}" FontFamily="Consolas" ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
+                        
+                        <DataGridTextColumn 
+                            Width="Auto" 
+                            Visibility="{Binding Source={x:Static source:App.Preference}, Path=UIUnstageDisplayMode, Converter={StaticResource FilesDisplayModeToGrid}}" 
+                            Binding="{Binding Path, Converter={StaticResource PathToFileName}}" 
+                            Foreground="{StaticResource Brush.FG}" 
+                            FontFamily="Consolas" 
+                            ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
+
+                        <DataGridTextColumn 
+                            Width="*" 
+                            Visibility="{Binding Source={x:Static source:App.Preference}, Path=UIUnstageDisplayMode, Converter={StaticResource FilesDisplayModeToGrid}}" 
+                            Binding="{Binding Path, Converter={StaticResource PathToFolderName}}" 
+                            Foreground="{StaticResource Brush.FG2}" 
+                            FontFamily="Consolas" 
+                            ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
+                        
+                        <DataGridTextColumn
+                            Width="*"
+                            Visibility="{Binding Source={x:Static source:App.Preference}, Path=UIUnstageDisplayMode, Converter={StaticResource FilesDisplayModeToListOnly}}" 
+                            Binding="{Binding Path}"
+                            Foreground="{StaticResource Brush.FG}"
+                            FontFamily="Consolas"
+                            ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
                     </DataGrid.Columns>
 
                     <DataGrid.RowStyle>
@@ -186,13 +213,10 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <ToggleButton
-                        Grid.Column="0" 
-                        x:Name="toggleStagedMode"
-                        Margin="4,0,4,0"
-                        ToolTip="SWITCH TO LIST/TREE VIEW"
-                        Style="{StaticResource Style.ToggleButton.ListOrTree}"
-                        IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIUseListInStaged, Mode=TwoWay}"/>
+                    <local:FilesDisplayModeSwitch
+                        Grid.Column="0"
+                        Mode="{Binding Source={x:Static source:App.Preference}, Path=UIStagedDisplayMode, Mode=TwoWay}"
+                        Opacity=".4"/>
                     <Label Grid.Column="1" Content="STAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG}"  Opacity=".4"/>
                     <Button Grid.Column="3" Click="Unstage" ToolTip="UNSTAGE" Margin="4,0" Background="Transparent">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Up}" Opacity=".4"/>
@@ -205,8 +229,8 @@
                 <TreeView
                     Grid.Row="1" 
                     x:Name="stageTree" 
+                    Visibility="{Binding Source={x:Static source:App.Preference}, Path=UIStagedDisplayMode, Converter={StaticResource FilesDisplayModeToTree}}"
                     Background="{StaticResource Brush.BG2}"
-                    Visibility="{Binding ElementName=toggleStagedMode, Path=IsChecked, Converter={StaticResource InverseBoolToCollapsed}}"
                     FontFamily="Consolas" 
                     PreviewMouseWheel="TreeMouseWheel"
                     helpers:TreeViewHelper.EnableMultiSelection="True"
@@ -259,8 +283,8 @@
                 <DataGrid
                     Grid.Row="1"
                     x:Name="stageList"
-                    Visibility="{Binding ElementName=toggleStagedMode, Path=IsChecked, Converter={StaticResource BoolToCollapsed}}"
                     RowHeight="24"
+                    Visibility="{Binding Source={x:Static source:App.Preference}, Path=UIStagedDisplayMode, Converter={StaticResource FilesDisplayModeToList}}"
                     SelectionChanged="StagedListSelectionChanged"
                     SelectionMode="Extended"
                     SelectionUnit="FullRow"
@@ -268,6 +292,7 @@
                     <DataGrid.Resources>
                         <Style x:Key="Style.DataGridText.VerticalCenter" TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="4,0"/>
                         </Style>
 
                         <RoutedUICommand x:Key="SelectWholeDataGridCommand" Text="SelectWholeDataGrid"/>
@@ -291,7 +316,30 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Width="*" Binding="{Binding Path}" Foreground="{StaticResource Brush.FG}" FontFamily="Consolas" ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
+
+                        <DataGridTextColumn 
+                            Width="Auto"                            
+                            Visibility="{Binding Source={x:Static source:App.Preference}, Path=UIStagedDisplayMode, Converter={StaticResource FilesDisplayModeToGrid}}" 
+                            Binding="{Binding Path, Converter={StaticResource PathToFileName}}" 
+                            Foreground="{StaticResource Brush.FG}" 
+                            FontFamily="Consolas" 
+                            ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
+
+                        <DataGridTextColumn 
+                            Width="*"                            
+                            Visibility="{Binding Source={x:Static source:App.Preference}, Path=UIStagedDisplayMode, Converter={StaticResource FilesDisplayModeToGrid}}" 
+                            Binding="{Binding Path, Converter={StaticResource PathToFolderName}}" 
+                            Foreground="{StaticResource Brush.FG2}" 
+                            FontFamily="Consolas" 
+                            ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
+
+                        <DataGridTextColumn
+                            Width="*" 
+                            Visibility="{Binding Source={x:Static source:App.Preference}, Path=UIStagedDisplayMode, Converter={StaticResource FilesDisplayModeToListOnly}}" 
+                            Binding="{Binding Path}" 
+                            Foreground="{StaticResource Brush.FG}" 
+                            FontFamily="Consolas" 
+                            ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
                     </DataGrid.Columns>
 
                     <DataGrid.RowStyle>
