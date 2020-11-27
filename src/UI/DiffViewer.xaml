@@ -67,14 +67,14 @@
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="1" x:Name="editorLines">
-            </Grid>
-
             <Grid Grid.Row="1" x:Name="editorContainer" SizeChanged="OnSizeChanged">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+            </Grid>
+
+            <Grid Grid.Row="1" x:Name="editorLines" IsHitTestVisible="False">
             </Grid>
 
             <Border x:Name="sizeChange" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
