@@ -50,7 +50,7 @@
                     <Button Click="OpenExplorer" Margin="4,0,0,0" ToolTip="Open In File Browser">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="16" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
-                            <Label Content="Open"/>
+                            <Label Content="Explore"/>
                         </StackPanel>
                     </Button>
 
