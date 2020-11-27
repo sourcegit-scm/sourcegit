@@ -67,6 +67,9 @@
                 </Grid>
             </Border>
 
+            <Grid Grid.Row="1" x:Name="editorLines">
+            </Grid>
+
             <Grid Grid.Row="1" x:Name="editorContainer" SizeChanged="OnSizeChanged">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

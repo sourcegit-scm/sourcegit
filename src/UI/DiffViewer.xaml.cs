@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace SourceGit.UI {
@@ -173,6 +174,21 @@ namespace SourceGit.UI {
                     editor.SetValue(Grid.ColumnSpanProperty, 2);
                     editorContainer.Children.Add(editor);
                     editors.Add(editor);
+
+                    editorLines.Children.Clear();
+                    editorLines.ColumnDefinitions.Clear();
+
+                    for (int i = 0; i < 2; i++) {
+                        editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
+
+                        var split = new Rectangle();
+                        split.Width = 1;
+                        split.Fill = FindResource("Brush.Border2") as Brush;
+                        split.HorizontalAlignment = HorizontalAlignment.Right;
+                        Grid.SetColumn(split, i);
+
+                        editorLines.Children.Add(split);
+                    }
                 });
             } else {
                 var oldSideBlocks = new List<ChangeBlock>();
@@ -223,6 +239,7 @@ namespace SourceGit.UI {
                     oldEditor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                     oldEditor.Columns[1].MinWidth = minWidth;
                     oldEditor.ItemsSource = oldSideBlocks;
+
                     var newEditor = CreateTextEditor(new string[] { "NewLine" });
                     newEditor.SetValue(Grid.ColumnProperty, 1);
                     newEditor.ContextMenuOpening += OnTextChangeContextMenuOpening;
@@ -236,6 +253,22 @@ namespace SourceGit.UI {
 
                     editors.Add(oldEditor);
                     editors.Add(newEditor);
+
+                    editorLines.Children.Clear();
+                    editorLines.ColumnDefinitions.Clear();
+                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
+                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
+                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+
+                    for (int i = 0; i < 3; i++) {
+                        var split = new Rectangle();
+                        split.Width = 1;
+                        split.Fill = FindResource("Brush.Border2") as Brush;
+                        split.HorizontalAlignment = HorizontalAlignment.Right;
+                        Grid.SetColumn(split, i);
+                        editorLines.Children.Add(split);
+                    }
                 });
             }
         }
@@ -372,8 +405,6 @@ namespace SourceGit.UI {
             var grid = new DataGrid();
             grid.SetValue(Grid.RowProperty, 1);
             grid.RowHeight = 16.0;
-            grid.GridLinesVisibility = DataGridGridLinesVisibility.Vertical;
-            grid.VerticalGridLinesBrush = FindResource("Brush.Border2") as Brush;
             grid.FrozenColumnCount = lineNumbers.Length;
             grid.ContextMenuOpening += OnTextChangeContextMenuOpening;
             grid.RowStyle = FindResource("Style.DataGridRow.TextChange") as Style;
