@@ -92,8 +92,8 @@ namespace SourceGit.UI {
                     args = args + "--branches --remotes --tags";
                 }
 
-                var commits = repo.Commits(args);
-                histories.SetCommits(commits);
+                var data = repo.Commits(args);
+                histories.SetCommits(data);
             });
         }
 
@@ -463,7 +463,7 @@ namespace SourceGit.UI {
 
         #region WORKSPACE
         private void SwitchWorkingCopy(object sender, RoutedEventArgs e) {
-            if (commits == null || histories == null || stashes == null) return;
+            if (!IsLoaded) return;
 
             commits.Visibility = Visibility.Visible;
             histories.Visibility = Visibility.Collapsed;
@@ -475,7 +475,7 @@ namespace SourceGit.UI {
         }
 
         private void SwitchHistories(object sender, RoutedEventArgs e) {
-            if (commits == null || histories == null || stashes == null) return;
+            if (!IsLoaded) return;
 
             commits.Visibility = Visibility.Collapsed;
             histories.Visibility = Visibility.Visible;
@@ -487,7 +487,7 @@ namespace SourceGit.UI {
         }
 
         private void SwitchStashes(object sender, RoutedEventArgs e) {
-            if (commits == null || histories == null || stashes == null) return;
+            if (!IsLoaded) return;
 
             commits.Visibility = Visibility.Collapsed;
             histories.Visibility = Visibility.Collapsed;
