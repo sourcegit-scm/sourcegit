@@ -50,7 +50,8 @@ namespace SourceGit.UI {
         ///     Constructor.
         /// </summary>
         /// <param name="repo">Opened repository.</param>
-        public Dashboard(Git.Repository opened) {            
+        public Dashboard(Git.Repository opened) {
+            opened.OnClosing = Cleanup;
             opened.OnWorkingCopyChanged = UpdateLocalChanges;
             opened.OnTagChanged = UpdateTags;
             opened.OnStashChanged = UpdateStashes;
@@ -76,6 +77,22 @@ namespace SourceGit.UI {
             UpdateStashes();
             UpdateTags();
             UpdateSubmodules();
+        }
+
+        /// <summary>
+        ///     Cleanup
+        /// </summary>
+        public void Cleanup() {
+            repo = null;
+            localBranchTree.ItemsSource = null;
+            remoteBranchTree.ItemsSource = null;
+            tagList.ItemsSource = null;
+            cachedLocalBranches.Clear();
+            cachedRemotes.Clear();
+
+            histories.Cleanup();
+            commits.Cleanup();
+            stashes.Cleanup();
         }
 
         #region DATA_UPDATE
@@ -286,14 +303,6 @@ namespace SourceGit.UI {
                     submoduleList.ItemsSource = submodules;
                 });
             });
-        }
-
-        private void Cleanup(object sender, RoutedEventArgs e) {
-            localBranchTree.ItemsSource = null;
-            remoteBranchTree.ItemsSource = null;
-            tagList.ItemsSource = null;
-            cachedLocalBranches.Clear();
-            cachedRemotes.Clear();
         }
         #endregion
 
@@ -1021,7 +1030,7 @@ namespace SourceGit.UI {
             sub.Name = Path.GetFileName(path);
             sub.Parent = repo;
 
-            if (!sub.BringUpTab()) sub.Open();            
+            App.Open(sub);          
         }
         #endregion
 

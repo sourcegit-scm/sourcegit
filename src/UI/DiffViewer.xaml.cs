@@ -71,6 +71,9 @@ namespace SourceGit.UI {
         /// </summary>
         public void Reset() {
             mask.Visibility = Visibility.Visible;
+            lineChanges = null;
+            foreach (var editor in editors) editorContainer.Children.Remove(editor);
+            editors.Clear();
         }
 
         /// <summary>

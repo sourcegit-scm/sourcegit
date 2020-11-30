@@ -110,7 +110,7 @@
                                                     Data="M 0,0 L 0,6 6,6 C 6,6 0,6 0,0 Z"
                                                     Fill="Transparent"/>
 
-                                                <StackPanel Orientation="Horizontal" Margin="8,0" VerticalAlignment="Center">
+                                                <StackPanel Orientation="Horizontal" Margin="12,0" VerticalAlignment="Center">
                                                     <Path Grid.Column="0" Width="14" Height="14" x:Name="Icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
 
                                                     <ContentPresenter 
@@ -119,15 +119,8 @@
                                                         TextElement.Foreground="{DynamicResource Brush.FG}"
                                                         TextElement.FontWeight="Bold"
                                                         ContentSource="Header"
-                                                        Margin="8,0"
+                                                        Margin="8,0,0,0"
                                                         RecognizesAccessKey="True" />
-
-                                                    <Button x:Name="Closer" Background="Transparent" Grid.Column="2" Click="CloseRepo" Visibility="Hidden">
-                                                        <Button.ToolTip>
-                                                            <ToolTip Content="CLOSE" FontWeight="Normal"/>
-                                                        </Button.ToolTip>
-                                                        <Path Width="8" Height="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
-                                                    </Button>
                                                 </StackPanel>
                                             </Grid>
                                             <ControlTemplate.Triggers>
@@ -139,16 +132,8 @@
                                                     <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG1}"/>
                                                 </Trigger>
                                                 <Trigger Property="AllowDrop" Value="False">
-                                                    <Setter TargetName="Icon" Property="Fill" Value="#FFF05133"/>
-                                                    <Setter TargetName="Closer" Property="Visibility" Value="Collapsed"/>
+                                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Home}"/>
                                                 </Trigger>
-                                                <MultiTrigger>
-                                                    <MultiTrigger.Conditions>
-                                                        <Condition Property="AllowDrop" Value="True"/>
-                                                        <Condition Property="IsMouseOver" Value="True"/>
-                                                    </MultiTrigger.Conditions>
-                                                    <Setter TargetName="Closer" Property="Visibility" Value="Visible"/>
-                                                </MultiTrigger>
                                                 <MultiTrigger>
                                                     <MultiTrigger.Conditions>
                                                         <Condition Property="IsSelected" Value="False"/>
@@ -166,6 +151,7 @@
 
                                 <EventSetter Event="MouseMove" Handler="TabsMouseMove"/>
                                 <EventSetter Event="Drop" Handler="TabsDrop"/>
+                                <EventSetter Event="ContextMenuOpening" Handler="TabsContextMenuOpening"/>
                             </Style>
                         </TabControl.ItemContainerStyle>
 

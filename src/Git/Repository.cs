@@ -15,7 +15,6 @@ namespace SourceGit.Git {
     public class Repository {
 
         #region HOOKS
-        public static Action<Repository> OnOpen = null;
         [XmlIgnore] public Action<string> OnNavigateCommit = null;
         [XmlIgnore] public Action OnWorkingCopyChanged = null;
         [XmlIgnore] public Action OnTagChanged = null;
@@ -23,6 +22,7 @@ namespace SourceGit.Git {
         [XmlIgnore] public Action OnBranchChanged = null;
         [XmlIgnore] public Action OnCommitsChanged = null;
         [XmlIgnore] public Action OnSubmoduleChanged = null;
+        [XmlIgnore] public Action OnClosing = null;
         #endregion
 
         #region PROPERTIES_SAVED
@@ -294,14 +294,14 @@ namespace SourceGit.Git {
             featurePrefix = GetConfig("gitflow.prefix.feature");
             releasePrefix = GetConfig("gitflow.prefix.release");
             hotfixPrefix = GetConfig("gitflow.prefix.hotfix");
-
-            OnOpen?.Invoke(this);
         }
 
         /// <summary>
         ///     Close repository.
         /// </summary>
         public void Close() {
+            OnClosing?.Invoke();
+
             OnBranchChanged = null;
             OnCommitsChanged = null;
             OnTagChanged = null;
@@ -309,6 +309,7 @@ namespace SourceGit.Git {
             OnWorkingCopyChanged = null;
             OnNavigateCommit = null;
             OnSubmoduleChanged = null;
+            OnClosing = null;
 
             cachedBranches.Clear();
             cachedRemotes.Clear();

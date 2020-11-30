@@ -91,6 +91,14 @@ namespace SourceGit {
         }
 
         /// <summary>
+        ///     Open repository.
+        /// </summary>
+        /// <param name="repo"></param>
+        public static void Open(Git.Repository repo) {
+            (Current.MainWindow as UI.Launcher).Open(repo);
+        }
+
+        /// <summary>
         ///     Deactivated event.
         /// </summary>
         /// <param name="sender"></param>

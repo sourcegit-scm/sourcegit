@@ -34,9 +34,7 @@ namespace SourceGit.UI {
         /// <summary>
         ///     Cleanup
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Cleanup(object sender, RoutedEventArgs e) {
+        public void Cleanup() {
             stashList.ItemsSource = null;
             changeList.ItemsSource = null;
             diff.Reset();

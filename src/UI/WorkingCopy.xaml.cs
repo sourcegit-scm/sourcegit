@@ -112,6 +112,18 @@ namespace SourceGit.UI {
             Validation.ClearInvalid(txtCommitMsg.GetBindingExpression(TextBox.TextProperty));
         }
 
+        /// <summary>
+        ///     Cleanup
+        /// </summary>
+        public void Cleanup() {
+            Repo = null;
+            unstagedList.ItemsSource = null;
+            unstagedList.ItemsSource = null;
+            stageList.ItemsSource = null;
+            stageTree.ItemsSource = null;
+            diffViewer.Reset();
+        }
+
         #region UNSTAGED
         private void UnstagedTreeMultiSelectionChanged(object sender, RoutedEventArgs e) {
             mergePanel.Visibility = Visibility.Collapsed;

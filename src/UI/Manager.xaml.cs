@@ -429,7 +429,7 @@ namespace SourceGit.UI {
             }
 
             var repo = App.Preference.AddRepository(path, "");
-            if (!repo.BringUpTab()) repo.Open();
+            App.Open(repo);
         }
 
         /// <summary>

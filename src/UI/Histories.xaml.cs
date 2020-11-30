@@ -78,6 +78,15 @@ namespace SourceGit.UI {
             }
         }
 
+        /// <summary>
+        ///     Cleanup
+        /// </summary>
+        public void Cleanup() {
+            commitGraph.Children.Clear();
+            commitList.ItemsSource = null;
+            cachedCommits.Clear();
+        }
+
         #region DATA
         public void SetCommits(List<Git.Commit> commits) {
             cachedCommits = commits;
@@ -183,12 +192,6 @@ namespace SourceGit.UI {
                 commitList.ItemsSource = new List<Git.Commit>(commits);
                 SetLoadingEnabled(false);
             });
-        }
-
-        private void Cleanup(object sender, RoutedEventArgs e) {
-            commitGraph.Children.Clear();
-            commitList.ItemsSource = null;
-            cachedCommits.Clear();
         }
         #endregion
 
@@ -516,7 +519,7 @@ namespace SourceGit.UI {
 
             // Reset
             var reset = new MenuItem();
-            reset.Header = $"Reset '{current.Name}' To Here";
+            reset.Header = $"Reset '{current.Name}' to Here";
             reset.Visibility = commit.IsHEAD ? Visibility.Collapsed : Visibility.Visible;
             reset.Click += (o, e) => {
                 Reset.Show(Repo, commit);
@@ -526,7 +529,7 @@ namespace SourceGit.UI {
 
             // Rebase or interactive rebase
             var rebase = new MenuItem();
-            rebase.Header = commit.IsMerged ? $"Interactive Rebase '{current.Name}' From Here" : $"Rebase '{current.Name}' To Here";
+            rebase.Header = commit.IsMerged ? $"Interactive Rebase '{current.Name}' from Here" : $"Rebase '{current.Name}' to Here";
             rebase.Visibility = commit.IsHEAD ? Visibility.Collapsed : Visibility.Visible;
             rebase.Click += (o, e) => {
                 if (commit.IsMerged) {
@@ -587,7 +590,7 @@ namespace SourceGit.UI {
 
             // Save as patch
             var patch = new MenuItem();
-            patch.Header = "Save As Patch";
+            patch.Header = "Save as Patch";
             patch.Click += (o, e) => {
                 FolderDailog.Open("Save patch to ...", saveTo => {
                     Repo.RunCommand($"format-patch {commit.SHA} -1 -o \"{saveTo}\"", null);

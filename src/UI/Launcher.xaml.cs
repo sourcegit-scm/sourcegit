@@ -36,26 +36,9 @@ namespace SourceGit.UI {
         ///     Constructor
         /// </summary>
         public Launcher() {
-            Git.Repository.OnOpen = repo => {
-                Dispatcher.Invoke(() => {
-                    var page = new Dashboard(repo);
-                    var tab = new Tab() {
-                        Title = repo.Parent == null ? repo.Name : $"{repo.Parent.Name} : {repo.Name}",
-                        Tooltip = repo.Path,
-                        AllowDragDrop = true,
-                        Repo = repo,
-                        Page = page,
-                    };
-
-                    repo.SetPopupManager(page.popupManager);
-                    Tabs.Add(tab);
-                    openedTabs.SelectedItem = tab;
-                });
-            };
-
             Tabs.Add(new Tab() {
-                Title = "SOURCE GIT",
-                Tooltip = "Welcome Page",
+                Title = "HOME",
+                Tooltip = "Repositories Manager",
                 AllowDragDrop = false,
                 Page = new Manager(),
             });
@@ -64,21 +47,87 @@ namespace SourceGit.UI {
             openedTabs.SelectedItem = Tabs[0];
         }
 
+        /// <summary>
+        ///     Open repository
+        /// </summary>
+        /// <param name="repo"></param>
+        public void Open(Git.Repository repo) {
+            for (int i = 1; i < Tabs.Count; i++) {
+                var opened = Tabs[i];
+                if (opened.Repo.Path == repo.Path) {
+                    openedTabs.SelectedItem = opened;
+                    return;
+                }
+            }
+
+            repo.Open();
+
+            var page = new Dashboard(repo);
+            var tab = new Tab() {
+                Title = repo.Parent == null ? repo.Name : $"{repo.Parent.Name} : {repo.Name}",
+                Tooltip = repo.Path,
+                AllowDragDrop = true,
+                Repo = repo,
+                Page = page,
+            };
+
+            repo.SetPopupManager(page.popupManager);
+            Tabs.Add(tab);
+            openedTabs.SelectedItem = tab;
+        }
+
         #region LAYOUT_CONTENT
         /// <summary>
-        ///     Close repository tab.
+        ///     Context menu for tab items.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CloseRepo(object sender, RoutedEventArgs e) {
-            var tab = (sender as Button).DataContext as Tab;
-            if (tab == null || tab.Repo == null) return;
+        private void TabsContextMenuOpening(object sender, ContextMenuEventArgs ev) {
+            var tab = (sender as TabItem).DataContext as Tab;
+            if (tab == null) {
+                ev.Handled = true;
+                return;
+            }
 
-            Tabs.Remove(tab);
-            tab.Page = null;
-            tab.Repo.RemovePopup();
-            tab.Repo.Close();
-            tab.Repo = null;
+            var repo = tab.Repo;
+            if (repo == null) {
+                ev.Handled = true;
+                return;
+            }
+
+            var close = new MenuItem();
+            close.Header = "Close";
+            close.Click += (o, e) => {
+                Tabs.Remove(tab);
+
+                tab.Page = null;
+                tab.Repo.RemovePopup();
+                tab.Repo.Close();
+                tab.Repo = null;
+            };
+
+            var copyPath = new MenuItem();
+            copyPath.Header = "Copy Path";
+            copyPath.Click += (o, e) => {
+                Clipboard.SetText(repo.Path);
+                e.Handled = true;
+            };
+
+            var refresh = new MenuItem();
+            refresh.Header = "Refresh";
+            refresh.Click += (o, e) => {
+                repo.AssertCommand(null);
+                e.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(close);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(copyPath);
+            menu.Items.Add(refresh);
+            menu.IsOpen = true;
+
+            ev.Handled = true;
         }
 
         /// <summary>
@@ -188,30 +237,5 @@ namespace SourceGit.UI {
             openedTabsScroller.LineRight();
         }
         #endregion
-    }
-
-    /// <summary>
-    ///     Extension methods for repository.
-    /// </summary>
-    public static class RepositoryTabBindings {
-
-        /// <summary>
-        ///     Bring up tab of repository if it was opened before.
-        /// </summary>
-        /// <param name="repo"></param>
-        /// <returns></returns>
-        public static bool BringUpTab(this Git.Repository repo) {
-            var main = App.Current.MainWindow as Launcher;
-
-            for (int i = 1; i < main.Tabs.Count; i++) {
-                var opened = main.Tabs[i];
-                if (opened.Repo.Path == repo.Path) {
-                    main.openedTabs.SelectedItem = opened;
-                    return true;
-                }
-            }
-
-            return false;
-        }
     }
 }

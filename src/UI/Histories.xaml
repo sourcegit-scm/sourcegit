@@ -10,8 +10,7 @@
              xmlns:sourcegit="clr-namespace:SourceGit"
              xmlns:converters="clr-namespace:SourceGit.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Unloaded="Cleanup">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid x:Name="layout" Background="{StaticResource Brush.BG1}">
         <!-- List Panel (SearchBar + DataGrid) -->
         <Grid x:Name="commitListPanel" Background="{StaticResource Brush.BG2}" ClipToBounds="True">
