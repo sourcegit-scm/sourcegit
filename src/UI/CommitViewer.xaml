@@ -181,8 +181,8 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <!-- SUBJECT -->
-                    <Label Grid.Row="3" Grid.Column="0" Content="SUBJECT" HorizontalAlignment="Right" Opacity=".6"/>
+                    <!-- MESSAGE -->
+                    <Label Grid.Row="3" Grid.Column="0" Content="MESSAGE" HorizontalAlignment="Right" Opacity=".6"/>
                     <TextBox 
                         Grid.Row="3" Grid.Column="1"
                         x:Name="subject"
@@ -191,9 +191,6 @@
                         FontFamily="Consolas"
                         BorderThickness="0"
                         Margin="11,0,16,0"/>
-
-                    <!-- MESSAGE -->
-                    <Label Grid.Row="4" Grid.Column="0" Content="DESCRIPTION" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".6"/>
                     <TextBox 
                         Grid.Row="4" Grid.Column="1"
                         x:Name="message"
