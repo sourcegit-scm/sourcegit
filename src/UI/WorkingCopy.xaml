@@ -154,7 +154,7 @@
                         <DataGridTemplateColumn Width="22">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Width="14" Height="14" x:Name="status" Background="{Binding ., Converter={StaticResource UnstagedStatusConverter}}" CornerRadius="2" Margin="2,0,4,0">
+                                    <Border Width="14" Height="14" x:Name="status" Background="{Binding ., Converter={StaticResource UnstagedStatusConverter}}" CornerRadius="2" Margin="2,0">
                                         <TextBlock Text="{Binding ., Converter={StaticResource UnstagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
                                     </Border>
                                 </DataTemplate>
@@ -310,7 +310,7 @@
                         <DataGridTemplateColumn Width="22">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Width="14" Height="14" x:Name="status" Background="{Binding ., Converter={StaticResource StagedStatusConverter}}" CornerRadius="2" Margin="2,0,4,0">
+                                    <Border Width="14" Height="14" x:Name="status" Background="{Binding ., Converter={StaticResource StagedStatusConverter}}" CornerRadius="2" Margin="2,0">
                                         <TextBlock Text="{Binding ., Converter={StaticResource StagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
                                     </Border>
                                 </DataTemplate>
