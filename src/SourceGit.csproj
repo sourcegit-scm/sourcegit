@@ -16,10 +16,4 @@
         <RepositoryType>Public</RepositoryType>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
-
-    <ItemGroup>
-        <TrimmerRootAssembly Include="System.Runtime" />
-        <TrimmerRootAssembly Include="System.Diagnostics.Debug" />
-        <TrimmerRootAssembly Include="System.Runtime.Extensions" />
-    </ItemGroup>
 </Project>
