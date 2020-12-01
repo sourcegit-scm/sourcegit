@@ -103,7 +103,7 @@ namespace SourceGit.UI {
                     Dispatcher.Invoke(() => {
                         var dialog = new UpdateAvailable(ver);
                         dialog.Owner = this;
-                        dialog.Show();
+                        dialog.ShowDialog();
                     });
                 }
             } catch {

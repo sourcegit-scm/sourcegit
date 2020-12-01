@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         FontFamily="Consolas"
-        Height="400" Width="500">
+        Height="400" Width="500"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <!-- Enable WindowChrome Feature -->
     <WindowChrome.WindowChrome>
         <WindowChrome UseAeroCaptionButtons="False" CornerRadius="0" CaptionHeight="32"/>
