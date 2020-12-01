@@ -10,7 +10,7 @@
         Title="Source Git"
         Width="{Binding Source={x:Static source:App.Preference}, Path=UIMainWindowWidth, Mode=TwoWay}"
         Height="{Binding Source={x:Static source:App.Preference}, Path=UIMainWindowHeight, Mode=TwoWay}"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterOwner">
 
     <!-- Enable WindowChrome Feature -->
     <WindowChrome.WindowChrome>

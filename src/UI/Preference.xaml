@@ -8,7 +8,7 @@
         xmlns:app="clr-namespace:SourceGit"
         xmlns:git="clr-namespace:SourceGit.Git"
         mc:Ignorable="d"
-        Height="520" Width="500"
+        Height="548" Width="500"
         Title="Preference"
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 
@@ -61,6 +61,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36"/>
                     <RowDefinition Height="28"/>
+                    <RowDefinition Height="28"/>
                     <RowDefinition Height="18"/>
                     <RowDefinition Height="36"/>
                     <RowDefinition Height="28"/>
@@ -78,24 +79,30 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition MinWidth="200" Width="*"/>
+                    <ColumnDefinition Width="136"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- 显示 -->
-                <Label Grid.Row="0" Grid.ColumnSpan="2" Content="APPEARANCE" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
+                <!-- 通用 -->
+                <Label Grid.Row="0" Grid.ColumnSpan="2" Content="GENERAL SETTING" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
                 <Label Grid.Row="1" Grid.Column="0" Content="Light Theme :" HorizontalAlignment="Right"/>
                 <CheckBox 
                     Grid.Row="1" 
                     Grid.Column="1" 
-                    IsChecked="{Binding Source={x:Static app:App.Preference}, Path=UIUseLightTheme, Mode=TwoWay}"
+                    IsChecked="{Binding Source={x:Static app:App.Preference}, Path=UseLightTheme, Mode=TwoWay}"
                     Content="Restart required"
+                    TextElement.FontStyle="Italic"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="Check for Update :" HorizontalAlignment="Right"/>
+                <CheckBox 
+                    Grid.Row="2" 
+                    Grid.Column="1" 
+                    IsChecked="{Binding Source={x:Static app:App.Preference}, Path=CheckUpdate, Mode=TwoWay}"
                     TextElement.FontStyle="Italic"/>
 
                 <!-- GIT相关配置 -->
-                <Label Grid.Row="3" Grid.ColumnSpan="2" Content="GIT INSTANCE" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
-                <Label Grid.Row="4" Grid.Column="0" Content="Install Path :" HorizontalAlignment="Right"/>
-                <Grid Grid.Row="4" Grid.Column="1">
+                <Label Grid.Row="4" Grid.ColumnSpan="2" Content="GIT INSTANCE" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
+                <Label Grid.Row="5" Grid.Column="0" Content="Install Path :" HorizontalAlignment="Right"/>
+                <Grid Grid.Row="5" Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="28"/>
@@ -110,8 +117,8 @@
                         <Path Width="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
                     </Button>
                 </Grid>
-                <Label Grid.Row="5" Grid.Column="0" Content="Default Clone Dir :" HorizontalAlignment="Right"/>
-                <Grid Grid.Row="5" Grid.Column="1">
+                <Label Grid.Row="6" Grid.Column="0" Content="Default Clone Dir :" HorizontalAlignment="Right"/>
+                <Grid Grid.Row="6" Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="28"/>
@@ -128,13 +135,13 @@
                 </Grid>
 
                 <!-- Global User -->
-                <Label Grid.Row="7" Grid.ColumnSpan="2" Content="GLOBAL SETTING" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
-                <Label Grid.Row="8" Grid.Column="0" Content="Name :" HorizontalAlignment="Right"/>
-                <TextBox Grid.Row="8" Grid.Column="1" Height="24" helpers:TextBoxHelper.Placeholder="Global git user name" Text="{Binding ElementName=me, Path=GlobalUser, Mode=TwoWay}"/>
-                <Label Grid.Row="9" Grid.Column="0" Content="Email :" HorizontalAlignment="Right"/>
-                <TextBox Grid.Row="9" Grid.Column="1" Height="24" helpers:TextBoxHelper.Placeholder="Global git user email" Text="{Binding ElementName=me, Path=GlobalUserEmail, Mode=TwoWay}"/>
-                <Label Grid.Row="10" Grid.Column="0" Content="Auto CRLF :" HorizontalAlignment="Right"/>
-                <ComboBox Grid.Row="10" Grid.Column="1"
+                <Label Grid.Row="8" Grid.ColumnSpan="2" Content="GLOBAL SETTING" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
+                <Label Grid.Row="9" Grid.Column="0" Content="Name :" HorizontalAlignment="Right"/>
+                <TextBox Grid.Row="9" Grid.Column="1" Height="24" helpers:TextBoxHelper.Placeholder="Global git user name" Text="{Binding ElementName=me, Path=GlobalUser, Mode=TwoWay}"/>
+                <Label Grid.Row="10" Grid.Column="0" Content="Email :" HorizontalAlignment="Right"/>
+                <TextBox Grid.Row="10" Grid.Column="1" Height="24" helpers:TextBoxHelper.Placeholder="Global git user email" Text="{Binding ElementName=me, Path=GlobalUserEmail, Mode=TwoWay}"/>
+                <Label Grid.Row="11" Grid.Column="0" Content="Auto CRLF :" HorizontalAlignment="Right"/>
+                <ComboBox Grid.Row="11" Grid.Column="1"
                       x:Name="cmbAutoCRLF"
                       Height="24"
                       HorizontalAlignment="Stretch"
@@ -151,9 +158,9 @@
                 </ComboBox>
 
                 <!-- 合并工具配置 -->
-                <Label Grid.Row="12" Grid.ColumnSpan="2" Content="MERGE TOOL" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
-                <Label Grid.Row="13" Grid.Column="0" Content="Merger :" HorizontalAlignment="Right"/>
-                <ComboBox Grid.Row="13" Grid.Column="1"
+                <Label Grid.Row="13" Grid.ColumnSpan="2" Content="MERGE TOOL" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
+                <Label Grid.Row="14" Grid.Column="0" Content="Merger :" HorizontalAlignment="Right"/>
+                <ComboBox Grid.Row="14" Grid.Column="1"
                      Height="24"
                      Padding="2,0,0,0"
                      HorizontalContentAlignment="Left"
@@ -162,8 +169,8 @@
                      ItemsSource="{Binding Source={x:Static git:MergeTool.Supported}}"
                      DisplayMemberPath="Name"
                      SelectionChanged="ChangeMergeTool"/>
-                <Label Grid.Row="14" Grid.Column="0" Content="Install Path :" HorizontalAlignment="Right"/>
-                <Grid Grid.Row="14" Grid.Column="1">
+                <Label Grid.Row="15" Grid.Column="0" Content="Install Path :" HorizontalAlignment="Right"/>
+                <Grid Grid.Row="15" Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="28"/>
@@ -178,8 +185,8 @@
                         <Path Width="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
                     </Button>
                 </Grid>
-                <Label Grid.Row="15" Grid.Column="0" Content="Command :" HorizontalAlignment="Right"/>
-                <TextBlock Grid.Row="15" Grid.Column="1" 
+                <Label Grid.Row="16" Grid.Column="0" Content="Command :" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Row="16" Grid.Column="1" 
                        x:Name="txtMergeParam"
                        VerticalAlignment="Center"
                        Foreground="{StaticResource Brush.FG2}"/>

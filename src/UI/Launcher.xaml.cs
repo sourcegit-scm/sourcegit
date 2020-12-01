@@ -1,4 +1,10 @@
+using System;
 using System.Collections.ObjectModel;
+using System.Net;
+using System.Reflection;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -45,6 +51,8 @@ namespace SourceGit.UI {
 
             InitializeComponent();
             openedTabs.SelectedItem = Tabs[0];
+
+            if (App.Preference.CheckUpdate) Task.Run(CheckUpdate);
         }
 
         /// <summary>
@@ -74,6 +82,33 @@ namespace SourceGit.UI {
             repo.SetPopupManager(page.popupManager);
             Tabs.Add(tab);
             openedTabs.SelectedItem = tab;
+        }
+
+        /// <summary>
+        ///     Checking for update.
+        /// </summary>
+        public void CheckUpdate() {
+            try {
+                var web = new WebClient();
+                var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/SourceGit/releases/latest");
+                var ver = JsonSerializer.Deserialize<Git.Version>(raw);
+                var cur = Assembly.GetExecutingAssembly().GetName().Version;
+
+                var matches = Regex.Match(ver.TagName, @"^v(\d+)\.(\d+).*");
+                if (!matches.Success) return;
+
+                var major = int.Parse(matches.Groups[1].Value);
+                var minor = int.Parse(matches.Groups[2].Value);
+                if (major > cur.Major || (major == cur.Major && minor > cur.Minor)) {
+                    Dispatcher.Invoke(() => {
+                        var dialog = new UpdateAvailable(ver);
+                        dialog.Owner = this;
+                        dialog.Show();
+                    });
+                }
+            } catch {
+                // IGNORE
+            }
         }
 
         #region LAYOUT_CONTENT

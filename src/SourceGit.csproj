@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net46</TargetFramework>
+        <TargetFramework>net5.0-windows</TargetFramework>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>App.ico</ApplicationIcon>
@@ -16,4 +16,10 @@
         <RepositoryType>Public</RepositoryType>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
+
+    <ItemGroup>
+        <TrimmerRootAssembly Include="System.Runtime" />
+        <TrimmerRootAssembly Include="System.Diagnostics.Debug" />
+        <TrimmerRootAssembly Include="System.Runtime.Extensions" />
+    </ItemGroup>
 </Project>

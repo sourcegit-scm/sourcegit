@@ -11,20 +11,13 @@ namespace SourceGit.UI {
     public partial class About : Window {
 
         /// <summary>
-        ///     Current app version
-        /// </summary>
-        public string Version {
-            get {
-                Assembly asm = Assembly.GetExecutingAssembly();
-                return "VERSION : " + asm.GetName().Version;
-            }
-        }
-
-        /// <summary>
         ///     Constructor
         /// </summary>
         public About() {
             InitializeComponent();
+
+            var asm = Assembly.GetExecutingAssembly().GetName();
+            version.Content = $"VERSION : v{asm.Version.Major}.{asm.Version.Minor}";
         }
 
         /// <summary>
@@ -33,7 +26,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OpenSource(object sender, RequestNavigateEventArgs e) {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {e.Uri.AbsoluteUri}") { CreateNoWindow = true });
             e.Handled = true;
         }
 

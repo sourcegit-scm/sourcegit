@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml.Serialization;
+using System.Text.Json;
 
 namespace SourceGit.Git {
 
@@ -48,7 +48,7 @@ namespace SourceGit.Git {
         private static readonly string SAVE_PATH = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "SourceGit",
-            "preference.xml");
+            "preference.json");
         /// <summary>
         ///     Runtime singleton instance.
         /// </summary>
@@ -62,6 +62,17 @@ namespace SourceGit.Git {
                 instance = value;
             }
         }
+        #endregion
+
+        #region SETTING_GENERAL
+        /// <summary>
+        ///     Use light color theme.
+        /// </summary>
+        public bool UseLightTheme { get; set; }
+        /// <summary>
+        ///     Check for updates.
+        /// </summary>
+        public bool CheckUpdate { get; set; }
         #endregion
 
         #region SETTING_GIT
@@ -95,10 +106,6 @@ namespace SourceGit.Git {
         ///     Main window's height
         /// </summary>
         public double UIMainWindowHeight { get; set; }
-        /// <summary>
-        ///     Use light color theme.
-        /// </summary>
-        public bool UIUseLightTheme { get; set; }
         /// <summary>
         ///     Show/Hide tags' list view.
         /// </summary>
@@ -144,17 +151,9 @@ namespace SourceGit.Git {
         public static void Load() {
             if (!File.Exists(SAVE_PATH)) {
                 instance = new Preference();
-                return;
+            } else {
+                instance = JsonSerializer.Deserialize<Preference>(File.ReadAllText(SAVE_PATH));
             }
-
-            try {
-                var stream = new FileStream(SAVE_PATH, FileMode.Open);
-                var reader = new XmlSerializer(typeof(Preference));
-                instance = (Preference)reader.Deserialize(stream);
-                stream.Close();
-            } catch {
-                instance = new Preference();
-            }            
         }
 
         /// <summary>
@@ -166,11 +165,8 @@ namespace SourceGit.Git {
             var dir = Path.GetDirectoryName(SAVE_PATH);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            var stream = new FileStream(SAVE_PATH, FileMode.Create);
-            var writer = new XmlSerializer(typeof(Preference));
-            writer.Serialize(stream, instance);
-            stream.Flush();
-            stream.Close();
+            var data = JsonSerializer.Serialize(instance, new JsonSerializerOptions() { WriteIndented = true });
+            File.WriteAllText(SAVE_PATH, data);
         }
         #endregion
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Windows.Threading;
-using System.Xml.Serialization;
 
 namespace SourceGit.Git {
 
@@ -15,14 +15,14 @@ namespace SourceGit.Git {
     public class Repository {
 
         #region HOOKS
-        [XmlIgnore] public Action<string> OnNavigateCommit = null;
-        [XmlIgnore] public Action OnWorkingCopyChanged = null;
-        [XmlIgnore] public Action OnTagChanged = null;
-        [XmlIgnore] public Action OnStashChanged = null;
-        [XmlIgnore] public Action OnBranchChanged = null;
-        [XmlIgnore] public Action OnCommitsChanged = null;
-        [XmlIgnore] public Action OnSubmoduleChanged = null;
-        [XmlIgnore] public Action OnClosing = null;
+        public Action<string> OnNavigateCommit = null;
+        public Action OnWorkingCopyChanged = null;
+        public Action OnTagChanged = null;
+        public Action OnStashChanged = null;
+        public Action OnBranchChanged = null;
+        public Action OnCommitsChanged = null;
+        public Action OnSubmoduleChanged = null;
+        public Action OnClosing = null;
         #endregion
 
         #region PROPERTIES_SAVED
@@ -57,8 +57,8 @@ namespace SourceGit.Git {
         #endregion
 
         #region PROPERTIES_RUNTIME
-        [XmlIgnore] public Repository Parent = null;
-        [XmlIgnore] public string GitDir = null;
+        [JsonIgnore] public Repository Parent = null;
+        [JsonIgnore] public string GitDir = null;
 
         private List<Remote> cachedRemotes = new List<Remote>();
         private List<Branch> cachedBranches = new List<Branch>();

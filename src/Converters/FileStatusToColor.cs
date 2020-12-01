@@ -27,7 +27,7 @@ namespace SourceGit.Converters {
                 status = change.Index;
             }
 
-            if (App.Preference.UIUseLightTheme) {
+            if (App.Preference.UseLightTheme) {
                 switch (status) {
                 case Git.Change.Status.Modified: return Brushes.Goldenrod;
                 case Git.Change.Status.Added: return Brushes.Green;

@@ -76,7 +76,7 @@ namespace SourceGit {
             }
 
             // Apply themes
-            if (Preference.UIUseLightTheme) {
+            if (Preference.UseLightTheme) {
                 foreach (var rs in Current.Resources.MergedDictionaries) {
                     if (rs.Source != null && rs.Source.OriginalString.StartsWith("pack://application:,,,/Resources/Themes/")) {
                         rs.Source = new Uri("pack://application:,,,/Resources/Themes/Light.xaml", UriKind.Absolute);
