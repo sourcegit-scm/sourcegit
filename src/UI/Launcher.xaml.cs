@@ -21,18 +21,32 @@ namespace SourceGit.UI {
         ///     Tab data.
         /// </summary>
         public class Tab : INotifyPropertyChanged {
+            private bool isActive = false;
+
             public string Title { get; set; }
             public string Tooltip { get; set; }
-            public bool IsActive { get; set; }
             public Git.Repository Repo { get; set; }
             public object Page { get; set; }
-            public bool IsRepo => Repo != null;
+
+            public bool IsRepo {
+                get { return Repo != null; }
+            }
+
             public int Color {
                 get { return Repo == null ? 0 : Repo.Color; }
                 set {
                     if (Repo == null || Repo.Color == value) return;
                     Repo.Color = value;
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Color"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Color"));
+                }
+            }
+
+            public bool IsActive {
+                get { return isActive; }
+                set {
+                    if (isActive == value) return;
+                    isActive = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsActive"));
                 }
             }
 

@@ -79,7 +79,7 @@
                             </DataTemplate>
 
                             <DataTemplate DataType="{x:Type local:Launcher+RepoTab}">
-                                <Grid MinWidth="72" Margin="12,0">
+                                <Grid MinWidth="80" Margin="8,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
