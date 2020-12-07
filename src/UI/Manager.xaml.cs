@@ -357,8 +357,8 @@ namespace SourceGit.UI {
 
             briefMask.Visibility = Visibility.Hidden;
 
-            repoName.Content = repo.Name;
-            repoPath.Content = repo.Path;
+            repoName.Text = repo.Name;
+            repoPath.Text = repo.Path;
 
             Task.Run(() => {
                 var changes = repo.LocalChanges();
@@ -377,10 +377,10 @@ namespace SourceGit.UI {
                     if (commits.Count > 0) {
                         var c = commits[0];
                         lastCommitId.Content = c.ShortSHA;
-                        lastCommit.Content = c.Subject;
+                        lastCommit.Text = c.Subject;
                     } else {
                         lastCommitId.Content = "---";
-                        lastCommit.Content = "";
+                        lastCommit.Text = "";
                     }
                 });
             });

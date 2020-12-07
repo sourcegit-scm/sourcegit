@@ -150,8 +150,10 @@
 
                     <!-- Name & Path -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <Label x:Name="repoName" FontSize="20" FontWeight="Bold"/>
-                        <Label x:Name="repoPath" FontSize="20" FontWeight="Light" Opacity="0.5" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="repoName" Margin="4,0,0,0" FontSize="28" FontWeight="Bold" FontFamily="Consolas" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
+                        <Border Background="{StaticResource Brush.BG4}" Margin="16,0,0,0" Height="26" CornerRadius="4" VerticalAlignment="Center">
+                            <TextBlock x:Name="repoPath" FontSize="20" Margin="8,0" FontWeight="Light" FontFamily="Consolas" Foreground="{StaticResource Brush.FG2}" VerticalAlignment="Center"/>
+                        </Border>
                     </StackPanel>
 
                     <!-- Status of selected repository -->
@@ -167,7 +169,7 @@
                         <Border Background="{StaticResource Brush.BG4}" Height="18" CornerRadius="4" VerticalAlignment="Center">
                             <Label x:Name="lastCommitId" Foreground="{StaticResource Brush.FG2}" FontFamily="Consolas" Padding="4,0" VerticalAlignment="Center"/>
                         </Border>
-                        <Label x:Name="lastCommit" Margin="2,0,0,0"/>
+                        <TextBlock x:Name="lastCommit" Margin="4,0,0,0" FontFamily="Consolas" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
                     </StackPanel>
 
                     <!-- README.md -->
