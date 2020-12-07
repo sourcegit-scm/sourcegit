@@ -89,15 +89,17 @@
 
                                     <Path
                                         Grid.Column="0"
-                                        Width="12" Height="12"
+                                        Width="14" Height="14"
                                         Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}"
                                         Style="{StaticResource Style.Icon}"
-                                        Data="{StaticResource Icon.Git}"/>
+                                        Data="{StaticResource Icon.Bookmark}"
+                                        VerticalAlignment="Center"/>
 
                                     <Label
+                                        x:Name="Title"
                                         Grid.Column="1" 
                                         Content="{Binding Title}" 
-                                        Foreground="{StaticResource Brush.FG}" FontFamily="Consolas" FontWeight="Bold"/>
+                                        Foreground="{StaticResource Brush.FG2}" FontFamily="Consolas" FontWeight="Bold"/>
 
                                     <Button Grid.Column="3" Click="CloseRepo" ToolTip="CLOSE">
                                         <Path
@@ -107,6 +109,12 @@
                                             Data="{StaticResource Icon.Close}"/>
                                     </Button>
                                 </Grid>
+
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                        <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </TabControl.Resources>
 
@@ -157,7 +165,6 @@
                                                     x:Name="ContentSite"
                                                     VerticalAlignment="Center"
                                                     ContentSource="Header"
-                                                    Opacity=".7"
                                                     RecognizesAccessKey="True"/>
                                             </Grid>
                                             <ControlTemplate.Triggers>
@@ -167,7 +174,6 @@
                                                     <Setter TargetName="BG" Property="BorderThickness" Value="1,1,1,0"/>
                                                     <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.BG1}"/>
                                                     <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG1}"/>
-                                                    <Setter TargetName="ContentSite" Property="Opacity" Value="1"/>
                                                 </Trigger>
                                                 
                                                 <Trigger Property="IsSelected" Value="False">
