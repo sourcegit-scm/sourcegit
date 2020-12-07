@@ -5,6 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:source="clr-namespace:SourceGit"
+        xmlns:local="clr-namespace:SourceGit.UI"
+        xmlns:converters="clr-namespace:SourceGit.Converters"
         mc:Ignorable="d"
         MinWidth="800" MinHeight="600"
         Title="Source Git"
@@ -62,33 +64,74 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabControl}">
-                                            <StackPanel Orientation="Horizontal"                                                    
-                                                        x:Name="HeaderPanel"
-                                                        Margin="6,4,0,0"
-                                                        IsItemsHost="True"
-                                                        SnapsToDevicePixels="True"
-                                                        KeyboardNavigation.TabIndex="1"/>
+                                            <StackPanel Orientation="Horizontal" x:Name="HeaderPanel" Margin="6,4,0,0" IsItemsHost="True" SnapsToDevicePixels="True" KeyboardNavigation.TabIndex="1"/>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
                             </Style>
                         </TabControl.Style>
 
+                        <TabControl.Resources>
+                            <converters:IntToRepoColor x:Key="IntToRepoColor"/>
+                            
+                            <DataTemplate DataType="{x:Type local:Launcher+ManagerTab}">
+                                <Path Width="14" Height="14" Margin="12,0" Fill="#FFF05133" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Home}"/>
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type local:Launcher+RepoTab}">
+                                <Grid MinWidth="72" Margin="12,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*" MinWidth="6"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Path
+                                        Grid.Column="0"
+                                        Width="12" Height="12"
+                                        Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}"
+                                        Style="{StaticResource Style.Icon}"
+                                        Data="{StaticResource Icon.Git}"/>
+
+                                    <Label
+                                        Grid.Column="1" 
+                                        Content="{Binding Title}" 
+                                        Foreground="{StaticResource Brush.FG}" FontFamily="Consolas" FontWeight="Bold"/>
+
+                                    <Button Grid.Column="3" Click="CloseRepo" ToolTip="CLOSE">
+                                        <Path
+                                            Width="8" Height="8" 
+                                            Fill="{StaticResource Brush.FG}"
+                                            Style="{StaticResource Style.Icon}"
+                                            Data="{StaticResource Icon.Close}"/>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </TabControl.Resources>
+
                         <TabControl.ItemContainerStyle>
                             <Style TargetType="{x:Type TabItem}">
-                                <Setter Property="AllowDrop" Value="{Binding AllowDragDrop}"/>
+                                <Setter Property="AllowDrop" Value="{Binding IsRepo}"/>
                                 <Setter Property="IsSelected" Value="{Binding IsActive, Mode=TwoWay}"/>
                                 <Setter Property="Margin" Value="0"/>
                                 <Setter Property="Padding" Value="0"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabItem}">
-                                            <Grid x:Name="Container" Opacity=".7" SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True">
-                                                <Border x:Name="BG" SnapsToDevicePixels="True" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
+                                            <Grid SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Tooltip}">
+                                                <Border x:Name="BG" Margin="-1,0" SnapsToDevicePixels="True" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
                                                     <Border.Effect>
                                                         <DropShadowEffect ShadowDepth="0" Opacity=".5"/>
                                                     </Border.Effect>
                                                 </Border>
+
+                                                <Rectangle
+                                                    x:Name="Splitter"
+                                                    HorizontalAlignment="Left" 
+                                                    Width="1" Height="16" 
+                                                    Fill="{StaticResource Brush.FG2}"
+                                                    Visibility="Hidden"/>
 
                                                 <Path
                                                     x:Name="CornerLeft"
@@ -96,7 +139,7 @@
                                                     Height="6"
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Bottom"
-                                                    Margin="-5,0,0,0"
+                                                    Margin="-6,0,0,0"
                                                     Data="M 0,6 L 6,6 6,0 C 6,0 6,6 0,6 Z"
                                                     Fill="Transparent"/>
 
@@ -106,43 +149,49 @@
                                                     Height="6"
                                                     HorizontalAlignment="Right"
                                                     VerticalAlignment="Bottom"
-                                                    Margin="0,0,-5,0"
+                                                    Margin="0,0,-6,0"
                                                     Data="M 0,0 L 0,6 6,6 C 6,6 0,6 0,0 Z"
                                                     Fill="Transparent"/>
 
-                                                <StackPanel Orientation="Horizontal" Margin="12,0" VerticalAlignment="Center">
-                                                    <Path Grid.Column="0" Width="14" Height="14" x:Name="Icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-
-                                                    <ContentPresenter 
-                                                        x:Name="ContentSite" 
-                                                        VerticalAlignment="Center" HorizontalAlignment="Center" 
-                                                        TextElement.Foreground="{DynamicResource Brush.FG}"
-                                                        TextElement.FontWeight="Bold"
-                                                        ContentSource="Header"
-                                                        Margin="8,0,0,0"
-                                                        RecognizesAccessKey="True" />
-                                                </StackPanel>
+                                                <ContentPresenter 
+                                                    x:Name="ContentSite"
+                                                    VerticalAlignment="Center"
+                                                    ContentSource="Header"
+                                                    Opacity=".7"
+                                                    RecognizesAccessKey="True"/>
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
+                                                    <Setter Property="Panel.ZIndex" Value="2"/>
                                                     <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.BG1}"/>
                                                     <Setter TargetName="BG" Property="BorderThickness" Value="1,1,1,0"/>
-                                                    <Setter TargetName="Container" Property="Opacity" Value="1"/>
                                                     <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.BG1}"/>
                                                     <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG1}"/>
+                                                    <Setter TargetName="ContentSite" Property="Opacity" Value="1"/>
                                                 </Trigger>
-                                                <Trigger Property="AllowDrop" Value="False">
-                                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Home}"/>
+                                                
+                                                <Trigger Property="IsSelected" Value="False">
+                                                    <Setter Property="Panel.ZIndex" Value="-1"/>
                                                 </Trigger>
+
                                                 <MultiTrigger>
                                                     <MultiTrigger.Conditions>
                                                         <Condition Property="IsSelected" Value="False"/>
                                                         <Condition Property="IsMouseOver" Value="True"/>
                                                     </MultiTrigger.Conditions>
-                                                    <Setter Property="Panel.ZIndex" Value="-1"/>
+                                                    <Setter Property="Panel.ZIndex" Value="1"/>
                                                     <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.BG5}"/>
                                                     <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.BG5}"/>
                                                     <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG5}"/>
+                                                </MultiTrigger>
+
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="IsSelected" Value="False"/>
+                                                        <Condition Property="IsMouseOver" Value="False"/>
+                                                        <Condition Property="AllowDrop" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Splitter" Property="Visibility" Value="Visible"/>
                                                 </MultiTrigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -154,16 +203,6 @@
                                 <EventSetter Event="ContextMenuOpening" Handler="TabsContextMenuOpening"/>
                             </Style>
                         </TabControl.ItemContainerStyle>
-
-                        <TabControl.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Brush.FG}" FontWeight="Bold">
-                                    <TextBlock.ToolTip>
-                                        <ToolTip Content="{Binding Tooltip}" FontWeight="Normal"/>
-                                    </TextBlock.ToolTip>
-                                </TextBlock>
-                            </DataTemplate>
-                        </TabControl.ItemTemplate>
                     </TabControl>
                 </ScrollViewer>
                 

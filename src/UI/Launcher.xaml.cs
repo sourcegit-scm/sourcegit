@@ -1,5 +1,5 @@
-using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Net;
 using System.Reflection;
 using System.Text.Json;
@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SourceGit.UI {
 
@@ -19,13 +20,48 @@ namespace SourceGit.UI {
         /// <summary>
         ///     Tab data.
         /// </summary>
-        public class Tab {
+        public class Tab : INotifyPropertyChanged {
             public string Title { get; set; }
             public string Tooltip { get; set; }
-            public bool AllowDragDrop { get; set; }
             public bool IsActive { get; set; }
             public Git.Repository Repo { get; set; }
             public object Page { get; set; }
+            public bool IsRepo => Repo != null;
+            public int Color {
+                get { return Repo == null ? 0 : Repo.Color; }
+                set {
+                    if (Repo == null || Repo.Color == value) return;
+                    Repo.Color = value;
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Color"));
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+        }
+
+        /// <summary>
+        ///     Manager tab
+        /// </summary>
+        public class ManagerTab : Tab {
+            public ManagerTab() {
+                Title = "HOME";
+                Tooltip = "Repositories Manager";
+                IsActive = true;
+                Page = new Manager();
+            }
+        }
+
+        /// <summary>
+        ///     Repository tab.
+        /// </summary>
+        public class RepoTab : Tab {
+            public RepoTab(Git.Repository repo, Dashboard page) {
+                Title = repo.Parent == null ? repo.Name : $"{repo.Parent.Name} : {repo.Name}";
+                Tooltip = repo.Path;
+                Repo = repo;
+                IsActive = false;
+                Page = page;
+            }
         }
 
         /// <summary>
@@ -42,16 +78,9 @@ namespace SourceGit.UI {
         ///     Constructor
         /// </summary>
         public Launcher() {
-            Tabs.Add(new Tab() {
-                Title = "HOME",
-                Tooltip = "Repositories Manager",
-                AllowDragDrop = false,
-                Page = new Manager(),
-            });
-
+            Tabs.Add(new ManagerTab());
             InitializeComponent();
             openedTabs.SelectedItem = Tabs[0];
-
             if (App.Preference.CheckUpdate) Task.Run(CheckUpdate);
         }
 
@@ -69,16 +98,8 @@ namespace SourceGit.UI {
             }
 
             repo.Open();
-
             var page = new Dashboard(repo);
-            var tab = new Tab() {
-                Title = repo.Parent == null ? repo.Name : $"{repo.Parent.Name} : {repo.Name}",
-                Tooltip = repo.Path,
-                AllowDragDrop = true,
-                Repo = repo,
-                Page = page,
-            };
-
+            var tab = new RepoTab(repo, page);
             repo.SetPopupManager(page.popupManager);
             Tabs.Add(tab);
             openedTabs.SelectedItem = tab;
@@ -113,40 +134,38 @@ namespace SourceGit.UI {
 
         #region LAYOUT_CONTENT
         /// <summary>
+        ///     Close repository.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseRepo(object sender, RoutedEventArgs e) {
+            var tab = (sender as Button).DataContext as Tab;
+            if (tab == null || tab.Repo == null) {
+                e.Handled = true;
+                return;
+            }
+
+            Tabs.Remove(tab);
+
+            tab.Page = null;
+            tab.Repo.RemovePopup();
+            tab.Repo.Close();
+            tab.Repo = null;
+        }
+
+        /// <summary>
         ///     Context menu for tab items.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TabsContextMenuOpening(object sender, ContextMenuEventArgs ev) {
             var tab = (sender as TabItem).DataContext as Tab;
-            if (tab == null) {
+            if (tab == null || tab.Repo == null) {
                 ev.Handled = true;
                 return;
             }
 
             var repo = tab.Repo;
-            if (repo == null) {
-                ev.Handled = true;
-                return;
-            }
-
-            var close = new MenuItem();
-            close.Header = "Close";
-            close.Click += (o, e) => {
-                Tabs.Remove(tab);
-
-                tab.Page = null;
-                tab.Repo.RemovePopup();
-                tab.Repo.Close();
-                tab.Repo = null;
-            };
-
-            var copyPath = new MenuItem();
-            copyPath.Header = "Copy Path";
-            copyPath.Click += (o, e) => {
-                Clipboard.SetText(repo.Path);
-                e.Handled = true;
-            };
 
             var refresh = new MenuItem();
             refresh.Header = "Refresh";
@@ -155,11 +174,39 @@ namespace SourceGit.UI {
                 e.Handled = true;
             };
 
+            var bookmark = new MenuItem();
+            bookmark.Header = "Bookmark";
+            for (int i = 0; i < Converters.IntToRepoColor.Colors.Length; i++) {
+                var icon = new System.Windows.Shapes.Path();
+                icon.Style = FindResource("Style.Icon") as Style;
+                icon.Data = Geometry.Parse("M 0,0 A 180,180 180 1 1 1,1 Z");
+                icon.Fill = Converters.IntToRepoColor.Colors[i];
+                icon.Width = 12;
+
+                var mark = new MenuItem();
+                mark.Icon = icon;
+                mark.Header = $"{i + 1}";
+
+                var refIdx = i;
+                mark.Click += (o, e) => {
+                    tab.Color = refIdx;
+                    e.Handled = true;
+                };
+
+                bookmark.Items.Add(mark);
+            }
+
+            var copyPath = new MenuItem();
+            copyPath.Header = "Copy path";
+            copyPath.Click += (o, e) => {
+                Clipboard.SetText(repo.Path);
+                e.Handled = true;
+            };
+
             var menu = new ContextMenu();
-            menu.Items.Add(close);
-            menu.Items.Add(new Separator());
-            menu.Items.Add(copyPath);
             menu.Items.Add(refresh);
+            menu.Items.Add(bookmark);
+            menu.Items.Add(copyPath);
             menu.IsOpen = true;
 
             ev.Handled = true;
@@ -227,11 +274,14 @@ namespace SourceGit.UI {
 
         #region DRAG_DROP
         private void TabsMouseMove(object sender, MouseEventArgs e) {
-            var tab = e.Source as TabItem;
-            if (tab == null || (tab.DataContext as Tab).Repo == null) return;
+            var item = e.Source as TabItem;
+            if (item == null) return;
+
+            var tab = item.DataContext as Tab;
+            if (tab == null || tab.Repo == null) return;
 
             if (Mouse.LeftButton == MouseButtonState.Pressed) {
-                DragDrop.DoDragDrop(tab, tab, DragDropEffects.All);
+                DragDrop.DoDragDrop(item, item, DragDropEffects.All);
                 e.Handled = true;
             }
         }

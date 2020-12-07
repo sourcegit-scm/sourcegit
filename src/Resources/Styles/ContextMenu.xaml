@@ -57,7 +57,7 @@
                 </Grid.ColumnDefinitions>
 
                 <ContentPresenter Name="Icon" Grid.Column="0" Margin="6,0" VerticalAlignment="Center" ContentSource="Icon"/>
-                <ContentPresenter Name="HeadHost" Grid.Column="1" ContentSource="Header" VerticalAlignment="Center"/>
+                <ContentPresenter Name="HeadHost" Grid.Column="1" Margin="0,0,8,0" ContentSource="Header" VerticalAlignment="Center"/>
                 <Path Grid.Column="2" Width="8" Height="8" Style="{DynamicResource Style.Icon}" Data="M 0 0 L 0 7 L 4 3.5 Z"/>
                 <Popup Name="Popup" Placement="Right" HorizontalOffset="-2" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
                     <Border Name="SubmenuBorder" SnapsToDevicePixels="True" Background="{DynamicResource Brush.BG1}" BorderBrush="{DynamicResource Brush.Border1}" BorderThickness="1">

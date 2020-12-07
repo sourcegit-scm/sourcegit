@@ -39,6 +39,10 @@ namespace SourceGit.Git {
         /// </summary>
         public string GroupId { get; set; }
         /// <summary>
+        ///     Custom color.
+        /// </summary>
+        public int Color { get; set; } = 0;
+        /// <summary>
         ///     Last open time(File time format).
         /// </summary>
         public long LastOpenTime { get; set; }
