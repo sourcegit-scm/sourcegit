@@ -88,6 +88,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Path
+                                        x:Name="Icon"
                                         Grid.Column="0"
                                         Width="14" Height="14"
                                         Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}"
@@ -113,6 +114,10 @@
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding IsActive}" Value="True">
                                         <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="0">
+                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Git}"/>
+                                        <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG}"/>
                                     </DataTrigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>

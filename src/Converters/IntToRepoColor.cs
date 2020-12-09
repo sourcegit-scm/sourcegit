@@ -15,6 +15,7 @@ namespace SourceGit.Converters {
         ///     All supported colors.
         /// </summary>
         public static Brush[] Colors = new Brush[] {
+            Brushes.Transparent,
             Brushes.White,
             Brushes.Red,
             Brushes.Orange,

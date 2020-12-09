@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SourceGit.UI {
 
@@ -25,6 +26,7 @@ namespace SourceGit.UI {
             public bool IsRepo { get; set; }
             public bool IsExpended { get; set; }
             public bool IsEditing { get; set; }
+            public int Color { get; set; }
             public List<Node> Children { get; set; } = new List<Node>();
         }
 
@@ -100,6 +102,31 @@ namespace SourceGit.UI {
                 ev.Handled = true;
             };
 
+            var iconBookmark = FindResource("Icon.Bookmark") as Geometry;
+            var bookmark = new MenuItem();
+            bookmark.Header = "Bookmark";
+            for (int i = 0; i < Converters.IntToRepoColor.Colors.Length; i++) {
+                var icon = new System.Windows.Shapes.Path();
+                icon.Style = FindResource("Style.Icon") as Style;
+                icon.Data = iconBookmark;
+                icon.Fill = Converters.IntToRepoColor.Colors[i];
+                icon.Width = 8;
+
+                var mark = new MenuItem();
+                mark.Icon = icon;
+                mark.Header = $"{i}";
+
+                var refIdx = i;
+                mark.Click += (o, e) => {
+                    repo.Color = refIdx;
+                    UpdateRecentOpened();
+                    UpdateTree();
+                    e.Handled = true;
+                };
+
+                bookmark.Items.Add(mark);
+            }
+
             var delete = new MenuItem();
             delete.Header = "Delete";
             delete.Click += (o, ev) => {
@@ -113,6 +140,7 @@ namespace SourceGit.UI {
             var menu = new ContextMenu();
             menu.Items.Add(open);
             menu.Items.Add(explore);
+            menu.Items.Add(bookmark);
             menu.Items.Add(delete);
             menu.IsOpen = true;
             e.Handled = true;
@@ -301,8 +329,37 @@ namespace SourceGit.UI {
                     ev.Handled = true;
                 };
 
+                var iconBookmark = FindResource("Icon.Bookmark") as Geometry;
+                var bookmark = new MenuItem();
+                bookmark.Header = "Bookmark";
+                for (int i = 0; i < Converters.IntToRepoColor.Colors.Length; i++) {
+                    var icon = new System.Windows.Shapes.Path();
+                    icon.Style = FindResource("Style.Icon") as Style;
+                    icon.Data = iconBookmark;
+                    icon.Fill = Converters.IntToRepoColor.Colors[i];
+                    icon.Width = 8;
+
+                    var mark = new MenuItem();
+                    mark.Icon = icon;
+                    mark.Header = $"{i}";
+
+                    var refIdx = i;
+                    mark.Click += (o, e) => {
+                        var repo = App.Preference.FindRepository(node.Id);
+                        if (repo != null) {
+                            repo.Color = refIdx;
+                            UpdateRecentOpened();
+                            UpdateTree();
+                        }
+                        e.Handled = true;
+                    };
+
+                    bookmark.Items.Add(mark);
+                }
+
                 menu.Items.Add(open);
                 menu.Items.Add(explore);
+                menu.Items.Add(bookmark);
             } else {
                 var addSubFolder = new MenuItem();
                 addSubFolder.Header = "Add Sub-Folder";
@@ -463,6 +520,7 @@ namespace SourceGit.UI {
                     IsRepo = false,
                     IsExpended = group.IsExpended,
                     IsEditing = group.Id == editingNodeId,
+                    Color = 0,
                 };
 
                 groupNodes.Add(node.Id, node);
@@ -486,6 +544,7 @@ namespace SourceGit.UI {
                     IsRepo = true,
                     IsExpended = false,
                     IsEditing = repo.Path == editingNodeId,
+                    Color = repo.Color,
                 };
 
                 if (groupNodes.ContainsKey(repo.GroupId)) {

@@ -188,18 +188,19 @@ namespace SourceGit.UI {
                 e.Handled = true;
             };
 
+            var iconBookmark = FindResource("Icon.Bookmark") as Geometry;
             var bookmark = new MenuItem();
             bookmark.Header = "Bookmark";
             for (int i = 0; i < Converters.IntToRepoColor.Colors.Length; i++) {
                 var icon = new System.Windows.Shapes.Path();
                 icon.Style = FindResource("Style.Icon") as Style;
-                icon.Data = Geometry.Parse("M 0,0 A 180,180 180 1 1 1,1 Z");
+                icon.Data = iconBookmark;
                 icon.Fill = Converters.IntToRepoColor.Colors[i];
-                icon.Width = 12;
+                icon.Width = 8;
 
                 var mark = new MenuItem();
                 mark.Icon = icon;
-                mark.Header = $"{i + 1}";
+                mark.Header = $"{i}";
 
                 var refIdx = i;
                 mark.Click += (o, e) => {
