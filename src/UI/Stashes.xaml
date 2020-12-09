@@ -30,7 +30,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="STASHES" Foreground="{StaticResource Brush.FG}"  Opacity=".4" FontWeight="Bold"/>
+                <Label Content="STASHES" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
                 <ListView
                     Grid.Row="1"
                     x:Name="stashList"
@@ -82,10 +82,9 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Content="CHANGES" Foreground="{StaticResource Brush.FG}"  Opacity=".4" FontWeight="Bold"/>
+                    <Label Grid.Column="0" Content="CHANGES" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
                     <Label Grid.Column="1" Content="Untracked files not included" Foreground="{StaticResource Brush.FG2}" FontSize="10"/>
                 </Grid>
-                
 
                 <ListView 
                     x:Name="changeList" 
@@ -125,9 +124,9 @@
         </Grid>
 
         <!-- Splitter -->
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.BG3}"/>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.BG4}"/>
 
         <!-- Right Panel -->
-        <local:DiffViewer Grid.Column="2" x:Name="diff"/>
+        <local:DiffViewer Grid.Column="2" x:Name="diff" Padding="8"/>
     </Grid>
 </UserControl>
