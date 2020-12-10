@@ -79,7 +79,7 @@
                             </DataTemplate>
 
                             <DataTemplate DataType="{x:Type local:Launcher+RepoTab}">
-                                <Grid MinWidth="80" Margin="8,0">
+                                <Grid x:Name="BG" MinWidth="80" Margin="8,0" Background="Transparent">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
@@ -119,6 +119,13 @@
                                         <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Git}"/>
                                         <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG}"/>
                                     </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsActive}" Value="False"/>
+                                            <Condition Binding="{Binding ElementName=BG, Path=IsMouseOver}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                                    </MultiDataTrigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>
                         </TabControl.Resources>
@@ -135,7 +142,7 @@
                                             <Grid SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Tooltip}">
                                                 <Border x:Name="BG" Margin="-1,0" SnapsToDevicePixels="True" Background="Transparent" BorderThickness="0" BorderBrush="{StaticResource Brush.BG3}" CornerRadius="4,4,0,0">
                                                     <Border.Effect>
-                                                        <DropShadowEffect ShadowDepth="0" Opacity=".5"/>
+                                                        <DropShadowEffect ShadowDepth="0" Opacity=".7"/>
                                                     </Border.Effect>
                                                 </Border>
 
