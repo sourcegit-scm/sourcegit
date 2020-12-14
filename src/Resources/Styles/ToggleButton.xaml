@@ -4,9 +4,37 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Grid Background="Transparent">
-                        <ContentPresenter/>
+                    <Grid Background="Transparent" Margin="4,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Path
+                            x:Name="ExpanderIcon"
+                            Grid.Column="0"
+                            Width="10" Height="10"
+                            Style="{DynamicResource Style.Icon}"
+                            Data="{DynamicResource Icon.Down}"
+                            Fill="{DynamicResource Brush.FG2}"
+                            RenderTransformOrigin=".5,.5">
+                            <Path.RenderTransform>
+                                <RotateTransform Angle="270"/>
+                            </Path.RenderTransform>
+                        </Path>
+                        
+                        <ContentPresenter Grid.Column="1"/>
                     </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="ExpanderIcon" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="0"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

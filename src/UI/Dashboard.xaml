@@ -360,7 +360,7 @@
                     Grid.Row="6" 
                     Style="{StaticResource Style.ToggleButton.Expender}"
                     IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIShowTags, Mode=TwoWay}">
-                    <Grid Margin="4,0,2,0">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="16"/>
@@ -427,7 +427,7 @@
                     Grid.Row="9" 
                     Style="{StaticResource Style.ToggleButton.Expender}"
                     IsChecked="False">
-                    <Grid Margin="4,0,2,0">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="16"/>
