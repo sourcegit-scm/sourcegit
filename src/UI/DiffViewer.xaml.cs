@@ -94,6 +94,9 @@ namespace SourceGit.UI {
             foreach (var editor in editors) editorContainer.Children.Remove(editor);
             editors.Clear();
 
+            editorLines.Children.Clear();
+            editorLines.ColumnDefinitions.Clear();
+
             Task.Run(() => {
                 var args = $"{opts.ExtraArgs} ";
                 if (opts.RevisionRange.Length > 0) args += $"{opts.RevisionRange[0]} ";
@@ -190,12 +193,10 @@ namespace SourceGit.UI {
                     editorContainer.Children.Add(editor);
                     editors.Add(editor);
 
-                    editorLines.Children.Clear();
-                    editorLines.ColumnDefinitions.Clear();
+                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
+                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
 
                     for (int i = 0; i < 2; i++) {
-                        editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
-
                         var split = new Rectangle();
                         split.Width = 1;
                         split.Fill = FindResource("Brush.Border2") as Brush;
@@ -269,8 +270,6 @@ namespace SourceGit.UI {
                     editors.Add(oldEditor);
                     editors.Add(newEditor);
 
-                    editorLines.Children.Clear();
-                    editorLines.ColumnDefinitions.Clear();
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
