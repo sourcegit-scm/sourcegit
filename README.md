@@ -7,7 +7,7 @@
 [发行版](https://gitee.com/sourcegit/SourceGit/releases/)
 
 1. `SourceGit.exe`为不包含`.NET 5.0`运行时的可执行文件。如果本机已有`.NET 5.0`可下载使用
-2. `SourceGit.zip`为`self-contained`包。包含了`.NET 5.0`运行时。 
+2. `SourceGit.tar.gz`为`self-contained`包。包含了`.NET 5.0`运行时。 
 
 ## 预览
 
