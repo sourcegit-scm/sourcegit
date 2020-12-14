@@ -15,11 +15,8 @@
         <RepositoryUrl>https://gitee.com/sourcegit/SourceGit.git</RepositoryUrl>
         <RepositoryType>Public</RepositoryType>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    </PropertyGroup>
-    
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <DebugType>none</DebugType>
-      <DebugSymbols>false</DebugSymbols>
+        <DebugType>embedded</DebugType>
+        <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
     </PropertyGroup>
 
     <ItemGroup>
