@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -423,12 +425,105 @@ namespace SourceGit.UI {
 
             Dispatcher.Invoke(() => {
                 fileTree.ItemsSource = fileTreeSource;
-                filePreview.Text = "";
+                previewEditor.Children.Clear();
             });
         }
 
+        private void LayoutPreview(List<Git.Commit.Line> data) {
+            var maxLineNumber = $"{data.Count + 1}";
+            var formatted = new FormattedText(
+                maxLineNumber,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(new FontFamily("Consolas"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                12.0,
+                Brushes.Black,
+                VisualTreeHelper.GetDpi(this).PixelsPerDip);
+
+            var grid = new DataGrid();
+            grid.SetValue(Grid.RowProperty, 1);
+            grid.RowHeight = 16.0;
+            grid.FrozenColumnCount = 1;
+            grid.ContextMenuOpening += OnPreviewContextMenuOpening;
+            grid.RowStyle = FindResource("Style.DataGridRow.NoBringIntoView") as Style;
+
+            var colLineNumber = new DataGridTextColumn();
+            colLineNumber.IsReadOnly = true;
+            colLineNumber.Binding = new Binding("No");
+            colLineNumber.ElementStyle = FindResource("Style.DataGridText.LineNumber") as Style;
+            colLineNumber.Width = new DataGridLength(formatted.Width + 16, DataGridLengthUnitType.Pixel);
+            grid.Columns.Add(colLineNumber);
+
+            var offset = formatted.Width + 16;
+            if (data.Count * 16 > previewEditor.ActualHeight) offset += 8;
+
+            var colContent = new DataGridTextColumn();
+            colContent.IsReadOnly = true;
+            colContent.Binding = new Binding("Content");
+            colContent.ElementStyle = FindResource("Style.DataGridText.Content") as Style;
+            colContent.MinWidth = previewEditor.ActualWidth - offset;
+            colContent.Width = DataGridLength.SizeToCells;
+            grid.Columns.Add(colContent);
+
+            var splitter = new System.Windows.Shapes.Rectangle();
+            splitter.Width = 1;
+            splitter.Fill = FindResource("Brush.Border2") as Brush;
+            splitter.HorizontalAlignment = HorizontalAlignment.Left;
+            splitter.Margin = new Thickness(formatted.Width + 15, 0, 0, 0);
+
+            grid.ItemsSource = data;
+            previewEditor.Children.Add(grid);
+            previewEditor.Children.Add(splitter);
+        }
+
+        private void OnPreviewContextMenuOpening(object sender, ContextMenuEventArgs e) {
+            var grid = sender as DataGrid;
+            if (grid == null) return;
+
+            var menu = new ContextMenu();
+            var copy = new MenuItem();
+            copy.Header = "Copy";
+            copy.Click += (o, ev) => {
+                var items = grid.SelectedItems;
+                if (items.Count == 0) return;
+
+                var builder = new StringBuilder();
+                foreach (var item in items) {
+                    var line = item as Git.Commit.Line;
+                    if (line == null) continue;
+
+                    builder.Append(line.Content);
+                    builder.AppendLine();
+                }
+
+                Clipboard.SetText(builder.ToString());
+            };
+            menu.Items.Add(copy);
+            menu.IsOpen = true;
+            e.Handled = true;
+        }
+
+        private void OnPreviewRequestBringIntoView(object sender, RequestBringIntoViewEventArgs e) {
+            e.Handled = true;
+        }
+
+        private void OnPreviewSizeChanged(object sender, SizeChangedEventArgs e) {
+            if (previewEditor.Children.Count == 0) return;
+
+            var totalWidth = previewEditor.ActualWidth;
+            var totalHeight = previewEditor.ActualHeight;
+            var editor = previewEditor.Children[0] as DataGrid;
+            var minWidth = totalWidth - editor.NonFrozenColumnsViewportHorizontalOffset;
+            var desireHeight = editor.Items.Count * editor.RowHeight;
+            if (desireHeight > totalHeight) minWidth -= 8;
+
+            editor.Columns[1].MinWidth = minWidth;
+            editor.Columns[1].Width = DataGridLength.SizeToCells;
+            editor.UpdateLayout();
+        }
+
         private async void FileTreeItemSelected(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            filePreview.Text = "";
+            previewEditor.Children.Clear();
             maskPreviewNotSupported.Visibility = Visibility.Collapsed;
             maskRevision.Visibility = Visibility.Collapsed;
 
@@ -450,7 +545,7 @@ namespace SourceGit.UI {
                         if (isBinary) {
                             Dispatcher.Invoke(() => maskPreviewNotSupported.Visibility = Visibility.Visible);
                         } else {
-                            Dispatcher.Invoke(() => filePreview.Text = data);
+                            Dispatcher.Invoke(() => LayoutPreview(data));
                         }
                     });
                 }

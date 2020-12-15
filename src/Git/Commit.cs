@@ -31,6 +31,14 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
+        ///     Line of text in file.
+        /// </summary>
+        public class Line {
+            public int No { get; set; }
+            public string Content { get; set; }
+        }
+
+        /// <summary>
         ///     SHA
         /// </summary>
         public string SHA { get; set; }
@@ -224,10 +232,10 @@ namespace SourceGit.Git {
         /// <param name="repo"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public string GetTextFileContent(Repository repo, string file, out bool isBinary) {
-            var data = new List<string>();
-            var count = 0;
+        public List<Line> GetTextFileContent(Repository repo, string file, out bool isBinary) {
+            var data = new List<Line>();
             var binary = false;
+            var count = 0;
 
             repo.RunCommand($"diff 4b825dc642cb6eb9a060e54bf8d69288fbee4904 {SHA} --numstat -- \"{file}\"", line => {
                 if (REG_TESTBINARY.IsMatch(line)) binary = true;
@@ -237,29 +245,21 @@ namespace SourceGit.Git {
                 var errs = repo.RunCommand($"show {SHA}:\"{file}\"", line => {
                     if (binary) return;
 
-                    count++;
-                    if (data.Count >= 1000) return;
-
                     if (line.IndexOf('\0') >= 0) {
                         binary = true;
                         data.Clear();
-                        data.Add("BINARY FILE PREVIEW NOT SUPPORTED!");
                         return;
                     }
 
-                    data.Add(line);
+                    count++;
+                    data.Add(new Line() { No = count, Content = line });
                 });
 
                 if (errs != null) App.RaiseError(errs);
-            }            
-
-            if (!binary && count > 1000) {
-                data.Add("...");
-                data.Add($"Total {count} lines. Hide {count-1000} lines.");
             }
 
-            isBinary = binary;            
-            return string.Join("\n", data);
+            isBinary = binary;
+            return data;
         }
 
         /// <summary>

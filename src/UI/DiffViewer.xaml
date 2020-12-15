@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              FontFamily="Consolas">
     <UserControl.Resources>
-        <Style x:Key="Style.DataGridRow.TextChange" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+        <Style x:Key="Style.DataGridRow.NoBringIntoView" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
             <EventSetter Event="RequestBringIntoView" Handler="OnLineRequestBringIntoView"/>
         </Style>
 

@@ -421,7 +421,7 @@ namespace SourceGit.UI {
             grid.RowHeight = 16.0;
             grid.FrozenColumnCount = lineNumbers.Length;
             grid.ContextMenuOpening += OnTextChangeContextMenuOpening;
-            grid.RowStyle = FindResource("Style.DataGridRow.TextChange") as Style;
+            grid.RowStyle = FindResource("Style.DataGridRow.NoBringIntoView") as Style;
 
             foreach (var number in lineNumbers) {
                 var colLineNumber = new DataGridTextColumn();

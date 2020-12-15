@@ -11,6 +11,26 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Unloaded="Cleanup">
+    <UserControl.Resources>
+        <Style x:Key="Style.DataGridRow.NoBringIntoView" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+            <EventSetter Event="RequestBringIntoView" Handler="OnPreviewRequestBringIntoView"/>
+        </Style>
+
+        <Style x:Key="Style.DataGridText.LineNumber" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style x:Key="Style.DataGridText.Content" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="4,0,0,0"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+    </UserControl.Resources>
+    
     <TabControl>
         <TabItem Header="INFORMATION">
             <Grid>
@@ -427,16 +447,7 @@
 
                 <Border Grid.Column="2" BorderThickness="1" Margin="2,0" BorderBrush="{StaticResource Brush.Border2}">
                     <Grid>
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            <TextBlock 
-                                FontSize="10pt"
-                                FontFamily="Consolas"
-                                Padding="8"
-                                Opacity="0.8"
-                                Background="{StaticResource Brush.BG2}"
-                                Foreground="{StaticResource Brush.FG}"
-                                x:Name="filePreview"/>
-                        </ScrollViewer>
+                        <Grid x:Name="previewEditor" SizeChanged="OnPreviewSizeChanged" TextElement.FontFamily="Consolas" TextElement.Foreground="{StaticResource Brush.FG}"/>
 
                         <StackPanel x:Name="maskRevision" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
                             <Path x:Name="iconPreviewRevision" Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Submodule}" Fill="{StaticResource Brush.FG2}"/>
