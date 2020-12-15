@@ -91,7 +91,8 @@ namespace SourceGit.UI {
             sizeChange.Visibility = Visibility.Collapsed;
             noChange.Visibility = Visibility.Collapsed;
 
-            foreach (var editor in editors) editorContainer.Children.Remove(editor);
+            editorContainer.Children.Clear();
+            editorLines.Children.Clear();
             editors.Clear();
 
             editorLines.Children.Clear();
@@ -193,6 +194,7 @@ namespace SourceGit.UI {
                     editorContainer.Children.Add(editor);
                     editors.Add(editor);
 
+                    editorLines.ColumnDefinitions.Clear();
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
 
@@ -270,6 +272,7 @@ namespace SourceGit.UI {
                     editors.Add(oldEditor);
                     editors.Add(newEditor);
 
+                    editorLines.ColumnDefinitions.Clear();
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
@@ -608,7 +611,10 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ChangeDiffMode(object sender, RoutedEventArgs e) {
-            foreach (var editor in editors) editorContainer.Children.Remove(editor);
+            if (!IsLoaded) return;
+
+            editorContainer.Children.Clear();
+            editorLines.Children.Clear();
             editors.Clear();
 
             SetTextChange();
