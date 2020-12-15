@@ -441,7 +441,7 @@ namespace SourceGit.UI {
             textContent.SetValue(TextBlock.BackgroundProperty, Brushes.Transparent);
             textContent.SetValue(TextBlock.FontSizeProperty, 12.0);
             textContent.SetValue(TextBlock.MarginProperty, new Thickness(0));
-            textContent.SetValue(TextBlock.PaddingProperty, new Thickness(0));
+            textContent.SetValue(TextBlock.PaddingProperty, new Thickness(4,0,0,0));
 
             var visualTree = new FrameworkElementFactory(typeof(Grid));
             visualTree.AppendChild(borderContent);
