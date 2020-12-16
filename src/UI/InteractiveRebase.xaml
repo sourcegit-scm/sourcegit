@@ -178,6 +178,7 @@
                                 Grid.Column="2"
                                 Foreground="{StaticResource Brush.FG}"
                                 VerticalAlignment="Center"
+                                Margin="8,0"
                                 Text="{Binding Commit.Committer.Name}"/>
 
                             <TextBlock
