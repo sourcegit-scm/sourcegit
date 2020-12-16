@@ -131,8 +131,8 @@
                     <RowDefinition Height="24"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="24"/>
-                    <RowDefinition Height="1"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1"/>
                     <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -372,9 +372,8 @@
                         </Button>
                     </Grid>
                 </ToggleButton>
-                <Rectangle Grid.Row="7" Height="1" Fill="{StaticResource Brush.BG3}"/>
                 <DataGrid
-                    Grid.Row="8"
+                    Grid.Row="7"
                     x:Name="tagList"
                     Visibility="{Binding ElementName=tagListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
                     Background="{StaticResource Brush.BG3}"
@@ -421,6 +420,8 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
+                <Rectangle Grid.Row="8" Fill="{StaticResource Brush.BG1}" Height="1"/>
+
                 <!-- SUBMODULES -->
                 <ToggleButton
                     x:Name="submoduleListToggle" 
@@ -445,7 +446,7 @@
                     </Grid>
                 </ToggleButton>
                 <DataGrid
-                    Grid.Row="11"
+                    Grid.Row="10"
                     x:Name="submoduleList"
                     Visibility="{Binding ElementName=submoduleListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
                     Background="{StaticResource Brush.BG3}"
