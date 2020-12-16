@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -425,6 +426,22 @@ namespace SourceGit.UI {
             grid.FrozenColumnCount = lineNumbers.Length;
             grid.ContextMenuOpening += OnTextChangeContextMenuOpening;
             grid.RowStyle = FindResource("Style.DataGridRow.NoBringIntoView") as Style;
+            grid.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, (o, e) => {
+                var items = (o as DataGrid).SelectedItems;
+                if (items.Count == 0) return;
+
+                var builder = new StringBuilder();
+                foreach (var item in items) {
+                    var block = item as ChangeBlock;
+                    if (block == null) continue;
+                    if (!block.IsContent) continue;
+
+                    builder.Append(block.Content);
+                    builder.AppendLine();
+                }
+
+                Clipboard.SetText(builder.ToString());
+            }));
 
             foreach (var number in lineNumbers) {
                 var colLineNumber = new DataGridTextColumn();

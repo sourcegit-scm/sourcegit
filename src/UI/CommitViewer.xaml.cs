@@ -446,6 +446,21 @@ namespace SourceGit.UI {
             grid.FrozenColumnCount = 1;
             grid.ContextMenuOpening += OnPreviewContextMenuOpening;
             grid.RowStyle = FindResource("Style.DataGridRow.NoBringIntoView") as Style;
+            grid.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, (o, e) => {
+                var items = (o as DataGrid).SelectedItems;
+                if (items.Count == 0) return;
+
+                var builder = new StringBuilder();
+                foreach (var item in items) {
+                    var line = item as Git.Commit.Line;
+                    if (line == null) continue;
+
+                    builder.Append(line.Content);
+                    builder.AppendLine();
+                }
+
+                Clipboard.SetText(builder.ToString());
+            }));
 
             var colLineNumber = new DataGridTextColumn();
             colLineNumber.IsReadOnly = true;
