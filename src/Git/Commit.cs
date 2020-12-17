@@ -153,6 +153,17 @@ namespace SourceGit.Git {
                 commits.Add(current);
             }
 
+            if (!findHead && commits.Count > 0) {
+                if (commits[commits.Count - 1].IsAncestorOfHead(repo)) {
+                    if (commits.Count == 1) {
+                        commits[0].IsMerged = true;
+                    } else {
+                        var head = FindFirstMerged(repo, commits, 0, commits.Count - 1);
+                        if (head != null) head.IsMerged = true;
+                    }                    
+                }                
+            }
+
             return commits;
         }
 
@@ -275,6 +286,41 @@ namespace SourceGit.Git {
             proc.Close();
 
             File.Delete(bat);
+        }
+
+        private bool IsAncestorOfHead(Repository repo) {
+            var startInfo = new ProcessStartInfo();
+            startInfo.FileName = App.Setting.Tools.GitExecutable;
+            startInfo.Arguments = $"merge-base --is-ancestor {SHA} HEAD";
+            startInfo.WorkingDirectory = repo.Path;
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+            startInfo.RedirectStandardOutput = false;
+            startInfo.RedirectStandardError = false;
+
+            var proc = new Process() { StartInfo = startInfo };
+            proc.Start();
+            proc.WaitForExit();
+
+            var ret = proc.ExitCode;
+            proc.Close();
+            return ret == 0;
+        }
+
+        private static Commit FindFirstMerged(Repository repo, List<Commit> commits, int start, int end) {
+            var isStartAncestor = commits[start].IsAncestorOfHead(repo);
+            if (isStartAncestor) return commits[start];
+
+            if (end - start <= 1) {
+                return commits[end];
+            } else {
+                var mid = (int)Math.Floor((end + start) * 0.5f);
+                if (commits[mid].IsAncestorOfHead(repo)) {
+                    return FindFirstMerged(repo, commits, start + 1, mid);
+                } else {
+                    return FindFirstMerged(repo, commits, mid + 1, end);
+                }
+            }
         }
 
         private static void ParseSHA(Commit commit, string data) {
