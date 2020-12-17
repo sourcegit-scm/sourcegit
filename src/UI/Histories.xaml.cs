@@ -630,7 +630,7 @@ namespace SourceGit.UI {
             layout.RowDefinitions.Clear();
             layout.ColumnDefinitions.Clear();
 
-            if (App.Preference.UIUseHorizontalLayout) {
+            if (App.Setting.UI.MoveCommitViewerRight) {
                 layout.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star), MinWidth = 200 });
                 layout.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2) });
                 layout.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star), MinWidth = 200 });

@@ -11,7 +11,7 @@ namespace SourceGit.UI {
     /// <summary>
     ///     Preference window.
     /// </summary>
-    public partial class Preference : Window {
+    public partial class SettingDialog : Window {
 
         /// <summary>
         ///     Git global user name.
@@ -53,7 +53,7 @@ namespace SourceGit.UI {
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public Preference() {
+        public SettingDialog() {
             GlobalUser = GetConfig("user.name");
             GlobalUserEmail = GetConfig("user.email");
             AutoCRLF = GetConfig("core.autocrlf");
@@ -61,7 +61,7 @@ namespace SourceGit.UI {
 
             InitializeComponent();
 
-            int mergeType = App.Preference.MergeTool;
+            int mergeType = App.Setting.Tools.MergeTool;
             var merger = Git.MergeTool.Supported[mergeType];
             txtMergePath.IsReadOnly = !merger.IsConfigured;
             txtMergeParam.Text = merger.Parameter;
@@ -106,7 +106,7 @@ namespace SourceGit.UI {
 
             if (dialog.ShowDialog() == true) {
                 txtGitPath.Text = dialog.FileName;
-                App.Preference.GitExecutable = dialog.FileName;
+                App.Setting.Tools.GitExecutable = dialog.FileName;
             }
         }
 
@@ -118,7 +118,7 @@ namespace SourceGit.UI {
         private void SelectDefaultClonePath(object sender, RoutedEventArgs e) {
             FolderDailog.Open("Select default clone path", path => {
                 txtGitCloneDir.Text = path;
-                App.Preference.GitDefaultCloneDir = path;
+                App.Setting.Tools.GitDefaultCloneDir = path;
             });
         }
 
@@ -129,11 +129,11 @@ namespace SourceGit.UI {
         /// <param name="e"></param>
         private void ChangeMergeTool(object sender, SelectionChangedEventArgs e) {
             if (IsLoaded) {
-                var t = Git.MergeTool.Supported[App.Preference.MergeTool];
+                var t = Git.MergeTool.Supported[App.Setting.Tools.MergeTool];
 
-                App.Preference.MergeExecutable = t.Finder();
+                App.Setting.Tools.MergeExecutable = t.Finder();
 
-                txtMergePath.Text = App.Preference.MergeExecutable;
+                txtMergePath.Text = App.Setting.Tools.MergeExecutable;
                 txtMergeParam.Text = t.Parameter;
                 txtMergePath.IsReadOnly = !t.IsConfigured;
             }
@@ -145,7 +145,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectMergeToolPath(object sender, RoutedEventArgs e) {
-            int mergeType = App.Preference.MergeTool;
+            int mergeType = App.Setting.Tools.MergeTool;
             if (mergeType == 0) return;
 
             var merger = Git.MergeTool.Supported[mergeType];
@@ -157,7 +157,7 @@ namespace SourceGit.UI {
 
             if (dialog.ShowDialog() == true) {
                 txtMergePath.Text = dialog.FileName;
-                App.Preference.MergeExecutable = dialog.FileName;
+                App.Setting.Tools.MergeExecutable = dialog.FileName;
             }
         }
 
@@ -180,7 +180,7 @@ namespace SourceGit.UI {
             if (!App.IsGitConfigured) return "";
 
             var startInfo = new ProcessStartInfo();
-            startInfo.FileName = App.Preference.GitExecutable;
+            startInfo.FileName = App.Setting.Tools.GitExecutable;
             startInfo.Arguments = $"config --global {key}";
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true;
@@ -200,7 +200,7 @@ namespace SourceGit.UI {
             if (!App.IsGitConfigured) return;
 
             var startInfo = new ProcessStartInfo();
-            startInfo.FileName = App.Preference.GitExecutable;
+            startInfo.FileName = App.Setting.Tools.GitExecutable;
             startInfo.Arguments = $"config --global {key} \"{val}\"";
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true;

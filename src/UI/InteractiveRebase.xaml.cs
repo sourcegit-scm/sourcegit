@@ -42,8 +42,8 @@ namespace SourceGit.UI {
         public static List<InteractiveRebaseModeInfo> Supported = new List<InteractiveRebaseModeInfo>() {
             new InteractiveRebaseModeInfo(InteractiveRebaseMode.Pick, "Pick", "Use this commit", Brushes.Green),
             new InteractiveRebaseModeInfo(InteractiveRebaseMode.Reword, "Reword", "Edit the commit message", Brushes.Yellow),
-            new InteractiveRebaseModeInfo(InteractiveRebaseMode.Squash, "Squash", "Meld into previous commit", App.Preference.UseLightTheme ? Brushes.Gray : Brushes.White),
-            new InteractiveRebaseModeInfo(InteractiveRebaseMode.Fixup, "Fixup", "Like 'Squash' but discard log message", App.Preference.UseLightTheme ? Brushes.Gray : Brushes.White),
+            new InteractiveRebaseModeInfo(InteractiveRebaseMode.Squash, "Squash", "Meld into previous commit", App.Setting.UI.UseLightTheme ? Brushes.Gray : Brushes.White),
+            new InteractiveRebaseModeInfo(InteractiveRebaseMode.Fixup, "Fixup", "Like 'Squash' but discard log message", App.Setting.UI.UseLightTheme? Brushes.Gray : Brushes.White),
             new InteractiveRebaseModeInfo(InteractiveRebaseMode.Drop, "Drop", "Remove commit", Brushes.Red),
         };
     }

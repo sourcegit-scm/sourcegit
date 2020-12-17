@@ -189,7 +189,7 @@
                 <ToggleButton
                     Style="{StaticResource Style.ToggleButton.Orientation}"
                     ToolTip="Toggle Horizontal/Vertical Layout"
-                    IsChecked="{Binding Source={x:Static sourcegit:App.Preference}, Path=UIUseHorizontalLayout, Mode=TwoWay}"
+                    IsChecked="{Binding Source={x:Static sourcegit:App.Setting}, Path=UI.MoveCommitViewerRight, Mode=TwoWay}"
                     Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
                 
                 <!-- Tips to Histories Panel -->

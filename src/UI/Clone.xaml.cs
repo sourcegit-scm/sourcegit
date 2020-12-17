@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,7 +35,7 @@ namespace SourceGit.UI {
         ///     Constructor.
         /// </summary>
         public Clone(PopupManager mgr) {
-            ParentFolder = App.Preference.GitDefaultCloneDir;
+            ParentFolder = App.Setting.Tools.GitDefaultCloneDir;
             popup = mgr;
             InitializeComponent();
         }
@@ -82,15 +83,16 @@ namespace SourceGit.UI {
 
             popup.Lock();
 
-            var repo = await Task.Run(() => {
+            var succ = await Task.Run(() => {
                 return Git.Repository.Clone(RemoteUri, ParentFolder, rName, repoName, popup.UpdateStatus);
             });
 
-            if (repo == null) {
-                popup.Unlock();
-            } else {
-                popup.Close(true);
+            if (succ) {
+                var path = new DirectoryInfo(ParentFolder + "/" + repoName).FullName;
+                var repo = App.Setting.AddRepository(path, "");
                 repo.Open();
+            } else {
+                popup.Unlock();
             }
         }
 

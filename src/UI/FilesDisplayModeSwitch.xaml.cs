@@ -12,12 +12,12 @@ namespace SourceGit.UI {
         public static readonly DependencyProperty ModeProperty =
             DependencyProperty.Register(
                 "Mode", 
-                typeof(Git.Preference.FilesDisplayMode), 
+                typeof(Preference.FilesDisplayMode), 
                 typeof(FilesDisplayModeSwitch), 
-                new PropertyMetadata(Git.Preference.FilesDisplayMode.Grid));
+                new PropertyMetadata(Preference.FilesDisplayMode.Grid));
 
-        public Git.Preference.FilesDisplayMode Mode {
-            get { return (Git.Preference.FilesDisplayMode)GetValue(ModeProperty); }
+        public Preference.FilesDisplayMode Mode {
+            get { return (Preference.FilesDisplayMode)GetValue(ModeProperty); }
             set { SetValue(ModeProperty, value); }
         }
 
@@ -32,15 +32,15 @@ namespace SourceGit.UI {
         }
 
         private void UseGrid(object sender, RoutedEventArgs e) {
-            Mode = Git.Preference.FilesDisplayMode.Grid;
+            Mode = Preference.FilesDisplayMode.Grid;
         }
 
         private void UseList(object sender, RoutedEventArgs e) {
-            Mode = Git.Preference.FilesDisplayMode.List;
+            Mode = Preference.FilesDisplayMode.List;
         }
 
         private void UseTree(object sender, RoutedEventArgs e) {
-            Mode = Git.Preference.FilesDisplayMode.Tree;
+            Mode = Preference.FilesDisplayMode.Tree;
         }
     }
 }

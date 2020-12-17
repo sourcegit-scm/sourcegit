@@ -507,7 +507,7 @@ namespace SourceGit.UI {
         private async void Stage(object sender, RoutedEventArgs e) {
             var files = new List<string>();
 
-            if (App.Preference.UIUnstageDisplayMode != Git.Preference.FilesDisplayMode.Tree) {
+            if (App.Setting.UI.UnstageFileDisplayMode != Preference.FilesDisplayMode.Tree) {
                 var selected = unstagedList.SelectedItems;
                 foreach (var one in selected) {
                     var node = one as Git.Change;
@@ -707,7 +707,7 @@ namespace SourceGit.UI {
         private async void Unstage(object sender, RoutedEventArgs e) {
             var files = new List<string>();
 
-            if (App.Preference.UIStagedDisplayMode != Git.Preference.FilesDisplayMode.Tree) {
+            if (App.Setting.UI.StagedFileDisplayMode != Preference.FilesDisplayMode.Tree) {
                 var selected = stageList.SelectedItems;
                 foreach (var one in selected) {
                     var node = one as Git.Change;
@@ -870,8 +870,8 @@ namespace SourceGit.UI {
 
         #region MERGE
         private async void OpenMergeTool(object sender, RoutedEventArgs e) {
-            var mergeExe = App.Preference.MergeExecutable;
-            var mergeParam = Git.MergeTool.Supported[App.Preference.MergeTool].Parameter;
+            var mergeExe = App.Setting.Tools.MergeExecutable;
+            var mergeParam = Git.MergeTool.Supported[App.Setting.Tools.MergeTool].Parameter;
 
             if (!File.Exists(mergeExe) || mergeParam.IndexOf("$MERGED") < 0) {
                 App.RaiseError("Invalid merge tool in preference setting!");
@@ -879,7 +879,7 @@ namespace SourceGit.UI {
             }
 
             string file = null;
-            if (App.Preference.UIUnstageDisplayMode != Git.Preference.FilesDisplayMode.Tree) {
+            if (App.Setting.UI.UnstageFileDisplayMode != Preference.FilesDisplayMode.Tree) {
                 var selected = unstagedList.SelectedItems;
                 if (selected.Count <= 0) return;
 
@@ -906,7 +906,7 @@ namespace SourceGit.UI {
 
         private async void UseTheirs(object sender, RoutedEventArgs e) {
             var files = new List<string>();
-            if (App.Preference.UIUnstageDisplayMode != Git.Preference.FilesDisplayMode.Tree) {
+            if (App.Setting.UI.UnstageFileDisplayMode != Preference.FilesDisplayMode.Tree) {
                 var selected = unstagedList.SelectedItems;
                 foreach (var one in selected) {
                     var node = one as Git.Change;
@@ -935,7 +935,7 @@ namespace SourceGit.UI {
 
         private async void UseMine(object sender, RoutedEventArgs e) {
             var files = new List<string>();
-            if (App.Preference.UIUnstageDisplayMode != Git.Preference.FilesDisplayMode.Tree) {
+            if (App.Setting.UI.UnstageFileDisplayMode != Preference.FilesDisplayMode.Tree) {
                 var selected = unstagedList.SelectedItems;
                 foreach (var one in selected) {
                     var node = one as Git.Change;

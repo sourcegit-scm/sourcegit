@@ -47,6 +47,10 @@ namespace SourceGit.Git {
         /// </summary>
         public long LastOpenTime { get; set; }
         /// <summary>
+        ///     Expand tags.
+        /// </summary>
+        public bool ExpandTags { get; set; }
+        /// <summary>
         ///     Filters for logs.
         /// </summary>
         public List<string> LogFilters { get; set; } = new List<string>();
@@ -89,7 +93,7 @@ namespace SourceGit.Git {
         /// <returns></returns>
         public string GetConfig(string key) {
             var startInfo = new ProcessStartInfo();
-            startInfo.FileName = Preference.Instance.GitExecutable;
+            startInfo.FileName = App.Setting.Tools.GitExecutable;
             startInfo.Arguments = $"config {key}";
             startInfo.WorkingDirectory = Path;
             startInfo.UseShellExecute = false;
@@ -113,7 +117,7 @@ namespace SourceGit.Git {
         /// <param name="value"></param>
         public void SetConfig(string key, string value) {
             var startInfo = new ProcessStartInfo();
-            startInfo.FileName = Preference.Instance.GitExecutable;
+            startInfo.FileName = App.Setting.Tools.GitExecutable;
             startInfo.Arguments = $"config {key} \"{value}\"";
             startInfo.WorkingDirectory = Path;
             startInfo.UseShellExecute = false;
@@ -135,7 +139,7 @@ namespace SourceGit.Git {
         /// <returns>Errors if exists.</returns>
         public static string RunCommand(string cwd, string args, Action<string> outputHandler, bool includeError = false) {
             var startInfo = new ProcessStartInfo();
-            startInfo.FileName = Preference.Instance.GitExecutable;
+            startInfo.FileName = App.Setting.Tools.GitExecutable;
             startInfo.Arguments = "--no-pager -c core.quotepath=off " + args;
             startInfo.WorkingDirectory = cwd;
             startInfo.UseShellExecute = false;
@@ -213,7 +217,7 @@ namespace SourceGit.Git {
         /// <returns></returns>
         public static bool IsValid(string path) {
             var startInfo = new ProcessStartInfo();
-            startInfo.FileName = Preference.Instance.GitExecutable;
+            startInfo.FileName = App.Setting.Tools.GitExecutable;
             startInfo.Arguments = "rev-parse --git-dir";
             startInfo.WorkingDirectory = path;
             startInfo.UseShellExecute = false;
@@ -416,7 +420,7 @@ namespace SourceGit.Git {
         /// <param name="name">Local name</param>
         /// <param name="onProgress"></param>
         /// <returns></returns>
-        public static Repository Clone(string url, string folder, string rName, string lName, Action<string> onProgress) {
+        public static bool Clone(string url, string folder, string rName, string lName, Action<string> onProgress) {
             string RemoteName;
             if (rName != null) {
                 RemoteName = $" --origin {rName}";
@@ -430,12 +434,10 @@ namespace SourceGit.Git {
 
             if (errs != null) {
                 App.RaiseError(errs);
-                return null;
+                return false;
             }
 
-            var path = new DirectoryInfo(folder + "/" + lName).FullName;
-            var repo = Preference.Instance.AddRepository(path, "");
-            return repo;
+            return true;
         }
 
         /// <summary>

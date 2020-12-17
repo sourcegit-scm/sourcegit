@@ -51,7 +51,7 @@
                             Margin="4,0,0,0" 
                             ToolTip="SWITCH TO LIST/TREE VIEW"
                             Style="{StaticResource Style.ToggleButton.ListOrTree}" 
-                            IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIUseListInChanges, Mode=TwoWay}"/>
+                            IsChecked="{Binding Source={x:Static source:App.Setting}, Path=UI.UseListInChanges, Mode=TwoWay}"/>
                 </Grid>
 
                 <TreeView

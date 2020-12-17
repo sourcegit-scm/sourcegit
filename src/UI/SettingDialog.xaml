@@ -1,4 +1,4 @@
-<Window x:Class="SourceGit.UI.Preference"
+<Window x:Class="SourceGit.UI.SettingDialog"
         x:Name="me"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -89,14 +89,14 @@
                 <CheckBox 
                     Grid.Row="1" 
                     Grid.Column="1" 
-                    IsChecked="{Binding Source={x:Static app:App.Preference}, Path=UseLightTheme, Mode=TwoWay}"
+                    IsChecked="{Binding Source={x:Static app:App.Setting}, Path=UI.UseLightTheme, Mode=TwoWay}"
                     Content="Restart required"
                     TextElement.FontStyle="Italic"/>
                 <Label Grid.Row="2" Grid.Column="0" Content="Check for Update :" HorizontalAlignment="Right"/>
                 <CheckBox 
                     Grid.Row="2" 
                     Grid.Column="1" 
-                    IsChecked="{Binding Source={x:Static app:App.Preference}, Path=CheckUpdate, Mode=TwoWay}"
+                    IsChecked="{Binding Source={x:Static app:App.Setting}, Path=CheckUpdate, Mode=TwoWay}"
                     TextElement.FontStyle="Italic"/>
 
                 <!-- GIT相关配置 -->
@@ -111,7 +111,7 @@
                     <TextBox Grid.Column="0"
                              x:Name="txtGitPath"
                              Height="24" 
-                             Text="{Binding Source={x:Static app:App.Preference}, Path=GitExecutable, Mode=TwoWay}"
+                             Text="{Binding Source={x:Static app:App.Setting}, Path=Tools.GitExecutable, Mode=TwoWay}"
                              helpers:TextBoxHelper.Placeholder="Input path for git.exe"/>
                     <Button Grid.Column="1" Width="24" Height="24" Click="SelectGitPath" Padding="0" BorderThickness="1" Style="{StaticResource Style.Button.Bordered}">
                         <Path Width="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
@@ -127,7 +127,7 @@
                     <TextBox Grid.Column="0" 
                              x:Name="txtGitCloneDir"
                              Height="24" 
-                             Text="{Binding Source={x:Static app:App.Preference}, Path=GitDefaultCloneDir, Mode=TwoWay}"
+                             Text="{Binding Source={x:Static app:App.Setting}, Path=Tools.GitDefaultCloneDir, Mode=TwoWay}"
                              helpers:TextBoxHelper.Placeholder="Default path to clone repo into"/>
                     <Button Grid.Column="1" Width="24" Height="24" Click="SelectDefaultClonePath" Padding="0" BorderThickness="1" Style="{StaticResource Style.Button.Bordered}">
                         <Path Width="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
@@ -165,7 +165,7 @@
                      Padding="2,0,0,0"
                      HorizontalContentAlignment="Left"
                      VerticalContentAlignment="Center"
-                     SelectedIndex="{Binding Source={x:Static app:App.Preference}, Path=MergeTool, Mode=TwoWay}"
+                     SelectedIndex="{Binding Source={x:Static app:App.Setting}, Path=Tools.MergeTool, Mode=TwoWay}"
                      ItemsSource="{Binding Source={x:Static git:MergeTool.Supported}}"
                      DisplayMemberPath="Name"
                      SelectionChanged="ChangeMergeTool"/>
@@ -179,7 +179,7 @@
                     <TextBox Grid.Column="0" 
                              x:Name="txtMergePath"
                              Height="24" 
-                             Text="{Binding Source={x:Static app:App.Preference}, Path=MergeExecutable, Mode=TwoWay}"
+                             Text="{Binding Source={x:Static app:App.Setting}, Path=Tools.MergeExecutable, Mode=TwoWay}"
                              helpers:TextBoxHelper.Placeholder="Input path for merge tool"/>
                     <Button Grid.Column="1" Width="24" Height="24" Click="SelectMergeToolPath" Padding="0" BorderThickness="1" Style="{StaticResource Style.Button.Bordered}">
                         <Path Width="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>

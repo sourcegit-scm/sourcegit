@@ -1,4 +1,5 @@
 <UserControl x:Class="SourceGit.UI.Dashboard"
+             x:Name="me"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -359,7 +360,7 @@
                     x:Name="tagListToggle" 
                     Grid.Row="6" 
                     Style="{StaticResource Style.ToggleButton.Expender}"
-                    IsChecked="{Binding Source={x:Static source:App.Preference}, Path=UIShowTags, Mode=TwoWay}">
+                    IsChecked="{Binding Path=ExpandTags, ElementName=me, Mode=TwoWay}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>

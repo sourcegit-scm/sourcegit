@@ -61,7 +61,7 @@
                             Margin="8,0,0,0"
                             Style="{StaticResource Style.ToggleButton.SplitDirection}"
                             ToolTip="Toggle One-Side/Two-Sides"
-                            IsChecked="{Binding Source={x:Static sourcegit:App.Preference}, Path=UIUseOneSideDiff, Mode=TwoWay}"
+                            IsChecked="{Binding Source={x:Static sourcegit:App.Setting}, Path=UI.UseCombinedDiff, Mode=TwoWay}"
                             Checked="ChangeDiffMode" Unchecked="ChangeDiffMode"/>
                     </StackPanel>
                 </Grid>

@@ -153,24 +153,6 @@ namespace SourceGit.Git {
                 commits.Add(current);
             }
 
-            if (!findHead && commits.Count > 0) {
-                var startInfo = new ProcessStartInfo();
-                startInfo.FileName = Preference.Instance.GitExecutable;
-                startInfo.Arguments = $"merge-base --is-ancestor {commits[0].SHA} HEAD";
-                startInfo.WorkingDirectory = repo.Path;
-                startInfo.UseShellExecute = false;
-                startInfo.CreateNoWindow = true;
-                startInfo.RedirectStandardOutput = false;
-                startInfo.RedirectStandardError = false;
-
-                var proc = new Process() { StartInfo = startInfo };
-                proc.Start();
-                proc.WaitForExit();
-
-                commits[0].IsMerged = proc.ExitCode == 0;
-                proc.Close();
-            }
-
             return commits;
         }
 

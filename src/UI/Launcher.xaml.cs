@@ -95,7 +95,7 @@ namespace SourceGit.UI {
             Tabs.Add(new ManagerTab());
             InitializeComponent();
             openedTabs.SelectedItem = Tabs[0];
-            if (App.Preference.CheckUpdate) Task.Run(CheckUpdate);
+            if (App.Setting.CheckUpdate) Task.Run(CheckUpdate);
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ShowPreference(object sender, RoutedEventArgs e) {
-            var dialog = new Preference();
+            var dialog = new SettingDialog();
             dialog.Owner = this;
             dialog.ShowDialog();
         }

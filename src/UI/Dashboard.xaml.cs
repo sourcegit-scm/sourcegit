@@ -47,6 +47,14 @@ namespace SourceGit.UI {
         private string abortCommand = null;
 
         /// <summary>
+        ///     Expand/Collapsed tags
+        /// </summary>
+        public bool ExpandTags {
+            get { return repo.ExpandTags; }
+            set { repo.ExpandTags = value; }
+        }
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="repo">Opened repository.</param>
@@ -65,9 +73,10 @@ namespace SourceGit.UI {
                 });
             };
 
+            repo = opened;
+
             InitializeComponent();
 
-            repo = opened;
             histories.Repo = opened;
             commits.Repo = opened;
 
@@ -347,7 +356,7 @@ namespace SourceGit.UI {
         }
 
         private void OpenTerminal(object sender, RoutedEventArgs e) {
-            var bash = Path.Combine(App.Preference.GitExecutable, "..", "bash.exe");
+            var bash = Path.Combine(App.Setting.Tools.GitExecutable, "..", "bash.exe");
             if (!File.Exists(bash)) {
                 App.RaiseError("Can NOT locate bash.exe. Make sure bash.exe exists under the same folder with git.exe");
                 return;

@@ -10,9 +10,9 @@
         mc:Ignorable="d"
         MinWidth="800" MinHeight="600"
         Title="Source Git"
-        Width="{Binding Source={x:Static source:App.Preference}, Path=UIMainWindowWidth, Mode=TwoWay}"
-        Height="{Binding Source={x:Static source:App.Preference}, Path=UIMainWindowHeight, Mode=TwoWay}"
-        WindowStartupLocation="CenterOwner">
+        Width="{Binding Source={x:Static source:App.Setting}, Path=UI.WindowWidth, Mode=TwoWay}"
+        Height="{Binding Source={x:Static source:App.Setting}, Path=UI.WindowHeight, Mode=TwoWay}"
+        WindowStartupLocation="CenterScreen">
 
     <!-- Enable WindowChrome Feature -->
     <WindowChrome.WindowChrome>

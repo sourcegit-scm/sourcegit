@@ -160,7 +160,7 @@ namespace SourceGit.UI {
             var lastOldLine = "";
             var lastNewLine = "";
 
-            if (App.Preference.UIUseOneSideDiff) {
+            if (App.Setting.UI.UseCombinedDiff) {
                 var blocks = new List<ChangeBlock>();
 
                 foreach (var line in lineChanges) {
@@ -510,7 +510,7 @@ namespace SourceGit.UI {
             if (editors.Count == 0) return;
 
             var total = editorContainer.ActualWidth;
-            if (App.Preference.UIUseOneSideDiff) {
+            if (App.Setting.UI.UseCombinedDiff) {
                 var editor = editors[0];
                 var minWidth = total - editor.NonFrozenColumnsViewportHorizontalOffset;
                 var scroller = GetVisualChild<ScrollViewer>(editor);

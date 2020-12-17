@@ -1,14 +1,82 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 
-namespace SourceGit.Git {
+namespace SourceGit {
 
     /// <summary>
     ///     User's preference settings. Serialized to 
     /// </summary>
     public class Preference {
+
+        /// <summary>
+        ///     Tools setting.
+        /// </summary>
+        public class ToolSetting {
+            /// <summary>
+            ///     Git executable file path.
+            /// </summary>
+            public string GitExecutable { get; set; }
+            /// <summary>
+            ///     Default clone directory.
+            /// </summary>
+            public string GitDefaultCloneDir { get; set; }
+            /// <summary>
+            ///     Selected merge tool.
+            /// </summary>
+            public int MergeTool { get; set; } = 0;
+            /// <summary>
+            ///     Executable file path for merge tool.
+            /// </summary>
+            public string MergeExecutable { get; set; } = "--";
+        }
+
+        /// <summary>
+        ///     File's display mode.
+        /// </summary>
+        public enum FilesDisplayMode {
+            Tree,
+            List,
+            Grid,
+        }
+
+        /// <summary>
+        ///     Settings for UI.
+        /// </summary>
+        public class UISetting {
+            /// <summary>
+            ///     Use light theme?
+            /// </summary>
+            public bool UseLightTheme { get; set; }
+            /// <summary>
+            ///     Main window width
+            /// </summary>
+            public double WindowWidth { get; set; }
+            /// <summary>
+            ///     Main window height
+            /// </summary>
+            public double WindowHeight { get; set; }
+            /// <summary>
+            ///     Move commit viewer from bottom to right
+            /// </summary>
+            public bool MoveCommitViewerRight { get; set; }
+            /// <summary>
+            ///     File's display mode in unstaged view.
+            /// </summary>
+            public FilesDisplayMode UnstageFileDisplayMode { get; set; }
+            /// <summary>
+            ///     File's display mode in staged view.
+            /// </summary>
+            public FilesDisplayMode StagedFileDisplayMode { get; set; }
+            /// <summary>
+            ///     Use DataGrid instead of TreeView in changes view.
+            /// </summary>
+            public bool UseListInChanges { get; set; }
+            /// <summary>
+            ///     Use combined instead of side-by-side mode in diff viewer.
+            /// </summary>
+            public bool UseCombinedDiff { get; set; }
+        }
 
         /// <summary>
         ///     Group(Virtual folder) for watched repositories.
@@ -32,104 +100,19 @@ namespace SourceGit.Git {
             public bool IsExpended { get; set; }
         }
 
-        /// <summary>
-        ///     File's display mode.
-        /// </summary>
-        public enum FilesDisplayMode {
-            Tree,
-            List,
-            Grid,
-        }
-
-        #region STATICS
-        /// <summary>
-        ///     Storage path for Preference.
-        /// </summary>
-        private static readonly string SAVE_PATH = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "SourceGit",
-            "preference.json");
-        /// <summary>
-        ///     Runtime singleton instance.
-        /// </summary>
-        private static Preference instance = null;
-        public static Preference Instance {
-            get {
-                if (instance == null) Load();
-                return instance;
-            }
-            set {
-                instance = value;
-            }
-        }
-        #endregion
-
-        #region SETTING_GENERAL
-        /// <summary>
-        ///     Use light color theme.
-        /// </summary>
-        public bool UseLightTheme { get; set; }
+        #region SAVED_DATAS
         /// <summary>
         ///     Check for updates.
         /// </summary>
-        public bool CheckUpdate { get; set; }
-        #endregion
-
-        #region SETTING_GIT
+        public bool CheckUpdate { get; set; } = true;
         /// <summary>
-        ///     Git executable file path.
+        ///     Settings for executables.
         /// </summary>
-        public string GitExecutable { get; set; }
+        public ToolSetting Tools { get; set; } = new ToolSetting();
         /// <summary>
-        ///     Default clone directory.
+        ///     Use light color theme.
         /// </summary>
-        public string GitDefaultCloneDir { get; set; }
-        #endregion
-
-        #region SETTING_MERGE_TOOL
-        /// <summary>
-        ///     Selected merge tool.
-        /// </summary>
-        public int MergeTool { get; set; } = 0;
-        /// <summary>
-        ///     Executable file path for merge tool.
-        /// </summary>
-        public string MergeExecutable { get; set; } = "--";
-        #endregion
-
-        #region SETTING_UI
-        /// <summary>
-        ///     Main window's width
-        /// </summary>
-        public double UIMainWindowWidth { get; set; }
-        /// <summary>
-        ///     Main window's height
-        /// </summary>
-        public double UIMainWindowHeight { get; set; }
-        /// <summary>
-        ///     Show/Hide tags' list view.
-        /// </summary>
-        public bool UIShowTags { get; set; } = true;
-        /// <summary>
-        ///     Use horizontal layout for histories.
-        /// </summary>
-        public bool UIUseHorizontalLayout { get; set; }
-        /// <summary>
-        ///     Files' display mode in unstage view.
-        /// </summary>
-        public FilesDisplayMode UIUnstageDisplayMode { get; set; } = FilesDisplayMode.Grid;
-        /// <summary>
-        ///     Files' display mode in staged view.
-        /// </summary>
-        public FilesDisplayMode UIStagedDisplayMode { get; set; } = FilesDisplayMode.Grid;
-        /// <summary>
-        ///     Using datagrid instead of tree in changes.
-        /// </summary>
-        public bool UIUseListInChanges { get; set; }
-        /// <summary>
-        ///     Use one side diff instead of two sides.
-        /// </summary>
-        public bool UIUseOneSideDiff { get; set; }
+        public UISetting UI { get; set; } = new UISetting();
         #endregion
 
         #region SETTING_REPOS
@@ -140,34 +123,7 @@ namespace SourceGit.Git {
         /// <summary>
         ///     Watched repositories.
         /// </summary>
-        public List<Repository> Repositories { get; set; } = new List<Git.Repository>();
-        #endregion
-
-        #region METHODS_LOAD_SAVE
-        /// <summary>
-        ///     Load preference from disk.
-        /// </summary>
-        /// <returns>Loaded preference instance.</returns>
-        public static void Load() {
-            if (!File.Exists(SAVE_PATH)) {
-                instance = new Preference();
-            } else {
-                instance = JsonSerializer.Deserialize<Preference>(File.ReadAllText(SAVE_PATH));
-            }
-        }
-
-        /// <summary>
-        ///     Save current preference into disk.
-        /// </summary>
-        public static void Save() {
-            if (instance == null) return;
-
-            var dir = Path.GetDirectoryName(SAVE_PATH);
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
-            var data = JsonSerializer.Serialize(instance, new JsonSerializerOptions() { WriteIndented = true });
-            File.WriteAllText(SAVE_PATH, data);
-        }
+        public List<Git.Repository> Repositories { get; set; } = new List<Git.Repository>();
         #endregion
 
         #region METHODS_ON_GROUP
@@ -244,12 +200,12 @@ namespace SourceGit.Git {
         /// <param name="path">Local storage path.</param>
         /// <param name="groupId">Group's ID</param>
         /// <returns>Added repository instance.</returns>
-        public Repository AddRepository(string path, string groupId) {
+        public Git.Repository AddRepository(string path, string groupId) {
             var repo = FindRepository(path);
             if (repo != null) return repo;
 
             var dir = new DirectoryInfo(path);
-            repo = new Repository() {
+            repo = new Git.Repository() {
                 Path = dir.FullName,
                 Name = dir.Name,
                 GroupId = groupId,
@@ -266,7 +222,7 @@ namespace SourceGit.Git {
         /// </summary>
         /// <param name="path">Local storage path.</param>
         /// <returns>Founded repository instance.</returns>
-        public Repository FindRepository(string path) {
+        public Git.Repository FindRepository(string path) {
             var dir = new DirectoryInfo(path);
             foreach (var repo in Repositories) {
                 if (repo.Path == dir.FullName) return repo;

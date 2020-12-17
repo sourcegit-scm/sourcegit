@@ -56,7 +56,7 @@ namespace SourceGit.UI {
 
             if (CommitTemplate != repo.CommitTemplate) {
                 repo.CommitTemplate = CommitTemplate;
-                Git.Preference.Save();
+                App.SaveSetting();
             }
 
             Close(sender, e);

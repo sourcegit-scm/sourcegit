@@ -130,7 +130,7 @@ namespace SourceGit.UI {
             var delete = new MenuItem();
             delete.Header = "Delete";
             delete.Click += (o, ev) => {
-                App.Preference.RemoveRepository(repo.Path);
+                App.Setting.RemoveRepository(repo.Path);
                 UpdateRecentOpened();
                 UpdateTree();
                 HideBrief();
@@ -157,7 +157,7 @@ namespace SourceGit.UI {
             var addFolder = new MenuItem();
             addFolder.Header = "Add Folder";
             addFolder.Click += (o, ev) => {
-                var group = App.Preference.AddGroup("New Group", "");
+                var group = App.Setting.AddGroup("New Group", "");
                 UpdateTree(group.Id);
                 ev.Handled = true;
             };
@@ -195,7 +195,7 @@ namespace SourceGit.UI {
                 foreach (var path in paths) {
                     FileInfo info = new FileInfo(path);
                     if (info.Attributes == FileAttributes.Directory && Git.Repository.IsValid(path)) {
-                        App.Preference.AddRepository(path, group);
+                        App.Setting.AddRepository(path, group);
                         needRebuild = true;
                     }
                 }
@@ -207,7 +207,7 @@ namespace SourceGit.UI {
                 var group = "";
                 var to = (sender as TreeViewItem)?.DataContext as Node;
                 if (to != null) group = to.IsRepo ? to.ParentId : to.Id;
-                App.Preference.FindRepository(node.Id).GroupId = group;
+                App.Setting.FindRepository(node.Id).GroupId = group;
                 needRebuild = true;
             }
 
@@ -222,7 +222,7 @@ namespace SourceGit.UI {
 
             var node = selectedTreeViewItem.DataContext as Node;
             if (node.IsRepo) {
-                ShowBrief(App.Preference.FindRepository(node.Id));
+                ShowBrief(App.Setting.FindRepository(node.Id));
             } else {
                 HideBrief();
             }
@@ -254,7 +254,7 @@ namespace SourceGit.UI {
             var node = item.DataContext as Node;
 
             if (node != null && !node.IsRepo) {
-                var group = App.Preference.FindGroup(node.Id);
+                var group = App.Setting.FindGroup(node.Id);
                 group.IsExpended = item.IsExpanded;
                 e.Handled = true;
             }
@@ -298,9 +298,9 @@ namespace SourceGit.UI {
             var node = text.DataContext as Node;
             if (node != null) {
                 if (node.IsRepo) {
-                    App.Preference.RenameRepository(node.Id, text.Text);
+                    App.Setting.RenameRepository(node.Id, text.Text);
                 } else {
-                    App.Preference.RenameGroup(node.Id, text.Text);
+                    App.Setting.RenameGroup(node.Id, text.Text);
                 }
 
                 UpdateRecentOpened();
@@ -345,7 +345,7 @@ namespace SourceGit.UI {
 
                     var refIdx = i;
                     mark.Click += (o, e) => {
-                        var repo = App.Preference.FindRepository(node.Id);
+                        var repo = App.Setting.FindRepository(node.Id);
                         if (repo != null) {
                             repo.Color = refIdx;
                             UpdateRecentOpened();
@@ -364,10 +364,10 @@ namespace SourceGit.UI {
                 var addSubFolder = new MenuItem();
                 addSubFolder.Header = "Add Sub-Folder";
                 addSubFolder.Click += (o, ev) => {
-                    var parent = App.Preference.FindGroup(node.Id);
+                    var parent = App.Setting.FindGroup(node.Id);
                     if (parent != null) parent.IsExpended = true;
 
-                    var group = App.Preference.AddGroup("New Group", node.Id);
+                    var group = App.Setting.AddGroup("New Group", node.Id);
                     UpdateTree(group.Id);
                     ev.Handled = true;
                 };
@@ -404,7 +404,7 @@ namespace SourceGit.UI {
                     popupManager.Show(new Init(popupManager, repo.Path));
                 } else {
                     App.RaiseError("Path is NOT valid git repository or has been removed.");
-                    App.Preference.RemoveRepository(repo.Path);
+                    App.Setting.RemoveRepository(repo.Path);
                     UpdateRecentOpened();
                     UpdateTree();
                 }
@@ -485,7 +485,7 @@ namespace SourceGit.UI {
                 return;
             }
 
-            var repo = App.Preference.AddRepository(path, "");
+            var repo = App.Setting.AddRepository(path, "");
             App.Open(repo);
         }
 
@@ -493,7 +493,7 @@ namespace SourceGit.UI {
         ///     Update recent opened repositories.
         /// </summary>
         private void UpdateRecentOpened() {
-            var sorted = App.Preference.Repositories.OrderByDescending(a => a.LastOpenTime).ToList();
+            var sorted = App.Setting.Repositories.OrderByDescending(a => a.LastOpenTime).ToList();
             var top5 = new List<Git.Repository>();
 
             for (int i = 0; i < sorted.Count && i < 5; i++) {
@@ -512,7 +512,7 @@ namespace SourceGit.UI {
             var groupNodes = new Dictionary<string, Node>();
             var nodes = new List<Node>();
 
-            foreach (var group in App.Preference.Groups) {
+            foreach (var group in App.Setting.Groups) {
                 Node node = new Node() {
                     Id = group.Id,
                     ParentId = group.ParentId,
@@ -536,7 +536,7 @@ namespace SourceGit.UI {
                 }
             }
 
-            foreach (var repo in App.Preference.Repositories) {
+            foreach (var repo in App.Setting.Repositories) {
                 Node node = new Node() {
                     Id = repo.Path,
                     ParentId = repo.GroupId,
@@ -563,10 +563,10 @@ namespace SourceGit.UI {
         /// <param name="node"></param>
         private void DeleteNode(Node node) {
             if (node.IsRepo) {
-                App.Preference.RemoveRepository(node.Id);
+                App.Setting.RemoveRepository(node.Id);
                 UpdateRecentOpened();
             } else {
-                App.Preference.RemoveGroup(node.Id);
+                App.Setting.RemoveGroup(node.Id);
             }
 
             UpdateTree();

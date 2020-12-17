@@ -36,13 +36,13 @@ namespace SourceGit.UI {
                 if (errs != null) {
                     App.RaiseError(errs);
                 } else {
-                    App.Preference.AddRepository(workingDir, "");
+                    App.Setting.AddRepository(workingDir, "");
                 }
             });
 
             popup.Close(true);
 
-            var repo = App.Preference.FindRepository(workingDir);
+            var repo = App.Setting.FindRepository(workingDir);
             if (repo != null) repo.Open();
         }
 
