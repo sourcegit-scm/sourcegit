@@ -4,7 +4,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:source="clr-namespace:SourceGit"
              xmlns:local="clr-namespace:SourceGit.UI"
              xmlns:converters="clr-namespace:SourceGit.Converters"
              mc:Ignorable="d" 
@@ -32,7 +31,7 @@
         
         <!-- TitleBar -->
         <Grid Grid.Row="0" Panel.ZIndex="100">
-            <Border Background="{StaticResource Brush.BG1}" Margin="0,16,0,0">
+            <Border Background="{StaticResource Brush.BG1}" Margin="0,4,0,0">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="2" Direction="270" Opacity=".5" Color="Black"/>
                 </Border.Effect>
