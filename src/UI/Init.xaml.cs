@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,15 +11,17 @@ namespace SourceGit.UI {
     public partial class Init : UserControl {
         private PopupManager popup = null;
         private string workingDir = null;
+        private Action onSuccess = null;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="mgr"></param>
         /// <param name="path"></param>
-        public Init(PopupManager mgr, string path) {
+        public Init(PopupManager mgr, string path, Action success) {
             popup = mgr;
             workingDir = path;
+            onSuccess = success;
             InitializeComponent();
             txtPath.Content = path;
         }
@@ -40,10 +43,13 @@ namespace SourceGit.UI {
                 }
             });
 
-            popup.Close(true);
-
             var repo = App.Setting.FindRepository(workingDir);
-            if (repo != null) repo.Open();
+            if (repo != null) {
+                App.Open(repo);
+                onSuccess?.Invoke();
+            }
+
+            popup.Close(true);
         }
 
         /// <summary>

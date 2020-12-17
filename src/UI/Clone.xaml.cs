@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,6 +11,7 @@ namespace SourceGit.UI {
     /// </summary>
     public partial class Clone : UserControl {
         private PopupManager popup = null;
+        private Action cb = null;
 
         /// <summary>
         ///     Remote repository
@@ -34,9 +36,10 @@ namespace SourceGit.UI {
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public Clone(PopupManager mgr) {
+        public Clone(PopupManager mgr, Action success) {
             ParentFolder = App.Setting.Tools.GitDefaultCloneDir;
             popup = mgr;
+            cb = success;
             InitializeComponent();
         }
 
@@ -90,7 +93,9 @@ namespace SourceGit.UI {
             if (succ) {
                 var path = new DirectoryInfo(ParentFolder + "/" + repoName).FullName;
                 var repo = App.Setting.AddRepository(path, "");
-                repo.Open();
+                App.Open(repo);
+                cb?.Invoke();
+                popup.Close(true);
             } else {
                 popup.Unlock();
             }

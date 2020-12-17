@@ -57,7 +57,12 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void CloneRepo(object sender, RoutedEventArgs e) {
-            if (MakeSureReady()) popupManager.Show(new Clone(popupManager));
+            if (MakeSureReady()) {
+                popupManager.Show(new Clone(popupManager, () => {
+                    UpdateRecentOpened();
+                    UpdateTree();
+                }));
+            }
         }
         #endregion
 
@@ -401,7 +406,10 @@ namespace SourceGit.UI {
         private void ShowBrief(Git.Repository repo) {
             if (repo == null || !Git.Repository.IsValid(repo.Path)) {
                 if (Directory.Exists(repo.Path)) {
-                    popupManager.Show(new Init(popupManager, repo.Path));
+                    popupManager.Show(new Init(popupManager, repo.Path, () => {
+                        UpdateRecentOpened();
+                        UpdateTree();
+                    }));
                 } else {
                     App.RaiseError("Path is NOT valid git repository or has been removed.");
                     App.Setting.RemoveRepository(repo.Path);
@@ -477,7 +485,10 @@ namespace SourceGit.UI {
 
             if (!Git.Repository.IsValid(path)) {
                 if (Directory.Exists(path)) {
-                    popupManager.Show(new Init(popupManager, path));
+                    popupManager.Show(new Init(popupManager, path, () => {
+                        UpdateRecentOpened();
+                        UpdateTree();
+                    }));
                     return;
                 }
 
