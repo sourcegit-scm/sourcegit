@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -120,8 +121,7 @@ namespace SourceGit.Helpers {
         ///     Dot
         /// </summary>
         public struct Dot {
-            public double X;
-            public double Y;
+            public Point Center;
             public Brush Color;
         }
 
@@ -206,9 +206,9 @@ namespace SourceGit.Helpers {
                     major.IsMerged = isMerged;
                     position.X = major.HorizontalOffset;
                     position.Y = offsetY;
-                    maker.Dots.Add(new Dot() { X = position.X - 3, Y = position.Y - 3, Color = major.Brush });
+                    maker.Dots.Add(new Dot() { Center = position, Color = major.Brush });
                 } else {
-                    maker.Dots.Add(new Dot() { X = position.X - 3, Y = position.Y - 3, Color = Brushes.Orange });
+                    maker.Dots.Add(new Dot() { Center = position, Color = Brushes.Orange });
                 }
 
                 // 处理本提交的其他依赖
@@ -239,7 +239,7 @@ namespace SourceGit.Helpers {
 
                 // 加入本次提交
                 commit.IsMerged = isMerged;
-                commit.GraphOffset = System.Math.Max(offsetX + HALF_WIDTH, oldCount * UNIT_WIDTH);
+                commit.GraphOffset = Math.Max(offsetX + HALF_WIDTH, oldCount * UNIT_WIDTH);
 
                 // 清理临时数据
                 ended.Clear();
@@ -258,7 +258,122 @@ namespace SourceGit.Helpers {
             }
             unsolved.Clear();
 
+            maker.Lines.Sort((l, h) => l.Points[0].Y.CompareTo(h.Points[0].Y));
             return maker;
+        }
+    }
+
+    /// <summary>
+    ///     Visual element to render commit graph
+    /// </summary>
+    public class CommitGraph : FrameworkElement {
+        private double offsetY;
+        private CommitGraphMaker maker;
+
+        public CommitGraph() {
+            Clear();
+        }
+
+        public void Clear() {
+            offsetY = 0;
+            maker = null;
+        }
+
+        public void SetCommits(List<Git.Commit> commits) {
+            maker = CommitGraphMaker.Parse(commits);
+            Dispatcher.Invoke(() => InvalidateVisual());            
+        }
+
+        public void SetOffset(double y) {
+            offsetY = y * CommitGraphMaker.UNIT_HEIGHT;
+            InvalidateVisual();
+        }
+
+        protected override void OnRender(DrawingContext dc) {
+            if (maker == null) return;
+
+            var startY = offsetY;
+            var endY = offsetY + ActualHeight;
+
+            dc.PushTransform(new TranslateTransform(0, -offsetY));
+
+            // Draw all visible lines.
+            foreach (var path in maker.Lines) {
+                var last = path.Points[0];
+                var size = path.Points.Count;
+
+                if (last.Y > endY) break;
+                if (path.Points[size - 1].Y < startY) continue;
+
+                var geo = new StreamGeometry();
+                var pen = new Pen(path.Brush, 2);
+
+                using (var geoCtx = geo.Open()) {
+                    geoCtx.BeginFigure(last, false, false);
+
+                    var ended = false;
+                    for (int i = 1; i < size; i++) {
+                        var cur = path.Points[i];
+
+                        // Fix line NOT shown in graph if cur.Y is too large than current.
+                        if (cur.Y > endY) {
+                            cur.Y = endY;
+                            ended = true;
+                        }
+
+                        if (cur.X > last.X) {
+                            geoCtx.QuadraticBezierTo(new Point(cur.X, last.Y), cur, true, false);
+                        } else if (cur.X < last.X) {
+                            if (i < size - 1) {
+                                cur.Y += CommitGraphMaker.HALF_HEIGHT;
+
+                                var midY = (last.Y + cur.Y) / 2;
+                                var midX = (last.X + cur.X) / 2;
+                                geoCtx.PolyQuadraticBezierTo(new Point[] {
+                                    new Point(last.X, midY),
+                                    new Point(midX, midY),
+                                    new Point(cur.X, midY),
+                                    cur}, true, false);
+                            } else {
+                                geoCtx.QuadraticBezierTo(new Point(last.X, cur.Y), cur, true, false);
+                            }
+                        } else {
+                            geoCtx.LineTo(cur, true, false);
+                        }
+
+                        if (ended) break;
+                        last = cur;
+                    }
+                }
+
+                geo.Freeze();
+                dc.DrawGeometry(null, pen, geo);
+            }
+
+            // Draw short links
+            foreach (var link in maker.Links) {
+                if (link.Start.Y > endY) break;
+                if (link.End.Y < startY) continue;
+
+                var geo = new StreamGeometry();
+                var pen = new Pen(link.Brush, 2);
+
+                using (var geoCtx = geo.Open()) {
+                    geoCtx.BeginFigure(link.Start, false, false);
+                    geoCtx.QuadraticBezierTo(link.Control, link.End, true, false);
+                }
+
+                geo.Freeze();
+                dc.DrawGeometry(null, pen, geo);
+            }
+
+            // Draw visible points
+            foreach (var dot in maker.Dots) {
+                if (dot.Center.Y > endY) break;
+                if (dot.Center.Y < startY) continue;
+
+                dc.DrawEllipse(dot.Color, null, dot.Center, 3, 3);
+            }
         }
     }
 }

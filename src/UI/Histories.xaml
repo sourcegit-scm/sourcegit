@@ -154,8 +154,11 @@
             </DataGrid>
 
             <!-- Commit Graph -->
-            <Border Grid.Row="1" Margin="0,0,310,0" ClipToBounds="True" IsHitTestVisible="False">
-                <Canvas x:Name="commitGraph"/>
+            <Border x:Name="commitGraphContainer" Grid.Row="1" Margin="0,0,310,0" ClipToBounds="True" IsHitTestVisible="False">
+                <helpers:CommitGraph 
+                    x:Name="commitGraph" 
+                    Width="{Binding ElementName=commitGraphContainer, Path=ActualWidth}"
+                    Height="{Binding ElementName=commitGraphContainer, Path=ActualHeight}"/>
             </Border>
         </Grid>
 

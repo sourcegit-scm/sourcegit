@@ -82,7 +82,7 @@ namespace SourceGit.UI {
         ///     Cleanup
         /// </summary>
         public void Cleanup() {
-            commitGraph.Children.Clear();
+            commitGraph.Clear();
             commitList.ItemsSource = null;
             cachedCommits.Clear();
         }
@@ -92,91 +92,10 @@ namespace SourceGit.UI {
             cachedCommits = commits;
             if (isSearchMode) return;
 
-            var maker = Helpers.CommitGraphMaker.Parse(commits);
+            commitGraph.SetCommits(commits);
 
             Dispatcher.Invoke(() => {
-                commitGraph.Children.Clear();
-                isSearchMode = false;
                 txtSearch.Text = "";
-
-                // Draw all lines.
-                foreach (var path in maker.Lines) {
-                    var size = path.Points.Count;
-                    var geo = new StreamGeometry();
-                    var last = path.Points[0];
-
-                    using (var ctx = geo.Open()) {
-                        ctx.BeginFigure(last, false, false);
-
-                        for (int i = 1; i < size; i++) {
-                            var cur = path.Points[i];
-
-                            if (cur.X > last.X) {
-                                ctx.QuadraticBezierTo(new Point(cur.X, last.Y), cur, true, false);
-                            } else if (cur.X < last.X) {
-                                if (i < size - 1) {
-                                    cur.Y += Helpers.CommitGraphMaker.HALF_HEIGHT;
-
-                                    var midY = (last.Y + cur.Y) / 2;
-                                    var midX = (last.X + cur.X) / 2;
-                                    ctx.PolyQuadraticBezierTo(new Point[] {
-                                        new Point(last.X, midY),
-                                        new Point(midX, midY),
-                                        new Point(cur.X, midY),
-                                        cur
-                                    }, true, false);
-                                } else {
-                                    ctx.QuadraticBezierTo(new Point(last.X, cur.Y), cur, true, false);
-                                }                            
-                            } else {
-                                ctx.LineTo(cur, true, false);
-                            }
-
-                            last = cur;
-                        }
-                    }
-
-                    geo.Freeze();
-
-                    var p = new Path();
-                    p.Data = geo;
-                    p.Stroke = path.Brush;
-                    p.StrokeThickness = 2;
-                    commitGraph.Children.Add(p);
-                }
-                maker.Lines.Clear();
-
-                // Draw short links
-                foreach (var link in maker.Links) {
-                    var geo = new StreamGeometry();
-                    
-                    using (var ctx = geo.Open()) {
-                        ctx.BeginFigure(link.Start, false, false);
-                        ctx.QuadraticBezierTo(link.Control, link.End, true, false);
-                    }
-
-                    geo.Freeze();
-
-                    var p = new Path();
-                    p.Data = geo;
-                    p.Stroke = link.Brush;
-                    p.StrokeThickness = 2;
-                    commitGraph.Children.Add(p);
-                }
-                maker.Links.Clear();
-
-                // Draw points.
-                foreach (var dot in maker.Dots) {
-                    var ellipse = new Ellipse();
-                    ellipse.Height = 6;
-                    ellipse.Width = 6;
-                    ellipse.Fill = dot.Color;
-                    ellipse.SetValue(Canvas.LeftProperty, dot.X);
-                    ellipse.SetValue(Canvas.TopProperty, dot.Y);
-                    commitGraph.Children.Add(ellipse);
-                }
-                maker.Dots.Clear();
-
                 commitList.ItemsSource = new List<Git.Commit>(cachedCommits);
                 SetLoadingEnabled(false);
             });
@@ -188,7 +107,7 @@ namespace SourceGit.UI {
             foreach (var c in commits) c.GraphOffset = 0;
 
             Dispatcher.Invoke(() => {
-                commitGraph.Children.Clear();
+                commitGraph.Clear();
                 commitList.ItemsSource = new List<Git.Commit>(commits);
                 SetLoadingEnabled(false);
             });
@@ -268,7 +187,7 @@ namespace SourceGit.UI {
 
         #region COMMIT_DATAGRID_AND_GRAPH
         private void CommitListScrolled(object sender, ScrollChangedEventArgs e) {
-            commitGraph.Margin = new Thickness(0, -e.VerticalOffset * Helpers.CommitGraphMaker.UNIT_HEIGHT, 0, 0);
+            commitGraph.SetOffset(e.VerticalOffset);
         }
 
         private void CommitSelectChanged(object sender, SelectionChangedEventArgs e) {

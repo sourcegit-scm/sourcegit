@@ -111,7 +111,7 @@ namespace SourceGit.UI {
             });
 
             Task.Run(() => {
-                var args = "-8000 ";
+                var args = "-20000 ";
                 if (repo.LogFilters.Count > 0) {
                     args = args + string.Join(" ", repo.LogFilters);
                 } else {
