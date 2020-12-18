@@ -498,6 +498,7 @@ namespace SourceGit.UI {
 
             var repo = App.Setting.AddRepository(path, "");
             App.Open(repo);
+            UpdateRecentOpened();
         }
 
         /// <summary>
