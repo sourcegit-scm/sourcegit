@@ -53,7 +53,7 @@
             <DataGrid
                 Grid.Row="1"
                 x:Name="commitList"
-                RowHeight="{x:Static helpers:CommitGraphMaker.UNIT_HEIGHT}"
+                RowHeight="{x:Static helpers:CommitGraphData.UNIT_HEIGHT}"
                 ScrollViewer.ScrollChanged="CommitListScrolled"
                 SelectionChanged="CommitSelectChanged"
                 SelectionUnit="FullRow">

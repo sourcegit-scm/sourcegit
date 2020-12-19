@@ -9,13 +9,12 @@ namespace SourceGit.Helpers {
     /// <summary>
     ///     Tools to parse commit graph.
     /// </summary>
-    public class CommitGraphMaker {
+    public class CommitGraphData {
         /// <summary>
-        ///     Sizes
+        ///     Unit lengths for commit graph
         /// </summary>
         public static readonly double UNIT_WIDTH = 12;
         public static readonly double HALF_WIDTH = 6;
-        public static readonly double DOUBLE_WIDTH = 24;
         public static readonly double UNIT_HEIGHT = 24;
         public static readonly double HALF_HEIGHT = 12;
 
@@ -34,9 +33,9 @@ namespace SourceGit.Helpers {
         };
 
         /// <summary>
-        ///     Helpers to draw lines.
+        ///     Data to draw lines.
         /// </summary>
-        public class LineHelper {
+        public class Line {
             private double lastX = 0;
             private double lastY = 0;
 
@@ -72,7 +71,7 @@ namespace SourceGit.Helpers {
             /// <param name="isMerged">Is merged in tree</param>
             /// <param name="colorIdx">Color index</param>
             /// <param name="startPoint">Start point</param>
-            public LineHelper(string nextCommitId, bool isMerged, int colorIdx, Point startPoint) {
+            public Line(string nextCommitId, bool isMerged, int colorIdx, Point startPoint) {
                 Next = nextCommitId;
                 IsMerged = isMerged;
                 Points = new List<Point>() { startPoint };
@@ -128,7 +127,7 @@ namespace SourceGit.Helpers {
         /// <summary>
         ///     Independent lines in graph
         /// </summary>
-        public List<LineHelper> Lines { get; set; } = new List<LineHelper>();
+        public List<Line> Lines { get; set; } = new List<Line>();
 
         /// <summary>
         ///     Short links.
@@ -145,18 +144,18 @@ namespace SourceGit.Helpers {
         /// </summary>
         /// <param name="commits"></param>
         /// <returns></returns>
-        public static CommitGraphMaker Parse(List<Git.Commit> commits) {
-            CommitGraphMaker maker = new CommitGraphMaker();
+        public static CommitGraphData Parse(List<Git.Commit> commits) {
+            CommitGraphData data = new CommitGraphData();
 
-            List<LineHelper> unsolved = new List<LineHelper>();
-            List<LineHelper> ended = new List<LineHelper>();
-            Dictionary<string, LineHelper> currentMap = new Dictionary<string, LineHelper>();
+            List<Line> unsolved = new List<Line>();
+            List<Line> ended = new List<Line>();
+            Dictionary<string, Line> currentMap = new Dictionary<string, Line>();
             double offsetY = -HALF_HEIGHT;
             int colorIdx = 0;
 
             for (int i = 0; i < commits.Count; i++) {
                 Git.Commit commit = commits[i];
-                LineHelper major = null;
+                Line major = null;
                 bool isMerged = commit.IsHEAD || commit.IsMerged;
                 int oldCount = unsolved.Count;
 
@@ -195,7 +194,7 @@ namespace SourceGit.Helpers {
                 // 处理本提交为非当前分支HEAD的情况（创建新依赖线路）
                 if (major == null && commit.Parents.Count > 0) {
                     offsetX += UNIT_WIDTH;
-                    major = new LineHelper(commit.Parents[0], isMerged, colorIdx, new Point(offsetX, offsetY));
+                    major = new Line(commit.Parents[0], isMerged, colorIdx, new Point(offsetX, offsetY));
                     unsolved.Add(major);
                     colorIdx++;
                 }
@@ -206,9 +205,9 @@ namespace SourceGit.Helpers {
                     major.IsMerged = isMerged;
                     position.X = major.HorizontalOffset;
                     position.Y = offsetY;
-                    maker.Dots.Add(new Dot() { Center = position, Color = major.Brush });
+                    data.Dots.Add(new Dot() { Center = position, Color = major.Brush });
                 } else {
-                    maker.Dots.Add(new Dot() { Center = position, Color = Brushes.Orange });
+                    data.Dots.Add(new Dot() { Center = position, Color = Brushes.Orange });
                 }
 
                 // 处理本提交的其他依赖
@@ -222,10 +221,10 @@ namespace SourceGit.Helpers {
                         link.End = new Point(l.HorizontalOffset, offsetY + HALF_HEIGHT);
                         link.Control = new Point(link.End.X, link.Start.Y);
                         link.Brush = l.Brush;
-                        maker.Links.Add(link);
+                        data.Links.Add(link);
                     } else {
                         offsetX += UNIT_WIDTH;
-                        unsolved.Add(new LineHelper(commit.Parents[j], isMerged, colorIdx, position));
+                        unsolved.Add(new Line(commit.Parents[j], isMerged, colorIdx, position));
                         colorIdx++;
                     }         
                 }
@@ -233,7 +232,7 @@ namespace SourceGit.Helpers {
                 // 处理已终止的线
                 foreach (var l in ended) {
                     l.AddPoint(position.X, position.Y, true);
-                    maker.Lines.Add(l);
+                    data.Lines.Add(l);
                     unsolved.Remove(l);
                 }
 
@@ -254,12 +253,12 @@ namespace SourceGit.Helpers {
                 if (path.Points.Count == 1 && path.Points[0].Y == endY) continue; 
 
                 path.AddPoint((i + 0.5) * UNIT_WIDTH, endY, true);
-                maker.Lines.Add(path);
+                data.Lines.Add(path);
             }
             unsolved.Clear();
 
-            maker.Lines.Sort((l, h) => l.Points[0].Y.CompareTo(h.Points[0].Y));
-            return maker;
+            data.Lines.Sort((l, h) => l.Points[0].Y.CompareTo(h.Points[0].Y));
+            return data;
         }
     }
 
@@ -268,7 +267,7 @@ namespace SourceGit.Helpers {
     /// </summary>
     public class CommitGraph : FrameworkElement {
         private double offsetY;
-        private CommitGraphMaker maker;
+        private CommitGraphData data;
 
         public CommitGraph() {
             Clear();
@@ -276,21 +275,21 @@ namespace SourceGit.Helpers {
 
         public void Clear() {
             offsetY = 0;
-            maker = null;
+            data = null;
         }
 
         public void SetCommits(List<Git.Commit> commits) {
-            maker = CommitGraphMaker.Parse(commits);
+            data = CommitGraphData.Parse(commits);
             Dispatcher.Invoke(() => InvalidateVisual());            
         }
 
         public void SetOffset(double y) {
-            offsetY = y * CommitGraphMaker.UNIT_HEIGHT;
+            offsetY = y * CommitGraphData.UNIT_HEIGHT;
             InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext dc) {
-            if (maker == null) return;
+            if (data == null) return;
 
             var startY = offsetY;
             var endY = offsetY + ActualHeight;
@@ -298,12 +297,12 @@ namespace SourceGit.Helpers {
             dc.PushTransform(new TranslateTransform(0, -offsetY));
 
             // Draw all visible lines.
-            foreach (var path in maker.Lines) {
+            foreach (var path in data.Lines) {
                 var last = path.Points[0];
                 var size = path.Points.Count;
 
-                if (last.Y > endY) break;
                 if (path.Points[size - 1].Y < startY) continue;
+                if (last.Y > endY) break;
 
                 var geo = new StreamGeometry();
                 var pen = new Pen(path.Brush, 2);
@@ -325,7 +324,7 @@ namespace SourceGit.Helpers {
                             geoCtx.QuadraticBezierTo(new Point(cur.X, last.Y), cur, true, false);
                         } else if (cur.X < last.X) {
                             if (i < size - 1) {
-                                cur.Y += CommitGraphMaker.HALF_HEIGHT;
+                                cur.Y += CommitGraphData.HALF_HEIGHT;
 
                                 var midY = (last.Y + cur.Y) / 2;
                                 var midX = (last.X + cur.X) / 2;
@@ -351,9 +350,9 @@ namespace SourceGit.Helpers {
             }
 
             // Draw short links
-            foreach (var link in maker.Links) {
-                if (link.Start.Y > endY) break;
+            foreach (var link in data.Links) {
                 if (link.End.Y < startY) continue;
+                if (link.Start.Y > endY) break;
 
                 var geo = new StreamGeometry();
                 var pen = new Pen(link.Brush, 2);
@@ -368,9 +367,9 @@ namespace SourceGit.Helpers {
             }
 
             // Draw visible points
-            foreach (var dot in maker.Dots) {
-                if (dot.Center.Y > endY) break;
+            foreach (var dot in data.Dots) {
                 if (dot.Center.Y < startY) continue;
+                if (dot.Center.Y > endY) break;
 
                 dc.DrawEllipse(dot.Color, null, dot.Center, 3, 3);
             }
