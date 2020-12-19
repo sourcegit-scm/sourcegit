@@ -33,8 +33,7 @@
                                      ViewportSize="{TemplateBinding ViewportHeight}"
                                      Maximum="{TemplateBinding ScrollableHeight}"
                                      Minimum="0"
-                                     Value="{TemplateBinding VerticalOffset}"
-                                     Margin="0,-1,-1,-1"/>
+                                     Value="{TemplateBinding VerticalOffset}"/>
 
                             <ScrollBar x:Name="PART_HorizontalScrollBar"
                                      IsTabStop="False"
@@ -43,8 +42,7 @@
                                      ViewportSize="{TemplateBinding ViewportWidth}"
                                      Maximum="{TemplateBinding ScrollableWidth}"
                                      Minimum="0"
-                                     Value="{TemplateBinding HorizontalOffset}"
-                                     Margin="-1,0,-1,-1"/>
+                                     Value="{TemplateBinding HorizontalOffset}"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>

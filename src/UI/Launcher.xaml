@@ -292,49 +292,60 @@
             </ItemsControl>
 
             <!-- Alerts -->
-            <ScrollViewer
-                Grid.Row="1"
-                Margin="0,32,0,0"
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Top" 
-                HorizontalScrollBarVisibility="Disabled" 
-                VerticalScrollBarVisibility="Auto"
-                Panel.ZIndex="100">
-                <ItemsControl Margin="4" Width="300" Height="Auto" ItemsSource="{Binding Errors, ElementName=me}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid x:Name="item" Height="Auto" Width="300" Margin="0,8,0,0">
-                                <Border Background="{StaticResource Brush.BG1}">
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="8" ShadowDepth="2" Direction="270"/>
-                                    </Border.Effect>
-                                </Border>
+            <ItemsControl 
+                Grid.Row="1" 
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Margin="0,32,0,0" Width="Auto" Height="Auto" 
+                ItemsSource="{Binding Errors, ElementName=me}">
 
-                                <Grid Margin="8">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="26"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
+                <ItemsControl.Style>
+                    <Style TargetType="{x:Type ItemsControl}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                    </ScrollViewer>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ItemsControl.Style>
+                
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid x:Name="item" Height="Auto" Width="300" Margin="8,8,16,8">
+                            <Border Background="{StaticResource Brush.BG1}">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0"/>
+                                </Border.Effect>
+                            </Border>
 
-                                    <Label Grid.Row="0" Content="ERROR" FontWeight="DemiBold"/>
-                                    <TextBlock Grid.Row="1" Margin="6,8" Text="{Binding}" Foreground="{StaticResource Brush.FG}" TextWrapping="Wrap"/>
-                                    <Button 
-                                        Grid.Row="2"
-                                        Margin="4,0"
-                                        Click="RemoveError"
-                                        Height="25"
-                                        Content="CLOSE"
-                                        Style="{StaticResource Style.Button.AccentBordered}"
-                                        BorderBrush="{StaticResource Brush.FG}"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"/>
-                                </Grid>
+                            <Grid Margin="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="26"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="0" Content="ERROR" FontWeight="DemiBold"/>
+                                <TextBlock Grid.Row="1" Margin="6,8" Text="{Binding}" Foreground="{StaticResource Brush.FG}" TextWrapping="Wrap"/>
+                                <Button 
+                                    Grid.Row="2"
+                                    Margin="4,0"
+                                    Click="RemoveError"
+                                    Height="25"
+                                    Content="CLOSE"
+                                    Style="{StaticResource Style.Button.AccentBordered}"
+                                    BorderBrush="{StaticResource Brush.FG}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"/>
                             </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
     </Border>
 </Window>
