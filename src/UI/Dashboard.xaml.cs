@@ -1094,6 +1094,8 @@ namespace SourceGit.UI {
             var toggle = sender as ToggleButton;
             if (toggle == null) return;
 
+            var changed = false;
+
             if (toggle.DataContext is BranchNode) {
                 var branch = (toggle.DataContext as BranchNode).Branch;
                 if (branch == null) return;
@@ -1101,16 +1103,24 @@ namespace SourceGit.UI {
                 if (toggle.IsChecked == true) {
                     if (!repo.LogFilters.Contains(branch.FullName)) {
                         repo.LogFilters.Add(branch.FullName);
+                        changed = true;
                     }
+
                     if (!string.IsNullOrEmpty(branch.Upstream) && !repo.LogFilters.Contains(branch.Upstream)) {
                         repo.LogFilters.Add(branch.Upstream);
                         UpdateBranches(false);
+                        changed = true;
                     }
                 } else {
-                    repo.LogFilters.Remove(branch.FullName);
-                    if (!string.IsNullOrEmpty(branch.Upstream)) {
+                    if (repo.LogFilters.Contains(branch.FullName)) {
+                        repo.LogFilters.Remove(branch.FullName);
+                        changed = true;
+                    }
+                    
+                    if (!string.IsNullOrEmpty(branch.Upstream) && repo.LogFilters.Contains(branch.Upstream)) {
                         repo.LogFilters.Remove(branch.Upstream);
                         UpdateBranches(false);
+                        changed = true;
                     }
                 }
             }
@@ -1121,13 +1131,17 @@ namespace SourceGit.UI {
                 if (toggle.IsChecked == true) {
                     if (!repo.LogFilters.Contains(tag.Name)) {
                         repo.LogFilters.Add(tag.Name);
+                        changed = true;
                     }
                 } else {
-                    repo.LogFilters.Remove(tag.Name);
+                    if (repo.LogFilters.Contains(tag.Name)) {
+                        repo.LogFilters.Remove(tag.Name);
+                        changed = true;
+                    }
                 }
             }
 
-            UpdateHistories();
+            if (changed) UpdateHistories();
         }
         #endregion
     }
