@@ -15,13 +15,13 @@
         <RepositoryUrl>https://gitee.com/sourcegit/SourceGit.git</RepositoryUrl>
         <RepositoryType>Public</RepositoryType>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <DebugType>embedded</DebugType>
+        <DebugType>none</DebugType>
         <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
     </PropertyGroup>
 
     <ItemGroup>
         <TrimmerRootAssembly Include="System.Runtime" />
-        <TrimmerRootAssembly Include="System.Diagnostics.Debug" />
         <TrimmerRootAssembly Include="System.Runtime.Extensions" />
+        <TrimmerRootAssembly Include="System.Diagnostics.Debug" />
     </ItemGroup>
 </Project>
