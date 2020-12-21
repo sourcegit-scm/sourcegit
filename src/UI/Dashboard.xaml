@@ -302,7 +302,7 @@
                     </TreeView.ItemContainerStyle>
 
                     <TreeView.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type local:RemoteNode}" ItemsSource="{Binding Children}">
+                        <HierarchicalDataTemplate DataType="{x:Type local:Dashboard+RemoteNode}" ItemsSource="{Binding Children}">
                             <Grid Height="24">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="16"/>
@@ -314,7 +314,7 @@
                             </Grid>
                         </HierarchicalDataTemplate>
                         
-                        <HierarchicalDataTemplate DataType="{x:Type local:BranchNode}" ItemsSource="{Binding Children}">
+                        <HierarchicalDataTemplate DataType="{x:Type local:Dashboard+BranchNode}" ItemsSource="{Binding Children}">
                             <Grid Height="24">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="16"/>

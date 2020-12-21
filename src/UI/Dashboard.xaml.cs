@@ -12,30 +12,6 @@ using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace SourceGit.UI {
-    
-    /// <summary>
-    ///     Branch node in tree.
-    /// </summary>
-    public class BranchNode {
-        public string Name { get; set; }
-        public Git.Branch Branch { get; set; }
-        public bool IsExpanded { get; set; }
-        public bool IsCurrent => Branch != null ? Branch.IsCurrent : false;
-        public bool IsFiltered => Branch != null ? Branch.IsFiltered : false;
-        public string Track => Branch != null ? Branch.UpstreamTrack : "";
-        public Visibility FilterVisibility => Branch == null ? Visibility.Collapsed : Visibility.Visible;
-        public Visibility TrackVisibility => (Branch != null && !Branch.IsSameWithUpstream) ? Visibility.Visible : Visibility.Collapsed;
-        public List<BranchNode> Children { get; set; }
-    }
-
-    /// <summary>
-    ///     Remote node in tree.
-    /// </summary>
-    public class RemoteNode {
-        public string Name { get; set; }
-        public bool IsExpanded { get; set; }
-        public List<BranchNode> Children { get; set; }
-    }
 
     /// <summary>
     ///     Dashboard for opened repository.
@@ -45,6 +21,30 @@ namespace SourceGit.UI {
         private List<BranchNode> cachedLocalBranches = new List<BranchNode>();
         private List<RemoteNode> cachedRemotes = new List<RemoteNode>();
         private string abortCommand = null;
+
+        /// <summary>
+        ///     Branch node in tree.
+        /// </summary>
+        public class BranchNode {
+            public string Name { get; set; }
+            public Git.Branch Branch { get; set; }
+            public bool IsExpanded { get; set; }
+            public bool IsCurrent => Branch != null ? Branch.IsCurrent : false;
+            public bool IsFiltered => Branch != null ? Branch.IsFiltered : false;
+            public string Track => Branch != null ? Branch.UpstreamTrack : "";
+            public Visibility FilterVisibility => Branch == null ? Visibility.Collapsed : Visibility.Visible;
+            public Visibility TrackVisibility => (Branch != null && !Branch.IsSameWithUpstream) ? Visibility.Visible : Visibility.Collapsed;
+            public List<BranchNode> Children { get; set; }
+        }
+
+        /// <summary>
+        ///     Remote node in tree.
+        /// </summary>
+        public class RemoteNode {
+            public string Name { get; set; }
+            public bool IsExpanded { get; set; }
+            public List<BranchNode> Children { get; set; }
+        }
 
         /// <summary>
         ///     Expand/Collapsed tags
