@@ -139,40 +139,11 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <Grid Grid.Column="1">
-                                <ContentControl x:Name="MessageEditorAnchor" MouseDoubleClick="PopupMessageEditor">
-                                    <TextBlock Text="{Binding Subject, Mode=TwoWay}" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
-                                </ContentControl>
-                                
-                                <Popup x:Name="MessageEditor" Placement="Bottom" IsOpen="{Binding IsEditorOpened}" VerticalOffset="1" Height="150" Width="400" PlacementTarget="{Binding ElementName=MessageEditorAnchor}">
-                                    <Border BorderBrush="{StaticResource Brush.Accent1}" BorderThickness="1" Background="{StaticResource Brush.BG4}">
-                                        <Grid Margin="8">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="32"/>
-                                            </Grid.RowDefinitions>
-                                            <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border1}" BorderThickness="1">
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="24"/>
-                                                        <RowDefinition Height="1"/>
-                                                        <RowDefinition Height="79"/>
-                                                    </Grid.RowDefinitions>
-
-                                                    <TextBox Grid.Row="0" Text="{Binding EditSubject, Mode=TwoWay}" Height="32" Padding="2,0" helpers:TextBoxHelper.Placeholder="Enter commit subject" BorderThickness="0"/>
-                                                    <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Brush.FG}" Opacity="0.1"/>
-                                                    <TextBox Grid.Row="2" Text="{Binding EditMessage, Mode=TwoWay}" TextChanged="CommitMessageChanged" Height="79" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="2" helpers:TextBoxHelper.Placeholder="Enter commit description. Optional" helpers:TextBoxHelper.PlaceholderBaseline="Top" BorderThickness="0" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"/>
-                                                </Grid>
-                                            </Border>
-
-                                            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
-                                                <Button Click="ApplyMessageEdit" Height="24" Style="{StaticResource Style.Button.AccentBordered}" BorderThickness="1" Content="APPLY" Margin="8,0"/>
-                                                <Button Click="HideMessageEditor" Height="24" Style="{StaticResource Style.Button.Bordered}" BorderThickness="1" Content="CANCEL"/>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-                                </Popup>
-                            </Grid>
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="{Binding Commit.Subject}" 
+                                VerticalAlignment="Center" 
+                                Foreground="{StaticResource Brush.FG}"/>
                             
                             <TextBlock
                                 Grid.Column="2"

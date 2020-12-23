@@ -36,69 +36,6 @@ namespace SourceGit {
         }
 
         /// <summary>
-        ///     Startup event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnAppStartup(object sender, StartupEventArgs e) {
-            // Use this app as a sequence editor?
-            var args = e.Args;
-            if (args.Length > 1) {
-                if (args[0] == "--interactive-rebase") {
-                    if (args.Length < 3) {
-                        Environment.Exit(1);
-                        return;
-                    }
-
-                    File.WriteAllText(args[2], File.ReadAllText(args[1]));
-                }
-
-                Environment.Exit(0);
-                return;
-            }
-
-            // Load settings.
-            var settingFile = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SourceGit",
-                "preference.json");
-            if (!File.Exists(settingFile)) {
-                Setting = new Preference();
-            } else {
-                Setting = JsonSerializer.Deserialize<Preference>(File.ReadAllText(settingFile));
-            }
-
-            // Try auto configure git via registry.
-            if (!IsGitConfigured) {
-                var root = RegistryKey.OpenBaseKey(
-                    RegistryHive.LocalMachine,
-                    Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
-
-                var git = root.OpenSubKey("SOFTWARE\\GitForWindows");
-                if (git != null) {
-                    Setting.Tools.GitExecutable = Path.Combine(
-                        git.GetValue("InstallPath") as string, 
-                        "bin", 
-                        "git.exe");
-                }
-            }
-
-            // Apply themes
-            if (Setting.UI.UseLightTheme) {
-                foreach (var rs in Current.Resources.MergedDictionaries) {
-                    if (rs.Source != null && rs.Source.OriginalString.StartsWith("pack://application:,,,/Resources/Themes/")) {
-                        rs.Source = new Uri("pack://application:,,,/Resources/Themes/Light.xaml", UriKind.Absolute);
-                        break;
-                    }
-                }
-            }
-
-            // Show main window
-            Current.MainWindow = new UI.Launcher();
-            Current.MainWindow.Show();
-        }
-
-        /// <summary>
         ///     Open repository.
         /// </summary>
         /// <param name="repo"></param>
@@ -123,6 +60,56 @@ namespace SourceGit {
         }
 
         /// <summary>
+        ///     Startup event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnAppStartup(object sender, StartupEventArgs e) {
+            // Use this app as a sequence editor?
+            if (OpenAsEditor(e)) return;
+
+            // Load settings.
+            var settingFile = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SourceGit",
+                "preference.json");
+            if (!File.Exists(settingFile)) {
+                Setting = new Preference();
+            } else {
+                Setting = JsonSerializer.Deserialize<Preference>(File.ReadAllText(settingFile));
+            }
+
+            // Try auto configure git via registry.
+            if (!IsGitConfigured) {
+                var root = RegistryKey.OpenBaseKey(
+                    RegistryHive.LocalMachine,
+                    Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
+
+                var git = root.OpenSubKey("SOFTWARE\\GitForWindows");
+                if (git != null) {
+                    Setting.Tools.GitExecutable = Path.Combine(
+                        git.GetValue("InstallPath") as string,
+                        "bin",
+                        "git.exe");
+                }
+            }
+
+            // Apply themes
+            if (Setting.UI.UseLightTheme) {
+                foreach (var rs in Current.Resources.MergedDictionaries) {
+                    if (rs.Source != null && rs.Source.OriginalString.StartsWith("pack://application:,,,/Resources/Themes/")) {
+                        rs.Source = new Uri("pack://application:,,,/Resources/Themes/Light.xaml", UriKind.Absolute);
+                        break;
+                    }
+                }
+            }
+
+            // Show main window
+            Current.MainWindow = new UI.Launcher();
+            Current.MainWindow.Show();
+        }
+
+        /// <summary>
         ///     Deactivated event.
         /// </summary>
         /// <param name="sender"></param>
@@ -130,6 +117,30 @@ namespace SourceGit {
         private void OnAppDeactivated(object sender, EventArgs e) {
             GC.Collect();
             SaveSetting();            
+        }
+
+        /// <summary>
+        ///     Try to open app as git editor
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private bool OpenAsEditor(StartupEventArgs e) {
+            if (e.Args.Length < 3) return false;
+
+            switch (e.Args[0]) {
+            case "--sequence":
+                var output = File.CreateText(e.Args[2]);
+                output.Write(File.ReadAllText(e.Args[1]));
+                output.Flush();
+                output.Close();
+
+                Environment.Exit(0);
+                break;
+            default:
+                return false;
+            }
+
+            return true;
         }
     }
 }

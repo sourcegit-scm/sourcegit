@@ -51,64 +51,17 @@ namespace SourceGit.UI {
     /// <summary>
     ///     Rebase item.
     /// </summary>
-    public class InteractiveRebaseItem : INotifyPropertyChanged {
-        private InteractiveRebaseMode mode = InteractiveRebaseMode.Pick;
-        private bool isEditorOpened = false;
-        private string editSubject = null;
-        private string editMsg = null;
+    public class InteractiveRebaseItem {
+        private InteractiveRebaseMode mode = InteractiveRebaseMode.Pick; 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public Git.Commit Commit { get; set; }
+        public Git.Commit Commit { 
+            get; 
+            set; 
+        }
 
         public int Mode {
-            get { return (int)mode; }
-            set {
-                if (value != (int)mode) {
-                    mode = (InteractiveRebaseMode)value;
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Mode"));
-                }
-            }
-        }
-
-        public bool IsEditorOpened {
-            get { return isEditorOpened; }
-            set {
-                if (value != isEditorOpened) {
-                    isEditorOpened = value;
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("IsEditorOpened"));
-                }
-            }
-        }
-
-        public string Subject {
-            get { return Commit.Subject; }
-            set {
-                if (value != Commit.Subject) {
-                    Commit.Subject = value;
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Subject"));
-                }
-            }
-        }
-
-        public string EditSubject {
-            get { return editSubject; }
-            set {
-                if (value != editMsg) {
-                    editSubject = value;
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("EditSubject"));
-                }
-            }
-        }
-
-        public string EditMessage {
-            get { return editMsg; }
-            set {
-                if (value != editMsg) {
-                    editMsg = value;
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("EditMessage"));
-                }
-            }
+            get { return (int)mode; } 
+            set { mode = (InteractiveRebaseMode)value; }
         }
     }
 
@@ -181,44 +134,10 @@ namespace SourceGit.UI {
         #endregion
 
         private void CommitSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            foreach (var obj in e.RemovedItems) {
-                var item = obj as InteractiveRebaseItem;
-                if (item != null) item.IsEditorOpened = false;
-            }
-
             if (e.AddedItems.Count == 1) {
                 var item = e.AddedItems[0] as InteractiveRebaseItem;
                 if (item != null) commitViewer.SetData(repo, item.Commit);
             }
-        }
-
-        private void PopupMessageEditor(object sender, MouseButtonEventArgs e) {
-            var item = (sender as Control).DataContext as InteractiveRebaseItem;
-            if (item == null) return;
-
-            item.EditSubject = item.Commit.Subject;
-            item.EditMessage = item.Commit.Message;
-            item.IsEditorOpened = true;
-        }
-
-        private void HideMessageEditor(object sender, RoutedEventArgs e) {
-            var item = (sender as Button).DataContext as InteractiveRebaseItem;
-            if (item == null) return;
-            item.IsEditorOpened = false;
-        }
-
-        private void ApplyMessageEdit(object sender, RoutedEventArgs e) {
-            var item = (sender as Button).DataContext as InteractiveRebaseItem;
-            if (item == null) return;
-
-            item.Subject = item.EditSubject;
-            item.Commit.Message = item.EditMessage;
-            item.Mode = (int)InteractiveRebaseMode.Reword;
-            item.IsEditorOpened = false;
-        }
-
-        private void CommitMessageChanged(object sender, TextChangedEventArgs e) {
-            (sender as TextBox).ScrollToEnd();
         }
 
         private void MoveUp(object sender, RoutedEventArgs e) {
@@ -259,39 +178,36 @@ namespace SourceGit.UI {
 
         private void Start(object sender, RoutedEventArgs e) {
             var temp = Path.GetTempFileName();
-            var stream = new FileStream(temp, FileMode.Create);
-            var writer = new StreamWriter(stream);
+            var writer = File.CreateText(temp);
 
             for (int i = Items.Count - 1; i >= 0; i--) {
                 var item = Items[i];
 
                 switch ((InteractiveRebaseMode)item.Mode) {
                 case InteractiveRebaseMode.Pick:
-                    writer.WriteLine($"p {item.Commit.ShortSHA} {item.Subject}");
+                    writer.WriteLine($"p {item.Commit.ShortSHA} {item.Commit.Subject}");
                     break;
                 case InteractiveRebaseMode.Reword:
-                    writer.WriteLine($"r {item.Commit.ShortSHA} {item.Subject}");
+                    writer.WriteLine($"r {item.Commit.ShortSHA} {item.Commit.Subject}");
                     break;
                 case InteractiveRebaseMode.Squash:
-                    writer.WriteLine($"s {item.Commit.ShortSHA} {item.Subject}");
+                    writer.WriteLine($"s {item.Commit.ShortSHA} {item.Commit.Subject}");
                     break;
                 case InteractiveRebaseMode.Fixup:
-                    writer.WriteLine($"f {item.Commit.ShortSHA} {item.Subject}");
+                    writer.WriteLine($"f {item.Commit.ShortSHA} {item.Commit.Subject}");
                     break;
                 case InteractiveRebaseMode.Drop:
-                    writer.WriteLine($"d {item.Commit.ShortSHA} {item.Subject}");
+                    writer.WriteLine($"d {item.Commit.ShortSHA} {item.Commit.Subject}");
                     break;
                 }
             }
 
             writer.Flush();
-            stream.Flush();
             writer.Close();
-            stream.Close();
 
             repo.SetWatcherEnabled(false);
             var editor = Process.GetCurrentProcess().MainModule.FileName;
-            var errs = repo.RunCommand($"-c sequence.editor=\"\\\"{editor}\\\" --interactive-rebase \\\"{temp}\\\"\" rebase -i {from}", null);
+            var errs = repo.RunCommand($"-c sequence.editor=\"\\\"{editor}\\\" --sequence \\\"{temp}\\\"\" rebase -i {from}", null);
             repo.AssertCommand(errs);
 
             Close();
