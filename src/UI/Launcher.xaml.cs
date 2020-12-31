@@ -16,6 +16,8 @@ namespace SourceGit.UI {
     ///     Main window for this app.
     /// </summary>
     public partial class Launcher : Window {
+        public static readonly Thickness MAXIMIZE_MARGIN = new Thickness(
+            (SystemParameters.MaximizedPrimaryScreenWidth - SystemParameters.WorkArea.Width) / 2);
 
         /// <summary>
         ///     Tab data.

@@ -27,7 +27,7 @@
             <Style TargetType="{x:Type Border}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding WindowState, ElementName=me}" Value="Maximized">
-                        <Setter Property="Margin" Value="6"/>
+                        <Setter Property="Margin" Value="{x:Static local:Launcher.MAXIMIZE_MARGIN}"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding WindowState, ElementName=me}" Value="Normal">
                         <Setter Property="Margin" Value="0"/>
