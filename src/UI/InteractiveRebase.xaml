@@ -12,7 +12,7 @@
 
     <!-- Enable WindowChrome -->
     <WindowChrome.WindowChrome>
-        <WindowChrome UseAeroCaptionButtons="False" CornerRadius="0" CaptionHeight="32"/>
+        <WindowChrome UseAeroCaptionButtons="False" CornerRadius="0" CaptionHeight="32" ResizeBorderThickness="1"/>
     </WindowChrome.WindowChrome>
 
     <!-- Window Content -->
