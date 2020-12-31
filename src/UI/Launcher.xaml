@@ -47,18 +47,42 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="openedTabsColumn" Width="*"/>
                     <ColumnDefinition Width="32"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Tabs -->
-                <ScrollViewer x:Name="openedTabsScroller" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                <ScrollViewer x:Name="openedTabsScroller" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" CanContentScroll="True">
                     <TabControl x:Name="openedTabs" Padding="0" SnapsToDevicePixels="True" ItemsSource="{Binding ElementName=me, Path=Tabs}" SizeChanged="OpenedTabsSizeChanged">
                         <TabControl.Style>
                             <Style TargetType="{x:Type TabControl}">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabControl}">
-                                            <StackPanel Orientation="Horizontal" x:Name="HeaderPanel" Margin="6,4,0,0" IsItemsHost="True" SnapsToDevicePixels="True" KeyboardNavigation.TabIndex="1"/>
+                                            <StackPanel Orientation="Horizontal" Margin="6,4,4,0">
+                                                <StackPanel Orientation="Horizontal" IsItemsHost="True" SnapsToDevicePixels="True" KeyboardNavigation.TabIndex="1"/>
+                                                <Button Margin="4,0,0,0" Click="NewTab" ToolTip="NEW PAGE" Width="24" Height="24" WindowChrome.IsHitTestVisibleInChrome="True">
+                                                    <Button.Style>
+                                                        <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
+                                                            <Setter Property="Opacity" Value="1"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate>
+                                                                        <Border x:Name="newTabBG" BorderThickness="0" Background="Transparent" CornerRadius="2">
+                                                                            <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.NewTab}" Fill="{StaticResource Brush.FG}"/>
+                                                                        </Border>
+
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                                <Setter TargetName="newTabBG" Property="Background" Value="{StaticResource Brush.BG4}"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </StackPanel>                                            
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
@@ -66,13 +90,11 @@
                         </TabControl.Style>
 
                         <TabControl.Resources>
-                            <converters:IntToRepoColor x:Key="IntToRepoColor"/>
-                            
-                            <DataTemplate DataType="{x:Type local:Launcher+ManagerTab}">
-                                <Path Width="14" Height="14" Margin="12,0" Fill="#FFF05133" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Home}"/>
-                            </DataTemplate>
+                            <converters:IntToRepoColor x:Key="IntToRepoColor"/>                            
+                        </TabControl.Resources>
 
-                            <DataTemplate DataType="{x:Type local:Launcher+RepoTab}">
+                        <TabControl.ItemTemplate>
+                            <DataTemplate>
                                 <Grid x:Name="BG" MinWidth="80" Margin="8,0" Background="Transparent">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -96,7 +118,7 @@
                                         Content="{Binding Title}" 
                                         Foreground="{StaticResource Brush.FG2}" FontFamily="Consolas" FontWeight="Bold"/>
 
-                                    <Button Grid.Column="3" Click="CloseRepo" ToolTip="CLOSE">
+                                    <Button Grid.Column="3" Click="CloseTab" ToolTip="CLOSE">
                                         <Path
                                             Width="8" Height="8" 
                                             Fill="{StaticResource Brush.FG}"
@@ -109,10 +131,18 @@
                                     <DataTrigger Binding="{Binding IsActive}" Value="True">
                                         <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG}"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Color}" Value="0">
-                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Git}"/>
+                                    <DataTrigger Binding="{Binding IsRepo}" Value="False">
+                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Home}"/>
                                         <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG}"/>
                                     </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsRepo}" Value="True"/>
+                                            <Condition Binding="{Binding Color}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Git}"/>
+                                        <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG}"/>
+                                    </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding IsActive}" Value="False"/>
@@ -122,11 +152,11 @@
                                     </MultiDataTrigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>
-                        </TabControl.Resources>
+                        </TabControl.ItemTemplate>
 
                         <TabControl.ItemContainerStyle>
                             <Style TargetType="{x:Type TabItem}">
-                                <Setter Property="AllowDrop" Value="{Binding IsRepo}"/>
+                                <Setter Property="AllowDrop" Value="True"/>
                                 <Setter Property="IsSelected" Value="{Binding IsActive, Mode=TwoWay}"/>
                                 <Setter Property="Margin" Value="0"/>
                                 <Setter Property="Padding" Value="0"/>
@@ -135,13 +165,6 @@
                                         <ControlTemplate TargetType="{x:Type TabItem}">
                                             <Grid SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Tooltip}">
                                                 <Border x:Name="BG" Margin="-1,0" SnapsToDevicePixels="True" Background="Transparent" CornerRadius="4,4,0,0"/>
-
-                                                <Rectangle
-                                                    x:Name="Splitter"
-                                                    HorizontalAlignment="Left" 
-                                                    Width="1" Height="16" 
-                                                    Fill="{StaticResource Brush.FG2}"
-                                                    Visibility="Hidden"/>
 
                                                 <Path
                                                     x:Name="CornerLeft"
@@ -168,6 +191,13 @@
                                                     VerticalAlignment="Center"
                                                     ContentSource="Header"
                                                     RecognizesAccessKey="True"/>
+
+                                                <Rectangle
+                                                    x:Name="Splitter"
+                                                    HorizontalAlignment="Right" 
+                                                    Width="1" Height="16" 
+                                                    Fill="{StaticResource Brush.FG2}"
+                                                    Visibility="Hidden"/>
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
@@ -196,7 +226,6 @@
                                                     <MultiTrigger.Conditions>
                                                         <Condition Property="IsSelected" Value="False"/>
                                                         <Condition Property="IsMouseOver" Value="False"/>
-                                                        <Condition Property="AllowDrop" Value="True"/>
                                                     </MultiTrigger.Conditions>
                                                     <Setter TargetName="Splitter" Property="Visibility" Value="Visible"/>
                                                 </MultiTrigger>

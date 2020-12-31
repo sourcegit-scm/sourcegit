@@ -22,14 +22,31 @@ namespace SourceGit.UI {
         /// </summary>
         public class Tab : INotifyPropertyChanged {
             private bool isActive = false;
+            private Git.Repository repo = null;
+            private object page = null;
 
-            public string Title { get; set; }
-            public string Tooltip { get; set; }
-            public Git.Repository Repo { get; set; }
-            public object Page { get; set; }
-
-            public bool IsRepo {
-                get { return Repo != null; }
+            public Git.Repository Repo {
+                get { return repo; }
+                set {
+                    if (repo != value) {
+                        repo = value;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Repo"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Title"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Tooltip"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Color"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsRepo"));
+                    }
+                }
+            }
+            
+            public object Page {
+                get { return page; }
+                set {
+                    if (page != value) {
+                        page = value;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Page"));
+                    }
+                }
             }
 
             public int Color {
@@ -50,32 +67,22 @@ namespace SourceGit.UI {
                 }
             }
 
+            public string Title {
+                get {
+                    if (Repo == null) return "Repositories";
+                    return Repo.Parent == null ? Repo.Name : $"{Repo.Parent.Name} : {Repo.Name}";
+                }
+            }
+
+            public string Tooltip {
+                get { return Repo == null ? "Repository Manager" : Repo.Path; }
+            }
+
+            public bool IsRepo {
+                get { return Repo != null; }
+            }
+
             public event PropertyChangedEventHandler PropertyChanged;
-        }
-
-        /// <summary>
-        ///     Manager tab
-        /// </summary>
-        public class ManagerTab : Tab {
-            public ManagerTab() {
-                Title = "HOME";
-                Tooltip = "Repositories Manager";
-                IsActive = true;
-                Page = new Manager();
-            }
-        }
-
-        /// <summary>
-        ///     Repository tab.
-        /// </summary>
-        public class RepoTab : Tab {
-            public RepoTab(Git.Repository repo, Dashboard page) {
-                Title = repo.Parent == null ? repo.Name : $"{repo.Parent.Name} : {repo.Name}";
-                Tooltip = repo.Path;
-                Repo = repo;
-                IsActive = false;
-                Page = page;
-            }
         }
 
         /// <summary>
@@ -92,9 +99,8 @@ namespace SourceGit.UI {
         ///     Constructor
         /// </summary>
         public Launcher() {
-            Tabs.Add(new ManagerTab());
             InitializeComponent();
-            openedTabs.SelectedItem = Tabs[0];
+            NewTab(null, null);
             if (App.Setting.CheckUpdate) Task.Run(CheckUpdate);
         }
 
@@ -103,9 +109,8 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="repo"></param>
         public void Open(Git.Repository repo) {
-            for (int i = 1; i < Tabs.Count; i++) {
-                var opened = Tabs[i];
-                if (opened.Repo.Path == repo.Path) {
+            foreach (var opened in Tabs) {
+                if (opened.IsRepo && opened.Repo.Path == repo.Path) {
                     openedTabs.SelectedItem = opened;
                     return;
                 }
@@ -113,10 +118,17 @@ namespace SourceGit.UI {
 
             repo.Open();
             var page = new Dashboard(repo);
-            var tab = new RepoTab(repo, page);
             repo.SetPopupManager(page.popupManager);
-            Tabs.Add(tab);
-            openedTabs.SelectedItem = tab;
+
+            var selected = openedTabs.SelectedItem as Tab;
+            if (selected != null && !selected.IsRepo) {
+                selected.Repo = repo;
+                selected.Page = page;
+            } else {
+                var tab = new Tab() { Repo = repo, Page = page };
+                Tabs.Add(tab);
+                openedTabs.SelectedItem = tab;
+            }
         }
 
         /// <summary>
@@ -148,23 +160,38 @@ namespace SourceGit.UI {
 
         #region LAYOUT_CONTENT
         /// <summary>
-        ///     Close repository.
+        ///     Add new tab.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CloseRepo(object sender, RoutedEventArgs e) {
+        private void NewTab(object sender, RoutedEventArgs e) {
+            var tab = new Tab() { Page = new Manager() };
+            Tabs.Add(tab);
+            openedTabs.SelectedItem = tab;
+        }
+
+        /// <summary>
+        ///     Close tab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseTab(object sender, RoutedEventArgs e) {
             var tab = (sender as Button).DataContext as Tab;
-            if (tab == null || tab.Repo == null) {
-                e.Handled = true;
+            if (tab == null) return;
+            
+            if (Tabs.Count == 1) {
+                App.Current.Shutdown();
                 return;
             }
 
-            Tabs.Remove(tab);
-
             tab.Page = null;
-            tab.Repo.RemovePopup();
-            tab.Repo.Close();
-            tab.Repo = null;
+            if (tab.IsRepo) {
+                tab.Repo.RemovePopup();
+                tab.Repo.Close();
+                tab.Repo = null;
+            }
+
+            Tabs.Remove(tab);            
         }
 
         /// <summary>
@@ -293,7 +320,7 @@ namespace SourceGit.UI {
             if (item == null) return;
 
             var tab = item.DataContext as Tab;
-            if (tab == null || tab.Repo == null) return;
+            if (tab == null) return;
 
             if (Mouse.LeftButton == MouseButtonState.Pressed) {
                 DragDrop.DoDragDrop(item, item, DragDropEffects.All);
@@ -308,15 +335,10 @@ namespace SourceGit.UI {
 
             var tabSrc = tabItemSrc.DataContext as Tab;
             var tabDst = tabItemDst.DataContext as Tab;
-            if (tabDst.Repo == null) {
-                Tabs.Remove(tabSrc);
-                Tabs.Insert(1, tabSrc);
-            } else {
-                int dstIdx = Tabs.IndexOf(tabDst);
+            int dstIdx = Tabs.IndexOf(tabDst);
 
-                Tabs.Remove(tabSrc);
-                Tabs.Insert(dstIdx, tabSrc);
-            }
+            Tabs.Remove(tabSrc);
+            Tabs.Insert(dstIdx, tabSrc);
         }
         #endregion
 
