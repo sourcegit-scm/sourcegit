@@ -1,9 +1,9 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Windows.Threading;
 
@@ -15,14 +15,14 @@ namespace SourceGit.Git {
     public class Repository {
 
         #region HOOKS
-        public Action<string> OnNavigateCommit = null;
-        public Action OnWorkingCopyChanged = null;
-        public Action OnTagChanged = null;
-        public Action OnStashChanged = null;
-        public Action OnBranchChanged = null;
-        public Action OnCommitsChanged = null;
-        public Action OnSubmoduleChanged = null;
-        public Action OnClosing = null;
+        [JsonIgnore] public Action<string> OnNavigateCommit = null;
+        [JsonIgnore] public Action OnWorkingCopyChanged = null;
+        [JsonIgnore] public Action OnTagChanged = null;
+        [JsonIgnore] public Action OnStashChanged = null;
+        [JsonIgnore] public Action OnBranchChanged = null;
+        [JsonIgnore] public Action OnCommitsChanged = null;
+        [JsonIgnore] public Action OnSubmoduleChanged = null;
+        [JsonIgnore] public Action OnClosing = null;
         #endregion
 
         #region PROPERTIES_SAVED

@@ -238,13 +238,13 @@ namespace SourceGit.UI {
                     mark.Header = $"{i}";
 
                     var refIdx = i;
-                    mark.Click += (o, e) => {
+                    mark.Click += (o, ev) => {
                         var repo = App.Setting.FindRepository(node.Id);
                         if (repo != null) {
                             repo.Color = refIdx;
                             UpdateTree();
                         }
-                        e.Handled = true;
+                        ev.Handled = true;
                     };
 
                     bookmark.Items.Add(mark);

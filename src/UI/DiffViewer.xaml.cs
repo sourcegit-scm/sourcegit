@@ -492,8 +492,7 @@ namespace SourceGit.UI {
                 FlowDirection.LeftToRight,
                 new Typeface(FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
                 12.0,
-                Brushes.Black,
-                VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                Brushes.Black);
 
             return formatted.Width + 16;
         }

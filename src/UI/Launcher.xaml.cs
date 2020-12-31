@@ -1,8 +1,8 @@
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -138,7 +138,7 @@ namespace SourceGit.UI {
             try {
                 var web = new WebClient();
                 var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/SourceGit/releases/latest");
-                var ver = JsonSerializer.Deserialize<Git.Version>(raw);
+                var ver = JsonConvert.DeserializeObject<Git.Version>(raw);
                 var cur = Assembly.GetExecutingAssembly().GetName().Version;
 
                 var matches = Regex.Match(ver.TagName, @"^v(\d+)\.(\d+).*");

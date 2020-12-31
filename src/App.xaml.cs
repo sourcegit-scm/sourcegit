@@ -1,7 +1,7 @@
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Text.Json;
 using System.Windows;
 
 namespace SourceGit {
@@ -55,7 +55,7 @@ namespace SourceGit {
             var dir = Path.GetDirectoryName(settingFile);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            var data = JsonSerializer.Serialize(Setting, new JsonSerializerOptions() { WriteIndented = true });
+            var data = JsonConvert.SerializeObject(Setting, Formatting.Indented);
             File.WriteAllText(settingFile, data);
         }
 
@@ -76,7 +76,7 @@ namespace SourceGit {
             if (!File.Exists(settingFile)) {
                 Setting = new Preference();
             } else {
-                Setting = JsonSerializer.Deserialize<Preference>(File.ReadAllText(settingFile));
+                Setting = JsonConvert.DeserializeObject<Preference>(File.ReadAllText(settingFile));
             }
 
             // Try auto configure git via registry.
