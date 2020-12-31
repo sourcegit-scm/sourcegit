@@ -5,7 +5,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:SourceGit.UI"
-    xmlns:git="clr-namespace:SourceGit.Git"
     xmlns:converters="clr-namespace:SourceGit.Converters"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800">
@@ -13,244 +12,149 @@
     <UserControl.Resources>
         <converters:IntToRepoColor x:Key="IntToRepoColor"/>
         <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
+        <converters:InverseBoolToCollapsed x:Key="InverseBoolToCollapsed"/>
+        <converters:InverseBool x:Key="InverseBool"/>
     </UserControl.Resources>
-    
-    <Grid>        
+
+    <Grid>
         <!-- Main Body -->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" MinWidth="200" MaxWidth="360"/>
-                <ColumnDefinition Width="2"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Left panel -->
-            <Grid Grid.Column="0" Background="{StaticResource Brush.BG1}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="32"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="32"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <!-- Recent Opened Repositories -->
-                <Label Grid.Row="0" Margin="8,8,0,0" Content="RECENTLY OPENED" Style="{StaticResource Style.Label.GroupHeader}"/>
-                <ListView
-                    x:Name="recentOpened"
-                    Grid.Row="1"
-                    Height="Auto"
-                    Margin="0,4"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Style="{StaticResource Style.ListView.Borderless}"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    GotFocus="RecentsGotFocus"
-                    SelectionChanged="RecentsSelectionChanged"
-                    MouseDoubleClick="RecentsMouseDoubleClick">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource Style.ListViewItem.Borderless}">
-                            <EventSetter Event="ContextMenuOpening" Handler="RecentsContextMenuOpening"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    
-                    <ListView.ItemTemplate>
-                        <DataTemplate DataType="{x:Type git:Repository}">
-                            <Grid Height="24">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Path Grid.Column="0" Width="12" Margin="16,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <TextBlock Margin="4,0" Text="{Binding Name}" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
-                                    <TextBlock FontSize="10" Text="{Binding Path}" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
-                                </StackPanel>
-
-                                <Path
-                                    Grid.Column="2" 
-                                    Width="12" Height="12" Margin="4,0" 
-                                    Style="{StaticResource Style.Icon}" 
-                                    Data="{StaticResource Icon.Bookmark}"
-                                    Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}"/>
-                            </Grid>                            
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-
-                <!-- Repositories' tree -->
-                <Grid Grid.Row="2" Margin="8,8,0,0">
+        <Grid Background="{StaticResource Brush.BG1}" HorizontalAlignment="Center" MinWidth="420" TextElement.FontFamily="Consolas">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Welcome -->
+            <StackPanel Orientation="Vertical" Margin="0,64,0,0">
+                <Path Width="72" Height="72" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
+                <TextBlock Grid.Column="0" Margin="0,16" HorizontalAlignment="Center" Text="Welcome to SourceGit :)" FontSize="26" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>
+                <Grid Margin="0,0,0,36">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
-                    <Label Grid.Column="0" Content="REPOSITORIES" Style="{StaticResource Style.Label.GroupHeader}"/>
-
-                    <Button Grid.Column="1" Click="CloneRepo" Style="{StaticResource Style.Button}" ToolTip="Clone Remote Repository">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}" Opacity=".8"/>
+                    <Button Click="OpenOrAddRepo" Grid.Column="0" Style="{StaticResource Style.Button.Bordered}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
+                            <Label Margin="4,0,0,0" Content="Open Local Repository"/>
+                        </StackPanel>
                     </Button>
-
-                    <Button Grid.Column="2" Click="OpenOrAddRepo" Style="{StaticResource Style.Button}" Margin="8,0,4,0"  ToolTip="Open Local Repository">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}" Opacity=".8"/>
+                    <Button Click="CloneRepo" Grid.Column="2" Style="{StaticResource Style.Button.Bordered}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}"/>
+                            <Label Margin="4,0,0,0" Content="Clone Remote Repository"/>
+                        </StackPanel>
                     </Button>
                 </Grid>
-                <TreeView
-                    x:Name="repositories"
-                    Grid.Row="3"
-                    Margin="0,4"
-                    Padding="0"
-                    AllowDrop="True"
-                    ContextMenuOpening="TreeContextMenuOpening"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    Drop="TreeDrop" 
-                    GotFocus="TreeGotFocus" 
-                    MouseMove="TreeMouseMove">
+                <Rectangle Height=".5" Fill="{StaticResource Brush.Border1}"/>
+            </StackPanel>
 
-                    <TreeView.ItemContainerStyle>
-                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
-                            <Setter Property="IsExpanded" Value="{Binding IsExpended, Mode=TwoWay}"/>
+            <!-- Repositories' tree -->
+            <Grid Grid.Row="1" Margin="0,8,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                            <EventSetter Event="Selected" Handler="TreeNodeSelected"/>
-                            <EventSetter Event="DragOver" Handler="TreeNodeDragOver"/>
-                            <EventSetter Event="Drop" Handler="TreeNodeDrop"/>
-                            <EventSetter Event="Expanded" Handler="TreeNodeIsExpandedChanged"/>
-                            <EventSetter Event="Collapsed" Handler="TreeNodeIsExpandedChanged"/>
-                            <EventSetter Event="KeyDown" Handler="TreeNodeKeyDown"/>
-                            <EventSetter Event="ContextMenuOpening" Handler="TreeNodeContextMenuOpening"/>
-                            <EventSetter Event="MouseDoubleClick" Handler="TreeNodeDoubleClick"/>
-                        </Style>
-                    </TreeView.ItemContainerStyle>
+                <TextBlock Grid.Column="0" Text="REPOSITORIES" FontSize="18" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>
+                <TextBlock Grid.Column="2" Text="DRAG-DROP YOUR FOLDER" FontSize="14" Foreground="{StaticResource Brush.FG2}" VerticalAlignment="Center"/>
+            </Grid>
+            <TreeView
+                x:Name="repositories"
+                Grid.Row="2"
+                Margin="0,4"
+                Padding="0"
+                AllowDrop="True"
+                TextElement.FontSize="14"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ContextMenuOpening="TreeContextMenuOpening"
+                Drop="TreeDrop" 
+                MouseMove="TreeMouseMove">
 
-                    <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <Grid Height="26">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                
-                                <Path 
-                                    x:Name="icon" 
-                                    Grid.Column="0" 
-                                    Width="14" Height="14" 
-                                    Style="{StaticResource Style.Icon}" 
-                                    Data="{StaticResource Icon.Folder.Fill}"/>
-                                
-                                <TextBlock 
-                                    x:Name="name" 
-                                    Grid.Column="1" 
-                                    Margin="4,0,0,0" 
-                                    Text="{Binding Name}" 
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpended, Mode=TwoWay}"/>
+                        <Setter Property="AllowDrop" Value="{Binding IsRepo, Converter={StaticResource InverseBool}}"/>
+
+                        <EventSetter Event="DragOver" Handler="TreeNodeDragOver"/>
+                        <EventSetter Event="Drop" Handler="TreeNodeDrop"/>
+                        <EventSetter Event="Expanded" Handler="TreeNodeIsExpandedChanged"/>
+                        <EventSetter Event="Collapsed" Handler="TreeNodeIsExpandedChanged"/>
+                        <EventSetter Event="KeyDown" Handler="TreeNodeKeyDown"/>
+                        <EventSetter Event="ContextMenuOpening" Handler="TreeNodeContextMenuOpening"/>
+                        <EventSetter Event="MouseDoubleClick" Handler="TreeNodeDoubleClick"/>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+
+                <TreeView.ItemTemplate>                    
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <Grid Height="32">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Path 
+                                x:Name="icon" 
+                                Grid.Column="0" 
+                                Width="16" Height="16" 
+                                Style="{StaticResource Style.Icon}" 
+                                Data="{StaticResource Icon.Folder.Fill}"/>
+
+                            <StackPanel
+                                x:Name="name"
+                                Grid.Column="1"
+                                Orientation="Horizontal"
+                                Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToCollapsed}}">
+                                <TextBlock
+                                    Margin="8,0,0,0" 
+                                    Text="{Binding Name}"
                                     Foreground="{StaticResource Brush.FG}" 
                                     VerticalAlignment="Center"/>
-                                
-                                <TextBox 
-                                    x:Name="editName" 
-                                    Grid.Column="1" 
-                                    Margin="4,0,0,0" 
-                                    Text="{Binding Name}" 
-                                    Loaded="TreeNodeRenameStart" 
-                                    KeyDown="TreeNodeRenameKeyDown" 
-                                    LostFocus="TreeNodeRenameEnd"/>
-
-                                <Path 
-                                    x:Name="bookmark" 
-                                    Grid.Column="2" 
-                                    Width="14" Height="14" 
-                                    Margin="4,0"
-                                    Style="{StaticResource Style.Icon}" 
-                                    Data="{StaticResource Icon.Bookmark}" 
-                                    Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}" 
+                                <TextBlock
+                                    Margin="8,0,0,0" 
+                                    Text="{Binding Id}"
+                                    Foreground="{StaticResource Brush.FG2}" 
+                                    VerticalAlignment="Center"
                                     Visibility="{Binding IsRepo, Converter={StaticResource BoolToCollapsed}}"/>
-                            </Grid>
+                            </StackPanel>                            
 
-                            <HierarchicalDataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding IsExpended}" Value="True">
-                                    <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsRepo}" Value="True">
-                                    <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Git}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsEditing}" Value="True">
-                                    <Setter TargetName="name" Property="Visibility" Value="Hidden"/>
-                                    <Setter TargetName="editName" Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsEditing}" Value="False">
-                                    <Setter TargetName="name" Property="Visibility" Value="Visible"/>
-                                    <Setter TargetName="editName" Property="Visibility" Value="Hidden"/>
-                                </DataTrigger>
-                            </HierarchicalDataTemplate.Triggers>
-                        </HierarchicalDataTemplate>
-                    </TreeView.ItemTemplate>
-                </TreeView>
-            </Grid>
+                            <TextBox 
+                                x:Name="editName" 
+                                Grid.Column="1" 
+                                Margin="4,0,0,0" 
+                                Text="{Binding Name}" 
+                                Loaded="TreeNodeRenameStart" 
+                                KeyDown="TreeNodeRenameKeyDown" 
+                                LostFocus="TreeNodeRenameEnd"
+                                Visibility="{Binding IsEditing, Converter={StaticResource BoolToCollapsed}}"/>
 
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="{StaticResource Brush.BG3}"/>
+                            <Path 
+                                x:Name="bookmark" 
+                                Grid.Column="2" 
+                                Width="14" Height="14" 
+                                Margin="4,0"
+                                Style="{StaticResource Style.Icon}" 
+                                Data="{StaticResource Icon.Bookmark}" 
+                                Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}" 
+                                Visibility="{Binding IsRepo, Converter={StaticResource BoolToCollapsed}}"/>
+                        </Grid>
 
-            <!-- Right Panel -->
-            <Grid Grid.Column="2" Background="{StaticResource Brush.BG3}">
-                <!-- Brief -->
-                <Grid Margin="16">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Name & Path -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <TextBlock x:Name="repoName" Margin="4,0,0,0" FontSize="28" FontWeight="Bold" FontFamily="Consolas" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
-                        <Border Background="{StaticResource Brush.BG4}" Margin="16,0,0,0" Height="26" CornerRadius="4" VerticalAlignment="Center">
-                            <TextBlock x:Name="repoPath" FontSize="20" Margin="8,0" FontWeight="Light" FontFamily="Consolas" Foreground="{StaticResource Brush.FG2}" VerticalAlignment="Center"/>
-                        </Border>
-                    </StackPanel>
-
-                    <!-- Status of selected repository -->
-                    <Label Grid.Row="1" Content="STATUS" FontSize="16" Margin="0,16,0,4" FontWeight="Bold" Opacity=".8"/>
-                    <StackPanel Grid.Row="2" Orientation="Horizontal">
-                        <Label Content="Local Changes :" Opacity=".5" FontWeight="Bold"/>
-                        <Label x:Name="localChanges" Margin="2,0,0,0"/>
-
-                        <Label Content="Total Commits :" Opacity=".5" FontWeight="Bold"/>
-                        <Label x:Name="totalCommits" Margin="2,0,0,0"/>
-
-                        <Label Content="Last Commit :" Opacity=".5" FontWeight="Bold"/>
-                        <Border Background="{StaticResource Brush.BG4}" Height="18" CornerRadius="4" VerticalAlignment="Center">
-                            <Label x:Name="lastCommitId" Foreground="{StaticResource Brush.FG2}" FontFamily="Consolas" Padding="4,0" VerticalAlignment="Center"/>
-                        </Border>
-                        <TextBlock x:Name="lastCommit" Margin="4,0,0,0" FontFamily="Consolas" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <!-- README.md -->
-                    <Label Grid.Row="3" Content="README" FontSize="16" Margin="0,16,0,4" FontWeight="Bold" Opacity=".8"/>
-                    <Border Grid.Row="4" Margin="6,0,0,0" BorderBrush="{StaticResource Brush.BG4}" BorderThickness="1">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            <TextBlock FontSize="10pt"
-                                FontFamily="Consolas"
-                                Padding="8"
-                                Opacity="0.8"
-                                Background="{StaticResource Brush.BG2}"
-                                Foreground="{StaticResource Brush.FG}"
-                                x:Name="readme"/>
-                        </ScrollViewer>
-                    </Border>
-                </Grid>
-
-                <!-- Mask -->
-                <Border x:Name="briefMask" Background="{StaticResource Brush.BG3}" IsHitTestVisible="False">
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
-                        <Path Width="160" Height="160" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}"/>
-                        <Label Margin="0,32,0,0" Content="WELCOME TO SOURCE GIT :-)" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-            </Grid>
+                        <HierarchicalDataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsExpended}" Value="True">
+                                <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsRepo}" Value="True">
+                                <Setter TargetName="icon" Property="Data" Value="{StaticResource Icon.Git}"/>
+                            </DataTrigger>
+                        </HierarchicalDataTemplate.Triggers>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
         </Grid>
         
         <!-- Popup -->

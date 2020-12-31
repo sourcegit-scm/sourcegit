@@ -69,7 +69,7 @@ namespace SourceGit.UI {
 
             public string Title {
                 get {
-                    if (Repo == null) return "Repositories";
+                    if (Repo == null) return "New Page";
                     return Repo.Parent == null ? Repo.Name : $"{Repo.Parent.Name} : {Repo.Name}";
                 }
             }

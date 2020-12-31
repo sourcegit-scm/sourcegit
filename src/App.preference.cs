@@ -191,6 +191,27 @@ namespace SourceGit {
 
             if (removedIdx >= 0) Groups.RemoveAt(removedIdx);
         }
+
+        /// <summary>
+        ///     Check if given group has relations.
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <param name="subId"></param>
+        /// <returns></returns>
+        public bool IsSubGroup(string parentId, string subId) {
+            if (string.IsNullOrEmpty(parentId)) return false;
+
+            var g = FindGroup(subId);
+            if (g == null) return false;
+
+            g = FindGroup(g.ParentId);
+            while (g != null) {
+                if (g.Id == parentId) return true;
+                g = FindGroup(g.ParentId);
+            }
+
+            return false;
+        }
         #endregion
 
         #region METHODS_ON_REPOS
@@ -209,7 +230,6 @@ namespace SourceGit {
                 Path = dir.FullName,
                 Name = dir.Name,
                 GroupId = groupId,
-                LastOpenTime = 0,
             };
 
             Repositories.Add(repo);

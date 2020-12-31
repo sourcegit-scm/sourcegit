@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,7 +12,6 @@ namespace SourceGit.UI {
     ///     Repository manager.
     /// </summary>
     public partial class Manager : UserControl {
-        private TreeViewItem selectedTreeViewItem = null;
 
         /// <summary>
         ///     Used to build tree
@@ -35,7 +32,6 @@ namespace SourceGit.UI {
         /// </summary>
         public Manager() {
             InitializeComponent();
-            UpdateRecentOpened();
             UpdateTree();
         }
 
@@ -59,105 +55,13 @@ namespace SourceGit.UI {
         private void CloneRepo(object sender, RoutedEventArgs e) {
             if (MakeSureReady()) {
                 popupManager.Show(new Clone(popupManager, () => {
-                    UpdateRecentOpened();
                     UpdateTree();
                 }));
             }
         }
         #endregion
 
-        #region EVENT_RECENT_LISTVIEW
-        private void RecentsGotFocus(object sender, RoutedEventArgs e) {
-            if (selectedTreeViewItem != null) selectedTreeViewItem.IsSelected = false;
-            selectedTreeViewItem = null;
-            e.Handled = true;
-        }
-
-        private void RecentsSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var recent = recentOpened.SelectedItem as Git.Repository;
-            if (recent != null) ShowBrief(recent);
-            e.Handled = true;
-        }
-
-        private void RecentsMouseDoubleClick(object sender, MouseButtonEventArgs e) {
-            var list = sender as ListView;
-            var recent = list.SelectedItem as Git.Repository;
-
-            if (recent != null) {
-                CheckAndOpenRepo(recent.Path);
-                e.Handled = true;
-            }
-        }
-
-        private void RecentsContextMenuOpening(object sender, ContextMenuEventArgs e) {
-            var repo = (sender as ListViewItem).DataContext as Git.Repository;
-            if (repo == null) return;
-
-            var open = new MenuItem();
-            open.Header = "Open";
-            open.Click += (o, ev) => {
-                CheckAndOpenRepo(repo.Path);
-                ev.Handled = true;
-            };
-
-            var explore = new MenuItem();
-            explore.Header = "Open Container Folder";
-            explore.Click += (o, ev) => {
-                Process.Start("explorer", repo.Path);
-                ev.Handled = true;
-            };
-
-            var iconBookmark = FindResource("Icon.Bookmark") as Geometry;
-            var bookmark = new MenuItem();
-            bookmark.Header = "Bookmark";
-            for (int i = 0; i < Converters.IntToRepoColor.Colors.Length; i++) {
-                var icon = new System.Windows.Shapes.Path();
-                icon.Style = FindResource("Style.Icon") as Style;
-                icon.Data = iconBookmark;
-                icon.Fill = Converters.IntToRepoColor.Colors[i];
-                icon.Width = 8;
-
-                var mark = new MenuItem();
-                mark.Icon = icon;
-                mark.Header = $"{i}";
-
-                var refIdx = i;
-                mark.Click += (o, e) => {
-                    repo.Color = refIdx;
-                    UpdateRecentOpened();
-                    UpdateTree();
-                    e.Handled = true;
-                };
-
-                bookmark.Items.Add(mark);
-            }
-
-            var delete = new MenuItem();
-            delete.Header = "Delete";
-            delete.Click += (o, ev) => {
-                App.Setting.RemoveRepository(repo.Path);
-                UpdateRecentOpened();
-                UpdateTree();
-                HideBrief();
-                ev.Handled = true;
-            };
-
-            var menu = new ContextMenu();
-            menu.Items.Add(open);
-            menu.Items.Add(explore);
-            menu.Items.Add(bookmark);
-            menu.Items.Add(delete);
-            menu.IsOpen = true;
-            e.Handled = true;
-        }
-        #endregion
-
         #region EVENT_TREEVIEW
-        private void TreeGotFocus(object sender, RoutedEventArgs e) {
-            recentOpened.SelectedItems.Clear();
-            e.Handled = true;
-        }
-
         private void TreeContextMenuOpening(object sender, ContextMenuEventArgs e) {
             var addFolder = new MenuItem();
             addFolder.Header = "Add Folder";
@@ -175,13 +79,8 @@ namespace SourceGit.UI {
 
         private void TreeMouseMove(object sender, MouseEventArgs e) {
             if (e.LeftButton != MouseButtonState.Pressed) return;
-
-            if (selectedTreeViewItem == null) return;
-
-            var node = selectedTreeViewItem.DataContext as Node;
-            if (node == null || !node.IsRepo) return;
-
-            DragDrop.DoDragDrop(repositories, selectedTreeViewItem, DragDropEffects.Move);
+            if (repositories.SelectedItem == null) return;
+            DragDrop.DoDragDrop(repositories, repositories.SelectedItem, DragDropEffects.Move);
             e.Handled = true;
         }
 
@@ -204,15 +103,19 @@ namespace SourceGit.UI {
                         needRebuild = true;
                     }
                 }
-            } else if (e.Data.GetDataPresent(typeof(TreeViewItem))) {
-                var item = e.Data.GetData(typeof(TreeViewItem)) as TreeViewItem;
-                var node = item.DataContext as Node;
-                if (node == null || !node.IsRepo) return;
+            } else if (e.Data.GetDataPresent(typeof(Node))) {
+                var node = e.Data.GetData(typeof(Node)) as Node;
+                if (node == null) return;
 
-                var group = "";
                 var to = (sender as TreeViewItem)?.DataContext as Node;
-                if (to != null) group = to.IsRepo ? to.ParentId : to.Id;
-                App.Setting.FindRepository(node.Id).GroupId = group;
+                var parent = to != null ? to.Id : "";
+
+                if (node.IsRepo) {
+                    App.Setting.FindRepository(node.Id).GroupId = to != null ? to.Id : "";
+                } else if (!App.Setting.IsSubGroup(node.Id, parent)) {
+                    App.Setting.FindGroup(node.Id).ParentId = parent;
+                }
+
                 needRebuild = true;
             }
 
@@ -222,19 +125,6 @@ namespace SourceGit.UI {
         #endregion
 
         #region EVENT_TREEVIEWITEM
-        private void TreeNodeSelected(object sender, RoutedEventArgs e) {
-            selectedTreeViewItem = sender as TreeViewItem;
-
-            var node = selectedTreeViewItem.DataContext as Node;
-            if (node.IsRepo) {
-                ShowBrief(App.Setting.FindRepository(node.Id));
-            } else {
-                HideBrief();
-            }
-
-            e.Handled = true;
-        }
-
         private void TreeNodeDoubleClick(object sender, MouseButtonEventArgs e) {
             var node = (sender as TreeViewItem).DataContext as Node;
             if (node != null && node.IsRepo) {
@@ -308,7 +198,6 @@ namespace SourceGit.UI {
                     App.Setting.RenameGroup(node.Id, text.Text);
                 }
 
-                UpdateRecentOpened();
                 UpdateTree();
                 e.Handled = true;
             }
@@ -353,7 +242,6 @@ namespace SourceGit.UI {
                         var repo = App.Setting.FindRepository(node.Id);
                         if (repo != null) {
                             repo.Color = refIdx;
-                            UpdateRecentOpened();
                             UpdateTree();
                         }
                         e.Handled = true;
@@ -391,7 +279,6 @@ namespace SourceGit.UI {
             delete.Header = "Delete";
             delete.Click += (o, ev) => {
                 DeleteNode(node);
-                HideBrief();
                 ev.Handled = true;
             };
 
@@ -399,66 +286,6 @@ namespace SourceGit.UI {
             menu.Items.Add(delete);
             menu.IsOpen = true;
             e.Handled = true;
-        }
-        #endregion
-
-        #region EVENT_BRIEF
-        private void ShowBrief(Git.Repository repo) {
-            if (repo == null || !Git.Repository.IsValid(repo.Path)) {
-                if (Directory.Exists(repo.Path)) {
-                    popupManager.Show(new Init(popupManager, repo.Path, () => {
-                        UpdateRecentOpened();
-                        UpdateTree();
-                    }));
-                } else {
-                    App.RaiseError("Path is NOT valid git repository or has been removed.");
-                    App.Setting.RemoveRepository(repo.Path);
-                    UpdateRecentOpened();
-                    UpdateTree();
-                }
-                
-                return;
-            }
-
-            briefMask.Visibility = Visibility.Hidden;
-
-            repoName.Text = repo.Name;
-            repoPath.Text = repo.Path;
-
-            Task.Run(() => {
-                var changes = repo.LocalChanges();
-                var count = changes.Count;
-                Dispatcher.Invoke(() => localChanges.Content = count);
-            });
-
-            Task.Run(() => {
-                var count = repo.TotalCommits();
-                Dispatcher.Invoke(() => totalCommits.Content = count);
-            });
-
-            Task.Run(() => {
-                var commits = repo.Commits("-n 1");
-                Dispatcher.Invoke(() => {
-                    if (commits.Count > 0) {
-                        var c = commits[0];
-                        lastCommitId.Content = c.ShortSHA;
-                        lastCommit.Text = c.Subject;
-                    } else {
-                        lastCommitId.Content = "---";
-                        lastCommit.Text = "";
-                    }
-                });
-            });
-
-            if (File.Exists(repo.Path + "/README.md")) {
-                readme.Text = File.ReadAllText(repo.Path + "/README.md");
-            } else {
-                readme.Text = "";
-            }
-        }
-
-        private void HideBrief() {
-            briefMask.Visibility = Visibility.Visible;
         }
         #endregion
 
@@ -485,10 +312,7 @@ namespace SourceGit.UI {
 
             if (!Git.Repository.IsValid(path)) {
                 if (Directory.Exists(path)) {
-                    popupManager.Show(new Init(popupManager, path, () => {
-                        UpdateRecentOpened();
-                        UpdateTree();
-                    }));
+                    popupManager.Show(new Init(popupManager, path, () => UpdateTree()));
                     return;
                 }
 
@@ -498,22 +322,6 @@ namespace SourceGit.UI {
 
             var repo = App.Setting.AddRepository(path, "");
             App.Open(repo);
-            UpdateRecentOpened();
-        }
-
-        /// <summary>
-        ///     Update recent opened repositories.
-        /// </summary>
-        private void UpdateRecentOpened() {
-            var sorted = App.Setting.Repositories.OrderByDescending(a => a.LastOpenTime).ToList();
-            var top5 = new List<Git.Repository>();
-
-            for (int i = 0; i < sorted.Count && i < 5; i++) {
-                if (sorted[i].LastOpenTime <= 0) break;
-                top5.Add(sorted[i]);
-            }
-
-            recentOpened.ItemsSource = top5;
         }
 
         /// <summary>
@@ -576,7 +384,6 @@ namespace SourceGit.UI {
         private void DeleteNode(Node node) {
             if (node.IsRepo) {
                 App.Setting.RemoveRepository(node.Id);
-                UpdateRecentOpened();
             } else {
                 App.Setting.RemoveGroup(node.Id);
             }

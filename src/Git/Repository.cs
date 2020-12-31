@@ -43,10 +43,6 @@ namespace SourceGit.Git {
         /// </summary>
         public int Color { get; set; } = 0;
         /// <summary>
-        ///     Last open time(File time format).
-        /// </summary>
-        public long LastOpenTime { get; set; }
-        /// <summary>
         ///     Expand tags.
         /// </summary>
         public bool ExpandTags { get; set; }
@@ -255,7 +251,6 @@ namespace SourceGit.Git {
         ///     Open repository.
         /// </summary>
         public void Open() {
-            LastOpenTime = DateTime.Now.ToFileTime();
             isWatcherDisabled = false;
 
             GitDir = ".git";
