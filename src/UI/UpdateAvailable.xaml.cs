@@ -32,7 +32,8 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Download(object sender, RoutedEventArgs e) {
-            Process.Start(new ProcessStartInfo("cmd", $"/c start https://gitee.com/sourcegit/SourceGit/releases/{tag}") { CreateNoWindow = true });
+            Process.Start($"https://gitee.com/sourcegit/SourceGit/releases/{tag}");
+            //Process.Start(new ProcessStartInfo("cmd", $"/c start https://gitee.com/sourcegit/SourceGit/releases/{tag}") { CreateNoWindow = true });
             e.Handled = true;
         }
 
