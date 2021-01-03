@@ -9,9 +9,9 @@ using System.Windows.Media;
 namespace SourceGit.UI {
 
     /// <summary>
-    ///     Repository manager.
+    ///     New page to open repository.
     /// </summary>
-    public partial class Manager : UserControl {
+    public partial class NewPage : UserControl {
 
         /// <summary>
         ///     Used to build tree
@@ -30,7 +30,7 @@ namespace SourceGit.UI {
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public Manager() {
+        public NewPage() {
             InitializeComponent();
             UpdateTree();
         }

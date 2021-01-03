@@ -1,5 +1,5 @@
 <UserControl 
-    x:Class="SourceGit.UI.Manager"
+    x:Class="SourceGit.UI.NewPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -18,41 +18,48 @@
 
     <Grid>
         <!-- Main Body -->
-        <Grid Background="{StaticResource Brush.BG1}" HorizontalAlignment="Center" MinWidth="420" TextElement.FontFamily="Consolas">
+        <Grid HorizontalAlignment="Center" MinWidth="420" TextElement.FontFamily="Consolas">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
+            <!-- Logo -->
+            <Path Grid.Row="0" Margin="0,48,0,0" Width="72" Height="72" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
+            
             <!-- Welcome -->
-            <StackPanel Orientation="Vertical" Margin="0,64,0,0">
-                <Path Width="72" Height="72" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
-                <TextBlock Grid.Column="0" Margin="0,16" HorizontalAlignment="Center" Text="Welcome to SourceGit :)" FontSize="26" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>
-                <Grid Margin="0,0,0,36">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Click="OpenOrAddRepo" Grid.Column="0" Style="{StaticResource Style.Button.Bordered}">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
-                            <Label Margin="4,0,0,0" Content="Open Local Repository"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="CloneRepo" Grid.Column="2" Style="{StaticResource Style.Button.Bordered}">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}"/>
-                            <Label Margin="4,0,0,0" Content="Clone Remote Repository"/>
-                        </StackPanel>
-                    </Button>
-                </Grid>
-                <Rectangle Height=".5" Fill="{StaticResource Brush.Border1}"/>
-            </StackPanel>
+            <TextBlock Grid.Row="1" Margin="0,16" HorizontalAlignment="Center" Text="Welcome to SourceGit :)" FontSize="28" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>
+                
+            <!-- Options -->
+            <Grid Grid.Row="2" Margin="0,0,0,36">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Click="OpenOrAddRepo" Grid.Column="0" Style="{StaticResource Style.Button.Bordered}">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
+                        <Label Margin="4,0,0,0" Content="Open Local Repository"/>
+                    </StackPanel>
+                </Button>
+                <Button Click="CloneRepo" Grid.Column="2" Style="{StaticResource Style.Button.Bordered}">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}"/>
+                        <Label Margin="4,0,0,0" Content="Clone Remote Repository"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <!-- Horizontal Line -->
+            <Rectangle Grid.Row="3" Height="1" Fill="{StaticResource Brush.Border1}"/>
 
             <!-- Repositories' tree -->
-            <Grid Grid.Row="1" Margin="0,8,0,0">
+            <Grid Grid.Row="4" Margin="0,8,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -64,7 +71,7 @@
             </Grid>
             <TreeView
                 x:Name="repositories"
-                Grid.Row="2"
+                Grid.Row="5"
                 Margin="0,4"
                 Padding="0"
                 AllowDrop="True"

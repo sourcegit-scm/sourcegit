@@ -167,7 +167,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void NewTab(object sender, RoutedEventArgs e) {
-            var tab = new Tab() { Page = new Manager() };
+            var tab = new Tab() { Page = new NewPage() };
             Tabs.Add(tab);
             openedTabs.SelectedItem = tab;
         }
