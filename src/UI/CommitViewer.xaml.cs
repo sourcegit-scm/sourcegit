@@ -437,7 +437,8 @@ namespace SourceGit.UI {
                 FlowDirection.LeftToRight,
                 new Typeface(new FontFamily("Consolas"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
                 12.0,
-                Brushes.Black);
+                Brushes.Black,
+                VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
             var grid = new DataGrid();
             grid.SetValue(Grid.RowProperty, 1);

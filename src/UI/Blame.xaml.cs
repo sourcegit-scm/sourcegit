@@ -93,7 +93,8 @@ namespace SourceGit.UI {
                         FlowDirection.LeftToRight,
                         new Typeface(blame.FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
                         12.0,
-                        Brushes.Black);
+                        Brushes.Black,
+                        VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
                     var lineNumberWidth = formatted.Width + 16;
                     var minWidth = area.ActualWidth - lineNumberWidth;

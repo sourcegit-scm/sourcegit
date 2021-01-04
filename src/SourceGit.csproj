@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <PropertyGroup>
-        <TargetFramework>net46</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>App.ico</ApplicationIcon>
