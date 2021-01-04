@@ -239,6 +239,8 @@ namespace SourceGit.Helpers {
                 selected.Add(item);
                 item.SetValue(IsCheckedProperty, true);
             } else {
+                if (selected.Count == 1 && selected[0] == item) return;
+
                 foreach (var old in selected) old.SetValue(IsCheckedProperty, false);
                 selected.Clear();
                 selected.Add(item);

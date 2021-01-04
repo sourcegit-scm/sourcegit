@@ -17,11 +17,12 @@ namespace SourceGit.UI {
     ///     Viewer for git diff
     /// </summary>
     public partial class DiffViewer : UserControl {
+        public static readonly Brush BG_EMPTY = new SolidColorBrush(Color.FromArgb(40, 0, 0, 0));
+        public static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
+        public static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
+        public static readonly Brush BG_NORMAL = Brushes.Transparent;
+
         private List<Git.Diff.LineChange> lineChanges = null;
-        private Brush bgEmpty = new SolidColorBrush(Color.FromArgb(40, 0, 0, 0));
-        private Brush bgAdded = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
-        private Brush bgDeleted = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
-        private Brush bgNormal = Brushes.Transparent;
         private List<DataGrid> editors = new List<DataGrid>();
 
         /// <summary>
@@ -85,8 +86,6 @@ namespace SourceGit.UI {
         public void Diff(Git.Repository repo, Option opts) {
             SetTitle(opts.Path, opts.OrgPath);
 
-            lineChanges = null;
-
             loading.Visibility = Visibility.Visible;
             mask.Visibility = Visibility.Collapsed;
             sizeChange.Visibility = Visibility.Collapsed;
@@ -94,10 +93,9 @@ namespace SourceGit.UI {
 
             editorContainer.Children.Clear();
             editorLines.Children.Clear();
-            editors.Clear();
-
-            editorLines.Children.Clear();
             editorLines.ColumnDefinitions.Clear();
+            editors.Clear();
+            lineChanges = null;
 
             Task.Run(() => {
                 var args = $"{opts.ExtraArgs} ";
@@ -195,7 +193,6 @@ namespace SourceGit.UI {
                     editorContainer.Children.Add(editor);
                     editors.Add(editor);
 
-                    editorLines.ColumnDefinitions.Clear();
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
 
@@ -253,7 +250,6 @@ namespace SourceGit.UI {
 
                     var oldEditor = CreateTextEditor(new string[] { "OldLine" });
                     oldEditor.SetValue(Grid.ColumnProperty, 0);
-                    oldEditor.ContextMenuOpening += OnTextChangeContextMenuOpening;
                     oldEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTwoSidesScroll));
                     oldEditor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                     oldEditor.Columns[1].MinWidth = minWidth;
@@ -261,7 +257,6 @@ namespace SourceGit.UI {
 
                     var newEditor = CreateTextEditor(new string[] { "NewLine" });
                     newEditor.SetValue(Grid.ColumnProperty, 1);
-                    newEditor.ContextMenuOpening += OnTextChangeContextMenuOpening;
                     newEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTwoSidesScroll));
                     newEditor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                     newEditor.Columns[1].MinWidth = minWidth;
@@ -273,7 +268,6 @@ namespace SourceGit.UI {
                     editors.Add(oldEditor);
                     editors.Add(newEditor);
 
-                    editorLines.ColumnDefinitions.Clear();
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                     editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
@@ -343,11 +337,11 @@ namespace SourceGit.UI {
         private Brush GetLineBackground(Git.Diff.LineChange line) {
             switch (line.Mode) {
             case Git.Diff.LineMode.Added:
-                return bgAdded;
+                return BG_ADDED;
             case Git.Diff.LineMode.Deleted:
-                return bgDeleted;
+                return BG_DELETED;
             default:
-                return bgNormal;
+                return BG_NORMAL;
             }
         }
 
@@ -364,7 +358,7 @@ namespace SourceGit.UI {
                     var empty = new ChangeBlock();
                     empty.Content = "";
                     empty.Mode = Git.Diff.LineMode.None;
-                    empty.BG = bgEmpty;
+                    empty.BG = BG_EMPTY;
                     empty.FG = Brushes.Transparent;
                     empty.Style = FontStyles.Normal;
                     empty.OldLine = "";
@@ -378,7 +372,7 @@ namespace SourceGit.UI {
                     var empty = new ChangeBlock();
                     empty.Content = "";
                     empty.Mode = Git.Diff.LineMode.None;
-                    empty.BG = bgEmpty;
+                    empty.BG = BG_EMPTY;
                     empty.FG = Brushes.Transparent;
                     empty.Style = FontStyles.Normal;
                     empty.OldLine = "";
@@ -632,6 +626,7 @@ namespace SourceGit.UI {
 
             editorContainer.Children.Clear();
             editorLines.Children.Clear();
+            editorLines.ColumnDefinitions.Clear();
             editors.Clear();
 
             SetTextChange();

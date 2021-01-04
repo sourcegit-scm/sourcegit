@@ -72,8 +72,6 @@ namespace SourceGit.UI {
                 }
             }
 
-            Dispatcher.Invoke(() => mergePanel.Visibility = Visibility.Collapsed);
-
             SetData(unstaged, true);
             SetData(staged, false);
 
@@ -85,6 +83,7 @@ namespace SourceGit.UI {
                     btnCommitAndPush.Visibility = Visibility.Collapsed;
                 }
 
+                mergePanel.Visibility = Visibility.Collapsed;
                 diffViewer.Reset();
             });
 
@@ -126,12 +125,11 @@ namespace SourceGit.UI {
 
         #region UNSTAGED
         private void UnstagedTreeMultiSelectionChanged(object sender, RoutedEventArgs e) {
-            mergePanel.Visibility = Visibility.Collapsed;
-            diffViewer.Reset();
-
             var selected = Helpers.TreeViewHelper.GetSelectedItems(unstagedTree);
             if (selected.Count == 0) return;
 
+            mergePanel.Visibility = Visibility.Collapsed;
+            diffViewer.Reset();
             Helpers.TreeViewHelper.UnselectTree(stageTree);
             stageList.SelectedItems.Clear();
 
@@ -532,12 +530,11 @@ namespace SourceGit.UI {
 
         #region STAGED
         private void StageTreeMultiSelectionChanged(object sender, RoutedEventArgs e) {
-            mergePanel.Visibility = Visibility.Collapsed;
-            diffViewer.Reset();
-
             var selected = Helpers.TreeViewHelper.GetSelectedItems(stageTree);
             if (selected.Count == 0) return;
-            
+
+            mergePanel.Visibility = Visibility.Collapsed;
+            diffViewer.Reset();
             Helpers.TreeViewHelper.UnselectTree(unstagedTree);
             unstagedList.SelectedItems.Clear();
 
@@ -546,7 +543,6 @@ namespace SourceGit.UI {
             var node = selected[0].DataContext as Node;
             if (!node.IsFile) return;
 
-            mergePanel.Visibility = Visibility.Collapsed;
             diffViewer.Diff(Repo, new DiffViewer.Option() {
                 ExtraArgs = "--cached",
                 Path = node.FilePath,
@@ -567,7 +563,6 @@ namespace SourceGit.UI {
             if (selected.Count != 1) return;
 
             var change = selected[0] as Git.Change;
-            mergePanel.Visibility = Visibility.Collapsed;
             diffViewer.Diff(Repo, new DiffViewer.Option() {
                 ExtraArgs = "--cached",
                 Path = change.Path,
