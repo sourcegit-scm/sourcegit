@@ -16,7 +16,7 @@
         <converters:InverseBool x:Key="InverseBool"/>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid AllowDrop="True" DragEnter="PageDragEnter" DragLeave="PageDragLeave" Drop="PageDrop" Background="Transparent">
         <!-- Main Body -->
         <Grid HorizontalAlignment="Center" MinWidth="420" TextElement.FontFamily="Consolas">
             <Grid.RowDefinitions>
@@ -58,7 +58,7 @@
             <!-- Horizontal Line -->
             <Rectangle Grid.Row="3" Height="1" Fill="{StaticResource Brush.Border1}"/>
 
-            <!-- Repositories' tree -->
+            <!-- Group Title For Repositories -->
             <Grid Grid.Row="4" Margin="0,8,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -69,25 +69,37 @@
                 <TextBlock Grid.Column="0" Text="REPOSITORIES" FontSize="18" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>
                 <TextBlock Grid.Column="2" Text="DRAG-DROP YOUR FOLDER" FontSize="14" Foreground="{StaticResource Brush.FG2}" VerticalAlignment="Center"/>
             </Grid>
+
+            <!-- Drop area tip. -->
+            <Rectangle 
+                Grid.Row="5" 
+                x:Name="dropArea" 
+                Margin="0,2" 
+                Stroke="{StaticResource Brush.Border1}" 
+                StrokeThickness="2" 
+                StrokeDashArray="4 4"
+                Visibility="Hidden"
+                SnapsToDevicePixels="True"/>
+
+            <!-- Repository Tree -->
             <TreeView
                 x:Name="repositories"
                 Grid.Row="5"
-                Margin="0,4"
+                Margin="2,4"
                 Padding="0"
                 AllowDrop="True"
                 TextElement.FontSize="14"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ContextMenuOpening="TreeContextMenuOpening"
-                Drop="TreeDrop" 
-                MouseMove="TreeMouseMove">
+                MouseMove="TreeMouseMove"
+                DragOver="TreeDragOver"
+                DragEnter="TreeDragEnter"
+                Drop="TreeDrop">
 
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
                         <Setter Property="IsExpanded" Value="{Binding IsExpended, Mode=TwoWay}"/>
-                        <Setter Property="AllowDrop" Value="{Binding IsRepo, Converter={StaticResource InverseBool}}"/>
 
-                        <EventSetter Event="DragOver" Handler="TreeNodeDragOver"/>
-                        <EventSetter Event="Drop" Handler="TreeNodeDrop"/>
                         <EventSetter Event="Expanded" Handler="TreeNodeIsExpandedChanged"/>
                         <EventSetter Event="Collapsed" Handler="TreeNodeIsExpandedChanged"/>
                         <EventSetter Event="KeyDown" Handler="TreeNodeKeyDown"/>
@@ -98,58 +110,60 @@
 
                 <TreeView.ItemTemplate>                    
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <Grid Height="32">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <Border Height="32">
+                            <Grid IsHitTestVisible="False">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Path 
-                                x:Name="icon" 
-                                Grid.Column="0" 
-                                Width="16" Height="16" 
-                                Style="{StaticResource Style.Icon}" 
-                                Data="{StaticResource Icon.Folder.Fill}"/>
+                                <Path 
+                                    x:Name="icon" 
+                                    Grid.Column="0" 
+                                    Width="16" Height="16" 
+                                    Style="{StaticResource Style.Icon}" 
+                                    Data="{StaticResource Icon.Folder.Fill}"/>
 
-                            <StackPanel
-                                x:Name="name"
-                                Grid.Column="1"
-                                Orientation="Horizontal"
-                                Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToCollapsed}}">
-                                <TextBlock
-                                    Margin="8,0,0,0" 
-                                    Text="{Binding Name}"
-                                    Foreground="{StaticResource Brush.FG}" 
-                                    VerticalAlignment="Center"/>
-                                <TextBlock
-                                    Margin="8,0,0,0" 
-                                    Text="{Binding Id}"
-                                    Foreground="{StaticResource Brush.FG2}" 
-                                    VerticalAlignment="Center"
+                                <StackPanel
+                                    x:Name="name"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToCollapsed}}">
+                                    <TextBlock
+                                        Margin="8,0,0,0" 
+                                        Text="{Binding Name}"
+                                        Foreground="{StaticResource Brush.FG}" 
+                                        VerticalAlignment="Center"/>
+                                    <TextBlock
+                                        Margin="8,0,0,0" 
+                                        Text="{Binding Id}"
+                                        Foreground="{StaticResource Brush.FG2}" 
+                                        VerticalAlignment="Center"
+                                        Visibility="{Binding IsRepo, Converter={StaticResource BoolToCollapsed}}"/>
+                                </StackPanel>
+
+                                <TextBox 
+                                    x:Name="editName" 
+                                    Grid.Column="1" 
+                                    Margin="4,0,0,0" 
+                                    Text="{Binding Name}" 
+                                    Loaded="TreeNodeRenameStart" 
+                                    KeyDown="TreeNodeRenameKeyDown" 
+                                    LostFocus="TreeNodeRenameEnd"
+                                    Visibility="{Binding IsEditing, Converter={StaticResource BoolToCollapsed}}"/>
+
+                                <Path 
+                                    x:Name="bookmark" 
+                                    Grid.Column="2" 
+                                    Width="14" Height="14" 
+                                    Margin="4,0"
+                                    Style="{StaticResource Style.Icon}" 
+                                    Data="{StaticResource Icon.Bookmark}" 
+                                    Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}" 
                                     Visibility="{Binding IsRepo, Converter={StaticResource BoolToCollapsed}}"/>
-                            </StackPanel>                            
-
-                            <TextBox 
-                                x:Name="editName" 
-                                Grid.Column="1" 
-                                Margin="4,0,0,0" 
-                                Text="{Binding Name}" 
-                                Loaded="TreeNodeRenameStart" 
-                                KeyDown="TreeNodeRenameKeyDown" 
-                                LostFocus="TreeNodeRenameEnd"
-                                Visibility="{Binding IsEditing, Converter={StaticResource BoolToCollapsed}}"/>
-
-                            <Path 
-                                x:Name="bookmark" 
-                                Grid.Column="2" 
-                                Width="14" Height="14" 
-                                Margin="4,0"
-                                Style="{StaticResource Style.Icon}" 
-                                Data="{StaticResource Icon.Bookmark}" 
-                                Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}" 
-                                Visibility="{Binding IsRepo, Converter={StaticResource BoolToCollapsed}}"/>
-                        </Grid>
+                            </Grid>
+                        </Border>
 
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding IsExpended}" Value="True">

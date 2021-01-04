@@ -254,7 +254,7 @@ namespace SourceGit.Helpers {
         /// <param name="item"></param>
         /// <param name="child"></param>
         /// <returns></returns>
-        private static TreeViewItem FindTreeViewItem(DependencyObject child) {
+        public static TreeViewItem FindTreeViewItem(DependencyObject child) {
             if (child == null) return null;
             if (child is TreeViewItem) return child as TreeViewItem;
             if (child is TreeView) return null;

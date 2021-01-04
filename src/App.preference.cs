@@ -200,6 +200,7 @@ namespace SourceGit {
         /// <returns></returns>
         public bool IsSubGroup(string parentId, string subId) {
             if (string.IsNullOrEmpty(parentId)) return false;
+            if (parentId == subId) return true;
 
             var g = FindGroup(subId);
             if (g == null) return false;

@@ -61,6 +61,93 @@ namespace SourceGit.UI {
         }
         #endregion
 
+        #region EVENT_DRAG_DROP
+        private void PageDragEnter(object sender, DragEventArgs e) {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                if (!MakeSureReady()) return;
+                SetDragAreaVisibility(true);
+            }
+        }
+
+        private void PageDragLeave(object sender, DragEventArgs e) {
+            SetDragAreaVisibility(false);
+        }
+
+        private void PageDrop(object sender, DragEventArgs e) {
+            SetDragAreaVisibility(false);
+        }
+
+        private void TreeMouseMove(object sender, MouseEventArgs e) {
+            if (e.LeftButton != MouseButtonState.Pressed) return;
+
+            if (repositories.SelectedItem != null) {
+                DragDrop.DoDragDrop(repositories, repositories.SelectedItem, DragDropEffects.Move);
+            }
+            
+            e.Handled = true;
+        }
+
+        private void TreeDragEnter(object sender, DragEventArgs e) {
+            SetDragAreaVisibility(true);
+        }
+
+        private void TreeDragOver(object sender, DragEventArgs e) {
+            var dropToItem = Helpers.TreeViewHelper.FindTreeViewItem(e.OriginalSource as DependencyObject);
+            if (dropToItem != null) {
+                var node = dropToItem.DataContext as Node;
+                if (!node.IsRepo && !node.IsExpended) dropToItem.IsExpanded = true;
+            }
+        }
+
+        private void TreeDrop(object sender, DragEventArgs e) {
+            bool needRebuild = false;
+            SetDragAreaVisibility(false);
+
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                if (!MakeSureReady()) return;
+
+                string[] paths = e.Data.GetData(DataFormats.FileDrop) as string[];
+                string group = "";
+
+                var dropToItem = Helpers.TreeViewHelper.FindTreeViewItem(e.OriginalSource as DependencyObject);
+                if (dropToItem != null) {
+                    var parentNode = dropToItem.DataContext as Node;
+                    group = parentNode.IsRepo ? parentNode.ParentId : parentNode.Id;
+                }
+
+                foreach (var path in paths) {
+                    FileInfo info = new FileInfo(path);
+                    if (info.Attributes == FileAttributes.Directory && Git.Repository.IsValid(path)) {
+                        App.Setting.AddRepository(path, group);
+                        needRebuild = true;
+                    }
+                }
+            } else if (e.Data.GetDataPresent(typeof(Node))) {
+                var node = e.Data.GetData(typeof(Node)) as Node;
+                if (node == null) return;
+
+                string newParent = "";
+
+                var dropToItem = Helpers.TreeViewHelper.FindTreeViewItem(e.OriginalSource as DependencyObject);
+                if (dropToItem != null) {
+                    var newParentNode = dropToItem.DataContext as Node; 
+                    newParent = newParentNode.IsRepo ? newParentNode.ParentId : newParentNode.Id;
+                }
+
+                if (node.IsRepo) {
+                    App.Setting.FindRepository(node.Id).GroupId = newParent;
+                } else if (!App.Setting.IsSubGroup(node.Id, newParent)) {
+                    App.Setting.FindGroup(node.Id).ParentId = newParent;
+                }
+
+                needRebuild = true;
+            }
+
+            if (needRebuild) UpdateTree();
+            e.Handled = true;
+        }
+        #endregion
+
         #region EVENT_TREEVIEW
         private void TreeContextMenuOpening(object sender, ContextMenuEventArgs e) {
             var addFolder = new MenuItem();
@@ -77,71 +164,12 @@ namespace SourceGit.UI {
             e.Handled = true;
         }
 
-        private void TreeMouseMove(object sender, MouseEventArgs e) {
-            if (e.LeftButton != MouseButtonState.Pressed) return;
-            if (repositories.SelectedItem == null) return;
-            DragDrop.DoDragDrop(repositories, repositories.SelectedItem, DragDropEffects.Move);
-            e.Handled = true;
-        }
-
-        private void TreeDrop(object sender, DragEventArgs e) {
-            bool needRebuild = false;
-
-            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
-                if (!MakeSureReady()) return;
-
-                string[] paths = e.Data.GetData(DataFormats.FileDrop) as string[];
-                string group = "";
-
-                var node = (sender as TreeViewItem)?.DataContext as Node;
-                if (node != null) group = node.IsRepo ? node.ParentId : node.Id;
-
-                foreach (var path in paths) {
-                    FileInfo info = new FileInfo(path);
-                    if (info.Attributes == FileAttributes.Directory && Git.Repository.IsValid(path)) {
-                        App.Setting.AddRepository(path, group);
-                        needRebuild = true;
-                    }
-                }
-            } else if (e.Data.GetDataPresent(typeof(Node))) {
-                var node = e.Data.GetData(typeof(Node)) as Node;
-                if (node == null) return;
-
-                var to = (sender as TreeViewItem)?.DataContext as Node;
-                var parent = to != null ? to.Id : "";
-
-                if (node.IsRepo) {
-                    App.Setting.FindRepository(node.Id).GroupId = to != null ? to.Id : "";
-                } else if (!App.Setting.IsSubGroup(node.Id, parent)) {
-                    App.Setting.FindGroup(node.Id).ParentId = parent;
-                }
-
-                needRebuild = true;
-            }
-
-            if (needRebuild) UpdateTree();
-            e.Handled = true;
-        }
-        #endregion
-
-        #region EVENT_TREEVIEWITEM
         private void TreeNodeDoubleClick(object sender, MouseButtonEventArgs e) {
             var node = (sender as TreeViewItem).DataContext as Node;
             if (node != null && node.IsRepo) {
                 CheckAndOpenRepo(node.Id);
                 e.Handled = true;
             }
-        }
-
-        private void TreeNodeDragOver(object sender, DragEventArgs e) {
-            var item = sender as TreeViewItem;
-            var node = item.DataContext as Node;
-            if (node != null && !node.IsRepo) item.IsExpanded = true;
-            e.Handled = true;
-        }
-
-        private void TreeNodeDrop(object sender, DragEventArgs e) {
-            TreeDrop(sender, e);
         }
 
         private void TreeNodeIsExpandedChanged(object sender, RoutedEventArgs e) {
@@ -389,6 +417,14 @@ namespace SourceGit.UI {
             }
 
             UpdateTree();
+        }
+
+        /// <summary>
+        ///     Set visibility of drag-drop area.
+        /// </summary>
+        /// <param name="bVisible"></param>
+        private void SetDragAreaVisibility(bool bVisible = true) {
+            dropArea.Visibility = bVisible ? Visibility.Visible : Visibility.Hidden;
         }
         #endregion
     }
