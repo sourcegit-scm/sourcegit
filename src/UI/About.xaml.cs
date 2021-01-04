@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
@@ -17,7 +18,10 @@ namespace SourceGit.UI {
             InitializeComponent();
 
             var asm = Assembly.GetExecutingAssembly().GetName();
-            version.Content = $"VERSION : v{asm.Version.Major}.{asm.Version.Minor}";
+            var framework = AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName;
+            var dotnetVer = framework.Substring(framework.IndexOf("=") + 1);
+
+            version.Content = $"VERSION : v{asm.Version.Major}.{asm.Version.Minor}   .NET : {dotnetVer}";
         }
 
         /// <summary>
