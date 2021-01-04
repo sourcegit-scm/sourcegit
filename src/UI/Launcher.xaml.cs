@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -138,7 +139,7 @@ namespace SourceGit.UI {
         /// </summary>
         public void CheckUpdate() {
             try {
-                var web = new WebClient();
+                var web = new WebClient() { Encoding = Encoding.UTF8 };
                 var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/SourceGit/releases/latest");
                 var ver = JsonConvert.DeserializeObject<Git.Version>(raw);
                 var cur = Assembly.GetExecutingAssembly().GetName().Version;
