@@ -26,7 +26,7 @@ namespace SourceGit.UI {
             public string FilePath { get; set; } = "";
             public string Name { get; set; } = "";
             public bool IsFile { get; set; } = false;
-            public bool IsNodeExpanded { get; set; } = true;
+            public bool IsNodeExpanded { get; set; } = false;
             public Git.Change Change { get; set; } = null;
             public ObservableCollection<Node> Children { get; set; } = new ObservableCollection<Node>();
         }
@@ -153,6 +153,8 @@ namespace SourceGit.UI {
                 RemoveTreeNode(tree, exist);
             }
 
+            var isDefaultExpand = changes.Count <= 50;
+
             foreach (var c in changes) {
                 if (list.FirstOrDefault(one => one.Path == c.Path) != null) continue;
 
@@ -166,7 +168,7 @@ namespace SourceGit.UI {
                 }
                 if (!added) list.Add(c);
 
-                InsertTreeNode(tree, c);
+                InsertTreeNode(tree, c, isDefaultExpand);
             }
         }
 
@@ -1055,12 +1057,13 @@ namespace SourceGit.UI {
             Helpers.TreeViewHelper.SelectWholeTree(tree);
         }
 
-        private Node InsertTreeNode(ObservableCollection<Node> nodes, string name, string path, bool isFile = false, Git.Change change = null) {
+        private Node InsertTreeNode(ObservableCollection<Node> nodes, string name, string path, bool isFile, Git.Change change, bool expand) {
             Node node = new Node();
             node.Name = name;
             node.FilePath = path;
             node.IsFile = isFile;
             node.Change = change;
+            node.IsNodeExpanded = expand;
 
             bool isAdded = false;
             if (node.IsFile) {
@@ -1087,21 +1090,21 @@ namespace SourceGit.UI {
             return node;
         }
 
-        private void InsertTreeNode(ObservableCollection<Node> nodes, Git.Change change) {
+        private void InsertTreeNode(ObservableCollection<Node> nodes, Git.Change change, bool expand) {
             string[] subs = change.Path.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (subs.Length == 1) {
-                InsertTreeNode(nodes, change.Path, change.Path, true, change);
+                InsertTreeNode(nodes, change.Path, change.Path, true, change, false);
             } else {
                 Node last = nodes.FirstOrDefault(o => o.Name == subs[0]);
-                if (last == null) last = InsertTreeNode(nodes, subs[0], subs[0]);
+                if (last == null) last = InsertTreeNode(nodes, subs[0], subs[0], false, null, expand);
 
                 for (int i = 1; i < subs.Length - 1; i++) {
                     var p = last.Children.FirstOrDefault(o => o.Name == subs[i]);
-                    if (p == null) p = InsertTreeNode(last.Children, subs[i], last.FilePath + "/" + subs[i]);
+                    if (p == null) p = InsertTreeNode(last.Children, subs[i], last.FilePath + "/" + subs[i], false, null, expand);
                     last = p;
                 }
 
-                InsertTreeNode(last.Children, subs[subs.Length - 1], change.Path, true, change);
+                InsertTreeNode(last.Children, subs[subs.Length - 1], change.Path, true, change, false);
             }
         }
 
