@@ -72,7 +72,8 @@
 
                 <TreeView 
                     Grid.Row="1" 
-                    x:Name="unstagedTree" 
+                    x:Name="unstagedTree"
+                    ItemsSource="{Binding ElementName=me, Path=UnstagedTreeData, IsAsync=True}"
                     Background="{StaticResource Brush.BG2}"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Converter={StaticResource FilesDisplayModeToTree}}"
                     FontFamily="Consolas" 
@@ -126,7 +127,8 @@
 
                 <DataGrid
                     Grid.Row="1"
-                    x:Name="unstagedList"
+                    x:Name="unstagedList"                    
+                    ItemsSource="{Binding ElementName=me, Path=UnstagedListData, IsAsync=True}"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Converter={StaticResource FilesDisplayModeToList}}"
                     RowHeight="24"
                     SelectionChanged="UnstagedListSelectionChanged"
@@ -228,7 +230,8 @@
 
                 <TreeView
                     Grid.Row="1" 
-                    x:Name="stageTree" 
+                    x:Name="stageTree"
+                    ItemsSource="{Binding ElementName=me, Path=StagedTreeData, IsAsync=True}"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Converter={StaticResource FilesDisplayModeToTree}}"
                     Background="{StaticResource Brush.BG2}"
                     FontFamily="Consolas" 
@@ -282,7 +285,8 @@
 
                 <DataGrid
                     Grid.Row="1"
-                    x:Name="stageList"
+                    x:Name="stageList"                    
+                    ItemsSource="{Binding ElementName=me, Path=StagedListData, IsAsync=True}"
                     RowHeight="24"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Converter={StaticResource FilesDisplayModeToList}}"
                     SelectionChanged="StagedListSelectionChanged"

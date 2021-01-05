@@ -96,7 +96,7 @@ namespace SourceGit.UI {
 
             Dispatcher.Invoke(() => {
                 txtSearch.Text = "";
-                commitList.ItemsSource = new List<Git.Commit>(cachedCommits);
+                commitList.ItemsSource = cachedCommits;
                 SetLoadingEnabled(false);
             });
         }

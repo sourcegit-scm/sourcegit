@@ -1,8 +1,10 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,7 +28,7 @@ namespace SourceGit.UI {
             public bool IsFile { get; set; } = false;
             public bool IsNodeExpanded { get; set; } = true;
             public Git.Change Change { get; set; } = null;
-            public List<Node> Children { get; set; } = new List<Node>();
+            public ObservableCollection<Node> Children { get; set; } = new ObservableCollection<Node>();
         }
 
         /// <summary>
@@ -40,14 +42,39 @@ namespace SourceGit.UI {
         public string CommitMessage { get; set; }
 
         /// <summary>
-        ///     Has conflict object?
+        ///     Cached unstaged changes in list/grid view.
         /// </summary>
-        private bool hasConflict = false;
+        public ObservableCollection<Git.Change> UnstagedListData { get; set; }
+
+        /// <summary>
+        ///     Cached unstaged changes in TreeView.
+        /// </summary>
+        public ObservableCollection<Node> UnstagedTreeData { get; set; }
+
+        /// <summary>
+        ///     Cached staged changes in list/grid view.
+        /// </summary>
+        public ObservableCollection<Git.Change> StagedListData { get; set; }
+
+        /// <summary>
+        ///     Cached staged changes in TreeView.
+        /// </summary>
+        public ObservableCollection<Node> StagedTreeData { get; set; }
+
+        /// <summary>
+        ///     Last view change
+        /// </summary>
+        public Git.Change LastViewChange { get; set; }
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         public WorkingCopy() {
+            UnstagedListData = new ObservableCollection<Git.Change>();
+            UnstagedTreeData = new ObservableCollection<Node>();
+            StagedListData = new ObservableCollection<Git.Change>();
+            StagedTreeData = new ObservableCollection<Node>();
+
             InitializeComponent();
         }
 
@@ -58,24 +85,35 @@ namespace SourceGit.UI {
         public bool SetData(List<Git.Change> changes) {
             List<Git.Change> staged = new List<Git.Change>();
             List<Git.Change> unstaged = new List<Git.Change>();
-            hasConflict = false;
+            bool hasConflict = false;
+            bool removeLastViewChange = true;
 
             foreach (var c in changes) {
                 hasConflict = hasConflict || c.IsConflit;
 
-                if (c.Index != Git.Change.Status.None && c.Index != Git.Change.Status.Untracked) {
+                if (c.IsAddedToIndex) {
                     staged.Add(c);
+                    if (LastViewChange != null && LastViewChange.IsAddedToIndex && c.Path == LastViewChange.Path) {
+                        LastViewChange = c;
+                        removeLastViewChange = false;
+                    }
                 }
 
                 if (c.WorkTree != Git.Change.Status.None) {
                     unstaged.Add(c);
+                    if (LastViewChange != null && !LastViewChange.IsAddedToIndex && c.Path == LastViewChange.Path) {
+                        LastViewChange = c;
+                        removeLastViewChange = false;
+                    }
                 }
             }
 
-            SetData(unstaged, true);
-            SetData(staged, false);
+            if (removeLastViewChange) LastViewChange = null;
 
             Dispatcher.Invoke(() => {
+                UpdateData(unstaged, UnstagedListData, UnstagedTreeData);
+                UpdateData(staged, StagedListData, StagedTreeData);
+
                 var current = Repo.CurrentBranch();
                 if (current != null && !string.IsNullOrEmpty(current.Upstream) && chkAmend.IsChecked != true) {
                     btnCommitAndPush.Visibility = Visibility.Visible;
@@ -83,11 +121,53 @@ namespace SourceGit.UI {
                     btnCommitAndPush.Visibility = Visibility.Collapsed;
                 }
 
-                mergePanel.Visibility = Visibility.Collapsed;
-                diffViewer.Reset();
+                if (LastViewChange != null) {
+                    if (LastViewChange.IsConflit) {
+                        mergePanel.Visibility = Visibility.Visible;
+                        diffViewer.Reset();
+                    } else {
+                        mergePanel.Visibility = Visibility.Collapsed;
+                        diffViewer.Reload();
+                    }
+                } else {
+                    mergePanel.Visibility = Visibility.Collapsed;
+                    diffViewer.Reset();
+                }
             });
 
             return hasConflict;
+        }
+
+        /// <summary>
+        ///     Update data.
+        /// </summary>
+        /// <param name="changes"></param>
+        /// <param name="list"></param>
+        /// <param name="tree"></param>
+        public void UpdateData(List<Git.Change> changes, ObservableCollection<Git.Change> list, ObservableCollection<Node> tree) {
+            for (int i = list.Count - 1; i >= 0; i--) {
+                var exist = list[i];
+                if (changes.FirstOrDefault(one => one.Path == exist.Path) != null) continue;
+
+                list.RemoveAt(i);
+                RemoveTreeNode(tree, exist);
+            }
+
+            foreach (var c in changes) {
+                if (list.FirstOrDefault(one => one.Path == c.Path) != null) continue;
+
+                bool added = false;
+                for (int i = 0; i < list.Count; i++) {
+                    if (c.Path.CompareTo(list[i].Path) < 0) {
+                        list.Insert(i, c);
+                        added = true;
+                        break;
+                    }
+                }
+                if (!added) list.Add(c);
+
+                InsertTreeNode(tree, c);
+            }
         }
 
         /// <summary>
@@ -116,10 +196,10 @@ namespace SourceGit.UI {
         /// </summary>
         public void Cleanup() {
             Repo = null;
-            unstagedList.ItemsSource = null;
-            unstagedList.ItemsSource = null;
-            stageList.ItemsSource = null;
-            stageTree.ItemsSource = null;
+            UnstagedListData.Clear();
+            UnstagedTreeData.Clear();
+            StagedListData.Clear();
+            StagedTreeData.Clear();
             diffViewer.Reset();
         }
 
@@ -142,6 +222,8 @@ namespace SourceGit.UI {
                 mergePanel.Visibility = Visibility.Visible;
                 return;
             }
+
+            LastViewChange = node.Change;
 
             DiffViewer.Option opt;
             switch (node.Change.WorkTree) {
@@ -173,6 +255,8 @@ namespace SourceGit.UI {
                 mergePanel.Visibility = Visibility.Visible;
                 return;
             }
+
+            LastViewChange = change;
 
             DiffViewer.Option opt;
             switch (change.WorkTree) {
@@ -543,6 +627,8 @@ namespace SourceGit.UI {
             var node = selected[0].DataContext as Node;
             if (!node.IsFile) return;
 
+            LastViewChange = node.Change;
+
             diffViewer.Diff(Repo, new DiffViewer.Option() {
                 ExtraArgs = "--cached",
                 Path = node.FilePath,
@@ -563,6 +649,7 @@ namespace SourceGit.UI {
             if (selected.Count != 1) return;
 
             var change = selected[0] as Git.Change;
+            LastViewChange = change;
             diffViewer.Diff(Repo, new DiffViewer.Option() {
                 ExtraArgs = "--cached",
                 Path = change.Path,
@@ -816,14 +903,15 @@ namespace SourceGit.UI {
         }
 
         private async void Commit(object sender, RoutedEventArgs e) {
-            var amend = chkAmend.IsChecked == true;
-
-            Repo.RecordCommitMessage(CommitMessage);
-
-            if (hasConflict) {
-                App.RaiseError("You have unsolved conflicts in your working copy!");
-                return;
+            foreach (var c in UnstagedListData) {
+                if (c.IsConflit) {
+                    App.RaiseError("You have unsolved conflicts in your working copy!");
+                    return;
+                }
             }
+
+            var amend = chkAmend.IsChecked == true;
+            Repo.RecordCommitMessage(CommitMessage);
 
             if (stageTree.Items.Count == 0) {
                 App.RaiseError("Nothing to commit!");
@@ -838,14 +926,15 @@ namespace SourceGit.UI {
         }
 
         private async void CommitAndPush(object sender, RoutedEventArgs e) {
-            var amend = chkAmend.IsChecked == true;
-
-            Repo.RecordCommitMessage(CommitMessage);
-
-            if (hasConflict) {
-                App.RaiseError("You have unsolved conflicts in your working copy!");
-                return;
+            foreach (var c in UnstagedListData) {
+                if (c.IsConflit) {
+                    App.RaiseError("You have unsolved conflicts in your working copy!");
+                    return;
+                }   
             }
+
+            var amend = chkAmend.IsChecked == true;
+            Repo.RecordCommitMessage(CommitMessage);
 
             if (stageTree.Items.Count == 0) {
                 App.RaiseError("Nothing to commit!");
@@ -966,89 +1055,81 @@ namespace SourceGit.UI {
             Helpers.TreeViewHelper.SelectWholeTree(tree);
         }
 
-        private void SetData(List<Git.Change> changes, bool unstaged) {
-            List<Node> source = new List<Node>();
-            Dictionary<string, Node> folders = new Dictionary<string, Node>();
-            bool isExpendDefault = changes.Count <= 50;
+        private Node InsertTreeNode(ObservableCollection<Node> nodes, string name, string path, bool isFile = false, Git.Change change = null) {
+            Node node = new Node();
+            node.Name = name;
+            node.FilePath = path;
+            node.IsFile = isFile;
+            node.Change = change;
 
-            foreach (var c in changes) {
-                var subs = c.Path.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
-                if (subs.Length == 1) {
-                    Node node = new Node();
-                    node.FilePath = c.Path;
-                    node.IsFile = true;
-                    node.Name = c.Path;
-                    node.Change = c;
-                    source.Add(node);
-                } else {
-                    Node lastFolder = null;
-                    var folder = "";
-                    for (int i = 0; i < subs.Length - 1; i++) {
-                        folder += (subs[i] + "/");
-                        if (folders.ContainsKey(folder)) {
-                            lastFolder = folders[folder];
-                        } else if (lastFolder == null) {
-                            lastFolder = new Node();
-                            lastFolder.FilePath = folder;
-                            lastFolder.Name = subs[i];
-                            lastFolder.IsNodeExpanded = isExpendDefault;
-                            source.Add(lastFolder);
-                            folders.Add(folder, lastFolder);
-                        } else {
-                            var folderNode = new Node();
-                            folderNode.FilePath = folder;
-                            folderNode.Name = subs[i];
-                            folderNode.IsNodeExpanded = isExpendDefault;
-                            folders.Add(folder, folderNode);
-                            lastFolder.Children.Add(folderNode);
-                            lastFolder = folderNode;
-                        }
+            bool isAdded = false;
+            if (node.IsFile) {
+                for (var i = 0; i < nodes.Count; i++) {
+                    var cur = nodes[i];
+                    if (!cur.IsFile) continue;
+                    if (node.FilePath.CompareTo(cur.FilePath) > 0) continue;
+                    nodes.Insert(i, node);
+                    isAdded = true;
+                    break;
+                }
+            } else {
+                for (var i = 0; i < nodes.Count; i++) {
+                    var cur = nodes[i];
+                    if (cur.IsFile || node.FilePath.CompareTo(cur.FilePath) < 0) {
+                        nodes.Insert(i, node);
+                        isAdded = true;
+                        break;
                     }
-
-                    Node node = new Node();
-                    node.FilePath = c.Path;
-                    node.Name = subs[subs.Length - 1];
-                    node.IsFile = true;
-                    node.Change = c;
-                    lastFolder.Children.Add(node);
                 }
             }
 
-            folders.Clear();            
-            SortTreeNodes(source);
-
-            Dispatcher.Invoke(() => {                
-                if (unstaged) {
-                    unstagedList.ItemsSource = changes;
-                    unstagedTree.ItemsSource = source;
-                } else {
-                    stageList.ItemsSource = changes;
-                    stageTree.ItemsSource = source;
-                }
-            });
+            if (!isAdded) nodes.Add(node);
+            return node;
         }
 
-        private Node FindNodeByPath(List<Node> nodes, string filePath) {
+        private void InsertTreeNode(ObservableCollection<Node> nodes, Git.Change change) {
+            string[] subs = change.Path.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
+            if (subs.Length == 1) {
+                InsertTreeNode(nodes, change.Path, change.Path, true, change);
+            } else {
+                Node last = nodes.FirstOrDefault(o => o.Name == subs[0]);
+                if (last == null) last = InsertTreeNode(nodes, subs[0], subs[0]);
+
+                for (int i = 1; i < subs.Length - 1; i++) {
+                    var p = last.Children.FirstOrDefault(o => o.Name == subs[i]);
+                    if (p == null) p = InsertTreeNode(last.Children, subs[i], last.FilePath + "/" + subs[i]);
+                    last = p;
+                }
+
+                InsertTreeNode(last.Children, subs[subs.Length - 1], change.Path, true, change);
+            }
+        }
+
+        private bool RemoveTreeNode(ObservableCollection<Node> nodes, Git.Change change) {
+            for (int i = nodes.Count - 1; i >= 0; i--) {
+                if (nodes[i].FilePath == change.Path) {
+                    nodes.RemoveAt(i);
+                    return true;
+                }
+
+                if (nodes[i].IsFile) continue;
+
+                if (RemoveTreeNode(nodes[i].Children, change)) {
+                    if (nodes[i].Children.Count == 0) nodes.RemoveAt(i);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private Node FindNodeByPath(ObservableCollection<Node> nodes, string filePath) {
             foreach (var node in nodes) {
                 if (node.FilePath == filePath) return node;
                 var found = FindNodeByPath(node.Children, filePath);
                 if (found != null) return found;
             }
             return null;
-        }
-
-        private void SortTreeNodes(List<Node> list) {
-            list.Sort((l, r) => {
-                if (l.IsFile) {
-                    return r.IsFile ? l.FilePath.CompareTo(r.FilePath) : 1;
-                } else {
-                    return r.IsFile ? -1 : l.FilePath.CompareTo(r.FilePath);
-                }
-            });
-
-            foreach (var sub in list) {
-                if (sub.Children.Count > 0) SortTreeNodes(sub.Children);
-            }
         }
 
         private void TreeMouseWheel(object sender, MouseWheelEventArgs e) {

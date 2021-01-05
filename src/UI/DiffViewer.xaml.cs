@@ -22,7 +22,9 @@ namespace SourceGit.UI {
         public static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
         public static readonly Brush BG_NORMAL = Brushes.Transparent;
 
-        private List<Git.Diff.LineChange> lineChanges = null;
+        private Git.Repository lastRepo = null;
+        private Option lastOpts = null;
+        private List<Git.Diff.LineChange> lastChanges = null;
         private List<DataGrid> editors = new List<DataGrid>();
 
         /// <summary>
@@ -73,9 +75,8 @@ namespace SourceGit.UI {
         /// </summary>
         public void Reset() {
             mask.Visibility = Visibility.Visible;
-            lineChanges = null;
-            foreach (var editor in editors) editorContainer.Children.Remove(editor);
-            editors.Clear();
+            ClearCache();
+            ClearEditor();
         }
 
         /// <summary>
@@ -91,11 +92,11 @@ namespace SourceGit.UI {
             sizeChange.Visibility = Visibility.Collapsed;
             noChange.Visibility = Visibility.Collapsed;
 
-            editorContainer.Children.Clear();
-            editorLines.Children.Clear();
-            editorLines.ColumnDefinitions.Clear();
-            editors.Clear();
-            lineChanges = null;
+            ClearEditor();
+            ClearCache();
+
+            lastRepo = repo;
+            lastOpts = opts;
 
             Task.Run(() => {
                 var args = $"{opts.ExtraArgs} ";
@@ -122,7 +123,57 @@ namespace SourceGit.UI {
                 if (rs.IsBinary) {
                     SetBinaryChange(Git.Diff.GetSizeChange(repo, opts.RevisionRange, opts.Path, opts.OrgPath));
                 } else if (rs.Lines.Count > 0) {
-                    lineChanges = rs.Lines;
+                    lastChanges = rs.Lines;
+                    SetTextChange();
+                } else {
+                    SetSame();
+                }
+            });
+        }
+
+        /// <summary>
+        ///     Reload diff content with last repository and options.
+        /// </summary>
+        public void Reload() {
+            if (lastRepo == null) {
+                Reset();
+                return;
+            }
+
+            loading.Visibility = Visibility.Visible;
+            mask.Visibility = Visibility.Collapsed;
+            sizeChange.Visibility = Visibility.Collapsed;
+            noChange.Visibility = Visibility.Collapsed;
+
+            var repo = lastRepo;
+            var opts = lastOpts;
+
+            Task.Run(() => {
+                var args = $"{opts.ExtraArgs} ";
+                if (opts.RevisionRange.Length > 0) args += $"{opts.RevisionRange[0]} ";
+                if (opts.RevisionRange.Length > 1) args += $"{opts.RevisionRange[1]} ";
+
+                args += "-- ";
+
+                if (!string.IsNullOrEmpty(opts.OrgPath)) args += $"\"{opts.OrgPath}\" ";
+                args += $"\"{opts.Path}\"";
+
+                if (repo.IsLFSFiltered(opts.Path)) {
+                    var lc = Git.Diff.GetLFSChange(repo, args);
+                    if (lc.IsValid) {
+                        SetLFSChange(lc);
+                    } else {
+                        SetSame();
+                    }
+
+                    return;
+                }
+
+                var rs = Git.Diff.GetTextChange(repo, args);
+                if (rs.IsBinary) {
+                    SetBinaryChange(Git.Diff.GetSizeChange(repo, opts.RevisionRange, opts.Path, opts.OrgPath));
+                } else if (rs.Lines.Count > 0) {
+                    lastChanges = rs.Lines;
                     SetTextChange();
                 } else {
                     SetSame();
@@ -151,7 +202,7 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="rs"></param>
         private void SetTextChange() {
-            if (lineChanges == null) return;
+            if (lastChanges == null) return;
 
             var fgCommon = FindResource("Brush.FG") as Brush;
             var fgIndicator = FindResource("Brush.FG2") as Brush;
@@ -161,7 +212,7 @@ namespace SourceGit.UI {
             if (App.Setting.UI.UseCombinedDiff) {
                 var blocks = new List<ChangeBlock>();
 
-                foreach (var line in lineChanges) {
+                foreach (var line in lastChanges) {
                     var block = new ChangeBlock();
                     block.Content = line.Content;
                     block.Mode = line.Mode;
@@ -181,36 +232,52 @@ namespace SourceGit.UI {
                     loading.Visibility = Visibility.Collapsed;
                     textChangeOptions.Visibility = Visibility.Visible;
 
+                    var createEditor = editors.Count == 0;
                     var lineNumberWidth = CalcLineNumberColWidth(lastOldLine, lastNewLine);
                     var minWidth = editorContainer.ActualWidth - lineNumberWidth * 2;
-                    if (editorContainer.ActualHeight < lineChanges.Count * 16) minWidth -= 8;
-                    var editor = CreateTextEditor(new string[] { "OldLine", "NewLine" });
+                    if (editorContainer.ActualHeight < lastChanges.Count * 16) minWidth -= 8;
+
+                    DataGrid editor;
+                    if (createEditor) {
+                        editor = CreateTextEditor(new string[] { "OldLine", "NewLine" });
+                        editor.SetValue(Grid.ColumnSpanProperty, 2);
+
+                        editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
+                        editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
+
+                        for (int i = 0; i < 2; i++) {
+                            var split = new Rectangle();
+                            split.Width = 1;
+                            split.Fill = FindResource("Brush.Border2") as Brush;
+                            split.HorizontalAlignment = HorizontalAlignment.Right;
+                            Grid.SetColumn(split, i);
+
+                            editorLines.Children.Add(split);
+                        }
+                    } else {
+                        editor = editors[0] as DataGrid;
+                        editorLines.ColumnDefinitions[0].Width = new GridLength(lineNumberWidth);
+                        editorLines.ColumnDefinitions[0].Width = new GridLength(lineNumberWidth);
+                    }
+
                     editor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                     editor.Columns[1].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                     editor.Columns[2].MinWidth = minWidth;
                     editor.ItemsSource = blocks;
-                    editor.SetValue(Grid.ColumnSpanProperty, 2);
-                    editorContainer.Children.Add(editor);
-                    editors.Add(editor);
 
-                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
-                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
-
-                    for (int i = 0; i < 2; i++) {
-                        var split = new Rectangle();
-                        split.Width = 1;
-                        split.Fill = FindResource("Brush.Border2") as Brush;
-                        split.HorizontalAlignment = HorizontalAlignment.Right;
-                        Grid.SetColumn(split, i);
-
-                        editorLines.Children.Add(split);
+                    if (createEditor) {
+                        editorContainer.Children.Add(editor);
+                        editors.Add(editor);
+                    } else {
+                        editor.UpdateLayout();
+                        editorLines.UpdateLayout();
                     }
                 });
             } else {
                 var oldSideBlocks = new List<ChangeBlock>();
                 var newSideBlocks = new List<ChangeBlock>();
 
-                foreach (var line in lineChanges) {
+                foreach (var line in lastChanges) {
                     var block = new ChangeBlock();
                     block.Content = line.Content;
                     block.Mode = line.Mode;
@@ -244,42 +311,63 @@ namespace SourceGit.UI {
                     loading.Visibility = Visibility.Collapsed;
                     textChangeOptions.Visibility = Visibility.Visible;
 
+                    var createEditor = editors.Count == 0;
                     var lineNumberWidth = CalcLineNumberColWidth(lastOldLine, lastNewLine);
                     var minWidth = editorContainer.ActualWidth / 2 - lineNumberWidth;
                     if (editorContainer.ActualHeight < newSideBlocks.Count * 16) minWidth -= 8;
 
-                    var oldEditor = CreateTextEditor(new string[] { "OldLine" });
-                    oldEditor.SetValue(Grid.ColumnProperty, 0);
-                    oldEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTwoSidesScroll));
+                    DataGrid oldEditor = null;
+                    DataGrid newEditor = null;
+
+                    if (createEditor) {
+                        oldEditor = CreateTextEditor(new string[] { "OldLine" });
+                        oldEditor.SetValue(Grid.ColumnProperty, 0);
+                        oldEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTwoSidesScroll));
+
+                        newEditor = CreateTextEditor(new string[] { "NewLine" });
+                        newEditor.SetValue(Grid.ColumnProperty, 1);
+                        newEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTwoSidesScroll));
+
+                        editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
+                        editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                        editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
+                        editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+
+                        for (int i = 0; i < 3; i++) {
+                            var split = new Rectangle();
+                            split.Width = 1;
+                            split.Fill = FindResource("Brush.Border2") as Brush;
+                            split.HorizontalAlignment = HorizontalAlignment.Right;
+                            Grid.SetColumn(split, i);
+                            editorLines.Children.Add(split);
+                        }
+                    } else {
+                        oldEditor = editors[0];
+                        newEditor = editors[1];
+
+                        editorLines.ColumnDefinitions[0].Width = new GridLength(lineNumberWidth);
+                        editorLines.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
+                        editorLines.ColumnDefinitions[2].Width = new GridLength(lineNumberWidth);
+                        editorLines.ColumnDefinitions[3].Width = new GridLength(1, GridUnitType.Star);
+                    }
+
                     oldEditor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                     oldEditor.Columns[1].MinWidth = minWidth;
                     oldEditor.ItemsSource = oldSideBlocks;
 
-                    var newEditor = CreateTextEditor(new string[] { "NewLine" });
-                    newEditor.SetValue(Grid.ColumnProperty, 1);
-                    newEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTwoSidesScroll));
                     newEditor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                     newEditor.Columns[1].MinWidth = minWidth;
                     newEditor.ItemsSource = newSideBlocks;
 
-                    editorContainer.Children.Add(oldEditor);
-                    editorContainer.Children.Add(newEditor);
-
-                    editors.Add(oldEditor);
-                    editors.Add(newEditor);
-
-                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
-                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(lineNumberWidth) });
-                    editorLines.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-
-                    for (int i = 0; i < 3; i++) {
-                        var split = new Rectangle();
-                        split.Width = 1;
-                        split.Fill = FindResource("Brush.Border2") as Brush;
-                        split.HorizontalAlignment = HorizontalAlignment.Right;
-                        Grid.SetColumn(split, i);
-                        editorLines.Children.Add(split);
+                    if (createEditor) {
+                        editorContainer.Children.Add(oldEditor);
+                        editorContainer.Children.Add(newEditor);
+                        editors.Add(oldEditor);
+                        editors.Add(newEditor);
+                    } else {
+                        oldEditor.UpdateLayout();
+                        newEditor.UpdateLayout();
+                        editorLines.UpdateLayout();
                     }
                 });
             }
@@ -491,10 +579,28 @@ namespace SourceGit.UI {
 
             return formatted.Width + 16;
         }
+
+        /// <summary>
+        ///     Clear cached data.
+        /// </summary>
+        private void ClearCache() {
+            lastRepo = null;
+            lastOpts = null;
+            lastChanges = null;
+        }
+
+        /// <summary>
+        ///     Clear editor.
+        /// </summary>
+        private void ClearEditor() {
+            editorContainer.Children.Clear();
+            editorLines.Children.Clear();
+            editorLines.ColumnDefinitions.Clear();
+            editors.Clear();
+        }
         #endregion
 
         #region EVENTS
-
         /// <summary>
         ///     Auto fit text change diff size.
         /// </summary>
@@ -513,18 +619,23 @@ namespace SourceGit.UI {
                 editor.Columns[2].Width = DataGridLength.SizeToCells;
                 editor.UpdateLayout();
             } else {
-                var offOld = editors[0].NonFrozenColumnsViewportHorizontalOffset;
-                var offNew = editors[1].NonFrozenColumnsViewportHorizontalOffset;
+                var oldEditor = editors[0];
+                var newEditor = editors[1];
+
+                var offOld = oldEditor.NonFrozenColumnsViewportHorizontalOffset;
+                var offNew = newEditor.NonFrozenColumnsViewportHorizontalOffset;
 
                 var minWidth = total / 2 - Math.Min(offOld, offNew);
-                var scroller = GetVisualChild<ScrollViewer>(editors[0]);
+                var scroller = GetVisualChild<ScrollViewer>(oldEditor);
                 if (scroller != null && scroller.ComputedVerticalScrollBarVisibility == Visibility.Visible) minWidth -= 8;
-                editors[0].Columns[1].MinWidth = minWidth;
-                editors[0].Columns[1].Width = DataGridLength.SizeToCells;
-                editors[1].Columns[1].MinWidth = minWidth;
-                editors[1].Columns[1].Width = DataGridLength.SizeToCells;
-                editors[0].UpdateLayout();
-                editors[1].UpdateLayout();
+
+                oldEditor.Columns[1].MinWidth = minWidth;
+                oldEditor.Columns[1].Width = DataGridLength.SizeToCells;
+                oldEditor.UpdateLayout();
+
+                newEditor.Columns[1].MinWidth = minWidth;
+                newEditor.Columns[1].Width = DataGridLength.SizeToCells;
+                newEditor.UpdateLayout();
             }
         }
 
@@ -543,19 +654,16 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTwoSidesScroll(object sender, ScrollChangedEventArgs e) {
-            if (e.VerticalChange != 0) {
-                foreach (var editor in editors) {
-                    var scroller = GetVisualChild<ScrollViewer>(editor);
-                    if (scroller != null && scroller.VerticalOffset != e.VerticalOffset) {
-                        scroller.ScrollToVerticalOffset(e.VerticalOffset);
-                    }
+            foreach (var editor in editors) {
+                var scroller = GetVisualChild<ScrollViewer>(editor);
+                if (scroller == null) continue;
+
+                if (e.VerticalChange != 0 && scroller.VerticalOffset != e.VerticalOffset) {
+                    scroller.ScrollToVerticalOffset(e.VerticalOffset);
                 }
-            } else {
-                foreach (var editor in editors) {
-                    var scroller = GetVisualChild<ScrollViewer>(editor);
-                    if (scroller != null && scroller.HorizontalOffset != e.HorizontalOffset) {
-                        scroller.ScrollToHorizontalOffset(e.HorizontalOffset);
-                    }
+
+                if (e.HorizontalChange != 0 && scroller.HorizontalOffset != e.HorizontalOffset) {
+                    scroller.ScrollToHorizontalOffset(e.HorizontalOffset);
                 }
             }
         }
@@ -624,11 +732,7 @@ namespace SourceGit.UI {
         private void ChangeDiffMode(object sender, RoutedEventArgs e) {
             if (!IsLoaded) return;
 
-            editorContainer.Children.Clear();
-            editorLines.Children.Clear();
-            editorLines.ColumnDefinitions.Clear();
-            editors.Clear();
-
+            ClearEditor();
             SetTextChange();
         }
 
