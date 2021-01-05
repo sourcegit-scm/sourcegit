@@ -74,7 +74,7 @@
                     </Hyperlink>
                 </Label>
 
-                <Label Grid.Row="4" Content="Copyright © sourcegit 2020. All rights reserved." HorizontalContentAlignment="Center" FontSize="11"/>
+                <Label Grid.Row="4" Content="Copyright © sourcegit 2021. All rights reserved." HorizontalContentAlignment="Center" FontSize="11"/>
             </Grid>
         </Grid>
     </Border>
