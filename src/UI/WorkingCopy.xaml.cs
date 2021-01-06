@@ -210,6 +210,7 @@ namespace SourceGit.UI {
             var selected = Helpers.TreeViewHelper.GetSelectedItems(unstagedTree);
             if (selected.Count == 0) return;
 
+            LastViewChange = null;
             mergePanel.Visibility = Visibility.Collapsed;
             diffViewer.Reset();
             Helpers.TreeViewHelper.UnselectTree(stageTree);
@@ -245,6 +246,7 @@ namespace SourceGit.UI {
             var selected = unstagedList.SelectedItems;
             if (selected.Count == 0) return;
 
+            LastViewChange = null;
             mergePanel.Visibility = Visibility.Collapsed;
             diffViewer.Reset();
             Helpers.TreeViewHelper.UnselectTree(stageTree);
@@ -619,6 +621,7 @@ namespace SourceGit.UI {
             var selected = Helpers.TreeViewHelper.GetSelectedItems(stageTree);
             if (selected.Count == 0) return;
 
+            LastViewChange = null;
             mergePanel.Visibility = Visibility.Collapsed;
             diffViewer.Reset();
             Helpers.TreeViewHelper.UnselectTree(unstagedTree);
@@ -643,6 +646,7 @@ namespace SourceGit.UI {
             var selected = stageList.SelectedItems;
             if (selected.Count == 0) return;
 
+            LastViewChange = null;
             mergePanel.Visibility = Visibility.Collapsed;
             diffViewer.Reset();
             Helpers.TreeViewHelper.UnselectTree(unstagedTree);
