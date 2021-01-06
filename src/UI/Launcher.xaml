@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:source="clr-namespace:SourceGit"
         xmlns:local="clr-namespace:SourceGit.UI"
+        xmlns:helpers="clr-namespace:SourceGit.Helpers"
         xmlns:converters="clr-namespace:SourceGit.Converters"
         mc:Ignorable="d"
         MinWidth="800" MinHeight="600"
@@ -37,7 +38,7 @@
         </Border.Style>
         
         <!-- Window Content -->
-        <Grid Background="{StaticResource Brush.Window}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="*"/>
@@ -50,6 +51,12 @@
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
 
+                <Border Grid.Column="0" Grid.ColumnSpan="3" Height="4" VerticalAlignment="Bottom" Margin="0,0,0,-4" Background="{StaticResource Brush.TitleBar}">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1" Direction="90" Opacity=".5" Color="Black"/>
+                    </Border.Effect>
+                </Border>
+
                 <!-- Tabs -->
                 <ScrollViewer x:Name="openedTabsScroller" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" CanContentScroll="True">
                     <TabControl x:Name="openedTabs" Padding="0" SnapsToDevicePixels="True" ItemsSource="{Binding ElementName=me, Path=Tabs}" SizeChanged="OpenedTabsSizeChanged">
@@ -58,16 +65,16 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabControl}">
-                                            <StackPanel Orientation="Horizontal" Margin="6,4,4,0">
+                                            <StackPanel Orientation="Horizontal" Margin="8,4,4,0">
                                                 <StackPanel Orientation="Horizontal" IsItemsHost="True" SnapsToDevicePixels="True" KeyboardNavigation.TabIndex="1"/>
-                                                <Button Margin="4,0,0,0" Click="NewTab" ToolTip="NEW PAGE" Width="24" Height="24" WindowChrome.IsHitTestVisibleInChrome="True">
+                                                <Button Margin="4,0,0,0" Click="NewTab" ToolTip="NEW PAGE" WindowChrome.IsHitTestVisibleInChrome="True">
                                                     <Button.Style>
                                                         <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
                                                             <Setter Property="Opacity" Value="1"/>
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate>
-                                                                        <Border x:Name="newTabBG" BorderThickness="0" Background="Transparent" CornerRadius="2">
+                                                                        <Border x:Name="newTabBG" Width="20" Height="20" BorderThickness="0" Background="Transparent" CornerRadius="2">
                                                                             <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.NewTab}" Fill="{StaticResource Brush.FG1}"/>
                                                                         </Border>
 
@@ -82,7 +89,7 @@
                                                         </Style>
                                                     </Button.Style>
                                                 </Button>
-                                            </StackPanel>                                            
+                                            </StackPanel>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
@@ -90,7 +97,7 @@
                         </TabControl.Style>
 
                         <TabControl.Resources>
-                            <converters:IntToRepoColor x:Key="IntToRepoColor"/>                            
+                            <converters:IntToRepoColor x:Key="IntToRepoColor"/>
                         </TabControl.Resources>
 
                         <TabControl.ItemTemplate>
@@ -163,28 +170,21 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabItem}">
-                                            <Grid SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Tooltip}">
-                                                <Border x:Name="BG" Margin="-1,0" SnapsToDevicePixels="True" Background="Transparent" CornerRadius="4,4,0,0"/>
+                                            <Grid x:Name="Container" SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Tooltip}">
+                                                <helpers:ChromeTabShape 
+                                                    x:Name="BG" 
+                                                    Width="{Binding ElementName=Container,Path=ActualWidth}"
+                                                    Height="{Binding ElementName=Container,Path=ActualHeight}"
+                                                    Fill="Transparent">
+                                                    <helpers:ChromeTabShape.Effect>
+                                                        <DropShadowEffect ShadowDepth="1" Direction="90" Opacity=".5" Color="Black"/>
+                                                    </helpers:ChromeTabShape.Effect>
+                                                </helpers:ChromeTabShape>
 
-                                                <Path
-                                                    x:Name="CornerLeft"
-                                                    Width="6"
-                                                    Height="6"
-                                                    HorizontalAlignment="Left"
-                                                    VerticalAlignment="Bottom"
-                                                    Margin="-6,0,0,0"
-                                                    Data="M 0,6 L 6,6 6,0 C 6,0 6,6 0,6 Z"
-                                                    Fill="Transparent"/>
-
-                                                <Path
-                                                    x:Name="CornerRight"
-                                                    Width="6"
-                                                    Height="6"
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Bottom"
-                                                    Margin="0,0,-6,0"
-                                                    Data="M 0,0 L 0,6 6,6 C 6,6 0,6 0,0 Z"
-                                                    Fill="Transparent"/>
+                                                <Border
+                                                    x:Name="Hover"
+                                                    Margin="-1,0"
+                                                    Background="Transparent"/>
 
                                                 <ContentPresenter 
                                                     x:Name="ContentSite"
@@ -202,33 +202,13 @@
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
                                                     <Setter Property="Panel.ZIndex" Value="2"/>
-                                                    <Setter TargetName="BG" Property="Background" Value="{StaticResource Brush.Window}"/>
-                                                    <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.Window}"/>
-                                                    <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.Window}"/>
+                                                    <Setter TargetName="BG" Property="Fill" Value="{StaticResource Brush.Window}"/>
                                                 </Trigger>
-                                                
+
                                                 <Trigger Property="IsSelected" Value="False">
                                                     <Setter Property="Panel.ZIndex" Value="-1"/>
-                                                </Trigger>
-
-                                                <MultiTrigger>
-                                                    <MultiTrigger.Conditions>
-                                                        <Condition Property="IsSelected" Value="False"/>
-                                                        <Condition Property="IsMouseOver" Value="True"/>
-                                                    </MultiTrigger.Conditions>
-                                                    <Setter Property="Panel.ZIndex" Value="1"/>
-                                                    <Setter TargetName="BG" Property="Background" Value="{StaticResource Brush.PageTabHover}"/>
-                                                    <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.PageTabHover}"/>
-                                                    <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.PageTabHover}"/>
-                                                </MultiTrigger>
-
-                                                <MultiTrigger>
-                                                    <MultiTrigger.Conditions>
-                                                        <Condition Property="IsSelected" Value="False"/>
-                                                        <Condition Property="IsMouseOver" Value="False"/>
-                                                    </MultiTrigger.Conditions>
                                                     <Setter TargetName="Splitter" Property="Visibility" Value="Visible"/>
-                                                </MultiTrigger>
+                                                </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </Setter.Value>
@@ -241,7 +221,7 @@
                         </TabControl.ItemContainerStyle>
                     </TabControl>
                 </ScrollViewer>
-                
+
                 <!-- Tab scroller -->
                 <StackPanel x:Name="openedTabsOpts" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal" Height="28" Margin="4,0,0,0" WindowChrome.IsHitTestVisibleInChrome="True">
                     <Button Click="ScrollToLeft">
@@ -304,7 +284,7 @@
             </Grid>
 
             <!-- Pages -->
-            <ItemsControl Grid.Row="1" ItemsSource="{Binding ElementName=me, Path=Tabs}">
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding ElementName=me, Path=Tabs}" Background="{StaticResource Brush.Window}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid/>

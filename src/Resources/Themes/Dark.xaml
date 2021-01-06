@@ -3,10 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="Brush.Logo" Color="#FFF05133"/>
 
-    <SolidColorBrush x:Key="Brush.TitleBar" Color="#FF303030"/>
+    <SolidColorBrush x:Key="Brush.TitleBar" Color="#FF202020"/>
     <SolidColorBrush x:Key="Brush.Window" Color="#FF252525"/>
     <SolidColorBrush x:Key="Brush.NewPageHover" Color="#FF404040"/>
-    <SolidColorBrush x:Key="Brush.PageTabHover" Color="#80505050"/>
+    <SolidColorBrush x:Key="Brush.PageTabHover" Color="#FF404040"/>
     <SolidColorBrush x:Key="Brush.Popup" Color="#FF252525"/>
     <SolidColorBrush x:Key="Brush.Contents" Color="#FF1B1B1B"/>
     <SolidColorBrush x:Key="Brush.Badge" Color="#FF8F8F8F"/>

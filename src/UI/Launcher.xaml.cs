@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace SourceGit.UI {
 
@@ -41,7 +42,7 @@ namespace SourceGit.UI {
                     }
                 }
             }
-            
+
             public object Page {
                 get { return page; }
                 set {
