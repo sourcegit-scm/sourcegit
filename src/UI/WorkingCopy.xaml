@@ -26,7 +26,7 @@
         <converters:PathToFolderName x:Key="PathToFolderName"/>
     </UserControl.Resources>
 
-    <Grid Background="{StaticResource Brush.BG3}">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="1"/>
@@ -48,7 +48,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" >
+                <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -61,7 +61,7 @@
                         Grid.Column="0"
                         Mode="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Mode=TwoWay}"
                         Opacity=".4"/>
-                    <Label Grid.Column="1" Content="UNSTAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG}" Opacity=".4"/>
+                    <Label Grid.Column="1" Content="UNSTAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG1}" Opacity=".4"/>
                     <Button Grid.Column="3" Click="Stage" Margin="4,0" ToolTip="STAGE" Background="Transparent">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Down}" Opacity=".4"/>
                     </Button>
@@ -74,7 +74,7 @@
                     Grid.Row="1" 
                     x:Name="unstagedTree"
                     ItemsSource="{Binding ElementName=me, Path=UnstagedTreeData, IsAsync=True}"
-                    Background="{StaticResource Brush.BG2}"
+                    Background="{StaticResource Brush.Contents}"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Converter={StaticResource FilesDisplayModeToTree}}"
                     FontFamily="Consolas" 
                     PreviewMouseWheel="TreeMouseWheel"
@@ -102,10 +102,10 @@
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" Height="24">
                                 <Border x:Name="status" Width="14" Height="14" Visibility="Collapsed" Background="{Binding Change, Converter={StaticResource UnstagedStatusConverter}}" CornerRadius="2" Margin="0,0,4,0">
-                                    <TextBlock Text="{Binding Change, Converter={StaticResource UnstagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <TextBlock Text="{Binding Change, Converter={StaticResource UnstagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
                                 </Border>
                                 <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
-                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
+                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
                             </StackPanel>
 
                             <HierarchicalDataTemplate.Triggers>
@@ -127,14 +127,14 @@
 
                 <DataGrid
                     Grid.Row="1"
-                    x:Name="unstagedList"                    
+                    x:Name="unstagedList"               
                     ItemsSource="{Binding ElementName=me, Path=UnstagedListData, IsAsync=True}"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Converter={StaticResource FilesDisplayModeToList}}"
                     RowHeight="24"
                     SelectionChanged="UnstagedListSelectionChanged"
                     SelectionMode="Extended"
                     SelectionUnit="FullRow"
-                    Background="{StaticResource Brush.BG2}">
+                    Background="{StaticResource Brush.Contents}">
                     <DataGrid.Resources>
                         <Style x:Key="Style.DataGridText.VerticalCenter" TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -157,7 +157,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Width="14" Height="14" x:Name="status" Background="{Binding ., Converter={StaticResource UnstagedStatusConverter}}" CornerRadius="2" Margin="2,0">
-                                        <TextBlock Text="{Binding ., Converter={StaticResource UnstagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
+                                        <TextBlock Text="{Binding ., Converter={StaticResource UnstagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -167,7 +167,7 @@
                             Width="Auto" 
                             Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Converter={StaticResource FilesDisplayModeToGrid}}" 
                             Binding="{Binding Path, Converter={StaticResource PathToFileName}}" 
-                            Foreground="{StaticResource Brush.FG}" 
+                            Foreground="{StaticResource Brush.FG1}" 
                             FontFamily="Consolas" 
                             ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
 
@@ -183,7 +183,7 @@
                             Width="*"
                             Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Converter={StaticResource FilesDisplayModeToListOnly}}" 
                             Binding="{Binding Path}"
-                            Foreground="{StaticResource Brush.FG}"
+                            Foreground="{StaticResource Brush.FG1}"
                             FontFamily="Consolas"
                             ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
                     </DataGrid.Columns>
@@ -206,7 +206,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" >
+                <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -219,7 +219,7 @@
                         Grid.Column="0"
                         Mode="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Mode=TwoWay}"
                         Opacity=".4"/>
-                    <Label Grid.Column="1" Content="STAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG}"  Opacity=".4"/>
+                    <Label Grid.Column="1" Content="STAGED" FontWeight="Bold" Foreground="{StaticResource Brush.FG1}"  Opacity=".4"/>
                     <Button Grid.Column="3" Click="Unstage" ToolTip="UNSTAGE" Margin="4,0" Background="Transparent">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Up}" Opacity=".4"/>
                     </Button>
@@ -233,7 +233,7 @@
                     x:Name="stageTree"
                     ItemsSource="{Binding ElementName=me, Path=StagedTreeData, IsAsync=True}"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Converter={StaticResource FilesDisplayModeToTree}}"
-                    Background="{StaticResource Brush.BG2}"
+                    Background="{StaticResource Brush.Contents}"
                     FontFamily="Consolas" 
                     PreviewMouseWheel="TreeMouseWheel"
                     helpers:TreeViewHelper.EnableMultiSelection="True"
@@ -260,10 +260,10 @@
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" Height="24">
                                 <Border x:Name="status" Width="14" Height="14" Visibility="Collapsed" Background="{Binding Change, Converter={StaticResource StagedStatusConverter}}" CornerRadius="2" Margin="0,0,4,0">
-                                    <TextBlock Text="{Binding Change, Converter={StaticResource StagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <TextBlock Text="{Binding Change, Converter={StaticResource StagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
                                 </Border>
                                 <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
-                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
+                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
                             </StackPanel>
 
                             <HierarchicalDataTemplate.Triggers>
@@ -292,7 +292,7 @@
                     SelectionChanged="StagedListSelectionChanged"
                     SelectionMode="Extended"
                     SelectionUnit="FullRow"
-                    Background="{StaticResource Brush.BG2}">
+                    Background="{StaticResource Brush.Contents}">
                     <DataGrid.Resources>
                         <Style x:Key="Style.DataGridText.VerticalCenter" TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -315,7 +315,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Width="14" Height="14" x:Name="status" Background="{Binding ., Converter={StaticResource StagedStatusConverter}}" CornerRadius="2" Margin="2,0">
-                                        <TextBlock Text="{Binding ., Converter={StaticResource StagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
+                                        <TextBlock Text="{Binding ., Converter={StaticResource StagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -325,7 +325,7 @@
                             Width="Auto"                            
                             Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Converter={StaticResource FilesDisplayModeToGrid}}" 
                             Binding="{Binding Path, Converter={StaticResource PathToFileName}}" 
-                            Foreground="{StaticResource Brush.FG}" 
+                            Foreground="{StaticResource Brush.FG1}" 
                             FontFamily="Consolas" 
                             ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
 
@@ -341,7 +341,7 @@
                             Width="*" 
                             Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Converter={StaticResource FilesDisplayModeToListOnly}}" 
                             Binding="{Binding Path}" 
-                            Foreground="{StaticResource Brush.FG}" 
+                            Foreground="{StaticResource Brush.FG1}" 
                             FontFamily="Consolas" 
                             ElementStyle="{StaticResource Style.DataGridText.VerticalCenter}"/>
                     </DataGrid.Columns>
@@ -356,10 +356,10 @@
         </Grid>
 
         <!-- Splitter -->
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.BG4}"/>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border3}"/>
 
         <!-- Right -->
-        <Grid Grid.Column="2">
+        <Grid Grid.Column="2" Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="66"/>
@@ -367,10 +367,10 @@
             </Grid.RowDefinitions>
 
             <!-- Diff -->
-            <local:DiffViewer Grid.Row="0" x:Name="diffViewer" Margin="8,8,8,4"/>
+            <local:DiffViewer Grid.Row="0" x:Name="diffViewer" Margin="0,0,0,4"/>
 
             <!-- Merge -->
-            <Grid Grid.Row="0" x:Name="mergePanel" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
+            <Grid Grid.Row="0" x:Name="mergePanel" Background="{StaticResource Brush.Window}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Conflict}" Margin="0,0,0,16"/>
                     <Label Content="CONFLICTS DETECTED" FontSize="20" HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}" Margin="0,0,0,24"/>
@@ -387,7 +387,6 @@
                 x:Name="txtCommitMsg"
                 Grid.Row="1"
                 Height="64"
-                Margin="8,0"
                 Padding="2"
                 AcceptsReturn="True"
                 AcceptsTab="True"
@@ -408,7 +407,7 @@
             </TextBox>
 
             <!-- Commit Options -->
-            <Grid Grid.Row="2" Margin="8,0">
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>

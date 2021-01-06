@@ -13,7 +13,7 @@
 
         <Style x:Key="Style.DataGridText.LineNumber" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="Consolas"/>
-            <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+            <Setter Property="Foreground" Value="{StaticResource Brush.FG1}"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Padding" Value="8,0"/>
@@ -28,7 +28,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="0,0,0,1">
+            <Border x:Name="titleBar" Grid.Row="0" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="0,0,0,1">
                 <Grid Margin="8,4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -38,13 +38,13 @@
 
                     <StackPanel Grid.Column="0" x:Name="orgFileNamePanel" Orientation="Horizontal">
                         <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.File}"/>
-                        <TextBlock x:Name="orgFileName" Margin="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
-                        <TextBlock Margin="8,0" VerticalAlignment="Center" Text="→" Foreground="{StaticResource Brush.FG}"/>
+                        <TextBlock x:Name="orgFileName" Margin="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG1}"/>
+                        <TextBlock Margin="8,0" VerticalAlignment="Center" Text="→" Foreground="{StaticResource Brush.FG1}"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.File}"/>
-                        <TextBlock x:Name="fileName" Margin="4,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}"/>
+                        <TextBlock x:Name="fileName" Margin="4,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG1}"/>
                         <Path x:Name="loading" Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}"/>
                     </StackPanel>
 
@@ -77,7 +77,7 @@
             <Grid Grid.Row="1" x:Name="editorLines" IsHitTestVisible="False">
             </Grid>
 
-            <Border x:Name="sizeChange" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
+            <Border x:Name="sizeChange" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.Window}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <Label x:Name="txtSizeChangeTitle" Content="BINARY DIFF" Margin="0,0,0,32" FontSize="18" FontWeight="UltraBold" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Center"/>
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Binary}" Fill="{StaticResource Brush.FG2}"/>
@@ -100,14 +100,14 @@
                 </StackPanel>
             </Border>
 
-            <Border x:Name="noChange" Grid.Row="1" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
+            <Border x:Name="noChange" Grid.Row="1" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Check}"/>
                     <Label Margin="0,8,0,0" Content="NO CHANGES OR ONLY EOL CHANGES" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
-            <Border x:Name="mask" Grid.RowSpan="2" Background="{StaticResource Brush.BG3}" Visibility="Collapsed">
+            <Border x:Name="mask" Grid.RowSpan="2" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Diff}"/>
                     <Label Margin="0,8,0,0" Content="SELECT FILE TO VIEW CHANGES" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>

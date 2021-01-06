@@ -74,7 +74,12 @@ namespace SourceGit.UI {
         ///     Reset data.
         /// </summary>
         public void Reset() {
+            loading.Visibility = Visibility.Collapsed;
             mask.Visibility = Visibility.Visible;
+            sizeChange.Visibility = Visibility.Collapsed;
+            noChange.Visibility = Visibility.Collapsed;
+            titleBar.Visibility = Visibility.Collapsed;
+
             ClearCache();
             ClearEditor();
         }
@@ -85,13 +90,13 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="opts"></param>
         public void Diff(Git.Repository repo, Option opts) {
-            SetTitle(opts.Path, opts.OrgPath);
-
             loading.Visibility = Visibility.Visible;
             mask.Visibility = Visibility.Collapsed;
             sizeChange.Visibility = Visibility.Collapsed;
             noChange.Visibility = Visibility.Collapsed;
+            titleBar.Visibility = Visibility.Collapsed;
 
+            SetTitle(opts.Path, opts.OrgPath);
             ClearEditor();
             ClearCache();
 
@@ -188,7 +193,9 @@ namespace SourceGit.UI {
         /// <param name="file"></param>
         /// <param name="orgFile"></param>
         private void SetTitle(string file, string orgFile) {
+            titleBar.Visibility = Visibility.Visible;
             fileName.Text = file;
+
             if (!string.IsNullOrEmpty(orgFile) && orgFile != "/dev/null") {
                 orgFileNamePanel.Visibility = Visibility.Visible;
                 orgFileName.Text = orgFile;
@@ -204,7 +211,7 @@ namespace SourceGit.UI {
         private void SetTextChange() {
             if (lastChanges == null) return;
 
-            var fgCommon = FindResource("Brush.FG") as Brush;
+            var fgCommon = FindResource("Brush.FG1") as Brush;
             var fgIndicator = FindResource("Brush.FG2") as Brush;
             var lastOldLine = "";
             var lastNewLine = "";

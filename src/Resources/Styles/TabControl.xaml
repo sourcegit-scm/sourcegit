@@ -35,7 +35,7 @@
                         <ContentPresenter 
                             x:Name="ContentSite" 
                             VerticalAlignment="Center" HorizontalAlignment="Center" 
-                            TextElement.Foreground="{DynamicResource Brush.FG}"
+                            TextElement.Foreground="{DynamicResource Brush.FG1}"
                             TextElement.FontWeight="Bold"
                             ContentSource="Header" 
                             Margin="8,6"

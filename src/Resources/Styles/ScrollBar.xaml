@@ -10,7 +10,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="area" Property="Background" Value="{DynamicResource Brush.FG}" />
+                            <Setter TargetName="area" Property="Background" Value="{DynamicResource Brush.FG1}" />
                             <Setter TargetName="area" Property="Opacity" Value=".08"/>
                         </Trigger>
                     </ControlTemplate.Triggers>

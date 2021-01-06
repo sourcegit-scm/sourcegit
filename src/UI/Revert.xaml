@@ -25,7 +25,7 @@
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Commit :"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path x:Name="icon" Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Commit}" Margin="4,0"/>
-            <TextBlock x:Name="txtDesc" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center"/>
+            <TextBlock x:Name="txtDesc" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
         </StackPanel>
 
         <CheckBox Grid.Row="3" Grid.Column="1" x:Name="chkCommit" Content="Commit revert changes" IsChecked="True"/>

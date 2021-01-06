@@ -37,13 +37,13 @@
                 <ControlTemplate TargetType="{x:Type ComboBox}">
                     <Grid>
                         <ToggleButton x:Name="ToggleButton" BorderThickness="{TemplateBinding BorderThickness}" Template="{StaticResource Template.ComboBox.ToggleButton}" Grid.Column="2" Focusable="false" ClickMode="Press" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                        <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3,3,23,3" VerticalAlignment="Center" HorizontalAlignment="Left" TextElement.Foreground="{DynamicResource Brush.FG}"/>
+                        <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3,3,23,3" VerticalAlignment="Center" HorizontalAlignment="Left" TextElement.Foreground="{DynamicResource Brush.FG1}"/>
                         <TextBox x:Name="PART_EditableTextBox" Style="{x:Null}" Template="{StaticResource Template.ComboBox.TextBox}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="3,3,23,3" Focusable="True" Background="Transparent" Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}" />
                         <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
                             <Grid x:Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                <Border x:Name="DropDownBorder" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Background="{DynamicResource Brush.BG2}"/>
+                                <Border x:Name="DropDownBorder" BorderThickness="1" BorderBrush="{DynamicResource Brush.Accent1}" Background="{DynamicResource Brush.Contents}"/>
                                 <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
-                                    <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" TextElement.Foreground="{DynamicResource Brush.FG}"/>
+                                    <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" TextElement.Foreground="{DynamicResource Brush.FG1}"/>
                                 </ScrollViewer>
                             </Grid>
                         </Popup>

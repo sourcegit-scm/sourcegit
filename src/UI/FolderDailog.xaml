@@ -14,7 +14,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Window Layout -->
-    <Border Background="{StaticResource Brush.BG1}">
+    <Border Background="{StaticResource Brush.Window}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
@@ -24,7 +24,7 @@
             </Grid.RowDefinitions>
 
             <!-- Titlebar -->
-            <Grid Grid.Row="0" Background="{StaticResource Brush.BG4}">
+            <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -33,7 +33,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- LOGO -->
-                <Path Width="20" Height="20" Margin="6,-1,2,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}"/>
+                <Path Margin="6,-1,2,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
 
                 <!-- Title -->
                 <Label Grid.Column="1" x:Name="txtTitle" FontWeight="Light"/>
@@ -61,7 +61,7 @@
             </StackPanel>
             
             <!-- File system tree -->
-            <Border Grid.Row="2" Margin="4" Background="{StaticResource Brush.BG1}" BorderBrush="{StaticResource Brush.FG2}" BorderThickness="1">
+            <Border Grid.Row="2" Margin="4" Background="{StaticResource Brush.Contents}" BorderBrush="{StaticResource Brush.Border1}" BorderThickness="1">
                 <TreeView x:Name="treePath" FontFamily="Consolas" PreviewMouseWheel="OnTreeMouseWheel" SelectedItemChanged="OnTreeSelectedChanged">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">
@@ -74,7 +74,7 @@
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" Height="24">
                                 <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
-                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center" Margin="6,0,0,0" FontSize="11"/>
+                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center" Margin="6,0,0,0" FontSize="11"/>
                             </StackPanel>
 
                             <HierarchicalDataTemplate.Triggers>

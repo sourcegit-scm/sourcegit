@@ -133,7 +133,7 @@
                                     <TextBlock
                                         Margin="8,0,0,0" 
                                         Text="{Binding Name}"
-                                        Foreground="{StaticResource Brush.FG}" 
+                                        Foreground="{StaticResource Brush.FG1}" 
                                         VerticalAlignment="Center"/>
                                     <TextBlock
                                         Margin="8,0,0,0" 

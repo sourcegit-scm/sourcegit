@@ -16,7 +16,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Layout Window -->
-    <Border Background="{StaticResource Brush.BG1}">
+    <Border Background="{StaticResource Brush.Window}">
         <!-- Fix Maximize BUG -->
         <Border.Style>
             <Style TargetType="{x:Type Border}">
@@ -38,7 +38,7 @@
             </Grid.RowDefinitions>
 
             <!-- Titlebar -->
-            <Grid Grid.Row="0" Background="{StaticResource Brush.BG4}">
+            <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -51,7 +51,7 @@
                         Width="20" Height="20" Margin="6,-1,2,0"
                         Style="{StaticResource Style.Icon}" 
                         Data="{StaticResource Icon.Git}" 
-                        Fill="#FFF05133"
+                        Fill="{StaticResource Brush.Logo}"
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         MouseLeftButtonDown="LogoMouseButtonDown"/>
                     <Label Content="SOURCE GIT - FILE HISTORIES" FontWeight="Light"/>
@@ -99,7 +99,6 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
-                        <ColumnDefinition Width="1"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -107,7 +106,7 @@
                         x:Name="commitList"
                         Margin="2,0,0,0"
                         Grid.Column="0"
-                        Background="{StaticResource Brush.BG2}"
+                        Background="{StaticResource Brush.Contents}"
                         BorderThickness="0"
                         SelectionMode="Single"
                         SelectionChanged="CommitSelectionChanged">
@@ -116,7 +115,7 @@
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Border BorderBrush="{StaticResource Brush.BG4}" BorderThickness="0,0,0,1" Padding="4">
+                                        <Border BorderBrush="{StaticResource Brush.Border3}" BorderThickness="0,0,0,1" Padding="4">
                                             <StackPanel Orientation="Vertical" Margin="2" MaxWidth="290">
                                                 <Grid TextBlock.FontSize="11" TextBlock.Foreground="{StaticResource Brush.FG2}">
                                                     <Grid.ColumnDefinitions>
@@ -133,7 +132,7 @@
                                                     <TextBlock Grid.Column="2" Text="{Binding Author.Time}"/>
                                                 </Grid>
 
-                                                <TextBlock MaxWidth="280" Foreground="{StaticResource Brush.FG}" Text="{Binding Subject}" TextAlignment="Left" Padding="0" Margin="0,8,2,0"/>
+                                                <TextBlock MaxWidth="280" Foreground="{StaticResource Brush.FG1}" Text="{Binding Subject}" TextAlignment="Left" Padding="0" Margin="0,8,2,0"/>
                                             </StackPanel>
                                         </Border>
                                     </DataTemplate>
@@ -159,9 +158,7 @@
                         </Path.Style>
                     </Path>
 
-                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Brush.BG4}"/>
-
-                    <local:DiffViewer x:Name="diff" Grid.Column="2" Margin="2,0"/>
+                    <local:DiffViewer x:Name="diff" Grid.Column="1"/>
                 </Grid>
             </Border>
         </Grid>

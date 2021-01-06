@@ -34,7 +34,7 @@
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Based On :"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path x:Name="basedOnType" Width="12" Style="{StaticResource Style.Icon}"/>
-            <TextBlock x:Name="basedOnDesc" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center" Text="master"/>
+            <TextBlock x:Name="basedOnDesc" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center" Text="master"/>
         </StackPanel>
 
         <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="New Branch Name :"/>

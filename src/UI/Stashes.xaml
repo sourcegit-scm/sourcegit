@@ -8,7 +8,7 @@
              xmlns:converters="clr-namespace:SourceGit.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="{StaticResource Brush.BG3}">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="1"/>
@@ -34,7 +34,7 @@
                 <ListView
                     Grid.Row="1"
                     x:Name="stashList"
-                    Background="{StaticResource Brush.BG2}" BorderThickness="0"
+                    Background="{StaticResource Brush.Contents}" BorderThickness="0"
                     SelectedIndex="-1"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     ScrollViewer.HorizontalScrollBarVisibility="Hidden"
@@ -47,7 +47,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type git:Stash}">
-                            <Border BorderBrush="{StaticResource Brush.BG4}" BorderThickness="0,0,0,1" Padding="4">
+                            <Border BorderBrush="{StaticResource Brush.Border3}" BorderThickness="0,0,0,1" Padding="4">
                                 <StackPanel Orientation="Vertical" Margin="2" MaxWidth="290">
                                     <Grid TextBlock.Foreground="{StaticResource Brush.FG2}" TextBlock.FontSize="11">
                                         <Grid.ColumnDefinitions>
@@ -58,7 +58,7 @@
                                         <TextBlock Grid.Column="0" Text="{Binding SHA}"/>
                                         <TextBlock Grid.Column="1" Text="{Binding Author.Time}"/>
                                     </Grid>
-                                    <TextBlock MaxWidth="280" Foreground="{StaticResource Brush.FG}" Text="{Binding Message}" TextAlignment="Left" Padding="0" Margin="0,8,2,0"/>
+                                    <TextBlock MaxWidth="280" Foreground="{StaticResource Brush.FG1}" Text="{Binding Message}" TextAlignment="Left" Padding="0" Margin="0,8,2,0"/>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
@@ -67,7 +67,7 @@
             </Grid>
 
             <!-- Splitter -->
-            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.BG3}"/>
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
 
             <!-- Changed file in this stash -->
             <Grid Grid.Row="2">
@@ -89,7 +89,7 @@
                 <ListView 
                     x:Name="changeList" 
                     Grid.Row="1"
-                    Background="{StaticResource Brush.BG2}" BorderThickness="0"
+                    Background="{StaticResource Brush.Contents}" BorderThickness="0"
                     SelectedIndex="-1"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -112,10 +112,10 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Border Grid.Column="0" Width="14" Height="14" Background="{Binding ., Converter={StaticResource StatusColorConverter}}" CornerRadius="2" Margin="0,0,4,0">
-                                    <TextBlock Text="{Binding ., Converter={StaticResource StatusIconConverter}}" Foreground="{StaticResource Brush.FG}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10"/>
+                                    <TextBlock Text="{Binding ., Converter={StaticResource StatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10"/>
                                 </Border>
 
-                                <TextBlock Grid.Column="1" Text="{Binding Path}" Foreground="{StaticResource Brush.FG}" VerticalAlignment="Center" FontSize="11"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Path}" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center" FontSize="11"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -124,7 +124,7 @@
         </Grid>
 
         <!-- Splitter -->
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.BG4}"/>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border3}"/>
 
         <!-- Right Panel -->
         <local:DiffViewer Grid.Column="2" x:Name="diff" Padding="8"/>

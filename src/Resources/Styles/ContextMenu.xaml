@@ -4,7 +4,7 @@
     <Style TargetType="{x:Type MenuItem}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Foreground" Value="{DynamicResource Brush.FG}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="MinHeight" Value="24"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
@@ -15,7 +15,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ContextMenu}">
-                    <Border Background="{DynamicResource Brush.BG1}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
+                    <Border Background="{DynamicResource Brush.Popup}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
                         <StackPanel IsItemsHost="True" Margin="1" KeyboardNavigation.DirectionalNavigation="Cycle"/>
                     </Border>
                 </ControlTemplate>
@@ -60,7 +60,7 @@
                 <ContentPresenter Name="HeadHost" Grid.Column="1" Margin="0,0,8,0" ContentSource="Header" VerticalAlignment="Center"/>
                 <Path Grid.Column="2" Width="8" Height="8" Style="{DynamicResource Style.Icon}" Data="M 0 0 L 0 7 L 4 3.5 Z"/>
                 <Popup Name="Popup" Placement="Right" HorizontalOffset="-2" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
-                    <Border Name="SubmenuBorder" SnapsToDevicePixels="True" Background="{DynamicResource Brush.BG1}" BorderBrush="{DynamicResource Brush.Border1}" BorderThickness="1">
+                    <Border Name="SubmenuBorder" SnapsToDevicePixels="True" Background="{DynamicResource Brush.Popup}" BorderBrush="{DynamicResource Brush.Border1}" BorderThickness="1">
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
                             <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
                         </ScrollViewer>

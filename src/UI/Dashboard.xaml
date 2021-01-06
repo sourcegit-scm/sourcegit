@@ -29,15 +29,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <!-- TitleBar -->
+        <!-- Toolbar -->
         <Grid Grid.Row="0" Panel.ZIndex="100">
-            <Border Background="{StaticResource Brush.BG1}" Margin="0,4,0,0">
+            <Border Background="{StaticResource Brush.Window}" Margin="0,4,0,0">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="2" Direction="270" Opacity=".5" Color="Black"/>
                 </Border.Effect>
             </Border>
 
-            <Grid Background="{StaticResource Brush.BG1}">
+            <Grid Background="{StaticResource Brush.Window}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -122,7 +122,7 @@
             </Grid.ColumnDefinitions>
             
             <!-- Left panel -->
-            <Grid Grid.Column="0" x:Name="main" Background="{StaticResource Brush.BG4}">
+            <Grid Grid.Column="0" x:Name="main">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
@@ -142,12 +142,14 @@
                 </Grid.Resources>
                 
                 <!-- WORKSPACE -->
-                <Label Grid.Row="0" Margin="4,0,0,0" Content="WORKSPACE" Style="{StaticResource Style.Label.GroupHeader}" />
+                <Border Grid.Row="0" Background="{StaticResource Brush.GroupBar}">
+                    <Label Margin="4,0,0,0" Content="WORKSPACE" Style="{StaticResource Style.Label.GroupHeader}" />
+                </Border>
                 <ListView
                     Grid.Row="1"
                     x:Name="workspace"
-                    Background="{StaticResource Brush.BG3}"
                     Style="{StaticResource Style.ListView.Borderless}"
+                    Background="{StaticResource Brush.GroupContent}"
                     SelectionMode="Single">
                     <ListViewItem x:Name="historiesSwitch" Selected="SwitchHistories" IsSelected="True">
                         <StackPanel Margin="16,0,0,0" Orientation="Horizontal">
@@ -188,19 +190,19 @@
                 </ListView>
                 
                 <!-- LOCAL BRANCHES -->
-                <Grid Grid.Row="2" Margin="4,0,2,0">
+                <Grid Grid.Row="2" Background="{StaticResource Brush.GroupBar}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="16"/>
                         <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="20"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Content="LOCAL BRANCHES" Style="{StaticResource Style.Label.GroupHeader}"/>
+                    <Label Grid.Column="0" Margin="4,0,0,0" Content="LOCAL BRANCHES" Style="{StaticResource Style.Label.GroupHeader}"/>
                     <Button Grid.Column="1" Click="OpenGitFlow" Background="Transparent" ToolTip="GIT FLOW">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{DynamicResource Icon.Flow}"/>
                     </Button>
-                    <Button Grid.Column="3" Click="OpenNewBranch" Background="Transparent" ToolTip="NEW BRANCH">
+                    <Button Margin="0,0,4,0" Grid.Column="3" Click="OpenNewBranch" Background="Transparent" ToolTip="NEW BRANCH">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{DynamicResource Icon.Branch.Add}"/>
                     </Button>
                 </Grid>
@@ -208,8 +210,8 @@
                     Grid.Row="3"
                     x:Name="localBranchTree"
                     Padding="0"
-                    Background="{StaticResource Brush.BG3}"
                     FontFamily="Consolas"
+                    Background="{StaticResource Brush.GroupContent}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     LostFocus="TreeLostFocus"
@@ -232,7 +234,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Path Grid.Column="0" Width="10" x:Name="icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
-                                <TextBlock Grid.Column="1" x:Name="name" Text="{Binding Name}" Padding="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}" ClipToBounds="True"/>
+                                <TextBlock Grid.Column="1" x:Name="name" Text="{Binding Name}" Padding="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG1}" ClipToBounds="True"/>
                                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                                     <Border Style="{StaticResource Style.Border.Badge}" Visibility="{Binding TrackVisibility}">
                                         <Label Margin="4,-2,4,-2" Content="{Binding Branch.UpstreamTrack}" FontSize="10"/>
@@ -272,14 +274,14 @@
                 </TreeView>
                 
                 <!-- REMOTES -->
-                <Grid Grid.Row="4" Margin="4,0,2,0">
+                <Grid Grid.Row="4" Background="{StaticResource Brush.GroupBar}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="20"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Content="REMOTES" Style="{StaticResource Style.Label.GroupHeader}"/>
-                    <Button Grid.Column="1" Click="OpenRemote" ToolTip="ADD REMOTE">
+                    <Label Grid.Column="0" Margin="4,0,0,0" Content="REMOTES" Style="{StaticResource Style.Label.GroupHeader}"/>
+                    <Button Grid.Column="1" Margin="0,0,4,0" Click="OpenRemote" ToolTip="ADD REMOTE">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{DynamicResource Icon.Remote.Add}"/>
                     </Button>
                 </Grid>
@@ -287,8 +289,8 @@
                     Grid.Row="5"
                     x:Name="remoteBranchTree"                    
                     Padding="0"
-                    Background="{StaticResource Brush.BG3}"
                     FontFamily="Consolas"
+                    Background="{StaticResource Brush.GroupContent}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     SelectedItemChanged="RemoteBranchSelected"
@@ -310,7 +312,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Path Grid.Column="0" Width="10" x:Name="icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Remote}"/>
-                                <TextBlock Grid.Column="1" x:Name="name" Text="{Binding Name}" Padding="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}" ClipToBounds="True"/>
+                                <TextBlock Grid.Column="1" x:Name="name" Text="{Binding Name}" Padding="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG1}" ClipToBounds="True"/>
                             </Grid>
                         </HierarchicalDataTemplate>
                         
@@ -323,7 +325,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Path Grid.Column="0" Width="10" x:Name="icon" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
-                                <TextBlock Grid.Column="1" x:Name="name" Text="{Binding Name}" Padding="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG}" ClipToBounds="True"/>
+                                <TextBlock Grid.Column="1" x:Name="name" Text="{Binding Name}" Padding="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG1}" ClipToBounds="True"/>
                                 <ToggleButton
                                     Grid.Column="2"
                                     Visibility="{Binding FilterVisibility}"
@@ -359,7 +361,8 @@
                     x:Name="tagListToggle" 
                     Grid.Row="6" 
                     Style="{StaticResource Style.ToggleButton.Expender}"
-                    IsChecked="{Binding Path=ExpandTags, ElementName=me, Mode=TwoWay}">
+                    IsChecked="{Binding Path=ExpandTags, ElementName=me, Mode=TwoWay}"
+                    Background="{StaticResource Brush.GroupBar}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -376,9 +379,9 @@
                     Grid.Row="7"
                     x:Name="tagList"
                     Visibility="{Binding ElementName=tagListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
-                    Background="{StaticResource Brush.BG3}"
                     RowHeight="24"
                     Height="200"
+                    Background="{StaticResource Brush.GroupContent}"
                     LostFocus="TagLostFocus"
                     SelectionChanged="TagSelectionChanged"
                     ContextMenuOpening="TagContextMenuOpening"
@@ -389,15 +392,15 @@
                     <DataGrid.Resources>                        
                         <Style x:Key="Style.DataGridText.TagName" TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                         </Style>
                     </DataGrid.Resources>
 
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Width="26">
+                        <DataGridTemplateColumn Width="32">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Tag}"/>
+                                    <Path Width="10" HorizontalAlignment="Right" Margin="0,0,8,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Tag}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -420,14 +423,15 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Rectangle Grid.Row="8" Fill="{StaticResource Brush.BG1}" Height="1"/>
+                <Rectangle Grid.Row="8" Fill="Transparent" Height="1"/>
 
                 <!-- SUBMODULES -->
                 <ToggleButton
                     x:Name="submoduleListToggle" 
                     Grid.Row="9" 
                     Style="{StaticResource Style.ToggleButton.Expender}"
-                    IsChecked="False">
+                    IsChecked="False"
+                    Background="{StaticResource Brush.GroupBar}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -449,9 +453,9 @@
                     Grid.Row="10"
                     x:Name="submoduleList"
                     Visibility="{Binding ElementName=submoduleListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
-                    Background="{StaticResource Brush.BG3}"
                     RowHeight="24"
                     Height="100"
+                    Background="{StaticResource Brush.GroupContent}"
                     LostFocus="SubmoduleLostFocus"
                     ContextMenuOpening="SubmoduleContextMenuOpening"                    
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -461,7 +465,7 @@
                     <DataGrid.Resources>
                         <Style x:Key="Style.DataGridText.SubmodulePath" TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                         </Style>
                     </DataGrid.Resources>
 
@@ -486,7 +490,7 @@
             </Grid>
 
             <!-- Splitter -->
-            <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.BG3}"/>
+            <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.GroupContent}"/>
 
             <!-- Right -->
             <Grid Grid.Column="2">
@@ -496,24 +500,24 @@
                 </Grid.RowDefinitions>
 
                 <!-- Abort panel -->
-                <Grid x:Name="abortPanel" Grid.Row="0" Background="{StaticResource Brush.BG7}" Visibility="Collapsed">
+                <Grid x:Name="abortPanel" Grid.Row="0" Background="{StaticResource Brush.Conflict}" Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" x:Name="txtMergeProcessing" FontWeight="DemiBold" Foreground="{StaticResource Brush.BG4}"/>
+                    <Label Grid.Column="0" x:Name="txtMergeProcessing" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG3}"/>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button x:Name="btnResolve" Click="Resolve" Content="RESOLVE" Margin="2">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style.Button.Bordered}">
-                                    <Setter Property="Background" Value="{StaticResource Brush.BG1}"/>
+                                    <Setter Property="Background" Value="{StaticResource Brush.Window}"/>
                                     <Setter Property="Margin" Value="2"/>
                                 </Style>
                             </Button.Style>
                         </Button>
                         <Button x:Name="btnContinue" Click="Continue" Content="CONTINUE" Style="{StaticResource Style.Button.AccentBordered}" Margin="2"/>
-                        <Button Grid.Column="3" Click="Abort" Content="ABORT" Style="{StaticResource Style.Button.Bordered}" Foreground="{StaticResource Brush.BG1}" Margin="2"/>
+                        <Button Grid.Column="3" Click="Abort" Content="ABORT" Style="{StaticResource Style.Button.Bordered}" Foreground="{StaticResource Brush.FG3}" Margin="2"/>
                     </StackPanel>
                     
                 </Grid>

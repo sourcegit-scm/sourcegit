@@ -11,9 +11,9 @@
              xmlns:converters="clr-namespace:SourceGit.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid x:Name="layout" Background="{StaticResource Brush.BG1}">
+    <Grid x:Name="layout">
         <!-- List Panel (SearchBar + DataGrid) -->
-        <Grid x:Name="commitListPanel" Background="{StaticResource Brush.BG2}" ClipToBounds="True">
+        <Grid x:Name="commitListPanel" Background="{StaticResource Brush.Contents}" ClipToBounds="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -62,13 +62,13 @@
 
                     <Style x:Key="Style.DataGridText" TargetType="{x:Type TextBlock}">
                         <Setter Property="FontFamily" Value="Consolas"/>
-                        <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                        <Setter Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
                         <Setter Property="Padding" Value="16,0"/>
                     </Style>
                     <Style x:Key="Style.DataGridText.NoPadding" TargetType="{x:Type TextBlock}">
                         <Setter Property="FontFamily" Value="Consolas"/>
-                        <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                        <Setter Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
                     </Style>
                 </DataGrid.Resources>
@@ -93,7 +93,7 @@
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
 
-                                                        <Border Grid.Column="0" Background="{StaticResource Brush.BG5}">
+                                                        <Border Grid.Column="0" Background="{StaticResource Brush.Decorator}">
                                                             <Path x:Name="Icon" Width="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
                                                         </Border>
 
@@ -163,10 +163,10 @@
         </Grid>
 
         <!-- Split -->
-        <GridSplitter x:Name="splitter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+        <GridSplitter x:Name="splitter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.CommitViewer}"/>
 
         <!-- Detail for selected commit -->
-        <Grid x:Name="commitDetailPanel">
+        <Grid x:Name="commitDetailPanel" Background="{StaticResource Brush.CommitViewer}">
             <!-- Selected commit detail -->
             <local:CommitViewer x:Name="commitViewer" Visibility="Collapsed"/>
 
@@ -174,7 +174,7 @@
             <local:TwoCommitsDiff x:Name="twoCommitDiff" Visibility="Collapsed"/>
 
             <!-- Mask -->
-            <Border x:Name="mask" Background="{StaticResource Brush.BG1}">
+            <Border x:Name="mask" Background="{StaticResource Brush.CommitViewer}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".25">
                     <Path Width="128" Height="128" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Detail}"/>
                     <Label x:Name="txtCounter" Visibility="Hidden" FontFamily="Consolas" Margin="0,16,0,0" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
@@ -201,7 +201,7 @@
                     Margin="8,0"
                     Style="{StaticResource Style.Icon}"
                     Data="{StaticResource Icon.Help}"
-                    Fill="{StaticResource Brush.Border1}">
+                    Fill="{StaticResource Brush.FG1}">
                     <Path.ToolTip>
                         <StackPanel Orientation="Vertical" TextElement.FontFamily="Consolas">
                             <Label Content="HISTORIES GUIDE" FontWeight="Bold" FontSize="14" Margin="0,0,0,8"/>

@@ -37,13 +37,13 @@
         </Border.Style>
         
         <!-- Window Content -->
-        <Grid Background="{StaticResource Brush.BG1}">
+        <Grid Background="{StaticResource Brush.Window}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="{StaticResource Brush.BG6}">
+            <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="openedTabsColumn" Width="*"/>
                     <ColumnDefinition Width="32"/>
@@ -68,12 +68,12 @@
                                                                 <Setter.Value>
                                                                     <ControlTemplate>
                                                                         <Border x:Name="newTabBG" BorderThickness="0" Background="Transparent" CornerRadius="2">
-                                                                            <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.NewTab}" Fill="{StaticResource Brush.FG}"/>
+                                                                            <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.NewTab}" Fill="{StaticResource Brush.FG1}"/>
                                                                         </Border>
 
                                                                         <ControlTemplate.Triggers>
                                                                             <Trigger Property="IsMouseOver" Value="True">
-                                                                                <Setter TargetName="newTabBG" Property="Background" Value="{StaticResource Brush.BG4}"/>
+                                                                                <Setter TargetName="newTabBG" Property="Background" Value="{StaticResource Brush.NewPageHover}"/>
                                                                             </Trigger>
                                                                         </ControlTemplate.Triggers>
                                                                     </ControlTemplate>
@@ -121,7 +121,7 @@
                                     <Button Grid.Column="3" Click="CloseTab" ToolTip="CLOSE">
                                         <Path
                                             Width="8" Height="8" 
-                                            Fill="{StaticResource Brush.FG}"
+                                            Fill="{StaticResource Brush.FG1}"
                                             Style="{StaticResource Style.Icon}"
                                             Data="{StaticResource Icon.Close}"/>
                                     </Button>
@@ -129,11 +129,11 @@
 
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                        <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                                        <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsRepo}" Value="False">
                                         <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Home}"/>
-                                        <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG}"/>
+                                        <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG1}"/>
                                     </DataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
@@ -141,14 +141,14 @@
                                             <Condition Binding="{Binding Color}" Value="0"/>
                                         </MultiDataTrigger.Conditions>
                                         <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Git}"/>
-                                        <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG}"/>
+                                        <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG1}"/>
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding IsActive}" Value="False"/>
                                             <Condition Binding="{Binding ElementName=BG, Path=IsMouseOver}" Value="True"/>
                                         </MultiDataTrigger.Conditions>
-                                        <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                                        <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                                     </MultiDataTrigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>
@@ -202,9 +202,9 @@
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
                                                     <Setter Property="Panel.ZIndex" Value="2"/>
-                                                    <Setter TargetName="BG" Property="Background" Value="{StaticResource Brush.BG1}"/>
-                                                    <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.BG1}"/>
-                                                    <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG1}"/>
+                                                    <Setter TargetName="BG" Property="Background" Value="{StaticResource Brush.Window}"/>
+                                                    <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.Window}"/>
+                                                    <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.Window}"/>
                                                 </Trigger>
                                                 
                                                 <Trigger Property="IsSelected" Value="False">
@@ -217,9 +217,9 @@
                                                         <Condition Property="IsMouseOver" Value="True"/>
                                                     </MultiTrigger.Conditions>
                                                     <Setter Property="Panel.ZIndex" Value="1"/>
-                                                    <Setter TargetName="BG" Property="Background" Value="{StaticResource Brush.BG5}"/>
-                                                    <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.BG5}"/>
-                                                    <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.BG5}"/>
+                                                    <Setter TargetName="BG" Property="Background" Value="{StaticResource Brush.PageTabHover}"/>
+                                                    <Setter TargetName="CornerLeft" Property="Fill" Value="{StaticResource Brush.PageTabHover}"/>
+                                                    <Setter TargetName="CornerRight" Property="Fill" Value="{StaticResource Brush.PageTabHover}"/>
                                                 </MultiTrigger>
 
                                                 <MultiTrigger>
@@ -345,7 +345,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid x:Name="item" Height="Auto" Width="300" Margin="8,8,16,8">
-                            <Border Background="{StaticResource Brush.BG1}">
+                            <Border Background="{StaticResource Brush.Window}">
                                 <Border.Effect>
                                     <DropShadowEffect ShadowDepth="0"/>
                                 </Border.Effect>
@@ -359,7 +359,7 @@
                                 </Grid.RowDefinitions>
 
                                 <Label Grid.Row="0" Content="ERROR" FontWeight="DemiBold"/>
-                                <TextBlock Grid.Row="1" Margin="6,8" Text="{Binding}" Foreground="{StaticResource Brush.FG}" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Row="1" Margin="6,8" Text="{Binding}" Foreground="{StaticResource Brush.FG1}" TextWrapping="Wrap"/>
                                 <Button 
                                     Grid.Row="2"
                                     Margin="4,0"
@@ -367,7 +367,7 @@
                                     Height="25"
                                     Content="CLOSE"
                                     Style="{StaticResource Style.Button.AccentBordered}"
-                                    BorderBrush="{StaticResource Brush.FG}"
+                                    BorderBrush="{StaticResource Brush.FG1}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right"/>
                             </Grid>

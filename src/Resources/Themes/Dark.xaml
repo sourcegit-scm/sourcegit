@@ -1,18 +1,27 @@
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <SolidColorBrush x:Key="Brush.BG1" Color="#FF252525"/>
-    <SolidColorBrush x:Key="Brush.BG2" Color="#FF1B1B1B"/>
-    <SolidColorBrush x:Key="Brush.BG3" Color="#FF202020"/>
-    <SolidColorBrush x:Key="Brush.BG4" Color="#FF303030"/>
-    <SolidColorBrush x:Key="Brush.BG5" Color="#FF505050"/>
-    <SolidColorBrush x:Key="Brush.BG6" Color="#FF404040"/>
-    <SolidColorBrush x:Key="Brush.BG7" Color="#FFFAFAD2"/>
+    <SolidColorBrush x:Key="Brush.Logo" Color="#FFF05133"/>
+
+    <SolidColorBrush x:Key="Brush.TitleBar" Color="#FF303030"/>
+    <SolidColorBrush x:Key="Brush.Window" Color="#FF252525"/>
+    <SolidColorBrush x:Key="Brush.NewPageHover" Color="#FF404040"/>
+    <SolidColorBrush x:Key="Brush.PageTabHover" Color="#80505050"/>
+    <SolidColorBrush x:Key="Brush.Popup" Color="#FF252525"/>
+    <SolidColorBrush x:Key="Brush.Contents" Color="#FF1B1B1B"/>
+    <SolidColorBrush x:Key="Brush.Badge" Color="#FF8F8F8F"/>
+    <SolidColorBrush x:Key="Brush.CommitViewer" Color="#FF222222"/>
+    <SolidColorBrush x:Key="Brush.GroupBar" Color="#FF303030"/>
+    <SolidColorBrush x:Key="Brush.GroupContent" Color="#FF202020"/>
+    <SolidColorBrush x:Key="Brush.Decorator" Color="#FF505050"/>
+    <SolidColorBrush x:Key="Brush.Conflict" Color="#FFFAFAD2"/>
+    
     <SolidColorBrush x:Key="Brush.Border1" Color="#FF7C7C7C"/>
     <SolidColorBrush x:Key="Brush.Border2" Color="#FF404040"/>
-    <SolidColorBrush x:Key="Brush.FG" Color="#FFF1F1F1"/>
+    <SolidColorBrush x:Key="Brush.Border3" Color="#FF252525"/>
+    <SolidColorBrush x:Key="Brush.FG1" Color="#FFF1F1F1"/>
     <SolidColorBrush x:Key="Brush.FG2" Color="#40F1F1F1"/>
-    <SolidColorBrush x:Key="Brush.Badge" Color="#FF8F8F8F"/>
+    <SolidColorBrush x:Key="Brush.FG3" Color="#FF252525"/>
     <SolidColorBrush x:Key="Brush.Accent1" Color="#FF007ACC"/>
     <SolidColorBrush x:Key="Brush.Accent2" Color="#4C007ACC"/>
 </ResourceDictionary>

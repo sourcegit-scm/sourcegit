@@ -10,7 +10,7 @@
         <Border Background="Transparent" MouseLeftButtonDown="Close"/>
         
         <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="Auto" Height="Auto">
-            <Border Background="{StaticResource Brush.BG1}">
+            <Border Background="{StaticResource Brush.Popup}">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="1" Opacity=".5" Direction="270" BlurRadius="16"/>
                 </Border.Effect>
@@ -18,7 +18,7 @@
             
             <Border x:Name="popupContent" Padding="8" Width="Auto" Height="Auto"/>
 
-            <Border x:Name="status" Visibility="Collapsed" Background="{StaticResource Brush.BG1}" Opacity=".9">
+            <Border x:Name="status" Visibility="Collapsed" Background="{StaticResource Brush.Popup}" Opacity=".9">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Path x:Name="statusIcon" Width="48" Height="48" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
                         <Path.RenderTransform>

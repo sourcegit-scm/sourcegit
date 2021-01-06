@@ -31,7 +31,7 @@
         <Setter Property="AllowDrop" Value="False"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.FG}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="TextElement.FontFamily" Value="Consolas"/>
         <Setter Property="EnableColumnVirtualization" Value="True"/>
         <Setter Property="EnableRowVirtualization" Value="True"/>

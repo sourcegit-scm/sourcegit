@@ -14,7 +14,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Window Content -->
-    <Border Background="{StaticResource Brush.BG1}">
+    <Border>
         <!-- Fix Maximize BUG -->
         <Border.Style>
             <Style TargetType="{x:Type Border}">
@@ -29,7 +29,7 @@
             </Style>
         </Border.Style>
 
-        <Grid>
+        <Grid Background="{StaticResource Brush.Window}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="24"/>
@@ -37,7 +37,7 @@
             </Grid.RowDefinitions>
 
             <!-- Title bar -->
-            <Grid Grid.Row="0" Background="{StaticResource Brush.BG4}">
+            <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -50,7 +50,7 @@
                         Width="20" Height="20" Margin="6,-1,2,0"
                         Style="{StaticResource Style.Icon}" 
                         Data="{StaticResource Icon.Git}" 
-                        Fill="#FFF05133"
+                        Fill="{StaticResource Brush.Logo}"
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         MouseLeftButtonDown="LogoMouseButtonDown"/>
                     <Label Content="SOURCE GIT - BLAME" FontWeight="Light"/>
@@ -112,7 +112,7 @@
                     <Grid.Resources>
                         <Style x:Key="Style.DataGridText.LineNumber" TargetType="{x:Type TextBlock}">
                             <Setter Property="FontFamily" Value="Consolas"/>
-                            <Setter Property="Foreground" Value="{StaticResource Brush.FG}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                             <Setter Property="HorizontalAlignment" Value="Right"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Padding" Value="8,0"/>
@@ -147,7 +147,7 @@
                                     <DataTemplate>
                                         <Grid>
                                             <Border Background="{Binding BG}" BorderThickness="0"/>
-                                            <TextBlock Text="{Binding Line.Content}" Background="Transparent" Foreground="{StaticResource Brush.FG}" FontFamily="Consolas" FontSize="12" Margin="0" Padding="0"/>
+                                            <TextBlock Text="{Binding Line.Content}" Background="Transparent" Foreground="{StaticResource Brush.FG1}" FontFamily="Consolas" FontSize="12" Margin="0" Padding="0"/>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -174,7 +174,7 @@
 
                     <!-- Popup to show commit info -->
                     <Popup x:Name="popup" Placement="MousePoint" IsOpen="False" StaysOpen="False" Focusable="True">
-                        <Border BorderBrush="{StaticResource Brush.Accent1}" BorderThickness="1" Background="{StaticResource Brush.BG1}">
+                        <Border BorderBrush="{StaticResource Brush.Accent1}" BorderThickness="1" Background="{StaticResource Brush.Popup}">
                             <Grid Margin="4">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="24"/>

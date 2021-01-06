@@ -11,7 +11,7 @@
             <converters:FilesDisplayModeToIcon x:Key="FilesDisplayModeToIcon"/>
             <Style x:Key="Style.Icon.DisplayMode" TargetType="{x:Type Path}" BasedOn="{StaticResource Style.Icon}">
                 <Setter Property="Fill" Value="Transparent"/>
-                <Setter Property="Stroke" Value="{StaticResource Brush.FG}"/>
+                <Setter Property="Stroke" Value="{StaticResource Brush.FG1}"/>
                 <Setter Property="StrokeThickness" Value=".4"/>
                 <Setter Property="Width" Value="12"/>
                 <Setter Property="Height" Value="12"/>

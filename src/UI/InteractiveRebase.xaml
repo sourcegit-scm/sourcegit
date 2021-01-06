@@ -5,7 +5,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SourceGit.UI"
-        xmlns:helpers="clr-namespace:SourceGit.Helpers"
         mc:Ignorable="d"        
         Title="Interactive Rebase"
         Height="600" Width="800">
@@ -16,7 +15,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Window Content -->
-    <Border Background="{StaticResource Brush.BG1}">
+    <Border Background="{StaticResource Brush.Window}">
         <!-- Fix Maximize BUG -->
         <Border.Style>
             <Style TargetType="{x:Type Border}">
@@ -41,7 +40,7 @@
             </Grid.RowDefinitions>
 
             <!-- Title bar -->
-            <Grid Grid.Row="0" Background="{StaticResource Brush.BG4}">
+            <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -53,8 +52,8 @@
                     <Path
                         Width="20" Height="20" Margin="6,-1,2,0"
                         Style="{StaticResource Style.Icon}" 
-                        Data="{StaticResource Icon.Git}" 
-                        Fill="#FFF05133"
+                        Data="{StaticResource Icon.Git}"
+                        Fill="{StaticResource Brush.Logo}"
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         MouseLeftButtonDown="LogoMouseButtonDown"/>
                     <Label Content="SOURCE GIT - INTERACTIVE REBASE" FontWeight="Light"/>
@@ -100,7 +99,7 @@
             <!-- Commit List -->
             <ListView Grid.Row="1"
                       x:Name="commitList"
-                      Background="Transparent"
+                      Background="{StaticResource Brush.Contents}"
                       Style="{StaticResource Style.ListView.Borderless}"
                       ItemsSource="{Binding ElementName=me, Path=Items}"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -143,18 +142,18 @@
                                 Grid.Column="1"
                                 Text="{Binding Commit.Subject}" 
                                 VerticalAlignment="Center" 
-                                Foreground="{StaticResource Brush.FG}"/>
+                                Foreground="{StaticResource Brush.FG1}"/>
                             
                             <TextBlock
                                 Grid.Column="2"
-                                Foreground="{StaticResource Brush.FG}"
+                                Foreground="{StaticResource Brush.FG1}"
                                 VerticalAlignment="Center"
                                 Margin="8,0"
                                 Text="{Binding Commit.Committer.Name}"/>
 
                             <TextBlock
                                 Grid.Column="3"
-                                Foreground="{StaticResource Brush.FG}"
+                                Foreground="{StaticResource Brush.FG1}"
                                 VerticalAlignment="Center"
                                 Text="{Binding Commit.Committer.Time}"/>
 
@@ -196,10 +195,10 @@
             </Grid>
             
             <!-- Splitter -->
-            <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+            <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.CommitViewer}"/>
 
             <!-- Commit Detail -->
-            <local:CommitViewer x:Name="commitViewer" Grid.Row="3" Background="{StaticResource Brush.BG4}"/>
+            <local:CommitViewer x:Name="commitViewer" Grid.Row="3" Background="{StaticResource Brush.CommitViewer}"/>
             
             <!-- Options Bar -->
             <Grid Grid.Row="5">

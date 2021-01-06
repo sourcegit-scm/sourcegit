@@ -9,10 +9,10 @@
                     <Border 
                         BorderThickness="1" 
                         BorderBrush="{DynamicResource Brush.Border1}" 
-                        Background="{DynamicResource Brush.BG1}"
+                        Background="{DynamicResource Brush.Popup}"
                         Width="Auto" 
                         Height="Auto">
-                        <ContentPresenter Margin="6,4" TextElement.Foreground="{DynamicResource Brush.FG}" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ContentPresenter Margin="6,4" TextElement.Foreground="{DynamicResource Brush.FG1}" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

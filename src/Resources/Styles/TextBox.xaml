@@ -78,8 +78,8 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.FG}"/>
-        <Setter Property="CaretBrush" Value="{DynamicResource Brush.FG}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.FG1}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border1}"/>
         <Setter Property="Validation.ErrorTemplate" Value="{StaticResource Template.Validation.Error}"/>
