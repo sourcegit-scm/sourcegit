@@ -65,7 +65,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabControl}">
-                                            <StackPanel Orientation="Horizontal" Margin="8,4,4,0">
+                                            <StackPanel Orientation="Horizontal" Margin="8,6,4,0">
                                                 <StackPanel Orientation="Horizontal" IsItemsHost="True" SnapsToDevicePixels="True" KeyboardNavigation.TabIndex="1"/>
                                                 <Button Margin="4,0,0,0" Click="NewTab" ToolTip="NEW PAGE" WindowChrome.IsHitTestVisibleInChrome="True">
                                                     <Button.Style>
