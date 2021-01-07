@@ -194,7 +194,8 @@
 
                                                 <Rectangle
                                                     x:Name="Splitter"
-                                                    HorizontalAlignment="Right" 
+                                                    HorizontalAlignment="Right"
+                                                    Margin="0,0,-1,0"
                                                     Width="1" Height="16" 
                                                     Fill="{StaticResource Brush.FG2}"
                                                     Visibility="Hidden"/>
