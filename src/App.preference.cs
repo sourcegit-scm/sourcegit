@@ -106,6 +106,10 @@ namespace SourceGit {
         /// </summary>
         public bool CheckUpdate { get; set; } = true;
         /// <summary>
+        ///     Last UNIX timestamp to check for update.
+        /// </summary>
+        public int LastCheckUpdate { get; set; } = 0;
+        /// <summary>
         ///     Settings for executables.
         /// </summary>
         public ToolSetting Tools { get; set; } = new ToolSetting();

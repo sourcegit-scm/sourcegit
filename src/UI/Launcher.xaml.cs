@@ -1,16 +1,9 @@
-using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace SourceGit.UI {
 
@@ -105,7 +98,6 @@ namespace SourceGit.UI {
         public Launcher() {
             InitializeComponent();
             NewTab(null, null);
-            if (App.Setting.CheckUpdate) Task.Run(CheckUpdate);
         }
 
         /// <summary>
@@ -132,33 +124,6 @@ namespace SourceGit.UI {
                 var tab = new Tab() { Repo = repo, Page = page };
                 Tabs.Add(tab);
                 openedTabs.SelectedItem = tab;
-            }
-        }
-
-        /// <summary>
-        ///     Checking for update.
-        /// </summary>
-        public void CheckUpdate() {
-            try {
-                var web = new WebClient() { Encoding = Encoding.UTF8 };
-                var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/SourceGit/releases/latest");
-                var ver = JsonConvert.DeserializeObject<Git.Version>(raw);
-                var cur = Assembly.GetExecutingAssembly().GetName().Version;
-
-                var matches = Regex.Match(ver.TagName, @"^v(\d+)\.(\d+).*");
-                if (!matches.Success) return;
-
-                var major = int.Parse(matches.Groups[1].Value);
-                var minor = int.Parse(matches.Groups[2].Value);
-                if (major > cur.Major || (major == cur.Major && minor > cur.Minor)) {
-                    Dispatcher.Invoke(() => {
-                        var dialog = new UpdateAvailable(ver);
-                        dialog.Owner = this;
-                        dialog.ShowDialog();
-                    });
-                }
-            } catch {
-                // IGNORE
             }
         }
 
