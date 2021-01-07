@@ -423,7 +423,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Rectangle Grid.Row="8" Fill="Transparent" Height="1"/>
+                <Rectangle Grid.Row="8" Fill="{StaticResource Brush.GroupContent}" Height="1"/>
 
                 <!-- SUBMODULES -->
                 <ToggleButton
