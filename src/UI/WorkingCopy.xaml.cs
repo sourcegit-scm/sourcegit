@@ -114,6 +114,12 @@ namespace SourceGit.UI {
                 UpdateData(unstaged, UnstagedListData, UnstagedTreeData);
                 UpdateData(staged, StagedListData, StagedTreeData);
 
+                // Force trigger UpdateLayout for DataGrid.
+                unstagedList.Columns.Add(new DataGridTextColumn());
+                unstagedList.Columns.RemoveAt(unstagedList.Columns.Count - 1);
+                stageList.Columns.Add(new DataGridTextColumn());
+                stageList.Columns.RemoveAt(stageList.Columns.Count - 1);
+
                 var current = Repo.CurrentBranch();
                 if (current != null && !string.IsNullOrEmpty(current.Upstream) && chkAmend.IsChecked != true) {
                     btnCommitAndPush.Visibility = Visibility.Visible;

@@ -231,7 +231,7 @@
                 <TreeView
                     Grid.Row="1" 
                     x:Name="stageTree"
-                    ItemsSource="{Binding ElementName=me, Path=StagedTreeData, IsAsync=True}"
+                    ItemsSource="{Binding ElementName=me, Path=StagedTreeData, IsAsync=False}"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Converter={StaticResource FilesDisplayModeToTree}}"
                     Background="{StaticResource Brush.Contents}"
                     FontFamily="Consolas" 
@@ -286,7 +286,7 @@
                 <DataGrid
                     Grid.Row="1"
                     x:Name="stageList"                    
-                    ItemsSource="{Binding ElementName=me, Path=StagedListData, IsAsync=True}"
+                    ItemsSource="{Binding ElementName=me, Path=StagedListData, IsAsync=False}"
                     RowHeight="24"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Converter={StaticResource FilesDisplayModeToList}}"
                     SelectionChanged="StagedListSelectionChanged"
