@@ -27,9 +27,9 @@
             <converters:InverseBool x:Key="InverseBool"/>
         </Grid.Resources>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Fetch Remote Changes"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.Fetch.Title}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Remote :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Fetch.Remote}"/>
         <ComboBox x:Name="combRemotes" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" IsEnabled="{Binding ElementName=chkFetchAll, Path=IsChecked, Converter={StaticResource InverseBool}}">
             <ComboBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type git:Remote}">
@@ -44,12 +44,12 @@
         <CheckBox Grid.Row="3" Grid.Column="1"
                   x:Name="chkFetchAll"
                   IsChecked="True"
-                  Content="Fetch all remotes"/>
+                  Content="{StaticResource Text.Fetch.AllRemotes}"/>
 
         <CheckBox Grid.Row="4" Grid.Column="1"
                   x:Name="chkPrune"
                   IsChecked="True"
-                  Content="Prune remote dead branches"/>
+                  Content="{StaticResource Text.Fetch.Prune}"/>
 
         <Grid Grid.Row="6" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -59,8 +59,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Start" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

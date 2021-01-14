@@ -21,21 +21,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Reset Current Branch To Revision"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.Reset}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Current Branch :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Reset.Target}"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path Width="12" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
             <TextBlock x:Name="branch" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Move To :"/>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Reset.MoveTo}"/>
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
             <Path Width="12" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Commit}"/>
             <TextBlock x:Name="desc" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="Reset Mode :"/>
+        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Reset.Mode}"/>
         <ComboBox x:Name="combMode" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -56,8 +56,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Start" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -20,8 +20,8 @@ namespace SourceGit.UI {
             public string Arg { get; set; }
 
             public WhitespaceOption(string n, string d, string a) {
-                Name = n;
-                Desc = d;
+                Name = App.Text(n);
+                Desc = App.Text(d);
                 Arg = a;
             }
         }
@@ -39,10 +39,10 @@ namespace SourceGit.UI {
             InitializeComponent();
 
             combWhitespaceOptions.ItemsSource = new WhitespaceOption[] {
-                new WhitespaceOption("No Warn", "Turns off the trailing whitespace warning", "nowarn"),
-                new WhitespaceOption("Warn", "Outputs warnings for a few such errors, but applies", "warn"),
-                new WhitespaceOption("Error", "Raise errors and refuses to apply the patch", "error"),
-                new WhitespaceOption("Error All", "Similar to 'error', but shows more", "error-all"),
+                new WhitespaceOption("Apply.NoWarn", "Apply.NoWarn.Desc", "nowarn"),
+                new WhitespaceOption("Apply.Warn", "Apply.Warn.Desc", "warn"),
+                new WhitespaceOption("Apply.Error", "Apply.Error.Desc", "error"),
+                new WhitespaceOption("Apply.ErrorAll", "Apply.ErrorAll.Desc", "error-all"),
             };
             combWhitespaceOptions.SelectedIndex = 0;
         }
@@ -63,7 +63,7 @@ namespace SourceGit.UI {
         private void FindPatchFile(object sender, RoutedEventArgs e) {
             var dialog = new OpenFileDialog();
             dialog.Filter = "Patch File|*.patch";
-            dialog.Title = "Select Patch File";
+            dialog.Title = App.Text("Apply.File.Placeholder");
             dialog.InitialDirectory = repo.Path;
             dialog.CheckFileExists = true;
 

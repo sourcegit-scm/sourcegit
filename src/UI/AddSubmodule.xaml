@@ -23,12 +23,12 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Add Submodule"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.Submodule.Add}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="URL :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.URL}"/>
         <TextBox x:Name="txtRepoUrl" Grid.Row="2" Grid.Column="1" 
                  Height="24"
-                 helpers:TextBoxHelper.Placeholder="Git Repository URL">
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.RepositoryURL}">
             <TextBox.Text>
                 <Binding Path="RepoURL" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -38,11 +38,11 @@
             </TextBox.Text>
         </TextBox>
 
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Parent Folder :"/>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.ParentFolder}"/>
         <TextBox Grid.Row="3" Grid.Column="1"
                  x:Name="txtPath"
                  Height="24"
-                 helpers:TextBoxHelper.Placeholder="Relative foler to store this module. Optional.">
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.ParentFolder.Placeholder}">
             <TextBox.Text>
                 <Binding Path="LocalPath" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -55,7 +55,7 @@
         <CheckBox Grid.Row="4" Grid.Column="1"
                   x:Name="chkRecursive"
                   IsChecked="True"
-                  Content="Fetch nested submodules"/>
+                  Content="{StaticResource Text.Submodule.FetchNested}"/>
 
         <Grid Grid.Row="6" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -65,8 +65,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Sure" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Sure" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

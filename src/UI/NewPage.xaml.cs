@@ -42,7 +42,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OpenOrAddRepo(object sender, RoutedEventArgs e) {
-            FolderDailog.Open("Open or init local repository", path => {
+            FolderDailog.Open(App.Text("NewPage.OpenOrInitDialog"), path => {
                 CheckAndOpenRepo(path);
             });
         }
@@ -151,7 +151,7 @@ namespace SourceGit.UI {
         #region EVENT_TREEVIEW
         private void TreeContextMenuOpening(object sender, ContextMenuEventArgs e) {
             var addFolder = new MenuItem();
-            addFolder.Header = "Add Folder";
+            addFolder.Header = App.Text("NewPage.NewFolder");
             addFolder.Click += (o, ev) => {
                 var group = App.Setting.AddGroup("New Group", "");
                 UpdateTree(group.Id);
@@ -238,14 +238,14 @@ namespace SourceGit.UI {
 
             if (node.IsRepo) {
                 var open = new MenuItem();
-                open.Header = "Open";
+                open.Header = App.Text("RepoCM.Open");
                 open.Click += (o, ev) => {
                     CheckAndOpenRepo(node.Id);
                     ev.Handled = true;
                 };
 
                 var explore = new MenuItem();
-                explore.Header = "Open Container Folder";
+                explore.Header = App.Text("RepoCM.Explore");
                 explore.Click += (o, ev) => {
                     Process.Start("explorer", node.Id);
                     ev.Handled = true;
@@ -253,7 +253,7 @@ namespace SourceGit.UI {
 
                 var iconBookmark = FindResource("Icon.Bookmark") as Geometry;
                 var bookmark = new MenuItem();
-                bookmark.Header = "Bookmark";
+                bookmark.Header = App.Text("RepoCM.Bookmark");
                 for (int i = 0; i < Converters.IntToRepoColor.Colors.Length; i++) {
                     var icon = new System.Windows.Shapes.Path();
                     icon.Style = FindResource("Style.Icon") as Style;
@@ -283,7 +283,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(bookmark);
             } else {
                 var addSubFolder = new MenuItem();
-                addSubFolder.Header = "Add Sub-Folder";
+                addSubFolder.Header = App.Text("NewPage.NewSubFolder");
                 addSubFolder.Click += (o, ev) => {
                     var parent = App.Setting.FindGroup(node.Id);
                     if (parent != null) parent.IsExpended = true;
@@ -297,14 +297,14 @@ namespace SourceGit.UI {
             }
 
             var rename = new MenuItem();
-            rename.Header = "Rename";
+            rename.Header = App.Text("NewPage.Rename");
             rename.Click += (o, ev) => {
                 UpdateTree(node.Id);
                 ev.Handled = true;
             };
 
             var delete = new MenuItem();
-            delete.Header = "Delete";
+            delete.Header = App.Text("NewPage.Delete");
             delete.Click += (o, ev) => {
                 DeleteNode(node);
                 ev.Handled = true;
@@ -324,7 +324,7 @@ namespace SourceGit.UI {
         /// <returns></returns>
         private bool MakeSureReady() {
             if (!App.IsGitConfigured) {
-                App.RaiseError("Git has NOT been configured.\nPlease to go [Preference] and configure it first.");
+                App.RaiseError(App.Text("NotConfigured"));
                 return false;
             }
 
@@ -344,7 +344,7 @@ namespace SourceGit.UI {
                     return;
                 }
 
-                App.RaiseError($"Path[{path}] not exists!");
+                App.RaiseError(App.Format("PathNotFound", path));
                 return;
             }
 

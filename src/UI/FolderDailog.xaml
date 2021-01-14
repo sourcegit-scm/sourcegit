@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="FolderDailog" 
+        Title="{StaticResource Text.FolderDialog}" 
         Height="400" Width="400"
         ResizeMode="NoResize">
     
@@ -56,7 +56,7 @@
             
             <!-- Current -->
             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,4,0,0">
-                <Label Content="Selected :" />
+                <Label Content="{StaticResource Text.FolderDialog.Selected}" />
                 <Label x:Name="txtSelected" Content="NONE" Foreground="{StaticResource Brush.FG2}"/>
             </StackPanel>
             
@@ -97,8 +97,8 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="1" x:Name="btnSure" Width="100" Height="32" Content="SURE" Click="OnSure" Style="{StaticResource Style.Button.AccentBordered}"/>
-                <Button Grid.Column="3" Width="100" Height="32" Content="CANCEL" Click="OnQuit" Style="{StaticResource Style.Button.Bordered}"/>
+                <Button Grid.Column="1" x:Name="btnSure" Width="100" Height="32" Content="{StaticResource Text.Sure}" Click="OnSure" Style="{StaticResource Style.Button.AccentBordered}"/>
+                <Button Grid.Column="3" Width="100" Height="32" Content="{StaticResource Text.Cancel}" Click="OnQuit" Style="{StaticResource Style.Button.Bordered}"/>
             </Grid>
         </Grid>
     </Border>

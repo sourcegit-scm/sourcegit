@@ -18,7 +18,7 @@ namespace SourceGit.UI {
         public UpdateAvailable(Git.Version version) {
             InitializeComponent();
 
-            txtRelease.Content = $"{version.Name} is available!";
+            txtRelease.Content = App.Format("UpdateAvailable.Title", version.Name);
             txtTime.Content = version.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
             txtBasedOn.Content = version.CommitSHA.Substring(0, 10);
             txtPrerelease.Content = version.PreRelease ? "YES" : "NO";

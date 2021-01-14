@@ -261,7 +261,7 @@ namespace SourceGit.Git {
             
             var checkGitDir = new DirectoryInfo(GitDir);
             if (!checkGitDir.Exists) {
-                App.RaiseError("GIT_DIR for this repository NOT FOUND!");
+                App.RaiseError(App.Text("GitDirNotFound"));
                 return;
             } else {
                 GitDir = checkGitDir.FullName;
@@ -1110,7 +1110,7 @@ namespace SourceGit.Git {
             releasePrefix = GetConfig("gitflow.prefix.release");
             hotfixPrefix = GetConfig("gitflow.prefix.hotfix");
 
-            if (!IsGitFlowEnabled()) App.RaiseError("Initialize Git-flow failed!");
+            if (!IsGitFlowEnabled()) App.RaiseError(App.Text("InitGitFlowFailed"));
 
             if (refreshBranches) {
                 Branches(true);
@@ -1136,7 +1136,7 @@ namespace SourceGit.Git {
             case Branch.Type.Release: args = $"flow release start {name}"; break;
             case Branch.Type.Hotfix: args = $"flow hotfix start {name}"; break;
             default:
-                App.RaiseError("Bad git-flow branch type!");
+                App.RaiseError(App.Text("BadGitFlowType"));
                 return;
             }
 
@@ -1165,7 +1165,7 @@ namespace SourceGit.Git {
                 args = $"flow hotfix finish {hotfixName} -m \"Hotfix done\""; 
                 break;
             default:
-                App.RaiseError("Bad git-flow branch type!");
+                App.RaiseError(App.Text("BadGitFlowType"));
                 return;
             }
 

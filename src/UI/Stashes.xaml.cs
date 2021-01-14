@@ -97,15 +97,15 @@ namespace SourceGit.UI {
             if (stash == null) return;
 
             var apply = new MenuItem();
-            apply.Header = "Apply";
+            apply.Header = App.Text("StashCM.Apply");
             apply.Click += (o, e) => stash.Apply(repo);
 
             var pop = new MenuItem();
-            pop.Header = "Pop";
+            pop.Header = App.Text("StashCM.Pop");
             pop.Click += (o, e) => stash.Pop(repo);
 
             var delete = new MenuItem();
-            delete.Header = "Drop";
+            delete.Header = App.Text("StashCM.Drop");
             delete.Click += (o, e) => stash.Drop(repo);
 
             var menu = new ContextMenu();

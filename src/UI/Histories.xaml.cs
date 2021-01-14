@@ -205,7 +205,7 @@ namespace SourceGit.UI {
             } else if (selected.Count > 2) {
                 mask.Visibility = Visibility.Visible;
                 txtCounter.Visibility = Visibility.Visible;
-                txtCounter.Content = $"SELECTED {selected.Count} COMMITS";
+                txtCounter.Content = App.Format("Histories.Selected", selected.Count);
             } else {
                 mask.Visibility = Visibility.Visible;
                 txtCounter.Visibility = Visibility.Hidden;
@@ -226,7 +226,7 @@ namespace SourceGit.UI {
             if (!string.IsNullOrEmpty(branch.Upstream)) {
                 var upstream = branch.Upstream.Substring(13);
                 var fastForward = new MenuItem();
-                fastForward.Header = $"Fast-Forward to '{upstream}'";
+                fastForward.Header = App.Format("BranchCM.FastForward", upstream);
                 fastForward.Click += (o, e) => {
                     Merge.StartDirectly(Repo, upstream, branch.Name);
                     e.Handled = true;
@@ -234,7 +234,7 @@ namespace SourceGit.UI {
                 submenu.Items.Add(fastForward);
 
                 var pull = new MenuItem();
-                pull.Header = $"Pull '{upstream}' ...";
+                pull.Header = App.Format("BranchCM.Pull", upstream);
                 pull.Click += (o, e) => {
                     Pull.Show(Repo);
                     e.Handled = true;
@@ -243,7 +243,7 @@ namespace SourceGit.UI {
             }
 
             var push = new MenuItem();
-            push.Header = $"Push '{branch.Name}' ...";
+            push.Header = App.Format("BranchCM.Push", branch.Name);
             push.Click += (o, e) => {
                 Push.Show(Repo, branch);
                 e.Handled = true;
@@ -258,7 +258,7 @@ namespace SourceGit.UI {
                 flowIcon.Width = 10;
 
                 var finish = new MenuItem();
-                finish.Header = $"Git Flow - Finish '{branch.Name}'";
+                finish.Header = App.Format("BranchCM.Finish", branch.Name);
                 finish.Icon = flowIcon;
                 finish.Click += (o, e) => {
                     GitFlowFinishBranch.Show(Repo, branch);
@@ -270,7 +270,7 @@ namespace SourceGit.UI {
             }
 
             var rename = new MenuItem();
-            rename.Header = "Rename ...";
+            rename.Header = App.Format("BranchCM.Rename", branch.Name);
             rename.Click += (o, e) => {
                 RenameBranch.Show(Repo, branch);
                 e.Handled = true;
@@ -292,7 +292,7 @@ namespace SourceGit.UI {
             submenu.Icon = icon;
 
             var checkout = new MenuItem();
-            checkout.Header = $"Checkout '{branch.Name}'";
+            checkout.Header = App.Format("BranchCM.Checkout", branch.Name);
             checkout.Click += (o, e) => {
                 if (branch.IsLocal) {
                     Task.Run(() => Repo.Checkout(branch.Name));
@@ -312,7 +312,7 @@ namespace SourceGit.UI {
             submenu.Items.Add(checkout);
 
             var merge = new MenuItem();
-            merge.Header = $"Merge into '{current.Name}' ...";
+            merge.Header = App.Format("BranchCM.Merge", branch.Name, current.Name);
             merge.IsEnabled = !merged;
             merge.Click += (o, e) => {
                 Merge.Show(Repo, branch.Name, current.Name);
@@ -328,7 +328,7 @@ namespace SourceGit.UI {
                 flowIcon.Width = 10;
 
                 var finish = new MenuItem();
-                finish.Header = $"Git Flow - Finish '{branch.Name}'";
+                finish.Header = App.Format("BranchCM.Finish", branch.Name);
                 finish.Icon = flowIcon;
                 finish.Click += (o, e) => {
                     GitFlowFinishBranch.Show(Repo, branch);
@@ -340,7 +340,7 @@ namespace SourceGit.UI {
             }
 
             var rename = new MenuItem();
-            rename.Header = "Rename ...";
+            rename.Header = App.Format("BranchCM.Rename", branch.Name);
             rename.Visibility = branch.IsLocal ? Visibility.Visible : Visibility.Collapsed;
             rename.Click += (o, e) => {
                 RenameBranch.Show(Repo, current);
@@ -349,7 +349,7 @@ namespace SourceGit.UI {
             submenu.Items.Add(rename);
 
             var delete = new MenuItem();
-            delete.Header = "Delete ...";
+            delete.Header = App.Format("BranchCM.Delete", branch.Name);
             delete.Click += (o, e) => {
                 DeleteBranch.Show(Repo, branch);
             };
@@ -370,7 +370,7 @@ namespace SourceGit.UI {
             submenu.MinWidth = 200;
 
             var push = new MenuItem();
-            push.Header = "Push ...";
+            push.Header = App.Format("TagCM.Push", tag.Name);
             push.Click += (o, e) => {
                 PushTag.Show(Repo, tag);
                 e.Handled = true;
@@ -378,7 +378,7 @@ namespace SourceGit.UI {
             submenu.Items.Add(push);
 
             var delete = new MenuItem();
-            delete.Header = "Delete ...";
+            delete.Header = App.Format("TagCM.Delete", tag.Name);
             delete.Click += (o, e) => {
                 DeleteTag.Show(Repo, tag);
                 e.Handled = true;
@@ -439,7 +439,7 @@ namespace SourceGit.UI {
 
             // Reset
             var reset = new MenuItem();
-            reset.Header = $"Reset '{current.Name}' to Here";
+            reset.Header = App.Format("CommitCM.Reset", current.Name);
             reset.Visibility = commit.IsHEAD ? Visibility.Collapsed : Visibility.Visible;
             reset.Click += (o, e) => {
                 Reset.Show(Repo, commit);
@@ -449,7 +449,7 @@ namespace SourceGit.UI {
 
             // Rebase or interactive rebase
             var rebase = new MenuItem();
-            rebase.Header = commit.IsMerged ? $"Interactive Rebase '{current.Name}' from Here" : $"Rebase '{current.Name}' to Here";
+            rebase.Header = App.Format(commit.IsMerged ? "CommitCM.InteractiveRebase" : "CommitCM.Rebase", current.Name);
             rebase.Visibility = commit.IsHEAD ? Visibility.Collapsed : Visibility.Visible;
             rebase.Click += (o, e) => {
                 if (commit.IsMerged) {
@@ -472,7 +472,7 @@ namespace SourceGit.UI {
 
             // Cherry-Pick
             var cherryPick = new MenuItem();
-            cherryPick.Header = "Cherry-Pick This Commit";
+            cherryPick.Header = App.Text("CommitCM.CherryPick");
             cherryPick.Visibility = commit.IsMerged ? Visibility.Collapsed : Visibility.Visible;
             cherryPick.Click += (o, e) => {
                 CherryPick.Show(Repo, commit);
@@ -482,7 +482,7 @@ namespace SourceGit.UI {
 
             // Revert commit
             var revert = new MenuItem();
-            revert.Header = "Revert Commit";
+            revert.Header = App.Text("CommitCM.Revert");
             revert.Visibility = !commit.IsMerged ? Visibility.Collapsed : Visibility.Visible;
             revert.Click += (o, e) => {
                 Revert.Show(Repo, commit);
@@ -493,14 +493,14 @@ namespace SourceGit.UI {
 
             // Common
             var createBranch = new MenuItem();
-            createBranch.Header = "Create Branch";
+            createBranch.Header = App.Text("CreateBranch");
             createBranch.Click += (o, e) => {
                 CreateBranch.Show(Repo, commit);
                 e.Handled = true;
             };
             menu.Items.Add(createBranch);
             var createTag = new MenuItem();
-            createTag.Header = "Create Tag";
+            createTag.Header = App.Text("CreateTag");
             createTag.Click += (o, e) => {
                 CreateTag.Show(Repo, commit);
                 e.Handled = true;
@@ -510,7 +510,7 @@ namespace SourceGit.UI {
 
             // Save as patch
             var patch = new MenuItem();
-            patch.Header = "Save as Patch";
+            patch.Header = App.Text("CommitCM.SaveAsPatch");
             patch.Click += (o, e) => {
                 FolderDailog.Open("Save patch to ...", saveTo => {
                     Repo.RunCommand($"format-patch {commit.SHA} -1 -o \"{saveTo}\"", null);
@@ -521,7 +521,7 @@ namespace SourceGit.UI {
 
             // Copy SHA
             var copySHA = new MenuItem();
-            copySHA.Header = "Copy Commit SHA";
+            copySHA.Header = App.Text("CommitCM.CopySHA");
             copySHA.Click += (o, e) => {
                 Clipboard.SetText(commit.SHA);
             };
@@ -529,7 +529,7 @@ namespace SourceGit.UI {
 
             // Copy info
             var copyInfo = new MenuItem();
-            copyInfo.Header = "Copy Commit Info";
+            copyInfo.Header = App.Text("CommitCM.CopyInfo");
             copyInfo.Click += (o, e) => {
                 Clipboard.SetText(string.Format(
                     "SHA: {0}\nTITLE: {1}\nAUTHOR: {2} <{3}>\nTIME: {4}",

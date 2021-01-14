@@ -1,0 +1,432 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="Text.Start">START</sys:String>
+    <sys:String x:Key="Text.Sure">SURE</sys:String>
+    <sys:String x:Key="Text.Save">SAVE</sys:String>
+    <sys:String x:Key="Text.Close">CLOSE</sys:String>
+    <sys:String x:Key="Text.Cancel">CANCEL</sys:String>
+    <sys:String x:Key="Text.Goto">CLICK TO GO</sys:String>
+    <sys:String x:Key="Text.RevealFile">Reveal in File Explorer</sys:String>
+    <sys:String x:Key="Text.SaveAs">Save As ...</sys:String>
+    <sys:String x:Key="Text.SaveFileTo">Save File to ...</sys:String>
+    <sys:String x:Key="Text.CopyPath">Copy Path</sys:String>
+    <sys:String x:Key="Text.Bytes">{0} Bytes</sys:String>
+    <sys:String x:Key="Text.Filter">FILTER</sys:String>
+    <sys:String x:Key="Text.Optional">Optional.</sys:String>
+
+    <sys:String x:Key="Text.URL">URL :</sys:String>
+    <sys:String x:Key="Text.RepositoryURL">Git Repository URL</sys:String>
+    <sys:String x:Key="Text.ParentFolder">Parent Folder :</sys:String>
+    <sys:String x:Key="Text.ParentFolder.Placeholder">Relative foler to store this module. Optional.</sys:String>
+    
+    <sys:String x:Key="Text.About">ABOUT</sys:String>
+    <sys:String x:Key="Text.About.Title">SourceGit - OPEN SOURCE GIT CLIENT</sys:String>
+
+    <sys:String x:Key="Text.Apply">Apply</sys:String>
+    <sys:String x:Key="Text.Apply.Title">Apply Patch</sys:String>
+    <sys:String x:Key="Text.Apply.File">Patch File :</sys:String>
+    <sys:String x:Key="Text.Apply.File.Placeholder">Select .patch file to apply</sys:String>
+    <sys:String x:Key="Text.Apply.WS">Whitespace :</sys:String>
+    <sys:String x:Key="Text.Apply.IgnoreWS">Ignore whitespace changes</sys:String>
+    <sys:String x:Key="Text.Apply.NoWarn">No Warn</sys:String>
+    <sys:String x:Key="Text.Apply.NoWarn.Desc">Turns off the trailing whitespace warning</sys:String>
+    <sys:String x:Key="Text.Apply.Warn">Warn</sys:String>
+    <sys:String x:Key="Text.Apply.Warn.Desc">Outputs warnings for a few such errors, but applies</sys:String>
+    <sys:String x:Key="Text.Apply.Error">Error</sys:String>
+    <sys:String x:Key="Text.Apply.Error.Desc">Raise errors and refuses to apply the patch</sys:String>
+    <sys:String x:Key="Text.Apply.ErrorAll">Error All</sys:String>
+    <sys:String x:Key="Text.Apply.ErrorAll.Desc">Similar to 'error', but shows more</sys:String>
+
+    <sys:String x:Key="Text.Blame">Blame</sys:String>
+    <sys:String x:Key="Text.Blame.Title">SOURCEGIT - BLAME</sys:String>
+    <sys:String x:Key="Text.Blame.Tip">Use right mouse button to view commit information.</sys:String>
+    <sys:String x:Key="Text.Blame.SHA">COMMIT SHA</sys:String>
+    <sys:String x:Key="Text.Blame.Author">AUTHOR</sys:String>
+    <sys:String x:Key="Text.Blame.ModifyTime">MODIFY TIME</sys:String>
+    
+    <sys:String x:Key="Text.Submodule">SUBMODULES</sys:String>
+    <sys:String x:Key="Text.Submodule.Add">Add Submodule</sys:String>
+    <sys:String x:Key="Text.Submodule.FetchNested">Fetch nested submodules</sys:String>
+    <sys:String x:Key="Text.Submodule.Open">Open Submodule Repository</sys:String>
+    <sys:String x:Key="Text.Submodule.CopyPath">Copy Relative Path</sys:String>
+
+    <sys:String x:Key="Text.CherryPick">Cherry-Pick This Commit</sys:String>
+    <sys:String x:Key="Text.CherryPick.Title">Cherry Pick</sys:String>
+    <sys:String x:Key="Text.CherryPick.Commit">Commit :</sys:String>
+    <sys:String x:Key="Text.CherryPick.CommitChanges">Commit all changes</sys:String>
+
+    <sys:String x:Key="Text.Clone">Clone Remote Repository</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteURL">Repository URL :</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteURL.Placeholder">Git Repository URL</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteFolder">Parent Folder :</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteFolder.Placeholder">Folder to contain this repository</sys:String>
+    <sys:String x:Key="Text.Clone.LocalName">Local Name :</sys:String>
+    <sys:String x:Key="Text.Clone.LocalName.Placeholder">Repository name. Optional.</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteName">Remote Name :</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteName.Placeholder">Remote name. Optional.</sys:String>
+
+    <sys:String x:Key="Text.CommitViewer.Info">INFORMATION</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Author">AUTHOR</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Committer">COMMITTER</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.SHA">SHA</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Parents">PARENTS</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Refs">REFS</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Message">MESSAGE</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Changed">CHANGED</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Changes">CHANGES</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Changes.Search">Search Files ...</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Changes.SwitchMode">SWITCH TO LIST/TREE VIEW</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Files">FILES</sys:String>
+
+    <sys:String x:Key="Text.Configure">Configure</sys:String>
+    <sys:String x:Key="Text.Configure.Credential">CREDENTIAL</sys:String>
+    <sys:String x:Key="Text.Configure.User">User :</sys:String>
+    <sys:String x:Key="Text.Configure.User.Placeholder">User name for this repository</sys:String>
+    <sys:String x:Key="Text.Configure.Email">Email :</sys:String>
+    <sys:String x:Key="Text.Configure.Email.Placeholder">Email address</sys:String>
+    <sys:String x:Key="Text.Configure.CommitTemplate">COMMIT TEMPLATE</sys:String>
+    <sys:String x:Key="Text.Configure.Template">Template :</sys:String>
+
+    <sys:String x:Key="Text.CreateBranch">Create Branch</sys:String>
+    <sys:String x:Key="Text.CreateBranch.Title">Create Local Branch</sys:String>
+    <sys:String x:Key="Text.CreateBranch.BasedOn">Based On :</sys:String>
+    <sys:String x:Key="Text.CreateBranch.Name">New Branch Name :</sys:String>
+    <sys:String x:Key="Text.CreateBranch.Name.Placeholder">Enter branch name.</sys:String>
+    <sys:String x:Key="Text.CreateBranch.LocalChanges">Local Changes :</sys:String>
+    <sys:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply">Stash &amp; Reapply</sys:String>
+    <sys:String x:Key="Text.CreateBranch.LocalChanges.Discard">Discard</sys:String>
+    <sys:String x:Key="Text.CreateBranch.Checkout">Check out after created</sys:String>
+
+    <sys:String x:Key="Text.CreateTag">Create Tag</sys:String>
+    <sys:String x:Key="Text.CreateTag.BasedOn">New Tag At :</sys:String>
+    <sys:String x:Key="Text.CreateTag.Name">Tag Name :</sys:String>
+    <sys:String x:Key="Text.CreateTag.Name.Placeholder">Recommanded format ：v1.0.0-alpha</sys:String>
+    <sys:String x:Key="Text.CreateTag.Message">Tag Message :</sys:String>
+    <sys:String x:Key="Text.CreateTag.Message.Placeholder">Optional.</sys:String>
+
+    <sys:String x:Key="Text.Dashboard.Explore">Explore</sys:String>
+    <sys:String x:Key="Text.Dashboard.Explore.Tip">Open In File Browser</sys:String>
+    <sys:String x:Key="Text.Dashboard.Terminal">Terminal</sys:String>
+    <sys:String x:Key="Text.Dashboard.Terminal.Tip">Open Git Bash</sys:String>
+    <sys:String x:Key="Text.Dashboard.Search">Search</sys:String>
+    <sys:String x:Key="Text.Dashboard.Search.Tip">Search Commit</sys:String>
+    <sys:String x:Key="Text.Dashboard.Configure.Tip">Configure this repository</sys:String>
+    <sys:String x:Key="Text.Dashboard.Workspace">WORKSPACE</sys:String>
+    <sys:String x:Key="Text.Dashboard.LocalBranches">LOCAL BRANCHES</sys:String>
+    <sys:String x:Key="Text.Dashboard.NewBranch">NEW BRANCH</sys:String>
+    <sys:String x:Key="Text.Dashboard.Remotes">REMOTES</sys:String>
+    <sys:String x:Key="Text.Dashboard.Remotes.Add">ADD REMOTE</sys:String>
+    <sys:String x:Key="Text.Dashboard.Tags">TAGS</sys:String>
+    <sys:String x:Key="Text.Dashboard.Tags.Add">NEW TAG</sys:String>
+    <sys:String x:Key="Text.Dashboard.Submodules">SUBMODULES</sys:String>
+    <sys:String x:Key="Text.Dashboard.Submodules.Add">ADD SUBMODULE</sys:String>
+    <sys:String x:Key="Text.Dashboard.Submodules.Update">UPDATE SUBMODULE</sys:String>
+    <sys:String x:Key="Text.Dashboard.Resolve">RESOLVE</sys:String>
+    <sys:String x:Key="Text.Dashboard.Continue">CONTINUE</sys:String>
+    <sys:String x:Key="Text.Dashboard.Abort">ABORT</sys:String>
+
+    <sys:String x:Key="Text.GitFlow">GIT FLOW</sys:String>
+    <sys:String x:Key="Text.GitFlow.Init">Initialize Git-Flow</sys:String>
+    <sys:String x:Key="Text.GitFlow.ProductionBranch">Production Branch :</sys:String>
+    <sys:String x:Key="Text.GitFlow.DevelopBranch">Development Branch :</sys:String>
+    <sys:String x:Key="Text.GitFlow.Feature">Feature :</sys:String>
+    <sys:String x:Key="Text.GitFlow.Release">Release :</sys:String>
+    <sys:String x:Key="Text.GitFlow.Hotfix">Hotfix :</sys:String>
+    <sys:String x:Key="Text.GitFlow.FeaturePrefix">Feature Prefix :</sys:String>
+    <sys:String x:Key="Text.GitFlow.ReleasePrefix">Release Prefix :</sys:String>
+    <sys:String x:Key="Text.GitFlow.HotfixPrefix">Hotfix Prefix :</sys:String>
+    <sys:String x:Key="Text.GitFlow.TagPrefix">Version Tag Prefix :</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartFeature">Start Feature ...</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartRelease">Start Release ...</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartHotfix">Start Hotfix ...</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartFeatureTitle">GIT FLOW - Start Feature</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartReleaseTitle">GIT FLOW - Start Release</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartHotfixTitle">GIT FLOW - Start Hotfix</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartPlaceholder">Enter name</sys:String>
+    <sys:String x:Key="Text.GitFlow.FinishFeature">GIT FLOW - Finish Feature</sys:String>
+    <sys:String x:Key="Text.GitFlow.FinishRelease">GIT FLOW - Finish Release</sys:String>
+    <sys:String x:Key="Text.GitFlow.FinishHotfix">GIT FLOW - Finish Hotfix</sys:String>
+    <sys:String x:Key="Text.GitFlow.BranchRequired">{0} branch name is required.</sys:String>
+    <sys:String x:Key="Text.GitFlow.BranchInvalid">{0} branch name contains invalid characters.</sys:String>
+    <sys:String x:Key="Text.GitFlow.PrefixRequired">{0} prefix is required.</sys:String>
+    <sys:String x:Key="Text.GitFlow.PrefixInvalid">{0} contains invalid characters.</sys:String>
+    <sys:String x:Key="Text.GitFlow.DevSameAsProd">Development branch is same with production!</sys:String>
+
+    <sys:String x:Key="Text.RepoCM.Refresh">Refresh</sys:String>
+    <sys:String x:Key="Text.RepoCM.Bookmark">Bookmark</sys:String>
+    <sys:String x:Key="Text.RepoCM.CopyPath">CopyPath</sys:String>
+    <sys:String x:Key="Text.RepoCM.Open">Open</sys:String>
+    <sys:String x:Key="Text.RepoCM.Explore">Open Container Folder</sys:String>
+
+    <sys:String x:Key="Text.BranchCM.Push">Push '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.DiscardAll">Discard all changes</sys:String>
+    <sys:String x:Key="Text.BranchCM.FastForward">Fast-Forward to '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Pull">Pull '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.PullInto">Pull '{0}' into '{1}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Checkout">Checkout '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Merge">Merge '{0}' into '{1}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Rebase">Rebase '{0}' on '{1}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Finish">Git Flow - Finish '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Rename">Rename '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Delete">Delete '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Tracking">Tracking ...</sys:String>
+    <sys:String x:Key="Text.BranchCM.CopyName">Copy Branch Name</sys:String>
+
+    <sys:String x:Key="Text.RemoteCM.Fetch">Fetch '{0}'</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Edit">Edit '{0}'</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Delete">Delete '{0}'</sys:String>
+    <sys:String x:Key="Text.RemoteCM.CopyURL">Copy Remote URL</sys:String>
+
+    <sys:String x:Key="Text.CommitCM.Reset">Reset '{0}' to Here</sys:String>
+    <sys:String x:Key="Text.CommitCM.InteractiveRebase">Interactive Rebase '{0}' from Here</sys:String>
+    <sys:String x:Key="Text.CommitCM.Rebase">Rebase '{0}' to Here</sys:String>
+    <sys:String x:Key="Text.CommitCM.CherryPick">Cherry-Pick This Commit</sys:String>
+    <sys:String x:Key="Text.CommitCM.Revert">Revert Commit</sys:String>
+    <sys:String x:Key="Text.CommitCM.SaveAsPatch">Save as Patch</sys:String>
+    <sys:String x:Key="Text.CommitCM.CopySHA">Copy Commit SHA</sys:String>
+    <sys:String x:Key="Text.CommitCM.CopyInfo">Copy Commit Info</sys:String>
+
+    <sys:String x:Key="Text.TagCM.Push">Push '{0}'</sys:String>
+    <sys:String x:Key="Text.TagCM.Delete">Delete '{0}'</sys:String>
+    <sys:String x:Key="Text.TagCM.Copy">Copy Tag Name</sys:String>
+
+    <sys:String x:Key="Text.StashCM.Apply">Apply</sys:String>
+    <sys:String x:Key="Text.StashCM.Pop">Pop</sys:String>
+    <sys:String x:Key="Text.StashCM.Drop">Drop</sys:String>
+
+    <sys:String x:Key="Text.FileCM.Unstage">Unstage</sys:String>
+    <sys:String x:Key="Text.FileCM.Stage">Stage...</sys:String>
+    <sys:String x:Key="Text.FileCM.Discard">Discard...</sys:String>
+    <sys:String x:Key="Text.FileCM.Stash">Stash...</sys:String>
+    <sys:String x:Key="Text.FileCM.UnstageMulti">Unstage {0} files</sys:String>
+    <sys:String x:Key="Text.FileCM.StageMulti">Stage {0} files...</sys:String>
+    <sys:String x:Key="Text.FileCM.DiscardMulti">Discard {0} files...</sys:String>
+    <sys:String x:Key="Text.FileCM.StashMulti">Stash {0} files...</sys:String>
+    <sys:String x:Key="Text.FileCM.SaveAsPatch">Save As Patch...</sys:String>
+
+    <sys:String x:Key="Text.DeleteBranch">Confirm To Delete Branch</sys:String>
+    <sys:String x:Key="Text.DeleteBranch.Branch">Branch :</sys:String>
+
+    <sys:String x:Key="Text.DeleteRemote">Confirm To Delete Remote</sys:String>
+    <sys:String x:Key="Text.DeleteRemote.Remote">Remote :</sys:String>
+
+    <sys:String x:Key="Text.DeleteTag">Confirm To Delete Tag</sys:String>
+    <sys:String x:Key="Text.DeleteTag.Tag">Tag :</sys:String>
+    <sys:String x:Key="Text.DeleteTag.WithRemote">Delete from remote repositories</sys:String>
+
+    <sys:String x:Key="Text.Diff.Next">Next Difference</sys:String>
+    <sys:String x:Key="Text.Diff.Prev">Previous Difference</sys:String>
+    <sys:String x:Key="Text.Diff.Mode">Toggle One-Side/Two-Sides</sys:String>
+    <sys:String x:Key="Text.Diff.Welcome">SELECT FILE TO VIEW CHANGES</sys:String>
+    <sys:String x:Key="Text.Diff.NoChange">NO CHANGES OR ONLY EOL CHANGES</sys:String>
+    <sys:String x:Key="Text.Diff.Binary">BINARY DIFF</sys:String>
+    <sys:String x:Key="Text.Diff.Binary.Old">OLD :</sys:String>
+    <sys:String x:Key="Text.Diff.Binary.New">New :</sys:String>
+    <sys:String x:Key="Text.Diff.LFS">LFS OBJECT CHANGE</sys:String>
+    <sys:String x:Key="Text.Diff.Copy">Copy Selected Lines</sys:String>
+
+    <sys:String x:Key="Text.Discard">Confirm To Discard Changes</sys:String>
+    <sys:String x:Key="Text.Discard.Changes">Changes :</sys:String>
+    <sys:String x:Key="Text.Discard.Warning">You can't undo this action!!!</sys:String>
+    <sys:String x:Key="Text.Discard.All">All local changes in working copy.</sys:String>
+    <sys:String x:Key="Text.Discard.Total">Total {0} changes will be discard</sys:String>
+
+    <sys:String x:Key="Text.Fetch">Fetch</sys:String>
+    <sys:String x:Key="Text.Fetch.Title">Fetch Remote Changes</sys:String>
+    <sys:String x:Key="Text.Fetch.Remote">Remote :</sys:String>
+    <sys:String x:Key="Text.Fetch.AllRemotes">Fetch all remotes</sys:String>
+    <sys:String x:Key="Text.Fetch.Prune">Prune remote dead branches</sys:String>
+
+    <sys:String x:Key="Text.FileHistory">File History</sys:String>
+
+    <sys:String x:Key="Text.FileDisplayMode">CHANGE FILES DISPLAY MODE</sys:String>
+    <sys:String x:Key="Text.FileDisplayMode.Grid">Show as Grid</sys:String>
+    <sys:String x:Key="Text.FileDisplayMode.List">Show as List</sys:String>
+    <sys:String x:Key="Text.FileDisplayMode.Tree">Show as Tree</sys:String>
+
+    <sys:String x:Key="Text.FolderDialog">SELECT FOLDER</sys:String>
+    <sys:String x:Key="Text.FolderDialog.Selected">SELECTED :</sys:String>
+
+    <sys:String x:Key="Text.Histories">Histories</sys:String>
+    <sys:String x:Key="Text.Histories.Search">SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT</sys:String>
+    <sys:String x:Key="Text.Histories.SearchClear">CLEAR</sys:String>
+    <sys:String x:Key="Text.Histories.DisplayMode">Toggle Horizontal/Vertical Layout</sys:String>
+    <sys:String x:Key="Text.Histories.Selected">SELECTED {0} COMMITS</sys:String>
+    <sys:String x:Key="Text.Histories.Guide">HISTORIES GUIDE</sys:String>
+    <sys:String x:Key="Text.Histories.Guide_1">1. Select single commit to view detail</sys:String>
+    <sys:String x:Key="Text.Histories.Guide_2">2. Select two commits to show differences</sys:String>
+    <sys:String x:Key="Text.Histories.Guide_3">3. Select more than 2 commits to count</sys:String>
+    <sys:String x:Key="Text.Histories.Guide_4">4. Try to open context menu with selected commit</sys:String>
+
+    <sys:String x:Key="Text.Init">Initialize Repository</sys:String>
+    <sys:String x:Key="Text.Init.Path">Path :</sys:String>
+    <sys:String x:Key="Text.Init.Tip">Invalid repository detected. Run `git init` under this path?</sys:String>
+
+    <sys:String x:Key="Text.InteractiveRebase">SOURCEGIT - INTERACTIVE REBASE</sys:String>
+    <sys:String x:Key="Text.InteractiveRebase.Target">Rebase :</sys:String>
+    <sys:String x:Key="Text.InteractiveRebase.On">On :</sys:String>
+    <sys:String x:Key="Text.InteractiveRebase.Start">REBASE</sys:String>
+    <sys:String x:Key="Text.InteractiveRebase.MoveUp">MOVE UP</sys:String>
+    <sys:String x:Key="Text.InteractiveRebase.MoveDown">MOVE DOWN</sys:String>
+
+    <sys:String x:Key="Text.Launcher">Source Git</sys:String>
+    <sys:String x:Key="Text.Launcher.NewPageButton">NEW PAGE</sys:String>
+    <sys:String x:Key="Text.Launcher.Preference">PREFERENCE</sys:String>
+    <sys:String x:Key="Text.Launcher.About">ABOUT</sys:String>
+    <sys:String x:Key="Text.Launcher.Error">ERROR</sys:String>
+    <sys:String x:Key="Text.Launcher.NewPage">New Page</sys:String>
+    <sys:String x:Key="Text.Launcher.NewPageTip">Welcome Page</sys:String>
+
+    <sys:String x:Key="Text.Merge">Merge Branch</sys:String>
+    <sys:String x:Key="Text.Merge.Source">Source Branch :</sys:String>
+    <sys:String x:Key="Text.Merge.Into">Into :</sys:String>
+    <sys:String x:Key="Text.Merge.Mode">Merge Option :</sys:String>
+
+    <sys:String x:Key="Text.NewPage.Title">Welcome to SourceGit :)</sys:String>
+    <sys:String x:Key="Text.NewPage.OpenOrInit">Open Local Repository</sys:String>
+    <sys:String x:Key="Text.NewPage.Clone">Clone Remote Repository</sys:String>
+    <sys:String x:Key="Text.NewPage.Repositories">REPOSITORIES</sys:String>
+    <sys:String x:Key="Text.NewPage.DragDrop">DRAG-DROP YOUR FOLDER</sys:String>
+    <sys:String x:Key="Text.NewPage.OpenOrInitDialog">Open or init local repository</sys:String>
+    <sys:String x:Key="Text.NewPage.NewFolder">Add Folder</sys:String>
+    <sys:String x:Key="Text.NewPage.NewSubFolder">Add Sub-Folder</sys:String>
+    <sys:String x:Key="Text.NewPage.Rename">Rename</sys:String>
+    <sys:String x:Key="Text.NewPage.Delete">Delete</sys:String>
+
+    <sys:String x:Key="Text.Pull">Pull</sys:String>
+    <sys:String x:Key="Text.Pull.Title">Pull (Fetch &amp; Merge)</sys:String>
+    <sys:String x:Key="Text.Pull.Remote">Remote :</sys:String>
+    <sys:String x:Key="Text.Pull.Branch">Branch :</sys:String>
+    <sys:String x:Key="Text.Pull.Into">Into :</sys:String>
+    <sys:String x:Key="Text.Pull.UseRebase">Use rebase instead of merge</sys:String>
+    <sys:String x:Key="Text.Pull.AutoStash">Stash &amp; reapply local changes</sys:String>
+    
+    <sys:String x:Key="Text.Push">Push</sys:String>
+    <sys:String x:Key="Text.Push.Title">Push Changes To Remote</sys:String>
+    <sys:String x:Key="Text.Push.Local">Local Branch :</sys:String>
+    <sys:String x:Key="Text.Push.Remote">Remote :</sys:String>
+    <sys:String x:Key="Text.Push.To">To :</sys:String>
+    <sys:String x:Key="Text.Push.WithAllTags">Push all tags</sys:String>
+    <sys:String x:Key="Text.Push.Force">Force push</sys:String>
+
+    <sys:String x:Key="Text.PushTag">Push Tag To Remote</sys:String>
+    <sys:String x:Key="Text.PushTag.Tag">Tag :</sys:String>
+    <sys:String x:Key="Text.PushTag.Remote">Remote :</sys:String>
+
+    <sys:String x:Key="Text.Rebase">Rebase Current Branch</sys:String>
+    <sys:String x:Key="Text.Rebase.Target">Rebase :</sys:String>
+    <sys:String x:Key="Text.Rebase.On">On :</sys:String>
+    <sys:String x:Key="Text.Rebase.AutoStash">Stash &amp; reapply local changes</sys:String>
+
+    <sys:String x:Key="Text.Remote.AddTitle">Add Remote</sys:String>
+    <sys:String x:Key="Text.Remote.EditTitle">Edit Remote</sys:String>
+    <sys:String x:Key="Text.Remote.Name">Name :</sys:String>
+    <sys:String x:Key="Text.Remote.Name.Placeholder">Remote name</sys:String>
+    <sys:String x:Key="Text.Remote.URL">Repository URL :</sys:String>
+    <sys:String x:Key="Text.Remote.URL.Placeholder">Remote git repository URL</sys:String>
+
+    <sys:String x:Key="Text.RenameBranch">Rename Branch</sys:String>
+    <sys:String x:Key="Text.RenameBranch.Target">Branch :</sys:String>
+    <sys:String x:Key="Text.RenameBranch.Name">New Name :</sys:String>
+    <sys:String x:Key="Text.RenameBranch.Name.Placeholder">Unique name for this branch</sys:String>
+
+    <sys:String x:Key="Text.Reset">Reset Current Branch To Revision</sys:String>
+    <sys:String x:Key="Text.Reset.Target">Current Branch :</sys:String>
+    <sys:String x:Key="Text.Reset.MoveTo">Move To :</sys:String>
+    <sys:String x:Key="Text.Reset.Mode">Reset Mode :</sys:String>
+
+    <sys:String x:Key="Text.Revert">Confirm To Revert Commit</sys:String>
+    <sys:String x:Key="Text.Revert.Commit">Commit :</sys:String>
+    <sys:String x:Key="Text.Revert.CommitChanges">Commit revert changes</sys:String>
+
+    <sys:String x:Key="Text.Preference">Preference</sys:String>
+    <sys:String x:Key="Text.Preference.General">GENERAL SETTING</sys:String>
+    <sys:String x:Key="Text.Preference.RestartRequired">RESTART REQUIRED</sys:String>
+    <sys:String x:Key="Text.Preference.Locale">Display Language :</sys:String>
+    <sys:String x:Key="Text.Preference.UseLight">Light Theme :</sys:String>
+    <sys:String x:Key="Text.Preference.CheckUpdate">Check for Update :</sys:String>
+    <sys:String x:Key="Text.Preference.Git">GIT INSTANCE</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Path">Install Path :</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Path.Placeholder">Input path for git.exe</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Dir">Default Clone Dir :</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Dir.Placeholder">Default path to clone repo into</sys:String>
+    <sys:String x:Key="Text.Preference.Global">GLOBAL SETTING</sys:String>
+    <sys:String x:Key="Text.Preference.User">Name :</sys:String>
+    <sys:String x:Key="Text.Preference.Email">Email :</sys:String>
+    <sys:String x:Key="Text.Preference.CRLF">Auto CRLF</sys:String>
+    <sys:String x:Key="Text.Preference.Merger">MERGE TOOL</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Type">Merger :</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Path">Install Path :</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Path.Placeholder">Input path for merge tool</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Cmd">Command :</sys:String>
+    <sys:String x:Key="Text.Preference.Dialog.GitExe">Select Git Executable File</sys:String>
+    <sys:String x:Key="Text.Preference.Dialog.GitDir">Select default clone path</sys:String>
+    <sys:String x:Key="Text.Preference.Dialog.Merger">Select {0} Install Path</sys:String>
+
+    <sys:String x:Key="Text.Stash">Stash</sys:String>
+    <sys:String x:Key="Text.Stash.Title">Stash Local Changes</sys:String>
+    <sys:String x:Key="Text.Stash.Message">Message :</sys:String>
+    <sys:String x:Key="Text.Stash.Message.Placeholder">Optional. Name of this stash</sys:String>
+    <sys:String x:Key="Text.Stash.IncludeUntracked">Include untracked files</sys:String>
+
+    <sys:String x:Key="Text.Stashes">Stashes</sys:String>
+    <sys:String x:Key="Text.Stashes.Stashes">STASHES</sys:String>
+    <sys:String x:Key="Text.Stashes.Changes">CHANGES</sys:String>
+    <sys:String x:Key="Text.Stashes.Changes.Tip">Untracked files not shown</sys:String>
+
+    <sys:String x:Key="Text.TwoCommitsDiff">COMMIT : {0} -> {1}</sys:String>
+
+    <sys:String x:Key="Text.UpdateAvailable">UPDATE AVAILABLE</sys:String>
+    <sys:String x:Key="Text.UpdateAvailable.Title">{0} is available!</sys:String>
+    <sys:String x:Key="Text.UpdateAvailable.Time">Publish Time</sys:String>
+    <sys:String x:Key="Text.UpdateAvailable.Based">Base On Commit</sys:String>
+    <sys:String x:Key="Text.UpdateAvailable.IsPreRelease">Is Pre-release</sys:String>
+    <sys:String x:Key="Text.UpdateAvailable.Download" xml:space="preserve">DOWNLOAD</sys:String>
+
+    <sys:String x:Key="Text.WorkingCopy">Commit</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Unstaged">UNSTAGED</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Unstaged.Stage">STAGE</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Unstaged.StageAll">STAGE ALL</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Staged">STAGED</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Staged.Unstage">UNSTAGE</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Staged.UnstageAll">UNSTAGE ALL</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Conflicts">CONFLICTS DETECTED</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.UseTheirs">USE THEIRS</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.UseMine">USE MINE</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.OpenMerger">OPEN MERGE</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.CommitMessageTip">Enter commit message</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.MessageHistories">MESSAGE HISTORIES</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Amend">Amend</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Commit">COMMIT</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.CommitAndPush">COMMIT &amp; PUSH</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.NoCommitHistories">NO RECENT INPUT MESSAGES</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.HasCommitHistories">RECENT INPUT MESSAGES</sys:String>
+
+    <sys:String x:Key="Text.Conflict.CherryPick">Cherry-Pick merge request detected! Press 'Abort' to restore original HEAD</sys:String>
+    <sys:String x:Key="Text.Conflict.Rebase">Rebase merge request detected! Press 'Abort' to restore original HEAD</sys:String>
+    <sys:String x:Key="Text.Conflict.Revert">Revert merge request detected! Press 'Abort' to restore original HEAD</sys:String>
+    <sys:String x:Key="Text.Conflict.Merge">Merge request detected! Press 'Abort' to restore original HEAD</sys:String>
+
+    <sys:String x:Key="Text.NotConfigured">Git has NOT been configured.\nPlease to go [Preference] and configure it first.</sys:String>
+    <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>
+    <sys:String x:Key="Text.MissingBash">Can NOT locate bash.exe. Make sure bash.exe exists under the same folder with git.exe</sys:String>
+    <sys:String x:Key="Text.BinaryNotSupported">BINARY FILE BLAME NOT SUPPORTED!!!</sys:String>
+    <sys:String x:Key="Text.GitDirNotFound">GIT_DIR for this repository NOT FOUND!</sys:String>
+    <sys:String x:Key="Text.InitGitFlowFailed">Initialize Git-flow failed!</sys:String>
+    <sys:String x:Key="Text.BadGitFlowType">Bad git-flow branch type!</sys:String>
+    <sys:String x:Key="Text.BadCloneFolder">EXISTS and FULL ACCESS CONTROL needed</sys:String>
+    <sys:String x:Key="Text.BadRemoteUri">Remote git URL not supported</sys:String>
+    <sys:String x:Key="Text.EmptyRemoteName">Remote name can NOT be null</sys:String>
+    <sys:String x:Key="Text.BadRemoteName">Bad name for remote. Regex: ^[\\w\\-\\.]+$</sys:String>
+    <sys:String x:Key="Text.DuplicatedRemoteName">Duplicated remote name!</sys:String>
+    <sys:String x:Key="Text.EmptyBranchName">Branch name can NOT be null</sys:String>
+    <sys:String x:Key="Text.BadBranchName">Bad name for branch. Regex: ^[\\w\\-/\\.]+$</sys:String>
+    <sys:String x:Key="Text.DuplicatedBranchName">Duplicated branch name!</sys:String>
+    <sys:String x:Key="Text.EmptyTagName">Tag name can NOT be null</sys:String>
+    <sys:String x:Key="Text.BadTagName">Bad name for tag. Regex: ^[\\w\\-\\.]+$</sys:String>
+    <sys:String x:Key="Text.DuplicatedTagName">Duplicated tag name!</sys:String>
+    <sys:String x:Key="Text.EmptyCommitMessage">Commit subject can NOT be empty</sys:String>
+    <sys:String x:Key="Text.BadPatchFile">Invalid path for patch file</sys:String>
+    <sys:String x:Key="Text.BadSubmodulePath">Invalid path for submodules</sys:String>
+</ResourceDictionary>

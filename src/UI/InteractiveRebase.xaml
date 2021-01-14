@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SourceGit.UI"
         mc:Ignorable="d"        
-        Title="Interactive Rebase"
+        Title="{StaticResource Text.InteractiveRebase}"
         Height="600" Width="800">
 
     <!-- Enable WindowChrome -->
@@ -56,7 +56,7 @@
                         Fill="{StaticResource Brush.Logo}"
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         MouseLeftButtonDown="LogoMouseButtonDown"/>
-                    <Label Content="SOURCE GIT - INTERACTIVE REBASE" FontWeight="Light"/>
+                    <Label Content="{StaticResource Text.InteractiveRebase}" FontWeight="Light"/>
                 </StackPanel>
 
                 <!-- Options -->
@@ -161,11 +161,11 @@
                                 Grid.Column="4"
                                 Orientation="Horizontal"
                                 Margin="4,0">
-                                <Button Click="MoveUp" ToolTip="MOVE UP">
+                                <Button Click="MoveUp" ToolTip="{StaticResource Text.InteractiveRebase.MoveUp}">
                                     <Path Width="12" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.MoveUp}"/>
                                 </Button>
 
-                                <Button Click="MoveDown" ToolTip="MOVE DOWN" Margin="4,0,0,0">
+                                <Button Click="MoveDown" ToolTip="{StaticResource Text.InteractiveRebase.MoveDown}" Margin="4,0,0,0">
                                     <Path Width="12" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.MoveDown}"/>                                    
                                 </Button>
                             </StackPanel>
@@ -211,17 +211,17 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,24,0">
-                    <Label Grid.Column="0" Content="Rebase :"/>
+                    <Label Grid.Column="0" Content="{StaticResource Text.InteractiveRebase.Target}"/>
                     <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
                     <Label x:Name="branch"/>
                     
-                    <Label Grid.Column="2" Content="On :" Margin="8,0,0,0"/>
+                    <Label Grid.Column="2" Content="{StaticResource Text.InteractiveRebase.On}" Margin="8,0,0,0"/>
                     <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Commit}"/>
                     <Label x:Name="on"/>
                 </StackPanel>
 
-                <Button Grid.Column="1" Height="26" Click="Start" Style="{StaticResource Style.Button.AccentBordered}" Content="REBASE"/>
-                <Button Grid.Column="3" Height="26" Click="Cancel" Style="{StaticResource Style.Button.Bordered}" Content="CANCEL"/>
+                <Button Grid.Column="1" Height="26" Click="Start" Style="{StaticResource Style.Button.AccentBordered}" Content="{StaticResource Text.InteractiveRebase.Start}"/>
+                <Button Grid.Column="3" Height="26" Click="Cancel" Style="{StaticResource Style.Button.Bordered}" Content="{StaticResource Text.Cancel}"/>
             </Grid>
         </Grid>
     </Border>

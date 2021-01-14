@@ -31,12 +31,7 @@ namespace SourceGit.UI {
             InitializeComponent();
             nameValidator.Repo = repo;
             nameValidator.Old = remote;
-
-            if (remote != null) {
-                title.Content = "Edit Remote";
-            } else {
-                title.Content = "Add New Remote";
-            }
+            title.Content = App.Text(remote == null ? "Remote.AddTitle" : "Remote.EditTitle");
         }
 
         /// <summary>

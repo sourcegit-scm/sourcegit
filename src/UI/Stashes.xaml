@@ -30,7 +30,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="STASHES" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
+                <Label Content="{StaticResource Text.Stashes.Stashes}" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
                 <ListView
                     Grid.Row="1"
                     x:Name="stashList"
@@ -82,8 +82,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Content="CHANGES" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
-                    <Label Grid.Column="1" Content="Untracked files not included" Foreground="{StaticResource Brush.FG2}" FontSize="10"/>
+                    <Label Grid.Column="0" Content="{StaticResource Text.Stashes.Changes}" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
+                    <Label Grid.Column="1" Content="{StaticResource Text.Stashes.Changes.Tip}" Foreground="{StaticResource Brush.FG2}" FontSize="10"/>
                 </Grid>
 
                 <ListView 

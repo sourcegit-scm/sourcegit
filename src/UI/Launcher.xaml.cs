@@ -66,13 +66,13 @@ namespace SourceGit.UI {
 
             public string Title {
                 get {
-                    if (Repo == null) return "New Page";
+                    if (Repo == null) return App.Text("Launcher.NewPage");
                     return Repo.Parent == null ? Repo.Name : $"{Repo.Parent.Name} : {Repo.Name}";
                 }
             }
 
             public string Tooltip {
-                get { return Repo == null ? "Repository Manager" : Repo.Path; }
+                get { return Repo == null ? App.Text("Launcher.NewPageTip") : Repo.Path; }
             }
 
             public bool IsRepo {
@@ -178,7 +178,7 @@ namespace SourceGit.UI {
             var repo = tab.Repo;
 
             var refresh = new MenuItem();
-            refresh.Header = "Refresh";
+            refresh.Header = App.Text("RepoCM.Refresh");
             refresh.Click += (o, e) => {
                 repo.AssertCommand(null);
                 e.Handled = true;
@@ -186,7 +186,7 @@ namespace SourceGit.UI {
 
             var iconBookmark = FindResource("Icon.Bookmark") as Geometry;
             var bookmark = new MenuItem();
-            bookmark.Header = "Bookmark";
+            bookmark.Header = App.Text("RepoCM.Bookmark");
             for (int i = 0; i < Converters.IntToRepoColor.Colors.Length; i++) {
                 var icon = new System.Windows.Shapes.Path();
                 icon.Style = FindResource("Style.Icon") as Style;
@@ -208,7 +208,7 @@ namespace SourceGit.UI {
             }
 
             var copyPath = new MenuItem();
-            copyPath.Header = "Copy path";
+            copyPath.Header = App.Text("RepoCM.CopyPath");
             copyPath.Click += (o, e) => {
                 Clipboard.SetText(repo.Path);
                 e.Handled = true;

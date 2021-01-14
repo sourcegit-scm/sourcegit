@@ -32,7 +32,7 @@
             <Path Grid.Row="0" Margin="0,48,0,0" Width="72" Height="72" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
             
             <!-- Welcome -->
-            <TextBlock Grid.Row="1" Margin="0,16" HorizontalAlignment="Center" Text="Welcome to SourceGit :)" FontSize="28" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>
+            <TextBlock Grid.Row="1" Margin="0,16" HorizontalAlignment="Center" Text="{StaticResource Text.NewPage.Title}" FontSize="28" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>
                 
             <!-- Options -->
             <Grid Grid.Row="2" Margin="0,0,0,36">
@@ -44,13 +44,13 @@
                 <Button Click="OpenOrAddRepo" Grid.Column="0" Style="{StaticResource Style.Button.Bordered}">
                     <StackPanel Orientation="Horizontal">
                         <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
-                        <Label Margin="4,0,0,0" Content="Open Local Repository"/>
+                        <Label Margin="4,0,0,0" Content="{StaticResource Text.NewPage.OpenOrInit}"/>
                     </StackPanel>
                 </Button>
                 <Button Click="CloneRepo" Grid.Column="2" Style="{StaticResource Style.Button.Bordered}">
                     <StackPanel Orientation="Horizontal">
                         <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}"/>
-                        <Label Margin="4,0,0,0" Content="Clone Remote Repository"/>
+                        <Label Margin="4,0,0,0" Content="{StaticResource Text.NewPage.Clone}"/>
                     </StackPanel>
                 </Button>
             </Grid>
@@ -66,8 +66,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="REPOSITORIES" FontSize="18" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>
-                <TextBlock Grid.Column="2" Text="DRAG-DROP YOUR FOLDER" FontSize="14" Foreground="{StaticResource Brush.FG2}" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Text="{StaticResource Text.NewPage.Repositories}" FontSize="18" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>
+                <TextBlock Grid.Column="2" Text="{StaticResource Text.NewPage.DragDrop}" FontSize="14" Foreground="{StaticResource Brush.FG2}" VerticalAlignment="Center"/>
             </Grid>
 
             <!-- Drop area tip. -->

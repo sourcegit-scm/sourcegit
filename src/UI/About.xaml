@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Height="280" Width="400"
-        Title="About"
+        Title="{StaticResource Text.About}"
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 
     <!-- Enable WindowChrome Feature -->
@@ -33,7 +33,7 @@
             <Path Margin="6,0,2,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}"/>
 
             <!-- Title -->
-            <Label Grid.Column="1" Content="ABOUT" FontWeight="Light"/>
+            <Label Grid.Column="1" Content="{StaticResource Text.About}" FontWeight="Light"/>
 
             <!-- Close Button -->
             <Button Click="Quit" Width="32" Grid.Column="3" WindowChrome.IsHitTestVisibleInChrome="True">
@@ -64,7 +64,7 @@
                 <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="{StaticResource Brush.Logo}"/>
             </StackPanel>
 
-            <Label Grid.Row="1" Content="SourceGit - OPEN SOURCE GIT CLIENT" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" FontSize="18" FontWeight="Bold"/>
+            <Label Grid.Row="1" Content="{StaticResource Text.About.Title}" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" FontSize="18" FontWeight="Bold"/>
             <Label Grid.Row="2" x:Name="version" HorizontalContentAlignment="Center" FontSize="11"/>
 
             <Label Grid.Row="3" HorizontalContentAlignment="Center" FontSize="11">

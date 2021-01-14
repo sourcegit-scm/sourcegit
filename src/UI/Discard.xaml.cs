@@ -25,12 +25,12 @@ namespace SourceGit.UI {
             InitializeComponent();
 
             if (changes == null || changes.Count == 0) {
-                txtPath.Text = "All local changes in working copy.";
+                txtPath.Text = App.Text("Discard.All");
                 icon.Data = FindResource("Icon.Folder") as Geometry;
             } else if (changes.Count == 1) {
                 txtPath.Text = changes[0].Path;
             } else {
-                txtPath.Text = $"Total {changes.Count} changes ...";
+                txtPath.Text = App.Format("Discard.Total", changes.Count);
             }
         }
 

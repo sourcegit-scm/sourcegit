@@ -24,9 +24,9 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Push Changes To Remote"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.Push.Local}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Local Branch :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.Push.Local}"/>
         <ComboBox Grid.Row="2" Grid.Column="1"
                   x:Name="combLocalBranches"
                   VerticalAlignment="Center"
@@ -41,7 +41,7 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Remote :"/>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.Push.Remote}"/>
         <ComboBox Grid.Row="3" Grid.Column="1"
                   x:Name="combRemotes"
                   VerticalAlignment="Center"
@@ -56,7 +56,7 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="To :"/>
+        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.Push.To}"/>
         <ComboBox Grid.Row="4" Grid.Column="1"
                   x:Name="combRemoteBranches"
                   VerticalAlignment="Center">
@@ -73,12 +73,12 @@
         <CheckBox Grid.Row="5" Grid.Column="1"
                   x:Name="chkTags"
                   VerticalAlignment="Center"
-                  Content="Push all tags"/>
+                  Content="{StaticResource Text.Push.WithAllTags}"/>
 
         <CheckBox Grid.Row="6" Grid.Column="1"
                   x:Name="chkForce"
                   VerticalAlignment="Center"
-                  Content="Force push"/>
+                  Content="{StaticResource Text.Push.Force}"/>
 
         <Grid Grid.Row="8" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -88,8 +88,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Start" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

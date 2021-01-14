@@ -49,7 +49,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectParentFolder(object sender, RoutedEventArgs e) {
-            FolderDailog.Open("Select folder to store repository", path => {
+            FolderDailog.Open(App.Text("Clone.RemoteFolder.Placeholder"), path => {
                 txtParentFolder.Text = path;
             });
         }

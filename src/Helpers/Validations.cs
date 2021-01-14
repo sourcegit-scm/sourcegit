@@ -10,7 +10,7 @@ namespace SourceGit.Helpers {
     /// </summary>
     public class CloneFolderRule : ValidationRule {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
-            var badPath = "EXISTS and FULL ACCESS CONTROL needed";
+            var badPath = App.Text("BadCloneFolder");
             var path = value as string;
             return Directory.Exists(path) ? ValidationResult.ValidResult : new ValidationResult(false, badPath);
         }
@@ -21,7 +21,7 @@ namespace SourceGit.Helpers {
     /// </summary>
     public class RemoteUriRule : ValidationRule {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
-            var badUrl = "Remote git URL not supported";
+            var badUrl = App.Text("BadRemoteUri");
             return Git.Repository.IsValidUrl(value as string) ? ValidationResult.ValidResult : new ValidationResult(false, badUrl);
         }
     }
@@ -38,13 +38,13 @@ namespace SourceGit.Helpers {
             var name = value as string;
             var remotes = Repo.Remotes();
 
-            if (string.IsNullOrEmpty(name)) return new ValidationResult(false, "Remote name can NOT be null");
-            if (!regex.IsMatch(name)) return new ValidationResult(false, $"Bad name for remote. Regex: ^[\\w\\-\\.]+$");
+            if (string.IsNullOrEmpty(name)) return new ValidationResult(false, App.Text("EmptyRemoteName"));
+            if (!regex.IsMatch(name)) return new ValidationResult(false, App.Text("BadRemoteName"));
 
             if (Old == null || name != Old.Name) {
                 foreach (var t in remotes) {
                     if (t.Name == name) {
-                        return new ValidationResult(false, $"Remote '{name}' already exists");
+                        return new ValidationResult(false, App.Text("DuplicatedRemoteName"));
                     }
                 }
             }
@@ -65,14 +65,14 @@ namespace SourceGit.Helpers {
             var name = value as string;
             var branches = Repo.Branches();
 
-            if (string.IsNullOrEmpty(name)) return new ValidationResult(false, "Branch name can NOT be null");
-            if (!regex.IsMatch(name)) return new ValidationResult(false, $"Bad name for branch. Regex: ^[\\w\\-/\\.]+$");
+            if (string.IsNullOrEmpty(name)) return new ValidationResult(false, App.Text("EmptyBranchName"));
+            if (!regex.IsMatch(name)) return new ValidationResult(false, App.Text("BadBranchName"));
 
             name = Prefix + name;
 
             foreach (var b in branches) {
                 if (b.Name == name) {
-                    return new ValidationResult(false, $"Branch '{name}' already exists");
+                    return new ValidationResult(false, App.Text("DuplicatedBranchName"));
                 }
             }
 
@@ -91,12 +91,12 @@ namespace SourceGit.Helpers {
             var name = value as string;
             var tags = Repo.Tags();
 
-            if (string.IsNullOrEmpty(name)) return new ValidationResult(false, "Tag name can NOT be null");
-            if (!regex.IsMatch(name)) return new ValidationResult(false, $"Bad name for tag. Regex: ^[\\w\\-\\.]+$");
+            if (string.IsNullOrEmpty(name)) return new ValidationResult(false, App.Text("EmptyTagName"));
+            if (!regex.IsMatch(name)) return new ValidationResult(false, App.Text("BadTagName"));
 
             foreach (var t in tags) {
                 if (t.Name == name) {
-                    return new ValidationResult(false, $"Tag '{name}' already exists");
+                    return new ValidationResult(false, App.Text("DuplicatedTagName"));
                 }
             }
 
@@ -110,7 +110,7 @@ namespace SourceGit.Helpers {
     public class CommitSubjectRequiredRule : ValidationRule {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
             var subject = value as string;
-            return string.IsNullOrWhiteSpace(subject) ? new ValidationResult(false, "Commit subject can NOT be empty") : ValidationResult.ValidResult;
+            return string.IsNullOrWhiteSpace(subject) ? new ValidationResult(false, App.Text("EmptyCommitMessage")) : ValidationResult.ValidResult;
         }
     }
 
@@ -121,7 +121,7 @@ namespace SourceGit.Helpers {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
             var path = value as string;
             var succ = !string.IsNullOrEmpty(path) && File.Exists(path);
-            return !succ ? new ValidationResult(false, "Invalid path for patch file") : ValidationResult.ValidResult;
+            return !succ ? new ValidationResult(false, App.Text("BadPatchFile")) : ValidationResult.ValidResult;
         }
     }
 
@@ -133,7 +133,7 @@ namespace SourceGit.Helpers {
             var regex = new Regex(@"^[\w\-\._/]+$");
             var path = value as string;
             var succ = !string.IsNullOrEmpty(path) && regex.IsMatch(path.Trim());
-            return !succ ? new ValidationResult(false, "Invalid path for submodules") : ValidationResult.ValidResult;
+            return !succ ? new ValidationResult(false, App.Text("BadSubmodulePath")) : ValidationResult.ValidResult;
         }
     }
 }

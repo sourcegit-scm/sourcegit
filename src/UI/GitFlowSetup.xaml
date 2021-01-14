@@ -26,21 +26,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Git Flow - Initialize"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.GitFlow.Init}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Production Branch :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.GitFlow.ProductionBranch}"/>
         <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtMaster" Padding="2,0" TextChanged="ValidateNames" VerticalContentAlignment="Center" helpers:TextBoxHelper.Placeholder="master" Height="24" Text="master"/>
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Development Branch :"/>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.GitFlow.DevelopBranch}"/>
         <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtDevelop" Padding="2,0" TextChanged="ValidateNames" VerticalContentAlignment="Center" helpers:TextBoxHelper.Placeholder="develop" Height="24" Text="develop"/>
 
-        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Feature Prefix :"/>
+        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.GitFlow.FeaturePrefix}"/>
         <TextBox Grid.Row="5" Grid.Column="1" x:Name="txtFeature" Padding="2,0" TextChanged="ValidateNames" VerticalContentAlignment="Center" helpers:TextBoxHelper.Placeholder="feature/" Height="24" Text="feature/"/>
-        <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Release Prefix :"/>
+        <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.GitFlow.ReleasePrefix}"/>
         <TextBox Grid.Row="6" Grid.Column="1" x:Name="txtRelease" Padding="2,0" TextChanged="ValidateNames" VerticalContentAlignment="Center" helpers:TextBoxHelper.Placeholder="release/" Height="24" Text="release/"/>
-        <Label Grid.Row="7" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Hotfix Prefix :"/>
+        <Label Grid.Row="7" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.GitFlow.HotfixPrefix}"/>
         <TextBox Grid.Row="7" Grid.Column="1" x:Name="txtHotfix" Padding="2,0" TextChanged="ValidateNames" VerticalContentAlignment="Center" helpers:TextBoxHelper.Placeholder="hotfix/" Height="24" Text="hotfix/"/>
-        <Label Grid.Row="8" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Version Tag Prefix :"/>
-        <TextBox Grid.Row="8" Grid.Column="1" x:Name="txtVersion" Padding="2,0" TextChanged="ValidateNames" VerticalContentAlignment="Center" helpers:TextBoxHelper.Placeholder="Optional." Height="24" Text=""/>
+        <Label Grid.Row="8" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.GitFlow.TagPrefix}"/>
+        <TextBox Grid.Row="8" Grid.Column="1" x:Name="txtVersion" Padding="2,0" TextChanged="ValidateNames" VerticalContentAlignment="Center" helpers:TextBoxHelper.Placeholder="{StaticResource Text.Optional}" Height="24" Text=""/>
 
         <Grid Grid.Row="10" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -52,8 +52,8 @@
 
             <Label Grid.Column="0" x:Name="txtValidation" Foreground="Red"/>
 
-            <Button Grid.Column="1" x:Name="btnSure" Click="Sure" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" x:Name="btnSure" Click="Sure" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

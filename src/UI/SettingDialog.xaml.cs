@@ -51,6 +51,19 @@ namespace SourceGit.UI {
         }
 
         /// <summary>
+        ///     Locale setting.
+        /// </summary>
+        public class Locale {
+            public string Value { get; set; }
+            public string Desc { get; set; }
+
+            public Locale(string v, string d) {
+                Value = v;
+                Desc = d;
+            }
+        }
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         public SettingDialog() {
@@ -60,6 +73,13 @@ namespace SourceGit.UI {
             if (string.IsNullOrEmpty(AutoCRLF)) AutoCRLF = "false";
 
             InitializeComponent();
+
+            var locales = new List<Locale>() {
+                new Locale("en_US", "English"),
+                new Locale("zh_CN", "简体中文"),
+            };
+            cmbLang.ItemsSource = locales;
+            cmbLang.SelectedItem = locales.Find(o => o.Value == App.Setting.UI.Locale);
 
             int mergeType = App.Setting.Tools.MergeTool;
             var merger = Git.MergeTool.Supported[mergeType];
@@ -92,6 +112,21 @@ namespace SourceGit.UI {
         }
 
         /// <summary>
+        ///     Set locale
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChangeLanguage(object sender, SelectionChangedEventArgs e) {
+            if (e.AddedItems.Count != 1) return;
+
+            var mode = e.AddedItems[0] as Locale;
+            if (mode == null) return;
+
+            App.Setting.UI.Locale = mode.Value;
+            App.SaveSetting();
+        }
+
+        /// <summary>
         ///     Select git executable file path.
         /// </summary>
         /// <param name="sender"></param>
@@ -100,7 +135,7 @@ namespace SourceGit.UI {
             var dialog = new OpenFileDialog();
             dialog.Filter = "Git Executable|git.exe";
             dialog.FileName = "git.exe";
-            dialog.Title = "Select Git Executable File";
+            dialog.Title = App.Text("Preference.Dialog.GitExe");
             dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             dialog.CheckFileExists = true;
 
@@ -116,7 +151,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectDefaultClonePath(object sender, RoutedEventArgs e) {
-            FolderDailog.Open("Select default clone path", path => {
+            FolderDailog.Open(App.Text("Preference.Dialog.GitDir"), path => {
                 txtGitCloneDir.Text = path;
                 App.Setting.Tools.GitDefaultCloneDir = path;
             });
@@ -151,7 +186,7 @@ namespace SourceGit.UI {
             var merger = Git.MergeTool.Supported[mergeType];
             var dialog = new OpenFileDialog();
             dialog.Filter = $"{merger.Name} Executable|{merger.ExecutableName}";
-            dialog.Title = $"Select {merger.Name} Install Path";
+            dialog.Title = App.Format("Preference.Dialog.Merger", merger.Name);
             dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             dialog.CheckFileExists = true;
 

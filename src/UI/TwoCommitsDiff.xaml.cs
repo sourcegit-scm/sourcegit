@@ -51,7 +51,7 @@ namespace SourceGit.UI {
             this.sha1 = sha1;
             this.sha2 = sha2;
 
-            txtTitle.Content = $"COMMIT : {sha1} -> {sha2}";
+            txtTitle.Content = App.Format("TwoCommitsDiff", sha1, sha2);
             Task.Run(() => LoadChanges(true));
         }
 
@@ -191,7 +191,7 @@ namespace SourceGit.UI {
             var menu = new ContextMenu();
             if (change.Index != Git.Change.Status.Deleted) {
                 MenuItem history = new MenuItem();
-                history.Header = "File History";
+                history.Header = App.Text("FileHistory");
                 history.Click += (o, ev) => {
                     var viewer = new FileHistories(repo, path);
                     viewer.Show();
@@ -199,7 +199,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(history);
 
                 MenuItem explore = new MenuItem();
-                explore.Header = "Reveal in File Explorer";
+                explore.Header = App.Text("RevealFile");
                 explore.Click += (o, ev) => {
                     var absPath = Path.GetFullPath(repo.Path + "\\" + path);
                     Process.Start("explorer", $"/select,{absPath}");
@@ -209,7 +209,7 @@ namespace SourceGit.UI {
             }
 
             MenuItem copyPath = new MenuItem();
-            copyPath.Header = "Copy Path";
+            copyPath.Header = App.Text("CopyPath");
             copyPath.Click += (obj, ev) => {
                 Clipboard.SetText(path);
             };
@@ -257,7 +257,7 @@ namespace SourceGit.UI {
             ContextMenu menu = new ContextMenu();
             if (node.Change == null || node.Change.Index != Git.Change.Status.Deleted) {
                 MenuItem history = new MenuItem();
-                history.Header = "File History";
+                history.Header = App.Text("FileHistory");
                 history.Click += (o, ev) => {
                     var viewer = new FileHistories(repo, node.FilePath);
                     viewer.Show();
@@ -265,7 +265,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(history);
 
                 MenuItem explore = new MenuItem();
-                explore.Header = "Reveal in File Explorer";
+                explore.Header = App.Text("RevealFile");
                 explore.Click += (o, ev) => {
                     var path = Path.GetFullPath(repo.Path + "\\" + node.FilePath);
                     Process.Start("explorer", $"/select,{path}");
@@ -275,7 +275,7 @@ namespace SourceGit.UI {
             }
 
             MenuItem copyPath = new MenuItem();
-            copyPath.Header = "Copy Path";
+            copyPath.Header = App.Text("CopyPath");
             copyPath.Click += (obj, ev) => {
                 Clipboard.SetText(node.FilePath);
             };

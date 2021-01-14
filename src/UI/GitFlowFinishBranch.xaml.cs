@@ -24,16 +24,16 @@ namespace SourceGit.UI {
 
             switch (branch.Kind) {
             case Git.Branch.Type.Feature:
-                txtTitle.Content = "Git Flow - Finish Feature";
-                txtBranchType.Content = "Feature :";
+                txtTitle.Content = App.Text("GitFlow.FinishFeature");
+                txtBranchType.Content = App.Text("GitFlow.Feature");
                 break;
             case Git.Branch.Type.Release:
-                txtTitle.Content = "Git Flow - Finish Release";
-                txtBranchType.Content = "Release :";
+                txtTitle.Content = App.Text("GitFlow.FinishRelease");
+                txtBranchType.Content = App.Text("GitFlow.Release");
                 break;
             case Git.Branch.Type.Hotfix:
-                txtTitle.Content = "Git Flow - Finish Hotfix";
-                txtBranchType.Content = "Hotfix :";
+                txtTitle.Content = App.Text("GitFlow.FinishHotfix");
+                txtBranchType.Content = App.Text("GitFlow.Hotfix");
                 break;
             default:
                 repo.GetPopupManager()?.Close();

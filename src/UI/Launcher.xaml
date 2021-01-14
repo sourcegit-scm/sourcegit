@@ -67,7 +67,7 @@
                                         <ControlTemplate TargetType="{x:Type TabControl}">
                                             <StackPanel Orientation="Horizontal" Margin="8,6,4,0">
                                                 <StackPanel Orientation="Horizontal" IsItemsHost="True" SnapsToDevicePixels="True" KeyboardNavigation.TabIndex="1"/>
-                                                <Button Margin="4,0,0,0" Click="NewTab" ToolTip="NEW PAGE" WindowChrome.IsHitTestVisibleInChrome="True">
+                                                <Button Margin="4,0,0,0" Click="NewTab" ToolTip="{StaticResource Text.Launcher.NewPageButton}" WindowChrome.IsHitTestVisibleInChrome="True">
                                                     <Button.Style>
                                                         <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
                                                             <Setter Property="Opacity" Value="1"/>
@@ -125,7 +125,7 @@
                                         Content="{Binding Title}" 
                                         Foreground="{StaticResource Brush.FG2}" FontFamily="Consolas" FontWeight="Bold"/>
 
-                                    <Button Grid.Column="3" Click="CloseTab" ToolTip="CLOSE">
+                                    <Button Grid.Column="3" Click="CloseTab" ToolTip="{StaticResource Text.Close}">
                                         <Path
                                             Width="8" Height="8" 
                                             Fill="{StaticResource Brush.FG1}"
@@ -241,11 +241,11 @@
                     HorizontalAlignment="Right"
                     Height="32"
                     WindowChrome.IsHitTestVisibleInChrome="True">
-                    <Button Click="ShowPreference" Width="24" ToolTip="PREFERENCE">
+                    <Button Click="ShowPreference" Width="24" ToolTip="{StaticResource Text.Launcher.Preference}">
                         <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Preference}"/>
                     </Button>
                     <Rectangle Width="1" Height="18" Margin="6,0" VerticalAlignment="Center" Fill="{StaticResource Brush.Border1}"/>
-                    <Button Click="ShowAbout" Width="24" ToolTip="ABOUT">
+                    <Button Click="ShowAbout" Width="24" ToolTip="{StaticResource Text.Launcher.About}">
                         <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}"/>
                     </Button>
                     <Rectangle Width="1" Height="18" Margin="6,0" VerticalAlignment="Center" Fill="{StaticResource Brush.Border1}"/>
@@ -339,14 +339,14 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <Label Grid.Row="0" Content="ERROR" FontWeight="DemiBold"/>
+                                <Label Grid.Row="0" Content="{StaticResource Text.Launcher.Error}" FontWeight="DemiBold"/>
                                 <TextBlock Grid.Row="1" Margin="6,8" Text="{Binding}" Foreground="{StaticResource Brush.FG1}" TextWrapping="Wrap"/>
                                 <Button 
                                     Grid.Row="2"
                                     Margin="4,0"
                                     Click="RemoveError"
                                     Height="25"
-                                    Content="CLOSE"
+                                    Content="{StaticResource Text.Close}"
                                     Style="{StaticResource Style.Button.AccentBordered}"
                                     BorderBrush="{StaticResource Brush.FG1}"
                                     VerticalAlignment="Center"

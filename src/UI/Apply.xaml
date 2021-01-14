@@ -28,9 +28,9 @@
             <converters:InverseBool x:Key="InverseBool"/>
         </Grid.Resources>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Apply Patch"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.Apply.Title}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Patch File :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Apply.File}"/>
         <Grid Grid.Row="2" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -41,7 +41,7 @@
                 Grid.Column="0"
                 x:Name="txtPatchFile"
                 Height="24"
-                helpers:TextBoxHelper.Placeholder="Select .patch file to apply">
+                helpers:TextBoxHelper.Placeholder="{StaticResource Text.Apply.File.Placeholder}">
                 <TextBox.Text>
                     <Binding Path="PatchFile" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                         <Binding.ValidationRules>
@@ -56,7 +56,7 @@
             </Button>
         </Grid>
 
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Whitespace :"/>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Apply.WS}"/>
         <ComboBox x:Name="combWhitespaceOptions" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" IsEnabled="{Binding ElementName=chkIgnoreWhitespace, Path=IsChecked, Converter={StaticResource InverseBool}}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -71,7 +71,7 @@
         <CheckBox Grid.Row="4" Grid.Column="1"
                   x:Name="chkIgnoreWhitespace"
                   IsChecked="True"
-                  Content="Ignore whitespace changes"/>
+                  Content="{StaticResource Text.Apply.IgnoreWS}"/>
 
         <Grid Grid.Row="6" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -81,8 +81,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Start" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

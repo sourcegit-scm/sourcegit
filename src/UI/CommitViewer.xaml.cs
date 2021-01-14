@@ -309,7 +309,7 @@ namespace SourceGit.UI {
             var menu = new ContextMenu();
             if (change.Index != Git.Change.Status.Deleted) {
                 MenuItem history = new MenuItem();
-                history.Header = "File History";
+                history.Header = App.Text("FileHistory");
                 history.Click += (o, ev) => {
                     var viewer = new FileHistories(repo, path);
                     viewer.Show();
@@ -317,7 +317,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(history);
 
                 MenuItem blame = new MenuItem();
-                blame.Header = "Blame";
+                blame.Header = App.Text("Blame");
                 blame.Click += (obj, ev) => {
                     Blame viewer = new Blame(repo, path, commit.SHA);
                     viewer.Show();
@@ -325,7 +325,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(blame);
 
                 MenuItem explore = new MenuItem();
-                explore.Header = "Reveal in File Explorer";
+                explore.Header = App.Text("RevealFile");
                 explore.Click += (o, ev) => {
                     var absPath = Path.GetFullPath(repo.Path + "\\" + path);
                     Process.Start("explorer", $"/select,{absPath}");
@@ -334,9 +334,9 @@ namespace SourceGit.UI {
                 menu.Items.Add(explore);
 
                 MenuItem saveAs = new MenuItem();
-                saveAs.Header = "Save As ...";
+                saveAs.Header = App.Text("SaveAs");
                 saveAs.Click += (obj, ev) => {
-                    FolderDailog.Open("Save file to ...", saveTo => {
+                    FolderDailog.Open(App.Text("SaveFileTo"), saveTo => {
                         var savePath = Path.Combine(saveTo, Path.GetFileName(path));
                         commit.SaveFileTo(repo, path, savePath);
                     });
@@ -345,7 +345,7 @@ namespace SourceGit.UI {
             }
 
             MenuItem copyPath = new MenuItem();
-            copyPath.Header = "Copy Path";
+            copyPath.Header = App.Text("CopyPath");
             copyPath.Click += (obj, ev) => {
                 Clipboard.SetText(path);
             };
@@ -551,7 +551,7 @@ namespace SourceGit.UI {
                     var obj = repo.GetLFSObject(commit.SHA, node.FilePath);
                     maskRevision.Visibility = Visibility.Visible;
                     iconPreviewRevision.Data = FindResource("Icon.LFS") as Geometry;
-                    txtPreviewRevision.Content = $"LFS SIZE: {obj.Size} Bytes";
+                    txtPreviewRevision.Content = "LFS SIZE:" + App.Format("Bytes", obj.Size);
                 } else {
                     await Task.Run(() => {
                         var isBinary = false;
@@ -621,7 +621,7 @@ namespace SourceGit.UI {
             ContextMenu menu = new ContextMenu();
             if (node.Change == null || node.Change.Index != Git.Change.Status.Deleted) {
                 MenuItem history = new MenuItem();
-                history.Header = "File History";
+                history.Header = App.Text("FileHistory");
                 history.Click += (o, ev) => {
                     var viewer = new FileHistories(repo, node.FilePath);
                     viewer.Show();
@@ -629,7 +629,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(history);
 
                 MenuItem blame = new MenuItem();
-                blame.Header = "Blame";
+                blame.Header = App.Text("Blame");
                 blame.Click += (obj, ev) => {
                     Blame viewer = new Blame(repo, node.FilePath, commit.SHA);
                     viewer.Show();
@@ -637,7 +637,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(blame);
 
                 MenuItem explore = new MenuItem();
-                explore.Header = "Reveal in File Explorer";
+                explore.Header = App.Text("RevealFile");
                 explore.Click += (o, ev) => {
                     var path = Path.GetFullPath(repo.Path + "\\" + node.FilePath);
                     Process.Start("explorer", $"/select,{path}");
@@ -646,10 +646,10 @@ namespace SourceGit.UI {
                 menu.Items.Add(explore);
 
                 MenuItem saveAs = new MenuItem();
-                saveAs.Header = "Save As ...";
+                saveAs.Header = App.Text("SaveAs");
                 saveAs.IsEnabled = node.CommitObject == null || node.CommitObject.Kind == Git.Commit.Object.Type.Blob;
                 saveAs.Click += (obj, ev) => {
-                    FolderDailog.Open("Save file to ...", saveTo => {
+                    FolderDailog.Open(App.Text("SaveFileTo"), saveTo => {
                         var path = Path.Combine(saveTo, node.Name);
                         commit.SaveFileTo(repo, node.FilePath, path);
                     });
@@ -658,7 +658,7 @@ namespace SourceGit.UI {
             }
 
             MenuItem copyPath = new MenuItem();
-            copyPath.Header = "Copy Path";
+            copyPath.Header = App.Text("CopyPath");
             copyPath.Click += (obj, ev) => {
                 Clipboard.SetText(node.FilePath);
             };

@@ -27,25 +27,25 @@
         </Grid.ColumnDefinitions>
 
         <!-- 仓库帐号 -->
-        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="CREDENTIAL" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
-        <Label Grid.Row="2" Grid.Column="0" Content="User : " HorizontalAlignment="Right"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="{StaticResource Text.Configure.Credential}" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource Text.Configure.User}" HorizontalAlignment="Right"/>
         <TextBox
             Grid.Row="2"
             Grid.Column="1"
             Height="24"
             Text="{Binding ElementName=me, Path=UserName, Mode=TwoWay}"
-            helpers:TextBoxHelper.Placeholder="User name for this repository"/>
-        <Label Grid.Row="3" Grid.Column="0" Content="Email : " HorizontalAlignment="Right"/>
+            helpers:TextBoxHelper.Placeholder="{StaticResource Text.Configure.User.Placeholder}"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="{StaticResource Text.Configure.Email}" HorizontalAlignment="Right"/>
         <TextBox
             Grid.Row="3"
             Grid.Column="1"
             Height="24"
             Text="{Binding ElementName=me, Path=UserEmail, Mode=TwoWay}"
-            helpers:TextBoxHelper.Placeholder="Email address"/>
+            helpers:TextBoxHelper.Placeholder="{StaticResource Text.Configure.Email.Placeholder}"/>
         
         <!-- 提交模板 -->
-        <Label Grid.Row="5" Grid.ColumnSpan="2" Content="COMMIT TEMPLATE" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
-        <Label Grid.Row="7" Grid.Column="0" Content="Template : " HorizontalAlignment="Right" VerticalAlignment="Top"/>
+        <Label Grid.Row="5" Grid.ColumnSpan="2" Content="{StaticResource Text.Configure.CommitTemplate}" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
+        <Label Grid.Row="7" Grid.Column="0" Content="{StaticResource Text.Configure.Template}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
         <TextBox
             Grid.Row="7"
             Grid.Column="1"
@@ -64,8 +64,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Save" Content="SAVE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Close" Content="CLOSE" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Save" Content="{StaticResource Text.Save}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Close" Content="{StaticResource Text.Close}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

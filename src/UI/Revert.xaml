@@ -20,15 +20,15 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Confirm To Revert Commit"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.Revert}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Commit :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Revert.Commit}"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path x:Name="icon" Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Commit}" Margin="4,0"/>
             <TextBlock x:Name="txtDesc" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <CheckBox Grid.Row="3" Grid.Column="1" x:Name="chkCommit" Content="Commit revert changes" IsChecked="True"/>
+        <CheckBox Grid.Row="3" Grid.Column="1" x:Name="chkCommit" Content="{StaticResource Text.Revert.CommitChanges}" IsChecked="True"/>
 
         <Grid Grid.Row="5" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -38,8 +38,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Sure" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Sure" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

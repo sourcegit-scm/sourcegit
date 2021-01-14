@@ -22,19 +22,19 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Rename Branch"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.RenameBranch}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Branch :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.RenameBranch.Target}"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
-            <TextBlock x:Name="txtOldName" Text="Old name" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
+            <TextBlock x:Name="txtOldName" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="New Name :"/>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.RenameBranch.Name}"/>
         <TextBox Grid.Row="3" Grid.Column="1"
                  x:Name="txtNewName"
                  Height="24" 
-                 helpers:TextBoxHelper.Placeholder="Unique name for this branch">
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.RenameBranch.Name.Placeholder}">
             <TextBox.Text>
                 <Binding Path="NewName" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -52,8 +52,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Sure" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Sure" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

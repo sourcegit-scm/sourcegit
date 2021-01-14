@@ -18,22 +18,22 @@
             </Style>
         </Grid.Resources>
         
-        <Button Click="OpenModeSelector" ToolTip="CHANGE FILES DISPLAY MODE" Margin="4,0">
+        <Button Click="OpenModeSelector" ToolTip="{StaticResource Text.FileDisplayMode}" Margin="4,0">
             <Button.ContextMenu>
                 <ContextMenu x:Name="selector" Placement="Bottom" StaysOpen="False" Focusable="True">
-                    <MenuItem Header="Show as Grid" Click="UseGrid">
+                    <MenuItem Header="{StaticResource Text.FileDisplayMode.Grid}" Click="UseGrid">
                         <MenuItem.Icon>
                             <Path Style="{StaticResource Style.Icon.DisplayMode}" Data="{StaticResource Icon.Grid}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="Show as List" Click="UseList">
+                    <MenuItem Header="{StaticResource Text.FileDisplayMode.List}" Click="UseList">
                         <MenuItem.Icon>
                             <Path Style="{StaticResource Style.Icon.DisplayMode}" Data="{StaticResource Icon.List}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="Show as Tree" Click="UseTree">
+                    <MenuItem Header="{StaticResource Text.FileDisplayMode.Tree}" Click="UseTree">
                         <MenuItem.Icon>
                             <Path Style="{StaticResource Style.Icon.DisplayMode}" Data="{StaticResource Icon.Tree}"/>
                         </MenuItem.Icon>

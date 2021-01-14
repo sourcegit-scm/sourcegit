@@ -6,6 +6,7 @@
         mc:Ignorable="d"
         FontFamily="Consolas"
         Height="400" Width="500"
+        Title="{StaticResource Text.UpdateAvailable}"
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <!-- Enable WindowChrome Feature -->
     <WindowChrome.WindowChrome>
@@ -29,10 +30,10 @@
             </Grid.ColumnDefinitions>
 
             <!-- LOGO -->
-            <Path Width="20" Height="20" Margin="6,-1,2,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Fetch}" Fill="{StaticResource Brush.Logo}"/>
+            <Path Width="20" Height="20" Margin="6,-1,2,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Fetch}" Fill="{StaticResource Brush.FG1}"/>
 
             <!-- Title -->
-            <Label Grid.Column="1" Content="UPDATE AVAILABLE" FontWeight="Light"/>
+            <Label Grid.Column="1" Content="{StaticResource Text.UpdateAvailable}" FontWeight="Light"/>
 
             <!-- Close Button -->
             <Button Click="Quit" Width="32" Grid.Column="3" WindowChrome.IsHitTestVisibleInChrome="True">
@@ -62,25 +63,29 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Path Width="20" Height="20" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
-                <Label x:Name="txtRelease" Content="Release 2.1 available!" FontSize="18" FontWeight="Bold"/>
+                <Label x:Name="txtRelease" FontSize="18" FontWeight="Bold"/>
             </StackPanel>
 
-            <Label Grid.Row="2" Grid.Column="0" Content="Publish Time    :" HorizontalAlignment="Right"/>
-            <Label Grid.Row="2" Grid.Column="1" x:Name="txtTime" Content="2020/11/30 00:00:00"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource Text.UpdateAvailable.Time}" Margin="8,0,0,0"/>
+            <Label Grid.Row="2" Grid.Column="1" Content=":"/>
+            <Label Grid.Row="2" Grid.Column="2" x:Name="txtTime" Content="2020/11/30 00:00:00"/>
 
-            <Label Grid.Row="3" Grid.Column="0" Content="Base On Commit  :" HorizontalAlignment="Right"/>
-            <Label Grid.Row="3" Grid.Column="1" x:Name="txtBasedOn" Content="724908ea"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="{StaticResource Text.UpdateAvailable.Based}" Margin="8,0,0,0"/>
+            <Label Grid.Row="3" Grid.Column="1" Content=":"/>
+            <Label Grid.Row="3" Grid.Column="2" x:Name="txtBasedOn" Content="724908ea"/>
 
-            <Label Grid.Row="4" Grid.Column="0" Content="Is Pre-release  :" HorizontalAlignment="Right"/>
-            <Label Grid.Row="4" Grid.Column="1" x:Name="txtPrerelease" Content="NO"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="{StaticResource Text.UpdateAvailable.IsPreRelease}" Margin="8,0,0,0"/>
+            <Label Grid.Row="4" Grid.Column="1" Content=":"/>
+            <Label Grid.Row="4" Grid.Column="2" x:Name="txtPrerelease" Content="NO"/>
 
-            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,6,6,0" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="1">
+            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="6,6,6,0" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="1">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <TextBlock FontSize="10pt"
                         FontFamily="Consolas"
@@ -92,9 +97,9 @@
                 </ScrollViewer>
             </Border>
 
-            <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
-                <Button Width="80" Height="24" Style="{StaticResource Style.Button.AccentBordered}" Content="DOWNLOAD" Click="Download"/>
-                <Button Width="80" Margin="8,0,0,0" Height="24" Style="{StaticResource Style.Button.Bordered}" Content="CANCEL" Click="Quit"/>
+            <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                <Button Width="80" Height="24" Style="{StaticResource Style.Button.AccentBordered}" Content="{StaticResource Text.UpdateAvailable.Download}" Click="Download"/>
+                <Button Width="80" Margin="8,0,0,0" Height="24" Style="{StaticResource Style.Button.Bordered}" Content="{StaticResource Text.Cancel}" Click="Quit"/>
             </StackPanel>
         </Grid>
     </Grid>

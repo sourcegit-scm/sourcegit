@@ -1,0 +1,432 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="Text.Start" xml:space="preserve">开    始</sys:String>
+    <sys:String x:Key="Text.Sure" xml:space="preserve">确    定</sys:String>
+    <sys:String x:Key="Text.Save" xml:space="preserve">保    存</sys:String>
+    <sys:String x:Key="Text.Close" xml:space="preserve">关    闭</sys:String>
+    <sys:String x:Key="Text.Cancel" xml:space="preserve">取    消</sys:String>
+    <sys:String x:Key="Text.Goto">点击前往</sys:String>
+    <sys:String x:Key="Text.RevealFile">在文件浏览器中查看</sys:String>
+    <sys:String x:Key="Text.SaveAs">另存为...</sys:String>
+    <sys:String x:Key="Text.SaveFileTo">另存文件到...</sys:String>
+    <sys:String x:Key="Text.CopyPath">复制路径</sys:String>
+    <sys:String x:Key="Text.Bytes">{0} 字节</sys:String>
+    <sys:String x:Key="Text.Filter">过滤</sys:String>
+    <sys:String x:Key="Text.Optional">选填</sys:String>
+
+    <sys:String x:Key="Text.URL">仓库地址 ：</sys:String>
+    <sys:String x:Key="Text.RepositoryURL">远程仓库地址</sys:String>
+    <sys:String x:Key="Text.ParentFolder">本地目录 ：</sys:String>
+    <sys:String x:Key="Text.ParentFolder.Placeholder">本地存放的父级目录，选填.</sys:String>
+
+    <sys:String x:Key="Text.About">关于软件</sys:String>
+    <sys:String x:Key="Text.About.Title">SourceGit - 开源Git图形客户端</sys:String>
+
+    <sys:String x:Key="Text.Apply">应用补丁</sys:String>
+    <sys:String x:Key="Text.Apply.Title">应用补丁</sys:String>
+    <sys:String x:Key="Text.Apply.File">补丁文件 ：</sys:String>
+    <sys:String x:Key="Text.Apply.File.Placeholder">选择补丁文件</sys:String>
+    <sys:String x:Key="Text.Apply.WS">空白符号处理 ：</sys:String>
+    <sys:String x:Key="Text.Apply.IgnoreWS">忽略空白符号</sys:String>
+    <sys:String x:Key="Text.Apply.NoWarn">忽略</sys:String>
+    <sys:String x:Key="Text.Apply.NoWarn.Desc">关闭所有警告</sys:String>
+    <sys:String x:Key="Text.Apply.Warn">警告</sys:String>
+    <sys:String x:Key="Text.Apply.Warn.Desc">应用补丁，输出关于空白符的警告</sys:String>
+    <sys:String x:Key="Text.Apply.Error">错误</sys:String>
+    <sys:String x:Key="Text.Apply.Error.Desc">输出错误，并终止应用补丁</sys:String>
+    <sys:String x:Key="Text.Apply.ErrorAll">更多错误</sys:String>
+    <sys:String x:Key="Text.Apply.ErrorAll.Desc">与【错误】级别相似，但输出内容更多</sys:String>
+
+    <sys:String x:Key="Text.Blame">逐行追溯</sys:String>
+    <sys:String x:Key="Text.Blame.Title">追溯</sys:String>
+    <sys:String x:Key="Text.Blame.Tip">右键点击查看所选行修改记录</sys:String>
+    <sys:String x:Key="Text.Blame.SHA">提交指纹</sys:String>
+    <sys:String x:Key="Text.Blame.Author">修改者</sys:String>
+    <sys:String x:Key="Text.Blame.ModifyTime">修改时间</sys:String>
+
+    <sys:String x:Key="Text.Submodule">子模块</sys:String>
+    <sys:String x:Key="Text.Submodule.Add">添加子模块</sys:String>
+    <sys:String x:Key="Text.Submodule.FetchNested">拉取子孙模块</sys:String>
+    <sys:String x:Key="Text.Submodule.Open">打开仓库</sys:String>
+    <sys:String x:Key="Text.Submodule.CopyPath">复制路径</sys:String>
+
+    <sys:String x:Key="Text.CherryPick">挑选此提交</sys:String>
+    <sys:String x:Key="Text.CherryPick.Title">挑选提交</sys:String>
+    <sys:String x:Key="Text.CherryPick.Commit">提交ID ：</sys:String>
+    <sys:String x:Key="Text.CherryPick.CommitChanges">提交变化</sys:String>
+
+	<sys:String x:Key="Text.Clone">克隆远程仓库</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteURL">远程仓库 ：</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteURL.Placeholder">远程仓库地址</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteFolder">父级目录 ：</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteFolder.Placeholder">选择存放本仓库的父级文件夹路径</sys:String>
+    <sys:String x:Key="Text.Clone.LocalName">本地仓库名 ：</sys:String>
+    <sys:String x:Key="Text.Clone.LocalName.Placeholder">本地仓库目录的名字，选填</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteName">远程名 ：</sys:String>
+    <sys:String x:Key="Text.Clone.RemoteName.Placeholder">远程的名字，选填</sys:String>
+
+	<sys:String x:Key="Text.CommitViewer.Info">基本信息</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Author">修改者</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Committer">提交者</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.SHA">提交指纹</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Parents">父提交</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Refs">相关引用</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Message">提交信息</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Info.Changed">变更列表</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Changes">变更对比</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Changes.Search">查找文件...</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Changes.SwitchMode">切换树形/列表模式</sys:String>
+    <sys:String x:Key="Text.CommitViewer.Files">文件列表</sys:String>
+
+    <sys:String x:Key="Text.Configure">配置</sys:String>
+	<sys:String x:Key="Text.Configure.Credential">仓库凭证</sys:String>
+    <sys:String x:Key="Text.Configure.User">用户 ：</sys:String>
+    <sys:String x:Key="Text.Configure.User.Placeholder">应用于本仓库的用户名</sys:String>
+    <sys:String x:Key="Text.Configure.Email">邮箱 ：</sys:String>
+    <sys:String x:Key="Text.Configure.Email.Placeholder">邮箱地址</sys:String>
+    <sys:String x:Key="Text.Configure.CommitTemplate">提交模板</sys:String>
+    <sys:String x:Key="Text.Configure.Template">模板内容 ：</sys:String>
+
+	<sys:String x:Key="Text.CreateBranch">新建分支</sys:String>
+    <sys:String x:Key="Text.CreateBranch.Title">创建本地分支</sys:String>
+    <sys:String x:Key="Text.CreateBranch.BasedOn">新分支基于 ：</sys:String>
+    <sys:String x:Key="Text.CreateBranch.Name">新分支名 ：</sys:String>
+    <sys:String x:Key="Text.CreateBranch.Name.Placeholder">填写分支名称</sys:String>
+    <sys:String x:Key="Text.CreateBranch.LocalChanges">未提交更改 ：</sys:String>
+    <sys:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply">贮藏并自动恢复</sys:String>
+    <sys:String x:Key="Text.CreateBranch.LocalChanges.Discard">忽略</sys:String>
+    <sys:String x:Key="Text.CreateBranch.Checkout">完成后切换到新分支</sys:String>
+
+	<sys:String x:Key="Text.CreateTag">新建标签</sys:String>
+    <sys:String x:Key="Text.CreateTag.BasedOn">标签位于 ：</sys:String>
+    <sys:String x:Key="Text.CreateTag.Name">标签名 ：</sys:String>
+    <sys:String x:Key="Text.CreateTag.Name.Placeholder">推荐格式 ：v1.0.0-alpha</sys:String>
+    <sys:String x:Key="Text.CreateTag.Message">标签描述 ：</sys:String>
+    <sys:String x:Key="Text.CreateTag.Message.Placeholder">选填</sys:String>
+
+	<sys:String x:Key="Text.Dashboard.Explore">浏览</sys:String>
+    <sys:String x:Key="Text.Dashboard.Explore.Tip">在文件浏览器中打开</sys:String>
+    <sys:String x:Key="Text.Dashboard.Terminal">终端</sys:String>
+    <sys:String x:Key="Text.Dashboard.Terminal.Tip">打开GIT终端</sys:String>
+    <sys:String x:Key="Text.Dashboard.Search">查找</sys:String>
+    <sys:String x:Key="Text.Dashboard.Search.Tip">查找提交</sys:String>
+    <sys:String x:Key="Text.Dashboard.Configure.Tip">配置本仓库</sys:String>
+    <sys:String x:Key="Text.Dashboard.Workspace">工作区</sys:String>
+    <sys:String x:Key="Text.Dashboard.LocalBranches">本地分支</sys:String>
+    <sys:String x:Key="Text.Dashboard.NewBranch">新建分支</sys:String>
+    <sys:String x:Key="Text.Dashboard.Remotes">远程列表</sys:String>
+    <sys:String x:Key="Text.Dashboard.Remotes.Add">添加远程</sys:String>
+    <sys:String x:Key="Text.Dashboard.Tags">标签列表</sys:String>
+    <sys:String x:Key="Text.Dashboard.Tags.Add">新建标签</sys:String>
+    <sys:String x:Key="Text.Dashboard.Submodules">子模块列表</sys:String>
+    <sys:String x:Key="Text.Dashboard.Submodules.Add">添加子模块</sys:String>
+    <sys:String x:Key="Text.Dashboard.Submodules.Update">更新子模块</sys:String>
+    <sys:String x:Key="Text.Dashboard.Resolve">解决冲突</sys:String>
+    <sys:String x:Key="Text.Dashboard.Continue">下一步</sys:String>
+    <sys:String x:Key="Text.Dashboard.Abort">终止冲突解决</sys:String>
+
+	<sys:String x:Key="Text.GitFlow">GIT工作流</sys:String>
+    <sys:String x:Key="Text.GitFlow.Init">初始化GIT工作流</sys:String>
+    <sys:String x:Key="Text.GitFlow.ProductionBranch">发布分支 ：</sys:String>
+    <sys:String x:Key="Text.GitFlow.DevelopBranch">开发分支 ：</sys:String>
+    <sys:String x:Key="Text.GitFlow.Feature">特性分支 ：</sys:String>
+    <sys:String x:Key="Text.GitFlow.Release">版本分支 ：</sys:String>
+    <sys:String x:Key="Text.GitFlow.Hotfix">修复分支 ：</sys:String>
+    <sys:String x:Key="Text.GitFlow.FeaturePrefix">特性分支名前缀 ：</sys:String>
+    <sys:String x:Key="Text.GitFlow.ReleasePrefix">版本分支名前缀 ：</sys:String>
+    <sys:String x:Key="Text.GitFlow.HotfixPrefix">修复分支名前缀 ：</sys:String>
+    <sys:String x:Key="Text.GitFlow.TagPrefix">版本标签前缀 ：</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartFeature">开始特性分支...</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartRelease">开始版本分支...</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartHotfix">开始修复分支...</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartFeatureTitle">开始特性分支</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartReleaseTitle">开始版本分支</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartHotfixTitle">开始修复分支</sys:String>
+    <sys:String x:Key="Text.GitFlow.StartPlaceholder">输入分支名</sys:String>
+    <sys:String x:Key="Text.GitFlow.FinishFeature">结束特性分支</sys:String>
+    <sys:String x:Key="Text.GitFlow.FinishRelease">结束版本分支</sys:String>
+    <sys:String x:Key="Text.GitFlow.FinishHotfix">结束修复分支</sys:String>
+    <sys:String x:Key="Text.GitFlow.BranchRequired">{0}分支名未填写！</sys:String>
+    <sys:String x:Key="Text.GitFlow.BranchInvalid">{0}分支名包含非法字符！</sys:String>
+    <sys:String x:Key="Text.GitFlow.PrefixRequired">{0}前缀未填写！</sys:String>
+    <sys:String x:Key="Text.GitFlow.PrefixInvalid">{0}前缀包含非法字符！</sys:String>
+	<sys:String x:Key="Text.GitFlow.DevSameAsProd">开发分支与发布分支不可相同！</sys:String>
+
+    <sys:String x:Key="Text.RepoCM.Refresh">刷新</sys:String>
+    <sys:String x:Key="Text.RepoCM.Bookmark">书签</sys:String>
+    <sys:String x:Key="Text.RepoCM.CopyPath">复制路径</sys:String>
+    <sys:String x:Key="Text.RepoCM.Open">打开</sys:String>
+    <sys:String x:Key="Text.RepoCM.Explore">在浏览器中查看</sys:String>
+
+	<sys:String x:Key="Text.BranchCM.Push">推送 '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.DiscardAll">放弃所有更改</sys:String>
+    <sys:String x:Key="Text.BranchCM.FastForward">快进到 '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Pull">拉回 '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.PullInto">拉回 '{0}' 内容至 '{1}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Checkout">检出 '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Merge">合并 '{0}' 到 '{1}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Rebase">变基 '{0}' 分支至 '{1}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Finish">GIT工作流 - 完成 '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Rename">重命名 '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Delete">删除 '{0}'</sys:String>
+    <sys:String x:Key="Text.BranchCM.Tracking">切换上游分支...</sys:String>
+    <sys:String x:Key="Text.BranchCM.CopyName">复制分支名</sys:String>
+
+	<sys:String x:Key="Text.RemoteCM.Fetch">拉取 '{0}' 更新</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Edit">编辑 '{0}'</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Delete">删除 '{0}'</sys:String>
+    <sys:String x:Key="Text.RemoteCM.CopyURL">复制远程地址</sys:String>
+
+	<sys:String x:Key="Text.CommitCM.Reset">重置 '{0}' 到此处</sys:String>
+    <sys:String x:Key="Text.CommitCM.InteractiveRebase">从此处开始对 '{0}' 交互式变基</sys:String>
+    <sys:String x:Key="Text.CommitCM.Rebase">变基 '{0}' 到此处</sys:String>
+    <sys:String x:Key="Text.CommitCM.CherryPick">挑选此提交</sys:String>
+    <sys:String x:Key="Text.CommitCM.Revert">回滚此提交</sys:String>
+    <sys:String x:Key="Text.CommitCM.SaveAsPatch">另存为补丁</sys:String>
+    <sys:String x:Key="Text.CommitCM.CopySHA">复制提交指纹</sys:String>
+    <sys:String x:Key="Text.CommitCM.CopyInfo">复制提交信息</sys:String>
+
+	<sys:String x:Key="Text.TagCM.Push">推送 '{0}'</sys:String>
+    <sys:String x:Key="Text.TagCM.Delete">删除 '{0}'</sys:String>
+    <sys:String x:Key="Text.TagCM.Copy">复制标签名</sys:String>
+
+	<sys:String x:Key="Text.StashCM.Apply">应用</sys:String>
+    <sys:String x:Key="Text.StashCM.Pop">应用并删除</sys:String>
+    <sys:String x:Key="Text.StashCM.Drop">删除</sys:String>
+
+	<sys:String x:Key="Text.FileCM.Unstage">从暂存中移除</sys:String>
+    <sys:String x:Key="Text.FileCM.Stage">暂存...</sys:String>
+    <sys:String x:Key="Text.FileCM.Discard">放弃更改...</sys:String>
+    <sys:String x:Key="Text.FileCM.Stash">贮藏...</sys:String>
+    <sys:String x:Key="Text.FileCM.UnstageMulti">从暂存中移除 {0} 个文件</sys:String>
+    <sys:String x:Key="Text.FileCM.StageMulti">暂存 {0} 个文件...</sys:String>
+    <sys:String x:Key="Text.FileCM.DiscardMulti">放弃 {0} 个文件的更改...</sys:String>
+    <sys:String x:Key="Text.FileCM.StashMulti">贮藏选中的 {0} 个文件...</sys:String>
+    <sys:String x:Key="Text.FileCM.SaveAsPatch">另存为补丁...</sys:String>
+
+	<sys:String x:Key="Text.DeleteBranch">确定要删除此分支吗？</sys:String>
+    <sys:String x:Key="Text.DeleteBranch.Branch">分支名 ：</sys:String>
+
+    <sys:String x:Key="Text.DeleteRemote">确定要移除该远程吗？</sys:String>
+    <sys:String x:Key="Text.DeleteRemote.Remote">远程名 ：</sys:String>
+
+	<sys:String x:Key="Text.DeleteTag">确定要移除该标签吗？</sys:String>
+    <sys:String x:Key="Text.DeleteTag.Tag">标签名 ：</sys:String>
+    <sys:String x:Key="Text.DeleteTag.WithRemote">同时删除远程仓库中的此标签</sys:String>
+
+	<sys:String x:Key="Text.Diff.Next">下一个差异</sys:String>
+    <sys:String x:Key="Text.Diff.Prev">上一个差异</sys:String>
+    <sys:String x:Key="Text.Diff.Mode">切换显示模式</sys:String>
+    <sys:String x:Key="Text.Diff.Welcome">请选择需要对比的文件</sys:String>
+    <sys:String x:Key="Text.Diff.NoChange">没有变更或仅有换行符差异</sys:String>
+    <sys:String x:Key="Text.Diff.Binary">二进制文件</sys:String>
+    <sys:String x:Key="Text.Diff.Binary.Old">原始大小 ：</sys:String>
+    <sys:String x:Key="Text.Diff.Binary.New">当前大小 ：</sys:String>
+    <sys:String x:Key="Text.Diff.LFS">LFS对象变更</sys:String>
+    <sys:String x:Key="Text.Diff.Copy">复制</sys:String>
+
+	<sys:String x:Key="Text.Discard">放弃更改确认</sys:String>
+    <sys:String x:Key="Text.Discard.Changes">需要放弃的变更 ：</sys:String>
+    <sys:String x:Key="Text.Discard.Warning">本操作不支持回退，请确认后继续！！！</sys:String>
+    <sys:String x:Key="Text.Discard.All">所有本地址未提交的修改</sys:String>
+    <sys:String x:Key="Text.Discard.Total">总计{0}项选中更改</sys:String>
+
+	<sys:String x:Key="Text.Fetch">拉取</sys:String>
+	<sys:String x:Key="Text.Fetch.Title">拉取远程仓库内容</sys:String>
+    <sys:String x:Key="Text.Fetch.Remote">远程仓库 ：</sys:String>
+    <sys:String x:Key="Text.Fetch.AllRemotes">拉取所有的远程仓库</sys:String>
+    <sys:String x:Key="Text.Fetch.Prune">自动清理远程已删除分支</sys:String>
+
+    <sys:String x:Key="Text.FileHistory">文件历史</sys:String>
+
+	<sys:String x:Key="Text.FileDisplayMode">切换显示模式</sys:String>
+	<sys:String x:Key="Text.FileDisplayMode.Grid">网格模式</sys:String>
+	<sys:String x:Key="Text.FileDisplayMode.List">列表模式</sys:String>
+	<sys:String x:Key="Text.FileDisplayMode.Tree">树形模式</sys:String>
+
+	<sys:String x:Key="Text.FolderDialog">选择目录...</sys:String>
+    <sys:String x:Key="Text.FolderDialog.Selected">当前选择 ：</sys:String>
+
+    <sys:String x:Key="Text.Histories">历史记录</sys:String>
+	<sys:String x:Key="Text.Histories.Search">查询提交指纹、信息、作者。回车键开始，ESC键取消</sys:String>
+    <sys:String x:Key="Text.Histories.SearchClear">清空</sys:String>
+    <sys:String x:Key="Text.Histories.DisplayMode">切换横向/纵向显示</sys:String>
+    <sys:String x:Key="Text.Histories.Selected">已选中{0}项提交</sys:String>
+    <sys:String x:Key="Text.Histories.Guide">操作说明</sys:String>
+    <sys:String x:Key="Text.Histories.Guide_1">1. 单选时，显示选中提交的详细信息</sys:String>
+    <sys:String x:Key="Text.Histories.Guide_2">2. 双选时，按选中顺序对比两个提交</sys:String>
+    <sys:String x:Key="Text.Histories.Guide_3">3. 多选时，仅统计选中行数</sys:String>
+    <sys:String x:Key="Text.Histories.Guide_4">4. 右键用于操作选中的某个提交</sys:String>
+
+	<sys:String x:Key="Text.Init">初始化新仓库</sys:String>
+    <sys:String x:Key="Text.Init.Path">路径 ：</sys:String>
+    <sys:String x:Key="Text.Init.Tip">点击【确定】将在此目录执行`git init`操作</sys:String>
+
+	<sys:String x:Key="Text.InteractiveRebase">交互式变基</sys:String>
+    <sys:String x:Key="Text.InteractiveRebase.Target">操作分支 ：</sys:String>
+    <sys:String x:Key="Text.InteractiveRebase.On">开始提交 ：</sys:String>
+    <sys:String x:Key="Text.InteractiveRebase.Start" xml:space="preserve">开    始</sys:String>
+    <sys:String x:Key="Text.InteractiveRebase.MoveUp">向上移动</sys:String>
+    <sys:String x:Key="Text.InteractiveRebase.MoveDown">向下移动</sys:String>
+
+	<sys:String x:Key="Text.Launcher">Source Git</sys:String>
+    <sys:String x:Key="Text.Launcher.NewPageButton">新建空白页</sys:String>
+    <sys:String x:Key="Text.Launcher.Preference">偏好设置</sys:String>
+    <sys:String x:Key="Text.Launcher.About">关于</sys:String>
+    <sys:String x:Key="Text.Launcher.Error">出错了</sys:String>
+    <sys:String x:Key="Text.Launcher.NewPage">新标签页</sys:String>
+    <sys:String x:Key="Text.Launcher.NewPageTip">起始页</sys:String>
+
+	<sys:String x:Key="Text.Merge">合并分支</sys:String>
+    <sys:String x:Key="Text.Merge.Source">合并分支 ：</sys:String>
+    <sys:String x:Key="Text.Merge.Into">目标分支 ：</sys:String>
+    <sys:String x:Key="Text.Merge.Mode">合并方式 ：</sys:String>
+
+	<sys:String x:Key="Text.NewPage.Title">欢迎使用本软件</sys:String>
+    <sys:String x:Key="Text.NewPage.OpenOrInit">打开本地仓库</sys:String>
+    <sys:String x:Key="Text.NewPage.Clone">克隆远程仓库</sys:String>
+    <sys:String x:Key="Text.NewPage.Repositories">仓库列表</sys:String>
+    <sys:String x:Key="Text.NewPage.DragDrop">支持拖放操作</sys:String>
+    <sys:String x:Key="Text.NewPage.OpenOrInitDialog">打开/初始化本地仓库</sys:String>
+    <sys:String x:Key="Text.NewPage.NewFolder">新建分组</sys:String>
+    <sys:String x:Key="Text.NewPage.NewSubFolder">新建子分组</sys:String>
+    <sys:String x:Key="Text.NewPage.Rename">重命名</sys:String>
+    <sys:String x:Key="Text.NewPage.Delete">删除</sys:String>
+
+    <sys:String x:Key="Text.Pull">拉回</sys:String>
+	<sys:String x:Key="Text.Pull.Title">拉回（拉取并合并）</sys:String>
+    <sys:String x:Key="Text.Pull.Remote">远程 ：</sys:String>
+    <sys:String x:Key="Text.Pull.Branch">拉取分支 ：</sys:String>
+    <sys:String x:Key="Text.Pull.Into">本地分支 ：</sys:String>
+    <sys:String x:Key="Text.Pull.UseRebase">使用变基方式合并分支</sys:String>
+    <sys:String x:Key="Text.Pull.AutoStash">自动贮藏并恢复本地变更</sys:String>
+
+    <sys:String x:Key="Text.Push">推送</sys:String>
+    <sys:String x:Key="Text.Push.Title">推送到远程仓库</sys:String>
+    <sys:String x:Key="Text.Push.Local">本地分支 ：</sys:String>
+    <sys:String x:Key="Text.Push.Remote">远程仓库 ：</sys:String>
+    <sys:String x:Key="Text.Push.To">远程分支 ：</sys:String>
+    <sys:String x:Key="Text.Push.WithAllTags">同时推送标签</sys:String>
+    <sys:String x:Key="Text.Push.Force">启用强制推送</sys:String>
+
+	<sys:String x:Key="Text.PushTag">推送标签到远程仓库</sys:String>
+    <sys:String x:Key="Text.PushTag.Tag">标签 ：</sys:String>
+    <sys:String x:Key="Text.PushTag.Remote">远程仓库 ：</sys:String>
+
+	<sys:String x:Key="Text.Rebase">变基操作</sys:String>
+    <sys:String x:Key="Text.Rebase.Target">分支 ：</sys:String>
+    <sys:String x:Key="Text.Rebase.On">目标提交 ：</sys:String>
+    <sys:String x:Key="Text.Rebase.AutoStash">自动贮藏并恢复本地变更</sys:String>
+
+	<sys:String x:Key="Text.Remote.AddTitle">添加远程仓库</sys:String>
+    <sys:String x:Key="Text.Remote.EditTitle">编辑远程仓库</sys:String>
+    <sys:String x:Key="Text.Remote.Name">远程名 ：</sys:String>
+    <sys:String x:Key="Text.Remote.Name.Placeholder">唯一远程名</sys:String>
+    <sys:String x:Key="Text.Remote.URL">仓库地址 ：</sys:String>
+    <sys:String x:Key="Text.Remote.URL.Placeholder">远程仓库的地址</sys:String>
+
+	<sys:String x:Key="Text.RenameBranch">分支重命名</sys:String>
+    <sys:String x:Key="Text.RenameBranch.Target">分支 ：</sys:String>
+    <sys:String x:Key="Text.RenameBranch.Name">新的名称 ：</sys:String>
+    <sys:String x:Key="Text.RenameBranch.Name.Placeholder">新的分支名不能与现有分支名相同</sys:String>
+
+	<sys:String x:Key="Text.Reset">重置当前分支到指定版本</sys:String>
+    <sys:String x:Key="Text.Reset.Target">当前分支 ：</sys:String>
+    <sys:String x:Key="Text.Reset.MoveTo">提交 ：</sys:String>
+    <sys:String x:Key="Text.Reset.Mode">重置模式 ：</sys:String>
+
+	<sys:String x:Key="Text.Revert">确定要回滚吗？</sys:String>
+    <sys:String x:Key="Text.Revert.Commit">目标提交 ：</sys:String>
+    <sys:String x:Key="Text.Revert.CommitChanges">回滚后提交更改</sys:String>
+
+	<sys:String x:Key="Text.Preference">偏好设置</sys:String>
+    <sys:String x:Key="Text.Preference.General">通用配置</sys:String>
+    <sys:String x:Key="Text.Preference.RestartRequired">需要重启软件</sys:String>
+    <sys:String x:Key="Text.Preference.Locale">显示语言 ：</sys:String>
+    <sys:String x:Key="Text.Preference.UseLight">启用浅色主题 ：</sys:String>
+    <sys:String x:Key="Text.Preference.CheckUpdate">检测更新 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Git">GIT配置</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Path">安装路径 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Path.Placeholder">填写git.exe所在位置</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Dir">默认克隆路径 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Dir.Placeholder">默认的仓库本地存放位置</sys:String>
+    <sys:String x:Key="Text.Preference.Global">全局设置</sys:String>
+    <sys:String x:Key="Text.Preference.User">用户名 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Email">邮箱 ：</sys:String>
+    <sys:String x:Key="Text.Preference.CRLF">自动换行转换 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Merger">外部合并工具</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Type">工具 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Path">安装路径 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Path.Placeholder">填写工具可执行文件所在位置</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Cmd">指令 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Dialog.GitExe">选择git.exe所在位置</sys:String>
+    <sys:String x:Key="Text.Preference.Dialog.GitDir">选择仓库本地存放位置</sys:String>
+    <sys:String x:Key="Text.Preference.Dialog.Merger">选择{0}所在位置</sys:String>
+
+    <sys:String x:Key="Text.Stash">贮藏</sys:String>
+    <sys:String x:Key="Text.Stash.Title">贮藏本地变更</sys:String>
+    <sys:String x:Key="Text.Stash.Message">信息 ：</sys:String>
+    <sys:String x:Key="Text.Stash.Message.Placeholder">选填，用于命名此贮藏</sys:String>
+    <sys:String x:Key="Text.Stash.IncludeUntracked">包含未跟踪的文件</sys:String>
+
+	<sys:String x:Key="Text.Stashes">贮藏列表</sys:String>
+    <sys:String x:Key="Text.Stashes.Stashes">贮藏列表</sys:String>
+    <sys:String x:Key="Text.Stashes.Changes">查看变更</sys:String>
+    <sys:String x:Key="Text.Stashes.Changes.Tip">不显示未跟踪的文件</sys:String>
+
+	<sys:String x:Key="Text.TwoCommitsDiff">对比提交 : {0} -> {1}</sys:String>
+
+	<sys:String x:Key="Text.UpdateAvailable">检测更新</sys:String>
+    <sys:String x:Key="Text.UpdateAvailable.Title">{0}已发布！</sys:String>
+    <sys:String x:Key="Text.UpdateAvailable.Time">发布时间</sys:String>
+    <sys:String x:Key="Text.UpdateAvailable.Based">GIT版本</sys:String>
+    <sys:String x:Key="Text.UpdateAvailable.IsPreRelease">预览版</sys:String>
+    <sys:String x:Key="Text.UpdateAvailable.Download" xml:space="preserve">下    载</sys:String>
+
+    <sys:String x:Key="Text.WorkingCopy">本地更改</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Unstaged">未暂存</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Unstaged.Stage">暂存选中</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Unstaged.StageAll">暂存所有</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Staged">已暂存</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Staged.Unstage">从暂存区移除选中</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Staged.UnstageAll">从暂存区移除所有</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Conflicts">检测到冲突</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.UseTheirs">使用THEIRS</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.UseMine">使用MINE</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.OpenMerger">打开合并工具</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.CommitMessageTip">填写提交信息</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.MessageHistories">历史提交信息</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Amend">修补</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Commit">提交</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.CommitAndPush">提交并推送</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.NoCommitHistories">没有提交信息记录</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.HasCommitHistories">最近输入的提交信息</sys:String>
+
+	<sys:String x:Key="Text.Conflict.CherryPick">检测到挑选提交冲突! </sys:String>
+    <sys:String x:Key="Text.Conflict.Rebase">检测到变基冲突！</sys:String>
+    <sys:String x:Key="Text.Conflict.Revert">检测到回滚提交冲突！</sys:String>
+    <sys:String x:Key="Text.Conflict.Merge">检测到分支合并冲突！</sys:String>
+
+    <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
+	<sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>
+    <sys:String x:Key="Text.MissingBash">无法找到bash.exe，请确保其在git.exe同目录中！</sys:String>
+    <sys:String x:Key="Text.BinaryNotSupported">二进制文件不支持该操作!!!</sys:String>
+    <sys:String x:Key="Text.GitDirNotFound">获取仓库GIT_DIR失败!</sys:String>
+    <sys:String x:Key="Text.InitGitFlowFailed">初始化GIT FLOW失败!</sys:String>
+    <sys:String x:Key="Text.BadGitFlowType">不支持的GIT FLOW分支!</sys:String>
+    <sys:String x:Key="Text.BadCloneFolder">目录不存在或不可写!!!</sys:String>
+    <sys:String x:Key="Text.BadRemoteUri">非法的远程仓库地址!</sys:String>
+    <sys:String x:Key="Text.EmptyRemoteName">远程仓库地址不可为空</sys:String>
+    <sys:String x:Key="Text.BadRemoteName">远程仓库地址包含非法字符！仅支持字母、数字、下划线、横线或英文点号！</sys:String>
+    <sys:String x:Key="Text.DuplicatedRemoteName">远程仓库名已存在!</sys:String>
+    <sys:String x:Key="Text.EmptyBranchName">分支名不可为空</sys:String>
+    <sys:String x:Key="Text.BadBranchName">分支名包含非法字符！仅支持字母、数字、下划线、横线或英文点号！</sys:String>
+    <sys:String x:Key="Text.DuplicatedBranchName">分支名已存在!</sys:String>
+    <sys:String x:Key="Text.EmptyTagName">标签名不可为空!</sys:String>
+    <sys:String x:Key="Text.BadTagName">标签名包含非法字符！仅支持字母、数字、下划线、横线或英文点号！</sys:String>
+    <sys:String x:Key="Text.DuplicatedTagName">标签名已存在!</sys:String>
+    <sys:String x:Key="Text.EmptyCommitMessage">提交信息未填写!</sys:String>
+    <sys:String x:Key="Text.BadPatchFile">补丁文件不存在或不可访问！</sys:String>
+    <sys:String x:Key="Text.BadSubmodulePath">非法的子模块路径！</sys:String>
+</ResourceDictionary>

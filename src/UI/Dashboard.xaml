@@ -46,17 +46,17 @@
                 
                 <!-- Browser -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="6,0">
-                    <Button Click="OpenExplorer" Margin="4,0,0,0" ToolTip="Open In File Browser">
+                    <Button Click="OpenExplorer" Margin="4,0,0,0" ToolTip="{StaticResource Text.Dashboard.Explore.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="16" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
-                            <Label Content="Explore"/>
+                            <Label Content="{StaticResource Text.Dashboard.Explore}"/>
                         </StackPanel>
                     </Button>
 
-                    <Button Click="OpenTerminal" Margin="4,0" ToolTip="Open Git Bash">
+                    <Button Click="OpenTerminal" Margin="4,0" ToolTip="{StaticResource Text.Dashboard.Terminal.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Terminal}"/>
-                            <Label Content="Terminal"/>
+                            <Label Content="{StaticResource Text.Dashboard.Terminal}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -66,47 +66,47 @@
                     <Button Click="OpenFetch" Margin="4,0">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Fetch}"/>
-                            <Label Content="Fetch"/>
+                            <Label Content="{StaticResource Text.Fetch}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenPull" Margin="4,0">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}"/>
-                            <Label Content="Pull"/>
+                            <Label Content="{StaticResource Text.Pull}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenPush" Margin="4,0">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Push}"/>
-                            <Label Content="Push"/>
+                            <Label Content="{StaticResource Text.Push}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenStash" Margin="4,0">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.SaveStash}"/>
-                            <Label Content="Stash"/>
+                            <Label Content="{StaticResource Text.Stash}"/>
                         </StackPanel>
                     </Button>                    
                     <Button Click="OpenApply">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Apply}"/>
-                            <Label Content="Apply"/>
+                            <Label Content="{StaticResource Text.Apply}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
 
                 <!-- External Options -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Click="OpenSearch" Margin="4,0" ToolTip="Search Commit">
+                    <Button Click="OpenSearch" Margin="4,0" ToolTip="{StaticResource Text.Dashboard.Search.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
-                            <Label Content="Search"/>
+                            <Label Content="{StaticResource Text.Dashboard.Search}"/>
                         </StackPanel>
                     </Button>
-                    <Button Click="OpenConfigure" Margin="4,0" ToolTip="Configure This Repository">
+                    <Button Click="OpenConfigure" Margin="4,0" ToolTip="{StaticResource Text.Dashboard.Configure.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Setting}"/>
-                            <Label Content="Configure"/>
+                            <Label Content="{StaticResource Text.Configure}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -143,7 +143,7 @@
                 
                 <!-- WORKSPACE -->
                 <Border Grid.Row="0" Background="{StaticResource Brush.GroupBar}">
-                    <Label Margin="4,0,0,0" Content="WORKSPACE" Style="{StaticResource Style.Label.GroupHeader}" />
+                    <Label Margin="4,0,0,0" Content="{StaticResource Text.Dashboard.Workspace}" Style="{StaticResource Style.Label.GroupHeader}" />
                 </Border>
                 <ListView
                     Grid.Row="1"
@@ -154,7 +154,7 @@
                     <ListViewItem x:Name="historiesSwitch" Selected="SwitchHistories" IsSelected="True">
                         <StackPanel Margin="16,0,0,0" Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Histories}"/>
-                            <Label Margin="4,0,0,0" Content="Histories"/>
+                            <Label Margin="4,0,0,0" Content="{StaticResource Text.Histories}"/>
                         </StackPanel>
                     </ListViewItem>
 
@@ -166,7 +166,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.WorkingCopy}"/>
-                            <Label Grid.Column="1" Margin="4,0,0,0" Content="Commit"/>
+                            <Label Grid.Column="1" Margin="4,0,0,0" Content="{StaticResource Text.WorkingCopy}"/>
                             <Border Grid.Column="2" x:Name="localChangesBadge" Style="{StaticResource Style.Border.Badge}">
                                 <Label x:Name="localChangesCount" Margin="4,-2,4,-2" Content="999" FontSize="10"/>
                             </Border>
@@ -181,7 +181,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Stashes}"/>
-                            <Label Grid.Column="1" Margin="4,0,0,0" Content="Stashes"/>
+                            <Label Grid.Column="1" Margin="4,0,0,0" Content="{StaticResource Text.Stashes}"/>
                             <Border Grid.Column="2" x:Name="stashBadge" Style="{StaticResource Style.Border.Badge}">
                                 <Label x:Name="stashCount" Margin="4,-2,4,-2" Content="999" FontSize="10"/>
                             </Border>
@@ -198,11 +198,11 @@
                         <ColumnDefinition Width="20"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Margin="4,0,0,0" Content="LOCAL BRANCHES" Style="{StaticResource Style.Label.GroupHeader}"/>
-                    <Button Grid.Column="1" Click="OpenGitFlow" Background="Transparent" ToolTip="GIT FLOW">
+                    <Label Grid.Column="0" Margin="4,0,0,0" Content="{StaticResource Text.Dashboard.LocalBranches}" Style="{StaticResource Style.Label.GroupHeader}"/>
+                    <Button Grid.Column="1" Click="OpenGitFlow" Background="Transparent" ToolTip="{StaticResource Text.GitFlow}">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{DynamicResource Icon.Flow}"/>
                     </Button>
-                    <Button Margin="0,0,4,0" Grid.Column="3" Click="OpenNewBranch" Background="Transparent" ToolTip="NEW BRANCH">
+                    <Button Margin="0,0,4,0" Grid.Column="3" Click="OpenNewBranch" Background="Transparent" ToolTip="{StaticResource Text.Dashboard.NewBranch}">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{DynamicResource Icon.Branch.Add}"/>
                     </Button>
                 </Grid>
@@ -245,7 +245,7 @@
                                         Checked="FilterChanged"
                                         Unchecked="FilterChanged"
                                         Style="{StaticResource Style.ToggleButton.Filter}"
-                                        ToolTip="FILTER"/>
+                                        ToolTip="{StaticResource Text.Filter}"/>
                                 </StackPanel>
                             </Grid>
 
@@ -280,8 +280,8 @@
                         <ColumnDefinition Width="20"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Margin="4,0,0,0" Content="REMOTES" Style="{StaticResource Style.Label.GroupHeader}"/>
-                    <Button Grid.Column="1" Margin="0,0,4,0" Click="OpenRemote" ToolTip="ADD REMOTE">
+                    <Label Grid.Column="0" Margin="4,0,0,0" Content="{StaticResource Text.Dashboard.Remotes}" Style="{StaticResource Style.Label.GroupHeader}"/>
+                    <Button Grid.Column="1" Margin="0,0,4,0" Click="OpenRemote" ToolTip="{StaticResource Text.Dashboard.Remotes.Add}">
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{DynamicResource Icon.Remote.Add}"/>
                     </Button>
                 </Grid>
@@ -333,7 +333,7 @@
                                     Checked="FilterChanged"
                                     Unchecked="FilterChanged"
                                     Style="{StaticResource Style.ToggleButton.Filter}"
-                                    ToolTip="FILTER"/>
+                                    ToolTip="{StaticResource Text.Filter}"/>
                             </Grid>
 
                             <HierarchicalDataTemplate.Triggers>
@@ -369,8 +369,8 @@
                             <ColumnDefinition Width="16"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" x:Name="tagCount" Content="TAGS" Style="{StaticResource Style.Label.GroupHeader}"/>
-                        <Button Grid.Column="1" Click="OpenNewTag" ToolTip="NEW TAG">
+                        <Label Grid.Column="0" x:Name="tagCount" Style="{StaticResource Style.Label.GroupHeader}"/>
+                        <Button Grid.Column="1" Click="OpenNewTag" ToolTip="{StaticResource Text.Dashboard.Tags.Add}">
                             <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Tag.Add}"/>
                         </Button>
                     </Grid>
@@ -416,7 +416,7 @@
                                         Checked="FilterChanged" 
                                         Unchecked="FilterChanged" 
                                         Style="{StaticResource Style.ToggleButton.Filter}"
-                                        ToolTip="FILTER"/>
+                                        ToolTip="{StaticResource Text.Filter}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -440,11 +440,11 @@
                             <ColumnDefinition Width="16"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" x:Name="submoduleCount" Content="SUBMODULES" Style="{StaticResource Style.Label.GroupHeader}"/>
-                        <Button Grid.Column="1" Click="OpenAddSubmodule" ToolTip="ADD SUBMODULE">
+                        <Label Grid.Column="0" x:Name="submoduleCount" Style="{StaticResource Style.Label.GroupHeader}"/>
+                        <Button Grid.Column="1" Click="OpenAddSubmodule" ToolTip="{StaticResource Text.Dashboard.Submodules.Add}">
                             <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Submodule}"/>
                         </Button>
-                        <Button Grid.Column="3" Click="UpdateSubmodule" ToolTip="UPDATE SUBMODULE">
+                        <Button Grid.Column="3" Click="UpdateSubmodule" ToolTip="{StaticResource Text.Dashboard.Submodules.Update}">
                             <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}"/>
                         </Button>
                     </Grid>
@@ -508,7 +508,7 @@
 
                     <Label Grid.Column="0" x:Name="txtMergeProcessing" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG3}"/>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button x:Name="btnResolve" Click="Resolve" Content="RESOLVE" Margin="2">
+                        <Button x:Name="btnResolve" Click="Resolve" Content="{StaticResource Text.Dashboard.Resolve}" Margin="2">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style.Button.Bordered}">
                                     <Setter Property="Background" Value="{StaticResource Brush.Window}"/>
@@ -516,8 +516,8 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <Button x:Name="btnContinue" Click="Continue" Content="CONTINUE" Style="{StaticResource Style.Button.AccentBordered}" Margin="2"/>
-                        <Button Grid.Column="3" Click="Abort" Content="ABORT" Style="{StaticResource Style.Button.Bordered}" Foreground="{StaticResource Brush.FG3}" Margin="2"/>
+                        <Button x:Name="btnContinue" Click="Continue" Content="{StaticResource Text.Dashboard.Continue}" Style="{StaticResource Style.Button.AccentBordered}" Margin="2"/>
+                        <Button Grid.Column="3" Click="Abort" Content="{StaticResource Text.Dashboard.Abort}" Style="{StaticResource Style.Button.Bordered}" Foreground="{StaticResource Brush.FG3}" Margin="2"/>
                     </StackPanel>
                     
                 </Grid>

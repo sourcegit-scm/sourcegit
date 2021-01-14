@@ -34,19 +34,19 @@ namespace SourceGit.UI {
             switch (type) {
             case Git.Branch.Type.Feature:
                 var featurePrefix = repo.GetFeaturePrefix();
-                txtTitle.Content = "Git Flow - Start Feature";
+                txtTitle.Content = App.Text("GitFlow.StartFeatureTitle");
                 txtPrefix.Content = featurePrefix;
                 nameValidator.Prefix = featurePrefix;
                 break;
             case Git.Branch.Type.Release:
                 var releasePrefix = repo.GetReleasePrefix();
-                txtTitle.Content = "Git Flow - Start Release";
+                txtTitle.Content = App.Text("GitFlow.StartReleaseTitle");
                 txtPrefix.Content = releasePrefix;
                 nameValidator.Prefix = releasePrefix;
                 break;
             case Git.Branch.Type.Hotfix:
                 var hotfixPrefix = repo.GetHotfixPrefix();
-                txtTitle.Content = "Git Flow - Start Hotfix";
+                txtTitle.Content = App.Text("GitFlow.StartHotfixTitle");
                 txtPrefix.Content = hotfixPrefix;
                 nameValidator.Prefix = hotfixPrefix;
                 break;

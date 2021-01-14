@@ -5,9 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SourceGit.UI"
-        xmlns:git="clr-namespace:SourceGit.Git"
         mc:Ignorable="d"        
-        Title="File Histories"
+        Title="{StaticResource Text.FileHistory}"
         Height="600" Width="800">
 
     <!-- Enable WindowChrome -->
@@ -54,7 +53,7 @@
                         Fill="{StaticResource Brush.Logo}"
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         MouseLeftButtonDown="LogoMouseButtonDown"/>
-                    <Label Content="SOURCE GIT - FILE HISTORIES" FontWeight="Light"/>
+                    <Label Content="{StaticResource Text.FileHistory}" FontWeight="Light"/>
                 </StackPanel>
 
                 <!-- Options -->

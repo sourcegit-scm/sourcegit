@@ -24,12 +24,12 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Clone Remote Repository"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.Clone}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Repository URL :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Clone.RemoteURL}"/>
         <TextBox x:Name="txtUrl" Grid.Row="2" Grid.Column="1" 
                  Height="24"
-                 helpers:TextBoxHelper.Placeholder="Git Repository URL">
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.Clone.RemoteURL.Placeholder}">
             <TextBox.Text>
                 <Binding Path="RemoteUri" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -39,7 +39,7 @@
             </TextBox.Text>
         </TextBox>
 
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Parent Folder :"/>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Clone.RemoteFolder}"/>
         <Grid Grid.Row="3" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -49,7 +49,7 @@
             <TextBox Grid.Column="0"
                 x:Name="txtParentFolder"
                 Height="24"
-                helpers:TextBoxHelper.Placeholder="Folder to contain this repository">
+                helpers:TextBoxHelper.Placeholder="{StaticResource Text.Clone.RemoteFolder.Placeholder}">
                 <TextBox.Text>
                     <Binding Path="ParentFolder" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                         <Binding.ValidationRules>
@@ -63,19 +63,19 @@
             </Button>
         </Grid>
 
-        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="Local Name :"/>
+        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Clone.LocalName}"/>
         <TextBox Grid.Row="4" Grid.Column="1" 
                  VerticalContentAlignment="Center" 
                  Height="24" 
-                 helpers:TextBoxHelper.Placeholder="Repository name. Optional."
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.Clone.LocalName.Placeholder}"
                  Text="{Binding LocalName, ElementName=me, Mode=TwoWay}">
         </TextBox>
 
-        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="Remote Name :"/>
+        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Clone.RemoteName}"/>
         <TextBox Grid.Row="5" Grid.Column="1" 
                  VerticalContentAlignment="Center" 
                  Height="24" 
-                 helpers:TextBoxHelper.Placeholder="Remote name. Optional."
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.Clone.RemoteName.Placeholder}"
                  Text="{Binding RemoteName, ElementName=me, Mode=TwoWay}">
         </TextBox>
 
@@ -87,8 +87,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Start" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

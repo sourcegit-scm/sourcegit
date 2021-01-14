@@ -44,12 +44,12 @@
 
                     <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}"/>
                     <Path Grid.Column="0" Width="14" Height="14" Fill="{StaticResource Brush.FG2}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
-                    <TextBox Grid.Column="1" x:Name="txtChangeFilter" BorderThickness="0" helpers:TextBoxHelper.Placeholder="Search File ..." TextChanged="SearchChangeFileTextChanged"/>
+                    <TextBox Grid.Column="1" x:Name="txtChangeFilter" BorderThickness="0" helpers:TextBoxHelper.Placeholder="{StaticResource Text.CommitViewer.Changes.Search}" TextChanged="SearchChangeFileTextChanged"/>
                     <ToggleButton
                             Grid.Column="2" 
                             x:Name="toggleSwitchMode"
                             Margin="4,0,0,0" 
-                            ToolTip="SWITCH TO LIST/TREE VIEW"
+                            ToolTip="{StaticResource Text.CommitViewer.Changes.SwitchMode}"
                             Style="{StaticResource Style.ToggleButton.ListOrTree}" 
                             IsChecked="{Binding Source={x:Static source:App.Setting}, Path=UI.UseListInChanges, Mode=TwoWay}"/>
                 </Grid>

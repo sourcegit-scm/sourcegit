@@ -389,9 +389,9 @@ namespace SourceGit.UI {
                 loading.Visibility = Visibility.Collapsed;
                 sizeChange.Visibility = Visibility.Visible;
                 textChangeOptions.Visibility = Visibility.Collapsed;
-                txtSizeChangeTitle.Content = "BINARY DIFF";
-                txtNewSize.Content = $"{bc.Size} Bytes";
-                txtOldSize.Content = $"{bc.PreSize} Bytes";
+                txtSizeChangeTitle.Content = App.Text("Diff.Binary");
+                txtNewSize.Content = App.Format("Bytes", bc.PreSize);
+                txtOldSize.Content = App.Format("Bytes", bc.Size);
             });
         }
 
@@ -407,9 +407,9 @@ namespace SourceGit.UI {
                 loading.Visibility = Visibility.Collapsed;
                 sizeChange.Visibility = Visibility.Visible;
                 textChangeOptions.Visibility = Visibility.Collapsed;
-                txtSizeChangeTitle.Content = "LFS OBJECT CHANGE";
-                txtNewSize.Content = $"{newSize} Bytes";
-                txtOldSize.Content = $"{oldSize} Bytes";
+                txtSizeChangeTitle.Content = App.Text("Diff.LFS");
+                txtNewSize.Content = App.Format("Bytes", newSize);
+                txtOldSize.Content = App.Format("Bytes", oldSize);
             });
         }
 
@@ -754,7 +754,7 @@ namespace SourceGit.UI {
 
             var menu = new ContextMenu();
             var copy = new MenuItem();
-            copy.Header = "Copy Selected Lines";
+            copy.Header = App.Text("Diff.Copy");
             copy.Click += (o, ev) => {
                 var items = grid.SelectedItems;
                 if (items.Count == 0) return;

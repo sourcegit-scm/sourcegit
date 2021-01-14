@@ -76,7 +76,7 @@ namespace SourceGit.UI {
             if (!ValidateBranch("Development", dev)) return;
 
             if (dev == master) {
-                txtValidation.Content = "Development branch is same with production!";
+                txtValidation.Content = App.Text("GitFlow.DevSameAsProd");
                 btnSure.IsEnabled = false;
                 return;
             }
@@ -91,13 +91,13 @@ namespace SourceGit.UI {
 
         private bool ValidateBranch(string type, string name) {
             if (string.IsNullOrEmpty(name)) {
-                txtValidation.Content = $"{type} branch name can't be empty";
+                txtValidation.Content = App.Format("GitFlow.BranchRequired", type);
                 btnSure.IsEnabled = false;
                 return false;
             }
 
             if (!regex.IsMatch(name)) {
-                txtValidation.Content = $"{type} branch name contains invalid characters.";
+                txtValidation.Content = App.Format("GitFlow.BranchInvalid", type);
                 btnSure.IsEnabled = false;
                 return false;
             }
@@ -107,13 +107,13 @@ namespace SourceGit.UI {
 
         private bool ValidatePrefix(string type, string prefix) {
             if (string.IsNullOrEmpty(prefix)) {
-                txtValidation.Content = $"{type} prefix is required!";
+                txtValidation.Content = App.Format("GitFlow.PrefixRequired", type);
                 btnSure.IsEnabled = false;
                 return false;
             }
 
             if (!regex.IsMatch(prefix)) {
-                txtValidation.Content = $"{type} prefix contains invalid characters.";
+                txtValidation.Content = App.Format("GitFlow.PrefixInvalid", type);
                 btnSure.IsEnabled = false;
                 return false;
             }

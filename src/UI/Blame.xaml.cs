@@ -66,7 +66,7 @@ namespace SourceGit.UI {
 
                 if (result.IsBinary) {
                     var error = new Record();
-                    error.Line = new Git.Blame.Line() { Content = "BINARY FILE BLAME NOT SUPPORTED!!!", CommitSHA = null };
+                    error.Line = new Git.Blame.Line() { Content = App.Text("BinaryNotSupported"), CommitSHA = null };
                     error.BG = Brushes.Red;
                     error.LineNumber = 0;
                     records.Add(error);
@@ -192,7 +192,7 @@ namespace SourceGit.UI {
             if (record == null || record.Line.CommitSHA == null) return;
 
             Hyperlink link = new Hyperlink(new Run(record.Line.CommitSHA));
-            link.ToolTip = "CLICK TO GO";
+            link.ToolTip = App.Text("Goto");
             link.Click += (o, e) => {
                 repo.OnNavigateCommit?.Invoke(record.Line.CommitSHA);
                 e.Handled = true;

@@ -42,11 +42,6 @@ namespace SourceGit.UI {
         /// <param name="repo"></param>
         /// <param name="branch"></param>
         public static void Show(Git.Repository repo, Git.Branch branch) {
-            if (branch == null) {
-                App.RaiseError("Empty repository!");
-                return;
-            }
-
             var dialog = new CreateTag(repo);
             dialog.based = branch.Head;
             dialog.basedOnType.Data = dialog.FindResource("Icon.Branch") as Geometry;

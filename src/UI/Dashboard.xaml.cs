@@ -298,7 +298,7 @@ namespace SourceGit.UI {
                 foreach (var t in tags) t.IsFiltered = repo.LogFilters.Contains(t.Name);
 
                 Dispatcher.Invoke(() => {
-                    tagCount.Content = $"TAGS ({tags.Count})";
+                    tagCount.Content = App.Text("Dashboard.Tags") + $" ({tags.Count})";
                     tagList.ItemsSource = tags;
                 });
             });
@@ -308,7 +308,7 @@ namespace SourceGit.UI {
             Task.Run(() => {
                 var submodules = repo.Submodules();
                 Dispatcher.Invoke(() => {
-                    submoduleCount.Content = $"SUBMODULES ({submodules.Count})";
+                    submoduleCount.Content = App.Text("Dashboard.Submodules") + $" ({submodules.Count})";
                     submoduleList.ItemsSource = submodules;
                 });
             });
@@ -358,7 +358,7 @@ namespace SourceGit.UI {
         private void OpenTerminal(object sender, RoutedEventArgs e) {
             var bash = Path.Combine(App.Setting.Tools.GitExecutable, "..", "bash.exe");
             if (!File.Exists(bash)) {
-                App.RaiseError("Can NOT locate bash.exe. Make sure bash.exe exists under the same folder with git.exe");
+                App.RaiseError(App.Text("MissingBash"));
                 return;
             }
 
@@ -391,16 +391,16 @@ namespace SourceGit.UI {
 
             if (File.Exists(cherryPickMerge)) {
                 abortCommand = "cherry-pick";
-                txtMergeProcessing.Content = "Cherry-Pick merge request detected! Press 'Abort' to restore original HEAD";
+                txtMergeProcessing.Content = App.Text("Conflict.CherryPick");
             } else if (File.Exists(rebaseMerge)) {
                 abortCommand = "rebase";
-                txtMergeProcessing.Content = "Rebase merge request detected! Press 'Abort' to restore original HEAD";
+                txtMergeProcessing.Content = App.Text("Conflict.Rebase");
             } else if (File.Exists(revertMerge)) {
                 abortCommand = "revert";
-                txtMergeProcessing.Content = "Revert merge request detected! Press 'Abort' to restore original HEAD";
+                txtMergeProcessing.Content = App.Text("Conflict.Revert");
             } else if (File.Exists(otherMerge)) {
                 abortCommand = "merge";
-                txtMergeProcessing.Content = "Merge request detected! Press 'Abort' to restore original HEAD";
+                txtMergeProcessing.Content = App.Text("Conflict.Merge");
             } else {
                 abortCommand = null;
             }
@@ -536,21 +536,21 @@ namespace SourceGit.UI {
 
             if (repo.IsGitFlowEnabled()) {
                 var startFeature = new MenuItem();
-                startFeature.Header = "Start Feature ...";
+                startFeature.Header = App.Text("GitFlow.StartFeature");
                 startFeature.Click += (o, e) => {
                     GitFlowStartBranch.Show(repo, Git.Branch.Type.Feature);
                     e.Handled = true;
                 };
 
                 var startRelease = new MenuItem();
-                startRelease.Header = "Start Release ...";
+                startRelease.Header = App.Text("GitFlow.StartRelease");
                 startRelease.Click += (o, e) => {
                     GitFlowStartBranch.Show(repo, Git.Branch.Type.Release);
                     e.Handled = true;
                 };
 
                 var startHotfix = new MenuItem();
-                startHotfix.Header = "Start Hotfix ...";
+                startHotfix.Header = App.Text("GitFlow.StartHotfix");
                 startHotfix.Click += (o, e) => {
                     GitFlowStartBranch.Show(repo, Git.Branch.Type.Hotfix);
                     e.Handled = true;
@@ -561,7 +561,7 @@ namespace SourceGit.UI {
                 button.ContextMenu.Items.Add(startHotfix);
             } else {
                 var init = new MenuItem();
-                init.Header = "Initialize Git-Flow";
+                init.Header = App.Text("GitFlow.Init");
                 init.Click += (o, e) => {
                     GitFlowSetup.Show(repo);
                     e.Handled = true;
@@ -593,7 +593,7 @@ namespace SourceGit.UI {
             var branch = node.Branch;            
 
             var push = new MenuItem();
-            push.Header = $"Push '{branch.Name}'";
+            push.Header = App.Format("BranchCM.Push", branch.Name);
             push.Click += (o, e) => {
                 Push.Show(repo, branch);
                 e.Handled = true;
@@ -601,7 +601,7 @@ namespace SourceGit.UI {
 
             if (branch.IsCurrent) {
                 var discard = new MenuItem();
-                discard.Header = "Discard all changes";
+                discard.Header = App.Text("BranchCM.DiscardAll");
                 discard.Click += (o, e) => {
                     Discard.Show(repo, null);
                     e.Handled = true;
@@ -612,14 +612,14 @@ namespace SourceGit.UI {
                 if (!string.IsNullOrEmpty(branch.Upstream)) {
                     var upstream = branch.Upstream.Substring(13);
                     var fastForward = new MenuItem();
-                    fastForward.Header = $"Fast-Forward to '{upstream}'";
+                    fastForward.Header = App.Format("BranchCM.FastForward", upstream);
                     fastForward.Click += (o, e) => {
                         Merge.StartDirectly(repo, upstream, branch.Name);
                         e.Handled = true;
                     };
 
                     var pull = new MenuItem();
-                    pull.Header = $"Pull '{upstream}'";
+                    pull.Header = App.Format("BranchCM.Pull", upstream);
                     pull.Click += (o, e) => {
                         Pull.Show(repo);
                         e.Handled = true;
@@ -634,7 +634,7 @@ namespace SourceGit.UI {
                 var current = repo.CurrentBranch();
 
                 var checkout = new MenuItem();
-                checkout.Header = $"Checkout {branch.Name}";
+                checkout.Header = App.Format("BranchCM.Checkout", branch.Name);
                 checkout.Click += (o, e) => {
                     Task.Run(() => repo.Checkout(node.Branch.Name));
                     e.Handled = true;
@@ -644,7 +644,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(push);
 
                 var merge = new MenuItem();
-                merge.Header = $"Merge '{branch.Name}' into '{current.Name}'";
+                merge.Header = App.Format("BranchCM.Merge", branch.Name, current.Name);
                 merge.Click += (o, e) => {
                     Merge.Show(repo, branch.Name, current.Name);
                     e.Handled = true;
@@ -652,7 +652,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(merge);
 
                 var rebase = new MenuItem();
-                rebase.Header = $"Rebase '{current.Name}' on '{branch.Name}'";
+                rebase.Header = App.Format("BranchCM.Rebase", current.Name, branch.Name);
                 rebase.Click += (o, e) => {
                     Rebase.Show(repo, branch);
                     e.Handled = true;
@@ -669,7 +669,7 @@ namespace SourceGit.UI {
                 flowIcon.Width = 10;
 
                 var finish = new MenuItem();
-                finish.Header = $"Git Flow - Finish '{branch.Name}'";
+                finish.Header = App.Format("BranchCM.Finish", branch.Name);
                 finish.Icon = flowIcon;
                 finish.Click += (o, e) => {
                     GitFlowFinishBranch.Show(repo, branch);
@@ -680,7 +680,7 @@ namespace SourceGit.UI {
             } 
 
             var rename = new MenuItem();
-            rename.Header = $"Rename '{branch.Name}'";
+            rename.Header = App.Format("BranchCM.Rename", branch.Name);
             rename.Click += (o, e) => {
                 RenameBranch.Show(repo, branch);
                 e.Handled = true;
@@ -689,7 +689,7 @@ namespace SourceGit.UI {
             menu.Items.Add(rename);
 
             var delete = new MenuItem();
-            delete.Header = $"Delete '{branch.Name}'";
+            delete.Header = App.Format("BranchCM.Delete", branch.Name);
             delete.IsEnabled = !branch.IsCurrent;
             delete.Click += (o, e) => {
                 DeleteBranch.Show(repo, branch);
@@ -699,7 +699,7 @@ namespace SourceGit.UI {
             menu.Items.Add(new Separator());
 
             var createBranch = new MenuItem();
-            createBranch.Header = "Create Branch";
+            createBranch.Header = App.Text("CreateBranch");
             createBranch.Click += (o, e) => {
                 CreateBranch.Show(repo, branch);
                 e.Handled = true;
@@ -707,7 +707,7 @@ namespace SourceGit.UI {
             menu.Items.Add(createBranch);
 
             var createTag = new MenuItem();
-            createTag.Header = "Create Tag";
+            createTag.Header = App.Text("CreateTag");
             createTag.Click += (o, e) => {
                 CreateTag.Show(repo, branch);
                 e.Handled = true;
@@ -730,7 +730,7 @@ namespace SourceGit.UI {
                 currentTrackingIcon.Width = 10;
 
                 var tracking = new MenuItem();
-                tracking.Header = "Tracking ...";
+                tracking.Header = App.Text("BranchCM.Tracking");
                 tracking.Icon = trackingIcon;
 
                 foreach (var b in remoteBranches) {
@@ -749,7 +749,7 @@ namespace SourceGit.UI {
             }
 
             var copy = new MenuItem();
-            copy.Header = "Copy Branch Name";
+            copy.Header = App.Text("BranchCM.CopyName");
             copy.Click += (o, e) => {
                 Clipboard.SetText(branch.Name);
                 e.Handled = true;
@@ -768,14 +768,14 @@ namespace SourceGit.UI {
 
         private void OpenRemoteContextMenu(RemoteNode node) {
             var fetch = new MenuItem();
-            fetch.Header = $"Fetch '{node.Name}'";
+            fetch.Header = App.Format("RemoteCM.Fetch", node.Name);
             fetch.Click += (o, e) => {
                 Fetch.Show(repo, node.Name);
                 e.Handled = true;
             };
 
             var edit = new MenuItem();
-            edit.Header = $"Edit '{node.Name}'";
+            edit.Header = App.Format("RemoteCM.Edit", node.Name);
             edit.Click += (o, e) => {
                 var remotes = repo.Remotes();
                 var found = remotes.Find(r => r.Name == node.Name);
@@ -784,14 +784,14 @@ namespace SourceGit.UI {
             };
 
             var delete = new MenuItem();
-            delete.Header = $"Delete '{node.Name}'";
+            delete.Header = App.Format("RemoteCM.Delete", node.Name);
             delete.Click += (o, e) => {
                 DeleteRemote.Show(repo, node.Name);
                 e.Handled = true;
             };
 
             var copy = new MenuItem();
-            copy.Header = "Copy Remote URL";
+            copy.Header = App.Text("RemoteCM.CopyURL");
             copy.Click += (o, e) => {
                 var remotes = repo.Remotes();
                 var found = remotes.Find(r => r.Name == node.Name);
@@ -815,7 +815,7 @@ namespace SourceGit.UI {
             if (current == null) return;
 
             var checkout = new MenuItem();
-            checkout.Header = $"Checkout '{branch.Name}'";
+            checkout.Header = App.Format("BranchCM.Checkout", branch.Name);
             checkout.Click += (o, e) => {
                 var branches = repo.Branches();
                 var tracked = null as Git.Branch;
@@ -838,49 +838,49 @@ namespace SourceGit.UI {
             };
 
             var pull = new MenuItem();
-            pull.Header = $"Pull '{branch.Name}' into '{current.Name}'";
+            pull.Header = App.Format("BranchCM.PullInto", branch.Name, current.Name);
             pull.Click += (o, e) => {
                 Pull.Show(repo, branch.Name);
                 e.Handled = true;
             };
 
             var merge = new MenuItem();
-            merge.Header = $"Merge '{branch.Name}' into '{current.Name}'";
+            merge.Header = App.Format("BranchCM.Merge", branch.Name, current.Name);
             merge.Click += (o, e) => {
                 Merge.Show(repo, branch.Name, current.Name);
                 e.Handled = true;
             };
 
             var rebase = new MenuItem();
-            rebase.Header = $"Rebase '{current.Name}' on '{branch.Name}'";
+            rebase.Header = App.Format("BranchCM.Rebase", current.Name, branch.Name);
             rebase.Click += (o, e) => {
                 Rebase.Show(repo, branch);
                 e.Handled = true;
             };
 
             var delete = new MenuItem();
-            delete.Header = $"Delete '{branch.Name}'";
+            delete.Header = App.Format("BranchCM.Delete", branch.Name);
             delete.Click += (o, e) => {
                 DeleteBranch.Show(repo, branch);
                 e.Handled = true;
             };
 
             var createBranch = new MenuItem();
-            createBranch.Header = "Create New Branch";
+            createBranch.Header = App.Text("CreateBranch");
             createBranch.Click += (o, e) => {
                 CreateBranch.Show(repo, branch);
                 e.Handled = true;
             };
 
             var createTag = new MenuItem();
-            createTag.Header = "Create New Tag";
+            createTag.Header = App.Text("CreateTag");
             createTag.Click += (o, e) => {
                 CreateTag.Show(repo, branch);
                 e.Handled = true;
             };
 
             var copy = new MenuItem();
-            copy.Header = "Copy Branch Name";
+            copy.Header = App.Text("BranchCM.CopyName");
             copy.Click += (o, e) => {
                 Clipboard.SetText(branch.Name);
                 e.Handled = true;
@@ -946,28 +946,28 @@ namespace SourceGit.UI {
             if (tag == null) return;
 
             var createBranch = new MenuItem();
-            createBranch.Header = "Create New Branch";
+            createBranch.Header = App.Text("CreateBranch");
             createBranch.Click += (o, ev) => {
                 CreateBranch.Show(repo, tag);
                 ev.Handled = true;
             };
 
             var pushTag = new MenuItem();
-            pushTag.Header = $"Push '{tag.Name}'";
+            pushTag.Header = App.Format("TagCM.Push", tag.Name);
             pushTag.Click += (o, ev) => {
                 PushTag.Show(repo, tag);
                 ev.Handled = true;
             };
 
             var deleteTag = new MenuItem();
-            deleteTag.Header = $"Delete '{tag.Name}'";
+            deleteTag.Header = App.Format("TagCM.Delete", tag.Name);
             deleteTag.Click += (o, ev) => {
                 DeleteTag.Show(repo, tag);
                 ev.Handled = true;
             };
 
             var copy = new MenuItem();
-            copy.Header = "Copy Name";
+            copy.Header = App.Text("TagCM.Copy");
             copy.Click += (o, ev) => {
                 Clipboard.SetText(tag.Name);
                 ev.Handled = true;
@@ -1004,7 +1004,7 @@ namespace SourceGit.UI {
             if (path == null) return;
 
             var open = new MenuItem();
-            open.Header = "Open Submodule Repository";
+            open.Header = App.Text("Submodule.Open");
             open.Click += (o, ev) => {
                 var sub = new Git.Repository();
                 sub.Path = Path.Combine(repo.Path, path);
@@ -1016,7 +1016,7 @@ namespace SourceGit.UI {
             };
 
             var copy = new MenuItem();
-            copy.Header = "Copy Relative Path";
+            copy.Header = App.Text("Submodule.CopyPath");
             copy.Click += (o, ev) => {
                 Clipboard.SetText(path);
                 ev.Handled = true;

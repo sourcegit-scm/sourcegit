@@ -22,14 +22,14 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" x:Name="title" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Add Remote"/>
+        <Label Grid.Row="0" x:Name="title" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Name :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Remote.Name}"/>
         <TextBox Grid.Row="2" Grid.Column="1"
                  x:Name="txtName"
                  VerticalContentAlignment="Center" 
                  Height="24"
-                 helpers:TextBoxHelper.Placeholder="Remote name">
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.Remote.Name.Placeholder}">
             <TextBox.Text>
                 <Binding Path="RemoteName" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -39,12 +39,12 @@
             </TextBox.Text>
         </TextBox>
 
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Repository URL :"/>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Remote.URL}"/>
         <TextBox Grid.Row="3" Grid.Column="1"
                  x:Name="txtUrl"
                  VerticalContentAlignment="Center" 
                  Height="24"
-                 helpers:TextBoxHelper.Placeholder="Remote git repository URL">
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.Remote.URL.Placeholder}">
             <TextBox.Text>
                 <Binding Path="RemoteUri" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -62,8 +62,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Sure" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Sure" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

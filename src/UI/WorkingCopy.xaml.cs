@@ -327,7 +327,7 @@ namespace SourceGit.UI {
                 var path = Path.GetFullPath(Repo.Path + "\\" + node.FilePath);
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
-                explore.Header = "Reveal in File Explorer";
+                explore.Header = App.Text("RevealFile");
                 explore.Click += (o, e) => {
                     if (node.IsFile) Process.Start("explorer", $"/select,{path}");
                     else Process.Start("explorer", path);
@@ -335,21 +335,21 @@ namespace SourceGit.UI {
                 };
 
                 var stage = new MenuItem();
-                stage.Header = "Stage";
+                stage.Header = App.Text("FileCM.Stage");
                 stage.Click += async (o, e) => {
                     await Task.Run(() => Repo.Stage(node.FilePath));
                     e.Handled = true;
                 };
 
                 var discard = new MenuItem();
-                discard.Header = "Discard changes ...";
+                discard.Header = App.Text("FileCM.Discard");
                 discard.Click += (o, e) => {
                     Discard.Show(Repo, changes);
                     e.Handled = true;
                 };
 
                 var stash = new MenuItem();
-                stash.Header = $"Stash ...";
+                stash.Header = App.Text("FileCM.Stash");
                 stash.Click += (o, e) => {
                     List<string> nodes = new List<string>() { node.FilePath };
                     Stash.Show(Repo, nodes);
@@ -357,11 +357,11 @@ namespace SourceGit.UI {
                 };
 
                 var patch = new MenuItem();
-                patch.Header = $"Save as patch ...";
+                patch.Header = App.Text("FileCM.SaveAsPatch");
                 patch.Click += (o, e) => {
                     var dialog = new SaveFileDialog();
                     dialog.Filter = "Patch File|*.patch";
-                    dialog.Title = "Select file to store patch data.";
+                    dialog.Title = App.Text("FileCM.SaveAsPatch");
                     dialog.InitialDirectory = Repo.Path;
 
                     if (dialog.ShowDialog() == true) {
@@ -372,7 +372,7 @@ namespace SourceGit.UI {
                 };
 
                 var copyPath = new MenuItem();
-                copyPath.Header = "Copy full path";
+                copyPath.Header = App.Text("CopyPath");
                 copyPath.Click += (o, e) => {
                     Clipboard.SetText(node.FilePath);
                     e.Handled = true;
@@ -388,7 +388,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(new Separator());
                 if (node.Change != null) {
                     var history = new MenuItem();
-                    history.Header = "Histories ...";
+                    history.Header = App.Text("FileHistory");
                     history.Click += (o, e) => {
                         var viewer = new FileHistories(Repo, node.FilePath);
                         viewer.Show();
@@ -407,32 +407,32 @@ namespace SourceGit.UI {
                 foreach (var c in changes) files.Add(c.Path);                
 
                 var stage = new MenuItem();
-                stage.Header = $"Stage {changes.Count} files ...";
+                stage.Header = App.Format("FileCM.StageMulti", changes.Count);
                 stage.Click += async (o, e) => {
                     await Task.Run(() => Repo.Stage(files.ToArray()));
                     e.Handled = true;
                 };
 
                 var discard = new MenuItem();
-                discard.Header = $"Discard {changes.Count} changes ...";
+                discard.Header = App.Format("FileCM.DiscardMulti", changes.Count);
                 discard.Click += (o, e) => {
                     Discard.Show(Repo, changes);
                     e.Handled = true;
                 };
 
                 var stash = new MenuItem();
-                stash.Header = $"Stash {changes.Count} files ...";
+                stash.Header = App.Format("FileCM.StashMulti", changes.Count);
                 stash.Click += (o, e) => {
                     Stash.Show(Repo, files);
                     e.Handled = true;
                 };
 
                 var patch = new MenuItem();
-                patch.Header = $"Save as patch ...";
+                patch.Header = App.Text("FileCM.SaveAsPatch");
                 patch.Click += (o, e) => {
                     var dialog = new SaveFileDialog();
                     dialog.Filter = "Patch File|*.patch";
-                    dialog.Title = "Select file to store patch data.";
+                    dialog.Title = App.Text("FileCM.SaveAsPatch");
                     dialog.InitialDirectory = Repo.Path;
 
                     if (dialog.ShowDialog() == true) {
@@ -470,28 +470,28 @@ namespace SourceGit.UI {
                 var path = Path.GetFullPath(Repo.Path + "\\" + change.Path);
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
-                explore.Header = "Reveal in File Explorer";
+                explore.Header = App.Text("RevealFile");
                 explore.Click += (o, e) => {
                     Process.Start("explorer", $"/select,{path}");
                     e.Handled = true;
                 };
 
                 var stage = new MenuItem();
-                stage.Header = "Stage";
+                stage.Header = App.Text("FileCM.Stage");
                 stage.Click += async (o, e) => {
                     await Task.Run(() => Repo.Stage(change.Path));
                     e.Handled = true;
                 };
 
                 var discard = new MenuItem();
-                discard.Header = "Discard changes ...";
+                discard.Header = App.Text("FileCM.Discard");
                 discard.Click += (o, e) => {
                     Discard.Show(Repo, new List<Git.Change>() { change });
                     e.Handled = true;
                 };
 
                 var stash = new MenuItem();
-                stash.Header = $"Stash ...";
+                stash.Header = App.Text("FileCM.Stash");
                 stash.Click += (o, e) => {
                     List<string> nodes = new List<string>() { change.Path };
                     Stash.Show(Repo, nodes);
@@ -499,11 +499,11 @@ namespace SourceGit.UI {
                 };
 
                 var patch = new MenuItem();
-                patch.Header = $"Save as patch ...";
+                patch.Header = App.Text("FileCM.SaveAsPatch");
                 patch.Click += (o, e) => {
                     var dialog = new SaveFileDialog();
                     dialog.Filter = "Patch File|*.patch";
-                    dialog.Title = "Select file to store patch data.";
+                    dialog.Title = App.Text("FileCM.SaveAsPatch");
                     dialog.InitialDirectory = Repo.Path;
 
                     if (dialog.ShowDialog() == true) {
@@ -514,7 +514,7 @@ namespace SourceGit.UI {
                 };
 
                 var copyPath = new MenuItem();
-                copyPath.Header = "Copy file path";
+                copyPath.Header = App.Text("CopyPath");
                 copyPath.Click += (o, e) => {
                     Clipboard.SetText(change.Path);
                     e.Handled = true;
@@ -530,7 +530,7 @@ namespace SourceGit.UI {
                 menu.Items.Add(new Separator());
                 if (change != null) {
                     var history = new MenuItem();
-                    history.Header = "Histories ...";
+                    history.Header = App.Text("FileHistory");
                     history.Click += (o, e) => {
                         var viewer = new FileHistories(Repo, change.Path);
                         viewer.Show();
@@ -550,32 +550,32 @@ namespace SourceGit.UI {
                 }
 
                 var stage = new MenuItem();
-                stage.Header = $"Stage {changes.Count} files ...";
+                stage.Header = App.Format("FileCM.StageMulti", changes.Count);
                 stage.Click += async (o, e) => {                    
                     await Task.Run(() => Repo.Stage(files.ToArray()));
                     e.Handled = true;
                 };
 
                 var discard = new MenuItem();
-                discard.Header = $"Discard {changes.Count} changes ...";
+                discard.Header = App.Format("FileCM.DiscardMulti", changes.Count);
                 discard.Click += (o, e) => {
                     Discard.Show(Repo, changes);
                     e.Handled = true;
                 };
 
                 var stash = new MenuItem();
-                stash.Header = $"Stash {changes.Count} files ...";
+                stash.Header = App.Format("FileCM.StashMulti", changes.Count);
                 stash.Click += (o, e) => {
                     Stash.Show(Repo, files);
                     e.Handled = true;
                 };
 
                 var patch = new MenuItem();
-                patch.Header = $"Save as patch ...";
+                patch.Header = App.Text("FileCM.SaveAsPatch");
                 patch.Click += (o, e) => {
                     var dialog = new SaveFileDialog();
                     dialog.Filter = "Patch File|*.patch";
-                    dialog.Title = "Select file to store patch data.";
+                    dialog.Title = App.Text("FileCM.SaveAsPatch");
                     dialog.InitialDirectory = Repo.Path;
 
                     if (dialog.ShowDialog() == true) {
@@ -685,7 +685,7 @@ namespace SourceGit.UI {
 
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
-                explore.Header = "Reveal in File Explorer";
+                explore.Header = App.Text("RevealFile");
                 explore.Click += (o, e) => {
                     if (node.IsFile) Process.Start("explorer", $"/select,{path}");
                     else Process.Start(path);
@@ -693,14 +693,14 @@ namespace SourceGit.UI {
                 };
 
                 var unstage = new MenuItem();
-                unstage.Header = "Unstage";
+                unstage.Header = App.Text("FileCM.Unstage");
                 unstage.Click += async (o, e) => {
                     await Task.Run(() => Repo.Unstage(node.FilePath));
                     e.Handled = true;
                 };
 
                 var copyPath = new MenuItem();
-                copyPath.Header = "Copy full path";
+                copyPath.Header = App.Text("CopyPath");
                 copyPath.Click += (o, e) => {
                     Clipboard.SetText(node.FilePath);
                     e.Handled = true;
@@ -720,7 +720,7 @@ namespace SourceGit.UI {
                 foreach (var c in changes) files.Add(c.Path);
 
                 var unstage = new MenuItem();
-                unstage.Header = $"Unstage {changes.Count} files";
+                unstage.Header = App.Format("FileCM.UnstageMulti", files.Count);
                 unstage.Click += async (o, e) => {
                     await Task.Run(() => Repo.Unstage(files.ToArray()));
                     e.Handled = true;
@@ -752,21 +752,21 @@ namespace SourceGit.UI {
 
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
-                explore.Header = "Reveal in File Explorer";
+                explore.Header = App.Text("RevealFile");
                 explore.Click += (o, e) => {
                     Process.Start("explorer", $"/select,{path}");
                     e.Handled = true;
                 };
 
                 var unstage = new MenuItem();
-                unstage.Header = "Unstage";
+                unstage.Header = App.Text("FileCM.Unstage");
                 unstage.Click += async (o, e) => {
                     await Task.Run(() => Repo.Unstage(change.Path));
                     e.Handled = true;
                 };
 
                 var copyPath = new MenuItem();
-                copyPath.Header = "Copy full path";
+                copyPath.Header = App.Text("CopyPath");
                 copyPath.Click += (o, e) => {
                     Clipboard.SetText(change.Path);
                     e.Handled = true;
@@ -784,7 +784,7 @@ namespace SourceGit.UI {
                 foreach (var one in selected) files.Add((one as Git.Change).Path);
 
                 var unstage = new MenuItem();
-                unstage.Header = $"Unstage {selected.Count} files";
+                unstage.Header = App.Format("FileCM.UnstageMulti", files.Count);
                 unstage.Click += async (o, e) => {
                     await Task.Run(() => Repo.Unstage(files.ToArray()));
                     e.Handled = true;
@@ -862,12 +862,12 @@ namespace SourceGit.UI {
 
             if (Repo.CommitMsgRecords.Count == 0) {
                 var tip = new MenuItem();
-                tip.Header = "NO RECENT INPUT MESSAGES";
+                tip.Header = App.Text("WorkingCopy.NoCommitHistories");
                 tip.IsEnabled = false;
                 anchor.ContextMenu.Items.Add(tip);
             } else {
                 var tip = new MenuItem();
-                tip.Header = "RECENT INPUT MESSAGES";
+                tip.Header = App.Text("WorkingCopy.HasCommitHistories");
                 tip.IsEnabled = false;
                 anchor.ContextMenu.Items.Add(tip);
                 anchor.ContextMenu.Items.Add(new Separator());

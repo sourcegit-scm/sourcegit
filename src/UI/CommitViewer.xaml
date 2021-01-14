@@ -32,7 +32,7 @@
     </UserControl.Resources>
     
     <TabControl>
-        <TabItem Header="INFORMATION">
+        <TabItem Header="{StaticResource Text.CommitViewer.Info}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -68,7 +68,7 @@
 
                         <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Width="64" Height="64" x:Name="authorAvatar" HorizontalAlignment="Right"/>
 
-                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="15,0,0,0" Text="AUTHOR" Opacity=".6" Foreground="{StaticResource Brush.FG1}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="15,0,0,0" Text="{StaticResource Text.CommitViewer.Info.Author}" Opacity=".6" Foreground="{StaticResource Brush.FG1}"/>
                         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="12,0,0,0">
                             <TextBox x:Name="authorName" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG1}" BorderThickness="0"/>
                             <TextBox x:Name="authorEmail" Margin="4,0,0,0" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG2}" BorderThickness="0"/>
@@ -95,7 +95,7 @@
 
                         <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Width="64" Height="64" x:Name="committerAvatar" HorizontalAlignment="Right"/>
 
-                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="15,0,0,0" Text="COMMITTER" Opacity=".6" Foreground="{StaticResource Brush.FG1}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="15,0,0,0" Text="{StaticResource Text.CommitViewer.Info.Committer}" Opacity=".6" Foreground="{StaticResource Brush.FG1}"/>
                         <StackPanel Grid.Row="1" Grid.Column="1" Margin="12,0,0,0" Orientation="Horizontal">
                             <TextBox x:Name="committerName" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG1}" BorderThickness="0"/>
                             <TextBox x:Name="committerEmail" Margin="4,0,0,0" IsReadOnly="True" Background="Transparent" Foreground="{StaticResource Brush.FG2}" BorderThickness="0"/>
@@ -122,7 +122,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- SHA -->
-                    <Label Grid.Row="0" Grid.Column="0" Content="SHA" HorizontalAlignment="Right" Opacity=".6"/>
+                    <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource Text.CommitViewer.Info.SHA}" HorizontalAlignment="Right" Opacity=".6"/>
                     <TextBox 
                         Grid.Row="0" Grid.Column="1" 
                         x:Name="SHA" 
@@ -133,7 +133,7 @@
                         Margin="11,0,0,0"/>
 
                     <!-- PARENTS -->
-                    <Label Grid.Row="1" Grid.Column="0" Content="PARENTS" HorizontalAlignment="Right" Opacity=".6"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource Text.CommitViewer.Info.Parents}" HorizontalAlignment="Right" Opacity=".6"/>
                     <ItemsControl Grid.Row="1" Grid.Column="1" x:Name="parents" Margin="8,0,0,0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -144,7 +144,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Label Margin="0,0,8,0" FontFamily="Consolas">
-                                    <Hyperlink RequestNavigate="NavigateParent" NavigateUri="{Binding .}" ToolTip="NAVIGATE TO COMMIT">
+                                    <Hyperlink RequestNavigate="NavigateParent" NavigateUri="{Binding .}" ToolTip="{StaticResource Text.Goto}">
                                         <Run Text="{Binding .}"/>
                                     </Hyperlink>
                                 </Label>
@@ -153,7 +153,7 @@
                     </ItemsControl>
 
                     <!-- Refs -->
-                    <Label Grid.Row="2" Grid.Column="0" Content="REFS" HorizontalAlignment="Right" Opacity=".6"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource Text.CommitViewer.Info.Refs}" HorizontalAlignment="Right" Opacity=".6"/>
                     <ItemsControl Grid.Row="2" Grid.Column="1" x:Name="refs" Margin="11,0,0,0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -202,7 +202,7 @@
                     </ItemsControl>
 
                     <!-- MESSAGE -->
-                    <Label Grid.Row="3" Grid.Column="0" Content="MESSAGE" HorizontalAlignment="Right" Opacity=".6"/>
+                    <Label Grid.Row="3" Grid.Column="0" Content="{StaticResource Text.CommitViewer.Info.Message}" HorizontalAlignment="Right" Opacity=".6"/>
                     <TextBox 
                         Grid.Row="3" Grid.Column="1"
                         x:Name="subject"
@@ -229,8 +229,8 @@
                         <ColumnDefinition Width="96"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    
-                    <Label Grid.Column="0" Content="CHANGED" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".6"/>
+
+                    <Label Grid.Column="0" Content="{StaticResource Text.CommitViewer.Info.Changed}" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".6"/>
                     <DataGrid
                         Grid.Column="1"
                         x:Name="changeList1"
@@ -270,7 +270,7 @@
         </TabItem>
 
         <!-- CHANGES -->
-        <TabItem Header="CHANGES">
+        <TabItem Header="{StaticResource Text.CommitViewer.Changes}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200" MinWidth="200"/>
@@ -298,12 +298,12 @@
 
                         <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}"/>
                         <Path Grid.Column="0" Width="14" Height="14" Fill="{StaticResource Brush.FG2}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
-                        <TextBox Grid.Column="1" x:Name="txtChangeFilter" BorderThickness="0" helpers:TextBoxHelper.Placeholder="Search File ..." TextChanged="SearchChangeFileTextChanged"/>
+                        <TextBox Grid.Column="1" x:Name="txtChangeFilter" BorderThickness="0" helpers:TextBoxHelper.Placeholder="{StaticResource Text.CommitViewer.Changes.Search}" TextChanged="SearchChangeFileTextChanged"/>
                         <ToggleButton
                             Grid.Column="2" 
                             x:Name="toggleSwitchMode"
                             Margin="4,0,0,0" 
-                            ToolTip="SWITCH TO LIST/TREE VIEW"
+                            ToolTip="{StaticResource Text.CommitViewer.Changes.SwitchMode}"
                             Style="{StaticResource Style.ToggleButton.ListOrTree}" 
                             IsChecked="{Binding Source={x:Static source:App.Setting}, Path=UI.UseListInChanges, Mode=TwoWay}"/>
                     </Grid>
@@ -400,7 +400,7 @@
         </TabItem>
 
         <!-- FILE TREE -->
-        <TabItem Header="FILES">
+        <TabItem Header="{StaticResource Text.CommitViewer.Files}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200" MinWidth="200" MaxWidth="400"/>
@@ -456,7 +456,7 @@
 
                         <StackPanel x:Name="maskPreviewNotSupported" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
                             <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}" Fill="{StaticResource Brush.FG2}"/>
-                            <Label Margin="0,16,0,0" Content="BINARY FILE DETECTED" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
+                            <Label Margin="0,16,0,0" Content="{StaticResource Text.BinaryNotSupported}" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
                         </StackPanel>
                     </Grid>
                 </Border>

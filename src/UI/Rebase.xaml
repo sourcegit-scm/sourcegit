@@ -21,15 +21,15 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Rebase Current Branch"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.Rebase}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Rebase :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Rebase.Target}"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path Width="12" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
             <TextBlock x:Name="branch" Text="master" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="On :"/>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Rebase.On}"/>
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
             <Path x:Name="type" Width="12" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
             <TextBlock x:Name="desc" Text="branch" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
@@ -38,7 +38,7 @@
         <CheckBox x:Name="chkAutoStash"
                   Grid.Row="4" Grid.Column="1"
                   IsChecked="True"
-                  Content="Stash &amp; reapply local changes"/>
+                  Content="{StaticResource Text.Rebase.AutoStash}"/>
 
         <Grid Grid.Row="6" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -48,8 +48,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Start" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>

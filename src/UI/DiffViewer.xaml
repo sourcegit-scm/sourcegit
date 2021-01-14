@@ -49,18 +49,18 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" x:Name="textChangeOptions" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Width="26" Click="Go2Next" ToolTip="Next Difference" Background="Transparent">
+                        <Button Width="26" Click="Go2Next" ToolTip="{StaticResource Text.Diff.Next}" Background="Transparent">
                             <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.MoveDown}"/>
                         </Button>
 
-                        <Button Click="Go2Prev" ToolTip="Previous Difference" Background="Transparent">
+                        <Button Click="Go2Prev" ToolTip="{StaticResource Text.Diff.Prev}" Background="Transparent">
                             <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.MoveUp}"/>
                         </Button>
 
                         <ToggleButton
                             Margin="8,0,0,0"
                             Style="{StaticResource Style.ToggleButton.SplitDirection}"
-                            ToolTip="Toggle One-Side/Two-Sides"
+                            ToolTip="{StaticResource Text.Diff.Mode}"
                             IsChecked="{Binding Source={x:Static sourcegit:App.Setting}, Path=UI.UseCombinedDiff, Mode=TwoWay}"
                             Checked="ChangeDiffMode" Unchecked="ChangeDiffMode"/>
                     </StackPanel>
@@ -79,7 +79,7 @@
 
             <Border x:Name="sizeChange" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.Window}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <Label x:Name="txtSizeChangeTitle" Content="BINARY DIFF" Margin="0,0,0,32" FontSize="18" FontWeight="UltraBold" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Center"/>
+                    <Label x:Name="txtSizeChangeTitle" Content="{StaticResource Text.Diff.Binary}" Margin="0,0,0,32" FontSize="18" FontWeight="UltraBold" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Center"/>
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Binary}" Fill="{StaticResource Brush.FG2}"/>
                     <Grid Margin="0,16,0,0" HorizontalAlignment="Center" TextElement.FontSize="18" TextElement.FontWeight="UltraBold">
                         <Grid.RowDefinitions>
@@ -88,13 +88,13 @@
                         </Grid.RowDefinitions>
                         
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="64"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Row="0" Grid.Column="0" Content="OLD :" Foreground="{StaticResource Brush.FG2}"/>
+                        <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource Text.Diff.Binary.Old}" Foreground="{StaticResource Brush.FG2}"/>
                         <Label Grid.Row="0" Grid.Column="1" x:Name="txtOldSize" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
-                        <Label Grid.Row="1" Grid.Column="0" Content="NEW :" Foreground="{StaticResource Brush.FG2}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource Text.Diff.Binary.New}" Foreground="{StaticResource Brush.FG2}"/>
                         <Label Grid.Row="1" Grid.Column="1" x:Name="txtNewSize" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
                     </Grid>
                 </StackPanel>
@@ -103,14 +103,14 @@
             <Border x:Name="noChange" Grid.Row="1" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Check}"/>
-                    <Label Margin="0,8,0,0" Content="NO CHANGES OR ONLY EOL CHANGES" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                    <Label Margin="0,8,0,0" Content="{StaticResource Text.Diff.NoChange}" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
             <Border x:Name="mask" Grid.RowSpan="2" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
                     <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Diff}"/>
-                    <Label Margin="0,8,0,0" Content="SELECT FILE TO VIEW CHANGES" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                    <Label Margin="0,8,0,0" Content="{StaticResource Text.Diff.Welcome}" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
         </Grid>

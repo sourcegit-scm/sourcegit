@@ -31,6 +31,25 @@ namespace SourceGit {
         }
 
         /// <summary>
+        ///     Load text from locales.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string Text(string key) {
+            return Current.FindResource("Text." + key) as string;
+        }
+
+        /// <summary>
+        ///     Format text
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static string Format(string key, params object[] args) {
+            return string.Format(Text(key), args);
+        }
+
+        /// <summary>
         ///     Raise error message.
         /// </summary>
         /// <param name="message"></param>
@@ -104,6 +123,16 @@ namespace SourceGit {
                 foreach (var rs in Current.Resources.MergedDictionaries) {
                     if (rs.Source != null && rs.Source.OriginalString.StartsWith("pack://application:,,,/Resources/Themes/")) {
                         rs.Source = new Uri("pack://application:,,,/Resources/Themes/Light.xaml", UriKind.Absolute);
+                        break;
+                    }
+                }
+            }
+
+            // Apply locales
+            if (Setting.UI.Locale != "en_US") {
+                foreach (var rs in Current.Resources.MergedDictionaries) {
+                    if (rs.Source != null && rs.Source.OriginalString.StartsWith("pack://application:,,,/Resources/Locales/")) {
+                        rs.Source = new Uri($"pack://application:,,,/Resources/Locales/{Setting.UI.Locale}.xaml", UriKind.Absolute);
                         break;
                     }
                 }

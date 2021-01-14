@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Blame"
+        Title="{StaticResource Text.Blame.Title}"
         Height="600" Width="800">
 
     <!-- Enable WindowChrome -->
@@ -53,7 +53,7 @@
                         Fill="{StaticResource Brush.Logo}"
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         MouseLeftButtonDown="LogoMouseButtonDown"/>
-                    <Label Content="SOURCE GIT - BLAME" FontWeight="Light"/>
+                    <Label Content="{StaticResource Text.Blame.Title}" FontWeight="Light"/>
                 </StackPanel>
 
                 <!-- Options -->
@@ -102,7 +102,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" x:Name="blameFile" HorizontalAlignment="Left" FontSize="11" Foreground="{StaticResource Brush.FG2}" FontFamily="Consolas"/>
-                    <Label Grid.Column="1" HorizontalAlignment="Right" Foreground="{StaticResource Brush.FG2}" FontSize="11" Content="Use right mouse button to view commit information."/>
+                    <Label Grid.Column="1" HorizontalAlignment="Right" Foreground="{StaticResource Brush.FG2}" FontSize="11" Content="{StaticResource Text.Blame.Tip}"/>
                 </Grid>
             </Border>
 
@@ -187,11 +187,11 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Label Grid.Row="0" Grid.Column="0" Content="COMMIT SHA" Foreground="{StaticResource Brush.FG2}"/>
+                                <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource Text.Blame.SHA}" Foreground="{StaticResource Brush.FG2}"/>
                                 <Label Grid.Row="0" Grid.Column="1" x:Name="commitID"/>
-                                <Label Grid.Row="1" Grid.Column="0" Content="AUTHOR" Foreground="{StaticResource Brush.FG2}"/>
+                                <Label Grid.Row="1" Grid.Column="0" Content="{StaticResource Text.Blame.Author}" Foreground="{StaticResource Brush.FG2}"/>
                                 <Label Grid.Row="1" Grid.Column="1" x:Name="authorName"/>
-                                <Label Grid.Row="2" Grid.Column="0" Content="MODIFY TIME" Foreground="{StaticResource Brush.FG2}"/>
+                                <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource Text.Blame.ModifyTime}" Foreground="{StaticResource Brush.FG2}"/>
                                 <Label Grid.Row="2" Grid.Column="1" x:Name="authorTime"/>
                             </Grid>
                         </Border>

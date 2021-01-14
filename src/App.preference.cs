@@ -49,6 +49,10 @@ namespace SourceGit {
             /// </summary>
             public bool UseLightTheme { get; set; }
             /// <summary>
+            ///     Locale
+            /// </summary>
+            public string Locale { get; set; } = "en_US";
+            /// <summary>
             ///     Main window width
             /// </summary>
             public double WindowWidth { get; set; }

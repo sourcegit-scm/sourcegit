@@ -23,19 +23,19 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="Create Tag"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.CreateTag}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="New Tag At :"/>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.CreateTag.BasedOn}"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Path Width="12" x:Name="basedOnType" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Commit}"/>
             <TextBlock x:Name="basedOnDesc" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center" Text="xxx"/>
         </StackPanel>
 
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Tag Name :"/>
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.CreateTag.Name}"/>
         <TextBox Grid.Row="3" Grid.Column="1"
                  x:Name="tagName"
                  Height="24" 
-                 helpers:TextBoxHelper.Placeholder="Recommanded format ：v1.0.0-alpha">
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.CreateTag.Name.Placeholder}">
             <TextBox.Text>
                 <Binding ElementName="me" Path="TagName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -45,13 +45,13 @@
             </TextBox.Text>
         </TextBox>
 
-        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4" Content="Tag Message :"/>
+        <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4" Content="{StaticResource Text.CreateTag.Message}"/>
         <TextBox Grid.Row="4" Grid.Column="1"
                  x:Name="tagMessage"
                  Height="56"
                  Padding="2"
                  AcceptsReturn="True"
-                 helpers:TextBoxHelper.Placeholder="Optional"
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.CreateTag.Message.Placeholder}"
                  helpers:TextBoxHelper.PlaceholderBaseline="Top"/>
 
         <Grid Grid.Row="6" Grid.ColumnSpan="2">
@@ -62,8 +62,8 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Click="Start" Content="SURE" Style="{StaticResource Style.Button.AccentBordered}"/>
-            <Button Grid.Column="3" Click="Cancel" Content="CANCEL" Style="{StaticResource Style.Button.Bordered}"/>
+            <Button Grid.Column="1" Click="Start" Content="{StaticResource Text.Sure}" Style="{StaticResource Style.Button.AccentBordered}"/>
+            <Button Grid.Column="3" Click="Cancel" Content="{StaticResource Text.Cancel}" Style="{StaticResource Style.Button.Bordered}"/>
         </Grid>
     </Grid>
 </UserControl>
