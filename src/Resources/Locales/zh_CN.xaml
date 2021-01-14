@@ -359,7 +359,7 @@
     <sys:String x:Key="Text.Preference.Merger.Type">工具 ：</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Path">安装路径 ：</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Path.Placeholder">填写工具可执行文件所在位置</sys:String>
-    <sys:String x:Key="Text.Preference.Merger.Cmd">指令 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Cmd">命令行参数 ：</sys:String>
     <sys:String x:Key="Text.Preference.Dialog.GitExe">选择git.exe所在位置</sys:String>
     <sys:String x:Key="Text.Preference.Dialog.GitDir">选择仓库本地存放位置</sys:String>
     <sys:String x:Key="Text.Preference.Dialog.Merger">选择{0}所在位置</sys:String>

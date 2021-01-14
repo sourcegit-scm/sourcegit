@@ -8,7 +8,7 @@
         xmlns:app="clr-namespace:SourceGit"
         xmlns:git="clr-namespace:SourceGit.Git"
         mc:Ignorable="d"
-        Height="600" Width="500"
+        Height="560" Width="500"
         Title="{StaticResource Text.Preference}"
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 
