@@ -29,7 +29,7 @@
             </Grid.RowDefinitions>
             
             <!-- Logo -->
-            <Path Grid.Row="0" Margin="0,48,0,0" Width="72" Height="72" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
+            <Path Grid.Row="0" Margin="0,48,0,0" Width="100" Height="100" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
             
             <!-- Welcome -->
             <TextBlock Grid.Row="1" Margin="0,16" HorizontalAlignment="Center" Text="{StaticResource Text.NewPage.Title}" FontSize="28" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>

@@ -125,7 +125,7 @@
                                         Content="{Binding Title}" 
                                         Foreground="{StaticResource Brush.FG2}" FontFamily="Consolas" FontWeight="Bold"/>
 
-                                    <Button Grid.Column="3" Click="CloseTab" ToolTip="{StaticResource Text.Close}">
+                                    <Button Grid.Column="3" Click="CloseTab" ToolTip="{StaticResource Text.Close}">                                        
                                         <Path
                                             Width="8" Height="8" 
                                             Fill="{StaticResource Brush.FG1}"
@@ -139,7 +139,7 @@
                                         <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsRepo}" Value="False">
-                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Home}"/>
+                                        <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.NewPage}"/>
                                         <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG1}"/>
                                     </DataTrigger>
                                     <MultiDataTrigger>
