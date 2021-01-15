@@ -390,6 +390,7 @@ namespace SourceGit.UI {
                 sizeChange.Visibility = Visibility.Visible;
                 textChangeOptions.Visibility = Visibility.Collapsed;
                 txtSizeChangeTitle.Content = App.Text("Diff.Binary");
+                iconSizeChange.Data = FindResource("Icon.Binary") as Geometry;
                 txtNewSize.Content = App.Format("Bytes", bc.PreSize);
                 txtOldSize.Content = App.Format("Bytes", bc.Size);
             });
@@ -408,6 +409,7 @@ namespace SourceGit.UI {
                 sizeChange.Visibility = Visibility.Visible;
                 textChangeOptions.Visibility = Visibility.Collapsed;
                 txtSizeChangeTitle.Content = App.Text("Diff.LFS");
+                iconSizeChange.Data = FindResource("Icon.LFS") as Geometry;
                 txtNewSize.Content = App.Format("Bytes", newSize);
                 txtOldSize.Content = App.Format("Bytes", oldSize);
             });
