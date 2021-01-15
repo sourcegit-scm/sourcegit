@@ -753,8 +753,15 @@ namespace SourceGit.UI {
             if (grid == null) return;
 
             var menu = new ContextMenu();
+
+            var copyIcon = new Path();
+            copyIcon.Style = FindResource("Style.Icon") as Style;
+            copyIcon.Data = FindResource("Icon.Copy") as Geometry;
+            copyIcon.Width = 10;
+
             var copy = new MenuItem();
             copy.Header = App.Text("Diff.Copy");
+            copy.Icon = copyIcon;
             copy.Click += (o, ev) => {
                 var items = grid.SelectedItems;
                 if (items.Count == 0) return;

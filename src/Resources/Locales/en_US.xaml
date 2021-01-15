@@ -224,7 +224,7 @@
     <sys:String x:Key="Text.Diff.Binary.Old">OLD :</sys:String>
     <sys:String x:Key="Text.Diff.Binary.New">New :</sys:String>
     <sys:String x:Key="Text.Diff.LFS">LFS OBJECT CHANGE</sys:String>
-    <sys:String x:Key="Text.Diff.Copy">Copy Selected Lines</sys:String>
+    <sys:String x:Key="Text.Diff.Copy">Copy</sys:String>
 
     <sys:String x:Key="Text.Discard">Confirm To Discard Changes</sys:String>
     <sys:String x:Key="Text.Discard.Changes">Changes :</sys:String>
