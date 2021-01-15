@@ -594,6 +594,7 @@ namespace SourceGit.UI {
 
             var push = new MenuItem();
             push.Header = App.Format("BranchCM.Push", branch.Name);
+            push.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrack);
             push.Click += (o, e) => {
                 Push.Show(repo, branch);
                 e.Handled = true;
@@ -613,6 +614,7 @@ namespace SourceGit.UI {
                     var upstream = branch.Upstream.Substring(13);
                     var fastForward = new MenuItem();
                     fastForward.Header = App.Format("BranchCM.FastForward", upstream);
+                    fastForward.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrack);
                     fastForward.Click += (o, e) => {
                         Merge.StartDirectly(repo, upstream, branch.Name);
                         e.Handled = true;
@@ -620,6 +622,7 @@ namespace SourceGit.UI {
 
                     var pull = new MenuItem();
                     pull.Header = App.Format("BranchCM.Pull", upstream);
+                    pull.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrack);
                     pull.Click += (o, e) => {
                         Pull.Show(repo);
                         e.Handled = true;
