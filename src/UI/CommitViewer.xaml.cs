@@ -477,7 +477,13 @@ namespace SourceGit.UI {
         }
 
         private bool IsImage(string path) {
-            return path.EndsWith(".png") || path.EndsWith(".jpg") || path.EndsWith(".jpeg") || path.EndsWith(".ico") || path.EndsWith(".bmp") || path.EndsWith(".svg");
+            return path.EndsWith(".png") || 
+                path.EndsWith(".jpg") || 
+                path.EndsWith(".jpeg") || 
+                path.EndsWith(".ico") || 
+                path.EndsWith(".bmp") ||
+                path.EndsWith(".tiff") ||
+                path.EndsWith(".gif");
         }
 
         private void OnPreviewContextMenuOpening(object sender, ContextMenuEventArgs e) {
