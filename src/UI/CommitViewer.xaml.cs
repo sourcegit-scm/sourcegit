@@ -446,21 +446,6 @@ namespace SourceGit.UI {
             grid.FrozenColumnCount = 1;
             grid.ContextMenuOpening += OnPreviewContextMenuOpening;
             grid.RowStyle = FindResource("Style.DataGridRow.NoBringIntoView") as Style;
-            grid.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, (o, e) => {
-                var items = (o as DataGrid).SelectedItems;
-                if (items.Count == 0) return;
-
-                var builder = new StringBuilder();
-                foreach (var item in items) {
-                    var line = item as Git.Commit.Line;
-                    if (line == null) continue;
-
-                    builder.Append(line.Content);
-                    builder.AppendLine();
-                }
-
-                Clipboard.SetText(builder.ToString());
-            }));
 
             var colLineNumber = new DataGridTextColumn();
             colLineNumber.IsReadOnly = true;
@@ -489,6 +474,10 @@ namespace SourceGit.UI {
             grid.ItemsSource = data;
             previewEditor.Children.Add(grid);
             previewEditor.Children.Add(splitter);
+        }
+
+        private bool IsImage(string path) {
+            return path.EndsWith(".png") || path.EndsWith(".jpg") || path.EndsWith(".jpeg") || path.EndsWith(".ico") || path.EndsWith(".bmp") || path.EndsWith(".svg");
         }
 
         private void OnPreviewContextMenuOpening(object sender, ContextMenuEventArgs e) {
@@ -539,6 +528,7 @@ namespace SourceGit.UI {
 
         private async void FileTreeItemSelected(object sender, RoutedPropertyChangedEventArgs<object> e) {
             previewEditor.Children.Clear();
+            previewImage.Visibility = Visibility.Collapsed;
             maskPreviewNotSupported.Visibility = Visibility.Collapsed;
             maskRevision.Visibility = Visibility.Collapsed;
 
@@ -547,15 +537,20 @@ namespace SourceGit.UI {
 
             switch (node.CommitObject.Kind) {
             case Git.Commit.Object.Type.Blob:
-                if (repo.IsLFSFiltered(node.FilePath)) {
+                if (IsImage(node.FilePath)) {
+                    var tmp = Path.GetTempFileName();
+                    commit.SaveFileTo(repo, node.FilePath, tmp);
+                    previewImageData.Source = new BitmapImage(new Uri(tmp, UriKind.Absolute));
+                    previewImage.Visibility = Visibility.Visible;
+                } else if (repo.IsLFSFiltered(node.FilePath)) {
                     var obj = repo.GetLFSObject(commit.SHA, node.FilePath);
                     maskRevision.Visibility = Visibility.Visible;
                     iconPreviewRevision.Data = FindResource("Icon.LFS") as Geometry;
                     txtPreviewRevision.Content = "LFS SIZE:" + App.Format("Bytes", obj.Size);
                 } else {
                     await Task.Run(() => {
-                        var isBinary = false;
-                        var data = commit.GetTextFileContent(repo, node.FilePath, out isBinary);
+                        var data = new List<Git.Commit.Line>();
+                        var isBinary = commit.GetTextFileContent(repo, node.FilePath, data);
 
                         if (isBinary) {
                             Dispatcher.Invoke(() => maskPreviewNotSupported.Visibility = Visibility.Visible);

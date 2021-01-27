@@ -224,9 +224,9 @@ namespace SourceGit.Git {
         /// </summary>
         /// <param name="repo"></param>
         /// <param name="file"></param>
+        /// <param name="line"></param>
         /// <returns></returns>
-        public List<Line> GetTextFileContent(Repository repo, string file, out bool isBinary) {
-            var data = new List<Line>();
+        public bool GetTextFileContent(Repository repo, string file, List<Line> lines) {
             var binary = false;
             var count = 0;
 
@@ -240,19 +240,18 @@ namespace SourceGit.Git {
 
                     if (line.IndexOf('\0') >= 0) {
                         binary = true;
-                        data.Clear();
+                        lines.Clear();
                         return;
                     }
 
                     count++;
-                    data.Add(new Line() { No = count, Content = line });
+                    lines.Add(new Line() { No = count, Content = line });
                 });
 
                 if (errs != null) App.RaiseError(errs);
             }
 
-            isBinary = binary;
-            return data;
+            return binary;
         }
 
         /// <summary>
