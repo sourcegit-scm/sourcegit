@@ -34,6 +34,11 @@ namespace SourceGit.UI {
         public string RemoteName { get; set; }
 
         /// <summary>
+        ///     Additional parameters
+        /// </summary>
+        public string AdditionalParam { get; set; }
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         public Clone(PopupManager mgr, Action success) {
@@ -87,7 +92,7 @@ namespace SourceGit.UI {
             popup.Lock();
 
             var succ = await Task.Run(() => {
-                return Git.Repository.Clone(RemoteUri, ParentFolder, rName, repoName, popup.UpdateStatus);
+                return Git.Repository.Clone(RemoteUri, ParentFolder, rName, repoName, AdditionalParam, popup.UpdateStatus);
             });
 
             if (succ) {

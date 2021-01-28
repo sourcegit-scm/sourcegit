@@ -65,6 +65,8 @@
     <sys:String x:Key="Text.Clone.LocalName.Placeholder">Repository name. Optional.</sys:String>
     <sys:String x:Key="Text.Clone.RemoteName">Remote Name :</sys:String>
     <sys:String x:Key="Text.Clone.RemoteName.Placeholder">Remote name. Optional.</sys:String>
+    <sys:String x:Key="Text.Clone.AdditionalParam">Extra Parameters :</sys:String>
+    <sys:String x:Key="Text.Clone.AdditionalParam.Placeholder">Additional arguments to clone repository. Optional.</sys:String>
 
     <sys:String x:Key="Text.CommitViewer.Info">INFORMATION</sys:String>
     <sys:String x:Key="Text.CommitViewer.Info.Author">AUTHOR</sys:String>

@@ -412,18 +412,22 @@ namespace SourceGit.Git {
         /// </summary>
         /// <param name="url">Remote repository URL</param>
         /// <param name="folder">Folder to clone into</param>
-        /// <param name="name">Local name</param>
+        /// <param name="rName">Remote name</param>
+        /// <param name="lName">Local name</param>
+        /// <param name="extra">Additional parameters</param>
         /// <param name="onProgress"></param>
         /// <returns></returns>
-        public static bool Clone(string url, string folder, string rName, string lName, Action<string> onProgress) {
+        public static bool Clone(string url, string folder, string rName, string lName, string extra, Action<string> onProgress) {
             string RemoteName;
             if (rName != null) {
                 RemoteName = $" --origin {rName}";
             } else {
-                RemoteName = null;
+                RemoteName = "";
             }
 
-            var errs = RunCommand(folder, $"-c credential.helper=manager clone --progress --verbose {RemoteName} --recurse-submodules {url} {lName}", line => {
+            if (extra == null) extra = "";
+
+            var errs = RunCommand(folder, $"-c credential.helper=manager clone --progress --verbose {RemoteName} --recurse-submodules {extra} {url} {lName}", line => {
                 if (line != null) onProgress?.Invoke(line);
             }, true);
 

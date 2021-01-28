@@ -65,6 +65,8 @@
     <sys:String x:Key="Text.Clone.LocalName.Placeholder">本地仓库目录的名字，选填</sys:String>
     <sys:String x:Key="Text.Clone.RemoteName">远程名 ：</sys:String>
     <sys:String x:Key="Text.Clone.RemoteName.Placeholder">远程的名字，选填</sys:String>
+    <sys:String x:Key="Text.Clone.AdditionalParam">额外参数 ：</sys:String>
+    <sys:String x:Key="Text.Clone.AdditionalParam.Placeholder">其他克隆参数，选填</sys:String>
 
 	<sys:String x:Key="Text.CommitViewer.Info">基本信息</sys:String>
     <sys:String x:Key="Text.CommitViewer.Info.Author">修改者</sys:String>

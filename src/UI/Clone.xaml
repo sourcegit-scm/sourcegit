@@ -6,11 +6,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:helpers="clr-namespace:SourceGit.Helpers"
              mc:Ignorable="d" 
-             Width="500" Height="224">
+             Width="500" Height="256">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="16"/>
+            <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
@@ -68,18 +69,23 @@
                  VerticalContentAlignment="Center" 
                  Height="24" 
                  helpers:TextBoxHelper.Placeholder="{StaticResource Text.Clone.LocalName.Placeholder}"
-                 Text="{Binding LocalName, ElementName=me, Mode=TwoWay}">
-        </TextBox>
+                 Text="{Binding LocalName, ElementName=me, Mode=TwoWay}"/>
 
         <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Clone.RemoteName}"/>
         <TextBox Grid.Row="5" Grid.Column="1" 
                  VerticalContentAlignment="Center" 
                  Height="24" 
                  helpers:TextBoxHelper.Placeholder="{StaticResource Text.Clone.RemoteName.Placeholder}"
-                 Text="{Binding RemoteName, ElementName=me, Mode=TwoWay}">
-        </TextBox>
+                 Text="{Binding RemoteName, ElementName=me, Mode=TwoWay}"/>
 
-        <Grid Grid.Row="7" Grid.ColumnSpan="2">
+        <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.Clone.AdditionalParam}"/>
+        <TextBox Grid.Row="6" Grid.Column="1"
+                 VerticalAlignment="Center"
+                 Height="24"
+                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.Clone.AdditionalParam.Placeholder}"
+                 Text="{Binding AdditionalParam, ElementName=me, Mode=TwoWay}"/>
+
+        <Grid Grid.Row="8" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>
