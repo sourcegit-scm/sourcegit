@@ -594,7 +594,6 @@ namespace SourceGit.UI {
 
             var push = new MenuItem();
             push.Header = App.Format("BranchCM.Push", branch.Name);
-            push.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrack);
             push.Click += (o, e) => {
                 Push.Show(repo, branch);
                 e.Handled = true;
