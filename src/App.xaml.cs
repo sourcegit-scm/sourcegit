@@ -139,8 +139,13 @@ namespace SourceGit {
             }
 
             // Show main window
-            MainWindow = new UI.Launcher();
+            if (e.Args.Length == 1) {
+                MainWindow = new UI.Launcher(e.Args[0]);
+            } else {
+                MainWindow = new UI.Launcher(null);
+            }
             MainWindow.Show();
+
 
             // Check for update.
             if (Setting.CheckUpdate && Setting.LastCheckUpdate != DateTime.Now.DayOfYear) {

@@ -95,9 +95,15 @@ namespace SourceGit.UI {
         /// <summary>
         ///     Constructor
         /// </summary>
-        public Launcher() {
+        public Launcher(string path) {
             InitializeComponent();
-            NewTab(null, null);
+            if (path != null && App.IsGitConfigured && Git.Repository.IsValid(path)) {
+                var repo = App.Setting.FindRepository(path);
+                if (repo == null) repo = App.Setting.AddRepository(path, "");
+                Open(repo);
+            } else {
+                NewTab(null, null);
+            }            
         }
 
         /// <summary>

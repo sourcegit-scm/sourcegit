@@ -212,6 +212,8 @@ namespace SourceGit.Git {
         /// <param name="path">Local path.</param>
         /// <returns></returns>
         public static bool IsValid(string path) {
+            if (!Directory.Exists(path)) return false;
+
             var startInfo = new ProcessStartInfo();
             startInfo.FileName = App.Setting.Tools.GitExecutable;
             startInfo.Arguments = "rev-parse --git-dir";
