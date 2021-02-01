@@ -23,7 +23,7 @@
     <sys:String x:Key="Text.About">ABOUT</sys:String>
     <sys:String x:Key="Text.About.Title">SourceGit - OPEN SOURCE GIT CLIENT</sys:String>
 
-    <sys:String x:Key="Text.Apply">Apply</sys:String>
+    <sys:String x:Key="Text.Apply">Patch</sys:String>
     <sys:String x:Key="Text.Apply.Title">Apply Patch</sys:String>
     <sys:String x:Key="Text.Apply.File">Patch File :</sys:String>
     <sys:String x:Key="Text.Apply.File.Placeholder">Select .patch file to apply</sys:String>

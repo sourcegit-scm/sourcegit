@@ -62,35 +62,35 @@
                 </StackPanel>
                 
                 <!-- Common Git Options -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="6,0">
-                    <Button Click="OpenFetch" Margin="4,0">
-                        <StackPanel Orientation="Horizontal">
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Click="OpenFetch" Style="{StaticResource Style.Button.HighlightHover}">
+                        <StackPanel Orientation="Horizontal" Margin="6,0">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Fetch}"/>
-                            <Label Content="{StaticResource Text.Fetch}"/>
+                            <Label Content="{StaticResource Text.Fetch}" Margin="4,0,0,0"/>
                         </StackPanel>
                     </Button>
-                    <Button Click="OpenPull" Margin="4,0">
-                        <StackPanel Orientation="Horizontal">
+                    <Button Click="OpenPull" Style="{StaticResource Style.Button.HighlightHover}">
+                        <StackPanel Orientation="Horizontal" Margin="6,0">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}"/>
-                            <Label Content="{StaticResource Text.Pull}"/>
+                            <Label Content="{StaticResource Text.Pull}" Margin="4,0,0,0"/>
                         </StackPanel>
                     </Button>
-                    <Button Click="OpenPush" Margin="4,0">
-                        <StackPanel Orientation="Horizontal">
+                    <Button Click="OpenPush" Style="{StaticResource Style.Button.HighlightHover}">
+                        <StackPanel Orientation="Horizontal" Margin="6,0">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Push}"/>
-                            <Label Content="{StaticResource Text.Push}"/>
+                            <Label Content="{StaticResource Text.Push}" Margin="4,0,0,0"/>
                         </StackPanel>
                     </Button>
-                    <Button Click="OpenStash" Margin="4,0">
-                        <StackPanel Orientation="Horizontal">
+                    <Button Click="OpenStash" Style="{StaticResource Style.Button.HighlightHover}">
+                        <StackPanel Orientation="Horizontal" Margin="6,0">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.SaveStash}"/>
-                            <Label Content="{StaticResource Text.Stash}"/>
+                            <Label Content="{StaticResource Text.Stash}" Margin="4,0,0,0"/>
                         </StackPanel>
-                    </Button>                    
-                    <Button Click="OpenApply">
-                        <StackPanel Orientation="Horizontal">
+                    </Button>
+                    <Button Click="OpenApply" Style="{StaticResource Style.Button.HighlightHover}">
+                        <StackPanel Orientation="Horizontal" Margin="6,0">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Apply}"/>
-                            <Label Content="{StaticResource Text.Apply}"/>
+                            <Label Content="{StaticResource Text.Apply}" Margin="4,0,0,0"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>

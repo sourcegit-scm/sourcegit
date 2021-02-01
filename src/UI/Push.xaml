@@ -24,7 +24,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.Push.Local}"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" FontSize="18" Content="{StaticResource Text.Push.Title}"/>
 
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.Push.Local}"/>
         <ComboBox Grid.Row="2" Grid.Column="1"
