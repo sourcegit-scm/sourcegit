@@ -151,7 +151,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectDefaultClonePath(object sender, RoutedEventArgs e) {
-            FolderDailog.Open(App.Text("Preference.Dialog.GitDir"), path => {
+            FolderDialog.Open(App.Text("Preference.Dialog.GitDir"), path => {
                 txtGitCloneDir.Text = path;
                 App.Setting.Tools.GitDefaultCloneDir = path;
             });

@@ -42,7 +42,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OpenOrAddRepo(object sender, RoutedEventArgs e) {
-            FolderDailog.ShowDialog(App.Text("NewPage.OpenOrInitDialog"), path => {
+            FolderDialog.ShowDialog(App.Text("NewPage.OpenOrInitDialog"), path => {
                 CheckAndOpenRepo(path);
             });
         }

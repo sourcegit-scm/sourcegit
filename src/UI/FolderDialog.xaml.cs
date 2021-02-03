@@ -9,9 +9,9 @@ using System.Windows.Input;
 namespace SourceGit.UI {
 
     /// <summary>
-    ///     Interaction logic for FolderDailog.xaml
+    ///     Interaction logic for FolderDialog.xaml
     /// </summary>
-    public partial class FolderDailog : Window {
+    public partial class FolderDialog : Window {
         private Action<string> cb = null;
         private Node root = new Node("", "");
         private Node selected = null;
@@ -93,7 +93,7 @@ namespace SourceGit.UI {
         /// </summary>
         /// <param name="title"></param>
         /// <param name="cb"></param>
-        public FolderDailog(string title, Action<string> onOK) {
+        public FolderDialog(string title, Action<string> onOK) {
             InitializeComponent();
 
             // Move to center.
@@ -120,7 +120,7 @@ namespace SourceGit.UI {
         /// <param name="title"></param>
         /// <param name="onOK"></param>
         public static void Open(string title, Action<string> onOK) {
-            new FolderDailog(title, onOK).Show();
+            new FolderDialog(title, onOK).Show();
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace SourceGit.UI {
         /// <param name="onOK"></param>
         public static void Show(string title, Action<string> onOK)
         {
-            new FolderDailog(title, onOK).Show();
+            new FolderDialog(title, onOK).Show();
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace SourceGit.UI {
         /// <param name="onOK"></param>
         public static void ShowDialog(string title, Action<string> onOK)
         {
-            new FolderDailog(title, onOK).ShowDialog();
+            new FolderDialog(title, onOK).ShowDialog();
         }
 
 

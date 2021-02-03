@@ -54,7 +54,7 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectParentFolder(object sender, RoutedEventArgs e) {
-            FolderDailog.Open(App.Text("Clone.RemoteFolder.Placeholder"), path => {
+            FolderDialog.Open(App.Text("Clone.RemoteFolder.Placeholder"), path => {
                 txtParentFolder.Text = path;
             });
         }

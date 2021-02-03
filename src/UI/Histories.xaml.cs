@@ -515,7 +515,7 @@ namespace SourceGit.UI {
             var patch = new MenuItem();
             patch.Header = App.Text("CommitCM.SaveAsPatch");
             patch.Click += (o, e) => {
-                FolderDailog.Open("Save patch to ...", saveTo => {
+                FolderDialog.Open("Save patch to ...", saveTo => {
                     Repo.RunCommand($"format-patch {commit.SHA} -1 -o \"{saveTo}\"", null);
                 });
             };
