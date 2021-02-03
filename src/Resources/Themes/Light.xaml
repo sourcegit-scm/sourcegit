@@ -3,14 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="Brush.Logo" Color="#FFF05133"/>
 
-    <SolidColorBrush x:Key="Brush.TitleBar" Color="White"/>
+    <SolidColorBrush x:Key="Brush.TitleBar" Color="#FFE9E9E9"/>
     <SolidColorBrush x:Key="Brush.Window" Color="#FFF8F8F8"/>
     <SolidColorBrush x:Key="Brush.NewPageHover" Color="#1D000000"/>
     <SolidColorBrush x:Key="Brush.Popup" Color="White"/>
     <SolidColorBrush x:Key="Brush.Contents" Color="White"/>
     <SolidColorBrush x:Key="Brush.Badge" Color="#FF8F8F8F"/>
     <SolidColorBrush x:Key="Brush.CommitViewer" Color="#FFF2F2F2"/>
-    <SolidColorBrush x:Key="Brush.GroupBar" Color="#FFE8E8E8"/>
+    <SolidColorBrush x:Key="Brush.GroupBar" Color="#FFCDCDCD"/>
     <SolidColorBrush x:Key="Brush.GroupContent" Color="#FFE8E8E8"/>
     <SolidColorBrush x:Key="Brush.Decorator" Color="#FFBDBDBD"/>
     <SolidColorBrush x:Key="Brush.Conflict" Color="#FF836C2E"/>
