@@ -123,6 +123,27 @@ namespace SourceGit.UI {
             new FolderDailog(title, onOK).Show();
         }
 
+        /// <summary>
+        ///     modeless.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="onOK"></param>
+        public static void Show(string title, Action<string> onOK)
+        {
+            new FolderDailog(title, onOK).Show();
+        }
+
+        /// <summary>
+        ///     modal.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="onOK"></param>
+        public static void ShowDialog(string title, Action<string> onOK)
+        {
+            new FolderDailog(title, onOK).ShowDialog();
+        }
+
+
         #region EVENTS
         private void OnSure(object sender, RoutedEventArgs e) {
             if (selected != null) cb?.Invoke(selected.Path);
