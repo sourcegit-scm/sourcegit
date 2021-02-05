@@ -106,7 +106,11 @@ namespace SourceGit.Git {
                     branch.IsLocal = true;
                 } else if (refname.StartsWith(remotePrefix, StringComparison.Ordinal)) {
                     var name = refname.Substring(remotePrefix.Length);
-                    branch.Remote = name.Substring(0, name.IndexOf('/'));
+                    if (name.Contains("/")) {
+                        branch.Remote = name.Substring(0, name.IndexOf('/'));
+                    } else {
+                        branch.Remote = name;
+                    }
                     branch.Name = name;
                     branch.IsLocal = false;
                     remoteBranches.Add(refname);
