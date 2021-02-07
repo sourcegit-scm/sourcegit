@@ -104,7 +104,7 @@ namespace SourceGit {
             }
 
             // Try auto configure git via registry.
-            if (!IsGitConfigured) {
+            if (Setting == null || !IsGitConfigured) {
                 var root = RegistryKey.OpenBaseKey(
                     RegistryHive.LocalMachine,
                     Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
