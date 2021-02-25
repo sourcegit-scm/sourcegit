@@ -18,11 +18,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ContextMenu}">
-                    <Grid RenderTransformOrigin="12,12">
-                        
+                    <Grid>
                         <Border Background="{DynamicResource Brush.Popup}" BorderThickness="0" Margin="12">
                             <Border.Effect>
-                                <DropShadowEffect BlurRadius="12" ShadowDepth="0" Color="Black"/>
+                                <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="Black" Opacity=".6"/>
                             </Border.Effect>
                         </Border>
                         <StackPanel IsItemsHost="True" Margin="14" KeyboardNavigation.DirectionalNavigation="Cycle"/>
@@ -72,7 +71,7 @@
                     <Grid>
                         <Border Background="{DynamicResource Brush.Popup}" BorderThickness="0" Margin="12">
                             <Border.Effect>
-                                <DropShadowEffect BlurRadius="12" ShadowDepth="0" Color="Black"/>
+                                <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="Black" Opacity=".6"/>
                             </Border.Effect>
                         </Border>
 
