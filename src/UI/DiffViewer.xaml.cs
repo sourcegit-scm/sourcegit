@@ -391,8 +391,8 @@ namespace SourceGit.UI {
                 textChangeOptions.Visibility = Visibility.Collapsed;
                 txtSizeChangeTitle.Content = App.Text("Diff.Binary");
                 iconSizeChange.Data = FindResource("Icon.Binary") as Geometry;
-                txtNewSize.Content = App.Format("Bytes", bc.PreSize);
-                txtOldSize.Content = App.Format("Bytes", bc.Size);
+                txtOldSize.Content = App.Format("Bytes", bc.PreSize);
+                txtNewSize.Content = App.Format("Bytes", bc.Size);
             });
         }
 
