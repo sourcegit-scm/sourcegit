@@ -12,19 +12,19 @@
     <Style TargetType="{x:Type ContextMenu}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Grid.IsSharedSizeScope" Value="False" />
-        <Setter Property="HorizontalOffset" Value="-12"/>
-        <Setter Property="VerticalOffset" Value="-12"/>
+        <Setter Property="HorizontalOffset" Value="-4"/>
+        <Setter Property="VerticalOffset" Value="-4"/>
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ContextMenu}">
                     <Grid>
-                        <Border Background="{DynamicResource Brush.Popup}" BorderThickness="0" Margin="12">
+                        <Border Background="{DynamicResource Brush.Popup}" BorderThickness="0" Margin="4">
                             <Border.Effect>
-                                <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="Black" Opacity=".6"/>
+                                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Color="Black" Opacity=".6"/>
                             </Border.Effect>
                         </Border>
-                        <StackPanel IsItemsHost="True" Margin="14" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                        <StackPanel IsItemsHost="True" Margin="6" KeyboardNavigation.DirectionalNavigation="Cycle"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -67,15 +67,15 @@
                 <ContentPresenter Name="Icon" Grid.Column="0" Margin="6,0" VerticalAlignment="Center" ContentSource="Icon"/>
                 <ContentPresenter Name="HeadHost" Grid.Column="1" Margin="0,0,8,0" ContentSource="Header" VerticalAlignment="Center"/>
                 <Path Grid.Column="2" Width="8" Height="8" Style="{DynamicResource Style.Icon}" Data="M 0 0 L 0 7 L 4 3.5 Z"/>
-                <Popup Name="Popup" Placement="Right" HorizontalOffset="-14" VerticalOffset="-12" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
+                <Popup Name="Popup" Placement="Right" HorizontalOffset="-4" VerticalOffset="-4" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
                     <Grid>
-                        <Border Background="{DynamicResource Brush.Popup}" BorderThickness="0" Margin="12">
+                        <Border Background="{DynamicResource Brush.Popup}" BorderThickness="0" Margin="4">
                             <Border.Effect>
-                                <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="Black" Opacity=".6"/>
+                                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Color="Black" Opacity=".6"/>
                             </Border.Effect>
                         </Border>
 
-                        <ScrollViewer Margin="14" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                        <ScrollViewer Margin="6" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
                             <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
                         </ScrollViewer>
                     </Grid>

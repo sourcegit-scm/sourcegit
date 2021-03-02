@@ -852,7 +852,7 @@ namespace SourceGit.UI {
                 anchor.ContextMenu = new ContextMenu();
                 anchor.ContextMenu.PlacementTarget = anchor;
                 anchor.ContextMenu.Placement = PlacementMode.Top;
-                anchor.ContextMenu.VerticalOffset = 8;
+                anchor.ContextMenu.VerticalOffset = 0;
                 anchor.ContextMenu.StaysOpen = false;
                 anchor.ContextMenu.Focusable = true;
                 anchor.ContextMenu.MaxWidth = 500;
