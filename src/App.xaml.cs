@@ -1,10 +1,10 @@
 using Microsoft.Win32;
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -79,7 +79,7 @@ namespace SourceGit {
             var dir = Path.GetDirectoryName(settingFile);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            var data = JsonConvert.SerializeObject(Setting, Formatting.Indented);
+            var data = JsonSerializer.Serialize(Setting, new JsonSerializerOptions() { WriteIndented = true });
             File.WriteAllText(settingFile, data);
         }
 
@@ -100,7 +100,7 @@ namespace SourceGit {
             if (!File.Exists(settingFile)) {
                 Setting = new Preference();
             } else {
-                Setting = JsonConvert.DeserializeObject<Preference>(File.ReadAllText(settingFile));
+                Setting = JsonSerializer.Deserialize<Preference>(File.ReadAllText(settingFile));
             }
 
             // Try auto configure git via registry.
@@ -196,7 +196,7 @@ namespace SourceGit {
             try {
                 var web = new WebClient() { Encoding = Encoding.UTF8 };
                 var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/SourceGit/releases/latest");
-                var ver = JsonConvert.DeserializeObject<Git.Version>(raw);
+                var ver = JsonSerializer.Deserialize<Git.Version>(raw);
                 var cur = Assembly.GetExecutingAssembly().GetName().Version;
 
                 var matches = Regex.Match(ver.TagName, @"^v(\d+)\.(\d+).*");

@@ -1,5 +1,5 @@
-using Newtonsoft.Json;
 using System;
+using System.Text.Json.Serialization;
 
 namespace SourceGit.Git {
 
@@ -7,19 +7,19 @@ namespace SourceGit.Git {
     ///     Version information.
     /// </summary>
     public class Version {
-        [JsonProperty(PropertyName = "id")]
+        [JsonPropertyName("id")]
         public ulong Id { get; set; }
-        [JsonProperty(PropertyName = "tag_name")]
+        [JsonPropertyName("tag_name")]
         public string TagName { get; set; }
-        [JsonProperty(PropertyName = "target_commitish")]
+        [JsonPropertyName("target_commitish")]
         public string CommitSHA { get; set; }
-        [JsonProperty(PropertyName = "prerelease")]
+        [JsonPropertyName("prerelease")]
         public bool PreRelease { get; set; }
-        [JsonProperty(PropertyName = "name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty(PropertyName = "body")]
+        [JsonPropertyName("body")]
         public string Body { get; set; }
-        [JsonProperty(PropertyName = "created_at")]
+        [JsonPropertyName("created_at")]
         public DateTime CreatedAt { get; set; }
     }
 }
