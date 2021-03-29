@@ -151,14 +151,14 @@
                     Style="{StaticResource Style.ListView.Borderless}"
                     Background="{StaticResource Brush.GroupContent}"
                     SelectionMode="Single">
-                    <ListViewItem x:Name="historiesSwitch" Selected="SwitchHistories" IsSelected="True">
+                    <ListViewItem x:Name="historiesSwitch" Selected="SwitchHistories" IsSelected="True" Height="28">
                         <StackPanel Margin="16,0,0,0" Orientation="Horizontal">
                             <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Histories}"/>
                             <Label Margin="4,0,0,0" Content="{StaticResource Text.Histories}"/>
                         </StackPanel>
                     </ListViewItem>
 
-                    <ListViewItem x:Name="workingCopySwitch" Selected="SwitchWorkingCopy">
+                    <ListViewItem x:Name="workingCopySwitch" Selected="SwitchWorkingCopy" Height="28">
                         <Grid Margin="16,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -173,7 +173,7 @@
                         </Grid>
                     </ListViewItem>
 
-                    <ListViewItem x:Name="stashesSwitch" Selected="SwitchStashes">
+                    <ListViewItem x:Name="stashesSwitch" Selected="SwitchStashes" Height="28">
                         <Grid Margin="16,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -244,6 +244,7 @@
                                         IsChecked="{Binding IsFiltered, Mode=OneWay}"
                                         Checked="FilterChanged"
                                         Unchecked="FilterChanged"
+                                        Margin="0,0,2,0"
                                         Style="{StaticResource Style.ToggleButton.Filter}"
                                         ToolTip="{StaticResource Text.Filter}"/>
                                 </StackPanel>
@@ -332,6 +333,7 @@
                                     IsChecked="{Binding IsFiltered, Mode=OneWay}"
                                     Checked="FilterChanged"
                                     Unchecked="FilterChanged"
+                                    Margin="0,0,2,0"
                                     Style="{StaticResource Style.ToggleButton.Filter}"
                                     ToolTip="{StaticResource Text.Filter}"/>
                             </Grid>
@@ -414,7 +416,8 @@
                                         Grid.Column="2" 
                                         IsChecked="{Binding IsFiltered, Mode=TwoWay}" 
                                         Checked="FilterChanged" 
-                                        Unchecked="FilterChanged" 
+                                        Unchecked="FilterChanged"
+                                        Margin="0,0,2,0"
                                         Style="{StaticResource Style.ToggleButton.Filter}"
                                         ToolTip="{StaticResource Text.Filter}"/>
                                 </DataTemplate>
