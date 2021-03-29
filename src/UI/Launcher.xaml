@@ -21,7 +21,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Window Layout -->
-    <Border>
+    <Border BorderBrush="{StaticResource Brush.Border3}">
 
         <!-- Fix Maximize BUG -->
         <Border.Style>
@@ -29,9 +29,11 @@
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding WindowState, ElementName=me}" Value="Maximized">
                         <Setter Property="Margin" Value="{x:Static local:Launcher.MAXIMIZE_MARGIN}"/>
+                        <Setter Property="BorderThickness" Value="0"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding WindowState, ElementName=me}" Value="Normal">
                         <Setter Property="Margin" Value="0"/>
+                        <Setter Property="BorderThickness" Value="1"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>

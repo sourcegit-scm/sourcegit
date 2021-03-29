@@ -101,6 +101,7 @@
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource Style.ListViewItem.Borderless}">
                             <Setter Property="Padding" Value="0"/>
+                            <Setter Property="TextBlock.FontFamily" Value="Consolas"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
