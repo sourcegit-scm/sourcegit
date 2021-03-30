@@ -15,16 +15,18 @@
     </WindowChrome.WindowChrome>
 
     <!-- Layout Window -->
-    <Border Background="{StaticResource Brush.Window}">
+    <Border Background="{StaticResource Brush.Window}" BorderBrush="{StaticResource Brush.Border3}">
         <!-- Fix Maximize BUG -->
         <Border.Style>
             <Style TargetType="{x:Type Border}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding WindowState, ElementName=me}" Value="Maximized">
                         <Setter Property="Margin" Value="6"/>
+                        <Setter Property="BorderThickness" Value="0"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding WindowState, ElementName=me}" Value="Normal">
                         <Setter Property="Margin" Value="0"/>
+                        <Setter Property="BorderThickness" Value="1"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -103,9 +105,9 @@
 
                     <DataGrid
                         x:Name="commitList"
-                        Margin="2,0,0,0"
+                        Margin="0,0,0,0"
                         Grid.Column="0"
-                        Background="{StaticResource Brush.Contents}"
+                        Background="{StaticResource Brush.Window}"
                         BorderThickness="0"
                         SelectionMode="Single"
                         SelectionChanged="CommitSelectionChanged">
@@ -114,7 +116,7 @@
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Border BorderBrush="{StaticResource Brush.Border3}" BorderThickness="0,0,0,1" Padding="4">
+                                        <Border BorderBrush="{StaticResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4">
                                             <StackPanel Orientation="Vertical" Margin="2" MaxWidth="290">
                                                 <Grid TextBlock.FontSize="11" TextBlock.Foreground="{StaticResource Brush.FG2}">
                                                     <Grid.ColumnDefinitions>
