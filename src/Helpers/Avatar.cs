@@ -20,17 +20,14 @@ namespace SourceGit.Helpers {
         ///     Colors used in avatar
         /// </summary>
         public static Brush[] Colors = new Brush[] {
-            Brushes.DarkBlue,
             Brushes.DarkCyan,
             Brushes.DarkGoldenrod,
-            Brushes.DarkGray,
             Brushes.DarkGreen,
             Brushes.DarkKhaki,
             Brushes.DarkMagenta,
             Brushes.DarkOliveGreen,
             Brushes.DarkOrange,
             Brushes.DarkOrchid,
-            Brushes.DarkRed,
             Brushes.DarkSalmon,
             Brushes.DarkSeaGreen,
             Brushes.DarkSlateBlue,
