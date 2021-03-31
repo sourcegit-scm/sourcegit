@@ -30,8 +30,8 @@ namespace SourceGit.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OpenSource(object sender, RequestNavigateEventArgs e) {
-            Process.Start(e.Uri.AbsoluteUri);
-            //Process.Start(new ProcessStartInfo("cmd", $"/c start {e.Uri.AbsoluteUri}") { CreateNoWindow = true });
+            //Process.Start(e.Uri.AbsoluteUri);
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {e.Uri.AbsoluteUri}") { CreateNoWindow = true });
             e.Handled = true;
         }
 
