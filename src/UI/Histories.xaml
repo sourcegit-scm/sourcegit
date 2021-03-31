@@ -136,7 +136,15 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn Width="100" IsReadOnly="True" Binding="{Binding Committer.Name}" ElementStyle="{StaticResource Style.DataGridText}"/>
+                    <DataGridTemplateColumn Width="32" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <helpers:Avatar Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" User="{Binding Committer}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Width="84" IsReadOnly="True" Binding="{Binding Committer.Name}" ElementStyle="{StaticResource Style.DataGridText.NoPadding}"/>
                     <DataGridTextColumn Width="84" IsReadOnly="True" Binding="{Binding ShortSHA}" ElementStyle="{StaticResource Style.DataGridText}"/>
                     <DataGridTextColumn Width="128" IsReadOnly="True" Binding="{Binding Committer.Time}" ElementStyle="{StaticResource Style.DataGridText.NoPadding}"/>
                 </DataGrid.Columns>
@@ -154,7 +162,7 @@
             </DataGrid>
 
             <!-- Commit Graph -->
-            <Border x:Name="commitGraphContainer" Grid.Row="1" Margin="0,0,310,0" ClipToBounds="True" IsHitTestVisible="False">
+            <Border x:Name="commitGraphContainer" Grid.Row="1" Margin="0,0,342,0" ClipToBounds="True" IsHitTestVisible="False">
                 <helpers:CommitGraph 
                     x:Name="commitGraph" 
                     Width="{Binding ElementName=commitGraphContainer, Path=ActualWidth}"

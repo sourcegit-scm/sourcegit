@@ -62,11 +62,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" x:Name="authorAvatarMask"  Width="64" Height="64" HorizontalAlignment="Right" Background="Gray">
-                            <Path Style="{StaticResource Style.Icon}" Fill="White" Width="56" Height="56" Data="{StaticResource Icon.User}" VerticalAlignment="Bottom"/>
-                        </Border>
-
-                        <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Width="64" Height="64" x:Name="authorAvatar" HorizontalAlignment="Right"/>
+                        <helpers:Avatar Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Width="64" Height="64" x:Name="authorAvatar" HorizontalAlignment="Right"/>
 
                         <TextBlock Grid.Row="0" Grid.Column="1" Margin="15,0,0,0" Text="{StaticResource Text.CommitViewer.Info.Author}" Opacity=".6" Foreground="{StaticResource Brush.FG1}"/>
                         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="12,0,0,0">
@@ -89,11 +85,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" x:Name="committerAvatarMask" Width="64" Height="64" HorizontalAlignment="Right" Background="Gray">
-                            <Path Style="{StaticResource Style.Icon}" Fill="White" Width="56" Height="56" Data="{StaticResource Icon.User}" VerticalAlignment="Bottom"/>
-                        </Border>
-
-                        <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Width="64" Height="64" x:Name="committerAvatar" HorizontalAlignment="Right"/>
+                        <helpers:Avatar Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Width="64" Height="64" x:Name="committerAvatar" HorizontalAlignment="Right"/>
 
                         <TextBlock Grid.Row="0" Grid.Column="1" Margin="15,0,0,0" Text="{StaticResource Text.CommitViewer.Info.Committer}" Opacity=".6" Foreground="{StaticResource Brush.FG1}"/>
                         <StackPanel Grid.Row="1" Grid.Column="1" Margin="12,0,0,0" Orientation="Horizontal">
