@@ -493,7 +493,7 @@
             </Grid>
 
             <!-- Splitter -->
-            <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.GroupContent}"/>
+            <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border4}"/>
 
             <!-- Right -->
             <Grid Grid.Column="2">
