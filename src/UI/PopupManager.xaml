@@ -8,15 +8,9 @@
              Visibility="Collapsed">
     <Grid ClipToBounds="True">
         <Border Background="Transparent" MouseLeftButtonDown="Close"/>
-        
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="Auto" Height="Auto">
-            <Border Background="{StaticResource Brush.Popup}">
-                <Border.Effect>
-                    <DropShadowEffect ShadowDepth="1" Opacity=".5" Direction="270" BlurRadius="16"/>
-                </Border.Effect>
-            </Border>
-            
-            <Border x:Name="popupContent" Padding="8" Width="Auto" Height="Auto"/>
+
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="Auto" Height="Auto" Background="{StaticResource Brush.Popup}">
+            <Border x:Name="popupContent" Padding="8" Width="Auto" Height="Auto" BorderThickness="1,0,1,1" BorderBrush="{StaticResource Brush.Border0}"/>
 
             <Border x:Name="status" Visibility="Collapsed" Background="{StaticResource Brush.Popup}" Opacity=".9">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">

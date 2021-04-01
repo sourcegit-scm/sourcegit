@@ -53,11 +53,10 @@
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Grid.ColumnSpan="3" Height="4" VerticalAlignment="Bottom" Margin="0,0,0,-4" Background="{StaticResource Brush.TitleBar}">
-                    <Border.Effect>
-                        <DropShadowEffect ShadowDepth="1" Direction="90" Opacity=".5" Color="Black"/>
-                    </Border.Effect>
-                </Border>
+                <Rectangle Grid.Column="0" Grid.ColumnSpan="3"
+                           Height="1"
+                           VerticalAlignment="Bottom"
+                           Fill="{StaticResource Brush.Border0}"/>
 
                 <!-- Tabs -->
                 <ScrollViewer x:Name="openedTabsScroller" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" CanContentScroll="True">
@@ -67,7 +66,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabControl}">
-                                            <StackPanel Orientation="Horizontal" Margin="8,6,4,0">
+                                            <StackPanel Orientation="Horizontal" Margin="4,6,4,0">
                                                 <StackPanel Orientation="Horizontal" IsItemsHost="True" SnapsToDevicePixels="True" KeyboardNavigation.TabIndex="1"/>
                                                 <Button Margin="4,0,0,0" Click="NewTab" ToolTip="{StaticResource Text.Launcher.NewPageButton}" WindowChrome.IsHitTestVisibleInChrome="True">
                                                     <Button.Style>
@@ -169,24 +168,17 @@
                                 <Setter Property="IsSelected" Value="{Binding IsActive, Mode=TwoWay}"/>
                                 <Setter Property="Margin" Value="0"/>
                                 <Setter Property="Padding" Value="0"/>
+                                <Setter Property="ClipToBounds" Value="False"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabItem}">
                                             <Grid x:Name="Container" SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Tooltip}">
-                                                <helpers:ChromeTabShape 
-                                                    x:Name="BG" 
-                                                    Width="{Binding ElementName=Container,Path=ActualWidth}"
-                                                    Height="{Binding ElementName=Container,Path=ActualHeight}"
-                                                    Fill="Transparent">
-                                                    <helpers:ChromeTabShape.Effect>
-                                                        <DropShadowEffect ShadowDepth="1" Direction="90" Opacity=".5" Color="Black"/>
-                                                    </helpers:ChromeTabShape.Effect>
-                                                </helpers:ChromeTabShape>
-
                                                 <Border
-                                                    x:Name="Hover"
-                                                    Margin="-1,0"
-                                                    Background="Transparent"/>
+                                                    x:Name="BG"
+                                                    BorderThickness="0"
+                                                    BorderBrush="{StaticResource Brush.Border0}"
+                                                    Background="Transparent"
+                                                    CornerRadius="3,3,0,0"/>
 
                                                 <ContentPresenter 
                                                     x:Name="ContentSite"
@@ -199,13 +191,14 @@
                                                     HorizontalAlignment="Right"
                                                     Margin="0,0,-1,0"
                                                     Width="1" Height="16" 
-                                                    Fill="{StaticResource Brush.FG2}"
+                                                    Fill="{StaticResource Brush.Border2}"
                                                     Visibility="Hidden"/>
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
                                                     <Setter Property="Panel.ZIndex" Value="2"/>
-                                                    <Setter TargetName="BG" Property="Fill" Value="{StaticResource Brush.Window}"/>
+                                                    <Setter TargetName="BG" Property="Background" Value="{StaticResource Brush.Window}"/>
+                                                    <Setter TargetName="BG" Property="BorderThickness" Value="1,1,1,0"/>
                                                 </Trigger>
 
                                                 <Trigger Property="IsSelected" Value="False">

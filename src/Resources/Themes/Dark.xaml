@@ -14,11 +14,13 @@
     <SolidColorBrush x:Key="Brush.GroupContent" Color="#FF252525"/>
     <SolidColorBrush x:Key="Brush.Decorator" Color="#FF505050"/>
     <SolidColorBrush x:Key="Brush.Conflict" Color="#FFFAFAD2"/>
-    
+
+    <SolidColorBrush x:Key="Brush.Border0" Color="#FF121212"/>
     <SolidColorBrush x:Key="Brush.Border1" Color="#FF7C7C7C"/>
     <SolidColorBrush x:Key="Brush.Border2" Color="#FF404040"/>
     <SolidColorBrush x:Key="Brush.Border3" Color="#FF252525"/>
     <SolidColorBrush x:Key="Brush.Border4" Color="#FF252525"/>
+    
     <SolidColorBrush x:Key="Brush.FG1" Color="#FFF1F1F1"/>
     <SolidColorBrush x:Key="Brush.FG2" Color="#40F1F1F1"/>
     <SolidColorBrush x:Key="Brush.FG3" Color="#FF252525"/>

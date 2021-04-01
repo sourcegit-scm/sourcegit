@@ -26,17 +26,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
+            <RowDefinition Height="1"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
         <!-- Toolbar -->
         <Grid Grid.Row="0" Panel.ZIndex="100">
-            <Border Background="{StaticResource Brush.Window}" Margin="0,4,0,0">
-                <Border.Effect>
-                    <DropShadowEffect ShadowDepth="2" Direction="270" Opacity=".5" Color="Black"/>
-                </Border.Effect>
-            </Border>
-
             <Grid Background="{StaticResource Brush.Window}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -112,9 +107,11 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        
+
+        <Rectangle Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource Brush.Border0}"/>
+
         <!-- Main body -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
                 <ColumnDefinition Width="1"/>
@@ -533,6 +530,6 @@
         </Grid>
         
         <!-- Popups -->
-        <local:PopupManager x:Name="popupManager" Grid.Row="1"/>
+        <local:PopupManager x:Name="popupManager" Grid.Row="2"/>
     </Grid>
 </UserControl>
