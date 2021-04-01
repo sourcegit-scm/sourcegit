@@ -19,9 +19,25 @@ namespace SourceGit.Helpers {
     public class Avatar : Image {
 
         /// <summary>
-        ///     Colors used in avatar
+        ///     Colors used in avatar for light theme
         /// </summary>
-        public static Brush[] Colors = new Brush[] {
+        public static Brush[] LightColors = new Brush[] {
+            Brushes.LightCoral,
+            Brushes.LightGreen,
+            Brushes.LightPink,
+            Brushes.LightSeaGreen,
+            Brushes.LightSteelBlue,
+            Brushes.Gray,
+            Brushes.SkyBlue,
+            Brushes.Plum,
+            Brushes.Gold,
+            Brushes.Khaki,
+        };
+
+        /// <summary>
+        ///     Colors used in avatar for light theme
+        /// </summary>
+        public static Brush[] DarkColors = new Brush[] {
             Brushes.DarkCyan,
             Brushes.DarkGoldenrod,
             Brushes.DarkGreen,
@@ -104,7 +120,13 @@ namespace SourceGit.Helpers {
                 var chars = placeholder.ToCharArray();
                 var sum = 0;
                 foreach (var ch in chars) sum += Math.Abs(ch);
-                var brush = Colors[sum % Colors.Length];
+
+                Brush brush;
+                if (App.Setting.UI.UseLightTheme) {
+                    brush = LightColors[sum % LightColors.Length];
+                } else {
+                    brush = DarkColors[sum % DarkColors.Length];
+                }
 
                 dc.DrawRoundedRectangle(brush, null, new Rect(-Width * 0.5 + offsetX, -Height * 0.5, Width, Height), Width / 16, Height / 16);
                 dc.DrawText(formatted, new Point(formatted.Width * -0.5 + offsetX, formatted.Height * -0.5));
