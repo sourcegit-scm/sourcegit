@@ -14,7 +14,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Window Layout -->
-    <Border BorderBrush="{StaticResource}" BorderThickness="1">
+    <Border BorderBrush="{StaticResource Brush.Border0}" BorderThickness="1">
         <Grid Background="{StaticResource Brush.Window}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>

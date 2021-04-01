@@ -21,7 +21,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Window Layout -->
-    <Border BorderBrush="{StaticResource Brush.Border3}">
+    <Border BorderBrush="{StaticResource Brush.Border0}">
 
         <!-- Fix Maximize BUG -->
         <Border.Style>
@@ -178,7 +178,7 @@
                                                     BorderThickness="0"
                                                     BorderBrush="{StaticResource Brush.Border0}"
                                                     Background="Transparent"
-                                                    CornerRadius="3,3,0,0"/>
+                                                    CornerRadius="4,4,0,0"/>
 
                                                 <ContentPresenter 
                                                     x:Name="ContentSite"

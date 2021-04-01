@@ -15,7 +15,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Layout Window -->
-    <Border Background="{StaticResource Brush.Window}" BorderBrush="{StaticResource Brush.Border3}">
+    <Border Background="{StaticResource Brush.Window}" BorderBrush="{StaticResource Brush.Border0}">
         <!-- Fix Maximize BUG -->
         <Border.Style>
             <Style TargetType="{x:Type Border}">
