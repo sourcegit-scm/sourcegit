@@ -73,7 +73,7 @@
                     </Style>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="*" IsReadOnly="True">
+                    <DataGridTemplateColumn x:Name="commitGraphColumn" Width="*" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="{Binding GraphOffset, Converter={StaticResource CommitTitleMargin}}">
@@ -144,7 +144,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn Width="84" IsReadOnly="True" Binding="{Binding Committer.Name}" ElementStyle="{StaticResource Style.DataGridText.NoPadding}"/>
+                    <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding Committer.Name}" ElementStyle="{StaticResource Style.DataGridText.NoPadding}"/>
                     <DataGridTextColumn Width="84" IsReadOnly="True" Binding="{Binding ShortSHA}" ElementStyle="{StaticResource Style.DataGridText}"/>
                     <DataGridTextColumn Width="128" IsReadOnly="True" Binding="{Binding Committer.Time}" ElementStyle="{StaticResource Style.DataGridText.NoPadding}"/>
                 </DataGrid.Columns>
@@ -162,7 +162,7 @@
             </DataGrid>
 
             <!-- Commit Graph -->
-            <Border x:Name="commitGraphContainer" Grid.Row="1" Margin="0,0,342,0" ClipToBounds="True" IsHitTestVisible="False">
+            <Border x:Name="commitGraphContainer" Grid.Row="1" Width="{Binding ElementName=commitGraphColumn, Path=ActualWidth}" ClipToBounds="True" IsHitTestVisible="False" HorizontalAlignment="Left">
                 <helpers:CommitGraph 
                     x:Name="commitGraph" 
                     Width="{Binding ElementName=commitGraphContainer, Path=ActualWidth}"

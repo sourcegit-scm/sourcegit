@@ -103,6 +103,9 @@ namespace SourceGit {
                 Setting = JsonSerializer.Deserialize<Preference>(File.ReadAllText(settingFile));
             }
 
+            // Make sure avatar cache folder exists
+            if (!Directory.Exists(Helpers.Avatar.CACHE_PATH)) Directory.CreateDirectory(Helpers.Avatar.CACHE_PATH);
+
             // Try auto configure git via registry.
             if (Setting == null || !IsGitConfigured) {
                 var root = RegistryKey.OpenBaseKey(

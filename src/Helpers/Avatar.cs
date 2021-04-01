@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -37,6 +39,14 @@ namespace SourceGit.Helpers {
         };
 
         /// <summary>
+        ///     Path to cache downloaded avatars
+        /// </summary>
+        public static readonly string CACHE_PATH = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "SourceGit",
+            "avatars");
+
+        /// <summary>
         ///     User property definition.
         /// </summary>
         public static readonly DependencyProperty UserProperty = DependencyProperty.Register(
@@ -54,25 +64,14 @@ namespace SourceGit.Helpers {
         }
 
         /// <summary>
-        ///     Loading request
-        /// </summary>
-        private class Request {
-            public BitmapImage img = null;
-            public List<Avatar> targets = new List<Avatar>();
-        }
-
-        /// <summary>
-        ///     Path to cache downloaded avatars
-        /// </summary>
-        private static readonly string CACHE_PATH = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "SourceGit",
-            "avatars");
-
-        /// <summary>
         ///     Current requests.
         /// </summary>
-        private static Dictionary<string, Request> requesting = new Dictionary<string, Request>();
+        private static Dictionary<string, List<Avatar>> requesting = new Dictionary<string, List<Avatar>>();
+
+        /// <summary>
+        ///     Loaded images.
+        /// </summary>
+        private static Dictionary<string, BitmapImage> loaded = new Dictionary<string, BitmapImage>();
 
         /// <summary>
         ///     Render implementation.
@@ -112,10 +111,10 @@ namespace SourceGit.Helpers {
         /// </summary>
         private void ReloadImage(Git.User oldUser) {
             if (oldUser != null && requesting.ContainsKey(oldUser.Email)) {
-                if (requesting[oldUser.Email].targets.Count <= 1) {
+                if (requesting[oldUser.Email].Count <= 1) {
                     requesting.Remove(oldUser.Email);
                 } else {
-                    requesting[oldUser.Email].targets.Remove(this);
+                    requesting[oldUser.Email].Remove(this);
                 }
             }
 
@@ -125,8 +124,13 @@ namespace SourceGit.Helpers {
             if (User == null) return;
 
             var email = User.Email;
+            if (loaded.ContainsKey(email)) {
+                Source = loaded[email];
+                return;
+            }
+
             if (requesting.ContainsKey(email)) {
-                requesting[email].targets.Add(this);
+                requesting[email].Add(this);
                 return;
             }
 
@@ -137,36 +141,32 @@ namespace SourceGit.Helpers {
 
             string filePath = Path.Combine(CACHE_PATH, md5);
             if (File.Exists(filePath)) {
-                Source = new BitmapImage(new Uri(filePath));
+                var img = new BitmapImage(new Uri(filePath));
+                loaded.Add(email, img);
+                Source = img;
                 return;
             }
 
-            requesting.Add(email, new Request());
-            requesting[email].targets.Add(this);
+            requesting.Add(email, new List<Avatar>());
+            requesting[email].Add(this);
 
-            BitmapImage downloading = new BitmapImage(new Uri("https://www.gravatar.com/avatar/" + md5 + "?d=404"));
-            requesting[email].img = downloading;
-            downloading.DownloadCompleted += (o, e) => {
-                var owner = o as BitmapImage;
-                if (owner != null) {
-                    if (!Directory.Exists(CACHE_PATH)) Directory.CreateDirectory(CACHE_PATH);
-
-                    var encoder = new PngBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(owner));
-                    using (var fs = new FileStream(filePath, FileMode.Create)) {
-                        encoder.Save(fs);
-                    }
+            Task.Run(() => {
+                try {
+                    var agent = new WebClient();
+                    var data = agent.DownloadData("https://www.gravatar.com/avatar/" + md5 + "?d=404");
+                    //var data = agent.DownloadData("https://cdn.s.loli.top/avatar/" + md5 + "?d=404");
+                    File.WriteAllBytes(filePath, data);
 
                     if (requesting.ContainsKey(email)) {
-                        BitmapImage exists = new BitmapImage(new Uri(filePath));
-                        foreach (var one in requesting[email].targets) one.Source = exists;
-                        requesting.Remove(email);
+                        Dispatcher.Invoke(() => {
+                            var img = new BitmapImage(new Uri(filePath));
+                            loaded[email] = img;
+                            foreach (var one in requesting[email]) one.Source = img;
+                            requesting.Remove(email);
+                        });
                     }
-                }
-            };
-            downloading.DownloadFailed += (o, e) => {
-                requesting.Remove(email);
-            };
+                } catch {}                
+            });
         }
 
         /// <summary>
