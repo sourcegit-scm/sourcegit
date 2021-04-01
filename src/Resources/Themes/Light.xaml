@@ -6,7 +6,7 @@
     <SolidColorBrush x:Key="Brush.TitleBar" Color="White"/>
     <SolidColorBrush x:Key="Brush.Window" Color="#FFF8F8F8"/>
     <SolidColorBrush x:Key="Brush.NewPageHover" Color="#1D000000"/>
-    <SolidColorBrush x:Key="Brush.Popup" Color="White"/>
+    <SolidColorBrush x:Key="Brush.Popup" Color="#FFF8F8F8"/>
     <SolidColorBrush x:Key="Brush.Contents" Color="White"/>
     <SolidColorBrush x:Key="Brush.Badge" Color="#FFAFAFAF"/>
     <SolidColorBrush x:Key="Brush.CommitViewer" Color="#FFF0F0F0"/>
