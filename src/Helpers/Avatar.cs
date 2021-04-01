@@ -157,7 +157,7 @@ namespace SourceGit.Helpers {
 
             Action job = () => {
                 try {
-                    HttpWebRequest req = WebRequest.CreateHttp("https://www.gravatar.com/avatar/" + md5 + "?d=404");
+                    HttpWebRequest req = WebRequest.CreateHttp(App.Setting.UI.AvatarServer + md5 + "?d=404");
                     req.Timeout = 2000;
                     req.Method = "GET";
 

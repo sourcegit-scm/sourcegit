@@ -348,6 +348,7 @@
     <sys:String x:Key="Text.Preference.Locale">Display Language :</sys:String>
     <sys:String x:Key="Text.Preference.UseLight">Light Theme :</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">Check for Update :</sys:String>
+    <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server :</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT INSTANCE</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">Install Path :</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">Input path for git.exe</sys:String>

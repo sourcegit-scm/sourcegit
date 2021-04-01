@@ -348,6 +348,7 @@
     <sys:String x:Key="Text.Preference.Locale">显示语言 ：</sys:String>
     <sys:String x:Key="Text.Preference.UseLight">启用浅色主题 ：</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">检测更新 ：</sys:String>
+    <sys:String x:Key="Text.Preference.AvatarServer">头像服务 ：</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT配置</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">安装路径 ：</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">填写git.exe所在位置</sys:String>

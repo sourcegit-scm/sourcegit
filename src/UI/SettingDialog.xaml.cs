@@ -64,6 +64,19 @@ namespace SourceGit.UI {
         }
 
         /// <summary>
+        ///     Avatar server
+        /// </summary>
+        public class AvatarServer {
+            public string Value { get; set; }
+            public string Desc { get; set; }
+
+            public AvatarServer(string v, string d) {
+                Value = v;
+                Desc = d;
+            }
+        }
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         public SettingDialog() {
@@ -80,6 +93,13 @@ namespace SourceGit.UI {
             };
             cmbLang.ItemsSource = locales;
             cmbLang.SelectedItem = locales.Find(o => o.Value == App.Setting.UI.Locale);
+
+            var avatarServers = new List<AvatarServer>() {
+                new AvatarServer("https://www.gravatar.com/avatar/", "Gravatar官网"),
+                new AvatarServer("https://cdn.s.loli.top/avatar/", "Gravatar中国CDN"),
+            };
+            cmbAvatarServer.ItemsSource = avatarServers;
+            cmbAvatarServer.SelectedItem = avatarServers.Find(o => o.Value == App.Setting.UI.AvatarServer);
 
             int mergeType = App.Setting.Tools.MergeTool;
             var merger = Git.MergeTool.Supported[mergeType];
@@ -123,6 +143,21 @@ namespace SourceGit.UI {
             if (mode == null) return;
 
             App.Setting.UI.Locale = mode.Value;
+            App.SaveSetting();
+        }
+
+        /// <summary>
+        ///     Set avatar server.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChangeAvatarServer(object sender, SelectionChangedEventArgs e) {
+            if (e.AddedItems.Count != 1) return;
+
+            var s = e.AddedItems[0] as AvatarServer;
+            if (s == null) return;
+
+            App.Setting.UI.AvatarServer = s.Value;
             App.SaveSetting();
         }
 
