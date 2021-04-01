@@ -74,6 +74,11 @@ namespace SourceGit.Helpers {
         private static Dictionary<string, BitmapImage> loaded = new Dictionary<string, BitmapImage>();
 
         /// <summary>
+        ///     Loader to join in queue.
+        /// </summary>
+        private static Task loader = null;
+
+        /// <summary>
         ///     Render implementation.
         /// </summary>
         /// <param name="dc"></param>
@@ -150,23 +155,37 @@ namespace SourceGit.Helpers {
             requesting.Add(email, new List<Avatar>());
             requesting[email].Add(this);
 
-            Task.Run(() => {
+            Action job = () => {
                 try {
-                    var agent = new WebClient();
-                    var data = agent.DownloadData("https://www.gravatar.com/avatar/" + md5 + "?d=404");
-                    //var data = agent.DownloadData("https://cdn.s.loli.top/avatar/" + md5 + "?d=404");
-                    File.WriteAllBytes(filePath, data);
+                    HttpWebRequest req = WebRequest.CreateHttp("https://www.gravatar.com/avatar/" + md5 + "?d=404");
+                    req.Timeout = 2000;
+                    req.Method = "GET";
 
-                    if (requesting.ContainsKey(email)) {
-                        Dispatcher.Invoke(() => {
-                            var img = new BitmapImage(new Uri(filePath));
-                            loaded[email] = img;
-                            foreach (var one in requesting[email]) one.Source = img;
-                            requesting.Remove(email);
-                        });
+                    HttpWebResponse rsp = req.GetResponse() as HttpWebResponse;
+                    if (rsp.StatusCode == HttpStatusCode.OK) {
+                        using (Stream reader = rsp.GetResponseStream())
+                        using (FileStream writer = File.OpenWrite(filePath)) {
+                            reader.CopyTo(writer);
+                        }
+
+                        if (requesting.ContainsKey(email)) {
+                            Dispatcher.Invoke(() => {
+                                var img = new BitmapImage(new Uri(filePath));
+                                loaded[email] = img;
+                                foreach (var one in requesting[email]) one.Source = img;
+                            });
+                        }
                     }
-                } catch {}                
-            });
+                } catch { }
+
+                requesting.Remove(email);
+            };
+
+            if (loader != null && !loader.IsCompleted) {
+                loader = loader.ContinueWith(t => { job(); });
+            } else {
+                loader = Task.Run(job);
+            }
         }
 
         /// <summary>
