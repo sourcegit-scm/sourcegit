@@ -232,10 +232,10 @@
                         <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}"/>
                     </Button>
                     <Button Click="Minimize" Width="28" Style="{StaticResource Style.Button.HighlightHover}">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Minimize}"/>
+                        <Path Width="10" Height="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Minimize}"/>
                     </Button>
                     <Button Click="MaximizeOrRestore" Width="28" Style="{StaticResource Style.Button.HighlightHover}">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Maximize}"/>
+                        <Path Width="10" Height="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Maximize}"/>
                     </Button>
                     <Button Click="Quit" Width="28">
                         <Button.Style>
