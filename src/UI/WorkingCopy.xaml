@@ -60,9 +60,8 @@
 
                     <local:FilesDisplayModeSwitch
                         Grid.Column="0"
-                        Mode="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Mode=TwoWay}"
-                        Opacity=".4"/>
-                    <Label Grid.Column="1" Content="{StaticResource Text.WorkingCopy.Unstaged}" FontWeight="Bold" Foreground="{StaticResource Brush.FG1}" Opacity=".4"/>
+                        Mode="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Mode=TwoWay}"/>
+                    <Label Grid.Column="1" Content="{StaticResource Text.WorkingCopy.Unstaged}" FontWeight="Bold" Foreground="{StaticResource Brush.FG2}"/>
                     <Button Grid.Column="3" Click="Stage" Margin="4,0" ToolTip="{StaticResource Text.WorkingCopy.Unstaged.Stage}" Background="Transparent">
                         <Path Width="14" Height="14" Data="{StaticResource Icon.Down}" Opacity=".4"/>
                     </Button>
@@ -221,9 +220,8 @@
 
                     <local:FilesDisplayModeSwitch
                         Grid.Column="0"
-                        Mode="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Mode=TwoWay}"
-                        Opacity=".4"/>
-                    <Label Grid.Column="1" Content="{StaticResource Text.WorkingCopy.Staged}" FontWeight="Bold" Foreground="{StaticResource Brush.FG1}"  Opacity=".4"/>
+                        Mode="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Mode=TwoWay}"/>
+                    <Label Grid.Column="1" Content="{StaticResource Text.WorkingCopy.Staged}" FontWeight="Bold" Foreground="{StaticResource Brush.FG2}"/>
                     <Button Grid.Column="3" Click="Unstage" ToolTip="{StaticResource Text.WorkingCopy.Staged.Unstage}" Margin="4,0" Background="Transparent">
                         <Path Width="14" Height="14" Data="{StaticResource Icon.Up}" Opacity=".4"/>
                     </Button>
