@@ -89,19 +89,14 @@
                     <Grid Background="Transparent">
                         <Path 
                             x:Name="Icon"
-                            Width="18"
-                            Height="18"
                             Style="{DynamicResource Style.Icon}"
-                            Fill="{DynamicResource Brush.Border1}"
-                            Data="{DynamicResource Icon.Horizontal}"/>
+                            Fill="{DynamicResource Brush.FG2}"
+                            Data="{DynamicResource Icon.Vertical}"/>
                     </Grid>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Icon" Property="Data" Value="{DynamicResource Icon.Vertical}"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Icon" Property="Fill" Value="{DynamicResource Brush.FG1}"/>
+                            <Setter TargetName="Icon" Property="Data" Value="{DynamicResource Icon.Horizontal}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

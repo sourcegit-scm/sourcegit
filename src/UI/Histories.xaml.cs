@@ -584,5 +584,12 @@ namespace SourceGit.UI {
             layout.InvalidateVisual();
         }
         #endregion
+
+        #region GUIDE
+        private void OpenGuide(object sender, RoutedEventArgs e) {
+            popupGuide.IsOpen = !popupGuide.IsOpen;
+            e.Handled = true;
+        }
+        #endregion
     }
 }
