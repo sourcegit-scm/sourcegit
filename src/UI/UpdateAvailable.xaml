@@ -31,7 +31,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- LOGO -->
-                <Path Width="20" Height="20" Margin="6,-1,2,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Fetch}" Fill="{StaticResource Brush.FG1}"/>
+                <Path Width="20" Height="20" Margin="6,-1,2,0" Data="{StaticResource Icon.Fetch}" Fill="{StaticResource Brush.FG1}"/>
 
                 <!-- Title -->
                 <Label Grid.Column="1" Content="{StaticResource Text.UpdateAvailable}" FontWeight="Light"/>
@@ -48,7 +48,7 @@
                         </Style>
                     </Button.Style>
 
-                    <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
+                    <Path Width="10" Data="{StaticResource Icon.Close}"/>
                 </Button>
             </Grid>
 
@@ -70,7 +70,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Path Width="20" Height="20" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
+                    <Path Width="20" Height="20" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
                     <Label x:Name="txtRelease" FontSize="18" FontWeight="Bold"/>
                 </StackPanel>
 

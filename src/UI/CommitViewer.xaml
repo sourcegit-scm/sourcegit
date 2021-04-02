@@ -163,7 +163,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Border Grid.Column="0" Background="{StaticResource Brush.Decorator}">
-                                            <Path x:Name="Icon" Width="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
+                                            <Path x:Name="Icon" Width="8" Data="{StaticResource Icon.Branch}"/>
                                         </Border>
 
                                         <Label x:Name="Name" Grid.Column="1" Content="{Binding Name}" FontSize="11" Padding="4,0" Foreground="Black"/>
@@ -289,7 +289,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}"/>
-                        <Path Grid.Column="0" Width="14" Height="14" Fill="{StaticResource Brush.FG2}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
+                        <Path Grid.Column="0" Width="14" Height="14" Fill="{StaticResource Brush.FG2}" Data="{StaticResource Icon.Search}"/>
                         <TextBox Grid.Column="1" x:Name="txtChangeFilter" BorderThickness="0" helpers:TextBoxHelper.Placeholder="{StaticResource Text.CommitViewer.Changes.Search}" TextChanged="SearchChangeFileTextChanged"/>
                         <ToggleButton
                             Grid.Column="2" 
@@ -327,7 +327,7 @@
                                     <Border x:Name="status" Width="14" Height="14" Visibility="Collapsed" Background="{Binding Change, Converter={StaticResource StatusColorConverter}}" CornerRadius="2" Margin="0,0,4,0">
                                         <TextBlock Text="{Binding Change, Converter={StaticResource StatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </Border>
-                                    <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
+                                    <Path x:Name="icon" Width="14" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
                                     <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
                                 </StackPanel>
 
@@ -420,7 +420,7 @@
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                 <StackPanel Orientation="Horizontal" Height="24">
-                                    <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
+                                    <Path x:Name="icon" Width="14" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
                                     <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" Margin="6,0,0,0" FontSize="11"/>
                                 </StackPanel>
 
@@ -455,12 +455,12 @@
                         </ScrollViewer>
 
                         <StackPanel x:Name="maskRevision" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
-                            <Path x:Name="iconPreviewRevision" Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Submodule}" Fill="{StaticResource Brush.FG2}"/>
+                            <Path x:Name="iconPreviewRevision" Width="64" Height="64" Data="{StaticResource Icon.Submodule}" Fill="{StaticResource Brush.FG2}"/>
                             <Label x:Name="txtPreviewRevision" Margin="0,16,0,0" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
                         </StackPanel>
 
                         <StackPanel x:Name="maskPreviewNotSupported" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
-                            <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}" Fill="{StaticResource Brush.FG2}"/>
+                            <Path Width="64" Height="64" Data="{StaticResource Icon.Info}" Fill="{StaticResource Brush.FG2}"/>
                             <Label Margin="0,16,0,0" Content="{StaticResource Text.BinaryNotSupported}" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
                         </StackPanel>
                     </Grid>

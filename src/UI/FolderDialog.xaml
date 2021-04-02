@@ -33,7 +33,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- LOGO -->
-                <Path Margin="6,-1,2,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder.Open}"/>
+                <Path Margin="6,-1,2,0" Data="{StaticResource Icon.Folder.Open}"/>
 
                 <!-- Title -->
                 <Label Grid.Column="1" x:Name="txtTitle" FontWeight="Light"/>
@@ -50,7 +50,7 @@
                         </Style>
                     </Button.Style>
 
-                    <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
+                    <Path Width="10" Data="{StaticResource Icon.Close}"/>
                 </Button>
             </Grid>
             
@@ -73,7 +73,7 @@
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" Height="24">
-                                <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
+                                <Path x:Name="icon" Width="14" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
                                 <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center" Margin="6,0,0,0" FontSize="11"/>
                             </StackPanel>
 

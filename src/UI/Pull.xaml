@@ -33,7 +33,7 @@
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="20">
-                        <Path Margin="4,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Remote}"/>
+                        <Path Margin="4,0,0,0" Data="{StaticResource Icon.Remote}"/>
                         <TextBlock Text="{Binding}" Padding="8,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
@@ -47,7 +47,7 @@
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="20">
-                        <Path Margin="4,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
+                        <Path Margin="4,0,0,0" Data="{StaticResource Icon.Branch}"/>
                         <TextBlock Text="{Binding}" Padding="8,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
@@ -56,7 +56,7 @@
 
         <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{StaticResource Text.Pull.Into}"/>
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
-            <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
+            <Path Width="12" Data="{StaticResource Icon.Branch}"/>
             <TextBlock x:Name="txtInto" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
         </StackPanel>
 

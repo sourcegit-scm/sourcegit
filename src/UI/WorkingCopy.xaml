@@ -64,10 +64,10 @@
                         Opacity=".4"/>
                     <Label Grid.Column="1" Content="{StaticResource Text.WorkingCopy.Unstaged}" FontWeight="Bold" Foreground="{StaticResource Brush.FG1}" Opacity=".4"/>
                     <Button Grid.Column="3" Click="Stage" Margin="4,0" ToolTip="{StaticResource Text.WorkingCopy.Unstaged.Stage}" Background="Transparent">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Down}" Opacity=".4"/>
+                        <Path Width="14" Height="14" Data="{StaticResource Icon.Down}" Opacity=".4"/>
                     </Button>
                     <Button Grid.Column="4" Click="StageAll" Margin="4,0" ToolTip="{StaticResource Text.WorkingCopy.Unstaged.StageAll}" Background="Transparent">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.DoubleDown}" Opacity=".4"/>
+                        <Path Width="14" Height="14" Data="{StaticResource Icon.DoubleDown}" Opacity=".4"/>
                     </Button>
                 </Grid>
 
@@ -107,7 +107,7 @@
                                 <Border x:Name="status" Width="14" Height="14" Visibility="Collapsed" Background="{Binding Change, Converter={StaticResource UnstagedStatusConverter}}" CornerRadius="2" Margin="0,0,4,0">
                                     <TextBlock Text="{Binding Change, Converter={StaticResource UnstagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
                                 </Border>
-                                <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
+                                <Path x:Name="icon" Width="14" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
                                 <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
                             </StackPanel>
 
@@ -225,10 +225,10 @@
                         Opacity=".4"/>
                     <Label Grid.Column="1" Content="{StaticResource Text.WorkingCopy.Staged}" FontWeight="Bold" Foreground="{StaticResource Brush.FG1}"  Opacity=".4"/>
                     <Button Grid.Column="3" Click="Unstage" ToolTip="{StaticResource Text.WorkingCopy.Staged.Unstage}" Margin="4,0" Background="Transparent">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Up}" Opacity=".4"/>
+                        <Path Width="14" Height="14" Data="{StaticResource Icon.Up}" Opacity=".4"/>
                     </Button>
                     <Button Grid.Column="4" Click="UnstageAll" ToolTip="{StaticResource Text.WorkingCopy.Staged.UnstageAll}" Margin="4,0" Background="Transparent">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.DoubleUp}" Opacity=".4"/>
+                        <Path Width="14" Height="14" Data="{StaticResource Icon.DoubleUp}" Opacity=".4"/>
                     </Button>
                 </Grid>
 
@@ -268,7 +268,7 @@
                                 <Border x:Name="status" Width="14" Height="14" Visibility="Collapsed" Background="{Binding Change, Converter={StaticResource StagedStatusConverter}}" CornerRadius="2" Margin="0,0,4,0">
                                     <TextBlock Text="{Binding Change, Converter={StaticResource StagedStatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
                                 </Border>
-                                <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
+                                <Path x:Name="icon" Width="14" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
                                 <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
                             </StackPanel>
 
@@ -378,7 +378,7 @@
             <!-- Merge -->
             <Grid Grid.Row="0" x:Name="mergePanel" Background="{StaticResource Brush.Window}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Conflict}" Margin="0,0,0,16"/>
+                    <Path Width="64" Height="64" Data="{StaticResource Icon.Conflict}" Margin="0,0,0,16"/>
                     <Label Content="{StaticResource Text.WorkingCopy.Conflicts}" FontSize="20" HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}" Margin="0,0,0,24"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4">
                         <Button Click="UseTheirs" Style="{StaticResource Style.Button.Bordered}" Content="{StaticResource Text.WorkingCopy.UseTheirs}" Height="24"/>
@@ -423,7 +423,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Width="16" Height="16" Margin="0,0,8,0" Click="OpenCommitMessageSelector" ToolTip="{StaticResource Text.WorkingCopy.MessageHistories}">
-                    <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.List}"/>
+                    <Path Width="14" Height="14" Data="{StaticResource Icon.List}"/>
                 </Button>
 
                 <CheckBox Grid.Column="1" x:Name="chkAmend" HorizontalAlignment="Left" Content="{StaticResource Text.WorkingCopy.Amend}" Checked="StartAmend" Unchecked="EndAmend"/>

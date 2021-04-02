@@ -35,7 +35,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- LOGO -->
-                <Path Width="20" Height="20" Margin="6,-1,2,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="{StaticResource Brush.Logo}"/>
+                <Path Width="20" Height="20" Margin="6,-1,2,0" Data="{StaticResource Icon.Git}" Fill="{StaticResource Brush.Logo}"/>
 
                 <!-- Title -->
                 <Label Grid.Column="1" Content="{StaticResource Text.Preference}" FontWeight="Light"/>
@@ -52,7 +52,7 @@
                         </Style>
                     </Button.Style>
 
-                    <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
+                    <Path Width="10" Data="{StaticResource Icon.Close}"/>
                 </Button>
             </Grid>
 
@@ -138,7 +138,7 @@
                         Text="{Binding Source={x:Static app:App.Setting}, Path=Tools.GitExecutable, Mode=TwoWay}"
                         helpers:TextBoxHelper.Placeholder="{StaticResource Text.Preference.Git.Path.Placeholder}"/>
                     <Button Grid.Column="1" Width="24" Height="24" Click="SelectGitPath" Padding="0" BorderThickness="1" Style="{StaticResource Style.Button.Bordered}">
-                        <Path Width="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
+                        <Path Width="14" Data="{StaticResource Icon.Folder}"/>
                     </Button>
                 </Grid>
                 <Label Grid.Row="8" Grid.Column="0" Content="{StaticResource Text.Preference.Git.Dir}" HorizontalAlignment="Right"/>
@@ -154,7 +154,7 @@
                         Text="{Binding Source={x:Static app:App.Setting}, Path=Tools.GitDefaultCloneDir, Mode=TwoWay}"
                         helpers:TextBoxHelper.Placeholder="{StaticResource Text.Preference.Git.Dir.Placeholder}"/>
                     <Button Grid.Column="1" Width="24" Height="24" Click="SelectDefaultClonePath" Padding="0" BorderThickness="1" Style="{StaticResource Style.Button.Bordered}">
-                        <Path Width="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
+                        <Path Width="14" Data="{StaticResource Icon.Folder}"/>
                     </Button>
                 </Grid>
 
@@ -206,7 +206,7 @@
                         Text="{Binding Source={x:Static app:App.Setting}, Path=Tools.MergeExecutable, Mode=TwoWay}"
                         helpers:TextBoxHelper.Placeholder="{StaticResource Text.Preference.Merger.Path.Placeholder}"/>
                     <Button Grid.Column="1" Width="24" Height="24" Click="SelectMergeToolPath" Padding="0" BorderThickness="1" Style="{StaticResource Style.Button.Bordered}">
-                        <Path Width="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
+                        <Path Width="14" Data="{StaticResource Icon.Folder}"/>
                     </Button>
                 </Grid>
                 <Label Grid.Row="18" Grid.Column="0" Content="{StaticResource Text.Preference.Merger.Cmd}" HorizontalAlignment="Right"/>

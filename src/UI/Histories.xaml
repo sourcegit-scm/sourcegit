@@ -41,10 +41,10 @@
                 <TextBox x:Name="txtSearch" Margin="4" Height="24" Padding="0,0,22,0" helpers:TextBoxHelper.Placeholder="{StaticResource Text.Histories.Search}" PreviewKeyDown="PreviewSearchKeyDown"/>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="8,0">
                     <Button ToolTip="{StaticResource Text.Histories.SearchClear}" Click="ClearSearch">
-                        <Path Width="12" Height="12" Fill="{StaticResource Brush.FG2}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Clear}"/>
+                        <Path Width="12" Height="12" Fill="{StaticResource Brush.FG2}" Data="{StaticResource Icon.Clear}"/>
                     </Button>
                     <Button Margin="8,0,0,0" ToolTip="{StaticResource Text.Close}" Click="HideSearchBarByButton">
-                        <Path Width="12" Height="12" Fill="{StaticResource Brush.FG2}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Up}"/>
+                        <Path Width="12" Height="12" Fill="{StaticResource Brush.FG2}" Data="{StaticResource Icon.Up}"/>
                     </Button>
                 </StackPanel>
             </Grid>
@@ -94,7 +94,7 @@
                                                         </Grid.ColumnDefinitions>
 
                                                         <Border Grid.Column="0" Background="{StaticResource Brush.Decorator}">
-                                                            <Path x:Name="Icon" Width="8" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}"/>
+                                                            <Path x:Name="Icon" Width="8" Data="{StaticResource Icon.Branch}"/>
                                                         </Border>
 
                                                         <TextBlock x:Name="Name" Grid.Column="1" Text="{Binding Name}" FontSize="11" Padding="4,0" Foreground="Black" VerticalAlignment="Center" TextWrapping="NoWrap"/>
@@ -184,7 +184,7 @@
             <!-- Mask -->
             <Border x:Name="mask" Background="{StaticResource Brush.CommitViewer}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".25">
-                    <Path Width="128" Height="128" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Detail}"/>
+                    <Path Width="128" Height="128" Data="{StaticResource Icon.Detail}"/>
                     <Label x:Name="txtCounter" Visibility="Hidden" FontFamily="Consolas" Margin="0,16,0,0" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
@@ -207,7 +207,7 @@
                 <Path
                     Width="20" Height="20"
                     Margin="8,0"
-                    Style="{StaticResource Style.Icon}"
+                   
                     Data="{StaticResource Icon.Info}"
                     Fill="{StaticResource Brush.FG1}">
                     <Path.ToolTip>

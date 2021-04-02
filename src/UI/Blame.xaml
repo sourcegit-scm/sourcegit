@@ -50,7 +50,6 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
                     <Path
                         Width="20" Height="20" Margin="6,-1,2,0"
-                        Style="{StaticResource Style.Icon}" 
                         Data="{StaticResource Icon.Git}" 
                         Fill="{StaticResource Brush.Logo}"
                         WindowChrome.IsHitTestVisibleInChrome="True"
@@ -61,10 +60,10 @@
                 <!-- Options -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
                     <Button Click="Minimize" Width="32" Style="{StaticResource Style.Button.HighlightHover}">
-                        <Path Width="10" Height="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Minimize}"/>
+                        <Path Width="10" Height="10" Data="{StaticResource Icon.Minimize}"/>
                     </Button>
                     <Button Click="MaximizeOrRestore" Width="32" Style="{StaticResource Style.Button.HighlightHover}">
-                        <Path Width="10" Height="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Maximize}"/>
+                        <Path Width="10" Height="10" Data="{StaticResource Icon.Maximize}"/>
                     </Button>
                     <Button Click="Quit" Width="32">
                         <Button.Style>
@@ -77,7 +76,7 @@
                             </Style>
                         </Button.Style>
 
-                        <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
+                        <Path Width="10" Data="{StaticResource Icon.Close}"/>
                     </Button>
                 </StackPanel>
             </Grid>

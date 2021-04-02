@@ -60,7 +60,7 @@
                 </TextBox.Text>
             </TextBox>
             <Button Grid.Column="1" Width="24" Height="24" Padding="0" BorderThickness="1" Click="SelectParentFolder" Style="{StaticResource Style.Button.Bordered}">
-                <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
+                <Path Data="{StaticResource Icon.Folder}"/>
             </Button>
         </Grid>
 

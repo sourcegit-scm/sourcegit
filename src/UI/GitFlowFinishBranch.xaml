@@ -23,7 +23,7 @@
 
         <Label Grid.Row="2" Grid.Column="0" x:Name="txtBranchType" HorizontalAlignment="Right"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-            <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Branch}" Margin="4,0"/>
+            <Path Width="12" Data="{StaticResource Icon.Branch}" Margin="4,0"/>
             <TextBlock x:Name="txtBranchName" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
         </StackPanel>
 

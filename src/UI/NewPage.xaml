@@ -29,7 +29,7 @@
             </Grid.RowDefinitions>
             
             <!-- Logo -->
-            <Path Grid.Row="0" Margin="0,48,0,0" Width="100" Height="100" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
+            <Path Grid.Row="0" Margin="0,48,0,0" Width="100" Height="100" Data="{StaticResource Icon.Git}" Fill="#FFF05133"/>
             
             <!-- Welcome -->
             <TextBlock Grid.Row="1" Margin="0,16" HorizontalAlignment="Center" Text="{StaticResource Text.NewPage.Title}" FontSize="28" FontWeight="ExtraBold" Foreground="{StaticResource Brush.FG2}"/>
@@ -43,13 +43,13 @@
                 </Grid.ColumnDefinitions>
                 <Button Click="OpenOrAddRepo" Grid.Column="0" Style="{StaticResource Style.Button.Bordered}">
                     <StackPanel Orientation="Horizontal">
-                        <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
+                        <Path Data="{StaticResource Icon.Folder}"/>
                         <Label Margin="4,0,0,0" Content="{StaticResource Text.NewPage.OpenOrInit}"/>
                     </StackPanel>
                 </Button>
                 <Button Click="CloneRepo" Grid.Column="2" Style="{StaticResource Style.Button.Bordered}">
                     <StackPanel Orientation="Horizontal">
-                        <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Pull}"/>
+                        <Path Data="{StaticResource Icon.Pull}"/>
                         <Label Margin="4,0,0,0" Content="{StaticResource Text.NewPage.Clone}"/>
                     </StackPanel>
                 </Button>
@@ -122,7 +122,7 @@
                                     x:Name="icon" 
                                     Grid.Column="0" 
                                     Width="16" Height="16" 
-                                    Style="{StaticResource Style.Icon}" 
+                                    
                                     Data="{StaticResource Icon.Folder.Fill}"/>
 
                                 <StackPanel
@@ -158,7 +158,7 @@
                                     Grid.Column="2" 
                                     Width="14" Height="14" 
                                     Margin="4,0"
-                                    Style="{StaticResource Style.Icon}" 
+                                    
                                     Data="{StaticResource Icon.Bookmark}" 
                                     Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}" 
                                     Visibility="{Binding IsRepo, Converter={StaticResource BoolToCollapsed}}"/>

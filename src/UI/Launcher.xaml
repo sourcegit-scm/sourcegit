@@ -62,7 +62,7 @@
                 <!-- Tab scroller left -->
                 <Border Grid.Column="0" x:Name="tabScrollerLeft" Width="18" Height="28" BorderThickness="0,0,1,0" BorderBrush="{StaticResource Brush.Border0}" WindowChrome.IsHitTestVisibleInChrome="True">
                     <Button Click="ScrollToLeft" Margin="0" Padding="0">
-                        <Path Width="10" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.ScrollLeft}"/>
+                        <Path Width="10" Height="12" Data="{StaticResource Icon.ScrollLeft}"/>
                     </Button>
                 </Border>
 
@@ -79,12 +79,11 @@
                                                 <Button Margin="4,0,0,0" Click="NewTab" ToolTip="{StaticResource Text.Launcher.NewPageButton}" WindowChrome.IsHitTestVisibleInChrome="True">
                                                     <Button.Style>
                                                         <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
-                                                            <Setter Property="Opacity" Value="1"/>
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate>
-                                                                        <Border x:Name="newTabBG" Width="20" Height="20" BorderThickness="0" Background="Transparent" CornerRadius="2">
-                                                                            <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.NewTab}" Fill="{StaticResource Brush.FG1}"/>
+                                                                        <Border x:Name="newTabBG" Width="20" Height="20" BorderThickness="0" Background="Transparent">
+                                                                            <Path Width="14" Height="14" Data="{StaticResource Icon.NewTab}" Fill="{StaticResource Brush.FG1}"/>
                                                                         </Border>
 
                                                                         <ControlTemplate.Triggers>
@@ -124,7 +123,7 @@
                                         Grid.Column="0"
                                         Width="14" Height="14"
                                         Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}"
-                                        Style="{StaticResource Style.Icon}"
+                                       
                                         Data="{StaticResource Icon.Bookmark}"
                                         VerticalAlignment="Center"/>
 
@@ -138,7 +137,7 @@
                                         <Path
                                             Width="8" Height="8" 
                                             Fill="{StaticResource Brush.FG1}"
-                                            Style="{StaticResource Style.Icon}"
+                                           
                                             Data="{StaticResource Icon.Close}"/>                                        
                                     </Button>
                                 </Grid>
@@ -212,7 +211,7 @@
                 <!-- Tab scroller right -->
                 <Border Grid.Column="2" x:Name="tabScrollerRight" Width="18" Height="28" BorderThickness="1,0,1,0" BorderBrush="{StaticResource Brush.Border0}" WindowChrome.IsHitTestVisibleInChrome="True">
                     <Button Click="ScrollToRight" Margin="0" Padding="0">
-                        <Path Width="10" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.ScrollRight}"/>
+                        <Path Width="10" Height="12" Data="{StaticResource Icon.ScrollRight}"/>
                     </Button>
                 </Border>
 
@@ -226,16 +225,16 @@
                     Height="27"
                     WindowChrome.IsHitTestVisibleInChrome="True">
                     <Button Click="ShowPreference" Width="28" ToolTip="{StaticResource Text.Launcher.Preference}">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Preference}"/>
+                        <Path Width="14" Height="14" Data="{StaticResource Icon.Preference}"/>
                     </Button>
                     <Button Click="ShowAbout" Width="28" ToolTip="{StaticResource Text.Launcher.About}">
-                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}"/>
+                        <Path Width="14" Height="14" Data="{StaticResource Icon.Info}"/>
                     </Button>
                     <Button Click="Minimize" Width="28" Style="{StaticResource Style.Button.HighlightHover}">
-                        <Path Width="10" Height="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Minimize}"/>
+                        <Path Width="10" Height="10" Data="{StaticResource Icon.Minimize}"/>
                     </Button>
                     <Button Click="MaximizeOrRestore" Width="28" Style="{StaticResource Style.Button.HighlightHover}">
-                        <Path Width="10" Height="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Maximize}"/>
+                        <Path Width="10" Height="10" Data="{StaticResource Icon.Maximize}"/>
                     </Button>
                     <Button Click="Quit" Width="28">
                         <Button.Style>
@@ -248,7 +247,7 @@
                             </Style>
                         </Button.Style>
 
-                        <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Close}"/>
+                        <Path Width="10" Data="{StaticResource Icon.Close}"/>
                     </Button>
                 </StackPanel>
             </Grid>

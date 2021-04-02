@@ -43,7 +43,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}"/>
-                    <Path Grid.Column="0" Width="14" Height="14" Fill="{StaticResource Brush.FG2}" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Search}"/>
+                    <Path Grid.Column="0" Width="14" Height="14" Fill="{StaticResource Brush.FG2}" Data="{StaticResource Icon.Search}"/>
                     <TextBox Grid.Column="1" x:Name="txtChangeFilter" BorderThickness="0" helpers:TextBoxHelper.Placeholder="{StaticResource Text.CommitViewer.Changes.Search}" TextChanged="SearchChangeFileTextChanged"/>
                     <ToggleButton
                             Grid.Column="2" 
@@ -78,7 +78,7 @@
                                 <Border x:Name="status" Width="14" Height="14" Visibility="Collapsed" Background="{Binding Change, Converter={StaticResource StatusColorConverter}}" CornerRadius="2" Margin="0,0,4,0">
                                     <TextBlock Text="{Binding Change, Converter={StaticResource StatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10" RenderOptions.BitmapScalingMode="HighQuality"/>
                                 </Border>
-                                <Path x:Name="icon" Width="14" Style="{StaticResource Style.Icon}" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
+                                <Path x:Name="icon" Width="14" Fill="Goldenrod" Data="{StaticResource Icon.Folder.Fill}"/>
                                 <TextBlock Text="{Binding Name}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="11"/>
                             </StackPanel>
 

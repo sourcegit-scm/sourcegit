@@ -256,7 +256,6 @@ namespace SourceGit.UI {
                 bookmark.Header = App.Text("RepoCM.Bookmark");
                 for (int i = 0; i < Converters.IntToRepoColor.Colors.Length; i++) {
                     var icon = new System.Windows.Shapes.Path();
-                    icon.Style = FindResource("Style.Icon") as Style;
                     icon.Data = iconBookmark;
                     icon.Fill = Converters.IntToRepoColor.Colors[i];
                     icon.Width = 8;

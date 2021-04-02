@@ -214,7 +214,6 @@ namespace SourceGit.UI {
 
         private MenuItem GetCurrentBranchContextMenu(Git.Branch branch) {
             var icon = new Path();
-            icon.Style = FindResource("Style.Icon") as Style;
             icon.Data = FindResource("Icon.Branch") as Geometry;
             icon.VerticalAlignment = VerticalAlignment.Bottom;
             icon.Width = 10;
@@ -256,7 +255,6 @@ namespace SourceGit.UI {
 
             if (branch.Kind != Git.Branch.Type.Normal) {
                 var flowIcon = new Path();
-                flowIcon.Style = FindResource("Style.Icon") as Style;
                 flowIcon.Data = FindResource("Icon.Flow") as Geometry;
                 flowIcon.Width = 10;
 
@@ -285,7 +283,6 @@ namespace SourceGit.UI {
 
         private MenuItem GetOtherBranchContextMenu(Git.Branch current, Git.Branch branch, bool merged) {
             var icon = new Path();
-            icon.Style = FindResource("Style.Icon") as Style;
             icon.Data = FindResource("Icon.Branch") as Geometry;
             icon.VerticalAlignment = VerticalAlignment.Bottom;
             icon.Width = 10;
@@ -326,7 +323,6 @@ namespace SourceGit.UI {
 
             if (branch.Kind != Git.Branch.Type.Normal) {
                 var flowIcon = new Path();
-                flowIcon.Style = FindResource("Style.Icon") as Style;
                 flowIcon.Data = FindResource("Icon.Flow") as Geometry;
                 flowIcon.Width = 10;
 
@@ -363,7 +359,6 @@ namespace SourceGit.UI {
 
         private MenuItem GetTagContextMenu(Git.Tag tag) {
             var icon = new Path();
-            icon.Style = FindResource("Style.Icon") as Style;
             icon.Data = FindResource("Icon.Tag") as Geometry;
             icon.Width = 10;
 

@@ -9,4 +9,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
     </Style>
+
+    <!-- 修改默认样式 -->
+    <Style TargetType="{x:Type Path}" BasedOn="{StaticResource Style.Icon}"/>
 </ResourceDictionary>

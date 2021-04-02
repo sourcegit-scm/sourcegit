@@ -4,8 +4,8 @@
     <Style x:Key="Style.Button" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.FG1}"/>
-        <Setter Property="Opacity" Value="0.9"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Opacity" Value=".8"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
 
         <Setter Property="Template">

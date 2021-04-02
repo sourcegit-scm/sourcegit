@@ -24,7 +24,7 @@
 
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="{StaticResource Text.DeleteTag.Tag}"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-            <Path Width="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Tag}" Margin="4,0"/>
+            <Path Width="12" Data="{StaticResource Icon.Tag}" Margin="4,0"/>
             <TextBlock x:Name="tagName" Text="v1.0" Padding="4,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
         </StackPanel>
 

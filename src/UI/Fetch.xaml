@@ -34,7 +34,7 @@
             <ComboBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type git:Remote}">
                     <StackPanel Orientation="Horizontal" Height="20">
-                        <Path Margin="4,0,0,0" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Remote}"/>
+                        <Path Margin="4,0,0,0" Data="{StaticResource Icon.Remote}"/>
                         <TextBlock Text="{Binding Name}" Padding="8,0,0,0" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>

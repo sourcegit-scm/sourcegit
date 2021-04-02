@@ -9,7 +9,7 @@
             
             <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="0" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{DynamicResource Brush.Border1}" Background="Transparent"/>
             <Border Grid.Column="0" CornerRadius="0" Margin="1" Background="Transparent"/>
-            <Path x:Name="Arrow" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z" Fill="{DynamicResource Brush.Border1}"/>
+            <Path x:Name="Arrow" Grid.Column="1" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z" Fill="{DynamicResource Brush.Border1}"/>
         </Grid>
 
         <ControlTemplate.Triggers>
@@ -55,6 +55,9 @@
                         <Trigger SourceName="Popup" Property="AllowsTransparency" Value="true">
                             <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0" />
                             <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value=".5"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

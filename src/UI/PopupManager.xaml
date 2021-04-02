@@ -14,7 +14,7 @@
 
             <Border x:Name="status" Visibility="Collapsed" Background="{StaticResource Brush.Popup}" Margin="1,0,1,1" Opacity=".9">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Path x:Name="statusIcon" Width="48" Height="48" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
+                    <Path x:Name="statusIcon" Width="48" Height="48" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
                         <Path.RenderTransform>
                             <RotateTransform Angle="0"/>
                         </Path.RenderTransform>

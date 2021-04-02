@@ -12,7 +12,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid Width="16" Height="16" Margin="1" Background="Transparent">
-                        <Path x:Name="ExpandPath" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1,1,1,1" Fill="{DynamicResource Brush.FG1}" Data="M 4 0 L 8 4 L 4 8 Z"/>
+                        <Path x:Name="ExpandPath" HorizontalAlignment="Left" Width="8" Height="8" VerticalAlignment="Center" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG1}" Data="M 4 0 L 8 4 L 4 8 Z"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
@@ -31,16 +31,15 @@
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, Mode=OneWay, FallbackValue=Stretch, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, Mode=OneWay, FallbackValue=Center, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Padding" Value="{Binding Padding, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TreeViewItem}">
                     <StackPanel>
-                        <Border 
-                            x:Name="BG" 
-                            Background="Transparent" 
-                            BorderThickness="0" 
-                            Padding="{TemplateBinding Padding}"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <Border x:Name="BG" 
+                                Background="Transparent" 
+                                Padding="{TemplateBinding Padding}" 
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <Grid
                                 Margin="{Binding Converter={StaticResource Converter.TreeViewItemIndent}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
                                 VerticalAlignment="Stretch" 
@@ -179,8 +178,7 @@
                             BorderThickness="0"
                             CornerRadius="0"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                        <ScrollViewer Padding="{TemplateBinding Padding}"
-                                      CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                        <ScrollViewer CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
                                       Focusable="False"
                                       HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                       VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"

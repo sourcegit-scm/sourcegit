@@ -52,7 +52,7 @@
             </TextBox>
 
             <Button Grid.Column="1" Width="24" Height="24" Click="FindPatchFile" Padding="0" BorderThickness="1" Style="{StaticResource Style.Button.Bordered}">
-                <Path Width="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Folder}"/>
+                <Path Width="14" Data="{StaticResource Icon.Folder}"/>
             </Button>
         </Grid>
 

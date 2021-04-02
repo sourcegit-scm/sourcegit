@@ -37,24 +37,24 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" x:Name="orgFileNamePanel" Orientation="Horizontal">
-                        <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.File}"/>
+                        <Path Width="10" Data="{StaticResource Icon.File}"/>
                         <TextBlock x:Name="orgFileName" Margin="4,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG1}"/>
                         <TextBlock Margin="8,0" VerticalAlignment="Center" Text="→" Foreground="{StaticResource Brush.FG1}"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.File}"/>
+                        <Path Width="10" Data="{StaticResource Icon.File}"/>
                         <TextBlock x:Name="fileName" Margin="4,0" VerticalAlignment="Center" Foreground="{StaticResource Brush.FG1}"/>
-                        <Path x:Name="loading" Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Loading}"/>
+                        <Path x:Name="loading" Width="10" Data="{StaticResource Icon.Loading}"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" x:Name="textChangeOptions" Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Width="26" Click="Go2Next" ToolTip="{StaticResource Text.Diff.Next}" Background="Transparent">
-                            <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.MoveDown}"/>
+                            <Path Width="10" Data="{StaticResource Icon.MoveDown}"/>
                         </Button>
 
                         <Button Click="Go2Prev" ToolTip="{StaticResource Text.Diff.Prev}" Background="Transparent">
-                            <Path Width="10" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.MoveUp}"/>
+                            <Path Width="10" Data="{StaticResource Icon.MoveUp}"/>
                         </Button>
 
                         <ToggleButton
@@ -80,7 +80,7 @@
             <Border x:Name="sizeChange" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.Window}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <Label x:Name="txtSizeChangeTitle" Content="{StaticResource Text.Diff.Binary}" Margin="0,0,0,32" FontSize="18" FontWeight="UltraBold" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Center"/>
-                    <Path x:Name="iconSizeChange" Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Binary}" Fill="{StaticResource Brush.FG2}"/>
+                    <Path x:Name="iconSizeChange" Width="64" Height="64" Data="{StaticResource Icon.Binary}" Fill="{StaticResource Brush.FG2}"/>
                     <Grid Margin="0,16,0,0" HorizontalAlignment="Center" TextElement.FontSize="18" TextElement.FontWeight="UltraBold">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="32"/>
@@ -102,14 +102,14 @@
 
             <Border x:Name="noChange" Grid.Row="1" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
-                    <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Check}"/>
+                    <Path Width="64" Height="64" Data="{StaticResource Icon.Check}"/>
                     <Label Margin="0,8,0,0" Content="{StaticResource Text.Diff.NoChange}" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
             <Border x:Name="mask" Grid.RowSpan="2" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".2">
-                    <Path Width="64" Height="64" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Diff}"/>
+                    <Path Width="64" Height="64" Data="{StaticResource Icon.Diff}"/>
                     <Label Margin="0,8,0,0" Content="{StaticResource Text.Diff.Welcome}" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>

@@ -757,7 +757,6 @@ namespace SourceGit.UI {
             var menu = new ContextMenu();
 
             var copyIcon = new Path();
-            copyIcon.Style = FindResource("Style.Icon") as Style;
             copyIcon.Data = FindResource("Icon.Copy") as Geometry;
             copyIcon.Width = 10;
 

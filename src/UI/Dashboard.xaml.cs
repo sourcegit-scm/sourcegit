@@ -666,7 +666,6 @@ namespace SourceGit.UI {
                 menu.Items.Add(new Separator());
 
                 var flowIcon = new System.Windows.Shapes.Path();
-                flowIcon.Style = FindResource("Style.Icon") as Style;
                 flowIcon.Data = FindResource("Icon.Flow") as Geometry;
                 flowIcon.Width = 10;
 
@@ -720,13 +719,11 @@ namespace SourceGit.UI {
             var remoteBranches = repo.RemoteBranches();
             if (remoteBranches.Count > 0) {
                 var trackingIcon = new System.Windows.Shapes.Path();
-                trackingIcon.Style = FindResource("Style.Icon") as Style;
                 trackingIcon.Data = FindResource("Icon.Branch") as Geometry;
                 trackingIcon.VerticalAlignment = VerticalAlignment.Bottom;
                 trackingIcon.Width = 10;
 
                 var currentTrackingIcon = new System.Windows.Shapes.Path();
-                currentTrackingIcon.Style = FindResource("Style.Icon") as Style;
                 currentTrackingIcon.Data = FindResource("Icon.Check") as Geometry;
                 currentTrackingIcon.VerticalAlignment = VerticalAlignment.Center;
                 currentTrackingIcon.Width = 10;
