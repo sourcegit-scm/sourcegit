@@ -411,6 +411,9 @@
     <sys:String x:Key="Text.Conflict.Revert">检测到回滚提交冲突！</sys:String>
     <sys:String x:Key="Text.Conflict.Merge">检测到分支合并冲突！</sys:String>
 
+    <sys:String x:Key="Text.Waiting.UpdateSubmodule">等待子模块更新完成...</sys:String>
+    <sys:String x:Key="Text.Waiting.Staging">等待暂存完成 ...</sys:String>
+
     <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
 	<sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>
     <sys:String x:Key="Text.MissingBash">无法找到bash.exe，请确保其在git.exe同目录中！</sys:String>

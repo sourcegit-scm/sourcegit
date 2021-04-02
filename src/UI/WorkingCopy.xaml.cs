@@ -336,8 +336,8 @@ namespace SourceGit.UI {
 
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.Stage");
-                stage.Click += async (o, e) => {
-                    await Task.Run(() => Repo.Stage(node.FilePath));
+                stage.Click += (o, e) => {
+                    Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage(node.FilePath));
                     e.Handled = true;
                 };
 
@@ -408,8 +408,8 @@ namespace SourceGit.UI {
 
                 var stage = new MenuItem();
                 stage.Header = App.Format("FileCM.StageMulti", changes.Count);
-                stage.Click += async (o, e) => {
-                    await Task.Run(() => Repo.Stage(files.ToArray()));
+                stage.Click += (o, e) => {
+                    Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage(files.ToArray()));
                     e.Handled = true;
                 };
 
@@ -478,8 +478,8 @@ namespace SourceGit.UI {
 
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.Stage");
-                stage.Click += async (o, e) => {
-                    await Task.Run(() => Repo.Stage(change.Path));
+                stage.Click += (o, e) => {
+                    Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage(change.Path));
                     e.Handled = true;
                 };
 
@@ -551,8 +551,8 @@ namespace SourceGit.UI {
 
                 var stage = new MenuItem();
                 stage.Header = App.Format("FileCM.StageMulti", changes.Count);
-                stage.Click += async (o, e) => {                    
-                    await Task.Run(() => Repo.Stage(files.ToArray()));
+                stage.Click += (o, e) => {                    
+                    Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage(files.ToArray()));
                     e.Handled = true;
                 };
 
@@ -596,7 +596,7 @@ namespace SourceGit.UI {
             ev.Handled = true;
         }
 
-        private async void Stage(object sender, RoutedEventArgs e) {
+        private void Stage(object sender, RoutedEventArgs e) {
             var files = new List<string>();
 
             if (App.Setting.UI.UnstageFileDisplayMode != Preference.FilesDisplayMode.Tree) {
@@ -614,11 +614,11 @@ namespace SourceGit.UI {
             }
 
             if (files.Count == 0) return;
-            await Task.Run(() => Repo.Stage(files.ToArray()));
+            Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage(files.ToArray()));
         }
 
-        private async void StageAll(object sender, RoutedEventArgs e) {
-            await Task.Run(() => Repo.Stage());
+        private void StageAll(object sender, RoutedEventArgs e) {
+            Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage());
         }
         #endregion
 

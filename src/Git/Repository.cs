@@ -655,16 +655,25 @@ namespace SourceGit.Git {
         public void Stage(params string[] files) {
             isWatcherDisabled = true;
 
-            var args = "add";
             if (files == null || files.Length == 0) {
-                args += " .";
+                var errs = RunCommand("add .", null);
+                if (errs != null) App.RaiseError(errs);
             } else {
-                args += " --";
-                foreach (var file in files) args += $" \"{file}\"";
-            }
+                for (int i = 0; i < files.Length; i += 10) {
+                    var args = "add --";
+                    var maxIdx = i + 10;
 
-            var errs = RunCommand(args, null);
-            if (errs != null) App.RaiseError(errs);
+                    for (int j = i; j < files.Length && j < maxIdx; j++) {
+                        args += $" \"{files[j]}\"";
+                    }
+
+                    var errs = RunCommand(args, null);
+                    if (errs != null) {
+                        App.RaiseError(errs);
+                        break;
+                    }
+                }
+            }
 
             OnWorkingCopyChanged?.Invoke();
             isWatcherDisabled = false;
@@ -677,14 +686,25 @@ namespace SourceGit.Git {
         public void Unstage(params string[] files) {
             isWatcherDisabled = true;
 
-            var args = "reset";
-            if (files != null && files.Length > 0) {
-                args += " --";
-                foreach (var file in files) args += $" \"{file}\"";
-            }
+            if (files == null || files.Length == 0) {
+                var errs = RunCommand("reset", null);
+                if (errs != null) App.RaiseError(errs);
+            } else {
+                for (int i = 0; i < files.Length; i += 10) {
+                    var args = "reset --";
+                    var maxIdx = i + 10;
 
-            var errs = RunCommand(args, null);
-            if (errs != null) App.RaiseError(errs);
+                    for (int j = i; j < files.Length && j < maxIdx; j++) {
+                        args += $" \"{files[j]}\"";
+                    }
+
+                    var errs = RunCommand(args, null);
+                    if (errs != null) {
+                        App.RaiseError(errs);
+                        break;
+                    }
+                }
+            }
 
             OnWorkingCopyChanged?.Invoke();
             isWatcherDisabled = false;

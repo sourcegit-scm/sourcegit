@@ -991,7 +991,7 @@ namespace SourceGit.UI {
         }
 
         private void UpdateSubmodule(object sender, RoutedEventArgs e) {
-            Waiting.Show(repo, () => repo.UpdateSubmodule());
+            Waiting.Show(repo, "Text.Waiting.UpdateSubmodule", () => repo.UpdateSubmodule());
         }
 
         private void SubmoduleLostFocus(object sender, RoutedEventArgs e) {

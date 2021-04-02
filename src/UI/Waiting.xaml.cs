@@ -20,11 +20,14 @@ namespace SourceGit.UI {
         ///     Show this dialog.
         /// </summary>
         /// <param name="repo"></param>
+        /// <param name="tip"></param>
         /// <param name="job"></param>
-        public static void Show(Git.Repository repo, Action job) {
+        public static void Show(Git.Repository repo, string tipKey, Action job) {
             var dialog = new Waiting();
-            var popup = repo.GetPopupManager();
+            var tip = dialog.FindResource(tipKey) as string;
+            if (tip != null) dialog.txtTip.Text = tip;
 
+            var popup = repo.GetPopupManager();
             popup?.Show(dialog);
             popup?.Lock();
             Task.Run(() => {

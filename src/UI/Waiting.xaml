@@ -5,4 +5,5 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="160" d:DesignWidth="500" Height="200" Width="500">
+    <TextBlock x:Name="txtTip" Text="WAITING ..." HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" FontWeight="Bold" FontSize="16" Foreground="{StaticResource Brush.FG1}"/>
 </UserControl>
