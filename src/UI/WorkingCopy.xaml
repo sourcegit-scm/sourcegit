@@ -418,6 +418,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Width="16" Height="16" Margin="0,0,8,0" Click="OpenCommitMessageSelector" ToolTip="{StaticResource Text.WorkingCopy.MessageHistories}">
@@ -426,8 +427,15 @@
 
                 <CheckBox Grid.Column="1" x:Name="chkAmend" HorizontalAlignment="Left" Content="{StaticResource Text.WorkingCopy.Amend}" Checked="StartAmend" Unchecked="EndAmend"/>
 
-                <Button Grid.Column="3" Height="26" Click="Commit" Style="{StaticResource Style.Button.AccentBordered}" Content="{StaticResource Text.WorkingCopy.Commit}"/>
-                <Button Grid.Column="4" x:Name="btnCommitAndPush" Height="26" Click="CommitAndPush" Style="{StaticResource Style.Button.Bordered}" Content="{StaticResource Text.WorkingCopy.CommitAndPush}" Margin="8,0,0,0"/>
+                <!-- Loading tip -->
+                <Path x:Name="iconCommiting" Grid.Column="3" Visibility="Collapsed" Margin="8,0" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
+                    <Path.RenderTransform>
+                        <RotateTransform Angle="0"/>
+                    </Path.RenderTransform>
+                </Path>
+                
+                <Button Grid.Column="4" Height="26" Click="Commit" Style="{StaticResource Style.Button.AccentBordered}" Content="{StaticResource Text.WorkingCopy.Commit}"/>
+                <Button Grid.Column="5" x:Name="btnCommitAndPush" Height="26" Click="CommitAndPush" Style="{StaticResource Style.Button.Bordered}" Content="{StaticResource Text.WorkingCopy.CommitAndPush}" Margin="8,0,0,0"/>
             </Grid>
         </Grid>
     </Grid>

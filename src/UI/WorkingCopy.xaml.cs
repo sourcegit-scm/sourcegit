@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace SourceGit.UI {
 
@@ -914,7 +915,7 @@ namespace SourceGit.UI {
             }
         }
 
-        private void Commit(object sender, RoutedEventArgs e) {
+        private async void Commit(object sender, RoutedEventArgs e) {
             foreach (var c in UnstagedListData) {
                 if (c.IsConflit) {
                     App.RaiseError("You have unsolved conflicts in your working copy!");
@@ -933,10 +934,15 @@ namespace SourceGit.UI {
             txtCommitMsg.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtCommitMsg)) return;
 
-            Waiting.Show(Repo, "Text.Waiting.Commit", () => {
-                bool succ = Repo.DoCommit(CommitMessage, amend);
-                if (succ) Dispatcher.Invoke(ClearMessage);
-            });
+            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
+            anim.RepeatBehavior = RepeatBehavior.Forever;
+            iconCommiting.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
+            iconCommiting.Visibility = Visibility.Visible;
+
+            bool succ = await Task.Run(() => Repo.DoCommit(CommitMessage, amend));
+            if (succ) Dispatcher.Invoke(ClearMessage);
+            iconCommiting.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+            iconCommiting.Visibility = Visibility.Collapsed;
         }
 
         private async void CommitAndPush(object sender, RoutedEventArgs e) {

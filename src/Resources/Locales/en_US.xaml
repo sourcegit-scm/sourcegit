@@ -413,7 +413,6 @@
 
     <sys:String x:Key="Text.Waiting.UpdateSubmodule">WAITING SUBMOUDLE UPDATE COMPLETE...</sys:String>
     <sys:String x:Key="Text.Waiting.Staging">WAITING STAGE COMPLETE...</sys:String>
-    <sys:String x:Key="Text.Waiting.Commit">WAITING COMMIT COMPLETE ...</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured.\nPlease to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>
