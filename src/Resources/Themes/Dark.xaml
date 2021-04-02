@@ -10,8 +10,7 @@
     <SolidColorBrush x:Key="Brush.Contents" Color="#FF1B1B1B"/>
     <SolidColorBrush x:Key="Brush.Badge" Color="#FF8F8F8F"/>
     <SolidColorBrush x:Key="Brush.CommitViewer" Color="#FF222222"/>
-    <SolidColorBrush x:Key="Brush.GroupBar" Color="#FF303030"/>
-    <SolidColorBrush x:Key="Brush.GroupContent" Color="#FF252525"/>
+    <SolidColorBrush x:Key="Brush.SideBar" Color="#FF252525"/>
     <SolidColorBrush x:Key="Brush.Decorator" Color="#FF505050"/>
     <SolidColorBrush x:Key="Brush.Conflict" Color="#FFFAFAD2"/>
 

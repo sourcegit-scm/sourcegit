@@ -119,7 +119,7 @@
             </Grid.ColumnDefinitions>
             
             <!-- Left panel -->
-            <Grid Grid.Column="0" x:Name="main">
+            <Grid Grid.Column="0" x:Name="main" Background="{StaticResource Brush.SideBar}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
@@ -129,7 +129,6 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="1"/>
                     <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -139,14 +138,13 @@
                 </Grid.Resources>
                 
                 <!-- WORKSPACE -->
-                <Border Grid.Row="0" Background="{StaticResource Brush.GroupBar}">
+                <Border Grid.Row="0">
                     <Label Margin="4,0,0,0" Content="{StaticResource Text.Dashboard.Workspace}" Style="{StaticResource Style.Label.GroupHeader}" />
                 </Border>
                 <ListView
                     Grid.Row="1"
                     x:Name="workspace"
                     Style="{StaticResource Style.ListView.Borderless}"
-                    Background="{StaticResource Brush.GroupContent}"
                     SelectionMode="Single">
                     <ListViewItem x:Name="historiesSwitch" Selected="SwitchHistories" IsSelected="True" Height="28">
                         <StackPanel Margin="16,0,0,0" Orientation="Horizontal">
@@ -187,7 +185,7 @@
                 </ListView>
                 
                 <!-- LOCAL BRANCHES -->
-                <Grid Grid.Row="2" Background="{StaticResource Brush.GroupBar}">
+                <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="16"/>
@@ -208,7 +206,6 @@
                     x:Name="localBranchTree"
                     Padding="0"
                     FontFamily="Consolas"
-                    Background="{StaticResource Brush.GroupContent}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     LostFocus="TreeLostFocus"
@@ -272,7 +269,7 @@
                 </TreeView>
                 
                 <!-- REMOTES -->
-                <Grid Grid.Row="4" Background="{StaticResource Brush.GroupBar}">
+                <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="20"/>
@@ -288,7 +285,6 @@
                     x:Name="remoteBranchTree"                    
                     Padding="0"
                     FontFamily="Consolas"
-                    Background="{StaticResource Brush.GroupContent}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     SelectedItemChanged="RemoteBranchSelected"
@@ -360,8 +356,7 @@
                     x:Name="tagListToggle" 
                     Grid.Row="6" 
                     Style="{StaticResource Style.ToggleButton.Expender}"
-                    IsChecked="{Binding Path=ExpandTags, ElementName=me, Mode=TwoWay}"
-                    Background="{StaticResource Brush.GroupBar}">
+                    IsChecked="{Binding Path=ExpandTags, ElementName=me, Mode=TwoWay}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -380,7 +375,6 @@
                     Visibility="{Binding ElementName=tagListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
                     RowHeight="24"
                     Height="200"
-                    Background="{StaticResource Brush.GroupContent}"
                     LostFocus="TagLostFocus"
                     SelectionChanged="TagSelectionChanged"
                     ContextMenuOpening="TagContextMenuOpening"
@@ -423,15 +417,12 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Rectangle Grid.Row="8" Fill="{StaticResource Brush.GroupContent}" Height="1"/>
-
                 <!-- SUBMODULES -->
                 <ToggleButton
                     x:Name="submoduleListToggle" 
-                    Grid.Row="9" 
+                    Grid.Row="8" 
                     Style="{StaticResource Style.ToggleButton.Expender}"
-                    IsChecked="False"
-                    Background="{StaticResource Brush.GroupBar}">
+                    IsChecked="False">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -455,7 +446,6 @@
                     Visibility="{Binding ElementName=submoduleListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
                     RowHeight="24"
                     Height="100"
-                    Background="{StaticResource Brush.GroupContent}"
                     LostFocus="SubmoduleLostFocus"
                     ContextMenuOpening="SubmoduleContextMenuOpening"                    
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
