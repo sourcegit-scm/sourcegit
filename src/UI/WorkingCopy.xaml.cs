@@ -914,7 +914,7 @@ namespace SourceGit.UI {
             }
         }
 
-        private async void Commit(object sender, RoutedEventArgs e) {
+        private void Commit(object sender, RoutedEventArgs e) {
             foreach (var c in UnstagedListData) {
                 if (c.IsConflit) {
                     App.RaiseError("You have unsolved conflicts in your working copy!");
@@ -933,8 +933,10 @@ namespace SourceGit.UI {
             txtCommitMsg.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtCommitMsg)) return;
 
-            bool succ = await Task.Run(() => Repo.DoCommit(CommitMessage, amend));
-            if (succ) ClearMessage();
+            Waiting.Show(Repo, "Text.Waiting.Commit", () => {
+                bool succ = Repo.DoCommit(CommitMessage, amend);
+                if (succ) Dispatcher.Invoke(ClearMessage);
+            });
         }
 
         private async void CommitAndPush(object sender, RoutedEventArgs e) {
