@@ -441,7 +441,7 @@
                     </Grid>
                 </ToggleButton>
                 <DataGrid
-                    Grid.Row="10"
+                    Grid.Row="9"
                     x:Name="submoduleList"
                     Visibility="{Binding ElementName=submoduleListToggle, Path=IsChecked, Converter={StaticResource Bool2Collapsed}}"
                     RowHeight="24"
