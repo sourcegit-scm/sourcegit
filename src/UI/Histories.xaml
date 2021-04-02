@@ -208,7 +208,7 @@
                     Width="20" Height="20"
                     Margin="8,0"
                     Style="{StaticResource Style.Icon}"
-                    Data="{StaticResource Icon.Help}"
+                    Data="{StaticResource Icon.Info}"
                     Fill="{StaticResource Brush.FG1}">
                     <Path.ToolTip>
                         <StackPanel Orientation="Vertical" TextElement.FontFamily="Consolas">
