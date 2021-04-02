@@ -45,6 +45,7 @@
             <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24"/>
+                    <RowDefinition Height="1"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -70,8 +71,10 @@
                     </Button>
                 </Grid>
 
+                <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource Brush.Border0}"/>
+
                 <TreeView 
-                    Grid.Row="1" 
+                    Grid.Row="2" 
                     x:Name="unstagedTree"
                     ItemsSource="{Binding ElementName=me, Path=UnstagedTreeData, IsAsync=True}"
                     Background="{StaticResource Brush.Contents}"
@@ -126,7 +129,7 @@
                 </TreeView>
 
                 <DataGrid
-                    Grid.Row="1"
+                    Grid.Row="2"
                     x:Name="unstagedList"               
                     ItemsSource="{Binding ElementName=me, Path=UnstagedListData, IsAsync=True}"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Converter={StaticResource FilesDisplayModeToList}}"
@@ -197,12 +200,13 @@
             </Grid>
 
             <!-- Splitter -->
-            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
 
             <!-- Staged changes -->
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24"/>
+                    <RowDefinition Height="1"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -228,8 +232,10 @@
                     </Button>
                 </Grid>
 
+                <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource Brush.Border0}"/>
+
                 <TreeView
-                    Grid.Row="1" 
+                    Grid.Row="2" 
                     x:Name="stageTree"
                     ItemsSource="{Binding ElementName=me, Path=StagedTreeData, IsAsync=False}"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Converter={StaticResource FilesDisplayModeToTree}}"
@@ -284,7 +290,7 @@
                 </TreeView>
 
                 <DataGrid
-                    Grid.Row="1"
+                    Grid.Row="2"
                     x:Name="stageList"                    
                     ItemsSource="{Binding ElementName=me, Path=StagedListData, IsAsync=False}"
                     RowHeight="24"
@@ -356,7 +362,7 @@
         </Grid>
 
         <!-- Splitter -->
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border3}"/>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
 
         <!-- Right -->
         <Grid Grid.Column="2" Margin="8">

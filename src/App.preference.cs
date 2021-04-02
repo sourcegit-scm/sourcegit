@@ -55,7 +55,7 @@ namespace SourceGit {
             /// <summary>
             ///     Base URL to get avatar
             /// </summary>
-            public string AvatarServer { get; set; } = "https://www.gravatar.com/avatar";
+            public string AvatarServer { get; set; } = "https://www.gravatar.com/avatar/";
             /// <summary>
             ///     Main window width
             /// </summary>

@@ -490,7 +490,7 @@
             </Grid>
 
             <!-- Splitter -->
-            <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border4}"/>
+            <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
 
             <!-- Right -->
             <Grid Grid.Column="2">

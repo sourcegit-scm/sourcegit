@@ -171,7 +171,7 @@
         </Grid>
 
         <!-- Split -->
-        <GridSplitter x:Name="splitter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.CommitViewer}"/>
+        <GridSplitter x:Name="splitter" Background="{StaticResource Brush.Border0}"/>
 
         <!-- Detail for selected commit -->
         <Grid x:Name="commitDetailPanel" Background="{StaticResource Brush.CommitViewer}">

@@ -320,9 +320,11 @@ namespace SourceGit.UI {
         #region TAB_SCROLL
         private void OpenedTabsSizeChanged(object sender, SizeChangedEventArgs e) {
             if (openedTabs.ActualWidth > openedTabsColumn.ActualWidth) {
-                openedTabsOpts.Visibility = Visibility.Visible;
+                tabScrollerLeft.Visibility = Visibility.Visible;
+                tabScrollerRight.Visibility = Visibility.Visible;
             } else {
-                openedTabsOpts.Visibility = Visibility.Collapsed;
+                tabScrollerLeft.Visibility = Visibility.Collapsed;
+                tabScrollerRight.Visibility = Visibility.Collapsed;
             }
         }
 

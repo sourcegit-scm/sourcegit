@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="Brush.Logo" Color="#FFF05133"/>
 
-    <SolidColorBrush x:Key="Brush.TitleBar" Color="#FF151515"/>
+    <SolidColorBrush x:Key="Brush.TitleBar" Color="#FF1F1F1F"/>
     <SolidColorBrush x:Key="Brush.Window" Color="#FF252525"/>
     <SolidColorBrush x:Key="Brush.NewPageHover" Color="#FF404040"/>
     <SolidColorBrush x:Key="Brush.Popup" Color="#FF2B2B2B"/>
@@ -15,7 +15,7 @@
     <SolidColorBrush x:Key="Brush.Decorator" Color="#FF505050"/>
     <SolidColorBrush x:Key="Brush.Conflict" Color="#FFFAFAD2"/>
 
-    <SolidColorBrush x:Key="Brush.Border0" Color="#FF121212"/>
+    <SolidColorBrush x:Key="Brush.Border0" Color="#FF101010"/>
     <SolidColorBrush x:Key="Brush.Border1" Color="#FF7C7C7C"/>
     <SolidColorBrush x:Key="Brush.Border2" Color="#FF404040"/>
     <SolidColorBrush x:Key="Brush.Border3" Color="#FF252525"/>

@@ -17,7 +17,7 @@
 
     <!-- Enable WindowChrome Feature -->
     <WindowChrome.WindowChrome>
-        <WindowChrome UseAeroCaptionButtons="False" CornerRadius="0" CaptionHeight="32" ResizeBorderThickness="1"/>
+        <WindowChrome UseAeroCaptionButtons="False" CornerRadius="0" CaptionHeight="28" ResizeBorderThickness="1"/>
     </WindowChrome.WindowChrome>
 
     <!-- Window Layout -->
@@ -42,31 +42,39 @@
         <!-- Window Content -->
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="32"/>
+                <RowDefinition Height="28"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition x:Name="openedTabsColumn" Width="*"/>
-                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
 
-                <Rectangle Grid.Column="0" Grid.ColumnSpan="3"
+                <Rectangle Grid.Column="0" Grid.ColumnSpan="4"
                            Height="1"
                            VerticalAlignment="Bottom"
                            Fill="{StaticResource Brush.Border0}"/>
 
+                <!-- Tab scroller left -->
+                <Border Grid.Column="0" x:Name="tabScrollerLeft" Width="18" Height="28" BorderThickness="0,0,1,0" BorderBrush="{StaticResource Brush.Border0}" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button Click="ScrollToLeft" Margin="0" Padding="0">
+                        <Path Width="10" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.ScrollLeft}"/>
+                    </Button>
+                </Border>
+
                 <!-- Tabs -->
-                <ScrollViewer x:Name="openedTabsScroller" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" CanContentScroll="True">
+                <ScrollViewer x:Name="openedTabsScroller" Grid.Column="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" CanContentScroll="True">
                     <TabControl x:Name="openedTabs" Padding="0" SnapsToDevicePixels="True" ItemsSource="{Binding ElementName=me, Path=Tabs}" SizeChanged="OpenedTabsSizeChanged">
                         <TabControl.Style>
                             <Style TargetType="{x:Type TabControl}">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabControl}">
-                                            <StackPanel Orientation="Horizontal" Margin="4,6,4,0">
+                                            <StackPanel Orientation="Horizontal" Margin="0">
                                                 <StackPanel Orientation="Horizontal" IsItemsHost="True" SnapsToDevicePixels="True" KeyboardNavigation.TabIndex="1"/>
                                                 <Button Margin="4,0,0,0" Click="NewTab" ToolTip="{StaticResource Text.Launcher.NewPageButton}" WindowChrome.IsHitTestVisibleInChrome="True">
                                                     <Button.Style>
@@ -124,21 +132,18 @@
                                         x:Name="Title"
                                         Grid.Column="1" 
                                         Content="{Binding Title}" 
-                                        Foreground="{StaticResource Brush.FG2}" FontFamily="Consolas" FontWeight="Bold"/>
+                                        Foreground="{StaticResource Brush.FG1}" FontFamily="Consolas" FontWeight="Bold"/>
 
-                                    <Button Grid.Column="3" Click="CloseTab" ToolTip="{StaticResource Text.Close}">                                        
+                                    <Button Grid.Column="3" Click="CloseTab" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{StaticResource Text.Close}" Style="{StaticResource Style.Button.HighlightHover}">
                                         <Path
                                             Width="8" Height="8" 
                                             Fill="{StaticResource Brush.FG1}"
                                             Style="{StaticResource Style.Icon}"
-                                            Data="{StaticResource Icon.Close}"/>
+                                            Data="{StaticResource Icon.Close}"/>                                        
                                     </Button>
                                 </Grid>
 
                                 <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                        <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG1}"/>
-                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding IsRepo}" Value="False">
                                         <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.NewPage}"/>
                                         <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG1}"/>
@@ -150,13 +155,6 @@
                                         </MultiDataTrigger.Conditions>
                                         <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Git}"/>
                                         <Setter TargetName="Icon" Property="Fill" Value="{StaticResource Brush.FG1}"/>
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding IsActive}" Value="False"/>
-                                            <Condition Binding="{Binding ElementName=BG, Path=IsMouseOver}" Value="True"/>
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter TargetName="Title" Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                                     </MultiDataTrigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>
@@ -175,36 +173,29 @@
                                             <Grid x:Name="Container" SnapsToDevicePixels="True" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="{Binding Tooltip}">
                                                 <Border
                                                     x:Name="BG"
-                                                    BorderThickness="0"
+                                                    BorderThickness="0,0,1,0"
                                                     BorderBrush="{StaticResource Brush.Border0}"
-                                                    Background="Transparent"
-                                                    CornerRadius="4,4,0,0"/>
+                                                    Background="Transparent"/>
 
                                                 <ContentPresenter 
                                                     x:Name="ContentSite"
                                                     VerticalAlignment="Center"
                                                     ContentSource="Header"
-                                                    RecognizesAccessKey="True"/>
-
-                                                <Rectangle
-                                                    x:Name="Splitter"
-                                                    HorizontalAlignment="Right"
-                                                    Margin="0,0,-1,0"
-                                                    Width="1" Height="16" 
-                                                    Fill="{StaticResource Brush.Border2}"
-                                                    Visibility="Hidden"/>
+                                                    RecognizesAccessKey="True"
+                                                    Opacity=".5"/>
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Panel.ZIndex" Value="2"/>
                                                     <Setter TargetName="BG" Property="Background" Value="{StaticResource Brush.Window}"/>
-                                                    <Setter TargetName="BG" Property="BorderThickness" Value="1,1,1,0"/>
+                                                    <Setter TargetName="ContentSite" Property="Opacity" Value="1"/>
                                                 </Trigger>
-
-                                                <Trigger Property="IsSelected" Value="False">
-                                                    <Setter Property="Panel.ZIndex" Value="-1"/>
-                                                    <Setter TargetName="Splitter" Property="Visibility" Value="Visible"/>
-                                                </Trigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                        <Condition Property="IsSelected" Value="False"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="ContentSite" Property="Opacity" Value=".9"/>
+                                                </MultiTrigger>                                                
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </Setter.Value>
@@ -218,52 +209,35 @@
                     </TabControl>
                 </ScrollViewer>
 
-                <!-- Tab scroller -->
-                <StackPanel x:Name="openedTabsOpts" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal" Height="28" Margin="4,0,0,0" WindowChrome.IsHitTestVisibleInChrome="True">
-                    <Button Click="ScrollToLeft">
-                        <Path Width="10" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.ScrollLeft}"/>
-                    </Button>
-                    <Button Click="ScrollToRight">
+                <!-- Tab scroller right -->
+                <Border Grid.Column="2" x:Name="tabScrollerRight" Width="18" Height="28" BorderThickness="1,0,1,0" BorderBrush="{StaticResource Brush.Border0}" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button Click="ScrollToRight" Margin="0" Padding="0">
                         <Path Width="10" Height="12" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.ScrollRight}"/>
                     </Button>
-                </StackPanel>
+                </Border>
 
                 <!-- Window Command -->
                 <StackPanel
-                    Grid.Column="2"
+                    Grid.Column="3"
                     Margin="32,0,0,0"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
-                    Height="32"
+                    VerticalAlignment="Top"
+                    Height="27"
                     WindowChrome.IsHitTestVisibleInChrome="True">
-                    <Button Click="ShowPreference" Width="24" ToolTip="{StaticResource Text.Launcher.Preference}">
-                        <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Preference}"/>
+                    <Button Click="ShowPreference" Width="28" ToolTip="{StaticResource Text.Launcher.Preference}">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Preference}"/>
                     </Button>
-                    <Rectangle Width="1" Height="18" Margin="6,0" VerticalAlignment="Center" Fill="{StaticResource Brush.Border1}"/>
-                    <Button Click="ShowAbout" Width="24" ToolTip="{StaticResource Text.Launcher.About}">
-                        <Path Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}"/>
+                    <Button Click="ShowAbout" Width="28" ToolTip="{StaticResource Text.Launcher.About}">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Info}"/>
                     </Button>
-                    <Rectangle Width="1" Height="18" Margin="6,0" VerticalAlignment="Center" Fill="{StaticResource Brush.Border1}"/>
-                    <Button Click="Minimize" Width="32" Style="{StaticResource Style.Button.HighlightHover}">
-                        <Path Style="{StaticResource Style.WindowControlIcon}" Data="{StaticResource Icon.Minimize}"/>
+                    <Button Click="Minimize" Width="28" Style="{StaticResource Style.Button.HighlightHover}">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Minimize}"/>
                     </Button>
-                    <Button Click="MaximizeOrRestore" Width="32" Style="{StaticResource Style.Button.HighlightHover}">
-                        <Path>
-                            <Path.Style>
-                                <Style TargetType="{x:Type Path}" BasedOn="{StaticResource Style.WindowControlIcon}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding WindowState, ElementName=me}" Value="Maximized">
-                                            <Setter Property="Data" Value="{StaticResource Icon.Restore}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding WindowState, ElementName=me}" Value="Normal">
-                                            <Setter Property="Data" Value="{StaticResource Icon.Maximize}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Path.Style>
-                        </Path>
+                    <Button Click="MaximizeOrRestore" Width="28" Style="{StaticResource Style.Button.HighlightHover}">
+                        <Path Width="14" Height="14" Style="{StaticResource Style.Icon}" Data="{StaticResource Icon.Maximize}"/>
                     </Button>
-                    <Button Click="Quit" Width="32">
+                    <Button Click="Quit" Width="28">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style.Button.HighlightHover}">
                                 <Style.Triggers>

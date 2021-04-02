@@ -27,12 +27,14 @@
             <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24"/>
+                    <RowDefinition Height="1"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Label Content="{StaticResource Text.Stashes.Stashes}" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
+                <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource Brush.Border0}"/>
                 <ListView
-                    Grid.Row="1"
+                    Grid.Row="2"
                     x:Name="stashList"
                     Background="{StaticResource Brush.Contents}" BorderThickness="0"
                     SelectedIndex="-1"
@@ -67,12 +69,13 @@
             </Grid>
 
             <!-- Splitter -->
-            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
 
             <!-- Changed file in this stash -->
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24"/>
+                    <RowDefinition Height="1"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -86,9 +89,11 @@
                     <Label Grid.Column="1" Content="{StaticResource Text.Stashes.Changes.Tip}" Foreground="{StaticResource Brush.FG2}" FontSize="10"/>
                 </Grid>
 
+                <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource Brush.Border0}"/>
+
                 <ListView 
                     x:Name="changeList" 
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Background="{StaticResource Brush.Contents}" BorderThickness="0"
                     SelectedIndex="-1"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -125,7 +130,7 @@
         </Grid>
 
         <!-- Splitter -->
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border3}"/>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
 
         <!-- Right Panel -->
         <local:DiffViewer Grid.Column="2" x:Name="diff" Padding="8"/>

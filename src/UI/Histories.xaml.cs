@@ -554,7 +554,7 @@ namespace SourceGit.UI {
 
             if (App.Setting.UI.MoveCommitViewerRight) {
                 layout.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star), MinWidth = 200 });
-                layout.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2) });
+                layout.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1) });
                 layout.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star), MinWidth = 200 });
 
                 Grid.SetRow(commitListPanel, 0);
@@ -563,9 +563,14 @@ namespace SourceGit.UI {
                 Grid.SetColumn(commitListPanel, 0);
                 Grid.SetColumn(splitter, 1);
                 Grid.SetColumn(commitDetailPanel, 2);
+
+                splitter.HorizontalAlignment = HorizontalAlignment.Center;
+                splitter.VerticalAlignment = VerticalAlignment.Stretch;
+                splitter.Width = 1;
+                splitter.Height = double.NaN;
             } else {
                 layout.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star), MinHeight = 100 });
-                layout.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(2) });
+                layout.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1) });
                 layout.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star), MinHeight = 100 });
 
                 Grid.SetRow(commitListPanel, 0);
@@ -574,6 +579,11 @@ namespace SourceGit.UI {
                 Grid.SetColumn(commitListPanel, 0);
                 Grid.SetColumn(splitter, 0);
                 Grid.SetColumn(commitDetailPanel, 0);
+
+                splitter.HorizontalAlignment = HorizontalAlignment.Stretch;
+                splitter.VerticalAlignment = VerticalAlignment.Center;
+                splitter.Width = double.NaN;
+                splitter.Height = 1;
             }
 
             layout.InvalidateVisual();
