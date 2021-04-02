@@ -15,16 +15,18 @@
     </WindowChrome.WindowChrome>
 
     <!-- Window Content -->
-    <Border Background="{StaticResource Brush.Window}">
+    <Border Background="{StaticResource Brush.Border0}" BorderBrush="{StaticResource Brush.Border0}">
         <!-- Fix Maximize BUG -->
         <Border.Style>
             <Style TargetType="{x:Type Border}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding WindowState, ElementName=me}" Value="Maximized">
                         <Setter Property="Margin" Value="6"/>
+                        <Setter Property="BorderThickness" Value="0"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding WindowState, ElementName=me}" Value="Normal">
                         <Setter Property="Margin" Value="0"/>
+                        <Setter Property="BorderThickness" Value="1"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -188,7 +190,7 @@
             <local:CommitViewer x:Name="commitViewer" Grid.Row="3" Background="{StaticResource Brush.CommitViewer}"/>
             
             <!-- Options Bar -->
-            <Grid Grid.Row="5">
+            <Grid Grid.Row="5" Background="{StaticResource Brush.CommitViewer}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="80"/>

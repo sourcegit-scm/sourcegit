@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace SourceGit.UI {
@@ -990,8 +991,12 @@ namespace SourceGit.UI {
             AddSubmodule.Show(repo);
         }
 
-        private void UpdateSubmodule(object sender, RoutedEventArgs e) {
-            Waiting.Show(repo, "Text.Waiting.UpdateSubmodule", () => repo.UpdateSubmodule());
+        private async void UpdateSubmodule(object sender, RoutedEventArgs e) {
+            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
+            anim.RepeatBehavior = RepeatBehavior.Forever;
+            iconUpdateSubmodule.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
+            await Task.Run(() => repo.UpdateSubmodule());
+            iconUpdateSubmodule.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
         }
 
         private void SubmoduleLostFocus(object sender, RoutedEventArgs e) {

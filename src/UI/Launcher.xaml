@@ -6,7 +6,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:source="clr-namespace:SourceGit"
         xmlns:local="clr-namespace:SourceGit.UI"
-        xmlns:helpers="clr-namespace:SourceGit.Helpers"
         xmlns:converters="clr-namespace:SourceGit.Converters"
         mc:Ignorable="d"
         MinWidth="800" MinHeight="600"
@@ -21,7 +20,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Window Layout -->
-    <Border BorderBrush="{StaticResource Brush.Border0}">
+    <Border BorderBrush="{StaticResource Brush.Border0}" Background="{StaticResource Brush.Border0}">
 
         <!-- Fix Maximize BUG -->
         <Border.Style>
@@ -110,11 +109,11 @@
 
                         <TabControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid x:Name="BG" MinWidth="80" Margin="8,0" Background="Transparent">
+                                <Grid x:Name="BG" Margin="8,0" Background="Transparent">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*" MinWidth="6"/>
+                                        <ColumnDefinition Width="4"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 

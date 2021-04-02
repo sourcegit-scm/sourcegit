@@ -26,12 +26,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
-            <RowDefinition Height="1"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
         <!-- Toolbar -->
-        <Grid Grid.Row="0" Panel.ZIndex="100">
+        <Border Grid.Row="0" Panel.ZIndex="100" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,0,1">
             <Grid Background="{StaticResource Brush.Window}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -106,15 +105,13 @@
                     </Button>
                 </StackPanel>
             </Grid>
-        </Grid>
-
-        <Rectangle Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource Brush.Border0}"/>
+        </Border>
 
         <!-- Main body -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
-                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="1" MaxWidth="1"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
@@ -436,7 +433,11 @@
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Submodule}"/>
                         </Button>
                         <Button Grid.Column="3" Click="UpdateSubmodule" ToolTip="{StaticResource Text.Dashboard.Submodules.Update}">
-                            <Path Width="14" Height="14" Data="{StaticResource Icon.Loading}"/>
+                            <Path x:Name="iconUpdateSubmodule" Width="14" Height="14" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
+                                <Path.RenderTransform>
+                                    <RotateTransform Angle="0"/>
+                                </Path.RenderTransform>
+                            </Path>
                         </Button>
                     </Grid>
                 </ToggleButton>
@@ -480,7 +481,7 @@
             </Grid>
 
             <!-- Splitter -->
-            <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
 
             <!-- Right -->
             <Grid Grid.Column="2">

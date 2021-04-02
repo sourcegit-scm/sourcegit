@@ -411,9 +411,6 @@
     <sys:String x:Key="Text.Conflict.Revert">Revert merge request detected! Press 'Abort' to restore original HEAD</sys:String>
     <sys:String x:Key="Text.Conflict.Merge">Merge request detected! Press 'Abort' to restore original HEAD</sys:String>
 
-    <sys:String x:Key="Text.Waiting.UpdateSubmodule">WAITING SUBMOUDLE UPDATE COMPLETE...</sys:String>
-    <sys:String x:Key="Text.Waiting.Staging">WAITING STAGE COMPLETE...</sys:String>
-
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured.\nPlease to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>
     <sys:String x:Key="Text.MissingBash">Can NOT locate bash.exe. Make sure bash.exe exists under the same folder with git.exe</sys:String>

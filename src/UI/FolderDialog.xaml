@@ -14,8 +14,8 @@
     </WindowChrome.WindowChrome>
 
     <!-- Window Layout -->
-    <Border Background="{StaticResource Brush.Window}" BorderThickness="1" BorderBrush="{StaticResource Brush.Border0}">
-        <Grid>
+    <Border Background="{StaticResource Brush.Border0}" BorderThickness="1" BorderBrush="{StaticResource Brush.Border0}">
+        <Grid Background="{StaticResource Brush.Window}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="32"/>
@@ -61,7 +61,7 @@
             </StackPanel>
             
             <!-- File system tree -->
-            <Border Grid.Row="2" Margin="4" Background="{StaticResource Brush.Contents}" BorderBrush="{StaticResource Brush.Border1}" BorderThickness="1">
+            <Border Grid.Row="2" Margin="4" Background="{StaticResource Brush.Contents}" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="1">
                 <TreeView x:Name="treePath" FontFamily="Consolas" PreviewMouseWheel="OnTreeMouseWheel" SelectedItemChanged="OnTreeSelectedChanged">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource Style.TreeView.ItemContainerStyle}">

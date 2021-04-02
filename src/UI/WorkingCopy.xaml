@@ -29,7 +29,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
-            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="1" MaxWidth="1"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -45,7 +45,6 @@
             <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24"/>
-                    <RowDefinition Height="1"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -53,27 +52,35 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
+                    <Border Grid.Column="0" Grid.ColumnSpan="6" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,0,1"/>
+
                     <local:FilesDisplayModeSwitch
                         Grid.Column="0"
                         Mode="{Binding Source={x:Static source:App.Setting}, Path=UI.UnstageFileDisplayMode, Mode=TwoWay}"/>
                     <Label Grid.Column="1" Content="{StaticResource Text.WorkingCopy.Unstaged}" FontWeight="Bold" Foreground="{StaticResource Brush.FG2}"/>
-                    <Button Grid.Column="3" Click="Stage" Margin="4,0" ToolTip="{StaticResource Text.WorkingCopy.Unstaged.Stage}" Background="Transparent">
+
+                    <Path x:Name="iconStaging" Grid.Column="2" Visibility="Collapsed" Margin="8,0" Data="{StaticResource Icon.Loading}" RenderTransformOrigin=".5,.5">
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="0"/>
+                        </Path.RenderTransform>
+                    </Path>
+
+                    <Button Grid.Column="4" Click="Stage" Margin="4,0" ToolTip="{StaticResource Text.WorkingCopy.Unstaged.Stage}" Background="Transparent">
                         <Path Width="14" Height="14" Data="{StaticResource Icon.Down}" Opacity=".4"/>
                     </Button>
-                    <Button Grid.Column="4" Click="StageAll" Margin="4,0" ToolTip="{StaticResource Text.WorkingCopy.Unstaged.StageAll}" Background="Transparent">
+                    <Button Grid.Column="5" Click="StageAll" Margin="4,0" ToolTip="{StaticResource Text.WorkingCopy.Unstaged.StageAll}" Background="Transparent">
                         <Path Width="14" Height="14" Data="{StaticResource Icon.DoubleDown}" Opacity=".4"/>
                     </Button>
                 </Grid>
 
-                <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource Brush.Border0}"/>
-
                 <TreeView 
-                    Grid.Row="2" 
+                    Grid.Row="1" 
                     x:Name="unstagedTree"
                     ItemsSource="{Binding ElementName=me, Path=UnstagedTreeData, IsAsync=True}"
                     Background="{StaticResource Brush.Contents}"
@@ -205,7 +212,6 @@
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24"/>
-                    <RowDefinition Height="1"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -217,6 +223,8 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Grid.ColumnSpan="5" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,0,1"/>
 
                     <local:FilesDisplayModeSwitch
                         Grid.Column="0"
@@ -230,10 +238,8 @@
                     </Button>
                 </Grid>
 
-                <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource Brush.Border0}"/>
-
                 <TreeView
-                    Grid.Row="2" 
+                    Grid.Row="1" 
                     x:Name="stageTree"
                     ItemsSource="{Binding ElementName=me, Path=StagedTreeData, IsAsync=False}"
                     Visibility="{Binding Source={x:Static source:App.Setting}, Path=UI.StagedFileDisplayMode, Converter={StaticResource FilesDisplayModeToTree}}"
@@ -360,7 +366,7 @@
         </Grid>
 
         <!-- Splitter -->
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
+        <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
 
         <!-- Right -->
         <Grid Grid.Column="2" Margin="8">

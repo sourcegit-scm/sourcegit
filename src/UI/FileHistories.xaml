@@ -15,7 +15,7 @@
     </WindowChrome.WindowChrome>
 
     <!-- Layout Window -->
-    <Border Background="{StaticResource Brush.Window}" BorderBrush="{StaticResource Brush.Border0}">
+    <Border Background="{StaticResource Brush.Border0}" BorderBrush="{StaticResource Brush.Border0}">
         <!-- Fix Maximize BUG -->
         <Border.Style>
             <Style TargetType="{x:Type Border}">
@@ -83,7 +83,7 @@
 
             <!-- Body -->
             <Border Grid.Row="1" ClipToBounds="True">
-                <Grid>
+                <Grid Background="{StaticResource Brush.Window}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
                         <ColumnDefinition Width="*"/>
@@ -93,7 +93,7 @@
                         x:Name="commitList"
                         Margin="0,0,0,0"
                         Grid.Column="0"
-                        Background="{StaticResource Brush.Window}"
+                        Background="{StaticResource Brush.Contents}"
                         BorderThickness="0"
                         SelectionMode="Single"
                         SelectionChanged="CommitSelectionChanged">

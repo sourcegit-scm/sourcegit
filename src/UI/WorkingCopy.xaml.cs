@@ -338,7 +338,7 @@ namespace SourceGit.UI {
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.Stage");
                 stage.Click += (o, e) => {
-                    Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage(node.FilePath));
+                    DoStage(node.FilePath);
                     e.Handled = true;
                 };
 
@@ -410,7 +410,7 @@ namespace SourceGit.UI {
                 var stage = new MenuItem();
                 stage.Header = App.Format("FileCM.StageMulti", changes.Count);
                 stage.Click += (o, e) => {
-                    Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage(files.ToArray()));
+                    DoStage(files.ToArray());
                     e.Handled = true;
                 };
 
@@ -480,7 +480,7 @@ namespace SourceGit.UI {
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.Stage");
                 stage.Click += (o, e) => {
-                    Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage(change.Path));
+                    DoStage(change.Path);
                     e.Handled = true;
                 };
 
@@ -552,8 +552,8 @@ namespace SourceGit.UI {
 
                 var stage = new MenuItem();
                 stage.Header = App.Format("FileCM.StageMulti", changes.Count);
-                stage.Click += (o, e) => {                    
-                    Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage(files.ToArray()));
+                stage.Click += (o, e) => {
+                    DoStage(files.ToArray());
                     e.Handled = true;
                 };
 
@@ -614,12 +614,25 @@ namespace SourceGit.UI {
                 }
             }
 
-            if (files.Count == 0) return;
-            Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage(files.ToArray()));
+            if (files.Count > 0) DoStage(files.ToArray());
         }
 
         private void StageAll(object sender, RoutedEventArgs e) {
-            Waiting.Show(Repo, "Text.Waiting.Staging", () => Repo.Stage());
+            DoStage();
+        }
+
+        private void DoStage(params string[] files) {
+            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
+            anim.RepeatBehavior = RepeatBehavior.Forever;
+            iconStaging.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
+            iconStaging.Visibility = Visibility.Visible;
+            Task.Run(() => {
+                Repo.Stage(files);
+                Dispatcher.Invoke(() => {
+                    iconStaging.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+                    iconStaging.Visibility = Visibility.Collapsed;
+                });
+            });
         }
         #endregion
 
@@ -964,7 +977,13 @@ namespace SourceGit.UI {
             txtCommitMsg.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtCommitMsg)) return;
 
+            DoubleAnimation anim = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(1));
+            anim.RepeatBehavior = RepeatBehavior.Forever;
+            iconCommiting.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, anim);
+            iconCommiting.Visibility = Visibility.Visible;
             bool succ = await Task.Run(() => Repo.DoCommit(CommitMessage, amend));
+            iconCommiting.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+            iconCommiting.Visibility = Visibility.Collapsed;
             if (!succ) return;
 
             ClearMessage();
