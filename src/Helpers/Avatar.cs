@@ -190,15 +190,20 @@ namespace SourceGit.Helpers {
                             reader.CopyTo(writer);
                         }
 
-                        if (requesting.ContainsKey(email)) {
-                            Dispatcher.Invoke(() => {
-                                var img = new BitmapImage(new Uri(filePath));
-                                loaded[email] = img;
+                        Dispatcher.Invoke(() => {
+                            var img = new BitmapImage(new Uri(filePath));
+                            loaded.Add(email, img);
+
+                            if (requesting.ContainsKey(email)) {
                                 foreach (var one in requesting[email]) one.Source = img;
-                            });
-                        }
+                            }
+                        });
+                    } else {
+                        loaded.Add(email, null);
                     }
-                } catch { }
+                } catch {
+                    loaded.Add(email, null);
+                }
 
                 requesting.Remove(email);
             };
