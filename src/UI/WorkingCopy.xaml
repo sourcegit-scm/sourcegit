@@ -392,7 +392,6 @@
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 helpers:TextBoxHelper.Placeholder="{StaticResource Text.WorkingCopy.CommitMessageTip}"
                 helpers:TextBoxHelper.PlaceholderBaseline="Top"
-                GotFocus="CommitMsgGotFocus"
                 PreviewMouseWheel="CommitMsgPreviewMouseWheel">
                 <TextBox.Text>
                     <Binding ElementName="me" Path="CommitMessage" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">

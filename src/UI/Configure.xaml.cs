@@ -33,7 +33,6 @@ namespace SourceGit.UI {
 
             UserName = repo.GetConfig("user.name");
             UserEmail = repo.GetConfig("user.email");
-            CommitTemplate = repo.CommitTemplate;
 
             InitializeComponent();
         }
@@ -53,11 +52,6 @@ namespace SourceGit.UI {
 
             var oldEmail = repo.GetConfig("user.email");
             if (oldEmail != UserEmail) repo.SetConfig("user.email", UserEmail);
-
-            if (CommitTemplate != repo.CommitTemplate) {
-                repo.CommitTemplate = CommitTemplate;
-                App.SaveSetting();
-            }
 
             Close(sender, e);
         }

@@ -6,17 +6,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:SourceGit.Helpers"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="500" Width="500" Height="314">
+             d:DesignHeight="150" d:DesignWidth="500" Width="500" Height="150">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
             <RowDefinition Height="8"/>
             <RowDefinition Height="28"/>
             <RowDefinition Height="28"/>
-            <RowDefinition Height="18"/>
-            <RowDefinition Height="36"/>
-            <RowDefinition Height="8"/>
-            <RowDefinition Height="102"/>
             <RowDefinition Height="18"/>
             <RowDefinition Height="32"/>
         </Grid.RowDefinitions>
@@ -43,20 +39,8 @@
             Text="{Binding ElementName=me, Path=UserEmail, Mode=TwoWay}"
             helpers:TextBoxHelper.Placeholder="{StaticResource Text.Configure.Email.Placeholder}"/>
         
-        <!-- 提交模板 -->
-        <Label Grid.Row="5" Grid.ColumnSpan="2" Content="{StaticResource Text.Configure.CommitTemplate}" FontSize="16" FontWeight="DemiBold" Opacity=".85"/>
-        <Label Grid.Row="7" Grid.Column="0" Content="{StaticResource Text.Configure.Template}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-        <TextBox
-            Grid.Row="7"
-            Grid.Column="1"
-            Height="100"
-            AcceptsReturn="True"
-            AcceptsTab="True"
-            Padding="2"
-            Text="{Binding ElementName=me, Path=CommitTemplate, Mode=TwoWay}"/>
-        
         <!-- 操作 -->
-        <Grid Grid.Row="9" Grid.ColumnSpan="2">
+        <Grid Grid.Row="5" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>
