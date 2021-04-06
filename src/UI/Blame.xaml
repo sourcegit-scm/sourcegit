@@ -49,9 +49,8 @@
                 <!-- Logo & TITLE -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
                     <Path
-                        Width="20" Height="20" Margin="6,-1,2,0"
-                        Data="{StaticResource Icon.Git}" 
-                        Fill="{StaticResource Brush.Logo}"
+                        Margin="6,0,0,0"
+                        Data="{StaticResource Icon.Commit}"
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         MouseLeftButtonDown="LogoMouseButtonDown"/>
                     <Label Content="{StaticResource Text.Blame.Title}" FontWeight="Light"/>

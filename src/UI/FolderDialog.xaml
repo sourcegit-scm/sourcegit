@@ -33,7 +33,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- LOGO -->
-                <Path Margin="6,-1,2,0" Data="{StaticResource Icon.Folder.Open}"/>
+                <Path Margin="6,0,0,0" Data="{StaticResource Icon.Folder.Open}"/>
 
                 <!-- Title -->
                 <Label Grid.Column="1" x:Name="txtTitle" FontWeight="Light"/>

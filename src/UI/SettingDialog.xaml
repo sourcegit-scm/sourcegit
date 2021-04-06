@@ -35,7 +35,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- LOGO -->
-                <Path Width="20" Height="20" Margin="6,-1,2,0" Data="{StaticResource Icon.Git}" Fill="{StaticResource Brush.Logo}"/>
+                <Path Margin="6,0,0,0" Data="{StaticResource Icon.Preference}"/>
 
                 <!-- Title -->
                 <Label Grid.Column="1" Content="{StaticResource Text.Preference}" FontWeight="Light"/>
