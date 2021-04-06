@@ -13,7 +13,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid x:Name="layout" Background="{StaticResource Brush.CommitViewer}">
         <!-- List Panel (SearchBar + DataGrid) -->
-        <Border x:Name="commitListPanel" Background="{StaticResource Brush.CommitViewer}" BorderBrush="{StaticResource Brush.Border0}" SnapsToDevicePixels="True">
+        <Border x:Name="commitListPanel" Background="{StaticResource Brush.Contents}" BorderBrush="{StaticResource Brush.Border0}" SnapsToDevicePixels="True">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
