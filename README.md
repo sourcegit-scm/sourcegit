@@ -2,13 +2,12 @@
 
 开源的Git客户端，仅用于Windows。
 
-## 注意
-
-**3.x 依赖 .NET 5，请先安装之**
-
 ## 下载
 
 [发行版](https://gitee.com/sourcegit/SourceGit/releases/)
+
+* `SourceGit.exe`为不带.NET 5.0运行时的可执行文件，需要先安装.NET 5
+* `SourceGit.zip`为自带.NET 5.0的可执行文件
 
 ## 预览
 
