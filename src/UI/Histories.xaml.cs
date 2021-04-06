@@ -552,21 +552,30 @@ namespace SourceGit.UI {
                 layout.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1) });
                 layout.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star), MinWidth = 200 });
 
+                splitter.HorizontalAlignment = HorizontalAlignment.Center;
+                splitter.VerticalAlignment = VerticalAlignment.Stretch;
+                splitter.Width = 1;
+                splitter.Height = double.NaN;
+
+                commitListPanel.BorderThickness = new Thickness(0, 0, 1, 0);
+
                 Grid.SetRow(commitListPanel, 0);
                 Grid.SetRow(splitter, 0);
                 Grid.SetRow(commitDetailPanel, 0);
                 Grid.SetColumn(commitListPanel, 0);
                 Grid.SetColumn(splitter, 1);
                 Grid.SetColumn(commitDetailPanel, 2);
-
-                splitter.HorizontalAlignment = HorizontalAlignment.Center;
-                splitter.VerticalAlignment = VerticalAlignment.Stretch;
-                splitter.Width = 1;
-                splitter.Height = double.NaN;
             } else {
                 layout.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star), MinHeight = 100 });
                 layout.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1) });
                 layout.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star), MinHeight = 100 });
+
+                splitter.HorizontalAlignment = HorizontalAlignment.Stretch;
+                splitter.VerticalAlignment = VerticalAlignment.Center;
+                splitter.Width = double.NaN;
+                splitter.Height = 1;
+
+                commitListPanel.BorderThickness = new Thickness(0, 0, 0, 1);
 
                 Grid.SetRow(commitListPanel, 0);
                 Grid.SetRow(splitter, 1);
@@ -574,11 +583,6 @@ namespace SourceGit.UI {
                 Grid.SetColumn(commitListPanel, 0);
                 Grid.SetColumn(splitter, 0);
                 Grid.SetColumn(commitDetailPanel, 0);
-
-                splitter.HorizontalAlignment = HorizontalAlignment.Stretch;
-                splitter.VerticalAlignment = VerticalAlignment.Center;
-                splitter.Width = double.NaN;
-                splitter.Height = 1;
             }
 
             layout.InvalidateVisual();

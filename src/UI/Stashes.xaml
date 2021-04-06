@@ -18,15 +18,23 @@
         <!-- Left panel -->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="24"/>
+                <RowDefinition Height="26"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="24"/>
+                <RowDefinition Height="26"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!-- Stashes list toolbar -->
             <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True">
-                <Label Content="{StaticResource Text.Stashes.Stashes}" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Path Grid.Column="0" Width="12" Height="12" Margin="4,0" Stroke="{StaticResource Brush.FG2}" StrokeThickness="1" Data="{StaticResource Icon.List}" Fill="{StaticResource Brush.FG2}"/>
+                    <Label Grid.Column="1" Content="{StaticResource Text.Stashes.Stashes}" Foreground="{StaticResource Brush.FG2}" Margin="0" FontWeight="Bold"/>
+                </Grid>
             </Border>
             
             <!-- Stashes list -->
@@ -70,12 +78,14 @@
             <Border Grid.Row="2" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,1,0,1" SnapsToDevicePixels="True">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Content="{StaticResource Text.Stashes.Changes}" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
-                    <Label Grid.Column="1" Content="{StaticResource Text.Stashes.Changes.Tip}" Foreground="{StaticResource Brush.FG2}" FontSize="10"/>
+                    <Path Grid.Column="0" Width="12" Height="12" Margin="4,0" Stroke="{StaticResource Brush.FG2}" StrokeThickness="1" Data="{StaticResource Icon.List}" Fill="{StaticResource Brush.FG2}"/>
+                    <Label Grid.Column="1" Content="{StaticResource Text.Stashes.Changes}" Foreground="{StaticResource Brush.FG2}" Margin="0" FontWeight="Bold"/>
+                    <Label Grid.Column="2" Content="{StaticResource Text.Stashes.Changes.Tip}" Foreground="{StaticResource Brush.FG2}" FontSize="10"/>
                 </Grid>
             </Border>
             
