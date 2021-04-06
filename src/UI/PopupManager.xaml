@@ -10,7 +10,7 @@
         <Border Background="Transparent" MouseLeftButtonDown="Close"/>
 
         <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="Auto" Height="Auto" Background="{StaticResource Brush.Popup}">
-            <Border x:Name="popupContent" Padding="8" Width="Auto" Height="Auto" BorderThickness="1,0,1,1" BorderBrush="{StaticResource Brush.Border0}"/>
+            <Border x:Name="popupContent" Padding="8" Width="Auto" Height="Auto" BorderThickness="1,0,1,1" BorderBrush="{StaticResource Brush.Border0}" SnapsToDevicePixels="True"/>
 
             <Border x:Name="status" Visibility="Collapsed" Background="{StaticResource Brush.Popup}" Margin="1,0,1,1" Opacity=".9">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">

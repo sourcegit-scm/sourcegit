@@ -18,68 +18,57 @@
         <!-- Left panel -->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="24"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="1"/>
+                <RowDefinition Height="24"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Stash list -->
-            <Grid Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="24"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
+            <!-- Stashes list toolbar -->
+            <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True">
                 <Label Content="{StaticResource Text.Stashes.Stashes}" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
-                <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource Brush.Border0}"/>
-                <ListView
-                    Grid.Row="2"
-                    x:Name="stashList"
-                    Background="{StaticResource Brush.Contents}" BorderThickness="0"
-                    SelectedIndex="-1"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                    SelectionChanged="StashSelectionChanged">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource Style.ListViewItem.Borderless}">
-                            <Setter Property="Padding" Value="0"/>
-                            <EventSetter Event="ContextMenuOpening" Handler="StashContextMenuOpening"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate DataType="{x:Type git:Stash}">
-                            <Border BorderBrush="{StaticResource Brush.Border3}" BorderThickness="0,0,0,1" Padding="4">
-                                <StackPanel Orientation="Vertical" Margin="2" MaxWidth="290">
-                                    <Grid TextBlock.Foreground="{StaticResource Brush.FG2}" TextBlock.FontSize="11">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+            </Border>
+            
+            <!-- Stashes list -->
+            <ListView
+                Grid.Row="1"
+                x:Name="stashList"
+                Background="{StaticResource Brush.Contents}" BorderThickness="0"
+                Style="{StaticResource Style.ListView.Borderless}"
+                SelectedIndex="-1"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                SelectionChanged="StashSelectionChanged">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource Style.ListViewItem.Borderless}">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <EventSetter Event="ContextMenuOpening" Handler="StashContextMenuOpening"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type git:Stash}">
+                        <Border BorderBrush="{StaticResource Brush.Border3}" BorderThickness="0,0,0,1" Padding="4">
+                            <StackPanel Orientation="Vertical" Margin="2" MaxWidth="290">
+                                <Grid TextBlock.Foreground="{StaticResource Brush.FG2}" TextBlock.FontSize="11">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.Column="0" Text="{Binding SHA}"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding Author.Time}"/>
-                                    </Grid>
-                                    <TextBlock MaxWidth="280" Foreground="{StaticResource Brush.FG1}" Text="{Binding Message}" TextAlignment="Left" Padding="0" Margin="0,8,2,0"/>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-
-            <!-- Splitter -->
-            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
-
-            <!-- Changed file in this stash -->
-            <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="24"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0">
+                                    <TextBlock Grid.Column="0" Text="{Binding SHA}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Author.Time}"/>
+                                </Grid>
+                                <TextBlock MaxWidth="280" Foreground="{StaticResource Brush.FG1}" Text="{Binding Message}" TextAlignment="Left" Padding="0" Margin="0,8,2,0"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+            <!-- Changed file toolbar -->
+            <Border Grid.Row="2" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,1,0,1" SnapsToDevicePixels="True">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -88,45 +77,45 @@
                     <Label Grid.Column="0" Content="{StaticResource Text.Stashes.Changes}" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0" FontWeight="Bold"/>
                     <Label Grid.Column="1" Content="{StaticResource Text.Stashes.Changes.Tip}" Foreground="{StaticResource Brush.FG2}" FontSize="10"/>
                 </Grid>
+            </Border>
+            
+            <!-- Change files -->
+            <ListView 
+                x:Name="changeList" 
+                Grid.Row="3"
+                Background="{StaticResource Brush.Contents}" BorderThickness="0"
+                Style="{StaticResource Style.ListView.Borderless}"
+                SelectedIndex="-1"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                SelectionChanged="FileSelectionChanged">
+                <ListView.Resources>
+                    <converters:FileStatusToColor x:Key="StatusColorConverter"/>
+                    <converters:FileStatusToIcon x:Key="StatusIconConverter"/>
+                </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource Style.ListViewItem.Borderless}">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="TextBlock.FontFamily" Value="Consolas"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type git:Change}">
+                        <Grid Height="24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="24"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource Brush.Border0}"/>
+                            <Border Grid.Column="0" Width="14" Height="14" Background="{Binding ., Converter={StaticResource StatusColorConverter}}" CornerRadius="2" Margin="0,0,4,0">
+                                <TextBlock Text="{Binding ., Converter={StaticResource StatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10"/>
+                            </Border>
 
-                <ListView 
-                    x:Name="changeList" 
-                    Grid.Row="2"
-                    Background="{StaticResource Brush.Contents}" BorderThickness="0"
-                    SelectedIndex="-1"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    SelectionChanged="FileSelectionChanged">
-                    <ListView.Resources>
-                        <converters:FileStatusToColor x:Key="StatusColorConverter"/>
-                        <converters:FileStatusToIcon x:Key="StatusIconConverter"/>
-                    </ListView.Resources>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource Style.ListViewItem.Borderless}">
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="TextBlock.FontFamily" Value="Consolas"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate DataType="{x:Type git:Change}">
-                            <Grid Height="24">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="24"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Border Grid.Column="0" Width="14" Height="14" Background="{Binding ., Converter={StaticResource StatusColorConverter}}" CornerRadius="2" Margin="0,0,4,0">
-                                    <TextBlock Text="{Binding ., Converter={StaticResource StatusIconConverter}}" Foreground="{StaticResource Brush.FG1}" TextAlignment="Center" VerticalAlignment="Center" FontSize="10"/>
-                                </Border>
-
-                                <TextBlock Grid.Column="1" Text="{Binding Path}" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center" FontSize="11"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
+                            <TextBlock Grid.Column="1" Text="{Binding Path}" Foreground="{StaticResource Brush.FG1}" VerticalAlignment="Center" FontSize="11"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
 
         <!-- Splitter -->

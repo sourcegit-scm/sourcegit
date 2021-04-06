@@ -111,7 +111,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
-                <ColumnDefinition Width="1" MaxWidth="1"/>
+                <ColumnDefinition Width="1"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
@@ -481,7 +481,7 @@
             </Grid>
 
             <!-- Splitter -->
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Center" Width="1" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
 
             <!-- Right -->
             <Grid Grid.Column="2">
