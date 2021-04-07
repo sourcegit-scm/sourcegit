@@ -19,39 +19,14 @@ namespace SourceGit.Helpers {
     public class Avatar : Image {
 
         /// <summary>
-        ///     Colors used in avatar for light theme
+        ///     Background colors for default 
         /// </summary>
-        public static Brush[] LightColors = new Brush[] {
-            Brushes.LightCoral,
-            Brushes.LightGreen,
-            Brushes.LightPink,
-            Brushes.LightSeaGreen,
-            Brushes.LightSteelBlue,
-            Brushes.Gray,
-            Brushes.SkyBlue,
-            Brushes.Plum,
-            Brushes.Gold,
-            Brushes.Khaki,
-        };
-
-        /// <summary>
-        ///     Colors used in avatar for light theme
-        /// </summary>
-        public static Brush[] DarkColors = new Brush[] {
-            Brushes.DarkCyan,
-            Brushes.DarkGoldenrod,
-            Brushes.DarkGreen,
-            Brushes.DarkKhaki,
-            Brushes.DarkMagenta,
-            Brushes.DarkOliveGreen,
-            Brushes.DarkOrange,
-            Brushes.DarkOrchid,
-            Brushes.DarkSalmon,
-            Brushes.DarkSeaGreen,
-            Brushes.DarkSlateBlue,
-            Brushes.DarkSlateGray,
-            Brushes.DarkTurquoise,
-            Brushes.DarkViolet
+        private static readonly Brush[] Backgrounds = new Brush[] {
+            new LinearGradientBrush(Colors.Orange, Color.FromRgb(255, 213, 134), 90),
+            new LinearGradientBrush(Colors.DodgerBlue, Colors.LightSkyBlue, 90),
+            new LinearGradientBrush(Colors.LimeGreen, Color.FromRgb(124, 241, 124), 90),
+            new LinearGradientBrush(Colors.Orchid, Color.FromRgb(248, 161, 245), 90),
+            new LinearGradientBrush(Colors.Tomato, Color.FromRgb(252, 165, 150), 90),
         };
 
         /// <summary>
@@ -108,27 +83,25 @@ namespace SourceGit.Helpers {
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     new Typeface(new FontFamily("Consolas"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
-                    Width * 0.75,
+                    Width * 0.65,
                     Brushes.White,
                     VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
                 double offsetX = 0;
                 if (HorizontalAlignment == HorizontalAlignment.Right) {
                     offsetX = -Width * 0.5;
+                } else if (HorizontalAlignment == HorizontalAlignment.Left) {
+                    offsetX = Width * 0.5;
                 }
 
                 var chars = placeholder.ToCharArray();
                 var sum = 0;
                 foreach (var ch in chars) sum += Math.Abs(ch);
 
-                Brush brush;
-                if (App.Setting.UI.UseLightTheme) {
-                    brush = LightColors[sum % LightColors.Length];
-                } else {
-                    brush = DarkColors[sum % DarkColors.Length];
-                }
+                var corner = Math.Max(2, Width / 16);
 
-                dc.DrawRoundedRectangle(brush, null, new Rect(-Width * 0.5 + offsetX, -Height * 0.5, Width, Height), Width / 16, Height / 16);
+                Brush brush = Backgrounds[sum % Backgrounds.Length];
+                dc.DrawRoundedRectangle(brush, null, new Rect(-Width * 0.5 + offsetX, -Height * 0.5, Width, Height), corner, corner);
                 dc.DrawText(formatted, new Point(formatted.Width * -0.5 + offsetX, formatted.Height * -0.5));
             }
         }
