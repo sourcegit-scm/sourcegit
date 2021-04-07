@@ -50,16 +50,18 @@
 
                     <StackPanel Grid.Column="2" x:Name="textChangeOptions" Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Width="26" Click="Go2Next" ToolTip="{StaticResource Text.Diff.Next}" Background="Transparent">
-                            <Path Width="10" Data="{StaticResource Icon.MoveDown}"/>
+                            <Path Width="10" Data="{StaticResource Icon.Down}"/>
                         </Button>
 
                         <Button Click="Go2Prev" ToolTip="{StaticResource Text.Diff.Prev}" Background="Transparent">
-                            <Path Width="10" Data="{StaticResource Icon.MoveUp}"/>
+                            <Path Width="10" Data="{StaticResource Icon.Up}"/>
                         </Button>
 
                         <ToggleButton
                             Margin="8,0,0,0"
                             Style="{StaticResource Style.ToggleButton.SplitDirection}"
+                            Foreground="{StaticResource Brush.FG1}"
+                            Width="12" Height="12"
                             ToolTip="{StaticResource Text.Diff.Mode}"
                             IsChecked="{Binding Source={x:Static sourcegit:App.Setting}, Path=UI.UseCombinedDiff, Mode=TwoWay}"
                             Checked="ChangeDiffMode" Unchecked="ChangeDiffMode"/>

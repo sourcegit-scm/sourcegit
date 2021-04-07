@@ -201,13 +201,15 @@
 
                 <!-- Layout Switch -->
                 <ToggleButton
-                    Style="{StaticResource Style.ToggleButton.Orientation}"
+                    Style="{StaticResource Style.ToggleButton.SplitDirection}"
+                    Foreground="{StaticResource Brush.FG2}"
+                    Width="14" Height="14"
                     ToolTip="{StaticResource Text.Histories.DisplayMode}"
                     IsChecked="{Binding Source={x:Static sourcegit:App.Setting}, Path=UI.MoveCommitViewerRight, Mode=TwoWay}"
                     Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
 
                 <!-- Tips to Histories Panel -->
-                <Button Margin="4,0" ToolTip="{StaticResource Text.Histories.Guide}" Background="Transparent" Click="OpenGuide">
+                <Button Margin="6,0" ToolTip="{StaticResource Text.Histories.Guide}" Background="Transparent" Click="OpenGuide">
                     <Path Data="{StaticResource Icon.Info}" Fill="{StaticResource Brush.FG2}"/>
                 </Button>
 

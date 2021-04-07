@@ -149,11 +149,11 @@
                                 Orientation="Horizontal"
                                 Margin="4,0">
                                 <Button Click="MoveUp" ToolTip="{StaticResource Text.InteractiveRebase.MoveUp}">
-                                    <Path Width="12" Height="12" Data="{StaticResource Icon.MoveUp}"/>
+                                    <Path Width="12" Height="12" Data="{StaticResource Icon.Up}"/>
                                 </Button>
 
                                 <Button Click="MoveDown" ToolTip="{StaticResource Text.InteractiveRebase.MoveDown}" Margin="4,0,0,0">
-                                    <Path Width="12" Height="12" Data="{StaticResource Icon.MoveDown}"/>                                    
+                                    <Path Width="12" Height="12" Data="{StaticResource Icon.Down}"/>                                    
                                 </Button>
                             </StackPanel>
                         </Grid>
