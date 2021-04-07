@@ -9,8 +9,6 @@
     <SolidColorBrush x:Key="Brush.Popup" Color="#FFF8F8F8"/>
     <SolidColorBrush x:Key="Brush.Contents" Color="White"/>
     <SolidColorBrush x:Key="Brush.Badge" Color="#FFAFAFAF"/>
-    <SolidColorBrush x:Key="Brush.CommitViewer" Color="#FFF0F0F0"/>
-    <SolidColorBrush x:Key="Brush.SideBar" Color="#FFF8F8F8"/>
     <SolidColorBrush x:Key="Brush.Decorator" Color="#FFBDBDBD"/>
     <SolidColorBrush x:Key="Brush.Conflict" Color="#FF836C2E"/>
 
@@ -18,7 +16,6 @@
     <SolidColorBrush x:Key="Brush.Border1" Color="#FF898989"/>
     <SolidColorBrush x:Key="Brush.Border2" Color="#FFCFCFCF"/>
     <SolidColorBrush x:Key="Brush.Border3" Color="#FFEFEFEF"/>
-    <SolidColorBrush x:Key="Brush.Border4" Color="#FFF2F2F2"/>
     
     <SolidColorBrush x:Key="Brush.FG1" Color="#FF1F1F1F"/>
     <SolidColorBrush x:Key="Brush.FG2" Color="#FF6F6F6F"/>

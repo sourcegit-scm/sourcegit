@@ -182,13 +182,13 @@
             </Grid>
             
             <!-- Splitter -->
-            <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.CommitViewer}"/>
+            <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource Brush.Window}"/>
 
             <!-- Commit Detail -->
-            <local:CommitViewer x:Name="commitViewer" Grid.Row="3" Background="{StaticResource Brush.CommitViewer}"/>
+            <local:CommitViewer x:Name="commitViewer" Grid.Row="3" Background="{StaticResource Brush.Window}"/>
             
             <!-- Options Bar -->
-            <Grid Grid.Row="5" Background="{StaticResource Brush.CommitViewer}">
+            <Grid Grid.Row="5" Background="{StaticResource Brush.Window}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="80"/>

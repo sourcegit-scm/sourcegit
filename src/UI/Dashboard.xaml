@@ -108,7 +108,7 @@
         </Border>
 
         <!-- Main body -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Background="{StaticResource Brush.Window}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
                 <ColumnDefinition Width="1"/>
@@ -116,7 +116,7 @@
             </Grid.ColumnDefinitions>
             
             <!-- Left panel -->
-            <Grid Grid.Column="0" x:Name="main" Background="{StaticResource Brush.SideBar}">
+            <Grid Grid.Column="0" x:Name="main">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
@@ -510,9 +510,9 @@
                         <Button x:Name="btnContinue" Click="Continue" Content="{StaticResource Text.Dashboard.Continue}" Style="{StaticResource Style.Button.AccentBordered}" Margin="2"/>
                         <Button Grid.Column="3" Click="Abort" Content="{StaticResource Text.Dashboard.Abort}" Style="{StaticResource Style.Button.Bordered}" Foreground="{StaticResource Brush.FG3}" Margin="2"/>
                     </StackPanel>
-                    
+
                 </Grid>
-                
+
                 <!-- Others -->
                 <local:Histories Grid.Row="1" x:Name="histories" Visibility="Visible"/>
                 <local:WorkingCopy Grid.Row="1" x:Name="commits" Visibility="Collapsed"/>
