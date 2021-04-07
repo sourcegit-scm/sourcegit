@@ -8,6 +8,11 @@
             <Border.RenderTransform>
                 <TranslateTransform x:Name="xform" X="-25" />
             </Border.RenderTransform>
+            
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="11" ShadowDepth="6" Opacity="0.4" />
+            </Border.Effect>
+            
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="OpenStates">
                     <VisualStateGroup.Transitions>
@@ -36,9 +41,7 @@
                     </VisualState>
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
-            <FrameworkElement.Effect>
-                <DropShadowEffect  BlurRadius="11" ShadowDepth="6" Opacity="0.4" />
-            </FrameworkElement.Effect>
+            
             <Border Background="#FFDC000C" BorderThickness="1" BorderBrush="#FFBC000C">
                 <TextBlock Foreground="White" MaxWidth="250" Margin="8,4,8,4" TextWrapping="Wrap" Text="{Binding [0].ErrorContent}" UseLayoutRounding="false" />
             </Border>
@@ -56,8 +59,8 @@
                             Template="{StaticResource Template.Validation.Tooltip}"
                             Style="{x:Null}"/>
                 </ToolTipService.ToolTip>
-                <Grid Background="Transparent" HorizontalAlignment="Right" Height="12" Width="12" Margin="1,-4,-4,0" VerticalAlignment="Top">
-                    <Path Data="M 1,0 L6,0 A 2,2 90 0 1 8,2 L8,7 z" Fill="#FFDC000C" Margin="1,3,0,0" />
+                <Grid Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Path Width="10" Height="10" Data="M 1,0 L8,0 L8,7 z" Fill="#FFDC000C"/>
                 </Grid>
             </Border>
         </AdornedElementPlaceholder>
