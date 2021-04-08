@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Threading;
 
 namespace SourceGit.Git {
@@ -65,12 +66,13 @@ namespace SourceGit.Git {
         private List<Tag> cachedTags = new List<Tag>();
         private FileSystemWatcher gitDirWatcher = null;
         private FileSystemWatcher workingCopyWatcher = null;
-        private DispatcherTimer timer = null;
+        private Timer timer = null;
         private bool isWatcherDisabled = false;
         private long nextUpdateTags = 0;
         private long nextUpdateLocalChanges = 0;
         private long nextUpdateStashes = 0;
         private long nextUpdateTree = 0;
+        private long nextFetchingRemotes = 0;
 
         private string featurePrefix = null;
         private string releasePrefix = null;
@@ -197,6 +199,9 @@ namespace SourceGit.Git {
             OnWorkingCopyChanged?.Invoke();
             OnTagChanged?.Invoke();
 
+            nextUpdateLocalChanges = 0;
+            nextUpdateTags = 0;
+            nextUpdateTree = 0;
             isWatcherDisabled = false;
         }
         #endregion
@@ -250,6 +255,7 @@ namespace SourceGit.Git {
         /// </summary>
         public void Open() {
             isWatcherDisabled = false;
+            nextFetchingRemotes = DateTime.Now.AddMinutes(10).ToFileTime();
 
             GitDir = ".git";
             RunCommand("rev-parse --git-dir", line => {
@@ -287,10 +293,7 @@ namespace SourceGit.Git {
             workingCopyWatcher.Deleted += OnWorkingCopyFSChanged;
             workingCopyWatcher.EnableRaisingEvents = true;
 
-            timer = new DispatcherTimer();
-            timer.Tick += Tick;
-            timer.Interval = TimeSpan.FromSeconds(.1);
-            timer.Start();
+            timer = new Timer(Tick, null, 100, 100);
 
             featurePrefix = GetConfig("gitflow.prefix.feature");
             releasePrefix = GetConfig("gitflow.prefix.release");
@@ -320,7 +323,7 @@ namespace SourceGit.Git {
             workingCopyWatcher.EnableRaisingEvents = false;
             gitDirWatcher.Dispose();
             workingCopyWatcher.Dispose();
-            timer.Stop();
+            timer.Dispose();
 
             gitDirWatcher = null;
             workingCopyWatcher = null;
@@ -338,7 +341,13 @@ namespace SourceGit.Git {
             isWatcherDisabled = !enabled;
         }
 
-        private void Tick(object sender, EventArgs e) {
+        private void Tick(object sender) {
+            var now = DateTime.Now.ToFileTime();
+            if (now >= nextFetchingRemotes) {
+                Fetch(null, true, null, false);
+                return;
+            }
+
             if (isWatcherDisabled) {
                 nextUpdateLocalChanges = 0;
                 nextUpdateStashes = 0;
@@ -347,7 +356,6 @@ namespace SourceGit.Git {
                 return;
             }
 
-            var now = DateTime.Now.ToFileTime();
             if (nextUpdateLocalChanges > 0 && now >= nextUpdateLocalChanges) {
                 nextUpdateLocalChanges = 0;
                 OnWorkingCopyChanged?.Invoke();
@@ -443,8 +451,10 @@ namespace SourceGit.Git {
         /// <param name="remote"></param>
         /// <param name="prune"></param>
         /// <param name="onProgress"></param>
-        public void Fetch(Remote remote, bool prune, Action<string> onProgress) {
+        /// <param name="raiseError"></param>
+        public void Fetch(Remote remote, bool prune, Action<string> onProgress, bool raiseError = true) {
             isWatcherDisabled = true;
+            nextFetchingRemotes = DateTime.Now.AddMinutes(10).ToFileTime();
 
             var args = "-c credential.helper=manager fetch --progress --verbose ";
 
@@ -461,6 +471,9 @@ namespace SourceGit.Git {
             }, true);
 
             OnSubmoduleChanged?.Invoke();
+            if (!raiseError) errs = null;
+
+            nextFetchingRemotes = DateTime.Now.AddMinutes(10).ToFileTime();
             AssertCommand(errs);
         }
 
@@ -475,6 +488,7 @@ namespace SourceGit.Git {
         /// <param name="onProgress">Progress message handler.</param>
         public void Pull(string remote, string branch, Action<string> onProgress, bool rebase = false, bool autostash = false) {
             isWatcherDisabled = true;
+            nextFetchingRemotes = DateTime.Now.AddMinutes(10).ToFileTime();
 
             var args = "-c credential.helper=manager pull --verbose --progress ";
             var needPopStash = false;

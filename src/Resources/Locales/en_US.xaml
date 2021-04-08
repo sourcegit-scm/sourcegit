@@ -87,8 +87,6 @@
     <sys:String x:Key="Text.Configure.User.Placeholder">User name for this repository</sys:String>
     <sys:String x:Key="Text.Configure.Email">Email :</sys:String>
     <sys:String x:Key="Text.Configure.Email.Placeholder">Email address</sys:String>
-    <sys:String x:Key="Text.Configure.CommitTemplate">COMMIT TEMPLATE</sys:String>
-    <sys:String x:Key="Text.Configure.Template">Template :</sys:String>
 
     <sys:String x:Key="Text.CreateBranch">Create Branch</sys:String>
     <sys:String x:Key="Text.CreateBranch.Title">Create Local Branch</sys:String>
@@ -345,10 +343,11 @@
     <sys:String x:Key="Text.Preference">Preference</sys:String>
     <sys:String x:Key="Text.Preference.General">GENERAL SETTING</sys:String>
     <sys:String x:Key="Text.Preference.RestartRequired">RESTART REQUIRED</sys:String>
-    <sys:String x:Key="Text.Preference.Locale">Display Language :</sys:String>
-    <sys:String x:Key="Text.Preference.UseLight">Light Theme :</sys:String>
-    <sys:String x:Key="Text.Preference.CheckUpdate">Check for Update :</sys:String>
+    <sys:String x:Key="Text.Preference.Locale">Language :</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server :</sys:String>
+    <sys:String x:Key="Text.Preference.UseLight">Use light theme</sys:String>
+    <sys:String x:Key="Text.Preference.CheckUpdate">Check for update</sys:String>
+    <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT INSTANCE</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">Install Path :</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">Input path for git.exe</sys:String>

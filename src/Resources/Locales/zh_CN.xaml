@@ -87,8 +87,6 @@
     <sys:String x:Key="Text.Configure.User.Placeholder">应用于本仓库的用户名</sys:String>
     <sys:String x:Key="Text.Configure.Email">邮箱 ：</sys:String>
     <sys:String x:Key="Text.Configure.Email.Placeholder">邮箱地址</sys:String>
-    <sys:String x:Key="Text.Configure.CommitTemplate">提交模板</sys:String>
-    <sys:String x:Key="Text.Configure.Template">模板内容 ：</sys:String>
 
 	<sys:String x:Key="Text.CreateBranch">新建分支</sys:String>
     <sys:String x:Key="Text.CreateBranch.Title">创建本地分支</sys:String>
@@ -346,9 +344,10 @@
     <sys:String x:Key="Text.Preference.General">通用配置</sys:String>
     <sys:String x:Key="Text.Preference.RestartRequired">需要重启软件</sys:String>
     <sys:String x:Key="Text.Preference.Locale">显示语言 ：</sys:String>
-    <sys:String x:Key="Text.Preference.UseLight">启用浅色主题 ：</sys:String>
-    <sys:String x:Key="Text.Preference.CheckUpdate">检测更新 ：</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">头像服务 ：</sys:String>
+    <sys:String x:Key="Text.Preference.UseLight">启用浅色主题</sys:String>
+    <sys:String x:Key="Text.Preference.CheckUpdate">启用检测更新</sys:String>
+    <sys:String x:Key="Text.Preference.AutoFetch">启用定时自动拉取远程更新</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT配置</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">安装路径 ：</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">填写git.exe所在位置</sys:String>

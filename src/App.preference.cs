@@ -118,6 +118,10 @@ namespace SourceGit {
         /// </summary>
         public int LastCheckUpdate { get; set; } = 0;
         /// <summary>
+        ///     Fetch remotes automatically?
+        /// </summary>
+        public bool AutoFetchRemotes { get; set; } = true;
+        /// <summary>
         ///     Settings for executables.
         /// </summary>
         public ToolSetting Tools { get; set; } = new ToolSetting();
