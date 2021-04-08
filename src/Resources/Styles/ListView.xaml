@@ -3,6 +3,7 @@
     
     <Style x:Key="Style.ListViewItem.Borderless" TargetType="{x:Type ListViewItem}">
         <Setter Property="Padding" Value="2"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="Template">
             <Setter.Value>
