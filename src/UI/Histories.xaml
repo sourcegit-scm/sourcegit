@@ -63,13 +63,11 @@
 
                         <Style x:Key="Style.DataGridText" TargetType="{x:Type TextBlock}">
                             <Setter Property="FontFamily" Value="Consolas"/>
-                            <Setter Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Padding" Value="16,0"/>
                         </Style>
                         <Style x:Key="Style.DataGridText.NoPadding" TargetType="{x:Type TextBlock}">
                             <Setter Property="FontFamily" Value="Consolas"/>
-                            <Setter Property="Foreground" Value="{StaticResource Brush.FG1}"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                         </Style>
                     </DataGrid.Resources>
