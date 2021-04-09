@@ -76,7 +76,7 @@
                 </Grid.ColumnDefinitions>
             </Grid>
 
-            <Grid Grid.Row="1" x:Name="editorLines" IsHitTestVisible="False">
+            <Grid Grid.Row="1" x:Name="editorLines" IsHitTestVisible="False" UseLayoutRounding="False">
             </Grid>
 
             <Border x:Name="sizeChange" Grid.Row="1" ClipToBounds="True" Background="{StaticResource Brush.Window}" Visibility="Collapsed">
