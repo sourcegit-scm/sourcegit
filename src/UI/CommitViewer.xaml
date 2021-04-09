@@ -105,7 +105,6 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition x:Name="refRow" Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition x:Name="descRow" Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -194,26 +193,20 @@
                     </ItemsControl>
 
                     <!-- MESSAGE -->
-                    <Label Grid.Row="3" Grid.Column="0" Content="{StaticResource Text.CommitViewer.Info.Message}" HorizontalAlignment="Right" Opacity=".6"/>
+                    <Label Grid.Row="3" Grid.Column="0" Content="{StaticResource Text.CommitViewer.Info.Message}" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity=".6"/>
                     <TextBox 
                         Grid.Row="3" Grid.Column="1"
-                        x:Name="subject"
+                        x:Name="message"
                         IsReadOnly="True"
                         Background="Transparent"
                         FontFamily="Consolas"
                         BorderThickness="0"
-                        Margin="11,0,16,0"/>
-                    <TextBox 
-                        Grid.Row="4" Grid.Column="1"
-                        x:Name="message"
-                        IsReadOnly="True"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        FontSize="11"
-                        Margin="11,8,0,0"/>
+                        TextWrapping="Wrap"
+                        Margin="11,5,16,0"
+                        VerticalAlignment="Top"/>
                 </Grid>
 
-                <Rectangle Grid.Row="3" Grid.ColumnSpan="2" Height="1" Margin="8" Fill="{StaticResource Brush.Border2}"/>
+                <Rectangle Grid.Row="3" Height="1" Margin="8" Fill="{StaticResource Brush.Border2}"/>
 
                 <!-- Changes -->
                 <Grid Grid.Row="4">

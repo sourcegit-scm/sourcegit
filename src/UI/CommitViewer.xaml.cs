@@ -85,15 +85,7 @@ namespace SourceGit.UI {
             SHA.Text = commit.SHA;
             refs.ItemsSource = commit.Decorators;
             parents.ItemsSource = parentIds;
-            subject.Text = commit.Subject;
-
-            var commitMsg = commit.Message.Trim();
-            if (string.IsNullOrEmpty(commitMsg)) {
-                descRow.Height = new GridLength(0);
-            } else {
-                descRow.Height = GridLength.Auto;
-                message.Text = commitMsg;
-            }
+            message.Text = (commit.Subject + "\n\n" + commit.Message.Trim()).Trim();
 
             authorName.Text = commit.Author.Name;
             authorEmail.Text = commit.Author.Email;
