@@ -12,7 +12,8 @@
         Title="Source Git"
         Width="{Binding Source={x:Static source:App.Setting}, Path=UI.WindowWidth, Mode=TwoWay}"
         Height="{Binding Source={x:Static source:App.Setting}, Path=UI.WindowHeight, Mode=TwoWay}"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        UseLayoutRounding="True">
 
     <!-- Enable WindowChrome Feature -->
     <WindowChrome.WindowChrome>
