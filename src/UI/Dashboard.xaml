@@ -47,9 +47,9 @@
                         </StackPanel>
                     </Button>
 
-                    <Button Click="OpenTerminal" Margin="4,0" ToolTip="{StaticResource Text.Dashboard.Terminal.Tip}">
+                    <Button Click="OpenTerminal" Margin="4,0,0,0" ToolTip="{StaticResource Text.Dashboard.Terminal.Tip}">
                         <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource Icon.Terminal}"/>
+                            <Path Width="12" Height="12" Data="{StaticResource Icon.Terminal}"/>
                             <Label Content="{StaticResource Text.Dashboard.Terminal}"/>
                         </StackPanel>
                     </Button>
