@@ -27,29 +27,16 @@ namespace SourceGit.Converters {
                 status = change.Index;
             }
 
-            if (App.Setting.UI.UseLightTheme) {
-                switch (status) {
-                case Git.Change.Status.Modified: return Brushes.Goldenrod;
-                case Git.Change.Status.Added: return Brushes.Green;
-                case Git.Change.Status.Deleted: return Brushes.Red;
-                case Git.Change.Status.Renamed: return Brushes.Magenta;
-                case Git.Change.Status.Copied: return Brushes.Goldenrod;
-                case Git.Change.Status.Unmerged: return Brushes.Goldenrod;
-                case Git.Change.Status.Untracked: return Brushes.Green;
-                default: return Brushes.Transparent;
-                }
-            } else {
-                switch (status) {
-                case Git.Change.Status.Modified: return Brushes.DarkGoldenrod;
-                case Git.Change.Status.Added: return Brushes.DarkGreen;
-                case Git.Change.Status.Deleted: return Brushes.DarkRed;
-                case Git.Change.Status.Renamed: return Brushes.DarkMagenta;
-                case Git.Change.Status.Copied: return Brushes.DarkGoldenrod;
-                case Git.Change.Status.Unmerged: return Brushes.DarkGoldenrod;
-                case Git.Change.Status.Untracked: return Brushes.DarkGreen;
-                default: return Brushes.Transparent;
-                }
-            }            
+            switch (status) {
+            case Git.Change.Status.Modified: return new LinearGradientBrush(Colors.Orange, Color.FromRgb(255, 213, 134), 90);
+            case Git.Change.Status.Added: return new LinearGradientBrush(Colors.LimeGreen, Color.FromRgb(124, 241, 124), 90);
+            case Git.Change.Status.Deleted: return new LinearGradientBrush(Colors.Tomato, Color.FromRgb(252, 165, 150), 90);
+            case Git.Change.Status.Renamed: return new LinearGradientBrush(Colors.Orchid, Color.FromRgb(248, 161, 245), 90);
+            case Git.Change.Status.Copied: return new LinearGradientBrush(Colors.Orange, Color.FromRgb(255, 213, 134), 90);
+            case Git.Change.Status.Unmerged: return new LinearGradientBrush(Colors.Orange, Color.FromRgb(255, 213, 134), 90);
+            case Git.Change.Status.Untracked: return new LinearGradientBrush(Colors.LimeGreen, Color.FromRgb(124, 241, 124), 90);
+            default: return Brushes.Transparent;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
