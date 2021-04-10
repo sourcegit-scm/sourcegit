@@ -922,7 +922,7 @@ namespace SourceGit.Git {
         /// </summary>
         /// <returns></returns>
         public List<string> Submodules() {
-            var test = new Regex(@"^[\-\+ ][0-9a-f]+\s(.*)\(.*\)$");
+            var test = new Regex(@"^[\-\+ ][0-9a-f]+\s(.*)\s\(.*\)$");
             var modules = new List<string>();
 
             var errs = RunCommand("submodule status", line => {
