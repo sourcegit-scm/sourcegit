@@ -123,21 +123,21 @@
                                         Grid.Column="0"
                                         Width="14" Height="14"
                                         Fill="{Binding Color, Converter={StaticResource IntToRepoColor}}"
-                                       
                                         Data="{StaticResource Icon.Bookmark}"
                                         VerticalAlignment="Center"/>
 
-                                    <Label
+                                    <TextBlock
                                         x:Name="Title"
                                         Grid.Column="1" 
-                                        Content="{Binding Title}" 
+                                        Text="{Binding Title}"
+                                        VerticalAlignment="Center"
+                                        Margin="4,0"
                                         Foreground="{StaticResource Brush.FG1}" FontFamily="Consolas" FontWeight="Bold"/>
 
                                     <Button Grid.Column="3" Click="CloseTab" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{StaticResource Text.Close}" Style="{StaticResource Style.Button.HighlightHover}">
                                         <Path
                                             Width="8" Height="8" 
                                             Fill="{StaticResource Brush.FG1}"
-                                           
                                             Data="{StaticResource Icon.Close}"/>                                        
                                     </Button>
                                 </Grid>
