@@ -490,7 +490,7 @@ namespace SourceGit.Git {
             isWatcherDisabled = true;
             nextFetchingRemotes = DateTime.Now.AddMinutes(10).ToFileTime();
 
-            var args = "-c credential.helper=manager pull --verbose --progress ";
+            var args = "-c credential.helper=manager pull --verbose --progress --tags ";
             var needPopStash = false;
 
             if (rebase) args += "--rebase ";
