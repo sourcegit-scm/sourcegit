@@ -1014,7 +1014,7 @@ namespace SourceGit.UI {
                 sub.Path = Path.Combine(repo.Path, path);
                 sub.Name = Path.GetFileName(path);
                 sub.Parent = repo;
-                sub.Open();
+                App.Open(sub);
 
                 ev.Handled = true;
             };
@@ -1043,7 +1043,8 @@ namespace SourceGit.UI {
             sub.Name = Path.GetFileName(path);
             sub.Parent = repo;
 
-            App.Open(sub);          
+            App.Open(sub);
+            e.Handled = true;
         }
         #endregion
 
