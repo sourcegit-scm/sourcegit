@@ -985,7 +985,7 @@ namespace SourceGit.Git {
             if (errs != null) {
                 App.RaiseError(errs);
             } else {
-                errs = RunCommand($"rm -f {path}", null);
+                errs = RunCommand($"rm -rf {path}", null);
                 if (errs != null) App.RaiseError(errs);
 
                 OnWorkingCopyChanged?.Invoke();
