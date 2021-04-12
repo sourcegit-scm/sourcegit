@@ -1026,9 +1026,17 @@ namespace SourceGit.UI {
                 ev.Handled = true;
             };
 
+            var rm = new MenuItem();
+            rm.Header = App.Text("Submodule.Remove");
+            rm.Click += (o, ev) => {
+                DeleteSubmodule.Show(repo, path);
+                ev.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Items.Add(open);
             menu.Items.Add(copy);
+            menu.Items.Add(rm);
             menu.IsOpen = true;
 
             e.Handled = true;

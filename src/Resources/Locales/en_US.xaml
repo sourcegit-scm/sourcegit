@@ -50,6 +50,7 @@
     <sys:String x:Key="Text.Submodule.FetchNested">Fetch nested submodules</sys:String>
     <sys:String x:Key="Text.Submodule.Open">Open Submodule Repository</sys:String>
     <sys:String x:Key="Text.Submodule.CopyPath">Copy Relative Path</sys:String>
+    <sys:String x:Key="Text.Submodule.Remove">Delete Submodule</sys:String>
 
     <sys:String x:Key="Text.CherryPick">Cherry-Pick This Commit</sys:String>
     <sys:String x:Key="Text.CherryPick.Title">Cherry Pick</sys:String>
@@ -214,6 +215,9 @@
     <sys:String x:Key="Text.DeleteTag">Confirm To Delete Tag</sys:String>
     <sys:String x:Key="Text.DeleteTag.Tag">Tag :</sys:String>
     <sys:String x:Key="Text.DeleteTag.WithRemote">Delete from remote repositories</sys:String>
+
+    <sys:String x:Key="Text.DeleteSubmodule">Confirm To Delete Submodule</sys:String>
+    <sys:String x:Key="Text.DeleteSubmodule.Path">Submodule Path ：</sys:String>
 
     <sys:String x:Key="Text.Diff.Next">Next Difference</sys:String>
     <sys:String x:Key="Text.Diff.Prev">Previous Difference</sys:String>

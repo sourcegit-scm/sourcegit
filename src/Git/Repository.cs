@@ -975,6 +975,27 @@ namespace SourceGit.Git {
         }
 
         /// <summary>
+        ///     Delete submodule
+        /// </summary>
+        /// <param name="path"></param>
+        public void DeleteSubmodule(string path) {
+            isWatcherDisabled = true;
+
+            var errs = RunCommand($"submodule deinit -f {path}", null);
+            if (errs != null) {
+                App.RaiseError(errs);
+            } else {
+                errs = RunCommand($"rm -f {path}", null);
+                if (errs != null) App.RaiseError(errs);
+
+                OnWorkingCopyChanged?.Invoke();
+                OnSubmoduleChanged?.Invoke();
+            }
+
+            isWatcherDisabled = false;
+        }
+
+        /// <summary>
         ///     Blame file.
         /// </summary>
         /// <param name="file"></param>

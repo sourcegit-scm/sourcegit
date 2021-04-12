@@ -50,6 +50,7 @@
     <sys:String x:Key="Text.Submodule.FetchNested">拉取子孙模块</sys:String>
     <sys:String x:Key="Text.Submodule.Open">打开仓库</sys:String>
     <sys:String x:Key="Text.Submodule.CopyPath">复制路径</sys:String>
+    <sys:String x:Key="Text.Submodule.Remove">删除子模块</sys:String>
 
     <sys:String x:Key="Text.CherryPick">挑选此提交</sys:String>
     <sys:String x:Key="Text.CherryPick.Title">挑选提交</sys:String>
@@ -214,6 +215,9 @@
 	<sys:String x:Key="Text.DeleteTag">确定要移除该标签吗？</sys:String>
     <sys:String x:Key="Text.DeleteTag.Tag">标签名 ：</sys:String>
     <sys:String x:Key="Text.DeleteTag.WithRemote">同时删除远程仓库中的此标签</sys:String>
+    
+	<sys:String x:Key="Text.DeleteSubmodule">确定要移除该子模块吗？</sys:String>
+    <sys:String x:Key="Text.DeleteSubmodule.Path">子模块路径 ：</sys:String>
 
 	<sys:String x:Key="Text.Diff.Next">下一个差异</sys:String>
     <sys:String x:Key="Text.Diff.Prev">上一个差异</sys:String>
