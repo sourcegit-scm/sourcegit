@@ -319,11 +319,10 @@ namespace SourceGit.Views.Widgets {
             stream.Close();
         }
 
-        private void OpenUnstagedContextMenuByNodes(List<ChangeNode> nodes, List<Models.Change> changes) {
+        private void OpenUnstagedContextMenuByNodes(ContextMenu menu, List<ChangeNode> nodes, List<Models.Change> changes) {
             var files = new List<string>();
             foreach (var c in changes) files.Add(c.Path);
 
-            var menu = new ContextMenu();
             if (nodes.Count == 1) {
                 var node = nodes[0];
                 var path = Path.GetFullPath(Path.Combine(repo, node.Path));
@@ -441,15 +440,12 @@ namespace SourceGit.Views.Widgets {
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
             }
-
-            menu.IsOpen = true;
         }
 
-        private void OpenUnstagedContextMenuByChanges(List<Models.Change> changes) {
+        private void OpenUnstagedContextMenuByChanges(ContextMenu menu, List<Models.Change> changes) {
             var files = new List<string>();
             foreach (var c in changes) files.Add(c.Path);
 
-            var menu = new ContextMenu();
             if (changes.Count == 1) {
                 var change = changes[0];
                 var path = Path.GetFullPath(Path.Combine(repo, change.Path));
@@ -566,8 +562,6 @@ namespace SourceGit.Views.Widgets {
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
             }
-
-            menu.IsOpen = true;
         }
         #endregion
 
@@ -587,11 +581,10 @@ namespace SourceGit.Views.Widgets {
             Models.Watcher.Get(repo)?.RefreshWC();
         }
 
-        private void OpenStagedContextMenuByNodes(List<ChangeNode> nodes, List<Models.Change> changes) {
+        private void OpenStagedContextMenuByNodes(ContextMenu menu, List<ChangeNode> nodes, List<Models.Change> changes) {
             var files = new List<string>();
             foreach (var c in changes) files.Add(c.Path);
 
-            var menu = new ContextMenu();
             if (nodes.Count == 1) {
                 var node = nodes[0];
                 var path = Path.GetFullPath(Path.Combine(repo, node.Path));
@@ -628,15 +621,12 @@ namespace SourceGit.Views.Widgets {
 
                 menu.Items.Add(unstage);
             }
-
-            menu.IsOpen = true;
         }
 
-        private void OpenStagedContextMenuByChanges(List<Models.Change> changes) {
+        private void OpenStagedContextMenuByChanges(ContextMenu menu, List<Models.Change> changes) {
             var files = new List<string>();
             foreach (var c in changes) files.Add(c.Path);
 
-            var menu = new ContextMenu();
             if (changes.Count == 1) {
                 var change = changes[0];
                 var path = Path.GetFullPath(Path.Combine(repo, change.Path));
@@ -678,7 +668,6 @@ namespace SourceGit.Views.Widgets {
 
                 menu.Items.Add(unstage);
             }
-            menu.IsOpen = true;
         }
         #endregion
 
@@ -696,7 +685,6 @@ namespace SourceGit.Views.Widgets {
             } else if (modeTree.Selected.Count == 1) {
                 var node = modeTree.Selected[0] as ChangeNode;
                 if (node.IsFolder) {
-                    if (DiffTarget == null) return;
                     DiffTarget = null;
                     hasOthers = true;
                 } else {
@@ -760,12 +748,14 @@ namespace SourceGit.Views.Widgets {
                 GetChangesFromNode(o as ChangeNode, changes);
             }
 
+            var menu = new ContextMenu();
             if (IsUnstaged) {
-                OpenUnstagedContextMenuByNodes(nodes, changes);
+                OpenUnstagedContextMenuByNodes(menu, nodes, changes);
             } else {
-                OpenStagedContextMenuByNodes(nodes, changes);
+                OpenStagedContextMenuByNodes(menu, nodes, changes);
             }
 
+            menu.IsOpen = true;
             ev.Handled = true;
         }
 
@@ -776,28 +766,28 @@ namespace SourceGit.Views.Widgets {
             var changes = new List<Models.Change>();
             if (Mode == Models.Change.DisplayMode.List) {
                 if (!row.IsSelected) {
-                    modeList.SelectedItems.Clear();
-                    modeList.SelectedItems.Add(row.DataContext);
+                    modeList.SelectedItem = row.DataContext;
                     changes.Add(row.DataContext as Models.Change);
                 } else {
                     foreach (var c in modeList.SelectedItems) changes.Add(c as Models.Change);
                 }
             } else {
                 if (!row.IsSelected) {
-                    modeGrid.SelectedItems.Clear();
-                    modeGrid.SelectedItems.Add(row.DataContext);
+                    modeGrid.SelectedItem = row.DataContext;
                     changes.Add(row.DataContext as Models.Change);
                 } else {
                     foreach (var c in modeGrid.SelectedItems) changes.Add(c as Models.Change);
                 }
             }
 
+            var menu = new ContextMenu();
             if (IsUnstaged) {
-                OpenUnstagedContextMenuByChanges(changes);
+                OpenUnstagedContextMenuByChanges(menu, changes);
             } else {
-                OpenStagedContextMenuByChanges(changes);
+                OpenStagedContextMenuByChanges(menu, changes);
             }
 
+            menu.IsOpen = true;
             ev.Handled = true;
         }
 

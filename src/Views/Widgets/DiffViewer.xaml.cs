@@ -80,10 +80,10 @@ namespace SourceGit.Views.Widgets {
                 return;
             }
 
-            Diff(repo, opt, false);
+            Diff(repo, opt);
         }
 
-        public void Diff(string repo, Option opt, bool clearEditor = true) {
+        public void Diff(string repo, Option opt) {
             mask.Visibility = Visibility.Collapsed;
             noChange.Visibility = Visibility.Collapsed;
             sizeChange.Visibility = Visibility.Collapsed;
@@ -92,7 +92,6 @@ namespace SourceGit.Views.Widgets {
             loading.IsAnimating = true;
 
             SetTitle(opt.Path, opt.OrgPath);
-            if (clearEditor) ClearEditor();
             ClearCache();
 
             this.repo = repo;
@@ -390,6 +389,8 @@ namespace SourceGit.Views.Widgets {
 
         private DataGrid CreateTextEditor(string[] lineNumbers) {
             var grid = new DataGrid();
+            grid.EnableRowVirtualization = true;
+            grid.EnableColumnVirtualization = true;
             grid.RowHeight = 16.0;
             grid.FrozenColumnCount = lineNumbers.Length;
             grid.ContextMenuOpening += OnTextDiffContextMenuOpening;

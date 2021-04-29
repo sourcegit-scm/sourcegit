@@ -99,6 +99,12 @@ namespace SourceGit.Views.Widgets {
 
             if (e.Target == null) {
                 if (e.HasOthers) {
+                    if (container.IsUnstaged) {
+                        stagedContainer.UnselectAll();
+                    } else {
+                        unstagedContainer.UnselectAll();
+                    }
+
                     mergePanel.Visibility = Visibility.Collapsed;
                     diffViewer.Reset();
                 }
@@ -106,14 +112,13 @@ namespace SourceGit.Views.Widgets {
                 return;
             }
 
-            mergePanel.Visibility = Visibility.Collapsed;
-            diffViewer.Reset();
-
             var change = e.Target;
             if (change.IsConflit) {
                 mergePanel.Visibility = Visibility.Visible;
                 return;
             }
+
+            mergePanel.Visibility = Visibility.Collapsed;
 
             if (change.IsAddedToIndex) {
                 unstagedContainer.UnselectAll();
