@@ -285,35 +285,35 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
                 menu.Items.Add(reset);
-
-                if (!merged) {
-                    var rebase = new MenuItem();
-                    rebase.Header = App.Text("CommitCM.Rebase", current.Name);
-                    rebase.Click += (o, e) => {
-                        new Popups.Rebase(repo.Path, current.Name, commit).Show();
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(rebase);
-
-                    var cherryPick = new MenuItem();
-                    cherryPick.Header = App.Text("CommitCM.CherryPick");
-                    cherryPick.Click += (o, e) => {
-                        new Popups.CherryPick(repo.Path, commit).Show();
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(cherryPick);
-                } else {
-                    var revert = new MenuItem();
-                    revert.Header = App.Text("CommitCM.Revert");
-                    revert.Click += (o, e) => {
-                        new Popups.Revert(repo.Path, commit).Show();
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(revert);
-                }
-
-                menu.Items.Add(new Separator());
             }
+
+            if (!merged) {
+                var rebase = new MenuItem();
+                rebase.Header = App.Text("CommitCM.Rebase", current.Name);
+                rebase.Click += (o, e) => {
+                    new Popups.Rebase(repo.Path, current.Name, commit).Show();
+                    e.Handled = true;
+                };
+                menu.Items.Add(rebase);
+
+                var cherryPick = new MenuItem();
+                cherryPick.Header = App.Text("CommitCM.CherryPick");
+                cherryPick.Click += (o, e) => {
+                    new Popups.CherryPick(repo.Path, commit).Show();
+                    e.Handled = true;
+                };
+                menu.Items.Add(cherryPick);
+            } else {
+                var revert = new MenuItem();
+                revert.Header = App.Text("CommitCM.Revert");
+                revert.Click += (o, e) => {
+                    new Popups.Revert(repo.Path, commit).Show();
+                    e.Handled = true;
+                };
+                menu.Items.Add(revert);
+            }
+
+            menu.Items.Add(new Separator());
 
             var createBranch = new MenuItem();
             createBranch.Header = App.Text("CreateBranch");
