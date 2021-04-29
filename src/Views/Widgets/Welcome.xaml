@@ -1,0 +1,186 @@
+<UserControl x:Class="SourceGit.Views.Widgets.Welcome"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+             xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="800">
+    <Grid Background="Transparent" AllowDrop="True" DragEnter="OnPageDragEnter" DragLeave="OnPageDragLeave" Drop="OnPageDrop">
+        <Grid Width="420">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0" Orientation="Vertical" Width="420" HorizontalAlignment="Center" TextElement.FontFamily="Consolas">
+                <!-- Logo -->
+                <Path 
+                    Margin="0,48,0,0" 
+                    Width="100" Height="100" 
+                    Data="{StaticResource Icon.Git}" 
+                    Fill="{StaticResource Brush.Logo}"/>
+
+                <!-- Welcome -->
+                <TextBlock
+                    Margin="0,16"
+                    HorizontalAlignment="Center" 
+                    Text="{StaticResource Text.Welcome.Title}"
+                    FontSize="28"
+                    FontWeight="ExtraBold"
+                    Foreground="{StaticResource Brush.FG2}"/>
+
+                <!-- Options -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Click="OnOpenClicked" Height="28">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="16" Height="16" Data="{StaticResource Icon.Folder.Open}"/>
+                            <TextBlock Margin="12,0,0,0" Text="{StaticResource Text.Welcome.OpenOrInit}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Grid.Column="2" Click="OnCloneClicked" Height="28">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="16" Height="16" Data="{StaticResource Icon.Pull}"/>
+                            <TextBlock Margin="12,0,0,0" Text="{StaticResource Text.Welcome.Clone}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!-- Horizontal line -->
+                <Rectangle Height="1" Margin="0,36,0,8" Fill="{StaticResource Brush.Border1}"/>
+
+                <!-- Labels -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock 
+                        Grid.Column="0" 
+                        Text="{StaticResource Text.Welcome.Repositories}" 
+                        FontSize="18" FontWeight="ExtraBold" 
+                        Foreground="{StaticResource Brush.FG2}"/>
+                    
+                    <TextBlock 
+                        Grid.Column="2" 
+                        Text="{StaticResource Text.Welcome.DragDrop}" 
+                        FontSize="14" 
+                        Foreground="{StaticResource Brush.FG2}"/>
+                </Grid>
+            </StackPanel>
+            
+            <!-- Drop Area -->
+            <Rectangle
+                Grid.Row="1"
+                x:Name="dropArea"
+                Margin="0,2"
+                Stroke="{StaticResource Brush.Border1}"
+                StrokeThickness="2"
+                StrokeDashArray="4,4"
+                SnapsToDevicePixels="True"
+                Visibility="Hidden"/>
+            
+            <!-- Tree -->
+            <controls:Tree
+                Grid.Row="1"
+                x:Name="tree"
+                Margin="2,4"
+                AllowDrop="True"
+                TextElement.FontSize="14"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ContextMenuOpening="OnTreeContextMenuOpening"
+                MouseMove="OnTreeMouseMove"
+                DragOver="OnTreeDragOver"
+                Drop="OnTreeDrop">
+                <controls:Tree.ItemContainerStyle>
+                    <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+
+                        <EventSetter Event="Expanded" Handler="OnTreeNodeStatusChange"/>
+                        <EventSetter Event="Collapsed" Handler="OnTreeNodeStatusChange"/>
+                        <EventSetter Event="MouseDoubleClick" Handler="OnTreeNodeDoubleClick"/>
+                    </Style>
+                </controls:Tree.ItemContainerStyle>
+                
+                <controls:Tree.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <Border Height="32">
+                            <Grid IsHitTestVisible="False">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="22"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Path Grid.Column="0" Margin="2,0,0,0" x:Name="Icon" Width="16" Height="16" Data="{StaticResource Icon.Git}"/>
+
+                                <StackPanel Grid.Column="1" x:Name="Contents" Orientation="Horizontal">
+                                    <TextBlock Margin="8,0" Text="{Binding Name}"/>
+                                    <TextBlock x:Name="Path" Text="{Binding Id}" Foreground="{StaticResource Brush.FG2}"/>
+                                </StackPanel>
+
+                                <controls:TextEdit 
+                                    Grid.Column="1" 
+                                    x:Name="Editor" 
+                                    Height="20"
+                                    Margin="4,0,0,0"
+                                    Text="{Binding Name}"
+                                    FontSize="12"
+                                    Loaded="RenameStart"
+                                    KeyDown="RenameKeyDown"
+                                    LostFocus="RenameEnd"
+                                    IsHitTestVisible="True"
+                                    Visibility="Collapsed"/>
+
+                                <controls:Bookmark
+                                    Grid.Column="2"
+                                    Width="14" Height="14"
+                                    Color="{Binding Bookmark}"
+                                    IsNewPage="False"
+                                    HideOnZero="True"/>
+                            </Grid>
+                        </Border>
+
+                        <HierarchicalDataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsGroup}" Value="True">
+                                <Setter TargetName="Path" Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsGroup}" Value="True"/>
+                                    <Condition Binding="{Binding IsExpanded}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Fill}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsGroup}" Value="True"/>
+                                    <Condition Binding="{Binding IsExpanded}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                <Setter TargetName="Editor" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="Contents" Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </HierarchicalDataTemplate.Triggers>
+                    </HierarchicalDataTemplate>
+                </controls:Tree.ItemTemplate>
+            </controls:Tree>
+        </Grid>
+
+        <!-- Popup -->
+        <widgets:PopupPanel x:Name="popup"/>
+    </Grid>
+</UserControl>

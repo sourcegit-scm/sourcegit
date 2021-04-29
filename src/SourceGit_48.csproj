@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <UseWPF>true</UseWPF>
+        <ApplicationIcon>App.ico</ApplicationIcon>
+        <Company>sourcegit</Company>
+        <Description>OpenSource GIT client for Windows</Description>
+        <Copyright>Copyright © sourcegit 2020. All rights reserved.</Copyright>
+        <ApplicationManifest>App.manifest</ApplicationManifest>
+        <Version>3.3</Version>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <StartupObject>SourceGit.App</StartupObject>
+        <PackageProjectUrl>https://gitee.com/sourcegit/SourceGit.git</PackageProjectUrl>
+        <RepositoryUrl>https://gitee.com/sourcegit/SourceGit.git</RepositoryUrl>
+        <RepositoryType>Public</RepositoryType>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
+        <RootNamespace>SourceGit</RootNamespace>
+        <AssemblyName>SourceGit</AssemblyName>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    </ItemGroup>
+</Project>

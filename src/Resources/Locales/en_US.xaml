@@ -14,6 +14,7 @@
     <sys:String x:Key="Text.Bytes">{0} Bytes</sys:String>
     <sys:String x:Key="Text.Filter">FILTER</sys:String>
     <sys:String x:Key="Text.Optional">Optional.</sys:String>
+    <sys:String x:Key="Text.FakeFolderFilter">Directory|*.this.directory</sys:String>
 
     <sys:String x:Key="Text.URL">URL :</sys:String>
     <sys:String x:Key="Text.RepositoryURL">Git Repository URL</sys:String>
@@ -39,8 +40,7 @@
     <sys:String x:Key="Text.Apply.ErrorAll.Desc">Similar to 'error', but shows more</sys:String>
 
     <sys:String x:Key="Text.Blame">Blame</sys:String>
-    <sys:String x:Key="Text.Blame.Title">SOURCEGIT - BLAME</sys:String>
-    <sys:String x:Key="Text.Blame.Tip">Use right mouse button to view commit information.</sys:String>
+    <sys:String x:Key="Text.Blame.Tip">Right click to see commit info</sys:String>
     <sys:String x:Key="Text.Blame.SHA">COMMIT SHA</sys:String>
     <sys:String x:Key="Text.Blame.Author">AUTHOR</sys:String>
     <sys:String x:Key="Text.Blame.ModifyTime">MODIFY TIME</sys:String>
@@ -60,8 +60,8 @@
     <sys:String x:Key="Text.Clone">Clone Remote Repository</sys:String>
     <sys:String x:Key="Text.Clone.RemoteURL">Repository URL :</sys:String>
     <sys:String x:Key="Text.Clone.RemoteURL.Placeholder">Git Repository URL</sys:String>
-    <sys:String x:Key="Text.Clone.RemoteFolder">Parent Folder :</sys:String>
-    <sys:String x:Key="Text.Clone.RemoteFolder.Placeholder">Folder to contain this repository</sys:String>
+    <sys:String x:Key="Text.Clone.Folder">Parent Folder :</sys:String>
+    <sys:String x:Key="Text.Clone.Folder.Placeholder">Folder to contain this repository</sys:String>
     <sys:String x:Key="Text.Clone.LocalName">Local Name :</sys:String>
     <sys:String x:Key="Text.Clone.LocalName.Placeholder">Repository name. Optional.</sys:String>
     <sys:String x:Key="Text.Clone.RemoteName">Remote Name :</sys:String>
@@ -79,11 +79,9 @@
     <sys:String x:Key="Text.CommitViewer.Info.Changed">CHANGED</sys:String>
     <sys:String x:Key="Text.CommitViewer.Changes">CHANGES</sys:String>
     <sys:String x:Key="Text.CommitViewer.Changes.Search">Search Files ...</sys:String>
-    <sys:String x:Key="Text.CommitViewer.Changes.SwitchMode">SWITCH TO LIST/TREE VIEW</sys:String>
     <sys:String x:Key="Text.CommitViewer.Files">FILES</sys:String>
 
     <sys:String x:Key="Text.Configure">Configure</sys:String>
-    <sys:String x:Key="Text.Configure.Credential">CREDENTIAL</sys:String>
     <sys:String x:Key="Text.Configure.User">User :</sys:String>
     <sys:String x:Key="Text.Configure.User.Placeholder">User name for this repository</sys:String>
     <sys:String x:Key="Text.Configure.Email">Email :</sys:String>
@@ -226,7 +224,7 @@
     <sys:String x:Key="Text.Diff.NoChange">NO CHANGES OR ONLY EOL CHANGES</sys:String>
     <sys:String x:Key="Text.Diff.Binary">BINARY DIFF</sys:String>
     <sys:String x:Key="Text.Diff.Binary.Old">OLD :</sys:String>
-    <sys:String x:Key="Text.Diff.Binary.New">New :</sys:String>
+    <sys:String x:Key="Text.Diff.Binary.New">NEW :</sys:String>
     <sys:String x:Key="Text.Diff.LFS">LFS OBJECT CHANGE</sys:String>
     <sys:String x:Key="Text.Diff.Copy">Copy</sys:String>
 
@@ -244,10 +242,10 @@
 
     <sys:String x:Key="Text.FileHistory">File History</sys:String>
 
-    <sys:String x:Key="Text.FileDisplayMode">CHANGE FILES DISPLAY MODE</sys:String>
-    <sys:String x:Key="Text.FileDisplayMode.Grid">Show as Grid</sys:String>
-    <sys:String x:Key="Text.FileDisplayMode.List">Show as List</sys:String>
-    <sys:String x:Key="Text.FileDisplayMode.Tree">Show as Tree</sys:String>
+    <sys:String x:Key="Text.ChangeDisplayMode">CHANGE DISPLAY MODE</sys:String>
+    <sys:String x:Key="Text.ChangeDisplayMode.Grid">Show as Grid</sys:String>
+    <sys:String x:Key="Text.ChangeDisplayMode.List">Show as List</sys:String>
+    <sys:String x:Key="Text.ChangeDisplayMode.Tree">Show as Tree</sys:String>
 
     <sys:String x:Key="Text.FolderDialog">SELECT FOLDER</sys:String>
     <sys:String x:Key="Text.FolderDialog.Selected">SELECTED :</sys:String>
@@ -275,28 +273,29 @@
     <sys:String x:Key="Text.InteractiveRebase.MoveDown">MOVE DOWN</sys:String>
 
     <sys:String x:Key="Text.Launcher">Source Git</sys:String>
-    <sys:String x:Key="Text.Launcher.NewPageButton">NEW PAGE</sys:String>
     <sys:String x:Key="Text.Launcher.Preference">PREFERENCE</sys:String>
     <sys:String x:Key="Text.Launcher.About">ABOUT</sys:String>
     <sys:String x:Key="Text.Launcher.Error">ERROR</sys:String>
-    <sys:String x:Key="Text.Launcher.NewPage">New Page</sys:String>
-    <sys:String x:Key="Text.Launcher.NewPageTip">Welcome Page</sys:String>
+
+    <sys:String x:Key="Text.PageSwitcher.New">NEW PAGE</sys:String>
+    <sys:String x:Key="Text.PageSwitcher.Welcome.Title">New Page</sys:String>
+    <sys:String x:Key="Text.PageSwitcher.Welcome.Tip">Welcome Page</sys:String>
 
     <sys:String x:Key="Text.Merge">Merge Branch</sys:String>
     <sys:String x:Key="Text.Merge.Source">Source Branch :</sys:String>
     <sys:String x:Key="Text.Merge.Into">Into :</sys:String>
     <sys:String x:Key="Text.Merge.Mode">Merge Option :</sys:String>
 
-    <sys:String x:Key="Text.NewPage.Title">Welcome to SourceGit :)</sys:String>
-    <sys:String x:Key="Text.NewPage.OpenOrInit">Open Local Repository</sys:String>
-    <sys:String x:Key="Text.NewPage.Clone">Clone Remote Repository</sys:String>
-    <sys:String x:Key="Text.NewPage.Repositories">REPOSITORIES</sys:String>
-    <sys:String x:Key="Text.NewPage.DragDrop">DRAG-DROP YOUR FOLDER</sys:String>
-    <sys:String x:Key="Text.NewPage.OpenOrInitDialog">Open or init local repository</sys:String>
-    <sys:String x:Key="Text.NewPage.NewFolder">Add Folder</sys:String>
-    <sys:String x:Key="Text.NewPage.NewSubFolder">Add Sub-Folder</sys:String>
-    <sys:String x:Key="Text.NewPage.Rename">Rename</sys:String>
-    <sys:String x:Key="Text.NewPage.Delete">Delete</sys:String>
+    <sys:String x:Key="Text.Welcome.Title">Welcome to SourceGit :)</sys:String>
+    <sys:String x:Key="Text.Welcome.OpenOrInit">Open Local Repository</sys:String>
+    <sys:String x:Key="Text.Welcome.Clone">Clone Remote Repository</sys:String>
+    <sys:String x:Key="Text.Welcome.Repositories">REPOSITORIES</sys:String>
+    <sys:String x:Key="Text.Welcome.DragDrop">DRAG-DROP YOUR FOLDER</sys:String>
+    <sys:String x:Key="Text.Welcome.OpenOrInitDialog">Open or init local repository</sys:String>
+    <sys:String x:Key="Text.Welcome.NewFolder">Add Folder</sys:String>
+    <sys:String x:Key="Text.Welcome.NewSubFolder">Add Sub-Folder</sys:String>
+    <sys:String x:Key="Text.Welcome.Rename">Rename</sys:String>
+    <sys:String x:Key="Text.Welcome.Delete">Delete</sys:String>
 
     <sys:String x:Key="Text.Pull">Pull</sys:String>
     <sys:String x:Key="Text.Pull.Title">Pull (Fetch &amp; Merge)</sys:String>
@@ -310,7 +309,7 @@
     <sys:String x:Key="Text.Push.Title">Push Changes To Remote</sys:String>
     <sys:String x:Key="Text.Push.Local">Local Branch :</sys:String>
     <sys:String x:Key="Text.Push.Remote">Remote :</sys:String>
-    <sys:String x:Key="Text.Push.To">To :</sys:String>
+    <sys:String x:Key="Text.Push.To">Remote Branch :</sys:String>
     <sys:String x:Key="Text.Push.WithAllTags">Push all tags</sys:String>
     <sys:String x:Key="Text.Push.Force">Force push</sys:String>
 
@@ -349,18 +348,19 @@
     <sys:String x:Key="Text.Preference.RestartRequired">RESTART REQUIRED</sys:String>
     <sys:String x:Key="Text.Preference.Locale">Language :</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server :</sys:String>
-    <sys:String x:Key="Text.Preference.UseLight">Use light theme</sys:String>
+    <sys:String x:Key="Text.Preference.UseDark">Use dark theme</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">Check for update</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically</sys:String>
-    <sys:String x:Key="Text.Preference.Git">GIT INSTANCE</sys:String>
+    <sys:String x:Key="Text.Preference.Git">GIT SETTING</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">Install Path :</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">Input path for git.exe</sys:String>
     <sys:String x:Key="Text.Preference.Git.Dir">Default Clone Dir :</sys:String>
     <sys:String x:Key="Text.Preference.Git.Dir.Placeholder">Default path to clone repo into</sys:String>
-    <sys:String x:Key="Text.Preference.Global">GLOBAL SETTING</sys:String>
-    <sys:String x:Key="Text.Preference.User">Name :</sys:String>
-    <sys:String x:Key="Text.Preference.Email">Email :</sys:String>
-    <sys:String x:Key="Text.Preference.CRLF">Auto CRLF</sys:String>
+    <sys:String x:Key="Text.Preference.Git.User">User Name :</sys:String>
+    <sys:String x:Key="Text.Preference.Git.User.Placeholder">Global git user name</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Email">User Email :</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Email.Placeholder">Global git user email</sys:String>
+    <sys:String x:Key="Text.Preference.Git.CRLF">Enable Auto CRLF :</sys:String>
     <sys:String x:Key="Text.Preference.Merger">MERGE TOOL</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Type">Merger :</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Path">Install Path :</sys:String>
@@ -417,12 +417,14 @@
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured.\nPlease to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>
     <sys:String x:Key="Text.MissingBash">Can NOT locate bash.exe. Make sure bash.exe exists under the same folder with git.exe</sys:String>
-    <sys:String x:Key="Text.BinaryNotSupported">BINARY FILE BLAME NOT SUPPORTED!!!</sys:String>
+    <sys:String x:Key="Text.BinaryNotSupported">BINARY FILE NOT SUPPORTED!!!</sys:String>
+    <sys:String x:Key="Text.BlameTypeNotSupported">BLAME ON THIS FILE IS NOT SUPPORTED!!!</sys:String>
     <sys:String x:Key="Text.GitDirNotFound">GIT_DIR for this repository NOT FOUND!</sys:String>
     <sys:String x:Key="Text.InitGitFlowFailed">Initialize Git-flow failed!</sys:String>
     <sys:String x:Key="Text.BadGitFlowType">Bad git-flow branch type!</sys:String>
     <sys:String x:Key="Text.BadCloneFolder">EXISTS and FULL ACCESS CONTROL needed</sys:String>
     <sys:String x:Key="Text.BadRemoteUri">Remote git URL not supported</sys:String>
+    <sys:String x:Key="Text.BadLocalName">Bad local repository name</sys:String>
     <sys:String x:Key="Text.EmptyRemoteName">Remote name can NOT be null</sys:String>
     <sys:String x:Key="Text.BadRemoteName">Bad name for remote. Regex: ^[\\w\\-\\.]+$</sys:String>
     <sys:String x:Key="Text.DuplicatedRemoteName">Duplicated remote name!</sys:String>

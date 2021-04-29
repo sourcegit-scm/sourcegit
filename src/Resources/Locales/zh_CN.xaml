@@ -14,6 +14,7 @@
     <sys:String x:Key="Text.Bytes">{0} 字节</sys:String>
     <sys:String x:Key="Text.Filter">过滤</sys:String>
     <sys:String x:Key="Text.Optional">选填</sys:String>
+    <sys:String x:Key="Text.FakeFolderFilter">路径|*.this.directory</sys:String>
 
     <sys:String x:Key="Text.URL">仓库地址 ：</sys:String>
     <sys:String x:Key="Text.RepositoryURL">远程仓库地址</sys:String>
@@ -23,7 +24,7 @@
     <sys:String x:Key="Text.About">关于软件</sys:String>
     <sys:String x:Key="Text.About.Title">SourceGit - 开源Git图形客户端</sys:String>
 
-    <sys:String x:Key="Text.Apply">应用补丁</sys:String>
+    <sys:String x:Key="Text.Apply">补丁</sys:String>
     <sys:String x:Key="Text.Apply.Title">应用补丁</sys:String>
     <sys:String x:Key="Text.Apply.File">补丁文件 ：</sys:String>
     <sys:String x:Key="Text.Apply.File.Placeholder">选择补丁文件</sys:String>
@@ -39,7 +40,6 @@
     <sys:String x:Key="Text.Apply.ErrorAll.Desc">与【错误】级别相似，但输出内容更多</sys:String>
 
     <sys:String x:Key="Text.Blame">逐行追溯</sys:String>
-    <sys:String x:Key="Text.Blame.Title">追溯</sys:String>
     <sys:String x:Key="Text.Blame.Tip">右键点击查看所选行修改记录</sys:String>
     <sys:String x:Key="Text.Blame.SHA">提交指纹</sys:String>
     <sys:String x:Key="Text.Blame.Author">修改者</sys:String>
@@ -60,8 +60,8 @@
 	<sys:String x:Key="Text.Clone">克隆远程仓库</sys:String>
     <sys:String x:Key="Text.Clone.RemoteURL">远程仓库 ：</sys:String>
     <sys:String x:Key="Text.Clone.RemoteURL.Placeholder">远程仓库地址</sys:String>
-    <sys:String x:Key="Text.Clone.RemoteFolder">父级目录 ：</sys:String>
-    <sys:String x:Key="Text.Clone.RemoteFolder.Placeholder">选择存放本仓库的父级文件夹路径</sys:String>
+    <sys:String x:Key="Text.Clone.Folder">父级目录 ：</sys:String>
+    <sys:String x:Key="Text.Clone.Folder.Placeholder">选择存放本仓库的父级文件夹路径</sys:String>
     <sys:String x:Key="Text.Clone.LocalName">本地仓库名 ：</sys:String>
     <sys:String x:Key="Text.Clone.LocalName.Placeholder">本地仓库目录的名字，选填</sys:String>
     <sys:String x:Key="Text.Clone.RemoteName">远程名 ：</sys:String>
@@ -79,11 +79,9 @@
     <sys:String x:Key="Text.CommitViewer.Info.Changed">变更列表</sys:String>
     <sys:String x:Key="Text.CommitViewer.Changes">变更对比</sys:String>
     <sys:String x:Key="Text.CommitViewer.Changes.Search">查找文件...</sys:String>
-    <sys:String x:Key="Text.CommitViewer.Changes.SwitchMode">切换树形/列表模式</sys:String>
     <sys:String x:Key="Text.CommitViewer.Files">文件列表</sys:String>
 
-    <sys:String x:Key="Text.Configure">配置</sys:String>
-	<sys:String x:Key="Text.Configure.Credential">仓库凭证</sys:String>
+    <sys:String x:Key="Text.Configure">仓库配置</sys:String>
     <sys:String x:Key="Text.Configure.User">用户 ：</sys:String>
     <sys:String x:Key="Text.Configure.User.Placeholder">应用于本仓库的用户名</sys:String>
     <sys:String x:Key="Text.Configure.Email">邮箱 ：</sys:String>
@@ -244,10 +242,10 @@
 
     <sys:String x:Key="Text.FileHistory">文件历史</sys:String>
 
-	<sys:String x:Key="Text.FileDisplayMode">切换显示模式</sys:String>
-	<sys:String x:Key="Text.FileDisplayMode.Grid">网格模式</sys:String>
-	<sys:String x:Key="Text.FileDisplayMode.List">列表模式</sys:String>
-	<sys:String x:Key="Text.FileDisplayMode.Tree">树形模式</sys:String>
+    <sys:String x:Key="Text.ChangeDisplayMode">切换变更显示模式</sys:String>
+    <sys:String x:Key="Text.ChangeDisplayMode.Grid">网格模式</sys:String>
+    <sys:String x:Key="Text.ChangeDisplayMode.List">列表模式</sys:String>
+    <sys:String x:Key="Text.ChangeDisplayMode.Tree">树形模式</sys:String>
 
 	<sys:String x:Key="Text.FolderDialog">选择目录...</sys:String>
     <sys:String x:Key="Text.FolderDialog.Selected">当前选择 ：</sys:String>
@@ -275,28 +273,29 @@
     <sys:String x:Key="Text.InteractiveRebase.MoveDown">向下移动</sys:String>
 
 	<sys:String x:Key="Text.Launcher">Source Git</sys:String>
-    <sys:String x:Key="Text.Launcher.NewPageButton">新建空白页</sys:String>
     <sys:String x:Key="Text.Launcher.Preference">偏好设置</sys:String>
     <sys:String x:Key="Text.Launcher.About">关于</sys:String>
     <sys:String x:Key="Text.Launcher.Error">出错了</sys:String>
-    <sys:String x:Key="Text.Launcher.NewPage">新标签页</sys:String>
-    <sys:String x:Key="Text.Launcher.NewPageTip">起始页</sys:String>
 
-	<sys:String x:Key="Text.Merge">合并分支</sys:String>
+    <sys:String x:Key="Text.PageSwitcher.New">新建空白页</sys:String>
+    <sys:String x:Key="Text.PageSwitcher.Welcome.Title">新标签页</sys:String>
+    <sys:String x:Key="Text.PageSwitcher.Welcome.Tip">起始页</sys:String>
+
+    <sys:String x:Key="Text.Merge">合并分支</sys:String>
     <sys:String x:Key="Text.Merge.Source">合并分支 ：</sys:String>
     <sys:String x:Key="Text.Merge.Into">目标分支 ：</sys:String>
     <sys:String x:Key="Text.Merge.Mode">合并方式 ：</sys:String>
 
-	<sys:String x:Key="Text.NewPage.Title">欢迎使用本软件</sys:String>
-    <sys:String x:Key="Text.NewPage.OpenOrInit">打开本地仓库</sys:String>
-    <sys:String x:Key="Text.NewPage.Clone">克隆远程仓库</sys:String>
-    <sys:String x:Key="Text.NewPage.Repositories">仓库列表</sys:String>
-    <sys:String x:Key="Text.NewPage.DragDrop">支持拖放操作</sys:String>
-    <sys:String x:Key="Text.NewPage.OpenOrInitDialog">打开/初始化本地仓库</sys:String>
-    <sys:String x:Key="Text.NewPage.NewFolder">新建分组</sys:String>
-    <sys:String x:Key="Text.NewPage.NewSubFolder">新建子分组</sys:String>
-    <sys:String x:Key="Text.NewPage.Rename">重命名</sys:String>
-    <sys:String x:Key="Text.NewPage.Delete">删除</sys:String>
+    <sys:String x:Key="Text.Welcome.Title">欢迎使用本软件</sys:String>
+    <sys:String x:Key="Text.Welcome.OpenOrInit">打开本地仓库</sys:String>
+    <sys:String x:Key="Text.Welcome.Clone">克隆远程仓库</sys:String>
+    <sys:String x:Key="Text.Welcome.Repositories">仓库列表</sys:String>
+    <sys:String x:Key="Text.Welcome.DragDrop">支持拖放操作</sys:String>
+    <sys:String x:Key="Text.Welcome.OpenOrInitDialog">打开/初始化本地仓库</sys:String>
+    <sys:String x:Key="Text.Welcome.NewFolder">新建分组</sys:String>
+    <sys:String x:Key="Text.Welcome.NewSubFolder">新建子分组</sys:String>
+    <sys:String x:Key="Text.Welcome.Rename">重命名</sys:String>
+    <sys:String x:Key="Text.Welcome.Delete">删除</sys:String>
 
     <sys:String x:Key="Text.Pull">拉回</sys:String>
 	<sys:String x:Key="Text.Pull.Title">拉回（拉取并合并）</sys:String>
@@ -349,7 +348,7 @@
     <sys:String x:Key="Text.Preference.RestartRequired">需要重启软件</sys:String>
     <sys:String x:Key="Text.Preference.Locale">显示语言 ：</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">头像服务 ：</sys:String>
-    <sys:String x:Key="Text.Preference.UseLight">启用浅色主题</sys:String>
+    <sys:String x:Key="Text.Preference.UseDark">启用暗色主题</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">启用检测更新</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">启用定时自动拉取远程更新</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT配置</sys:String>
@@ -357,10 +356,11 @@
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">填写git.exe所在位置</sys:String>
     <sys:String x:Key="Text.Preference.Git.Dir">默认克隆路径 ：</sys:String>
     <sys:String x:Key="Text.Preference.Git.Dir.Placeholder">默认的仓库本地存放位置</sys:String>
-    <sys:String x:Key="Text.Preference.Global">全局设置</sys:String>
-    <sys:String x:Key="Text.Preference.User">用户名 ：</sys:String>
-    <sys:String x:Key="Text.Preference.Email">邮箱 ：</sys:String>
-    <sys:String x:Key="Text.Preference.CRLF">自动换行转换 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Git.User">用户名 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Git.User.Placeholder">默认GIT用户名</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Email">邮箱 ：</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Email.Placeholder">默认GIT用户邮箱</sys:String>
+    <sys:String x:Key="Text.Preference.Git.CRLF">自动换行转换 ：</sys:String>
     <sys:String x:Key="Text.Preference.Merger">外部合并工具</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Type">工具 ：</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Path">安装路径 ：</sys:String>
@@ -418,11 +418,13 @@
 	<sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>
     <sys:String x:Key="Text.MissingBash">无法找到bash.exe，请确保其在git.exe同目录中！</sys:String>
     <sys:String x:Key="Text.BinaryNotSupported">二进制文件不支持该操作!!!</sys:String>
+    <sys:String x:Key="Text.BlameTypeNotSupported">选中文件不支持该操作!!!</sys:String>
     <sys:String x:Key="Text.GitDirNotFound">获取仓库GIT_DIR失败!</sys:String>
     <sys:String x:Key="Text.InitGitFlowFailed">初始化GIT FLOW失败!</sys:String>
     <sys:String x:Key="Text.BadGitFlowType">不支持的GIT FLOW分支!</sys:String>
     <sys:String x:Key="Text.BadCloneFolder">目录不存在或不可写!!!</sys:String>
     <sys:String x:Key="Text.BadRemoteUri">非法的远程仓库地址!</sys:String>
+    <sys:String x:Key="Text.BadLocalName">非法的本地仓库地址!</sys:String>
     <sys:String x:Key="Text.EmptyRemoteName">远程仓库地址不可为空</sys:String>
     <sys:String x:Key="Text.BadRemoteName">远程仓库地址包含非法字符！仅支持字母、数字、下划线、横线或英文点号！</sys:String>
     <sys:String x:Key="Text.DuplicatedRemoteName">远程仓库名已存在!</sys:String>

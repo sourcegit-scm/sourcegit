@@ -1,0 +1,107 @@
+<UserControl x:Class="SourceGit.Views.Widgets.RevisionCompare"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+             xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="4,8,4,4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="360"/>
+                <ColumnDefinition Width="48"/>
+                <ColumnDefinition Width="360"/>
+            </Grid.ColumnDefinitions>
+
+            <Border
+                Grid.Column="0"
+                BorderBrush="{StaticResource Brush.Border2}"
+                BorderThickness="1"
+                Background="{StaticResource Brush.Contents}"
+                CornerRadius="4">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <controls:Avatar Grid.Column="0" Width="32" Height="32" x:Name="avatarStart"/>
+
+                    <Grid Grid.Column="1" Margin="8,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" TextBlock.FontSize="11" TextBlock.FontFamily="Consolas">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" x:Name="txtStartSHA" Foreground="DarkOrange"/>
+                            <TextBlock Grid.Column="1" x:Name="txtStartTime" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <TextBlock Grid.Row="1" x:Name="txtStartSubject" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Path 
+                Grid.Column="1" 
+                Width="16" Height="16" 
+                Fill="{StaticResource Brush.FG2}" 
+                Data="{StaticResource Icon.Down}" 
+                RenderTransformOrigin=".5,.5">
+                <Path.RenderTransform>
+                    <RotateTransform Angle="270"/>
+                </Path.RenderTransform>
+            </Path>
+
+            <Border
+                Grid.Column="2"
+                BorderBrush="{StaticResource Brush.Border2}"
+                BorderThickness="1"
+                Background="{StaticResource Brush.Contents}"
+                CornerRadius="4">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <controls:Avatar Grid.Column="0" Width="32" Height="32" x:Name="avatarEnd"/>
+
+                    <Grid Grid.Column="1" Margin="8,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" TextBlock.FontSize="11" TextBlock.FontFamily="Consolas">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" x:Name="txtEndSHA" Foreground="DarkOrange"/>
+                            <TextBlock Grid.Column="1" x:Name="txtEndTime" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <TextBlock Grid.Row="1" x:Name="txtEndSubject" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <widgets:CommitChanges Grid.Row="1" x:Name="changesContainer" Margin="0,8,0,0"/>
+    </Grid>
+</UserControl>

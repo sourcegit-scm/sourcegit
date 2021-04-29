@@ -1,22 +1,23 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Resources/Styles/Border.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/Button.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CheckBox.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/ComboBox.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/ContextMenu.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/DataGrid.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/HyperLink.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Resources/Styles/Label.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Resources/Styles/IconButton.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Resources/Styles/ListBox.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/ListView.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/Path.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/RadioButton.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/ScrollBar.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/ScrollViewer.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/TabControl.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Resources/Styles/TextBlock.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/TextBox.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/ToggleButton.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/Tooltip.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Resources/Styles/TreeView.xaml"/>
-    </ResourceDictionary.MergedDictionaries>    
+        <ResourceDictionary Source="pack://application:,,,/Resources/Styles/Tree.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

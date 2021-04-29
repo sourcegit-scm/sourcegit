@@ -7,7 +7,7 @@
 [发行版](https://gitee.com/sourcegit/SourceGit/releases/)
 
 * `SourceGit.exe`为不带.NET 5.0运行时的可执行文件，需要先安装.NET 5
-* `SourceGit.zip`为自带.NET 5.0的可执行文件
+* `SourceGit_48.exe`为.NET 4.8编译的可执行文件，Window 10 已内置该运行时
 
 ## 预览
 

@@ -1,0 +1,478 @@
+<UserControl x:Class="SourceGit.Views.Widgets.Dashboard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+             xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
+             xmlns:converters="clr-namespace:SourceGit.Views.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Toolbar -->
+        <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="6,0">
+                    <Button Click="Explore" Margin="4,0,0,0" ToolTip="{StaticResource Text.Dashboard.Explore.Tip}" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="16" Height="14" Data="{StaticResource Icon.Folder.Open}"/>
+                            <Label Content="{StaticResource Text.Dashboard.Explore}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="Terminal" Margin="4,0,0,0" ToolTip="{StaticResource Text.Dashboard.Terminal.Tip}" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="13" Height="13" Data="{StaticResource Icon.Terminal}"/>
+                            <Label Content="{StaticResource Text.Dashboard.Terminal}"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Click="OpenFetch" Width="72" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" Margin="6,0">
+                            <Path Width="16" Height="16" Data="{StaticResource Icon.Fetch}"/>
+                            <Label Content="{StaticResource Text.Fetch}" Margin="4,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenPull" Width="72" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" Margin="6,0">
+                            <Path Width="15" Height="15" Data="{StaticResource Icon.Pull}"/>
+                            <Label Content="{StaticResource Text.Pull}" Margin="4,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenPush" Width="72" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" Margin="6,0">
+                            <Path Width="15" Height="15" Data="{StaticResource Icon.Push}"/>
+                            <Label Content="{StaticResource Text.Push}" Margin="4,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenStash" Width="72" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" Margin="6,0">
+                            <Path Width="14" Height="14" Data="{StaticResource Icon.SaveStash}"/>
+                            <Label Content="{StaticResource Text.Stash}" Margin="4,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenApply" Width="72" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" Margin="6,0">
+                            <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icon.Apply}"/>
+                            <Label Content="{StaticResource Text.Apply}" Margin="4,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Click="OpenSearch" Margin="4,0,0,0" BorderThickness="0" ToolTip="{StaticResource Text.Dashboard.Search.Tip}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="16" Height="16" Data="{StaticResource Icon.Search}"/>
+                            <Label Content="{StaticResource Text.Dashboard.Search}"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OpenConfigure" Margin="4,0,0,0" BorderThickness="0" ToolTip="{StaticResource Text.Dashboard.Configure.Tip}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="16" Height="16" Data="{StaticResource Icon.Setting}"/>
+                            <Label Content="{StaticResource Text.Configure}"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border> 
+    
+        <!-- Main -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Left -->
+            <Grid x:Name="leftPanel" Grid.Column="0" FocusManager.IsFocusScope="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.Resources>
+                    <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
+                </Grid.Resources>
+
+                <!-- Workspace -->
+                <TextBlock Grid.Row="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.Workspace}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
+                <ListView Grid.Row="1" x:Name="workspace" SelectionMode="Single" SelectionChanged="OnPageSelectionChanged">
+                    <ListViewItem IsSelected="True">
+                        <StackPanel Margin="16,0,0,0" Height="28" Orientation="Horizontal">
+                            <Path Width="16" Height="16" Data="{StaticResource Icon.Histories}"/>
+                            <TextBlock Margin="8,0,0,0" Text="{StaticResource Text.Histories}"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Grid Margin="16,0,0,0" Height="28">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Grid.Column="0" Width="16" Height="16" Data="{StaticResource Icon.WorkingCopy}"/>
+                            <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{StaticResource Text.WorkingCopy}"/>
+                            <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeLocalChanges"/>
+                        </Grid>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Grid Margin="16,0,0,0" Height="28">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Grid.Column="0" Width="16" Height="16" Data="{StaticResource Icon.Stashes}"/>
+                            <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{StaticResource Text.Stashes}"/>
+                            <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeStashes"/>
+                        </Grid>
+                    </ListViewItem>
+                </ListView>
+                
+                <!-- Local Branches -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.LocalBranches}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
+                    <controls:IconButton Grid.Column="1" Click="OpenGitFlowPanel" Width="14" Height="14" Margin="8,0" Icon="{StaticResource Icon.Flow}" ToolTip="{StaticResource Text.GitFlow}"/>
+                    <controls:IconButton Grid.Column="2" Click="OpenNewBranch" Width="14" Height="14" Margin="0,0,2,0" Icon="{StaticResource Icon.Branch.Add}" ToolTip="{StaticResource Text.Dashboard.NewBranch}"/>
+                </Grid>
+                <controls:Tree
+                    Grid.Row="3"
+                    x:Name="localBranchTree"
+                    FontFamily="Consolas"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    LostFocus="OnTreeLostFocus"
+                    SelectionChanged="OnTreeSelectionChanged">
+                    <controls:Tree.ItemContainerStyle>
+                        <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                            <EventSetter Event="MouseDoubleClick" Handler="OnTreeDoubleClick"/>
+                            <EventSetter Event="ContextMenuOpening" Handler="OnTreeContextMenuOpening"/>
+                        </Style>
+                    </controls:Tree.ItemContainerStyle>
+                    <controls:Tree.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <Grid Height="24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Path Grid.Column="0" x:Name="Icon" Width="10" Height="10" Data="{StaticResource Icon.Branch}"/>
+                                <TextBlock Grid.Column="1" x:Name="Name" Text="{Binding Name}" Margin="4,0"/>
+                                <controls:Badge Grid.Column="2" Margin="4,0" Label="{Binding UpstreamTrackStatus}"/>
+                                <ToggleButton 
+                                    Grid.Column="3"
+                                    x:Name="Filter"
+                                    Margin="4,0"
+                                    IsChecked="{Binding IsFiltered}"
+                                    Style="{StaticResource Style.ToggleButton.Filter}"
+                                    ToolTip="{StaticResource Text.Filter}"
+                                    Checked="OnFilterChanged" Unchecked="OnFilterChanged"/>
+                            </Grid>
+
+                            <HierarchicalDataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Check}"/>
+                                    <Setter TargetName="Name" Property="FontWeight" Value="ExtraBold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Folder}">
+                                    <Setter TargetName="Filter" Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Folder}"/>
+                                        <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Folder}"/>
+                                        <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Fill}"/>
+                                </MultiDataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+                        </HierarchicalDataTemplate>
+                    </controls:Tree.ItemTemplate>
+                </controls:Tree>
+
+                <!-- REMOTES -->
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.Remotes}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
+                    <controls:IconButton Grid.Column="1" Click="OpenAddRemote" Width="14" Height="14" Margin="0,0,4,0" Icon="{StaticResource Icon.Remote.Add}" ToolTip="{StaticResource Text.Dashboard.Remotes.Add}"/>
+                </Grid>
+                <controls:Tree
+                    Grid.Row="5"
+                    x:Name="remoteBranchTree"
+                    FontFamily="Consolas"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    LostFocus="OnTreeLostFocus"
+                    SelectionChanged="OnTreeSelectionChanged">
+                    <controls:Tree.ItemContainerStyle>
+                        <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
+                            <EventSetter Event="ContextMenuOpening" Handler="OnTreeContextMenuOpening"/>
+                        </Style>
+                    </controls:Tree.ItemContainerStyle>
+                    
+                    <controls:Tree.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <Grid Height="24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Path Grid.Column="0" x:Name="Icon" Width="10" Height="10" Data="{StaticResource Icon.Branch}"/>
+                                <TextBlock Grid.Column="1" x:Name="Name" Text="{Binding Name}" Margin="4,0"/>
+                                <ToggleButton 
+                                    Grid.Column="2"
+                                    x:Name="Filter"
+                                    Margin="4,0"
+                                    IsChecked="{Binding IsFiltered}"
+                                    Style="{StaticResource Style.ToggleButton.Filter}"
+                                    ToolTip="{StaticResource Text.Filter}"
+                                    Checked="OnFilterChanged" Unchecked="OnFilterChanged"/>
+                            </Grid>
+
+                            <HierarchicalDataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Check}"/>
+                                    <Setter TargetName="Name" Property="FontWeight" Value="ExtraBold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Folder}">
+                                    <Setter TargetName="Filter" Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Remote}">
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Remote}"/>
+                                    <Setter TargetName="Filter" Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Folder}"/>
+                                        <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Folder}"/>
+                                        <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Fill}"/>
+                                </MultiDataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+                        </HierarchicalDataTemplate>
+                    </controls:Tree.ItemTemplate>
+                </controls:Tree>
+
+                <!-- TAGS -->
+                <ToggleButton
+                    Grid.Row="6"
+                    x:Name="tglTags"
+                    Style="{StaticResource Style.ToggleButton.Expender}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.Tags}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
+                        <TextBlock Grid.Column="1" x:Name="txtTagCount" FontWeight="DemiBold" Margin="4,0,0,0" Foreground="{StaticResource Brush.FG2}"/>
+                        <controls:IconButton Grid.Column="2" Click="OpenNewTag" Width="14" Height="14" Margin="0,0,4,0" Icon="{StaticResource Icon.Tag.Add}" ToolTip="{StaticResource Text.Dashboard.Tags.Add}"/>
+                    </Grid>
+                </ToggleButton>
+                <DataGrid
+                    Grid.Row="7"
+                    x:Name="tagList"
+                    RowHeight="24"
+                    Height="200"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding ElementName=tglTags, Path=IsChecked, Converter={StaticResource BoolToCollapsed}}"
+                    SelectionMode="Single"
+                    SelectionUnit="FullRow"
+                    LostFocus="OnTagsLostFocus"
+                    SelectionChanged="OnTagSelectionChanged"
+                    ContextMenuOpening="OnTagContextMenuOpening">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Path Grid.Column="0" Width="10" Height="10" Margin="16,0,8,0" Data="{StaticResource Icon.Tag}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+                                        <ToggleButton
+                                            Grid.Column="2"
+                                            IsChecked="{Binding IsFiltered, Mode=TwoWay}"
+                                            Margin="0,0,4,0"
+                                            Style="{StaticResource Style.ToggleButton.Filter}"
+                                            ToolTip="{StaticResource Text.Filter}"
+                                            Checked="OnFilterChanged" Unchecked="OnFilterChanged"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- SUBMODULES -->
+                <ToggleButton
+                    Grid.Row="8"
+                    x:Name="tglSubmodules"
+                    Style="{StaticResource Style.ToggleButton.Expender}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.Submodules}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
+                        <TextBlock Grid.Column="1" x:Name="txtSubmoduleCount" FontWeight="DemiBold" Margin="4,0,0,0" Foreground="{StaticResource Brush.FG2}"/>
+                        <controls:IconButton Grid.Column="2" Click="OpenAddSubmodule" Width="14" Height="14" Margin="8,0" Icon="{StaticResource Icon.Submodule}" ToolTip="{StaticResource Text.Dashboard.Remotes.Add}"/>
+                        <Button Grid.Column="3" Click="UpdateSubmodules" Background="Transparent" Margin="0,0,4,0" BorderThickness="0" ToolTip="{StaticResource Text.Dashboard.Submodules.Update}">
+                            <controls:Loading x:Name="iconUpdateSubmodule" Width="14" Height="14" />
+                        </Button>
+                    </Grid>
+                </ToggleButton>
+                <DataGrid
+                    Grid.Row="9"
+                    x:Name="submoduleList"
+                    RowHeight="24"
+                    Height="100"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding ElementName=tglSubmodules, Path=IsChecked, Converter={StaticResource BoolToCollapsed}}"
+                    SelectionMode="Single"
+                    SelectionUnit="FullRow"
+                    ContextMenuOpening="OnSubmoduleContextMenuOpening"
+                    MouseDoubleClick="OnSubmoduleMouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Path Grid.Column="0" Width="10" Height="10" Margin="16,0,8,0" Data="{StaticResource Icon.Submodule}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <!-- Splitter -->
+            <GridSplitter 
+                Grid.Column="1" 
+                Width="1" 
+                HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+                Background="{StaticResource Brush.Border0}"/>
+            
+            <!-- Right -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" x:Name="mergeNavigator" Height="24" Background="{StaticResource Brush.Conflict}" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock 
+                        Grid.Column="0" 
+                        x:Name="txtConflictTip" 
+                        Margin="4,0" 
+                        FontWeight="DemiBold" 
+                        Foreground="{StaticResource Brush.FG3}"/>
+                    <Button 
+                        Grid.Column="1"
+                        x:Name="btnResolve" 
+                        Click="GotoResolve"
+                        Width="80" 
+                        Margin="2" 
+                        Content="{StaticResource Text.Dashboard.Resolve}" 
+                        Background="{StaticResource Brush.Window}"
+                        BorderBrush="{StaticResource Brush.FG1}"/>
+                    <Button 
+                        Grid.Column="2" 
+                        x:Name="btnContinue"
+                        Click="ContinueMerge"
+                        Width="80" 
+                        Margin="2" 
+                        Content="{StaticResource Text.Dashboard.Continue}" 
+                        Background="{StaticResource Brush.Accent1}"
+                        BorderBrush="{StaticResource Brush.FG1}"/>
+                    <Button 
+                        Grid.Column="3"
+                        Click="AbortMerge"
+                        Width="80" 
+                        Margin="2,2,4,2" 
+                        Content="{StaticResource Text.Dashboard.Abort}"
+                        Background="{StaticResource Brush.Window}"
+                        BorderBrush="{StaticResource Brush.FG1}"/>
+                </Grid>
+
+                <controls:PageContainer Grid.Row="1" x:Name="pages"/>
+            </Grid>
+        </Grid>
+    
+        <!-- Popup -->
+        <widgets:PopupPanel x:Name="popup" Grid.Row="1"/>
+    </Grid>
+</UserControl>

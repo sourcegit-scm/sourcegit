@@ -1,0 +1,196 @@
+<UserControl x:Class="SourceGit.Views.Widgets.CommitChanges"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+             xmlns:converters="clr-namespace:SourceGit.Views.Converters"
+             xmlns:models="clr-namespace:SourceGit.Models"
+             xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:PureFileName x:Key="PureFileName"/>
+        <converters:PureFolderName x:Key="PureFolderName"/>
+
+        <Style x:Key="Style.DataGridRow.Changes" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+            <EventSetter Event="RequestBringIntoView" Handler="OnRequestBringIntoView"/>
+            <EventSetter Event="ContextMenuOpening" Handler="OnDataGridContextMenuOpening"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" MinWidth="200" MaxWidth="400"/>
+            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="24"/>
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    Grid.Column="0" Grid.ColumnSpan="2"
+                    BorderBrush="{StaticResource Brush.Border2}"
+                    BorderThickness="1"/>
+                <Path
+                    Grid.Column="0"
+                    Width="14" Height="14"
+                    Fill="{StaticResource Brush.FG2}"
+                    Data="{StaticResource Icon.Search}"
+                    IsHitTestVisible="False"/>
+                <controls:TextEdit
+                    Grid.Column="1"
+                    Height="24"
+                    Margin="0"
+                    Placeholder="{StaticResource Text.CommitViewer.Changes.Search}"
+                    BorderThickness="0"
+                    TextChanged="SearchFilterChanged"/>
+
+                <controls:ChangeDisplaySwitcher
+                    Grid.Column="2"
+                    x:Name="modeSwitcher"
+                    Margin="4,0,0,0" Width="18" Height="18"
+                    Mode="{Binding Source={x:Static models:Preference.Instance}, Path=Window.ChangeInCommitInfo, Mode=TwoWay}"
+                    ModeChanged="OnDisplayModeChanged"/>
+            </Grid>
+
+            <Border 
+                Grid.Row="1"
+                BorderBrush="{StaticResource Brush.Border2}" 
+                BorderThickness="1" 
+                Background="{StaticResource Brush.Contents}">
+                <Grid>
+                    <controls:Tree
+                        x:Name="modeTree"
+                        FontFamily="Consolas"
+                        SelectionChanged="OnTreeSelectionChanged">
+                        <controls:Tree.ItemContainerStyle>
+                            <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
+                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                                <EventSetter Event="ContextMenuOpening" Handler="OnTreeContextMenuOpening"/>
+                            </Style>
+                        </controls:Tree.ItemContainerStyle>
+
+                        <controls:Tree.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <Grid Height="24">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <controls:ChangeStatusIcon
+                                        Grid.Column="0"
+                                        Width="14" Height="14"
+                                        IsLocalChange="False" 
+                                        Change="{Binding Change}"/>
+                                    
+                                    <Path
+                                        Grid.Column="0"
+                                        x:Name="IconFolder" 
+                                        Width="14" Height="14"
+                                        Fill="Goldenrod"
+                                        Data="{StaticResource Icon.Folder.Fill}"/>
+
+                                    <TextBlock
+                                        Grid.Column="1" 
+                                        Text="{Binding Path, Converter={StaticResource PureFileName}}" 
+                                        Margin="4,0,0,0" 
+                                        FontSize="11"/>
+                                </Grid>
+
+                                <HierarchicalDataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsFolder}" Value="False">
+                                        <Setter TargetName="IconFolder" Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                        <Setter TargetName="IconFolder" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                                    </DataTrigger>
+                                </HierarchicalDataTemplate.Triggers>
+                            </HierarchicalDataTemplate>
+                        </controls:Tree.ItemTemplate>
+                    </controls:Tree>
+
+                    <DataGrid
+                        x:Name="modeList"
+                        RowHeight="24"
+                        SelectionMode="Single"
+                        SelectionUnit="FullRow"
+                        SelectionChanged="OnListSelectionChanged"
+                        RowStyle="{StaticResource Style.DataGridRow.Changes}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="22" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type models:Change}">
+                                        <controls:ChangeStatusIcon Width="14" Height="14" IsLocalChange="False" Change="{Binding}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontFamily="Consolas" Margin="2,0,0,0" Text="{Binding Path}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <DataGrid
+                        x:Name="modeGrid"
+                        RowHeight="24"
+                        SelectionMode="Single"
+                        SelectionUnit="FullRow"
+                        SelectionChanged="OnGridSelectionChanged"
+                        RowStyle="{StaticResource Style.DataGridRow.Changes}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="22" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type models:Change}">
+                                        <controls:ChangeStatusIcon Width="14" Height="14" IsLocalChange="False" Change="{Binding}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontFamily="Consolas" Margin="2,0,0,0" Text="{Binding Path, Converter={StaticResource PureFileName}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontFamily="Consolas" Margin="4,0,0,0" Text="{Binding Path, Converter={StaticResource PureFolderName}}" Foreground="{StaticResource Brush.FG2}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <GridSplitter 
+            Grid.Column="1" 
+            Width="1" 
+            HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+            Background="Transparent"/>
+
+        <widgets:DiffViewer
+            Grid.Column="2"
+            x:Name="diffViewer"
+            Margin="4,0,0,0"/>
+    </Grid>
+</UserControl>

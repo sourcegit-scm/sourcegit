@@ -50,7 +50,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Grid>
+                    <Grid Background="Transparent">
                         <Path 
                             x:Name="Icon" 
                             Height="12"
@@ -70,38 +70,8 @@
                                 <Condition Property="IsChecked" Value="False"/>
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Icon" Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+                            <Setter TargetName="Icon" Property="Opacity" Value=".5"/>
                         </MultiTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="Style.ToggleButton.ListOrTree" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Grid Background="Transparent">
-                        <Path 
-                            x:Name="Icon" 
-                            Height="12"
-                            Width="12"
-                            Style="{DynamicResource Style.Icon}"
-                            Fill="Transparent"
-                            Stroke="{DynamicResource Brush.FG1}"
-                            StrokeThickness=".4"
-                            Data="{DynamicResource Icon.Tree}"/>
-                    </Grid>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Icon" Property="Data" Value="{DynamicResource Icon.List}"/>
-                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

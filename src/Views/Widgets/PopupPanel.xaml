@@ -1,0 +1,46 @@
+<UserControl x:Class="SourceGit.Views.Widgets.PopupPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+             mc:Ignorable="d" Visibility="Collapsed">
+    <Grid ClipToBounds="True">
+        <!-- Background to close -->
+        <Border Background="Transparent" MouseLeftButtonDown="Cancel"/>
+        
+        <!-- Popup panel -->
+        <Border
+            Background="{StaticResource Brush.Popup}"
+            BorderBrush="{StaticResource Brush.Border0}" 
+            BorderThickness="1,0,1,1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Width="500"
+            Height="Auto">
+            <Grid>                
+                <!-- Custom panel -->
+                <Border x:Name="body">
+                    <StackPanel Margin="8" Orientation="Vertical">
+                        <TextBlock Margin="8,8,0,18" x:Name="txtTitle" FontSize="18" FontWeight="DemiBold"/>
+                        <ContentControl x:Name="container"/>
+                        <StackPanel Margin="0,16,0,0" Height="32" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Click="Sure" Width="80" Content="SURE" BorderBrush="{StaticResource Brush.FG1}" Background="{StaticResource Brush.Accent1}"/>
+                            <Button Click="Cancel" Width="80" Margin="8,0,0,0" Content="CANCEL"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+                
+                <!-- Progress mask -->
+                <Border x:Name="mask" Visibility="Collapsed" Background="{StaticResource Brush.Popup}" Opacity=".9">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <controls:Loading x:Name="processing" Width="48" Height="48"/>
+                        <TextBlock x:Name="txtMsg" Margin="0,16,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+    
+</UserControl>

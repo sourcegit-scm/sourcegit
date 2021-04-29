@@ -1,0 +1,41 @@
+<controls:PopupWidget 
+    x:Class="SourceGit.Views.Popups.CherryPick"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+    mc:Ignorable="d" 
+    d:DesignWidth="800" Height="Auto">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock
+            Grid.Row="0" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{StaticResource Text.CherryPick.Commit}"
+            HorizontalAlignment="Right"/>
+        <StackPanel
+            Grid.Row="0" Grid.Column="1"
+            Orientation="Horizontal"
+            VerticalAlignment="Center">
+            <Path Width="14" Height="14" Data="{StaticResource Icon.Commit}"/>
+            <TextBlock x:Name="txtCommit" Margin="8,0,0,0"/>
+        </StackPanel>
+
+        <CheckBox 
+            Grid.Row="1" Grid.Column="1"
+            Margin="0,4,0,0"
+            x:Name="chkCommit"
+            IsChecked="True"
+            Content="{StaticResource Text.CherryPick.CommitChanges}"/>
+    </Grid>
+</controls:PopupWidget>

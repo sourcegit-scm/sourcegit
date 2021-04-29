@@ -1,0 +1,61 @@
+<controls:PopupWidget 
+    x:Class="SourceGit.Views.Popups.Remote"
+    x:Name="me"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+    xmlns:validations="clr-namespace:SourceGit.Views.Validations"
+    mc:Ignorable="d" 
+    d:DesignWidth="500" Height="Auto">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock
+            Grid.Row="0" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{StaticResource Text.Remote.Name}"
+            HorizontalAlignment="Right"/>
+        <controls:TextEdit
+            Grid.Row="0" Grid.Column="1"
+            x:Name="txtName"
+            Height="24"
+            Placeholder="{StaticResource Text.Remote.Name.Placeholder}">
+            <controls:TextEdit.Text>
+                <Binding ElementName="me" Path="RemoteName" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                    <Binding.ValidationRules>
+                        <validations:RemoteName x:Name="ruleName"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </controls:TextEdit.Text>
+        </controls:TextEdit>
+
+        <TextBlock
+            Grid.Row="1" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{StaticResource Text.Remote.URL}"
+            HorizontalAlignment="Right"/>
+        <controls:TextEdit
+            Grid.Row="1" Grid.Column="1"
+            x:Name="txtUrl"
+            Height="24"
+            Placeholder="{StaticResource Text.Remote.URL.Placeholder}">
+            <controls:TextEdit.Text>
+                <Binding ElementName="me" Path="RemoteURL" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                    <Binding.ValidationRules>
+                        <validations:GitURL x:Name="ruleURL"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </controls:TextEdit.Text>
+        </controls:TextEdit>
+    </Grid>
+</controls:PopupWidget>

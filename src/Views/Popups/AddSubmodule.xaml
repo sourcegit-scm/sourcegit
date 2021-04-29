@@ -1,0 +1,69 @@
+<controls:PopupWidget 
+    x:Class="SourceGit.Views.Popups.AddSubmodule"
+    x:Name="me"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+    xmlns:validations="clr-namespace:SourceGit.Views.Validations"
+    mc:Ignorable="d" 
+    d:DesignWidth="500" Height="Auto">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock
+            Grid.Row="0" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{StaticResource Text.URL}"
+            HorizontalAlignment="Right"/>
+        <controls:TextEdit
+            Grid.Row="0" Grid.Column="1"
+            x:Name="txtURL"
+            Height="24"
+            Placeholder="{StaticResource Text.RepositoryURL}">
+            <controls:TextEdit.Text>
+                <Binding ElementName="me" Path="URL" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                    <Binding.ValidationRules>
+                        <validations:GitURL/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </controls:TextEdit.Text>
+        </controls:TextEdit>
+
+        <TextBlock
+            Grid.Row="1" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{StaticResource Text.ParentFolder}"
+            HorizontalAlignment="Right"/>
+        <controls:TextEdit
+            Grid.Row="1" Grid.Column="1"
+            x:Name="txtPath"
+            Height="24"
+            Placeholder="{StaticResource Text.ParentFolder.Placeholder}">
+            <controls:TextEdit.Text>
+                <Binding ElementName="me" Path="Path" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                    <Binding.ValidationRules>
+                        <validations:SubmodulePath/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </controls:TextEdit.Text>
+        </controls:TextEdit>
+
+        <CheckBox 
+            Grid.Row="2" Grid.Column="1"
+            Margin="0,4,0,0"
+            x:Name="chkNested"
+            IsChecked="True"
+            Content="{StaticResource Text.Submodule.FetchNested}"/>
+    </Grid>
+</controls:PopupWidget>

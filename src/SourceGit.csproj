@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net5.0-windows</TargetFramework>
-        <OutputType>WinExe</OutputType>
+        <OutputType>Exe</OutputType>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>App.ico</ApplicationIcon>
         <Company>sourcegit</Company>
@@ -15,12 +15,6 @@
         <RepositoryUrl>https://gitee.com/sourcegit/SourceGit.git</RepositoryUrl>
         <RepositoryType>Public</RepositoryType>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <DebugType>none</DebugType>
         <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
     </PropertyGroup>
-    <ItemGroup>
-        <TrimmerRootAssembly Include="System.Runtime"/>
-        <TrimmerRootAssembly Include="System.Runtime.Extensions"/>
-        <TrimmerRootAssembly Include="System.Runtime.InteropServices"/>
-    </ItemGroup>
 </Project>

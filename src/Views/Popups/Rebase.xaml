@@ -1,0 +1,54 @@
+<controls:PopupWidget 
+    x:Class="SourceGit.Views.Popups.Rebase"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+    mc:Ignorable="d" 
+    d:DesignWidth="500" Height="Auto">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock
+            Grid.Row="0" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{StaticResource Text.Rebase.Target}"
+            HorizontalAlignment="Right"/>
+        <StackPanel
+            Grid.Row="0" Grid.Column="1"
+            Orientation="Horizontal"
+            VerticalAlignment="Center">
+            <Path Width="14" Height="14" Data="{StaticResource Icon.Branch}"/>
+            <TextBlock x:Name="txtCurrent" Margin="8,0,0,0"/>
+        </StackPanel>
+
+        <TextBlock
+            Grid.Row="1" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{StaticResource Text.Rebase.On}"
+            HorizontalAlignment="Right"/>
+        <StackPanel
+            Grid.Row="1" Grid.Column="1"
+            Orientation="Horizontal"
+            VerticalAlignment="Center">
+            <Path x:Name="iconBased" Width="14" Height="14" Data="{StaticResource Icon.Branch}"/>
+            <TextBlock x:Name="txtOn" Margin="8,0,0,0"/>
+        </StackPanel>
+
+        <CheckBox 
+            Grid.Row="2" Grid.Column="1"
+            x:Name="chkAutoStash"
+            IsChecked="True"
+            Content="{StaticResource Text.Rebase.AutoStash}"/>
+    </Grid>
+</controls:PopupWidget>

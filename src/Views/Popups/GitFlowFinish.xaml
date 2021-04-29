@@ -1,0 +1,35 @@
+<controls:PopupWidget 
+    x:Class="SourceGit.Views.Popups.GitFlowFinish"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+    mc:Ignorable="d" 
+    d:DesignWidth="800" Height="Auto">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock
+            Grid.Row="0" Grid.Column="0"
+            Margin="0,0,8,0"
+            x:Name="txtPrefix"
+            HorizontalAlignment="Right"/>
+        <Path
+            Grid.Row="0" Grid.Column="1"
+            Width="14" Height="14" 
+            Data="{StaticResource Icon.Branch}"/>
+        <TextBlock
+            Grid.Row="0" Grid.Column="2"
+            Margin="4,0,0,0"
+            x:Name="txtName"/>
+    </Grid>
+</controls:PopupWidget>

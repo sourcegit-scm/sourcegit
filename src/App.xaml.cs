@@ -1,10 +1,8 @@
-using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,211 +10,106 @@ using System.Windows;
 namespace SourceGit {
 
     /// <summary>
-    ///     Application.
+    ///     程序入口.
     /// </summary>
     public partial class App : Application {
-        /// <summary>
-        ///     Getter/Setter for application user setting.
-        /// </summary>
-        public static Preference Setting { get; set; }
 
         /// <summary>
-        ///     Check if GIT has been configured.
+        ///     读取本地化字串
         /// </summary>
-        public static bool IsGitConfigured {
-            get {
-                return !string.IsNullOrEmpty(Setting.Tools.GitExecutable)
-                    && File.Exists(Setting.Tools.GitExecutable);
-            }
+        /// <param name="key">本地化字串的Key</param>
+        /// <param name="args">可选格式化参数</param>
+        /// <returns>本地化字串</returns>
+        public static string Text(string key, params object[] args) {
+            var data = Current.FindResource($"Text.{key}") as string;
+            if (string.IsNullOrEmpty(data)) return $"Text.{key}";
+            return string.Format(data, args);
         }
 
         /// <summary>
-        ///     Load text from locales.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static string Text(string key) {
-            return Current.FindResource("Text." + key) as string;
-        }
-
-        /// <summary>
-        ///     Format text
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public static string Format(string key, params object[] args) {
-            return string.Format(Text(key), args);
-        }
-
-        /// <summary>
-        ///     Raise error message.
-        /// </summary>
-        /// <param name="message"></param>
-        public static void RaiseError(string msg) {
-            Current.Dispatcher.Invoke(() => {
-                (Current.MainWindow as UI.Launcher).Errors.Add(msg);
-            });
-        }
-
-        /// <summary>
-        ///     Open repository.
-        /// </summary>
-        /// <param name="repo"></param>
-        public static void Open(Git.Repository repo) {
-            (Current.MainWindow as UI.Launcher).Open(repo);
-        }
-
-        /// <summary>
-        ///     Save settings.
-        /// </summary>
-        public static void SaveSetting() {
-            var settingFile = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SourceGit",
-                "preference.json");
-
-            var dir = Path.GetDirectoryName(settingFile);
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
-            var data = JsonSerializer.Serialize(Setting, new JsonSerializerOptions() { WriteIndented = true });
-            File.WriteAllText(settingFile, data);
-        }
-
-        /// <summary>
-        ///     Startup event.
+        ///     启动.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAppStartup(object sender, StartupEventArgs e) {
-            // Use this app as a sequence editor?
-            if (OpenAsEditor(e)) return;
-
-            // Load settings.
-            var settingFile = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SourceGit",
-                "preference.json");
-            if (!File.Exists(settingFile)) {
-                Setting = new Preference();
-            } else {
-                Setting = JsonSerializer.Deserialize<Preference>(File.ReadAllText(settingFile));
+            // 创建必要目录
+            if (!Directory.Exists(Views.Controls.Avatar.CACHE_PATH)) {
+                Directory.CreateDirectory(Views.Controls.Avatar.CACHE_PATH);
             }
 
-            // Make sure avatar cache folder exists
-            if (!Directory.Exists(Helpers.Avatar.CACHE_PATH)) Directory.CreateDirectory(Helpers.Avatar.CACHE_PATH);
-
-            // Try auto configure git via registry.
-            if (Setting == null || !IsGitConfigured) {
-                var root = RegistryKey.OpenBaseKey(
-                    RegistryHive.LocalMachine,
-                    Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
-
-                var git = root.OpenSubKey("SOFTWARE\\GitForWindows");
-                if (git != null) {
-                    Setting.Tools.GitExecutable = Path.Combine(
-                        git.GetValue("InstallPath") as string,
-                        "bin",
-                        "git.exe");
-                }
-            }
-
-            // Apply themes
-            if (Setting.UI.UseLightTheme) {
+            // 控制主题
+            if (Models.Preference.Instance.General.UseDarkTheme) {
                 foreach (var rs in Current.Resources.MergedDictionaries) {
-                    if (rs.Source != null && rs.Source.OriginalString.StartsWith("pack://application:,,,/Resources/Themes/")) {
-                        rs.Source = new Uri("pack://application:,,,/Resources/Themes/Light.xaml", UriKind.Absolute);
+                    if (rs.Source != null && rs.Source.OriginalString.StartsWith("pack://application:,,,/Resources/Themes/", StringComparison.Ordinal)) {
+                        rs.Source = new Uri("pack://application:,,,/Resources/Themes/Dark.xaml", UriKind.Absolute);
                         break;
                     }
                 }
             }
 
-            // Apply locales
-            if (Setting.UI.Locale != "en_US") {
+            // 控制显示语言
+            var lang = Models.Preference.Instance.General.Locale;
+            if (lang != "en_US") {
                 foreach (var rs in Current.Resources.MergedDictionaries) {
-                    if (rs.Source != null && rs.Source.OriginalString.StartsWith("pack://application:,,,/Resources/Locales/")) {
-                        rs.Source = new Uri($"pack://application:,,,/Resources/Locales/{Setting.UI.Locale}.xaml", UriKind.Absolute);
+                    if (rs.Source != null && rs.Source.OriginalString.StartsWith("pack://application:,,,/Resources/Locales/", StringComparison.Ordinal)) {
+                        rs.Source = new Uri($"pack://application:,,,/Resources/Locales/{lang}.xaml", UriKind.Absolute);
                         break;
                     }
                 }
             }
 
-            // Show main window
-            if (e.Args.Length == 1) {
-                MainWindow = new UI.Launcher(e.Args[0]);
-            } else {
-                MainWindow = new UI.Launcher(null);
-            }
+            // 主界面显示
+            MainWindow = new Views.Launcher();
             MainWindow.Show();
 
+            // 如果启动命令中指定了路径，打开指定目录的仓库
+            if (e.Args.Length > 0) {
+                var repo = Models.Preference.Instance.FindRepository(e.Args[0]);
+                if (repo == null) {
+                    var path = new Commands.GetRepositoryRootPath(e.Args[0]).Result();
+                    if (path != null) {
+                        var gitDir = new Commands.QueryGitDir(path).Result();
+                        repo = Models.Preference.Instance.AddRepository(path, gitDir, "");
+                    }
+                }
 
-            // Check for update.
-            if (Setting.CheckUpdate && Setting.LastCheckUpdate != DateTime.Now.DayOfYear) {
-                Setting.LastCheckUpdate = DateTime.Now.DayOfYear;
-                SaveSetting();
-                Task.Run(CheckUpdate);
+                if (repo != null) Models.Watcher.Open(repo);
+            }
+
+            // 检测更新
+            if (Models.Preference.Instance.General.CheckForUpdate) {
+                var curDayOfYear = DateTime.Now.DayOfYear;
+                var lastDayOfYear = Models.Preference.Instance.General.LastCheckDay;
+                if (lastDayOfYear != curDayOfYear) {
+                    Models.Preference.Instance.General.LastCheckDay = curDayOfYear;
+                    Task.Run(() => {
+                        try {
+                            var web = new WebClient() { Encoding = Encoding.UTF8 };
+                            var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/SourceGit/releases/latest");
+                            var ver = Models.Version.Load(raw);
+                            var cur = Assembly.GetExecutingAssembly().GetName().Version;
+
+                            var matches = Regex.Match(ver.TagName, @"^v(\d+)\.(\d+).*");
+                            if (!matches.Success) return;
+
+                            var major = int.Parse(matches.Groups[1].Value);
+                            var minor = int.Parse(matches.Groups[2].Value);
+                            if (major > cur.Major || (major == cur.Major && minor > cur.Minor)) {
+                                Dispatcher.Invoke(() => Views.Upgrade.Open(MainWindow, ver));
+                            }
+                        } catch {}
+                    });
+                }
             }
         }
 
         /// <summary>
-        ///     Deactivated event.
+        ///     后台运行
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAppDeactivated(object sender, EventArgs e) {
-            GC.Collect();
-            SaveSetting();
-        }
-
-        /// <summary>
-        ///     Try to open app as git editor
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        private bool OpenAsEditor(StartupEventArgs e) {
-            if (e.Args.Length < 3) return false;
-
-            switch (e.Args[0]) {
-            case "--sequence":
-                var output = File.CreateText(e.Args[2]);
-                output.Write(File.ReadAllText(e.Args[1]));
-                output.Flush();
-                output.Close();
-
-                Environment.Exit(0);
-                break;
-            default:
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        ///     Check for update.
-        /// </summary>
-        private void CheckUpdate() {
-            try {
-                var web = new WebClient() { Encoding = Encoding.UTF8 };
-                var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/SourceGit/releases/latest");
-                var ver = JsonSerializer.Deserialize<Git.Version>(raw);
-                var cur = Assembly.GetExecutingAssembly().GetName().Version;
-
-                var matches = Regex.Match(ver.TagName, @"^v(\d+)\.(\d+).*");
-                if (!matches.Success) return;
-
-                var major = int.Parse(matches.Groups[1].Value);
-                var minor = int.Parse(matches.Groups[2].Value);
-                if (major > cur.Major || (major == cur.Major && minor > cur.Minor)) {
-                    Dispatcher.Invoke(() => {
-                        var dialog = new UI.UpdateAvailable(ver);
-                        dialog.Owner = MainWindow;
-                        dialog.ShowDialog();
-                    });
-                }
-            } catch {
-                // IGNORE
-            }
+            Models.Preference.Save();
         }
     }
 }

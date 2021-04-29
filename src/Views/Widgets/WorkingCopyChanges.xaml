@@ -1,0 +1,151 @@
+<UserControl x:Class="SourceGit.Views.Widgets.WorkingCopyChanges"
+             x:Name="me"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+             xmlns:converters="clr-namespace:SourceGit.Views.Converters"
+             xmlns:models="clr-namespace:SourceGit.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:PureFileName x:Key="PureFileName"/>
+        <converters:PureFolderName x:Key="PureFolderName"/>
+        <Style x:Key="Style.DataGridRow.Change" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+            <EventSetter Event="RequestBringIntoView" Handler="OnRequestBringIntoView"/>
+            <EventSetter Event="ContextMenuOpening" Handler="OnDataGridContextMenuOpening"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <controls:Tree
+            x:Name="modeTree"
+            FontFamily="Consolas"
+            MultiSelection="True"
+            ItemsSource="{Binding ElementName=me, Path=Nodes}"
+            SelectionChanged="OnTreeSelectionChanged"
+            Visibility="Visible">
+            <TreeView.Resources>
+                <RoutedUICommand x:Key="SelectWholeTreeCommand" Text="SelectWholeTree"/>
+            </TreeView.Resources>
+
+            <TreeView.InputBindings>
+                <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectWholeTreeCommand}"/>
+            </TreeView.InputBindings>
+
+            <TreeView.CommandBindings>
+                <CommandBinding Command="{StaticResource SelectWholeTreeCommand}" Executed="SelectWholeTree"/>
+            </TreeView.CommandBindings>
+            
+            <controls:Tree.ItemContainerStyle>
+                <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                    <EventSetter Event="ContextMenuOpening" Handler="OnTreeContextMenuOpening"/>
+                </Style>
+            </controls:Tree.ItemContainerStyle>
+
+            <controls:Tree.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <Grid Height="24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="18"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <controls:ChangeStatusIcon
+                            Grid.Column="0"
+                            Width="14" Height="14"
+                            IsLocalChange="{Binding ElementName=me, Path=IsUnstaged}" 
+                            Change="{Binding Change}"/>
+
+                        <Path
+                            Grid.Column="0"
+                            x:Name="IconFolder" 
+                            Width="14" Height="14"
+                            Fill="Goldenrod"
+                            Data="{StaticResource Icon.Folder.Fill}"/>
+
+                        <TextBlock
+                            Grid.Column="1" 
+                            Text="{Binding Path, Converter={StaticResource PureFileName}}" 
+                            Margin="4,0,0,0" 
+                            FontSize="11"/>
+                    </Grid>
+
+                    <HierarchicalDataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsFolder}" Value="False">
+                            <Setter TargetName="IconFolder" Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                            <Setter TargetName="IconFolder" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                        </DataTrigger>
+                    </HierarchicalDataTemplate.Triggers>
+                </HierarchicalDataTemplate>
+            </controls:Tree.ItemTemplate>
+        </controls:Tree>
+
+        <DataGrid
+            x:Name="modeList"
+            RowHeight="24"
+            SelectionMode="Extended"
+            SelectionUnit="FullRow"
+            SelectionChanged="OnListSelectionChanged"
+            SizeChanged="OnListSizeChanged"
+            ItemsSource="{Binding ElementName=me, Path=Changes}"
+            RowStyle="{StaticResource Style.DataGridRow.Change}"
+            Visibility="Collapsed">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="22" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type models:Change}">
+                            <controls:ChangeStatusIcon Width="14" Height="14" IsLocalChange="{Binding ElementName=me, Path=IsUnstaged}" Change="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn IsReadOnly="True" Width="SizeToCells">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock FontFamily="Consolas" Margin="2,0,0,0" Text="{Binding Path}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid
+            x:Name="modeGrid"
+            RowHeight="24"
+            SelectionMode="Extended"
+            SelectionUnit="FullRow"
+            SelectionChanged="OnGridSelectionChanged"
+            SizeChanged="OnGridSizeChanged"
+            ItemsSource="{Binding ElementName=me, Path=Changes}"
+            RowStyle="{StaticResource Style.DataGridRow.Change}"
+            Visibility="Collapsed">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="22" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <controls:ChangeStatusIcon Width="14" Height="14" IsLocalChange="{Binding ElementName=me, Path=IsUnstaged}" Change="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn IsReadOnly="True" Width="SizeToCells">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock FontFamily="Consolas" Margin="2,0,0,0" Text="{Binding Path, Converter={StaticResource PureFileName}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn IsReadOnly="True" Width="SizeToCells">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock FontFamily="Consolas" Margin="8,0,0,0" Text="{Binding Path, Converter={StaticResource PureFolderName}}" Foreground="{StaticResource Brush.FG2}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

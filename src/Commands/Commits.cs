@@ -1,0 +1,140 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace SourceGit.Commands {
+
+    /// <summary>
+    ///     取得提交列表
+    /// </summary>
+    public class Commits : Command {
+        private static readonly string GPGSIG_START = "gpgsig -----BEGIN PGP SIGNATURE-----";
+        private static readonly string GPGSIG_END = " -----END PGP SIGNATURE-----";
+
+        private List<Models.Commit> commits = new List<Models.Commit>();
+        private Models.Commit current = null;
+        private bool isSkipingGpgsig = false;
+        private bool isHeadFounded = false;
+        private bool findFirstMerged = true;
+
+        public Commits(string path, string limits, bool needFindHead = true) {
+            Cwd = path;
+            Args = "log --date-order --decorate=full --pretty=raw " + limits;
+            findFirstMerged = needFindHead;
+        }
+
+        public List<Models.Commit> Result() {
+            Exec();
+
+            if (current != null) {
+                current.Message = current.Message.Trim();
+                commits.Add(current);
+            }
+
+            if (findFirstMerged && !isHeadFounded && commits.Count > 0) {
+                MarkFirstMerged();
+            }
+
+            return commits;
+        }
+
+        public override void OnReadline(string line) {
+            if (isSkipingGpgsig) {
+                if (line.StartsWith(GPGSIG_END, StringComparison.Ordinal)) isSkipingGpgsig = false;
+                return;
+            } else if (line.StartsWith(GPGSIG_START, StringComparison.Ordinal)) {
+                isSkipingGpgsig = true;
+                return;
+            }
+
+            if (line.StartsWith("commit ", StringComparison.Ordinal)) {
+                if (current != null) {
+                    current.Message = current.Message.Trim();
+                    commits.Add(current);
+                }
+
+                current = new Models.Commit();
+                line = line.Substring(7);
+
+                var decoratorStart = line.IndexOf('(');
+                if (decoratorStart < 0) {
+                    current.SHA = line.Trim();
+                } else {
+                    current.SHA = line.Substring(0, decoratorStart).Trim();
+                    current.IsMerged = ParseDecorators(current.Decorators, line.Substring(decoratorStart + 1));
+                    if (!isHeadFounded) isHeadFounded = current.IsMerged;
+                }
+
+                return;
+            }
+
+            if (current == null) return;
+
+            if (line.StartsWith("tree ", StringComparison.Ordinal)) {
+                return;
+            } else if (line.StartsWith("parent ", StringComparison.Ordinal)) {
+                current.Parents.Add(line.Substring("parent ".Length));
+            } else if (line.StartsWith("author ", StringComparison.Ordinal)) {
+                current.Author.Parse(line);
+            } else if (line.StartsWith("committer ", StringComparison.Ordinal)) {
+                current.Committer.Parse(line);
+            } else if (string.IsNullOrEmpty(current.Subject)) {
+                current.Subject = line.Trim();
+            } else {
+                current.Message += (line.Trim() + "\n");
+            }
+        }
+
+        private bool ParseDecorators(List<Models.Decorator> decorators, string data) {
+            bool isHeadOfCurrent = false;
+
+            var subs = data.Split(new char[] { ',', ')', '(' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var sub in subs) {
+                var d = sub.Trim();
+                if (d.StartsWith("tag: refs/tags/", StringComparison.Ordinal)) {
+                    decorators.Add(new Models.Decorator() {
+                        Type = Models.DecoratorType.Tag,
+                        Name = d.Substring(15).Trim(),
+                    });
+                } else if (d.EndsWith("/HEAD", StringComparison.Ordinal)) {
+                    continue;
+                } else if (d.StartsWith("HEAD -> refs/heads/", StringComparison.Ordinal)) {
+                    isHeadOfCurrent = true;
+                    decorators.Add(new Models.Decorator() {
+                        Type = Models.DecoratorType.CurrentBranchHead,
+                        Name = d.Substring(19).Trim(),
+                    });
+                } else if (d.StartsWith("refs/heads/", StringComparison.Ordinal)) {
+                    decorators.Add(new Models.Decorator() {
+                        Type = Models.DecoratorType.LocalBranchHead,
+                        Name = d.Substring(11).Trim(),
+                    });
+                } else if (d.StartsWith("refs/remotes/", StringComparison.Ordinal)) {
+                    decorators.Add(new Models.Decorator() {
+                        Type = Models.DecoratorType.RemoteBranchHead,
+                        Name = d.Substring(13).Trim(),
+                    });
+                }
+            }
+
+            return isHeadOfCurrent;
+        }
+
+        private void MarkFirstMerged() {
+            Args = $"log --since=\"{commits.Last().Committer.Time}\" --min-parents=2 --format=\"%H\"";
+
+            var rs = ReadToEnd();
+            var shas = rs.Output.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            if (shas.Length == 0) return;
+
+            var merges = commits.Where(x => x.Parents.Count > 1).ToList();
+            foreach (var sha in shas) {
+                var c = merges.Find(x => x.SHA == sha);
+                if (c != null) {
+                    c.IsMerged = true;
+                    return;
+                }
+            }
+        }
+    }
+}

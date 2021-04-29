@@ -1,0 +1,45 @@
+<UserControl x:Class="SourceGit.Views.Widgets.Exceptions"
+             x:Name="me"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             Width="Auto" Height="Auto">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <ItemsControl ItemsSource="{Binding ElementName=me, Path=Messages}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Height="Auto" Width="300" Margin="8">
+                        <Border Background="{StaticResource Brush.Window}" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="1">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0" Opacity=".5"/>
+                            </Border.Effect>
+                        </Border>
+
+                        <Grid Margin="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="26"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="{StaticResource Text.Launcher.Error}" FontWeight="Bold"/>
+                            <TextBlock Grid.Row="1" Margin="0,8" Text="{Binding}" TextWrapping="Wrap"/>
+                            <Button 
+                                Grid.Row="2" 
+                                Width="60" Height="25"
+                                Margin="4,0" 
+                                Click="Dismiss" 
+                                Content="{StaticResource Text.Close}"
+                                Background="{StaticResource Brush.Accent1}"
+                                BorderBrush="{StaticResource Brush.FG1}"
+                                BorderThickness="1"
+                                HorizontalAlignment="Right"/>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>
