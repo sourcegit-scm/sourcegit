@@ -33,7 +33,12 @@ namespace SourceGit.Views.Popups {
         public override Task<bool> Start() {
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo, false);
-                new Commands.Discard(repo, changes).Exec();
+                var cmd = new Commands.Discard(repo);
+                if (changes == null || changes.Count == 0) {
+                    cmd.Whole();
+                } else {
+                    cmd.Changes(changes);
+                }
                 Models.Watcher.SetEnabled(repo, true);
                 return true;
             });

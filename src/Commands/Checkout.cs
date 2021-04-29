@@ -33,7 +33,7 @@ namespace SourceGit.Commands {
 
         public bool Files(List<string> files) {
             StringBuilder builder = new StringBuilder();
-            builder.Append("checkout -qf --");
+            builder.Append("checkout -f -q --");
             foreach (var f in files) {
                 builder.Append(" \"");
                 builder.Append(f);
