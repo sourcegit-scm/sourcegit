@@ -84,13 +84,13 @@ namespace SourceGit.Views.Controls {
 
         private static Brush GetBackground(Models.Change.Status status) {
             switch (status) {
-            case Models.Change.Status.Modified: return new LinearGradientBrush(Colors.Orange, Color.FromRgb(255, 213, 134), 90);
-            case Models.Change.Status.Added: return new LinearGradientBrush(Colors.LimeGreen, Color.FromRgb(124, 241, 124), 90);
+            case Models.Change.Status.Modified: return new LinearGradientBrush(Color.FromRgb(238, 160, 14), Color.FromRgb(228, 172, 67), 90);
+            case Models.Change.Status.Added: return new LinearGradientBrush(Color.FromRgb(47, 185, 47), Color.FromRgb(75, 189, 75), 90);
             case Models.Change.Status.Deleted: return new LinearGradientBrush(Colors.Tomato, Color.FromRgb(252, 165, 150), 90);
             case Models.Change.Status.Renamed: return new LinearGradientBrush(Colors.Orchid, Color.FromRgb(248, 161, 245), 90);
-            case Models.Change.Status.Copied: return new LinearGradientBrush(Colors.Orange, Color.FromRgb(255, 213, 134), 90);
-            case Models.Change.Status.Unmerged: return new LinearGradientBrush(Colors.Orange, Color.FromRgb(255, 213, 134), 90);
-            case Models.Change.Status.Untracked: return new LinearGradientBrush(Colors.LimeGreen, Color.FromRgb(124, 241, 124), 90);
+            case Models.Change.Status.Copied: return new LinearGradientBrush(Color.FromRgb(238, 160, 14), Color.FromRgb(228, 172, 67), 90);
+            case Models.Change.Status.Unmerged: return new LinearGradientBrush(Color.FromRgb(238, 160, 14), Color.FromRgb(228, 172, 67), 90);
+            case Models.Change.Status.Untracked: return new LinearGradientBrush(Color.FromRgb(47, 185, 47), Color.FromRgb(75, 189, 75), 90);
             default: return Brushes.Transparent;
             }
         }
@@ -102,7 +102,7 @@ namespace SourceGit.Views.Controls {
             case Models.Change.Status.Deleted: return "▬";
             case Models.Change.Status.Renamed: return "➔";
             case Models.Change.Status.Copied: return "❏";
-            case Models.Change.Status.Unmerged: return "U";
+            case Models.Change.Status.Unmerged: return "∪";
             case Models.Change.Status.Untracked: return "?";
             default: return "?";
             }
