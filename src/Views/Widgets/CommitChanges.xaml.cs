@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -252,7 +253,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnTreeSelectionChanged(object sender, RoutedEventArgs e) {
-            if (Models.Preference.Instance.Window.ChangeInCommitInfo != Models.Change.DisplayMode.Tree) return;
+            if (modeSwitcher.Mode != Models.Change.DisplayMode.Tree) return;
 
             diffViewer.Reset();
             if (modeTree.Selected.Count == 0) return;
@@ -264,7 +265,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnListSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (Models.Preference.Instance.Window.ChangeInCommitInfo != Models.Change.DisplayMode.List) return;
+            if (modeSwitcher.Mode != Models.Change.DisplayMode.List) return;
 
             diffViewer.Reset();
 
@@ -275,7 +276,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnGridSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (Models.Preference.Instance.Window.ChangeInCommitInfo != Models.Change.DisplayMode.Grid) return;
+            if (modeSwitcher.Mode != Models.Change.DisplayMode.Grid) return;
 
             diffViewer.Reset();
 
@@ -305,6 +306,26 @@ namespace SourceGit.Views.Widgets {
 
             OpenChangeContextMenu(change);
             e.Handled = true;
+        }
+
+        private void OnListSizeChanged(object sender, SizeChangedEventArgs e) {
+            if (modeSwitcher.Mode != Models.Change.DisplayMode.List) return;
+
+            int last = modeList.Columns.Count - 1;
+            double offset = 0;
+            for (int i = 0; i < last; i++) offset += modeList.Columns[i].ActualWidth;
+            modeList.Columns[last].MinWidth = Math.Max(layerChanges.ActualWidth - offset, 10);
+            modeList.UpdateLayout();
+        }
+
+        private void OnGridSizeChanged(object sender, SizeChangedEventArgs e) {
+            if (modeSwitcher.Mode != Models.Change.DisplayMode.Grid) return;
+
+            int last = modeGrid.Columns.Count - 1;
+            double offset = 0;
+            for (int i = 0; i < last; i++) offset += modeGrid.Columns[i].ActualWidth;
+            modeGrid.Columns[last].MinWidth = Math.Max(layerChanges.ActualWidth - offset, 10);
+            modeGrid.UpdateLayout();
         }
     }
 }

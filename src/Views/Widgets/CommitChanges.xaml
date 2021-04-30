@@ -70,7 +70,7 @@
                 BorderBrush="{StaticResource Brush.Border2}" 
                 BorderThickness="1" 
                 Background="{StaticResource Brush.Contents}">
-                <Grid>
+                <Grid x:Name="layerChanges">
                     <controls:Tree
                         x:Name="modeTree"
                         FontFamily="Consolas"
@@ -128,6 +128,7 @@
                         SelectionMode="Single"
                         SelectionUnit="FullRow"
                         SelectionChanged="OnListSelectionChanged"
+                        SizeChanged="OnListSizeChanged"
                         RowStyle="{StaticResource Style.DataGridRow.Changes}">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Width="22" IsReadOnly="True">
@@ -153,6 +154,7 @@
                         SelectionMode="Single"
                         SelectionUnit="FullRow"
                         SelectionChanged="OnGridSelectionChanged"
+                        SizeChanged="OnGridSizeChanged"
                         RowStyle="{StaticResource Style.DataGridRow.Changes}">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Width="22" IsReadOnly="True">
