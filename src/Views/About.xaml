@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:SourceGit.Views.Controls"
         mc:Ignorable="d"
+        UseLayoutRounding="True"
         WindowStartupLocation="CenterOwner"
         Title="{StaticResource Text.About}" 
         Height="280" Width="400"
@@ -16,7 +17,7 @@
     <controls:WindowBorder>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="32"/>
+                <RowDefinition Height="28"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
@@ -37,9 +38,10 @@
                 
                 <!-- Close -->
                 <controls:IconButton
-                    Grid.Column="3" 
+                    Grid.Column="3"
                     Click="Quit"
-                    Padding="9" 
+                    Width="28"
+                    Padding="8" 
                     Icon="{StaticResource Icon.Close}" 
                     HoverBackground="Red" 
                     WindowChrome.IsHitTestVisibleInChrome="True"/>

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:SourceGit.Views.Controls"
         mc:Ignorable="d"
+        UseLayoutRounding="True"
         Title="{StaticResource Text.Blame}"
         WindowStartupLocation="CenterOwner"
         Height="600" Width="800">
@@ -15,7 +16,7 @@
     <controls:WindowBorder>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="32"/>
+                <RowDefinition Height="28"/>
                 <RowDefinition Height="24"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>

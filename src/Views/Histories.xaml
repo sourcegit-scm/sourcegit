@@ -7,6 +7,7 @@
         xmlns:models="clr-namespace:SourceGit.Models"
         xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
         mc:Ignorable="d"
+        UseLayoutRounding="True"
         Title="{StaticResource Text.FileHistory}"
         WindowStartupLocation="CenterOwner"
         MinHeight="600" MinWidth="800">
@@ -17,7 +18,7 @@
     <controls:WindowBorder>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="32"/>
+                <RowDefinition Height="28"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
