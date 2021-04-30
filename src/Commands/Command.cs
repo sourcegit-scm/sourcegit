@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 namespace SourceGit.Commands {
 
     /// <summary>
-    ///     取消命令执行的对象
+    ///     用于取消命令执行的上下文对象
     /// </summary>
-    public class Cancellable {
+    public class Context {
         public bool IsCancelRequested { get; set; } = false;
     }
 
@@ -28,6 +28,11 @@ namespace SourceGit.Commands {
         }
 
         /// <summary>
+        ///     上下文
+        /// </summary>
+        public Context Ctx { get; set; } = null;
+
+        /// <summary>
         ///     运行路径
         /// </summary>
         public string Cwd { get; set; } = "";
@@ -41,11 +46,6 @@ namespace SourceGit.Commands {
         ///     使用标准错误输出
         /// </summary>
         public bool TraitErrorAsOutput { get; set; } = false;
-
-        /// <summary>
-        ///     用于取消命令指行的Token
-        /// </summary>
-        public Cancellable Token { get; set; } = null;
 
         /// <summary>
         ///     运行
@@ -69,7 +69,7 @@ namespace SourceGit.Commands {
             var isCancelled = false;
 
             proc.OutputDataReceived += (o, e) => {
-                if (Token != null && Token.IsCancelRequested) {
+                if (Ctx != null && Ctx.IsCancelRequested) {
                     isCancelled = true;
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
@@ -85,7 +85,7 @@ namespace SourceGit.Commands {
                 OnReadline(e.Data);
             };
             proc.ErrorDataReceived += (o, e) => {
-                if (Token != null && Token.IsCancelRequested) {
+                if (Ctx != null && Ctx.IsCancelRequested) {
                     isCancelled = true;
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();

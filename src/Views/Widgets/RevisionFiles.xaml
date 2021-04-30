@@ -1,0 +1,115 @@
+<UserControl x:Class="SourceGit.Views.Widgets.RevisionFiles"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+             xmlns:converters="clr-namespace:SourceGit.Views.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="Style.DataGridRow.TextPreview" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+            <EventSetter Event="RequestBringIntoView" Handler="OnRequestBringIntoView"/>
+        </Style>
+        <converters:PureFileName x:Key="PureFileName"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" MinWidth="200" MaxWidth="400"/>
+            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="{StaticResource Brush.Contents}" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="1">
+            <controls:Tree 
+                x:Name="treeFiles" 
+                FontFamily="Consolas" 
+                SelectionChanged="OnFilesSelectionChanged" 
+                ContextMenuOpening="OnFilesContextMenuOpening">
+                <controls:Tree.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal" Height="24">
+                            <Path x:Name="Icon" Width="14" Height="14" Data="{StaticResource Icon.File}"/>
+                            <TextBlock Margin="6,0,0,0" FontSize="11" Text="{Binding Path, Converter={StaticResource PureFileName}}"/>
+                        </StackPanel>
+
+                        <HierarchicalDataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsFolder}" Value="True">
+                                <Setter TargetName="Icon" Property="Fill" Value="Goldenrod"/>
+                                <Setter TargetName="Icon" Property="Opacity" Value="1"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}, Path=IsExpanded}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Fill}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}, Path=IsExpanded}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                            </MultiDataTrigger>
+                        </HierarchicalDataTemplate.Triggers>
+                    </HierarchicalDataTemplate>
+                </controls:Tree.ItemTemplate>
+            </controls:Tree>
+        </Border>
+
+        <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Transparent"/>
+
+        <Border Grid.Column="2" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="1" Margin="2,0">
+            <Grid>
+                <Grid x:Name="layerTextPreview" Visibility="Collapsed" SizeChanged="OnTextPreviewSizeChanged">
+                    <DataGrid
+                        x:Name="txtPreviewData"
+                        FontFamily="Consolas"
+                        RowHeight="16"
+                        RowStyle="{StaticResource Style.DataGridRow.TextPreview}"
+                        FrozenColumnCount="1"
+                        ContextMenuOpening="OnTextPreviewContextMenuOpening"
+                        SelectionMode="Extended"
+                        SelectionUnit="FullRow">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Number}" ElementStyle="{StaticResource Style.TextBlock.LineNumber}"/>
+                            <DataGridTextColumn Binding="{Binding Data}" ElementStyle="{StaticResource Style.TextBlock.LineContent}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Rectangle x:Name="txtPreviewSplitter" Width="1" Fill="{StaticResource Brush.Border2}" HorizontalAlignment="Left"/>
+                </Grid>
+
+                <ScrollViewer 
+                    x:Name="layerImagePreview" 
+                    HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                    Visibility="Collapsed">
+                    <Image 
+                        x:Name="imgPreviewData" 
+                        Width="Auto" Height="Auto"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </ScrollViewer>
+
+                <StackPanel 
+                    x:Name="layerRevisionPreview" 
+                    Orientation="Vertical" 
+                    VerticalAlignment="Center" HorizontalAlignment="Center" 
+                    Visibility="Collapsed">
+                    <Path x:Name="iconRevisionPreview" Width="64" Height="64" Data="{StaticResource Icon.Submodule}" Fill="{StaticResource Brush.FG2}"/>
+                    <TextBlock x:Name="txtRevisionPreview" Margin="0,16,0,0" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
+                </StackPanel>
+
+                <StackPanel 
+                    x:Name="layerBinaryPreview" 
+                    Orientation="Vertical" 
+                    VerticalAlignment="Center" HorizontalAlignment="Center" 
+                    Visibility="Collapsed">
+                    <Path Width="64" Height="64" Data="{StaticResource Icon.Error}" Fill="{StaticResource Brush.FG2}"/>
+                    <TextBlock Margin="0,16,0,0" Text="{StaticResource Text.BinaryNotSupported}" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

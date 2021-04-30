@@ -211,21 +211,9 @@ namespace SourceGit.Views.Widgets {
                     ev.Handled = true;
                 };
 
-                var saveAs = new MenuItem();
-                saveAs.Header = App.Text("SaveAs");
-                saveAs.Visibility = range.Count == 1 ? Visibility.Visible : Visibility.Collapsed;
-                saveAs.Click += (obj, ev) => {
-                    FolderBrowser.Open(null, App.Text("SaveFileTo"), saveTo => {
-                        var full = Path.Combine(saveTo, Path.GetFileName(path));
-                        new Commands.SaveRevisionFile(repo, path, range[0].SHA, full).Exec();
-                    });
-                    ev.Handled = true;
-                };
-
                 menu.Items.Add(history);
                 menu.Items.Add(blame);
                 menu.Items.Add(explore);
-                menu.Items.Add(saveAs);
             }
 
             var copyPath = new MenuItem();
