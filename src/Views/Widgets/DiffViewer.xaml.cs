@@ -336,11 +336,11 @@ namespace SourceGit.Views.Widgets {
                 
                 oldEditor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                 oldEditor.Columns[1].MinWidth = minWidth;
-                oldEditor.ItemsSource = oldSideBlocks;
+                oldEditor.SetBinding(DataGrid.ItemsSourceProperty, new Binding() { Source = oldSideBlocks, IsAsync = true });
 
                 newEditor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                 newEditor.Columns[1].MinWidth = minWidth;
-                newEditor.ItemsSource = newSideBlocks;
+                newEditor.SetBinding(DataGrid.ItemsSourceProperty, new Binding() { Source = newSideBlocks, IsAsync = true });
             });
         }
 
