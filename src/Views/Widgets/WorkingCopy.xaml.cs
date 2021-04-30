@@ -120,7 +120,7 @@ namespace SourceGit.Views.Widgets {
 
             mergePanel.Visibility = Visibility.Collapsed;
 
-            if (change.IsAddedToIndex) {
+            if (!container.IsUnstaged) {
                 unstagedContainer.UnselectAll();
 
                 diffViewer.Diff(repo.Path, new DiffViewer.Option() {
