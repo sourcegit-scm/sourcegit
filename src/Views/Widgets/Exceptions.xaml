@@ -28,8 +28,8 @@
                             <TextBlock Grid.Row="1" Margin="0,8" Text="{Binding}" TextWrapping="Wrap"/>
                             <Button 
                                 Grid.Row="2" 
-                                Width="60" Height="25"
-                                Margin="4,0" 
+                                Height="25"
+                                Margin="4,0" Padding="8,0" 
                                 Click="Dismiss" 
                                 Content="{StaticResource Text.Close}"
                                 Background="{StaticResource Brush.Accent1}"

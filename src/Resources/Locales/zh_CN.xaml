@@ -4,7 +4,7 @@
     <sys:String x:Key="Text.Start" xml:space="preserve">开    始</sys:String>
     <sys:String x:Key="Text.Sure" xml:space="preserve">确    定</sys:String>
     <sys:String x:Key="Text.Save" xml:space="preserve">保    存</sys:String>
-    <sys:String x:Key="Text.Close" xml:space="preserve">关    闭</sys:String>
+    <sys:String x:Key="Text.Close">关闭</sys:String>
     <sys:String x:Key="Text.Cancel" xml:space="preserve">取    消</sys:String>
     <sys:String x:Key="Text.Goto">点击前往</sys:String>
     <sys:String x:Key="Text.RevealFile">在文件浏览器中查看</sys:String>
