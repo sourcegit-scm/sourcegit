@@ -122,20 +122,20 @@ namespace SourceGit.Views.Widgets {
         }
 
         public void StageSelected() {
-            var files = new List<string>();
+            var changes = new List<Models.Change>();
             switch (Mode) {
             case Models.Change.DisplayMode.Tree:
-                var changes = new List<Models.Change>();
                 foreach (var node in modeTree.Selected) GetChangesFromNode(node as ChangeNode, changes);
-                foreach (var c in changes) files.Add(c.Path);
                 break;
             case Models.Change.DisplayMode.List:
-                foreach (var c in modeList.SelectedItems) files.Add((c as Models.Change).Path);
+                foreach (var c in modeList.SelectedItems) changes.Add(c as Models.Change);
                 break;
             case Models.Change.DisplayMode.Grid:
-                foreach (var c in modeGrid.SelectedItems) files.Add((c as Models.Change).Path);
+                foreach (var c in modeGrid.SelectedItems) changes.Add(c as Models.Change);
                 break;
             }
+
+            var files = GetPathsFromChanges(changes);
             if (files.Count > 0) DoStage(files);
         }
 
@@ -144,20 +144,20 @@ namespace SourceGit.Views.Widgets {
         }
 
         public void UnstageSelected() {
-            var files = new List<string>();
+            var changes = new List<Models.Change>();
             switch (Mode) {
             case Models.Change.DisplayMode.Tree:
-                var changes = new List<Models.Change>();
                 foreach (var node in modeTree.Selected) GetChangesFromNode(node as ChangeNode, changes);
-                foreach (var c in changes) files.Add(c.Path);
                 break;
             case Models.Change.DisplayMode.List:
-                foreach (var c in modeList.SelectedItems) files.Add((c as Models.Change).Path);
+                foreach (var c in modeList.SelectedItems) changes.Add(c as Models.Change);
                 break;
             case Models.Change.DisplayMode.Grid:
-                foreach (var c in modeGrid.SelectedItems) files.Add((c as Models.Change).Path);
+                foreach (var c in modeGrid.SelectedItems) changes.Add(c as Models.Change);
                 break;
             }
+
+            var files = GetPathsFromChanges(changes);
             if (files.Count > 0) DoUnstage(files);
         }
 
@@ -284,6 +284,15 @@ namespace SourceGit.Views.Widgets {
             } else {
                 foreach (var sub in node.Children) GetChangesFromNode(sub, changes);
             }
+        }
+
+        private List<string> GetPathsFromChanges(List<Models.Change> changes) {
+            var files = new List<string>();
+            foreach (var c in changes) {
+                files.Add(c.Path);
+                if (!string.IsNullOrEmpty(c.OriginalPath)) files.Add(c.OriginalPath);
+            }
+            return files;
         }
         #endregion
 
@@ -582,8 +591,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OpenStagedContextMenuByNodes(ContextMenu menu, List<ChangeNode> nodes, List<Models.Change> changes) {
-            var files = new List<string>();
-            foreach (var c in changes) files.Add(c.Path);
+            var files = GetPathsFromChanges(changes);
 
             if (nodes.Count == 1) {
                 var node = nodes[0];
@@ -624,8 +632,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OpenStagedContextMenuByChanges(ContextMenu menu, List<Models.Change> changes) {
-            var files = new List<string>();
-            foreach (var c in changes) files.Add(c.Path);
+            var files = GetPathsFromChanges(changes);
 
             if (changes.Count == 1) {
                 var change = changes[0];
