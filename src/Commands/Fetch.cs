@@ -48,7 +48,7 @@ namespace SourceGit.Commands {
 
         public static void MarkFetched(string repo) {
             if (!jobs.ContainsKey(repo)) return;
-            jobs[repo].nextFetchPoint = DateTime.Now.AddMinutes(1).ToFileTime();
+            jobs[repo].nextFetchPoint = DateTime.Now.AddMinutes(10).ToFileTime();
         }
 
         public static void Stop(string repo) {
@@ -60,7 +60,7 @@ namespace SourceGit.Commands {
 
         public AutoFetch(string repo) {
             cmd = new Fetch(repo, "--all", true, null);
-            nextFetchPoint = DateTime.Now.AddMinutes(1).ToFileTime();
+            nextFetchPoint = DateTime.Now.AddMinutes(10).ToFileTime();
             timer = new Timer(OnTick, null, 60000, 10000);
         }
 
@@ -70,7 +70,7 @@ namespace SourceGit.Commands {
             
             Models.Watcher.SetEnabled(cmd.Cwd, false);
             cmd.Exec();
-            nextFetchPoint = DateTime.Now.AddMinutes(1).ToFileTime();
+            nextFetchPoint = DateTime.Now.AddMinutes(10).ToFileTime();
             Models.Watcher.SetEnabled(cmd.Cwd, true);
         }
     }
