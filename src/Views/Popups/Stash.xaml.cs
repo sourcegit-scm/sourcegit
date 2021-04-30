@@ -44,7 +44,7 @@ namespace SourceGit.Views.Popups {
                     }
                 }
 
-                new Commands.Stash(repo).Push(changes, message);
+                if (jobs.Count > 0) new Commands.Stash(repo).Push(changes, message);
                 Models.Watcher.SetEnabled(repo, true);
                 return true;
             });
