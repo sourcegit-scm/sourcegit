@@ -379,7 +379,6 @@
     <sys:String x:Key="Text.Stashes">Stashes</sys:String>
     <sys:String x:Key="Text.Stashes.Stashes">STASHES</sys:String>
     <sys:String x:Key="Text.Stashes.Changes">CHANGES</sys:String>
-    <sys:String x:Key="Text.Stashes.Changes.Tip">Untracked files not shown</sys:String>
 
     <sys:String x:Key="Text.TwoCommitsDiff">COMMIT : {0} -> {1}</sys:String>
 

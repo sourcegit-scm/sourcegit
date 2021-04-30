@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SourceGit.Views.Popups {
@@ -9,14 +10,14 @@ namespace SourceGit.Views.Popups {
     /// </summary>
     public partial class Stash : Controls.PopupWidget {
         private string repo = null;
-        private List<string> files = null;
+        private List<Models.Change> changes = null;
 
-        public Stash(string repo, List<string> files) {
+        public Stash(string repo, List<Models.Change> changes) {
             this.repo = repo;
-            this.files = files;
+            this.changes = changes;
 
             InitializeComponent();
-            chkIncludeUntracked.IsEnabled = files == null || files.Count == 0;
+            chkIncludeUntracked.IsEnabled = changes == null || changes.Count == 0;
         }
 
         public override string GetTitle() {
@@ -29,15 +30,21 @@ namespace SourceGit.Views.Popups {
 
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo, false);
-                if (files == null || files.Count == 0) {
-                    new Commands.Stash(repo).Push(null, message, includeUntracked);
-                } else {
-                    for (int i = 0; i < files.Count; i += 10) {
-                        var count = Math.Min(10, files.Count - i);
-                        var step = files.GetRange(i, count);
-                        new Commands.Stash(repo).Push(step, message, includeUntracked);
+
+                if (changes == null || changes.Count == 0) {
+                    changes = new Commands.LocalChanges(repo).Result();
+                }
+
+                var jobs = new List<Models.Change>();
+                foreach (var c in changes) {
+                    if (c.WorkTree == Models.Change.Status.Added || c.WorkTree == Models.Change.Status.Untracked) {
+                        if (includeUntracked) jobs.Add(c);
+                    } else {
+                        jobs.Add(c);
                     }
                 }
+
+                new Commands.Stash(repo).Push(changes, message);
                 Models.Watcher.SetEnabled(repo, true);
                 return true;
             });

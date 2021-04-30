@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace SourceGit.Commands {
     /// <summary>
@@ -11,25 +11,37 @@ namespace SourceGit.Commands {
             Cwd = repo;
         }
 
-        public bool Push(List<string> files, string message, bool includeUntracked) {
-            StringBuilder builder = new StringBuilder();
-            builder.Append("stash push ");
-            if (includeUntracked) builder.Append("-u ");
-            builder.Append("-m \"");
-            builder.Append(message);
-            builder.Append("\" ");
+        public bool Push(List<Models.Change> changes, string message) {
+            var temp = Path.GetTempFileName();
+            var stream = new FileStream(temp, FileMode.Create);
+            var writer = new StreamWriter(stream);
 
-            if (files != null && files.Count > 0) {
-                builder.Append("--");
-                foreach (var f in files) {
-                    builder.Append(" \"");
-                    builder.Append(f);
-                    builder.Append("\"");
+            var needAdd = new List<string>();
+            foreach (var c in changes) {
+                writer.WriteLine(c.Path);
+
+                if (c.WorkTree == Models.Change.Status.Added || c.WorkTree == Models.Change.Status.Untracked) {
+                    needAdd.Add(c.Path);
+                    if (needAdd.Count > 10) {
+                        new Add(Cwd, needAdd).Exec();
+                        needAdd.Clear();
+                    }
                 }
             }
+            if (needAdd.Count > 0) {
+                new Add(Cwd, needAdd).Exec();
+                needAdd.Clear();
+            }
 
-            Args = builder.ToString();
-            return Exec();
+            writer.Flush();
+            stream.Flush();
+            writer.Close();
+            stream.Close();
+
+            Args = $"stash push -m \"{message}\" --pathspec-from-file=\"{temp}\"";
+            var succ = Exec();
+            File.Delete(temp);
+            return succ;
         }
 
         public bool Apply(string name) {

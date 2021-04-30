@@ -28,7 +28,7 @@ namespace SourceGit.Commands {
             if (needStash) {
                 var changes = new LocalChanges(Cwd).Result();
                 if (changes.Count > 0) {
-                    if (!new Stash(Cwd).Push(null, "PULL_AUTO_STASH", true)) {
+                    if (!new Stash(Cwd).Push(changes, "PULL_AUTO_STASH")) {
                         return false;
                     }
                 } else {

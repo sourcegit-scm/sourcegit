@@ -306,8 +306,8 @@ namespace SourceGit.Views.Widgets {
         }
 
         private async void SaveAsPatch(string saveTo, List<Models.Change> changes) {
-            FileStream stream = new FileStream(saveTo, FileMode.Create);
-            StreamWriter writer = new StreamWriter(stream);
+            var stream = new FileStream(saveTo, FileMode.Create);
+            var writer = new StreamWriter(stream);
 
             foreach (var c in changes) {
                 await Task.Run(() => new Commands.SaveChangeToStream(repo, c, writer).Exec());
@@ -353,7 +353,7 @@ namespace SourceGit.Views.Widgets {
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.Stash");
                 stash.Click += (o, e) => {
-                    new Popups.Stash(repo, files).Show();
+                    new Popups.Stash(repo, changes).Show();
                     e.Handled = true;
                 };
 
@@ -416,7 +416,7 @@ namespace SourceGit.Views.Widgets {
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.StashMulti", changes.Count);
                 stash.Click += (o, e) => {
-                    new Popups.Stash(repo, files).Show();
+                    new Popups.Stash(repo, changes).Show();
                     e.Handled = true;
                 };
 
@@ -475,7 +475,7 @@ namespace SourceGit.Views.Widgets {
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.Stash");
                 stash.Click += (o, e) => {
-                    new Popups.Stash(repo, files).Show();
+                    new Popups.Stash(repo, changes).Show();
                     e.Handled = true;
                 };
 
@@ -538,7 +538,7 @@ namespace SourceGit.Views.Widgets {
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.StashMulti", changes.Count);
                 stash.Click += (o, e) => {
-                    new Popups.Stash(repo, files).Show();
+                    new Popups.Stash(repo, changes).Show();
                     e.Handled = true;
                 };
 

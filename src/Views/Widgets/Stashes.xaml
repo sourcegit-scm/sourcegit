@@ -27,8 +27,14 @@
             <!-- Stashes List Group -->
             <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,0,1">
                 <StackPanel Orientation="Horizontal">
+                    <Path
+                        Margin="4,0"
+                        Width="12" Height="12"
+                        Fill="{StaticResource Brush.FG2}"
+                        Data="{StaticResource Icon.Stashes}"/>
+
                     <TextBlock
-                        Margin="6,0,0,0"
+                        Margin="4,0,0,0"
                         Text="{StaticResource Text.Stashes.Stashes}" 
                         Foreground="{StaticResource Brush.FG2}" 
                         FontWeight="Bold"/>
@@ -71,25 +77,19 @@
             
             <!-- Change List Group -->
             <Border Grid.Row="2" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Path
+                        Margin="4,0"
+                        Width="12" Height="12"
+                        Fill="{StaticResource Brush.FG2}"
+                        Data="{StaticResource Icon.File}"/>
+                    
                     <TextBlock
-                        Grid.Column="0"
-                        Margin="6,0,0,0"
+                        Margin="4,0,0,0"
                         Text="{StaticResource Text.Stashes.Changes}" 
                         Foreground="{StaticResource Brush.FG2}" 
                         FontWeight="Bold"/>
-                    <TextBlock
-                        Grid.Column="1"
-                        Margin="0,0,4,0"
-                        Text="{StaticResource Text.Stashes.Changes.Tip}"
-                        Foreground="{StaticResource Brush.FG2}"
-                        FontFamily="Consolas"
-                        FontSize="10"/>
-                </Grid>
+                </StackPanel>
             </Border>
             
             <!-- Changed Files -->
