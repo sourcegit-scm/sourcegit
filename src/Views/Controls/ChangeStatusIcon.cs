@@ -103,7 +103,7 @@ namespace SourceGit.Views.Controls {
             case Models.Change.Status.Renamed: return "➔";
             case Models.Change.Status.Copied: return "❏";
             case Models.Change.Status.Unmerged: return "∪";
-            case Models.Change.Status.Untracked: return "?";
+            case Models.Change.Status.Untracked: return "★";
             default: return "?";
             }
         }
