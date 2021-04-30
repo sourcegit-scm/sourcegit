@@ -80,6 +80,9 @@ namespace SourceGit.Views.Widgets {
             noChange.Visibility = Visibility.Collapsed;
             sizeChange.Visibility = Visibility.Collapsed;
             ClearCache();
+
+            foreach (var e in editors) e.ItemsSource = null;
+            foreach (var s in splitters) s.Visibility = Visibility.Hidden;
         }
 
         public void Diff(string repo, Option opt) {
@@ -250,6 +253,8 @@ namespace SourceGit.Views.Widgets {
                     splitters[0].Margin = new Thickness(Math.Floor(lineNumberWidth), 0, 0, 0);
                     splitters[1].Margin = new Thickness(Math.Floor(lineNumberWidth) * 2, 0, 0, 0);
                 }
+
+                foreach (var s in splitters) s.Visibility = Visibility.Visible;
                 
                 editor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                 editor.Columns[1].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
@@ -333,7 +338,9 @@ namespace SourceGit.Views.Widgets {
                     splitters[0].Margin = new Thickness(Math.Floor(lineNumberWidth), 0, 0, 0);
                     splitters[2].Margin = new Thickness(Math.Floor(lineNumberWidth), 0, 0, 0);
                 }
-                
+
+                foreach (var s in splitters) s.Visibility = Visibility.Visible;
+
                 oldEditor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                 oldEditor.Columns[1].MinWidth = minWidth;
                 oldEditor.SetBinding(DataGrid.ItemsSourceProperty, new Binding() { Source = oldSideBlocks, IsAsync = true });
