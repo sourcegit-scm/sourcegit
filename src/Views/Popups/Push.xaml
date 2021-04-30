@@ -89,7 +89,7 @@
         <CheckBox Grid.Row="3" Grid.Column="1"
                   Margin="0,4,0,0"
                   x:Name="chkAllTags"
-                  IsChecked="True"
+                  IsChecked="False"
                   Content="{StaticResource Text.Push.WithAllTags}"/>
 
         <CheckBox Grid.Row="4" Grid.Column="1"
