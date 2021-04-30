@@ -121,18 +121,19 @@ namespace SourceGit.Commands {
         }
 
         private void MarkFirstMerged() {
-            Args = $"log --since=\"{commits.Last().Committer.Time}\" --min-parents=2 --format=\"%H\"";
+            Args = $"log --since=\"{commits.Last().Committer.Time}\" --format=\"%H\"";
 
             var rs = ReadToEnd();
             var shas = rs.Output.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             if (shas.Length == 0) return;
 
-            var merges = commits.Where(x => x.Parents.Count > 1).ToList();
-            foreach (var sha in shas) {
-                var c = merges.Find(x => x.SHA == sha);
-                if (c != null) {
+            var set = new HashSet<string>();
+            foreach (var sha in shas) set.Add(sha);
+
+            foreach (var c in commits) {
+                if (set.Contains(c.SHA)) {
                     c.IsMerged = true;
-                    return;
+                    break;
                 }
             }
         }
