@@ -94,7 +94,7 @@
 
         <CheckBox Grid.Row="4" Grid.Column="1"
                   x:Name="chkForce"
-                  IsChecked="True"
+                  IsChecked="False"
                   Content="{StaticResource Text.Push.Force}"/>
     </Grid>
 </controls:PopupWidget>
