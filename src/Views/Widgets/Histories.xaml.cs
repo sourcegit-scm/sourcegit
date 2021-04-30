@@ -26,6 +26,7 @@ namespace SourceGit.Views.Widgets {
 
             var watcher = Models.Watcher.Get(repo.Path);
             watcher.BranchChanged += UpdateCommits;
+            watcher.TagChanged += UpdateCommits;
         }
 
         #region DATA
