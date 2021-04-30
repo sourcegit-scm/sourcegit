@@ -75,7 +75,7 @@
                 </Grid.ColumnDefinitions>
             </Grid>
 
-            <Border x:Name="sizeChange" Grid.Row="1">
+            <Border x:Name="sizeChange" Grid.Row="1" Background="{StaticResource Brush.Window}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" TextElement.FontFamily="Consolas">
                     <TextBlock 
                         x:Name="txtSizeChangeTitle" 
@@ -111,7 +111,7 @@
                 </StackPanel>
             </Border>
 
-            <Border x:Name="noChange" Grid.Row="1">
+            <Border x:Name="noChange" Grid.Row="1" Background="{StaticResource Brush.Window}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <Path Width="64" Height="64" Data="{StaticResource Icon.Check}" Fill="{StaticResource Brush.FG2}"/>
                     <TextBlock 
@@ -123,7 +123,7 @@
                 </StackPanel>
             </Border>
 
-            <Border x:Name="mask" Grid.Row="0" Grid.RowSpan="2">
+            <Border x:Name="mask" Grid.Row="0" Grid.RowSpan="2" Background="{StaticResource Brush.Window}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <Path Width="64" Height="64" Data="{StaticResource Icon.Diff}" Fill="{StaticResource Brush.FG2}"/>
                     <TextBlock 

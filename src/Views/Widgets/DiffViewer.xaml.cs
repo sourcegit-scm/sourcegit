@@ -53,6 +53,7 @@ namespace SourceGit.Views.Widgets {
             }
         }
 
+        private ulong seq = 0;
         private string repo = null;
         private Option opt = null;
         private List<Models.TextChanges.Line> cachedTextChanges = null;
@@ -64,26 +65,26 @@ namespace SourceGit.Views.Widgets {
             Reset();
         }
 
+        public void Reload() {
+            if (repo == null || opt == null) {
+                Reset();
+            } else {
+                Diff(repo, opt);
+            }
+        }
+
         public void Reset() {
+            seq++;
             mask.Visibility = Visibility.Visible;
             toolbar.Visibility = Visibility.Collapsed;
             noChange.Visibility = Visibility.Collapsed;
             sizeChange.Visibility = Visibility.Collapsed;
-
-            ClearEditor();
             ClearCache();
         }
 
-        public void Reload() {
-            if (repo == null || opt == null) {
-                Reset();
-                return;
-            }
-
-            Diff(repo, opt);
-        }
-
         public void Diff(string repo, Option opt) {
+            seq++;
+
             mask.Visibility = Visibility.Collapsed;
             noChange.Visibility = Visibility.Collapsed;
             sizeChange.Visibility = Visibility.Collapsed;
@@ -97,6 +98,7 @@ namespace SourceGit.Views.Widgets {
             this.repo = repo;
             this.opt = opt;
 
+            var dummy = seq;
             Task.Run(() => {
                 var args = $"{opt.ExtraArgs} ";
                 if (opt.RevisionRange.Length > 0) args += $"{opt.RevisionRange[0]} ";
@@ -111,9 +113,9 @@ namespace SourceGit.Views.Widgets {
                 if (isLFSObject) {
                     var lc = new Commands.QueryLFSObjectChange(repo, args).Result();
                     if (lc.IsValid) {
-                        SetLFSChange(lc);
+                        SetLFSChange(lc, dummy);
                     } else {
-                        SetSame();
+                        SetSame(dummy);
                     }
                     return;
                 }
@@ -121,12 +123,12 @@ namespace SourceGit.Views.Widgets {
                 var rs = new Commands.Diff(repo, args).Result();
                 if (rs.IsBinary) {
                     var fsc = new Commands.QueryFileSizeChange(repo, opt.RevisionRange, opt.Path, opt.OrgPath).Result();
-                    SetSizeChange(fsc);
+                    SetSizeChange(fsc, dummy);
                 } else if (rs.Lines.Count > 0) {
                     cachedTextChanges = rs.Lines;
-                    SetTextChange();
+                    SetTextChange(dummy);
                 } else {
-                    SetSame();
+                    SetSame(dummy);
                 }
             });
         }
@@ -142,18 +144,20 @@ namespace SourceGit.Views.Widgets {
             }
         }
 
-        private void SetTextChange() {
+        private void SetTextChange(ulong dummy) {
             if (cachedTextChanges == null) return;
 
             if (Models.Preference.Instance.Window.UseCombinedDiff) {
-                MakeCombinedViewer();
+                MakeCombinedViewer(dummy);
             } else {
-                MakeSideBySideViewer();
+                MakeSideBySideViewer(dummy);
             }
         }
 
-        private void SetSizeChange(Models.FileSizeChange fsc) {
+        private void SetSizeChange(Models.FileSizeChange fsc, ulong dummy) {
             Dispatcher.Invoke(() => {
+                if (dummy != seq) return;
+
                 loading.Visibility = Visibility.Collapsed;
                 mask.Visibility = Visibility.Collapsed;
                 toolbarOptions.Visibility = Visibility.Collapsed;
@@ -166,8 +170,10 @@ namespace SourceGit.Views.Widgets {
             });
         }
 
-        private void SetLFSChange(Models.LFSChange lc) {
+        private void SetLFSChange(Models.LFSChange lc, ulong dummy) {
             Dispatcher.Invoke(() => {
+                if (dummy != seq) return;
+
                 var oldSize = lc.Old == null ? 0 : lc.Old.Size;
                 var newSize = lc.New == null ? 0 : lc.New.Size;
 
@@ -183,8 +189,10 @@ namespace SourceGit.Views.Widgets {
             });
         }
 
-        private void SetSame() {
+        private void SetSame(ulong dummy) {
             Dispatcher.Invoke(() => {
+                if (dummy != seq) return;
+
                 loading.Visibility = Visibility.Collapsed;
                 mask.Visibility = Visibility.Collapsed; 
                 toolbarOptions.Visibility = Visibility.Collapsed;
@@ -192,7 +200,7 @@ namespace SourceGit.Views.Widgets {
             });
         }
 
-        private void MakeCombinedViewer() {
+        private void MakeCombinedViewer(ulong dummy) {
             var fgCommon = FindResource("Brush.FG1") as Brush;
             var fgIndicator = FindResource("Brush.FG2") as Brush;
             var lastOldLine = "";
@@ -216,6 +224,8 @@ namespace SourceGit.Views.Widgets {
             }
 
             Dispatcher.Invoke(() => {
+                if (dummy != seq) return;
+
                 loading.Visibility = Visibility.Collapsed;
                 mask.Visibility = Visibility.Collapsed;
                 toolbarOptions.Visibility = Visibility.Visible;
@@ -244,11 +254,11 @@ namespace SourceGit.Views.Widgets {
                 editor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                 editor.Columns[1].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                 editor.Columns[2].MinWidth = minWidth;
-                editor.ItemsSource = blocks;
+                editor.SetBinding(DataGrid.ItemsSourceProperty, new Binding() { Source = blocks, IsAsync = true });
             });
         }
 
-        private void MakeSideBySideViewer() {
+        private void MakeSideBySideViewer(ulong dummy) {
             var fgCommon = FindResource("Brush.FG1") as Brush;
             var fgIndicator = FindResource("Brush.FG2") as Brush;
             var lastOldLine = "";
@@ -287,6 +297,8 @@ namespace SourceGit.Views.Widgets {
             FillEmptyLines(oldSideBlocks, newSideBlocks);
 
             Dispatcher.Invoke(() => {
+                if (dummy != seq) return;
+
                 loading.Visibility = Visibility.Collapsed;
                 mask.Visibility = Visibility.Collapsed;
                 toolbarOptions.Visibility = Visibility.Visible;
@@ -466,12 +478,6 @@ namespace SourceGit.Views.Widgets {
             opt = null;
             cachedTextChanges = null;
         }
-        
-        private void ClearEditor() {
-            editors.Clear();
-            splitters.Clear();
-            textDiff.Children.Clear();
-        }
 
         private T GetVisualChild<T>(DependencyObject parent) where T : Visual {
             T child = null;
@@ -497,8 +503,11 @@ namespace SourceGit.Views.Widgets {
         #region EVENTS
         private void OnDiffViewModeChanged(object sender, RoutedEventArgs e) {
             if (editors.Count > 0) {
-                ClearEditor();
-                SetTextChange();
+                editors.Clear();
+                splitters.Clear();
+                textDiff.Children.Clear();
+
+                SetTextChange(seq);
             }
         }
 
