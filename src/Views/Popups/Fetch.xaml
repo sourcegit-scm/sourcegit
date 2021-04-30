@@ -6,7 +6,7 @@
              xmlns:converters="clr-namespace:SourceGit.Views.Converters"
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              mc:Ignorable="d" 
-             d:DesignWidth="500" Height="Auto">
+             d:DesignWidth="500" Height="Auto" Padding="1">
     <Grid>
         <Grid.Resources>
             <converters:InverseBool x:Key="InverseBool"/>

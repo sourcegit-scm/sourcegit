@@ -8,7 +8,7 @@
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
     xmlns:validations="clr-namespace:SourceGit.Views.Validations"
     mc:Ignorable="d" 
-    d:DesignWidth="500" Height="Auto">
+    d:DesignWidth="500" Height="Auto" Padding="1">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>

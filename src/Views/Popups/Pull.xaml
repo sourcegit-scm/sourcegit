@@ -7,7 +7,7 @@
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
     xmlns:converters="clr-namespace:SourceGit.Views.Converters" 
     mc:Ignorable="d" 
-    d:DesignWidth="500" Height="Auto">
+    d:DesignWidth="500" Height="Auto" Padding="1">
     <UserControl.Resources>
         <converters:BranchToName x:Key="BranchToName"/>
     </UserControl.Resources>
