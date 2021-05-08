@@ -177,6 +177,8 @@ namespace SourceGit.Views.Widgets {
                 if (!newSet.ContainsKey(old.Path)) {
                     Changes.RemoveAt(i);
                     RemoveTreeNode(Nodes, old);
+                    if (modeTree.Selected.Contains(old)) modeTree.Selected.Remove(old);
+                    if (DiffTarget == old) DiffTarget = null;
                     continue;
                 }
 
@@ -184,6 +186,8 @@ namespace SourceGit.Views.Widgets {
                 if (cur.Index != old.Index || cur.WorkTree != old.WorkTree) {
                     Changes.RemoveAt(i);
                     RemoveTreeNode(Nodes, old);
+                    if (modeTree.Selected.Contains(old)) modeTree.Selected.Remove(old);
+                    if (DiffTarget == old) DiffTarget = null;
                     continue;
                 }
 
@@ -619,6 +623,10 @@ namespace SourceGit.Views.Widgets {
                     Clipboard.SetText(node.Path);
                     e.Handled = true;
                 };
+
+                menu.Items.Add(explore);
+                menu.Items.Add(unstage);
+                menu.Items.Add(copyPath);
             } else {
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.UnstageMulti", files.Count);
