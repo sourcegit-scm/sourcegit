@@ -514,6 +514,14 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
+                var history = new MenuItem();
+                history.Header = App.Text("FileHistory");
+                history.Click += (o, e) => {
+                    var viewer = new Views.Histories(repo, change.Path);
+                    viewer.Show();
+                    e.Handled = true;
+                };
+
                 menu.Items.Add(explore);
                 menu.Items.Add(new Separator());
                 menu.Items.Add(stage);
@@ -521,17 +529,8 @@ namespace SourceGit.Views.Widgets {
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
                 menu.Items.Add(new Separator());
-                if (change != null) {
-                    var history = new MenuItem();
-                    history.Header = App.Text("FileHistory");
-                    history.Click += (o, e) => {
-                        var viewer = new Views.Histories(repo, change.Path);
-                        viewer.Show();
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(history);
-                    menu.Items.Add(new Separator());
-                }
+                menu.Items.Add(history);
+                menu.Items.Add(new Separator());
                 menu.Items.Add(copyPath);
             } else {
                 var stage = new MenuItem();
