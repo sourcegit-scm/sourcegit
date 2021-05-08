@@ -112,25 +112,21 @@ namespace SourceGit.Views.Widgets {
                 return;
             }
 
+            if (container.IsUnstaged) {
+                stagedContainer.UnselectAll();
+            } else {
+                unstagedContainer.UnselectAll();
+            }
+
             var change = e.Target;
             if (change.IsConflit) {
                 mergePanel.Visibility = Visibility.Visible;
+                diffViewer.Reset();
                 return;
             }
 
             mergePanel.Visibility = Visibility.Collapsed;
-
-            if (!container.IsUnstaged) {
-                unstagedContainer.UnselectAll();
-
-                diffViewer.Diff(repo.Path, new DiffViewer.Option() {
-                    ExtraArgs = "--cached",
-                    Path = change.Path,
-                    OrgPath = change.OriginalPath
-                });
-            } else {
-                stagedContainer.UnselectAll();
-
+            if (container.IsUnstaged) {
                 switch (change.WorkTree) {
                 case Models.Change.Status.Added:
                 case Models.Change.Status.Untracked:
@@ -147,6 +143,12 @@ namespace SourceGit.Views.Widgets {
                     });
                     break;
                 }
+            } else {
+                diffViewer.Diff(repo.Path, new DiffViewer.Option() {
+                    ExtraArgs = "--cached",
+                    Path = change.Path,
+                    OrgPath = change.OriginalPath
+                });
             }
         }
         #endregion
