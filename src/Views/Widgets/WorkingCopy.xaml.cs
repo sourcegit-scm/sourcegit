@@ -28,7 +28,10 @@ namespace SourceGit.Views.Widgets {
             List<Models.Change> stagedChanges = new List<Models.Change>();
 
             foreach (var c in changes) {
-                if (c.IsAddedToIndex) {
+                if (c.Index == Models.Change.Status.Modified 
+                    || c.Index == Models.Change.Status.Added
+                    || c.Index == Models.Change.Status.Deleted
+                    || c.Index == Models.Change.Status.Renamed) {
                     stagedChanges.Add(c);
                 }
 

@@ -33,13 +33,6 @@ namespace SourceGit.Models {
         public string Path { get; set; } = "";
         public string OriginalPath { get; set; } = "";
 
-        public bool IsAddedToIndex {
-            get {
-                if (Index == Status.None || Index == Status.Untracked) return false;
-                return true;
-            }
-        }
-
         public bool IsConflit {
             get {
                 if (Index == Status.Unmerged || WorkTree == Status.Unmerged) return true;
