@@ -77,7 +77,8 @@
                                                 HorizontalAlignment="Center"
                                                 Width="32" Height="32"
                                                 Email="{Binding Author.Email}"
-                                                FallbackLabel="{Binding Author.Name}"/>
+                                                FallbackLabel="{Binding Author.Name}"
+                                                ToolTip="{Binding Author.Name}"/>
 
                                             <Grid Grid.Column="1" Margin="8,0,0,0">
                                                 <Grid.RowDefinitions>
@@ -89,7 +90,6 @@
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="72"/>
                                                         <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="120"/>
                                                     </Grid.ColumnDefinitions>
 
                                                     <TextBlock Grid.Column="0" FontSize="11">
@@ -98,8 +98,13 @@
                                                         </Hyperlink>
                                                     </TextBlock>
 
-                                                    <TextBlock Grid.Column="1" Text="{Binding Author.Name}" FontSize="11" Foreground="{StaticResource Brush.FG2}"/>
-                                                    <TextBlock Grid.Column="2" Text="{Binding Author.Time}" FontSize="11" Foreground="{StaticResource Brush.FG2}"/>
+                                                    <TextBlock
+                                                        Grid.Column="1" 
+                                                        Text="{Binding Author.Time}" 
+                                                        FontSize="11" 
+                                                        Foreground="{StaticResource Brush.FG2}" 
+                                                        Margin="4,0,0,0" 
+                                                        HorizontalAlignment="Right"/>
                                                 </Grid>
 
                                                 <TextBlock Grid.Row="1" Text="{Binding Subject}" Margin="0,6,0,0"/>
