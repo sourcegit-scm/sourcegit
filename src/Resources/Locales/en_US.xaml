@@ -389,7 +389,7 @@
     <sys:String x:Key="Text.UpdateAvailable.IsPreRelease">Is Pre-release</sys:String>
     <sys:String x:Key="Text.UpdateAvailable.Download" xml:space="preserve">DOWNLOAD</sys:String>
 
-    <sys:String x:Key="Text.WorkingCopy">Commit</sys:String>
+    <sys:String x:Key="Text.WorkingCopy">Changes</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Unstaged">UNSTAGED</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Unstaged.Stage">STAGE</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Unstaged.StageAll">STAGE ALL</sys:String>
