@@ -412,8 +412,9 @@ namespace SourceGit.Views.Widgets {
             grid.EnableColumnVirtualization = true;
             grid.RowHeight = 16.0;
             grid.FrozenColumnCount = lineNumbers.Length;
-            grid.ContextMenuOpening += OnTextDiffContextMenuOpening;
             grid.RowStyle = FindResource("Style.DataGridRow.DiffViewer") as Style;
+            grid.ContextMenuOpening += OnTextDiffContextMenuOpening;
+            grid.PreviewMouseWheel += OnTextDiffPreviewMouseWheel;
             grid.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, (o, e) => {
                 var items = (o as DataGrid).SelectedItems;
                 if (items.Count == 0) return;
@@ -568,9 +569,23 @@ namespace SourceGit.Views.Widgets {
             e.Handled = true;
         }
 
+        private void OnTextDiffPreviewMouseWheel(object sender, MouseWheelEventArgs e) {
+            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) {
+                var editor = sender as DataGrid;
+                if (editor == null) return;
+
+                var scroller = GetVisualChild<ScrollViewer>(editor);
+                if (scroller == null || scroller.ComputedHorizontalScrollBarVisibility != Visibility.Visible) return;
+
+                if (e.Delta > 0) scroller.LineLeft();
+                else scroller.LineRight();
+
+                e.Handled = true;
+            }
+        }
+
         private void OnTextDiffSyncScroll(object sender, ScrollChangedEventArgs e) {
             foreach (var editor in editors) {
-                
                 var scroller = GetVisualChild<ScrollViewer>(editor);
                 if (scroller == null) continue;
 
