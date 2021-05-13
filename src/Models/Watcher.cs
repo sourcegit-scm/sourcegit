@@ -44,7 +44,10 @@ namespace SourceGit.Models {
         /// </summary>
         /// <param name="repo"></param>
         public static void Open(Repository repo) {
-            if (all.ContainsKey(repo.Path)) return;
+            if (all.ContainsKey(repo.Path)) {
+                Opened?.Invoke(repo);
+                return;
+            }
 
             var watcher = new Watcher();
             watcher.Start(repo.Path, repo.GitDir);
