@@ -151,6 +151,7 @@
     <sys:String x:Key="Text.GitFlow.PrefixRequired">{0}前缀未填写！</sys:String>
     <sys:String x:Key="Text.GitFlow.PrefixInvalid">{0}前缀包含非法字符！</sys:String>
     <sys:String x:Key="Text.GitFlow.DevSameAsProd">开发分支与发布分支不可相同！</sys:String>
+    <sys:String x:Key="Text.GitFlow.KeepBranchAfterFinish">保留分支</sys:String>
 
     <sys:String x:Key="Text.RepoCM.Refresh">刷新</sys:String>
     <sys:String x:Key="Text.RepoCM.Bookmark">书签</sys:String>

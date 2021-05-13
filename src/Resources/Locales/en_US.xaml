@@ -151,6 +151,7 @@
     <sys:String x:Key="Text.GitFlow.PrefixRequired">{0} prefix is required.</sys:String>
     <sys:String x:Key="Text.GitFlow.PrefixInvalid">{0} contains invalid characters.</sys:String>
     <sys:String x:Key="Text.GitFlow.DevSameAsProd">Development branch is same with production!</sys:String>
+    <sys:String x:Key="Text.GitFlow.KeepBranchAfterFinish">Keep branch</sys:String>
 
     <sys:String x:Key="Text.RepoCM.Refresh">Refresh</sys:String>
     <sys:String x:Key="Text.RepoCM.Bookmark">Bookmark</sys:String>

@@ -46,9 +46,11 @@ namespace SourceGit.Views.Popups {
         }
 
         public override Task<bool> Start() {
+            var keepBranch = chkKeep.IsChecked == true;
+
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo, false);
-                new Commands.GitFlow(repo).Finish(type, name);
+                new Commands.GitFlow(repo).Finish(type, name, keepBranch);
                 Models.Watcher.SetEnabled(repo, true);
                 return true;
             });
