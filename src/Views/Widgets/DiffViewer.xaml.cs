@@ -570,7 +570,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnTextDiffPreviewMouseWheel(object sender, MouseWheelEventArgs e) {
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) {
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) {
                 var editor = sender as DataGrid;
                 if (editor == null) return;
 
