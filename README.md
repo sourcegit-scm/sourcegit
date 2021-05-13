@@ -23,3 +23,4 @@
 ## Thanks
 
 * [PUMA](https://gitee.com/whgfu) 配置默认User
+* [Rwing](https://gitee.com/rwing) GitFlow: add an option to keep branch after finish

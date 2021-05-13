@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
-    mc:Ignorable="d" 
+    mc:Ignorable="d"
     d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -32,17 +32,10 @@
             Grid.Row="0" Grid.Column="2"
             Margin="4,0,0,0"
             x:Name="txtName"/>
-        <TextBlock
-            Grid.Row="1" Grid.Column="0"
-            Margin="0,0,8,0"
-            x:Name="txtKeep"
-            HorizontalAlignment="Right"
-            Text="{StaticResource Text.GitFlow.KeepBranchAfterFinish}"/>
         <CheckBox 
-            Grid.Row="1" Grid.Column="2"
-            Margin="0,4,0,0"
+            Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
             x:Name="chkKeep"
             IsChecked="False"
-           />
+            Content="{StaticResource Text.GitFlow.KeepBranchAfterFinish}"/>
     </Grid>
 </controls:PopupWidget>
