@@ -7,7 +7,7 @@
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
     xmlns:models="clr-namespace:SourceGit.Models"
     mc:Ignorable="d" 
-    d:DesignWidth="500" Height="Auto" Padding="1">
+    d:DesignWidth="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>

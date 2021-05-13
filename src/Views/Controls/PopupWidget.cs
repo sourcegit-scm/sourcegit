@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace SourceGit.Views.Controls {
@@ -45,6 +46,14 @@ namespace SourceGit.Views.Controls {
         /// <param name="id">容器ID</param>
         public static void SetCurrentContainer(string id) {
             currentContainer = id;
+        }
+
+        /// <summary>
+        ///     构造函数
+        /// </summary>
+        public PopupWidget() {
+            Height = double.NaN;
+            Padding = new Thickness(1);
         }
 
         /// <summary>

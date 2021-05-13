@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              mc:Ignorable="d"
-             d:DesignWidth="500" Height="Auto" Padding="1">
+             d:DesignWidth="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
