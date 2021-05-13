@@ -27,7 +27,6 @@ namespace SourceGit.Views.Controls {
             this.indent = indent;
 
             Padding = new Thickness(indent * depth, 0, 0, 0);
-            RequestBringIntoView += (o, e) => e.Handled = true;
         }
 
         protected override DependencyObject GetContainerForItemOverride() {

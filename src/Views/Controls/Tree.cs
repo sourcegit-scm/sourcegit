@@ -75,6 +75,16 @@ namespace SourceGit.Views.Controls {
             RaiseEvent(new RoutedEventArgs(SelectionChangedEvent));
         }
 
+        public void Select(object dataContext) {
+            if (Selected.Count == 1 && Selected[0] == dataContext) return;
+
+            var item = FindItemByDataContext(this, dataContext);
+            if (item != null) {
+                AddSelected(item, true);
+                item.BringIntoView();
+            }
+        }
+
         protected override DependencyObject GetContainerForItemOverride() {
             return new TreeItem(0, Indent);
         }

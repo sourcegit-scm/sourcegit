@@ -16,6 +16,7 @@ namespace SourceGit.Views.Widgets {
         private List<Models.Commit> range = null;
         private List<Models.Change> cachedChanges = new List<Models.Change>();
         private string filter = null;
+        private bool isSelecting = false;
 
         public class ChangeNode {
             public string Path { get; set; } = "";
@@ -37,7 +38,28 @@ namespace SourceGit.Views.Widgets {
             UpdateVisible();
         }
 
-        public void UpdateVisible() {
+        public void Select(Models.Change change) {
+            isSelecting = true;
+
+            switch (modeSwitcher.Mode) {
+            case Models.Change.DisplayMode.Tree:
+                var node = FindNodeByChange(modeTree.ItemsSource as List<ChangeNode>, change);
+                modeTree.Select(node);
+                break;
+            case Models.Change.DisplayMode.List:
+                modeList.SelectedItem = change;
+                modeList.ScrollIntoView(change);
+                break;
+            case Models.Change.DisplayMode.Grid:
+                modeGrid.SelectedItem = change;
+                modeGrid.ScrollIntoView(change);
+                break;
+            }
+
+            isSelecting = false;
+        }
+
+        private void UpdateVisible() {
             Task.Run(() => {
                 // 筛选出可见的列表
                 List<Models.Change> visible;
@@ -113,6 +135,21 @@ namespace SourceGit.Views.Widgets {
                     UpdateMode();
                 });
             });
+        }
+
+        private ChangeNode FindNodeByChange(List<ChangeNode> nodes, Models.Change change) {
+            if (nodes == null || nodes.Count == 0) return null;
+
+            foreach (var node in nodes) {
+                if (node.IsFolder) {
+                    var found = FindNodeByChange(node.Children, change);
+                    if (found != null) return found;
+                } else if (node.Change == change) {
+                    return node;
+                }
+            }
+
+            return null;
         }
 
         private void SortFileNodes(List<ChangeNode> nodes) {
@@ -237,7 +274,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnRequestBringIntoView(object sender, RequestBringIntoViewEventArgs e) {
-            e.Handled = true;
+            if (!isSelecting) e.Handled = true;
         }
 
         private void OnTreeSelectionChanged(object sender, RoutedEventArgs e) {

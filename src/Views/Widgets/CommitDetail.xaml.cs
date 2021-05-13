@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 
 namespace SourceGit.Views.Widgets {
@@ -88,9 +89,21 @@ namespace SourceGit.Views.Widgets {
         }
         #endregion
 
-        #region INFORMATION
+        #region EVENTS
         private void OnNavigateParent(object sender, RequestNavigateEventArgs e) {
             Models.Watcher.Get(repo)?.NavigateTo(e.Uri.OriginalString);
+        }
+
+        private void OnChangeListMouseDoubleClick(object sender, MouseButtonEventArgs e) {
+            var row = sender as DataGridRow;
+            if (row == null) return;
+
+            var change = row.DataContext as Models.Change;
+            if (change == null) return;
+
+            body.SelectedIndex = 1;
+            changeContainer.Select(change);
+            e.Handled = true;
         }
 
         private void OnChangeListContextMenuOpening(object sender, ContextMenuEventArgs e) {
