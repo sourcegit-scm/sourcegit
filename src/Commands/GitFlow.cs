@@ -50,16 +50,17 @@ namespace SourceGit.Commands {
             Exec();
         }
 
-        public void Finish(Models.GitFlowBranchType type, string name) {
+        public void Finish(Models.GitFlowBranchType type, string name, bool keepBranch) {
+            var option = keepBranch ? "-k" : string.Empty;
             switch (type) {
             case Models.GitFlowBranchType.Feature:
-                Args = $"flow feature finish {name}";
+                Args = $"flow feature finish {option} {name}";
                 break;
             case Models.GitFlowBranchType.Release:
-                Args = $"flow release finish {name}";
+                Args = $"flow release finish {option} {name}";
                 break;
             case Models.GitFlowBranchType.Hotfix:
-                Args = $"flow hotfix finish {name}";
+                Args = $"flow hotfix finish {option} {name}";
                 break;
             default:
                 return;

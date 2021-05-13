@@ -10,6 +10,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -31,5 +32,17 @@
             Grid.Row="0" Grid.Column="2"
             Margin="4,0,0,0"
             x:Name="txtName"/>
+        <TextBlock
+            Grid.Row="1" Grid.Column="0"
+            Margin="0,0,8,0"
+            x:Name="txtKeep"
+            HorizontalAlignment="Right"
+            Text="{StaticResource Text.GitFlow.KeepBranchAfterFinish}"/>
+        <CheckBox 
+            Grid.Row="1" Grid.Column="2"
+            Margin="0,4,0,0"
+            x:Name="chkKeep"
+            IsChecked="False"
+           />
     </Grid>
 </controls:PopupWidget>
