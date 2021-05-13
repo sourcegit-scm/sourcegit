@@ -11,6 +11,7 @@
         UseLayoutRounding="True"
         Title="{StaticResource Text.About.Title}"
         MinWidth="1280" MinHeight="720"
+        WindowStartupLocation="CenterScreen"
         Width="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Width, Mode=TwoWay}"
         Height="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Height, Mode=TwoWay}">
     <WindowChrome.WindowChrome>
