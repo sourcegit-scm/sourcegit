@@ -132,7 +132,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Path Grid.Column="0" Width="16" Height="16" Data="{StaticResource Icon.WorkingCopy}"/>
+                            <Path Grid.Column="0" Width="16" Height="16" Data="{StaticResource Icon.Send}"/>
                             <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{StaticResource Text.WorkingCopy}"/>
                             <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeLocalChanges"/>
                         </Grid>

@@ -89,16 +89,25 @@
                     <Grid Background="Transparent">
                         <Path 
                             x:Name="Icon" 
+                            Style="{DynamicResource Style.Icon}"
                             Height="{TemplateBinding Width}"
                             Width="{TemplateBinding Height}"
-                            Style="{DynamicResource Style.Icon}"
                             Fill="{TemplateBinding Foreground}"
-                            Data="{DynamicResource Icon.SplitVertical}"/>
+                            Data="{DynamicResource Icon.Orientation}"
+                            RenderTransformOrigin=".5,.5">
+                            <Path.RenderTransform>
+                                <RotateTransform Angle="270"/>
+                            </Path.RenderTransform>
+                        </Path>
                     </Grid>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Icon" Property="Data" Value="{DynamicResource Icon.SplitHorizontal}"/>
+                            <Setter TargetName="Icon" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="0"/>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

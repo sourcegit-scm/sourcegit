@@ -12,6 +12,7 @@
     <Grid x:Name="layout">
         <Grid.Resources>
             <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
+            <converters:InverseBool x:Key="InverseBool"/>
         </Grid.Resources>
         
         <Border x:Name="commitListPanel" Background="{StaticResource Brush.Contents}">
@@ -182,9 +183,9 @@
                 <ToggleButton
                     Style="{StaticResource Style.ToggleButton.SplitDirection}"
                     Foreground="{StaticResource Brush.FG2}"
-                    Width="14" Height="14"
+                    Width="16" Height="16"
                     ToolTip="{StaticResource Text.Histories.DisplayMode}"
-                    IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.MoveCommitInfoRight, Mode=TwoWay}"
+                    IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.MoveCommitInfoRight, Mode=TwoWay, Converter={StaticResource InverseBool}}"
                     Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
 
                 <controls:IconButton
