@@ -13,15 +13,17 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" HorizontalAlignment="Center">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="360"/>
+                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="48"/>
-                <ColumnDefinition Width="360"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="64"/>
             </Grid.ColumnDefinitions>
 
             <Border
-                Grid.Column="0"
+                Grid.Column="1"
                 BorderBrush="{StaticResource Brush.Border2}"
                 BorderThickness="1"
                 Background="{StaticResource Brush.Contents}"
@@ -56,7 +58,7 @@
             </Border>
 
             <Path 
-                Grid.Column="1" 
+                Grid.Column="2" 
                 Width="16" Height="16" 
                 Fill="{StaticResource Brush.FG2}" 
                 Data="{StaticResource Icon.Down}" 
@@ -67,7 +69,7 @@
             </Path>
 
             <Border
-                Grid.Column="2"
+                Grid.Column="3"
                 BorderBrush="{StaticResource Brush.Border2}"
                 BorderThickness="1"
                 Background="{StaticResource Brush.Contents}"
