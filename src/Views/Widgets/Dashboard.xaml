@@ -27,14 +27,14 @@
                     <Button Click="Explore" Margin="6,0" ToolTip="{StaticResource Text.Dashboard.Explore.Tip}" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Folder.Open}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Explore}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Explore}"/>
                         </StackPanel>
                     </Button>
 
                     <Button Click="Terminal" Margin="6,0" ToolTip="{StaticResource Text.Dashboard.Terminal.Tip}" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="13" Height="13" Data="{StaticResource Icon.Terminal}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Terminal}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Terminal}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -43,31 +43,31 @@
                     <Button Click="OpenFetch" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Fetch}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{StaticResource Text.Fetch}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Fetch}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenPull" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Pull}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{StaticResource Text.Pull}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Pull}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenPush" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Push}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{StaticResource Text.Push}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Push}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenStash" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.SaveStash}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{StaticResource Text.Stash}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Stash}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenApply" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Apply}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{StaticResource Text.Apply}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Apply}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -76,13 +76,13 @@
                     <Button Click="OpenSearch" Margin="6,0" BorderThickness="0" ToolTip="{StaticResource Text.Dashboard.Search.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Search}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Search}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Search}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenConfigure" Margin="6,0" BorderThickness="0" ToolTip="{StaticResource Text.Dashboard.Configure.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Setting}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{StaticResource Text.Configure}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Configure}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -122,7 +122,7 @@
                     <ListViewItem IsSelected="True">
                         <StackPanel Margin="16,0,0,0" Height="28" Orientation="Horizontal">
                             <Path Width="16" Height="16" Data="{StaticResource Icon.Histories}"/>
-                            <TextBlock Margin="8,0,0,0" Text="{StaticResource Text.Histories}"/>
+                            <TextBlock Margin="8,0,0,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Histories}"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem>
@@ -133,7 +133,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Width="16" Height="16" Data="{StaticResource Icon.Send}"/>
-                            <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{StaticResource Text.WorkingCopy}"/>
+                            <TextBlock Grid.Column="1" Margin="8,0,0,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.WorkingCopy}"/>
                             <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeLocalChanges"/>
                         </Grid>
                     </ListViewItem>
@@ -145,7 +145,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Width="16" Height="16" Data="{StaticResource Icon.Stashes}"/>
-                            <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{StaticResource Text.Stashes}"/>
+                            <TextBlock Grid.Column="1" Margin="8,0,0,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Stashes}"/>
                             <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeStashes"/>
                         </Grid>
                     </ListViewItem>
