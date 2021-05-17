@@ -61,7 +61,7 @@ namespace SourceGit.Views.Controls {
             "FallbackLabel",
             typeof(string),
             typeof(Avatar),
-            new PropertyMetadata("?"));
+            new PropertyMetadata("?", OnFallbackLabelChanged));
 
         /// <summary>
         ///     下载头像失败时显示的Label属性
@@ -75,6 +75,9 @@ namespace SourceGit.Views.Controls {
         private static Dictionary<string, BitmapImage> loaded = new Dictionary<string, BitmapImage>();
         private static Task loader = null;
 
+        private int colorIdx = 0;
+        private FormattedText label = null;
+
         /// <summary>
         ///     渲染实现
         /// </summary>
@@ -82,17 +85,7 @@ namespace SourceGit.Views.Controls {
         protected override void OnRender(DrawingContext dc) {
             base.OnRender(dc);
 
-            if (Source == null) {
-                var placeholder = FallbackLabel.Length > 0 ? FallbackLabel.Substring(0, 1) : "?";
-                var formatted = new FormattedText(
-                    placeholder,
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(new FontFamily("Consolas"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
-                    Width * 0.65,
-                    Brushes.White,
-                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
-
+            if (Source == null && label != null) {
                 var corner = Math.Max(2, Width / 16);
                 var offsetX = (double)0;
                 if (HorizontalAlignment == HorizontalAlignment.Right) {
@@ -101,14 +94,36 @@ namespace SourceGit.Views.Controls {
                     offsetX = Width * 0.5;
                 }
 
-                var chars = placeholder.ToCharArray();
-                var sum = 0;
-                foreach (var ch in chars) sum += Math.Abs(ch);
-
-                Brush brush = BACKGROUND_BRUSHES[sum % BACKGROUND_BRUSHES.Length];
+                Brush brush = BACKGROUND_BRUSHES[colorIdx];
                 dc.DrawRoundedRectangle(brush, null, new Rect(-Width * 0.5 + offsetX, -Height * 0.5, Width, Height), corner, corner);
-                dc.DrawText(formatted, new Point(formatted.Width * -0.5 + offsetX, formatted.Height * -0.5));
+                dc.DrawText(label, new Point(label.Width * -0.5 + offsetX, label.Height * -0.5));
             }
+        }
+
+        /// <summary>
+        ///     显示文本变化时触发
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void OnFallbackLabelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            Avatar a = d as Avatar;
+            if (a == null) return;
+
+            var placeholder = a.FallbackLabel.Length > 0 ? a.FallbackLabel.Substring(0, 1) : "?";
+
+            a.colorIdx = 0;
+            a.label = new FormattedText(
+                placeholder,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(new FontFamily("Consolas"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                a.Width * 0.65,
+                Brushes.White,
+                VisualTreeHelper.GetDpi(a).PixelsPerDip);
+
+            var chars = placeholder.ToCharArray();
+            foreach (var ch in chars) a.colorIdx += Math.Abs(ch);
+            a.colorIdx = a.colorIdx % BACKGROUND_BRUSHES.Length;
         }
 
         /// <summary>
