@@ -14,6 +14,9 @@
         <Setter Property="Grid.IsSharedSizeScope" Value="False" />
         <Setter Property="HorizontalOffset" Value="-4"/>
         <Setter Property="VerticalOffset" Value="-4"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+        <Setter Property="TextElement.FontSize" Value="9pt"/>
 
         <Setter Property="Template">
             <Setter.Value>

@@ -42,7 +42,7 @@
                             <controls:TextEdit x:Name="txtAuthorName" IsReadOnly="True" BorderThickness="0"/>
                             <controls:TextEdit x:Name="txtAuthorEmail" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0"/>
                         </StackPanel>
-                        <controls:TextEdit x:Name="txtAuthorTime" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}" FontSize="10"/>
+                        <controls:TextEdit x:Name="txtAuthorTime" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}" FontSize="8pt"/>
                     </StackPanel>
 
                     <!-- Committer Avatar -->
@@ -171,7 +171,7 @@
                         Grid.Row="3" Grid.Column="1"
                         x:Name="txtMessage"
                         IsReadOnly="true"
-                        FontFamily="Consolas"
+                        FontFamily="Consolas,SimSun"
                         BorderThickness="0"
                         TextWrapping="Wrap"
                         Margin="11,5,16,0"

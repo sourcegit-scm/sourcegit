@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style TargetType="{x:Type TextBlock}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontSize" Value="9pt"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -10,7 +10,7 @@
 
     <Style x:Key="Style.TextBlock.LineNumber" TargetType="{x:Type TextBlock}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontSize" Value="9pt"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -19,7 +19,7 @@
 
     <Style x:Key="Style.TextBlock.LineContent" TargetType="{x:Type TextBlock}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontSize" Value="9pt"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Center"/>

@@ -70,7 +70,7 @@
                             Grid.Column="1" 
                             Text="{Binding Path, Converter={StaticResource PureFileName}}" 
                             Margin="4,0,0,0" 
-                            FontSize="11"/>
+                            FontSize="9pt"/>
                     </Grid>
 
                     <HierarchicalDataTemplate.Triggers>

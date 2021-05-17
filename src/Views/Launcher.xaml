@@ -9,9 +9,11 @@
         xmlns:models="clr-namespace:SourceGit.Models"
         mc:Ignorable="d"
         UseLayoutRounding="True"
-        Title="{StaticResource Text.About.Title}"
-        MinWidth="1280" MinHeight="720"
         WindowStartupLocation="CenterScreen"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
+        MinWidth="1280" MinHeight="720"
+        Title="{StaticResource Text.About.Title}"
         Width="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Width, Mode=TwoWay}"
         Height="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Height, Mode=TwoWay}">
     <WindowChrome.WindowChrome>

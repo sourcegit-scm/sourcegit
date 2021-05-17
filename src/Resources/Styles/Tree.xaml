@@ -55,9 +55,10 @@
                                     x:Name="PART_Header" 
                                     Grid.Column="1" 
                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
-                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
                                     ContentSource="Header"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                    TextElement.FontFamily="Consolas,SimSun"/>
                             </Grid>
                         </Border>
                         <ItemsPresenter x:Name="ItemsHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>

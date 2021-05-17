@@ -448,9 +448,11 @@ namespace SourceGit.Views.Widgets {
             textContent.SetBinding(TextBlock.ForegroundProperty, new Binding("FG"));
             textContent.SetBinding(TextBlock.FontStyleProperty, new Binding("Style"));
             textContent.SetValue(TextBlock.BackgroundProperty, Brushes.Transparent);
-            textContent.SetValue(TextBlock.FontSizeProperty, 12.0);
+            textContent.SetValue(TextBlock.FontSizeProperty, new FontSizeConverter().ConvertFrom("10pt"));
             textContent.SetValue(TextBlock.MarginProperty, new Thickness(0));
             textContent.SetValue(TextBlock.PaddingProperty, new Thickness(4, 0, 0, 0));
+            textContent.SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Display);
+            textContent.SetValue(TextOptions.TextRenderingModeProperty, TextRenderingMode.ClearType);
 
             var visualTree = new FrameworkElementFactory(typeof(Grid));
             visualTree.AppendChild(borderContent);
