@@ -115,7 +115,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Width="Auto" IsReadOnly="True">
+                        <DataGridTemplateColumn Width="SizeToCells" MinWidth="56" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Committer.Name}" FontFamily="Consolas,SimSun" FontSize="10pt" Margin="0,0,8,0"/>
@@ -123,7 +123,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Width="64" IsReadOnly="True">
+                        <DataGridTemplateColumn Width="72" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding ShortSHA}" FontSize="10pt"/>
@@ -131,7 +131,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Width="140" IsReadOnly="True">
+                        <DataGridTemplateColumn Width="SizeToCells" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Committer.Time}" FontSize="10pt"/>
