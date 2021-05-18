@@ -37,12 +37,12 @@
                     
                     <!-- Author Info -->
                     <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
-                        <TextBlock Text="{StaticResource Text.CommitViewer.Info.Author}" Foreground="{StaticResource Brush.FG2}"/>
+                        <TextBlock FontWeight="Bold" Text="{StaticResource Text.CommitViewer.Info.Author}" Foreground="{StaticResource Brush.FG2}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,12,0,8">
-                            <controls:TextEdit x:Name="txtAuthorName" IsReadOnly="True" BorderThickness="0"/>
-                            <controls:TextEdit x:Name="txtAuthorEmail" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0"/>
+                            <controls:TextEdit x:Name="txtAuthorName" FontFamily="Consolas,Microsoft YaHei UI" FontSize="10pt" IsReadOnly="True" BorderThickness="0"/>
+                            <controls:TextEdit x:Name="txtAuthorEmail" FontFamily="Consolas,Microsoft YaHei UI" FontSize="10pt" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0"/>
                         </StackPanel>
-                        <controls:TextEdit x:Name="txtAuthorTime" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}" FontSize="8pt"/>
+                        <controls:TextEdit x:Name="txtAuthorTime" FontFamily="Consolas" FontSize="9pt" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}"/>
                     </StackPanel>
 
                     <!-- Committer Avatar -->
@@ -54,12 +54,12 @@
 
                     <!-- Committer Info -->
                     <StackPanel x:Name="committerInfoPanel" Grid.Column="3" Margin="16,0,8,0" Orientation="Vertical">
-                        <TextBlock Text="{StaticResource Text.CommitViewer.Info.Committer}" Foreground="{StaticResource Brush.FG2}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,12,0,6">
-                            <controls:TextEdit x:Name="txtCommitterName" IsReadOnly="True" BorderThickness="0"/>
-                            <controls:TextEdit x:Name="txtCommitterEmail" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0"/>
+                        <TextBlock FontWeight="Bold" Text="{StaticResource Text.CommitViewer.Info.Committer}" Foreground="{StaticResource Brush.FG2}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,12,0,8">
+                            <controls:TextEdit x:Name="txtCommitterName" FontFamily="Consolas,Microsoft YaHei UI" FontSize="10pt" IsReadOnly="True" BorderThickness="0"/>
+                            <controls:TextEdit x:Name="txtCommitterEmail" FontFamily="Consolas,Microsoft YaHei UI" FontSize="10pt" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}" Margin="4,0,0,0"/>
                         </StackPanel>
-                        <controls:TextEdit x:Name="txtCommitterTime" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}" FontSize="10"/>
+                        <controls:TextEdit x:Name="txtCommitterTime" FontFamily="Consolas" FontSize="9pt" IsReadOnly="True" BorderThickness="0" Foreground="{StaticResource Brush.FG2}"/>
                     </StackPanel>
                 </Grid>
             
@@ -84,6 +84,7 @@
                     <TextBlock 
                         Grid.Row="0" Grid.Column="0"
                         HorizontalAlignment="Right"
+                        FontWeight="Bold"
                         Text="{StaticResource Text.CommitViewer.Info.SHA}" 
                         Foreground="{StaticResource Brush.FG2}"/>
                     <controls:TextEdit
@@ -99,6 +100,7 @@
                     <TextBlock 
                         Grid.Row="1" Grid.Column="0"
                         HorizontalAlignment="Right"
+                        FontWeight="Bold"
                         Text="{StaticResource Text.CommitViewer.Info.Parents}" 
                         Foreground="{StaticResource Brush.FG2}"/>
                     <ItemsControl Grid.Row="1" Grid.Column="1" x:Name="listParents" Height="24" Margin="13,0,0,0">
@@ -123,6 +125,7 @@
                     <TextBlock 
                         Grid.Row="2" Grid.Column="0"
                         HorizontalAlignment="Right"
+                        FontWeight="Bold"
                         Text="{StaticResource Text.CommitViewer.Info.Refs}" 
                         Foreground="{StaticResource Brush.FG2}"/>
                     <ItemsControl Grid.Row="2" Grid.Column="1" x:Name="listRefs" Height="24" Margin="11,0,0,0">
@@ -140,7 +143,7 @@
                                     </Border>
 
                                     <Border x:Name="Color" Background="#FFFFB835">
-                                        <TextBlock Text="{Binding Name}" FontSize="11" Margin="4,0" Foreground="Black"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="8pt" Margin="4,0" Foreground="Black"/>
                                     </Border>
                                 </StackPanel>
 
@@ -165,6 +168,7 @@
                         Grid.Row="3" Grid.Column="0"
                         Margin="0,4,0,0"
                         HorizontalAlignment="Right" VerticalAlignment="Top"
+                        FontWeight="Bold"
                         Text="{StaticResource Text.CommitViewer.Info.Message}" 
                         Foreground="{StaticResource Brush.FG2}"/>
                     <controls:TextEdit
@@ -172,6 +176,7 @@
                         x:Name="txtMessage"
                         IsReadOnly="true"
                         FontFamily="Consolas,SimSun"
+                        FontSize="9pt"
                         BorderThickness="0"
                         TextWrapping="Wrap"
                         Margin="11,5,16,0"
@@ -192,6 +197,7 @@
                         Grid.Column="0"
                         Margin="0,4,0,0"
                         HorizontalAlignment="Right" VerticalAlignment="Top"
+                        FontWeight="Bold"
                         Text="{StaticResource Text.CommitViewer.Info.Changed}" 
                         Foreground="{StaticResource Brush.FG2}"/>
 

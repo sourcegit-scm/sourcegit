@@ -42,7 +42,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0" TextBlock.FontSize="11" TextBlock.FontFamily="Consolas">
+                        <Grid Grid.Row="0" TextBlock.FontSize="9pt" TextBlock.FontFamily="Consolas">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -52,7 +52,7 @@
                             <TextBlock Grid.Column="1" x:Name="txtStartTime" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
                         </Grid>
 
-                        <TextBlock Grid.Row="1" x:Name="txtStartSubject" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Row="1" x:Name="txtStartSubject" FontSize="10pt" FontFamily="Consolas,SimSun" VerticalAlignment="Bottom"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -88,7 +88,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0" TextBlock.FontSize="11" TextBlock.FontFamily="Consolas">
+                        <Grid Grid.Row="0" TextBlock.FontSize="9pt" TextBlock.FontFamily="Consolas">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -98,7 +98,7 @@
                             <TextBlock Grid.Column="1" x:Name="txtEndTime" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
                         </Grid>
 
-                        <TextBlock Grid.Row="1" x:Name="txtEndSubject" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Row="1" x:Name="txtEndSubject" FontSize="10pt" FontFamily="Consolas,SimSun" VerticalAlignment="Bottom"/>
                     </Grid>
                 </Grid>
             </Border>

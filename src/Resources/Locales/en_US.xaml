@@ -287,7 +287,7 @@
     <sys:String x:Key="Text.Merge.Into">Into :</sys:String>
     <sys:String x:Key="Text.Merge.Mode">Merge Option :</sys:String>
 
-    <sys:String x:Key="Text.Welcome.Title">Welcome to SourceGit :)</sys:String>
+    <sys:String x:Key="Text.Welcome.Title">SourceGit</sys:String>
     <sys:String x:Key="Text.Welcome.OpenOrInit">Open Local Repository</sys:String>
     <sys:String x:Key="Text.Welcome.Clone">Clone Remote Repository</sys:String>
     <sys:String x:Key="Text.Welcome.Repositories">REPOSITORIES</sys:String>

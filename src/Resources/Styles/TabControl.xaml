@@ -38,16 +38,17 @@
                     <Border 
                         x:Name="Border"
                         BorderThickness="0,0,0,1" 
-                        BorderBrush="Transparent">
+                        BorderBrush="Transparent"
+                        Opacity=".56">
                         <ContentPresenter
                             VerticalAlignment="Center" 
                             HorizontalAlignment="Center"
                             ContentSource="Header" 
-                            Margin="8,6">
+                            Margin="8,4">
                             <ContentPresenter.Resources>
                                 <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+                                    <Setter Property="FontWeight" Value="DemiBold"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabItem}}, Path=IsSelected}" Value="True">
                                             <Setter Property="Foreground" Value="{DynamicResource Brush.Accent1}"/>
@@ -60,6 +61,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Brush.Accent1}"/>
+                            <Setter TargetName="Border" Property="Opacity" Value="1"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -67,6 +69,7 @@
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Brush.Accent2}"/>
+                            <Setter TargetName="Border" Property="Opacity" Value=".7"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

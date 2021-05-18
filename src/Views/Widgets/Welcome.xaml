@@ -27,8 +27,10 @@
                     Margin="0,16"
                     HorizontalAlignment="Center" 
                     Text="{StaticResource Text.Welcome.Title}"
-                    FontSize="28"
+                    FontSize="24pt"
                     FontWeight="ExtraBold"
+                    TextOptions.TextFormattingMode="Ideal"
+                    TextOptions.TextRenderingMode="ClearType"
                     Foreground="{StaticResource Brush.FG2}"/>
 
                 <!-- Options -->
@@ -68,13 +70,13 @@
                     <TextBlock 
                         Grid.Column="0" 
                         Text="{StaticResource Text.Welcome.Repositories}" 
-                        FontSize="18" FontWeight="ExtraBold" 
+                        FontSize="13pt" FontWeight="ExtraBold" FontFamily="Consolas,Microsoft YaHei UI"
                         Foreground="{StaticResource Brush.FG2}"/>
                     
                     <TextBlock 
                         Grid.Column="2" 
                         Text="{StaticResource Text.Welcome.DragDrop}" 
-                        FontSize="14" 
+                        FontSize="10pt" FontFamily="Consolas,Microsoft YaHei UI"
                         Foreground="{StaticResource Brush.FG2}"/>
                 </Grid>
             </StackPanel>
@@ -126,7 +128,7 @@
                                 <Path Grid.Column="0" Margin="2,0,0,0" x:Name="Icon" Width="16" Height="16" Data="{StaticResource Icon.Git}"/>
 
                                 <StackPanel Grid.Column="1" x:Name="Contents" Orientation="Horizontal">
-                                    <TextBlock Margin="8,0" Text="{Binding Name}"/>
+                                    <TextBlock Margin="8,0" FontSize="9pt" FontFamily="Consolas,Microsoft YaHei UI" Text="{Binding Name}"/>
                                     <TextBlock x:Name="Path" Text="{Binding Id}" Foreground="{StaticResource Brush.FG2}"/>
                                 </StackPanel>
 
@@ -136,7 +138,7 @@
                                     Height="20"
                                     Margin="4,0,0,0"
                                     Text="{Binding Name}"
-                                    FontSize="12"
+                                    FontSize="9pt"
                                     Loaded="RenameStart"
                                     KeyDown="RenameKeyDown"
                                     LostFocus="RenameEnd"

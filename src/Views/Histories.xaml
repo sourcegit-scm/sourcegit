@@ -92,7 +92,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
 
-                                                    <TextBlock Grid.Column="0" FontSize="11">
+                                                    <TextBlock Grid.Column="0" FontSize="9pt" FontFamily="Consolas">
                                                         <Hyperlink NavigateUri="{Binding SHA}" RequestNavigate="GotoCommit" Foreground="DarkOrange" ToolTip="GOTO COMMIT">
                                                             <Run Text="{Binding ShortSHA, Mode=OneWay}"/>
                                                         </Hyperlink>
@@ -101,13 +101,17 @@
                                                     <TextBlock
                                                         Grid.Column="1" 
                                                         Text="{Binding Author.Time}" 
-                                                        FontSize="11" 
+                                                        FontSize="9pt" FontFamily="Consolas"
                                                         Foreground="{StaticResource Brush.FG2}" 
                                                         Margin="4,0,0,0" 
                                                         HorizontalAlignment="Right"/>
                                                 </Grid>
 
-                                                <TextBlock Grid.Row="1" Text="{Binding Subject}" Margin="0,6,0,0"/>
+                                                <TextBlock
+                                                    Grid.Row="1" 
+                                                    Text="{Binding Subject}" 
+                                                    FontSize="9pt" FontFamily="Consolas,SimSun" 
+                                                    Margin="0,6,0,0"/>
                                             </Grid>
                                         </Grid>
                                     </Border>

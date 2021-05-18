@@ -31,7 +31,7 @@
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal" Height="24">
                             <Path x:Name="Icon" Width="14" Height="14" Data="{StaticResource Icon.File}"/>
-                            <TextBlock Margin="6,0,0,0" FontSize="11" Text="{Binding Path, Converter={StaticResource PureFileName}}"/>
+                            <TextBlock Margin="6,0,0,0" FontSize="9pt" Text="{Binding Path, Converter={StaticResource PureFileName}}"/>
                         </StackPanel>
 
                         <HierarchicalDataTemplate.Triggers>
