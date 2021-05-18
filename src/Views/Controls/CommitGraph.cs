@@ -270,7 +270,7 @@ namespace SourceGit.Views.Controls {
                             } else {
                                 ctx.QuadraticBezierTo(new Point(last.X, cur.Y), cur, true, false);
                             }
-                        } else {
+                        } else if (cur.Y != last.Y) {
                             ctx.LineTo(cur, true, false);
                         }
 
