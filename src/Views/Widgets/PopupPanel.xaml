@@ -25,8 +25,8 @@
                         <TextBlock Margin="8,8,0,18" x:Name="txtTitle" FontSize="18" FontWeight="DemiBold"/>
                         <ContentControl x:Name="container"/>
                         <StackPanel Margin="0,16,0,0" Height="32" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Click="Sure" Width="80" Content="SURE" BorderBrush="{StaticResource Brush.FG1}" Background="{StaticResource Brush.Accent1}"/>
-                            <Button Click="Cancel" Width="80" Margin="8,0,0,0" Content="CANCEL"/>
+                            <Button Click="Sure" Width="80" Content="{StaticResource Text.Sure}" BorderBrush="{StaticResource Brush.FG1}" Background="{StaticResource Brush.Accent1}"/>
+                            <Button Click="Cancel" Width="80" Margin="8,0,0,0" Content="{StaticResource Text.Cancel}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
