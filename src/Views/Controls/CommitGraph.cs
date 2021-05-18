@@ -10,15 +10,15 @@ namespace SourceGit.Views.Controls {
     ///     提交线路图
     /// </summary>
     public class CommitGraph : FrameworkElement {
-        public static readonly Brush[] COLORS = new Brush[] {
-            Brushes.Orange,
-            Brushes.ForestGreen,
-            Brushes.Gold,
-            Brushes.Magenta,
-            Brushes.Red,
-            Brushes.Gray,
-            Brushes.Turquoise,
-            Brushes.Olive,
+        public static readonly Pen[] PENS = new Pen[] {
+            new Pen(Brushes.Orange, 2),
+            new Pen(Brushes.ForestGreen, 2),
+            new Pen(Brushes.Gold, 2),
+            new Pen(Brushes.Magenta, 2),
+            new Pen(Brushes.Red, 2),
+            new Pen(Brushes.Gray, 2),
+            new Pen(Brushes.Turquoise, 2),
+            new Pen(Brushes.Olive, 2),
         };
 
         public static readonly double UNIT_WIDTH = 12;
@@ -45,7 +45,7 @@ namespace SourceGit.Views.Controls {
                 LastY = start.Y;
 
                 Line = new Line();
-                Line.Color = color % COLORS.Length;
+                Line.Color = color % PENS.Length;
                 Line.Points.Add(start);
             }
 
@@ -242,7 +242,7 @@ namespace SourceGit.Views.Controls {
                 if (last.Y > bottom) continue;
 
                 var geo = new StreamGeometry();
-                var pen = new Pen(COLORS[line.Color], 2);
+                var pen = PENS[line.Color];
                 using (var ctx = geo.Open()) {
                     ctx.BeginFigure(last, false, false);
 
@@ -289,23 +289,22 @@ namespace SourceGit.Views.Controls {
                 if (link.Start.Y > bottom) break;
 
                 var geo = new StreamGeometry();
-                var pen = new Pen(COLORS[link.Color], 2);
-
                 using (var ctx = geo.Open()) {
                     ctx.BeginFigure(link.Start, false, false);
                     ctx.QuadraticBezierTo(link.Control, link.End, true, false);
                 }
 
                 geo.Freeze();
-                dc.DrawGeometry(null, pen, geo);
+                dc.DrawGeometry(null, PENS[link.Color], geo);
             }
 
             // 绘制点
+            var dotFill = FindResource("Brush.Contents") as Brush;
             foreach (var dot in data.Dots) {
                 if (dot.Center.Y < top) continue;
                 if (dot.Center.Y > bottom) break;
 
-                dc.DrawEllipse(COLORS[dot.Color], null, dot.Center, 3, 3);
+                dc.DrawEllipse(dotFill, PENS[dot.Color], dot.Center, 3, 3);
             }
         }
     }
