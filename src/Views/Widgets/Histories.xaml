@@ -97,7 +97,7 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
 
-                                        <TextBlock Text="{Binding Subject}" FontFamily="Consolas,SimSun" FontSize="10pt" Margin="2,0,0,0"/>
+                                        <TextBlock Text="{Binding Subject}" FontFamily="Consolas,SimSun" FontSize="9pt" Margin="2,0,0,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -118,7 +118,7 @@
                         <DataGridTemplateColumn Width="SizeToCells" MinWidth="56" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Committer.Name}" FontFamily="Consolas,SimSun" FontSize="10pt" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Committer.Name}" FontFamily="Consolas,SimSun" FontSize="9pt" Margin="0,0,8,0"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -126,7 +126,7 @@
                         <DataGridTemplateColumn Width="72" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ShortSHA}" FontSize="10pt"/>
+                                    <TextBlock Text="{Binding ShortSHA}" FontSize="9pt"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -134,7 +134,7 @@
                         <DataGridTemplateColumn Width="SizeToCells" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Committer.Time}" FontSize="10pt"/>
+                                    <TextBlock Text="{Binding Committer.Time}" FontSize="9pt"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
