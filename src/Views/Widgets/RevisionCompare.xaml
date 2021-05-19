@@ -15,11 +15,11 @@
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="48"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
             <Border

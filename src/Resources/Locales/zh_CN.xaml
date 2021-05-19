@@ -254,6 +254,7 @@
     <sys:String x:Key="Text.Histories">历史记录</sys:String>
     <sys:String x:Key="Text.Histories.Search">查询提交指纹、信息、作者。回车键开始，ESC键取消</sys:String>
     <sys:String x:Key="Text.Histories.SearchClear">清空</sys:String>
+    <sys:String x:Key="Text.Histories.GraphMode">切换曲线/折线显示</sys:String>
     <sys:String x:Key="Text.Histories.DisplayMode">切换横向/纵向显示</sys:String>
     <sys:String x:Key="Text.Histories.Selected">已选中{0}项提交</sys:String>
     <sys:String x:Key="Text.Histories.Guide">操作说明</sys:String>

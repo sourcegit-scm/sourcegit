@@ -235,12 +235,30 @@ namespace SourceGit.Views.Controls {
         protected override void OnRender(DrawingContext dc) {
             if (data == null) return;
 
+            dc.PushTransform(new TranslateTransform(0, -startY));
+
+            // 计算边界
             var top = startY;
             var bottom = startY + ActualHeight;
 
-            dc.PushTransform(new TranslateTransform(0, -startY));
+            // 绘制线
+            if (Models.Preference.Instance.Window.UsePolylineInGraph) {
+                DrawPolyLine(dc, top, bottom);
+            } else {
+                DrawCurveLine(dc, top, bottom);
+            }
 
-            // 绘制曲线
+            // 绘制点
+            var dotFill = FindResource("Brush.Contents") as Brush;
+            foreach (var dot in data.Dots) {
+                if (dot.Center.Y < top) continue;
+                if (dot.Center.Y > bottom) break;
+
+                dc.DrawEllipse(dotFill, PENS[dot.Color], dot.Center, 3, 3);
+            }
+        }
+    
+        private void DrawCurveLine(DrawingContext dc, double top, double bottom) {
             foreach (var line in data.Lines) {
                 var last = line.Points[0];
                 var size = line.Points.Count;
@@ -265,8 +283,6 @@ namespace SourceGit.Views.Controls {
                             ctx.QuadraticBezierTo(new Point(cur.X, last.Y), cur, true, false);
                         } else if (cur.X < last.X) {
                             if (i < size - 1) {
-                                cur.Y += HALF_HEIGHT;
-
                                 var midY = (last.Y + cur.Y) / 2;
                                 var midX = (last.X + cur.X) / 2;
                                 ctx.PolyQuadraticBezierTo(new Point[] {
@@ -290,7 +306,6 @@ namespace SourceGit.Views.Controls {
                 dc.DrawGeometry(null, pen, geo);
             }
 
-            // 绘制合并线
             foreach (var link in data.Links) {
                 if (link.End.Y < top) continue;
                 if (link.Start.Y > bottom) break;
@@ -304,14 +319,43 @@ namespace SourceGit.Views.Controls {
                 geo.Freeze();
                 dc.DrawGeometry(null, PENS[link.Color], geo);
             }
+        }
 
-            // 绘制点
-            var dotFill = FindResource("Brush.Contents") as Brush;
-            foreach (var dot in data.Dots) {
-                if (dot.Center.Y < top) continue;
-                if (dot.Center.Y > bottom) break;
+        private void DrawPolyLine(DrawingContext dc, double top, double bottom) {
+            foreach (var line in data.Lines) {
+                var last = line.Points[0];
+                var size = line.Points.Count;
 
-                dc.DrawEllipse(dotFill, PENS[dot.Color], dot.Center, 3, 3);
+                if (line.Points[size - 1].Y < top) continue;
+                if (last.Y > bottom) continue;
+
+                var geo = new StreamGeometry();
+                var pen = PENS[line.Color];
+                using (var ctx = geo.Open()) {
+                    ctx.BeginFigure(last, false, false);
+
+                    var ended = false;
+                    for (int i = 1; i < size; i++) {
+                        var cur = line.Points[i];
+                        if (cur.Y > bottom) {
+                            cur.Y = bottom;
+                            ended = true;
+                        }
+
+                        ctx.LineTo(cur, true, false);
+                        if (ended) break;
+                        last = cur;
+                    }
+                }
+
+                geo.Freeze();
+                dc.DrawGeometry(null, pen, geo);
+            }
+
+            foreach (var link in data.Links) {
+                if (link.End.Y < top) continue;
+                if (link.Start.Y > bottom) break;
+                dc.DrawLine(PENS[link.Color], link.Start, link.End);
             }
         }
     }

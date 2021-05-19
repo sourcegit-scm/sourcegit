@@ -254,7 +254,8 @@
     <sys:String x:Key="Text.Histories">Histories</sys:String>
     <sys:String x:Key="Text.Histories.Search">SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT</sys:String>
     <sys:String x:Key="Text.Histories.SearchClear">CLEAR</sys:String>
-    <sys:String x:Key="Text.Histories.DisplayMode">Toggle Horizontal/Vertical Layout</sys:String>
+    <sys:String x:Key="Text.Histories.GraphMode">Switch Curve/Polyline Graph Mode</sys:String>
+    <sys:String x:Key="Text.Histories.DisplayMode">Switch Horizontal/Vertical Layout</sys:String>
     <sys:String x:Key="Text.Histories.Selected">SELECTED {0} COMMITS</sys:String>
     <sys:String x:Key="Text.Histories.Guide">HISTORIES GUIDE</sys:String>
     <sys:String x:Key="Text.Histories.Guide_1">1. Select single commit to view detail</sys:String>
