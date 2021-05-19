@@ -110,7 +110,7 @@
                                                 <TextBlock
                                                     Grid.Row="1" 
                                                     Text="{Binding Subject}" 
-                                                    FontSize="9pt" FontFamily="Consolas,SimSun" 
+                                                    FontSize="9pt" FontFamily="Consolas,Microsoft YaHei UI" 
                                                     Margin="0,6,0,0"/>
                                             </Grid>
                                         </Grid>

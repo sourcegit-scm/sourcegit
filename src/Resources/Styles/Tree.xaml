@@ -58,7 +58,7 @@
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
                                     ContentSource="Header"
-                                    TextElement.FontFamily="Consolas,SimSun"/>
+                                    TextElement.FontFamily="Consolas,Microsoft YaHei UI"/>
                             </Grid>
                         </Border>
                         <ItemsPresenter x:Name="ItemsHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>

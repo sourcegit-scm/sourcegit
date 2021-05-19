@@ -88,7 +88,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Background="{Binding BG}" BorderThickness="0">
-                                    <TextBlock Text="{Binding Line.Content}" Background="Transparent" Foreground="{StaticResource Brush.FG1}" FontFamily="Consolas,SimSun" FontSize="9pt" Margin="0" Padding="2,0,0,0"/>
+                                    <TextBlock Text="{Binding Line.Content}" Background="Transparent" Foreground="{StaticResource Brush.FG1}" FontFamily="Consolas,Microsoft YaHei UI" FontSize="9pt" Margin="0" Padding="2,0,0,0"/>
                                 </Border>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

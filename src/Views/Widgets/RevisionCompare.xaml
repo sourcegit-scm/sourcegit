@@ -52,7 +52,7 @@
                             <TextBlock Grid.Column="1" x:Name="txtStartTime" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
                         </Grid>
 
-                        <TextBlock Grid.Row="1" x:Name="txtStartSubject" FontSize="10pt" FontFamily="Consolas,SimSun" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Row="1" x:Name="txtStartSubject" FontSize="10pt" FontFamily="Consolas,Microsoft YaHei UI" VerticalAlignment="Bottom"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -98,7 +98,7 @@
                             <TextBlock Grid.Column="1" x:Name="txtEndTime" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
                         </Grid>
 
-                        <TextBlock Grid.Row="1" x:Name="txtEndSubject" FontSize="10pt" FontFamily="Consolas,SimSun" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Row="1" x:Name="txtEndSubject" FontSize="10pt" FontFamily="Consolas,Microsoft YaHei UI" VerticalAlignment="Bottom"/>
                     </Grid>
                 </Grid>
             </Border>

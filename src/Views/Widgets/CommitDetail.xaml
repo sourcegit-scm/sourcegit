@@ -175,7 +175,7 @@
                         Grid.Row="3" Grid.Column="1"
                         x:Name="txtMessage"
                         IsReadOnly="true"
-                        FontFamily="Consolas,SimSun"
+                        FontFamily="Consolas,Microsoft YaHei UI"
                         FontSize="9pt"
                         BorderThickness="0"
                         TextWrapping="Wrap"
