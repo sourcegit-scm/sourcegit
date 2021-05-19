@@ -38,11 +38,14 @@ namespace SourceGit.Views.Controls {
             public double LastY;
             public Line Line;
 
+            private Point end;
+
             public LineHelper(string next, bool isMerged, int color, Point start) {
                 Next = next;
                 IsMerged = isMerged;
                 LastX = start.X;
                 LastY = start.Y;
+                end = start;
 
                 Line = new Line();
                 Line.Color = color % PENS.Length;
@@ -51,19 +54,23 @@ namespace SourceGit.Views.Controls {
 
             public void Add(double x, double y, bool isEnd = false) {
                 if (x > LastX) {
-                    Line.Points.Add(new Point(LastX, LastY));
-                    Line.Points.Add(new Point(x, y - HALF_HEIGHT));
+                    Add(new Point(LastX, LastY));
+                    Add(new Point(x, y - HALF_HEIGHT));
                 } else if (x < LastX) {
-                    Line.Points.Add(new Point(LastX, LastY + HALF_HEIGHT));
-                    Line.Points.Add(new Point(x, y));
+                    Add(new Point(LastX, LastY + HALF_HEIGHT));
+                    Add(new Point(x, y));
                 }
 
                 LastX = x;
                 LastY = y;
 
-                if (isEnd) {
-                    var last = Line.Points.Last();
-                    if (LastX != last.X || LastY != last.Y) Line.Points.Add(new Point(LastX, LastY));
+                if (isEnd) Add(new Point(LastX, LastY));
+            }
+
+            private void Add(Point p) {
+                if (p.Y > end.Y) {
+                    Line.Points.Add(p);
+                    end = p;
                 }
             }
         }
@@ -270,7 +277,7 @@ namespace SourceGit.Views.Controls {
                             } else {
                                 ctx.QuadraticBezierTo(new Point(last.X, cur.Y), cur, true, false);
                             }
-                        } else if (cur.Y != last.Y) {
+                        } else {
                             ctx.LineTo(cur, true, false);
                         }
 
