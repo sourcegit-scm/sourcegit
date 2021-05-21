@@ -16,10 +16,16 @@ namespace SourceGit.Views {
         public string MergeCmd { get; set; }
 
         public Preference() {
-            User = new Commands.Config().Get("user.name");
-            Email = new Commands.Config().Get("user.email");
-            CRLF = new Commands.Config().Get("core.autocrlf");
-            if (string.IsNullOrEmpty(CRLF)) CRLF = "false";
+            if (Models.Preference.Instance.IsReady) {
+                User = new Commands.Config().Get("user.name");
+                Email = new Commands.Config().Get("user.email");
+                CRLF = new Commands.Config().Get("core.autocrlf");
+                if (string.IsNullOrEmpty(CRLF)) CRLF = "false";
+            } else {
+                User = "";
+                Email = "";
+                CRLF = "false";
+            }
 
             var merger = Models.MergeTool.Supported.Find(x => x.Type == Models.Preference.Instance.MergeTool.Type);
             if (merger != null) MergeCmd = merger.Cmd;
@@ -83,15 +89,17 @@ namespace SourceGit.Views {
         }
 
         private void Quit(object sender, RoutedEventArgs e) {
-            var cmd = new Commands.Config();
-            var oldUser = cmd.Get("user.name");
-            if (oldUser != User) cmd.Set("user.name", User);
+            if (Models.Preference.Instance.IsReady) {
+                var cmd = new Commands.Config();
+                var oldUser = cmd.Get("user.name");
+                if (oldUser != User) cmd.Set("user.name", User);
 
-            var oldEmail = cmd.Get("user.email");
-            if (oldEmail != Email) cmd.Set("user.email", Email);
+                var oldEmail = cmd.Get("user.email");
+                if (oldEmail != Email) cmd.Set("user.email", Email);
 
-            var oldCRLF = cmd.Get("core.autocrlf");
-            if (oldCRLF != CRLF) cmd.Set("core.autocrlf", CRLF);
+                var oldCRLF = cmd.Get("core.autocrlf");
+                if (oldCRLF != CRLF) cmd.Set("core.autocrlf", CRLF);
+            }
 
             Models.Preference.Save();
             Close();
