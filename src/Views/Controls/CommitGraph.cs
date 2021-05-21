@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -57,7 +56,7 @@ namespace SourceGit.Views.Controls {
                     Add(new Point(LastX, LastY));
                     Add(new Point(x, y - HALF_HEIGHT));
                 } else if (x < LastX) {
-                    Add(new Point(LastX, LastY + HALF_HEIGHT));
+                    if (y > LastY + HALF_HEIGHT) Add(new Point(LastX, LastY + HALF_HEIGHT));
                     Add(new Point(x, y));
                 }
 
@@ -190,7 +189,14 @@ namespace SourceGit.Views.Controls {
                         temp.Links.Add(link);
                     } else {
                         offsetX += UNIT_WIDTH;
-                        unsolved.Add(new LineHelper(commit.Parents[j], isMerged, colorIdx, position));
+
+                        // 防止有下一个提交有ended线时，新的分支线与旧线重合
+                        var l = new LineHelper(commit.Parents[j], isMerged, colorIdx, position);
+                        l.Line.Points.Add(new Point(offsetX, position.Y + HALF_HEIGHT));
+                        l.LastX = offsetX;
+                        l.LastY = position.Y + HALF_HEIGHT;
+
+                        unsolved.Add(l);
                         colorIdx++;
                     }
                 }
