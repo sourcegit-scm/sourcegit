@@ -167,6 +167,7 @@
                     Grid.Row="3"
                     x:Name="localBranchTree"
                     FontFamily="Consolas"
+                    MaxHeight="300"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     LostFocus="OnTreeLostFocus"
