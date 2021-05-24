@@ -35,20 +35,32 @@ namespace SourceGit.Views.Controls {
             public bool IsMerged;
             public double LastX;
             public double LastY;
+            public double EndY;
             public Line Line;
-
-            private Point end;
 
             public LineHelper(string next, bool isMerged, int color, Point start) {
                 Next = next;
                 IsMerged = isMerged;
                 LastX = start.X;
                 LastY = start.Y;
-                end = start;
+                EndY = LastY;
 
                 Line = new Line();
                 Line.Color = color % PENS.Length;
                 Line.Points.Add(start);
+            }
+
+            public LineHelper(string next, bool isMerged, int color, Point start, Point to) {
+                Next = next;
+                IsMerged = isMerged;
+                LastX = to.X;
+                LastY = to.Y;
+                EndY = LastY;
+
+                Line = new Line();
+                Line.Color = color % PENS.Length;
+                Line.Points.Add(start);
+                Line.Points.Add(to);
             }
 
             public void Add(double x, double y, bool isEnd = false) {
@@ -67,9 +79,9 @@ namespace SourceGit.Views.Controls {
             }
 
             private void Add(Point p) {
-                if (p.Y > end.Y) {
+                if (EndY < p.Y) {
                     Line.Points.Add(p);
-                    end = p;
+                    EndY = p.Y;
                 }
             }
         }
@@ -191,12 +203,7 @@ namespace SourceGit.Views.Controls {
                         offsetX += UNIT_WIDTH;
 
                         // 防止有下一个提交有ended线时，新的分支线与旧线重合
-                        var l = new LineHelper(commit.Parents[j], isMerged, colorIdx, position);
-                        l.Line.Points.Add(new Point(offsetX, position.Y + HALF_HEIGHT));
-                        l.LastX = offsetX;
-                        l.LastY = position.Y + HALF_HEIGHT;
-
-                        unsolved.Add(l);
+                        unsolved.Add(new LineHelper(commit.Parents[j], isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT)));
                         colorIdx++;
                     }
                 }
