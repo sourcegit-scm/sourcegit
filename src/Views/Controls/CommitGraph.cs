@@ -25,62 +25,63 @@ namespace SourceGit.Views.Controls {
         public static readonly double UNIT_HEIGHT = 24;
         public static readonly double HALF_HEIGHT = 12;
 
-        public class Line {
+        public class Path {
             public List<Point> Points = new List<Point>();
             public int Color = 0;
         }
 
-        public class LineHelper {
+        public class PathHelper {
             public string Next;
             public bool IsMerged;
             public double LastX;
             public double LastY;
             public double EndY;
-            public Line Line;
+            public Path Path;
 
-            public LineHelper(string next, bool isMerged, int color, Point start) {
+            public PathHelper(string next, bool isMerged, int color, Point start) {
                 Next = next;
                 IsMerged = isMerged;
                 LastX = start.X;
                 LastY = start.Y;
                 EndY = LastY;
 
-                Line = new Line();
-                Line.Color = color % PENS.Length;
-                Line.Points.Add(start);
+                Path = new Path();
+                Path.Color = color % PENS.Length;
+                Path.Points.Add(start);
             }
 
-            public LineHelper(string next, bool isMerged, int color, Point start, Point to) {
+            public PathHelper(string next, bool isMerged, int color, Point start, Point to) {
                 Next = next;
                 IsMerged = isMerged;
                 LastX = to.X;
                 LastY = to.Y;
                 EndY = LastY;
 
-                Line = new Line();
-                Line.Color = color % PENS.Length;
-                Line.Points.Add(start);
-                Line.Points.Add(to);
+                Path = new Path();
+                Path.Color = color % PENS.Length;
+                Path.Points.Add(start);
+                Path.Points.Add(to);
             }
 
             public void Add(double x, double y, bool isEnd = false) {
                 if (x > LastX) {
                     Add(new Point(LastX, LastY));
                     Add(new Point(x, y - HALF_HEIGHT));
+                    if (isEnd) Add(new Point(x, y));
                 } else if (x < LastX) {
                     if (y > LastY + HALF_HEIGHT) Add(new Point(LastX, LastY + HALF_HEIGHT));
+                    Add(new Point(x, y));
+                } else if (isEnd) {
                     Add(new Point(x, y));
                 }
 
                 LastX = x;
                 LastY = y;
-
-                if (isEnd) Add(new Point(LastX, LastY));
             }
 
             private void Add(Point p) {
                 if (EndY < p.Y) {
-                    Line.Points.Add(p);
+                    Path.Points.Add(p);
                     EndY = p.Y;
                 }
             }
@@ -99,7 +100,7 @@ namespace SourceGit.Views.Controls {
         }
 
         public class Data {
-            public List<Line> Lines = new List<Line>();
+            public List<Path> Paths = new List<Path>();
             public List<Link> Links = new List<Link>();
             public List<Dot> Dots = new List<Dot>();
         }
@@ -125,14 +126,14 @@ namespace SourceGit.Views.Controls {
             }
 
             var temp = new Data();
-            var unsolved = new List<LineHelper>();
-            var mapUnsolved = new Dictionary<string, LineHelper>();
-            var ended = new List<LineHelper>();
+            var unsolved = new List<PathHelper>();
+            var mapUnsolved = new Dictionary<string, PathHelper>();
+            var ended = new List<PathHelper>();
             var offsetY = -HALF_HEIGHT;
             var colorIdx = 0;
 
             foreach (var commit in commits) {
-                var major = null as LineHelper;
+                var major = null as PathHelper;
                 var isMerged = commit.IsMerged;
                 var oldCount = unsolved.Count;
 
@@ -171,7 +172,7 @@ namespace SourceGit.Views.Controls {
                 // 处理本提交为非当前分支HEAD的情况（创建新依赖线路）
                 if (major == null && commit.Parents.Count > 0) {
                     offsetX += UNIT_WIDTH;
-                    major = new LineHelper(commit.Parents[0], isMerged, colorIdx, new Point(offsetX, offsetY));
+                    major = new PathHelper(commit.Parents[0], isMerged, colorIdx, new Point(offsetX, offsetY));
                     unsolved.Add(major);
                     colorIdx++;
                 }
@@ -182,7 +183,7 @@ namespace SourceGit.Views.Controls {
                     major.IsMerged = isMerged;
                     position.X = major.LastX;
                     position.Y = offsetY;
-                    temp.Dots.Add(new Dot() { Center = position, Color = major.Line.Color });
+                    temp.Dots.Add(new Dot() { Center = position, Color = major.Path.Color });
                 } else {
                     temp.Dots.Add(new Dot() { Center = position, Color = 0 });
                 }
@@ -197,13 +198,13 @@ namespace SourceGit.Views.Controls {
                         link.Start = position;
                         link.End = new Point(l.LastX, offsetY + HALF_HEIGHT);
                         link.Control = new Point(link.End.X, link.Start.Y);
-                        link.Color = l.Line.Color;
+                        link.Color = l.Path.Color;
                         temp.Links.Add(link);
                     } else {
                         offsetX += UNIT_WIDTH;
 
                         // 防止有下一个提交有ended线时，新的分支线与旧线重合
-                        unsolved.Add(new LineHelper(commit.Parents[j], isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT)));
+                        unsolved.Add(new PathHelper(commit.Parents[j], isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT)));
                         colorIdx++;
                     }
                 }
@@ -211,7 +212,7 @@ namespace SourceGit.Views.Controls {
                 // 处理已终止的线
                 foreach (var l in ended) {
                     l.Add(position.X, position.Y, true);
-                    temp.Lines.Add(l.Line);
+                    temp.Paths.Add(l.Path);
                     unsolved.Remove(l);
                 }
 
@@ -229,15 +230,15 @@ namespace SourceGit.Views.Controls {
                 var path = unsolved[i];
                 var endY = (commits.Count - 0.5) * UNIT_HEIGHT;
 
-                if (path.Line.Points.Count == 1 && path.Line.Points[0].Y == endY) continue;
+                if (path.Path.Points.Count == 1 && path.Path.Points[0].Y == endY) continue;
 
                 path.Add((i + 0.5) * UNIT_WIDTH, endY, true);
-                temp.Lines.Add(path.Line);
+                temp.Paths.Add(path.Path);
             }
             unsolved.Clear();
 
             // 排序
-            temp.Lines.Sort((l, h) => l.Points[0].Y.CompareTo(h.Points[0].Y));
+            temp.Paths.Sort((l, h) => l.Points[0].Y.CompareTo(h.Points[0].Y));
 
             Dispatcher.Invoke(() => {
                 data = temp;
@@ -256,9 +257,9 @@ namespace SourceGit.Views.Controls {
 
             // 绘制线
             if (Models.Preference.Instance.Window.UsePolylineInGraph) {
-                DrawPolyLine(dc, top, bottom);
+                DrawPolyLines(dc, top, bottom);
             } else {
-                DrawCurveLine(dc, top, bottom);
+                DrawCurves(dc, top, bottom);
             }
 
             // 绘制点
@@ -271,8 +272,8 @@ namespace SourceGit.Views.Controls {
             }
         }
     
-        private void DrawCurveLine(DrawingContext dc, double top, double bottom) {
-            foreach (var line in data.Lines) {
+        private void DrawCurves(DrawingContext dc, double top, double bottom) {
+            foreach (var line in data.Paths) {
                 var last = line.Points[0];
                 var size = line.Points.Count;
 
@@ -334,8 +335,8 @@ namespace SourceGit.Views.Controls {
             }
         }
 
-        private void DrawPolyLine(DrawingContext dc, double top, double bottom) {
-            foreach (var line in data.Lines) {
+        private void DrawPolyLines(DrawingContext dc, double top, double bottom) {
+            foreach (var line in data.Paths) {
                 var last = line.Points[0];
                 var size = line.Points.Count;
 
