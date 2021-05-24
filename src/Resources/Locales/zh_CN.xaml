@@ -256,7 +256,7 @@
     <sys:String x:Key="Text.Histories.SearchClear">清空</sys:String>
     <sys:String x:Key="Text.Histories.GraphMode">切换曲线/折线显示</sys:String>
     <sys:String x:Key="Text.Histories.DisplayMode">切换横向/纵向显示</sys:String>
-    <sys:String x:Key="Text.Histories.Selected">已选中{0}项提交</sys:String>
+    <sys:String x:Key="Text.Histories.Selected">已选中 {0} 项提交</sys:String>
     <sys:String x:Key="Text.Histories.Guide">操作说明</sys:String>
     <sys:String x:Key="Text.Histories.Guide_1">1. 单选时，显示选中提交的详细信息</sys:String>
     <sys:String x:Key="Text.Histories.Guide_2">2. 双选时，按选中顺序对比两个提交</sys:String>

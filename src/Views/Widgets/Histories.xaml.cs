@@ -238,11 +238,10 @@ namespace SourceGit.Views.Widgets {
                 revisionCompare.Visibility = Visibility.Visible;
             } else if (selected.Count > 2) {
                 mask.Visibility = Visibility.Visible;
-                txtCounter.Visibility = Visibility.Visible;
                 txtCounter.Text = App.Text("Histories.Selected", selected.Count);
             } else {
-                mask.Visibility = Visibility.Visible;
-                txtCounter.Visibility = Visibility.Hidden;
+                mask.Visibility = Visibility.Visible; 
+                txtCounter.Text = App.Text("Histories.Guide");
             }
         }
 
@@ -592,13 +591,6 @@ namespace SourceGit.Views.Widgets {
             };
             submenu.Items.Add(delete);
             menu.Items.Add(submenu);
-        }
-        #endregion
-
-        #region GUIDE
-        private void OpenGuide(object sender, RoutedEventArgs e) {
-            popupGuide.IsOpen = !popupGuide.IsOpen;
-            e.Handled = true;
         }
         #endregion
     }

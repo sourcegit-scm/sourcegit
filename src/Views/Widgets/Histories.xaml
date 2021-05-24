@@ -174,12 +174,26 @@
             <Border x:Name="mask" Background="{StaticResource Brush.Window}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Opacity=".25">
                     <Path Width="128" Height="128" Data="{StaticResource Icon.Detail}"/>
-                    <TextBlock x:Name="txtCounter" Visibility="Hidden" FontFamily="Consolas" Margin="0,16,0,0" FontSize="24" FontWeight="UltraBold" HorizontalAlignment="Center"/>
+                    
+                    <TextBlock 
+                        x:Name="txtCounter" 
+                        Margin="0,16"
+                        FontFamily="Consolas" FontSize="24" FontWeight="UltraBold" 
+                        HorizontalAlignment="Center" 
+                        TextOptions.TextFormattingMode="Ideal"
+                        Text="{StaticResource Text.Histories.Guide}"/>
+
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" TextBlock.FontFamily="Consolas,Microsoft YaHei UI">
+                        <TextBlock Text="{StaticResource Text.Histories.Guide_1}" FontSize="14" Margin="0,2"/>
+                        <TextBlock Text="{StaticResource Text.Histories.Guide_2}" FontSize="14" Margin="0,2"/>
+                        <TextBlock Text="{StaticResource Text.Histories.Guide_3}" FontSize="14" Margin="0,2"/>
+                        <TextBlock Text="{StaticResource Text.Histories.Guide_4}" FontSize="14" Margin="0,2"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
             <!-- Right Top Button -->
-            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,0,0" Orientation="Horizontal">
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,8,0" Orientation="Horizontal">
                 <ToggleButton
                     Style="{StaticResource Style.ToggleButton.CommitGraphMode}"
                     Foreground="{StaticResource Brush.FG2}"
@@ -196,26 +210,6 @@
                     ToolTip="{StaticResource Text.Histories.DisplayMode}"
                     IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.MoveCommitInfoRight, Mode=TwoWay, Converter={StaticResource InverseBool}}"
                     Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
-
-                <controls:IconButton
-                    Margin="8,0"
-                    Width="16" Height="16"
-                    ToolTip="{StaticResource Text.Histories.Guide}"
-                    Icon="{StaticResource Icon.Help}"
-                    Opacity=".4"
-                    Click="OpenGuide"/>
-
-                <Popup x:Name="popupGuide" IsOpen="False" StaysOpen="False" Placement="Bottom">
-                    <Border Background="{StaticResource Brush.Popup}" BorderThickness="1" BorderBrush="{StaticResource Brush.Border2}">
-                        <StackPanel Orientation="Vertical" TextElement.FontFamily="Consolas" Margin="8">
-                            <Label Content="{StaticResource Text.Histories.Guide}" FontWeight="Bold" FontSize="14" Margin="0,0,0,8"/>
-                            <Label Content="{StaticResource Text.Histories.Guide_1}"/>
-                            <Label Content="{StaticResource Text.Histories.Guide_2}"/>
-                            <Label Content="{StaticResource Text.Histories.Guide_3}"/>
-                            <Label Content="{StaticResource Text.Histories.Guide_4}"/>
-                        </StackPanel>
-                    </Border>
-                </Popup>
             </StackPanel>
         </Grid>
     </Grid>
