@@ -57,10 +57,10 @@ namespace SourceGit.Commands {
                 Args = $"flow feature finish {option} {name}";
                 break;
             case Models.GitFlowBranchType.Release:
-                Args = $"flow release finish {option} {name}";
+                Args = $"flow release finish {option} {name} -m \"RELEASE_DONE\"";
                 break;
             case Models.GitFlowBranchType.Hotfix:
-                Args = $"flow hotfix finish {option} {name}";
+                Args = $"flow hotfix finish {option} {name} -m \"HOTFIX_DONE\"";
                 break;
             default:
                 return;
