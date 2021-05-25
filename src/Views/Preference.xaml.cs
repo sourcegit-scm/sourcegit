@@ -121,7 +121,18 @@ namespace SourceGit.Views {
                 useDarkTheme != general.UseDarkTheme ||
                 checkUpdate != general.CheckForUpdate ||
                 autoFetch != general.AutoFetchRemotes) {
-                App.Restart();
+                var result = MessageBox.Show(
+                    this,
+                    App.Text("Restart.Content"),
+                    App.Text("Restart.Title"),
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Question,
+                    MessageBoxResult.Cancel);
+                if (result == MessageBoxResult.OK) {
+                    App.Restart();
+                } else {
+                    Close();
+                }
             } else {
                 Close();
             }
