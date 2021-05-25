@@ -255,6 +255,8 @@ namespace SourceGit.Views.Widgets {
             commitList.SelectedItem = commit;
 
             var current = repo.Branches.Find(x => x.IsCurrent);
+            if (current == null) return;
+
             var merged = commit.IsMerged;
             var menu = new ContextMenu();
             var tags = new List<string>();
