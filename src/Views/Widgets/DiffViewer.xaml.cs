@@ -318,10 +318,12 @@ namespace SourceGit.Views.Widgets {
                     oldEditor = CreateTextEditor(new string[] { "OldLine" });
                     oldEditor.SetValue(Grid.ColumnProperty, 0);
                     oldEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTextDiffSyncScroll));
+                    oldEditor.SelectionChanged += new SelectionChangedEventHandler(OnTextDiffSyncSelected);
 
                     newEditor = CreateTextEditor(new string[] { "NewLine" });
                     newEditor.SetValue(Grid.ColumnProperty, 1);
                     newEditor.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnTextDiffSyncScroll));
+                    newEditor.SelectionChanged += new SelectionChangedEventHandler(OnTextDiffSyncSelected);
 
                     editors.Add(oldEditor);
                     editors.Add(newEditor);
@@ -598,6 +600,20 @@ namespace SourceGit.Views.Widgets {
                 if (e.HorizontalChange != 0 && scroller.HorizontalOffset != e.HorizontalOffset) {
                     scroller.ScrollToHorizontalOffset(e.HorizontalOffset);
                 }
+            }
+        }
+
+
+        private void OnTextDiffSyncSelected(object sender, SelectionChangedEventArgs e) {
+            DataGrid dG = sender as DataGrid;
+            int Index = dG.SelectedIndex;
+
+            foreach (var editor in editors) {
+                if (editor == sender || editor.SelectedIndex == Index) {    /// 对于事件发起者不用处理
+                    continue;
+                }
+
+                editor.SelectedIndex = Index;       ///* 这里更改后，会导致再次进入改接口
             }
         }
 
