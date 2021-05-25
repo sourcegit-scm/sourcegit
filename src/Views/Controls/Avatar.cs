@@ -78,6 +78,10 @@ namespace SourceGit.Views.Controls {
         private int colorIdx = 0;
         private FormattedText label = null;
 
+        public Avatar() {
+            SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.HighQuality);
+        }
+
         /// <summary>
         ///     渲染实现
         /// </summary>
