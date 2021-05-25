@@ -636,6 +636,7 @@ namespace SourceGit.Views.Widgets {
                 if (next.IsDifference) {
                     if (firstModeEnded || next.Mode != first.Mode) {
                         scroller.ScrollToVerticalOffset(i);
+                        grid.SelectedIndex = i;
                         break;
                     }
                 } else {
@@ -659,6 +660,7 @@ namespace SourceGit.Views.Widgets {
                 if (next.IsDifference) {
                     if (firstModeEnded || next.Mode != first.Mode) {
                         scroller.ScrollToVerticalOffset(i);
+                        grid.SelectedIndex = i;
                         break;
                     }
                 } else {
