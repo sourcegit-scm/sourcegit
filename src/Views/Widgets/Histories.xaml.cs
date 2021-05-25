@@ -406,7 +406,7 @@ namespace SourceGit.Views.Widgets {
 
             var push = new MenuItem();
             push.Header = App.Text("BranchCM.Push", current.Name);
-            push.IsEnabled = dirty;
+            push.IsEnabled = repo.Remotes.Count > 0 && dirty;
             push.Click += (o, e) => {
                 new Popups.Push(repo, current).Show();
                 e.Handled = true;
@@ -579,6 +579,7 @@ namespace SourceGit.Views.Widgets {
 
             var push = new MenuItem();
             push.Header = App.Text("TagCM.Push", tag);
+            push.IsEnabled = repo.Remotes.Count > 0;
             push.Click += (o, e) => {
                 new Popups.PushTag(repo, tag).Show();
                 e.Handled = true;

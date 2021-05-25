@@ -271,16 +271,31 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OpenFetch(object sender, RoutedEventArgs e) {
+            if (repo.Remotes.Count == 0) {
+                Models.Exception.Raise("No remotes added to this repository!!!");
+                return;
+            }
+
             new Popups.Fetch(repo, null).Show();
             e.Handled = true;
         }
 
         private void OpenPull(object sender, RoutedEventArgs e) {
+            if (repo.Remotes.Count == 0) {
+                Models.Exception.Raise("No remotes added to this repository!!!");
+                return;
+            }
+
             new Popups.Pull(repo, null).Show();
             e.Handled = true;
         }
 
         private void OpenPush(object sender, RoutedEventArgs e) {
+            if (repo.Remotes.Count == 0) {
+                Models.Exception.Raise("No remotes added to this repository!!!");
+                return;
+            }
+
             new Popups.Push(repo, null).Show();
             e.Handled = true;
         }
@@ -450,6 +465,7 @@ namespace SourceGit.Views.Widgets {
         private void FillLocalBranchContextMenu(ContextMenu menu, Models.Branch branch) {
             var push = new MenuItem();
             push.Header = App.Text("BranchCM.Push", branch.Name);
+            push.IsEnabled = repo.Remotes.Count > 0;
             push.Click += (o, e) => {
                 new Popups.Push(repo, branch).Show();
                 e.Handled = true;
@@ -768,6 +784,7 @@ namespace SourceGit.Views.Widgets {
 
             var pushTag = new MenuItem();
             pushTag.Header = App.Text("TagCM.Push", tag.Name);
+            pushTag.IsEnabled = repo.Remotes.Count > 0;
             pushTag.Click += (o, ev) => {
                 new Popups.PushTag(repo, tag.Name).Show();
                 ev.Handled = true;
