@@ -15,6 +15,12 @@ namespace SourceGit.Views {
         public string CRLF { get; set; }
         public string MergeCmd { get; set; }
 
+        private string locale;
+        private string avatarServer;
+        private bool useDarkTheme;
+        private bool checkUpdate;
+        private bool autoFetch;
+
         public Preference() {
             if (Models.Preference.Instance.IsReady) {
                 User = new Commands.Config().Get("user.name");
@@ -29,6 +35,12 @@ namespace SourceGit.Views {
 
             var merger = Models.MergeTool.Supported.Find(x => x.Type == Models.Preference.Instance.MergeTool.Type);
             if (merger != null) MergeCmd = merger.Cmd;
+
+            locale = Models.Preference.Instance.General.Locale;
+            avatarServer = Models.Preference.Instance.General.AvatarServer;
+            useDarkTheme = Models.Preference.Instance.General.UseDarkTheme;
+            checkUpdate = Models.Preference.Instance.General.CheckForUpdate;
+            autoFetch = Models.Preference.Instance.General.AutoFetchRemotes;
 
             InitializeComponent();
         }
@@ -102,7 +114,17 @@ namespace SourceGit.Views {
             }
 
             Models.Preference.Save();
-            Close();
+
+            var general = Models.Preference.Instance.General;
+            if (locale != general.Locale ||
+                avatarServer != general.AvatarServer ||
+                useDarkTheme != general.UseDarkTheme ||
+                checkUpdate != general.CheckForUpdate ||
+                autoFetch != general.AutoFetchRemotes) {
+                App.Restart();
+            } else {
+                Close();
+            }
         }
         #endregion
     }

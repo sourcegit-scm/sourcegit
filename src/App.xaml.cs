@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -13,6 +14,7 @@ namespace SourceGit {
     ///     程序入口.
     /// </summary>
     public partial class App : Application {
+        private static bool restart = false;
 
         /// <summary>
         ///     读取本地化字串
@@ -24,6 +26,15 @@ namespace SourceGit {
             var data = Current.FindResource($"Text.{key}") as string;
             if (string.IsNullOrEmpty(data)) return $"Text.{key}";
             return string.Format(data, args);
+        }
+
+        /// <summary>
+        ///     重启程序
+        /// </summary>
+        public static void Restart() {
+            restart = true;
+            Process.Start(Process.GetCurrentProcess().MainModule.FileName);
+            Current.Shutdown();
         }
 
         /// <summary>
@@ -109,7 +120,7 @@ namespace SourceGit {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAppDeactivated(object sender, EventArgs e) {
-            Models.Preference.Save();
+            if (!restart) Models.Preference.Save();
         }
     }
 }
