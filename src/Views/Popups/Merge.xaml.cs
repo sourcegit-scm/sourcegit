@@ -26,7 +26,7 @@ namespace SourceGit.Views.Popups {
             var mode = (cmbMode.SelectedItem as Models.MergeOption).Arg;
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo, false);
-                new Commands.Merge(repo, source, mode).Exec();
+                new Commands.Merge(repo, source, mode, UpdateProgress).Exec();
                 Models.Watcher.SetEnabled(repo, true);
                 return true;
             });
