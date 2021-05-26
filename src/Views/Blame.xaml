@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:SourceGit.Views.Controls"
         mc:Ignorable="d"
-        UseLayoutRounding="True"
         Title="{StaticResource Text.Blame}"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType"
+        RenderOptions.ClearTypeHint="Enabled"
+        UseLayoutRounding="True"
         WindowStartupLocation="CenterOwner"
         Height="600" Width="800">
     <WindowChrome.WindowChrome>
@@ -19,6 +20,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="28"/>
+                <RowDefinition Height="1"/>
                 <RowDefinition Height="24"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -45,9 +47,16 @@
                     <controls:IconButton Click="Quit" Width="28" Padding="8" Icon="{StaticResource Icon.Close}" HoverBackground="Red" Opacity="1"/>
                 </StackPanel>
             </Grid>
-            
-            <!-- Body -->
-            <Border Grid.Row="1">
+
+            <!-- Line -->
+            <Rectangle 
+                Grid.Row="1"
+                Height="1"
+                HorizontalAlignment="Stretch"
+                Fill="{StaticResource Brush.Border0}"/>
+
+            <!-- Description -->
+            <Border Grid.Row="2">
                 <Grid Margin="4,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -61,7 +70,7 @@
             
             <!-- Viewer -->
             <DataGrid
-                Grid.Row="2"
+                Grid.Row="3"
                 x:Name="blame"
                 GridLinesVisibility="Vertical"
                 VerticalGridLinesBrush="{StaticResource Brush.Border2}"
@@ -98,7 +107,7 @@
 
             <StackPanel
                 x:Name="notSupport" 
-                Grid.Row="2"
+                Grid.Row="3"
                 Orientation="Vertical" 
                 VerticalAlignment="Center" HorizontalAlignment="Center" 
                 Background="{StaticResource Brush.Window}"
@@ -108,10 +117,10 @@
             </StackPanel>
 
             <!-- Loading -->
-            <controls:Loading x:Name="loading" Grid.Row="2" Width="48" Height="48" IsAnimating="True"/>
+            <controls:Loading x:Name="loading" Grid.Row="3" Width="48" Height="48" IsAnimating="True"/>
 
             <!-- Popup to show commit info -->
-            <Popup x:Name="popup" Grid.Row="2" Placement="MousePoint" IsOpen="False" StaysOpen="False" Focusable="True">
+            <Popup x:Name="popup" Grid.Row="3" Placement="MousePoint" IsOpen="False" StaysOpen="False" Focusable="True">
                 <Border BorderBrush="{StaticResource Brush.Accent1}" BorderThickness="1" Background="{StaticResource Brush.Popup}">
                     <Grid Margin="4">
                         <Grid.RowDefinitions>

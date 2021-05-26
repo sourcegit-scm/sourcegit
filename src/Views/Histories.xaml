@@ -7,8 +7,11 @@
         xmlns:models="clr-namespace:SourceGit.Models"
         xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
         mc:Ignorable="d"
-        UseLayoutRounding="True"
         Title="{StaticResource Text.FileHistory}"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
+        RenderOptions.ClearTypeHint="Enabled"
+        UseLayoutRounding="True"
         WindowStartupLocation="CenterOwner"
         MinHeight="600" MinWidth="800">
     <WindowChrome.WindowChrome>
@@ -19,6 +22,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="28"/>
+                <RowDefinition Height="1"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
@@ -44,9 +48,15 @@
                     <controls:IconButton Click="Quit" Width="28" Padding="8" Icon="{StaticResource Icon.Close}" HoverBackground="Red" Opacity="1"/>
                 </StackPanel>
             </Grid>
-            
+
+            <Rectangle 
+                Grid.Row="1"
+                Height="1"
+                HorizontalAlignment="Stretch"
+                Fill="{StaticResource Brush.Border0}"/>
+
             <!-- Body -->
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300" MinWidth="300" MaxWidth="600"/>
                     <ColumnDefinition Width="1"/>
@@ -58,6 +68,8 @@
                     x:Name="commitList"
                     Grid.Column="0"
                     Background="{StaticResource Brush.Contents}"
+                    BorderBrush="{StaticResource Brush.Border0}"
+                    BorderThickness="0,0,1,0"
                     SelectionMode="Single"
                     SelectionUnit="FullRow"
                     SelectedCellsChanged="OnCommitSelectedChanged">
@@ -128,7 +140,7 @@
                 <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Transparent"/>
 
                 <!-- Diff Viewer -->
-                <widgets:DiffViewer Grid.Column="2" x:Name="diffViewer"/>
+                <widgets:DiffViewer Grid.Column="2" x:Name="diffViewer" Padding="4"/>
             </Grid>
         </Grid>
     </controls:WindowBorder>

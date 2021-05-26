@@ -7,11 +7,11 @@
         xmlns:controls="clr-namespace:SourceGit.Views.Controls"
         xmlns:models="clr-namespace:SourceGit.Models"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
         UseLayoutRounding="True"
         Title="{StaticResource Text.Preference}"
-        Width="500" SizeToContent="Height"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        Width="500" SizeToContent="Height">
     <WindowChrome.WindowChrome>
         <WindowChrome UseAeroCaptionButtons="False" CornerRadius="0" CaptionHeight="28" ResizeBorderThickness="1"/>
     </WindowChrome.WindowChrome>
@@ -20,6 +20,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="28"/>
+                <RowDefinition Height="1"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
@@ -47,9 +48,14 @@
                     HoverBackground="Red"
                     WindowChrome.IsHitTestVisibleInChrome="True"/>
             </Grid>
-            
+
+            <Rectangle 
+                Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                Fill="{StaticResource Brush.Border0}"/>
+
             <!-- Body -->
-            <Grid Grid.Row="1" Margin="16,8">
+            <Grid Grid.Row="2" Margin="16,8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36"/>
                     <RowDefinition Height="28"/>

@@ -18,6 +18,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="28"/>
+                <RowDefinition Height="1"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
@@ -46,9 +47,15 @@
                     HoverBackground="Red" 
                     WindowChrome.IsHitTestVisibleInChrome="True"/>
             </Grid>
-        
+
+            <Rectangle 
+                Grid.Row="1"
+                Height="1"
+                HorizontalAlignment="Stretch"
+                Fill="{StaticResource Brush.Border0}"/>
+
             <!-- Content -->
-            <StackPanel Grid.Row="1" Orientation="Vertical">
+            <StackPanel Grid.Row="2" Orientation="Vertical">
                 
                 <!-- LOGO -->
                 <Path 

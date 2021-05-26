@@ -11,7 +11,7 @@ namespace SourceGit.Views.Controls {
 
         public WindowBorder() {
             Background = FindResource("Brush.Window") as Brush;
-            BorderBrush = FindResource("Brush.Border0") as Brush;
+            BorderBrush = FindResource("Brush.WindowBorder") as Brush;
             BorderThickness = new Thickness(1);
             Margin = new Thickness(0);
 
