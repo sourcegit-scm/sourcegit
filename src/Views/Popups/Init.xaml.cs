@@ -23,7 +23,7 @@ namespace SourceGit.Views.Popups {
                 if (!succ) return false;
 
                 var repo = Models.Preference.Instance.AddRepository(WorkDir, WorkDir + "\\.git", "");
-                Models.Watcher.Open(repo);
+                Dispatcher.Invoke(() => Models.Watcher.Open(repo));
                 return true;
             });
         }
