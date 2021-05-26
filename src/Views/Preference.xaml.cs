@@ -61,10 +61,11 @@ namespace SourceGit.Views {
         }
 
         private void SelectGitCloneDir(object sender, RoutedEventArgs e) {
-            FolderBrowser.Open(this, App.Text("Preference.Dialog.GitDir"), path => {
-                Models.Preference.Instance.Git.DefaultCloneDir = path;
+            var dialog = new Controls.FolderDialog("Preference.Dialog.GitDir");
+            if (dialog.ShowDialog() == true) {
+                Models.Preference.Instance.Git.DefaultCloneDir = dialog.SelectedPath;
                 txtGitCloneDir?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-            });
+            }
         }
 
         private void SelectMergeTool(object sender, RoutedEventArgs e) {

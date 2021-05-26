@@ -47,7 +47,8 @@ namespace SourceGit.Views.Widgets {
 
         #region FUNC_EVENTS
         private void OnOpenClicked(object sender, RoutedEventArgs e) {
-            FolderBrowser.Open(null, App.Text("Welcome.OpenOrInitDialog"), CheckAndOpen);
+            var dialog = new Controls.FolderDialog("Welcome.OpenOrInitDialog");            
+            if (dialog.ShowDialog() == true) CheckAndOpen(dialog.SelectedPath);
         }
 
         private void OnCloneClicked(object sender, RoutedEventArgs e) {

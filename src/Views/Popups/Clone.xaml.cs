@@ -54,10 +54,11 @@ namespace SourceGit.Views.Popups {
         }
 
         private void OnFolderSelectorClick(object sender, System.Windows.RoutedEventArgs e) {
-            FolderBrowser.Open(null, App.Text("Clone.Folder.Placeholder"), path => {
-                Folder = path;
+            var dialog = new Controls.FolderDialog("Clone.Folder.Placeholder");
+            if (dialog.ShowDialog() == true) {
+                Folder = dialog.SelectedPath;
                 txtFolder.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-            });
+            }
         }
     }
 }

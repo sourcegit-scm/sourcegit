@@ -289,10 +289,11 @@ namespace SourceGit.Views.Widgets {
             saveAs.Header = App.Text("SaveAs");
             saveAs.IsEnabled = node.Type == Models.ObjectType.Blob;
             saveAs.Click += (obj, ev) => {
-                FolderBrowser.Open(null, App.Text("SaveFileTo"), saveTo => {
-                    var full = Path.Combine(saveTo, Path.GetFileName(node.Path));
+                var dialog = new Controls.FolderDialog("SaveFileTo");
+                if (dialog.ShowDialog() == true) {
+                    var full = Path.Combine(dialog.SelectedPath, Path.GetFileName(node.Path));
                     new Commands.SaveRevisionFile(repo, node.Path, sha, full).Exec();
-                });
+                }
                 ev.Handled = true;
             };
 

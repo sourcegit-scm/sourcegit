@@ -342,9 +342,10 @@ namespace SourceGit.Views.Widgets {
             var saveToPatch = new MenuItem();
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += (o, e) => {
-                FolderBrowser.Open(null, "Save patch to ...", saveTo => {
-                    new Commands.FormatPatch(repo.Path, commit.SHA, saveTo).Exec();
-                });
+                var dialog = new Controls.FolderDialog("SaveFileTo");
+                if (dialog.ShowDialog() == true) {
+                    new Commands.FormatPatch(repo.Path, commit.SHA, dialog.SelectedPath).Exec();
+                }
             };
             menu.Items.Add(saveToPatch);
             menu.Items.Add(new Separator());
