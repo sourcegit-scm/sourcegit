@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,13 +7,16 @@ namespace SourceGit.Commands {
     ///     检出
     /// </summary>
     public class Checkout : Command {
+        private Action<string> handler = null;
 
         public Checkout(string repo) {
             Cwd = repo;
         }
 
-        public bool Branch(string branch) {
-            Args = $"checkout {branch}";
+        public bool Branch(string branch, Action<string> onProgress) {
+            Args = $"checkout --progress {branch}";
+            TraitErrorAsOutput = true;
+            handler = onProgress;
             return Exec();
         }
 
@@ -41,6 +45,10 @@ namespace SourceGit.Commands {
             }
             Args = builder.ToString();
             return Exec();
+        }
+
+        public override void OnReadline(string line) {
+            handler?.Invoke(line);
         }
     }
 }

@@ -457,10 +457,8 @@ namespace SourceGit.Views.Widgets {
 
             var checkout = new MenuItem();
             checkout.Header = App.Text("BranchCM.Checkout", branch.Name);
-            checkout.Click += async (o, e) => {
-                Models.Watcher.SetEnabled(repo.Path, false);
-                await Task.Run(() => new Commands.Checkout(repo.Path).Branch(branch.Name));
-                Models.Watcher.SetEnabled(repo.Path, true);
+            checkout.Click += (o, e) => {
+                new Popups.Checkout(repo.Path, branch.Name).ShowAndStart();
                 e.Handled = true;
             };
             submenu.Items.Add(checkout);
@@ -528,14 +526,11 @@ namespace SourceGit.Views.Widgets {
 
             var checkout = new MenuItem();
             checkout.Header = App.Text("BranchCM.Checkout", name);
-            checkout.Click += async (o, e) => {
+            checkout.Click += (o, e) => {
                 foreach (var b in repo.Branches) {
                     if (b.IsLocal && b.Upstream == branch.FullName) {
                         if (b.IsCurrent) return;
-
-                        Models.Watcher.SetEnabled(repo.Path, false);
-                        await Task.Run(() => new Commands.Checkout(repo.Path).Branch(b.Name));
-                        Models.Watcher.SetEnabled(repo.Path, true);
+                        new Popups.Checkout(repo.Path, b.Name).ShowAndStart();
                         return;
                     }
                 }
