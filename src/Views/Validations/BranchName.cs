@@ -16,7 +16,8 @@ namespace SourceGit.Views.Validations {
 
             name = Prefix + name;
             foreach (var t in Repo.Branches) {
-                if (t.Name == name) {
+                var check = t.IsLocal ? t.Name : $"{t.Remote}/{t.Name}";
+                if (check == name) {
                     return new ValidationResult(false, App.Text("DuplicatedBranchName"));
                 }
             }

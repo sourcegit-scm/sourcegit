@@ -10,12 +10,14 @@ namespace SourceGit.Views.Popups {
         private string repo = null;
         private string basedOn = null;
 
-        public string BranchName { get; set; }
-        public bool AutoStash { get; set; }
+        public string BranchName { get; set; } = "";
+        public bool AutoStash { get; set; } = false;
 
         public CreateBranch(Models.Repository repo, Models.Branch branch) {
             this.repo = repo.Path;
-            this.basedOn = branch.Head;
+            this.basedOn = branch.FullName;
+
+            if (!branch.IsLocal) BranchName = branch.Name;
 
             InitializeComponent();
 
@@ -37,7 +39,7 @@ namespace SourceGit.Views.Popups {
 
         public CreateBranch(Models.Repository repo, Models.Tag tag) {
             this.repo = repo.Path;
-            this.basedOn = tag.SHA;
+            this.basedOn = tag.Name;
 
             InitializeComponent();
 
@@ -68,6 +70,8 @@ namespace SourceGit.Views.Popups {
                         } else {
                             AutoStash = true;
                         }
+                    } else {
+                        new Commands.Discard(repo).Whole();
                     }
 
                     new Commands.Checkout(repo).Branch(BranchName, basedOn);
