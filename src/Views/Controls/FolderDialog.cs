@@ -46,9 +46,6 @@ namespace SourceGit.Views.Controls {
     /// </summary>
     [SuppressUnmanagedCodeSecurity]
     internal static class Shell32 {
-        [DllImport("shell32.dll")]
-        public static extern Int32 SHGetSpecialFolderLocation(IntPtr hwnd, Int32 csidl, ref IntPtr ppidl);
-
         [DllImport("shell32.dll", CharSet = CharSet.Auto)]
         public static extern Boolean SHGetPathFromIDList(IntPtr pidl, IntPtr pszPath);
 
@@ -81,22 +78,12 @@ namespace SourceGit.Views.Controls {
         }
 
         protected override bool RunDialog(IntPtr hwndOwner) {
-            IntPtr ppidl = IntPtr.Zero;
-            Shell32.SHGetSpecialFolderLocation(hwndOwner, (Int32)Environment.SpecialFolder.Desktop, ref ppidl);
-            if (ppidl == IntPtr.Zero) {
-                Shell32.SHGetSpecialFolderLocation(hwndOwner, 0, ref ppidl);
-                if (ppidl == IntPtr.Zero) {
-                    Models.Exception.Raise("Failed to open folder dialog!!!");
-                    return false;
-                }
-            }
-
             BrowseCallbackProc callback = new BrowseCallbackProc(BrowseCallbackHandler);
             IntPtr displayName = Marshal.AllocHGlobal(260 * Marshal.SystemDefaultCharSize);
             bool ok = false;
             try {
                 var info = new BrowseInfo();
-                info.pidlRoot = ppidl;
+                info.pidlRoot = IntPtr.Zero;
                 info.hwndOwner = hwndOwner;
                 info.pszDisplayName = displayName;
                 info.lpszTitle = Description;
@@ -119,7 +106,6 @@ namespace SourceGit.Views.Controls {
                     Ole32.CoTaskMemFree(result);
                 }
             } finally {
-                Ole32.CoTaskMemFree(ppidl);
                 if (displayName != IntPtr.Zero) Marshal.FreeHGlobal(displayName);
                 callback = null;
             }
