@@ -39,6 +39,11 @@
     <sys:String x:Key="Text.Apply.ErrorAll">更多错误</sys:String>
     <sys:String x:Key="Text.Apply.ErrorAll.Desc">与【错误】级别相似，但输出内容更多</sys:String>
 
+    <sys:String x:Key="Text.Archive">存档</sys:String>
+    <sys:String x:Key="Text.Archive.Revision">指定的提交：</sys:String>
+    <sys:String x:Key="Text.Archive.File">存档文件路径：</sys:String>
+    <sys:String x:Key="Text.Archive.File.Placeholder">选择存档文件的存放路径</sys:String>
+
     <sys:String x:Key="Text.Blame">逐行追溯</sys:String>
     <sys:String x:Key="Text.Blame.Tip">右键点击查看所选行修改记录</sys:String>
     <sys:String x:Key="Text.Blame.SHA">提交指纹</sys:String>
@@ -184,7 +189,8 @@
     <sys:String x:Key="Text.CommitCM.Rebase">变基 '{0}' 到此处</sys:String>
     <sys:String x:Key="Text.CommitCM.CherryPick">挑选此提交</sys:String>
     <sys:String x:Key="Text.CommitCM.Revert">回滚此提交</sys:String>
-    <sys:String x:Key="Text.CommitCM.SaveAsPatch">另存为补丁</sys:String>
+    <sys:String x:Key="Text.CommitCM.SaveAsPatch">另存为补丁 ...</sys:String>
+    <sys:String x:Key="Text.CommitCM.Archive">存档 ...</sys:String>
     <sys:String x:Key="Text.CommitCM.CopySHA">复制提交指纹</sys:String>
     <sys:String x:Key="Text.CommitCM.CopyInfo">复制提交信息</sys:String>
 
@@ -442,4 +448,5 @@
     <sys:String x:Key="Text.EmptyCommitMessage">提交信息未填写!</sys:String>
     <sys:String x:Key="Text.BadPatchFile">补丁文件不存在或不可访问！</sys:String>
     <sys:String x:Key="Text.BadSubmodulePath">非法的子模块路径！</sys:String>
+    <sys:String x:Key="Text.BadArchiveFile">非法的存档文件路径！</sys:String>
 </ResourceDictionary>

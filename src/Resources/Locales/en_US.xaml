@@ -39,6 +39,11 @@
     <sys:String x:Key="Text.Apply.ErrorAll">Error All</sys:String>
     <sys:String x:Key="Text.Apply.ErrorAll.Desc">Similar to 'error', but shows more</sys:String>
 
+    <sys:String x:Key="Text.Archive">Archive</sys:String>
+    <sys:String x:Key="Text.Archive.Revision">Revision :</sys:String>
+    <sys:String x:Key="Text.Archive.File">Save Archive To :</sys:String>
+    <sys:String x:Key="Text.Archive.File.Placeholder">Select archive file path</sys:String>
+
     <sys:String x:Key="Text.Blame">Blame</sys:String>
     <sys:String x:Key="Text.Blame.Tip">Right click to see commit info</sys:String>
     <sys:String x:Key="Text.Blame.SHA">COMMIT SHA</sys:String>
@@ -184,7 +189,8 @@
     <sys:String x:Key="Text.CommitCM.Rebase">Rebase '{0}' to Here</sys:String>
     <sys:String x:Key="Text.CommitCM.CherryPick">Cherry-Pick This Commit</sys:String>
     <sys:String x:Key="Text.CommitCM.Revert">Revert Commit</sys:String>
-    <sys:String x:Key="Text.CommitCM.SaveAsPatch">Save as Patch</sys:String>
+    <sys:String x:Key="Text.CommitCM.SaveAsPatch">Save as Patch ...</sys:String>
+    <sys:String x:Key="Text.CommitCM.Archive">Archive ...</sys:String>
     <sys:String x:Key="Text.CommitCM.CopySHA">Copy Commit SHA</sys:String>
     <sys:String x:Key="Text.CommitCM.CopyInfo">Copy Commit Info</sys:String>
 
@@ -442,4 +448,5 @@
     <sys:String x:Key="Text.EmptyCommitMessage">Commit subject can NOT be empty</sys:String>
     <sys:String x:Key="Text.BadPatchFile">Invalid path for patch file</sys:String>
     <sys:String x:Key="Text.BadSubmodulePath">Invalid path for submodules</sys:String>
+    <sys:String x:Key="Text.BadArchiveFile">Invalid path for archive file</sys:String>
 </ResourceDictionary>

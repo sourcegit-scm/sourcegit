@@ -348,6 +348,14 @@ namespace SourceGit.Views.Widgets {
                 }
             };
             menu.Items.Add(saveToPatch);
+
+            var archive = new MenuItem();
+            archive.Header = App.Text("CommitCM.Archive");
+            archive.Click += (o, e) => {
+                new Popups.Archive(repo.Path, commit).Show();
+                e.Handled = true;
+            };
+            menu.Items.Add(archive);
             menu.Items.Add(new Separator());
 
             var copySHA = new MenuItem();
