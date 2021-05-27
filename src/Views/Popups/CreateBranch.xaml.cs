@@ -61,20 +61,21 @@ namespace SourceGit.Views.Popups {
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo, false);
                 if (checkout) {
-                    if (AutoStash) {
-                        var changes = new Commands.LocalChanges(repo).Result();
-                        if (changes.Count > 0) {
+                    var changes = new Commands.LocalChanges(repo).Result();
+                    if (changes.Count > 0) {
+                        if (AutoStash) {
                             if (!new Commands.Stash(repo).Push(changes, "NEWBRANCH_AUTO_STASH")) {
                                 return false;
                             }
                         } else {
-                            AutoStash = true;
+                            new Commands.Discard(repo).Whole();
                         }
                     } else {
-                        new Commands.Discard(repo).Whole();
+                        AutoStash = false;
                     }
 
-                    new Commands.Checkout(repo).Branch(BranchName, basedOn);
+                    UpdateProgress($"Create new branch '{BranchName}'");
+                    new Commands.Checkout(repo).Branch(BranchName, basedOn, UpdateProgress);
                     if (AutoStash) new Commands.Stash(repo).Pop("stash@{0}");
                 } else {
                     new Commands.Branch(repo, BranchName).Create(basedOn);

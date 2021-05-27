@@ -400,7 +400,8 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OpenNewBranch(object sender, RoutedEventArgs e) {
-            new Popups.CreateBranch(repo, repo.Branches.Find(x => x.IsCurrent)).Show();
+            var current = repo.Branches.Find(x => x.IsCurrent);
+            if (current != null) new Popups.CreateBranch(repo, current).Show();
             e.Handled = true;
         }
 
@@ -684,27 +685,36 @@ namespace SourceGit.Views.Widgets {
                 new Popups.CreateBranch(repo, branch).Show();
                 e.Handled = true;
             };
+            menu.Items.Add(checkout);
+            menu.Items.Add(new Separator());
 
-            var pull = new MenuItem();
-            pull.Header = App.Text("BranchCM.PullInto", branch.Name, current.Name);
-            pull.Click += (o, e) => {
-                new Popups.Pull(repo, branch).Show();
-                e.Handled = true;
-            };
+            if (current != null) {
+                var pull = new MenuItem();
+                pull.Header = App.Text("BranchCM.PullInto", branch.Name, current.Name);
+                pull.Click += (o, e) => {
+                    new Popups.Pull(repo, branch).Show();
+                    e.Handled = true;
+                };
 
-            var merge = new MenuItem();
-            merge.Header = App.Text("BranchCM.Merge", branch.Name, current.Name);
-            merge.Click += (o, e) => {
-                new Popups.Merge(repo.Path, $"{branch.Remote}/{branch.Name}", current.Name).Show();
-                e.Handled = true;
-            };
+                var merge = new MenuItem();
+                merge.Header = App.Text("BranchCM.Merge", branch.Name, current.Name);
+                merge.Click += (o, e) => {
+                    new Popups.Merge(repo.Path, $"{branch.Remote}/{branch.Name}", current.Name).Show();
+                    e.Handled = true;
+                };
 
-            var rebase = new MenuItem();
-            rebase.Header = App.Text("BranchCM.Rebase", current.Name, branch.Name);
-            rebase.Click += (o, e) => {
-                new Popups.Rebase(repo.Path, current.Name, branch).Show();
-                e.Handled = true;
-            };
+                var rebase = new MenuItem();
+                rebase.Header = App.Text("BranchCM.Rebase", current.Name, branch.Name);
+                rebase.Click += (o, e) => {
+                    new Popups.Rebase(repo.Path, current.Name, branch).Show();
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(pull);
+                menu.Items.Add(merge);
+                menu.Items.Add(rebase);
+                menu.Items.Add(new Separator());
+            }
 
             var delete = new MenuItem();
             delete.Header = App.Text("BranchCM.Delete", branch.Name);
@@ -733,13 +743,7 @@ namespace SourceGit.Views.Widgets {
                 Clipboard.SetText(branch.Remote + "/" + branch.Name);
                 e.Handled = true;
             };
-
-            menu.Items.Add(checkout);
-            menu.Items.Add(new Separator());
-            menu.Items.Add(pull);
-            menu.Items.Add(merge);
-            menu.Items.Add(rebase);
-            menu.Items.Add(new Separator());
+            
             menu.Items.Add(delete);
             menu.Items.Add(new Separator());
             menu.Items.Add(createBranch);

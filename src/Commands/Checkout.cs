@@ -20,8 +20,10 @@ namespace SourceGit.Commands {
             return Exec();
         }
 
-        public bool Branch(string branch, string basedOn) {
-            Args = $"checkout -b {branch} {basedOn}";
+        public bool Branch(string branch, string basedOn, Action<string> onProgress) {
+            Args = $"checkout --progress -b {branch} {basedOn}";
+            TraitErrorAsOutput = true;
+            handler = onProgress;
             return Exec();
         }
 
