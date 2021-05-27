@@ -36,6 +36,13 @@ namespace SourceGit.Commands {
                 newLine = int.Parse(match.Groups[2].Value);
                 changes.Lines.Add(new Models.TextChanges.Line(Models.TextChanges.LineMode.Indicator, line, "", ""));
             } else {
+                if (line.Length == 0) {
+                    changes.Lines.Add(new Models.TextChanges.Line(Models.TextChanges.LineMode.Normal, "", $"{oldLine}", $"{newLine}"));
+                    oldLine++;
+                    newLine++;
+                    return;
+                }
+
                 var ch = line[0];
                 if (ch == '-') {
                     changes.Lines.Add(new Models.TextChanges.Line(Models.TextChanges.LineMode.Deleted, line.Substring(1), $"{oldLine}", ""));
