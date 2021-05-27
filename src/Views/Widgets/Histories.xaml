@@ -115,7 +115,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Width="SizeToCells" MinWidth="56" IsReadOnly="True">
+                        <DataGridTemplateColumn Width="80" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Committer.Name}" FontFamily="Consolas,Microsoft YaHei UI" FontSize="9pt" Margin="0,0,8,0"/>
@@ -131,7 +131,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Width="SizeToCells" IsReadOnly="True">
+                        <DataGridTemplateColumn Width="140" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Committer.Time}" FontSize="9pt"/>
