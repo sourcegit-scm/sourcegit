@@ -96,6 +96,7 @@
     <sys:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply">贮藏并自动恢复</sys:String>
     <sys:String x:Key="Text.CreateBranch.LocalChanges.Discard">忽略</sys:String>
     <sys:String x:Key="Text.CreateBranch.Checkout">完成后切换到新分支</sys:String>
+    <sys:String x:Key="Text.CreateBranch.Idle">对于空仓库，只有提交一次有效数据，Git 才会创建第一个分支</sys:String>
 
     <sys:String x:Key="Text.CreateTag">新建标签</sys:String>
     <sys:String x:Key="Text.CreateTag.BasedOn">标签位于 ：</sys:String>

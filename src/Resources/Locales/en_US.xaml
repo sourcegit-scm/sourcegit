@@ -96,6 +96,7 @@
     <sys:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply">Stash &amp; Reapply</sys:String>
     <sys:String x:Key="Text.CreateBranch.LocalChanges.Discard">Discard</sys:String>
     <sys:String x:Key="Text.CreateBranch.Checkout">Check out after created</sys:String>
+    <sys:String x:Key="Text.CreateBranch.Idle">Git do not hold any branch until you do first commit.</sys:String>
 
     <sys:String x:Key="Text.CreateTag">Create Tag</sys:String>
     <sys:String x:Key="Text.CreateTag.BasedOn">New Tag At :</sys:String>
