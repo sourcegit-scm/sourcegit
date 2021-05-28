@@ -68,7 +68,7 @@ namespace SourceGit.Views.Popups {
         private void OpenFileBrowser(object sender, RoutedEventArgs e) {
             var dialog = new OpenFileDialog();
             dialog.Filter = "ZIP|*.zip";
-            dialog.Title = App.Text("Archive.File");
+            dialog.Title = App.Text("Archive.File.Placeholder");
             dialog.InitialDirectory = repo;
             dialog.CheckFileExists = false;
 
