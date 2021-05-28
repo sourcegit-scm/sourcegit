@@ -43,6 +43,11 @@ namespace SourceGit.Commands {
         public string Args { get; set; } = "";
 
         /// <summary>
+        ///     是否忽略错误
+        /// </summary>
+        public bool DontRaiseError { get; set; } = false;
+
+        /// <summary>
         ///     使用标准错误输出
         /// </summary>
         public bool TraitErrorAsOutput { get; set; } = false;
@@ -115,7 +120,7 @@ namespace SourceGit.Commands {
             proc.Close();
 
             if (!isCancelled && exitCode != 0 && errs.Count > 0) {
-                Models.Exception.Raise(string.Join("\n", errs));
+                if (!DontRaiseError) Models.Exception.Raise(string.Join("\n", errs));
                 return false;
             } else {
                 return true;

@@ -200,6 +200,7 @@ namespace SourceGit.Views.Widgets {
 
             var cmd = new Commands.Command();
             cmd.Cwd = repo.Path;
+            cmd.DontRaiseError = true;
             cmd.Args = $"-c mergetool.sourcegit.cmd=\"\\\"{mergeExe}\\\" {merger.Cmd}\" ";
             cmd.Args += "-c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true ";
             cmd.Args += $"mergetool --tool=sourcegit {change.Path}";

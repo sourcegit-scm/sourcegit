@@ -22,6 +22,7 @@ namespace SourceGit.Models {
             new MergeTool(3, "Tortoise Merge", "TortoiseMerge.exe", "-base:\"$BASE\" -theirs:\"$REMOTE\" -mine:\"$LOCAL\" -merged:\"$MERGED\"", FindTortoiseMerge),
             new MergeTool(4, "KDiff3", "kdiff3.exe", "\"$REMOTE\" -b \"$BASE\" \"$LOCAL\" -o \"$MERGED\"", FindKDiff3),
             new MergeTool(5, "Beyond Compare 4", "BComp.exe", "\"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"", FindBCompare),
+            new MergeTool(6, "WinMerge", "WinMergeU.exe", "-u -e \"$REMOTE\" \"$LOCAL\" \"$MERGED\"", FindWinMerge),
         };
         
         public MergeTool(int type, string name, string exec, string cmd, Func<string> finder) {
@@ -114,6 +115,18 @@ namespace SourceGit.Models {
             var exec = bc.GetValue("ExePath") as string;
             var dir = Path.GetDirectoryName(exec);
             return $"{dir}\\BComp.exe";
+        }
+
+        private static string FindWinMerge() {
+            var root = RegistryKey.OpenBaseKey(
+                    RegistryHive.CurrentUser,
+                    Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
+
+            var merge = root.OpenSubKey(@"SOFTWARE\Thingamahoochie\WinMerge");
+            if (merge == null) return "";
+
+            var exec = merge.GetValue("Executable") as string;
+            return exec;
         }
     }
 }
