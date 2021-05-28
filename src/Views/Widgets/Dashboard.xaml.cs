@@ -817,9 +817,9 @@ namespace SourceGit.Views.Widgets {
 
             var archive = new MenuItem();
             archive.Header = App.Text("Archive");
-            archive.Click += (o, e) => {
+            archive.Click += (o, ev) => {
                 new Popups.Archive(repo.Path, tag).Show();
-                e.Handled = true;
+                ev.Handled = true;
             };
 
             var copy = new MenuItem();
