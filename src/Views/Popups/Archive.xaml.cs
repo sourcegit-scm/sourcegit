@@ -1,7 +1,9 @@
 using Microsoft.Win32;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace SourceGit.Views.Popups {
 
@@ -12,19 +14,43 @@ namespace SourceGit.Views.Popups {
         private string repo;
         private string revision;
 
-        public string SaveTo { get; set; } = "archive.zip";
+        public string SaveTo { get; set; }
+
+        public Archive(string repo, Models.Branch branch) {
+            this.repo = repo;
+            this.revision = branch.Head;
+            this.SaveTo = $"archive-{Path.GetFileNameWithoutExtension(branch.Name)}.zip";
+
+            InitializeComponent();
+
+            iconBased.Data = FindResource("Icon.Branch") as Geometry;
+            txtBased.Text = branch.IsLocal ? branch.Name : $"{branch.Remote}/{branch.Name}";
+        }
 
         public Archive(string repo, Models.Commit revision) {
             this.repo = repo;
             this.revision = revision.SHA;
+            this.SaveTo = $"archive-{revision.ShortSHA}.zip";
 
             InitializeComponent();
 
+            iconBased.Data = FindResource("Icon.Commit") as Geometry;
             txtBased.Text = $"{revision.ShortSHA}  {revision.Subject}";
         }
 
+        public Archive(string repo, Models.Tag tag) {
+            this.repo = repo;
+            this.revision = tag.SHA;
+            this.SaveTo = $"archive-{tag.Name}.zip";
+
+            InitializeComponent();
+
+            iconBased.Data = FindResource("Icon.Tag") as Geometry;
+            txtBased.Text = tag.Name;
+        }
+
         public override string GetTitle() {
-            return App.Text("Archive");
+            return App.Text("Archive.Title");
         }
 
         public override Task<bool> Start() {

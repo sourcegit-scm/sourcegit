@@ -29,7 +29,7 @@
             Grid.Row="0" Grid.Column="1"
             Orientation="Horizontal"
             VerticalAlignment="Center">
-            <Path Width="14" Height="14" Data="{StaticResource Icon.Commit}"/>
+            <Path x:Name="iconBased" Width="14" Height="14" Data="{StaticResource Icon.Commit}"/>
             <TextBlock x:Name="txtBased" Margin="8,0,0,0"/>
         </StackPanel>
 

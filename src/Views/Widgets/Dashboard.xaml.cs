@@ -623,8 +623,16 @@ namespace SourceGit.Views.Widgets {
                 }
 
                 menu.Items.Add(tracking);
-                menu.Items.Add(new Separator());
             }
+
+            var archive = new MenuItem();
+            archive.Header = App.Text("Archive");
+            archive.Click += (o, e) => {
+                new Popups.Archive(repo.Path, branch).Show();
+                e.Handled = true;
+            };
+            menu.Items.Add(archive);
+            menu.Items.Add(new Separator());
 
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
@@ -741,6 +749,13 @@ namespace SourceGit.Views.Widgets {
                 e.Handled = true;
             };
 
+            var archive = new MenuItem();
+            archive.Header = App.Text("Archive");
+            archive.Click += (o, e) => {
+                new Popups.Archive(repo.Path, branch).Show();
+                e.Handled = true;
+            };
+
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
             copy.Click += (o, e) => {
@@ -752,6 +767,8 @@ namespace SourceGit.Views.Widgets {
             menu.Items.Add(new Separator());
             menu.Items.Add(createBranch);
             menu.Items.Add(createTag);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(archive);
             menu.Items.Add(new Separator());
             menu.Items.Add(copy);
         }
@@ -798,6 +815,13 @@ namespace SourceGit.Views.Widgets {
                 ev.Handled = true;
             };
 
+            var archive = new MenuItem();
+            archive.Header = App.Text("Archive");
+            archive.Click += (o, e) => {
+                new Popups.Archive(repo.Path, tag).Show();
+                e.Handled = true;
+            };
+
             var copy = new MenuItem();
             copy.Header = App.Text("TagCM.Copy");
             copy.Click += (o, ev) => {
@@ -810,6 +834,8 @@ namespace SourceGit.Views.Widgets {
             menu.Items.Add(new Separator());
             menu.Items.Add(pushTag);
             menu.Items.Add(deleteTag);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(archive);
             menu.Items.Add(new Separator());
             menu.Items.Add(copy);
             menu.IsOpen = true;

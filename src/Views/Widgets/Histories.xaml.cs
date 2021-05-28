@@ -350,7 +350,7 @@ namespace SourceGit.Views.Widgets {
             menu.Items.Add(saveToPatch);
 
             var archive = new MenuItem();
-            archive.Header = App.Text("CommitCM.Archive");
+            archive.Header = App.Text("Archive");
             archive.Click += (o, e) => {
                 new Popups.Archive(repo.Path, commit).Show();
                 e.Handled = true;

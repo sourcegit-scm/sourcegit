@@ -39,7 +39,8 @@
     <sys:String x:Key="Text.Apply.ErrorAll">更多错误</sys:String>
     <sys:String x:Key="Text.Apply.ErrorAll.Desc">与【错误】级别相似，但输出内容更多</sys:String>
 
-    <sys:String x:Key="Text.Archive">存档</sys:String>
+    <sys:String x:Key="Text.Archive">存档 ...</sys:String>
+    <sys:String x:Key="Text.Archive.Title">存档</sys:String>
     <sys:String x:Key="Text.Archive.Revision">指定的提交：</sys:String>
     <sys:String x:Key="Text.Archive.File">存档文件路径：</sys:String>
     <sys:String x:Key="Text.Archive.File.Placeholder">选择存档文件的存放路径</sys:String>
@@ -190,7 +191,6 @@
     <sys:String x:Key="Text.CommitCM.CherryPick">挑选此提交</sys:String>
     <sys:String x:Key="Text.CommitCM.Revert">回滚此提交</sys:String>
     <sys:String x:Key="Text.CommitCM.SaveAsPatch">另存为补丁 ...</sys:String>
-    <sys:String x:Key="Text.CommitCM.Archive">存档 ...</sys:String>
     <sys:String x:Key="Text.CommitCM.CopySHA">复制提交指纹</sys:String>
     <sys:String x:Key="Text.CommitCM.CopyInfo">复制提交信息</sys:String>
 
