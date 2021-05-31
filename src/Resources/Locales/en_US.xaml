@@ -228,6 +228,7 @@
     <sys:String x:Key="Text.Diff.Next">Next Difference</sys:String>
     <sys:String x:Key="Text.Diff.Prev">Previous Difference</sys:String>
     <sys:String x:Key="Text.Diff.Mode">Toggle One-Side/Two-Sides</sys:String>
+    <sys:String x:Key="Text.Diff.UseMerger">Open With Merge Tool</sys:String>
     <sys:String x:Key="Text.Diff.Welcome">SELECT FILE TO VIEW CHANGES</sys:String>
     <sys:String x:Key="Text.Diff.NoChange">NO CHANGES OR ONLY EOL CHANGES</sys:String>
     <sys:String x:Key="Text.Diff.Binary">BINARY DIFF</sys:String>

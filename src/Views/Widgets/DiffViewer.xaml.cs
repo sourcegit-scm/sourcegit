@@ -668,6 +668,35 @@ namespace SourceGit.Views.Widgets {
                 }
             }
         }
+
+        private async void OpenWithMerger(object sender, RoutedEventArgs e) {
+            var mergeType = Models.Preference.Instance.MergeTool.Type;
+            var mergeExe = Models.Preference.Instance.MergeTool.Path;
+
+            var merger = Models.MergeTool.Supported.Find(x => x.Type == mergeType);
+            if (merger == null || merger.Type == 0 || !System.IO.File.Exists(mergeExe)) {
+                Models.Exception.Raise("Invalid merge tool in preference setting!");
+                return;
+            }
+
+            var args = $"{opt.ExtraArgs} ";
+            if (opt.RevisionRange.Length > 0) args += $"{opt.RevisionRange[0]} ";
+            if (opt.RevisionRange.Length > 1) args += $"{opt.RevisionRange[1]} ";
+
+            args += "-- ";
+
+            if (!string.IsNullOrEmpty(opt.OrgPath)) args += $"\"{opt.OrgPath}\" ";
+            args += $"\"{opt.Path}\"";
+
+            var cmd = new Commands.Command();
+            cmd.Cwd = repo;
+            cmd.DontRaiseError = true;
+            cmd.Args = $"-c difftool.sourcegit.cmd=\"\\\"{mergeExe}\\\" {merger.DiffCmd}\" ";
+            cmd.Args += $"difftool --tool=sourcegit --no-prompt {args}";
+
+            await Task.Run(() => cmd.Exec());
+            e.Handled = true;
+        }
         #endregion
     }
 }

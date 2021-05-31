@@ -58,12 +58,19 @@
 
                         <ToggleButton
                             Width="14" Height="14"
-                            Margin="4,0,0,0"
+                            Margin="4,0"
                             Style="{StaticResource Style.ToggleButton.SplitDirection}"
                             Foreground="{StaticResource Brush.FG1}"
                             ToolTip="{StaticResource Text.Diff.Mode}"
                             IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.UseCombinedDiff, Mode=TwoWay}"
                             Checked="OnDiffViewModeChanged" Unchecked="OnDiffViewModeChanged"/>
+
+                        <controls:IconButton
+                            Width="14" Height="14"
+                            Margin="4,0,0,0"
+                            Icon="{StaticResource Icon.DiffWith}"
+                            ToolTip="{StaticResource Text.Diff.UseMerger}"
+                            Click="OpenWithMerger"/>
                     </StackPanel>
                 </Grid>
             </Border>

@@ -228,6 +228,7 @@
     <sys:String x:Key="Text.Diff.Next">下一个差异</sys:String>
     <sys:String x:Key="Text.Diff.Prev">上一个差异</sys:String>
     <sys:String x:Key="Text.Diff.Mode">切换显示模式</sys:String>
+    <sys:String x:Key="Text.Diff.UseMerger">使用外部合并工具查看</sys:String>
     <sys:String x:Key="Text.Diff.Welcome">请选择需要对比的文件</sys:String>
     <sys:String x:Key="Text.Diff.NoChange">没有变更或仅有换行符差异</sys:String>
     <sys:String x:Key="Text.Diff.Binary">二进制文件</sys:String>

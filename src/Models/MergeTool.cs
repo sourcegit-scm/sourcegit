@@ -13,23 +13,25 @@ namespace SourceGit.Models {
         public string Name { get; set; }
         public string Exec { get; set; }
         public string Cmd { get; set; }
+        public string DiffCmd { get; set; }
         public Func<string> Finder { get; set; }
 
         public static List<MergeTool> Supported = new List<MergeTool>() {
-            new MergeTool(0, "--", "", "", () => ""),
-            new MergeTool(1, "Visual Studio Code", "Code.exe", "-n --wait \"$MERGED\"", FindVSCode),
-            new MergeTool(2, "Visual Studio 2017/2019", "vsDiffMerge.exe", "\"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\" //m", FindVSMerge),
-            new MergeTool(3, "Tortoise Merge", "TortoiseMerge.exe", "-base:\"$BASE\" -theirs:\"$REMOTE\" -mine:\"$LOCAL\" -merged:\"$MERGED\"", FindTortoiseMerge),
-            new MergeTool(4, "KDiff3", "kdiff3.exe", "\"$REMOTE\" -b \"$BASE\" \"$LOCAL\" -o \"$MERGED\"", FindKDiff3),
-            new MergeTool(5, "Beyond Compare 4", "BComp.exe", "\"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"", FindBCompare),
-            new MergeTool(6, "WinMerge", "WinMergeU.exe", "-u -e \"$REMOTE\" \"$LOCAL\" \"$MERGED\"", FindWinMerge),
+            new MergeTool(0, "--", "", "", "", () => ""),
+            new MergeTool(1, "Visual Studio Code", "Code.exe", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\"", FindVSCode),
+            new MergeTool(2, "Visual Studio 2017/2019", "vsDiffMerge.exe", "\"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\" /m", "\"$LOCAL\" \"$REMOTE\"", FindVSMerge),
+            new MergeTool(3, "Tortoise Merge", "TortoiseMerge.exe", "-base:\"$BASE\" -theirs:\"$REMOTE\" -mine:\"$LOCAL\" -merged:\"$MERGED\"", "-base:\"$LOCAL\" -theirs:\"$REMOTE\"", FindTortoiseMerge),
+            new MergeTool(4, "KDiff3", "kdiff3.exe", "\"$REMOTE\" -b \"$BASE\" \"$LOCAL\" -o \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\"", FindKDiff3),
+            new MergeTool(5, "Beyond Compare 4", "BComp.exe", "\"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\"", FindBCompare),
+            new MergeTool(6, "WinMerge", "WinMergeU.exe", "-u -e \"$REMOTE\" \"$LOCAL\" \"$MERGED\"", "-u -e \"$LOCAL\" \"$REMOTE\"", FindWinMerge),
         };
         
-        public MergeTool(int type, string name, string exec, string cmd, Func<string> finder) {
+        public MergeTool(int type, string name, string exec, string cmd, string diffCmd, Func<string> finder) {
             Type = type;
             Name = name;
             Exec = exec;
             Cmd = cmd;
+            DiffCmd = diffCmd;
             Finder = finder;
         }
 
