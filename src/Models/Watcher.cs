@@ -175,7 +175,6 @@ namespace SourceGit.Models {
             } else if (e.Name.StartsWith("refs\\stash", StringComparison.Ordinal)) {
                 updateStashes = DateTime.Now.AddSeconds(.5).ToFileTime();
             } else if (e.Name.Equals("HEAD", StringComparison.Ordinal) ||
-                e.Name.EndsWith("_HEAD", StringComparison.Ordinal) || 
                 e.Name.StartsWith("refs\\heads\\", StringComparison.Ordinal) || 
                 e.Name.StartsWith("refs\\remotes\\", StringComparison.Ordinal)) {
                 updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
