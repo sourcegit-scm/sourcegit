@@ -60,6 +60,8 @@ namespace SourceGit.Commands {
 
         public AutoFetch(string repo) {
             cmd = new Fetch(repo, "--all", true, null);
+            cmd.DontRaiseError = true;
+
             nextFetchPoint = DateTime.Now.AddMinutes(10).ToFileTime();
             timer = new Timer(OnTick, null, 60000, 10000);
         }
