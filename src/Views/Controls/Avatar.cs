@@ -80,6 +80,21 @@ namespace SourceGit.Views.Controls {
 
         public Avatar() {
             SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.HighQuality);
+            Unloaded += (o, e) => Cancel(Email);
+        }
+
+        /// <summary>
+        ///     取消一个下载任务
+        /// </summary>
+        /// <param name="email"></param>
+        private void Cancel(string email) {
+            if (!string.IsNullOrEmpty(email) && requesting.ContainsKey(email)) {
+                if (requesting[email].Count <= 1) {
+                    requesting.Remove(email);
+                } else {
+                    requesting[email].Remove(this);
+                }
+            }
         }
 
         /// <summary>
@@ -139,15 +154,7 @@ namespace SourceGit.Views.Controls {
             Avatar a = d as Avatar;
             if (a == null) return;
 
-            var oldEmail = e.OldValue as string;
-            if (!string.IsNullOrEmpty(oldEmail) && requesting.ContainsKey(oldEmail)) {
-                if (requesting[oldEmail].Count <= 1) {
-                    requesting.Remove(oldEmail);
-                } else {
-                    requesting[oldEmail].Remove(a);
-                }
-            }
-
+            a.Cancel(e.OldValue as string);
             a.Source = null;
             a.InvalidateVisual();
 
@@ -181,6 +188,8 @@ namespace SourceGit.Views.Controls {
             requesting[email].Add(a);
 
             Action job = () => {
+                if (!requesting.ContainsKey(email)) return;
+
                 try {
                     HttpWebRequest req = WebRequest.CreateHttp(Models.Preference.Instance.General.AvatarServer + md5 + "?d=404");
                     req.Timeout = 2000;

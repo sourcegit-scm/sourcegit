@@ -87,10 +87,11 @@ namespace SourceGit.Views {
         }
 
         private void OnTabClosed(object sender, Widgets.PageTabBar.TabEventArgs e) {
+            Controls.PopupWidget.UnregisterContainer(e.TabId);
             Models.Watcher.Close(e.TabId);
             Commands.AutoFetch.Stop(e.TabId);
             container.Remove(e.TabId);
-            Controls.PopupWidget.UnregisterContainer(e.TabId);
+            GC.Collect();
         }
         #endregion
     }

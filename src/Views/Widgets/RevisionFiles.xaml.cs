@@ -31,6 +31,7 @@ namespace SourceGit.Views.Widgets {
 
         public RevisionFiles() {
             InitializeComponent();
+            Unloaded += (o, e) => treeFiles.ItemsSource = new List<FileNode>();
         }
 
         public void SetData(string repo, string sha, Commands.Context cancelToken) {

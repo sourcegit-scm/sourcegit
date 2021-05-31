@@ -68,6 +68,15 @@ namespace SourceGit.Views.Widgets {
             watcher.StashChanged += UpdateStashes;
             watcher.TagChanged += UpdateTags;
             watcher.SubmoduleChanged += UpdateSubmodules;
+
+            Unloaded += (o, e) => {
+                localBranches.Clear();
+                remoteBranches.Clear();
+                localBranchTree.ItemsSource = localBranches;
+                remoteBranchTree.ItemsSource = remoteBranches;
+                tagList.ItemsSource = new List<Models.Tag>();
+                submoduleList.ItemsSource = new List<string>();
+            };
         }
 
         #region POPUP

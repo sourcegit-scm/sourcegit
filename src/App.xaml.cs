@@ -120,6 +120,7 @@ namespace SourceGit {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAppDeactivated(object sender, EventArgs e) {
+            GC.Collect();
             if (!restart) Models.Preference.Save();
         }
     }

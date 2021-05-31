@@ -27,6 +27,12 @@ namespace SourceGit.Views.Widgets {
             var watcher = Models.Watcher.Get(repo.Path);
             watcher.BranchChanged += UpdateCommits;
             watcher.TagChanged += UpdateCommits;
+
+            Unloaded += (o, e) => {
+                cachedCommits.Clear();
+                commitList.ItemsSource = cachedCommits;
+                graph.SetData(cachedCommits, false);
+            };
         }
 
         #region DATA
