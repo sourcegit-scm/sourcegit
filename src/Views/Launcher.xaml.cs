@@ -126,8 +126,8 @@ namespace SourceGit.Views {
                     }
                 }
 
-                for (int i = 0; i < 10; i++) {
-                    if (Keyboard.IsKeyDown(Key.D1 + i)) {
+                for (int i = 0; i < 9; i++) {
+                    if (Keyboard.IsKeyDown(Key.D1 + i) || Keyboard.IsKeyDown(Key.NumPad1 + i)) {
                         if (tabs.Tabs.Count > i) {
                             tabs.Goto(tabs.Tabs[i].Id);
                             e.Handled = true;
