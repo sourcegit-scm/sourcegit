@@ -319,7 +319,7 @@ namespace SourceGit.Views.Widgets {
             e.Handled = true;
         }
 
-        private void OpenSearch(object sender, RoutedEventArgs e) {
+        public void OpenSearch(object sender, RoutedEventArgs e) {
             if (popup.IsLocked) return;
             popup.Close();
 

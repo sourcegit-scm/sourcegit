@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace SourceGit.Views {
 
@@ -92,6 +93,55 @@ namespace SourceGit.Views {
             Commands.AutoFetch.Stop(e.TabId);
             container.Remove(e.TabId);
             GC.Collect();
+        }
+        #endregion
+
+        #region HOTKEYS
+        protected override void OnPreviewKeyDown(KeyEventArgs e) {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) {
+                if (Keyboard.IsKeyDown(Key.Tab)) {
+                    tabs.Next();
+                    e.Handled = true;
+                    return;
+                }
+
+                if (Keyboard.IsKeyDown(Key.W)) {
+                    tabs.CloseCurrent();
+                    e.Handled = true;
+                    return;
+                }
+
+                if (Keyboard.IsKeyDown(Key.T)) {
+                    OnTabAdding(null, null);
+                    e.Handled = true;
+                    return;
+                }
+
+                if (Keyboard.IsKeyDown(Key.F)) {
+                    var dashboard = container.Get(tabs.Current) as Widgets.Dashboard;
+                    if (dashboard != null) {
+                        dashboard.OpenSearch(null, null);
+                        e.Handled = true;
+                        return;
+                    }
+                }
+
+                for (int i = 0; i < 10; i++) {
+                    if (Keyboard.IsKeyDown(Key.D1 + i)) {
+                        if (tabs.Tabs.Count > i) {
+                            tabs.Goto(tabs.Tabs[i].Id);
+                            e.Handled = true;
+                            return;
+                        }
+                    }
+                }
+            }
+
+            if (Keyboard.IsKeyDown(Key.F5)) {
+                Models.Watcher.Get(tabs.Current)?.Refresh();
+                e.Handled = true;
+                return;
+            }
         }
         #endregion
     }

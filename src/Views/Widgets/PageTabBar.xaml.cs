@@ -114,6 +114,25 @@ namespace SourceGit.Views.Widgets {
             return false;
         }
 
+        public void Next() {
+            container.SelectedIndex = (container.SelectedIndex + 1) % Tabs.Count;
+        }
+
+        public void CloseCurrent() {
+            var curTab = container.SelectedItem as Tab;
+            if (Tabs.Count == 1) {
+                Application.Current.Shutdown();
+            } else {
+                var idx = container.SelectedIndex;
+                Tabs.Remove(curTab);
+                RaiseEvent(new TabEventArgs(TabClosedEvent, this, curTab.Id));
+
+                var next = Tabs[idx % Tabs.Count];
+                container.SelectedItem = next;
+                RaiseEvent(new TabEventArgs(TabSelectedEvent, this, next.Id));
+            }
+        }
+
         private void CalcScrollerVisibilty(object sender, SizeChangedEventArgs e) {
             if ((sender as StackPanel).ActualWidth > scroller.ActualWidth) {
                 leftScroller.Visibility = Visibility.Visible;
@@ -143,8 +162,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void CloseTab(object sender, RoutedEventArgs e) {
-            var btn = (sender as Button);
-            var tab = btn.DataContext as Tab;
+            var tab = (sender as Button).DataContext as Tab;
             if (tab == null) return;
 
             var curTab = container.SelectedItem as Tab;
