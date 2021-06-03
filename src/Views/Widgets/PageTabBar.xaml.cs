@@ -127,7 +127,8 @@ namespace SourceGit.Views.Widgets {
                 Tabs.Remove(curTab);
                 RaiseEvent(new TabEventArgs(TabClosedEvent, this, curTab.Id));
 
-                var next = Tabs[idx % Tabs.Count];
+                var last = Tabs.Count - 1;
+                var next = idx > last ? Tabs[last] : Tabs[idx];
                 container.SelectedItem = next;
                 RaiseEvent(new TabEventArgs(TabSelectedEvent, this, next.Id));
             }
@@ -171,7 +172,8 @@ namespace SourceGit.Views.Widgets {
                     var idx = Tabs.IndexOf(tab);
                     Tabs.Remove(tab);
 
-                    var next = Tabs[idx % Tabs.Count];
+                    var last = Tabs.Count - 1;
+                    var next = idx > last ? Tabs[last] : Tabs[idx];
                     container.SelectedItem = next;
                     RaiseEvent(new TabEventArgs(TabSelectedEvent, this, next.Id));
                 } else {
