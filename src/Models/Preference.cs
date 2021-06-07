@@ -78,7 +78,6 @@ namespace SourceGit.Models {
         ///     外部合并工具配置
         /// </summary>
         public class MergeToolInfo {
-
             /// <summary>
             ///     合并工具类型
             /// </summary>
@@ -87,7 +86,7 @@ namespace SourceGit.Models {
             /// <summary>
             ///     合并工具可执行文件路径
             /// </summary>
-            public string Path { get; set; }
+            public string Path { get; set; } = "";
         }
 
         /// <summary>

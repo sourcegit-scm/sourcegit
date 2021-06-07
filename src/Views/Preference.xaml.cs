@@ -87,16 +87,17 @@ namespace SourceGit.Views {
         }
 
         private void MergeToolChanged(object sender, SelectionChangedEventArgs e) {
-            var selector = sender as ComboBox;
-            var type = (int)selector.SelectedValue;
+            var type = (int)(sender as ComboBox).SelectedValue;
             var tool = Models.MergeTool.Supported.Find(x => x.Type == type);
             if (tool == null) return;
 
-            Models.Preference.Instance.MergeTool.Path = tool.Finder();
             MergeCmd = tool.Cmd;
-
-            txtMergeExec?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             txtMergeCmd?.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+
+            if (IsLoaded) {
+                Models.Preference.Instance.MergeTool.Path = tool.Finder();
+                txtMergeExec?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            }
 
             e.Handled = true;
         }
