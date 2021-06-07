@@ -32,7 +32,6 @@ namespace SourceGit.Views.Widgets {
 
         public RevisionFiles() {
             InitializeComponent();
-            Unloaded += (o, e) => treeFiles.ItemsSource = new List<FileNode>();
         }
 
         public void SetData(string repo, string sha, Commands.Context cancelToken) {
@@ -107,6 +106,10 @@ namespace SourceGit.Views.Widgets {
                     GC.Collect();
                 });
             });
+        }
+
+        public void Cleanup() {
+            treeFiles.ItemsSource = new List<FileNode>();
         }
 
         private void SortFileNodes(List<FileNode> nodes) {

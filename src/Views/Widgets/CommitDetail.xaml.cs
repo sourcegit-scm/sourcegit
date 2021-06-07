@@ -19,6 +19,12 @@ namespace SourceGit.Views.Widgets {
 
         public CommitDetail() {
             InitializeComponent();
+
+            Unloaded += (o, e) => {
+                changeList.ItemsSource = new List<Models.Change>();
+                changeContainer.CleanUp();
+                revisionFiles.Cleanup();
+            };
         }
 
         public void SetData(string repo, Models.Commit commit) {

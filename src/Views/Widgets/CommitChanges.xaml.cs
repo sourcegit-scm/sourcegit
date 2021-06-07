@@ -13,7 +13,7 @@ namespace SourceGit.Views.Widgets {
     /// </summary>
     public partial class CommitChanges : UserControl {
         private string repo = null;
-        private List<Models.Commit> range = null;
+        private List<Models.Commit> range = new List<Models.Commit>();
         private List<Models.Change> cachedChanges = new List<Models.Change>();
         private string filter = null;
         private bool isSelecting = false;
@@ -29,6 +29,14 @@ namespace SourceGit.Views.Widgets {
 
         public CommitChanges() {
             InitializeComponent();
+        }
+
+        public void CleanUp() {
+            range.Clear();
+            cachedChanges.Clear();
+            modeTree.ItemsSource = new List<ChangeNode>();
+            modeGrid.ItemsSource = new List<Models.Change>();
+            modeList.ItemsSource = new List<Models.Change>();
         }
 
         public void SetData(string repo, List<Models.Commit> range, List<Models.Change> changes) {
