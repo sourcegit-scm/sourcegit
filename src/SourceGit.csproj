@@ -8,7 +8,7 @@
         <Description>OpenSource GIT client for Windows</Description>
         <Copyright>Copyright © sourcegit 2020. All rights reserved.</Copyright>
         <ApplicationManifest>App.manifest</ApplicationManifest>
-        <Version>3.8</Version>
+        <Version>3.9</Version>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <StartupObject>SourceGit.App</StartupObject>
         <PackageProjectUrl>https://gitee.com/sourcegit/SourceGit.git</PackageProjectUrl>
