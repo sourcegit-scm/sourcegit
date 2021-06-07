@@ -13,7 +13,7 @@ namespace SourceGit.Commands {
             var tmp = Path.GetTempFileName();
             var cmd = $"\"{Models.Preference.Instance.Git.Path}\" --no-pager ";
 
-            var isLFS = new IsLFSFiltered(repo, path).Result();
+            var isLFS = new LFS(repo).IsFiltered(path);
             if (isLFS) {
                 cmd += $"show {sha}:\"{path}\" > {tmp}.lfs\n";
                 cmd += $"\"{Models.Preference.Instance.Git.Path}\" --no-pager lfs smudge < {tmp}.lfs > \"{saveTo}\"\n";

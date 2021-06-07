@@ -12,9 +12,11 @@ namespace SourceGit.Views.Widgets {
     public partial class Stashes : UserControl {
         private string repo = null;
         private string selected = null;
+        private bool isLFSEnabled = false;
 
         public Stashes(string repo) {
             this.repo = repo;
+            this.isLFSEnabled = new Commands.LFS(repo).IsEnabled();
             InitializeComponent();
         }
 
@@ -44,7 +46,8 @@ namespace SourceGit.Views.Widgets {
             diffViewer.Diff(repo, new DiffViewer.Option() {
                 RevisionRange = new string[] { selected + "^", selected },
                 Path = change.Path,
-                OrgPath = change.OriginalPath
+                OrgPath = change.OriginalPath,
+                UseLFS = isLFSEnabled,
             });
         }
 

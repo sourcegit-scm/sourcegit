@@ -17,6 +17,7 @@ namespace SourceGit.Views.Widgets {
     public partial class RevisionFiles : UserControl {
         private string repo = null;
         private string sha = null;
+        private bool isLFSEnabled = false;
 
         /// <summary>
         ///     文件列表树节点
@@ -37,6 +38,7 @@ namespace SourceGit.Views.Widgets {
         public void SetData(string repo, string sha, Commands.Context cancelToken) {
             this.repo = repo;
             this.sha = sha;
+            this.isLFSEnabled = new Commands.LFS(repo).IsEnabled();
 
             var cmd = new Commands.RevisionObjects(repo, sha) { Ctx = cancelToken };
             Task.Run(() => {
@@ -220,7 +222,7 @@ namespace SourceGit.Views.Widgets {
 
                     layerImagePreview.Visibility = Visibility.Visible;
                     imgPreviewData.Source = new BitmapImage(new Uri(tmp, UriKind.Absolute));
-                } else if (new Commands.IsLFSFiltered(repo, node.Path).Result()) {
+                } else if (isLFSEnabled && new Commands.LFS(repo).IsFiltered(node.Path)) {
                     var lfs = new Commands.QueryLFSObject(repo, sha, node.Path).Result();
                     layerRevisionPreview.Visibility = Visibility.Visible;
                     iconRevisionPreview.Data = FindResource("Icon.LFS") as Geometry;

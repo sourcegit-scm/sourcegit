@@ -25,6 +25,7 @@ namespace SourceGit.Views.Widgets {
             public string Path = "";
             public string OrgPath = null;
             public string ExtraArgs = "";
+            public bool UseLFS = false;
         }
 
         public class Block {
@@ -112,15 +113,17 @@ namespace SourceGit.Views.Widgets {
                 if (!string.IsNullOrEmpty(opt.OrgPath)) args += $"\"{opt.OrgPath}\" ";
                 args += $"\"{opt.Path}\"";
 
-                var isLFSObject = new Commands.IsLFSFiltered(repo, opt.Path).Result();
-                if (isLFSObject) {
-                    var lc = new Commands.QueryLFSObjectChange(repo, args).Result();
-                    if (lc.IsValid) {
-                        SetLFSChange(lc, dummy);
-                    } else {
-                        SetSame(dummy);
+                if (opt.UseLFS) {
+                    var isLFSObject = new Commands.LFS(repo).IsFiltered(opt.Path);
+                    if (isLFSObject) {
+                        var lc = new Commands.QueryLFSObjectChange(repo, args).Result();
+                        if (lc.IsValid) {
+                            SetLFSChange(lc, dummy);
+                        } else {
+                            SetSame(dummy);
+                        }
+                        return;
                     }
-                    return;
                 }
 
                 var rs = new Commands.Diff(repo, args).Result();

@@ -11,11 +11,13 @@ namespace SourceGit.Views.Widgets {
     /// </summary>
     public partial class WorkingCopy : UserControl {
         private Models.Repository repo = null;
+        private bool isLFSEnabled = false;
 
         public string CommitMessage { get; set; }
 
         public WorkingCopy(Models.Repository repo) {
             this.repo = repo;
+            this.isLFSEnabled = new Commands.LFS(repo.Path).IsEnabled();
 
             InitializeComponent();
 
@@ -136,13 +138,15 @@ namespace SourceGit.Views.Widgets {
                     diffViewer.Diff(repo.Path, new DiffViewer.Option() {
                         ExtraArgs = "--no-index",
                         Path = change.Path,
-                        OrgPath = "/dev/null"
+                        OrgPath = "/dev/null",
+                        UseLFS = isLFSEnabled
                     });
                     break;
                 default:
                     diffViewer.Diff(repo.Path, new DiffViewer.Option() {
                         Path = change.Path,
-                        OrgPath = change.OriginalPath
+                        OrgPath = change.OriginalPath,
+                        UseLFS = isLFSEnabled
                     });
                     break;
                 }
@@ -150,7 +154,8 @@ namespace SourceGit.Views.Widgets {
                 diffViewer.Diff(repo.Path, new DiffViewer.Option() {
                     ExtraArgs = "--cached",
                     Path = change.Path,
-                    OrgPath = change.OriginalPath
+                    OrgPath = change.OriginalPath,
+                    UseLFS = isLFSEnabled
                 });
             }
         }

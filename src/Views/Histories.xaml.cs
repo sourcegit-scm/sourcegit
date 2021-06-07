@@ -11,10 +11,12 @@ namespace SourceGit.Views {
     public partial class Histories : Window {
         private string repo = null;
         private string file = null;
+        private bool isLFSEnabled = false;
 
         public Histories(string repo, string file) {
             this.repo = repo;
             this.file = file;
+            this.isLFSEnabled = new Commands.LFS(repo).IsEnabled();
 
             InitializeComponent();
 
@@ -57,7 +59,8 @@ namespace SourceGit.Views {
 
             diffViewer.Diff(repo, new Widgets.DiffViewer.Option() {
                 RevisionRange = new string[] { start, commit.SHA },
-                Path = file
+                Path = file,
+                UseLFS = isLFSEnabled,
             });
         }
 

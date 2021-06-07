@@ -49,7 +49,7 @@ namespace SourceGit.Views {
             txtFile.Text = $"{file}@{revision.Substring(0, 8)}";
 
             Task.Run(() => {
-                var lfs = new Commands.IsLFSFiltered(repo, file).Result();
+                var lfs = new Commands.LFS(repo).IsFiltered(file);
                 if (lfs) {
                     Dispatcher.Invoke(() => {
                         loading.IsAnimating = false;

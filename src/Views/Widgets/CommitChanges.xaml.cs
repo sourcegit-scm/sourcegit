@@ -17,6 +17,7 @@ namespace SourceGit.Views.Widgets {
         private List<Models.Change> cachedChanges = new List<Models.Change>();
         private string filter = null;
         private bool isSelecting = false;
+        private bool isLFSEnabled = false;
 
         public class ChangeNode {
             public string Path { get; set; } = "";
@@ -34,6 +35,7 @@ namespace SourceGit.Views.Widgets {
             this.repo = repo;
             this.range = range;
             this.cachedChanges = changes;
+            this.isLFSEnabled = new Commands.LFS(repo).IsEnabled();
 
             UpdateVisible();
         }
@@ -214,7 +216,8 @@ namespace SourceGit.Views.Widgets {
             diffViewer.Diff(repo, new DiffViewer.Option() {
                 RevisionRange = revisions,
                 Path = change.Path,
-                OrgPath = change.OriginalPath
+                OrgPath = change.OriginalPath,
+                UseLFS = isLFSEnabled,
             });
         }
 
