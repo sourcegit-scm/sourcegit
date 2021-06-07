@@ -38,6 +38,10 @@ namespace SourceGit.Models {
         ///     子模块变更
         /// </summary>
         public event Action SubmoduleChanged;
+        /// <summary>
+        ///     树更新
+        /// </summary>
+        public event Action SubTreeChanged;
 
         /// <summary>
         ///     打开仓库事件
@@ -119,6 +123,13 @@ namespace SourceGit.Models {
             WorkingCopyChanged?.Invoke();
         }
 
+        /// <summary>
+        ///     通知更新子树列表
+        /// </summary>
+        public void RefreshSubTrees() {
+            SubTreeChanged?.Invoke();
+        }
+
         private void Start(string repo, string gitDir) {
             wcWatcher = new FileSystemWatcher();
             wcWatcher.Path = repo;
@@ -163,6 +174,7 @@ namespace SourceGit.Models {
             TagChanged = null;
             StashChanged = null;
             SubmoduleChanged = null;
+            SubTreeChanged = null;
         }
 
         private void OnRepositoryChanged(object o, FileSystemEventArgs e) {

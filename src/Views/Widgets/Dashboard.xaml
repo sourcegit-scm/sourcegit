@@ -110,6 +110,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid.Resources>
@@ -326,7 +328,7 @@
                     Grid.Row="7"
                     x:Name="tagList"
                     RowHeight="24"
-                    Height="200"
+                    MaxHeight="200"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     Visibility="{Binding ElementName=tglTags, Path=IsChecked, Converter={StaticResource BoolToCollapsed}}"
@@ -386,7 +388,7 @@
                     Grid.Row="9"
                     x:Name="submoduleList"
                     RowHeight="24"
-                    Height="100"
+                    MaxHeight="100"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     Visibility="{Binding ElementName=tglSubmodules, Path=IsChecked, Converter={StaticResource BoolToCollapsed}}"
@@ -405,6 +407,52 @@
                                         </Grid.ColumnDefinitions>
                                         <Path Grid.Column="0" Width="10" Height="10" Margin="16,0,8,0" Data="{StaticResource Icon.Submodule}"/>
                                         <TextBlock Grid.Column="1" Text="{Binding}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- SUBTREES -->
+                <ToggleButton
+                    Grid.Row="10"
+                    x:Name="tglSubTrees"
+                    Style="{StaticResource Style.ToggleButton.Expender}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.SubTrees}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
+                        <TextBlock Grid.Column="1" x:Name="txtSubTreeCount" FontWeight="DemiBold" Margin="4,0,0,0" Foreground="{StaticResource Brush.FG2}"/>
+                        <controls:IconButton Grid.Column="2" Click="OpenAddSubTree" Width="14" Height="14" Margin="0,0,4,0" Icon="{StaticResource Icon.TreeAddNode}" ToolTip="{StaticResource Text.Dashboard.SubTrees.Add}"/>
+                    </Grid>
+                </ToggleButton>
+                <DataGrid
+                    Grid.Row="11"
+                    x:Name="subTreeList"
+                    RowHeight="24"
+                    MaxHeight="100"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding ElementName=tglSubTrees, Path=IsChecked, Converter={StaticResource BoolToCollapsed}}"
+                    SelectionMode="Single"
+                    SelectionUnit="FullRow"
+                    ContextMenuOpening="OnSubTreeContextMenuOpening">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Path Grid.Column="0" Width="10" Height="10" Margin="16,0,8,0" Data="{StaticResource Icon.SubTree}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Prefix}"/>
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

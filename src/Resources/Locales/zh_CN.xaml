@@ -128,6 +128,8 @@
     <sys:String x:Key="Text.Dashboard.Submodules">子模块列表</sys:String>
     <sys:String x:Key="Text.Dashboard.Submodules.Add">添加子模块</sys:String>
     <sys:String x:Key="Text.Dashboard.Submodules.Update">更新子模块</sys:String>
+    <sys:String x:Key="Text.Dashboard.SubTrees">子树列表</sys:String>
+    <sys:String x:Key="Text.Dashboard.SubTrees.Add">添加子树</sys:String>
     <sys:String x:Key="Text.Dashboard.Resolve">解决冲突</sys:String>
     <sys:String x:Key="Text.Dashboard.Continue">下一步</sys:String>
     <sys:String x:Key="Text.Dashboard.Abort">终止冲突解决</sys:String>
@@ -426,6 +428,32 @@
     <sys:String x:Key="Text.Restart.Title">系统提示</sys:String>
     <sys:String x:Key="Text.Restart.Content">本次配置变更需要在重启后生效，是否立即重启？</sys:String>
 
+    <sys:String x:Key="Text.AddSubTree">添加子树</sys:String>
+    <sys:String x:Key="Text.AddSubTree.Source">远程地址：</sys:String>
+    <sys:String x:Key="Text.AddSubTree.Branch">分支或提交ID：</sys:String>
+    <sys:String x:Key="Text.AddSubTree.Prefix">本地相对路径：</sys:String>
+    <sys:String x:Key="Text.AddSubTree.Squash">合并提交为单一提交</sys:String>
+
+    <sys:String x:Key="Text.EditSubTree">编辑子树信息</sys:String>
+    <sys:String x:Key="Text.EditSubTree.Source">远程地址：</sys:String>
+    <sys:String x:Key="Text.EditSubTree.Prefix">本地相对路径：</sys:String>
+
+    <sys:String x:Key="Text.UnlinkSubTree">删除子树</sys:String>
+    <sys:String x:Key="Text.UnlinkSubTree.Prefix">本地相对路径：</sys:String>
+    <sys:String x:Key="Text.UnlinkSubTree.Tips">本操作仅将子树信息删除，相关文件及提交不会更改</sys:String>
+
+    <sys:String x:Key="Text.SubTreePullOrPush.Pull">拉取子树更新</sys:String>
+    <sys:String x:Key="Text.SubTreePullOrPush.Push">推送子树更新到远程</sys:String>
+    <sys:String x:Key="Text.SubTreePullOrPush.Prefix">本地相对路径：</sys:String>
+    <sys:String x:Key="Text.SubTreePullOrPush.Source">远程地址：</sys:String>
+    <sys:String x:Key="Text.SubTreePullOrPush.Branch">远程分支：</sys:String>
+    <sys:String x:Key="Text.SubTreePullOrPush.Squash">合并提交为单一提交</sys:String>
+
+    <sys:String x:Key="Text.SubTree.Edit">编辑子树 ...</sys:String>
+    <sys:String x:Key="Text.SubTree.Unlink">删除子树 ...</sys:String>
+    <sys:String x:Key="Text.SubTree.Pull">拉取子树更新</sys:String>
+    <sys:String x:Key="Text.SubTree.Push">推送子树变更</sys:String>
+
     <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
     <sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>
     <sys:String x:Key="Text.MissingBash">无法找到bash.exe，请确保其在git.exe同目录中！</sys:String>
@@ -448,6 +476,7 @@
     <sys:String x:Key="Text.DuplicatedTagName">标签名已存在!</sys:String>
     <sys:String x:Key="Text.EmptyCommitMessage">提交信息未填写!</sys:String>
     <sys:String x:Key="Text.BadPatchFile">补丁文件不存在或不可访问！</sys:String>
-    <sys:String x:Key="Text.BadSubmodulePath">非法的子模块路径！</sys:String>
+    <sys:String x:Key="Text.BadRelativePath">非法的子路径！</sys:String>
     <sys:String x:Key="Text.BadArchiveFile">非法的存档文件路径！</sys:String>
+    <sys:String x:Key="Text.Required">内容未填写！</sys:String>
 </ResourceDictionary>

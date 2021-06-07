@@ -60,6 +60,7 @@ namespace SourceGit.Views.Widgets {
             UpdateStashes();
             UpdateTags();
             UpdateSubmodules();
+            UpdateSubTrees();
 
             var watcher = Models.Watcher.Get(repo.Path);
             watcher.Navigate += NavigateTo;
@@ -68,6 +69,7 @@ namespace SourceGit.Views.Widgets {
             watcher.StashChanged += UpdateStashes;
             watcher.TagChanged += UpdateTags;
             watcher.SubmoduleChanged += UpdateSubmodules;
+            watcher.SubTreeChanged += UpdateSubTrees;
 
             Unloaded += (o, e) => {
                 localBranches.Clear();
@@ -255,6 +257,14 @@ namespace SourceGit.Views.Widgets {
                     txtSubmoduleCount.Text = $"({submodules.Count})";
                     submoduleList.ItemsSource = submodules;
                 });
+            });
+        }
+
+        private void UpdateSubTrees() {
+            Dispatcher.Invoke(() => {
+                txtSubTreeCount.Text = $"({repo.SubTrees.Count})";
+                subTreeList.ItemsSource = null;
+                subTreeList.ItemsSource = repo.SubTrees;
             });
         }
         #endregion
@@ -905,6 +915,55 @@ namespace SourceGit.Views.Widgets {
             sub.Name = repo.Name + " : " + Path.GetFileName(submodule);
 
             Models.Watcher.Open(sub);
+            e.Handled = true;
+        }
+        #endregion
+
+        #region SUBTREES
+        private void OpenAddSubTree(object sender, RoutedEventArgs e) {
+            new Popups.AddSubTree(repo).Show();
+            e.Handled = true;
+        }
+
+        private void OnSubTreeContextMenuOpening(object sender, ContextMenuEventArgs e) {
+            var subtree = subTreeList.SelectedItem as Models.SubTree;
+            if (subtree == null) return;
+
+            var edit = new MenuItem();
+            edit.Header = App.Text("SubTree.Edit");
+            edit.Click += (o, ev) => {
+                new Popups.EditSubTree(repo, subtree.Prefix).Show();
+                ev.Handled = true;
+            };
+
+            var unlink = new MenuItem();
+            unlink.Header = App.Text("SubTree.Unlink");
+            unlink.Click += (o, ev) => {
+                new Popups.UnlinkSubTree(repo, subtree.Prefix).Show();
+                ev.Handled = true;
+            };
+
+            var pull = new MenuItem();
+            pull.Header = App.Text("SubTree.Pull");
+            pull.Click += (o, ev) => {
+                new Popups.SubTreePull(repo.Path, subtree).Show();
+                ev.Handled = true;
+            };
+
+            var push = new MenuItem();
+            push.Header = App.Text("SubTree.Push");
+            push.Click += (o, ev) => {
+                new Popups.SubTreePush(repo.Path, subtree).Show();
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(edit);
+            menu.Items.Add(unlink);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(pull);
+            menu.Items.Add(push);
+            menu.IsOpen = true;
             e.Handled = true;
         }
         #endregion
