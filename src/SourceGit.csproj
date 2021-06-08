@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net5.0-windows</TargetFramework>
-        <OutputType>Exe</OutputType>
+        <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>App.ico</ApplicationIcon>
         <Company>sourcegit</Company>
