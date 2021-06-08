@@ -16,7 +16,7 @@ namespace SourceGit.Views {
         public Histories(string repo, string file) {
             this.repo = repo;
             this.file = file;
-            this.isLFSEnabled = new Commands.LFS(repo).IsEnabled();
+            this.isLFSEnabled = new Commands.LFS(repo).IsFiltered(file);
 
             InitializeComponent();
 
