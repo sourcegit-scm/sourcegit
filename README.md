@@ -1,6 +1,6 @@
 # SourceGit
 
-开源的Git客户端，仅用于Windows。
+开源的Git客户端，仅用于Windows。[主页](https://sourcegit-scm.github.io/)
 
 ## 下载
 
