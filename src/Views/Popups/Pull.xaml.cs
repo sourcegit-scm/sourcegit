@@ -18,6 +18,8 @@ namespace SourceGit.Views.Popups {
             InitializeComponent();
 
             var current = repo.Branches.Find(x => x.IsCurrent);
+            if (current == null) return;
+
             txtInto.Text = current.Name;
 
             if (prefered == null && !string.IsNullOrEmpty(current.Upstream)) {
