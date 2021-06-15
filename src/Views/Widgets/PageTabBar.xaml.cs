@@ -16,8 +16,10 @@ namespace SourceGit.Views.Widgets {
         /// </summary>
         public class Tab {
             public string Id { get; set; }
-            public UserControl Control { get; set; }
-            public Tab(string id, UserControl ctrl) { Id = id; Control = ctrl; }
+            public bool IsWelcomePage { get; set; }
+            public string Title { get; set; }
+            public string Tooltip { get; set; }
+            public int Bookmark { get; set; }
         }
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace SourceGit.Views.Widgets {
         public static readonly RoutedEvent TabAddEvent = EventManager.RegisterRoutedEvent(
             "TabAdd",
             RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
+            typeof(EventHandler<TabEventArgs>),
             typeof(PageTabBar));
 
         public event RoutedEventHandler TabAdd {
@@ -75,18 +77,29 @@ namespace SourceGit.Views.Widgets {
             InitializeComponent();
         }
 
-        public void Add(string id, UserControl element) {
-            var tab = new Tab(id, element);
+        public void Add() {
+            NewTab(null, null);
+        }
+
+        public void Add(string title, string repo, int bookmark) {
+            var tab = new Tab() {
+                Id = repo,
+                IsWelcomePage = false,
+                Title = title,
+                Tooltip = repo,
+                Bookmark = bookmark,
+            };
+
             Tabs.Add(tab);
             container.SelectedItem = tab;
         }
 
-        public void Replace(string oldId, string newId, UserControl element) {
+        public void Replace(string id, string title, string repo, int bookmark) {
             var tab = null as Tab;
             var curTab = container.SelectedItem as Tab;
 
             foreach (var one in Tabs) {
-                if (one.Id == oldId) {
+                if (one.Id == id) {
                     tab = one;
                     break;
                 }
@@ -98,9 +111,16 @@ namespace SourceGit.Views.Widgets {
             Tabs.RemoveAt(idx);
             RaiseEvent(new TabEventArgs(TabClosedEvent, this, tab.Id));
 
-            var replaced = new Tab(newId, element);
+            var replaced = new Tab() {
+                Id = repo,
+                IsWelcomePage = false,
+                Title = title,
+                Tooltip = repo,
+                Bookmark = bookmark,
+            };
+
             Tabs.Insert(idx, replaced);
-            if (curTab.Id == oldId) container.SelectedItem = replaced;
+            if (curTab.Id == id) container.SelectedItem = replaced;
         }
 
         public bool Goto(string id) {
@@ -145,7 +165,18 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void NewTab(object sender, RoutedEventArgs e) {
-            RaiseEvent(new RoutedEventArgs(TabAddEvent));
+            var id = Guid.NewGuid().ToString();
+            var tab = new Tab() {
+                Id = id,
+                IsWelcomePage = true,
+                Title = App.Text("PageSwitcher.Welcome.Title"),
+                Tooltip = App.Text("PageSwitcher.Welcome.Tip"),
+                Bookmark = 0,
+            };
+
+            Tabs.Add(tab);
+            RaiseEvent(new TabEventArgs(TabAddEvent, this, id));
+            container.SelectedItem = tab;
         }
 
         private void ScrollLeft(object sender, RoutedEventArgs e) {

@@ -115,6 +115,8 @@
     <sys:String x:Key="Text.Dashboard.Explore.Tip">Open In File Browser</sys:String>
     <sys:String x:Key="Text.Dashboard.Terminal">Terminal</sys:String>
     <sys:String x:Key="Text.Dashboard.Terminal.Tip">Open Git Bash</sys:String>
+    <sys:String x:Key="Text.Dashboard.Refresh">Refresh</sys:String>
+    <sys:String x:Key="Text.Dashboard.Refresh.Tip">Refresh Repositoy</sys:String>
     <sys:String x:Key="Text.Dashboard.Search">Search</sys:String>
     <sys:String x:Key="Text.Dashboard.Search.Tip">Search Commit</sys:String>
     <sys:String x:Key="Text.Dashboard.Configure.Tip">Configure this repository</sys:String>

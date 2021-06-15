@@ -30,7 +30,6 @@
                             <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Explore}"/>
                         </StackPanel>
                     </Button>
-
                     <Button Click="Terminal" Margin="6,0" ToolTip="{StaticResource Text.Dashboard.Terminal.Tip}" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="13" Height="13" Data="{StaticResource Icon.Terminal}"/>
@@ -82,7 +81,13 @@
                     <Button Click="OpenConfigure" Margin="6,0" BorderThickness="0" ToolTip="{StaticResource Text.Dashboard.Configure.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Setting}"/>
-                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Configure}"/>
+                            <TextBlock Margin="4,0,0,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Configure}"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="Refresh" Margin="6,0" BorderThickness="0" ToolTip="{StaticResource Text.Dashboard.Refresh.Tip}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="13" Height="13" Data="{StaticResource Icon.Loading}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Refresh}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>

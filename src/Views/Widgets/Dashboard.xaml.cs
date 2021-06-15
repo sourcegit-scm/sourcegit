@@ -289,6 +289,15 @@ namespace SourceGit.Views.Widgets {
             e.Handled = true;
         }
 
+        public void Refresh(object sender, RoutedEventArgs e) {
+            UpdateBraches();
+            UpdateWorkingCopy();
+            UpdateStashes();
+            UpdateTags();
+            UpdateSubmodules();
+            UpdateSubTrees();
+        }
+
         private void OpenFetch(object sender, RoutedEventArgs e) {
             if (repo.Remotes.Count == 0) {
                 Models.Exception.Raise("No remotes added to this repository!!!");

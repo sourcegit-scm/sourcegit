@@ -13,7 +13,7 @@ namespace SourceGit.Views {
         public Launcher() {
             Models.Watcher.Opened += OpenRepository;
             InitializeComponent();
-            OnTabAdding(null, null);
+            tabs.Add();
         }
 
         #region OPEN_REPO
@@ -30,15 +30,14 @@ namespace SourceGit.Views {
             Commands.AutoFetch.Start(repo.Path);
 
             var page = new Widgets.Dashboard(repo);
-            var tab = new Widgets.PageTabItem(repo.Name, false, repo.Bookmark, repo.Path);
             container.Add(repo.Path, page);
             Controls.PopupWidget.RegisterContainer(repo.Path, page);
 
             var front = container.Get(tabs.Current);
             if (front == null || front is Widgets.Dashboard) {
-                tabs.Add(repo.Path, tab);
+                tabs.Add(repo.Name, repo.Path, repo.Bookmark);
             } else {
-                tabs.Replace(tabs.Current, repo.Path, tab);
+                tabs.Replace(tabs.Current, repo.Name, repo.Path, repo.Bookmark);
             }
         }
         #endregion
@@ -72,14 +71,10 @@ namespace SourceGit.Views {
         #endregion
 
         #region TAB_OPERATION
-        private void OnTabAdding(object sender, RoutedEventArgs e) {
-            var id = Guid.NewGuid().ToString();
-            var tab = new Widgets.PageTabItem(App.Text("PageSwitcher.Welcome.Title"), true, 0, App.Text("PageSwitcher.Welcome.Tip"));
+        private void OnTabAdding(object sender, Widgets.PageTabBar.TabEventArgs e) {
             var page = new Widgets.Welcome();
-
-            container.Add(id, page);
-            tabs.Add(id, tab);
-            Controls.PopupWidget.RegisterContainer(id, page);
+            container.Add(e.TabId, page);
+            Controls.PopupWidget.RegisterContainer(e.TabId, page);
         }
 
         private void OnTabSelected(object sender, Widgets.PageTabBar.TabEventArgs e) {
@@ -112,7 +107,7 @@ namespace SourceGit.Views {
                 }
 
                 if (Keyboard.IsKeyDown(Key.T)) {
-                    OnTabAdding(null, null);
+                    tabs.Add();
                     e.Handled = true;
                     return;
                 }
@@ -138,7 +133,8 @@ namespace SourceGit.Views {
             }
 
             if (Keyboard.IsKeyDown(Key.F5)) {
-                Models.Watcher.Get(tabs.Current)?.Refresh();
+                var dashboard = container.Get(tabs.Current) as Widgets.Dashboard;
+                if (dashboard != null) dashboard.Refresh(null, null);
                 e.Handled = true;
                 return;
             }

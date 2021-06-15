@@ -105,17 +105,6 @@ namespace SourceGit.Models {
         }
 
         /// <summary>
-        ///     强制刷新
-        /// </summary>
-        public void Refresh() {
-            updateWC = 1;
-            updateBranch = 1;
-            updateSubmodules = 1;
-            updateStashes = 1;
-            updateTags = 1;
-        }
-
-        /// <summary>
         ///     仅强制更新本地变化
         /// </summary>
         public void RefreshWC() {

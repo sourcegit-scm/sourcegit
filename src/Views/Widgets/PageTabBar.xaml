@@ -54,8 +54,19 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                         <Border x:Name="Border" Background="Transparent" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,1,0">
-                                            <StackPanel Margin="8,0" x:Name="Contents" Orientation="Horizontal" Opacity=".5">
-                                                <ContentPresenter VerticalAlignment="Center" Content="{Binding Control}"/>
+                                            <StackPanel Margin="8,0" x:Name="Contents" Orientation="Horizontal" VerticalAlignment="Center" Opacity=".5" ToolTip="{Binding Tooltip}">
+                                                <controls:Bookmark
+                                                    Width="14" Height="14"
+                                                    IsNewPage="{Binding IsWelcomePage}"
+                                                    Color="{Binding Bookmark}"
+                                                    HideOnZero="False"/>
+
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    Margin="4,0"
+                                                    FontFamily="Consolas"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding Title}"/>
                                                 
                                                 <controls:IconButton
                                                     Click="CloseTab"

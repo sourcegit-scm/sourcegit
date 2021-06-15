@@ -115,6 +115,8 @@
     <sys:String x:Key="Text.Dashboard.Explore.Tip">在文件浏览器中打开</sys:String>
     <sys:String x:Key="Text.Dashboard.Terminal">终端</sys:String>
     <sys:String x:Key="Text.Dashboard.Terminal.Tip">打开GIT终端</sys:String>
+    <sys:String x:Key="Text.Dashboard.Refresh">刷新</sys:String>
+    <sys:String x:Key="Text.Dashboard.Refresh.Tip">刷新仓库数据</sys:String>
     <sys:String x:Key="Text.Dashboard.Search">查找</sys:String>
     <sys:String x:Key="Text.Dashboard.Search.Tip">查找提交</sys:String>
     <sys:String x:Key="Text.Dashboard.Configure.Tip">配置本仓库</sys:String>
