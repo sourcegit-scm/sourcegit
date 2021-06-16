@@ -31,8 +31,10 @@ namespace SourceGit.Views.Popups {
         }
 
         public override Task<bool> Start() {
-            txtName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            if (Validation.GetHasError(txtName)) return null;
+            if (remote == null || remote.Name != RemoteName) {
+                txtName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                if (Validation.GetHasError(txtName)) return null;
+            }
 
             txtUrl.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             if (Validation.GetHasError(txtUrl)) return null;
@@ -44,11 +46,13 @@ namespace SourceGit.Views.Popups {
                     if (succ) new Commands.Fetch(repo.Path, RemoteName, true, UpdateProgress).Exec();
                 } else {
                     if (remote.URL != RemoteURL) {
-                        new Commands.Remote(repo.Path).SetURL(remote.Name, RemoteURL);
+                        var succ = new Commands.Remote(repo.Path).SetURL(remote.Name, RemoteURL);
+                        if (succ) remote.URL = RemoteURL;
                     }
 
                     if (remote.Name != RemoteName) {
-                        new Commands.Remote(repo.Path).Rename(remote.Name, RemoteName);
+                        var succ = new Commands.Remote(repo.Path).Rename(remote.Name, RemoteName);
+                        if (succ) remote.Name = RemoteName;
                     }
                 }
                 Models.Watcher.SetEnabled(repo.Path, true);
