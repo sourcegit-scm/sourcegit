@@ -136,7 +136,7 @@
                     <TextBlock 
                         Margin="0,16,0,0" 
                         Text="{StaticResource Text.Diff.Welcome}" 
-                        FontSize="18" FontWeight="UltraBold" 
+                        FontSize="18" FontWeight="UltraBold" TextOptions.TextFormattingMode="Ideal"
                         Foreground="{StaticResource Brush.FG2}"
                         HorizontalAlignment="Center"/>
                 </StackPanel>

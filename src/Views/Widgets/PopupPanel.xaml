@@ -26,7 +26,7 @@
                 <!-- Custom panel -->
                 <Border x:Name="body">
                     <StackPanel Margin="8" Orientation="Vertical">
-                        <TextBlock Margin="8,8,0,18" x:Name="txtTitle" FontSize="18" FontWeight="DemiBold"/>
+                        <TextBlock Margin="8,8,0,18" x:Name="txtTitle" FontSize="18" FontWeight="DemiBold" TextOptions.TextFormattingMode="Ideal"/>
                         <ContentControl x:Name="container"/>
                         <StackPanel Margin="0,16,0,0" Height="32" Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button Click="Sure" Width="80" Content="{StaticResource Text.Sure}" BorderBrush="{StaticResource Brush.FG1}" Background="{StaticResource Brush.Accent1}"/>
