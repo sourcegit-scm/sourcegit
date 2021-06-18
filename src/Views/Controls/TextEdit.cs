@@ -49,9 +49,11 @@ namespace SourceGit.Views.Controls {
                     Placeholder,
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
-                    new Typeface(FontFamily, FontStyle, FontWeight, FontStretches.Normal),
+                    new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
                     FontSize,
                     FindResource("Brush.FG2") as Brush,
+                    new NumberSubstitution(),
+                    TextFormattingMode.Display,
                     VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
                 switch (PlaceholderBaseline) {
