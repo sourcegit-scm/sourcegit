@@ -12,6 +12,7 @@
     <SolidColorBrush x:Key="Brush.Contents" Color="#FF1B1B1B"/>
     <SolidColorBrush x:Key="Brush.Badge" Color="#FF8F8F8F"/>
     <SolidColorBrush x:Key="Brush.Decorator" Color="#FF505050"/>
+    <SolidColorBrush x:Key="Brush.DecoratorIcon" Color="#FFF8F8F8"/>
     <SolidColorBrush x:Key="Brush.Conflict" Color="#FFFAFAD2"/>
 
     <SolidColorBrush x:Key="Brush.Border0" Color="#FF101010"/>

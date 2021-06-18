@@ -139,11 +139,11 @@
                             <DataTemplate DataType="{x:Type models:Decorator}">
                                 <StackPanel Orientation="Horizontal" Height="16" Margin="2,0">
                                     <Border Background="{StaticResource Brush.Decorator}">
-                                        <Path x:Name="Icon" Margin="4,0" Width="8" Height="8" Data="{StaticResource Icon.Branch}"/>
+                                        <Path x:Name="Icon" Margin="4,0" Width="8" Height="8" Data="{StaticResource Icon.Branch}" Fill="{StaticResource Brush.DecoratorIcon}"/>
                                     </Border>
 
                                     <Border x:Name="Color" Background="#FFFFB835">
-                                        <TextBlock Text="{Binding Name}" FontSize="8pt" Margin="4,0" Foreground="Black"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="8pt" Margin="4,0" Foreground="Black" FontFamily="Consolas"/>
                                     </Border>
                                 </StackPanel>
 

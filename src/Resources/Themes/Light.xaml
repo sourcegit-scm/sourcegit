@@ -11,7 +11,8 @@
     <SolidColorBrush x:Key="Brush.Popup" Color="#FFF8F8F8"/>
     <SolidColorBrush x:Key="Brush.Contents" Color="White"/>
     <SolidColorBrush x:Key="Brush.Badge" Color="#FFAFAFAF"/>
-    <SolidColorBrush x:Key="Brush.Decorator" Color="#FFBDBDBD"/>
+    <SolidColorBrush x:Key="Brush.Decorator" Color="#FF6F6F6F"/>
+    <SolidColorBrush x:Key="Brush.DecoratorIcon" Color="#FFF8F8F8"/>
     <SolidColorBrush x:Key="Brush.Conflict" Color="#FF836C2E"/>
 
     <SolidColorBrush x:Key="Brush.Border0" Color="#FFCFCFCF"/>
