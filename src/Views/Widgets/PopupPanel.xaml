@@ -18,6 +18,10 @@
             VerticalAlignment="Top"
             Width="500"
             Height="Auto">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="8" ShadowDepth="0" Opacity=".2" Color="Black"/>
+            </Border.Effect>
+            
             <Grid>                
                 <!-- Custom panel -->
                 <Border x:Name="body">

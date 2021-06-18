@@ -64,6 +64,7 @@
                 Margin="0,24,0,8"
                 Text="{StaticResource Text.About.Title}"
                 HorizontalAlignment="Center"
+                TextOptions.TextFormattingMode="Ideal"
                 FontSize="18" FontWeight="Bold"/>
 
             <!-- Version -->
