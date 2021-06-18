@@ -5,7 +5,7 @@ namespace SourceGit.Views {
     /// <summary>
     ///     新版本提示窗口
     /// </summary>
-    public partial class Upgrade : Window {
+    public partial class Upgrade : Controls.Window {
         public Models.Version Version { get; set; } = new Models.Version();
 
         public Upgrade(Models.Version ver) {

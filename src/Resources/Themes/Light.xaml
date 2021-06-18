@@ -4,7 +4,7 @@
     <SolidColorBrush x:Key="Brush.Logo" Color="#FFF05133"/>
 
     <SolidColorBrush x:Key="Brush.Window" Color="#FFF8F8F8"/>
-    <SolidColorBrush x:Key="Brush.WindowBorder" Color="#FF505050"/>
+    <SolidColorBrush x:Key="Brush.WindowBorder" Color="#FF4295FF"/>
 
     <SolidColorBrush x:Key="Brush.TitleBar" Color="White"/>
     <SolidColorBrush x:Key="Brush.NewPageHover" Color="#1D000000"/>

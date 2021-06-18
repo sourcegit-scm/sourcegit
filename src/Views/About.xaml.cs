@@ -8,7 +8,7 @@ namespace SourceGit.Views {
     /// <summary>
     ///     关于对话框
     /// </summary>
-    public partial class About : Window {
+    public partial class About : Controls.Window {
 
         public About() {
             InitializeComponent();

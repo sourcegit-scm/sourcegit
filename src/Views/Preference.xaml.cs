@@ -8,7 +8,7 @@ namespace SourceGit.Views {
     /// <summary>
     ///     设置面板
     /// </summary>
-    public partial class Preference : Window {
+    public partial class Preference : Controls.Window {
 
         public string User { get; set; }
         public string Email { get; set; }

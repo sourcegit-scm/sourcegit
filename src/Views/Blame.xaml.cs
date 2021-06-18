@@ -11,7 +11,7 @@ namespace SourceGit.Views {
     /// <summary>
     ///     逐行追溯
     /// </summary>
-    public partial class Blame : Window {
+    public partial class Blame : Controls.Window {
         private static readonly Brush[] BG = new Brush[] {
             Brushes.Transparent,
             new SolidColorBrush(Color.FromArgb(128, 0, 0, 0))

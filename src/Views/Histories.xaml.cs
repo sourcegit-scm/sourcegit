@@ -8,7 +8,7 @@ namespace SourceGit.Views {
     /// <summary>
     ///     文件历史
     /// </summary>
-    public partial class Histories : Window {
+    public partial class Histories : Controls.Window {
         private string repo = null;
         private string file = null;
         private bool isLFSEnabled = false;

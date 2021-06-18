@@ -8,7 +8,7 @@ namespace SourceGit.Views {
     /// <summary>
     ///     主窗体
     /// </summary>
-    public partial class Launcher : Window {
+    public partial class Launcher : Controls.Window {
 
         public Launcher() {
             Models.Watcher.Opened += OpenRepository;
