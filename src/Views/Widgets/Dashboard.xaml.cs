@@ -96,6 +96,15 @@ namespace SourceGit.Views.Widgets {
         #endregion
 
         #region DATA
+        public void Refresh() {
+            UpdateBraches();
+            UpdateWorkingCopy();
+            UpdateStashes();
+            UpdateTags();
+            UpdateSubmodules();
+            UpdateSubTrees();
+        }
+
         private void NavigateTo(string commitId) {
             workspace.SelectedIndex = 0;
             (pages.Get("histories") as Histories).NavigateTo(commitId);
@@ -287,15 +296,6 @@ namespace SourceGit.Views.Widgets {
             start.FileName = bash;
             Process.Start(start);
             e.Handled = true;
-        }
-
-        public void Refresh(object sender, RoutedEventArgs e) {
-            UpdateBraches();
-            UpdateWorkingCopy();
-            UpdateStashes();
-            UpdateTags();
-            UpdateSubmodules();
-            UpdateSubTrees();
         }
 
         private void OpenFetch(object sender, RoutedEventArgs e) {

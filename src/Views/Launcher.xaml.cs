@@ -134,7 +134,7 @@ namespace SourceGit.Views {
 
             if (Keyboard.IsKeyDown(Key.F5)) {
                 var dashboard = container.Get(tabs.Current) as Widgets.Dashboard;
-                if (dashboard != null) dashboard.Refresh(null, null);
+                if (dashboard != null) dashboard.Refresh();
                 e.Handled = true;
                 return;
             }
