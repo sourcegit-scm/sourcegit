@@ -77,7 +77,7 @@ namespace SourceGit.Views.Controls {
                 }
             } else {
                 mark.icon.Fill = mark.FindResource("Brush.FG1") as Brush;
-                mark.icon.Data = mark.FindResource("Icon.NewPage") as Geometry;
+                mark.icon.Data = mark.FindResource("Icon.WelcomePage") as Geometry;
             }
 
             mark.Visibility = Visibility.Visible;
