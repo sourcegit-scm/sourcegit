@@ -56,7 +56,7 @@ namespace SourceGit.Views.Controls {
             if (w != null) {
                 if (w.IsMaximized) {
                     SystemCommands.MaximizeWindow(w);
-                } else {
+                } else if (w.WindowState != WindowState.Minimized) {
                     SystemCommands.RestoreWindow(w);
                 }
             }
