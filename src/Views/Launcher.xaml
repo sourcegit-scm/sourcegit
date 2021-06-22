@@ -41,6 +41,7 @@
             <!-- Right controls -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="27" WindowChrome.IsHitTestVisibleInChrome="True">
                 <controls:IconButton Click="OpenPreference" Width="28" Padding="6" Icon="{StaticResource Icon.Preference}" ToolTip="{StaticResource Text.Launcher.Preference}"/>
+                <controls:IconButton Click="OpenHotkeys" Width="28" Padding="6" Icon="{StaticResource Icon.Hotkeys}" ToolTip="{StaticResource Text.Hotkeys}"/>
                 <controls:IconButton Click="OpenAbout" Width="28" Padding="6" Icon="{StaticResource Icon.Help}" ToolTip="{StaticResource Text.Launcher.About}"/>
                 <controls:IconButton Click="Minimize" Width="28" Padding="8" Icon="{StaticResource Icon.Minimize}" HoverBackground="#40000000" Opacity="1"/>
                 <ToggleButton Style="{StaticResource Style.ToggleButton.MaxOrRestore}" Width="28" IsChecked="{Binding ElementName=me, Path=IsMaximized}"/>

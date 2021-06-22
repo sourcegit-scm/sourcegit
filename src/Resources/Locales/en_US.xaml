@@ -456,6 +456,16 @@
     <sys:String x:Key="Text.SubTree.Pull">Pull ...</sys:String>
     <sys:String x:Key="Text.SubTree.Push">Push ...</sys:String>
 
+    <sys:String x:Key="Text.Hotkeys">HOTKEYS</sys:String>
+    <sys:String x:Key="Text.Hotkeys.Col.Key">KEY</sys:String>
+    <sys:String x:Key="Text.Hotkeys.Col.Desc">DESCRIPTION</sys:String>
+    <sys:String x:Key="Text.Hotkeys.NewTab">Create a new page</sys:String>
+    <sys:String x:Key="Text.Hotkeys.CloseTab">Close current active page</sys:String>
+    <sys:String x:Key="Text.Hotkeys.NextTab">Switch to next page</sys:String>
+    <sys:String x:Key="Text.Hotkeys.SwitchTo">Switch to page at given index</sys:String>
+    <sys:String x:Key="Text.Hotkeys.Search">Toggle search bar if possible</sys:String>
+    <sys:String x:Key="Text.Hotkeys.Refresh">Reload current opening repository</sys:String>
+
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>
     <sys:String x:Key="Text.MissingBash">Can NOT locate bash.exe. Make sure bash.exe exists under the same folder with git.exe</sys:String>

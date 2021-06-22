@@ -48,6 +48,11 @@ namespace SourceGit.Views {
             dialog.ShowDialog();
         }
 
+        private void OpenHotkeys(object sender, RoutedEventArgs e) {
+            var dialog = new Hotkeys() { Owner = this };
+            dialog.ShowDialog();
+        }
+
         private void OpenAbout(object sender, RoutedEventArgs e) {
             var dialog = new About() { Owner = this };
             dialog.ShowDialog();

@@ -456,6 +456,16 @@
     <sys:String x:Key="Text.SubTree.Pull">拉取子树更新</sys:String>
     <sys:String x:Key="Text.SubTree.Push">推送子树变更</sys:String>
 
+    <sys:String x:Key="Text.Hotkeys">快捷键</sys:String>
+    <sys:String x:Key="Text.Hotkeys.Col.Key">快捷键</sys:String>
+    <sys:String x:Key="Text.Hotkeys.Col.Desc">功能说明</sys:String>
+    <sys:String x:Key="Text.Hotkeys.NewTab">新建标签页</sys:String>
+    <sys:String x:Key="Text.Hotkeys.CloseTab">关闭当前浏览标签页</sys:String>
+    <sys:String x:Key="Text.Hotkeys.NextTab">切换到下一个标签页</sys:String>
+    <sys:String x:Key="Text.Hotkeys.SwitchTo">切换到指定位置的标签页</sys:String>
+    <sys:String x:Key="Text.Hotkeys.Search">打开/隐藏搜索框（仅在仓库页起效）</sys:String>
+    <sys:String x:Key="Text.Hotkeys.Refresh">重新加载当前仓库信息（仅在仓库页起效）</sys:String>
+
     <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
     <sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>
     <sys:String x:Key="Text.MissingBash">无法找到bash.exe，请确保其在git.exe同目录中！</sys:String>
