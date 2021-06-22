@@ -10,8 +10,8 @@ namespace SourceGit.Models {
         public string Url { get; set; }
 
         public static List<AvatarServer> Supported = new List<AvatarServer>() {
-            new AvatarServer("Gravatar官网", "https://www.gravatar.com/avatar/"),
-            new AvatarServer("Gravatar中国CDN", "https://cdn.s.loli.top/avatar/"),
+            new AvatarServer("Gravatar", "https://www.gravatar.com/avatar/"),
+            new AvatarServer("Gravatar - 极客族", "https://sdn.geekzu.org/avatar/"),
         };
 
         public AvatarServer(string name, string url) {
