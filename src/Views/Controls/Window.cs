@@ -8,6 +8,17 @@ namespace SourceGit.Views.Controls {
     /// </summary>
     public class Window : System.Windows.Window {
 
+        public static readonly DependencyProperty IsMaximizedProperty = DependencyProperty.Register(
+            "IsMaximized",
+            typeof(bool),
+            typeof(Window),
+            new PropertyMetadata(false, OnIsMaximizedChanged));
+
+        public bool IsMaximized {
+            get { return (bool)GetValue(IsMaximizedProperty); }
+            set { SetValue(IsMaximizedProperty, value); }
+        }
+
         public Window() {
             Background = FindResource("Brush.Window") as Brush;
             BorderBrush = FindResource("Brush.WindowBorder") as Brush;
@@ -29,13 +40,26 @@ namespace SourceGit.Views.Controls {
                 var content = Content as FrameworkElement;
 
                 if (WindowState == WindowState.Maximized) {
+                    if (!IsMaximized) IsMaximized = true;
                     BorderThickness = new Thickness(0);
                     content.Margin = new Thickness((SystemParameters.MaximizedPrimaryScreenWidth - SystemParameters.WorkArea.Width) / 2);
                 } else {
+                    if (IsMaximized) IsMaximized = false;
                     BorderThickness = new Thickness(1);
                     content.Margin = new Thickness(0);
                 }
             };
+        }
+
+        private static void OnIsMaximizedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            Window w = d as Window;
+            if (w != null) {
+                if (w.IsMaximized) {
+                    SystemCommands.MaximizeWindow(w);
+                } else {
+                    SystemCommands.RestoreWindow(w);
+                }
+            }
         }
     }
 }

@@ -114,14 +114,6 @@ namespace SourceGit.Views {
             SystemCommands.MinimizeWindow(this);
         }
 
-        private void MaximizeOrRestore(object sender, RoutedEventArgs e) {
-            if (WindowState == WindowState.Normal) {
-                SystemCommands.MaximizeWindow(this);
-            } else {
-                SystemCommands.RestoreWindow(this);
-            }
-        }
-
         private void Quit(object sender, RoutedEventArgs e) {
             Close();
         }
