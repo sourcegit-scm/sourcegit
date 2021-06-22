@@ -164,13 +164,9 @@
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="Icon" Property="Data" Value="{DynamicResource Icon.Restore}"/>
                         </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="False"/>
-                                <Condition Property="IsMouseOver" Value="True"/>
-                            </MultiTrigger.Conditions>
+                        <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="BG" Property="Background" Value="#40000000"/>
-                        </MultiTrigger>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
