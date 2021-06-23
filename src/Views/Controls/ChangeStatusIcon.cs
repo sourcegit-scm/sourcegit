@@ -74,7 +74,7 @@ namespace SourceGit.Views.Controls {
                 txt,
                 CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
-                new Typeface(new FontFamily("Consolas"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                new Typeface(new FontFamily("Microsoft YaHei UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
                 icon.Width * 0.8,
                 new SolidColorBrush(Color.FromRgb(241,241,241)),
                 VisualTreeHelper.GetDpi(icon).PixelsPerDip);
@@ -98,9 +98,9 @@ namespace SourceGit.Views.Controls {
         private static string GetLabel(Models.Change.Status status) {
             switch (status) {
             case Models.Change.Status.Modified: return "±";
-            case Models.Change.Status.Added: return "✚";
-            case Models.Change.Status.Deleted: return "▬";
-            case Models.Change.Status.Renamed: return "➔";
+            case Models.Change.Status.Added: return "+";
+            case Models.Change.Status.Deleted: return "−";
+            case Models.Change.Status.Renamed: return "➜";
             case Models.Change.Status.Copied: return "❏";
             case Models.Change.Status.Unmerged: return "U";
             case Models.Change.Status.Untracked: return "★";
