@@ -11,15 +11,13 @@
         
         <!-- Popup panel -->
         <Border
-            Background="{StaticResource Brush.Popup}"
-            BorderBrush="{StaticResource Brush.Border0}" 
-            BorderThickness="1,0,1,1"
+            Background="{StaticResource Brush.Window}"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Width="500"
             Height="Auto">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="8" ShadowDepth="0" Opacity=".2" Color="Black"/>
+                <DropShadowEffect BlurRadius="8" ShadowDepth="0" Opacity=".5" Color="Black"/>
             </Border.Effect>
             
             <Grid>                
