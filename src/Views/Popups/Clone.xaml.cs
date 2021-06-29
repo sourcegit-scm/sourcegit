@@ -1,3 +1,4 @@
+using Ookii.Dialogs.Wpf;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -54,7 +55,7 @@ namespace SourceGit.Views.Popups {
         }
 
         private void OnFolderSelectorClick(object sender, System.Windows.RoutedEventArgs e) {
-            var dialog = new Controls.FolderDialog("Clone.Folder.Placeholder");
+            var dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog() == true) {
                 Folder = dialog.SelectedPath;
                 txtFolder.GetBindingExpression(TextBox.TextProperty).UpdateTarget();

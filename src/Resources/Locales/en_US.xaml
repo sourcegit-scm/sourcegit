@@ -305,7 +305,6 @@
     <sys:String x:Key="Text.Welcome.Clone">Clone Remote Repository</sys:String>
     <sys:String x:Key="Text.Welcome.Repositories">REPOSITORIES</sys:String>
     <sys:String x:Key="Text.Welcome.DragDrop">DRAG-DROP YOUR FOLDER</sys:String>
-    <sys:String x:Key="Text.Welcome.OpenOrInitDialog">Open or init local repository</sys:String>
     <sys:String x:Key="Text.Welcome.NewFolder">Add Folder</sys:String>
     <sys:String x:Key="Text.Welcome.NewSubFolder">Add Sub-Folder</sys:String>
     <sys:String x:Key="Text.Welcome.Rename">Rename</sys:String>
@@ -381,7 +380,6 @@
     <sys:String x:Key="Text.Preference.Merger.Path.Placeholder">Input path for merge tool</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Cmd">Command :</sys:String>
     <sys:String x:Key="Text.Preference.Dialog.GitExe">Select Git Executable File</sys:String>
-    <sys:String x:Key="Text.Preference.Dialog.GitDir">Select default clone path</sys:String>
     <sys:String x:Key="Text.Preference.Dialog.Merger">Select {0} Install Path</sys:String>
 
     <sys:String x:Key="Text.Stash">Stash</sys:String>

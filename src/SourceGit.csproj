@@ -17,4 +17,7 @@
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
     </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
+    </ItemGroup>
 </Project>

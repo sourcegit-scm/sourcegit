@@ -9,7 +9,6 @@
     <sys:String x:Key="Text.Goto">点击前往</sys:String>
     <sys:String x:Key="Text.RevealFile">在文件浏览器中查看</sys:String>
     <sys:String x:Key="Text.SaveAs">另存为...</sys:String>
-    <sys:String x:Key="Text.SaveFileTo">另存文件到...</sys:String>
     <sys:String x:Key="Text.CopyPath">复制路径</sys:String>
     <sys:String x:Key="Text.Bytes">{0} 字节</sys:String>
     <sys:String x:Key="Text.Filter">过滤</sys:String>
@@ -305,7 +304,6 @@
     <sys:String x:Key="Text.Welcome.Clone">克隆远程仓库</sys:String>
     <sys:String x:Key="Text.Welcome.Repositories">仓库列表</sys:String>
     <sys:String x:Key="Text.Welcome.DragDrop">支持拖放操作</sys:String>
-    <sys:String x:Key="Text.Welcome.OpenOrInitDialog">打开/初始化本地仓库</sys:String>
     <sys:String x:Key="Text.Welcome.NewFolder">新建分组</sys:String>
     <sys:String x:Key="Text.Welcome.NewSubFolder">新建子分组</sys:String>
     <sys:String x:Key="Text.Welcome.Rename">重命名</sys:String>
@@ -381,7 +379,6 @@
     <sys:String x:Key="Text.Preference.Merger.Path.Placeholder">填写工具可执行文件所在位置</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Cmd">命令行参数 ：</sys:String>
     <sys:String x:Key="Text.Preference.Dialog.GitExe">选择git.exe所在位置</sys:String>
-    <sys:String x:Key="Text.Preference.Dialog.GitDir">选择仓库本地存放位置</sys:String>
     <sys:String x:Key="Text.Preference.Dialog.Merger">选择{0}所在位置</sys:String>
 
     <sys:String x:Key="Text.Stash">贮藏</sys:String>

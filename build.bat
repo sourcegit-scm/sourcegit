@@ -6,7 +6,7 @@ cd src
 rmdir /s /q bin
 rmdir /s /q obj
 dotnet publish SourceGit_48.csproj --nologo -c Release -r win-x86 -o ..\publish\net48
-ilrepack /ndebug /out:..\publish\SourceGit.exe ..\publish\net48\SourceGit.exe ..\publish\net48\Newtonsoft.Json.dll
+ilrepack /ndebug /out:..\publish\SourceGit.exe ..\publish\net48\SourceGit.exe ..\publish\net48\Newtonsoft.Json.dll ..\publish\net48\Ookii.Dialogs.Wpf.dll
 cd ..\publish
 ren SourceGit.exe SourceGit_48.exe
 rmdir /s /q net48

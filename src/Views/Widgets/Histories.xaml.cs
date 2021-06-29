@@ -1,3 +1,4 @@
+using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -348,7 +349,7 @@ namespace SourceGit.Views.Widgets {
             var saveToPatch = new MenuItem();
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += (o, e) => {
-                var dialog = new Controls.FolderDialog("SaveFileTo");
+                var dialog = new VistaFolderBrowserDialog();
                 if (dialog.ShowDialog() == true) {
                     new Commands.FormatPatch(repo.Path, commit.SHA, dialog.SelectedPath).Exec();
                 }
