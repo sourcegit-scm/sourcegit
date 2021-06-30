@@ -177,9 +177,10 @@ namespace SourceGit.Models {
                 updateStashes = DateTime.Now.AddSeconds(.5).ToFileTime();
             } else if (e.Name.Equals("HEAD", StringComparison.Ordinal) ||
                 e.Name.StartsWith("refs\\heads\\", StringComparison.Ordinal) || 
-                e.Name.StartsWith("refs\\remotes\\", StringComparison.Ordinal)) {
+                e.Name.StartsWith("refs\\remotes\\", StringComparison.Ordinal) ||
+                e.Name.StartsWith("worktrees\\")) {
                 updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
-            } else if (e.Name.StartsWith("objects\\") || e.Name.Equals("index", StringComparison.Ordinal)) {
+            } else if (e.Name.StartsWith("objects\\", StringComparison.Ordinal) || e.Name.Equals("index", StringComparison.Ordinal)) {
                 updateWC = DateTime.Now.AddSeconds(.5).ToFileTime();
             }
         }

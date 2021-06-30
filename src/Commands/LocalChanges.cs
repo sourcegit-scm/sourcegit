@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -22,6 +23,7 @@ namespace SourceGit.Commands {
         public override void OnReadline(string line) {
             var match = REG_FORMAT.Match(line);
             if (!match.Success) return;
+            if (line.EndsWith("/", StringComparison.Ordinal)) return; // Ignore changes with git-worktree
 
             var change = new Models.Change() { Path = match.Groups[2].Value };
             var status = match.Groups[1].Value;
