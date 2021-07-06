@@ -364,6 +364,7 @@
     <sys:String x:Key="Text.Preference.UseDark">Use dark theme</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">Check for update</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically</sys:String>
+    <sys:String x:Key="Text.Preference.RestoreTabs">Restore windows</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT SETTING</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">Install Path :</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">Input path for git.exe</sys:String>

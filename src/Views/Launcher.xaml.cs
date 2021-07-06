@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -14,6 +15,31 @@ namespace SourceGit.Views {
             Models.Watcher.Opened += OpenRepository;
             InitializeComponent();
             tabs.Add();
+        }
+
+        private void OnClosing(object sender, CancelEventArgs e) {
+            var restore = Models.Preference.Instance.Restore;
+            if (!restore.IsEnabled) return;
+
+            restore.Opened.Clear();
+
+            foreach (var tab in tabs.Tabs) {
+                if (tab.IsWelcomePage) continue;
+
+                // 仅支持恢复加入管理的仓库页，Submodules等未加入管理的不支持
+                var repo = Models.Preference.Instance.FindRepository(tab.Id);
+                if (repo != null) restore.Opened.Add(tab.Id);
+            }
+
+            if (restore.Opened.Count > 0) {
+                if (restore.Opened.IndexOf(tabs.Current) >= 0) {
+                    restore.Actived = tabs.Current;
+                } else {
+                    restore.Actived = restore.Opened[0];
+                }
+            }
+
+            Models.Preference.Save();
         }
 
         #region OPEN_REPO

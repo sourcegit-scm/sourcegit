@@ -136,6 +136,27 @@ namespace SourceGit.Models {
         }
 
         /// <summary>
+        ///     恢复上次打开的窗口
+        /// </summary>
+        public class RestoreTabs {
+
+            /// <summary>
+            ///     是否开启该功能
+            /// </summary>
+            public bool IsEnabled { get; set; } = false;
+
+            /// <summary>
+            ///     上次打开的仓库
+            /// </summary>
+            public List<string> Opened { get; set; } = new List<string>();
+
+            /// <summary>
+            ///     最后浏览的仓库
+            /// </summary>
+            public string Actived { get; set; } = null;
+        }
+
+        /// <summary>
         ///     全局配置
         /// </summary>
         [JsonIgnore]
@@ -163,6 +184,7 @@ namespace SourceGit.Models {
         public WindowInfo Window { get; set; } = new WindowInfo();
         public List<Group> Groups { get; set; } = new List<Group>();
         public List<Repository> Repositories { get; set; } = new List<Repository>();
+        public RestoreTabs Restore { get; set; } = new RestoreTabs();
         #endregion
 
         #region LOAD_SAVE

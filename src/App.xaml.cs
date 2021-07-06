@@ -85,6 +85,18 @@ namespace SourceGit {
                 }
 
                 if (repo != null) Models.Watcher.Open(repo);
+            } else {
+                var restore = Models.Preference.Instance.Restore;
+                var actived = null as Models.Repository;
+                if (restore.IsEnabled && restore.Opened.Count > 0) {
+                    foreach (var path in restore.Opened) {
+                        var repo = Models.Preference.Instance.FindRepository(path);
+                        if (repo != null) Models.Watcher.Open(repo);
+                        if (path == restore.Actived) actived = repo;
+                    }
+
+                    if (actived != null) Models.Watcher.Open(actived);
+                }
             }
 
             // 检测更新

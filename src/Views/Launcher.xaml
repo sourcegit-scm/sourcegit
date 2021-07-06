@@ -13,7 +13,8 @@
     MinWidth="1280" MinHeight="720"
     Title="{StaticResource Text.About.Title}"
     Width="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Width, Mode=TwoWay}"
-    Height="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Height, Mode=TwoWay}">
+    Height="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Height, Mode=TwoWay}"
+    Closing="OnClosing">
     <controls:DragDropAdornerLayer>
         <Grid.RowDefinitions>
             <RowDefinition Height="28"/>
