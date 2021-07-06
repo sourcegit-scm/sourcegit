@@ -28,14 +28,17 @@
             Visibility="Visible">
             <TreeView.Resources>
                 <RoutedUICommand x:Key="SelectWholeTreeCommand" Text="SelectWholeTree"/>
+                <RoutedUICommand x:Key="StageChangeCommand" Text="StageChange"/>
             </TreeView.Resources>
 
             <TreeView.InputBindings>
                 <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectWholeTreeCommand}"/>
+                <KeyBinding Key="Space" Command="{StaticResource StageChangeCommand}"/>
             </TreeView.InputBindings>
 
             <TreeView.CommandBindings>
                 <CommandBinding Command="{StaticResource SelectWholeTreeCommand}" Executed="SelectWholeTree"/>
+                <CommandBinding Command="{StaticResource StageChangeCommand}" Executed="StageChange"/>
             </TreeView.CommandBindings>
             
             <controls:Tree.ItemContainerStyle>

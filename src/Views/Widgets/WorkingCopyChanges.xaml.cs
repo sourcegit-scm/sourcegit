@@ -689,6 +689,14 @@ namespace SourceGit.Views.Widgets {
         private void SelectWholeTree(object sender, ExecutedRoutedEventArgs e) {
             modeTree.SelectAll();
         }
+        
+        private void StageChange(object sender, ExecutedRoutedEventArgs e) {
+            if (!IsUnstaged) {
+                UnstageSelected();
+            } else {
+                StageSelected();
+            }
+        }
 
         private void OnTreeSelectionChanged(object sender, RoutedEventArgs e) {
             if (Mode != Models.Change.DisplayMode.Tree) return;
