@@ -71,7 +71,6 @@ namespace SourceGit {
 
             // 主界面显示
             MainWindow = new Views.Launcher();
-            MainWindow.Show();
 
             // 如果启动命令中指定了路径，打开指定目录的仓库
             if (e.Args.Length > 0) {
@@ -98,6 +97,8 @@ namespace SourceGit {
                     if (actived != null) Models.Watcher.Open(actived);
                 }
             }
+
+            MainWindow.Show();
 
             // 检测更新
             if (Models.Preference.Instance.General.CheckForUpdate) {
