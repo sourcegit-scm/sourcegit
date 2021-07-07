@@ -89,6 +89,7 @@ namespace SourceGit {
                 var actived = null as Models.Repository;
                 if (restore.IsEnabled && restore.Opened.Count > 0) {
                     foreach (var path in restore.Opened) {
+                        if (!Directory.Exists(path)) continue;
                         var repo = Models.Preference.Instance.FindRepository(path);
                         if (repo != null) Models.Watcher.Open(repo);
                         if (path == restore.Actived) actived = repo;
