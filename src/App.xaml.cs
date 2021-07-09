@@ -110,7 +110,7 @@ namespace SourceGit {
                     Task.Run(() => {
                         try {
                             var web = new WebClient() { Encoding = Encoding.UTF8 };
-                            var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/SourceGit/releases/latest");
+                            var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/sourcegit/releases/latest");
                             var ver = Models.Version.Load(raw);
                             var cur = Assembly.GetExecutingAssembly().GetName().Version;
 
