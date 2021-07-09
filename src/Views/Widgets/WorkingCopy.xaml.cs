@@ -311,7 +311,11 @@ namespace SourceGit.Views.Widgets {
             Models.Watcher.SetEnabled(repo.Path, false);
             var amend = chkAmend.IsChecked == true;
             var succ = await Task.Run(() => new Commands.Commit(repo.Path, CommitMessage, amend).Exec());
-            if (succ) ClearMessage();
+            if (succ) {
+                ClearMessage();
+                if (amend) chkAmend.IsChecked = false;
+            }
+
             iconCommitting.IsAnimating = false;
             iconCommitting.Visibility = Visibility.Collapsed;
             Models.Watcher.SetEnabled(repo.Path, true);
