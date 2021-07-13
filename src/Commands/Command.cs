@@ -79,9 +79,9 @@ namespace SourceGit.Commands {
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
 #if NET48
-                    proc.Kill();
+                    if (!proc.HasExited) proc.Kill();
 #else
-                    proc.Kill(true);
+                    if (!proc.HasExited) proc.Kill(true);
 #endif
                     return;
                 }
@@ -95,17 +95,16 @@ namespace SourceGit.Commands {
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
 #if NET48
-                    proc.Kill();
+                    if (!proc.HasExited) proc.Kill();
 #else
-                    proc.Kill(true);
+                    if (!proc.HasExited) proc.Kill(true);
 #endif
                     return;
                 }
-
-                if (e.Data == null) return;
-                if (TraitErrorAsOutput) OnReadline(e.Data);
-                
+    
                 if (string.IsNullOrEmpty(e.Data)) return;
+                if (TraitErrorAsOutput) OnReadline(e.Data);
+
                 if (progressFilter.IsMatch(e.Data)) return;
                 if (e.Data.StartsWith("remote: Counting objects:", StringComparison.Ordinal)) return;
                 errs.Add(e.Data);
