@@ -283,11 +283,20 @@ namespace SourceGit.Views.Controls {
                 var geo = new StreamGeometry();
                 var pen = PENS[line.Color];
                 using (var ctx = geo.Open()) {
-                    ctx.BeginFigure(last, false, false);
-
+                    var started = false;
                     var ended = false;
                     for (int i = 1; i < size; i++) {
                         var cur = line.Points[i];
+                        if (cur.Y < top) {
+                            last = cur;
+                            continue;
+                        }
+
+                        if (!started) {
+                            ctx.BeginFigure(last, false, false);
+                            started = true;
+                        }
+
                         if (cur.Y > bottom) {
                             cur.Y = bottom;
                             ended = true;
@@ -346,11 +355,19 @@ namespace SourceGit.Views.Controls {
                 var geo = new StreamGeometry();
                 var pen = PENS[line.Color];
                 using (var ctx = geo.Open()) {
-                    ctx.BeginFigure(last, false, false);
-
+                    var started = false;
                     var ended = false;
                     for (int i = 1; i < size; i++) {
                         var cur = line.Points[i];
+                        if (cur.Y < top) {
+                            last = cur;
+                            continue;
+                        }
+
+                        if (!started) {
+                            ctx.BeginFigure(last, false, false);
+                        }
+
                         if (cur.Y > bottom) {
                             cur.Y = bottom;
                             ended = true;
