@@ -192,11 +192,15 @@ namespace SourceGit.Models {
             if (!File.Exists(SAVE_PATH)) {
                 instance = new Preference();
             } else {
+                try {
 #if NET48
-                instance = JsonConvert.DeserializeObject<Preference>(File.ReadAllText(SAVE_PATH));
+                    instance = JsonConvert.DeserializeObject<Preference>(File.ReadAllText(SAVE_PATH));
 #else
-                instance = JsonSerializer.Deserialize<Preference>(File.ReadAllText(SAVE_PATH));
+                    instance = JsonSerializer.Deserialize<Preference>(File.ReadAllText(SAVE_PATH));
 #endif
+                } catch {
+                    instance = new Preference();
+                }
             }
 
             if (!instance.IsReady) {
