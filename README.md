@@ -1,24 +1,45 @@
 # SourceGit
 
-开源的Git客户端，仅用于Windows。[主页](https://sourcegit-scm.github.io/)
+开源的Git客户端，仅用于Windows。
+
+## 特点
+
+* 永久免费+开源
+* 轻量级，Windows 10下软件小于2M，无需安装，直接运行
+* 启动速度、加载速度快（相对于SmartGit，SourceTree等，加载同数量的日志）
+* 一次性显示最近20000条提交历史
+* 中英双语并提供明暗两种主题
+* 覆盖常用GIT指令
+* 分支线路图
+* 高级指令图形操作
+  * SUBMODULES
+  * SUBTREES
+  * ARCHIVE
+  * PATCH/APPLY
+  * FILE HISTORIES
+  * BLAME
+  * REVISION DIFF
 
 ## 下载
 
-[发行版](https://gitee.com/sourcegit/sourcegit/releases/)
+下载地址：[发行版](https://gitee.com/sourcegit/sourcegit/releases/)
 
-* `SourceGit.exe`为不带.NET 5.0运行时的可执行文件，需要先安装.NET 5
-* `SourceGit_48.exe`为.NET 4.8编译的可执行文件，Window 10 已内置该运行时
+| 文件             | 运行时             | 说明                                |
+| ---------------- | ------------------ | ----------------------------------- |
+| SourceGit.exe    | .NET 5             | 需要自行安装 .NET 5运行时           |
+| SourceGit_48.exe | .NET Framework 4.8 | Windows 10 内置该运行时，不需要安装 |
+
+> 【注】本软件为GIT的**图形前端**，需先自行安装Git
 
 ## 预览
 
-* DarkTheme
+* 暗色主题
 
 ![Theme Dark](./screenshots/theme_dark.png)
 
-* LightTheme
+* 亮色主题
 
 ![Theme Light](./screenshots/theme_light.png)
-
 
 ## Thanks
 
