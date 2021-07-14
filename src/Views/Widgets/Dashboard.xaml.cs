@@ -213,7 +213,7 @@ namespace SourceGit.Views.Widgets {
                         MakeBranchNode(b, localBranches, folders, states, "locals/");
                     } else {
                         var r = remoteBranches.Find(x => x.Name == b.Remote);
-                        if (r != null) MakeBranchNode(b, r.Children, folders, states, "remotes/");
+                        if (r != null) MakeBranchNode(b, r.Children, folders, states, $"remotes/{b.Remote}/");
                     }
                 }
 
