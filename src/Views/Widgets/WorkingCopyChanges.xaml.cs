@@ -686,15 +686,15 @@ namespace SourceGit.Views.Widgets {
         #endregion
 
         #region EVENTS
-        private void SelectWholeTree(object sender, ExecutedRoutedEventArgs e) {
-            modeTree.SelectAll();
-        }
-        
-        private void StageChange(object sender, ExecutedRoutedEventArgs e) {
-            if (!IsUnstaged) {
-                UnstageSelected();
-            } else {
-                StageSelected();
+        private void OnChangePreviewKeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Space && Keyboard.Modifiers == ModifierKeys.None) {
+                if (!IsUnstaged) {
+                    UnstageSelected();
+                } else {
+                    StageSelected();
+                }
+
+                e.Handled = true;
             }
         }
 

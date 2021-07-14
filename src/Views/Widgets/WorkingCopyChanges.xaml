@@ -25,22 +25,8 @@
             MultiSelection="True"
             ItemsSource="{Binding ElementName=me, Path=Nodes}"
             SelectionChanged="OnTreeSelectionChanged"
+            PreviewKeyDown="OnChangePreviewKeyDown"
             Visibility="Visible">
-            <TreeView.Resources>
-                <RoutedUICommand x:Key="SelectWholeTreeCommand" Text="SelectWholeTree"/>
-                <RoutedUICommand x:Key="StageChangeCommand" Text="StageChange"/>
-            </TreeView.Resources>
-
-            <TreeView.InputBindings>
-                <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectWholeTreeCommand}"/>
-                <KeyBinding Key="Space" Command="{StaticResource StageChangeCommand}"/>
-            </TreeView.InputBindings>
-
-            <TreeView.CommandBindings>
-                <CommandBinding Command="{StaticResource SelectWholeTreeCommand}" Executed="SelectWholeTree"/>
-                <CommandBinding Command="{StaticResource StageChangeCommand}" Executed="StageChange"/>
-            </TreeView.CommandBindings>
-            
             <controls:Tree.ItemContainerStyle>
                 <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
@@ -95,6 +81,7 @@
             SelectionUnit="FullRow"
             SelectionChanged="OnListSelectionChanged"
             SizeChanged="OnListSizeChanged"
+            PreviewKeyDown="OnChangePreviewKeyDown"
             ItemsSource="{Binding ElementName=me, Path=Changes}"
             RowStyle="{StaticResource Style.DataGridRow.Change}"
             Visibility="Collapsed">
@@ -123,6 +110,7 @@
             SelectionUnit="FullRow"
             SelectionChanged="OnGridSelectionChanged"
             SizeChanged="OnGridSizeChanged"
+            PreviewKeyDown="OnChangePreviewKeyDown"
             ItemsSource="{Binding ElementName=me, Path=Changes}"
             RowStyle="{StaticResource Style.DataGridRow.Change}"
             Visibility="Collapsed">

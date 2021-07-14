@@ -48,12 +48,7 @@ namespace SourceGit.Views.Controls {
         public List<object> Selected {
             get;
             set;
-        }
-
-        public Tree() {
-            Selected = new List<object>();
-            PreviewMouseDown += OnPreviewMouseDown;
-        }
+        } = new List<object>();
 
         public TreeItem FindItem(DependencyObject elem) {
             if (elem == null) return null;
@@ -102,21 +97,18 @@ namespace SourceGit.Views.Controls {
             }
         }
 
-        private TreeItem FindItemByDataContext(ItemsControl control, object data) {
-            if (control == null) return null;
+        protected override void OnPreviewKeyDown(KeyEventArgs e) {
+            base.OnPreviewKeyDown(e);
 
-            for (int i = 0; i < control.Items.Count; i++) {
-                var child = control.ItemContainerGenerator.ContainerFromIndex(i) as TreeItem;
-                if (control.Items[i] == data) return child;
-
-                var found = FindItemByDataContext(child, data);
-                if (found != null) return found;
+            if (MultiSelection && e.Key == Key.A && Keyboard.Modifiers == ModifierKeys.Control) {
+                SelectAll();
+                e.Handled = true;
             }
-
-            return null;
         }
 
-        private void OnPreviewMouseDown(object sender, MouseButtonEventArgs e) {
+        protected override void OnPreviewMouseDown(MouseButtonEventArgs e) {
+            base.OnPreviewMouseDown(e);
+
             var hit = VisualTreeHelper.HitTest(this, e.GetPosition(this));
             if (hit == null || hit.VisualHit == null) return;
 
@@ -155,6 +147,20 @@ namespace SourceGit.Views.Controls {
                 if (item.IsChecked && Selected.Count == 1) return;
                 AddSelected(item, true);
             }
+        }
+
+        private TreeItem FindItemByDataContext(ItemsControl control, object data) {
+            if (control == null) return null;
+
+            for (int i = 0; i < control.Items.Count; i++) {
+                var child = control.ItemContainerGenerator.ContainerFromIndex(i) as TreeItem;
+                if (control.Items[i] == data) return child;
+
+                var found = FindItemByDataContext(child, data);
+                if (found != null) return found;
+            }
+
+            return null;
         }
 
         private void AddSelected(TreeItem item, bool removeOthers) {
