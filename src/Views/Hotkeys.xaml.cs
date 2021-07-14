@@ -24,6 +24,7 @@ namespace SourceGit.Views {
                 new Keymap("CTRL + [1-9]", "SwitchTo"),
                 new Keymap("CTRL + F", "Search"),
                 new Keymap("F5", "Refresh"),
+                new Keymap("SPACE", "ToggleStage"),
             };
         }
 

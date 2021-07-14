@@ -463,6 +463,7 @@
     <sys:String x:Key="Text.Hotkeys.SwitchTo">切换到指定位置的标签页</sys:String>
     <sys:String x:Key="Text.Hotkeys.Search">打开/隐藏搜索框（仅在仓库页起效）</sys:String>
     <sys:String x:Key="Text.Hotkeys.Refresh">重新加载当前仓库信息（仅在仓库页起效）</sys:String>
+    <sys:String x:Key="Text.Hotkeys.ToggleStage">暂存或从暂存中移除当前选中</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
     <sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>

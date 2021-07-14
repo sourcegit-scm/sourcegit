@@ -464,6 +464,7 @@
     <sys:String x:Key="Text.Hotkeys.SwitchTo">Switch to page at given index</sys:String>
     <sys:String x:Key="Text.Hotkeys.Search">Toggle search bar if possible</sys:String>
     <sys:String x:Key="Text.Hotkeys.Refresh">Reload current repository if possible</sys:String>
+    <sys:String x:Key="Text.Hotkeys.ToggleStage">Stage or unstage selected files</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>
