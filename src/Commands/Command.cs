@@ -68,7 +68,7 @@ namespace SourceGit.Commands {
 
             if (!string.IsNullOrEmpty(Cwd)) start.WorkingDirectory = Cwd;
 
-            var progressFilter = new Regex(@"\d+\%");
+            var progressFilter = new Regex(@"\s\d+%\s");
             var errs = new List<string>();
             var proc = new Process() { StartInfo = start };
             var isCancelled = false;

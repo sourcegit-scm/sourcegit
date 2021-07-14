@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              mc:Ignorable="d" 
              Width="Auto" Height="Auto">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -25,7 +26,16 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Text="{StaticResource Text.Launcher.Error}" FontWeight="Bold"/>
-                            <TextBlock Grid.Row="1" Margin="0,8" Text="{Binding}" TextWrapping="Wrap"/>
+                            <controls:TextEdit
+                                Grid.Row="1"
+                                Text="{Binding Path=., Mode=OneWay}"
+                                IsReadOnly="true"
+                                BorderThickness="0"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto"
+                                MaxHeight="80"
+                                Margin="0,8"
+                                VerticalAlignment="Top"/>
                             <Button 
                                 Grid.Row="2" 
                                 Height="25"
