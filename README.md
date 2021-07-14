@@ -47,3 +47,4 @@
 * [Rwing](https://gitee.com/rwing) GitFlow: add an option to keep branch after finish
 * [XiaoLinger](https://gitee.com/LingerNN) 纠正弹出框文本配置方式
 * [Jai](https://gitee.com/abel) 启动恢复上次浏览页面功能
+* [Jai](https://gitee.com/abel) 修复不同remote分支结构生成错误的BUG
