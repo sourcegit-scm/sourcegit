@@ -11,7 +11,7 @@ namespace SourceGit.Views.Popups {
         private string basedOn = null;
 
         public string BranchName { get; set; } = "";
-        public bool AutoStash { get; set; } = false;
+        public bool AutoStash { get; set; } = true;
 
         public CreateBranch(Models.Repository repo, Models.Branch branch) {
             this.repo = repo.Path;
