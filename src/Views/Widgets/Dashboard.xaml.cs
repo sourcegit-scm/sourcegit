@@ -113,9 +113,9 @@ namespace SourceGit.Views.Widgets {
         private void BackupBranchExpandState(Dictionary<string, bool> states, List<BranchNode> nodes, string prefix) {
             foreach (var node in nodes) {
                 if (node.Type != BranchNodeType.Branch) {
-                    var id = prefix + node.Name + "/";
+                    var id = string.Concat(prefix, "/", node.Name);
                     states[id] = node.IsExpanded;
-                    BackupBranchExpandState(states, node.Children, id + "/");
+                    BackupBranchExpandState(states, node.Children, id);
                 }
             }
         }
@@ -138,7 +138,7 @@ namespace SourceGit.Views.Widgets {
             BranchNode lastFolder = null;
             string path = prefix;
             for (int i = 0; i < subs.Length - 1; i++) {
-                path = path + subs[i] + "/";
+                path = string.Concat(path, "/", subs[i]);
                 if (folders.ContainsKey(path)) {
                     lastFolder = folders[path];
                 } else if (lastFolder == null) {
@@ -189,8 +189,8 @@ namespace SourceGit.Views.Widgets {
                 repo.Remotes = new Commands.Remotes(repo.Path).Result();
 
                 var states = new Dictionary<string, bool>();
-                BackupBranchExpandState(states, localBranches, "locals/");
-                BackupBranchExpandState(states, remoteBranches, "remotes/");
+                BackupBranchExpandState(states, localBranches, "locals");
+                BackupBranchExpandState(states, remoteBranches, "remotes");
 
                 var folders = new Dictionary<string, BranchNode>();
                 localBranches = new List<BranchNode>();
@@ -210,10 +210,10 @@ namespace SourceGit.Views.Widgets {
 
                 foreach (var b in repo.Branches) {
                     if (b.IsLocal) {
-                        MakeBranchNode(b, localBranches, folders, states, "locals/");
+                        MakeBranchNode(b, localBranches, folders, states, "locals");
                     } else {
                         var r = remoteBranches.Find(x => x.Name == b.Remote);
-                        if (r != null) MakeBranchNode(b, r.Children, folders, states, $"remotes/{b.Remote}/");
+                        if (r != null) MakeBranchNode(b, r.Children, folders, states, $"remotes/{b.Remote}");
                     }
                 }
 

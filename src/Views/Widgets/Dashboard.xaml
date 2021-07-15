@@ -214,14 +214,14 @@
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Folder}"/>
-                                        <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="True"/>
+                                        <Condition Binding="{Binding IsExpanded, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="True"/>
                                     </MultiDataTrigger.Conditions>
                                     <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
                                 </MultiDataTrigger>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Folder}"/>
-                                        <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="False"/>
+                                        <Condition Binding="{Binding IsExpanded, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="False"/>
                                     </MultiDataTrigger.Conditions>
                                     <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Fill}"/>
                                 </MultiDataTrigger>
@@ -250,6 +250,7 @@
                     SelectionChanged="OnTreeSelectionChanged">
                     <controls:Tree.ItemContainerStyle>
                         <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
                             <EventSetter Event="ContextMenuOpening" Handler="OnTreeContextMenuOpening"/>
                         </Style>
                     </controls:Tree.ItemContainerStyle>
@@ -290,14 +291,14 @@
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Folder}"/>
-                                        <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="True"/>
+                                        <Condition Binding="{Binding IsExpanded, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="True"/>
                                     </MultiDataTrigger.Conditions>
                                     <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
                                 </MultiDataTrigger>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding Type}" Value="{x:Static widgets:Dashboard+BranchNodeType.Folder}"/>
-                                        <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="False"/>
+                                        <Condition Binding="{Binding IsExpanded, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}}" Value="False"/>
                                     </MultiDataTrigger.Conditions>
                                     <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Fill}"/>
                                 </MultiDataTrigger>
