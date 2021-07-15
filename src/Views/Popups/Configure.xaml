@@ -12,6 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -40,5 +41,16 @@
             Text="{Binding ElementName=me, Path=UserEmail, Mode=TwoWay}"
             Height="24"
             Placeholder="{StaticResource Text.Configure.Email.Placeholder}"/>
+
+        <TextBlock
+            Grid.Row="2" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{StaticResource Text.Configure.Proxy}"
+            HorizontalAlignment="Right"/>
+        <controls:TextEdit
+            Grid.Row="2" Grid.Column="1"
+            Text="{Binding ElementName=me, Path=Proxy, Mode=TwoWay}"
+            Height="24"
+            Placeholder="{StaticResource Text.Configure.Proxy.Placeholder}"/>
     </Grid>
 </controls:PopupWidget>

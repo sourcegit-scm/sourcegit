@@ -92,6 +92,8 @@
     <sys:String x:Key="Text.Configure.User.Placeholder">User name for this repository</sys:String>
     <sys:String x:Key="Text.Configure.Email">Email :</sys:String>
     <sys:String x:Key="Text.Configure.Email.Placeholder">Email address</sys:String>
+    <sys:String x:Key="Text.Configure.Proxy">Proxy :</sys:String>
+    <sys:String x:Key="Text.Configure.Proxy.Placeholder">HTTP proxy used by this repository</sys:String>
 
     <sys:String x:Key="Text.CreateBranch">Create Branch</sys:String>
     <sys:String x:Key="Text.CreateBranch.Title">Create Local Branch</sys:String>
