@@ -24,7 +24,7 @@
                     <Grid>
                         <Border Background="{DynamicResource Brush.Popup}" BorderThickness="0" Margin="4">
                             <Border.Effect>
-                                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Color="Black" Opacity=".6"/>
+                                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Color="Black" Opacity=".8"/>
                             </Border.Effect>
                         </Border>
                         <StackPanel IsItemsHost="True" Margin="6" KeyboardNavigation.DirectionalNavigation="Cycle"/>
@@ -74,7 +74,7 @@
                     <Grid>
                         <Border Background="{DynamicResource Brush.Popup}" BorderThickness="0" Margin="4">
                             <Border.Effect>
-                                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Color="Black" Opacity=".6"/>
+                                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Color="Black" Opacity=".8"/>
                             </Border.Effect>
                         </Border>
 
