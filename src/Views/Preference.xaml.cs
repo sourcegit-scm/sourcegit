@@ -1,5 +1,4 @@
 using Microsoft.Win32;
-using Ookii.Dialogs.Wpf;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,7 +61,7 @@ namespace SourceGit.Views {
         }
 
         private void SelectGitCloneDir(object sender, RoutedEventArgs e) {
-            var dialog = new VistaFolderBrowserDialog();
+            var dialog = new Controls.FolderDialog();
             if (dialog.ShowDialog() == true) {
                 Models.Preference.Instance.Git.DefaultCloneDir = dialog.SelectedPath;
                 txtGitCloneDir?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();

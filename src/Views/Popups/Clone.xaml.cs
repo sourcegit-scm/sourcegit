@@ -1,4 +1,3 @@
-using Ookii.Dialogs.Wpf;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -55,7 +54,7 @@ namespace SourceGit.Views.Popups {
         }
 
         private void OnFolderSelectorClick(object sender, System.Windows.RoutedEventArgs e) {
-            var dialog = new VistaFolderBrowserDialog();
+            var dialog = new Controls.FolderDialog();
             if (dialog.ShowDialog() == true) {
                 Folder = dialog.SelectedPath;
                 txtFolder.GetBindingExpression(TextBox.TextProperty).UpdateTarget();

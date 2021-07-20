@@ -15,6 +15,7 @@
     <sys:String x:Key="Text.Filter">FILTER</sys:String>
     <sys:String x:Key="Text.Optional">Optional.</sys:String>
     <sys:String x:Key="Text.FakeFolderFilter">Directory|*.this.directory</sys:String>
+    <sys:String x:Key="Text.OpenFolder">SELECT FOLDER</sys:String>
 
     <sys:String x:Key="Text.URL">URL :</sys:String>
     <sys:String x:Key="Text.RepositoryURL">Git Repository URL</sys:String>

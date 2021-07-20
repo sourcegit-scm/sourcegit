@@ -1,4 +1,3 @@
-using Ookii.Dialogs.Wpf;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -48,7 +47,7 @@ namespace SourceGit.Views.Widgets {
 
         #region FUNC_EVENTS
         private void OnOpenClicked(object sender, RoutedEventArgs e) {
-            var dialog = new VistaFolderBrowserDialog();
+            var dialog = new Controls.FolderDialog();
             if (dialog.ShowDialog() == true) CheckAndOpen(dialog.SelectedPath);
         }
 

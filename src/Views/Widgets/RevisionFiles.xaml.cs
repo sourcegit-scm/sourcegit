@@ -1,4 +1,3 @@
-using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -296,7 +295,7 @@ namespace SourceGit.Views.Widgets {
             saveAs.Header = App.Text("SaveAs");
             saveAs.IsEnabled = node.Type == Models.ObjectType.Blob;
             saveAs.Click += (obj, ev) => {
-                var dialog = new VistaFolderBrowserDialog();
+                var dialog = new Controls.FolderDialog();
                 if (dialog.ShowDialog() == true) {
                     var full = Path.Combine(dialog.SelectedPath, Path.GetFileName(node.Path));
                     new Commands.SaveRevisionFile(repo, node.Path, sha, full).Exec();

@@ -14,6 +14,7 @@
     <sys:String x:Key="Text.Filter">过滤</sys:String>
     <sys:String x:Key="Text.Optional">选填</sys:String>
     <sys:String x:Key="Text.FakeFolderFilter">路径|*.this.directory</sys:String>
+    <sys:String x:Key="Text.OpenFolder">选择文件夹</sys:String>
 
     <sys:String x:Key="Text.URL">仓库地址 ：</sys:String>
     <sys:String x:Key="Text.RepositoryURL">远程仓库地址</sys:String>
