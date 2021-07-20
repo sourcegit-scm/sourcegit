@@ -112,17 +112,13 @@
             </DataGrid>
 
             <!-- Official site -->
-            <TextBlock HorizontalAlignment="Center" Margin="0,4">
-                <Hyperlink NavigateUri="https://gitee.com/sourcegit/sourcegit.git" RequestNavigate="OnRequestNavigate">
-                    <Run Text="https://gitee.com/sourcegit/sourcegit.git"/>
+            <TextBlock HorizontalAlignment="Center" Margin="0,4,0,16">
+                <TextBlock Text="© 2021" Margin="0" Padding="0"/>
+                <Hyperlink NavigateUri="https://gitee.com/sourcegit/sourcegit.git" RequestNavigate="OnRequestNavigate" ToolTip="https://gitee.com/sourcegit/sourcegit.git">
+                    <Run Text="SourceGit."/>
                 </Hyperlink>
+                <TextBlock Text="All rights reserved." Margin="0" Padding="0"/>
             </TextBlock>
-
-            <!-- Copyrights -->
-            <TextBlock
-                Margin="0,4,0,16"
-                Text="Copyright © sourcegit 2021. All rights reserved."
-                HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </controls:Window>
