@@ -13,7 +13,7 @@
         </Style>
     </UserControl.Resources>
     
-    <Border BorderBrush="{StaticResource Brush.Border2}" BorderThickness="1">
+    <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="26"/>
@@ -21,7 +21,7 @@
             </Grid.RowDefinitions>
             
             <!-- Tool Bar -->
-            <Border x:Name="toolbar" Grid.Row="0" BorderBrush="{StaticResource Brush.Border2}" BorderThickness="0,0,0,1">
+            <Border x:Name="toolbar" Grid.Row="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1">
                 <Grid Margin="8,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -46,22 +46,22 @@
                             Width="14" Height="14"
                             Margin="4,0"
                             Icon="{StaticResource Icon.Down}"
-                            ToolTip="{StaticResource Text.Diff.Next}"
+                            ToolTip="{DynamicResource Text.Diff.Next}"
                             Click="GotoNextChange"/>
                         
                         <controls:IconButton
                             Width="14" Height="14"
                             Margin="4,0"
                             Icon="{StaticResource Icon.Up}"
-                            ToolTip="{StaticResource Text.Diff.Prev}"
+                            ToolTip="{DynamicResource Text.Diff.Prev}"
                             Click="GotoPrevChange"/>
 
                         <ToggleButton
                             Width="14" Height="14"
                             Margin="4,0"
                             Style="{StaticResource Style.ToggleButton.SplitDirection}"
-                            Foreground="{StaticResource Brush.FG1}"
-                            ToolTip="{StaticResource Text.Diff.Mode}"
+                            Foreground="{DynamicResource Brush.FG1}"
+                            ToolTip="{DynamicResource Text.Diff.Mode}"
                             IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.UseCombinedDiff, Mode=TwoWay}"
                             Checked="OnDiffViewModeChanged" Unchecked="OnDiffViewModeChanged"/>
 
@@ -69,7 +69,7 @@
                             Width="14" Height="14"
                             Margin="4,0,0,0"
                             Icon="{StaticResource Icon.DiffWith}"
-                            ToolTip="{StaticResource Text.Diff.UseMerger}"
+                            ToolTip="{DynamicResource Text.Diff.UseMerger}"
                             Click="OpenWithMerger"/>
                     </StackPanel>
                 </Grid>
@@ -82,21 +82,21 @@
                 </Grid.ColumnDefinitions>
             </Grid>
 
-            <Border x:Name="sizeChange" Grid.Row="1" Background="{StaticResource Brush.Window}">
+            <Border x:Name="sizeChange" Grid.Row="1" Background="{DynamicResource Brush.Window}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" TextElement.FontFamily="Consolas">
                     <TextBlock 
                         x:Name="txtSizeChangeTitle" 
-                        Text="{StaticResource Text.Diff.Binary}" 
+                        Text="{DynamicResource Text.Diff.Binary}" 
                         Margin="0,0,0,32" 
                         FontSize="18" FontWeight="UltraBold" 
-                        Foreground="{StaticResource Brush.FG2}" 
+                        Foreground="{DynamicResource Brush.FG2}" 
                         HorizontalAlignment="Center"/>
                     
                     <Path 
                         x:Name="iconSizeChange" 
                         Width="64" Height="64" 
                         Data="{StaticResource Icon.Binary}" 
-                        Fill="{StaticResource Brush.FG2}"/>
+                        Fill="{DynamicResource Brush.FG2}"/>
                     
                     <Grid Margin="0,16,0,0" HorizontalAlignment="Center">
                         <Grid.RowDefinitions>
@@ -110,34 +110,34 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{StaticResource Text.Diff.Binary.Old}" Foreground="{StaticResource Brush.FG2}" TextElement.FontSize="18" TextElement.FontWeight="UltraBold"/>
-                        <TextBlock Grid.Row="0" Grid.Column="2" x:Name="txtOldSize" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right" TextElement.FontSize="18" TextElement.FontWeight="UltraBold"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{StaticResource Text.Diff.Binary.New}" Foreground="{StaticResource Brush.FG2}" TextElement.FontSize="18" TextElement.FontWeight="UltraBold"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" x:Name="txtNewSize" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right" TextElement.FontSize="18" TextElement.FontWeight="UltraBold"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Text.Diff.Binary.Old}" Foreground="{DynamicResource Brush.FG2}" TextElement.FontSize="18" TextElement.FontWeight="UltraBold"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" x:Name="txtOldSize" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" TextElement.FontSize="18" TextElement.FontWeight="UltraBold"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource Text.Diff.Binary.New}" Foreground="{DynamicResource Brush.FG2}" TextElement.FontSize="18" TextElement.FontWeight="UltraBold"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" x:Name="txtNewSize" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" TextElement.FontSize="18" TextElement.FontWeight="UltraBold"/>
                     </Grid>
                 </StackPanel>
             </Border>
 
-            <Border x:Name="noChange" Grid.Row="1" Background="{StaticResource Brush.Window}">
+            <Border x:Name="noChange" Grid.Row="1" Background="{DynamicResource Brush.Window}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <Path Width="64" Height="64" Data="{StaticResource Icon.Check}" Fill="{StaticResource Brush.FG2}"/>
+                    <Path Width="64" Height="64" Data="{StaticResource Icon.Check}" Fill="{DynamicResource Brush.FG2}"/>
                     <TextBlock 
                         Margin="0,16,0,0" 
-                        Text="{StaticResource Text.Diff.NoChange}" 
+                        Text="{DynamicResource Text.Diff.NoChange}" 
                         FontSize="18" FontWeight="UltraBold"
-                        Foreground="{StaticResource Brush.FG2}"
+                        Foreground="{DynamicResource Brush.FG2}"
                         HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
-            <Border x:Name="mask" Grid.Row="0" Grid.RowSpan="2" Background="{StaticResource Brush.Window}">
+            <Border x:Name="mask" Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource Brush.Window}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <Path Width="64" Height="64" Data="{StaticResource Icon.Diff}" Fill="{StaticResource Brush.FG2}"/>
+                    <Path Width="64" Height="64" Data="{StaticResource Icon.Diff}" Fill="{DynamicResource Brush.FG2}"/>
                     <TextBlock 
                         Margin="0,16,0,0" 
-                        Text="{StaticResource Text.Diff.Welcome}" 
+                        Text="{DynamicResource Text.Diff.Welcome}" 
                         FontSize="18" FontWeight="UltraBold" TextOptions.TextFormattingMode="Ideal"
-                        Foreground="{StaticResource Brush.FG2}"
+                        Foreground="{DynamicResource Brush.FG2}"
                         HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>

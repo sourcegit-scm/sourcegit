@@ -109,6 +109,7 @@ namespace SourceGit.Views.Controls {
         private double startY = 0;
 
         public CommitGraph() {
+            Models.Theme.AddListener(this, InvalidateVisual);
             IsHitTestVisible = false;
             ClipToBounds = true;
         }

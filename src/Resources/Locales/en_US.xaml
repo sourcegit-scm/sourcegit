@@ -16,12 +16,13 @@
     <sys:String x:Key="Text.Optional">Optional.</sys:String>
     <sys:String x:Key="Text.FakeFolderFilter">Directory|*.this.directory</sys:String>
     <sys:String x:Key="Text.OpenFolder">SELECT FOLDER</sys:String>
+    <sys:String x:Key="Text.ThemeSwitcher">DARK/LIGHT THEME</sys:String>
 
     <sys:String x:Key="Text.URL">URL :</sys:String>
     <sys:String x:Key="Text.RepositoryURL">Git Repository URL</sys:String>
     <sys:String x:Key="Text.ParentFolder">Parent Folder :</sys:String>
     <sys:String x:Key="Text.ParentFolder.Placeholder">Relative foler to store this module. Optional.</sys:String>
-    
+
     <sys:String x:Key="Text.About">ABOUT</sys:String>
     <sys:String x:Key="Text.About.Title">SourceGit - OPEN SOURCE GIT CLIENT</sys:String>
 
@@ -361,10 +362,8 @@
 
     <sys:String x:Key="Text.Preference">Preference</sys:String>
     <sys:String x:Key="Text.Preference.General">GENERAL SETTING</sys:String>
-    <sys:String x:Key="Text.Preference.RestartRequired">RESTART REQUIRED</sys:String>
     <sys:String x:Key="Text.Preference.Locale">Language :</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server :</sys:String>
-    <sys:String x:Key="Text.Preference.UseDark">Use dark theme</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">Check for update</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">Restore windows</sys:String>

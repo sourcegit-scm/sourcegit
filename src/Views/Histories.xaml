@@ -9,7 +9,7 @@
     xmlns:models="clr-namespace:SourceGit.Models"
     xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
     mc:Ignorable="d"
-    Title="{StaticResource Text.FileHistory}"
+    Title="{DynamicResource Text.FileHistory}"
     WindowStartupLocation="CenterOwner"
     MinHeight="600" MinWidth="800">
     <Grid>
@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title Bar -->
-        <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
+        <Grid Grid.Row="0" Background="{DynamicResource Brush.TitleBar}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -32,7 +32,7 @@
             <Path Grid.Column="0" Margin="6,0" Width="16" Height="16" Data="{StaticResource Icon.Histories}"/>
 
             <!-- Title -->
-            <TextBlock Grid.Column="1" Text="{StaticResource Text.FileHistory}"/>
+            <TextBlock Grid.Column="1" Text="{DynamicResource Text.FileHistory}"/>
 
             <!-- Window Commands -->
             <StackPanel Grid.Column="3" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
@@ -46,7 +46,7 @@
             Grid.Row="1"
             Height="1"
             HorizontalAlignment="Stretch"
-            Fill="{StaticResource Brush.Border0}"/>
+            Fill="{DynamicResource Brush.Border0}"/>
 
         <!-- Body -->
         <Grid Grid.Row="2">
@@ -60,8 +60,8 @@
             <DataGrid
                 x:Name="commitList"
                 Grid.Column="0"
-                Background="{StaticResource Brush.Contents}"
-                BorderBrush="{StaticResource Brush.Border0}"
+                Background="{DynamicResource Brush.Contents}"
+                BorderBrush="{DynamicResource Brush.Border0}"
                 BorderThickness="0,0,1,0"
                 SelectionMode="Single"
                 SelectionUnit="FullRow"
@@ -70,7 +70,7 @@
                     <DataGridTemplateColumn Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate DataType="{x:Type models:Commit}">
-                                <Border BorderBrush="{StaticResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4">
+                                <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="36"/>
@@ -107,7 +107,7 @@
                                                     Grid.Column="1" 
                                                     Text="{Binding Author.Time}" 
                                                     FontSize="9pt" FontFamily="Consolas"
-                                                    Foreground="{StaticResource Brush.FG2}" 
+                                                    Foreground="{DynamicResource Brush.FG2}" 
                                                     Margin="4,0,0,0" 
                                                     HorizontalAlignment="Right"/>
                                             </Grid>

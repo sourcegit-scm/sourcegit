@@ -36,8 +36,8 @@ namespace SourceGit.Views.Controls {
 
         public ChangeDisplaySwitcher() {
             icon = new Path();
-            icon.Fill = FindResource("Brush.FG2") as Brush;
             icon.Data = FindResource("Icon.Tree") as Geometry;
+            icon.SetResourceReference(Path.FillProperty, "Brush.FG2");
 
             Content = icon;
             Style = FindResource("Style.Button") as Style;
@@ -73,8 +73,8 @@ namespace SourceGit.Views.Controls {
             var iconMode = new Path();
             iconMode.Width = 12;
             iconMode.Height = 12;
-            iconMode.Fill = FindResource("Brush.FG2") as Brush;
             iconMode.Data = FindResource(icon) as Geometry;
+            iconMode.SetResourceReference(Path.FillProperty, "Brush.FG2");
 
             var item = new MenuItem();
             item.Icon = iconMode;

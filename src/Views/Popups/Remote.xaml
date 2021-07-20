@@ -23,13 +23,13 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Remote.Name}"
+            Text="{DynamicResource Text.Remote.Name}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="0" Grid.Column="1"
             x:Name="txtName"
             Height="24"
-            Placeholder="{StaticResource Text.Remote.Name.Placeholder}">
+            Placeholder="{DynamicResource Text.Remote.Name.Placeholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="RemoteName" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -42,13 +42,13 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Remote.URL}"
+            Text="{DynamicResource Text.Remote.URL}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="1" Grid.Column="1"
             x:Name="txtUrl"
             Height="24"
-            Placeholder="{StaticResource Text.Remote.URL.Placeholder}">
+            Placeholder="{DynamicResource Text.Remote.URL.Placeholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="RemoteURL" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>

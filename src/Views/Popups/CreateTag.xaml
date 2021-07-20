@@ -24,7 +24,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.CreateTag.BasedOn}"
+            Text="{DynamicResource Text.CreateTag.BasedOn}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -37,13 +37,13 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.CreateTag.Name}"
+            Text="{DynamicResource Text.CreateTag.Name}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="1" Grid.Column="1"
             x:Name="txtTagName"
             Height="24"
-            Placeholder="{StaticResource Text.CreateTag.Name.Placeholder}">
+            Placeholder="{DynamicResource Text.CreateTag.Name.Placeholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="TagName" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -56,14 +56,14 @@
         <TextBlock
             Grid.Row="2" Grid.Column="0"
             Margin="0,6,8,0"
-            Text="{StaticResource Text.CreateTag.Message}"
+            Text="{DynamicResource Text.CreateTag.Message}"
             HorizontalAlignment="Right" VerticalAlignment="Top"/>
         <controls:TextEdit
             Grid.Row="2" Grid.Column="1"
             Text="{Binding ElementName=me, Path=Message, Mode=TwoWay}"
             Height="56" Padding="0,2"
             AcceptsReturn="True"
-            Placeholder="{StaticResource Text.CreateTag.Message.Placeholder}"
+            Placeholder="{DynamicResource Text.CreateTag.Message.Placeholder}"
             PlaceholderBaseline="Top"/>
     </Grid>
 </controls:PopupWidget>

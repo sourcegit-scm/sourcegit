@@ -24,13 +24,13 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.URL}"
+            Text="{DynamicResource Text.URL}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="0" Grid.Column="1"
             x:Name="txtURL"
             Height="24"
-            Placeholder="{StaticResource Text.RepositoryURL}">
+            Placeholder="{DynamicResource Text.RepositoryURL}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="URL" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -43,13 +43,13 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.ParentFolder}"
+            Text="{DynamicResource Text.ParentFolder}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="1" Grid.Column="1"
             x:Name="txtPath"
             Height="24"
-            Placeholder="{StaticResource Text.ParentFolder.Placeholder}">
+            Placeholder="{DynamicResource Text.ParentFolder.Placeholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="Path" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -64,6 +64,6 @@
             Margin="0,4,0,0"
             x:Name="chkNested"
             IsChecked="True"
-            Content="{StaticResource Text.Submodule.FetchNested}"/>
+            Content="{DynamicResource Text.Submodule.FetchNested}"/>
     </Grid>
 </controls:PopupWidget>

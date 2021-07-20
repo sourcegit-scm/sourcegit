@@ -20,7 +20,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.DeleteRemote.Remote}"
+            Text="{DynamicResource Text.DeleteRemote.Remote}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"

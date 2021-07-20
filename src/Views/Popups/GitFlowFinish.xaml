@@ -36,6 +36,6 @@
             Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
             x:Name="chkKeep"
             IsChecked="False"
-            Content="{StaticResource Text.GitFlow.KeepBranchAfterFinish}"/>
+            Content="{DynamicResource Text.GitFlow.KeepBranchAfterFinish}"/>
     </Grid>
 </controls:PopupWidget>

@@ -24,14 +24,14 @@
 
         <TextBlock
             Grid.Row="0" Grid.Column="0" 
-            Text="{StaticResource Text.Clone.RemoteURL}"
+            Text="{DynamicResource Text.Clone.RemoteURL}"
             Margin="0,0,4,0"
             HorizontalAlignment="Right"/>
         <controls:TextEdit 
             Grid.Row="0" Grid.Column="1"
             x:Name="txtUrl"
             Height="24"
-            Placeholder="{StaticResource Text.Clone.RemoteURL.Placeholder}">
+            Placeholder="{DynamicResource Text.Clone.RemoteURL.Placeholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="Uri" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -43,7 +43,7 @@
 
         <TextBlock
             Grid.Row="1" Grid.Column="0" 
-            Text="{StaticResource Text.Clone.Folder}"
+            Text="{DynamicResource Text.Clone.Folder}"
             Margin="0,0,4,0"
             HorizontalAlignment="Right"/>
         <Grid Grid.Row="1" Grid.Column="1">
@@ -56,7 +56,7 @@
                 Grid.Column="0"
                 x:Name="txtFolder"
                 Height="24"
-                Placeholder="{StaticResource Text.Clone.Folder.Placeholder}">
+                Placeholder="{DynamicResource Text.Clone.Folder.Placeholder}">
                 <controls:TextEdit.Text>
                     <Binding ElementName="me" Path="Folder" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                         <Binding.ValidationRules>
@@ -71,21 +71,21 @@
                 Click="OnFolderSelectorClick"
                 Width="24" Height="24"
                 Margin="2,0,0,0" Padding="4"
-                BorderBrush="{StaticResource Brush.Border1}"
+                BorderBrush="{DynamicResource Brush.Border1}"
                 BorderThickness="1"
                 Icon="{StaticResource Icon.Folder.Open}"/>
         </Grid>
 
         <TextBlock
             Grid.Row="2" Grid.Column="0" 
-            Text="{StaticResource Text.Clone.LocalName}"
+            Text="{DynamicResource Text.Clone.LocalName}"
             Margin="0,0,4,0"
             HorizontalAlignment="Right"/>
         <controls:TextEdit 
             Grid.Row="2" Grid.Column="1"
             Height="24"
             x:Name="txtLocal"
-            Placeholder="{StaticResource Text.Clone.LocalName.Placeholder}">
+            Placeholder="{DynamicResource Text.Clone.LocalName.Placeholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="LocalName" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -97,14 +97,14 @@
 
         <TextBlock
             Grid.Row="3" Grid.Column="0" 
-            Text="{StaticResource Text.Clone.RemoteName}"
+            Text="{DynamicResource Text.Clone.RemoteName}"
             Margin="0,0,4,0"
             HorizontalAlignment="Right"/>
         <controls:TextEdit 
             Grid.Row="3" Grid.Column="1"
             x:Name="txtRemote"
             Height="24"
-            Placeholder="{StaticResource Text.Clone.RemoteName.Placeholder}">
+            Placeholder="{DynamicResource Text.Clone.RemoteName.Placeholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="RemoteName" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -116,13 +116,13 @@
 
         <TextBlock
             Grid.Row="4" Grid.Column="0" 
-            Text="{StaticResource Text.Clone.AdditionalParam}"
+            Text="{DynamicResource Text.Clone.AdditionalParam}"
             Margin="0,0,4,0"
             HorizontalAlignment="Right"/>
         <controls:TextEdit 
             Grid.Row="4" Grid.Column="1"
             Height="24"
-            Placeholder="{StaticResource Text.Clone.AdditionalParam.Placeholder}"
+            Placeholder="{DynamicResource Text.Clone.AdditionalParam.Placeholder}"
             Text="{Binding ElementName=me, Path=ExtraArgs, Mode=TwoWay}"/>
     </Grid>
 </controls:PopupWidget>

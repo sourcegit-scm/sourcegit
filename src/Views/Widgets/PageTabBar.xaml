@@ -20,8 +20,8 @@
             x:Name="leftScroller"
             Click="ScrollLeft"
             Width="18" Padding="5"
-            HoverBackground="{StaticResource Brush.Accent1}"
-            BorderBrush="{StaticResource Brush.Border0}"
+            HoverBackground="{DynamicResource Brush.Accent1}"
+            BorderBrush="{DynamicResource Brush.Border0}"
             BorderThickness="0,0,1,0"
             Icon="{StaticResource Icon.ScrollLeft}"
             WindowChrome.IsHitTestVisibleInChrome="True"
@@ -53,7 +53,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                        <Border x:Name="Border" Background="Transparent" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,1,0">
+                                        <Border x:Name="Border" Background="Transparent" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,1,0">
                                             <StackPanel Margin="8,0" x:Name="Contents" Orientation="Horizontal" VerticalAlignment="Center" Opacity=".5" ToolTip="{Binding Tooltip}">
                                                 <controls:Bookmark
                                                     Width="14" Height="14"
@@ -72,15 +72,15 @@
                                                     Click="CloseTab"
                                                     Width="16" Height="16"
                                                     Margin="4,0,0,0" Padding="4"
-                                                    ToolTip="{StaticResource Text.Close}"
+                                                    ToolTip="{DynamicResource Text.Close}"
                                                     Icon="{StaticResource Icon.Close}"
-                                                    HoverBackground="{StaticResource Brush.NewPageHover}"/>
+                                                    HoverBackground="{DynamicResource Brush.NewPageHover}"/>
                                             </StackPanel>
                                         </Border>
 
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsSelected" Value="True">
-                                                <Setter TargetName="Border" Property="Background" Value="{StaticResource Brush.Window}"/>
+                                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource Brush.Window}"/>
                                                 <Setter TargetName="Contents" Property="Opacity" Value="1"/>
                                             </Trigger>
                                             <MultiTrigger>
@@ -105,8 +105,8 @@
                     Width="20" Height="20"
                     Margin="4,0" Padding="4"
                     Icon="{StaticResource Icon.NewTab}"
-                    HoverBackground="{StaticResource Brush.NewPageHover}"
-                    ToolTip="{StaticResource Text.PageSwitcher.New}"
+                    HoverBackground="{DynamicResource Brush.NewPageHover}"
+                    ToolTip="{DynamicResource Text.PageSwitcher.New}"
                     Click="NewTab"
                     WindowChrome.IsHitTestVisibleInChrome="True"/>
             </StackPanel>
@@ -118,8 +118,8 @@
             x:Name="rightScroller"
             Click="ScrollRight"
             Width="18" Padding="5"
-            HoverBackground="{StaticResource Brush.Accent1}"
-            BorderBrush="{StaticResource Brush.Border0}"
+            HoverBackground="{DynamicResource Brush.Accent1}"
+            BorderBrush="{DynamicResource Brush.Border0}"
             BorderThickness="1,0"
             Icon="{StaticResource Icon.ScrollRight}"
             WindowChrome.IsHitTestVisibleInChrome="True"

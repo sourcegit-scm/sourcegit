@@ -12,7 +12,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid Height="Auto" Width="300" Margin="8">
-                        <Border Background="{StaticResource Brush.Window}" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="1">
+                        <Border Background="{DynamicResource Brush.Window}" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="1">
                             <Border.Effect>
                                 <DropShadowEffect ShadowDepth="0" Opacity=".5"/>
                             </Border.Effect>
@@ -25,7 +25,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Text="{StaticResource Text.Launcher.Error}" FontWeight="Bold"/>
+                            <TextBlock Grid.Row="0" Text="{DynamicResource Text.Launcher.Error}" FontWeight="Bold"/>
                             <controls:TextEdit
                                 Grid.Row="1"
                                 Text="{Binding Path=., Mode=OneWay}"
@@ -41,9 +41,9 @@
                                 Height="25"
                                 Margin="4,0" Padding="8,0" 
                                 Click="Dismiss" 
-                                Content="{StaticResource Text.Close}"
-                                Background="{StaticResource Brush.Accent1}"
-                                BorderBrush="{StaticResource Brush.FG1}"
+                                Content="{DynamicResource Text.Close}"
+                                Background="{DynamicResource Brush.Accent1}"
+                                BorderBrush="{DynamicResource Brush.FG1}"
                                 BorderThickness="1"
                                 HorizontalAlignment="Right"/>
                         </Grid>

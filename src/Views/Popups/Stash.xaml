@@ -21,18 +21,18 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Stash.Message}"
+            Text="{DynamicResource Text.Stash.Message}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="0" Grid.Column="1"
             x:Name="txtMessage"
             Height="24"
-            Placeholder="{StaticResource Text.Stash.Message.Placeholder}"/>
+            Placeholder="{DynamicResource Text.Stash.Message.Placeholder}"/>
         <CheckBox 
             Grid.Row="1" Grid.Column="1"
             Margin="0,4,0,0"
             x:Name="chkIncludeUntracked"
             IsChecked="True"
-            Content="{StaticResource Text.Stash.IncludeUntracked}"/>
+            Content="{DynamicResource Text.Stash.IncludeUntracked}"/>
     </Grid>
 </controls:PopupWidget>

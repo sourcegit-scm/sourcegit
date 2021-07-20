@@ -25,7 +25,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.SubTreePullOrPush.Prefix}"
+            Text="{DynamicResource Text.SubTreePullOrPush.Prefix}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -38,7 +38,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.SubTreePullOrPush.Source}"
+            Text="{DynamicResource Text.SubTreePullOrPush.Source}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="1" Grid.Column="1"
@@ -51,7 +51,7 @@
         <TextBlock
             Grid.Row="2" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.SubTreePullOrPush.Branch}"
+            Text="{DynamicResource Text.SubTreePullOrPush.Branch}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit 
             Grid.Row="2" Grid.Column="1"
@@ -71,6 +71,6 @@
             Margin="0,4,0,0"
             x:Name="chkSquash"
             IsChecked="True"
-            Content="{StaticResource Text.SubTreePullOrPush.Squash}"/>
+            Content="{DynamicResource Text.SubTreePullOrPush.Squash}"/>
     </Grid>
 </controls:PopupWidget>

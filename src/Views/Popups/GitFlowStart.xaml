@@ -28,7 +28,7 @@
             Grid.Row="0" Grid.Column="1"
             x:Name="txtBranchName"
             Height="24"
-            Placeholder="{StaticResource Text.GitFlow.StartPlaceholder}">
+            Placeholder="{DynamicResource Text.GitFlow.StartPlaceholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="BranchName" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>

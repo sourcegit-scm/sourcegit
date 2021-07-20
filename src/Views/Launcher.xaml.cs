@@ -69,6 +69,10 @@ namespace SourceGit.Views {
         #endregion
 
         #region RIGHT_COMMANDS
+        private void ChangeTheme(object sender, RoutedEventArgs e) {
+            Models.Theme.Change();
+        }
+
         private void OpenPreference(object sender, RoutedEventArgs e) {
             var dialog = new Preference() { Owner = this };
             dialog.ShowDialog();

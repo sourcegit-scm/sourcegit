@@ -23,7 +23,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Archive.Revision}"
+            Text="{DynamicResource Text.Archive.Revision}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -36,7 +36,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Archive.File}"
+            Text="{DynamicResource Text.Archive.File}"
             HorizontalAlignment="Right"/>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>
@@ -48,7 +48,7 @@
                 Grid.Column="0"
                 x:Name="txtSaveTo"
                 Height="24"
-                Placeholder="{StaticResource Text.Archive.File.Placeholder}">
+                Placeholder="{DynamicResource Text.Archive.File.Placeholder}">
                 <controls:TextEdit.Text>
                     <Binding Path="SaveTo" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                         <Binding.ValidationRules>

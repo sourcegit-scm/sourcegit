@@ -26,7 +26,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Fetch.Remote}"
+            Text="{DynamicResource Text.Fetch.Remote}"
             HorizontalAlignment="Right"/>
         <ComboBox
             Grid.Row="0" Grid.Column="1"
@@ -47,11 +47,11 @@
                   Margin="0,4,0,0"
                   x:Name="chkFetchAll"
                   IsChecked="True"
-                  Content="{StaticResource Text.Fetch.AllRemotes}"/>
+                  Content="{DynamicResource Text.Fetch.AllRemotes}"/>
 
         <CheckBox Grid.Row="2" Grid.Column="1"
                   x:Name="chkPrune"
                   IsChecked="True"
-                  Content="{StaticResource Text.Fetch.Prune}"/>
+                  Content="{DynamicResource Text.Fetch.Prune}"/>
     </Grid>
 </controls:PopupWidget>

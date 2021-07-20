@@ -62,6 +62,7 @@ namespace SourceGit.Views.Widgets {
         private List<Rectangle> splitters = new List<Rectangle>();
 
         public DiffViewer() {
+            Models.Theme.AddListener(this, Reload);
             InitializeComponent();
             Reset();
         }
@@ -222,6 +223,7 @@ namespace SourceGit.Views.Widgets {
                 block.Style = block.IsContent ? FontStyles.Normal : FontStyles.Italic;
                 block.OldLine = line.OldLine;
                 block.NewLine = line.NewLine;
+
 
                 if (line.OldLine.Length > 0) lastOldLine = line.OldLine;
                 if (line.NewLine.Length > 0) lastNewLine = line.NewLine;
@@ -402,10 +404,10 @@ namespace SourceGit.Views.Widgets {
         private void AddSplitter(int column, double offset) {
             var split = new Rectangle();
             split.Width = 1;
-            split.Fill = FindResource("Brush.Border2") as Brush;
             split.HorizontalAlignment = HorizontalAlignment.Left;
             split.Margin = new Thickness(offset, 0, 0, 0);
             split.SetValue(Grid.ColumnProperty, column);
+            split.SetResourceReference(Rectangle.FillProperty, "Brush.Border2");
 
             textDiff.Children.Add(split);
             splitters.Add(split);

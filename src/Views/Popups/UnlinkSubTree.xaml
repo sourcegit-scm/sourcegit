@@ -21,7 +21,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.UnlinkSubTree.Prefix}"
+            Text="{DynamicResource Text.UnlinkSubTree.Prefix}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -34,7 +34,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="1"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.UnlinkSubTree.Tips}"
+            Text="{DynamicResource Text.UnlinkSubTree.Tips}"
             HorizontalAlignment="Left"/>
     </Grid>
 </controls:PopupWidget>

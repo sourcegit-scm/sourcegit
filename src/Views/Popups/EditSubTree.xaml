@@ -23,7 +23,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.EditSubTree.Prefix}"
+            Text="{DynamicResource Text.EditSubTree.Prefix}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -36,7 +36,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.EditSubTree.Source}"
+            Text="{DynamicResource Text.EditSubTree.Source}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit 
             Grid.Row="1" Grid.Column="1"

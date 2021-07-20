@@ -20,18 +20,18 @@
                     Margin="0,48,0,0" 
                     Width="100" Height="100" 
                     Data="{StaticResource Icon.Git}" 
-                    Fill="{StaticResource Brush.Logo}"/>
+                    Fill="{DynamicResource Brush.Logo}"/>
 
                 <!-- Welcome -->
                 <TextBlock
                     Margin="0,16"
                     HorizontalAlignment="Center" 
-                    Text="{StaticResource Text.Welcome.Title}"
+                    Text="{DynamicResource Text.Welcome.Title}"
                     FontSize="24pt"
                     FontWeight="ExtraBold"
                     TextOptions.TextFormattingMode="Ideal"
                     TextOptions.TextRenderingMode="ClearType"
-                    Foreground="{StaticResource Brush.FG2}"/>
+                    Foreground="{DynamicResource Brush.FG2}"/>
 
                 <!-- Options -->
                 <Grid>
@@ -44,20 +44,20 @@
                     <Button Grid.Column="0" Click="OnOpenClicked" Height="28">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="16" Height="16" Data="{StaticResource Icon.Folder.Open}"/>
-                            <TextBlock Margin="12,0,0,0" Text="{StaticResource Text.Welcome.OpenOrInit}"/>
+                            <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.OpenOrInit}"/>
                         </StackPanel>
                     </Button>
 
                     <Button Grid.Column="2" Click="OnCloneClicked" Height="28">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="16" Height="16" Data="{StaticResource Icon.Pull}"/>
-                            <TextBlock Margin="12,0,0,0" Text="{StaticResource Text.Welcome.Clone}"/>
+                            <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.Clone}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
 
                 <!-- Horizontal line -->
-                <Rectangle Height="1" Margin="0,36,0,8" Fill="{StaticResource Brush.Border1}"/>
+                <Rectangle Height="1" Margin="0,36,0,8" Fill="{DynamicResource Brush.Border1}"/>
 
                 <!-- Labels -->
                 <Grid>
@@ -69,15 +69,15 @@
 
                     <TextBlock 
                         Grid.Column="0" 
-                        Text="{StaticResource Text.Welcome.Repositories}" 
+                        Text="{DynamicResource Text.Welcome.Repositories}" 
                         FontSize="13pt" FontWeight="ExtraBold" FontFamily="Consolas,Microsoft YaHei UI"
-                        Foreground="{StaticResource Brush.FG2}"/>
+                        Foreground="{DynamicResource Brush.FG2}"/>
                     
                     <TextBlock 
                         Grid.Column="2" 
-                        Text="{StaticResource Text.Welcome.DragDrop}" 
+                        Text="{DynamicResource Text.Welcome.DragDrop}" 
                         FontSize="10pt" FontFamily="Consolas,Microsoft YaHei UI"
-                        Foreground="{StaticResource Brush.FG2}"/>
+                        Foreground="{DynamicResource Brush.FG2}"/>
                 </Grid>
             </StackPanel>
             
@@ -86,7 +86,7 @@
                 Grid.Row="1"
                 x:Name="dropArea"
                 Margin="0,2"
-                Stroke="{StaticResource Brush.Border1}"
+                Stroke="{DynamicResource Brush.Border1}"
                 StrokeThickness="2"
                 StrokeDashArray="4,4"
                 SnapsToDevicePixels="True"
@@ -129,7 +129,7 @@
 
                                 <StackPanel Grid.Column="1" x:Name="Contents" Orientation="Horizontal">
                                     <TextBlock Margin="8,0" FontSize="9pt" FontFamily="Consolas,Microsoft YaHei UI" Text="{Binding Name}"/>
-                                    <TextBlock x:Name="Path" Text="{Binding Id}" Foreground="{StaticResource Brush.FG2}"/>
+                                    <TextBlock x:Name="Path" Text="{Binding Id}" Foreground="{DynamicResource Brush.FG2}"/>
                                 </StackPanel>
 
                                 <controls:TextEdit 

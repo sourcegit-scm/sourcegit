@@ -30,7 +30,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Apply.File}"
+            Text="{DynamicResource Text.Apply.File}"
             HorizontalAlignment="Right"/>
         <Grid
             Grid.Row="0" Grid.Column="1">
@@ -43,7 +43,7 @@
                 Grid.Column="0"
                 x:Name="txtPath"
                 Height="24"
-                Placeholder="{StaticResource Text.Apply.File.Placeholder}">
+                Placeholder="{DynamicResource Text.Apply.File.Placeholder}">
                 <controls:TextEdit.Text>
                     <Binding Path="File" ElementName="me" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                         <Binding.ValidationRules>
@@ -64,7 +64,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Apply.WS}"
+            Text="{DynamicResource Text.Apply.WS}"
             HorizontalAlignment="Right"/>
         <ComboBox
             Grid.Row="1" Grid.Column="1"
@@ -78,7 +78,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="20">
                         <TextBlock Text="{Binding Name}" Margin="4,0"/>
-                        <TextBlock Text="{Binding Desc}" Margin="4,0" FontSize="11" Foreground="{StaticResource Brush.FG2}"/>
+                        <TextBlock Text="{Binding Desc}" Margin="4,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
@@ -89,6 +89,6 @@
             Margin="0,4,0,0"
             x:Name="chkIngoreWS"
             IsChecked="True"
-            Content="{StaticResource Text.Apply.IgnoreWS}"/>
+            Content="{DynamicResource Text.Apply.IgnoreWS}"/>
     </Grid>
 </controls:PopupWidget>

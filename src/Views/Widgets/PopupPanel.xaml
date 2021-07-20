@@ -11,7 +11,7 @@
         
         <!-- Popup panel -->
         <Border
-            Background="{StaticResource Brush.Window}"
+            Background="{DynamicResource Brush.Window}"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Width="500"
@@ -27,15 +27,15 @@
                         <TextBlock Margin="8,8,0,18" x:Name="txtTitle" FontSize="18" FontWeight="DemiBold" TextOptions.TextFormattingMode="Ideal"/>
                         <ContentControl x:Name="container"/>
                         <StackPanel Margin="0,16,0,0" Height="32" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Click="Sure" Width="80" Content="{StaticResource Text.Sure}" BorderBrush="{StaticResource Brush.FG1}" Background="{StaticResource Brush.Accent1}"/>
-                            <Button Click="Cancel" Width="80" Margin="8,0,0,0" Content="{StaticResource Text.Cancel}"/>
+                            <Button Click="Sure" Width="80" Content="{DynamicResource Text.Sure}" BorderBrush="{DynamicResource Brush.FG1}" Background="{DynamicResource Brush.Accent1}"/>
+                            <Button Click="Cancel" Width="80" Margin="8,0,0,0" Content="{DynamicResource Text.Cancel}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
                 
                 
                 <!-- Progress mask -->
-                <Border x:Name="mask" Visibility="Collapsed" Background="{StaticResource Brush.Popup}" Opacity=".9">
+                <Border x:Name="mask" Visibility="Collapsed" Background="{DynamicResource Brush.Popup}" Opacity=".9">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <controls:Loading x:Name="processing" Width="48" Height="48"/>
                         <TextBlock x:Name="txtMsg" Margin="0,16,0,0"/>

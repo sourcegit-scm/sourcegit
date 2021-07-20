@@ -28,7 +28,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Pull.Remote}"
+            Text="{DynamicResource Text.Pull.Remote}"
             HorizontalAlignment="Right"/>
         <ComboBox
             Grid.Row="0" Grid.Column="1"
@@ -49,7 +49,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Pull.Branch}"
+            Text="{DynamicResource Text.Pull.Branch}"
             HorizontalAlignment="Right"/>
         <ComboBox
             Grid.Row="1" Grid.Column="1"
@@ -69,7 +69,7 @@
         <TextBlock
             Grid.Row="2" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Pull.Into}"
+            Text="{DynamicResource Text.Pull.Into}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="2" Grid.Column="1"
@@ -83,11 +83,11 @@
                   Margin="0,4,0,0"
                   x:Name="chkUseRebase"
                   IsChecked="True"
-                  Content="{StaticResource Text.Pull.UseRebase}"/>
+                  Content="{DynamicResource Text.Pull.UseRebase}"/>
 
         <CheckBox Grid.Row="4" Grid.Column="1"
                   x:Name="chkAutoStash"
                   IsChecked="True"
-                  Content="{StaticResource Text.Pull.AutoStash}"/>
+                  Content="{DynamicResource Text.Pull.AutoStash}"/>
     </Grid>
 </controls:PopupWidget>

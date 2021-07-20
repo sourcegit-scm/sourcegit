@@ -15,6 +15,7 @@
     <sys:String x:Key="Text.Optional">选填</sys:String>
     <sys:String x:Key="Text.FakeFolderFilter">路径|*.this.directory</sys:String>
     <sys:String x:Key="Text.OpenFolder">选择文件夹</sys:String>
+    <sys:String x:Key="Text.ThemeSwitcher">切换主题</sys:String>
 
     <sys:String x:Key="Text.URL">仓库地址 ：</sys:String>
     <sys:String x:Key="Text.RepositoryURL">远程仓库地址</sys:String>
@@ -360,10 +361,8 @@
 
     <sys:String x:Key="Text.Preference">偏好设置</sys:String>
     <sys:String x:Key="Text.Preference.General">通用配置</sys:String>
-    <sys:String x:Key="Text.Preference.RestartRequired">需要重启软件</sys:String>
     <sys:String x:Key="Text.Preference.Locale">显示语言 ：</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">头像服务 ：</sys:String>
-    <sys:String x:Key="Text.Preference.UseDark">启用暗色主题</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">启用检测更新</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">启用定时自动拉取远程更新</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">启动时恢复上次打开的仓库</sys:String>

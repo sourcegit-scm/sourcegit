@@ -23,7 +23,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Reset.Target}"
+            Text="{DynamicResource Text.Reset.Target}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -36,7 +36,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Reset.MoveTo}"
+            Text="{DynamicResource Text.Reset.MoveTo}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="1" Grid.Column="1"
@@ -49,7 +49,7 @@
         <TextBlock
             Grid.Row="2" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Reset.Mode}"
+            Text="{DynamicResource Text.Reset.Mode}"
             HorizontalAlignment="Right"/>
         <ComboBox
             Grid.Row="2" Grid.Column="1"
@@ -63,7 +63,7 @@
                     <StackPanel Orientation="Horizontal" Height="20">
                         <Path Width="12" Height="12" Margin="4,0,0,0" Fill="{Binding Color}" Data="M 0,0 A 180,180 180 1 1 1,1 Z"/>
                         <TextBlock Text="{Binding Name}" Margin="4,0"/>
-                        <TextBlock Text="{Binding Desc}" Margin="4,0" FontSize="11" Foreground="{StaticResource Brush.FG2}"/>
+                        <TextBlock Text="{Binding Desc}" Margin="4,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>

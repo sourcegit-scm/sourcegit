@@ -24,9 +24,9 @@
 
             <Border
                 Grid.Column="1"
-                BorderBrush="{StaticResource Brush.Border2}"
+                BorderBrush="{DynamicResource Brush.Border2}"
                 BorderThickness="1"
-                Background="{StaticResource Brush.Contents}"
+                Background="{DynamicResource Brush.Contents}"
                 CornerRadius="4">
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
@@ -49,7 +49,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Column="0" x:Name="txtStartSHA" Foreground="DarkOrange"/>
-                            <TextBlock Grid.Column="1" x:Name="txtStartTime" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
+                            <TextBlock Grid.Column="1" x:Name="txtStartTime" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
                         </Grid>
 
                         <TextBlock Grid.Row="1" x:Name="txtStartSubject" FontSize="10pt" FontFamily="Consolas,Microsoft YaHei UI" VerticalAlignment="Bottom"/>
@@ -60,7 +60,7 @@
             <Path 
                 Grid.Column="2" 
                 Width="16" Height="16" 
-                Fill="{StaticResource Brush.FG2}" 
+                Fill="{DynamicResource Brush.FG2}" 
                 Data="{StaticResource Icon.Down}" 
                 RenderTransformOrigin=".5,.5">
                 <Path.RenderTransform>
@@ -70,9 +70,9 @@
 
             <Border
                 Grid.Column="3"
-                BorderBrush="{StaticResource Brush.Border2}"
+                BorderBrush="{DynamicResource Brush.Border2}"
                 BorderThickness="1"
-                Background="{StaticResource Brush.Contents}"
+                Background="{DynamicResource Brush.Contents}"
                 CornerRadius="4">
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
@@ -95,7 +95,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Column="0" x:Name="txtEndSHA" Foreground="DarkOrange"/>
-                            <TextBlock Grid.Column="1" x:Name="txtEndTime" Foreground="{StaticResource Brush.FG2}" HorizontalAlignment="Right"/>
+                            <TextBlock Grid.Column="1" x:Name="txtEndTime" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
                         </Grid>
 
                         <TextBlock Grid.Row="1" x:Name="txtEndSubject" FontSize="10pt" FontFamily="Consolas,Microsoft YaHei UI" VerticalAlignment="Bottom"/>

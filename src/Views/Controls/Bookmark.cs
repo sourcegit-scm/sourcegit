@@ -69,14 +69,14 @@ namespace SourceGit.Views.Controls {
 
             if (!mark.IsNewPage) {                
                 if (mark.Color == 0) {
-                    mark.icon.Fill = mark.FindResource("Brush.FG1") as Brush;
+                    mark.icon.SetResourceReference(Path.FillProperty, "Brush.FG1");
                     mark.icon.Data = mark.FindResource("Icon.Git") as Geometry;
                 } else {
                     mark.icon.Fill = COLORS[mark.Color % COLORS.Length];
                     mark.icon.Data = mark.FindResource("Icon.Bookmark") as Geometry;
                 }
             } else {
-                mark.icon.Fill = mark.FindResource("Brush.FG1") as Brush;
+                mark.icon.SetResourceReference(Path.FillProperty, "Brush.FG1");
                 mark.icon.Data = mark.FindResource("Icon.WelcomePage") as Geometry;
             }
 

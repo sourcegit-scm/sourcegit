@@ -22,7 +22,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Rebase.Target}"
+            Text="{DynamicResource Text.Rebase.Target}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -35,7 +35,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Rebase.On}"
+            Text="{DynamicResource Text.Rebase.On}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="1" Grid.Column="1"
@@ -49,6 +49,6 @@
             Grid.Row="2" Grid.Column="1"
             x:Name="chkAutoStash"
             IsChecked="True"
-            Content="{StaticResource Text.Rebase.AutoStash}"/>
+            Content="{DynamicResource Text.Rebase.AutoStash}"/>
     </Grid>
 </controls:PopupWidget>

@@ -21,7 +21,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Revert.Commit}"
+            Text="{DynamicResource Text.Revert.Commit}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -36,6 +36,6 @@
             Margin="0,4,0,0"
             x:Name="chkCommit"
             IsChecked="True"
-            Content="{StaticResource Text.Revert.CommitChanges}"/>
+            Content="{DynamicResource Text.Revert.CommitChanges}"/>
     </Grid>
 </controls:PopupWidget>

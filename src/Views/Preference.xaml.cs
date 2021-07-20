@@ -15,12 +15,6 @@ namespace SourceGit.Views {
         public string CRLF { get; set; }
         public string MergeCmd { get; set; }
 
-        private string locale;
-        private string avatarServer;
-        private bool useDarkTheme;
-        private bool checkUpdate;
-        private bool autoFetch;
-
         public Preference() {
             if (Models.Preference.Instance.IsReady) {
                 User = new Commands.Config().Get("user.name");
@@ -36,16 +30,15 @@ namespace SourceGit.Views {
             var merger = Models.MergeTool.Supported.Find(x => x.Type == Models.Preference.Instance.MergeTool.Type);
             if (merger != null) MergeCmd = merger.Cmd;
 
-            locale = Models.Preference.Instance.General.Locale;
-            avatarServer = Models.Preference.Instance.General.AvatarServer;
-            useDarkTheme = Models.Preference.Instance.General.UseDarkTheme;
-            checkUpdate = Models.Preference.Instance.General.CheckForUpdate;
-            autoFetch = Models.Preference.Instance.General.AutoFetchRemotes;
-
             InitializeComponent();
         }
 
         #region EVENTS
+        private void LocaleChanged(object sender, SelectionChangedEventArgs e) {
+            Models.Locale.Change();
+            e.Handled = true;
+        }
+
         private void SelectGitPath(object sender, RoutedEventArgs e) {
             var dialog = new OpenFileDialog();
             dialog.Filter = "Git Executable|git.exe";
@@ -116,28 +109,7 @@ namespace SourceGit.Views {
             }
 
             Models.Preference.Save();
-
-            var general = Models.Preference.Instance.General;
-            if (locale != general.Locale ||
-                avatarServer != general.AvatarServer ||
-                useDarkTheme != general.UseDarkTheme ||
-                checkUpdate != general.CheckForUpdate ||
-                autoFetch != general.AutoFetchRemotes) {
-                var result = MessageBox.Show(
-                    this,
-                    App.Text("Restart.Content"),
-                    App.Text("Restart.Title"),
-                    MessageBoxButton.OKCancel,
-                    MessageBoxImage.Question,
-                    MessageBoxResult.Cancel);
-                if (result == MessageBoxResult.OK) {
-                    App.Restart();
-                } else {
-                    Close();
-                }
-            } else {
-                Close();
-            }
+            Close();
         }
         #endregion
     }

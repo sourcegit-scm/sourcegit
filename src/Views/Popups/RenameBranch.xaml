@@ -23,7 +23,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.RenameBranch.Target}"
+            Text="{DynamicResource Text.RenameBranch.Target}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -36,13 +36,13 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.RenameBranch.Name}"
+            Text="{DynamicResource Text.RenameBranch.Name}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="1" Grid.Column="1"
             x:Name="txtNewName"
             Height="24"
-            Placeholder="{StaticResource Text.RenameBranch.Name.Placeholder}">
+            Placeholder="{DynamicResource Text.RenameBranch.Name.Placeholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="NewName" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>

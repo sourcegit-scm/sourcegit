@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         
         <!-- Toolbar -->
-        <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,0,1">
+        <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -24,16 +24,16 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="6,0">
-                    <Button Click="Explore" Margin="6,0" ToolTip="{StaticResource Text.Dashboard.Explore.Tip}" BorderThickness="0">
+                    <Button Click="Explore" Margin="6,0" ToolTip="{DynamicResource Text.Dashboard.Explore.Tip}" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Folder.Open}"/>
-                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Explore}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Dashboard.Explore}"/>
                         </StackPanel>
                     </Button>
-                    <Button Click="Terminal" Margin="6,0" ToolTip="{StaticResource Text.Dashboard.Terminal.Tip}" BorderThickness="0">
+                    <Button Click="Terminal" Margin="6,0" ToolTip="{DynamicResource Text.Dashboard.Terminal.Tip}" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="13" Height="13" Data="{StaticResource Icon.Terminal}"/>
-                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Terminal}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Dashboard.Terminal}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -42,46 +42,46 @@
                     <Button Click="OpenFetch" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Fetch}"/>
-                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Fetch}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Fetch}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenPull" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Pull}"/>
-                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Pull}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Pull}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenPush" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Push}"/>
-                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Push}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Push}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenStash" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.SaveStash}"/>
-                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Stash}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Stash}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenApply" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Apply}"/>
-                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Apply}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Apply}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Click="OpenSearch" Margin="6,0" BorderThickness="0" ToolTip="{StaticResource Text.Dashboard.Search.Tip}">
+                    <Button Click="OpenSearch" Margin="6,0" BorderThickness="0" ToolTip="{DynamicResource Text.Dashboard.Search.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Search}"/>
-                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Dashboard.Search}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Dashboard.Search}"/>
                         </StackPanel>
                     </Button>
-                    <Button Click="OpenConfigure" Margin="6,0" BorderThickness="0" ToolTip="{StaticResource Text.Dashboard.Configure.Tip}">
+                    <Button Click="OpenConfigure" Margin="6,0" BorderThickness="0" ToolTip="{DynamicResource Text.Dashboard.Configure.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Setting}"/>
-                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Configure}"/>
+                            <TextBlock Margin="4,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Configure}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -118,12 +118,12 @@
                 </Grid.Resources>
 
                 <!-- Workspace -->
-                <TextBlock Grid.Row="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.Workspace}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
+                <TextBlock Grid.Row="0" Margin="8,0,0,0" Text="{DynamicResource Text.Dashboard.Workspace}" FontWeight="DemiBold" Foreground="{DynamicResource Brush.FG2}"/>
                 <ListView Grid.Row="1" x:Name="workspace" SelectionMode="Single" SelectionChanged="OnPageSelectionChanged">
                     <ListViewItem IsSelected="True">
                         <StackPanel Margin="16,0,0,0" Height="28" Orientation="Horizontal">
                             <Path Width="16" Height="16" Data="{StaticResource Icon.Histories}"/>
-                            <TextBlock Margin="8,0,0,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Histories}"/>
+                            <TextBlock Margin="8,0,0,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Histories}"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem>
@@ -134,7 +134,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Width="16" Height="16" Data="{StaticResource Icon.Send}"/>
-                            <TextBlock Grid.Column="1" Margin="8,0,0,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.WorkingCopy}"/>
+                            <TextBlock Grid.Column="1" Margin="8,0,0,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy}"/>
                             <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeLocalChanges"/>
                         </Grid>
                     </ListViewItem>
@@ -146,7 +146,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Width="16" Height="16" Data="{StaticResource Icon.Stashes}"/>
-                            <TextBlock Grid.Column="1" Margin="8,0,0,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{StaticResource Text.Stashes}"/>
+                            <TextBlock Grid.Column="1" Margin="8,0,0,0" FontFamily="Consolas,Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Stashes}"/>
                             <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeStashes"/>
                         </Grid>
                     </ListViewItem>
@@ -160,9 +160,9 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.LocalBranches}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
-                    <controls:IconButton Grid.Column="1" Click="OpenGitFlowPanel" Width="14" Height="14" Margin="8,0" Icon="{StaticResource Icon.Flow}" ToolTip="{StaticResource Text.GitFlow}"/>
-                    <controls:IconButton Grid.Column="2" Click="OpenNewBranch" Width="14" Height="14" Margin="0,0,2,0" Icon="{StaticResource Icon.Branch.Add}" ToolTip="{StaticResource Text.Dashboard.NewBranch}"/>
+                    <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{DynamicResource Text.Dashboard.LocalBranches}" FontWeight="DemiBold" Foreground="{DynamicResource Brush.FG2}"/>
+                    <controls:IconButton Grid.Column="1" Click="OpenGitFlowPanel" Width="14" Height="14" Margin="8,0" Icon="{StaticResource Icon.Flow}" ToolTip="{DynamicResource Text.GitFlow}"/>
+                    <controls:IconButton Grid.Column="2" Click="OpenNewBranch" Width="14" Height="14" Margin="0,0,2,0" Icon="{StaticResource Icon.Branch.Add}" ToolTip="{DynamicResource Text.Dashboard.NewBranch}"/>
                 </Grid>
                 <controls:Tree
                     Grid.Row="3"
@@ -199,7 +199,7 @@
                                     Margin="4,0"
                                     IsChecked="{Binding IsFiltered}"
                                     Style="{StaticResource Style.ToggleButton.Filter}"
-                                    ToolTip="{StaticResource Text.Filter}"
+                                    ToolTip="{DynamicResource Text.Filter}"
                                     Checked="OnFilterChanged" Unchecked="OnFilterChanged"/>
                             </Grid>
 
@@ -237,8 +237,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.Remotes}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
-                    <controls:IconButton Grid.Column="1" Click="OpenAddRemote" Width="14" Height="14" Margin="0,0,4,0" Icon="{StaticResource Icon.Remote.Add}" ToolTip="{StaticResource Text.Dashboard.Remotes.Add}"/>
+                    <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{DynamicResource Text.Dashboard.Remotes}" FontWeight="DemiBold" Foreground="{DynamicResource Brush.FG2}"/>
+                    <controls:IconButton Grid.Column="1" Click="OpenAddRemote" Width="14" Height="14" Margin="0,0,4,0" Icon="{StaticResource Icon.Remote.Add}" ToolTip="{DynamicResource Text.Dashboard.Remotes.Add}"/>
                 </Grid>
                 <controls:Tree
                     Grid.Row="5"
@@ -272,7 +272,7 @@
                                     Margin="4,0"
                                     IsChecked="{Binding IsFiltered}"
                                     Style="{StaticResource Style.ToggleButton.Filter}"
-                                    ToolTip="{StaticResource Text.Filter}"
+                                    ToolTip="{DynamicResource Text.Filter}"
                                     Checked="OnFilterChanged" Unchecked="OnFilterChanged"/>
                             </Grid>
 
@@ -319,9 +319,9 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.Tags}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
-                        <TextBlock Grid.Column="1" x:Name="txtTagCount" FontWeight="DemiBold" Margin="4,0,0,0" Foreground="{StaticResource Brush.FG2}"/>
-                        <controls:IconButton Grid.Column="2" Click="OpenNewTag" Width="14" Height="14" Margin="0,0,4,0" Icon="{StaticResource Icon.Tag.Add}" ToolTip="{StaticResource Text.Dashboard.Tags.Add}"/>
+                        <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{DynamicResource Text.Dashboard.Tags}" FontWeight="DemiBold" Foreground="{DynamicResource Brush.FG2}"/>
+                        <TextBlock Grid.Column="1" x:Name="txtTagCount" FontWeight="DemiBold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+                        <controls:IconButton Grid.Column="2" Click="OpenNewTag" Width="14" Height="14" Margin="0,0,4,0" Icon="{StaticResource Icon.Tag.Add}" ToolTip="{DynamicResource Text.Dashboard.Tags.Add}"/>
                     </Grid>
                 </ToggleButton>
                 <DataGrid
@@ -354,7 +354,7 @@
                                             IsChecked="{Binding IsFiltered, Mode=TwoWay}"
                                             Margin="0,0,4,0"
                                             Style="{StaticResource Style.ToggleButton.Filter}"
-                                            ToolTip="{StaticResource Text.Filter}"
+                                            ToolTip="{DynamicResource Text.Filter}"
                                             Checked="OnFilterChanged" Unchecked="OnFilterChanged"/>
                                     </Grid>
                                 </DataTemplate>
@@ -376,10 +376,10 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.Submodules}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
-                        <TextBlock Grid.Column="1" x:Name="txtSubmoduleCount" FontWeight="DemiBold" Margin="4,0,0,0" Foreground="{StaticResource Brush.FG2}"/>
-                        <controls:IconButton Grid.Column="2" Click="OpenAddSubmodule" Width="14" Height="14" Margin="8,0" Icon="{StaticResource Icon.Submodule}" ToolTip="{StaticResource Text.Dashboard.Remotes.Add}"/>
-                        <Button Grid.Column="3" Click="UpdateSubmodules" Background="Transparent" Margin="0,0,4,0" BorderThickness="0" ToolTip="{StaticResource Text.Dashboard.Submodules.Update}">
+                        <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{DynamicResource Text.Dashboard.Submodules}" FontWeight="DemiBold" Foreground="{DynamicResource Brush.FG2}"/>
+                        <TextBlock Grid.Column="1" x:Name="txtSubmoduleCount" FontWeight="DemiBold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+                        <controls:IconButton Grid.Column="2" Click="OpenAddSubmodule" Width="14" Height="14" Margin="8,0" Icon="{StaticResource Icon.Submodule}" ToolTip="{DynamicResource Text.Dashboard.Remotes.Add}"/>
+                        <Button Grid.Column="3" Click="UpdateSubmodules" Background="Transparent" Margin="0,0,4,0" BorderThickness="0" ToolTip="{DynamicResource Text.Dashboard.Submodules.Update}">
                             <controls:Loading x:Name="iconUpdateSubmodule" Width="14" Height="14" />
                         </Button>
                     </Grid>
@@ -426,9 +426,9 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{StaticResource Text.Dashboard.SubTrees}" FontWeight="DemiBold" Foreground="{StaticResource Brush.FG2}"/>
-                        <TextBlock Grid.Column="1" x:Name="txtSubTreeCount" FontWeight="DemiBold" Margin="4,0,0,0" Foreground="{StaticResource Brush.FG2}"/>
-                        <controls:IconButton Grid.Column="2" Click="OpenAddSubTree" Width="14" Height="14" Margin="0,0,4,0" Icon="{StaticResource Icon.TreeAddNode}" ToolTip="{StaticResource Text.Dashboard.SubTrees.Add}"/>
+                        <TextBlock Grid.Column="0" Margin="8,0,0,0" Text="{DynamicResource Text.Dashboard.SubTrees}" FontWeight="DemiBold" Foreground="{DynamicResource Brush.FG2}"/>
+                        <TextBlock Grid.Column="1" x:Name="txtSubTreeCount" FontWeight="DemiBold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+                        <controls:IconButton Grid.Column="2" Click="OpenAddSubTree" Width="14" Height="14" Margin="0,0,4,0" Icon="{StaticResource Icon.TreeAddNode}" ToolTip="{DynamicResource Text.Dashboard.SubTrees.Add}"/>
                     </Grid>
                 </ToggleButton>
                 <DataGrid
@@ -466,7 +466,7 @@
                 Grid.Column="1" 
                 Width="1" 
                 HorizontalAlignment="Center" VerticalAlignment="Stretch" 
-                Background="{StaticResource Brush.Border0}"/>
+                Background="{DynamicResource Brush.Border0}"/>
             
             <!-- Right -->
             <Grid Grid.Column="2">
@@ -475,7 +475,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" x:Name="mergeNavigator" Height="24" Background="{StaticResource Brush.Conflict}" Visibility="Collapsed">
+                <Grid Grid.Row="0" x:Name="mergeNavigator" Height="24" Background="{DynamicResource Brush.Conflict}" Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -488,33 +488,33 @@
                         x:Name="txtConflictTip" 
                         Margin="4,0" 
                         FontWeight="DemiBold" 
-                        Foreground="{StaticResource Brush.FG3}"/>
+                        Foreground="{DynamicResource Brush.FG3}"/>
                     <Button 
                         Grid.Column="1"
                         x:Name="btnResolve" 
                         Click="GotoResolve"
                         Width="80" 
                         Margin="2" 
-                        Content="{StaticResource Text.Dashboard.Resolve}" 
-                        Background="{StaticResource Brush.Window}"
-                        BorderBrush="{StaticResource Brush.FG1}"/>
+                        Content="{DynamicResource Text.Dashboard.Resolve}" 
+                        Background="{DynamicResource Brush.Window}"
+                        BorderBrush="{DynamicResource Brush.FG1}"/>
                     <Button 
                         Grid.Column="2" 
                         x:Name="btnContinue"
                         Click="ContinueMerge"
                         Width="80" 
                         Margin="2" 
-                        Content="{StaticResource Text.Dashboard.Continue}" 
-                        Background="{StaticResource Brush.Accent1}"
-                        BorderBrush="{StaticResource Brush.FG1}"/>
+                        Content="{DynamicResource Text.Dashboard.Continue}" 
+                        Background="{DynamicResource Brush.Accent1}"
+                        BorderBrush="{DynamicResource Brush.FG1}"/>
                     <Button 
                         Grid.Column="3"
                         Click="AbortMerge"
                         Width="80" 
                         Margin="2,2,4,2" 
-                        Content="{StaticResource Text.Dashboard.Abort}"
-                        Background="{StaticResource Brush.Window}"
-                        BorderBrush="{StaticResource Brush.FG1}"/>
+                        Content="{DynamicResource Text.Dashboard.Abort}"
+                        Background="{DynamicResource Brush.Window}"
+                        BorderBrush="{DynamicResource Brush.FG1}"/>
                 </Grid>
 
                 <controls:PageContainer Grid.Row="1" x:Name="pages"/>

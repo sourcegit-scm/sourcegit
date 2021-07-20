@@ -26,8 +26,9 @@ namespace SourceGit.Views.Controls {
             Height = 18;
             CornerRadius = new CornerRadius(9);
             VerticalAlignment = VerticalAlignment.Center;
-            Background = FindResource("Brush.Badge") as Brush;
             Visibility = Visibility.Collapsed;
+
+            SetResourceReference(BackgroundProperty, "Brush.Badge");
 
             label = new TextBlock();
             label.FontSize = 10;

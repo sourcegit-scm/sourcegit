@@ -25,18 +25,18 @@
             </Grid.RowDefinitions>
             
             <!-- Stashes List Group -->
-            <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,0,1">
+            <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1">
                 <StackPanel Orientation="Horizontal">
                     <Path
                         Margin="4,0"
                         Width="12" Height="12"
-                        Fill="{StaticResource Brush.FG2}"
+                        Fill="{DynamicResource Brush.FG2}"
                         Data="{StaticResource Icon.Stashes}"/>
 
                     <TextBlock
                         Margin="4,0,0,0"
-                        Text="{StaticResource Text.Stashes.Stashes}" 
-                        Foreground="{StaticResource Brush.FG2}" 
+                        Text="{DynamicResource Text.Stashes.Stashes}" 
+                        Foreground="{DynamicResource Brush.FG2}" 
                         FontWeight="Bold"/>
 
                     <controls:Loading
@@ -51,22 +51,22 @@
             <ListView
                 Grid.Row="1"
                 x:Name="stashList"
-                Background="{StaticResource Brush.Contents}"
+                Background="{DynamicResource Brush.Contents}"
                 BorderThickness="0"
                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 SelectionChanged="OnStashSelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:Stash}">
-                        <Border BorderBrush="{StaticResource Brush.Border3}" BorderThickness="0,0,0,1" Background="Transparent" Padding="6" ContextMenuOpening="OnStashContextMenuOpening">
+                        <Border BorderBrush="{DynamicResource Brush.Border3}" BorderThickness="0,0,0,1" Background="Transparent" Padding="6" ContextMenuOpening="OnStashContextMenuOpening">
                             <StackPanel Orientation="Vertical" TextElement.FontFamily="Consolas">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding SHA}" Foreground="{StaticResource Brush.FG2}" FontSize="11"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Author.Time}" Foreground="{StaticResource Brush.FG2}" FontSize="11"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding SHA}" Foreground="{DynamicResource Brush.FG2}" FontSize="11"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Author.Time}" Foreground="{DynamicResource Brush.FG2}" FontSize="11"/>
                                 </Grid>
                                 <TextBlock Text="{Binding Message}" Margin="0,8,0,0"/>
                             </StackPanel>
@@ -76,18 +76,18 @@
             </ListView>
             
             <!-- Change List Group -->
-            <Border Grid.Row="2" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,1">
+            <Border Grid.Row="2" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,1">
                 <StackPanel Orientation="Horizontal">
                     <Path
                         Margin="4,0"
                         Width="12" Height="12"
-                        Fill="{StaticResource Brush.FG2}"
+                        Fill="{DynamicResource Brush.FG2}"
                         Data="{StaticResource Icon.File}"/>
                     
                     <TextBlock
                         Margin="4,0,0,0"
-                        Text="{StaticResource Text.Stashes.Changes}" 
-                        Foreground="{StaticResource Brush.FG2}" 
+                        Text="{DynamicResource Text.Stashes.Changes}" 
+                        Foreground="{DynamicResource Brush.FG2}" 
                         FontWeight="Bold"/>
                 </StackPanel>
             </Border>
@@ -96,7 +96,7 @@
             <DataGrid
                 Grid.Row="3"
                 x:Name="changeList"
-                Background="{StaticResource Brush.Contents}"
+                Background="{DynamicResource Brush.Contents}"
                 RowHeight="24"
                 SelectionMode="Single"
                 SelectionUnit="FullRow"
@@ -121,7 +121,7 @@
         </Grid>
         
         <!-- Splitter -->
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="1" Background="{StaticResource Brush.Border0}"/>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="1" Background="{DynamicResource Brush.Border0}"/>
         
         <!-- Right -->
         <widgets:DiffViewer Grid.Column="2" x:Name="diffViewer" Margin="4"/>

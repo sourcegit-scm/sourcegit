@@ -41,19 +41,19 @@
 
                 <Border
                     Grid.Column="0" Grid.ColumnSpan="2"
-                    BorderBrush="{StaticResource Brush.Border2}"
+                    BorderBrush="{DynamicResource Brush.Border2}"
                     BorderThickness="1"/>
                 <Path
                     Grid.Column="0"
                     Width="14" Height="14"
-                    Fill="{StaticResource Brush.FG2}"
+                    Fill="{DynamicResource Brush.FG2}"
                     Data="{StaticResource Icon.Search}"
                     IsHitTestVisible="False"/>
                 <controls:TextEdit
                     Grid.Column="1"
                     Height="24"
                     Margin="0"
-                    Placeholder="{StaticResource Text.CommitViewer.Changes.Search}"
+                    Placeholder="{DynamicResource Text.CommitViewer.Changes.Search}"
                     BorderThickness="0"
                     TextChanged="SearchFilterChanged"/>
 
@@ -67,9 +67,9 @@
 
             <Border 
                 Grid.Row="1"
-                BorderBrush="{StaticResource Brush.Border2}" 
+                BorderBrush="{DynamicResource Brush.Border2}" 
                 BorderThickness="1" 
-                Background="{StaticResource Brush.Contents}">
+                Background="{DynamicResource Brush.Contents}">
                 <Grid x:Name="layerChanges">
                     <controls:Tree
                         x:Name="modeTree"
@@ -174,7 +174,7 @@
                             <DataGridTemplateColumn IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontFamily="Consolas" Margin="4,0,0,0" Text="{Binding Path, Converter={StaticResource PureFolderName}}" Foreground="{StaticResource Brush.FG2}"/>
+                                        <TextBlock FontFamily="Consolas" Margin="4,0,0,0" Text="{Binding Path, Converter={StaticResource PureFolderName}}" Foreground="{DynamicResource Brush.FG2}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     WindowStartupLocation="CenterOwner"
     ResizeMode="NoResize"
-    Title="{StaticResource Text.Preference}"
+    Title="{DynamicResource Text.Preference}"
     Width="500" SizeToContent="Height">
     <Grid>
         <Grid.RowDefinitions>
@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
             
         <!-- Title bar -->
-        <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
+        <Grid Grid.Row="0" Background="{DynamicResource Brush.TitleBar}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -32,7 +32,7 @@
             <Path Grid.Column="0" Width="14" Height="14" Margin="6,0" Data="{StaticResource Icon.Preference}"/>
                 
             <!-- Title -->
-            <TextBlock Grid.Column="1" Text="{StaticResource Text.Preference}"/>
+            <TextBlock Grid.Column="1" Text="{DynamicResource Text.Preference}"/>
                 
             <!-- Close -->
             <controls:IconButton 
@@ -47,13 +47,12 @@
         <Rectangle 
             Grid.Row="1"
             HorizontalAlignment="Stretch"
-            Fill="{StaticResource Brush.Border0}"/>
+            Fill="{DynamicResource Brush.Border0}"/>
 
         <!-- Body -->
         <Grid Grid.Row="2" Margin="16,8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="36"/>
-                <RowDefinition Height="28"/>
                 <RowDefinition Height="28"/>
                 <RowDefinition Height="28"/>
                 <RowDefinition Height="28"/>
@@ -80,21 +79,16 @@
             </Grid.ColumnDefinitions>
 
             <!-- General Group -->
-            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-                <TextBlock
-                    Text="{StaticResource Text.Preference.General}" 
-                    FontSize="16" FontWeight="DemiBold" 
-                    Foreground="{StaticResource Brush.FG2}"/>
-                <TextBlock 
-                    Text="{StaticResource Text.Preference.RestartRequired}" 
-                    Foreground="{StaticResource Brush.FG2}" 
-                    Margin="16,0"/>
-            </StackPanel>
+            <TextBlock
+                Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                Text="{DynamicResource Text.Preference.General}" 
+                FontSize="16" FontWeight="DemiBold" 
+                Foreground="{DynamicResource Brush.FG2}"/>
                 
             <!-- Language -->
             <TextBlock 
                 Grid.Row="1" Grid.Column="0" 
-                Text="{StaticResource Text.Preference.Locale}" 
+                Text="{DynamicResource Text.Preference.Locale}" 
                 HorizontalAlignment="Right"
                 Margin="0,0,6,0"/>
             <ComboBox 
@@ -103,12 +97,13 @@
                 ItemsSource="{Binding Source={x:Static models:Locale.Supported}}"
                 DisplayMemberPath="Name"
                 SelectedValuePath="Resource"
-                SelectedValue="{Binding Source={x:Static models:Preference.Instance}, Path=General.Locale, Mode=TwoWay}"/>
+                SelectedValue="{Binding Source={x:Static models:Preference.Instance}, Path=General.Locale, Mode=TwoWay}"
+                SelectionChanged="LocaleChanged"/>
                 
             <!-- Avatar -->
             <TextBlock 
                 Grid.Row="2" Grid.Column="0" 
-                Text="{StaticResource Text.Preference.AvatarServer}" 
+                Text="{DynamicResource Text.Preference.AvatarServer}" 
                 HorizontalAlignment="Right" 
                 Margin="0,0,6,0"/>
             <ComboBox 
@@ -118,45 +113,39 @@
                 DisplayMemberPath="Name"
                 SelectedValuePath="Url"
                 SelectedValue="{Binding Source={x:Static models:Preference.Instance}, Path=General.AvatarServer, Mode=TwoWay}"/>
-                
-            <!-- Use Dark Theme -->
-            <CheckBox
-                Grid.Row="3" Grid.Column="1"
-                Content="{StaticResource Text.Preference.UseDark}"
-                IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.UseDarkTheme, Mode=TwoWay}"/>
-                
+
             <!-- Enable Check For Update -->
             <CheckBox
-                Grid.Row="4" Grid.Column="1"
-                Content="{StaticResource Text.Preference.CheckUpdate}"
+                Grid.Row="3" Grid.Column="1"
+                Content="{DynamicResource Text.Preference.CheckUpdate}"
                 IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.CheckForUpdate, Mode=TwoWay}"/>
                 
             <!-- Auto Fetch -->
             <CheckBox
-                Grid.Row="5" Grid.Column="1"
-                Content="{StaticResource Text.Preference.AutoFetch}"
+                Grid.Row="4" Grid.Column="1"
+                Content="{DynamicResource Text.Preference.AutoFetch}"
                 IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.AutoFetchRemotes, Mode=TwoWay}"/>
 
             <!-- Restore Windows -->
             <CheckBox
-                Grid.Row="6" Grid.Column="1"
-                Content="{StaticResource Text.Preference.RestoreTabs}"
+                Grid.Row="5" Grid.Column="1"
+                Content="{DynamicResource Text.Preference.RestoreTabs}"
                 IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Restore.IsEnabled, Mode=TwoWay}"/>
 
             <!-- Git Group -->
             <TextBlock
-                Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
-                Text="{StaticResource Text.Preference.Git}"
+                Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
+                Text="{DynamicResource Text.Preference.Git}"
                 FontSize="16" FontWeight="DemiBold"
-                Foreground="{StaticResource Brush.FG2}"/>
+                Foreground="{DynamicResource Brush.FG2}"/>
                 
             <!-- Git Executable Path -->
             <TextBlock 
-                Grid.Row="9" Grid.Column="0" 
-                Text="{StaticResource Text.Preference.Git.Path}" 
+                Grid.Row="8" Grid.Column="0" 
+                Text="{DynamicResource Text.Preference.Git.Path}" 
                 HorizontalAlignment="Right" 
                 Margin="0,0,6,0"/>
-            <Grid Grid.Row="9" Grid.Column="1">
+            <Grid Grid.Row="8" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -167,23 +156,23 @@
                     x:Name="editGitPath"
                     Height="24"
                     Text="{Binding Source={x:Static models:Preference.Instance}, Path=Git.Path, Mode=TwoWay}"
-                    Placeholder="{StaticResource Text.Preference.Git.Path.Placeholder}"/>
+                    Placeholder="{DynamicResource Text.Preference.Git.Path.Placeholder}"/>
                 <controls:IconButton
                     Grid.Column="1"
                     Click="SelectGitPath"
                     Width="24" Height="24"
                     Margin="4,0,0,0" Padding="4"
-                    BorderThickness="1" BorderBrush="{StaticResource Brush.Border1}"
+                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                     Icon="{StaticResource Icon.Folder.Open}"/>
             </Grid>
                 
             <!-- Default Clone Dir -->
             <TextBlock 
-                Grid.Row="10" Grid.Column="0" 
-                Text="{StaticResource Text.Preference.Git.Dir}" 
+                Grid.Row="9" Grid.Column="0" 
+                Text="{DynamicResource Text.Preference.Git.Dir}" 
                 HorizontalAlignment="Right" 
                 Margin="0,0,6,0"/>
-            <Grid Grid.Row="10" Grid.Column="1">
+            <Grid Grid.Row="9" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -193,49 +182,49 @@
                     Grid.Column="0"
                     x:Name="txtGitCloneDir"
                     Height="24"
-                    Placeholder="{StaticResource Text.Preference.Git.Dir.Placeholder}"
+                    Placeholder="{DynamicResource Text.Preference.Git.Dir.Placeholder}"
                     Text="{Binding Source={x:Static models:Preference.Instance}, Path=Git.DefaultCloneDir, Mode=TwoWay}"/>
                 <controls:IconButton
                     Grid.Column="1"
                     Click="SelectGitCloneDir"
                     Width="24" Height="24"
                     Margin="4,0,0,0" Padding="4"
-                    BorderThickness="1" BorderBrush="{StaticResource Brush.Border1}"
+                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                     Icon="{StaticResource Icon.Folder.Open}"/>
             </Grid>
                 
             <!-- User -->
             <TextBlock 
+                Grid.Row="10" Grid.Column="0" 
+                Text="{DynamicResource Text.Preference.Git.User}" 
+                HorizontalAlignment="Right" 
+                Margin="0,0,6,0"/>
+            <controls:TextEdit
+                Grid.Row="10" Grid.Column="1"
+                Height="24"
+                Text="{Binding ElementName=me, Path=User, Mode=TwoWay}"
+                Placeholder="{DynamicResource Text.Preference.Git.User.Placeholder}"/>
+
+            <!-- Email -->
+            <TextBlock 
                 Grid.Row="11" Grid.Column="0" 
-                Text="{StaticResource Text.Preference.Git.User}" 
+                Text="{DynamicResource Text.Preference.Git.Email}" 
                 HorizontalAlignment="Right" 
                 Margin="0,0,6,0"/>
             <controls:TextEdit
                 Grid.Row="11" Grid.Column="1"
                 Height="24"
-                Text="{Binding ElementName=me, Path=User, Mode=TwoWay}"
-                Placeholder="{StaticResource Text.Preference.Git.User.Placeholder}"/>
-
-            <!-- Email -->
-            <TextBlock 
-                Grid.Row="12" Grid.Column="0" 
-                Text="{StaticResource Text.Preference.Git.Email}" 
-                HorizontalAlignment="Right" 
-                Margin="0,0,6,0"/>
-            <controls:TextEdit
-                Grid.Row="12" Grid.Column="1"
-                Height="24"
                 Text="{Binding ElementName=me, Path=Email, Mode=TwoWay}"
-                Placeholder="{StaticResource Text.Preference.Git.Email.Placeholder}"/>
+                Placeholder="{DynamicResource Text.Preference.Git.Email.Placeholder}"/>
                 
             <!-- CRLF -->
             <TextBlock 
-                Grid.Row="13" Grid.Column="0" 
-                Text="{StaticResource Text.Preference.Git.CRLF}" 
+                Grid.Row="12" Grid.Column="0" 
+                Text="{DynamicResource Text.Preference.Git.CRLF}" 
                 HorizontalAlignment="Right" 
                 Margin="0,0,6,0"/>
             <ComboBox 
-                Grid.Row="13" Grid.Column="1" 
+                Grid.Row="12" Grid.Column="1" 
                 Height="24"
                 ItemsSource="{Binding Source={x:Static models:CRLFOption.Supported}}"
                 SelectedValuePath="Value"
@@ -244,7 +233,7 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Height="20">
                             <TextBlock Text="{Binding Display}" Margin="2,0"/>
-                            <TextBlock Text="{Binding Desc}" Margin="8,0,0,0" FontSize="10" Foreground="{StaticResource Brush.FG2}"/>
+                            <TextBlock Text="{Binding Desc}" Margin="8,0,0,0" FontSize="10" Foreground="{DynamicResource Brush.FG2}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
@@ -252,19 +241,19 @@
 
             <!-- Merge Tool Group -->
             <TextBlock
-                Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2"
-                Text="{StaticResource Text.Preference.Merger}"
+                Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="2"
+                Text="{DynamicResource Text.Preference.Merger}"
                 FontSize="16" FontWeight="DemiBold"
-                Foreground="{StaticResource Brush.FG2}"/>
+                Foreground="{DynamicResource Brush.FG2}"/>
                 
             <!-- Merge Tool Type -->
             <TextBlock 
-                Grid.Row="16" Grid.Column="0" 
-                Text="{StaticResource Text.Preference.Merger.Type}" 
+                Grid.Row="15" Grid.Column="0" 
+                Text="{DynamicResource Text.Preference.Merger.Type}" 
                 HorizontalAlignment="Right" 
                 Margin="0,0,6,0"/>
             <ComboBox 
-                Grid.Row="16" Grid.Column="1" 
+                Grid.Row="15" Grid.Column="1" 
                 Height="24"
                 ItemsSource="{Binding Source={x:Static models:MergeTool.Supported}}"
                 DisplayMemberPath="Name"
@@ -274,11 +263,11 @@
 
             <!-- Merge Tool Executable Path -->
             <TextBlock 
-                Grid.Row="17" Grid.Column="0" 
-                Text="{StaticResource Text.Preference.Merger.Path}" 
+                Grid.Row="16" Grid.Column="0" 
+                Text="{DynamicResource Text.Preference.Merger.Path}" 
                 HorizontalAlignment="Right" 
                 Margin="0,0,6,0"/>
-            <Grid Grid.Row="17" Grid.Column="1">
+            <Grid Grid.Row="16" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -288,28 +277,28 @@
                     Grid.Column="0"
                     Height="24"
                     x:Name="txtMergeExec"
-                    Placeholder="{StaticResource Text.Preference.Merger.Path.Placeholder}"
+                    Placeholder="{DynamicResource Text.Preference.Merger.Path.Placeholder}"
                     Text="{Binding Source={x:Static models:Preference.Instance}, Path=MergeTool.Path, Mode=TwoWay}"/>
                 <controls:IconButton
                     Grid.Column="1"
                     Click="SelectMergeTool"
                     Width="24" Height="24"
                     Margin="4,0,0,0" Padding="4"
-                    BorderThickness="1" BorderBrush="{StaticResource Brush.Border1}"
+                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                     Icon="{StaticResource Icon.Folder.Open}"/>
             </Grid>
                 
             <!-- Merge Tool Command -->
             <TextBlock 
-                Grid.Row="18" Grid.Column="0"
-                Text="{StaticResource Text.Preference.Merger.Cmd}" 
+                Grid.Row="17" Grid.Column="0"
+                Text="{DynamicResource Text.Preference.Merger.Cmd}" 
                 HorizontalAlignment="Right" 
                 Margin="0,0,6,0"/>
             <TextBlock
-                Grid.Row="18" Grid.Column="1"
+                Grid.Row="17" Grid.Column="1"
                 x:Name="txtMergeCmd"
                 Text="{Binding ElementName=me, Path=MergeCmd}"
-                Foreground="{StaticResource Brush.FG2}"/>
+                Foreground="{DynamicResource Brush.FG2}"/>
         </Grid>
     </Grid>
 </controls:Window>

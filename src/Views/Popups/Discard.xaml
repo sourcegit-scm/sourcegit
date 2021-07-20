@@ -21,7 +21,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Discard.Changes}"
+            Text="{DynamicResource Text.Discard.Changes}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -33,7 +33,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="1"
             Margin="0,4,0,0"
-            Text="{StaticResource Text.Discard.Warning}"
-            Foreground="{StaticResource Brush.FG2}"/>
+            Text="{DynamicResource Text.Discard.Warning}"
+            Foreground="{DynamicResource Brush.FG2}"/>
     </Grid>
 </controls:PopupWidget>

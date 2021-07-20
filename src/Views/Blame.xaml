@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
     mc:Ignorable="d"
-    Title="{StaticResource Text.Blame}"
+    Title="{DynamicResource Text.Blame}"
     WindowStartupLocation="CenterOwner"
     Height="600" Width="800">
     <Grid>
@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title Bar -->
-        <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
+        <Grid Grid.Row="0" Background="{DynamicResource Brush.TitleBar}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -31,7 +31,7 @@
             <Path Grid.Column="0" Margin="6,0" Width="16" Height="16" Data="{StaticResource Icon.Commit}"/>
 
             <!-- Title -->
-            <TextBlock Grid.Column="1" Text="{StaticResource Text.Blame}"/>
+            <TextBlock Grid.Column="1" Text="{DynamicResource Text.Blame}"/>
 
             <!-- Window Commands -->
             <StackPanel Grid.Column="3" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
@@ -46,7 +46,7 @@
             Grid.Row="1"
             Height="1"
             HorizontalAlignment="Stretch"
-            Fill="{StaticResource Brush.Border0}"/>
+            Fill="{DynamicResource Brush.Border0}"/>
 
         <!-- Description -->
         <Border Grid.Row="2">
@@ -56,8 +56,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" x:Name="txtFile" FontSize="11" Foreground="{StaticResource Brush.FG2}" FontFamily="Consolas"/>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Foreground="{StaticResource Brush.FG2}" FontFamily="11" Text="{StaticResource Text.Blame.Tip}"/>
+                <TextBlock Grid.Column="0" x:Name="txtFile" FontSize="11" Foreground="{DynamicResource Brush.FG2}" FontFamily="Consolas"/>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Foreground="{DynamicResource Brush.FG2}" FontFamily="11" Text="{DynamicResource Text.Blame.Tip}"/>
             </Grid>
         </Border>
 
@@ -66,8 +66,8 @@
             Grid.Row="3"
             x:Name="blame"
             GridLinesVisibility="Vertical"
-            VerticalGridLinesBrush="{StaticResource Brush.Border2}"
-            BorderBrush="{StaticResource Brush.Border2}"
+            VerticalGridLinesBrush="{DynamicResource Brush.Border2}"
+            BorderBrush="{DynamicResource Brush.Border2}"
             BorderThickness="1"
             FrozenColumnCount="1"
             RowHeight="16"
@@ -90,7 +90,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Border Background="{Binding BG}" BorderThickness="0">
-                                <TextBlock Text="{Binding Line.Content}" Background="Transparent" Foreground="{StaticResource Brush.FG1}" FontFamily="Consolas,Microsoft YaHei UI" FontSize="9pt" Margin="0" Padding="2,0,0,0"/>
+                                <TextBlock Text="{Binding Line.Content}" Background="Transparent" Foreground="{DynamicResource Brush.FG1}" FontFamily="Consolas,Microsoft YaHei UI" FontSize="9pt" Margin="0" Padding="2,0,0,0"/>
                             </Border>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -103,10 +103,10 @@
             Grid.Row="3"
             Orientation="Vertical" 
             VerticalAlignment="Center" HorizontalAlignment="Center" 
-            Background="{StaticResource Brush.Window}"
+            Background="{DynamicResource Brush.Window}"
             Visibility="Collapsed">
-            <Path Width="64" Height="64" Data="{StaticResource Icon.Error}" Fill="{StaticResource Brush.FG2}"/>
-            <TextBlock Text="{StaticResource Text.BlameTypeNotSupported}" Margin="0,16,0,0" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{StaticResource Brush.FG2}"/>
+            <Path Width="64" Height="64" Data="{StaticResource Icon.Error}" Fill="{DynamicResource Brush.FG2}"/>
+            <TextBlock Text="{DynamicResource Text.BlameTypeNotSupported}" Margin="0,16,0,0" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
         </StackPanel>
 
         <!-- Loading -->
@@ -114,7 +114,7 @@
 
         <!-- Popup to show commit info -->
         <Popup x:Name="popup" Grid.Row="3" Placement="MousePoint" IsOpen="False" StaysOpen="False" Focusable="True">
-            <Border BorderBrush="{StaticResource Brush.Accent1}" BorderThickness="1" Background="{StaticResource Brush.Popup}">
+            <Border BorderBrush="{DynamicResource Brush.Accent1}" BorderThickness="1" Background="{DynamicResource Brush.Popup}">
                 <Grid Margin="4">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="24"/>
@@ -127,11 +127,11 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{StaticResource Text.Blame.SHA}" Foreground="{StaticResource Brush.FG2}" Margin="4,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Text.Blame.SHA}" Foreground="{DynamicResource Brush.FG2}" Margin="4,0"/>
                     <Label Grid.Row="0" Grid.Column="1" x:Name="commitID" Margin="8,0,4,0" Padding="0" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{StaticResource Text.Blame.Author}" Foreground="{StaticResource Brush.FG2}" Margin="4,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource Text.Blame.Author}" Foreground="{DynamicResource Brush.FG2}" Margin="4,0"/>
                     <TextBlock Grid.Row="1" Grid.Column="1" x:Name="authorName" Margin="8,0,4,0"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{StaticResource Text.Blame.ModifyTime}" Foreground="{StaticResource Brush.FG2}" Margin="4,0"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource Text.Blame.ModifyTime}" Foreground="{DynamicResource Brush.FG2}" Margin="4,0"/>
                     <TextBlock Grid.Row="2" Grid.Column="1" x:Name="authorTime" Margin="8,0,4,0"/>
                 </Grid>
             </Border>

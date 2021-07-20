@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
     mc:Ignorable="d"
-    Title="{StaticResource Text.UpdateAvailable}"
+    Title="{DynamicResource Text.UpdateAvailable}"
     WindowStartupLocation="CenterOwner"
     Height="400" Width="500"
     ResizeMode="NoResize">
@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
             
         <!-- Title Bar -->
-        <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
+        <Grid Grid.Row="0" Background="{DynamicResource Brush.TitleBar}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -33,7 +33,7 @@
             <Path Grid.Column="0" Width="16" Height="16" Margin="6,0" Data="{StaticResource Icon.Fetch}"/>
                 
             <!-- Title -->
-            <TextBlock Grid.Column="1" Text="{StaticResource Text.UpdateAvailable}"/>
+            <TextBlock Grid.Column="1" Text="{DynamicResource Text.UpdateAvailable}"/>
                 
             <!-- Close -->
             <controls:IconButton
@@ -45,13 +45,13 @@
                 WindowChrome.IsHitTestVisibleInChrome="True"/>
         </Grid>
 
-        <Rectangle Grid.Row="1" Fill="{StaticResource Brush.Border0}" HorizontalAlignment="Stretch" Height="1"/>
+        <Rectangle Grid.Row="1" Fill="{DynamicResource Brush.Border0}" HorizontalAlignment="Stretch" Height="1"/>
 
         <!-- Body -->
         <StackPanel Grid.Row="2" Orientation="Vertical" Margin="8,16,8,0">
             <!-- Title -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Path Width="20" Height="20" Data="{StaticResource Icon.Git}" Fill="{StaticResource Brush.Logo}"/>
+                <Path Width="20" Height="20" Data="{StaticResource Icon.Git}" Fill="{DynamicResource Brush.Logo}"/>
                 <TextBlock x:Name="txtRelease" Margin="8,0,0,0" FontSize="18" FontWeight="Bold" Text="Release 1.0 Is Out!!!"/>
             </StackPanel>
                 
@@ -68,26 +68,26 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="{StaticResource Text.UpdateAvailable.Time}" FontWeight="Bold"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Text.UpdateAvailable.Time}" FontWeight="Bold"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ElementName=me, Path=Version.PublishTime}"/>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{StaticResource Text.UpdateAvailable.Based}" FontWeight="Bold"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource Text.UpdateAvailable.Based}" FontWeight="Bold"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=me, Path=Version.CommitSHA}"/>
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{StaticResource Text.UpdateAvailable.IsPreRelease}" FontWeight="Bold"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource Text.UpdateAvailable.IsPreRelease}" FontWeight="Bold"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ElementName=me, Path=Version.IsPrerelease}"/>
             </Grid>
         </StackPanel>
 
         <!-- CHANGELOG -->
-        <Border Grid.Row="3" Margin="8" Background="{StaticResource Brush.Contents}" BorderBrush="{StaticResource Brush.Border1}" BorderThickness="1">
+        <Border Grid.Row="3" Margin="8" Background="{DynamicResource Brush.Contents}" BorderBrush="{DynamicResource Brush.Border1}" BorderThickness="1">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <TextBlock
                     FontSize="10pt"
                     FontFamily="Consolas"
                     Padding="8"
                     VerticalAlignment="Top"
-                    Foreground="{StaticResource Brush.FG2}"
+                    Foreground="{DynamicResource Brush.FG2}"
                     Text="{Binding ElementName=me, Path=Version.Body}"/>
             </ScrollViewer>
         </Border>
@@ -97,16 +97,16 @@
             <Button
                 Click="Download"
                 Width="100" Height="24" 
-                Content="{StaticResource Text.UpdateAvailable.Download}" 
-                Background="{StaticResource Brush.Accent1}"
-                BorderBrush="{StaticResource Brush.FG1}"
+                Content="{DynamicResource Text.UpdateAvailable.Download}" 
+                Background="{DynamicResource Brush.Accent1}"
+                BorderBrush="{DynamicResource Brush.FG1}"
                 BorderThickness="1"/>
 
             <Button
                 Click="Quit"
                 Width="100" Height="24"
                 Margin="8,0,0,0"
-                Content="{StaticResource Text.Cancel}"/>
+                Content="{DynamicResource Text.Cancel}"/>
         </StackPanel>
     </Grid>
 </controls:Window>

@@ -30,7 +30,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.CreateBranch.BasedOn}"
+            Text="{DynamicResource Text.CreateBranch.BasedOn}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -43,13 +43,13 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.CreateBranch.Name}"
+            Text="{DynamicResource Text.CreateBranch.Name}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="1" Grid.Column="1"
             x:Name="txtBranchName"
             Height="24"
-            Placeholder="{StaticResource Text.CreateBranch.Name.Placeholder}">
+            Placeholder="{DynamicResource Text.CreateBranch.Name.Placeholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="BranchName" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -62,17 +62,17 @@
         <TextBlock
             Grid.Row="2" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.CreateBranch.LocalChanges}"
+            Text="{DynamicResource Text.CreateBranch.LocalChanges}"
             HorizontalAlignment="Right"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-            <RadioButton Content="{StaticResource Text.CreateBranch.LocalChanges.StashAndReply}" GroupName="LocalChanges" IsChecked="{Binding AutoStash, ElementName=me}"/>
-            <RadioButton Content="{StaticResource Text.CreateBranch.LocalChanges.Discard}" Margin="8,0,0,0" GroupName="LocalChanges" IsChecked="{Binding AutoStash, ElementName=me, Mode=OneWay, Converter={StaticResource InverseBool}}"/>
+            <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}" GroupName="LocalChanges" IsChecked="{Binding AutoStash, ElementName=me}"/>
+            <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}" Margin="8,0,0,0" GroupName="LocalChanges" IsChecked="{Binding AutoStash, ElementName=me, Mode=OneWay, Converter={StaticResource InverseBool}}"/>
         </StackPanel>
 
         <CheckBox 
             Grid.Row="3" Grid.Column="1"
             x:Name="chkCheckout"
             IsChecked="True"
-            Content="{StaticResource Text.CreateBranch.Checkout}"/>
+            Content="{DynamicResource Text.CreateBranch.Checkout}"/>
     </Grid>
 </controls:PopupWidget>

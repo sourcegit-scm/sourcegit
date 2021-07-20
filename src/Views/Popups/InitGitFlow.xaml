@@ -26,7 +26,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.GitFlow.ProductionBranch}"
+            Text="{DynamicResource Text.GitFlow.ProductionBranch}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="0" Grid.Column="1"
@@ -38,7 +38,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.GitFlow.DevelopBranch}"
+            Text="{DynamicResource Text.GitFlow.DevelopBranch}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="1" Grid.Column="1"
@@ -50,12 +50,12 @@
         <Rectangle
             Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
             Height="1"
-            Fill="{StaticResource Brush.Border2}"/>
+            Fill="{DynamicResource Brush.Border2}"/>
 
         <TextBlock
             Grid.Row="3" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.GitFlow.FeaturePrefix}"
+            Text="{DynamicResource Text.GitFlow.FeaturePrefix}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="3" Grid.Column="1"
@@ -67,7 +67,7 @@
         <TextBlock
             Grid.Row="4" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.GitFlow.ReleasePrefix}"
+            Text="{DynamicResource Text.GitFlow.ReleasePrefix}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="4" Grid.Column="1"
@@ -79,7 +79,7 @@
         <TextBlock
             Grid.Row="5" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.GitFlow.HotfixPrefix}"
+            Text="{DynamicResource Text.GitFlow.HotfixPrefix}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="5" Grid.Column="1"
@@ -91,12 +91,12 @@
         <TextBlock
             Grid.Row="6" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.GitFlow.TagPrefix}"
+            Text="{DynamicResource Text.GitFlow.TagPrefix}"
             HorizontalAlignment="Right"/>
         <controls:TextEdit
             Grid.Row="6" Grid.Column="1"
             x:Name="txtTag"
             Height="24"
-            Placeholder="{StaticResource Text.Optional}"/>
+            Placeholder="{DynamicResource Text.Optional}"/>
     </Grid>
 </controls:PopupWidget>

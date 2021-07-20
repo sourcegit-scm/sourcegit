@@ -27,7 +27,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Push.Local}"
+            Text="{DynamicResource Text.Push.Local}"
             HorizontalAlignment="Right"/>
         <ComboBox
             Grid.Row="0" Grid.Column="1"
@@ -48,7 +48,7 @@
         <TextBlock
             Grid.Row="1" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Push.Remote}"
+            Text="{DynamicResource Text.Push.Remote}"
             HorizontalAlignment="Right"/>
         <ComboBox
             Grid.Row="1" Grid.Column="1"
@@ -69,7 +69,7 @@
         <TextBlock
             Grid.Row="2" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.Push.To}"
+            Text="{DynamicResource Text.Push.To}"
             HorizontalAlignment="Right"/>
         <ComboBox
             Grid.Row="2" Grid.Column="1"
@@ -90,11 +90,11 @@
                   Margin="0,4,0,0"
                   x:Name="chkAllTags"
                   IsChecked="False"
-                  Content="{StaticResource Text.Push.WithAllTags}"/>
+                  Content="{DynamicResource Text.Push.WithAllTags}"/>
 
         <CheckBox Grid.Row="4" Grid.Column="1"
                   x:Name="chkForce"
                   IsChecked="False"
-                  Content="{StaticResource Text.Push.Force}"/>
+                  Content="{DynamicResource Text.Push.Force}"/>
     </Grid>
 </controls:PopupWidget>

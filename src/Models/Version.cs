@@ -1,4 +1,9 @@
 using System;
+using System.Net;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 #if NET48
 using Newtonsoft.Json;
@@ -52,12 +57,36 @@ namespace SourceGit.Models {
             get { return PreRelease ? "YES" : "NO"; }
         }
 
-        public static Version Load(string data) {
+        public static void Check(Action<Version> onUpgradable) {
+            if (!Preference.Instance.General.CheckForUpdate) return;
+
+            var curDayOfYear = DateTime.Now.DayOfYear;
+            var lastDayOfYear = Preference.Instance.General.LastCheckDay;
+            if (lastDayOfYear != curDayOfYear) {
+                Preference.Instance.General.LastCheckDay = curDayOfYear;
+                Task.Run(() => {
+                    try {
+                        var web = new WebClient() { Encoding = Encoding.UTF8 };
+                        var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/sourcegit/releases/latest");
 #if NET48
-            return JsonConvert.DeserializeObject<Version>(data);
+                        var ver = JsonConvert.DeserializeObject<Version>(raw);
 #else
-            return JsonSerializer.Deserialize<Version>(data);
+                        var ver = JsonSerializer.Deserialize<Version>(raw);
 #endif
+                        var cur = Assembly.GetExecutingAssembly().GetName().Version;
+
+                        var matches = Regex.Match(ver.TagName, @"^v(\d+)\.(\d+).*");
+                        if (!matches.Success) return;
+
+                        var major = int.Parse(matches.Groups[1].Value);
+                        var minor = int.Parse(matches.Groups[2].Value);
+                        if (major > cur.Major || (major == cur.Major && minor > cur.Minor)) {
+                            onUpgradable?.Invoke(ver);
+                        }
+                    } catch {
+                    }
+                });
+            }
         }
     }
 }

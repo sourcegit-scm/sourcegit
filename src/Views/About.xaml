@@ -7,7 +7,7 @@
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
     mc:Ignorable="d"
     WindowStartupLocation="CenterOwner"
-    Title="{StaticResource Text.About}" 
+    Title="{DynamicResource Text.About}" 
     Height="280" Width="400"
     ResizeMode="NoResize">
     <Grid>
@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title bar -->
-        <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
+        <Grid Grid.Row="0" Background="{DynamicResource Brush.TitleBar}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -30,7 +30,7 @@
             <Path Grid.Column="0" Margin="6,0" Width="16" Height="16" Data="{StaticResource Icon.Help}"/>
 
             <!-- Title -->
-            <TextBlock Grid.Column="1" Text="{StaticResource Text.About}"/>
+            <TextBlock Grid.Column="1" Text="{DynamicResource Text.About}"/>
 
             <!-- Close -->
             <controls:IconButton
@@ -47,7 +47,7 @@
             Grid.Row="1"
             Height="1"
             HorizontalAlignment="Stretch"
-            Fill="{StaticResource Brush.Border0}"/>
+            Fill="{DynamicResource Brush.Border0}"/>
 
         <!-- Content -->
         <StackPanel Grid.Row="2" Orientation="Vertical">
@@ -57,12 +57,12 @@
                 Margin="0,16,0,0" 
                 Width="64" Height="64" 
                 Data="{StaticResource Icon.Git}" 
-                Fill="{StaticResource Brush.Logo}"/>
+                Fill="{DynamicResource Brush.Logo}"/>
 
             <!-- Title -->
             <TextBlock
                 Margin="0,24,0,8"
-                Text="{StaticResource Text.About.Title}"
+                Text="{DynamicResource Text.About.Title}"
                 HorizontalAlignment="Center"
                 TextOptions.TextFormattingMode="Ideal"
                 FontSize="18" FontWeight="Bold"/>

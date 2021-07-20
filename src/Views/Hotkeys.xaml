@@ -7,7 +7,7 @@
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
     mc:Ignorable="d"
     SizeToContent="Height" Width="400"
-    Title="{StaticResource Text.Hotkeys}"
+    Title="{DynamicResource Text.Hotkeys}"
     WindowStartupLocation="CenterOwner"
     ResizeMode="NoResize">
     <Grid>
@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title bar -->
-        <Grid Grid.Row="0" Background="{StaticResource Brush.TitleBar}">
+        <Grid Grid.Row="0" Background="{DynamicResource Brush.TitleBar}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -30,7 +30,7 @@
             <Path Grid.Column="0" Margin="6,0" Width="16" Height="16" Data="{StaticResource Icon.Hotkeys}"/>
 
             <!-- Title -->
-            <TextBlock Grid.Column="1" Text="{StaticResource Text.Hotkeys}"/>
+            <TextBlock Grid.Column="1" Text="{DynamicResource Text.Hotkeys}"/>
 
             <!-- Close -->
             <controls:IconButton
@@ -47,27 +47,27 @@
             Grid.Row="1"
             Height="1"
             HorizontalAlignment="Stretch"
-            Fill="{StaticResource Brush.Border0}"/>
+            Fill="{DynamicResource Brush.Border0}"/>
 
         <DataGrid
             x:Name="container"
             Grid.Row="2"
             Margin="8"
-            Background="{StaticResource Brush.Contents}"
+            Background="{DynamicResource Brush.Contents}"
             GridLinesVisibility="All"
-            HorizontalGridLinesBrush="{StaticResource Brush.Border0}"
-            VerticalGridLinesBrush="{StaticResource Brush.Border0}"
+            HorizontalGridLinesBrush="{DynamicResource Brush.Border0}"
+            VerticalGridLinesBrush="{DynamicResource Brush.Border0}"
             HeadersVisibility="Column"
             RowHeight="24"
             ColumnHeaderHeight="24"
             BorderThickness="1,1,0,0"
-            BorderBrush="{StaticResource Brush.Border0}">
+            BorderBrush="{DynamicResource Brush.Border0}">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
-                                <Border BorderThickness="0,0,1,1" BorderBrush="{StaticResource Brush.Border0}" Background="{StaticResource Brush.Window}">
+                                <Border BorderThickness="0,0,1,1" BorderBrush="{DynamicResource Brush.Border0}" Background="{DynamicResource Brush.Window}">
                                     <TextBlock 
                                         Text="{TemplateBinding Content}"
                                         HorizontalAlignment="Center"
@@ -80,8 +80,8 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Width="100" Header="{StaticResource Text.Hotkeys.Col.Key}" Binding="{Binding .Key}" ElementStyle="{StaticResource Style.TextBlock.LineContent}"/>
-                <DataGridTextColumn Width="*" Header="{StaticResource Text.Hotkeys.Col.Desc}" Binding="{Binding .Desc}" ElementStyle="{StaticResource Style.TextBlock.LineContent}"/>
+                <DataGridTextColumn Width="100" Header="{DynamicResource Text.Hotkeys.Col.Key}" Binding="{Binding .Key}" ElementStyle="{StaticResource Style.TextBlock.LineContent}"/>
+                <DataGridTextColumn Width="*" Header="{DynamicResource Text.Hotkeys.Col.Desc}" Binding="{Binding .Desc}" ElementStyle="{StaticResource Style.TextBlock.LineContent}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

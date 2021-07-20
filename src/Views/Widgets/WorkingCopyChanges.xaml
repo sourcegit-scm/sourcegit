@@ -132,7 +132,7 @@
                 <DataGridTemplateColumn IsReadOnly="True" Width="SizeToCells">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock FontFamily="Consolas" Margin="8,0,0,0" Text="{Binding Path, Converter={StaticResource PureFolderName}}" Foreground="{StaticResource Brush.FG2}"/>
+                            <TextBlock FontFamily="Consolas" Margin="8,0,0,0" Text="{Binding Path, Converter={StaticResource PureFolderName}}" Foreground="{DynamicResource Brush.FG2}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

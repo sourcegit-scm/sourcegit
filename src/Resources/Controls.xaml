@@ -19,5 +19,6 @@
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/ToggleButton.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/Tooltip.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/Tree.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Resources/Styles/Window.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

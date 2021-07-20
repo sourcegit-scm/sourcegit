@@ -1,6 +1,4 @@
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Shell;
 
 namespace SourceGit.Views.Controls {
     /// <summary>
@@ -20,32 +18,16 @@ namespace SourceGit.Views.Controls {
         }
 
         public Window() {
-            Background = FindResource("Brush.Window") as Brush;
-            BorderBrush = FindResource("Brush.WindowBorder") as Brush;
-            BorderThickness = new Thickness(1);
-
-            SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Display);
-            SetValue(TextOptions.TextRenderingModeProperty, TextRenderingMode.ClearType);
-            SetValue(TextOptions.TextHintingModeProperty, TextHintingMode.Animated);
-            UseLayoutRounding = true;
-
-            var chrome = new WindowChrome();
-            chrome.ResizeBorderThickness = new Thickness(4);
-            chrome.UseAeroCaptionButtons = false;
-            chrome.CornerRadius = new CornerRadius(0);
-            chrome.CaptionHeight = 28;
-            WindowChrome.SetWindowChrome(this, chrome);
+            Style = FindResource("Style.Window") as Style;
 
             StateChanged += (_, __) => {
                 var content = Content as FrameworkElement;
 
                 if (WindowState == WindowState.Maximized) {
                     if (!IsMaximized) IsMaximized = true;
-                    BorderThickness = new Thickness(0);
                     content.Margin = new Thickness((SystemParameters.MaximizedPrimaryScreenWidth - SystemParameters.WorkArea.Width) / 2);
                 } else {
                     if (IsMaximized) IsMaximized = false;
-                    BorderThickness = new Thickness(1);
                     content.Margin = new Thickness(0);
                 }
             };

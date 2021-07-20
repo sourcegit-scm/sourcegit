@@ -14,11 +14,6 @@ namespace SourceGit.Views {
             txtRelease.Text = App.Text("UpdateAvailable.Title", ver.Name);
         }
 
-        public static void Open(Window owner, Models.Version ver) {
-            var dialog = new Upgrade(ver) { Owner = owner };
-            dialog.ShowDialog();
-        }
-
         private void Download(object sender, RoutedEventArgs e) {
             var info = new ProcessStartInfo("cmd", $"/c start https://gitee.com/sourcegit/SourceGit/releases/{Version.TagName}");
             info.CreateNoWindow = true;

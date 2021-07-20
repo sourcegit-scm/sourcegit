@@ -31,7 +31,7 @@
             </Grid.RowDefinitions>
             
             <!-- Unstaged Toolbar -->
-            <Border Grid.Row="0" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,0,0,1">
+            <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -51,8 +51,8 @@
                     <TextBlock
                         Grid.Column="1"
                         Margin="6,0"
-                        Text="{StaticResource Text.WorkingCopy.Unstaged}" 
-                        Foreground="{StaticResource Brush.FG2}" 
+                        Text="{DynamicResource Text.WorkingCopy.Unstaged}" 
+                        Foreground="{DynamicResource Brush.FG2}" 
                         FontWeight="Bold"/>
                     <controls:Loading
                         Grid.Column="2"
@@ -66,19 +66,19 @@
                         Width="14" Height="14"
                         Margin="4,0"
                         Icon="{StaticResource Icon.Down}"
-                        ToolTip="{StaticResource Text.WorkingCopy.Unstaged.Stage}"/>
+                        ToolTip="{DynamicResource Text.WorkingCopy.Unstaged.Stage}"/>
                     <controls:IconButton
                         Grid.Column="5"
                         Click="StageAll"
                         Width="14" Height="14"
                         Margin="4,0"
                         Icon="{StaticResource Icon.DoubleDown}"
-                        ToolTip="{StaticResource Text.WorkingCopy.Unstaged.StageAll}"/>
+                        ToolTip="{DynamicResource Text.WorkingCopy.Unstaged.StageAll}"/>
                 </Grid>
             </Border>
             
             <!-- Unstaged Changes -->
-            <Border Grid.Row="1" Background="{StaticResource Brush.Contents}">
+            <Border Grid.Row="1" Background="{DynamicResource Brush.Contents}">
                 <widgets:WorkingCopyChanges
                     x:Name="unstagedContainer" 
                     IsUnstaged="True" 
@@ -87,7 +87,7 @@
             </Border>
 
             <!-- Staged Toolbar -->
-            <Border Grid.Row="2" BorderBrush="{StaticResource Brush.Border0}" BorderThickness="0,1">
+            <Border Grid.Row="2" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -105,8 +105,8 @@
                     <TextBlock
                         Grid.Column="1"
                         Margin="6,0"
-                        Text="{StaticResource Text.WorkingCopy.Staged}" 
-                        Foreground="{StaticResource Brush.FG2}" 
+                        Text="{DynamicResource Text.WorkingCopy.Staged}" 
+                        Foreground="{DynamicResource Brush.FG2}" 
                         FontWeight="Bold"/>
 
                     <controls:IconButton
@@ -115,19 +115,19 @@
                         Width="14" Height="14"
                         Margin="4,0"
                         Icon="{StaticResource Icon.Up}"
-                        ToolTip="{StaticResource Text.WorkingCopy.Staged.Unstage}"/>
+                        ToolTip="{DynamicResource Text.WorkingCopy.Staged.Unstage}"/>
                     <controls:IconButton
                         Grid.Column="3"
                         Click="UnstageAll"
                         Width="14" Height="14"
                         Margin="4,0"
                         Icon="{StaticResource Icon.DoubleUp}"
-                        ToolTip="{StaticResource Text.WorkingCopy.Staged.UnstageAll}"/>
+                        ToolTip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}"/>
                 </Grid>
             </Border>
 
             <!-- Staged Changes -->
-            <Border Grid.Row="3" Background="{StaticResource Brush.Contents}">
+            <Border Grid.Row="3" Background="{DynamicResource Brush.Contents}">
                 <widgets:WorkingCopyChanges
                     x:Name="stagedContainer"
                     IsUnstaged="False" 
@@ -136,7 +136,7 @@
             </Border>
         </Grid>
 
-        <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{StaticResource Brush.Border0}"/>
+        <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{DynamicResource Brush.Border0}"/>
     
         <!-- Right -->
         <Grid Grid.Column="2" Margin="4">
@@ -150,22 +150,22 @@
             <widgets:DiffViewer Grid.Row="0" x:Name="diffViewer"/>
             
             <!-- Merge Option Panel -->
-            <Grid Grid.Row="0" x:Name="mergePanel" Background="{StaticResource Brush.Window}" Visibility="Collapsed">
+            <Grid Grid.Row="0" x:Name="mergePanel" Background="{DynamicResource Brush.Window}" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Path 
                         Width="64" Height="64" 
                         Data="{StaticResource Icon.Conflict}"
-                        Fill="{StaticResource Brush.FG2}"/>
+                        Fill="{DynamicResource Brush.FG2}"/>
                     <TextBlock 
                         Margin="0,16,0,28"
                         FontSize="20" FontWeight="DemiBold"
-                        Text="{StaticResource Text.WorkingCopy.Conflicts}" 
-                        Foreground="{StaticResource Brush.FG2}"
+                        Text="{DynamicResource Text.WorkingCopy.Conflicts}" 
+                        Foreground="{DynamicResource Brush.FG2}"
                         HorizontalAlignment="Center"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Click="UseTheirs" Content="{StaticResource Text.WorkingCopy.UseTheirs}" Height="24" Padding="8,0"/>
-                        <Button Click="UseMine" Content="{StaticResource Text.WorkingCopy.UseMine}" Height="24" Margin="8,0" Padding="8,0"/>
-                        <Button Click="UseMergeTool" Content="{StaticResource Text.WorkingCopy.OpenMerger}" Height="24" Padding="8,0"/>
+                        <Button Click="UseTheirs" Content="{DynamicResource Text.WorkingCopy.UseTheirs}" Height="24" Padding="8,0"/>
+                        <Button Click="UseMine" Content="{DynamicResource Text.WorkingCopy.UseMine}" Height="24" Margin="8,0" Padding="8,0"/>
+                        <Button Click="UseMergeTool" Content="{DynamicResource Text.WorkingCopy.OpenMerger}" Height="24" Padding="8,0"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
@@ -181,7 +181,7 @@
                 TextWrapping="Wrap"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                Placeholder="{StaticResource Text.WorkingCopy.CommitMessageTip}"
+                Placeholder="{DynamicResource Text.WorkingCopy.CommitMessageTip}"
                 PlaceholderBaseline="Top">
                 <TextBox.Text>
                     <Binding ElementName="me" Path="CommitMessage" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
@@ -207,7 +207,7 @@
                     Grid.Column="0"
                     Width="14" Height="14"
                     Click="OpenCommitMessageRecorder"
-                    ToolTip="{StaticResource Text.WorkingCopy.MessageHistories}"
+                    ToolTip="{DynamicResource Text.WorkingCopy.MessageHistories}"
                     Icon="{StaticResource Icon.List}"
                     Opacity=".5"/>
 
@@ -216,7 +216,7 @@
                     x:Name="chkAmend" 
                     Margin="8,0,0,0"
                     HorizontalAlignment="Left" 
-                    Content="{StaticResource Text.WorkingCopy.Amend}" 
+                    Content="{DynamicResource Text.WorkingCopy.Amend}" 
                     Checked="StartAmend" Unchecked="EndAmend"/>
 
                 <controls:Loading
@@ -231,9 +231,9 @@
                     Height="26" 
                     Padding="8,0"
                     Click="Commit"
-                    Background="{StaticResource Brush.Accent1}"
-                    BorderBrush="{StaticResource Brush.FG1}"
-                    Content="{StaticResource Text.WorkingCopy.Commit}"/>
+                    Background="{DynamicResource Brush.Accent1}"
+                    BorderBrush="{DynamicResource Brush.FG1}"
+                    Content="{DynamicResource Text.WorkingCopy.Commit}"/>
                 
                 <Button 
                     Grid.Column="5" 
@@ -241,7 +241,7 @@
                     Height="26" 
                     Padding="8,0"
                     Click="CommitAndPush" 
-                    Content="{StaticResource Text.WorkingCopy.CommitAndPush}" 
+                    Content="{DynamicResource Text.WorkingCopy.CommitAndPush}" 
                     Margin="8,0,0,0"/>
             </Grid>
         </Grid>

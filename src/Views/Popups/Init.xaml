@@ -21,7 +21,7 @@
 
         <TextBlock
             Grid.Row="0" Grid.Column="0"
-            Text="{StaticResource Text.Init.Path}"
+            Text="{DynamicResource Text.Init.Path}"
             HorizontalAlignment="Right"/>
 
         <Path
@@ -37,7 +37,7 @@
 
         <TextBlock 
             Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" 
-            Text="{StaticResource Text.Init.Tip}" 
-            Foreground="{StaticResource Brush.FG2}"/>
+            Text="{DynamicResource Text.Init.Tip}" 
+            Foreground="{DynamicResource Brush.FG2}"/>
     </Grid>
 </controls:PopupWidget>

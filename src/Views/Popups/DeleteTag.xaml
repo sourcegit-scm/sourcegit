@@ -21,7 +21,7 @@
         <TextBlock
             Grid.Row="0" Grid.Column="0"
             Margin="0,0,8,0"
-            Text="{StaticResource Text.DeleteTag.Tag}"
+            Text="{DynamicResource Text.DeleteTag.Tag}"
             HorizontalAlignment="Right"/>
         <StackPanel
             Grid.Row="0" Grid.Column="1"
@@ -36,6 +36,6 @@
             Margin="0,4,0,0"
             x:Name="chkPush"
             IsChecked="True"
-            Content="{StaticResource Text.DeleteTag.WithRemote}"/>
+            Content="{DynamicResource Text.DeleteTag.WithRemote}"/>
     </Grid>
 </controls:PopupWidget>
