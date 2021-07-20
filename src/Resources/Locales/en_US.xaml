@@ -365,7 +365,7 @@
     <sys:String x:Key="Text.Preference.Locale">Language :</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server :</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">Check for update</sys:String>
-    <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically</sys:String>
+    <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically (need restart)</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">Restore windows</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT SETTING</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">Install Path :</sys:String>
