@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     WindowStartupLocation="CenterOwner"
     Title="{DynamicResource Text.About}" 
-    Height="280" Width="400"
+    Width="400" SizeToContent="Height"
     ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
@@ -75,16 +75,52 @@
                 FontSize="11"
                 Text="VERSION: v1.0    .NET: v5.0"/>
 
+            <DataGrid
+                x:Name="hotkeys"
+                Grid.Row="2"
+                Margin="16,8"
+                Background="{DynamicResource Brush.Contents}"
+                GridLinesVisibility="All"
+                HorizontalGridLinesBrush="{DynamicResource Brush.Border0}"
+                VerticalGridLinesBrush="{DynamicResource Brush.Border0}"
+                HeadersVisibility="Column"
+                RowHeight="24"
+                ColumnHeaderHeight="24"
+                BorderThickness="1,1,0,0"
+                BorderBrush="{DynamicResource Brush.Border0}">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                    <Border BorderThickness="0,0,1,1" BorderBrush="{DynamicResource Brush.Border0}" Background="{DynamicResource Brush.Window}">
+                                        <TextBlock
+                                            Text="{TemplateBinding Content}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontWeight="DemiBold"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="100" Header="{DynamicResource Text.Hotkeys.Col.Key}" Binding="{Binding .Key}" ElementStyle="{StaticResource Style.TextBlock.LineContent}"/>
+                    <DataGridTextColumn Width="*" Header="{DynamicResource Text.Hotkeys.Col.Desc}" Binding="{Binding .Desc}" ElementStyle="{StaticResource Style.TextBlock.LineContent}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
             <!-- Official site -->
-            <TextBlock HorizontalAlignment="Center" Margin="0,16,0,4">
-                    <Hyperlink NavigateUri="https://gitee.com/sourcegit/sourcegit.git" RequestNavigate="OnRequestNavigate">
-                        <Run Text="https://gitee.com/sourcegit/sourcegit.git"/>
-                    </Hyperlink>
+            <TextBlock HorizontalAlignment="Center" Margin="0,4">
+                <Hyperlink NavigateUri="https://gitee.com/sourcegit/sourcegit.git" RequestNavigate="OnRequestNavigate">
+                    <Run Text="https://gitee.com/sourcegit/sourcegit.git"/>
+                </Hyperlink>
             </TextBlock>
 
             <!-- Copyrights -->
             <TextBlock
-                Margin="0,4"
+                Margin="0,4,0,16"
                 Text="Copyright © sourcegit 2021. All rights reserved."
                 HorizontalAlignment="Center"/>
         </StackPanel>

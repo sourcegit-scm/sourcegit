@@ -182,8 +182,9 @@
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Grid x:Name="BG" Background="Transparent">
                         <Path 
-                            x:Name="Icon" 
-                            Height="12"
+                            x:Name="Icon"
+                            Width="10"
+                            Height="10"
                             Style="{DynamicResource Style.Icon}"
                             Fill="{DynamicResource Brush.FG1}"
                             Data="{DynamicResource Icon.Maximize}"/>
