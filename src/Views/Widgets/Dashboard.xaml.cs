@@ -55,13 +55,6 @@ namespace SourceGit.Views.Widgets {
             InitializeComponent();
             InitPages();
 
-            UpdateBraches();
-            UpdateWorkingCopy();
-            UpdateStashes();
-            UpdateTags();
-            UpdateSubmodules();
-            UpdateSubTrees();
-
             var watcher = Models.Watcher.Get(repo.Path);
             watcher.Navigate += NavigateTo;
             watcher.BranchChanged += UpdateBraches;
@@ -79,6 +72,12 @@ namespace SourceGit.Views.Widgets {
                 tagList.ItemsSource = new List<Models.Tag>();
                 submoduleList.ItemsSource = new List<string>();
             };
+            
+            void FirstShowHandler(object _, DependencyPropertyChangedEventArgs __) {
+                IsVisibleChanged -= FirstShowHandler;
+                Refresh();
+            }
+            IsVisibleChanged += FirstShowHandler;
         }
 
         #region POPUP
