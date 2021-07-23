@@ -22,11 +22,6 @@ namespace SourceGit.Views.Widgets {
 
             InitializeComponent();
             ChangeOrientation(null, null);
-            UpdateCommits();
-
-            var watcher = Models.Watcher.Get(repo.Path);
-            watcher.BranchChanged += UpdateCommits;
-            watcher.TagChanged += UpdateCommits;
 
             Unloaded += (o, e) => {
                 cachedCommits.Clear();

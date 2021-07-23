@@ -19,6 +19,7 @@ namespace SourceGit.Views.Widgets {
         private Models.Repository repo = null;
         private List<BranchNode> localBranches = new List<BranchNode>();
         private List<BranchNode> remoteBranches = new List<BranchNode>();
+        private bool isFirstLoaded = false;
 
         /// <summary>
         ///     节点类型
@@ -58,12 +59,15 @@ namespace SourceGit.Views.Widgets {
             var watcher = Models.Watcher.Get(repo.Path);
             watcher.Navigate += NavigateTo;
             watcher.BranchChanged += UpdateBraches;
+            watcher.BranchChanged += UpdateCommits;
             watcher.WorkingCopyChanged += UpdateWorkingCopy;
             watcher.StashChanged += UpdateStashes;
             watcher.TagChanged += UpdateTags;
+            watcher.TagChanged += UpdateCommits;
             watcher.SubmoduleChanged += UpdateSubmodules;
             watcher.SubTreeChanged += UpdateSubTrees;
 
+            IsVisibleChanged += OnVisibleChanged;
             Unloaded += (o, e) => {
                 localBranches.Clear();
                 remoteBranches.Clear();
@@ -72,12 +76,6 @@ namespace SourceGit.Views.Widgets {
                 tagList.ItemsSource = new List<Models.Tag>();
                 submoduleList.ItemsSource = new List<string>();
             };
-            
-            void FirstShowHandler(object _, DependencyPropertyChangedEventArgs __) {
-                IsVisibleChanged -= FirstShowHandler;
-                Refresh();
-            }
-            IsVisibleChanged += FirstShowHandler;
         }
 
         #region POPUP
@@ -102,9 +100,19 @@ namespace SourceGit.Views.Widgets {
             UpdateTags();
             UpdateSubmodules();
             UpdateSubTrees();
+            UpdateCommits();
+        }
+
+        private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs ev) {
+            if (IsVisible && !isFirstLoaded) {
+                isFirstLoaded = true;
+                Refresh();
+            }
         }
 
         private void NavigateTo(string commitId) {
+            if (!isFirstLoaded) return;
+
             workspace.SelectedIndex = 0;
             (pages.Get("histories") as Histories).NavigateTo(commitId);
         }
@@ -183,6 +191,8 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void UpdateBraches() {
+            if (!isFirstLoaded) return;
+
             Task.Run(() => {
                 repo.Branches = new Commands.Branches(repo.Path).Result();
                 repo.Remotes = new Commands.Remotes(repo.Path).Result();
@@ -227,6 +237,8 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void UpdateWorkingCopy() {
+            if (!isFirstLoaded) return;
+
             Task.Run(() => {
                 var changes = new Commands.LocalChanges(repo.Path).Result();
                 Dispatcher.Invoke(() => {
@@ -238,6 +250,8 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void UpdateStashes() {
+            if (!isFirstLoaded) return;
+
             Task.Run(() => {
                 var stashes = new Commands.Stashes(repo.Path).Result();
                 Dispatcher.Invoke(() => {
@@ -248,6 +262,8 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void UpdateTags() {
+            if (!isFirstLoaded) return;
+
             Task.Run(() => {
                 var tags = new Commands.Tags(repo.Path).Result();
                 foreach (var t in tags) t.IsFiltered = repo.Filters.Contains(t.Name);
@@ -259,6 +275,8 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void UpdateSubmodules() {
+            if (!isFirstLoaded) return;
+
             Task.Run(() => {
                 var submodules = new Commands.Submodules(repo.Path).Result();
                 Dispatcher.Invoke(() => {
@@ -269,11 +287,19 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void UpdateSubTrees() {
+            if (!isFirstLoaded) return;
+
             Dispatcher.Invoke(() => {
                 txtSubTreeCount.Text = $"({repo.SubTrees.Count})";
                 subTreeList.ItemsSource = null;
                 subTreeList.ItemsSource = repo.SubTrees;
             });
+        }
+
+        private void UpdateCommits() {
+            if (!isFirstLoaded) return;
+
+            (pages.Get("histories") as Histories).UpdateCommits();
         }
         #endregion
 
