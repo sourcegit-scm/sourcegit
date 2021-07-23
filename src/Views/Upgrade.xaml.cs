@@ -15,7 +15,7 @@ namespace SourceGit.Views {
         }
 
         private void Download(object sender, RoutedEventArgs e) {
-            var info = new ProcessStartInfo("cmd", $"/c start https://gitee.com/sourcegit/SourceGit/releases/{Version.TagName}");
+            var info = new ProcessStartInfo("cmd", $"/c start https://gitee.com/sourcegit/sourcegit/releases/{Version.TagName}");
             info.CreateNoWindow = true;
 
             Process.Start(info);
