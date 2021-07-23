@@ -13,7 +13,6 @@
     <sys:String x:Key="Text.Bytes">{0} 字节</sys:String>
     <sys:String x:Key="Text.Filter">过滤</sys:String>
     <sys:String x:Key="Text.Optional">选填</sys:String>
-    <sys:String x:Key="Text.FakeFolderFilter">路径|*.this.directory</sys:String>
     <sys:String x:Key="Text.OpenFolder">选择文件夹</sys:String>
     <sys:String x:Key="Text.ThemeSwitcher">切换主题</sys:String>
 
