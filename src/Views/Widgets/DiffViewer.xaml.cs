@@ -19,6 +19,9 @@ namespace SourceGit.Views.Widgets {
         private static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
         private static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
         private static readonly Brush BG_NORMAL = Brushes.Transparent;
+        private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(100, 0, 255, 0));
+        private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(100, 255, 0, 0));
+        private static readonly Brush HL_NORMAL = Brushes.Transparent;
 
         public class Option {
             public string[] RevisionRange = new string[] { };
@@ -29,13 +32,13 @@ namespace SourceGit.Views.Widgets {
         }
 
         public class Block {
-            public string Content { get; set; }
             public Models.TextChanges.LineMode Mode { get; set; }
             public Brush BG { get; set; }
             public Brush FG { get; set; }
             public FontStyle Style { get; set; }
             public string OldLine { get; set; }
             public string NewLine { get; set; }
+            public Controls.HighlightableTextBlock.Data Data { get; set; } = new Controls.HighlightableTextBlock.Data();
 
             public bool IsContent {
                 get {
@@ -216,14 +219,15 @@ namespace SourceGit.Views.Widgets {
 
             foreach (var line in cachedTextChanges) {
                 var block = new Block();
-                block.Content = line.Content;
                 block.Mode = line.Mode;
                 block.BG = GetLineBackground(line);
                 block.FG = block.IsContent ? fgCommon : fgIndicator;
                 block.Style = block.IsContent ? FontStyles.Normal : FontStyles.Italic;
                 block.OldLine = line.OldLine;
                 block.NewLine = line.NewLine;
-
+                block.Data.Text = line.Content;
+                block.Data.HighlightBrush = GetLineHighlight(line);
+                block.Data.Highlights.AddRange(line.Highlights);
 
                 if (line.OldLine.Length > 0) lastOldLine = line.OldLine;
                 if (line.NewLine.Length > 0) lastNewLine = line.NewLine;
@@ -278,13 +282,15 @@ namespace SourceGit.Views.Widgets {
 
             foreach (var line in cachedTextChanges) {
                 var block = new Block();
-                block.Content = line.Content;
                 block.Mode = line.Mode;
                 block.BG = GetLineBackground(line);
                 block.FG = block.IsContent ? fgCommon : fgIndicator;
                 block.Style = block.IsContent ? FontStyles.Normal : FontStyles.Italic;
                 block.OldLine = line.OldLine;
                 block.NewLine = line.NewLine;
+                block.Data.Text = line.Content;
+                block.Data.HighlightBrush = GetLineHighlight(line);
+                block.Data.Highlights.AddRange(line.Highlights);
 
                 if (line.OldLine.Length > 0) lastOldLine = line.OldLine;
                 if (line.NewLine.Length > 0) lastNewLine = line.NewLine;
@@ -369,13 +375,23 @@ namespace SourceGit.Views.Widgets {
             }
         }
 
+        private Brush GetLineHighlight(Models.TextChanges.Line line) {
+            switch (line.Mode) {
+            case Models.TextChanges.LineMode.Added:
+                return HL_ADDED;
+            case Models.TextChanges.LineMode.Deleted:
+                return HL_DELETED;
+            default:
+                return HL_NORMAL;
+            }
+        }
+
         private void FillEmptyLines(List<Block> old, List<Block> cur) {
             if (old.Count < cur.Count) {
                 int diff = cur.Count - old.Count;
 
                 for (int i = 0; i < diff; i++) {
                     var empty = new Block();
-                    empty.Content = "";
                     empty.Mode = Models.TextChanges.LineMode.None;
                     empty.BG = BG_EMPTY;
                     empty.FG = Brushes.Transparent;
@@ -389,7 +405,6 @@ namespace SourceGit.Views.Widgets {
 
                 for (int i = 0; i < diff; i++) {
                     var empty = new Block();
-                    empty.Content = "";
                     empty.Mode = Models.TextChanges.LineMode.None;
                     empty.BG = BG_EMPTY;
                     empty.FG = Brushes.Transparent;
@@ -432,7 +447,7 @@ namespace SourceGit.Views.Widgets {
                     if (block == null) continue;
                     if (!block.IsContent) continue;
 
-                    builder.Append(block.Content);
+                    builder.Append(block.Data.Text);
                     builder.AppendLine();
                 }
 
@@ -447,27 +462,21 @@ namespace SourceGit.Views.Widgets {
                 grid.Columns.Add(colLineNumber);
             }
 
-            var borderContent = new FrameworkElementFactory(typeof(Border));
-            borderContent.SetBinding(Border.BackgroundProperty, new Binding("BG"));
-
-            var textContent = new FrameworkElementFactory(typeof(TextBlock));
-            textContent.SetBinding(TextBlock.TextProperty, new Binding("Content"));
-            textContent.SetBinding(TextBlock.ForegroundProperty, new Binding("FG"));
-            textContent.SetBinding(TextBlock.FontStyleProperty, new Binding("Style"));
-            textContent.SetValue(TextBlock.BackgroundProperty, Brushes.Transparent);
-            textContent.SetValue(TextBlock.FontSizeProperty, new FontSizeConverter().ConvertFrom("9pt"));
-            textContent.SetValue(TextBlock.MarginProperty, new Thickness(0));
-            textContent.SetValue(TextBlock.PaddingProperty, new Thickness(4, 0, 0, 0));
-            textContent.SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Display);
-            textContent.SetValue(TextOptions.TextRenderingModeProperty, TextRenderingMode.ClearType);
-
-            var visualTree = new FrameworkElementFactory(typeof(Grid));
-            visualTree.AppendChild(borderContent);
-            visualTree.AppendChild(textContent);
+            var line = new FrameworkElementFactory(typeof(Controls.HighlightableTextBlock));
+            line.SetBinding(Controls.HighlightableTextBlock.ContentProperty, new Binding("Data"));
+            line.SetBinding(TextBlock.BackgroundProperty, new Binding("BG"));
+            line.SetBinding(TextBlock.ForegroundProperty, new Binding("FG"));
+            line.SetBinding(TextBlock.FontStyleProperty, new Binding("Style"));
+            line.SetValue(TextBlock.FontSizeProperty, new FontSizeConverter().ConvertFrom("9pt"));
+            line.SetValue(TextBlock.MarginProperty, new Thickness(0));
+            line.SetValue(TextBlock.PaddingProperty, new Thickness(4, 0, 0, 0));
+            line.SetValue(TextBlock.LineHeightProperty, 16.0);
+            line.SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Display);
+            line.SetValue(TextOptions.TextRenderingModeProperty, TextRenderingMode.ClearType);
 
             var colContent = new DataGridTemplateColumn();
             colContent.CellTemplate = new DataTemplate();
-            colContent.CellTemplate.VisualTree = visualTree;
+            colContent.CellTemplate.VisualTree = line;
             colContent.Width = DataGridLength.SizeToCells;
             grid.Columns.Add(colContent);
 
@@ -567,7 +576,7 @@ namespace SourceGit.Views.Widgets {
                     if (block == null) continue;
                     if (!block.IsContent) continue;
 
-                    builder.Append(block.Content);
+                    builder.Append(block.Data.Text);
                     builder.AppendLine();
                 }
 

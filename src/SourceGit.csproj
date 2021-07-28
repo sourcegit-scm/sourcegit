@@ -17,4 +17,7 @@
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
     </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="DiffPlex" Version="1.7.0" />
+    </ItemGroup>
 </Project>
