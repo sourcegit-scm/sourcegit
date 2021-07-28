@@ -77,10 +77,13 @@ namespace SourceGit.Commands {
                     for (int i = added.Count - 1; i >= 0; i--) {
                         var left = deleted[i];
                         var right = added[i];
+
                         var result = DiffPlex.Differ.Instance.CreateCharacterDiffs(left.Content, right.Content, false, false);
+                        if (result.DiffBlocks.Count > 4) break;
+
                         foreach (var block in result.DiffBlocks) {
-                            left.Highlights.Add(new Models.TextChanges.HighlightRange(block.DeleteStartA, block.DeleteCountA));
-                            right.Highlights.Add(new Models.TextChanges.HighlightRange(block.InsertStartB, block.InsertCountB));
+                            if (block.DeleteCountA > 0) left.Highlights.Add(new Models.TextChanges.HighlightRange(block.DeleteStartA, block.DeleteCountA));
+                            if (block.InsertCountB > 0) right.Highlights.Add(new Models.TextChanges.HighlightRange(block.InsertStartB, block.InsertCountB));
                         }
                     }
                 }
