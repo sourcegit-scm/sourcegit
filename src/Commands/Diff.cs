@@ -16,7 +16,7 @@ namespace SourceGit.Commands {
 
         public Diff(string repo, string args) {
             Cwd = repo;
-            Args = $"diff --ignore-cr-at-eol {args}";
+            Args = $"diff --ignore-cr-at-eol --unified=4 {args}";
         }
 
         public Models.TextChanges Result() {
