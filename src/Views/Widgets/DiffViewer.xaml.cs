@@ -467,6 +467,7 @@ namespace SourceGit.Views.Widgets {
             line.SetBinding(TextBlock.BackgroundProperty, new Binding("BG"));
             line.SetBinding(TextBlock.ForegroundProperty, new Binding("FG"));
             line.SetBinding(TextBlock.FontStyleProperty, new Binding("Style"));
+            line.SetValue(TextBlock.FontFamilyProperty, new FontFamily("Consolas,Microsoft YaHei UI"));
             line.SetValue(TextBlock.FontSizeProperty, new FontSizeConverter().ConvertFrom("9pt"));
             line.SetValue(TextBlock.MarginProperty, new Thickness(0));
             line.SetValue(TextBlock.PaddingProperty, new Thickness(4, 0, 0, 0));
