@@ -24,12 +24,21 @@ namespace SourceGit.Commands {
                 var chunks = new List<string>();
 
                 for (int i = 0; i < size; i++) {
+#if NET48
+                    var ch = text.Substring(i, 1);
+                    if (WORD_SEPS.Contains(ch)) {
+                        if (start != i) chunks.Add(text.Substring(start, i - start));
+                        chunks.Add(ch);
+                        start = i + 1;
+                    }
+#else
                     var ch = text[i];
                     if (WORD_SEPS.Contains(ch)) {
                         if (start != i) chunks.Add(text.Substring(start, i - start));
                         chunks.Add(text.Substring(i, 1));
                         start = i + 1;
                     }
+#endif
                 }
 
                 if (start < size) chunks.Add(text.Substring(start));
