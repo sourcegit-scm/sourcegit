@@ -34,11 +34,11 @@ namespace SourceGit.Commands {
                     change.OldSize = new QuerySizeCmd(repo, orgPath, revisions[0]).Result();
                 }
             } else {
-                change.NewSize = new QuerySizeCmd(repo, path, revisions[0]).Result();
+                change.NewSize = new QuerySizeCmd(repo, path, revisions[1]).Result();
                 if (string.IsNullOrEmpty(orgPath)) {
-                    change.OldSize = new QuerySizeCmd(repo, path, revisions[1]).Result();
+                    change.OldSize = new QuerySizeCmd(repo, path, revisions[0]).Result();
                 } else {
-                    change.OldSize = new QuerySizeCmd(repo, orgPath, revisions[1]).Result();
+                    change.OldSize = new QuerySizeCmd(repo, orgPath, revisions[0]).Result();
                 }
             }
         }
