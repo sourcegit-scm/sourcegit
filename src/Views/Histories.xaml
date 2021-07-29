@@ -36,9 +36,9 @@
 
             <!-- Window Commands -->
             <StackPanel Grid.Column="3" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
-                <controls:IconButton Click="Minimize" Width="28" Padding="8" Icon="{StaticResource Icon.Minimize}" HoverBackground="#40000000" Opacity="1"/>
+                <controls:IconButton Click="Minimize" Width="28" Padding="9" Icon="{StaticResource Icon.Minimize}" HoverBackground="#40000000" Opacity="1"/>
                 <ToggleButton Style="{StaticResource Style.ToggleButton.MaxOrRestore}" Width="28" IsChecked="{Binding ElementName=me, Path=IsMaximized}"/>
-                <controls:IconButton Click="Quit" Width="28" Padding="8" Icon="{StaticResource Icon.Close}" HoverBackground="Red" Opacity="1"/>
+                <controls:IconButton Click="Quit" Width="28" Padding="9" Icon="{StaticResource Icon.Close}" HoverBackground="Red" Opacity="1"/>
             </StackPanel>
         </Grid>
 
