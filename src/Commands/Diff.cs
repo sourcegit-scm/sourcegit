@@ -8,11 +8,34 @@ namespace SourceGit.Commands {
     /// </summary>
     public class Diff : Command {
         private static readonly Regex REG_INDICATOR = new Regex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@");
+        private static readonly string WORD_SEPS = " \t+-*/=!:;.'\"/?|&#@%`<>()[]{}\\";
+
         private Models.TextChanges changes = new Models.TextChanges();
         private List<Models.TextChanges.Line> deleted = new List<Models.TextChanges.Line>();
         private List<Models.TextChanges.Line> added = new List<Models.TextChanges.Line>();
+        private Chunker chunker = new Chunker();
         private int oldLine = 0;
         private int newLine = 0;
+
+        public class Chunker : DiffPlex.IChunker {
+            public string[] Chunk(string text) {
+                var start = 0;
+                var size = text.Length;
+                var chunks = new List<string>();
+
+                for (int i = 0; i < size; i++) {
+                    var ch = text[i];
+                    if (WORD_SEPS.Contains(ch)) {
+                        if (start != i) chunks.Add(text.Substring(start, i - start));
+                        chunks.Add(text.Substring(i, 1));
+                        start = i + 1;
+                    }
+                }
+
+                if (start < size) chunks.Add(text.Substring(start));
+                return chunks.ToArray();
+            }
+        }
 
         public Diff(string repo, string args) {
             Cwd = repo;
@@ -78,12 +101,39 @@ namespace SourceGit.Commands {
                         var left = deleted[i];
                         var right = added[i];
 
-                        var result = DiffPlex.Differ.Instance.CreateCharacterDiffs(left.Content, right.Content, false, false);
-                        if (result.DiffBlocks.Count > 4) break;
+                        if (left.Content.Length > 1024 || right.Content.Length > 1024) continue;
+
+                        var result = DiffPlex.Differ.Instance.CreateDiffs(left.Content, right.Content, false, false, chunker);
+                        if (result.DiffBlocks.Count > 4) continue;
 
                         foreach (var block in result.DiffBlocks) {
-                            if (block.DeleteCountA > 0) left.Highlights.Add(new Models.TextChanges.HighlightRange(block.DeleteStartA, block.DeleteCountA));
-                            if (block.InsertCountB > 0) right.Highlights.Add(new Models.TextChanges.HighlightRange(block.InsertStartB, block.InsertCountB));
+                            if (block.DeleteCountA > 0) {
+                                var startPos = 0;
+                                for (int j = 0; j < block.DeleteStartA; j++) {
+                                    startPos += result.PiecesOld[j].Length;
+                                }
+
+                                var deleteNum = 0;
+                                for (int j = 0; j < block.DeleteCountA; j++) {
+                                    deleteNum += result.PiecesOld[j + block.DeleteStartA].Length;
+                                }
+
+                                left.Highlights.Add(new Models.TextChanges.HighlightRange(startPos, deleteNum));
+                            }
+
+                            if (block.InsertCountB > 0) {
+                                var startPos = 0;
+                                for (int j = 0; j < block.InsertStartB; j++) {
+                                    startPos += result.PiecesNew[j].Length;
+                                }
+
+                                var addedNum = 0;
+                                for (int j = 0; j < block.InsertCountB; j++) {
+                                    addedNum += result.PiecesNew[j + block.InsertStartB].Length;
+                                }
+
+                                right.Highlights.Add(new Models.TextChanges.HighlightRange(startPos, addedNum));
+                            }
                         }
                     }
                 }
