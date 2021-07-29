@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
@@ -8,43 +9,11 @@ namespace SourceGit.Commands {
     /// </summary>
     public class Diff : Command {
         private static readonly Regex REG_INDICATOR = new Regex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@");
-        private static readonly string WORD_SEPS = " \t+-*/=!:;.'\"/?|&#@%`<>()[]{}\\";
-
         private Models.TextChanges changes = new Models.TextChanges();
         private List<Models.TextChanges.Line> deleted = new List<Models.TextChanges.Line>();
         private List<Models.TextChanges.Line> added = new List<Models.TextChanges.Line>();
-        private Chunker chunker = new Chunker();
         private int oldLine = 0;
         private int newLine = 0;
-
-        public class Chunker : DiffPlex.IChunker {
-            public string[] Chunk(string text) {
-                var start = 0;
-                var size = text.Length;
-                var chunks = new List<string>();
-
-                for (int i = 0; i < size; i++) {
-#if NET48
-                    var ch = text.Substring(i, 1);
-                    if (WORD_SEPS.Contains(ch)) {
-                        if (start != i) chunks.Add(text.Substring(start, i - start));
-                        chunks.Add(ch);
-                        start = i + 1;
-                    }
-#else
-                    var ch = text[i];
-                    if (WORD_SEPS.Contains(ch)) {
-                        if (start != i) chunks.Add(text.Substring(start, i - start));
-                        chunks.Add(text.Substring(i, 1));
-                        start = i + 1;
-                    }
-#endif
-                }
-
-                if (start < size) chunks.Add(text.Substring(start));
-                return chunks.ToArray();
-            }
-        }
 
         public Diff(string repo, string args) {
             Cwd = repo;
@@ -104,7 +73,7 @@ namespace SourceGit.Commands {
         }
     
         private void ProcessChanges() {
-            if (deleted.Count > 0) {
+            if (deleted.Any()) {
                 if (added.Count == deleted.Count) {
                     for (int i = added.Count - 1; i >= 0; i--) {
                         var left = deleted[i];
@@ -112,36 +81,16 @@ namespace SourceGit.Commands {
 
                         if (left.Content.Length > 1024 || right.Content.Length > 1024) continue;
 
-                        var result = DiffPlex.Differ.Instance.CreateDiffs(left.Content, right.Content, false, false, chunker);
-                        if (result.DiffBlocks.Count > 4) continue;
+                        var chunks = Models.TextCompare.Process(left.Content, right.Content);
+                        if (chunks.Count > 4) continue;
 
-                        foreach (var block in result.DiffBlocks) {
-                            if (block.DeleteCountA > 0) {
-                                var startPos = 0;
-                                for (int j = 0; j < block.DeleteStartA; j++) {
-                                    startPos += result.PiecesOld[j].Length;
-                                }
-
-                                var deleteNum = 0;
-                                for (int j = 0; j < block.DeleteCountA; j++) {
-                                    deleteNum += result.PiecesOld[j + block.DeleteStartA].Length;
-                                }
-
-                                left.Highlights.Add(new Models.TextChanges.HighlightRange(startPos, deleteNum));
+                        foreach (var chunk in chunks) {
+                            if (chunk.DeletedCount > 0) {
+                                left.Highlights.Add(new Models.TextChanges.HighlightRange(chunk.DeletedStart, chunk.DeletedCount));
                             }
 
-                            if (block.InsertCountB > 0) {
-                                var startPos = 0;
-                                for (int j = 0; j < block.InsertStartB; j++) {
-                                    startPos += result.PiecesNew[j].Length;
-                                }
-
-                                var addedNum = 0;
-                                for (int j = 0; j < block.InsertCountB; j++) {
-                                    addedNum += result.PiecesNew[j + block.InsertStartB].Length;
-                                }
-
-                                right.Highlights.Add(new Models.TextChanges.HighlightRange(startPos, addedNum));
+                            if (chunk.AddedCount > 0) {
+                                right.Highlights.Add(new Models.TextChanges.HighlightRange(chunk.AddedStart, chunk.AddedCount));
                             }
                         }
                     }
@@ -151,7 +100,7 @@ namespace SourceGit.Commands {
                 deleted.Clear();
             }
 
-            if (added.Count > 0) {
+            if (added.Any()) {
                 changes.Lines.AddRange(added);
                 added.Clear();
             }
