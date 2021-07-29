@@ -175,6 +175,7 @@ namespace SourceGit.Views.Controls {
                     offsetX += UNIT_WIDTH;
                     major = new PathHelper(commit.Parents[0], isMerged, colorIdx, new Point(offsetX, offsetY));
                     unsolved.Add(major);
+                    temp.Paths.Add(major.Path);
                     colorIdx++;
                 }
 
@@ -205,7 +206,9 @@ namespace SourceGit.Views.Controls {
                         offsetX += UNIT_WIDTH;
 
                         // 防止有下一个提交有ended线时，新的分支线与旧线重合
-                        unsolved.Add(new PathHelper(commit.Parents[j], isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT)));
+                        var l = new PathHelper(commit.Parents[j], isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT));
+                        unsolved.Add(l);
+                        temp.Paths.Add(l.Path);
                         colorIdx++;
                     }
                 }
@@ -213,7 +216,6 @@ namespace SourceGit.Views.Controls {
                 // 处理已终止的线
                 foreach (var l in ended) {
                     l.Add(position.X, position.Y, true);
-                    temp.Paths.Add(l.Path);
                     unsolved.Remove(l);
                 }
 
@@ -232,14 +234,9 @@ namespace SourceGit.Views.Controls {
                 var endY = (commits.Count - 0.5) * UNIT_HEIGHT;
 
                 if (path.Path.Points.Count == 1 && path.Path.Points[0].Y == endY) continue;
-
                 path.Add((i + 0.5) * UNIT_WIDTH, endY, true);
-                temp.Paths.Add(path.Path);
             }
             unsolved.Clear();
-
-            // 排序
-            temp.Paths.Sort((l, h) => l.Points[0].Y.CompareTo(h.Points[0].Y));
 
             Dispatcher.Invoke(() => {
                 data = temp;
