@@ -260,7 +260,8 @@ namespace SourceGit.Models {
                 }
             }
 
-            throw new System.Exception("SHOULD NEVER GET HERE");
+            rs.State = Edit.None;
+            return rs;
         }
 
         private static void AddChunk(List<Chunk> chunks, Dictionary<string, int> hashes, string data, int start) {
