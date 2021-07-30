@@ -19,8 +19,8 @@ namespace SourceGit.Views.Widgets {
         private static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
         private static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
         private static readonly Brush BG_NORMAL = Brushes.Transparent;
-        private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(100, 0, 255, 0));
-        private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(100, 255, 0, 0));
+        private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(128, 0, 255, 0));
+        private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
         private static readonly Brush HL_NORMAL = Brushes.Transparent;
 
         public class Option {
