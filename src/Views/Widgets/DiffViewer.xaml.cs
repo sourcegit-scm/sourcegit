@@ -468,12 +468,13 @@ namespace SourceGit.Views.Widgets {
             line.SetBinding(TextBlock.ForegroundProperty, new Binding("FG"));
             line.SetBinding(TextBlock.FontStyleProperty, new Binding("Style"));
             line.SetValue(TextBlock.FontFamilyProperty, new FontFamily("Consolas,Microsoft YaHei UI"));
-            line.SetValue(TextBlock.FontSizeProperty, new FontSizeConverter().ConvertFrom("9pt"));
+            line.SetValue(TextBlock.FontSizeProperty, 13.0);
             line.SetValue(TextBlock.MarginProperty, new Thickness(0));
             line.SetValue(TextBlock.PaddingProperty, new Thickness(4, 0, 0, 0));
             line.SetValue(TextBlock.LineHeightProperty, 16.0);
             line.SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Display);
             line.SetValue(TextOptions.TextRenderingModeProperty, TextRenderingMode.ClearType);
+            line.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
 
             var colContent = new DataGridTemplateColumn();
             colContent.CellTemplate = new DataTemplate();
