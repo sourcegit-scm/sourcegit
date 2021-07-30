@@ -97,7 +97,7 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
 
-                                        <TextBlock Text="{Binding Subject}" FontFamily="Consolas,Microsoft YaHei UI Light" FontSize="13" RenderOptions.ClearTypeHint="Enabled" Margin="2,0,0,0"/>
+                                        <TextBlock Text="{Binding Subject}" FontFamily="Consolas,Microsoft YaHei UI" FontSize="13" RenderOptions.ClearTypeHint="Enabled" Margin="2,0,0,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
