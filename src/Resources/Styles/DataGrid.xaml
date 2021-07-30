@@ -15,6 +15,7 @@
     <Style x:Key="Style.DataGridRow" TargetType="{x:Type DataGridRow}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
 
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">

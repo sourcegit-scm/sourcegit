@@ -7,6 +7,9 @@
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="MinHeight" Value="24"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>
     </Style>
     
     <Style TargetType="{x:Type ContextMenu}">
@@ -14,9 +17,7 @@
         <Setter Property="Grid.IsSharedSizeScope" Value="False" />
         <Setter Property="HorizontalOffset" Value="-4"/>
         <Setter Property="VerticalOffset" Value="-4"/>
-        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
-        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
-        <Setter Property="TextElement.FontSize" Value="9pt"/>
+        <Setter Property="TextElement.FontSize" Value="13"/>
 
         <Setter Property="Template">
             <Setter.Value>
