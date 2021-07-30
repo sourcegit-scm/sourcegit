@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              xmlns:models="clr-namespace:SourceGit.Models"
              mc:Ignorable="d"
-             Background="{DynamicResource Brush.Contents}"
+             Background="{DynamicResource Brush.Window}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <Style x:Key="Style.DataGridRow.DiffViewer" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
@@ -76,7 +76,7 @@
                 </Grid>
             </Border>
 
-            <Grid x:Name="textDiff" Grid.Row="1" SizeChanged="OnTextDiffSizeChanged">
+            <Grid x:Name="textDiff" Grid.Row="1" Background="{DynamicResource Brush.Contents}" SizeChanged="OnTextDiffSizeChanged">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -131,7 +131,7 @@
                 </StackPanel>
             </Border>
 
-            <Border x:Name="mask" Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource Brush.Contents}">
+            <Border x:Name="mask" Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource Brush.Window}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <Path Width="64" Height="64" Data="{StaticResource Icon.Diff}" Fill="{DynamicResource Brush.FG2}"/>
                     <TextBlock 
