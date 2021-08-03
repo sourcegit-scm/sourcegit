@@ -944,7 +944,7 @@ namespace SourceGit.Views.Widgets {
             if (hitted == null || hitted != submodule) return;
 
             var sub = new Models.Repository();
-            sub.Path = Path.Combine(repo.Path, submodule);
+            sub.Path = Path.GetFullPath(Path.Combine(repo.Path, submodule));
             sub.GitDir = new Commands.QueryGitDir(sub.Path).Result();
             sub.Name = repo.Name + " : " + Path.GetFileName(submodule);
 
