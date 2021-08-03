@@ -43,6 +43,7 @@
 
 ## Thanks
 
+* [Jai](https://gitee.com/abel) 修复SUBMODULE路径不正确的BUG
 * [Jai](https://gitee.com/abel) 修复刷新分支时，分支树节点状态未正常恢复的BUG
 * [PUMA](https://gitee.com/whgfu) 配置默认User
 * [Rwing](https://gitee.com/rwing) GitFlow: add an option to keep branch after finish
