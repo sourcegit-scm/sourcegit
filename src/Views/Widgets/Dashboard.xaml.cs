@@ -1049,6 +1049,9 @@ namespace SourceGit.Views.Widgets {
 
                 var rebaseTempFolder = Path.Combine(repo.GitDir, "rebase-apply");
                 if (Directory.Exists(rebaseTempFolder)) Directory.Delete(rebaseTempFolder);
+
+                var rebaseMergeFolder = Path.Combine(repo.GitDir, "rebase-merge");
+                if (Directory.Exists(rebaseMergeFolder)) Directory.Delete(rebaseMergeFolder);
                 return;
             }
 
@@ -1097,6 +1100,12 @@ namespace SourceGit.Views.Widgets {
                 if (mode == "rebase") {
                     var rebaseTempFolder = Path.Combine(repo.GitDir, "rebase-apply");
                     if (Directory.Exists(rebaseTempFolder)) Directory.Delete(rebaseTempFolder);
+
+                    var rebaseFile = Path.Combine(repo.GitDir, "REBASE_HEAD");
+                    if (File.Exists(rebaseFile)) Directory.Delete(rebaseFile);
+
+                    var rebaseMergeFolder = Path.Combine(repo.GitDir, "rebase-merge");
+                    if (Directory.Exists(rebaseMergeFolder)) Directory.Delete(rebaseMergeFolder);
                 }
             }
         }
