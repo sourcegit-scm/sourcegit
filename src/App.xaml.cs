@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace SourceGit {
@@ -26,7 +27,12 @@ namespace SourceGit {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnAppStartup(object sender, StartupEventArgs e) {
+        protected override void OnStartup(StartupEventArgs e) {
+            base.OnStartup(e);
+
+            // 崩溃上报
+            AppDomain.CurrentDomain.UnhandledException += (_, ev) => Models.Issue.Create(ev.ExceptionObject as Exception);
+
             // 创建必要目录
             if (!Directory.Exists(Views.Controls.Avatar.CACHE_PATH)) {
                 Directory.CreateDirectory(Views.Controls.Avatar.CACHE_PATH);
@@ -79,7 +85,8 @@ namespace SourceGit {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnAppDeactivated(object sender, EventArgs e) {
+        protected override void OnDeactivated(EventArgs e) {
+            base.OnDeactivated(e);
             GC.Collect();
             Models.Preference.Save();
         }
