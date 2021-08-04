@@ -43,29 +43,31 @@ namespace SourceGit {
 
             // 如果启动命令中指定了路径，打开指定目录的仓库
             var launcher = new Views.Launcher();
-            if (e.Args.Length > 0) {
-                var repo = Models.Preference.Instance.FindRepository(e.Args[0]);
-                if (repo == null) {
-                    var path = new Commands.GetRepositoryRootPath(e.Args[0]).Result();
-                    if (path != null) {
-                        var gitDir = new Commands.QueryGitDir(path).Result();
-                        repo = Models.Preference.Instance.AddRepository(path, gitDir, "");
-                    }
-                }
-
-                if (repo != null) Models.Watcher.Open(repo);
-            } else {
-                var restore = Models.Preference.Instance.Restore;
-                var actived = null as Models.Repository;
-                if (restore.IsEnabled && restore.Opened.Count > 0) {
-                    foreach (var path in restore.Opened) {
-                        if (!Directory.Exists(path)) continue;
-                        var repo = Models.Preference.Instance.FindRepository(path);
-                        if (repo != null) Models.Watcher.Open(repo);
-                        if (path == restore.Actived) actived = repo;
+            if (Models.Preference.Instance.IsReady) {
+                if (e.Args.Length > 0) {
+                    var repo = Models.Preference.Instance.FindRepository(e.Args[0]);
+                    if (repo == null) {
+                        var path = new Commands.GetRepositoryRootPath(e.Args[0]).Result();
+                        if (path != null) {
+                            var gitDir = new Commands.QueryGitDir(path).Result();
+                            repo = Models.Preference.Instance.AddRepository(path, gitDir, "");
+                        }
                     }
 
-                    if (actived != null) Models.Watcher.Open(actived);
+                    if (repo != null) Models.Watcher.Open(repo);
+                } else if (Models.Preference.Instance.Restore.IsEnabled) {
+                    var restore = Models.Preference.Instance.Restore;
+                    var actived = null as Models.Repository;
+                    if (restore.Opened.Count > 0) {
+                        foreach (var path in restore.Opened) {
+                            if (!Directory.Exists(path)) continue;
+                            var repo = Models.Preference.Instance.FindRepository(path);
+                            if (repo != null) Models.Watcher.Open(repo);
+                            if (path == restore.Actived) actived = repo;
+                        }
+
+                        if (actived != null) Models.Watcher.Open(actived);
+                    }
                 }
             }
 
