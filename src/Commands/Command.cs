@@ -110,7 +110,13 @@ namespace SourceGit.Commands {
                 errs.Add(e.Data);
             };
 
-            proc.Start();
+            try {
+                proc.Start();
+            } catch (Exception e) {
+                if (!DontRaiseError) Models.Exception.Raise(e.Message);
+                return false;
+            }
+
             proc.BeginOutputReadLine();
             proc.BeginErrorReadLine();
             proc.WaitForExit();
@@ -143,7 +149,15 @@ namespace SourceGit.Commands {
             if (!string.IsNullOrEmpty(Cwd)) start.WorkingDirectory = Cwd;
             
             var proc = new Process() { StartInfo = start };
-            proc.Start();
+            try {
+                proc.Start();
+            } catch (Exception e) {
+                return new ReadToEndResult() {
+                    Output = "",
+                    Error = e.Message,
+                    IsSuccess = false,
+                };
+            }
 
             var rs = new ReadToEndResult();
             rs.Output = proc.StandardOutput.ReadToEnd();
