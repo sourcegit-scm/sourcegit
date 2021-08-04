@@ -15,13 +15,6 @@ namespace SourceGit.Views.Widgets {
     ///     变更对比视图
     /// </summary>
     public partial class DiffViewer : UserControl {
-        private static readonly Brush BG_EMPTY = new SolidColorBrush(Color.FromArgb(40, 0, 0, 0));
-        private static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
-        private static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
-        private static readonly Brush BG_NORMAL = Brushes.Transparent;
-        private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(128, 0, 255, 0));
-        private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
-        private static readonly Brush HL_NORMAL = Brushes.Transparent;
 
         public class Option {
             public string[] RevisionRange = new string[] { };
@@ -32,29 +25,9 @@ namespace SourceGit.Views.Widgets {
         }
 
         public class Block {
-            public Models.TextChanges.LineMode Mode { get; set; }
-            public Brush BG { get; set; }
-            public Brush FG { get; set; }
-            public FontStyle Style { get; set; }
-            public string OldLine { get; set; }
-            public string NewLine { get; set; }
+            public string OldLine { get; set; } = "";
+            public string NewLine { get; set; } = "";
             public Controls.HighlightableTextBlock.Data Data { get; set; } = new Controls.HighlightableTextBlock.Data();
-
-            public bool IsContent {
-                get {
-                    return Mode == Models.TextChanges.LineMode.Added 
-                        || Mode == Models.TextChanges.LineMode.Deleted 
-                        || Mode == Models.TextChanges.LineMode.Normal;
-                }
-            }
-
-            public bool IsDifference {
-                get {
-                    return Mode == Models.TextChanges.LineMode.Added 
-                        || Mode == Models.TextChanges.LineMode.Deleted 
-                        || Mode == Models.TextChanges.LineMode.None;
-                }
-            }
         }
 
         private ulong seq = 0;
@@ -65,7 +38,6 @@ namespace SourceGit.Views.Widgets {
         private List<Rectangle> splitters = new List<Rectangle>();
 
         public DiffViewer() {
-            Models.Theme.AddListener(this, Reload);
             InitializeComponent();
             Reset();
         }
@@ -211,22 +183,16 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void MakeCombinedViewer(ulong dummy) {
-            var fgCommon = FindResource("Brush.FG1") as Brush;
-            var fgIndicator = FindResource("Brush.FG2") as Brush;
             var lastOldLine = "";
             var lastNewLine = "";
             var blocks = new List<Block>();
 
             foreach (var line in cachedTextChanges) {
                 var block = new Block();
-                block.Mode = line.Mode;
-                block.BG = GetLineBackground(line);
-                block.FG = block.IsContent ? fgCommon : fgIndicator;
-                block.Style = block.IsContent ? FontStyles.Normal : FontStyles.Italic;
                 block.OldLine = line.OldLine;
                 block.NewLine = line.NewLine;
+                block.Data.Mode = line.Mode;
                 block.Data.Text = line.Content;
-                block.Data.HighlightBrush = GetLineHighlight(line);
                 block.Data.Highlights.AddRange(line.Highlights);
 
                 if (line.OldLine.Length > 0) lastOldLine = line.OldLine;
@@ -273,8 +239,6 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void MakeSideBySideViewer(ulong dummy) {
-            var fgCommon = FindResource("Brush.FG1") as Brush;
-            var fgIndicator = FindResource("Brush.FG2") as Brush;
             var lastOldLine = "";
             var lastNewLine = "";
             var oldSideBlocks = new List<Block>();
@@ -282,14 +246,10 @@ namespace SourceGit.Views.Widgets {
 
             foreach (var line in cachedTextChanges) {
                 var block = new Block();
-                block.Mode = line.Mode;
-                block.BG = GetLineBackground(line);
-                block.FG = block.IsContent ? fgCommon : fgIndicator;
-                block.Style = block.IsContent ? FontStyles.Normal : FontStyles.Italic;
                 block.OldLine = line.OldLine;
                 block.NewLine = line.NewLine;
+                block.Data.Mode = line.Mode;
                 block.Data.Text = line.Content;
-                block.Data.HighlightBrush = GetLineHighlight(line);
                 block.Data.Highlights.AddRange(line.Highlights);
 
                 if (line.OldLine.Length > 0) lastOldLine = line.OldLine;
@@ -364,55 +324,13 @@ namespace SourceGit.Views.Widgets {
             });
         }
 
-        private Brush GetLineBackground(Models.TextChanges.Line line) {
-            switch (line.Mode) {
-            case Models.TextChanges.LineMode.Added:
-                return BG_ADDED;
-            case Models.TextChanges.LineMode.Deleted:
-                return BG_DELETED;
-            default:
-                return BG_NORMAL;
-            }
-        }
-
-        private Brush GetLineHighlight(Models.TextChanges.Line line) {
-            switch (line.Mode) {
-            case Models.TextChanges.LineMode.Added:
-                return HL_ADDED;
-            case Models.TextChanges.LineMode.Deleted:
-                return HL_DELETED;
-            default:
-                return HL_NORMAL;
-            }
-        }
-
         private void FillEmptyLines(List<Block> old, List<Block> cur) {
             if (old.Count < cur.Count) {
                 int diff = cur.Count - old.Count;
-
-                for (int i = 0; i < diff; i++) {
-                    var empty = new Block();
-                    empty.Mode = Models.TextChanges.LineMode.None;
-                    empty.BG = BG_EMPTY;
-                    empty.FG = Brushes.Transparent;
-                    empty.Style = FontStyles.Normal;
-                    empty.OldLine = "";
-                    empty.NewLine = "";
-                    old.Add(empty);
-                }
+                for (int i = 0; i < diff; i++) old.Add(new Block());
             } else if (old.Count > cur.Count) {
                 int diff = old.Count - cur.Count;
-
-                for (int i = 0; i < diff; i++) {
-                    var empty = new Block();
-                    empty.Mode = Models.TextChanges.LineMode.None;
-                    empty.BG = BG_EMPTY;
-                    empty.FG = Brushes.Transparent;
-                    empty.Style = FontStyles.Normal;
-                    empty.OldLine = "";
-                    empty.NewLine = "";
-                    cur.Add(empty);
-                }
+                for (int i = 0; i < diff; i++) cur.Add(new Block());
             }
         }
 
@@ -445,7 +363,7 @@ namespace SourceGit.Views.Widgets {
                 foreach (var item in items) {
                     var block = item as Block;
                     if (block == null) continue;
-                    if (!block.IsContent) continue;
+                    if (!block.Data.IsContent) continue;
 
                     builder.Append(block.Data.Text);
                     builder.AppendLine();
@@ -464,17 +382,11 @@ namespace SourceGit.Views.Widgets {
 
             var line = new FrameworkElementFactory(typeof(Controls.HighlightableTextBlock));
             line.SetBinding(Controls.HighlightableTextBlock.ContentProperty, new Binding("Data"));
-            line.SetBinding(TextBlock.BackgroundProperty, new Binding("BG"));
-            line.SetBinding(TextBlock.ForegroundProperty, new Binding("FG"));
-            line.SetBinding(TextBlock.FontStyleProperty, new Binding("Style"));
             line.SetValue(TextBlock.FontFamilyProperty, new FontFamily("Consolas,Microsoft YaHei UI"));
             line.SetValue(TextBlock.FontSizeProperty, 13.0);
             line.SetValue(TextBlock.MarginProperty, new Thickness(0));
             line.SetValue(TextBlock.PaddingProperty, new Thickness(4, 0, 0, 0));
             line.SetValue(TextBlock.LineHeightProperty, 16.0);
-            line.SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Display);
-            line.SetValue(TextOptions.TextRenderingModeProperty, TextRenderingMode.ClearType);
-            line.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
 
             var colContent = new DataGridTemplateColumn();
             colContent.CellTemplate = new DataTemplate();
@@ -576,7 +488,7 @@ namespace SourceGit.Views.Widgets {
                 foreach (var item in items) {
                     var block = item as Block;
                     if (block == null) continue;
-                    if (!block.IsContent) continue;
+                    if (!block.Data.IsContent) continue;
 
                     builder.Append(block.Data.Text);
                     builder.AppendLine();
@@ -619,7 +531,6 @@ namespace SourceGit.Views.Widgets {
             }
         }
 
-
         private void OnTextDiffSyncSelected(object sender, SelectionChangedEventArgs e) {
             DataGrid dG = sender as DataGrid;
             int Index = dG.SelectedIndex;
@@ -649,8 +560,8 @@ namespace SourceGit.Views.Widgets {
             var first = grid.Items[firstVisible] as Block;
             for (int i = firstVisible - 1; i >= 0; i--) {
                 var next = grid.Items[i] as Block;
-                if (next.IsDifference) {
-                    if (firstModeEnded || next.Mode != first.Mode) {
+                if (next.Data.IsDifference) {
+                    if (firstModeEnded || next.Data.Mode != first.Data.Mode) {
                         scroller.ScrollToVerticalOffset(i);
                         grid.SelectedIndex = i;
                         break;
@@ -673,8 +584,8 @@ namespace SourceGit.Views.Widgets {
             var first = grid.Items[firstVisible] as Block;
             for (int i = firstVisible + 1; i < grid.Items.Count; i++) {
                 var next = grid.Items[i] as Block;
-                if (next.IsDifference) {
-                    if (firstModeEnded || next.Mode != first.Mode) {
+                if (next.Data.IsDifference) {
+                    if (firstModeEnded || next.Data.Mode != first.Data.Mode) {
                         scroller.ScrollToVerticalOffset(i);
                         grid.SelectedIndex = i;
                         break;

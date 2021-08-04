@@ -9,11 +9,36 @@ namespace SourceGit.Views.Controls {
     ///     支持部分高亮的文本组件
     /// </summary>
     public class HighlightableTextBlock : TextBlock {
+        private static readonly Brush BG_EMPTY = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
+        private static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
+        private static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
+        private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(128, 0, 255, 0));
+        private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
 
         public class Data {
+            public Models.TextChanges.LineMode Mode { get; set; } = Models.TextChanges.LineMode.None;
             public string Text { get; set; } = "";
             public List<Models.TextChanges.HighlightRange> Highlights { get; set; } = new List<Models.TextChanges.HighlightRange>();
-            public Brush HighlightBrush { get; set; } = Brushes.Transparent;
+
+            public bool IsContent {
+                get {
+                    return Mode == Models.TextChanges.LineMode.Added
+                        || Mode == Models.TextChanges.LineMode.Deleted
+                        || Mode == Models.TextChanges.LineMode.Normal;
+                }
+            }
+
+            public bool IsDifference {
+                get {
+                    return Mode == Models.TextChanges.LineMode.Added
+                        || Mode == Models.TextChanges.LineMode.Deleted
+                        || Mode == Models.TextChanges.LineMode.None;
+                }
+            }
+
+            public string FG {
+                get { return Mode == Models.TextChanges.LineMode.Indicator ? "Brush.FG2" : "Brush.FG1"; }
+            }
         }
 
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register(
@@ -33,7 +58,32 @@ namespace SourceGit.Views.Controls {
 
             txt.Inlines.Clear();
             txt.Text = null;
+            txt.Background = Brushes.Transparent;
+            txt.FontStyle = FontStyles.Normal;
+
             if (txt.Content == null) return;
+
+            Brush highlightBrush = Brushes.Transparent;
+            switch (txt.Content.Mode) {
+            case Models.TextChanges.LineMode.None:
+                txt.Background = BG_EMPTY;
+                break;
+            case Models.TextChanges.LineMode.Indicator:
+                txt.FontStyle = FontStyles.Italic;
+                break;
+            case Models.TextChanges.LineMode.Added:
+                txt.Background = BG_ADDED;
+                highlightBrush = HL_ADDED;
+                break;
+            case Models.TextChanges.LineMode.Deleted:
+                txt.Background = BG_DELETED;
+                highlightBrush = HL_DELETED;
+                break;
+            default:
+                break;
+            }
+
+            txt.SetResourceReference(ForegroundProperty, txt.Content.FG);
 
             if (txt.Content.Highlights == null || txt.Content.Highlights.Count == 0) {
                 txt.Text = txt.Content.Text;
@@ -47,7 +97,7 @@ namespace SourceGit.Views.Controls {
                 }
 
                 txt.Inlines.Add(new TextBlock() {
-                    Background = txt.Content.HighlightBrush,
+                    Background = highlightBrush,
                     LineHeight = txt.LineHeight,
                     Text = txt.Content.Text.Substring(highlight.Start, highlight.Count),
                 });
