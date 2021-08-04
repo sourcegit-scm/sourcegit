@@ -17,7 +17,7 @@ namespace SourceGit.Commands {
 
             rs = rs.Trim();
             if (Path.IsPathRooted(rs)) return rs;
-            return Path.Combine(Cwd, rs);
+            return Path.GetFullPath(Path.Combine(Cwd, rs));
         }
     }
 }

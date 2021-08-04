@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SourceGit.Views.Popups {
@@ -22,7 +23,8 @@ namespace SourceGit.Views.Popups {
                 var succ = new Commands.Init(WorkDir).Exec();
                 if (!succ) return false;
 
-                var repo = Models.Preference.Instance.AddRepository(WorkDir, WorkDir + "\\.git", "");
+                var gitDir = Path.GetFullPath(Path.Combine(WorkDir, ".git"));
+                var repo = Models.Preference.Instance.AddRepository(WorkDir, gitDir, "");
                 Dispatcher.Invoke(() => Models.Watcher.Open(repo));
                 return true;
             });

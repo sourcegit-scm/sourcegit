@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -40,14 +41,20 @@ namespace SourceGit.Views.Popups {
 
                 var path = Folder;
                 if (!string.IsNullOrEmpty(LocalName)) {
-                    path += $"/{LocalName}";
+                    path = Path.GetFullPath(Path.Combine(path, LocalName));
                 } else {
-                    var idx = Uri.LastIndexOfAny(new char[] { '\\', '/' });
-                    var name = Uri.Substring(idx + 1);
-                    path += $"/{name.Replace(".git", "")}";
+                    var name = Path.GetFileName(Uri);
+                    if (name.EndsWith(".git")) name = name.Substring(0, name.Length - 4);
+                    path = Path.GetFullPath(Path.Combine(path, name));
                 }
 
-                var repo = Models.Preference.Instance.AddRepository(path, path + "/.git", "");
+                if (!Directory.Exists(path)) {
+                    Models.Exception.Raise($"Folder {path} not found!");
+                    return false;
+                }
+
+                var gitDir = new Commands.QueryGitDir(path).Result();
+                var repo = Models.Preference.Instance.AddRepository(path, gitDir, "");
                 if (repo != null) Dispatcher.Invoke(() => Models.Watcher.Open(repo));
                 return true;
             });
