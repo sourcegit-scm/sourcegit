@@ -39,7 +39,10 @@ namespace SourceGit.Commands {
                 branch.IsLocal = true;
             } else if (refName.StartsWith(PREFIX_REMOTE, StringComparison.Ordinal)) {
                 var name = refName.Substring(PREFIX_REMOTE.Length);
-                branch.Remote = name.Substring(0, name.IndexOf('/'));
+                var shortNameIdx = name.IndexOf('/');
+                if (shortNameIdx < 0) return;
+
+                branch.Remote = name.Substring(0, shortNameIdx);
                 branch.Name = name.Substring(branch.Remote.Length + 1);
                 branch.IsLocal = false;
             } else {
