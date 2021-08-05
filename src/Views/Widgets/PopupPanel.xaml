@@ -24,7 +24,7 @@
                 <!-- Custom panel -->
                 <Border x:Name="body">
                     <StackPanel Margin="8" Orientation="Vertical">
-                        <TextBlock Margin="8,8,0,18" x:Name="txtTitle" FontSize="18" FontWeight="DemiBold" TextOptions.TextFormattingMode="Ideal"/>
+                        <TextBlock Margin="8,8,0,18" x:Name="txtTitle" FontSize="18" FontWeight="DemiBold" TextOptions.TextFormattingMode="Ideal" RenderOptions.ClearTypeHint="Enabled"/>
                         <ContentControl x:Name="container"/>
                         <StackPanel Margin="0,16,0,0" Height="32" Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button Click="Sure" Width="80" Content="{DynamicResource Text.Sure}" BorderBrush="{DynamicResource Brush.FG1}" Background="{DynamicResource Brush.Accent1}"/>
@@ -32,7 +32,6 @@
                         </StackPanel>
                     </StackPanel>
                 </Border>
-                
                 
                 <!-- Progress mask -->
                 <Border x:Name="mask" Visibility="Collapsed" Background="{DynamicResource Brush.Popup}" Opacity=".9">

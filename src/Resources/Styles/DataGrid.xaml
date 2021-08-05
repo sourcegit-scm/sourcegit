@@ -4,6 +4,7 @@
     <Style x:Key="Style.DataGridCell" TargetType="{x:Type DataGridCell}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>
         
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
@@ -15,7 +16,6 @@
     <Style x:Key="Style.DataGridRow" TargetType="{x:Type DataGridRow}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
 
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
@@ -44,7 +44,7 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.FG1}"/>
-        <Setter Property="TextElement.FontFamily" Value="Consolas"/>
+        <Setter Property="TextElement.FontFamily" Value="Consolas,Microsoft YaHei UI"/>
         <Setter Property="EnableColumnVirtualization" Value="True"/>
         <Setter Property="EnableRowVirtualization" Value="True"/>
         <Setter Property="RowBackground" Value="Transparent"/>

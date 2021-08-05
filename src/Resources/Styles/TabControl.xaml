@@ -46,9 +46,12 @@
                             ContentSource="Header" 
                             Margin="8,4">
                             <ContentPresenter.Resources>
-                                <Style TargetType="{x:Type TextBlock}">
+                                <Style TargetType="{x:Type TextBlock}" BasedOn="{x:Null}">
                                     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
                                     <Setter Property="FontWeight" Value="DemiBold"/>
+                                    <Setter Property="FontFamily" Value="Microsoft YaHei UI"/>
+                                    <Setter Property="FontSize" Value="9pt"/>
+                                    <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabItem}}, Path=IsSelected}" Value="True">
                                             <Setter Property="Foreground" Value="{DynamicResource Brush.Accent1}"/>

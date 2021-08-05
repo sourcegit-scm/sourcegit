@@ -14,7 +14,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
-            <StackPanel Grid.Row="0" Orientation="Vertical" Width="420" HorizontalAlignment="Center" TextElement.FontFamily="Consolas">
+            <StackPanel Grid.Row="0" Orientation="Vertical" Width="420" HorizontalAlignment="Center">
                 <!-- Logo -->
                 <Path 
                     Margin="0,48,0,0" 
@@ -70,13 +70,13 @@
                     <TextBlock 
                         Grid.Column="0" 
                         Text="{DynamicResource Text.Welcome.Repositories}" 
-                        FontSize="13pt" FontWeight="ExtraBold" FontFamily="Consolas,Microsoft YaHei UI"
+                        FontSize="13pt" FontWeight="ExtraBold"
                         Foreground="{DynamicResource Brush.FG2}"/>
                     
                     <TextBlock 
                         Grid.Column="2" 
                         Text="{DynamicResource Text.Welcome.DragDrop}" 
-                        FontSize="10pt" FontFamily="Consolas,Microsoft YaHei UI"
+                        FontSize="10pt"
                         Foreground="{DynamicResource Brush.FG2}"/>
                 </Grid>
             </StackPanel>
@@ -128,7 +128,7 @@
                                 <Path Grid.Column="0" Margin="2,0,0,0" x:Name="Icon" Width="16" Height="16" Data="{StaticResource Icon.Git}"/>
 
                                 <StackPanel Grid.Column="1" x:Name="Contents" Orientation="Horizontal">
-                                    <TextBlock Margin="8,0" FontSize="9pt" FontFamily="Consolas,Microsoft YaHei UI" Text="{Binding Name}"/>
+                                    <TextBlock Margin="8,0" Text="{Binding Name}"/>
                                     <TextBlock x:Name="Path" Text="{Binding Id}" Foreground="{DynamicResource Brush.FG2}"/>
                                 </StackPanel>
 

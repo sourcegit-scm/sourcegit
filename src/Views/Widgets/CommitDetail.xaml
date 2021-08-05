@@ -37,12 +37,12 @@
                     
                     <!-- Author Info -->
                     <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
-                        <TextBlock FontWeight="Bold" Text="{DynamicResource Text.CommitViewer.Info.Author}" Foreground="{DynamicResource Brush.FG2}"/>
+                        <TextBlock Style="{DynamicResource Style.TextBlock.Group}" Text="{DynamicResource Text.CommitViewer.Info.Author}" Margin="0"/>
                         <StackPanel Orientation="Horizontal" Margin="0,12,0,8">
-                            <controls:TextEdit x:Name="txtAuthorName" FontFamily="Consolas,Microsoft YaHei UI" FontSize="10pt" IsReadOnly="True" BorderThickness="0"/>
-                            <controls:TextEdit x:Name="txtAuthorEmail" FontFamily="Consolas,Microsoft YaHei UI" FontSize="10pt" IsReadOnly="True" BorderThickness="0" Foreground="{DynamicResource Brush.FG2}" Margin="4,0,0,0"/>
+                            <controls:TextEdit x:Name="txtAuthorName" FontSize="10pt" IsReadOnly="True" BorderThickness="0"/>
+                            <controls:TextEdit x:Name="txtAuthorEmail" FontSize="10pt" IsReadOnly="True" BorderThickness="0" Foreground="{DynamicResource Brush.FG2}" Margin="4,0,0,0"/>
                         </StackPanel>
-                        <controls:TextEdit x:Name="txtAuthorTime" FontFamily="Consolas" FontSize="9pt" IsReadOnly="True" BorderThickness="0" Foreground="{DynamicResource Brush.FG2}"/>
+                        <controls:TextEdit x:Name="txtAuthorTime" IsReadOnly="True" BorderThickness="0" Foreground="{DynamicResource Brush.FG2}"/>
                     </StackPanel>
 
                     <!-- Committer Avatar -->
@@ -54,12 +54,12 @@
 
                     <!-- Committer Info -->
                     <StackPanel x:Name="committerInfoPanel" Grid.Column="3" Margin="16,0,8,0" Orientation="Vertical">
-                        <TextBlock FontWeight="Bold" Text="{DynamicResource Text.CommitViewer.Info.Committer}" Foreground="{DynamicResource Brush.FG2}"/>
+                        <TextBlock Style="{DynamicResource Style.TextBlock.Group}" Text="{DynamicResource Text.CommitViewer.Info.Committer}" Margin="0"/>
                         <StackPanel Orientation="Horizontal" Margin="0,12,0,8">
-                            <controls:TextEdit x:Name="txtCommitterName" FontFamily="Consolas,Microsoft YaHei UI" FontSize="10pt" IsReadOnly="True" BorderThickness="0"/>
-                            <controls:TextEdit x:Name="txtCommitterEmail" FontFamily="Consolas,Microsoft YaHei UI" FontSize="10pt" IsReadOnly="True" BorderThickness="0" Foreground="{DynamicResource Brush.FG2}" Margin="4,0,0,0"/>
+                            <controls:TextEdit x:Name="txtCommitterName" FontSize="10pt" IsReadOnly="True" BorderThickness="0"/>
+                            <controls:TextEdit x:Name="txtCommitterEmail" FontSize="10pt" IsReadOnly="True" BorderThickness="0" Foreground="{DynamicResource Brush.FG2}" Margin="4,0,0,0"/>
                         </StackPanel>
-                        <controls:TextEdit x:Name="txtCommitterTime" FontFamily="Consolas" FontSize="9pt" IsReadOnly="True" BorderThickness="0" Foreground="{DynamicResource Brush.FG2}"/>
+                        <controls:TextEdit x:Name="txtCommitterTime" IsReadOnly="True" BorderThickness="0" Foreground="{DynamicResource Brush.FG2}"/>
                     </StackPanel>
                 </Grid>
             
@@ -83,26 +83,21 @@
                     <!-- SHA -->
                     <TextBlock 
                         Grid.Row="0" Grid.Column="0"
-                        HorizontalAlignment="Right"
-                        FontWeight="Bold"
-                        Text="{DynamicResource Text.CommitViewer.Info.SHA}" 
-                        Foreground="{DynamicResource Brush.FG2}"/>
+                        Style="{DynamicResource Style.TextBlock.Header}"
+                        Text="{DynamicResource Text.CommitViewer.Info.SHA}"/>
                     <controls:TextEdit
                         Grid.Row="0" Grid.Column="1"
                         Height="24"
                         x:Name="txtSHA"
                         IsReadOnly="True"
                         BorderThickness="0"
-                        FontFamily="Consolas"
                         Margin="11,0,0,0"/>
 
                     <!-- PARENTS -->
                     <TextBlock 
                         Grid.Row="1" Grid.Column="0"
-                        HorizontalAlignment="Right"
-                        FontWeight="Bold"
-                        Text="{DynamicResource Text.CommitViewer.Info.Parents}" 
-                        Foreground="{DynamicResource Brush.FG2}"/>
+                        Style="{DynamicResource Style.TextBlock.Header}"
+                        Text="{DynamicResource Text.CommitViewer.Info.Parents}"/>
                     <ItemsControl Grid.Row="1" Grid.Column="1" x:Name="listParents" Height="24" Margin="13,0,0,0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -112,7 +107,7 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Margin="0,0,8,0" FontFamily="Consolas">
+                                <TextBlock Margin="0,0,8,0">
                                     <Hyperlink RequestNavigate="OnNavigateParent" NavigateUri="{Binding .}" ToolTip="{DynamicResource Text.Goto}">
                                         <Run Text="{Binding .}"/>
                                     </Hyperlink>
@@ -124,10 +119,8 @@
                     <!-- REFS -->
                     <TextBlock 
                         Grid.Row="2" Grid.Column="0"
-                        HorizontalAlignment="Right"
-                        FontWeight="Bold"
-                        Text="{DynamicResource Text.CommitViewer.Info.Refs}" 
-                        Foreground="{DynamicResource Brush.FG2}"/>
+                        Style="{DynamicResource Style.TextBlock.Header}"
+                        Text="{DynamicResource Text.CommitViewer.Info.Refs}"/>
                     <ItemsControl Grid.Row="2" Grid.Column="1" x:Name="listRefs" Height="24" Margin="11,0,0,0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -143,7 +136,7 @@
                                     </Border>
 
                                     <Border x:Name="Color" Background="#FFFFB835">
-                                        <TextBlock Text="{Binding Name}" FontSize="8pt" Margin="4,0" Foreground="Black" FontFamily="Consolas"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="8pt" Margin="4,0" Foreground="Black"/>
                                     </Border>
                                 </StackPanel>
 
@@ -166,17 +159,13 @@
                     <!-- Message -->
                     <TextBlock 
                         Grid.Row="3" Grid.Column="0"
-                        Margin="0,4,0,0"
-                        HorizontalAlignment="Right" VerticalAlignment="Top"
-                        FontWeight="Bold"
-                        Text="{DynamicResource Text.CommitViewer.Info.Message}" 
-                        Foreground="{DynamicResource Brush.FG2}"/>
+                        Style="{DynamicResource Style.TextBlock.Header}"
+                        Margin="0,4,0,0" VerticalAlignment="Top"
+                        Text="{DynamicResource Text.CommitViewer.Info.Message}"/>
                     <controls:TextEdit
                         Grid.Row="3" Grid.Column="1"
                         x:Name="txtMessage"
                         IsReadOnly="true"
-                        FontFamily="Consolas,Microsoft YaHei UI"
-                        FontSize="9pt"
                         BorderThickness="0"
                         TextWrapping="Wrap"
                         Margin="11,5,16,0"
@@ -195,11 +184,9 @@
 
                     <TextBlock 
                         Grid.Column="0"
-                        Margin="0,4,0,0"
-                        HorizontalAlignment="Right" VerticalAlignment="Top"
-                        FontWeight="Bold"
-                        Text="{DynamicResource Text.CommitViewer.Info.Changed}" 
-                        Foreground="{DynamicResource Brush.FG2}"/>
+                        Style="{DynamicResource Style.TextBlock.Header}"
+                        Margin="0,4,0,0" VerticalAlignment="Top"
+                        Text="{DynamicResource Text.CommitViewer.Info.Changed}"/>
 
                     <DataGrid
                         Grid.Column="1"
@@ -223,7 +210,7 @@
                             <DataGridTemplateColumn Width="*" IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontFamily="Consolas" Margin="2,0,0,0" Text="{Binding Path}"/>
+                                        <TextBlock Margin="2,0,0,0" Text="{Binding Path}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

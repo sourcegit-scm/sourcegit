@@ -97,7 +97,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <TextBlock Grid.Column="0" FontSize="9pt" FontFamily="Consolas">
+                                                <TextBlock Grid.Column="0">
                                                         <Hyperlink NavigateUri="{Binding SHA}" RequestNavigate="GotoCommit" Foreground="DarkOrange" ToolTip="GOTO COMMIT">
                                                             <Run Text="{Binding ShortSHA, Mode=OneWay}"/>
                                                         </Hyperlink>
@@ -105,8 +105,7 @@
 
                                                 <TextBlock
                                                     Grid.Column="1" 
-                                                    Text="{Binding Author.Time}" 
-                                                    FontSize="9pt" FontFamily="Consolas"
+                                                    Text="{Binding Author.Time}"
                                                     Foreground="{DynamicResource Brush.FG2}" 
                                                     Margin="4,0,0,0" 
                                                     HorizontalAlignment="Right"/>
@@ -114,8 +113,7 @@
 
                                             <TextBlock
                                                 Grid.Row="1" 
-                                                Text="{Binding Subject}" 
-                                                FontSize="9pt" FontFamily="Consolas,Microsoft YaHei UI" 
+                                                Text="{Binding Subject}"
                                                 Margin="0,6,0,0"/>
                                         </Grid>
                                     </Grid>

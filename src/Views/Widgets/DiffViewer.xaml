@@ -32,13 +32,13 @@
 
                     <StackPanel Grid.Column="0" x:Name="orgFileNamePanel" Orientation="Horizontal">
                         <Path Width="10" Height="10" Data="{StaticResource Icon.File}"/>
-                        <TextBlock x:Name="txtOrgFileName" Margin="4,0,0,0" FontFamily="Consolas"/>
-                        <TextBlock Margin="8,0" Text="→" FontFamily="Consolas"/>
+                        <TextBlock x:Name="txtOrgFileName" Margin="4,0,0,0"/>
+                        <TextBlock Margin="8,0" Text="→"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Path Width="10" Height="10" Data="{StaticResource Icon.File}"/>
-                        <TextBlock x:Name="txtFileName" Margin="4,0" FontFamily="Consolas"/>
+                        <TextBlock x:Name="txtFileName" Margin="4,0"/>
                         <controls:Loading x:Name="loading" Width="10" Height="10" Visibility="Collapsed"/>
                     </StackPanel>
 
@@ -84,7 +84,7 @@
             </Grid>
 
             <Border x:Name="sizeChange" Grid.Row="1" Background="{DynamicResource Brush.Contents}">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center" TextElement.FontFamily="Consolas">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <TextBlock 
                         x:Name="txtSizeChangeTitle" 
                         Text="{DynamicResource Text.Diff.Binary}" 
@@ -137,7 +137,7 @@
                     <TextBlock 
                         Margin="0,16,0,0" 
                         Text="{DynamicResource Text.Diff.Welcome}" 
-                        FontSize="18" FontWeight="UltraBold" TextOptions.TextFormattingMode="Ideal"
+                        FontSize="18" FontWeight="UltraBold"
                         Foreground="{DynamicResource Brush.FG2}"
                         HorizontalAlignment="Center"/>
                 </StackPanel>

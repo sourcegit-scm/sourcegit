@@ -59,14 +59,14 @@
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:Stash}">
                         <Border BorderBrush="{DynamicResource Brush.Border3}" BorderThickness="0,0,0,1" Background="Transparent" Padding="6" ContextMenuOpening="OnStashContextMenuOpening">
-                            <StackPanel Orientation="Vertical" TextElement.FontFamily="Consolas">
+                            <StackPanel Orientation="Vertical">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding SHA}" Foreground="{DynamicResource Brush.FG2}" FontSize="11"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Author.Time}" Foreground="{DynamicResource Brush.FG2}" FontSize="11"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding SHA}" Foreground="{DynamicResource Brush.FG2}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Author.Time}" Foreground="{DynamicResource Brush.FG2}"/>
                                 </Grid>
                                 <TextBlock Text="{Binding Message}" Margin="0,8,0,0"/>
                             </StackPanel>
@@ -112,7 +112,7 @@
                     <DataGridTemplateColumn Width="*" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock FontFamily="Consolas" Margin="2,0,0,0" Text="{Binding Path}"/>
+                                <TextBlock Margin="2,0,0,0" Text="{Binding Path}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

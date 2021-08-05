@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style TargetType="{x:Type Hyperlink}">
         <Setter Property="TextDecorations" Value="{x:Null}"/>
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="{DynamicResource Brush.Accent1}"/>

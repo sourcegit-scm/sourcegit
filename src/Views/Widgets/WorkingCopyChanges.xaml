@@ -21,7 +21,6 @@
     <Grid>
         <controls:Tree
             x:Name="modeTree"
-            FontFamily="Consolas"
             MultiSelection="True"
             ItemsSource="{Binding ElementName=me, Path=Nodes}"
             SelectionChanged="OnTreeSelectionChanged"
@@ -58,8 +57,7 @@
                         <TextBlock
                             Grid.Column="1" 
                             Text="{Binding Path, Converter={StaticResource PureFileName}}" 
-                            Margin="4,0,0,0" 
-                            FontSize="9pt"/>
+                            Margin="4,0,0,0"/>
                     </Grid>
 
                     <HierarchicalDataTemplate.Triggers>
@@ -96,7 +94,7 @@
                 <DataGridTemplateColumn IsReadOnly="True" Width="SizeToCells">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock FontFamily="Consolas" Margin="2,0,0,0" Text="{Binding Path}"/>
+                            <TextBlock Margin="2,0,0,0" Text="{Binding Path}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -125,14 +123,14 @@
                 <DataGridTemplateColumn IsReadOnly="True" Width="SizeToCells">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock FontFamily="Consolas" Margin="2,0,0,0" Text="{Binding Path, Converter={StaticResource PureFileName}}"/>
+                            <TextBlock Margin="2,0,0,0" Text="{Binding Path, Converter={StaticResource PureFileName}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn IsReadOnly="True" Width="SizeToCells">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock FontFamily="Consolas" Margin="8,0,0,0" Text="{Binding Path, Converter={StaticResource PureFolderName}}" Foreground="{DynamicResource Brush.FG2}"/>
+                            <TextBlock Margin="8,0,0,0" Text="{Binding Path, Converter={StaticResource PureFolderName}}" Foreground="{DynamicResource Brush.FG2}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

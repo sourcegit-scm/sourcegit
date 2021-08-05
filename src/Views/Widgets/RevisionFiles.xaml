@@ -22,16 +22,12 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" Background="{DynamicResource Brush.Contents}" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1">
-            <controls:Tree 
-                x:Name="treeFiles" 
-                FontFamily="Consolas" 
-                SelectionChanged="OnFilesSelectionChanged" 
-                ContextMenuOpening="OnFilesContextMenuOpening">
+            <controls:Tree x:Name="treeFiles" SelectionChanged="OnFilesSelectionChanged" ContextMenuOpening="OnFilesContextMenuOpening">
                 <controls:Tree.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal" Height="24">
                             <Path x:Name="Icon" Width="14" Height="14" Data="{StaticResource Icon.File}"/>
-                            <TextBlock Margin="6,0,0,0" FontSize="9pt" Text="{Binding Path, Converter={StaticResource PureFileName}}"/>
+                            <TextBlock Margin="6,0,0,0" Text="{Binding Path, Converter={StaticResource PureFileName}}"/>
                         </StackPanel>
 
                         <HierarchicalDataTemplate.Triggers>
@@ -66,7 +62,6 @@
                 <Grid x:Name="layerTextPreview" Visibility="Collapsed" SizeChanged="OnTextPreviewSizeChanged">
                     <DataGrid
                         x:Name="txtPreviewData"
-                        FontFamily="Consolas,Microsoft YaHei UI"
                         RowHeight="16"
                         RowStyle="{StaticResource Style.DataGridRow.TextPreview}"
                         FrozenColumnCount="1"
@@ -98,7 +93,7 @@
                     VerticalAlignment="Center" HorizontalAlignment="Center" 
                     Visibility="Collapsed">
                     <Path x:Name="iconRevisionPreview" Width="64" Height="64" Data="{StaticResource Icon.Submodule}" Fill="{DynamicResource Brush.FG2}"/>
-                    <TextBlock x:Name="txtRevisionPreview" Margin="0,16,0,0" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
+                    <TextBlock x:Name="txtRevisionPreview" Margin="0,16,0,0" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
                 </StackPanel>
 
                 <StackPanel 
@@ -107,7 +102,7 @@
                     VerticalAlignment="Center" HorizontalAlignment="Center" 
                     Visibility="Collapsed">
                     <Path Width="64" Height="64" Data="{StaticResource Icon.Error}" Fill="{DynamicResource Brush.FG2}"/>
-                    <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.BinaryNotSupported}" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
+                    <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.BinaryNotSupported}" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
                 </StackPanel>
             </Grid>
         </Border>

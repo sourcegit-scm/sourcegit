@@ -80,6 +80,7 @@ namespace SourceGit.Views.Controls {
 
         public Avatar() {
             SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.HighQuality);
+            SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Auto);
             Unloaded += (o, e) => Cancel(Email);
         }
 

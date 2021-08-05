@@ -7,6 +7,7 @@
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="MinHeight" Value="24"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="TextElement.FontFamily" Value="Microsoft YaHei UI"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
         <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>

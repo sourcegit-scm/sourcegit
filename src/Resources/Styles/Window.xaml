@@ -11,6 +11,7 @@
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         <Setter Property="TextOptions.TextHintingMode" Value="Animated"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>
 
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>

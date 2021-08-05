@@ -372,11 +372,6 @@ namespace SourceGit.Views.Widgets {
 
             var line = new FrameworkElementFactory(typeof(Controls.HighlightableTextBlock));
             line.SetBinding(Controls.HighlightableTextBlock.DataProperty, new Binding("."));
-            line.SetValue(TextBlock.FontFamilyProperty, new FontFamily("Consolas,Microsoft YaHei UI"));
-            line.SetValue(TextBlock.FontSizeProperty, 13.0);
-            line.SetValue(TextBlock.MarginProperty, new Thickness(0));
-            line.SetValue(TextBlock.PaddingProperty, new Thickness(4, 0, 0, 0));
-            line.SetValue(TextBlock.LineHeightProperty, 16.0);
 
             var colContent = new DataGridTemplateColumn();
             colContent.CellTemplate = new DataTemplate();

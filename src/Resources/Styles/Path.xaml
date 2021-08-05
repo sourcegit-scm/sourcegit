@@ -5,6 +5,5 @@
         <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
     </Style>
 </ResourceDictionary>

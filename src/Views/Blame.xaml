@@ -56,8 +56,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" x:Name="txtFile" FontSize="11" Foreground="{DynamicResource Brush.FG2}" FontFamily="Consolas"/>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Foreground="{DynamicResource Brush.FG2}" FontFamily="11" Text="{DynamicResource Text.Blame.Tip}"/>
+                <TextBlock Grid.Column="0" x:Name="txtFile" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Foreground="{DynamicResource Brush.FG2}" FontSize="11" Text="{DynamicResource Text.Blame.Tip}"/>
             </Grid>
         </Border>
 
@@ -73,7 +73,6 @@
             RowHeight="16"
             SelectionUnit="FullRow"
             SelectionMode="Single"
-            FontFamily="Consolas"
             SizeChanged="OnViewerSizeChanged">
 
             <DataGrid.RowStyle>
@@ -90,7 +89,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Border Background="{Binding BG}" BorderThickness="0">
-                                <TextBlock Text="{Binding Line.Content}" Background="Transparent" Foreground="{DynamicResource Brush.FG1}" FontFamily="Consolas,Microsoft YaHei UI" FontSize="9pt" Margin="0" Padding="2,0,0,0"/>
+                                <TextBlock Text="{Binding Line.Content}" Style="{DynamicResource Style.TextBlock.LineContent}"/>
                             </Border>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -106,7 +105,7 @@
             Background="{DynamicResource Brush.Window}"
             Visibility="Collapsed">
             <Path Width="64" Height="64" Data="{StaticResource Icon.Error}" Fill="{DynamicResource Brush.FG2}"/>
-            <TextBlock Text="{DynamicResource Text.BlameTypeNotSupported}" Margin="0,16,0,0" FontFamily="Consolas" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
+            <TextBlock Text="{DynamicResource Text.BlameTypeNotSupported}" Margin="0,16,0,0" FontSize="18" FontWeight="UltraBold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
         </StackPanel>
 
         <!-- Loading -->

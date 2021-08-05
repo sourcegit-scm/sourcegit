@@ -84,7 +84,6 @@
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <TextBlock
                     FontSize="10pt"
-                    FontFamily="Consolas"
                     Padding="8"
                     VerticalAlignment="Top"
                     Foreground="{DynamicResource Brush.FG2}"
