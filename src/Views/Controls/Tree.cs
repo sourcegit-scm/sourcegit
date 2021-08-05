@@ -164,6 +164,8 @@ namespace SourceGit.Views.Controls {
         }
 
         private void AddSelected(TreeItem item, bool removeOthers) {
+            if (!item.IsVisible) return;
+
             if (removeOthers && Selected.Count > 0) {
                 UnselectAllChildren(this);
                 Selected.Clear();
