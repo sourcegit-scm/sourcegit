@@ -24,12 +24,6 @@ namespace SourceGit.Views.Widgets {
             public bool UseLFS = false;
         }
 
-        public class Block {
-            public string OldLine { get; set; } = "";
-            public string NewLine { get; set; } = "";
-            public Controls.HighlightableTextBlock.Data Data { get; set; } = new Controls.HighlightableTextBlock.Data();
-        }
-
         private ulong seq = 0;
         private string repo = null;
         private Option opt = null;
@@ -185,20 +179,22 @@ namespace SourceGit.Views.Widgets {
         private void MakeCombinedViewer(ulong dummy) {
             var lastOldLine = "";
             var lastNewLine = "";
-            var blocks = new List<Block>();
+            var foundOld = false;
+            var foundNew = false;
 
-            foreach (var line in cachedTextChanges) {
-                var block = new Block();
-                block.OldLine = line.OldLine;
-                block.NewLine = line.NewLine;
-                block.Data.Mode = line.Mode;
-                block.Data.Text = line.Content;
-                block.Data.Highlights.AddRange(line.Highlights);
+            for (int i = cachedTextChanges.Count - 1; i >= 0; i--) {
+                var line = cachedTextChanges[i];
+                if (!foundOld && line.OldLine.Length > 0) {
+                    lastOldLine = line.OldLine;
+                    if (foundNew) break;
+                    foundOld = true;
+                }
 
-                if (line.OldLine.Length > 0) lastOldLine = line.OldLine;
-                if (line.NewLine.Length > 0) lastNewLine = line.NewLine;
-
-                blocks.Add(block);
+                if (!foundNew && line.NewLine.Length > 0) {
+                    lastNewLine = line.NewLine;
+                    if (foundOld) break;
+                    foundNew = true;
+                }
             }
 
             Dispatcher.Invoke(() => {
@@ -234,38 +230,32 @@ namespace SourceGit.Views.Widgets {
                 editor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                 editor.Columns[1].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                 editor.Columns[2].MinWidth = minWidth;
-                editor.SetBinding(DataGrid.ItemsSourceProperty, new Binding() { Source = blocks, IsAsync = true });
+                editor.SetBinding(DataGrid.ItemsSourceProperty, new Binding() { Source = cachedTextChanges, IsAsync = true });
             });
         }
 
         private void MakeSideBySideViewer(ulong dummy) {
             var lastOldLine = "";
             var lastNewLine = "";
-            var oldSideBlocks = new List<Block>();
-            var newSideBlocks = new List<Block>();
+            var oldSideBlocks = new List<Models.TextChanges.Line>();
+            var newSideBlocks = new List<Models.TextChanges.Line>();
 
             foreach (var line in cachedTextChanges) {
-                var block = new Block();
-                block.OldLine = line.OldLine;
-                block.NewLine = line.NewLine;
-                block.Data.Mode = line.Mode;
-                block.Data.Text = line.Content;
-                block.Data.Highlights.AddRange(line.Highlights);
-
-                if (line.OldLine.Length > 0) lastOldLine = line.OldLine;
-                if (line.NewLine.Length > 0) lastNewLine = line.NewLine;
-
                 switch (line.Mode) {
                 case Models.TextChanges.LineMode.Added:
-                    newSideBlocks.Add(block);
+                    newSideBlocks.Add(line);
+                    lastNewLine = line.NewLine;
                     break;
                 case Models.TextChanges.LineMode.Deleted:
-                    oldSideBlocks.Add(block);
+                    oldSideBlocks.Add(line);
+                    lastOldLine = line.OldLine;
                     break;
                 default:
                     FillEmptyLines(oldSideBlocks, newSideBlocks);
-                    oldSideBlocks.Add(block);
-                    newSideBlocks.Add(block);
+                    oldSideBlocks.Add(line);
+                    newSideBlocks.Add(line);
+                    lastNewLine = line.NewLine;
+                    lastOldLine = line.OldLine;
                     break;
                 }
             }
@@ -324,13 +314,13 @@ namespace SourceGit.Views.Widgets {
             });
         }
 
-        private void FillEmptyLines(List<Block> old, List<Block> cur) {
+        private void FillEmptyLines(List<Models.TextChanges.Line> old, List<Models.TextChanges.Line> cur) {
             if (old.Count < cur.Count) {
                 int diff = cur.Count - old.Count;
-                for (int i = 0; i < diff; i++) old.Add(new Block());
+                for (int i = 0; i < diff; i++) old.Add(new Models.TextChanges.Line());
             } else if (old.Count > cur.Count) {
                 int diff = old.Count - cur.Count;
-                for (int i = 0; i < diff; i++) cur.Add(new Block());
+                for (int i = 0; i < diff; i++) cur.Add(new Models.TextChanges.Line());
             }
         }
 
@@ -361,11 +351,11 @@ namespace SourceGit.Views.Widgets {
 
                 var builder = new StringBuilder();
                 foreach (var item in items) {
-                    var block = item as Block;
+                    var block = item as Models.TextChanges.Line;
                     if (block == null) continue;
-                    if (!block.Data.IsContent) continue;
+                    if (!block.IsContent) continue;
 
-                    builder.Append(block.Data.Text);
+                    builder.Append(block.Content);
                     builder.AppendLine();
                 }
 
@@ -381,7 +371,7 @@ namespace SourceGit.Views.Widgets {
             }
 
             var line = new FrameworkElementFactory(typeof(Controls.HighlightableTextBlock));
-            line.SetBinding(Controls.HighlightableTextBlock.ContentProperty, new Binding("Data"));
+            line.SetBinding(Controls.HighlightableTextBlock.DataProperty, new Binding("."));
             line.SetValue(TextBlock.FontFamilyProperty, new FontFamily("Consolas,Microsoft YaHei UI"));
             line.SetValue(TextBlock.FontSizeProperty, 13.0);
             line.SetValue(TextBlock.MarginProperty, new Thickness(0));
@@ -486,11 +476,11 @@ namespace SourceGit.Views.Widgets {
 
                 var builder = new StringBuilder();
                 foreach (var item in items) {
-                    var block = item as Block;
+                    var block = item as Models.TextChanges.Line;
                     if (block == null) continue;
-                    if (!block.Data.IsContent) continue;
+                    if (!block.IsContent) continue;
 
-                    builder.Append(block.Data.Text);
+                    builder.Append(block.Content);
                     builder.AppendLine();
                 }
 
@@ -557,11 +547,11 @@ namespace SourceGit.Views.Widgets {
 
             var firstVisible = (int)scroller.VerticalOffset;
             var firstModeEnded = false;
-            var first = grid.Items[firstVisible] as Block;
+            var first = grid.Items[firstVisible] as Models.TextChanges.Line;
             for (int i = firstVisible - 1; i >= 0; i--) {
-                var next = grid.Items[i] as Block;
-                if (next.Data.IsDifference) {
-                    if (firstModeEnded || next.Data.Mode != first.Data.Mode) {
+                var next = grid.Items[i] as Models.TextChanges.Line;
+                if (next.IsDifference) {
+                    if (firstModeEnded || next.Mode != first.Mode) {
                         scroller.ScrollToVerticalOffset(i);
                         grid.SelectedIndex = i;
                         break;
@@ -581,11 +571,11 @@ namespace SourceGit.Views.Widgets {
 
             var firstVisible = (int)scroller.VerticalOffset;
             var firstModeEnded = false;
-            var first = grid.Items[firstVisible] as Block;
+            var first = grid.Items[firstVisible] as Models.TextChanges.Line;
             for (int i = firstVisible + 1; i < grid.Items.Count; i++) {
-                var next = grid.Items[i] as Block;
-                if (next.Data.IsDifference) {
-                    if (firstModeEnded || next.Data.Mode != first.Data.Mode) {
+                var next = grid.Items[i] as Models.TextChanges.Line;
+                if (next.IsDifference) {
+                    if (firstModeEnded || next.Mode != first.Mode) {
                         scroller.ScrollToVerticalOffset(i);
                         grid.SelectedIndex = i;
                         break;
