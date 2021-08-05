@@ -195,6 +195,8 @@
     <sys:String x:Key="Text.CommitCM.InteractiveRebase">从此处开始对 '{0}' 交互式变基</sys:String>
     <sys:String x:Key="Text.CommitCM.Rebase">变基 '{0}' 到此处</sys:String>
     <sys:String x:Key="Text.CommitCM.CherryPick">挑选此提交</sys:String>
+    <sys:String x:Key="Text.CommitCM.Reword">编辑提交信息</sys:String>
+    <sys:String x:Key="Text.CommitCM.Squash">合并此提交到上一个提交</sys:String>
     <sys:String x:Key="Text.CommitCM.Revert">回滚此提交</sys:String>
     <sys:String x:Key="Text.CommitCM.SaveAsPatch">另存为补丁 ...</sys:String>
     <sys:String x:Key="Text.CommitCM.CopySHA">复制提交指纹</sys:String>
@@ -464,6 +466,15 @@
     <sys:String x:Key="Text.Hotkeys.Search">打开/隐藏搜索框（仅在仓库页起效）</sys:String>
     <sys:String x:Key="Text.Hotkeys.Refresh">重新加载当前仓库信息（仅在仓库页起效）</sys:String>
     <sys:String x:Key="Text.Hotkeys.ToggleStage">暂存或从暂存中移除当前选中</sys:String>
+
+    <sys:String x:Key="Text.Reword">编辑提交信息</sys:String>
+    <sys:String x:Key="Text.Reword.On">提交：</sys:String>
+    <sys:String x:Key="Text.Reword.Message">提交信息：</sys:String>
+
+    <sys:String x:Key="Text.Squash">合并HEAD到上一个提交</sys:String>
+    <sys:String x:Key="Text.Squash.Head">当前提交 :</sys:String>
+    <sys:String x:Key="Text.Squash.To">合并到 :</sys:String>
+    <sys:String x:Key="Text.Squash.Message">修改提交信息：</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
     <sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>

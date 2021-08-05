@@ -1,0 +1,73 @@
+﻿<controls:PopupWidget 
+    x:Class="SourceGit.Views.Popups.Squash"
+    x:Name="me"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+    xmlns:validations="clr-namespace:SourceGit.Views.Validations"
+    mc:Ignorable="d" 
+    d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock
+            Grid.Row="0" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{DynamicResource Text.Squash.Head}"
+            HorizontalAlignment="Right"/>
+        <StackPanel
+            Grid.Row="0" Grid.Column="1"
+            Orientation="Horizontal"
+            VerticalAlignment="Center">
+            <Path Width="14" Height="14" Data="{StaticResource Icon.Commit}"/>
+            <TextBlock x:Name="txtHead" Margin="8,0,0,0"/>
+        </StackPanel>
+
+        <TextBlock
+            Grid.Row="1" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{DynamicResource Text.Squash.To}"
+            HorizontalAlignment="Right"/>
+        <StackPanel
+            Grid.Row="1" Grid.Column="1"
+            Orientation="Horizontal"
+            VerticalAlignment="Center">
+            <Path Width="14" Height="14" Data="{StaticResource Icon.Commit}"/>
+            <TextBlock x:Name="txtParent" Margin="8,0,0,0"/>
+        </StackPanel>
+
+        <TextBlock
+            Grid.Row="2" Grid.Column="0"
+            Margin="0,8,8,0"
+            HorizontalAlignment="Right" VerticalAlignment="Top"
+            Text="{DynamicResource Text.Squash.Message}"/>
+        <controls:TextEdit
+            Grid.Row="2" Grid.Column="1"
+            x:Name="txtMsg"
+            Height="100" Margin="0,8,0,0" Padding="1"
+            AcceptsReturn="True"
+            AcceptsTab="True"
+            TextWrapping="Wrap"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <controls:TextEdit.Text>
+                <Binding ElementName="me" Path="Msg" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validations:CommitMessage/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </controls:TextEdit.Text>
+        </controls:TextEdit>
+    </Grid>
+</controls:PopupWidget>

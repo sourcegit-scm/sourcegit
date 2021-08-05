@@ -294,6 +294,31 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
                 menu.Items.Add(reset);
+            } else {
+                var reword = new MenuItem();
+                reword.Header = App.Text("CommitCM.Reword");
+                reword.Click += (o, e) => {
+                    new Popups.Reword(repo.Path, commit).Show();
+                    e.Handled = true;
+                };
+                menu.Items.Add(reword);
+
+                var squash = new MenuItem();
+                squash.Header = App.Text("CommitCM.Squash");
+                squash.IsEnabled = commit.Parents.Count == 1;
+                squash.Click += (o, e) => {
+                    foreach (var c in cachedCommits) {
+                        if (c.SHA == commit.Parents[0]) {
+                            new Popups.Squash(repo.Path, commit, c).Show();
+                            e.Handled = true;
+                            return;
+                        }
+                    }
+
+                    Models.Exception.Raise("Can NOT found parent of HEAD!");
+                    e.Handled = true;
+                };
+                menu.Items.Add(squash);
             }
 
             if (!merged) {

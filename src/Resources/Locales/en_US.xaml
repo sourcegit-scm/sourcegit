@@ -196,6 +196,8 @@
     <sys:String x:Key="Text.CommitCM.InteractiveRebase">Interactive Rebase '{0}' from Here</sys:String>
     <sys:String x:Key="Text.CommitCM.Rebase">Rebase '{0}' to Here</sys:String>
     <sys:String x:Key="Text.CommitCM.CherryPick">Cherry-Pick This Commit</sys:String>
+    <sys:String x:Key="Text.CommitCM.Reword">Reword</sys:String>
+    <sys:String x:Key="Text.CommitCM.Squash">Squash Into Parent</sys:String>
     <sys:String x:Key="Text.CommitCM.Revert">Revert Commit</sys:String>
     <sys:String x:Key="Text.CommitCM.SaveAsPatch">Save as Patch ...</sys:String>
     <sys:String x:Key="Text.CommitCM.CopySHA">Copy Commit SHA</sys:String>
@@ -466,6 +468,15 @@
     <sys:String x:Key="Text.Hotkeys.Refresh">Reload current repository if possible</sys:String>
     <sys:String x:Key="Text.Hotkeys.ToggleStage">Stage or unstage selected files</sys:String>
 
+    <sys:String x:Key="Text.Reword">Reword Commit Message</sys:String>
+    <sys:String x:Key="Text.Reword.On">On :</sys:String>
+    <sys:String x:Key="Text.Reword.Message">Message :</sys:String>
+
+    <sys:String x:Key="Text.Squash">Squash HEAD Into Parent</sys:String>
+    <sys:String x:Key="Text.Squash.Head">HEAD :</sys:String>
+    <sys:String x:Key="Text.Squash.To">To :</sys:String>
+    <sys:String x:Key="Text.Squash.Message">Reword :</sys:String>
+
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>
     <sys:String x:Key="Text.MissingBash">Can NOT locate bash.exe. Make sure bash.exe exists under the same folder with git.exe</sys:String>
@@ -486,7 +497,7 @@
     <sys:String x:Key="Text.EmptyTagName">Tag name can NOT be null</sys:String>
     <sys:String x:Key="Text.BadTagName">Bad name for tag. Regex: ^[\\w\\-\\.]+$</sys:String>
     <sys:String x:Key="Text.DuplicatedTagName">Duplicated tag name!</sys:String>
-    <sys:String x:Key="Text.EmptyCommitMessage">Commit subject can NOT be empty</sys:String>
+    <sys:String x:Key="Text.EmptyCommitMessage">Commit message can NOT be empty</sys:String>
     <sys:String x:Key="Text.BadPatchFile">Invalid path for patch file</sys:String>
     <sys:String x:Key="Text.BadRelativePath">Invalid relative path</sys:String>
     <sys:String x:Key="Text.BadArchiveFile">Invalid path for archive file</sys:String>
