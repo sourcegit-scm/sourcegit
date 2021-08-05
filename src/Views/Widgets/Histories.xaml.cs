@@ -36,7 +36,7 @@ namespace SourceGit.Views.Widgets {
 
             foreach (var item in commitList.ItemsSource) {
                 var c = item as Models.Commit;
-                if (c.SHA.StartsWith(commit, StringComparison.Ordinal)) {
+                if (c != null && c.SHA.StartsWith(commit, StringComparison.Ordinal)) {
                     commitList.SelectedItem = c;
                     commitList.ScrollIntoView(c);
                     break;
