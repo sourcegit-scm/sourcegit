@@ -17,7 +17,7 @@
             Width="500"
             Height="Auto">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="8" ShadowDepth="0" Opacity=".8" Color="Black"/>
+                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Color="Black" Opacity=".8"/>
             </Border.Effect>
             
             <Grid>                
