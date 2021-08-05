@@ -123,7 +123,7 @@
                     <ListViewItem IsSelected="True">
                         <StackPanel Margin="16,0,0,0" Height="28" Orientation="Horizontal">
                             <Path Width="16" Height="16" Data="{StaticResource Icon.Histories}"/>
-                            <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.Histories}"/>
+                            <TextBlock Margin="8,0,0,0" FontWeight="Bold" Text="{DynamicResource Text.Histories}"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem>
@@ -134,7 +134,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Width="16" Height="16" Data="{StaticResource Icon.Send}"/>
-                            <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{DynamicResource Text.WorkingCopy}"/>
+                            <TextBlock Grid.Column="1" Margin="8,0,0,0" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy}"/>
                             <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeLocalChanges"/>
                         </Grid>
                     </ListViewItem>
@@ -146,7 +146,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Path Grid.Column="0" Width="16" Height="16" Data="{StaticResource Icon.Stashes}"/>
-                            <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{DynamicResource Text.Stashes}"/>
+                            <TextBlock Grid.Column="1" Margin="8,0,0,0" FontWeight="Bold" Text="{DynamicResource Text.Stashes}"/>
                             <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeStashes"/>
                         </Grid>
                     </ListViewItem>

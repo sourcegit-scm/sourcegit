@@ -51,8 +51,9 @@
                     <TextBlock
                         Grid.Column="1"
                         Margin="6,0"
-                        Text="{DynamicResource Text.WorkingCopy.Unstaged}" 
-                        Foreground="{DynamicResource Brush.FG2}" 
+                        Text="{DynamicResource Text.WorkingCopy.Unstaged}"
+                        Foreground="{DynamicResource Brush.FG2}"
+                        FontFamily="Microsoft YaHei UI"
                         FontWeight="Bold"/>
                     <controls:Loading
                         Grid.Column="2"
@@ -106,7 +107,8 @@
                         Grid.Column="1"
                         Margin="6,0"
                         Text="{DynamicResource Text.WorkingCopy.Staged}" 
-                        Foreground="{DynamicResource Brush.FG2}" 
+                        Foreground="{DynamicResource Brush.FG2}"
+                        FontFamily="Microsoft YaHei UI"
                         FontWeight="Bold"/>
 
                     <controls:IconButton
