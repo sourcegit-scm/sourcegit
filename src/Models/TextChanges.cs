@@ -43,7 +43,7 @@ namespace SourceGit.Models {
                 }
             }
 
-            public Line() {}
+            public Line() { }
 
             public Line(LineMode mode, string content, string oldLine, string newLine) {
                 Mode = mode;

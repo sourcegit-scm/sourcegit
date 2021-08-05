@@ -4,7 +4,7 @@ namespace SourceGit.Commands {
     /// </summary>
     public class Config : Command {
 
-        public Config() {}
+        public Config() { }
 
         public Config(string repo) {
             Cwd = repo;

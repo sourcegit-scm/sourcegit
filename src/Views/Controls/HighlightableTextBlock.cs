@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace SourceGit.Views.Controls {
     /// <summary>
@@ -15,9 +15,9 @@ namespace SourceGit.Views.Controls {
         private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
 
         public static readonly DependencyProperty DataProperty = DependencyProperty.Register(
-            "Data", 
+            "Data",
             typeof(Models.TextChanges.Line),
-            typeof(HighlightableTextBlock), 
+            typeof(HighlightableTextBlock),
             new PropertyMetadata(null, OnContentChanged));
 
         public Models.TextChanges.Line Data {

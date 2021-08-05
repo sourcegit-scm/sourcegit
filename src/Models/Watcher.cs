@@ -101,7 +101,7 @@ namespace SourceGit.Models {
         /// </summary>
         /// <param name="commit"></param>
         public void NavigateTo(string commit) {
-           Navigate?.Invoke(commit);
+            Navigate?.Invoke(commit);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace SourceGit.Models {
             repoWatcher.Renamed += OnRepositoryChanged;
             repoWatcher.Changed += OnRepositoryChanged;
             repoWatcher.Deleted += OnRepositoryChanged;
-            repoWatcher.EnableRaisingEvents = true;            
+            repoWatcher.EnableRaisingEvents = true;
 
             timer = new Timer(Tick, null, 100, 100);
         }
@@ -176,7 +176,7 @@ namespace SourceGit.Models {
             } else if (e.Name.StartsWith("refs\\stash", StringComparison.Ordinal)) {
                 updateStashes = DateTime.Now.AddSeconds(.5).ToFileTime();
             } else if (e.Name.Equals("HEAD", StringComparison.Ordinal) ||
-                e.Name.StartsWith("refs\\heads\\", StringComparison.Ordinal) || 
+                e.Name.StartsWith("refs\\heads\\", StringComparison.Ordinal) ||
                 e.Name.StartsWith("refs\\remotes\\", StringComparison.Ordinal) ||
                 e.Name.StartsWith("worktrees\\")) {
                 updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();

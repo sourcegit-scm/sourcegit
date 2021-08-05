@@ -69,7 +69,7 @@ namespace SourceGit.Commands {
         private void OnTick(object o) {
             var now = DateTime.Now.ToFileTime();
             if (nextFetchPoint > now) return;
-            
+
             Models.Watcher.SetEnabled(cmd.Cwd, false);
             cmd.Exec();
             nextFetchPoint = DateTime.Now.AddMinutes(10).ToFileTime();

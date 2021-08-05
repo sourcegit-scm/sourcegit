@@ -344,7 +344,7 @@ namespace SourceGit.Views.Widgets {
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Header = App.Text("RevealFile");
                 explore.Click += (o, e) => {
-                    if (node.IsFolder) Process.Start("explorer", path); 
+                    if (node.IsFolder) Process.Start("explorer", path);
                     else Process.Start("explorer", $"/select,{path}");
                     e.Handled = true;
                 };

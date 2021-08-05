@@ -10,9 +10,9 @@ namespace SourceGit.Views.Controls {
     public class IconButton : Button {
 
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
-            "Icon", 
-            typeof(Geometry), 
-            typeof(IconButton), 
+            "Icon",
+            typeof(Geometry),
+            typeof(IconButton),
             new PropertyMetadata(null));
 
         public Geometry Icon {
@@ -21,9 +21,9 @@ namespace SourceGit.Views.Controls {
         }
 
         public static readonly DependencyProperty HoverBackgroundProperty = DependencyProperty.Register(
-            "HoverBackground", 
-            typeof(Brush), 
-            typeof(IconButton), 
+            "HoverBackground",
+            typeof(Brush),
+            typeof(IconButton),
             new PropertyMetadata(Brushes.Transparent));
 
         public Brush HoverBackground {

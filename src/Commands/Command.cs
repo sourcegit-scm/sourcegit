@@ -101,7 +101,7 @@ namespace SourceGit.Commands {
 #endif
                     return;
                 }
-    
+
                 if (string.IsNullOrEmpty(e.Data)) return;
                 if (TraitErrorAsOutput) OnReadline(e.Data);
 
@@ -147,7 +147,7 @@ namespace SourceGit.Commands {
             start.StandardErrorEncoding = Encoding.UTF8;
 
             if (!string.IsNullOrEmpty(Cwd)) start.WorkingDirectory = Cwd;
-            
+
             var proc = new Process() { StartInfo = start };
             try {
                 proc.Start();
@@ -174,6 +174,6 @@ namespace SourceGit.Commands {
         ///     调用Exec时的读取函数
         /// </summary>
         /// <param name="line"></param>
-        public virtual void OnReadline(string line) {}
+        public virtual void OnReadline(string line) { }
     }
 }

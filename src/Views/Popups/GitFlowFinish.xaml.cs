@@ -22,7 +22,7 @@ namespace SourceGit.Views.Popups {
                 name = branch.Substring(repo.GitFlow.Feature.Length);
                 break;
             case Models.GitFlowBranchType.Release:
-                txtPrefix.Text = App.Text("GitFlow.Release"); 
+                txtPrefix.Text = App.Text("GitFlow.Release");
                 name = branch.Substring(repo.GitFlow.Release.Length);
                 break;
             case Models.GitFlowBranchType.Hotfix:

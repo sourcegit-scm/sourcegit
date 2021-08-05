@@ -7,7 +7,7 @@ namespace SourceGit.Views.Popups {
     ///     应用补丁
     /// </summary>
     public partial class Apply : Controls.PopupWidget {
-        private string repo = null;        
+        private string repo = null;
         public string File { get; set; }
 
         public Apply(string repo) {

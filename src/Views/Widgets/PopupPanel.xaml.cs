@@ -44,7 +44,7 @@ namespace SourceGit.Views.Widgets {
         public void ShowAndStart(Controls.PopupWidget widget) {
             if (locked) return;
             Show(widget);
-            Sure(null, null); 
+            Sure(null, null);
         }
 
         public void UpdateProgress(string message) {

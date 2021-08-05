@@ -200,7 +200,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnTreeDragOver(object sender, DragEventArgs e) {
-            if (!e.Data.GetDataPresent(DataFormats.FileDrop) && !e.Data.GetDataPresent(typeof(Node))) return;  
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop) && !e.Data.GetDataPresent(typeof(Node))) return;
 
             var item = tree.FindItem(e.OriginalSource as DependencyObject);
             if (item == null) return;

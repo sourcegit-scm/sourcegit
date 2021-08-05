@@ -71,7 +71,7 @@ namespace SourceGit.Commands {
                 }
             }
         }
-    
+
         private void ProcessChanges() {
             if (deleted.Any()) {
                 if (added.Count == deleted.Count) {

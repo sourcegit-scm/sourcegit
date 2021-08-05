@@ -269,7 +269,7 @@ namespace SourceGit.Views.Controls {
                 dc.DrawEllipse(dotFill, PENS[dot.Color], dot.Center, 3, 3);
             }
         }
-    
+
         private void DrawCurves(DrawingContext dc, double top, double bottom) {
             foreach (var line in data.Paths) {
                 var last = line.Points[0];

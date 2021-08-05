@@ -9,9 +9,9 @@ namespace SourceGit.Views.Controls {
     public class TreeItem : TreeViewItem {
 
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
-            "IsChecked", 
-            typeof(bool), 
-            typeof(TreeItem), 
+            "IsChecked",
+            typeof(bool),
+            typeof(TreeItem),
             new PropertyMetadata(false));
 
         public bool IsChecked {

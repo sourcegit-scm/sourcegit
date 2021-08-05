@@ -13,9 +13,9 @@ namespace SourceGit.Views.Controls {
     /// </summary>
     public class Tree : TreeView {
         public static readonly DependencyProperty MultiSelectionProperty = DependencyProperty.Register(
-            "MultiSelection", 
-            typeof(bool), 
-            typeof(Tree), 
+            "MultiSelection",
+            typeof(bool),
+            typeof(Tree),
             new PropertyMetadata(false));
 
         public bool MultiSelection {
@@ -90,7 +90,7 @@ namespace SourceGit.Views.Controls {
 
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue) {
             base.OnItemsSourceChanged(oldValue, newValue);
-            
+
             if (Selected.Count > 0) {
                 Selected.Clear();
                 RaiseEvent(new RoutedEventArgs(SelectionChangedEvent));

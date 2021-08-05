@@ -117,7 +117,7 @@ namespace SourceGit.Commands {
                 }
             }
 
-            decorators.Sort((l, r) => { 
+            decorators.Sort((l, r) => {
                 if (l.Type != r.Type) {
                     return (int)l.Type - (int)r.Type;
                 } else {

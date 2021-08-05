@@ -12,7 +12,7 @@ namespace SourceGit.Commands {
             this.repo = repo;
         }
 
-        public void Whole() {            
+        public void Whole() {
             new Reset(repo, "HEAD", "--hard").Exec();
             new Clean(repo).Exec();
         }

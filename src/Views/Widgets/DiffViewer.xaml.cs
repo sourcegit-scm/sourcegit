@@ -170,7 +170,7 @@ namespace SourceGit.Views.Widgets {
                 if (dummy != seq) return;
 
                 loading.Visibility = Visibility.Collapsed;
-                mask.Visibility = Visibility.Collapsed; 
+                mask.Visibility = Visibility.Collapsed;
                 toolbarOptions.Visibility = Visibility.Collapsed;
                 noChange.Visibility = Visibility.Visible;
             });
@@ -226,7 +226,7 @@ namespace SourceGit.Views.Widgets {
                 }
 
                 foreach (var s in splitters) s.Visibility = Visibility.Visible;
-                
+
                 editor.Columns[0].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                 editor.Columns[1].Width = new DataGridLength(lineNumberWidth, DataGridLengthUnitType.Pixel);
                 editor.Columns[2].MinWidth = minWidth;

@@ -84,7 +84,7 @@ namespace SourceGit.Views.Controls {
                 if (result != IntPtr.Zero) {
                     IntPtr pathPtr = Marshal.AllocHGlobal(260 * Marshal.SystemDefaultCharSize);
                     Shell32.SHGetPathFromIDList(result, pathPtr);
-                    
+
                     if (pathPtr != IntPtr.Zero) {
                         SelectedPath = Marshal.PtrToStringAuto(pathPtr);
                         ok = true;

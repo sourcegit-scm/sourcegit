@@ -7,7 +7,7 @@ namespace SourceGit.Views.Popups {
     /// </summary>
     public partial class Fetch : Controls.PopupWidget {
         private string repo = null;
-        
+
         public Fetch(Models.Repository repo, string preferRemote) {
             this.repo = repo.Path;
             InitializeComponent();

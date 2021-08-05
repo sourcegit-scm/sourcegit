@@ -10,9 +10,9 @@ namespace SourceGit.Views.Controls {
     class ChangeStatusIcon : FrameworkElement {
 
         public static readonly DependencyProperty ChangeProperty = DependencyProperty.Register(
-            "Change", 
-            typeof(Models.Change), 
-            typeof(ChangeStatusIcon), 
+            "Change",
+            typeof(Models.Change),
+            typeof(ChangeStatusIcon),
             new PropertyMetadata(null, ForceDirty));
 
         public Models.Change Change {
@@ -21,9 +21,9 @@ namespace SourceGit.Views.Controls {
         }
 
         public static readonly DependencyProperty IsLocalChangeProperty = DependencyProperty.Register(
-            "IsLocalChange", 
-            typeof(bool), 
-            typeof(ChangeStatusIcon), 
+            "IsLocalChange",
+            typeof(bool),
+            typeof(ChangeStatusIcon),
             new PropertyMetadata(false, ForceDirty));
 
         public bool IsLocalChange {
@@ -76,7 +76,7 @@ namespace SourceGit.Views.Controls {
                 FlowDirection.LeftToRight,
                 new Typeface(new FontFamily("Microsoft YaHei UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
                 icon.Width * 0.8,
-                new SolidColorBrush(Color.FromRgb(241,241,241)),
+                new SolidColorBrush(Color.FromRgb(241, 241, 241)),
                 VisualTreeHelper.GetDpi(icon).PixelsPerDip);
 
             icon.InvalidateVisual();

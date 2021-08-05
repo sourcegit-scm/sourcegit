@@ -45,7 +45,7 @@ namespace SourceGit.Commands {
             var when = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestamp).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
 
             var blameLine = new Models.BlameLine() {
-                LineNumber = $"{data.Lines.Count+1}",
+                LineNumber = $"{data.Lines.Count + 1}",
                 CommitSHA = commit,
                 Author = author,
                 Time = when,

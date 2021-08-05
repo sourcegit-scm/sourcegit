@@ -39,11 +39,11 @@ namespace SourceGit.Views.Popups {
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo.Path, false);
                 var succ = new Commands.Push(
-                    repo.Path, 
-                    localBranch.Name, 
-                    remoteBranch.Remote, 
-                    remoteBranch.Name.Replace(" (new)", ""), 
-                    withTags, 
+                    repo.Path,
+                    localBranch.Name,
+                    remoteBranch.Remote,
+                    remoteBranch.Name.Replace(" (new)", ""),
+                    withTags,
                     force,
                     track,
                     UpdateProgress).Exec();

@@ -41,9 +41,9 @@ namespace SourceGit.Views.Controls {
         ///     邮件属性定义
         /// </summary>
         public static readonly DependencyProperty EmailProperty = DependencyProperty.Register(
-            "Email", 
+            "Email",
             typeof(string),
-            typeof(Avatar), 
+            typeof(Avatar),
             new PropertyMetadata(null, OnEmailChanged));
 
         /// <summary>

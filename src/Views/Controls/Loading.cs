@@ -14,9 +14,9 @@ namespace SourceGit.Views.Controls {
         private Path icon = null;
 
         public static readonly DependencyProperty IsAnimatingProperty = DependencyProperty.Register(
-            "IsAnimating", 
-            typeof(bool), 
-            typeof(Loading), 
+            "IsAnimating",
+            typeof(bool),
+            typeof(Loading),
             new PropertyMetadata(false, OnIsAnimatingChanged));
 
         public bool IsAnimating {

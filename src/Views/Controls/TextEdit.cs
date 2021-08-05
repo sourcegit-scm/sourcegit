@@ -14,7 +14,7 @@ namespace SourceGit.Views.Controls {
 
         public static readonly DependencyProperty PlaceholderProperty = DependencyProperty.Register(
             "Placeholder",
-            typeof(string), 
+            typeof(string),
             typeof(TextEdit),
             new PropertyMetadata(""));
 
@@ -24,9 +24,9 @@ namespace SourceGit.Views.Controls {
         }
 
         public static readonly DependencyProperty PlaceholderBaselineProperty = DependencyProperty.Register(
-            "PlaceholderBaseline", 
-            typeof(AlignmentY), 
-            typeof(TextEdit), 
+            "PlaceholderBaseline",
+            typeof(AlignmentY),
+            typeof(TextEdit),
             new PropertyMetadata(AlignmentY.Center));
 
         public AlignmentY PlaceholderBaseline {

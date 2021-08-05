@@ -337,7 +337,7 @@ namespace SourceGit.Views.Widgets {
             var row = sender as DataGridRow;
             if (row == null) return;
 
-            var change = row.Item as Models.Change; 
+            var change = row.Item as Models.Change;
             if (change == null) return;
 
             OpenChangeContextMenu(change);

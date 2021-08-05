@@ -454,7 +454,7 @@ namespace SourceGit.Views.Widgets {
 
         private void OpenNewBranch(object sender, RoutedEventArgs e) {
             var current = repo.Branches.Find(x => x.IsCurrent);
-            if (current != null) { 
+            if (current != null) {
                 new Popups.CreateBranch(repo, current).Show();
             } else {
                 Models.Exception.Raise(App.Text("CreateBranch.Idle"));
@@ -815,7 +815,7 @@ namespace SourceGit.Views.Widgets {
                 Clipboard.SetText(branch.Remote + "/" + branch.Name);
                 e.Handled = true;
             };
-            
+
             menu.Items.Add(delete);
             menu.Items.Add(new Separator());
             menu.Items.Add(createBranch);

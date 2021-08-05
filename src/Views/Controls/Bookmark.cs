@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -67,7 +62,7 @@ namespace SourceGit.Views.Controls {
                 return;
             }
 
-            if (!mark.IsNewPage) {                
+            if (!mark.IsNewPage) {
                 if (mark.Color == 0) {
                     mark.icon.SetResourceReference(Path.FillProperty, "Brush.FG1");
                     mark.icon.Data = mark.FindResource("Icon.Git") as Geometry;

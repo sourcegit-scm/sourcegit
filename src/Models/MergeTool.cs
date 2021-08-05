@@ -25,7 +25,7 @@ namespace SourceGit.Models {
             new MergeTool(5, "Beyond Compare 4", "BComp.exe", "\"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\"", FindBCompare),
             new MergeTool(6, "WinMerge", "WinMergeU.exe", "-u -e \"$REMOTE\" \"$LOCAL\" \"$MERGED\"", "-u -e \"$LOCAL\" \"$REMOTE\"", FindWinMerge),
         };
-        
+
         public MergeTool(int type, string name, string exec, string cmd, string diffCmd, Func<string> finder) {
             Type = type;
             Name = name;
