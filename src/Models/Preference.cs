@@ -2,13 +2,8 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
-
-#if NET48
-using Newtonsoft.Json;
-#else
 using System.Text.Json;
 using System.Text.Json.Serialization;
-#endif
 
 namespace SourceGit.Models {
 
@@ -193,11 +188,7 @@ namespace SourceGit.Models {
                 instance = new Preference();
             } else {
                 try {
-#if NET48
-                    instance = JsonConvert.DeserializeObject<Preference>(File.ReadAllText(SAVE_PATH));
-#else
                     instance = JsonSerializer.Deserialize<Preference>(File.ReadAllText(SAVE_PATH));
-#endif
                 } catch {
                     instance = new Preference();
                 }
@@ -219,12 +210,7 @@ namespace SourceGit.Models {
         public static void Save() {
             var dir = Path.GetDirectoryName(SAVE_PATH);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
-#if NET48
-            var data = JsonConvert.SerializeObject(instance, Formatting.Indented);
-#else
             var data = JsonSerializer.Serialize(instance, new JsonSerializerOptions() { WriteIndented = true });
-#endif
             File.WriteAllText(SAVE_PATH, data);
         }
         #endregion

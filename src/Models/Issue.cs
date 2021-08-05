@@ -5,29 +5,14 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
-
-#if NET48
-using Newtonsoft.Json;
-#else
 using System.Text.Json;
 using System.Text.Json.Serialization;
-#endif
 
 namespace SourceGit.Models {
     /// <summary>
     ///     崩溃日志上报
     /// </summary>
     public class Issue {
-#if NET48
-        [JsonProperty(PropertyName = "access_token")]
-        public string AccessToken { get; set; }
-        [JsonProperty(PropertyName = "repo")]
-        public string Repo { get; set; }
-        [JsonProperty(PropertyName = "title")]
-        public string Title { get; set; }
-        [JsonProperty(PropertyName = "body")]
-        public string Body { get; set; }
-#else
         [JsonPropertyName("access_token")]
         public string AccessToken { get; set; }
         [JsonPropertyName("repo")]
@@ -36,7 +21,6 @@ namespace SourceGit.Models {
         public string Title { get; set; }
         [JsonPropertyName("body")]
         public string Body { get; set; }
-#endif
 
         /// <summary>
         ///     创建Gitee平台ISSUE
@@ -64,14 +48,9 @@ namespace SourceGit.Models {
                 req.Timeout = 1000;
 
                 using (var writer = req.GetRequestStream()) {
-#if NET48
-                    var data = JsonConvert.SerializeObject(issue);
+                    var data = JsonSerializer.Serialize(issue);
                     var raw = Encoding.UTF8.GetBytes(data);
                     writer.Write(raw, 0, raw.Length);
-#else
-                    var data = JsonSerializer.Serialize(issue);
-                    writer.Write(Encoding.UTF8.GetBytes(data));
-#endif
                 }
 
                 req.GetResponse();

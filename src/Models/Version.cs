@@ -4,13 +4,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
-#if NET48
-using Newtonsoft.Json;
-#else
 using System.Text.Json;
 using System.Text.Json.Serialization;
-#endif
 
 namespace SourceGit.Models {
 
@@ -18,22 +13,6 @@ namespace SourceGit.Models {
     ///     Gitee开放API中Release信息格式
     /// </summary>
     public class Version {
-#if NET48
-        [JsonProperty(PropertyName = "id")]
-        public ulong Id { get; set; }
-        [JsonProperty(PropertyName = "tag_name")]
-        public string TagName { get; set; }
-        [JsonProperty(PropertyName = "target_commitish")]
-        public string CommitSHA { get; set; }
-        [JsonProperty(PropertyName = "prerelease")]
-        public bool PreRelease { get; set; }
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-        [JsonProperty(PropertyName = "body")]
-        public string Body { get; set; }
-        [JsonProperty(PropertyName = "created_at")]
-        public DateTime CreatedAt { get; set; }
-#else
         [JsonPropertyName("id")]
         public ulong Id { get; set; }
         [JsonPropertyName("tag_name")]
@@ -48,7 +27,7 @@ namespace SourceGit.Models {
         public string Body { get; set; }
         [JsonPropertyName("created_at")]
         public DateTime CreatedAt { get; set; }
-#endif
+
         public string PublishTime {
             get { return CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"); }
         }
@@ -68,11 +47,7 @@ namespace SourceGit.Models {
                     try {
                         var web = new WebClient() { Encoding = Encoding.UTF8 };
                         var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/sourcegit/releases/latest");
-#if NET48
-                        var ver = JsonConvert.DeserializeObject<Version>(raw);
-#else
                         var ver = JsonSerializer.Deserialize<Version>(raw);
-#endif
                         var cur = Assembly.GetExecutingAssembly().GetName().Version;
 
                         var matches = Regex.Match(ver.TagName, @"^v(\d+)\.(\d+).*");
