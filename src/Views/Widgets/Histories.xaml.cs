@@ -92,10 +92,11 @@ namespace SourceGit.Views.Widgets {
                 }
             }
 
+            graph.SetData(visible, searching);
+
             Dispatcher.Invoke(() => {
                 loading.IsAnimating = false;
                 loading.Visibility = Visibility.Collapsed;
-                graph.SetData(visible, searching);
                 commitList.ItemsSource = visible;
             });
         }
