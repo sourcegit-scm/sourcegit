@@ -63,7 +63,7 @@
                     <StackPanel Orientation="Horizontal" Height="20">
                         <Path Width="12" Height="12" Margin="4,0,0,0" Fill="{Binding Color}" Data="M 0,0 A 180,180 180 1 1 1,1 Z"/>
                         <TextBlock Text="{Binding Name}" Margin="4,0"/>
-                        <TextBlock Text="{Binding Desc}" Margin="4,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                        <TextBlock Text="{Binding Desc}" Margin="4,0" FontFamily="Microsoft YaHei UI" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>

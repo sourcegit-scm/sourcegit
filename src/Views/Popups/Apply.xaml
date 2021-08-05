@@ -78,7 +78,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="20">
                         <TextBlock Text="{Binding Name}" Margin="4,0"/>
-                        <TextBlock Text="{Binding Desc}" Margin="4,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                        <TextBlock Text="{Binding Desc}" Margin="4,0" FontFamily="Microsoft YaHei UI" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
