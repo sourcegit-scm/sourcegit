@@ -1,10 +1,5 @@
 using System.Collections.Generic;
-
-#if NET48
-using Newtonsoft.Json;
-#else
 using System.Text.Json.Serialization;
-#endif
 
 namespace SourceGit.Models {
 
