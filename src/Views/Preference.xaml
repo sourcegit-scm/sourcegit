@@ -69,12 +69,11 @@
                 <RowDefinition Height="36"/>
                 <RowDefinition Height="28"/>
                 <RowDefinition Height="28"/>
-                <RowDefinition Height="28"/>
                 <RowDefinition Height="6"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="132"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -90,7 +89,7 @@
                 Grid.Row="1" Grid.Column="0" 
                 Text="{DynamicResource Text.Preference.Locale}" 
                 HorizontalAlignment="Right"
-                Margin="0,0,6,0"/>
+                Margin="0,0,8,0"/>
             <ComboBox 
                 Grid.Row="1" Grid.Column="1" 
                 Height="24"
@@ -105,7 +104,7 @@
                 Grid.Row="2" Grid.Column="0" 
                 Text="{DynamicResource Text.Preference.AvatarServer}" 
                 HorizontalAlignment="Right" 
-                Margin="0,0,6,0"/>
+                Margin="0,0,8,0"/>
             <ComboBox 
                 Grid.Row="2" Grid.Column="1" 
                 Height="24"
@@ -144,7 +143,7 @@
                 Grid.Row="8" Grid.Column="0" 
                 Text="{DynamicResource Text.Preference.Git.Path}" 
                 HorizontalAlignment="Right" 
-                Margin="0,0,6,0"/>
+                Margin="0,0,8,0"/>
             <Grid Grid.Row="8" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -171,7 +170,7 @@
                 Grid.Row="9" Grid.Column="0" 
                 Text="{DynamicResource Text.Preference.Git.Dir}" 
                 HorizontalAlignment="Right" 
-                Margin="0,0,6,0"/>
+                Margin="0,0,8,0"/>
             <Grid Grid.Row="9" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -198,7 +197,7 @@
                 Grid.Row="10" Grid.Column="0" 
                 Text="{DynamicResource Text.Preference.Git.User}" 
                 HorizontalAlignment="Right" 
-                Margin="0,0,6,0"/>
+                Margin="0,0,8,0"/>
             <controls:TextEdit
                 Grid.Row="10" Grid.Column="1"
                 Height="24"
@@ -210,7 +209,7 @@
                 Grid.Row="11" Grid.Column="0" 
                 Text="{DynamicResource Text.Preference.Git.Email}" 
                 HorizontalAlignment="Right" 
-                Margin="0,0,6,0"/>
+                Margin="0,0,8,0"/>
             <controls:TextEdit
                 Grid.Row="11" Grid.Column="1"
                 Height="24"
@@ -222,7 +221,7 @@
                 Grid.Row="12" Grid.Column="0" 
                 Text="{DynamicResource Text.Preference.Git.CRLF}" 
                 HorizontalAlignment="Right" 
-                Margin="0,0,6,0"/>
+                Margin="0,0,8,0"/>
             <ComboBox 
                 Grid.Row="12" Grid.Column="1" 
                 Height="24"
@@ -251,7 +250,7 @@
                 Grid.Row="15" Grid.Column="0" 
                 Text="{DynamicResource Text.Preference.Merger.Type}" 
                 HorizontalAlignment="Right" 
-                Margin="0,0,6,0"/>
+                Margin="0,0,8,0"/>
             <ComboBox 
                 Grid.Row="15" Grid.Column="1" 
                 Height="24"
@@ -266,7 +265,7 @@
                 Grid.Row="16" Grid.Column="0" 
                 Text="{DynamicResource Text.Preference.Merger.Path}" 
                 HorizontalAlignment="Right" 
-                Margin="0,0,6,0"/>
+                Margin="0,0,8,0"/>
             <Grid Grid.Row="16" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -287,18 +286,6 @@
                     BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                     Icon="{StaticResource Icon.Folder.Open}"/>
             </Grid>
-                
-            <!-- Merge Tool Command -->
-            <TextBlock 
-                Grid.Row="17" Grid.Column="0"
-                Text="{DynamicResource Text.Preference.Merger.Cmd}" 
-                HorizontalAlignment="Right" 
-                Margin="0,0,6,0"/>
-            <TextBlock
-                Grid.Row="17" Grid.Column="1"
-                x:Name="txtMergeCmd"
-                Text="{Binding ElementName=me, Path=MergeCmd}"
-                Foreground="{DynamicResource Brush.FG2}"/>
         </Grid>
     </Grid>
 </controls:Window>

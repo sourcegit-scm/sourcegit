@@ -13,7 +13,6 @@ namespace SourceGit.Views {
         public string User { get; set; }
         public string Email { get; set; }
         public string CRLF { get; set; }
-        public string MergeCmd { get; set; }
 
         public Preference() {
             if (Models.Preference.Instance.IsReady) {
@@ -26,9 +25,6 @@ namespace SourceGit.Views {
                 Email = "";
                 CRLF = "false";
             }
-
-            var merger = Models.MergeTool.Supported.Find(x => x.Type == Models.Preference.Instance.MergeTool.Type);
-            if (merger != null) MergeCmd = merger.Cmd;
 
             InitializeComponent();
         }
@@ -83,9 +79,6 @@ namespace SourceGit.Views {
             var type = (int)(sender as ComboBox).SelectedValue;
             var tool = Models.MergeTool.Supported.Find(x => x.Type == type);
             if (tool == null) return;
-
-            MergeCmd = tool.Cmd;
-            txtMergeCmd?.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
 
             if (IsLoaded) {
                 Models.Preference.Instance.MergeTool.Path = tool.Finder();

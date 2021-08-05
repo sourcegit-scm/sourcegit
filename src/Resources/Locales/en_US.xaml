@@ -361,26 +361,25 @@
 
     <sys:String x:Key="Text.Preference">Preference</sys:String>
     <sys:String x:Key="Text.Preference.General">GENERAL SETTING</sys:String>
-    <sys:String x:Key="Text.Preference.Locale">Language :</sys:String>
-    <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server :</sys:String>
+    <sys:String x:Key="Text.Preference.Locale">Language</sys:String>
+    <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">Check for update</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically (need restart)</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">Restore windows</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT SETTING</sys:String>
-    <sys:String x:Key="Text.Preference.Git.Path">Install Path :</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Path">Install Path</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">Input path for git.exe</sys:String>
-    <sys:String x:Key="Text.Preference.Git.Dir">Default Clone Dir :</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Dir">Default Clone Dir</sys:String>
     <sys:String x:Key="Text.Preference.Git.Dir.Placeholder">Default path to clone repo into</sys:String>
-    <sys:String x:Key="Text.Preference.Git.User">User Name :</sys:String>
+    <sys:String x:Key="Text.Preference.Git.User">User Name</sys:String>
     <sys:String x:Key="Text.Preference.Git.User.Placeholder">Global git user name</sys:String>
-    <sys:String x:Key="Text.Preference.Git.Email">User Email :</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Email">User Email</sys:String>
     <sys:String x:Key="Text.Preference.Git.Email.Placeholder">Global git user email</sys:String>
-    <sys:String x:Key="Text.Preference.Git.CRLF">Enable Auto CRLF :</sys:String>
+    <sys:String x:Key="Text.Preference.Git.CRLF">Enable Auto CRLF</sys:String>
     <sys:String x:Key="Text.Preference.Merger">MERGE TOOL</sys:String>
-    <sys:String x:Key="Text.Preference.Merger.Type">Merger :</sys:String>
-    <sys:String x:Key="Text.Preference.Merger.Path">Install Path :</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Type">Merger</sys:String>
+    <sys:String x:Key="Text.Preference.Merger.Path">Install Path</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Path.Placeholder">Input path for merge tool</sys:String>
-    <sys:String x:Key="Text.Preference.Merger.Cmd">Command :</sys:String>
     <sys:String x:Key="Text.Preference.Dialog.GitExe">Select Git Executable File</sys:String>
     <sys:String x:Key="Text.Preference.Dialog.Merger">Select {0} Install Path</sys:String>
 
