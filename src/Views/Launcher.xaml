@@ -15,7 +15,7 @@
     Width="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Width, Mode=TwoWay}"
     Height="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Height, Mode=TwoWay}"
     Closing="OnClosing">
-    <controls:DragDropAdornerLayer>
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="28"/>
             <RowDefinition Height="*"/>
@@ -61,5 +61,5 @@
             Grid.Row="1" 
             HorizontalAlignment="Right" VerticalAlignment="Top"
             Width="330" Height="Auto"/>
-    </controls:DragDropAdornerLayer>
+    </Grid>
 </controls:Window>

@@ -1,4 +1,7 @@
+using System;
 using System.Windows;
+using System.Windows.Documents;
+using System.Collections.Generic;
 
 namespace SourceGit.Views.Controls {
     /// <summary>
@@ -17,20 +20,47 @@ namespace SourceGit.Views.Controls {
             set { SetValue(IsMaximizedProperty, value); }
         }
 
+        private AdornerLayer adornerLayer = null;
+        private List<Adorner> adorners = new List<Adorner>();
+
         public Window() {
             Style = FindResource("Style.Window") as Style;
+            Loaded += (_, __) => adornerLayer = AdornerLayer.GetAdornerLayer(Content as FrameworkElement);
+        }
 
-            StateChanged += (_, __) => {
-                var content = Content as FrameworkElement;
+        public static void AddAdorner(FrameworkElement elem, Adorner adorner) {
+            var wnd = GetWindow(elem) as Window;
+            if (wnd != null && wnd.adornerLayer != null) {
+                wnd.adorners.Add(adorner);
+                wnd.adornerLayer.Add(adorner);
+            }
+        }
 
-                if (WindowState == WindowState.Maximized) {
-                    if (!IsMaximized) IsMaximized = true;
-                    content.Margin = new Thickness((SystemParameters.MaximizedPrimaryScreenWidth - SystemParameters.WorkArea.Width) / 2);
-                } else {
-                    if (IsMaximized) IsMaximized = false;
-                    content.Margin = new Thickness(0);
-                }
-            };
+        public static void RemoveAdorner(Adorner adorner) {
+            var wnd = GetWindow(adorner) as Window;
+            if (wnd != null && wnd.adornerLayer != null) {
+                wnd.adorners.Remove(adorner);
+                wnd.adornerLayer.Remove(adorner);
+            }
+        }
+
+        protected override void OnPreviewGiveFeedback(GiveFeedbackEventArgs e) {
+            base.OnPreviewGiveFeedback(e);
+            if (adornerLayer != null && adorners.Count > 0) adornerLayer.Update();
+        }
+
+        protected override void OnStateChanged(EventArgs e) {
+            base.OnStateChanged(e);
+
+            if (WindowState == WindowState.Maximized) {
+                if (!IsMaximized) IsMaximized = true;
+                BorderThickness = new Thickness(0);
+                Padding = new Thickness((SystemParameters.MaximizedPrimaryScreenWidth - SystemParameters.WorkArea.Width) / 2);
+            } else {
+                if (IsMaximized) IsMaximized = false;
+                BorderThickness = new Thickness(1);
+                Padding = new Thickness(0);
+            }
         }
 
         private static void OnIsMaximizedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
