@@ -63,11 +63,17 @@
             VerticalAlignment="Center">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Height="20">
-                        <Path Width="12" Height="12" Margin="4,0,0,0" Fill="{Binding Color}" Data="M 0,0 A 180,180 180 1 1 1,1 Z"/>
-                        <TextBlock Text="{Binding Name}" Margin="4,0"/>
-                        <TextBlock Text="{Binding Desc}" Margin="4,0" FontFamily="Microsoft YaHei UI" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                    </StackPanel>
+                    <Grid Height="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Path Grid.Column="0" Width="12" Height="12" Fill="{Binding Color}" Data="M 0,0 A 180,180 180 1 1 1,1 Z"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="4,0,0,0"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Desc}" FontFamily="Microsoft YaHei UI" FontSize="11" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+                    </Grid>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>

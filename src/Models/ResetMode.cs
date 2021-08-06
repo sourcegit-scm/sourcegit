@@ -13,7 +13,7 @@ namespace SourceGit.Models {
 
         public static List<ResetMode> Supported = new List<ResetMode>() {
             new ResetMode("Soft", "Keep all changes. Stage differences", "--soft", Brushes.Green),
-            new ResetMode("Mixed", "Keep all changes. Unstage differences", "--mixed", Brushes.Yellow),
+            new ResetMode("Mixed", "Keep all changes. Unstage differences", "--mixed", Brushes.Orange),
             new ResetMode("Hard", "Discard all changes", "--hard", Brushes.Red),
         };
 
