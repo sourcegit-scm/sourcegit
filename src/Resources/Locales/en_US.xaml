@@ -193,7 +193,6 @@
     <sys:String x:Key="Text.RemoteCM.CopyURL">Copy Remote URL</sys:String>
 
     <sys:String x:Key="Text.CommitCM.Reset">Reset '{0}' to Here</sys:String>
-    <sys:String x:Key="Text.CommitCM.InteractiveRebase">Interactive Rebase '{0}' from Here</sys:String>
     <sys:String x:Key="Text.CommitCM.Rebase">Rebase '{0}' to Here</sys:String>
     <sys:String x:Key="Text.CommitCM.CherryPick">Cherry-Pick This Commit</sys:String>
     <sys:String x:Key="Text.CommitCM.Reword">Reword</sys:String>
@@ -283,13 +282,6 @@
     <sys:String x:Key="Text.Init">Initialize Repository</sys:String>
     <sys:String x:Key="Text.Init.Path">Path :</sys:String>
     <sys:String x:Key="Text.Init.Tip">Invalid repository detected. Run `git init` under this path?</sys:String>
-
-    <sys:String x:Key="Text.InteractiveRebase">SOURCEGIT - INTERACTIVE REBASE</sys:String>
-    <sys:String x:Key="Text.InteractiveRebase.Target">Rebase :</sys:String>
-    <sys:String x:Key="Text.InteractiveRebase.On">On :</sys:String>
-    <sys:String x:Key="Text.InteractiveRebase.Start">REBASE</sys:String>
-    <sys:String x:Key="Text.InteractiveRebase.MoveUp">MOVE UP</sys:String>
-    <sys:String x:Key="Text.InteractiveRebase.MoveDown">MOVE DOWN</sys:String>
 
     <sys:String x:Key="Text.Launcher">Source Git</sys:String>
     <sys:String x:Key="Text.Launcher.Preference">PREFERENCE</sys:String>

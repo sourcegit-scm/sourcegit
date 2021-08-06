@@ -192,7 +192,6 @@
     <sys:String x:Key="Text.RemoteCM.CopyURL">复制远程地址</sys:String>
 
     <sys:String x:Key="Text.CommitCM.Reset">重置 '{0}' 到此处</sys:String>
-    <sys:String x:Key="Text.CommitCM.InteractiveRebase">从此处开始对 '{0}' 交互式变基</sys:String>
     <sys:String x:Key="Text.CommitCM.Rebase">变基 '{0}' 到此处</sys:String>
     <sys:String x:Key="Text.CommitCM.CherryPick">挑选此提交</sys:String>
     <sys:String x:Key="Text.CommitCM.Reword">编辑提交信息</sys:String>
@@ -282,13 +281,6 @@
     <sys:String x:Key="Text.Init">初始化新仓库</sys:String>
     <sys:String x:Key="Text.Init.Path">路径 ：</sys:String>
     <sys:String x:Key="Text.Init.Tip">点击【确定】将在此目录执行`git init`操作</sys:String>
-
-    <sys:String x:Key="Text.InteractiveRebase">交互式变基</sys:String>
-    <sys:String x:Key="Text.InteractiveRebase.Target">操作分支 ：</sys:String>
-    <sys:String x:Key="Text.InteractiveRebase.On">开始提交 ：</sys:String>
-    <sys:String x:Key="Text.InteractiveRebase.Start" xml:space="preserve">开    始</sys:String>
-    <sys:String x:Key="Text.InteractiveRebase.MoveUp">向上移动</sys:String>
-    <sys:String x:Key="Text.InteractiveRebase.MoveDown">向下移动</sys:String>
 
     <sys:String x:Key="Text.Launcher">Source Git</sys:String>
     <sys:String x:Key="Text.Launcher.Preference">偏好设置</sys:String>
