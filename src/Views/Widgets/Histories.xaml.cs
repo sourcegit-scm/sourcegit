@@ -32,7 +32,7 @@ namespace SourceGit.Views.Widgets {
 
         #region DATA
         public void NavigateTo(string commit) {
-            if (string.IsNullOrEmpty(commit)) return;
+            if (string.IsNullOrEmpty(commit) || commitList == null || commitList.ItemsSource == null) return;
 
             foreach (var item in commitList.ItemsSource) {
                 var c = item as Models.Commit;
