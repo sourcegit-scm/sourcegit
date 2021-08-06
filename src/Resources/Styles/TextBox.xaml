@@ -29,12 +29,17 @@
                         <Border x:Name="Border" BorderBrush="#FFDB000C" BorderThickness="1">
                             <Grid Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <Path Width="10" Height="10" Data="M 1,0 L8,0 L8,7 z" Fill="#FFDC000C"/>
-                                <Popup x:Name="Tips" IsOpen="False" Placement="Right" PlacementTarget="{Binding ElementName=Border}" AllowsTransparency="True">
-                                    <Border Background="Transparent" Height="24">
-                                        <Border Background="#FFDB000C" Margin="4,0">
+                                <Popup x:Name="Tips" IsOpen="False" Placement="Right" VerticalOffset="-4" PlacementTarget="{Binding ElementName=Border}" AllowsTransparency="True">
+                                    <Grid Background="Transparent" Height="32">
+                                        <Border Background="#FFDB000C" Margin="4">
+                                            <Border.Effect>
+                                                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Color="Black" Opacity=".8"/>
+                                            </Border.Effect>
+                                        </Border>
+                                        <Border Margin="4">
                                             <TextBlock Foreground="White" Margin="12,0" VerticalAlignment="Center" Text="{Binding [0].ErrorContent}"/>
                                         </Border>
-                                    </Border>
+                                    </Grid>
                                 </Popup>
                             </Grid>
                         </Border>
