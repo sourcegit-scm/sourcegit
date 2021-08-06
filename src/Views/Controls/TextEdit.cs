@@ -49,7 +49,7 @@ namespace SourceGit.Views.Controls {
                     Placeholder,
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
-                    new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
+                    new Typeface(new FontFamily("Microsoft YaHei UI"), FontStyle, FontWeight, FontStretch),
                     FontSize,
                     FindResource("Brush.FG2") as Brush,
                     new NumberSubstitution(),
