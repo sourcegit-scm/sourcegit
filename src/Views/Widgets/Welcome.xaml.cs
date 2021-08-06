@@ -194,6 +194,8 @@ namespace SourceGit.Views.Widgets {
             var item = tree.FindItem(e.OriginalSource as DependencyObject);
             if (item == null) return;
 
+            tree.UnselectAll();
+
             var adorner = new Controls.DragDropAdorner(item);
             DragDrop.DoDragDrop(item, item.DataContext, DragDropEffects.Move);
             adorner.Remove();
