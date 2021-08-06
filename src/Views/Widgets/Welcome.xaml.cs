@@ -230,6 +230,7 @@ namespace SourceGit.Views.Widgets {
                     if (dir != null) {
                         var root = new Commands.GetRepositoryRootPath(path).Result();
                         Models.Preference.Instance.AddRepository(root, dir, parent);
+                        CheckAndOpen(path);
                         rebuild = true;
                     }
                 }
