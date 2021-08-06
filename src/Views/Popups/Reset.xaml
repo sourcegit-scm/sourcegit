@@ -30,7 +30,7 @@
             Orientation="Horizontal"
             VerticalAlignment="Center">
             <Path Width="14" Height="14" Data="{StaticResource Icon.Branch}"/>
-            <TextBlock x:Name="txtCurrent" Margin="8,0,0,0"/>
+            <TextBlock x:Name="txtCurrent" Margin="4,0,0,0"/>
         </StackPanel>
 
         <TextBlock
