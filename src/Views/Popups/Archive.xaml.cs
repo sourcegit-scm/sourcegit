@@ -35,7 +35,9 @@ namespace SourceGit.Views.Popups {
             InitializeComponent();
 
             iconBased.Data = FindResource("Icon.Commit") as Geometry;
-            txtBased.Text = $"{revision.ShortSHA}  {revision.Subject}";
+            txtSHA.Text = revision.ShortSHA;
+            badgeSHA.Visibility = Visibility.Visible;
+            txtBased.Text = revision.Subject;
         }
 
         public Archive(string repo, Models.Tag tag) {

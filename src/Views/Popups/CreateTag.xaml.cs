@@ -33,7 +33,9 @@ namespace SourceGit.Views.Popups {
 
             ruleTag.Tags = new Commands.Tags(repo.Path).Result();
             iconBased.Data = FindResource("Icon.Commit") as Geometry;
-            txtBased.Text = $"{commit.ShortSHA}  {commit.Subject}";
+            txtSHA.Text = commit.ShortSHA;
+            txtBased.Text = commit.Subject;
+            badgeSHA.Visibility = System.Windows.Visibility.Visible;
         }
 
         public override string GetTitle() {

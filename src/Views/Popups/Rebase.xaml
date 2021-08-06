@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -42,7 +42,10 @@
             Orientation="Horizontal"
             VerticalAlignment="Center">
             <Path x:Name="iconBased" Width="14" Height="14" Data="{StaticResource Icon.Branch}"/>
-            <TextBlock x:Name="txtOn" Margin="8,0,0,0"/>
+            <Border x:Name="badgeSHA" Background="{DynamicResource Brush.Badge}" Margin="4,0,0,0" Padding="4,2" CornerRadius="4" Visibility="Collapsed">
+                <TextBlock x:Name="txtSHA"/>
+            </Border>
+            <TextBlock x:Name="txtOn" Margin="4,0,0,0"/>
         </StackPanel>
 
         <CheckBox 

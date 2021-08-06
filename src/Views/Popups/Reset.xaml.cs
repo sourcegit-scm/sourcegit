@@ -15,7 +15,8 @@ namespace SourceGit.Views.Popups {
             InitializeComponent();
 
             txtCurrent.Text = current;
-            txtMoveTo.Text = $"{to.ShortSHA}  {to.Subject}";
+            txtSHA.Text = to.ShortSHA;
+            txtMoveTo.Text = to.Subject;
         }
 
         public override string GetTitle() {

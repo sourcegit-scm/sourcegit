@@ -37,7 +37,10 @@
             Orientation="Horizontal"
             VerticalAlignment="Center">
             <Path x:Name="iconBased" Width="14" Height="14" Data="{StaticResource Icon.Branch}"/>
-            <TextBlock x:Name="txtBased" Margin="8,0,0,0"/>
+            <Border x:Name="badgeSHA" Background="{DynamicResource Brush.Badge}" Margin="4,0,0,0" Padding="4,2" CornerRadius="4" Visibility="Collapsed">
+                <TextBlock x:Name="txtSHA"/>
+            </Border>
+            <TextBlock x:Name="txtBased" Margin="4,0,0,0"/>
         </StackPanel>
 
         <TextBlock

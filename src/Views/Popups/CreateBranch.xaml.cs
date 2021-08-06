@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -34,7 +35,9 @@ namespace SourceGit.Views.Popups {
 
             ruleBranch.Repo = repo;
             iconBased.Data = FindResource("Icon.Commit") as Geometry;
-            txtBased.Text = $"{commit.ShortSHA}  {commit.Subject}";
+            txtSHA.Text = commit.ShortSHA;
+            txtBased.Text = commit.Subject;
+            badgeSHA.Visibility = Visibility.Visible;
         }
 
         public CreateBranch(Models.Repository repo, Models.Tag tag) {

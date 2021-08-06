@@ -16,7 +16,9 @@ namespace SourceGit.Views.Popups {
             this.old = $"{commit.Subject}\n{commit.Message}".Trim();
             this.Msg = old;
             InitializeComponent();
-            txtCurrent.Text = $"{commit.ShortSHA}  {commit.Subject}";
+
+            txtSHA.Text = commit.ShortSHA;
+            txtCurrent.Text = commit.Subject;
         }
 
         public override string GetTitle() {

@@ -27,8 +27,10 @@ namespace SourceGit.Views.Popups {
             InitializeComponent();
 
             txtCurrent.Text = current;
-            txtOn.Text = $"{commit.ShortSHA}  {commit.Subject}";
-            iconBased.Data = FindResource("Icon.Branch") as Geometry;
+            txtSHA.Text = commit.ShortSHA;
+            txtOn.Text = commit.Subject;
+            badgeSHA.Visibility = System.Windows.Visibility.Visible;
+            iconBased.Data = FindResource("Icon.Commit") as Geometry;
         }
 
         public override string GetTitle() {

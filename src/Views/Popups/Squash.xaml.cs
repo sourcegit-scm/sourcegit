@@ -16,8 +16,11 @@ namespace SourceGit.Views.Popups {
             this.to = parent.SHA;
             this.Msg = $"{parent.Subject}\n{parent.Message}".Trim();
             InitializeComponent();
-            txtHead.Text = $"{head.ShortSHA}  {head.Subject}";
-            txtParent.Text = $"{parent.ShortSHA}  {parent.Subject}";
+
+            txtHeadSHA.Text = head.ShortSHA;
+            txtHead.Text = head.Subject;
+            txtParentSHA.Text = parent.ShortSHA;
+            txtParent.Text = parent.Subject;
         }
 
         public override string GetTitle() {

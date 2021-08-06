@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -28,7 +28,10 @@
             Orientation="Horizontal"
             VerticalAlignment="Center">
             <Path Width="14" Height="14" Data="{StaticResource Icon.Commit}"/>
-            <TextBlock x:Name="txtCommit" Margin="8,0,0,0"/>
+            <Border Background="{DynamicResource Brush.Badge}" Margin="4,0" Padding="4,2" CornerRadius="4">
+                <TextBlock x:Name="txtSHA"/>
+            </Border>
+            <TextBlock x:Name="txtCommit"/>
         </StackPanel>
 
         <CheckBox 
