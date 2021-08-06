@@ -27,13 +27,13 @@
                     <Button Click="Explore" Margin="6,0" ToolTip="{DynamicResource Text.Dashboard.Explore.Tip}" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Folder.Open}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" FontSize="13" Text="{DynamicResource Text.Dashboard.Explore}"/>
+                            <TextBlock Margin="4,0" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Dashboard.Explore}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="Terminal" Margin="6,0" ToolTip="{DynamicResource Text.Dashboard.Terminal.Tip}" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="13" Height="13" Data="{StaticResource Icon.Terminal}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" FontSize="13" Text="{DynamicResource Text.Dashboard.Terminal}"/>
+                            <TextBlock Margin="4,0" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Dashboard.Terminal}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -42,31 +42,31 @@
                     <Button Click="OpenFetch" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Fetch}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" FontSize="13" Text="{DynamicResource Text.Fetch}"/>
+                            <TextBlock Margin="4,0" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Fetch}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenPull" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Pull}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" FontSize="13" Text="{DynamicResource Text.Pull}"/>
+                            <TextBlock Margin="4,0" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Pull}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenPush" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Push}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" FontSize="13" Text="{DynamicResource Text.Push}"/>
+                            <TextBlock Margin="4,0" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Push}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenStash" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.SaveStash}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" FontSize="13" Text="{DynamicResource Text.Stash}"/>
+                            <TextBlock Margin="4,0" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Stash}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenApply" Margin="8,0" BorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Apply}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" FontSize="13" Text="{DynamicResource Text.Apply}"/>
+                            <TextBlock Margin="4,0" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Apply}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -75,13 +75,13 @@
                     <Button Click="OpenSearch" Margin="6,0" BorderThickness="0" ToolTip="{DynamicResource Text.Dashboard.Search.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Search}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" FontSize="13" Text="{DynamicResource Text.Dashboard.Search}"/>
+                            <TextBlock Margin="4,0" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Dashboard.Search}"/>
                         </StackPanel>
                     </Button>
                     <Button Click="OpenConfigure" Margin="6,0" BorderThickness="0" ToolTip="{DynamicResource Text.Dashboard.Configure.Tip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="14" Height="14" Data="{StaticResource Icon.Setting}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" FontSize="13" Text="{DynamicResource Text.Configure}"/>
+                            <TextBlock Margin="4,0" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Text="{DynamicResource Text.Configure}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
