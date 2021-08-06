@@ -43,6 +43,7 @@
 
 ## Thanks
 
+* [Jai](https://gitee.com/abel) .NET Framework 4.8 与 .NET 5 平台使用System.Text.Json统一代码
 * [Jai](https://gitee.com/abel) 修复SUBMODULE路径不正确的BUG
 * [Jai](https://gitee.com/abel) 修复刷新分支时，分支树节点状态未正常恢复的BUG
 * [PUMA](https://gitee.com/whgfu) 配置默认User
