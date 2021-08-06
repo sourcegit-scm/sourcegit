@@ -8,8 +8,7 @@ namespace SourceGit.Views.Controls {
     ///     展示正在拖拽的视图
     /// </summary>
     public class DragDropAdorner : Adorner {
-        private Size renderSize;
-        private Brush renderBrush;
+        private FrameworkElement renderElem;
 
         public struct PInPoint {
             public int X;
@@ -23,14 +22,13 @@ namespace SourceGit.Views.Controls {
         static extern void GetCursorPos(ref PInPoint p);
 
         public DragDropAdorner(FrameworkElement elem) : base(elem) {
-            renderSize = elem.RenderSize;
-            renderBrush = new VisualBrush(elem);
+            renderElem = elem;
             IsHitTestVisible = false;
             Window.AddAdorner(elem, this);
         }
 
         public void Remove() {
-            Window.RemoveAdorner(this);
+            Window.RemoveAdorner(renderElem, this);
         }
 
         protected override void OnRender(DrawingContext dc) {
@@ -40,11 +38,11 @@ namespace SourceGit.Views.Controls {
             GetCursorPos(ref p);
 
             Point pos = PointFromScreen(new Point(p.X, p.Y));
-            Rect rect = new Rect(pos.X, pos.Y, renderSize.Width, renderSize.Height);
+            Rect rect = new Rect(pos.X, pos.Y, renderElem.RenderSize.Width, renderElem.RenderSize.Height);
 
             dc.PushOpacity(1);
             dc.DrawRectangle(FindResource("Brush.Window") as Brush, null, rect);
-            dc.DrawRectangle(renderBrush, null, rect);
+            dc.DrawRectangle(new VisualBrush(renderElem), null, rect);
             dc.DrawRectangle(null, new Pen(Brushes.DeepSkyBlue, 2), rect);
         }
     }

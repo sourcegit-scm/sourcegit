@@ -28,16 +28,16 @@ namespace SourceGit.Views.Controls {
             Loaded += (_, __) => adornerLayer = AdornerLayer.GetAdornerLayer(Content as FrameworkElement);
         }
 
-        public static void AddAdorner(FrameworkElement elem, Adorner adorner) {
-            var wnd = GetWindow(elem) as Window;
+        public static void AddAdorner(FrameworkElement windowContext, Adorner adorner) {
+            var wnd = GetWindow(windowContext) as Window;
             if (wnd != null && wnd.adornerLayer != null) {
                 wnd.adorners.Add(adorner);
                 wnd.adornerLayer.Add(adorner);
             }
         }
 
-        public static void RemoveAdorner(Adorner adorner) {
-            var wnd = GetWindow(adorner) as Window;
+        public static void RemoveAdorner(FrameworkElement windowContext, Adorner adorner) {
+            var wnd = GetWindow(windowContext) as Window;
             if (wnd != null && wnd.adornerLayer != null) {
                 wnd.adorners.Remove(adorner);
                 wnd.adornerLayer.Remove(adorner);
