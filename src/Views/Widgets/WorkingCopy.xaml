@@ -233,6 +233,8 @@
                     Height="26" 
                     Padding="8,0"
                     Click="Commit"
+                    FontFamily="Microsoft YaHei UI"
+                    FontWeight="Bold"
                     Background="{DynamicResource Brush.Accent1}"
                     BorderBrush="{DynamicResource Brush.FG1}"
                     Content="{DynamicResource Text.WorkingCopy.Commit}"/>
@@ -243,6 +245,8 @@
                     Height="26" 
                     Padding="8,0"
                     Click="CommitAndPush" 
+                    FontFamily="Microsoft YaHei UI"
+                    FontWeight="Bold"
                     Content="{DynamicResource Text.WorkingCopy.CommitAndPush}" 
                     Margin="8,0,0,0"/>
             </Grid>
