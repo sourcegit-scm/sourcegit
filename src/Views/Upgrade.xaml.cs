@@ -15,11 +15,14 @@ namespace SourceGit.Views {
         }
 
         private void Download(object sender, RoutedEventArgs e) {
-            var info = new ProcessStartInfo("cmd", $"/c start https://gitee.com/sourcegit/sourcegit/releases/{Version.TagName}");
+            var url = $"https://gitee.com/sourcegit/sourcegit/releases/{Version.TagName}";
+#if NET48
+            Process.Start(url);
+#else
+            var info = new ProcessStartInfo("cmd", $"/c start {url}");
             info.CreateNoWindow = true;
-
             Process.Start(info);
-            e.Handled = true;
+#endif
         }
 
         private void Quit(object sender, RoutedEventArgs e) {

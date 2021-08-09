@@ -38,9 +38,13 @@ namespace SourceGit.Views {
         }
 
         private void OnRequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) {
+#if NET48
+            Process.Start(e.Uri.AbsoluteUri);
+#else
             var info = new ProcessStartInfo("cmd", $"/c start {e.Uri.AbsoluteUri}");
             info.CreateNoWindow = true;
             Process.Start(info);
+#endif
         }
 
         private void Quit(object sender, RoutedEventArgs e) {
