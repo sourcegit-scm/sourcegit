@@ -7,7 +7,6 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="TextElement.FontFamily" Value="Consolas,Microsoft YaHei UI"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="CaretBrush" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="Background" Value="Transparent"/>

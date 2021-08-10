@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="clr-namespace:SourceGit.Models">
 
     <Style x:Key="Style.Window" TargetType="{x:Type Window}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -12,6 +13,7 @@
         <Setter Property="TextOptions.TextHintingMode" Value="Animated"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
         <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>
+        <Setter Property="FontFamily" Value="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyWindow, Mode=OneWay}"/>
 
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>

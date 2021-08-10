@@ -38,7 +38,6 @@
         <TextBlock 
             Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" 
             Text="{DynamicResource Text.Init.Tip}" 
-            FontFamily="Microsoft YaHei UI"
             Foreground="{DynamicResource Brush.FG2}"/>
     </Grid>
 </controls:PopupWidget>

@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:models="clr-namespace:SourceGit.Models">
 
     <Style x:Key="Style.DataGridCell" TargetType="{x:Type DataGridCell}">
         <Setter Property="BorderThickness" Value="0"/>
@@ -44,7 +45,7 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.FG1}"/>
-        <Setter Property="TextElement.FontFamily" Value="Consolas,Microsoft YaHei UI"/>
+        <Setter Property="TextElement.FontFamily" Value="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
         <Setter Property="EnableColumnVirtualization" Value="True"/>
         <Setter Property="EnableRowVirtualization" Value="True"/>
         <Setter Property="RowBackground" Value="Transparent"/>

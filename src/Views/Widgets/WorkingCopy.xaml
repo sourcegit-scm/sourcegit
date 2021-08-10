@@ -10,7 +10,8 @@
              xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
              xmlns:validations="clr-namespace:SourceGit.Views.Validations"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}">
     <UserControl.Resources>
         <converter:BoolToCollapsed x:Key="BoolToCollapsed"/>
     </UserControl.Resources>
@@ -53,7 +54,6 @@
                         Margin="6,0"
                         Text="{DynamicResource Text.WorkingCopy.Unstaged}"
                         Foreground="{DynamicResource Brush.FG2}"
-                        FontFamily="Microsoft YaHei UI"
                         FontWeight="Bold"/>
                     <controls:Loading
                         Grid.Column="2"
@@ -108,7 +108,6 @@
                         Margin="6,0"
                         Text="{DynamicResource Text.WorkingCopy.Staged}" 
                         Foreground="{DynamicResource Brush.FG2}"
-                        FontFamily="Microsoft YaHei UI"
                         FontWeight="Bold"/>
 
                     <controls:IconButton
@@ -233,7 +232,6 @@
                     Height="26" 
                     Padding="8,0"
                     Click="Commit"
-                    FontFamily="Microsoft YaHei UI"
                     FontWeight="Bold"
                     Background="{DynamicResource Brush.Accent1}"
                     BorderBrush="{DynamicResource Brush.FG1}"
@@ -245,7 +243,6 @@
                     Height="26" 
                     Padding="8,0"
                     Click="CommitAndPush" 
-                    FontFamily="Microsoft YaHei UI"
                     FontWeight="Bold"
                     Content="{DynamicResource Text.WorkingCopy.CommitAndPush}" 
                     Margin="8,0,0,0"/>

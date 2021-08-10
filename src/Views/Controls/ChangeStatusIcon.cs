@@ -74,7 +74,7 @@ namespace SourceGit.Views.Controls {
                 txt,
                 CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
-                new Typeface(new FontFamily("Microsoft YaHei UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                new Typeface(new FontFamily(Models.Preference.Instance.General.FontFamilyWindow), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
                 icon.Width * 0.8,
                 new SolidColorBrush(Color.FromRgb(241, 241, 241)),
                 VisualTreeHelper.GetDpi(icon).PixelsPerDip);

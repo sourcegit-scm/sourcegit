@@ -355,6 +355,8 @@
     <sys:String x:Key="Text.Preference">偏好设置</sys:String>
     <sys:String x:Key="Text.Preference.General">通用配置</sys:String>
     <sys:String x:Key="Text.Preference.Locale">显示语言</sys:String>
+    <sys:String x:Key="Text.Preference.FontFamilyWindow">系统字体</sys:String>
+    <sys:String x:Key="Text.Preference.FontFamilyContent">文本字体</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">头像服务</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">启用检测更新</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">启用定时自动拉取远程更新（重启生效）</sys:String>

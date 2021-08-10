@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+    xmlns:models="clr-namespace:SourceGit.Models"
     mc:Ignorable="d"
     Title="{DynamicResource Text.Blame}"
     WindowStartupLocation="CenterOwner"
@@ -56,8 +57,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" x:Name="txtFile" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Foreground="{DynamicResource Brush.FG2}" FontSize="11" Text="{DynamicResource Text.Blame.Tip}"/>
+                <TextBlock Grid.Column="0" x:Name="txtFile" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Foreground="{DynamicResource Brush.FG2}" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" FontSize="11" Text="{DynamicResource Text.Blame.Tip}"/>
             </Grid>
         </Border>
 

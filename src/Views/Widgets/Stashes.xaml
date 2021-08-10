@@ -37,7 +37,6 @@
                         Margin="4,0,0,0"
                         Text="{DynamicResource Text.Stashes.Stashes}" 
                         Foreground="{DynamicResource Brush.FG2}" 
-                        FontFamily="Microsoft YaHei UI"
                         FontWeight="Bold"/>
 
                     <controls:Loading
@@ -89,7 +88,6 @@
                         Margin="4,0,0,0"
                         Text="{DynamicResource Text.Stashes.Changes}" 
                         Foreground="{DynamicResource Brush.FG2}" 
-                        FontFamily="Microsoft YaHei UI"
                         FontWeight="Bold"/>
                 </StackPanel>
             </Border>

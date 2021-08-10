@@ -356,6 +356,8 @@
     <sys:String x:Key="Text.Preference">Preference</sys:String>
     <sys:String x:Key="Text.Preference.General">GENERAL SETTING</sys:String>
     <sys:String x:Key="Text.Preference.Locale">Language</sys:String>
+    <sys:String x:Key="Text.Preference.FontFamilyWindow">Window Font</sys:String>
+    <sys:String x:Key="Text.Preference.FontFamilyContent">Content Font</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">Check for update</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically (need restart)</sys:String>
