@@ -361,6 +361,7 @@
     <sys:String x:Key="Text.Preference.CheckUpdate">启用检测更新</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">启用定时自动拉取远程更新（重启生效）</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">启动时恢复上次打开的仓库</sys:String>
+    <sys:String x:Key="Text.Preference.EnableCrashReport">开启崩溃上报（可能涉及上报相关路径）</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT配置</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">安装路径</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">填写git.exe所在位置</sys:String>

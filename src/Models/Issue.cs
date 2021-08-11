@@ -24,6 +24,8 @@ namespace SourceGit.Models {
         /// </summary>
         /// <param name="e"></param>
         public static void Create(System.Exception e) {
+            if (!Preference.Instance.General.EnableCrashReport) return;
+
             try {
                 var issue = new Issue();
                 issue.AccessToken = "d0d56410f13a3826b87fb0868d5a26ce"; // 这是我个人的Token，仅启用ISSUE创建功能，请不要使用
