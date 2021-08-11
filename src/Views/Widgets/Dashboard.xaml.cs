@@ -1102,7 +1102,7 @@ namespace SourceGit.Views.Widgets {
                     if (Directory.Exists(rebaseTempFolder)) Directory.Delete(rebaseTempFolder);
 
                     var rebaseFile = Path.Combine(repo.GitDir, "REBASE_HEAD");
-                    if (File.Exists(rebaseFile)) Directory.Delete(rebaseFile);
+                    if (File.Exists(rebaseFile)) File.Delete(rebaseFile);
 
                     var rebaseMergeFolder = Path.Combine(repo.GitDir, "rebase-merge");
                     if (Directory.Exists(rebaseMergeFolder)) Directory.Delete(rebaseMergeFolder);
