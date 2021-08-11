@@ -64,7 +64,6 @@
                                                 <TextBlock
                                                     Grid.Column="1"
                                                     Margin="4,0"
-                                                    FontWeight="Bold"
                                                     Text="{Binding Title}"/>
                                                 
                                                 <controls:IconButton

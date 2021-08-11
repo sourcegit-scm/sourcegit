@@ -168,8 +168,8 @@ namespace SourceGit.Views.Widgets {
             var tab = new Tab() {
                 Id = id,
                 IsWelcomePage = true,
-                Title = App.Text("PageSwitcher.Welcome.Title"),
-                Tooltip = App.Text("PageSwitcher.Welcome.Tip"),
+                Title = App.Text("PageTabBar.Welcome.Title"),
+                Tooltip = App.Text("PageTabBar.Welcome.Tip"),
                 Bookmark = 0,
             };
 
