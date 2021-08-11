@@ -10,8 +10,7 @@
              xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
              xmlns:validations="clr-namespace:SourceGit.Views.Validations"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}">
+             d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converter:BoolToCollapsed x:Key="BoolToCollapsed"/>
     </UserControl.Resources>

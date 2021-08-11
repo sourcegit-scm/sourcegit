@@ -138,14 +138,12 @@ namespace SourceGit.Views.Widgets {
 
         #region EVENTS
         private void LayoutTextPreview(List<Models.TextLine> lines) {
-            var font = new FontFamily(Models.Preference.Instance.General.FontFamilyWindow);
-
             var maxLineNumber = $"{lines.Count + 1}";
             var formatted = new FormattedText(
                 maxLineNumber,
                 CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
-                new Typeface(font, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                new Typeface(txtPreviewData.FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
                 12.0,
                 Brushes.Black,
                 VisualTreeHelper.GetDpi(this).PixelsPerDip);
