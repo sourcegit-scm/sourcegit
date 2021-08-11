@@ -118,8 +118,6 @@
     <sys:String x:Key="Text.Dashboard.Explore.Tip">Open In File Browser</sys:String>
     <sys:String x:Key="Text.Dashboard.Terminal">Terminal</sys:String>
     <sys:String x:Key="Text.Dashboard.Terminal.Tip">Open Git Bash</sys:String>
-    <sys:String x:Key="Text.Dashboard.Refresh">Refresh</sys:String>
-    <sys:String x:Key="Text.Dashboard.Refresh.Tip">Refresh Repositoy</sys:String>
     <sys:String x:Key="Text.Dashboard.Search">Search</sys:String>
     <sys:String x:Key="Text.Dashboard.Search.Tip">Search Commit</sys:String>
     <sys:String x:Key="Text.Dashboard.Configure.Tip">Configure this repository</sys:String>
@@ -166,12 +164,6 @@
     <sys:String x:Key="Text.GitFlow.PrefixInvalid">{0} contains invalid characters.</sys:String>
     <sys:String x:Key="Text.GitFlow.DevSameAsProd">Development branch is same with production!</sys:String>
     <sys:String x:Key="Text.GitFlow.KeepBranchAfterFinish">Keep branch</sys:String>
-
-    <sys:String x:Key="Text.RepoCM.Refresh">Refresh</sys:String>
-    <sys:String x:Key="Text.RepoCM.Bookmark">Bookmark</sys:String>
-    <sys:String x:Key="Text.RepoCM.CopyPath">CopyPath</sys:String>
-    <sys:String x:Key="Text.RepoCM.Open">Open</sys:String>
-    <sys:String x:Key="Text.RepoCM.Explore">Open Container Folder</sys:String>
 
     <sys:String x:Key="Text.BranchCM.Push">Push '{0}'</sys:String>
     <sys:String x:Key="Text.BranchCM.DiscardAll">Discard all changes</sys:String>

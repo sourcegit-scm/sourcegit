@@ -117,8 +117,6 @@
     <sys:String x:Key="Text.Dashboard.Explore.Tip">在文件浏览器中打开</sys:String>
     <sys:String x:Key="Text.Dashboard.Terminal">终端</sys:String>
     <sys:String x:Key="Text.Dashboard.Terminal.Tip">打开GIT终端</sys:String>
-    <sys:String x:Key="Text.Dashboard.Refresh">刷新</sys:String>
-    <sys:String x:Key="Text.Dashboard.Refresh.Tip">刷新仓库数据</sys:String>
     <sys:String x:Key="Text.Dashboard.Search">查找</sys:String>
     <sys:String x:Key="Text.Dashboard.Search.Tip">查找提交</sys:String>
     <sys:String x:Key="Text.Dashboard.Configure.Tip">配置本仓库</sys:String>
@@ -165,12 +163,6 @@
     <sys:String x:Key="Text.GitFlow.PrefixInvalid">{0}前缀包含非法字符！</sys:String>
     <sys:String x:Key="Text.GitFlow.DevSameAsProd">开发分支与发布分支不可相同！</sys:String>
     <sys:String x:Key="Text.GitFlow.KeepBranchAfterFinish">保留分支</sys:String>
-
-    <sys:String x:Key="Text.RepoCM.Refresh">刷新</sys:String>
-    <sys:String x:Key="Text.RepoCM.Bookmark">书签</sys:String>
-    <sys:String x:Key="Text.RepoCM.CopyPath">复制路径</sys:String>
-    <sys:String x:Key="Text.RepoCM.Open">打开</sys:String>
-    <sys:String x:Key="Text.RepoCM.Explore">在浏览器中查看</sys:String>
 
     <sys:String x:Key="Text.BranchCM.Push">推送 '{0}'</sys:String>
     <sys:String x:Key="Text.BranchCM.DiscardAll">放弃所有更改</sys:String>
