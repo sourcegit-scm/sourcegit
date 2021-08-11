@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -346,13 +347,11 @@ namespace SourceGit.Views.Widgets {
             grid.ContextMenuOpening += OnTextDiffContextMenuOpening;
             grid.PreviewMouseWheel += OnTextDiffPreviewMouseWheel;
             grid.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, (o, e) => {
-                var items = (o as DataGrid).SelectedItems;
-                if (items.Count == 0) return;
+                var items = (o as DataGrid)?.SelectedItems.OfType<Models.TextChanges.Line>().OrderBy(i => i.Index).ToList();
+                if (items == null || items.Count == 0) return;
 
                 var builder = new StringBuilder();
-                foreach (var item in items) {
-                    var block = item as Models.TextChanges.Line;
-                    if (block == null) continue;
+                foreach (var block in items) {
                     if (!block.IsContent) continue;
 
                     builder.Append(block.Content);
@@ -466,13 +465,11 @@ namespace SourceGit.Views.Widgets {
             copy.Header = App.Text("Diff.Copy");
             copy.Icon = copyIcon;
             copy.Click += (o, ev) => {
-                var items = grid.SelectedItems;
+                var items = grid.SelectedItems.OfType<Models.TextChanges.Line>().OrderBy(i => i.Index).ToList();
                 if (items.Count == 0) return;
 
                 var builder = new StringBuilder();
-                foreach (var item in items) {
-                    var block = item as Models.TextChanges.Line;
-                    if (block == null) continue;
+                foreach (var block in items) {
                     if (!block.IsContent) continue;
 
                     builder.Append(block.Content);

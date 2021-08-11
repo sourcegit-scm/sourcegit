@@ -21,6 +21,7 @@ namespace SourceGit.Models {
         }
 
         public class Line {
+            public int Index { get; set; } = 0;
             public LineMode Mode { get; set; } = LineMode.None;
             public string Content { get; set; } = "";
             public string OldLine { get; set; } = "";
@@ -45,7 +46,8 @@ namespace SourceGit.Models {
 
             public Line() { }
 
-            public Line(LineMode mode, string content, string oldLine, string newLine) {
+            public Line(int index, LineMode mode, string content, string oldLine, string newLine) {
+                Index = index;
                 Mode = mode;
                 Content = content;
                 OldLine = oldLine;
