@@ -3,7 +3,6 @@
                     xmlns:controls="clr-namespace:SourceGit.Views.Controls">
     <Style x:Key="Style.TextBlock.Base" TargetType="{x:Type TextBlock}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="FontFamily" Value="Consolas,Microsoft YaHei UI"/>
         <Setter Property="FontSize" Value="9pt"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -20,7 +19,6 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
-        <Setter Property="FontFamily" Value="Microsoft YaHei UI"/>
         <Setter Property="FontWeight" Value="ExtraBold"/>
         <Setter Property="FontSize" Value="9pt"/>
         <Setter Property="Margin" Value="8,0,0,0"/>

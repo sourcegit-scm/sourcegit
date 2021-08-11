@@ -138,7 +138,7 @@ namespace SourceGit.Views.Widgets {
 
         #region EVENTS
         private void LayoutTextPreview(List<Models.TextLine> lines) {
-            var font = new FontFamily("Consolas");
+            var font = new FontFamily(Models.Preference.Instance.General.FontFamilyWindow);
 
             var maxLineNumber = $"{lines.Count + 1}";
             var formatted = new FormattedText(

@@ -28,7 +28,6 @@
                             <TextBlock 
                                 Grid.Row="0" 
                                 Text="{DynamicResource Text.Launcher.Error}" 
-                                FontFamily="Microsoft YaHei UI" 
                                 FontWeight="Bold"/>
                             <controls:TextEdit
                                 Grid.Row="1"
@@ -39,14 +38,12 @@
                                 VerticalScrollBarVisibility="Auto"
                                 MaxHeight="80"
                                 Margin="0,8"
-                                FontFamily="Microsoft YaHei UI"
                                 VerticalAlignment="Top"/>
                             <Button 
                                 Grid.Row="2" 
                                 Height="25"
                                 Margin="4,0" Padding="8,0" 
                                 Click="Dismiss"
-                                FontFamily="Microsoft YaHei UI"
                                 Content="{DynamicResource Text.Close}"
                                 Background="{DynamicResource Brush.Accent1}"
                                 BorderBrush="{DynamicResource Brush.FG1}"

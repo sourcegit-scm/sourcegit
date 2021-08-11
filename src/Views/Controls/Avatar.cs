@@ -136,7 +136,7 @@ namespace SourceGit.Views.Controls {
                 placeholder,
                 CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
-                new Typeface(new FontFamily("Consolas"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                new Typeface(new FontFamily(Models.Preference.Instance.General.FontFamilyWindow), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
                 a.Width * 0.65,
                 Brushes.White,
                 VisualTreeHelper.GetDpi(a).PixelsPerDip);

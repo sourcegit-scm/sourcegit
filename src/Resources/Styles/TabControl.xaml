@@ -49,7 +49,6 @@
                                 <Style TargetType="{x:Type TextBlock}" BasedOn="{x:Null}">
                                     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
                                     <Setter Property="FontWeight" Value="DemiBold"/>
-                                    <Setter Property="FontFamily" Value="Microsoft YaHei UI"/>
                                     <Setter Property="FontSize" Value="9pt"/>
                                     <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>
                                     <Style.Triggers>

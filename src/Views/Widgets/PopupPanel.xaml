@@ -27,8 +27,8 @@
                         <TextBlock Margin="8,8,0,18" x:Name="txtTitle" FontSize="18" FontWeight="DemiBold" TextOptions.TextFormattingMode="Ideal" RenderOptions.ClearTypeHint="Enabled"/>
                         <ContentControl x:Name="container"/>
                         <StackPanel Margin="0,16,0,0" Height="32" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Click="Sure" Width="80" Content="{DynamicResource Text.Sure}" BorderBrush="{DynamicResource Brush.FG1}" Background="{DynamicResource Brush.Accent1}" FontFamily="Microsoft YaHei UI" FontWeight="Bold"/>
-                            <Button Click="Cancel" Width="80" Margin="8,0,0,0" Content="{DynamicResource Text.Cancel}" FontFamily="Microsoft YaHei UI" FontWeight="Bold"/>
+                            <Button Click="Sure" Width="80" Content="{DynamicResource Text.Sure}" BorderBrush="{DynamicResource Brush.FG1}" Background="{DynamicResource Brush.Accent1}" FontWeight="Bold"/>
+                            <Button Click="Cancel" Width="80" Margin="8,0,0,0" Content="{DynamicResource Text.Cancel}" FontWeight="Bold"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

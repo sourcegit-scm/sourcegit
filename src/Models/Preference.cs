@@ -28,6 +28,27 @@ namespace SourceGit.Models {
             public string Locale { get; set; } = "en_US";
 
             /// <summary>
+            ///     系统字体
+            /// </summary>
+            public string FontFamilyWindowSetting { get; set; } = "Microsoft YaHei UI";
+
+            [JsonIgnore]
+            public string FontFamilyWindow {
+                get => FontFamilyWindowSetting + ",Microsoft YaHei UI";
+                set => FontFamilyWindowSetting = value;
+            }
+
+            /// <summary>
+            ///     用户字体（提交列表、提交日志、差异比较等）
+            /// </summary>
+            public string FontFamilyContentSetting { get; set; } = "Consolas";
+
+            [JsonIgnore] public string FontFamilyContent {
+                get => FontFamilyContentSetting + ",Microsoft YaHei UI";
+                set => FontFamilyContentSetting = value;
+            }
+
+            /// <summary>
             ///     头像服务器
             /// </summary>
             public string AvatarServer { get; set; } = "https://www.gravatar.com/avatar/";
