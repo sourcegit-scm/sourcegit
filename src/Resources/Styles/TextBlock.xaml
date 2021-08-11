@@ -48,5 +48,6 @@
         <Setter Property="LineHeight" Value="16"/>
         <Setter Property="Margin" Value="0"/>
         <Setter Property="Padding" Value="4,0,0,0"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
     </Style>
 </ResourceDictionary>
