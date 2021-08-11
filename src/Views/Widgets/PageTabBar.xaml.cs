@@ -140,16 +140,15 @@ namespace SourceGit.Views.Widgets {
 
         public void CloseCurrent() {
             var curTab = container.SelectedItem as Tab;
-            if (Tabs.Count == 1) {
+            var idx = container.SelectedIndex;
+            Tabs.Remove(curTab);
+            if (Tabs.Count == 0) {
                 Application.Current.Shutdown();
             } else {
-                var idx = container.SelectedIndex;
-                Tabs.Remove(curTab);
-                RaiseEvent(new TabEventArgs(TabClosedEvent, this, curTab.Id));
-
                 var last = Tabs.Count - 1;
                 var next = idx > last ? Tabs[last] : Tabs[idx];
                 container.SelectedItem = next;
+                RaiseEvent(new TabEventArgs(TabClosedEvent, this, curTab.Id));
                 RaiseEvent(new TabEventArgs(TabSelectedEvent, this, next.Id));
             }
         }
@@ -199,17 +198,18 @@ namespace SourceGit.Views.Widgets {
 
             var curTab = container.SelectedItem as Tab;
             if (curTab != null && tab.Id == curTab.Id) {
-                if (Tabs.Count > 1) {
-                    var idx = Tabs.IndexOf(tab);
-                    Tabs.Remove(tab);
+                var idx = Tabs.IndexOf(tab);
+                Tabs.Remove(tab);
 
-                    var last = Tabs.Count - 1;
-                    var next = idx > last ? Tabs[last] : Tabs[idx];
-                    container.SelectedItem = next;
-                    RaiseEvent(new TabEventArgs(TabSelectedEvent, this, next.Id));
-                } else {
+                if (Tabs.Count == 0) {
                     Application.Current.Shutdown();
+                    return;
                 }
+
+                var last = Tabs.Count - 1;
+                var next = idx > last ? Tabs[last] : Tabs[idx];
+                container.SelectedItem = next;
+                RaiseEvent(new TabEventArgs(TabSelectedEvent, this, next.Id));
             } else {
                 Tabs.Remove(tab);
             }

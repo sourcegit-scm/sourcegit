@@ -22,6 +22,7 @@ namespace SourceGit.Views {
             if (!restore.IsEnabled) return;
 
             restore.Opened.Clear();
+            restore.Actived = null;
 
             foreach (var tab in tabs.Tabs) {
                 if (tab.IsWelcomePage) continue;
