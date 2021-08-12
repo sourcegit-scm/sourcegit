@@ -388,7 +388,7 @@ namespace SourceGit.Views.Widgets {
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
                 copyPath.Click += (o, e) => {
-                    Clipboard.SetText(node.Path);
+                    Clipboard.SetDataObject(node.Path, true);
                     e.Handled = true;
                 };
 
@@ -510,7 +510,7 @@ namespace SourceGit.Views.Widgets {
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
                 copyPath.Click += (o, e) => {
-                    Clipboard.SetText(change.Path);
+                    Clipboard.SetDataObject(change.Path, true);
                     e.Handled = true;
                 };
 
@@ -619,7 +619,7 @@ namespace SourceGit.Views.Widgets {
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
                 copyPath.Click += (o, e) => {
-                    Clipboard.SetText(node.Path);
+                    Clipboard.SetDataObject(node.Path, true);
                     e.Handled = true;
                 };
 
@@ -663,7 +663,7 @@ namespace SourceGit.Views.Widgets {
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
                 copyPath.Click += (o, e) => {
-                    Clipboard.SetText(change.Path);
+                    Clipboard.SetDataObject(change.Path, true);
                     e.Handled = true;
                 };
 

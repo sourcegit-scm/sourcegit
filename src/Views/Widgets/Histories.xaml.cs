@@ -388,7 +388,7 @@ namespace SourceGit.Views.Widgets {
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
             copySHA.Click += (o, e) => {
-                Clipboard.SetText(commit.SHA);
+                Clipboard.SetDataObject(commit.SHA, true);
                 e.Handled = true;
             };
             menu.Items.Add(copySHA);
@@ -396,9 +396,9 @@ namespace SourceGit.Views.Widgets {
             var copyInfo = new MenuItem();
             copyInfo.Header = App.Text("CommitCM.CopyInfo");
             copyInfo.Click += (o, e) => {
-                Clipboard.SetText(string.Format(
+                Clipboard.SetDataObject(string.Format(
                     "SHA: {0}\nTITLE: {1}\nAUTHOR: {2} <{3}>\nTIME: {4}",
-                    commit.SHA, commit.Subject, commit.Committer.Name, commit.Committer.Email, commit.Committer.Time));
+                    commit.SHA, commit.Subject, commit.Committer.Name, commit.Committer.Email, commit.Committer.Time), true);
             };
             menu.Items.Add(copyInfo);
 

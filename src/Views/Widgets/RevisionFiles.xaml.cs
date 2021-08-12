@@ -198,7 +198,7 @@ namespace SourceGit.Views.Widgets {
                     builder.AppendLine();
                 }
 
-                Clipboard.SetText(builder.ToString());
+                Clipboard.SetDataObject(builder.ToString(), true);
             };
             menu.Items.Add(copy);
             menu.IsOpen = true;
@@ -304,7 +304,7 @@ namespace SourceGit.Views.Widgets {
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Click += (obj, ev) => {
-                Clipboard.SetText(node.Path);
+                Clipboard.SetDataObject(node.Path, true);
                 ev.Handled = true;
             };
 

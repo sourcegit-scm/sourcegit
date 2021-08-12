@@ -267,7 +267,7 @@ namespace SourceGit.Views.Widgets {
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Click += (obj, ev) => {
-                Clipboard.SetText(path);
+                Clipboard.SetDataObject(path, true);
             };
 
             menu.Items.Add(copyPath);

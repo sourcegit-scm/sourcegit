@@ -690,7 +690,7 @@ namespace SourceGit.Views.Widgets {
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
             copy.Click += (o, e) => {
-                Clipboard.SetText(branch.Name);
+                Clipboard.SetDataObject(branch.Name, true);
                 e.Handled = true;
             };
             menu.Items.Add(copy);
@@ -721,7 +721,7 @@ namespace SourceGit.Views.Widgets {
             var copy = new MenuItem();
             copy.Header = App.Text("RemoteCM.CopyURL");
             copy.Click += (o, e) => {
-                Clipboard.SetText(remote.URL);
+                Clipboard.SetDataObject(remote.URL, true);
                 e.Handled = true;
             };
 
@@ -812,7 +812,7 @@ namespace SourceGit.Views.Widgets {
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
             copy.Click += (o, e) => {
-                Clipboard.SetText(branch.Remote + "/" + branch.Name);
+                Clipboard.SetDataObject(branch.Remote + "/" + branch.Name, true);
                 e.Handled = true;
             };
 
@@ -878,7 +878,7 @@ namespace SourceGit.Views.Widgets {
             var copy = new MenuItem();
             copy.Header = App.Text("TagCM.Copy");
             copy.Click += (o, ev) => {
-                Clipboard.SetText(tag.Name);
+                Clipboard.SetDataObject(tag.Name, true);
                 ev.Handled = true;
             };
 
@@ -918,7 +918,7 @@ namespace SourceGit.Views.Widgets {
             var copy = new MenuItem();
             copy.Header = App.Text("Submodule.CopyPath");
             copy.Click += (o, ev) => {
-                Clipboard.SetText(submodule);
+                Clipboard.SetDataObject(submodule, true);
                 ev.Handled = true;
             };
 

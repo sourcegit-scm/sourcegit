@@ -358,7 +358,7 @@ namespace SourceGit.Views.Widgets {
                     builder.AppendLine();
                 }
 
-                Clipboard.SetText(builder.ToString());
+                Clipboard.SetDataObject(builder.ToString(), true);
             }));
 
             foreach (var number in lineNumbers) {
@@ -476,7 +476,7 @@ namespace SourceGit.Views.Widgets {
                     builder.AppendLine();
                 }
 
-                Clipboard.SetText(builder.ToString());
+                Clipboard.SetDataObject(builder.ToString(), true);
             };
             menu.Items.Add(copy);
             menu.IsOpen = true;
