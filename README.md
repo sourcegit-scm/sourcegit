@@ -26,8 +26,8 @@
 
 | 文件             | 运行时             | 说明                                |
 | ---------------- | ------------------ | ----------------------------------- |
-| SourceGit.exe    | .NET 5             | 需要自行安装 .NET 5运行时           |
-| SourceGit_48.exe | .NET Framework 4.8 | Windows 10 内置该运行时，不需要安装 |
+| SourceGit.net5.0.exe    | .NET 5             | 需要自行安装 .NET 5运行时           |
+| SourceGit.net4.8.exe | .NET Framework 4.8 | Windows 10 内置该运行时，不需要安装 |
 
 > 【注】本软件为GIT的**图形前端**，需先自行安装Git
 
