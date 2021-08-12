@@ -167,13 +167,13 @@ namespace SourceGit.Views.Widgets {
                 ThicknessAnimation anim = new ThicknessAnimation();
                 anim.From = new Thickness(0);
                 anim.To = new Thickness(0, -32, 0, 0);
-                anim.Duration = TimeSpan.FromSeconds(.3);
+                anim.Duration = TimeSpan.FromSeconds(.1);
                 searchBar.BeginAnimation(MarginProperty, anim);
             } else {
                 ThicknessAnimation anim = new ThicknessAnimation();
                 anim.From = new Thickness(0, -32, 0, 0);
                 anim.To = new Thickness(0);
-                anim.Duration = TimeSpan.FromSeconds(.3);
+                anim.Duration = TimeSpan.FromSeconds(.1);
                 searchBar.BeginAnimation(MarginProperty, anim);
 
                 txtSearch.Focus();
@@ -195,7 +195,7 @@ namespace SourceGit.Views.Widgets {
             ThicknessAnimation anim = new ThicknessAnimation();
             anim.From = new Thickness(0);
             anim.To = new Thickness(0, -32, 0, 0);
-            anim.Duration = TimeSpan.FromSeconds(.3);
+            anim.Duration = TimeSpan.FromSeconds(.1);
             searchBar.BeginAnimation(MarginProperty, anim);
         }
 
