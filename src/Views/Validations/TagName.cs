@@ -11,7 +11,7 @@ namespace SourceGit.Views.Validations {
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
             var name = value as string;
-            if (string.IsNullOrEmpty(name)) new ValidationResult(false, App.Text("EmptyTagName"));
+            if (string.IsNullOrEmpty(name)) return new ValidationResult(false, App.Text("EmptyTagName"));
             if (!REG_FORMAT.IsMatch(name)) return new ValidationResult(false, App.Text("BadTagName"));
 
             foreach (var t in Tags) {

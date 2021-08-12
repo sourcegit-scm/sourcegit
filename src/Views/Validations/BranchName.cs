@@ -11,7 +11,7 @@ namespace SourceGit.Views.Validations {
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
             var name = value as string;
-            if (string.IsNullOrEmpty(name)) new ValidationResult(false, App.Text("EmptyBranchName"));
+            if (string.IsNullOrEmpty(name)) return new ValidationResult(false, App.Text("EmptyBranchName"));
             if (!REG_FORMAT.IsMatch(name)) return new ValidationResult(false, App.Text("BadBranchName"));
 
             name = Prefix + name;
