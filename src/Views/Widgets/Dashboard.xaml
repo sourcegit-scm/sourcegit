@@ -23,67 +23,74 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="6,0">
-                    <Button Click="Explore" Margin="6,0" ToolTip="{DynamicResource Text.Dashboard.Explore.Tip}" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="14" Height="14" Data="{StaticResource Icon.Folder.Open}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{DynamicResource Text.Dashboard.Explore}"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="Terminal" Margin="6,0" ToolTip="{DynamicResource Text.Dashboard.Terminal.Tip}" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="13" Height="13" Data="{StaticResource Icon.Terminal}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{DynamicResource Text.Dashboard.Terminal}"/>
-                        </StackPanel>
-                    </Button>
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <controls:IconButton
+                        Margin="8,0"
+                        Padding="0,9"
+                        Icon="{DynamicResource Icon.Folder.Open}" 
+                        ToolTip="{DynamicResource Text.Dashboard.Explore.Tip}"
+                        Click="Explore"/>
+                    <controls:IconButton
+                        Margin="8,0"
+                        Padding="0,9"
+                        Icon="{DynamicResource Icon.Terminal}" 
+                        ToolTip="{DynamicResource Text.Dashboard.Terminal.Tip}"
+                        Click="Terminal"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Button Click="OpenFetch" Margin="8,0" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="14" Height="14" Data="{StaticResource Icon.Fetch}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{DynamicResource Text.Fetch}"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="OpenPull" Margin="8,0" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="14" Height="14" Data="{StaticResource Icon.Pull}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{DynamicResource Text.Pull}"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="OpenPush" Margin="8,0" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="14" Height="14" Data="{StaticResource Icon.Push}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{DynamicResource Text.Push}"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="OpenStash" Margin="8,0" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="14" Height="14" Data="{StaticResource Icon.SaveStash}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{DynamicResource Text.Stash}"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="OpenApply" Margin="8,0" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="14" Height="14" Data="{StaticResource Icon.Apply}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{DynamicResource Text.Apply}"/>
-                        </StackPanel>
-                    </Button>
+                    <controls:IconButton
+                        Margin="16,0"
+                        Padding="0,8"
+                        Icon="{DynamicResource Icon.Fetch}" 
+                        ToolTip="{DynamicResource Text.Fetch}"
+                        Click="OpenFetch"/>
+                    <controls:IconButton
+                        Margin="16,0"
+                        Padding="0,8"
+                        Icon="{DynamicResource Icon.Pull}" 
+                        ToolTip="{DynamicResource Text.Pull}"
+                        Click="OpenPull"/>
+                    <controls:IconButton
+                        Margin="16,0"
+                        Padding="0,8"
+                        Icon="{DynamicResource Icon.Push}" 
+                        ToolTip="{DynamicResource Text.Push}"
+                        Click="OpenPush"/>
+                    <controls:IconButton
+                        Margin="16,0"
+                        Padding="0,8"
+                        Icon="{DynamicResource Icon.SaveStash}" 
+                        ToolTip="{DynamicResource Text.Stash}"
+                        Click="OpenStash"/>
+                    <controls:IconButton
+                        Margin="16,0"
+                        Padding="0,8"
+                        Icon="{DynamicResource Icon.Apply}" 
+                        ToolTip="{DynamicResource Text.Apply}"
+                        Click="OpenApply"/>
+
+                    <Rectangle 
+                        Width="1" Height="16" 
+                        Margin="8,0" 
+                        VerticalAlignment="Center" 
+                        Fill="{DynamicResource Brush.Border2}"/>
+
+                    <controls:IconButton
+                        Margin="16,0"
+                        Padding="0,8"
+                        Icon="{DynamicResource Icon.Search}" 
+                        ToolTip="{DynamicResource Text.Dashboard.Search}"
+                        Click="OpenSearch"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Click="OpenSearch" Margin="6,0" BorderThickness="0" ToolTip="{DynamicResource Text.Dashboard.Search.Tip}">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="14" Height="14" Data="{StaticResource Icon.Search}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{DynamicResource Text.Dashboard.Search}"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="OpenConfigure" Margin="6,0" BorderThickness="0" ToolTip="{DynamicResource Text.Dashboard.Configure.Tip}">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="14" Height="14" Data="{StaticResource Icon.Setting}"/>
-                            <TextBlock Margin="4,0" FontWeight="Bold" Text="{DynamicResource Text.Configure}"/>
-                        </StackPanel>
-                    </Button>
+                    <controls:IconButton
+                        Margin="8,0"
+                        Padding="0,8"
+                        Icon="{DynamicResource Icon.Setting}" 
+                        ToolTip="{DynamicResource Text.Configure}"
+                        Click="OpenConfigure"/>
                 </StackPanel>
             </Grid>
         </Border> 
@@ -120,13 +127,13 @@
                 <!-- Workspace -->
                 <TextBlock Grid.Row="0" Style="{DynamicResource Style.TextBlock.Group}" Text="{DynamicResource Text.Dashboard.Workspace}"/>
                 <ListView Grid.Row="1" x:Name="workspace" SelectionMode="Single" SelectionChanged="OnPageSelectionChanged">
-                    <ListViewItem IsSelected="True">
+                    <ListViewItem IsSelected="True" Opacity=".9">
                         <StackPanel Margin="16,0,0,0" Height="28" Orientation="Horizontal">
                             <Path Width="16" Height="16" Data="{StaticResource Icon.Histories}"/>
                             <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.Histories}"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem>
+                    <ListViewItem Opacity=".9">
                         <Grid Margin="16,0,0,0" Height="28">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -138,7 +145,7 @@
                             <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeLocalChanges"/>
                         </Grid>
                     </ListViewItem>
-                    <ListViewItem>
+                    <ListViewItem Opacity=".9">
                         <Grid Margin="16,0,0,0" Height="28">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
