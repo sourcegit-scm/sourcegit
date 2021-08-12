@@ -113,13 +113,10 @@
     <sys:String x:Key="Text.CreateTag.Message">标签描述 ：</sys:String>
     <sys:String x:Key="Text.CreateTag.Message.Placeholder">选填</sys:String>
 
-    <sys:String x:Key="Text.Dashboard.Explore">浏览</sys:String>
-    <sys:String x:Key="Text.Dashboard.Explore.Tip">在文件浏览器中打开</sys:String>
-    <sys:String x:Key="Text.Dashboard.Terminal">终端</sys:String>
-    <sys:String x:Key="Text.Dashboard.Terminal.Tip">打开GIT终端</sys:String>
-    <sys:String x:Key="Text.Dashboard.Search">查找</sys:String>
-    <sys:String x:Key="Text.Dashboard.Search.Tip">查找提交</sys:String>
-    <sys:String x:Key="Text.Dashboard.Configure.Tip">配置本仓库</sys:String>
+    <sys:String x:Key="Text.Dashboard.Explore">在文件浏览器中打开</sys:String>
+    <sys:String x:Key="Text.Dashboard.Terminal">打开GIT终端</sys:String>
+    <sys:String x:Key="Text.Dashboard.Search">查找提交</sys:String>
+    <sys:String x:Key="Text.Dashboard.Configure">配置本仓库</sys:String>
     <sys:String x:Key="Text.Dashboard.Workspace">工作区</sys:String>
     <sys:String x:Key="Text.Dashboard.LocalBranches">本地分支</sys:String>
     <sys:String x:Key="Text.Dashboard.NewBranch">新建分支</sys:String>

@@ -28,13 +28,13 @@
                         Margin="8,0"
                         Padding="0,9"
                         Icon="{DynamicResource Icon.Folder.Open}" 
-                        ToolTip="{DynamicResource Text.Dashboard.Explore.Tip}"
+                        ToolTip="{DynamicResource Text.Dashboard.Explore}"
                         Click="Explore"/>
                     <controls:IconButton
                         Margin="8,0"
                         Padding="0,9"
                         Icon="{DynamicResource Icon.Terminal}" 
-                        ToolTip="{DynamicResource Text.Dashboard.Terminal.Tip}"
+                        ToolTip="{DynamicResource Text.Dashboard.Terminal}"
                         Click="Terminal"/>
                 </StackPanel>
 
@@ -89,7 +89,7 @@
                         Margin="8,0"
                         Padding="0,8"
                         Icon="{DynamicResource Icon.Setting}" 
-                        ToolTip="{DynamicResource Text.Configure}"
+                        ToolTip="{DynamicResource Text.Dashboard.Configure}"
                         Click="OpenConfigure"/>
                 </StackPanel>
             </Grid>

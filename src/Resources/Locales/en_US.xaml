@@ -114,13 +114,10 @@
     <sys:String x:Key="Text.CreateTag.Message">Tag Message :</sys:String>
     <sys:String x:Key="Text.CreateTag.Message.Placeholder">Optional.</sys:String>
 
-    <sys:String x:Key="Text.Dashboard.Explore">Explore</sys:String>
-    <sys:String x:Key="Text.Dashboard.Explore.Tip">Open In File Browser</sys:String>
-    <sys:String x:Key="Text.Dashboard.Terminal">Terminal</sys:String>
-    <sys:String x:Key="Text.Dashboard.Terminal.Tip">Open Git Bash</sys:String>
-    <sys:String x:Key="Text.Dashboard.Search">Search</sys:String>
-    <sys:String x:Key="Text.Dashboard.Search.Tip">Search Commit</sys:String>
-    <sys:String x:Key="Text.Dashboard.Configure.Tip">Configure this repository</sys:String>
+    <sys:String x:Key="Text.Dashboard.Explore">Open In File Browser</sys:String>
+    <sys:String x:Key="Text.Dashboard.Terminal">Open Git Bash</sys:String>
+    <sys:String x:Key="Text.Dashboard.Search">Search Commit</sys:String>
+    <sys:String x:Key="Text.Dashboard.Configure">Configure this repository</sys:String>
     <sys:String x:Key="Text.Dashboard.Workspace">WORKSPACE</sys:String>
     <sys:String x:Key="Text.Dashboard.LocalBranches">LOCAL BRANCHES</sys:String>
     <sys:String x:Key="Text.Dashboard.NewBranch">NEW BRANCH</sys:String>
