@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,6 +13,7 @@ namespace SourceGit.Views.Widgets {
     ///     新标签页
     /// </summary>
     public partial class Welcome : UserControl, Controls.IPopupContainer {
+
         /// <summary>
         ///     树节点数据
         /// </summary>
@@ -43,6 +45,11 @@ namespace SourceGit.Views.Widgets {
 
             public List<Node> Children { get; set; }
         }
+
+        /// <summary>
+        ///     仓库节点编辑事件参数
+        /// </summary>
+        public event Action<Node> OnNodeEdited;
 
         public Welcome() {
             InitializeComponent();
@@ -144,7 +151,7 @@ namespace SourceGit.Views.Widgets {
                             if (repo != null) {
                                 repo.Bookmark = refIdx;
                                 node.Bookmark = refIdx;
-                                (Application.Current.MainWindow as Launcher)?.tabs.Update(node.Id, refIdx, node.Name);
+                                OnNodeEdited?.Invoke(node);
                             }
                             ev.Handled = true;
                         };
@@ -400,7 +407,7 @@ namespace SourceGit.Views.Widgets {
                     Models.Preference.Instance.RenameGroup(node.Id, edit.Text);
                 } else {
                     Models.Preference.Instance.RenameRepository(node.Id, node.Name);
-                    (Application.Current.MainWindow as Launcher)?.tabs.Update(node.Id, node.Bookmark, edit.Text);
+                    OnNodeEdited?.Invoke(node);
                 }
                 e.Handled = false;
             }
