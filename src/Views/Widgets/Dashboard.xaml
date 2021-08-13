@@ -127,13 +127,13 @@
                 <!-- Workspace -->
                 <TextBlock Grid.Row="0" Style="{DynamicResource Style.TextBlock.Group}" Text="{DynamicResource Text.Dashboard.Workspace}"/>
                 <ListView Grid.Row="1" x:Name="workspace" SelectionMode="Single" SelectionChanged="OnPageSelectionChanged">
-                    <ListViewItem IsSelected="True" Opacity=".9">
+                    <ListViewItem IsSelected="True" Style="{DynamicResource Style.ListViewItem.Switcher}">
                         <StackPanel Margin="16,0,0,0" Height="28" Orientation="Horizontal">
                             <Path Width="16" Height="16" Data="{StaticResource Icon.Histories}"/>
                             <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.Histories}"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Opacity=".9">
+                    <ListViewItem Style="{DynamicResource Style.ListViewItem.Switcher}">
                         <Grid Margin="16,0,0,0" Height="28">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -145,7 +145,7 @@
                             <controls:Badge Grid.Column="2" Margin="4,0" x:Name="badgeLocalChanges"/>
                         </Grid>
                     </ListViewItem>
-                    <ListViewItem Opacity=".9">
+                    <ListViewItem Style="{DynamicResource Style.ListViewItem.Switcher}">
                         <Grid Margin="16,0,0,0" Height="28">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>

@@ -25,4 +25,7 @@
     <SolidColorBrush x:Key="Brush.FG3" Color="#FF252525"/>
     <SolidColorBrush x:Key="Brush.Accent1" Color="#FF007ACC"/>
     <SolidColorBrush x:Key="Brush.Accent2" Color="#4C007ACC"/>
+
+    <SolidColorBrush x:Key="Brush.SwitcherHover" Color="#FF323232"/>
+    <SolidColorBrush x:Key="Brush.SwitcherBG" Color="#FF3F3F3F"/>
 </ResourceDictionary>
