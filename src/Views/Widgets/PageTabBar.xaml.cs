@@ -14,12 +14,23 @@ namespace SourceGit.Views.Widgets {
         /// <summary>
         ///     标签数据
         /// </summary>
-        public class Tab {
+        public class Tab : Controls.BindableBase {
             public string Id { get; set; }
             public bool IsWelcomePage { get; set; }
-            public string Title { get; set; }
+            
+            private string title;
+            public string Title {
+                get => title;
+                set => SetProperty(ref title, value);
+            }
+
             public string Tooltip { get; set; }
-            public int Bookmark { get; set; }
+
+            private int bookmark = 0;
+            public int Bookmark {
+                get => bookmark;
+                set => SetProperty(ref bookmark, value);
+            }
         }
 
         /// <summary>
@@ -121,6 +132,16 @@ namespace SourceGit.Views.Widgets {
 
             Tabs.Insert(idx, replaced);
             if (curTab.Id == id) container.SelectedItem = replaced;
+        }
+
+        public void Update(string id, int bookmark, string title) {
+            foreach (var one in Tabs) {
+                if (one.Id == id) {
+                    one.Bookmark = bookmark;
+                    one.Title = title;
+                    break;
+                }
+            }
         }
 
         public bool Goto(string id) {
