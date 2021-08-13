@@ -161,6 +161,10 @@
     <sys:String x:Key="Text.GitFlow.DevSameAsProd">开发分支与发布分支不可相同！</sys:String>
     <sys:String x:Key="Text.GitFlow.KeepBranchAfterFinish">保留分支</sys:String>
 
+    <sys:String x:Key="Text.RepoCM.Bookmark">书签</sys:String>
+    <sys:String x:Key="Text.RepoCM.Open">打开</sys:String>
+    <sys:String x:Key="Text.RepoCM.Explore">在浏览器中查看</sys:String>
+
     <sys:String x:Key="Text.BranchCM.Push">推送 '{0}'</sys:String>
     <sys:String x:Key="Text.BranchCM.DiscardAll">放弃所有更改</sys:String>
     <sys:String x:Key="Text.BranchCM.FastForward">快进到 '{0}'</sys:String>
