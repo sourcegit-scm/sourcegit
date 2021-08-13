@@ -15,14 +15,32 @@ namespace SourceGit.Views.Widgets {
         /// <summary>
         ///     树节点数据
         /// </summary>
-        public class Node {
+        public class Node : Controls.BindableBase {
             public string Id { get; set; }
             public string ParentId { get; set; }
-            public string Name { get; set; }
+
+            private string name;
+            public string Name {
+                get => name;
+                set => SetProperty(ref name, value);
+            }
+
             public bool IsGroup { get; set; }
-            public bool IsEditing { get; set; }
+
+            private bool isEditing = false;
+            public bool IsEditing {
+                get => isEditing;
+                set => SetProperty(ref isEditing, value);
+            }
+
             public bool IsExpanded { get; set; }
-            public int Bookmark { get; set; }
+            
+            private int bookmark = 0;
+            public int Bookmark {
+                get => bookmark;
+                set => SetProperty(ref bookmark, value);
+            }
+
             public List<Node> Children { get; set; }
         }
 
@@ -125,7 +143,8 @@ namespace SourceGit.Views.Widgets {
                             var repo = Models.Preference.Instance.FindRepository(node.Id);
                             if (repo != null) {
                                 repo.Bookmark = refIdx;
-                                UpdateTree();
+                                node.Bookmark = refIdx;
+                                (Application.Current.MainWindow as Launcher)?.tabs.Update(node.Id, refIdx, node.Name);
                             }
                             ev.Handled = true;
                         };
@@ -375,13 +394,14 @@ namespace SourceGit.Views.Widgets {
 
             var node = edit.DataContext as Node;
             if (node != null) {
+                node.Name = edit.Text;
+                node.IsEditing = false;
                 if (node.IsGroup) {
                     Models.Preference.Instance.RenameGroup(node.Id, edit.Text);
                 } else {
-                    Models.Preference.Instance.RenameRepository(node.Id, edit.Text);
+                    Models.Preference.Instance.RenameRepository(node.Id, node.Name);
+                    (Application.Current.MainWindow as Launcher)?.tabs.Update(node.Id, node.Bookmark, edit.Text);
                 }
-
-                UpdateTree();
                 e.Handled = false;
             }
         }
