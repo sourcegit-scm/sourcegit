@@ -162,6 +162,10 @@
     <sys:String x:Key="Text.GitFlow.DevSameAsProd">Development branch is same with production!</sys:String>
     <sys:String x:Key="Text.GitFlow.KeepBranchAfterFinish">Keep branch</sys:String>
 
+    <sys:String x:Key="Text.RepoCM.Bookmark">Bookmark</sys:String>
+    <sys:String x:Key="Text.RepoCM.Open">Open</sys:String>
+    <sys:String x:Key="Text.RepoCM.Explore">Open Container Folder</sys:String>
+
     <sys:String x:Key="Text.BranchCM.Push">Push '{0}'</sys:String>
     <sys:String x:Key="Text.BranchCM.DiscardAll">Discard all changes</sys:String>
     <sys:String x:Key="Text.BranchCM.FastForward">Fast-Forward to '{0}'</sys:String>
