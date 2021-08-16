@@ -4,8 +4,6 @@
     <SolidColorBrush x:Key="Brush.Logo" Color="#FFF05133"/>
 
     <SolidColorBrush x:Key="Brush.Window" Color="#FF252525"/>
-    <SolidColorBrush x:Key="Brush.WindowBorder" Color="#FF101010"/>
-
     <SolidColorBrush x:Key="Brush.TitleBar" Color="#FF1F1F1F"/>
     <SolidColorBrush x:Key="Brush.NewPageHover" Color="#FF404040"/>
     <SolidColorBrush x:Key="Brush.Popup" Color="#FF2B2B2B"/>

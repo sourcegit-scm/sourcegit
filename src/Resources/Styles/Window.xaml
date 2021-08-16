@@ -8,7 +8,7 @@
         <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource Brush.WindowBorder}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         <Setter Property="TextOptions.TextHintingMode" Value="Animated"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
