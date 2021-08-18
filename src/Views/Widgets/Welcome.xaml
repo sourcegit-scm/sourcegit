@@ -125,7 +125,7 @@
                                     <ColumnDefinition Width="22"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Path Grid.Column="0" Margin="2,0,0,0" x:Name="Icon" Width="16" Height="16" Data="{StaticResource Icon.Git}"/>
+                                <Path Grid.Column="0" Margin="2,0,0,0" x:Name="Icon" Width="16" Height="16" Data="{StaticResource Icon.Folder.Fill}"/>
 
                                 <controls:Bookmark
                                     Grid.Column="0"
@@ -133,9 +133,7 @@
                                     x:Name="BookmarkIcon"
                                     Width="16" Height="16"
                                     Color="{Binding Bookmark}"
-                                    IsNewPage="False"
-                                    HideOnZero="False"
-                                    Visibility="Collapsed"/>
+                                    IsNewPage="False"/>
 
                                 <StackPanel Grid.Column="1" x:Name="Contents" Orientation="Horizontal">
                                     <TextBlock Margin="8,0" Text="{Binding Name}"/>
@@ -154,32 +152,23 @@
                                     LostFocus="RenameEnd"
                                     IsHitTestVisible="True"
                                     Visibility="Collapsed"/>
-
                             </Grid>
                         </Border>
 
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding IsGroup}" Value="True">
                                 <Setter TargetName="Path" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="Icon" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="BookmarkIcon" Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsGroup}" Value="False">
-                                <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"></Setter>
-                                <Setter TargetName="BookmarkIcon" Property="Visibility" Value="Visible"></Setter>
+                                <Setter TargetName="Path" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="BookmarkIcon" Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding IsGroup}" Value="True"/>
-                                    <Condition Binding="{Binding IsExpanded}" Value="False"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Fill}"/>
-                            </MultiDataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding IsGroup}" Value="True"/>
-                                    <Condition Binding="{Binding IsExpanded}" Value="True"/>
-                                </MultiDataTrigger.Conditions>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}, Path=IsExpanded}" Value="True">
                                 <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
-                            </MultiDataTrigger>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding IsEditing}" Value="True">
                                 <Setter TargetName="Editor" Property="Visibility" Value="Visible"/>
                                 <Setter TargetName="Contents" Property="Visibility" Value="Collapsed"/>

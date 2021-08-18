@@ -39,14 +39,6 @@ namespace SourceGit.Views.Controls {
             set { SetValue(IsNewPageProperty, value); }
         }
 
-        public static readonly DependencyProperty HideOnZeroProperty =
-            DependencyProperty.Register("HideOnZero", typeof(bool), typeof(Bookmark), new PropertyMetadata(false, UpdateBookmark));
-
-        public bool HideOnZero {
-            get { return (bool)GetValue(HideOnZeroProperty); }
-            set { SetValue(HideOnZeroProperty, value); }
-        }
-
         public Bookmark() {
             icon = new Path();
             Child = icon;
@@ -56,11 +48,6 @@ namespace SourceGit.Views.Controls {
         private static void UpdateBookmark(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             var mark = d as Bookmark;
             if (mark == null) return;
-
-            if (mark.HideOnZero && mark.Color == 0) {
-                mark.Visibility = Visibility.Collapsed;
-                return;
-            }
 
             if (!mark.IsNewPage) {
                 if (mark.Color == 0) {
@@ -74,8 +61,6 @@ namespace SourceGit.Views.Controls {
                 mark.icon.SetResourceReference(Path.FillProperty, "Brush.FG1");
                 mark.icon.Data = mark.FindResource("Icon.WelcomePage") as Geometry;
             }
-
-            mark.Visibility = Visibility.Visible;
         }
     }
 }

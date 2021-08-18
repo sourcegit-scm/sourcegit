@@ -58,8 +58,7 @@
                                                 <controls:Bookmark
                                                     Width="14" Height="14"
                                                     IsNewPage="{Binding IsWelcomePage}"
-                                                    Color="{Binding Bookmark}"
-                                                    HideOnZero="False"/>
+                                                    Color="{Binding Bookmark}"/>
 
                                                 <TextBlock
                                                     Grid.Column="1"
