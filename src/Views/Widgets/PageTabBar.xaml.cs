@@ -251,7 +251,10 @@ namespace SourceGit.Views.Widgets {
             var item = sender as ListBoxItem;
             if (item == null) return;
 
-            if (Mouse.LeftButton == MouseButtonState.Pressed) {
+            var tab = item.DataContext as Tab;
+            if (tab == null || tab != container.SelectedItem) return;
+
+            if (e.LeftButton == MouseButtonState.Pressed) {
                 var dragging = new Controls.DragDropAdorner(item);
                 DragDrop.DoDragDrop(item, item.DataContext, DragDropEffects.Move);
                 dragging.Remove();
