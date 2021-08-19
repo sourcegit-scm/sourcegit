@@ -1,8 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SourceGit.Views.Widgets {
 
@@ -32,6 +34,11 @@ namespace SourceGit.Views.Widgets {
                 set => SetProperty(ref bookmark, value);
             }
         }
+
+        /// <summary>
+        ///     仓库标签页编辑事件参数
+        /// </summary>
+        public event Action<Tab> OnTabEdited;
 
         /// <summary>
         ///     标签相关事件参数
@@ -216,7 +223,10 @@ namespace SourceGit.Views.Widgets {
         private void CloseTab(object sender, RoutedEventArgs e) {
             var tab = (sender as Button).DataContext as Tab;
             if (tab == null) return;
+            CloseTab(tab);
+        }
 
+        private void CloseTab(Tab tab) {
             var curTab = container.SelectedItem as Tab;
             if (curTab != null && tab.Id == curTab.Id) {
                 var idx = Tabs.IndexOf(tab);
@@ -234,7 +244,6 @@ namespace SourceGit.Views.Widgets {
             } else {
                 Tabs.Remove(tab);
             }
-
             RaiseEvent(new TabEventArgs(TabClosedEvent, this, tab.Id));
         }
 
@@ -263,6 +272,70 @@ namespace SourceGit.Views.Widgets {
             Tabs.Remove(tabSrc);
             Tabs.Insert(dstIdx, tabSrc);
             container.SelectedItem = tabSrc;
+            e.Handled = true;
+        }
+
+        private void OnTabContextMenuOpening(object sender, ContextMenuEventArgs e) {
+            var tab = (sender as ListBoxItem).DataContext as Tab;
+            if (tab == null) return;
+
+            var menu = new ContextMenu();
+
+            var close = new MenuItem();
+            close.Header = App.Text("PageTabBar.Tab.Close");
+            close.Click += (_, __) => {
+                CloseTab(tab);
+            };
+
+            var closeOther = new MenuItem();
+            closeOther.Header = App.Text("PageTabBar.Tab.CloseOther");
+            closeOther.Click += (_, __) => {
+                Tabs.ToList().ForEach(t => { if (tab != t) CloseTab(t); });
+            };
+
+            var closeRight = new MenuItem();
+            closeRight.Header = App.Text("PageTabBar.Tab.CloseRight");
+            closeRight.Click += (_, __) => {
+                var tabs = Tabs.ToList();
+                tabs.RemoveRange(0, tabs.IndexOf(tab) + 1);
+                tabs.ForEach(t => CloseTab(t));
+            };
+
+            menu.Items.Add(close);
+            menu.Items.Add(closeOther);
+            menu.Items.Add(closeRight);
+
+            if (!tab.IsWelcomePage) {
+                var iconBookmark = FindResource("Icon.Bookmark") as Geometry;
+                var bookmark = new MenuItem();
+                bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
+                for (int i = 0; i < Controls.Bookmark.COLORS.Length; i++) {
+                    var icon = new System.Windows.Shapes.Path();
+                    icon.Data = iconBookmark;
+                    icon.Fill = Controls.Bookmark.COLORS[i];
+                    icon.Width = 8;
+
+                    var mark = new MenuItem();
+                    mark.Icon = icon;
+                    mark.Header = $"{i}";
+
+                    var refIdx = i;
+                    mark.Click += (o, ev) => {
+                        var repo = Models.Preference.Instance.FindRepository(tab.Id);
+                        if (repo != null) {
+                            repo.Bookmark = refIdx;
+                            tab.Bookmark = refIdx;
+                            OnTabEdited?.Invoke(tab);
+                        }
+                        ev.Handled = true;
+                    };
+                    bookmark.Items.Add(mark);
+                }
+                menu.Items.Add(new Separator());
+                menu.Items.Add(bookmark);
+            }
+
+            menu.IsOpen = true;
             e.Handled = true;
         }
     }

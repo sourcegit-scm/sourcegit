@@ -48,6 +48,7 @@
 
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
+                            <EventSetter Event="ContextMenuOpening" Handler="OnTabContextMenuOpening" />
                             <Setter Property="AllowDrop" Value="True"/>
                             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                             <Setter Property="Template">

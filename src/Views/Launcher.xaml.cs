@@ -15,6 +15,14 @@ namespace SourceGit.Views {
             Models.Watcher.Opened += OpenRepository;
             InitializeComponent();
             tabs.Add();
+
+            tabs.OnTabEdited += (t) => {
+                foreach (var tab in tabs.Tabs) {
+                    if (!tab.IsWelcomePage) continue;
+                    var page = container.Get(tab.Id) as Widgets.Welcome;
+                    if (page != null) page.UpdateNodes(t.Id, t.Bookmark);
+                }
+            };
         }
 
         private void OnClosing(object sender, CancelEventArgs e) {
