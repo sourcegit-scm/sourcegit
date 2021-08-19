@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -367,6 +368,21 @@ namespace SourceGit.Views.Widgets {
             var gitDir = new Commands.QueryGitDir(root).Result();
             var repo = Models.Preference.Instance.AddRepository(root, gitDir, "");
             Models.Watcher.Open(repo);
+        }
+
+        public void UpdateNodes(string id, int bookmark, IEnumerable<Node> nodes = null) {
+            if (nodes == null) nodes = tree.ItemsSource.OfType<Node>();
+            foreach (var node in nodes) {
+                if (!node.IsGroup) {
+                    if (node.Id == id) {
+                        node.Bookmark = bookmark;
+                        break;
+                    }
+                } else if (node.Children.Count > 0) {
+                    UpdateNodes(id, bookmark, node.Children);
+                }
+            }
+            
         }
         #endregion
 

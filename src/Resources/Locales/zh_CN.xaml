@@ -283,6 +283,10 @@
     <sys:String x:Key="Text.PageTabBar.New">新建空白页</sys:String>
     <sys:String x:Key="Text.PageTabBar.Welcome.Title">新标签页</sys:String>
     <sys:String x:Key="Text.PageTabBar.Welcome.Tip">起始页</sys:String>
+    <sys:String x:Key="Text.PageTabBar.Tab.Close">关闭标签页</sys:String>
+    <sys:String x:Key="Text.PageTabBar.Tab.CloseOther">关闭其他标签页</sys:String>
+    <sys:String x:Key="Text.PageTabBar.Tab.CloseRight">关闭右侧标签页</sys:String>
+    <sys:String x:Key="Text.PageTabBar.Tab.Bookmark">设置书签</sys:String>
 
     <sys:String x:Key="Text.Merge">合并分支</sys:String>
     <sys:String x:Key="Text.Merge.Source">合并分支 ：</sys:String>

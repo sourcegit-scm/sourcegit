@@ -284,6 +284,10 @@
     <sys:String x:Key="Text.PageTabBar.New">NEW PAGE</sys:String>
     <sys:String x:Key="Text.PageTabBar.Welcome.Title">*Repositories</sys:String>
     <sys:String x:Key="Text.PageTabBar.Welcome.Tip">WELCOME PAGE</sys:String>
+    <sys:String x:Key="Text.PageTabBar.Tab.Close">Close Tab</sys:String>
+    <sys:String x:Key="Text.PageTabBar.Tab.CloseOther">Close Other Tabs</sys:String>
+    <sys:String x:Key="Text.PageTabBar.Tab.CloseRight">Close Tabs to the Right</sys:String>
+    <sys:String x:Key="Text.PageTabBar.Tab.Bookmark">Bookmark</sys:String>
 
     <sys:String x:Key="Text.Merge">Merge Branch</sys:String>
     <sys:String x:Key="Text.Merge.Source">Source Branch :</sys:String>
