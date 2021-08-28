@@ -27,11 +27,21 @@ namespace SourceGit.Views.Popups {
         public override Task<bool> Start() {
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo, false);
+
+                var full = branch;
                 if (string.IsNullOrEmpty(remote)) {
+                    full = $"refs/heads/{branch}";
                     new Commands.Branch(repo, branch).Delete();
                 } else {
+                    full = $"refs/remotes/{remote}/{branch}";
                     new Commands.Push(repo, remote, branch).Exec();
                 }
+
+                var exists = Models.Preference.Instance.FindRepository(repo);
+                if (exists != null && exists.Filters.Contains(full)) {
+                    exists.Filters.Remove(full);
+                }
+
                 Models.Watcher.SetEnabled(repo, true);
                 return true;
             });

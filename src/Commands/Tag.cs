@@ -29,6 +29,11 @@ namespace SourceGit.Commands {
             Args = $"tag --delete {name}";
             if (!Exec()) return false;
 
+            var repo = Models.Preference.Instance.FindRepository(Cwd);
+            if (repo != null && repo.Filters.Contains(name)) {
+                repo.Filters.Remove(name);
+            }
+
             if (push) {
                 var remotes = new Remotes(Cwd).Result();
                 foreach (var r in remotes) {
