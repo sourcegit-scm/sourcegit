@@ -1,5 +1,7 @@
 using Microsoft.Win32;
 using System;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,6 +16,13 @@ namespace SourceGit.Views {
         public string Email { get; set; }
         public string CRLF { get; set; }
 
+        // https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathfindonpathw
+        // https://www.pinvoke.net/default.aspx/shlwapi.PathFindOnPath
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
+        private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
+
+        public bool EnableWindowsTerminal { get; set; } = PathFindOnPath(new StringBuilder("wt.exe"), null);
+
         public Preference() {
             if (Models.Preference.Instance.IsReady) {
                 User = new Commands.Config().Get("user.name");
@@ -24,6 +33,10 @@ namespace SourceGit.Views {
                 User = "";
                 Email = "";
                 CRLF = "false";
+            }
+
+            if (!EnableWindowsTerminal) {
+                Models.Preference.Instance.General.UseWindowsTerminal = false;
             }
 
             InitializeComponent();
