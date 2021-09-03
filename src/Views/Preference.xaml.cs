@@ -49,12 +49,18 @@ namespace SourceGit.Views {
         }
 
         private void SelectGitPath(object sender, RoutedEventArgs e) {
-            var dialog = new OpenFileDialog();
-            dialog.Filter = "Git Executable|git.exe";
-            dialog.FileName = "git.exe";
-            dialog.Title = App.Text("Preference.Dialog.GitExe");
-            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            dialog.CheckFileExists = true;
+            var sb = new StringBuilder("git.exe");
+            string dir = PathFindOnPath(sb, null)
+                ? sb.ToString()
+                : Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+
+            var dialog = new OpenFileDialog {
+                Filter = "Git Executable|git.exe",
+                FileName = "git.exe",
+                Title = App.Text("Preference.Dialog.GitExe"),
+                InitialDirectory = dir,
+                CheckFileExists = true,
+            };
 
             if (dialog.ShowDialog() == true) {
                 Models.Preference.Instance.Git.Path = dialog.FileName;
