@@ -265,6 +265,7 @@
                 Margin="0,0,8,0"/>
             <controls:TextEdit
                 Grid.Row="14" Grid.Column="1"
+                x:Name="editGitUser"
                 Height="24"
                 Text="{Binding ElementName=me, Path=User, Mode=TwoWay}"
                 Placeholder="{DynamicResource Text.Preference.Git.User.Placeholder}"/>
@@ -277,6 +278,7 @@
                 Margin="0,0,8,0"/>
             <controls:TextEdit
                 Grid.Row="15" Grid.Column="1"
+                x:Name="editGitEmail"
                 Height="24"
                 Text="{Binding ElementName=me, Path=Email, Mode=TwoWay}"
                 Placeholder="{DynamicResource Text.Preference.Git.Email.Placeholder}"/>
@@ -289,6 +291,7 @@
                 Margin="0,0,8,0"/>
             <ComboBox
                 Grid.Row="16" Grid.Column="1"
+                x:Name="editGitCrlf"
                 Height="24"
                 ItemsSource="{Binding Source={x:Static models:CRLFOption.Supported}}"
                 SelectedValuePath="Value"

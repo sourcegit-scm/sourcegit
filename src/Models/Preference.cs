@@ -194,7 +194,7 @@ namespace SourceGit.Models {
         }
 
         /// <summary>
-        ///     检测配置是否
+        ///     检测配置是否正常
         /// </summary>
         [JsonIgnore]
         public bool IsReady {

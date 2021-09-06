@@ -24,12 +24,7 @@ namespace SourceGit.Views {
         public bool EnableWindowsTerminal { get; set; } = PathFindOnPath(new StringBuilder("wt.exe"), null);
 
         public Preference() {
-            if (Models.Preference.Instance.IsReady) {
-                User = new Commands.Config().Get("user.name");
-                Email = new Commands.Config().Get("user.email");
-                CRLF = new Commands.Config().Get("core.autocrlf");
-                if (string.IsNullOrEmpty(CRLF)) CRLF = "false";
-            } else {
+            if (!UpdateGitInfoIfReady()) {
                 User = "";
                 Email = "";
                 CRLF = "false";
@@ -40,6 +35,15 @@ namespace SourceGit.Views {
             }
 
             InitializeComponent();
+        }
+
+        private bool UpdateGitInfoIfReady() {
+            if (!Models.Preference.Instance.IsReady) return false;
+            User = new Commands.Config().Get("user.name");
+            Email = new Commands.Config().Get("user.email");
+            CRLF = new Commands.Config().Get("core.autocrlf");
+            if (string.IsNullOrEmpty(CRLF)) CRLF = "false";
+            return true;
         }
 
         #region EVENTS
@@ -65,6 +69,11 @@ namespace SourceGit.Views {
             if (dialog.ShowDialog() == true) {
                 Models.Preference.Instance.Git.Path = dialog.FileName;
                 editGitPath?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                if (UpdateGitInfoIfReady()) {
+                    editGitUser?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                    editGitEmail?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                    editGitCrlf?.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateTarget();
+                }
             }
         }
 
