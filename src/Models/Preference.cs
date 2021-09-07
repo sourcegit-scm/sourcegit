@@ -198,9 +198,7 @@ namespace SourceGit.Models {
         /// </summary>
         [JsonIgnore]
         public bool IsReady {
-            get {
-                return !string.IsNullOrEmpty(Git.Path) && File.Exists(Git.Path);
-            }
+            get => File.Exists(Git.Path) && new Commands.Version().Query() != null;
         }
 
         #region DATA

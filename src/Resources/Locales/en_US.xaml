@@ -364,6 +364,7 @@
     <sys:String x:Key="Text.Preference.Git">GIT SETTING</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">Install Path</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">Input path for git.exe</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Version">Git version</sys:String>
     <sys:String x:Key="Text.Preference.Git.Dir">Default Clone Dir</sys:String>
     <sys:String x:Key="Text.Preference.Git.Dir.Placeholder">Default path to clone repo into</sys:String>
     <sys:String x:Key="Text.Preference.Git.User">User Name</sys:String>

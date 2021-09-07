@@ -15,6 +15,7 @@ namespace SourceGit.Views {
         public string User { get; set; }
         public string Email { get; set; }
         public string CRLF { get; set; }
+        public string Version { get; set; }
 
         // https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathfindonpathw
         // https://www.pinvoke.net/default.aspx/shlwapi.PathFindOnPath
@@ -24,11 +25,7 @@ namespace SourceGit.Views {
         public bool EnableWindowsTerminal { get; set; } = PathFindOnPath(new StringBuilder("wt.exe"), null);
 
         public Preference() {
-            if (!UpdateGitInfoIfReady()) {
-                User = "";
-                Email = "";
-                CRLF = "false";
-            }
+            UpdateGitInfo(false);
 
             if (!EnableWindowsTerminal) {
                 Models.Preference.Instance.General.UseWindowsTerminal = false;
@@ -37,13 +34,27 @@ namespace SourceGit.Views {
             InitializeComponent();
         }
 
-        private bool UpdateGitInfoIfReady() {
-            if (!Models.Preference.Instance.IsReady) return false;
-            User = new Commands.Config().Get("user.name");
-            Email = new Commands.Config().Get("user.email");
-            CRLF = new Commands.Config().Get("core.autocrlf");
-            if (string.IsNullOrEmpty(CRLF)) CRLF = "false";
-            return true;
+        private bool UpdateGitInfo(bool updateUi) {
+            var isReady = Models.Preference.Instance.IsReady;
+            if (isReady) {
+                User = new Commands.Config().Get("user.name");
+                Email = new Commands.Config().Get("user.email");
+                CRLF = new Commands.Config().Get("core.autocrlf");
+                Version = new Commands.Version().Query();
+                if (string.IsNullOrEmpty(CRLF)) CRLF = "false";
+            } else {
+                User = "";
+                Email = "";
+                CRLF = "false";
+                Version = "Unknown";
+            }
+            if (updateUi) {
+                editGitUser?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                editGitEmail?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                editGitCrlf?.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateTarget();
+                textGitVersion?.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+            }
+            return isReady;
         }
 
         #region EVENTS
@@ -69,11 +80,7 @@ namespace SourceGit.Views {
             if (dialog.ShowDialog() == true) {
                 Models.Preference.Instance.Git.Path = dialog.FileName;
                 editGitPath?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-                if (UpdateGitInfoIfReady()) {
-                    editGitUser?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-                    editGitEmail?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-                    editGitCrlf?.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateTarget();
-                }
+                UpdateGitInfo(true);
             }
         }
 
