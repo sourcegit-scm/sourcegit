@@ -58,7 +58,7 @@ namespace SourceGit.Views.Widgets {
 
             var watcher = Models.Watcher.Get(repo.Path);
             watcher.Navigate += NavigateTo;
-            watcher.BranchChanged += UpdateBraches;
+            watcher.BranchChanged += UpdateBranches;
             watcher.BranchChanged += UpdateCommits;
             watcher.WorkingCopyChanged += UpdateWorkingCopy;
             watcher.StashChanged += UpdateStashes;
@@ -94,7 +94,7 @@ namespace SourceGit.Views.Widgets {
 
         #region DATA
         public void Refresh() {
-            UpdateBraches();
+            UpdateBranches();
             UpdateWorkingCopy();
             UpdateStashes();
             UpdateTags();
@@ -190,7 +190,7 @@ namespace SourceGit.Views.Widgets {
             foreach (var node in nodes) SortBranches(node.Children);
         }
 
-        private void UpdateBraches() {
+        private void UpdateBranches() {
             if (!isFirstLoaded) return;
 
             Task.Run(() => {
@@ -669,11 +669,21 @@ namespace SourceGit.Views.Widgets {
                     if (branch.Upstream == b.FullName) target.Icon = currentTrackingIcon;
                     target.Click += (o, e) => {
                         new Commands.Branch(repo.Path, branch.Name).SetUpstream(upstream);
-                        UpdateBraches();
+                        UpdateBranches();
                         e.Handled = true;
                     };
                     tracking.Items.Add(target);
                 }
+
+                var unsetUpstream = new MenuItem();
+                unsetUpstream.Header = App.Text("BranchCM.UnsetUpstream");
+                unsetUpstream.Click += (_, e) => {
+                    new Commands.Branch(repo.Path, branch.Name).SetUpstream(string.Empty);
+                    UpdateBranches();
+                    e.Handled = true;
+                };
+                tracking.Items.Add(new Separator());
+                tracking.Items.Add(unsetUpstream);
 
                 menu.Items.Add(tracking);
             }
@@ -784,7 +794,12 @@ namespace SourceGit.Views.Widgets {
             var delete = new MenuItem();
             delete.Header = App.Text("BranchCM.Delete", branch.Name);
             delete.Click += (o, e) => {
-                new Popups.DeleteBranch(repo.Path, branch.Name, branch.Remote).Show();
+                new Popups.DeleteBranch(repo.Path, branch.Name, branch.Remote)
+                    .Then(() => {
+                        repo.Branches.FindAll(item => item.Upstream == branch.FullName).ForEach(item =>
+                            new Commands.Branch(repo.Path, item.Name).SetUpstream(string.Empty));
+                    })
+                    .Show();
                 e.Handled = true;
             };
 

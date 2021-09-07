@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace SourceGit.Views.Popups {
@@ -8,6 +9,7 @@ namespace SourceGit.Views.Popups {
         private string repo = null;
         private string branch = null;
         private string remote = null;
+        private Action finishHandler = null;
 
         public DeleteBranch(string repo, string branch, string remote = null) {
             this.repo = repo;
@@ -18,6 +20,11 @@ namespace SourceGit.Views.Popups {
 
             if (string.IsNullOrEmpty(remote)) txtTarget.Text = branch;
             else txtTarget.Text = $"{remote}/{branch}";
+        }
+
+        public DeleteBranch Then(Action handler) {
+            this.finishHandler = handler;
+            return this;
         }
 
         public override string GetTitle() {
@@ -41,7 +48,8 @@ namespace SourceGit.Views.Popups {
                 if (exists != null && exists.Filters.Contains(full)) {
                     exists.Filters.Remove(full);
                 }
-
+                
+                finishHandler?.Invoke();
                 Models.Watcher.SetEnabled(repo, true);
                 return true;
             });

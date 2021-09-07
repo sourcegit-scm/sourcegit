@@ -178,6 +178,7 @@
     <sys:String x:Key="Text.BranchCM.Delete">删除 '{0}'</sys:String>
     <sys:String x:Key="Text.BranchCM.Tracking">切换上游分支...</sys:String>
     <sys:String x:Key="Text.BranchCM.CopyName">复制分支名</sys:String>
+    <sys:String x:Key="Text.BranchCM.UnsetUpstream">取消追踪</sys:String>
 
     <sys:String x:Key="Text.RemoteCM.Fetch">拉取 '{0}' 更新</sys:String>
     <sys:String x:Key="Text.RemoteCM.Edit">编辑 '{0}'</sys:String>
