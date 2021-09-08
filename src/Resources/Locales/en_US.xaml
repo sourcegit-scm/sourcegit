@@ -179,6 +179,7 @@
     <sys:String x:Key="Text.BranchCM.Delete">Delete '{0}'</sys:String>
     <sys:String x:Key="Text.BranchCM.Tracking">Tracking ...</sys:String>
     <sys:String x:Key="Text.BranchCM.CopyName">Copy Branch Name</sys:String>
+    <sys:String x:Key="Text.BranchCM.UnsetUpstream">Unset Upstream</sys:String>
 
     <sys:String x:Key="Text.RemoteCM.Fetch">Fetch '{0}'</sys:String>
     <sys:String x:Key="Text.RemoteCM.Edit">Edit '{0}'</sys:String>

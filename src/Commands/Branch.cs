@@ -21,7 +21,12 @@ namespace SourceGit.Commands {
         }
 
         public void SetUpstream(string upstream) {
-            Args = $"branch {target} -u {upstream}";
+            Args = $"branch {target} ";
+            if (string.IsNullOrEmpty(upstream)) {
+                Args += "--unset-upstream";
+            } else {
+                Args += $"-u {upstream}";
+            }
             Exec();
         }
 
