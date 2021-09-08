@@ -17,12 +17,13 @@ namespace SourceGit.Views {
         public string CRLF { get; set; }
         public string Version { get; set; }
 
+        const int MAX_PATH = 260;
         // https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathfindonpathw
         // https://www.pinvoke.net/default.aspx/shlwapi.PathFindOnPath
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
 
-        public bool EnableWindowsTerminal { get; set; } = PathFindOnPath(new StringBuilder("wt.exe"), null);
+        public bool EnableWindowsTerminal { get; set; } = PathFindOnPath(new StringBuilder("wt.exe", MAX_PATH), null);
 
         public Preference() {
             UpdateGitInfo(false);
@@ -64,7 +65,7 @@ namespace SourceGit.Views {
         }
 
         private void SelectGitPath(object sender, RoutedEventArgs e) {
-            var sb = new StringBuilder("git.exe");
+            var sb = new StringBuilder("git.exe", MAX_PATH);
             string dir = PathFindOnPath(sb, null)
                 ? sb.ToString()
                 : Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
