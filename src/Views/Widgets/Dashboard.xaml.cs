@@ -315,11 +315,20 @@ namespace SourceGit.Views.Widgets {
                 Models.Exception.Raise(App.Text("MissingBash"));
                 return;
             }
-
-            var start = new ProcessStartInfo();
-            start.WorkingDirectory = repo.Path;
-            start.FileName = bash;
-            Process.Start(start);
+            if (Models.Preference.Instance.General.UseWindowsTerminal) {
+                Process.Start(new ProcessStartInfo {
+                    WorkingDirectory = repo.Path,
+                    FileName = "wt",
+                    Arguments = bash,
+                    UseShellExecute = false,
+                });
+            } else {
+                Process.Start(new ProcessStartInfo {
+                    WorkingDirectory = repo.Path,
+                    FileName = bash,
+                    UseShellExecute = true,
+                });
+            }
             e.Handled = true;
         }
 

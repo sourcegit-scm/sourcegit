@@ -1,5 +1,7 @@
 using Microsoft.Win32;
 using System;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,20 +15,46 @@ namespace SourceGit.Views {
         public string User { get; set; }
         public string Email { get; set; }
         public string CRLF { get; set; }
+        public string Version { get; set; }
+
+        // https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathfindonpathw
+        // https://www.pinvoke.net/default.aspx/shlwapi.PathFindOnPath
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
+        private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
+
+        public bool EnableWindowsTerminal { get; set; } = PathFindOnPath(new StringBuilder("wt.exe"), null);
 
         public Preference() {
-            if (Models.Preference.Instance.IsReady) {
+            UpdateGitInfo(false);
+
+            if (!EnableWindowsTerminal) {
+                Models.Preference.Instance.General.UseWindowsTerminal = false;
+            }
+
+            InitializeComponent();
+        }
+
+        private bool UpdateGitInfo(bool updateUi) {
+            var isReady = Models.Preference.Instance.IsReady;
+            if (isReady) {
                 User = new Commands.Config().Get("user.name");
                 Email = new Commands.Config().Get("user.email");
                 CRLF = new Commands.Config().Get("core.autocrlf");
+                Version = new Commands.Version().Query();
                 if (string.IsNullOrEmpty(CRLF)) CRLF = "false";
             } else {
                 User = "";
                 Email = "";
                 CRLF = "false";
+                Version = "Unknown";
             }
-
-            InitializeComponent();
+            if (updateUi) {
+                editGitUser?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                editGitEmail?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                editGitCrlf?.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateTarget();
+                textGitVersion?.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+            }
+            return isReady;
         }
 
         #region EVENTS
@@ -36,16 +64,23 @@ namespace SourceGit.Views {
         }
 
         private void SelectGitPath(object sender, RoutedEventArgs e) {
-            var dialog = new OpenFileDialog();
-            dialog.Filter = "Git Executable|git.exe";
-            dialog.FileName = "git.exe";
-            dialog.Title = App.Text("Preference.Dialog.GitExe");
-            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            dialog.CheckFileExists = true;
+            var sb = new StringBuilder("git.exe");
+            string dir = PathFindOnPath(sb, null)
+                ? sb.ToString()
+                : Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+
+            var dialog = new OpenFileDialog {
+                Filter = "Git Executable|git.exe",
+                FileName = "git.exe",
+                Title = App.Text("Preference.Dialog.GitExe"),
+                InitialDirectory = dir,
+                CheckFileExists = true,
+            };
 
             if (dialog.ShowDialog() == true) {
                 Models.Preference.Instance.Git.Path = dialog.FileName;
                 editGitPath?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                UpdateGitInfo(true);
             }
         }
 

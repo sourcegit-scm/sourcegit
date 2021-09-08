@@ -77,6 +77,11 @@ namespace SourceGit.Models {
             ///     是否启用崩溃上报
             /// </summary>
             public bool EnableCrashReport { get; set; } = false;
+
+            /// <summary>
+            ///     是否尝试使用 Windows Terminal 打开终端
+            /// </summary>
+            public bool UseWindowsTerminal { get; set; } = false;
         }
 
         /// <summary>
@@ -189,13 +194,11 @@ namespace SourceGit.Models {
         }
 
         /// <summary>
-        ///     检测配置是否
+        ///     检测配置是否正常
         /// </summary>
         [JsonIgnore]
         public bool IsReady {
-            get {
-                return !string.IsNullOrEmpty(Git.Path) && File.Exists(Git.Path);
-            }
+            get => File.Exists(Git.Path) && new Commands.Version().Query() != null;
         }
 
         #region DATA

@@ -360,9 +360,11 @@
     <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically (need restart)</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">Restore windows</sys:String>
     <sys:String x:Key="Text.Preference.EnableCrashReport">Enable crash report (maybe include related path)</sys:String>
+    <sys:String x:Key="Text.Preference.UseWindowsTerminal">Use Windows Terminal to open Git terminal</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT SETTING</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">Install Path</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">Input path for git.exe</sys:String>
+    <sys:String x:Key="Text.Preference.Git.Version">Git version</sys:String>
     <sys:String x:Key="Text.Preference.Git.Dir">Default Clone Dir</sys:String>
     <sys:String x:Key="Text.Preference.Git.Dir.Placeholder">Default path to clone repo into</sys:String>
     <sys:String x:Key="Text.Preference.Git.User">User Name</sys:String>
