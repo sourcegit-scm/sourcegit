@@ -1,31 +1,30 @@
 <UserControl x:Class="SourceGit.Views.Widgets.Welcome"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="800">
-    <Grid Background="Transparent" AllowDrop="True" DragEnter="OnPageDragEnter" DragLeave="OnPageDragLeave" Drop="OnPageDrop">
-        <Grid Width="420">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            
-            <StackPanel Grid.Row="0" Orientation="Vertical" Width="420" HorizontalAlignment="Center">
-                <!-- Logo -->
-                <Path 
-                    Margin="0,48,0,0" 
-                    Width="100" Height="100" 
-                    Data="{StaticResource Icon.Git}" 
+    <Grid Background="Transparent" AllowDrop="True" Drop="OnPageDrop" MouseMove="OnPageMouseMove" MouseDown="OnPageMouseDown">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Vertical" Width="420" HorizontalAlignment="Center">
+            <!-- Logo -->
+            <Path
+                    Margin="0,48,0,0"
+                    Width="100" Height="100"
+                    Data="{StaticResource Icon.Git}"
                     Fill="{DynamicResource Brush.Logo}"/>
 
-                <!-- Welcome -->
-                <TextBlock
+            <!-- Welcome -->
+            <TextBlock
                     Margin="0,16"
-                    HorizontalAlignment="Center" 
+                    HorizontalAlignment="Center"
                     Text="{DynamicResource Text.Welcome.Title}"
                     FontSize="24pt"
                     FontWeight="ExtraBold"
@@ -33,57 +32,106 @@
                     TextOptions.TextRenderingMode="ClearType"
                     Foreground="{DynamicResource Brush.FG2}"/>
 
-                <!-- Options -->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+            <!-- Options -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Click="OnOpenClicked" Height="28">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="16" Height="16" Data="{StaticResource Icon.Folder.Open}"/>
-                            <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.OpenOrInit}"/>
-                        </StackPanel>
-                    </Button>
+                <Button Grid.Column="0" Click="OnOpenClicked" Height="28">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Width="16" Height="16" Data="{StaticResource Icon.Folder.Open}"/>
+                        <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.OpenOrInit}"/>
+                    </StackPanel>
+                </Button>
 
-                    <Button Grid.Column="2" Click="OnCloneClicked" Height="28">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="16" Height="16" Data="{StaticResource Icon.Pull}"/>
-                            <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.Clone}"/>
-                        </StackPanel>
-                    </Button>
-                </Grid>
+                <Button Grid.Column="2" Click="OnCloneClicked" Height="28">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Width="16" Height="16" Data="{StaticResource Icon.Pull}"/>
+                        <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.Clone}"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </StackPanel>
 
-                <!-- Horizontal line -->
-                <Rectangle Height="1" Margin="0,36,0,8" Fill="{DynamicResource Brush.Border1}"/>
+        <Grid Grid.Row="1" Margin="80,80">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-                <!-- Labels -->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                    <TextBlock 
-                        Grid.Column="0" 
-                        Text="{DynamicResource Text.Welcome.Repositories}" 
-                        FontSize="13pt" FontWeight="ExtraBold"
-                        Foreground="{DynamicResource Brush.FG2}"/>
-                    
-                    <TextBlock 
-                        Grid.Column="2" 
-                        Text="{DynamicResource Text.Welcome.DragDrop}" 
-                        FontSize="10pt"
-                        Foreground="{DynamicResource Brush.FG2}"/>
-                </Grid>
-            </StackPanel>
-            
+            <!-- History -->
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="{DynamicResource Text.Welcome.Histories}"
+                FontSize="13pt" FontWeight="ExtraBold"
+                HorizontalAlignment="Center"
+                Foreground="{DynamicResource Brush.FG2}"/>
+            <!-- History Tree -->
+            <controls:Tree
+                Grid.Row="1"
+                Grid.Column="0"
+                x:Name="treeHistory"
+                Margin="0,4"
+                TextElement.FontSize="14"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ContextMenuOpening="OnTreeContextMenuOpening">
+                <controls:Tree.ItemContainerStyle>
+                    <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
+                        <EventSetter Event="MouseDoubleClick" Handler="OnTreeNodeDoubleClick"/>
+                    </Style>
+                </controls:Tree.ItemContainerStyle>
+
+                <controls:Tree.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <Border Height="32">
+                            <Grid IsHitTestVisible="False">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="22"/>
+                                </Grid.ColumnDefinitions>
+
+                                <controls:Bookmark
+                                    Grid.Column="0"
+                                    Margin="2,0,0,0"
+                                    x:Name="BookmarkIcon"
+                                    Width="16" Height="16"
+                                    Color="{Binding Bookmark}"
+                                    IsNewPage="False"/>
+
+                                <StackPanel Grid.Column="1" x:Name="ContentsHistory" Orientation="Horizontal">
+                                    <TextBlock Margin="8,0" Text="{Binding Name}"/>
+                                    <TextBlock x:Name="Path" Text="{Binding Id}" Foreground="{DynamicResource Brush.FG2}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </HierarchicalDataTemplate>
+                </controls:Tree.ItemTemplate>
+            </controls:Tree>
+
+            <!-- Bookmark -->
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="{DynamicResource Text.Welcome.Bookmarks}"
+                FontSize="13pt" FontWeight="ExtraBold"
+                HorizontalAlignment="Center"
+                Foreground="{DynamicResource Brush.FG2}"/>
+
             <!-- Drop Area -->
             <Rectangle
                 Grid.Row="1"
+                Grid.Column="1"
                 x:Name="dropArea"
                 Margin="0,2"
                 Stroke="{DynamicResource Brush.Border1}"
@@ -91,20 +139,22 @@
                 StrokeDashArray="4,4"
                 SnapsToDevicePixels="True"
                 Visibility="Hidden"/>
-            
+
             <!-- Tree -->
             <controls:Tree
                 Grid.Row="1"
-                x:Name="tree"
-                Margin="2,4"
+                Grid.Column="1"
+                x:Name="treeBookmarks"
+                Margin="0,4"
                 AllowDrop="True"
                 TextElement.FontSize="14"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 ContextMenuOpening="OnTreeContextMenuOpening"
-                MouseMove="OnTreeMouseMove"
-                DragOver="OnTreeDragOver"
-                Drop="OnTreeDrop">
+                DragEnter="OnTreeBookmarksDragEnter"
+                DragLeave="OnTreeBookmarksDragLeave"
+                DragOver="OnTreeBookmarksDragOver"
+                Drop="OnTreeBookmarksDrop">
                 <controls:Tree.ItemContainerStyle>
                     <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
@@ -114,7 +164,7 @@
                         <EventSetter Event="MouseDoubleClick" Handler="OnTreeNodeDoubleClick"/>
                     </Style>
                 </controls:Tree.ItemContainerStyle>
-                
+
                 <controls:Tree.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <Border Height="32">
@@ -135,14 +185,14 @@
                                     Color="{Binding Bookmark}"
                                     IsNewPage="False"/>
 
-                                <StackPanel Grid.Column="1" x:Name="Contents" Orientation="Horizontal">
+                                <StackPanel Grid.Column="1" x:Name="ContentsBookmark" Orientation="Horizontal">
                                     <TextBlock Margin="8,0" Text="{Binding Name}"/>
                                     <TextBlock x:Name="Path" Text="{Binding Id}" Foreground="{DynamicResource Brush.FG2}"/>
                                 </StackPanel>
 
-                                <controls:TextEdit 
-                                    Grid.Column="1" 
-                                    x:Name="Editor" 
+                                <controls:TextEdit
+                                    Grid.Column="1"
+                                    x:Name="EditorBookmarks"
                                     Height="20"
                                     Margin="4,0,0,0"
                                     Text="{Binding Name}"
@@ -170,13 +220,14 @@
                                 <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsEditing}" Value="True">
-                                <Setter TargetName="Editor" Property="Visibility" Value="Visible"/>
-                                <Setter TargetName="Contents" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="EditorBookmarks" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="ContentsBookmark" Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
                 </controls:Tree.ItemTemplate>
             </controls:Tree>
+
         </Grid>
 
         <!-- Popup -->
