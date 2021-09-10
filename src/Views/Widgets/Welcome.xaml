@@ -32,52 +32,48 @@
                     TextOptions.TextRenderingMode="ClearType"
                     Foreground="{DynamicResource Brush.FG2}"/>
 
-            <!-- Options -->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0" Click="OnOpenClicked" Height="28">
-                    <StackPanel Orientation="Horizontal">
-                        <Path Width="16" Height="16" Data="{StaticResource Icon.Folder.Open}"/>
-                        <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.OpenOrInit}"/>
-                    </StackPanel>
-                </Button>
-
-                <Button Grid.Column="2" Click="OnCloneClicked" Height="28">
-                    <StackPanel Orientation="Horizontal">
-                        <Path Width="16" Height="16" Data="{StaticResource Icon.Pull}"/>
-                        <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.Clone}"/>
-                    </StackPanel>
-                </Button>
-            </Grid>
         </StackPanel>
 
-        <Grid Grid.Row="1" Margin="80,80">
+        <Grid Grid.Row="1" Margin="10,40" HorizontalAlignment="Center">
             <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="350"/>
             </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Grid.Row="0" Click="OnOpenClicked" Height="28" Width="240">
+                <StackPanel Orientation="Horizontal">
+                    <Path Width="16" Height="16" Data="{StaticResource Icon.Folder.Open}"/>
+                    <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.OpenOrInit}"/>
+                </StackPanel>
+            </Button>
+
+            <Button Grid.Column="0"  Grid.Row="1" Click="OnCloneClicked" Height="28" Width="240">
+                <StackPanel Orientation="Horizontal">
+                    <Path Width="16" Height="16" Data="{StaticResource Icon.Pull}"/>
+                    <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.Clone}"/>
+                </StackPanel>
+            </Button>
+
 
             <!-- History -->
             <TextBlock
-                Grid.Row="0"
+                Grid.Row="3"
                 Grid.Column="0"
                 Text="{DynamicResource Text.Welcome.Histories}"
                 FontSize="13pt" FontWeight="ExtraBold"
-                HorizontalAlignment="Center"
                 Foreground="{DynamicResource Brush.FG2}"/>
             <!-- History Tree -->
             <controls:Tree
-                Grid.Row="1"
+                Grid.Row="4"
                 Grid.Column="0"
                 x:Name="treeHistory"
                 Margin="0,4"
@@ -122,7 +118,7 @@
             <!-- Bookmark -->
             <TextBlock
                 Grid.Row="0"
-                Grid.Column="1"
+                Grid.Column="2"
                 Text="{DynamicResource Text.Welcome.Bookmarks}"
                 FontSize="13pt" FontWeight="ExtraBold"
                 HorizontalAlignment="Center"
@@ -131,7 +127,8 @@
             <!-- Drop Area -->
             <Rectangle
                 Grid.Row="1"
-                Grid.Column="1"
+                Grid.RowSpan="4"
+                Grid.Column="2"
                 x:Name="dropArea"
                 Margin="0,2"
                 Stroke="{DynamicResource Brush.Border1}"
@@ -139,11 +136,10 @@
                 StrokeDashArray="4,4"
                 SnapsToDevicePixels="True"
                 Visibility="Hidden"/>
-
-            <!-- Tree -->
             <controls:Tree
                 Grid.Row="1"
-                Grid.Column="1"
+                Grid.RowSpan="4"
+                Grid.Column="2"
                 x:Name="treeBookmarks"
                 Margin="0,4"
                 AllowDrop="True"
@@ -227,10 +223,9 @@
                     </HierarchicalDataTemplate>
                 </controls:Tree.ItemTemplate>
             </controls:Tree>
-
         </Grid>
-
+        
         <!-- Popup -->
-        <widgets:PopupPanel x:Name="popup"/>
+        <widgets:PopupPanel x:Name="popup" Grid.Row="0" Grid.RowSpan="2"/>
     </Grid>
 </UserControl>
