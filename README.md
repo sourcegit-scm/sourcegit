@@ -44,6 +44,7 @@
 
 ## Thanks
 
+* [carterl](https://gitee.com/carterl) Windows Terminal支持；优化git.exe路径查找
 * [PUMA](https://gitee.com/whgfu) 配置默认User
 * [Rwing](https://gitee.com/rwing) GitFlow: add an option to keep branch after finish
 * [XiaoLinger](https://gitee.com/LingerNN) 纠正弹出框文本配置方式
