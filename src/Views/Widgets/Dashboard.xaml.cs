@@ -320,7 +320,7 @@ namespace SourceGit.Views.Widgets {
                 Process.Start(new ProcessStartInfo {
                     WorkingDirectory = repo.Path,
                     FileName = "wt",
-                    Arguments = bash,
+                    Arguments = $"-d \"{repo.Path}\" \"{bash}\"",
                     UseShellExecute = false,
                 });
             } else {
