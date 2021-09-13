@@ -194,7 +194,7 @@
             <CheckBox
                 Grid.Row="9" Grid.Column="1"
                 Content="{DynamicResource Text.Preference.UseWindowsTerminal}"
-                IsEnabled="{Binding ElementName=me, Path=EnableWindowsTerminal}"
+                IsEnabled="{Binding ElementName=me, Path=HasWindowsTerminal}"
                 IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.UseWindowsTerminal, Mode=TwoWay}"/>
 
             <!-- Git Group -->

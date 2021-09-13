@@ -56,6 +56,9 @@ namespace SourceGit.Views.Widgets {
             InitializeComponent();
             InitPages();
 
+            var vscode = Models.ExecutableFinder.Find("code.cmd");
+            if (vscode != null) btnOpenWithVSCode.Visibility = Visibility.Visible;
+
             var watcher = Models.Watcher.Get(repo.Path);
             watcher.Navigate += NavigateTo;
             watcher.BranchChanged += UpdateBranches;
@@ -306,6 +309,21 @@ namespace SourceGit.Views.Widgets {
         #region TOOLBAR_COMMANDS
         private void Explore(object sender, RoutedEventArgs e) {
             Process.Start("explorer", repo.Path);
+            e.Handled = true;
+        }
+
+        private void OpenInVSCode(object sender, RoutedEventArgs e) {
+            var vscode = Models.ExecutableFinder.Find("code.cmd");
+            if (vscode == null) return;
+
+            vscode = Path.Combine(Path.GetDirectoryName(vscode), "..", "Code.exe");
+            Process.Start(new ProcessStartInfo {
+                WorkingDirectory = repo.Path,
+                FileName = vscode,
+                Arguments = $"\"{repo.Path}\"",
+                UseShellExecute = false,
+            });
+
             e.Handled = true;
         }
 

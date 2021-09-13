@@ -1,7 +1,6 @@
 using Microsoft.Win32;
 using System;
-using System.Runtime.InteropServices;
-using System.Text;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,21 +15,13 @@ namespace SourceGit.Views {
         public string Email { get; set; }
         public string CRLF { get; set; }
         public string Version { get; set; }
-
-        const int MAX_PATH = 260;
-        // https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathfindonpathw
-        // https://www.pinvoke.net/default.aspx/shlwapi.PathFindOnPath
-        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
-        private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
-
-        public bool EnableWindowsTerminal { get; set; } = PathFindOnPath(new StringBuilder("wt.exe", MAX_PATH), null);
+        public bool HasWindowsTerminal { get; set; }
 
         public Preference() {
             UpdateGitInfo(false);
 
-            if (!EnableWindowsTerminal) {
-                Models.Preference.Instance.General.UseWindowsTerminal = false;
-            }
+            HasWindowsTerminal = Models.ExecutableFinder.Find("wt.exe") != null;
+            if (HasWindowsTerminal) Models.Preference.Instance.General.UseWindowsTerminal = false;
 
             InitializeComponent();
         }
@@ -65,16 +56,15 @@ namespace SourceGit.Views {
         }
 
         private void SelectGitPath(object sender, RoutedEventArgs e) {
-            var sb = new StringBuilder("git.exe", MAX_PATH);
-            string dir = PathFindOnPath(sb, null)
-                ? sb.ToString()
-                : Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            var initDir = Models.ExecutableFinder.Find("git.exe");
+            if (initDir == null) initDir = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            else initDir = Path.GetDirectoryName(initDir);
 
             var dialog = new OpenFileDialog {
                 Filter = "Git Executable|git.exe",
                 FileName = "git.exe",
                 Title = App.Text("Preference.Dialog.GitExe"),
-                InitialDirectory = dir,
+                InitialDirectory = initDir,
                 CheckFileExists = true,
             };
 

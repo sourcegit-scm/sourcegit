@@ -114,6 +114,7 @@
     <sys:String x:Key="Text.CreateTag.Message.Placeholder">选填</sys:String>
 
     <sys:String x:Key="Text.Dashboard.Explore">在文件浏览器中打开</sys:String>
+    <sys:String x:Key="Text.Dashboard.VSCode">在Visual Studio Code中打开</sys:String>
     <sys:String x:Key="Text.Dashboard.Terminal">打开GIT终端</sys:String>
     <sys:String x:Key="Text.Dashboard.Search">查找提交</sys:String>
     <sys:String x:Key="Text.Dashboard.Configure">配置本仓库</sys:String>

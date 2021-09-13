@@ -31,6 +31,14 @@
                         ToolTip="{DynamicResource Text.Dashboard.Explore}"
                         Click="Explore"/>
                     <controls:IconButton
+                        x:Name="btnOpenWithVSCode"
+                        Visibility="Collapsed"
+                        Margin="8,0"
+                        Padding="0,9"
+                        Icon="{DynamicResource Icon.VSCode}" 
+                        ToolTip="{DynamicResource Text.Dashboard.VSCode}"
+                        Click="OpenInVSCode"/>
+                    <controls:IconButton
                         Margin="8,0"
                         Padding="0,9"
                         Icon="{DynamicResource Icon.Terminal}" 
