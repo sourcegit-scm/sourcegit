@@ -315,6 +315,7 @@ namespace SourceGit.Views.Widgets {
                 Models.Exception.Raise(App.Text("MissingBash"));
                 return;
             }
+
             if (Models.Preference.Instance.General.UseWindowsTerminal) {
                 Process.Start(new ProcessStartInfo {
                     WorkingDirectory = repo.Path,
@@ -329,6 +330,7 @@ namespace SourceGit.Views.Widgets {
                     UseShellExecute = true,
                 });
             }
+
             e.Handled = true;
         }
 

@@ -7,164 +7,165 @@
              xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="800">
-    <Grid Background="Transparent" AllowDrop="True" Drop="OnPageDrop" MouseMove="OnPageMouseMove" MouseDown="OnPageMouseDown">
+    <Grid Background="Transparent" AllowDrop="True" DragEnter="OnPageDragEnter" DragLeave="OnPageDragLeave" Drop="OnPageDrop">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Vertical" Width="420" HorizontalAlignment="Center">
-            <!-- Logo -->
-            <Path
-                    Margin="0,48,0,0"
-                    Width="100" Height="100"
-                    Data="{StaticResource Icon.Git}"
-                    Fill="{DynamicResource Brush.Logo}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="900"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <!-- Welcome -->
-            <TextBlock
-                    Margin="0,16"
-                    HorizontalAlignment="Center"
-                    Text="{DynamicResource Text.Welcome.Title}"
-                    FontSize="24pt"
-                    FontWeight="ExtraBold"
-                    TextOptions.TextFormattingMode="Ideal"
-                    TextOptions.TextRenderingMode="ClearType"
-                    Foreground="{DynamicResource Brush.FG2}"/>
+        <!-- Page Title -->
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            Text="{DynamicResource Text.Welcome.Title}"
+            FontSize="28pt"
+            TextOptions.TextFormattingMode="Ideal"
+            TextOptions.TextRenderingMode="ClearType"/>
 
-        </StackPanel>
-
-        <Grid Grid.Row="1" Margin="10,40" HorizontalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="32"/>
-                <RowDefinition Height="32"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="32"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
+        <Grid x:Name="body" Grid.Row="2" Grid.Column="1" Margin="0,32" FocusManager.IsFocusScope="True">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="350"/>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            
+            <!-- Left Panel -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <Button Grid.Column="0" Grid.Row="0" Click="OnOpenClicked" Height="28" Width="240">
-                <StackPanel Orientation="Horizontal">
-                    <Path Width="16" Height="16" Data="{StaticResource Icon.Folder.Open}"/>
-                    <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.OpenOrInit}"/>
+                <!-- Options -->
+                <TextBlock
+                    Grid.Row="0"
+                    Text="{DynamicResource Text.Welcome.Start}"
+                    FontSize="13pt"/>
+                <StackPanel Grid.Row="1" Margin="4,12,0,0" Orientation="Vertical">
+                    <Button Grid.Column="0" Grid.Row="0" Click="OnOpenClicked" Height="28" HorizontalAlignment="Left" BorderThickness="0" Opacity="1">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Path Width="16" Height="16" Data="{StaticResource Icon.Folder.Open}" Fill="{DynamicResource Brush.Accent1}"/>
+                            <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.OpenOrInit}" Foreground="{DynamicResource Brush.Accent1}"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="0"  Grid.Row="1" Click="OnCloneClicked" Height="28" HorizontalAlignment="Left" BorderThickness="0" Opacity="1">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="16" Height="16" Data="{StaticResource Icon.Pull}" Fill="{DynamicResource Brush.Accent1}"/>
+                            <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.Clone}" Foreground="{DynamicResource Brush.Accent1}"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
-            </Button>
 
-            <Button Grid.Column="0"  Grid.Row="1" Click="OnCloneClicked" Height="28" Width="240">
-                <StackPanel Orientation="Horizontal">
-                    <Path Width="16" Height="16" Data="{StaticResource Icon.Pull}"/>
-                    <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.Clone}"/>
-                </StackPanel>
-            </Button>
+                <!-- Recents -->
+                <TextBlock
+                    Grid.Row="2" Margin="0,32,0,0"
+                    Text="{DynamicResource Text.Welcome.Recent}"
+                    FontSize="13pt"/>
+                <DataGrid
+                    Grid.Row="3"
+                    x:Name="list"
+                    Margin="0,12,0,0"
+                    SelectionUnit="FullRow"
+                    SelectionMode="Single"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    LostFocus="OnRecentLostFocus">
+                    <DataGrid.RowStyle>
+                        <Style BasedOn="{StaticResource Style.DataGridRow}" TargetType="{x:Type DataGridRow}">
+                            <EventSetter Event="MouseDoubleClick" Handler="OnRecentDoubleClick"/>
+                            <EventSetter Event="ContextMenuOpening" Handler="OnRecentContextMenuOpening"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Height="32" Margin="4,0,0,0" IsHitTestVisible="False">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="22"/>
+                                        </Grid.ColumnDefinitions>
 
+                                        <controls:Bookmark
+                                            Grid.Column="0"
+                                            Margin="2,0,0,0"
+                                            x:Name="BookmarkIcon"
+                                            Width="16" Height="16"
+                                            Color="{Binding Bookmark}"
+                                            IsNewPage="False"/>
 
-            <!-- History -->
-            <TextBlock
-                Grid.Row="3"
-                Grid.Column="0"
-                Text="{DynamicResource Text.Welcome.Histories}"
-                FontSize="13pt" FontWeight="ExtraBold"
-                Foreground="{DynamicResource Brush.FG2}"/>
-            <!-- History Tree -->
-            <controls:Tree
-                Grid.Row="4"
-                Grid.Column="0"
-                x:Name="treeHistory"
-                Margin="0,4"
-                TextElement.FontSize="14"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                ContextMenuOpening="OnTreeContextMenuOpening">
-                <controls:Tree.ItemContainerStyle>
-                    <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
-                        <EventSetter Event="MouseDoubleClick" Handler="OnTreeNodeDoubleClick"/>
-                    </Style>
-                </controls:Tree.ItemContainerStyle>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <TextBlock Margin="8,0" Text="{Binding Name}"/>
+                                            <TextBlock x:Name="Path" Text="{Binding Path}" Foreground="{DynamicResource Brush.FG2}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+            
+            <!-- Right Panel -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <controls:Tree.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <Border Height="32">
-                            <Grid IsHitTestVisible="False">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="22"/>
-                                </Grid.ColumnDefinitions>
+                <!-- Repositories Label -->
+                <Grid Grid.Row="0">
+                    <TextBlock
+                        Text="{DynamicResource Text.Welcome.Repositories}"
+                        FontSize="13pt"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                                <controls:Bookmark
-                                    Grid.Column="0"
-                                    Margin="2,0,0,0"
-                                    x:Name="BookmarkIcon"
-                                    Width="16" Height="16"
-                                    Color="{Binding Bookmark}"
-                                    IsNewPage="False"/>
+                    <TextBlock
+                        Text="{DynamicResource Text.Welcome.DragDrop}"
+                        FontSize="10pt"
+                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Foreground="{DynamicResource Brush.FG2}"/>
+                </Grid>
 
-                                <StackPanel Grid.Column="1" x:Name="ContentsHistory" Orientation="Horizontal">
-                                    <TextBlock Margin="8,0" Text="{Binding Name}"/>
-                                    <TextBlock x:Name="Path" Text="{Binding Id}" Foreground="{DynamicResource Brush.FG2}"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </HierarchicalDataTemplate>
-                </controls:Tree.ItemTemplate>
-            </controls:Tree>
+                <!-- Repositories Tree -->
+                <controls:Tree
+                    Grid.Row="1"
+                    x:Name="tree"
+                    Margin="0,8,0,0"
+                    AllowDrop="True"
+                    TextElement.FontSize="14"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    ContextMenuOpening="OnTreeContextMenuOpening"
+                    MouseMove="OnTreeMouseMove"
+                    DragOver="OnTreeDragOver"
+                    Drop="OnTreeDrop"
+                    LostFocus="OnTreeLostFocus">
+                    <controls:Tree.ItemContainerStyle>
+                        <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
 
-            <!-- Bookmark -->
-            <TextBlock
-                Grid.Row="0"
-                Grid.Column="2"
-                Text="{DynamicResource Text.Welcome.Bookmarks}"
-                FontSize="13pt" FontWeight="ExtraBold"
-                HorizontalAlignment="Center"
-                Foreground="{DynamicResource Brush.FG2}"/>
+                            <EventSetter Event="Expanded" Handler="OnTreeNodeStatusChange"/>
+                            <EventSetter Event="Collapsed" Handler="OnTreeNodeStatusChange"/>
+                            <EventSetter Event="MouseDoubleClick" Handler="OnTreeNodeDoubleClick"/>
+                        </Style>
+                    </controls:Tree.ItemContainerStyle>
 
-            <!-- Drop Area -->
-            <Rectangle
-                Grid.Row="1"
-                Grid.RowSpan="4"
-                Grid.Column="2"
-                x:Name="dropArea"
-                Margin="0,2"
-                Stroke="{DynamicResource Brush.Border1}"
-                StrokeThickness="2"
-                StrokeDashArray="4,4"
-                SnapsToDevicePixels="True"
-                Visibility="Hidden"/>
-            <controls:Tree
-                Grid.Row="1"
-                Grid.RowSpan="4"
-                Grid.Column="2"
-                x:Name="treeBookmarks"
-                Margin="0,4"
-                AllowDrop="True"
-                TextElement.FontSize="14"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                ContextMenuOpening="OnTreeContextMenuOpening"
-                DragEnter="OnTreeBookmarksDragEnter"
-                DragLeave="OnTreeBookmarksDragLeave"
-                DragOver="OnTreeBookmarksDragOver"
-                Drop="OnTreeBookmarksDrop">
-                <controls:Tree.ItemContainerStyle>
-                    <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
-                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
-
-                        <EventSetter Event="Expanded" Handler="OnTreeNodeStatusChange"/>
-                        <EventSetter Event="Collapsed" Handler="OnTreeNodeStatusChange"/>
-                        <EventSetter Event="MouseDoubleClick" Handler="OnTreeNodeDoubleClick"/>
-                    </Style>
-                </controls:Tree.ItemContainerStyle>
-
-                <controls:Tree.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <Border Height="32">
-                            <Grid IsHitTestVisible="False">
+                    <controls:Tree.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <Grid Height="32" IsHitTestVisible="False">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
@@ -199,33 +200,45 @@
                                     IsHitTestVisible="True"
                                     Visibility="Collapsed"/>
                             </Grid>
-                        </Border>
 
-                        <HierarchicalDataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsGroup}" Value="True">
-                                <Setter TargetName="Path" Property="Visibility" Value="Collapsed"/>
-                                <Setter TargetName="Icon" Property="Visibility" Value="Visible"/>
-                                <Setter TargetName="BookmarkIcon" Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsGroup}" Value="False">
-                                <Setter TargetName="Path" Property="Visibility" Value="Visible"/>
-                                <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
-                                <Setter TargetName="BookmarkIcon" Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}, Path=IsExpanded}" Value="True">
-                                <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsEditing}" Value="True">
-                                <Setter TargetName="EditorBookmarks" Property="Visibility" Value="Visible"/>
-                                <Setter TargetName="ContentsBookmark" Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </HierarchicalDataTemplate.Triggers>
-                    </HierarchicalDataTemplate>
-                </controls:Tree.ItemTemplate>
-            </controls:Tree>
+                            <HierarchicalDataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsGroup}" Value="True">
+                                    <Setter TargetName="Path" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="BookmarkIcon" Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsGroup}" Value="False">
+                                    <Setter TargetName="Path" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="BookmarkIcon" Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}, Path=IsExpanded}" Value="True">
+                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                    <Setter TargetName="EditorBookmarks" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="ContentsBookmark" Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+                        </HierarchicalDataTemplate>
+                    </controls:Tree.ItemTemplate>
+                </controls:Tree>
+
+                <!-- Drop Area -->
+                <Rectangle
+                    Grid.Row="1"
+                    x:Name="dropArea"
+                    Margin="0,4"
+                    Stroke="{DynamicResource Brush.Border1}"
+                    StrokeThickness="2"
+                    StrokeDashArray="4,4"
+                    SnapsToDevicePixels="True"
+                    Visibility="Hidden"
+                    IsHitTestVisible="False"/>
+            </Grid>
         </Grid>
         
         <!-- Popup -->
-        <widgets:PopupPanel x:Name="popup" Grid.Row="0" Grid.RowSpan="2"/>
+        <widgets:PopupPanel x:Name="popup" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="3"/>
     </Grid>
 </UserControl>

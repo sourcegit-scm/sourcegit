@@ -208,6 +208,7 @@ namespace SourceGit.Models {
         public WindowInfo Window { get; set; } = new WindowInfo();
         public List<Group> Groups { get; set; } = new List<Group>();
         public List<Repository> Repositories { get; set; } = new List<Repository>();
+        public List<string> Recents { get; set; } = new List<string>();
         public RestoreTabs Restore { get; set; } = new RestoreTabs();
         #endregion
 
@@ -353,6 +354,37 @@ namespace SourceGit.Models {
             }
 
             if (removedIdx >= 0) Repositories.RemoveAt(removedIdx);
+        }
+        #endregion
+
+        #region RECENTS
+        public void AddRecent(string path) {
+            if (Recents.Count == 0) {
+                Recents.Add(path);
+                return;
+            }
+
+            for (int i = 0; i < Recents.Count; i++) {
+                if (Recents[i] == path) {
+                    if (i != 0) {
+                        Recents.RemoveAt(i);
+                        Recents.Insert(0, path);
+                    }
+
+                    return;
+                }
+            }
+
+            Recents.Insert(0, path);
+        }
+
+        public void RemoveRecent(string path) {
+            for (int i = 0; i < Recents.Count; i++) {
+                if (Recents[i] == path) {
+                    Recents.RemoveAt(i);
+                    return;
+                }
+            }
         }
         #endregion
     }

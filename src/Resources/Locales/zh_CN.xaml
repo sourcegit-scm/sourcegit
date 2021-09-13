@@ -297,8 +297,10 @@
     <sys:String x:Key="Text.Welcome.Title">欢迎使用本软件</sys:String>
     <sys:String x:Key="Text.Welcome.OpenOrInit">打开本地仓库</sys:String>
     <sys:String x:Key="Text.Welcome.Clone">克隆远程仓库</sys:String>
-    <sys:String x:Key="Text.Welcome.Bookmarks">收藏/书签</sys:String>
-    <sys:String x:Key="Text.Welcome.Histories">最近使用</sys:String>
+    <sys:String x:Key="Text.Welcome.DragDrop">支持拖放操作</sys:String>
+    <sys:String x:Key="Text.Welcome.Start">开始使用</sys:String>
+    <sys:String x:Key="Text.Welcome.Recent">最近使用</sys:String>
+    <sys:String x:Key="Text.Welcome.Repositories">收藏/书签</sys:String>
     <sys:String x:Key="Text.Welcome.NewFolder">新建分组</sys:String>
     <sys:String x:Key="Text.Welcome.NewSubFolder">新建子分组</sys:String>
     <sys:String x:Key="Text.Welcome.Rename">重命名</sys:String>

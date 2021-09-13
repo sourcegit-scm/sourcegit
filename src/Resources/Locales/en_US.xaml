@@ -298,8 +298,10 @@
     <sys:String x:Key="Text.Welcome.Title">SourceGit</sys:String>
     <sys:String x:Key="Text.Welcome.OpenOrInit">Open Local Repository</sys:String>
     <sys:String x:Key="Text.Welcome.Clone">Clone Remote Repository</sys:String>
-    <sys:String x:Key="Text.Welcome.Bookmarks">Bookmarks</sys:String>
-    <sys:String x:Key="Text.Welcome.Histories">Histories</sys:String>
+    <sys:String x:Key="Text.Welcome.DragDrop">DRAG-DROP YOUR FOLDER</sys:String>
+    <sys:String x:Key="Text.Welcome.Start">START</sys:String>
+    <sys:String x:Key="Text.Welcome.Recent">RECENT OPENED</sys:String>
+    <sys:String x:Key="Text.Welcome.Repositories">REPOSITORIES</sys:String>
     <sys:String x:Key="Text.Welcome.NewFolder">Add Folder</sys:String>
     <sys:String x:Key="Text.Welcome.NewSubFolder">Add Sub-Folder</sys:String>
     <sys:String x:Key="Text.Welcome.Rename">Rename</sys:String>
