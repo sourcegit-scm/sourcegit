@@ -16,7 +16,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="900"/>
+            <ColumnDefinition Width="800"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -33,7 +33,7 @@
         <Grid x:Name="body" Grid.Row="2" Grid.Column="1" Margin="0,32" FocusManager.IsFocusScope="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="16"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
