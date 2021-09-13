@@ -28,6 +28,17 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="Style.Button.Link" BasedOn="{StaticResource Style.Button}" TargetType="{x:Type Button}">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Opacity" Value="1"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style.Button}"/>
-    
+
 </ResourceDictionary>
