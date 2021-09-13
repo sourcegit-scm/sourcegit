@@ -21,7 +21,7 @@ namespace SourceGit.Views {
             UpdateGitInfo(false);
 
             HasWindowsTerminal = Models.ExecutableFinder.Find("wt.exe") != null;
-            if (HasWindowsTerminal) Models.Preference.Instance.General.UseWindowsTerminal = false;
+            if (!HasWindowsTerminal) Models.Preference.Instance.General.UseWindowsTerminal = false;
 
             InitializeComponent();
         }
