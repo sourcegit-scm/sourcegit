@@ -297,8 +297,9 @@
     <sys:String x:Key="Text.Merge.Mode">Merge Option :</sys:String>
 
     <sys:String x:Key="Text.Welcome.Title">SourceGit</sys:String>
-    <sys:String x:Key="Text.Welcome.OpenOrInit">Open Local Repository</sys:String>
-    <sys:String x:Key="Text.Welcome.Clone">Clone Remote Repository</sys:String>
+    <sys:String x:Key="Text.Welcome.OpenOrInit">Open local repository</sys:String>
+    <sys:String x:Key="Text.Welcome.OpenTerminal">Open terminal</sys:String>
+    <sys:String x:Key="Text.Welcome.Clone">Clone remote repository</sys:String>
     <sys:String x:Key="Text.Welcome.DragDrop">DRAG-DROP YOUR FOLDER</sys:String>
     <sys:String x:Key="Text.Welcome.Start">START</sys:String>
     <sys:String x:Key="Text.Welcome.Recent">RECENT OPENED</sys:String>

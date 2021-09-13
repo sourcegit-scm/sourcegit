@@ -52,16 +52,22 @@
                     Text="{DynamicResource Text.Welcome.Start}"
                     FontSize="13pt"/>
                 <StackPanel Grid.Row="1" Margin="4,12,0,0" Orientation="Vertical">
-                    <Button Grid.Column="0" Grid.Row="0" Click="OnOpenClicked" Height="28" Style="{DynamicResource Style.Button.Link}">
+                    <Button Click="OnOpenClicked" Height="28" Style="{DynamicResource Style.Button.Link}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <Path Width="16" Height="16" Data="{StaticResource Icon.Folder.Open}" Fill="{DynamicResource Brush.Accent1}"/>
-                            <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.OpenOrInit}" Foreground="{DynamicResource Brush.Accent1}"/>
+                            <Path Width="16" Height="15" Data="{StaticResource Icon.Folder.Open}" Fill="{DynamicResource Brush.Accent1}"/>
+                            <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.Welcome.OpenOrInit}" Foreground="{DynamicResource Brush.Accent1}"/>
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="0"  Grid.Row="1" Click="OnCloneClicked" Height="28" Style="{DynamicResource Style.Button.Link}">
+                    <Button Click="OnCloneClicked" Height="28" Style="{DynamicResource Style.Button.Link}">
                         <StackPanel Orientation="Horizontal">
                             <Path Width="16" Height="16" Data="{StaticResource Icon.Pull}" Fill="{DynamicResource Brush.Accent1}"/>
-                            <TextBlock Margin="12,0,0,0" Text="{DynamicResource Text.Welcome.Clone}" Foreground="{DynamicResource Brush.Accent1}"/>
+                            <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.Welcome.Clone}" Foreground="{DynamicResource Brush.Accent1}"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="OnOpenTerminalClicked" Height="28" Style="{DynamicResource Style.Button.Link}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="16" Height="14" Data="{StaticResource Icon.Terminal}" Fill="{DynamicResource Brush.Accent1}"/>
+                            <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.Welcome.OpenTerminal}" Foreground="{DynamicResource Brush.Accent1}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>

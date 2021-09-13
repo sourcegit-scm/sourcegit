@@ -78,6 +78,31 @@ namespace SourceGit.Views.Widgets {
             if (dialog.ShowDialog() == true) CheckAndOpen(dialog.SelectedPath);
         }
 
+        private void OnOpenTerminalClicked(object sender, RoutedEventArgs e) {
+            if (MakeSureReady()) {
+                var bash = Path.Combine(Models.Preference.Instance.Git.Path, "..", "bash.exe");
+                if (!File.Exists(bash)) {
+                    Models.Exception.Raise(App.Text("MissingBash"));
+                    return;
+                }
+
+                if (Models.Preference.Instance.General.UseWindowsTerminal) {
+                    Process.Start(new ProcessStartInfo {
+                        FileName = "wt",
+                        Arguments = "\"{bash}\"",
+                        UseShellExecute = false,
+                    });
+                } else {
+                    Process.Start(new ProcessStartInfo {
+                        FileName = bash,
+                        UseShellExecute = true,
+                    });
+                }
+
+                e.Handled = true;
+            }
+        }
+
         private void OnCloneClicked(object sender, RoutedEventArgs e) {
             if (MakeSureReady()) new Popups.Clone().Show();
         }
