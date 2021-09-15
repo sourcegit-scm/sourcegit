@@ -360,6 +360,12 @@ namespace SourceGit.Views.Widgets {
 
             foreach (var path in dirty) Models.Preference.Instance.RemoveRecent(path);
             list.ItemsSource = repos;
+
+            if (repos.Count == 0) {
+                lblRecent.Visibility = Visibility.Hidden;
+            } else {
+                lblRecent.Visibility = Visibility.Visible;
+            }
         }
 
         private void UpdateTree(string editingNodeId = null) {
@@ -411,6 +417,12 @@ namespace SourceGit.Views.Widgets {
             }
 
             tree.ItemsSource = nodes;
+
+            if (nodes.Count > 0) {
+                dropTip.Visibility = Visibility.Collapsed;
+            } else {
+                dropTip.Visibility = Visibility.Visible;
+            }
         }
 
         private void DeleteNode(Node node) {

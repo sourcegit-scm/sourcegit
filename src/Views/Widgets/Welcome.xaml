@@ -9,8 +9,9 @@
              d:DesignHeight="800" d:DesignWidth="800">
     <Grid Background="Transparent" AllowDrop="True" DragEnter="OnPageDragEnter" DragLeave="OnPageDragLeave" Drop="OnPageDrop">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
             <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -20,17 +21,27 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Page Title -->
+        <!-- App Name -->
         <TextBlock
             Grid.Row="1"
             Grid.Column="1"
             HorizontalAlignment="Left"
-            Text="{DynamicResource Text.Welcome.Title}"
+            Text="SourceGit"
             FontSize="28pt"
             TextOptions.TextFormattingMode="Ideal"
             TextOptions.TextRenderingMode="ClearType"/>
+        
+        <!-- App Desc -->
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            Text="{DynamicResource Text.Welcome.Title}"
+            Foreground="{DynamicResource Brush.FG2}"
+            FontSize="20pt"
+            Margin="0,8"/>
 
-        <Grid x:Name="body" Grid.Row="2" Grid.Column="1" Margin="0,32" FocusManager.IsFocusScope="True">
+        <Grid x:Name="body" Grid.Row="3" Grid.Column="1" Margin="0,40,0,80" FocusManager.IsFocusScope="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="16"/>
@@ -75,8 +86,10 @@
                 <!-- Recents -->
                 <TextBlock
                     Grid.Row="2" Margin="0,32,0,0"
+                    x:Name="lblRecent"
                     Text="{DynamicResource Text.Welcome.Recent}"
-                    FontSize="13pt"/>
+                    FontSize="13pt"
+                    Visibility="Hidden"/>
                 <DataGrid
                     Grid.Row="3"
                     x:Name="list"
@@ -132,18 +145,27 @@
                 </Grid.RowDefinitions>
 
                 <!-- Repositories Label -->
-                <Grid Grid.Row="0">
-                    <TextBlock
-                        Text="{DynamicResource Text.Welcome.Repositories}"
-                        FontSize="13pt"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock
+                    Grid.Row="0"
+                    Text="{DynamicResource Text.Welcome.Repositories}"
+                    FontSize="13pt"
+                    HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                
+                <!-- Repositories Tree DragDrop tip -->
+                <StackPanel Grid.Row="1" x:Name="dropTip" Margin="4,16,0,0" HorizontalAlignment="Left" Orientation="Vertical">
+                    <Path
+                        Data="{DynamicResource Icon.DragDrop}"
+                        Fill="{DynamicResource Brush.FG2}"
+                        Width="48" Height="48"
+                        VerticalAlignment="Top"/>
 
                     <TextBlock
                         Text="{DynamicResource Text.Welcome.DragDrop}"
                         FontSize="10pt"
-                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Margin="0,8,0,0"
+                        HorizontalAlignment="Center" VerticalAlignment="Top"
                         Foreground="{DynamicResource Brush.FG2}"/>
-                </Grid>
+                </StackPanel>
 
                 <!-- Repositories Tree -->
                 <controls:Tree
@@ -245,6 +267,6 @@
         </Grid>
         
         <!-- Popup -->
-        <widgets:PopupPanel x:Name="popup" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="3"/>
+        <widgets:PopupPanel x:Name="popup" Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3"/>
     </Grid>
 </UserControl>
