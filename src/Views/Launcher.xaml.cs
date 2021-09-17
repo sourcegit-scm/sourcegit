@@ -170,6 +170,19 @@ namespace SourceGit.Views {
                 e.Handled = true;
                 return;
             }
+
+            if (Keyboard.IsKeyDown(Key.Escape)) {
+                var page = container.Get(tabs.Current);
+
+                var popup = null as Widgets.PopupPanel;
+                if (page is Widgets.Dashboard) {
+                    popup = (page as Widgets.Dashboard).popup;
+                } else if (page is Widgets.Welcome) {
+                    popup = (page as Widgets.Welcome).popup;
+                }
+
+                popup?.CancelDirectly();
+            }
         }
         #endregion
     }

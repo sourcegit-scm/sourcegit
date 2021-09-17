@@ -51,6 +51,10 @@ namespace SourceGit.Views.Widgets {
             Dispatcher.Invoke(() => txtMsg.Text = message);
         }
 
+        public void CancelDirectly() {
+            if (Visibility == Visibility.Visible) Cancel(this, null);
+        }
+
         public void Close() {
             if (Visibility != Visibility.Visible) return;
 

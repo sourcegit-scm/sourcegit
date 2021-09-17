@@ -466,6 +466,7 @@
     <sys:String x:Key="Text.Hotkeys.Search">Toggle search bar if possible</sys:String>
     <sys:String x:Key="Text.Hotkeys.Refresh">Reload current repository if possible</sys:String>
     <sys:String x:Key="Text.Hotkeys.ToggleStage">Stage or unstage selected files</sys:String>
+    <sys:String x:Key="Text.Hotkeys.CancelPopup">Close current popup panel</sys:String>
 
     <sys:String x:Key="Text.Reword">Reword Commit Message</sys:String>
     <sys:String x:Key="Text.Reword.On">On :</sys:String>

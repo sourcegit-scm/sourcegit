@@ -465,6 +465,7 @@
     <sys:String x:Key="Text.Hotkeys.Search">打开/隐藏搜索框（仅在仓库页起效）</sys:String>
     <sys:String x:Key="Text.Hotkeys.Refresh">重新加载当前仓库信息（仅在仓库页起效）</sys:String>
     <sys:String x:Key="Text.Hotkeys.ToggleStage">暂存或从暂存中移除当前选中</sys:String>
+    <sys:String x:Key="Text.Hotkeys.CancelPopup">关闭当前弹出面板</sys:String>
 
     <sys:String x:Key="Text.Reword">编辑提交信息</sys:String>
     <sys:String x:Key="Text.Reword.On">提交：</sys:String>
