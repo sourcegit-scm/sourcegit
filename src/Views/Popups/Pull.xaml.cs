@@ -60,6 +60,8 @@ namespace SourceGit.Views.Popups {
             var branches = repo.Branches.Where(x => x.Remote == remote.Name).ToList();
             cmbBranches.ItemsSource = branches;
 
+            if (branches.Count == 0) return;
+
             if (prefered != null && remote.Name == prefered.Remote) {
                 cmbBranches.SelectedItem = branches.Find(x => x.FullName == prefered.FullName);
             } else {
