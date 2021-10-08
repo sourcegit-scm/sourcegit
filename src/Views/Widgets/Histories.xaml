@@ -12,7 +12,6 @@
     <Grid x:Name="layout">
         <Grid.Resources>
             <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
-            <converters:InverseBool x:Key="InverseBool"/>
         </Grid.Resources>
         
         <Border x:Name="commitListPanel" Background="{DynamicResource Brush.Contents}">
@@ -163,7 +162,6 @@
         <GridSplitter x:Name="splitter" Background="{DynamicResource Brush.Border0}"/>
 
         <Grid x:Name="inspector">
-            
             <!-- Commit Detail -->
             <widgets:CommitDetail x:Name="commitDetail"/>
 
@@ -190,18 +188,6 @@
                     </StackPanel>
                 </StackPanel>
             </Border>
-
-            <!-- Right Top Button -->
-            <ToggleButton
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Style="{StaticResource Style.ToggleButton.SplitDirection}"
-                Foreground="{DynamicResource Brush.FG2}"
-                Width="16" Height="16"
-                Margin="0,6,8,0"
-                ToolTip="{DynamicResource Text.Histories.DisplayMode}"
-                IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.MoveCommitInfoRight, Mode=TwoWay, Converter={StaticResource InverseBool}}"
-                Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
         </Grid>
     </Grid>
 </UserControl>

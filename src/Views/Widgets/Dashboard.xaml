@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+             xmlns:models="clr-namespace:SourceGit.Models"
              xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
              xmlns:converters="clr-namespace:SourceGit.Views.Converters"
              mc:Ignorable="d" 
@@ -13,7 +14,11 @@
             <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
+        <Grid.Resources>
+            <converters:InverseBool x:Key="InverseBool"/>
+        </Grid.Resources>
+
         <!-- Toolbar -->
         <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1">
             <Grid>
@@ -93,8 +98,15 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <ToggleButton
+                        Width="16" Height="16"
+                        Style="{StaticResource Style.ToggleButton.SplitDirection}"
+                        ToolTip="{DynamicResource Text.Histories.DisplayMode}"
+                        IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.MoveCommitInfoRight, Mode=TwoWay, Converter={StaticResource InverseBool}}"
+                        Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
+                    
                     <controls:IconButton
-                        Margin="8,0"
+                        Margin="12,0,8,0"
                         Padding="0,8"
                         Icon="{DynamicResource Icon.Setting}" 
                         ToolTip="{DynamicResource Text.Dashboard.Configure}"

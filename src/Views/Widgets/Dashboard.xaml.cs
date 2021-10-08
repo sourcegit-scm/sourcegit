@@ -400,6 +400,12 @@ namespace SourceGit.Views.Widgets {
             (pages.Get("histories") as Histories).ToggleSearch();
         }
 
+        private void ChangeOrientation(object sender, RoutedEventArgs e) {
+            if (!IsLoaded) return;
+
+            (pages.Get("histories") as Histories)?.ChangeOrientation();
+        }
+
         private void OpenConfigure(object sender, RoutedEventArgs e) {
             new Popups.Configure(repo.Path).Show();
             e.Handled = true;

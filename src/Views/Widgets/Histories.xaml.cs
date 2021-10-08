@@ -21,7 +21,7 @@ namespace SourceGit.Views.Widgets {
             this.repo = repo;
 
             InitializeComponent();
-            ChangeOrientation(null, null);
+            ChangeOrientation();
 
             Unloaded += (o, e) => {
                 cachedCommits.Clear();
@@ -103,7 +103,7 @@ namespace SourceGit.Views.Widgets {
         #endregion
 
         #region LAYOUT
-        private void ChangeOrientation(object sender, RoutedEventArgs e) {
+        public void ChangeOrientation() {
             if (layout == null || commitListPanel == null || inspector == null || splitter == null) return;
 
             layout.RowDefinitions.Clear();
