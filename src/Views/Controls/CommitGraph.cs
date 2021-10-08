@@ -254,11 +254,7 @@ namespace SourceGit.Views.Controls {
             var bottom = startY + ActualHeight;
 
             // 绘制线
-            if (Models.Preference.Instance.Window.UsePolylineInGraph) {
-                DrawPolyLines(dc, top, bottom);
-            } else {
-                DrawCurves(dc, top, bottom);
-            }
+            DrawCurves(dc, top, bottom);
 
             // 绘制点
             var dotFill = FindResource("Brush.Contents") as Brush;
@@ -339,52 +335,6 @@ namespace SourceGit.Views.Controls {
 
                 geo.Freeze();
                 dc.DrawGeometry(null, PENS[link.Color], geo);
-            }
-        }
-
-        private void DrawPolyLines(DrawingContext dc, double top, double bottom) {
-            foreach (var line in data.Paths) {
-                var last = line.Points[0];
-                var size = line.Points.Count;
-
-                if (line.Points[size - 1].Y < top) continue;
-                if (last.Y > bottom) continue;
-
-                var geo = new StreamGeometry();
-                var pen = PENS[line.Color];
-                using (var ctx = geo.Open()) {
-                    var started = false;
-                    var ended = false;
-                    for (int i = 1; i < size; i++) {
-                        var cur = line.Points[i];
-                        if (cur.Y < top) {
-                            last = cur;
-                            continue;
-                        }
-
-                        if (!started) {
-                            ctx.BeginFigure(last, false, false);
-                        }
-
-                        if (cur.Y > bottom) {
-                            cur.Y = bottom;
-                            ended = true;
-                        }
-
-                        ctx.LineTo(cur, true, false);
-                        if (ended) break;
-                        last = cur;
-                    }
-                }
-
-                geo.Freeze();
-                dc.DrawGeometry(null, pen, geo);
-            }
-
-            foreach (var link in data.Links) {
-                if (link.End.Y < top) continue;
-                if (link.Start.Y > bottom) break;
-                dc.DrawLine(PENS[link.Color], link.Start, link.End);
             }
         }
     }

@@ -145,11 +145,6 @@ namespace SourceGit.Views.Widgets {
 
             layout.InvalidateArrange();
         }
-
-        public void ChangeGraphMode(object sender, RoutedEventArgs e) {
-            graph.InvalidateVisual();
-            e.Handled = true;
-        }
         #endregion
 
         #region SEARCH_BAR

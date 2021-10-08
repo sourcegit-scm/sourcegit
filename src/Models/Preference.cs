@@ -131,11 +131,6 @@ namespace SourceGit.Models {
             public double Height { get; set; } = 600;
 
             /// <summary>
-            ///     在提交列表视图中是否使用折线代替曲线
-            /// </summary>
-            public bool UsePolylineInGraph { get; set; } = false;
-
-            /// <summary>
             ///     将提交信息面板与提交记录左右排布
             /// </summary>
             public bool MoveCommitInfoRight { get; set; } = false;

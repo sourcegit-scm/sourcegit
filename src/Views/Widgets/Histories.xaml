@@ -192,24 +192,16 @@
             </Border>
 
             <!-- Right Top Button -->
-            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,8,0" Orientation="Horizontal">
-                <ToggleButton
-                    Style="{StaticResource Style.ToggleButton.CommitGraphMode}"
-                    Foreground="{DynamicResource Brush.FG2}"
-                    Width="16" Height="16"
-                    ToolTip="{DynamicResource Text.Histories.GraphMode}"
-                    IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.UsePolylineInGraph, Mode=TwoWay}"
-                    Checked="ChangeGraphMode" Unchecked="ChangeGraphMode"/>
-                
-                <ToggleButton
-                    Style="{StaticResource Style.ToggleButton.SplitDirection}"
-                    Foreground="{DynamicResource Brush.FG2}"
-                    Width="16" Height="16"
-                    Margin="8,0,0,0"
-                    ToolTip="{DynamicResource Text.Histories.DisplayMode}"
-                    IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.MoveCommitInfoRight, Mode=TwoWay, Converter={StaticResource InverseBool}}"
-                    Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
-            </StackPanel>
+            <ToggleButton
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Style="{StaticResource Style.ToggleButton.SplitDirection}"
+                Foreground="{DynamicResource Brush.FG2}"
+                Width="16" Height="16"
+                Margin="0,6,8,0"
+                ToolTip="{DynamicResource Text.Histories.DisplayMode}"
+                IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.MoveCommitInfoRight, Mode=TwoWay, Converter={StaticResource InverseBool}}"
+                Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
         </Grid>
     </Grid>
 </UserControl>
