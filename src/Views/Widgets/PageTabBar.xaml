@@ -104,7 +104,7 @@
                     Margin="4,0" Padding="4"
                     Icon="{StaticResource Icon.NewTab}"
                     HoverBackground="{DynamicResource Brush.NewPageHover}"
-                    ToolTip="{DynamicResource Text.PageSwitcher.New}"
+                    ToolTip="{DynamicResource Text.PageTabBar.New}"
                     Click="NewTab"
                     WindowChrome.IsHitTestVisibleInChrome="True"/>
             </StackPanel>
