@@ -17,6 +17,7 @@
 
         <Grid.Resources>
             <converters:InverseBool x:Key="InverseBool"/>
+            <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
         </Grid.Resources>
 
         <!-- Toolbar -->
@@ -102,6 +103,7 @@
                         Width="16" Height="16"
                         Style="{StaticResource Style.ToggleButton.SplitDirection}"
                         ToolTip="{DynamicResource Text.Histories.DisplayMode}"
+                        Visibility="{Binding ElementName=pageHistories,Path=IsSelected,Converter={StaticResource BoolToCollapsed}}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.MoveCommitInfoRight, Mode=TwoWay, Converter={StaticResource InverseBool}}"
                         Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
                     
@@ -147,7 +149,7 @@
                 <!-- Workspace -->
                 <TextBlock Grid.Row="0" Style="{DynamicResource Style.TextBlock.Group}" Text="{DynamicResource Text.Dashboard.Workspace}"/>
                 <ListView Grid.Row="1" x:Name="workspace" SelectionMode="Single" SelectionChanged="OnPageSelectionChanged">
-                    <ListViewItem IsSelected="True" Style="{DynamicResource Style.ListViewItem.Switcher}">
+                    <ListViewItem x:Name="pageHistories" IsSelected="True" Style="{DynamicResource Style.ListViewItem.Switcher}">
                         <StackPanel Margin="16,0,0,0" Height="28" Orientation="Horizontal">
                             <Path Width="16" Height="16" Data="{StaticResource Icon.Histories}"/>
                             <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.Histories}"/>
