@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace SourceGit.Models {
 
@@ -84,6 +84,7 @@ namespace SourceGit.Models {
             var ret = new List<Different>();
             var posOld = 0;
             var posNew = 0;
+            var last = null as Different;
             do {
                 while (posOld < sizeOld && posNew < sizeNew && !chunksOld[posOld].Modified && !chunksNew[posNew].Modified) {
                     posOld++;
@@ -97,13 +98,25 @@ namespace SourceGit.Models {
                 for (; posOld < sizeOld && chunksOld[posOld].Modified; posOld++) countOld += chunksOld[posOld].Size;
                 for (; posNew < sizeNew && chunksNew[posNew].Modified; posNew++) countNew += chunksNew[posNew].Size;
 
-                if (countOld + countNew > 0) {
-                    ret.Add(new Different(
-                        countOld > 0 ? chunksOld[beginOld].Start : 0,
-                        countOld,
-                        countNew > 0 ? chunksNew[beginNew].Start : 0,
-                        countNew));
+                if (countOld + countNew == 0) continue;
+
+                var diff = new Different(
+                    countOld > 0 ? chunksOld[beginOld].Start : 0,
+                    countOld,
+                    countNew > 0 ? chunksNew[beginNew].Start : 0,
+                    countNew);
+                if (last != null) {
+                    var midSizeOld = diff.DeletedStart - last.DeletedStart - last.DeletedCount;
+                    var midSizeNew = diff.AddedStart - last.AddedStart - last.AddedCount;
+                    if (midSizeOld == 1 && midSizeNew == 1) {
+                        last.DeletedCount += (1 + countOld);
+                        last.AddedCount += (1 + countNew);
+                        continue;
+                    }
                 }
+
+                last = diff;
+                ret.Add(diff);
             } while (posOld < sizeOld && posNew < sizeNew);
 
             return ret;
