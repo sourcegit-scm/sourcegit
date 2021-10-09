@@ -290,6 +290,7 @@
     <sys:String x:Key="Text.PageTabBar.Tab.CloseOther">Close Other Tabs</sys:String>
     <sys:String x:Key="Text.PageTabBar.Tab.CloseRight">Close Tabs to the Right</sys:String>
     <sys:String x:Key="Text.PageTabBar.Tab.Bookmark">Bookmark</sys:String>
+    <sys:String x:Key="Text.PageTabBar.Tab.CopyPath">Copy Path</sys:String>
 
     <sys:String x:Key="Text.Merge">Merge Branch</sys:String>
     <sys:String x:Key="Text.Merge.Source">Source Branch :</sys:String>

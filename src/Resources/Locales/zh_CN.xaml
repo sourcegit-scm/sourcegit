@@ -289,6 +289,7 @@
     <sys:String x:Key="Text.PageTabBar.Tab.CloseOther">关闭其他标签页</sys:String>
     <sys:String x:Key="Text.PageTabBar.Tab.CloseRight">关闭右侧标签页</sys:String>
     <sys:String x:Key="Text.PageTabBar.Tab.Bookmark">设置书签</sys:String>
+    <sys:String x:Key="Text.PageTabBar.Tab.CopyPath">复制仓库路径</sys:String>
 
     <sys:String x:Key="Text.Merge">合并分支</sys:String>
     <sys:String x:Key="Text.Merge.Source">合并分支 ：</sys:String>

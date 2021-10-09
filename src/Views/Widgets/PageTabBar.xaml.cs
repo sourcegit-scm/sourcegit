@@ -336,7 +336,15 @@ namespace SourceGit.Views.Widgets {
                 }
                 menu.Items.Add(new Separator());
                 menu.Items.Add(bookmark);
-            }
+
+                var copyPath = new MenuItem();
+                copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
+                copyPath.Click += (_, __) => {
+                    Clipboard.SetDataObject(tab.Id);
+                };
+                menu.Items.Add(new Separator());
+                menu.Items.Add(copyPath);
+            }            
 
             menu.IsOpen = true;
             e.Handled = true;
