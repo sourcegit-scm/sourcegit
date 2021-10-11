@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
+             xmlns:models="clr-namespace:SourceGit.Models"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="800">
     <Grid Background="Transparent" AllowDrop="True" DragEnter="OnPageDragEnter" DragLeave="OnPageDragLeave" Drop="OnPageDrop">
@@ -29,7 +30,8 @@
             Text="SourceGit"
             FontSize="28pt"
             TextOptions.TextFormattingMode="Ideal"
-            TextOptions.TextRenderingMode="ClearType"/>
+            TextOptions.TextRenderingMode="ClearType"
+            RenderOptions.ClearTypeHint="Enabled"/>
         
         <!-- App Desc -->
         <TextBlock
@@ -38,7 +40,7 @@
             HorizontalAlignment="Left"
             Text="{DynamicResource Text.Welcome.Title}"
             Foreground="{DynamicResource Brush.FG2}"
-            FontSize="20pt"
+            FontSize="18pt"
             Margin="0,8"/>
 
         <Grid x:Name="body" Grid.Row="3" Grid.Column="1" Margin="0,40,0,80" FocusManager.IsFocusScope="True">
