@@ -11,9 +11,18 @@ namespace SourceGit.Commands {
 
         public Pull(string repo, string remote, string branch, bool useRebase, bool autoStash, Action<string> onProgress) {
             Cwd = repo;
-            Args = "-c credential.helper=manager pull --verbose --progress --tags ";
             TraitErrorAsOutput = true;
             handler = onProgress;
+
+            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            if (!string.IsNullOrEmpty(sshKey)) {
+                Environment.SetEnvironmentVariable("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
+                Args = "";
+            } else {
+                Args = "-c credential.helper=manager ";
+            }
+
+            Args += "pull --verbose --progress --tags ";
 
             if (useRebase) Args += "--rebase ";
             if (autoStash) {

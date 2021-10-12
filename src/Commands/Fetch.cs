@@ -13,7 +13,16 @@ namespace SourceGit.Commands {
         public Fetch(string repo, string remote, bool prune, Action<string> outputHandler) {
             Cwd = repo;
             TraitErrorAsOutput = true;
-            Args = "-c credential.helper=manager fetch --progress --verbose ";
+
+            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            if (!string.IsNullOrEmpty(sshKey)) {
+                Environment.SetEnvironmentVariable("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
+                Args = "";
+            } else {
+                Args = "-c credential.helper=manager ";
+            }
+
+            Args += "fetch --progress --verbose ";
             if (prune) Args += "--prune ";
             Args += remote;
             handler = outputHandler;

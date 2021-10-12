@@ -28,13 +28,21 @@ namespace SourceGit.Views.Popups {
         public override Task<bool> Start() {
             var prune = chkPrune.IsChecked == true;
             var remote = (remotes.SelectedItem as Models.Remote).Name;
-            if (chkFetchAll.IsChecked == true) remote = "--all";
+            var all = chkFetchAll.IsChecked == true;
 
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo, false);
-                var succ = new Commands.Fetch(repo, remote, prune, UpdateProgress).Exec();
+
+                if (all) {
+                    foreach (var r in remotes.ItemsSource) {
+                        new Commands.Fetch(repo, (r as Models.Remote).Name, prune, UpdateProgress).Exec();
+                    }
+                } else {
+                    new Commands.Fetch(repo, remote, prune, UpdateProgress).Exec();
+                }
+
                 Models.Watcher.SetEnabled(repo, true);
-                return succ;
+                return true;
             });
         }
     }

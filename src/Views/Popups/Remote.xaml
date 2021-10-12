@@ -13,6 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
+            <RowDefinition x:Name="rowSSHKey" Height="0"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -48,6 +49,7 @@
             Grid.Row="1" Grid.Column="1"
             x:Name="txtUrl"
             Height="24"
+            TextChanged="OnUrlChanged"
             Placeholder="{DynamicResource Text.Remote.URL.Placeholder}">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="RemoteURL" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
@@ -57,5 +59,32 @@
                 </Binding>
             </controls:TextEdit.Text>
         </controls:TextEdit>
+
+        <TextBlock
+            Grid.Row="2" Grid.Column="0" 
+            Text="{DynamicResource Text.SSHKey}"
+            Margin="0,0,4,0"
+            HorizontalAlignment="Right"/>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:TextEdit 
+                Grid.Column="0"
+                x:Name="txtSSHKey"
+                Height="24"
+                Placeholder="{DynamicResource Text.SSHKey.Placeholder}"/>
+
+            <controls:IconButton
+                Grid.Column="1"
+                Click="OnSelectSSHKey"
+                Width="24" Height="24"
+                Margin="2,0,0,0" Padding="4"
+                BorderBrush="{DynamicResource Brush.Border1}"
+                BorderThickness="1"
+                Icon="{StaticResource Icon.Folder.Open}"/>
+        </Grid>
     </Grid>
 </controls:PopupWidget>

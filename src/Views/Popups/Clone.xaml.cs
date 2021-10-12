@@ -1,5 +1,8 @@
+using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace SourceGit.Views.Popups {
@@ -32,11 +35,13 @@ namespace SourceGit.Views.Popups {
                 if (Validation.GetHasError(edit)) return null;
             }
 
+            var sshKey = txtSSHKey.Text;
+
             return Task.Run(() => {
                 var extras = string.IsNullOrEmpty(ExtraArgs) ? "" : ExtraArgs;
                 if (!string.IsNullOrEmpty(RemoteName)) extras += $" --origin {RemoteName}";
 
-                var succ = new Commands.Clone(Folder, Uri, LocalName, extras, UpdateProgress).Exec();
+                var succ = new Commands.Clone(Folder, Uri, LocalName, sshKey, extras, UpdateProgress).Exec();
                 if (!succ) return false;
 
                 var path = Folder;
@@ -53,6 +58,13 @@ namespace SourceGit.Views.Popups {
                     return false;
                 }
 
+                if (!string.IsNullOrEmpty(sshKey)) {
+                    var config = new Commands.Config(path);
+                    var remote = "origin";
+                    if (!string.IsNullOrEmpty(RemoteName)) remote = RemoteName;
+                    config.Set($"remote.{remote}.sshkey", sshKey);
+                }
+
                 var gitDir = new Commands.QueryGitDir(path).Result();
                 var repo = Models.Preference.Instance.AddRepository(path, gitDir, "");
                 if (repo != null) Dispatcher.Invoke(() => Models.Watcher.Open(repo));
@@ -60,11 +72,33 @@ namespace SourceGit.Views.Popups {
             });
         }
 
-        private void OnFolderSelectorClick(object sender, System.Windows.RoutedEventArgs e) {
+        private void OnFolderSelectorClick(object sender, RoutedEventArgs e) {
             var dialog = new Controls.FolderDialog();
             if (dialog.ShowDialog() == true) {
                 Folder = dialog.SelectedPath;
                 txtFolder.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            }
+        }
+
+        private void OnSelectSSHKey(object sender, RoutedEventArgs e) {
+            var initPath = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "..", ".ssh"));
+            if (!Directory.Exists(initPath)) Directory.CreateDirectory(initPath);
+
+            var dialog = new OpenFileDialog();
+            dialog.Filter = $"SSH Private Key|*";
+            dialog.Title = App.Text("SSHKey");
+            dialog.InitialDirectory = initPath;
+            dialog.CheckFileExists = true;
+            dialog.Multiselect = false;
+
+            if (dialog.ShowDialog() == true) txtSSHKey.Text = dialog.FileName;
+        }
+
+        private void OnUrlChanged(object sender, TextChangedEventArgs e) {
+            if (!string.IsNullOrEmpty(txtUrl.Text)) {
+                rowSSHKey.Height = new GridLength(txtUrl.Text.StartsWith("git@") ? 32 : 0, GridUnitType.Pixel);
+            } else {
+                rowSSHKey.Height = new GridLength(0, GridUnitType.Pixel);
             }
         }
     }

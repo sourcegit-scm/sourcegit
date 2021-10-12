@@ -11,7 +11,16 @@ namespace SourceGit.Commands {
             Cwd = repo;
             TraitErrorAsOutput = true;
             handler = onProgress;
-            Args = "-c credential.helper=manager push --progress --verbose ";
+
+            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            if (!string.IsNullOrEmpty(sshKey)) {
+                Environment.SetEnvironmentVariable("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
+                Args = "";
+            } else {
+                Args = "-c credential.helper=manager ";
+            }
+
+            Args += "push --progress --verbose ";
 
             if (withTags) Args += "--tags ";
             if (track) Args += "-u ";

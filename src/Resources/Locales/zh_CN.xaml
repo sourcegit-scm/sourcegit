@@ -21,6 +21,9 @@
     <sys:String x:Key="Text.ParentFolder">本地目录 ：</sys:String>
     <sys:String x:Key="Text.ParentFolder.Placeholder">本地存放的父级目录，选填.</sys:String>
 
+    <sys:String x:Key="Text.SSHKey">SSH密钥</sys:String>
+    <sys:String x:Key="Text.SSHKey.Placeholder">SSH密钥文件</sys:String>
+
     <sys:String x:Key="Text.About">关于软件</sys:String>
     <sys:String x:Key="Text.About.Title">SourceGit - 开源Git图形客户端</sys:String>
 

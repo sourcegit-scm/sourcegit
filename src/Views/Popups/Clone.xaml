@@ -11,6 +11,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
+            <RowDefinition x:Name="rowSSHKey" Height="0"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
@@ -31,7 +32,8 @@
             Grid.Row="0" Grid.Column="1"
             x:Name="txtUrl"
             Height="24"
-            Placeholder="{DynamicResource Text.Clone.RemoteURL.Placeholder}">
+            Placeholder="{DynamicResource Text.Clone.RemoteURL.Placeholder}"
+            TextChanged="OnUrlChanged">
             <controls:TextEdit.Text>
                 <Binding ElementName="me" Path="Uri" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -43,10 +45,37 @@
 
         <TextBlock
             Grid.Row="1" Grid.Column="0" 
-            Text="{DynamicResource Text.Clone.Folder}"
+            Text="{DynamicResource Text.SSHKey}"
             Margin="0,0,4,0"
             HorizontalAlignment="Right"/>
         <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:TextEdit 
+                Grid.Column="0"
+                x:Name="txtSSHKey"
+                Height="24"
+                Placeholder="{DynamicResource Text.SSHKey.Placeholder}"/>
+
+            <controls:IconButton
+                Grid.Column="1"
+                Click="OnSelectSSHKey"
+                Width="24" Height="24"
+                Margin="2,0,0,0" Padding="4"
+                BorderBrush="{DynamicResource Brush.Border1}"
+                BorderThickness="1"
+                Icon="{StaticResource Icon.Folder.Open}"/>
+        </Grid>
+
+        <TextBlock
+            Grid.Row="2" Grid.Column="0" 
+            Text="{DynamicResource Text.Clone.Folder}"
+            Margin="0,0,4,0"
+            HorizontalAlignment="Right"/>
+        <Grid Grid.Row="2" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="30"/>
@@ -77,12 +106,12 @@
         </Grid>
 
         <TextBlock
-            Grid.Row="2" Grid.Column="0" 
+            Grid.Row="3" Grid.Column="0" 
             Text="{DynamicResource Text.Clone.LocalName}"
             Margin="0,0,4,0"
             HorizontalAlignment="Right"/>
         <controls:TextEdit 
-            Grid.Row="2" Grid.Column="1"
+            Grid.Row="3" Grid.Column="1"
             Height="24"
             x:Name="txtLocal"
             Placeholder="{DynamicResource Text.Clone.LocalName.Placeholder}">
@@ -96,12 +125,12 @@
         </controls:TextEdit>
 
         <TextBlock
-            Grid.Row="3" Grid.Column="0" 
+            Grid.Row="4" Grid.Column="0" 
             Text="{DynamicResource Text.Clone.RemoteName}"
             Margin="0,0,4,0"
             HorizontalAlignment="Right"/>
         <controls:TextEdit 
-            Grid.Row="3" Grid.Column="1"
+            Grid.Row="4" Grid.Column="1"
             x:Name="txtRemote"
             Height="24"
             Placeholder="{DynamicResource Text.Clone.RemoteName.Placeholder}">
@@ -115,12 +144,12 @@
         </controls:TextEdit>
 
         <TextBlock
-            Grid.Row="4" Grid.Column="0" 
+            Grid.Row="5" Grid.Column="0" 
             Text="{DynamicResource Text.Clone.AdditionalParam}"
             Margin="0,0,4,0"
             HorizontalAlignment="Right"/>
         <controls:TextEdit 
-            Grid.Row="4" Grid.Column="1"
+            Grid.Row="5" Grid.Column="1"
             Height="24"
             Placeholder="{DynamicResource Text.Clone.AdditionalParam.Placeholder}"
             Text="{Binding ElementName=me, Path=ExtraArgs, Mode=TwoWay}"/>
