@@ -16,7 +16,7 @@ namespace SourceGit.Commands {
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
             if (!string.IsNullOrEmpty(sshKey)) {
-                Environment.SetEnvironmentVariable("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
+                Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
                 Args = "";
             } else {
                 Args = "-c credential.helper=manager ";
