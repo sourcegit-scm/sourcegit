@@ -22,7 +22,7 @@
     <sys:String x:Key="Text.ParentFolder">Parent Folder :</sys:String>
     <sys:String x:Key="Text.ParentFolder.Placeholder">Relative foler to store this module. Optional.</sys:String>
 
-    <sys:String x:Key="Text.SSHKey">SSH Private Key</sys:String>
+    <sys:String x:Key="Text.SSHKey">SSH Private Key :</sys:String>
     <sys:String x:Key="Text.SSHKey.Placeholder">Private SSH key store path</sys:String>
 
     <sys:String x:Key="Text.About">ABOUT</sys:String>
