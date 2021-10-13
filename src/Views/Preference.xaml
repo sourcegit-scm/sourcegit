@@ -318,6 +318,7 @@
                     <!-- Auto Fetch -->
                     <CheckBox
                         Grid.Row="6" Grid.Column="1"
+                        VerticalAlignment="Bottom"
                         Content="{DynamicResource Text.Preference.Git.AutoFetch}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Git.AutoFetchRemotes, Mode=TwoWay}"/>
                 </Grid>
