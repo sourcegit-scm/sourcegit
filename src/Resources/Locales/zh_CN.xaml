@@ -14,7 +14,6 @@
     <sys:String x:Key="Text.Filter">过滤</sys:String>
     <sys:String x:Key="Text.Optional">选填</sys:String>
     <sys:String x:Key="Text.OpenFolder">选择文件夹</sys:String>
-    <sys:String x:Key="Text.ThemeSwitcher">切换主题</sys:String>
 
     <sys:String x:Key="Text.URL">仓库地址 ：</sys:String>
     <sys:String x:Key="Text.RepositoryURL">远程仓库地址</sys:String>
@@ -365,6 +364,7 @@
     <sys:String x:Key="Text.Preference.FontFamilyContent">文本字体</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">头像服务</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">启用检测更新</sys:String>
+    <sys:String x:Key="Text.Preference.UseDarkTheme">启用暗色主题</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">启用定时自动拉取远程更新（重启生效）</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">启动时恢复上次打开的仓库</sys:String>
     <sys:String x:Key="Text.Preference.EnableCrashReport">开启崩溃上报（可能涉及上报相关路径）</sys:String>

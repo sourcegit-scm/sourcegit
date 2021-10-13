@@ -15,7 +15,6 @@
     <sys:String x:Key="Text.Filter">FILTER</sys:String>
     <sys:String x:Key="Text.Optional">Optional.</sys:String>
     <sys:String x:Key="Text.OpenFolder">SELECT FOLDER</sys:String>
-    <sys:String x:Key="Text.ThemeSwitcher">CHANGE THEME</sys:String>
 
     <sys:String x:Key="Text.URL">URL :</sys:String>
     <sys:String x:Key="Text.RepositoryURL">Git Repository URL</sys:String>
@@ -366,6 +365,7 @@
     <sys:String x:Key="Text.Preference.FontFamilyContent">Content Font</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">Check for update</sys:String>
+    <sys:String x:Key="Text.Preference.UseDarkTheme">Use dark theme</sys:String>
     <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically (need restart)</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">Restore windows</sys:String>
     <sys:String x:Key="Text.Preference.EnableCrashReport">Enable crash report (maybe include related path)</sys:String>

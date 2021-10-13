@@ -42,7 +42,6 @@
             <!-- Right controls -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="27" WindowChrome.IsHitTestVisibleInChrome="True">
                 <controls:IconButton Click="OpenPreference" Width="28" Padding="6" Icon="{StaticResource Icon.Preference}" ToolTip="{DynamicResource Text.Launcher.Preference}"/>
-                <ToggleButton Style="{StaticResource Style.ToggleButton.Theme}" Width="28" IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.UseDarkTheme, Mode=TwoWay}" Checked="ChangeTheme" Unchecked="ChangeTheme" ToolTip="{DynamicResource Text.ThemeSwitcher}"/>
                 <controls:IconButton Click="OpenAbout" Width="28" Padding="6" Icon="{StaticResource Icon.Help}" ToolTip="{DynamicResource Text.Launcher.About}"/>
 
                 <Rectangle Margin="4,0" Width="1" Height="16" VerticalAlignment="Center" Fill="{DynamicResource Brush.Border2}"/>

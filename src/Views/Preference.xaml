@@ -66,6 +66,7 @@
                 <RowDefinition Height="28"/>
                 <RowDefinition Height="28"/>
                 <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
                 <RowDefinition Height="8"/>
                 <RowDefinition Height="36"/>
                 <RowDefinition Height="28"/>
@@ -172,45 +173,52 @@
                 Content="{DynamicResource Text.Preference.CheckUpdate}"
                 IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.CheckForUpdate, Mode=TwoWay}"/>
 
-            <!-- Auto Fetch -->
+            <!-- Enable Dark Theme -->
             <CheckBox
                 Grid.Row="6" Grid.Column="1"
+                Content="{DynamicResource Text.Preference.UseDarkTheme}"
+                IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.UseDarkTheme, Mode=TwoWay}"
+                Checked="ChangeTheme" Unchecked="ChangeTheme"/>
+
+            <!-- Auto Fetch -->
+            <CheckBox
+                Grid.Row="7" Grid.Column="1"
                 Content="{DynamicResource Text.Preference.AutoFetch}"
                 IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.AutoFetchRemotes, Mode=TwoWay}"/>
 
             <!-- Restore Windows -->
             <CheckBox
-                Grid.Row="7" Grid.Column="1"
+                Grid.Row="8" Grid.Column="1"
                 Content="{DynamicResource Text.Preference.RestoreTabs}"
                 IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Restore.IsEnabled, Mode=TwoWay}"/>
 
             <!-- Crash Report -->
             <CheckBox
-                Grid.Row="8" Grid.Column="1"
+                Grid.Row="9" Grid.Column="1"
                 Content="{DynamicResource Text.Preference.EnableCrashReport}"
                 IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.EnableCrashReport, Mode=TwoWay}"/>
 
             <!-- Use Windows Terminal -->
             <CheckBox
-                Grid.Row="9" Grid.Column="1"
+                Grid.Row="10" Grid.Column="1"
                 Content="{DynamicResource Text.Preference.UseWindowsTerminal}"
                 IsEnabled="{Binding ElementName=me, Path=HasWindowsTerminal}"
                 IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.UseWindowsTerminal, Mode=TwoWay}"/>
 
             <!-- Git Group -->
             <TextBlock
-                Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2"
+                Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2"
                 Text="{DynamicResource Text.Preference.Git}"
                 FontSize="16" FontWeight="DemiBold"
                 Foreground="{DynamicResource Brush.FG2}"/>
 
             <!-- Git Executable Path -->
             <TextBlock
-                Grid.Row="12" Grid.Column="0"
+                Grid.Row="13" Grid.Column="0"
                 Text="{DynamicResource Text.Preference.Git.Path}"
                 HorizontalAlignment="Right"
                 Margin="0,0,8,0"/>
-            <Grid Grid.Row="12" Grid.Column="1">
+            <Grid Grid.Row="13" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -233,22 +241,22 @@
 
             <!-- Git Version -->
             <TextBlock
-                Grid.Row="13" Grid.Column="0"
+                Grid.Row="14" Grid.Column="0"
                 Text="{DynamicResource Text.Preference.Git.Version}"
                 HorizontalAlignment="Right"
                 Margin="0,0,8,0"/>
             <TextBlock
-                Grid.Row="13" Grid.Column="1"
+                Grid.Row="14" Grid.Column="1"
                 x:Name="textGitVersion"
                 Text="{Binding ElementName=me, Path=Version}"/>
 
             <!-- Default Clone Dir -->
             <TextBlock
-                Grid.Row="14" Grid.Column="0"
+                Grid.Row="15" Grid.Column="0"
                 Text="{DynamicResource Text.Preference.Git.Dir}"
                 HorizontalAlignment="Right"
                 Margin="0,0,8,0"/>
-            <Grid Grid.Row="14" Grid.Column="1">
+            <Grid Grid.Row="15" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -271,12 +279,12 @@
 
             <!-- User -->
             <TextBlock
-                Grid.Row="15" Grid.Column="0"
+                Grid.Row="16" Grid.Column="0"
                 Text="{DynamicResource Text.Preference.Git.User}"
                 HorizontalAlignment="Right"
                 Margin="0,0,8,0"/>
             <controls:TextEdit
-                Grid.Row="15" Grid.Column="1"
+                Grid.Row="16" Grid.Column="1"
                 x:Name="editGitUser"
                 Height="24"
                 Text="{Binding ElementName=me, Path=User, Mode=TwoWay}"
@@ -284,12 +292,12 @@
 
             <!-- Email -->
             <TextBlock
-                Grid.Row="16" Grid.Column="0"
+                Grid.Row="17" Grid.Column="0"
                 Text="{DynamicResource Text.Preference.Git.Email}"
                 HorizontalAlignment="Right"
                 Margin="0,0,8,0"/>
             <controls:TextEdit
-                Grid.Row="16" Grid.Column="1"
+                Grid.Row="17" Grid.Column="1"
                 x:Name="editGitEmail"
                 Height="24"
                 Text="{Binding ElementName=me, Path=Email, Mode=TwoWay}"
@@ -297,12 +305,12 @@
 
             <!-- CRLF -->
             <TextBlock
-                Grid.Row="17" Grid.Column="0"
+                Grid.Row="18" Grid.Column="0"
                 Text="{DynamicResource Text.Preference.Git.CRLF}"
                 HorizontalAlignment="Right"
                 Margin="0,0,8,0"/>
             <ComboBox
-                Grid.Row="17" Grid.Column="1"
+                Grid.Row="18" Grid.Column="1"
                 x:Name="editGitCrlf"
                 Height="24"
                 ItemsSource="{Binding Source={x:Static models:CRLFOption.Supported}}"
@@ -320,19 +328,19 @@
 
             <!-- Merge Tool Group -->
             <TextBlock
-                Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="2"
+                Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="2"
                 Text="{DynamicResource Text.Preference.Merger}"
                 FontSize="17" FontWeight="DemiBold"
                 Foreground="{DynamicResource Brush.FG2}"/>
 
             <!-- Merge Tool Type -->
             <TextBlock
-                Grid.Row="20" Grid.Column="0"
+                Grid.Row="21" Grid.Column="0"
                 Text="{DynamicResource Text.Preference.Merger.Type}"
                 HorizontalAlignment="Right"
                 Margin="0,0,8,0"/>
             <ComboBox
-                Grid.Row="20" Grid.Column="1"
+                Grid.Row="21" Grid.Column="1"
                 Height="24"
                 ItemsSource="{Binding Source={x:Static models:MergeTool.Supported}}"
                 DisplayMemberPath="Name"
@@ -342,11 +350,11 @@
 
             <!-- Merge Tool Executable Path -->
             <TextBlock
-                Grid.Row="21" Grid.Column="0"
+                Grid.Row="22" Grid.Column="0"
                 Text="{DynamicResource Text.Preference.Merger.Path}"
                 HorizontalAlignment="Right"
                 Margin="0,0,8,0"/>
-            <Grid Grid.Row="21" Grid.Column="1">
+            <Grid Grid.Row="22" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>

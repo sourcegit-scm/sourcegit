@@ -52,7 +52,10 @@ namespace SourceGit.Views {
         #region EVENTS
         private void LocaleChanged(object sender, SelectionChangedEventArgs e) {
             Models.Locale.Change();
-            e.Handled = true;
+        }
+
+        private void ChangeTheme(object sender, RoutedEventArgs e) {
+            Models.Theme.Change();
         }
 
         private void SelectGitPath(object sender, RoutedEventArgs e) {
