@@ -72,7 +72,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="132"/>
+                        <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -96,7 +96,7 @@
                         Grid.Row="1" Grid.Column="0"
                         Text="{DynamicResource Text.Preference.FontFamilyWindow}"
                         HorizontalAlignment="Right"
-                        Margin="0,0,6,0"/>
+                        Margin="0,0,8,0"/>
                     <ComboBox
                         Grid.Row="1" Grid.Column="1"
                         Height="24"
@@ -118,7 +118,7 @@
                         Grid.Row="2" Grid.Column="0"
                         Text="{DynamicResource Text.Preference.FontFamilyContent}"
                         HorizontalAlignment="Right"
-                        Margin="0,0,6,0"/>
+                        Margin="0,0,8,0"/>
                     <ComboBox
                         Grid.Row="2" Grid.Column="1"
                         Height="24"
@@ -197,7 +197,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="132"/>
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -331,7 +331,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="132"/>
+                        <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     
