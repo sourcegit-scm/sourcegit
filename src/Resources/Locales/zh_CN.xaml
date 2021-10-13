@@ -365,7 +365,6 @@
     <sys:String x:Key="Text.Preference.AvatarServer">头像服务</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">启用检测更新</sys:String>
     <sys:String x:Key="Text.Preference.UseDarkTheme">启用暗色主题</sys:String>
-    <sys:String x:Key="Text.Preference.AutoFetch">启用定时自动拉取远程更新（重启生效）</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">启动时恢复上次打开的仓库</sys:String>
     <sys:String x:Key="Text.Preference.EnableCrashReport">开启崩溃上报（可能涉及上报相关路径）</sys:String>
     <sys:String x:Key="Text.Preference.UseWindowsTerminal">使用 Windows Terminal 打开 Git 终端</sys:String>
@@ -380,6 +379,7 @@
     <sys:String x:Key="Text.Preference.Git.Email">邮箱</sys:String>
     <sys:String x:Key="Text.Preference.Git.Email.Placeholder">默认GIT用户邮箱</sys:String>
     <sys:String x:Key="Text.Preference.Git.CRLF">自动换行转换</sys:String>
+    <sys:String x:Key="Text.Preference.Git.AutoFetch">启用定时自动拉取远程更新（重启生效）</sys:String>
     <sys:String x:Key="Text.Preference.Merger">外部合并工具</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Type">工具</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Path">安装路径</sys:String>

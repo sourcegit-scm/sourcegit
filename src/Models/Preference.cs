@@ -69,11 +69,6 @@ namespace SourceGit.Models {
             public int LastCheckDay { get; set; } = 0;
 
             /// <summary>
-            ///     启用自动拉取远程变更（每10分钟一次）
-            /// </summary>
-            public bool AutoFetchRemotes { get; set; } = true;
-
-            /// <summary>
             ///     是否启用崩溃上报
             /// </summary>
             public bool EnableCrashReport { get; set; } = false;
@@ -98,6 +93,11 @@ namespace SourceGit.Models {
             ///     默认克隆路径
             /// </summary>
             public string DefaultCloneDir { get; set; }
+
+            /// <summary>
+            ///     启用自动拉取远程变更（每10分钟一次）
+            /// </summary>
+            public bool AutoFetchRemotes { get; set; } = true;
         }
 
         /// <summary>

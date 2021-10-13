@@ -45,7 +45,7 @@ namespace SourceGit.Commands {
         private Timer timer = null;
 
         public static void Start(string repo) {
-            if (!Models.Preference.Instance.General.AutoFetchRemotes) return;
+            if (!Models.Preference.Instance.Git.AutoFetchRemotes) return;
 
             // 只自动更新加入管理列表中的仓库（子模块等不自动更新）
             var exists = Models.Preference.Instance.FindRepository(repo);

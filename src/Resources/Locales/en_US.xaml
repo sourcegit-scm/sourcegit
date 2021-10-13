@@ -359,18 +359,17 @@
     <sys:String x:Key="Text.Revert.CommitChanges">Commit revert changes</sys:String>
 
     <sys:String x:Key="Text.Preference">Preference</sys:String>
-    <sys:String x:Key="Text.Preference.General">GENERAL SETTING</sys:String>
+    <sys:String x:Key="Text.Preference.General">GENERAL</sys:String>
     <sys:String x:Key="Text.Preference.Locale">Language</sys:String>
     <sys:String x:Key="Text.Preference.FontFamilyWindow">Window Font</sys:String>
     <sys:String x:Key="Text.Preference.FontFamilyContent">Content Font</sys:String>
     <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server</sys:String>
     <sys:String x:Key="Text.Preference.CheckUpdate">Check for update</sys:String>
     <sys:String x:Key="Text.Preference.UseDarkTheme">Use dark theme</sys:String>
-    <sys:String x:Key="Text.Preference.AutoFetch">Fetch remotes automatically (need restart)</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">Restore windows</sys:String>
     <sys:String x:Key="Text.Preference.EnableCrashReport">Enable crash report (maybe include related path)</sys:String>
     <sys:String x:Key="Text.Preference.UseWindowsTerminal">Use Windows Terminal instead of cmd.exe</sys:String>
-    <sys:String x:Key="Text.Preference.Git">GIT SETTING</sys:String>
+    <sys:String x:Key="Text.Preference.Git">GIT</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">Install Path</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">Input path for git.exe</sys:String>
     <sys:String x:Key="Text.Preference.Git.Version">Git version</sys:String>
@@ -381,7 +380,8 @@
     <sys:String x:Key="Text.Preference.Git.Email">User Email</sys:String>
     <sys:String x:Key="Text.Preference.Git.Email.Placeholder">Global git user email</sys:String>
     <sys:String x:Key="Text.Preference.Git.CRLF">Enable Auto CRLF</sys:String>
-    <sys:String x:Key="Text.Preference.Merger">MERGE TOOL</sys:String>
+    <sys:String x:Key="Text.Preference.Git.AutoFetch">Fetch remotes automatically (need restart)</sys:String>
+    <sys:String x:Key="Text.Preference.Merger">MERGE</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Type">Merger</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Path">Install Path</sys:String>
     <sys:String x:Key="Text.Preference.Merger.Path.Placeholder">Input path for merge tool</sys:String>
