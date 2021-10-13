@@ -33,23 +33,15 @@
                     <controls:IconButton
                         Margin="8,0"
                         Padding="0,9"
-                        Icon="{DynamicResource Icon.Folder.Open}" 
-                        ToolTip="{DynamicResource Text.Dashboard.Explore}"
-                        Click="Explore"/>
-                    <controls:IconButton
-                        x:Name="btnOpenWithVSCode"
-                        Visibility="Collapsed"
-                        Margin="8,0"
-                        Padding="0,9"
-                        Icon="{DynamicResource Icon.VSCode}" 
-                        ToolTip="{DynamicResource Text.Dashboard.VSCode}"
-                        Click="OpenInVSCode"/>
+                        Icon="{DynamicResource Icon.Folder}" 
+                        ToolTip="{DynamicResource Text.Dashboard.Open}"
+                        Click="OpenExternal"/>
                     <controls:IconButton
                         Margin="8,0"
                         Padding="0,9"
-                        Icon="{DynamicResource Icon.Terminal}" 
-                        ToolTip="{DynamicResource Text.Dashboard.Terminal}"
-                        Click="Terminal"/>
+                        Icon="{DynamicResource Icon.Loading}" 
+                        ToolTip="{DynamicResource Text.Dashboard.Refresh}"
+                        Click="TriggerRefresh"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal">

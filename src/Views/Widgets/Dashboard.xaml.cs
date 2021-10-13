@@ -56,9 +56,6 @@ namespace SourceGit.Views.Widgets {
             InitializeComponent();
             InitPages();
 
-            var vscode = Models.ExecutableFinder.Find("code.cmd");
-            if (vscode != null) btnOpenWithVSCode.Visibility = Visibility.Visible;
-
             var watcher = Models.Watcher.Get(repo.Path);
             watcher.Navigate += NavigateTo;
             watcher.BranchChanged += UpdateBranches;
@@ -307,48 +304,90 @@ namespace SourceGit.Views.Widgets {
         #endregion
 
         #region TOOLBAR_COMMANDS
-        private void Explore(object sender, RoutedEventArgs e) {
-            Process.Start("explorer", repo.Path);
-            e.Handled = true;
+        private MenuItem CreateMenuItem(string icon, string header, Action click) {
+            var ret = new MenuItem();
+            ret.Header = App.Text(header);
+            ret.Click += (o, e) => {
+                click();
+                e.Handled = true;
+            };
+
+            if (!string.IsNullOrEmpty(icon)) {
+                var geo = new System.Windows.Shapes.Path();
+                geo.Data = FindResource(icon) as Geometry;
+                geo.VerticalAlignment = VerticalAlignment.Center;
+                geo.Width = 12;
+                geo.Height = 12;
+
+                ret.Icon = geo;
+            }
+
+            return ret;
         }
 
-        private void OpenInVSCode(object sender, RoutedEventArgs e) {
-            var vscode = Models.ExecutableFinder.Find("code.cmd");
-            if (vscode == null) return;
+        private void OpenExternal(object sender, RoutedEventArgs e) {
+            var btn = sender as Controls.IconButton;
+            if (btn == null) return;
 
-            vscode = Path.Combine(Path.GetDirectoryName(vscode), "..", "Code.exe");
-            Process.Start(new ProcessStartInfo {
-                WorkingDirectory = repo.Path,
-                FileName = vscode,
-                Arguments = $"\"{repo.Path}\"",
-                UseShellExecute = false,
-            });
-
-            e.Handled = true;
-        }
-
-        private void Terminal(object sender, RoutedEventArgs e) {
-            var bash = Path.Combine(Models.Preference.Instance.Git.Path, "..", "bash.exe");
-            if (!File.Exists(bash)) {
-                Models.Exception.Raise(App.Text("MissingBash"));
+            if (btn.ContextMenu != null) {
+                btn.ContextMenu.IsOpen = true;
+                e.Handled = true;
                 return;
             }
 
-            if (Models.Preference.Instance.General.UseWindowsTerminal) {
-                Process.Start(new ProcessStartInfo {
-                    WorkingDirectory = repo.Path,
-                    FileName = "wt",
-                    Arguments = $"-d \"{repo.Path}\" \"{bash}\"",
-                    UseShellExecute = false,
-                });
-            } else {
-                Process.Start(new ProcessStartInfo {
-                    WorkingDirectory = repo.Path,
-                    FileName = bash,
-                    UseShellExecute = true,
-                });
+            var menu = new ContextMenu();
+            menu.PlacementTarget = btn;
+            menu.Placement = PlacementMode.Bottom;
+            menu.StaysOpen = false;
+            menu.Focusable = true;
+
+            menu.Items.Add(CreateMenuItem("Icon.Folder.Open", "Dashboard.Explore", () => {
+                Process.Start("explorer", repo.Path);
+            }));
+
+            menu.Items.Add(CreateMenuItem("Icon.Terminal", "Dashboard.Terminal", () => {
+                var bash = Path.Combine(Models.Preference.Instance.Git.Path, "..", "bash.exe");
+                if (!File.Exists(bash)) {
+                    Models.Exception.Raise(App.Text("MissingBash"));
+                    return;
+                }
+
+                if (Models.Preference.Instance.General.UseWindowsTerminal) {
+                    Process.Start(new ProcessStartInfo {
+                        WorkingDirectory = repo.Path,
+                        FileName = "wt",
+                        Arguments = $"-d \"{repo.Path}\" \"{bash}\"",
+                        UseShellExecute = false,
+                    });
+                } else {
+                    Process.Start(new ProcessStartInfo {
+                        WorkingDirectory = repo.Path,
+                        FileName = bash,
+                        UseShellExecute = true,
+                    });
+                }
+            }));
+
+            var vscode = Models.ExecutableFinder.Find("code.cmd");
+            if (vscode != null) {
+                vscode = Path.Combine(Path.GetDirectoryName(vscode), "..", "Code.exe");
+                menu.Items.Add(CreateMenuItem("Icon.VSCode", "Dashboard.VSCode", () => {
+                    Process.Start(new ProcessStartInfo {
+                        WorkingDirectory = repo.Path,
+                        FileName = vscode,
+                        Arguments = $"\"{repo.Path}\"",
+                        UseShellExecute = false,
+                    });
+                }));
             }
 
+            btn.ContextMenu = menu;
+            menu.IsOpen = true;
+            e.Handled = true;
+        }
+
+        private void TriggerRefresh(object sender, RoutedEventArgs e) {
+            Refresh();
             e.Handled = true;
         }
 

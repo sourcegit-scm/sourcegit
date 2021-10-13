@@ -116,9 +116,11 @@
     <sys:String x:Key="Text.CreateTag.Message">Tag Message :</sys:String>
     <sys:String x:Key="Text.CreateTag.Message.Placeholder">Optional.</sys:String>
 
+    <sys:String x:Key="Text.Dashboard.Open">Open</sys:String>
     <sys:String x:Key="Text.Dashboard.Explore">Open In File Browser</sys:String>
     <sys:String x:Key="Text.Dashboard.VSCode">Open In Visual Studio Code</sys:String>
-    <sys:String x:Key="Text.Dashboard.Terminal">Open Git Bash</sys:String>
+    <sys:String x:Key="Text.Dashboard.Terminal">Open In Git Bash</sys:String>
+    <sys:String x:Key="Text.Dashboard.Refresh">Refresh</sys:String>
     <sys:String x:Key="Text.Dashboard.Search">Search Commit</sys:String>
     <sys:String x:Key="Text.Dashboard.Configure">Configure this repository</sys:String>
     <sys:String x:Key="Text.Dashboard.Workspace">WORKSPACE</sys:String>
