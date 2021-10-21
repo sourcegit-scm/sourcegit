@@ -28,7 +28,7 @@ namespace SourceGit.Views.Popups {
             InitializeComponent();
 
             ruleName.Repo = repo;
-            if (RemoteURL.StartsWith("git@")) {
+            if (!string.IsNullOrEmpty(RemoteURL) && RemoteURL.StartsWith("git@")) {
                 txtSSHKey.Text = new Commands.Config(repo.Path).Get($"remote.{remote.Name}.sshkey");
             } else {
                 txtSSHKey.Text = "";
