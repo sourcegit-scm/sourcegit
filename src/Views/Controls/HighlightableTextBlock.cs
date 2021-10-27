@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -69,9 +69,8 @@ namespace SourceGit.Views.Controls {
                     txt.Inlines.Add(new Run(txt.Data.Content.Substring(started, highlight.Start - started)));
                 }
 
-                txt.Inlines.Add(new TextBlock() {
+                txt.Inlines.Add(new Run() {
                     Background = highlightBrush,
-                    LineHeight = txt.LineHeight,
                     Text = txt.Data.Content.Substring(highlight.Start, highlight.Count),
                 });
 
