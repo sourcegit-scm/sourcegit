@@ -33,15 +33,23 @@
                     <controls:IconButton
                         Margin="8,0"
                         Padding="0,9"
-                        Icon="{DynamicResource Icon.Folder}" 
-                        ToolTip="{DynamicResource Text.Dashboard.Open}"
-                        Click="OpenExternal"/>
+                        Icon="{DynamicResource Icon.Folder.Open}" 
+                        ToolTip="{DynamicResource Text.Dashboard.Explore}"
+                        Click="OpenInExplorer"/>
+                    <controls:IconButton
+                        x:Name="btnVSCode"
+                        Margin="8,0"
+                        Padding="0,9"
+                        Icon="{DynamicResource Icon.VSCode}" 
+                        ToolTip="{DynamicResource Text.Dashboard.VSCode}"
+                        Visibility="Collapsed"
+                        Click="OpenInVSCode"/>
                     <controls:IconButton
                         Margin="8,0"
                         Padding="0,9"
-                        Icon="{DynamicResource Icon.Loading}" 
-                        ToolTip="{DynamicResource Text.Dashboard.Refresh}"
-                        Click="TriggerRefresh"/>
+                        Icon="{DynamicResource Icon.Terminal}" 
+                        ToolTip="{DynamicResource Text.Dashboard.Terminal}"
+                        Click="OpenInTerminal"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -93,14 +101,22 @@
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
                     <ToggleButton
                         Width="16" Height="16"
+                        Margin="0,0,8,0"
                         Style="{StaticResource Style.ToggleButton.SplitDirection}"
                         ToolTip="{DynamicResource Text.Histories.DisplayMode}"
                         Visibility="{Binding ElementName=pageHistories,Path=IsSelected,Converter={StaticResource BoolToCollapsed}}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.MoveCommitInfoRight, Mode=TwoWay, Converter={StaticResource InverseBool}}"
                         Checked="ChangeOrientation" Unchecked="ChangeOrientation"/>
-                    
+
                     <controls:IconButton
-                        Margin="12,0,8,0"
+                        Margin="8,0"
+                        Padding="0,9,0,8"
+                        Icon="{DynamicResource Icon.Loading}" 
+                        ToolTip="{DynamicResource Text.Dashboard.Refresh}"
+                        Click="TriggerRefresh"/>
+
+                    <controls:IconButton
+                        Margin="8,0"
                         Padding="0,8"
                         Icon="{DynamicResource Icon.Setting}" 
                         ToolTip="{DynamicResource Text.Dashboard.Configure}"
