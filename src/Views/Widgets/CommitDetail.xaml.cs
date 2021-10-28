@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -116,50 +117,73 @@ namespace SourceGit.Views.Widgets {
             var row = sender as DataGridRow;
             if (row == null) return;
 
-            var change = row.DataContext as Models.Change;
-            if (change == null) return;
-
-            var menu = new ContextMenu();
-            if (change.Index != Models.Change.Status.Deleted) {
-                var history = new MenuItem();
-                history.Header = App.Text("FileHistory");
-                history.IsEnabled = change.Index != Models.Change.Status.Deleted;
-                history.Click += (o, ev) => {
-                    var viewer = new Views.Histories(repo, change.Path);
-                    viewer.Show();
-                    ev.Handled = true;
-                };
-
-                var blame = new MenuItem();
-                blame.Header = App.Text("Blame");
-                blame.IsEnabled = change.Index != Models.Change.Status.Deleted;
-                blame.Click += (obj, ev) => {
-                    var viewer = new Blame(repo, change.Path, commit.SHA);
-                    viewer.Show();
-                    ev.Handled = true;
-                };
-
-                var explore = new MenuItem();
-                explore.Header = App.Text("RevealFile");
-                explore.IsEnabled = change.Index != Models.Change.Status.Deleted;
-                explore.Click += (o, ev) => {
-                    var full = Path.GetFullPath(repo + "\\" + change.Path);
-                    Process.Start("explorer", $"/select,{full}");
-                    ev.Handled = true;
-                };
-
-                menu.Items.Add(history);
-                menu.Items.Add(blame);
-                menu.Items.Add(explore);
+            if (!row.IsSelected) {
+                changeList.UnselectAll();
+                row.IsSelected = true;
             }
 
-            var copyPath = new MenuItem();
-            copyPath.Header = App.Text("CopyPath");
-            copyPath.Click += (obj, ev) => {
-                Clipboard.SetDataObject(change.Path, true);
-                ev.Handled = true;
-            };
-            menu.Items.Add(copyPath);
+            var selectedCount = changeList.SelectedItems.Count;
+            var menu = new ContextMenu();
+            if (selectedCount == 1) {
+                var change = changeList.SelectedItems[0] as Models.Change;
+                if (change == null) return;
+
+                if (change.Index != Models.Change.Status.Deleted) {
+                    var history = new MenuItem();
+                    history.Header = App.Text("FileHistory");
+                    history.IsEnabled = change.Index != Models.Change.Status.Deleted;
+                    history.Click += (_, ev) => {
+                        var viewer = new Views.Histories(repo, change.Path);
+                        viewer.Show();
+                        ev.Handled = true;
+                    };
+
+                    var blame = new MenuItem();
+                    blame.Header = App.Text("Blame");
+                    blame.IsEnabled = change.Index != Models.Change.Status.Deleted;
+                    blame.Click += (_, ev) => {
+                        var viewer = new Blame(repo, change.Path, commit.SHA);
+                        viewer.Show();
+                        ev.Handled = true;
+                    };
+
+                    var explore = new MenuItem();
+                    explore.Header = App.Text("RevealFile");
+                    explore.IsEnabled = change.Index != Models.Change.Status.Deleted;
+                    explore.Click += (_, ev) => {
+                        var full = Path.GetFullPath(repo + "\\" + change.Path);
+                        Process.Start("explorer", $"/select,{full}");
+                        ev.Handled = true;
+                    };
+
+                    menu.Items.Add(history);
+                    menu.Items.Add(blame);
+                    menu.Items.Add(explore);
+                }
+
+                var copyPath = new MenuItem();
+                copyPath.Header = App.Text("CopyPath");
+                copyPath.Click += (_, ev) => {
+                    Clipboard.SetDataObject(change.Path, true);
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(copyPath);
+            } else {
+                var copyPath = new MenuItem();
+                copyPath.Header = App.Text("CopyPath");
+                copyPath.Click += (_, ev) => {
+                    var builder = new StringBuilder();
+                    foreach (var obj in changeList.SelectedItems) {
+                        builder.Append((obj as Models.Change).Path);
+                        builder.Append("\n");
+                    }
+                    Clipboard.SetDataObject(builder.ToString(), true);
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(copyPath);
+            }            
 
             menu.IsOpen = true;
             e.Handled = true;
