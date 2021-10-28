@@ -11,6 +11,10 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+#if NET6_0_OR_GREATER
+using System.Net.Http;
+#endif
+
 namespace SourceGit.Views.Controls {
 
     /// <summary>
@@ -192,6 +196,28 @@ namespace SourceGit.Views.Controls {
                 if (!requesting.ContainsKey(email)) return;
 
                 try {
+#if NET6_0_OR_GREATER
+                    var req = new HttpClient().GetAsync(Models.Preference.Instance.General.AvatarServer + md5 + "?d=404");
+                    req.Wait();
+
+                    var rsp = req.Result;
+                    if (rsp != null && rsp.StatusCode == HttpStatusCode.OK) {
+                        var writer = File.OpenWrite(filePath);
+                        rsp.Content.CopyToAsync(writer).Wait();
+                        writer.Close();
+
+                        a.Dispatcher.Invoke(() => {
+                            var img = new BitmapImage(new Uri(filePath));
+                            loaded.Add(email, img);
+
+                            if (requesting.ContainsKey(email)) {
+                                foreach (var one in requesting[email]) one.Source = img;
+                            }
+                        });
+                    } else {
+                        if (!loaded.ContainsKey(email)) loaded.Add(email, null);
+                    }
+#else
                     HttpWebRequest req = WebRequest.CreateHttp(Models.Preference.Instance.General.AvatarServer + md5 + "?d=404");
                     req.Timeout = 2000;
                     req.Method = "GET";
@@ -214,6 +240,7 @@ namespace SourceGit.Views.Controls {
                     } else {
                         if (!loaded.ContainsKey(email)) loaded.Add(email, null);
                     }
+#endif
                 } catch {
                     if (!loaded.ContainsKey(email)) loaded.Add(email, null);
                 }

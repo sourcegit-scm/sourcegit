@@ -1,11 +1,16 @@
 using System;
-using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
+#if NET6_0_OR_GREATER
+using System.Net.Http;
+#else
+using System.Net;
+using System.Text;
+#endif
 
 namespace SourceGit.Models {
 
@@ -43,10 +48,18 @@ namespace SourceGit.Models {
             var lastDayOfYear = Preference.Instance.General.LastCheckDay;
             if (lastDayOfYear != curDayOfYear) {
                 Preference.Instance.General.LastCheckDay = curDayOfYear;
-                Task.Run(() => {
+                Task.Run(async () => {
                     try {
+#if NET6_0_OR_GREATER
+                        var req = new HttpClient();
+                        var rsp = await req.GetAsync("https://gitee.com/api/v5/repos/sourcegit/sourcegit/releases/latest");
+                        rsp.EnsureSuccessStatusCode();
+
+                        var raw = await rsp.Content.ReadAsStringAsync();
+#else
                         var web = new WebClient() { Encoding = Encoding.UTF8 };
-                        var raw = web.DownloadString("https://gitee.com/api/v5/repos/sourcegit/sourcegit/releases/latest");
+                        var raw = await web.DownloadStringTaskAsync("https://gitee.com/api/v5/repos/sourcegit/sourcegit/releases/latest");
+#endif
                         var ver = JsonSerializer.Deserialize<Version>(raw);
                         var cur = Assembly.GetExecutingAssembly().GetName().Version;
 

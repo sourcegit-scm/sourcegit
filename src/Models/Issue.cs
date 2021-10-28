@@ -1,9 +1,14 @@
 ﻿using System;
-using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+#if NET6_0_OR_GREATER
+using System.Net.Http;
+#else
+using System.Net;
+using System.Text;
+#endif
 
 namespace SourceGit.Models {
     /// <summary>
@@ -40,6 +45,13 @@ namespace SourceGit.Models {
                     e.Source,
                     e.StackTrace);
 
+#if NET6_0_OR_GREATER
+                var req = new HttpClient();
+                req.DefaultRequestHeaders.Add("Content-Type", "application/json");
+                req.DefaultRequestHeaders.Add("charset", "UTF-8");
+                req.Timeout = TimeSpan.FromSeconds(1);
+                req.PostAsync("https://gitee.com/api/v5/repos/sourcegit/issues", new StringContent(JsonSerializer.Serialize(issue))).Wait();
+#else
                 var req = WebRequest.CreateHttp("https://gitee.com/api/v5/repos/sourcegit/issues");
                 req.Method = "POST";
                 req.ContentType = "application/json";
@@ -53,6 +65,7 @@ namespace SourceGit.Models {
                 }
 
                 req.GetResponse();
+#endif
             } catch { }
         }
     }

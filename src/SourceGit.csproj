@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net5.0-windows;net48</TargetFrameworks>
+        <TargetFrameworks>net6.0-windows;net5.0-windows;net48</TargetFrameworks>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>App.ico</ApplicationIcon>

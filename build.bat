@@ -25,4 +25,18 @@ dotnet publish SourceGit.csproj --nologo -c Release -r win-x64 -f net5.0-windows
 cd ..\publish
 ren SourceGit.exe SourceGit.net5.0.x64.exe
 
+cd ..\src
+rmdir /s /q bin
+rmdir /s /q obj
+dotnet publish SourceGit.csproj --nologo -c Release -r win-x86 -f net6.0-windows -p:PublishSingleFile=true --no-self-contained -o ..\publish
+cd ..\publish
+ren SourceGit.exe SourceGit.net6.0.x86.exe
+
+cd ..\src
+rmdir /s /q bin
+rmdir /s /q obj
+dotnet publish SourceGit.csproj --nologo -c Release -r win-x64 -f net6.0-windows -p:PublishSingleFile=true --no-self-contained -o ..\publish
+cd ..\publish
+ren SourceGit.exe SourceGit.net6.0.x64.exe
+
 cd ../
