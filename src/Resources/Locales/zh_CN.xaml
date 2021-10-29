@@ -398,6 +398,9 @@
     <sys:String x:Key="Text.Stashes.Stashes">贮藏列表</sys:String>
     <sys:String x:Key="Text.Stashes.Changes">查看变更</sys:String>
 
+    <sys:String x:Key="Text.StashDropConfirm">丢弃贮藏确认</sys:String>
+    <sys:String x:Key="Text.StashDropConfirm.Label">丢弃贮藏 ：</sys:String>
+
     <sys:String x:Key="Text.TwoCommitsDiff">对比提交 : {0} -> {1}</sys:String>
 
     <sys:String x:Key="Text.UpdateAvailable">检测更新</sys:String>

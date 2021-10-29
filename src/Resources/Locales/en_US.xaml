@@ -399,6 +399,9 @@
     <sys:String x:Key="Text.Stashes.Stashes">STASHES</sys:String>
     <sys:String x:Key="Text.Stashes.Changes">CHANGES</sys:String>
 
+    <sys:String x:Key="Text.StashDropConfirm">Confirm To Drop Stash</sys:String>
+    <sys:String x:Key="Text.StashDropConfirm.Label">Drop :</sys:String>
+
     <sys:String x:Key="Text.TwoCommitsDiff">COMMIT : {0} -> {1}</sys:String>
 
     <sys:String x:Key="Text.UpdateAvailable">UPDATE AVAILABLE</sys:String>
