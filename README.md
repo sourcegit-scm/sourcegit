@@ -22,7 +22,7 @@
 
 ## 下载
 
-下载地址：[发行版](https://gitee.com/sourcegit/sourcegit/releases/)
+下载地址：[发行版](https://github.com/sourcegit-scm/sourcegit/releases)
 
 | 文件             | 运行时             | 说明                                |
 | ---------------- | ------------------ | ----------------------------------- |
