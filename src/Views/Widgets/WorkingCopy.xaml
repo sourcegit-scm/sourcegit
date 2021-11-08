@@ -179,6 +179,7 @@
                 AcceptsReturn="True"
                 AcceptsTab="True"
                 TextWrapping="Wrap"
+                KeyDown="CommitMessageKeyDown"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 Placeholder="{DynamicResource Text.WorkingCopy.CommitMessageTip}"

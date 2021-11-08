@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
 namespace SourceGit.Views.Widgets {
     /// <summary>
@@ -354,6 +355,14 @@ namespace SourceGit.Views.Widgets {
             Models.Watcher.SetEnabled(repo.Path, true);
 
             e.Handled = true;
+        }
+        
+        private void CommitMessageKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                Commit(sender, e);
+            }
         }
         #endregion
     }
