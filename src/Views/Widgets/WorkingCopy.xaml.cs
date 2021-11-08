@@ -357,10 +357,8 @@ namespace SourceGit.Views.Widgets {
             e.Handled = true;
         }
         
-        private void CommitMessageKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
+        private void CommitMessageKeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Enter && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) {
                 Commit(sender, e);
             }
         }

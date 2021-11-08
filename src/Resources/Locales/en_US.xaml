@@ -426,6 +426,7 @@
     <sys:String x:Key="Text.WorkingCopy.MessageHistories">MESSAGE HISTORIES</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Amend">Amend</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Commit">COMMIT</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.CommitTip">CTRL + Enter</sys:String>
     <sys:String x:Key="Text.WorkingCopy.CommitAndPush">COMMIT &amp; PUSH</sys:String>
     <sys:String x:Key="Text.WorkingCopy.NoCommitHistories">NO RECENT INPUT MESSAGES</sys:String>
     <sys:String x:Key="Text.WorkingCopy.HasCommitHistories">RECENT INPUT MESSAGES</sys:String>

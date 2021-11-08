@@ -235,7 +235,8 @@
                     FontWeight="Bold"
                     Background="{DynamicResource Brush.Accent1}"
                     BorderBrush="{DynamicResource Brush.FG1}"
-                    Content="{DynamicResource Text.WorkingCopy.Commit}"/>
+                    Content="{DynamicResource Text.WorkingCopy.Commit}"
+                    ToolTip="{DynamicResource Text.WorkingCopy.CommitTip}"/>
                 
                 <Button 
                     Grid.Column="5" 

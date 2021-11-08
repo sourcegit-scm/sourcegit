@@ -425,6 +425,7 @@
     <sys:String x:Key="Text.WorkingCopy.MessageHistories">历史提交信息</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Amend">修补</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Commit">提交</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.CommitTip">CTRL + Enter</sys:String>
     <sys:String x:Key="Text.WorkingCopy.CommitAndPush">提交并推送</sys:String>
     <sys:String x:Key="Text.WorkingCopy.NoCommitHistories">没有提交信息记录</sys:String>
     <sys:String x:Key="Text.WorkingCopy.HasCommitHistories">最近输入的提交信息</sys:String>

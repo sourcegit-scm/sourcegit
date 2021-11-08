@@ -44,6 +44,7 @@
 
 ## Thanks
 
+* [XiaoLinger](https://gitee.com/LingerNN) 增加`CTRL + Enter`提交快捷键
 * [carterl](https://gitee.com/carterl) Windows Terminal支持；优化git.exe路径查找
 * [PUMA](https://gitee.com/whgfu) 配置默认User
 * [Rwing](https://gitee.com/rwing) GitFlow: add an option to keep branch after finish
