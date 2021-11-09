@@ -69,11 +69,6 @@ namespace SourceGit.Models {
             public int LastCheckDay { get; set; } = 0;
 
             /// <summary>
-            ///     是否启用崩溃上报
-            /// </summary>
-            public bool EnableCrashReport { get; set; } = false;
-
-            /// <summary>
             ///     是否尝试使用 Windows Terminal 打开终端
             /// </summary>
             public bool UseWindowsTerminal { get; set; } = false;
