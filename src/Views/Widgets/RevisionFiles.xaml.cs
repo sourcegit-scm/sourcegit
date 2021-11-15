@@ -18,6 +18,8 @@ namespace SourceGit.Views.Widgets {
         private string repo = null;
         private string sha = null;
         private bool isLFSEnabled = false;
+        private List<Models.Object> cached = new List<Models.Object>();
+        private string filter = null;
 
         /// <summary>
         ///     文件列表树节点
@@ -26,6 +28,7 @@ namespace SourceGit.Views.Widgets {
             public Models.ObjectType Type { get; set; } = Models.ObjectType.None;
             public string Path { get; set; } = "";
             public string SHA { get; set; } = null;
+            public bool IsExpanded { get; set; } = false;
             public bool IsFolder => Type == Models.ObjectType.None;
             public List<FileNode> Children { get; set; } = new List<FileNode>();
         }
@@ -44,72 +47,89 @@ namespace SourceGit.Views.Widgets {
                 var objects = cmd.Result();
                 if (cmd.Ctx.IsCancelRequested) return;
 
-                var nodes = new List<FileNode>();
-                var folders = new Dictionary<string, FileNode>();
-
-                foreach (var obj in objects) {
-                    var sepIdx = obj.Path.IndexOf('/');
-                    if (sepIdx == -1) {
-                        nodes.Add(new FileNode() {
-                            Type = obj.Type,
-                            Path = obj.Path,
-                            SHA = obj.SHA,
-                        });
-                    } else {
-                        FileNode lastFolder = null;
-                        var start = 0;
-
-                        while (sepIdx != -1) {
-                            var folder = obj.Path.Substring(0, sepIdx);
-                            if (folders.ContainsKey(folder)) {
-                                lastFolder = folders[folder];
-                            } else if (lastFolder == null) {
-                                lastFolder = new FileNode() {
-                                    Type = Models.ObjectType.None,
-                                    Path = folder,
-                                    SHA = null,
-                                };
-                                nodes.Add(lastFolder);
-                                folders.Add(folder, lastFolder);
-                            } else {
-                                var cur = new FileNode() {
-                                    Type = Models.ObjectType.None,
-                                    Path = folder,
-                                    SHA = null,
-                                };
-                                folders.Add(folder, cur);
-                                lastFolder.Children.Add(cur);
-                                lastFolder = cur;
-                            }
-
-                            start = sepIdx + 1;
-                            sepIdx = obj.Path.IndexOf('/', start);
-                        }
-
-                        lastFolder.Children.Add(new FileNode() {
-                            Type = obj.Type,
-                            Path = obj.Path,
-                            SHA = obj.SHA,
-                        });
-                    }
-
-                    obj.Path = null;
-                }
-
-                folders.Clear();
-                objects.Clear();
-
-                SortFileNodes(nodes);
-
-                Dispatcher.Invoke(() => {
-                    treeFiles.ItemsSource = nodes;
-                    GC.Collect();
-                });
+                cached = objects;
+                ShowVisibles();        
             });
         }
 
         public void Cleanup() {
             treeFiles.ItemsSource = new List<FileNode>();
+            cached = new List<Models.Object>();
+        }
+
+        private void ShowVisibles() {
+            var nodes = new List<FileNode>();
+            var folders = new Dictionary<string, FileNode>();
+            var visibles = new List<Models.Object>();
+
+            if (string.IsNullOrEmpty(filter)) {
+                visibles.AddRange(cached);
+            } else {
+                foreach (var obj in cached) {
+                    if (obj.Path.ToUpper().Contains(filter)) visibles.Add(obj);
+                }
+            }
+
+            var expanded = visibles.Count <= 50;
+
+            foreach (var obj in visibles) {
+                var sepIdx = obj.Path.IndexOf('/');
+                if (sepIdx == -1) {
+                    nodes.Add(new FileNode() {
+                        Type = obj.Type,
+                        Path = obj.Path,
+                        SHA = obj.SHA,
+                    });
+                } else {
+                    FileNode lastFolder = null;
+                    var start = 0;
+
+                    while (sepIdx != -1) {
+                        var folder = obj.Path.Substring(0, sepIdx);
+                        if (folders.ContainsKey(folder)) {
+                            lastFolder = folders[folder];
+                        } else if (lastFolder == null) {
+                            lastFolder = new FileNode() {
+                                Type = Models.ObjectType.None,
+                                Path = folder,
+                                SHA = null,
+                                IsExpanded = expanded,
+                            };
+                            nodes.Add(lastFolder);
+                            folders.Add(folder, lastFolder);
+                        } else {
+                            var cur = new FileNode() {
+                                Type = Models.ObjectType.None,
+                                Path = folder,
+                                SHA = null,
+                                IsExpanded = expanded,
+                            };
+                            folders.Add(folder, cur);
+                            lastFolder.Children.Add(cur);
+                            lastFolder = cur;
+                        }
+
+                        start = sepIdx + 1;
+                        sepIdx = obj.Path.IndexOf('/', start);
+                    }
+
+                    lastFolder.Children.Add(new FileNode() {
+                        Type = obj.Type,
+                        Path = obj.Path,
+                        SHA = obj.SHA,
+                    });
+                }
+            }
+
+            folders.Clear();
+            visibles.Clear();
+
+            SortFileNodes(nodes);
+
+            Dispatcher.Invoke(() => {
+                treeFiles.ItemsSource = nodes;
+                GC.Collect();
+            });
         }
 
         private void SortFileNodes(List<FileNode> nodes) {
@@ -259,7 +279,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnFilesContextMenuOpening(object sender, ContextMenuEventArgs e) {
-            var item = treeFiles.FindItem(e.OriginalSource as DependencyObject);
+            var item = sender as Controls.TreeItem;
             if (item == null) return;
 
             var node = item.DataContext as FileNode;
@@ -320,6 +340,13 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnRequestBringIntoView(object sender, RequestBringIntoViewEventArgs e) {
+            e.Handled = true;
+        }
+
+        private void OnSearchFilterChanged(object sender, TextChangedEventArgs e) {
+            var edit = sender as Controls.TextEdit;
+            filter = edit.Text.ToUpper();
+            Task.Run(() => ShowVisibles());
             e.Handled = true;
         }
         #endregion
