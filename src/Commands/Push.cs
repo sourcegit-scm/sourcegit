@@ -17,7 +17,7 @@ namespace SourceGit.Commands {
                 Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
                 Args = "";
             } else {
-                Args = "-c credential.helper=manager ";
+                Args = "-c credential.helper=manager-core ";
             }
 
             Args += "push --progress --verbose ";
@@ -31,12 +31,30 @@ namespace SourceGit.Commands {
 
         public Push(string repo, string remote, string branch) {
             Cwd = repo;
-            Args = $"-c credential.helper=manager push {remote} --delete {branch}";
+
+            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            if (!string.IsNullOrEmpty(sshKey)) {
+                Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
+                Args = "";
+            } else {
+                Args = "-c credential.helper=manager-core ";
+            }
+
+            Args += $"push {remote} --delete {branch}";
         }
 
         public Push(string repo, string remote, string tag, bool isDelete) {
             Cwd = repo;
-            Args = $"-c credential.helper=manager push ";
+
+            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            if (!string.IsNullOrEmpty(sshKey)) {
+                Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
+                Args = "";
+            } else {
+                Args = "-c credential.helper=manager-core ";
+            }
+
+            Args += "push ";
             if (isDelete) Args += "--delete ";
             Args += $"{remote} refs/tags/{tag}";
         }
