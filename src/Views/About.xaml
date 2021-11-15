@@ -114,7 +114,7 @@
             <!-- Official site -->
             <TextBlock HorizontalAlignment="Center" Margin="0,4,0,16">
                 <TextBlock Text="© 2021" Margin="0" Padding="0"/>
-                <Hyperlink NavigateUri="https://gitee.com/sourcegit/sourcegit.git" RequestNavigate="OnRequestNavigate" ToolTip="https://gitee.com/sourcegit/sourcegit.git">
+                <Hyperlink NavigateUri="https://github.com/sourcegit-scm/sourcegit.git" RequestNavigate="OnRequestNavigate" ToolTip="https://github.com/sourcegit-scm/sourcegit.git">
                     <Run Text="SourceGit."/>
                 </Hyperlink>
                 <TextBlock Text="All rights reserved." Margin="0" Padding="0"/>

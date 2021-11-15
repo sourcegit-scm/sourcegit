@@ -15,7 +15,7 @@ namespace SourceGit.Views {
         }
 
         private void Download(object sender, RoutedEventArgs e) {
-            var url = $"https://gitee.com/sourcegit/sourcegit/releases/{Version.TagName}";
+            var url = $"https://github.com/sourcegit-scm/sourcegit/releases/{Version.TagName}";
 #if NET48
             Process.Start(url);
 #else

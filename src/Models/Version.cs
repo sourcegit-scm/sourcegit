@@ -15,7 +15,7 @@ using System.Text;
 namespace SourceGit.Models {
 
     /// <summary>
-    ///     Gitee开放API中Release信息格式
+    ///     Github开放API中Release信息格式
     /// </summary>
     public class Version {
         [JsonPropertyName("id")]
