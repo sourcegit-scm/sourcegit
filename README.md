@@ -31,8 +31,8 @@ Pre-build Binaries：[Releases](https://github.com/sourcegit-scm/sourcegit/relea
 
 | File                     | .NET runtime       | Description                       |
 | ------------------------ | ------------------ | --------------------------------- |
-| SourceGit.net5.0.x86.exe | .NET 5 x86         | Need to be installed by user.     |
-| SourceGit.net5.0.x64.exe | .NET 5 x64         | Need to be installed by user.     |
+| SourceGit.net6.0.x86.exe | .NET 6 x86         | Need to be installed by user.     |
+| SourceGit.net6.0.x64.exe | .NET 6 x64         | Need to be installed by user.     |
 | SourceGit.net4.8.exe     | .NET Framework 4.8 | Windows 10/11 already installed.  |
 
 > NOTE: You need install Git first.
