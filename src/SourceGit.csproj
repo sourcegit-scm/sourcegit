@@ -11,8 +11,8 @@
         <Version>5.6</Version>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <StartupObject>SourceGit.App</StartupObject>
-        <PackageProjectUrl>https://gitee.com/sourcegit/SourceGit.git</PackageProjectUrl>
-        <RepositoryUrl>https://gitee.com/sourcegit/SourceGit.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/sourcegit-scm/sourcegit.git</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/sourcegit-scm/sourcegit.git</RepositoryUrl>
         <RepositoryType>Public</RepositoryType>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
