@@ -64,8 +64,7 @@
                 Margin="0,24,0,8"
                 Text="{DynamicResource Text.About.Title}"
                 HorizontalAlignment="Center"
-                TextOptions.TextFormattingMode="Ideal"
-                FontSize="18" FontWeight="Bold"/>
+                FontSize="18"/>
 
             <!-- Version -->
             <TextBlock 
@@ -86,6 +85,7 @@
                 HeadersVisibility="Column"
                 RowHeight="24"
                 ColumnHeaderHeight="24"
+                IsHitTestVisible="False"
                 BorderThickness="1,1,0,0"
                 BorderBrush="{DynamicResource Brush.Border0}">
                 <DataGrid.ColumnHeaderStyle>
