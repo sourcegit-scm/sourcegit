@@ -184,9 +184,10 @@
     <sys:String x:Key="Text.BranchCM.CopyName">复制分支名</sys:String>
     <sys:String x:Key="Text.BranchCM.UnsetUpstream">取消追踪</sys:String>
 
-    <sys:String x:Key="Text.RemoteCM.Fetch">拉取 '{0}' 更新</sys:String>
-    <sys:String x:Key="Text.RemoteCM.Edit">编辑 '{0}'</sys:String>
-    <sys:String x:Key="Text.RemoteCM.Delete">删除 '{0}'</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Fetch">拉取更新 ...</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Prune">清理远程已删除分支</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Edit">编辑 ...</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Delete">删除 ...</sys:String>
     <sys:String x:Key="Text.RemoteCM.CopyURL">复制远程地址</sys:String>
 
     <sys:String x:Key="Text.CommitCM.Reset">重置 '{0}' 到此处</sys:String>

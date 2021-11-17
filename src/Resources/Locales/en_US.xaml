@@ -185,10 +185,11 @@
     <sys:String x:Key="Text.BranchCM.CopyName">Copy Branch Name</sys:String>
     <sys:String x:Key="Text.BranchCM.UnsetUpstream">Unset Upstream</sys:String>
 
-    <sys:String x:Key="Text.RemoteCM.Fetch">Fetch '{0}'</sys:String>
-    <sys:String x:Key="Text.RemoteCM.Edit">Edit '{0}'</sys:String>
-    <sys:String x:Key="Text.RemoteCM.Delete">Delete '{0}'</sys:String>
-    <sys:String x:Key="Text.RemoteCM.CopyURL">Copy Remote URL</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Fetch">Fetch ...</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Prune">Prune</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Edit">Edit ...</sys:String>
+    <sys:String x:Key="Text.RemoteCM.Delete">Delete ...</sys:String>
+    <sys:String x:Key="Text.RemoteCM.CopyURL">Copy URL</sys:String>
 
     <sys:String x:Key="Text.CommitCM.Reset">Reset '{0}' to Here</sys:String>
     <sys:String x:Key="Text.CommitCM.Rebase">Rebase '{0}' to Here</sys:String>

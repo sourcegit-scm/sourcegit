@@ -23,6 +23,11 @@ namespace SourceGit.Commands {
             return Exec();
         }
 
+        public bool Prune(string name) {
+            Args = $"remote prune {name}";
+            return Exec();
+        }
+
         public bool SetURL(string name, string url) {
             Args = $"remote set-url {name} {url}";
             return Exec();

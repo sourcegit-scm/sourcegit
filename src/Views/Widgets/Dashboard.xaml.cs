@@ -745,21 +745,28 @@ namespace SourceGit.Views.Widgets {
 
         private void FillRemoteContextMenu(ContextMenu menu, Models.Remote remote) {
             var fetch = new MenuItem();
-            fetch.Header = App.Text("RemoteCM.Fetch", remote.Name);
+            fetch.Header = App.Text("RemoteCM.Fetch");
             fetch.Click += (o, e) => {
                 new Popups.Fetch(repo, remote.Name).Show();
                 e.Handled = true;
             };
 
+            var prune = new MenuItem();
+            prune.Header = App.Text("RemoteCM.Prune");
+            prune.Click += (o, e) => {
+                new Popups.Prune(repo.Path, remote.Name).ShowAndStart();
+                e.Handled = true;
+            };
+
             var edit = new MenuItem();
-            edit.Header = App.Text("RemoteCM.Edit", remote.Name);
+            edit.Header = App.Text("RemoteCM.Edit");
             edit.Click += (o, e) => {
                 new Popups.Remote(repo, remote).Show();
                 e.Handled = true;
             };
 
             var delete = new MenuItem();
-            delete.Header = App.Text("RemoteCM.Delete", remote.Name);
+            delete.Header = App.Text("RemoteCM.Delete");
             delete.Click += (o, e) => {
                 new Popups.DeleteRemote(repo.Path, remote.Name).Show();
                 e.Handled = true;
@@ -773,6 +780,7 @@ namespace SourceGit.Views.Widgets {
             };
 
             menu.Items.Add(fetch);
+            menu.Items.Add(prune);
             menu.Items.Add(new Separator());
             menu.Items.Add(edit);
             menu.Items.Add(delete);
