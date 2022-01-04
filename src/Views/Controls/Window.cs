@@ -25,7 +25,11 @@ namespace SourceGit.Views.Controls {
 
         public Window() {
             Style = FindResource("Style.Window") as Style;
-            Loaded += (_, __) => adornerLayer = AdornerLayer.GetAdornerLayer(Content as FrameworkElement);
+
+            Loaded += (_, __) => {
+                adornerLayer = AdornerLayer.GetAdornerLayer(Content as FrameworkElement);
+                OnStateChanged(null);
+            };
         }
 
         public static void AddAdorner(FrameworkElement windowContext, Adorner adorner) {
@@ -50,8 +54,6 @@ namespace SourceGit.Views.Controls {
         }
 
         protected override void OnStateChanged(EventArgs e) {
-            base.OnStateChanged(e);
-
             if (WindowState == WindowState.Maximized) {
                 if (!IsMaximized) IsMaximized = true;
                 BorderThickness = new Thickness(0);

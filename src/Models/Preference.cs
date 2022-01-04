@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Windows;
 
 namespace SourceGit.Models {
 
@@ -124,6 +125,11 @@ namespace SourceGit.Models {
             ///     最近一次设置的高度
             /// </summary>
             public double Height { get; set; } = 600;
+
+            /// <summary>
+            ///     保存上次关闭时是否最大化中
+            /// </summary>
+            public WindowState State { get; set; } = WindowState.Normal;
 
             /// <summary>
             ///     将提交信息面板与提交记录左右排布
