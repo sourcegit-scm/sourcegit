@@ -408,6 +408,11 @@ namespace SourceGit.Views.Widgets {
             (pages.Get("histories") as Histories)?.ChangeOrientation();
         }
 
+        private void OpenStatistics(object sender, RoutedEventArgs e) {
+            var dialog = new Statistics(repo.Path) { Owner = App.Current.MainWindow };
+            dialog.ShowDialog();
+        }
+
         private void OpenConfigure(object sender, RoutedEventArgs e) {
             new Popups.Configure(repo.Path).Show();
             e.Handled = true;

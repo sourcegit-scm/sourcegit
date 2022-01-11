@@ -110,6 +110,13 @@
 
                     <controls:IconButton
                         Margin="8,0"
+                        Padding="0,8"
+                        Icon="{DynamicResource Icon.Statistics}" 
+                        ToolTip="{DynamicResource Text.Dashboard.Statistics}"
+                        Click="OpenStatistics"/>
+
+                    <controls:IconButton
+                        Margin="8,0"
                         Padding="0,9,0,8"
                         Icon="{DynamicResource Icon.Loading}" 
                         ToolTip="{DynamicResource Text.Dashboard.Refresh}"

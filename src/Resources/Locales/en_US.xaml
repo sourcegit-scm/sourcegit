@@ -121,6 +121,7 @@
     <sys:String x:Key="Text.Dashboard.Terminal">Open In Git Bash</sys:String>
     <sys:String x:Key="Text.Dashboard.Refresh">Refresh</sys:String>
     <sys:String x:Key="Text.Dashboard.Search">Search Commit</sys:String>
+    <sys:String x:Key="Text.Dashboard.Statistics">Statistics</sys:String>
     <sys:String x:Key="Text.Dashboard.Configure">Configure this repository</sys:String>
     <sys:String x:Key="Text.Dashboard.Workspace">WORKSPACE</sys:String>
     <sys:String x:Key="Text.Dashboard.LocalBranches">LOCAL BRANCHES</sys:String>
@@ -486,6 +487,14 @@
     <sys:String x:Key="Text.Squash.Head">HEAD :</sys:String>
     <sys:String x:Key="Text.Squash.To">To :</sys:String>
     <sys:String x:Key="Text.Squash.Message">Reword :</sys:String>
+
+    <sys:String x:Key="Text.Statistics">Statistics</sys:String>
+    <sys:String x:Key="Text.Statistics.ThisWeek">WEEK</sys:String>
+    <sys:String x:Key="Text.Statistics.ThisMonth">MONTH</sys:String>
+    <sys:String x:Key="Text.Statistics.TotalCommitterCount">Total Committers: {0}</sys:String>
+    <sys:String x:Key="Text.Statistics.TotalCommitsCount">Total Commits：{0}</sys:String>
+    <sys:String x:Key="Text.Statistics.CommitterName">COMMITTER</sys:String>
+    <sys:String x:Key="Text.Statistics.CommitAmount">COMMITS</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>

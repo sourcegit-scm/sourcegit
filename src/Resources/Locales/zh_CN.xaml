@@ -120,6 +120,7 @@
     <sys:String x:Key="Text.Dashboard.Terminal">在GIT终端中打开</sys:String>
     <sys:String x:Key="Text.Dashboard.Refresh">重新加载</sys:String>
     <sys:String x:Key="Text.Dashboard.Search">查找提交</sys:String>
+    <sys:String x:Key="Text.Dashboard.Statistics">提交统计</sys:String>
     <sys:String x:Key="Text.Dashboard.Configure">配置本仓库</sys:String>
     <sys:String x:Key="Text.Dashboard.Workspace">工作区</sys:String>
     <sys:String x:Key="Text.Dashboard.LocalBranches">本地分支</sys:String>
@@ -485,6 +486,14 @@
     <sys:String x:Key="Text.Squash.Head">当前提交 :</sys:String>
     <sys:String x:Key="Text.Squash.To">合并到 :</sys:String>
     <sys:String x:Key="Text.Squash.Message">修改提交信息：</sys:String>
+
+    <sys:String x:Key="Text.Statistics">提交统计</sys:String>
+    <sys:String x:Key="Text.Statistics.ThisWeek">本周</sys:String>
+    <sys:String x:Key="Text.Statistics.ThisMonth">本月</sys:String>
+    <sys:String x:Key="Text.Statistics.TotalCommitterCount">提交者人数：{0}</sys:String>
+    <sys:String x:Key="Text.Statistics.TotalCommitsCount">总计提交次数：{0}</sys:String>
+    <sys:String x:Key="Text.Statistics.CommitterName">提交者</sys:String>
+    <sys:String x:Key="Text.Statistics.CommitAmount">提交次数</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
     <sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>
