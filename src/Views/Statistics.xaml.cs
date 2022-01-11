@@ -8,7 +8,6 @@ namespace SourceGit.Views {
     ///     提交统计
     /// </summary>
     public partial class Statistics : Controls.Window {
-        private static readonly string[] WEEK_DAYS = new string[] { "一", "二", "三", "四", "五", "六", "日" };
         private string repo = null;
 
         public Statistics(string repo) {
@@ -25,7 +24,7 @@ namespace SourceGit.Views {
             var mapsWeek = new Dictionary<int, Models.StatisticSample>();
             for (int i = 0; i < 7; i++) {
                 mapsWeek.Add(i, new Models.StatisticSample {
-                    Name = $"星期{WEEK_DAYS[i]}",
+                    Name = App.Text($"Weekday.{i}"),
                     Count = 0,
                 });
             }

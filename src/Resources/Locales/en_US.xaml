@@ -496,6 +496,14 @@
     <sys:String x:Key="Text.Statistics.CommitterName">COMMITTER</sys:String>
     <sys:String x:Key="Text.Statistics.CommitAmount">COMMITS</sys:String>
 
+    <sys:String x:Key="Text.Weekday.0">SUN</sys:String>
+    <sys:String x:Key="Text.Weekday.1">MON</sys:String>
+    <sys:String x:Key="Text.Weekday.2">TUE</sys:String>
+    <sys:String x:Key="Text.Weekday.3">WED</sys:String>
+    <sys:String x:Key="Text.Weekday.4">THU</sys:String>
+    <sys:String x:Key="Text.Weekday.5">FRI</sys:String>
+    <sys:String x:Key="Text.Weekday.6">SAT</sys:String>
+
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>
     <sys:String x:Key="Text.MissingBash">Can NOT locate bash.exe. Make sure bash.exe exists under the same folder with git.exe</sys:String>
