@@ -491,6 +491,7 @@
     <sys:String x:Key="Text.Statistics">Statistics</sys:String>
     <sys:String x:Key="Text.Statistics.ThisWeek">WEEK</sys:String>
     <sys:String x:Key="Text.Statistics.ThisMonth">MONTH</sys:String>
+    <sys:String x:Key="Text.Statistics.ThisYear">YEAR</sys:String>
     <sys:String x:Key="Text.Statistics.TotalCommitterCount">Total Committers: {0}</sys:String>
     <sys:String x:Key="Text.Statistics.TotalCommitsCount">Total Commits：{0}</sys:String>
     <sys:String x:Key="Text.Statistics.CommitterName">COMMITTER</sys:String>
@@ -503,6 +504,19 @@
     <sys:String x:Key="Text.Weekday.4">THU</sys:String>
     <sys:String x:Key="Text.Weekday.5">FRI</sys:String>
     <sys:String x:Key="Text.Weekday.6">SAT</sys:String>
+
+    <sys:String x:Key="Text.Month.1">Jan</sys:String>
+    <sys:String x:Key="Text.Month.2">Feb</sys:String>
+    <sys:String x:Key="Text.Month.3">Mar</sys:String>
+    <sys:String x:Key="Text.Month.4">Apr</sys:String>
+    <sys:String x:Key="Text.Month.5">May</sys:String>
+    <sys:String x:Key="Text.Month.6">Jun</sys:String>
+    <sys:String x:Key="Text.Month.7">Jul</sys:String>
+    <sys:String x:Key="Text.Month.8">Aug</sys:String>
+    <sys:String x:Key="Text.Month.9">Sep</sys:String>
+    <sys:String x:Key="Text.Month.10">Oct</sys:String>
+    <sys:String x:Key="Text.Month.11">Nov</sys:String>
+    <sys:String x:Key="Text.Month.12">Dec</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>

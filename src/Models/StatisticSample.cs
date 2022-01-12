@@ -4,6 +4,10 @@
     /// </summary>
     public class StatisticSample {
         /// <summary>
+        ///     在图表中的顺序
+        /// </summary>
+        public int Index { get; set; }
+        /// <summary>
         ///     样品名
         /// </summary>
         public string Name { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -25,6 +26,7 @@ namespace SourceGit.Views {
             for (int i = 0; i < 7; i++) {
                 mapsWeek.Add(i, new Models.StatisticSample {
                     Name = App.Text($"Weekday.{i}"),
+                    Index = i,
                     Count = 0,
                 });
             }
@@ -35,23 +37,39 @@ namespace SourceGit.Views {
             for (int i = 1; i <= maxDays; i++) {
                 mapsMonth.Add(i, new Models.StatisticSample {
                     Name = $"{i}",
+                    Index = i,
+                    Count = 0,
+                });
+            }
+
+            var mapsYear = new Dictionary<int, Models.StatisticSample>();
+            for (int i = 1; i <= 12; i++) {
+                mapsYear.Add(i, new Models.StatisticSample {
+                    Name = App.Text($"Month.{i}"),
+                    Index = i,
                     Count = 0,
                 });
             }
 
             var mapCommitterWeek = new Dictionary<string, Models.StatisticSample>();
             var mapCommitterMonth = new Dictionary<string, Models.StatisticSample>();
+            var mapCommitterYear = new Dictionary<string, Models.StatisticSample>();
+
             var weekStart = today.AddSeconds(-(int)today.DayOfWeek * 3600 * 24 - today.Hour * 3600 - today.Minute * 60 - today.Second);
             var weekEnd = weekStart.AddDays(7);
+            var month = today.Month;
 
-            var limits = $"--branches --remotes --since=\"{today.ToString("yyyy-MM-01 00:00:00")}\"";
+            var limits = $"--branches --remotes --since=\"{today.ToString("yyyy-01-01 00:00:00")}\"";
             var commits = new Commands.Commits(repo, limits).Result();
-            var totalCommitsMonth = commits.Count;
             var totalCommitsWeek = 0;
+            var totalCommitsMonth = 0;
+            var totalCommitsYear = commits.Count;
             foreach (var c in commits) {
                 var commitTime = DateTime.Parse(c.Committer.Time);
                 if (commitTime.CompareTo(weekStart) >= 0 && commitTime.CompareTo(weekEnd) < 0) {
                     mapsWeek[(int)commitTime.DayOfWeek].Count++;
+                    totalCommitsWeek++;
+
                     if (mapCommitterWeek.ContainsKey(c.Committer.Name)) {
                         mapCommitterWeek[c.Committer.Name].Count++;
                     } else {
@@ -60,53 +78,55 @@ namespace SourceGit.Views {
                             Count = 1,
                         };
                     }
-                    
-                    totalCommitsWeek++;
                 }
 
-                mapsMonth[commitTime.Day].Count++;
+                if (commitTime.Month == month) {
+                    mapsMonth[commitTime.Day].Count++;
+                    totalCommitsMonth++;
 
-                if (mapCommitterMonth.ContainsKey(c.Committer.Name)) {
-                    mapCommitterMonth[c.Committer.Name].Count++;
+                    if (mapCommitterMonth.ContainsKey(c.Committer.Name)) {
+                        mapCommitterMonth[c.Committer.Name].Count++;
+                    } else {
+                        mapCommitterMonth[c.Committer.Name] = new Models.StatisticSample {
+                            Name = c.Committer.Name,
+                            Count = 1,
+                        };
+                    }
+                }
+
+                mapsYear[commitTime.Month].Count++;
+                if (mapCommitterYear.ContainsKey(c.Committer.Name)) {
+                    mapCommitterYear[c.Committer.Name].Count++;
                 } else {
-                    mapCommitterMonth[c.Committer.Name] = new Models.StatisticSample {
+                    mapCommitterYear[c.Committer.Name] = new Models.StatisticSample {
                         Name = c.Committer.Name,
                         Count = 1,
                     };
                 }
             }
 
-            var samplesChartWeek = new List<Models.StatisticSample>();
-            var samplesChartMonth = new List<Models.StatisticSample>();
-            var samplesCommittersWeek = new List<Models.StatisticSample>();
-            var samplesCommittersMonth = new List<Models.StatisticSample>();
-            for (int i = 0; i < 7; i++) samplesChartWeek.Add(mapsWeek[i]);
-            for (int i = 1; i <= maxDays; i++) samplesChartMonth.Add(mapsMonth[i]);
-            foreach (var kv in mapCommitterWeek) samplesCommittersWeek.Add(kv.Value);
-            foreach (var kv in mapCommitterMonth) samplesCommittersMonth.Add(kv.Value);
+            SetPage(pageWeek, mapCommitterWeek.Values.ToList(), mapsWeek.Values.ToList(), totalCommitsWeek);
+            SetPage(pageMonth, mapCommitterMonth.Values.ToList(), mapsMonth.Values.ToList(), totalCommitsMonth);
+            SetPage(pageYear, mapCommitterYear.Values.ToList(), mapsYear.Values.ToList(), totalCommitsYear);
+
             mapsMonth.Clear();
             mapsWeek.Clear();
+            mapsYear.Clear();
             mapCommitterMonth.Clear();
             mapCommitterWeek.Clear();
+            mapCommitterYear.Clear();
             commits.Clear();
-            samplesCommittersWeek.Sort((x, y) => y.Count - x.Count);
-            samplesCommittersMonth.Sort((x, y) => y.Count - x.Count);
 
             Dispatcher.Invoke(() => {
                 loading.IsAnimating = false;
                 loading.Visibility = Visibility.Collapsed;
-
-                chartWeek.SetData(samplesChartWeek);
-                chartMonth.SetData(samplesChartMonth);
-
-                lstCommitterWeek.ItemsSource = samplesCommittersWeek;
-                lstCommitterMonth.ItemsSource = samplesCommittersMonth;
-
-                txtMemberCountWeek.Text = App.Text("Statistics.TotalCommitterCount", samplesCommittersWeek.Count);
-                txtMemberCountMonth.Text = App.Text("Statistics.TotalCommitterCount", samplesCommittersMonth.Count);
-                txtCommitCountWeek.Text = App.Text("Statistics.TotalCommitsCount", totalCommitsWeek);
-                txtCommitCountMonth.Text = App.Text("Statistics.TotalCommitsCount", totalCommitsMonth);
             });
+        }
+
+        private void SetPage(Widgets.StatisticsPage page, List<Models.StatisticSample> committers, List<Models.StatisticSample> commits, int total) {
+            committers.Sort((x, y) => y.Count - x.Count);
+            commits.Sort((x, y) => x.Index - y.Index);
+            page.SetData(committers, commits, total);
         }
     }
 }

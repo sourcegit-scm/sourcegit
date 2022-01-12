@@ -490,6 +490,7 @@
     <sys:String x:Key="Text.Statistics">提交统计</sys:String>
     <sys:String x:Key="Text.Statistics.ThisWeek">本周</sys:String>
     <sys:String x:Key="Text.Statistics.ThisMonth">本月</sys:String>
+    <sys:String x:Key="Text.Statistics.ThisYear">本年</sys:String>
     <sys:String x:Key="Text.Statistics.TotalCommitterCount">提交者人数：{0}</sys:String>
     <sys:String x:Key="Text.Statistics.TotalCommitsCount">总计提交次数：{0}</sys:String>
     <sys:String x:Key="Text.Statistics.CommitterName">提交者</sys:String>
@@ -502,6 +503,19 @@
     <sys:String x:Key="Text.Weekday.4">星期四</sys:String>
     <sys:String x:Key="Text.Weekday.5">星期五</sys:String>
     <sys:String x:Key="Text.Weekday.6">星期六</sys:String>
+
+    <sys:String x:Key="Text.Month.1">1月</sys:String>
+    <sys:String x:Key="Text.Month.2">2月</sys:String>
+    <sys:String x:Key="Text.Month.3">3月</sys:String>
+    <sys:String x:Key="Text.Month.4">4月</sys:String>
+    <sys:String x:Key="Text.Month.5">5月</sys:String>
+    <sys:String x:Key="Text.Month.6">6月</sys:String>
+    <sys:String x:Key="Text.Month.7">7月</sys:String>
+    <sys:String x:Key="Text.Month.8">8月</sys:String>
+    <sys:String x:Key="Text.Month.9">9月</sys:String>
+    <sys:String x:Key="Text.Month.10">10月</sys:String>
+    <sys:String x:Key="Text.Month.11">11月</sys:String>
+    <sys:String x:Key="Text.Month.12">12月</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
     <sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>
