@@ -41,7 +41,7 @@ namespace SourceGit.Views {
 
             var mapCommitterWeek = new Dictionary<string, Models.StatisticSample>();
             var mapCommitterMonth = new Dictionary<string, Models.StatisticSample>();
-            var weekStart = today.AddDays(-(int)today.DayOfWeek).AddSeconds(-today.Hour * 3600 - today.Minute * 60 - today.Second);
+            var weekStart = today.AddSeconds(-(int)today.DayOfWeek * 3600 * 24 - today.Hour * 3600 - today.Minute * 60 - today.Second);
             var weekEnd = weekStart.AddDays(7);
 
             var limits = $"--branches --remotes --since=\"{today.ToString("yyyy-MM-01 00:00:00")}\"";
