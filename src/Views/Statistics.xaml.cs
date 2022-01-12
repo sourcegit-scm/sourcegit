@@ -44,7 +44,7 @@ namespace SourceGit.Views {
             var week = today.DayOfWeek;
             var month = today.Month;
 
-            var limits = $"--since=\"{today.ToString("yyyy-MM-01 00:00:00")}\"";
+            var limits = $"--branches --remotes --since=\"{today.ToString("yyyy-MM-01 00:00:00")}\"";
             var commits = new Commands.Commits(repo, limits).Result();
             var totalCommitsMonth = commits.Count;
             var totalCommitsWeek = 0;
