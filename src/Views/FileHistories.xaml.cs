@@ -8,12 +8,12 @@ namespace SourceGit.Views {
     /// <summary>
     ///     文件历史
     /// </summary>
-    public partial class Histories : Controls.Window {
+    public partial class FileHistories : Controls.Window {
         private string repo = null;
         private string file = null;
         private bool isLFSEnabled = false;
 
-        public Histories(string repo, string file) {
+        public FileHistories(string repo, string file) {
             this.repo = repo;
             this.file = file;
             this.isLFSEnabled = new Commands.LFS(repo).IsFiltered(file);

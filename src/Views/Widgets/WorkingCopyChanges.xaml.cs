@@ -403,7 +403,7 @@ namespace SourceGit.Views.Widgets {
                     var history = new MenuItem();
                     history.Header = App.Text("FileHistory");
                     history.Click += (o, e) => {
-                        var viewer = new Views.Histories(repo, node.Path);
+                        var viewer = new FileHistories(repo, node.Path);
                         viewer.Show();
                         e.Handled = true;
                     };
@@ -517,7 +517,7 @@ namespace SourceGit.Views.Widgets {
                 var history = new MenuItem();
                 history.Header = App.Text("FileHistory");
                 history.Click += (o, e) => {
-                    var viewer = new Views.Histories(repo, change.Path);
+                    var viewer = new FileHistories(repo, change.Path);
                     viewer.Show();
                     e.Handled = true;
                 };

@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-#if NET6_0_OR_GREATER
+#if NET6_0
 using System.Net.Http;
 #else
 using System.Net;
@@ -50,7 +50,7 @@ namespace SourceGit.Models {
                 Preference.Instance.General.LastCheckDay = curDayOfYear;
                 Task.Run(async () => {
                     try {
-#if NET6_0_OR_GREATER
+#if NET6_0
                         var req = new HttpClient();
                         var rsp = await req.GetAsync("https://api.github.com/repos/sourcegit-scm/sourcegit/releases/latest");
                         rsp.EnsureSuccessStatusCode();

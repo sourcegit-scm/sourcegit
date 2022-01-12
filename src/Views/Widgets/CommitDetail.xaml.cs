@@ -133,7 +133,7 @@ namespace SourceGit.Views.Widgets {
                     history.Header = App.Text("FileHistory");
                     history.IsEnabled = change.Index != Models.Change.Status.Deleted;
                     history.Click += (_, ev) => {
-                        var viewer = new Views.Histories(repo, change.Path);
+                        var viewer = new FileHistories(repo, change.Path);
                         viewer.Show();
                         ev.Handled = true;
                     };

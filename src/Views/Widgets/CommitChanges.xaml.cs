@@ -237,7 +237,7 @@ namespace SourceGit.Views.Widgets {
                 var history = new MenuItem();
                 history.Header = App.Text("FileHistory");
                 history.Click += (o, ev) => {
-                    var viewer = new Views.Histories(repo, path);
+                    var viewer = new FileHistories(repo, path);
                     viewer.Show();
                     ev.Handled = true;
                 };

@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-#if NET6_0_OR_GREATER
+#if NET6_0
 using System.Net.Http;
 #endif
 
@@ -196,7 +196,7 @@ namespace SourceGit.Views.Controls {
                 if (!requesting.ContainsKey(email)) return;
 
                 try {
-#if NET6_0_OR_GREATER
+#if NET6_0
                     var req = new HttpClient().GetAsync(Models.Preference.Instance.General.AvatarServer + md5 + "?d=404");
                     req.Wait();
 
