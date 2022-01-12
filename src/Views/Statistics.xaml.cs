@@ -41,8 +41,8 @@ namespace SourceGit.Views {
 
             var mapCommitterWeek = new Dictionary<string, Models.StatisticSample>();
             var mapCommitterMonth = new Dictionary<string, Models.StatisticSample>();
-            var week = today.DayOfWeek;
-            var month = today.Month;
+            var weekStart = today.AddDays(-(int)today.DayOfWeek).AddSeconds(-today.Hour * 3600 - today.Minute * 60 - today.Second);
+            var weekEnd = weekStart.AddDays(7);
 
             var limits = $"--branches --remotes --since=\"{today.ToString("yyyy-MM-01 00:00:00")}\"";
             var commits = new Commands.Commits(repo, limits).Result();
@@ -50,7 +50,7 @@ namespace SourceGit.Views {
             var totalCommitsWeek = 0;
             foreach (var c in commits) {
                 var commitTime = DateTime.Parse(c.Committer.Time);
-                if (IsSameWeek(today, commitTime)) {
+                if (commitTime.CompareTo(weekStart) >= 0 && commitTime.CompareTo(weekEnd) < 0) {
                     mapsWeek[(int)commitTime.DayOfWeek].Count++;
                     if (mapCommitterWeek.ContainsKey(c.Committer.Name)) {
                         mapCommitterWeek[c.Committer.Name].Count++;
@@ -107,13 +107,6 @@ namespace SourceGit.Views {
                 txtCommitCountWeek.Text = App.Text("Statistics.TotalCommitsCount", totalCommitsWeek);
                 txtCommitCountMonth.Text = App.Text("Statistics.TotalCommitsCount", totalCommitsMonth);
             });
-        }
-
-        private bool IsSameWeek(DateTime t1, DateTime t2) {
-            double diffDay = t1.Subtract(t2).Duration().TotalDays;
-            if (diffDay >= 7) return false;
-
-            return t1.CompareTo(t2) > 0 ? (t1.DayOfWeek >= t2.DayOfWeek) : t1.DayOfWeek <= t2.DayOfWeek;
         }
     }
 }
