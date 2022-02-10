@@ -413,6 +413,11 @@ namespace SourceGit.Views.Widgets {
             dialog.ShowDialog();
         }
 
+        private void OpenCleanup(object sender, RoutedEventArgs e) {
+            new Popups.Cleanup(repo.Path).ShowAndStart();
+            e.Handled = true;
+        }
+
         private void OpenConfigure(object sender, RoutedEventArgs e) {
             new Popups.Configure(repo.Path).Show();
             e.Handled = true;

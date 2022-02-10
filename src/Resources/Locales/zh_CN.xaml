@@ -121,6 +121,7 @@
     <sys:String x:Key="Text.Dashboard.Refresh">重新加载</sys:String>
     <sys:String x:Key="Text.Dashboard.Search">查找提交</sys:String>
     <sys:String x:Key="Text.Dashboard.Statistics">提交统计</sys:String>
+    <sys:String x:Key="Text.Dashboard.Clean">清理本仓库(GC)</sys:String>
     <sys:String x:Key="Text.Dashboard.Configure">配置本仓库</sys:String>
     <sys:String x:Key="Text.Dashboard.Workspace">工作区</sys:String>
     <sys:String x:Key="Text.Dashboard.LocalBranches">本地分支</sys:String>

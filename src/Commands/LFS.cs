@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 namespace SourceGit.Commands {
@@ -6,6 +7,21 @@ namespace SourceGit.Commands {
     /// </summary>
     public class LFS {
         private string repo;
+
+        private class PruneCmd : Command {
+            private Action<string> handler;
+
+            public PruneCmd(string repo, Action<string> onProgress) {
+                Cwd = repo;
+                Args = "lfs prune";
+                TraitErrorAsOutput = true;
+                handler = onProgress;
+            }
+
+            public override void OnReadline(string line) {
+                handler?.Invoke(line);
+            }
+        }
 
         public LFS(string repo) {
             this.repo = repo;
@@ -26,6 +42,10 @@ namespace SourceGit.Commands {
 
             var rs = cmd.ReadToEnd();
             return rs.Output.Contains("filter\0lfs");
+        }
+
+        public void Prune(Action<string> onProgress) {
+            new PruneCmd(repo, onProgress).Exec();
         }
     }
 }

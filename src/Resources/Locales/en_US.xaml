@@ -122,6 +122,7 @@
     <sys:String x:Key="Text.Dashboard.Refresh">Refresh</sys:String>
     <sys:String x:Key="Text.Dashboard.Search">Search Commit</sys:String>
     <sys:String x:Key="Text.Dashboard.Statistics">Statistics</sys:String>
+    <sys:String x:Key="Text.Dashboard.Clean">Cleanup(GC &amp; Prune)</sys:String>
     <sys:String x:Key="Text.Dashboard.Configure">Configure this repository</sys:String>
     <sys:String x:Key="Text.Dashboard.Workspace">WORKSPACE</sys:String>
     <sys:String x:Key="Text.Dashboard.LocalBranches">LOCAL BRANCHES</sys:String>

@@ -125,6 +125,13 @@
                     <controls:IconButton
                         Margin="8,0"
                         Padding="0,8"
+                        Icon="{DynamicResource Icon.Clean}" 
+                        ToolTip="{DynamicResource Text.Dashboard.Clean}"
+                        Click="OpenCleanup"/>
+
+                    <controls:IconButton
+                        Margin="8,0"
+                        Padding="0,8"
                         Icon="{DynamicResource Icon.Setting}" 
                         ToolTip="{DynamicResource Text.Dashboard.Configure}"
                         Click="OpenConfigure"/>
