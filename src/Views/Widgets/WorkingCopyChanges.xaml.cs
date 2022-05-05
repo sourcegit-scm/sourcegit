@@ -140,7 +140,13 @@ namespace SourceGit.Views.Widgets {
         }
 
         public void StageAll() {
-            DoStage(null);
+            if (Models.Preference.Instance.Git.IncludeUntrackedInWC) {
+                DoStage(null);
+            } else {
+                var changes = new List<string>();
+                foreach (var c in Changes) changes.Add(c.Path);
+                DoStage(changes);
+            }
         }
 
         public void UnstageSelected() {

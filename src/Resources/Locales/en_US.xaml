@@ -433,6 +433,7 @@
     <sys:String x:Key="Text.WorkingCopy.CommitAndPush">COMMIT &amp; PUSH</sys:String>
     <sys:String x:Key="Text.WorkingCopy.NoCommitHistories">NO RECENT INPUT MESSAGES</sys:String>
     <sys:String x:Key="Text.WorkingCopy.HasCommitHistories">RECENT INPUT MESSAGES</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.IncludeUntracked">INCLUDE UNTRACKED FILES</sys:String>
 
     <sys:String x:Key="Text.Conflict.CherryPick">Cherry-Pick merge request detected! Press 'Abort' to restore original HEAD</sys:String>
     <sys:String x:Key="Text.Conflict.Rebase">Rebase merge request detected! Press 'Abort' to restore original HEAD</sys:String>

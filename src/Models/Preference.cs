@@ -94,6 +94,11 @@ namespace SourceGit.Models {
             ///     启用自动拉取远程变更（每10分钟一次）
             /// </summary>
             public bool AutoFetchRemotes { get; set; } = true;
+
+            /// <summary>
+            ///     在本地变更列表中显示未跟踪文件
+            /// </summary>
+            public bool IncludeUntrackedInWC { get; set; } = true;
         }
 
         /// <summary>

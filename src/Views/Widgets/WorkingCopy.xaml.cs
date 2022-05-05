@@ -82,6 +82,11 @@ namespace SourceGit.Views.Widgets {
             Validation.ClearInvalid(txtCommitMessage.GetBindingExpression(TextBox.TextProperty));
         }
 
+        public void ToggleIncludeUntracked(object sender, RoutedEventArgs e) {
+            var watcher = Models.Watcher.Get(repo.Path);
+            if (watcher != null) watcher.RefreshWC();
+        }
+
         #region STAGE_UNSTAGE
         private void StageSelected(object sender, RoutedEventArgs e) {
             unstagedContainer.StageSelected();

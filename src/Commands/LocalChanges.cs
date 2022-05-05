@@ -8,11 +8,12 @@ namespace SourceGit.Commands {
     /// </summary>
     public class LocalChanges : Command {
         private static readonly Regex REG_FORMAT = new Regex(@"^(\s?[\w\?]{1,4})\s+(.+)$");
+        private static readonly string[] UNTRACKED = new string[] { "no", "all" };
         private List<Models.Change> changes = new List<Models.Change>();
 
-        public LocalChanges(string path) {
+        public LocalChanges(string path, bool includeUntracked = true) {
             Cwd = path;
-            Args = "status -uall --ignore-submodules=dirty --porcelain";
+            Args = $"status -u{UNTRACKED[includeUntracked ? 1 : 0]} --ignore-submodules=dirty --porcelain";
         }
 
         public List<Models.Change> Result() {

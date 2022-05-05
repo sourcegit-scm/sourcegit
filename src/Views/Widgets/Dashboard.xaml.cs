@@ -245,7 +245,7 @@ namespace SourceGit.Views.Widgets {
             if (!isFirstLoaded) return;
 
             Task.Run(() => {
-                var changes = new Commands.LocalChanges(repo.Path).Result();
+                var changes = new Commands.LocalChanges(repo.Path, Models.Preference.Instance.Git.IncludeUntrackedInWC).Result();
                 Dispatcher.Invoke(() => {
                     badgeLocalChanges.Label = $"{changes.Count}";
                     (pages.Get("working_copy") as WorkingCopy).SetData(changes);

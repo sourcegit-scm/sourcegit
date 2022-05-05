@@ -40,6 +40,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <controls:ChangeDisplaySwitcher
@@ -60,15 +61,23 @@
                         x:Name="iconStaging"
                         IsAnimating="{Binding ElementName=unstagedContainer, Path=IsStaging}"
                         Visibility="{Binding ElementName=unstagedContainer, Path=IsStaging, Converter={StaticResource BoolToCollapsed}}"/>
-                    <controls:IconButton
+                    <ToggleButton
                         Grid.Column="4"
+                        Width="14" Height="14"
+                        Margin="4,0"
+                        Style="{StaticResource Style.ToggleButton.Eye}"
+                        ToolTip="{DynamicResource Text.WorkingCopy.IncludeUntracked}"
+                        IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Git.IncludeUntrackedInWC, Mode=TwoWay}"
+                        Checked="ToggleIncludeUntracked" Unchecked="ToggleIncludeUntracked"/>
+                    <controls:IconButton
+                        Grid.Column="5"
                         Click="StageSelected"
                         Width="14" Height="14"
                         Margin="4,0"
                         Icon="{StaticResource Icon.Down}"
                         ToolTip="{DynamicResource Text.WorkingCopy.Unstaged.Stage}"/>
                     <controls:IconButton
-                        Grid.Column="5"
+                        Grid.Column="6"
                         Click="StageAll"
                         Width="14" Height="14"
                         Margin="4,0"
