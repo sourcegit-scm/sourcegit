@@ -74,13 +74,13 @@
                     <controls:IconButton
                         Margin="16,0"
                         Padding="0,8"
-                        Icon="{DynamicResource Icon.SaveStash}" 
+                        Icon="{DynamicResource Icon.Stashes}" 
                         ToolTip="{DynamicResource Text.Stash}"
                         Click="OpenStash"/>
                     <controls:IconButton
                         Margin="16,0"
                         Padding="0,8"
-                        Icon="{DynamicResource Icon.Apply}" 
+                        Icon="{DynamicResource Icon.Diff}" 
                         ToolTip="{DynamicResource Text.Apply}"
                         Click="OpenApply"/>
 

@@ -671,14 +671,22 @@ namespace SourceGit.Views.Widgets {
                 e.Handled = true;
             };
 
+            var createBranchIcon = new System.Windows.Shapes.Path();
+            createBranchIcon.Data = FindResource("Icon.Branch.Add") as Geometry;
+            createBranchIcon.Width = 10;
             var createBranch = new MenuItem();
+            createBranch.Icon = createBranchIcon;
             createBranch.Header = App.Text("CreateBranch");
             createBranch.Click += (o, e) => {
                 new Popups.CreateBranch(repo, branch).Show();
                 e.Handled = true;
             };
 
+            var createTagIcon = new System.Windows.Shapes.Path();
+            createTagIcon.Data = FindResource("Icon.Tag.Add") as Geometry;
+            createTagIcon.Width = 10;
             var createTag = new MenuItem();
+            createTag.Icon = createTagIcon;
             createTag.Header = App.Text("CreateTag");
             createTag.Click += (o, e) => {
                 new Popups.CreateTag(repo, branch).Show();
@@ -735,7 +743,11 @@ namespace SourceGit.Views.Widgets {
                 menu.Items.Add(tracking);
             }
 
+            var archiveIcon = new System.Windows.Shapes.Path();
+            archiveIcon.Data = FindResource("Icon.Archive") as Geometry;
+            archiveIcon.Width = 10;
             var archive = new MenuItem();
+            archive.Icon = archiveIcon;
             archive.Header = App.Text("Archive");
             archive.Click += (o, e) => {
                 new Popups.Archive(repo.Path, branch).Show();
@@ -858,21 +870,33 @@ namespace SourceGit.Views.Widgets {
                 e.Handled = true;
             };
 
+            var createBranchIcon = new System.Windows.Shapes.Path();
+            createBranchIcon.Data = FindResource("Icon.Branch.Add") as Geometry;
+            createBranchIcon.Width = 10;
             var createBranch = new MenuItem();
+            createBranch.Icon = createBranchIcon;
             createBranch.Header = App.Text("CreateBranch");
             createBranch.Click += (o, e) => {
                 new Popups.CreateBranch(repo, branch).Show();
                 e.Handled = true;
             };
 
+            var createTagIcon = new System.Windows.Shapes.Path();
+            createTagIcon.Data = FindResource("Icon.Tag.Add") as Geometry;
+            createTagIcon.Width = 10;
             var createTag = new MenuItem();
+            createTag.Icon = createTagIcon;
             createTag.Header = App.Text("CreateTag");
             createTag.Click += (o, e) => {
                 new Popups.CreateTag(repo, branch).Show();
                 e.Handled = true;
             };
 
+            var archiveIcon = new System.Windows.Shapes.Path();
+            archiveIcon.Data = FindResource("Icon.Archive") as Geometry;
+            archiveIcon.Width = 10;
             var archive = new MenuItem();
+            archive.Icon = archiveIcon;
             archive.Header = App.Text("Archive");
             archive.Click += (o, e) => {
                 new Popups.Archive(repo.Path, branch).Show();
@@ -916,7 +940,11 @@ namespace SourceGit.Views.Widgets {
             var tag = tagList.SelectedItem as Models.Tag;
             if (tag == null) return;
 
+            var createBranchIcon = new System.Windows.Shapes.Path();
+            createBranchIcon.Data = FindResource("Icon.Branch.Add") as Geometry;
+            createBranchIcon.Width = 10;
             var createBranch = new MenuItem();
+            createBranch.Icon = createBranchIcon;
             createBranch.Header = App.Text("CreateBranch");
             createBranch.Click += (o, ev) => {
                 new Popups.CreateBranch(repo, tag).Show();
@@ -938,7 +966,11 @@ namespace SourceGit.Views.Widgets {
                 ev.Handled = true;
             };
 
+            var archiveIcon = new System.Windows.Shapes.Path();
+            archiveIcon.Data = FindResource("Icon.Archive") as Geometry;
+            archiveIcon.Width = 10;
             var archive = new MenuItem();
+            archive.Icon = archiveIcon;
             archive.Header = App.Text("Archive");
             archive.Click += (o, ev) => {
                 new Popups.Archive(repo.Path, tag).Show();

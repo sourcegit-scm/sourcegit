@@ -369,14 +369,22 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
+                var stashIcon = new System.Windows.Shapes.Path();
+                stashIcon.Data = FindResource("Icon.Stashes") as System.Windows.Media.Geometry;
+                stashIcon.Width = 10;
                 var stash = new MenuItem();
+                stash.Icon = stashIcon;
                 stash.Header = App.Text("FileCM.Stash");
                 stash.Click += (o, e) => {
                     new Popups.Stash(repo, changes).Show();
                     e.Handled = true;
                 };
 
+                var patchIcon = new System.Windows.Shapes.Path();
+                patchIcon.Data = FindResource("Icon.Diff") as System.Windows.Media.Geometry;
+                patchIcon.Width = 10;
                 var patch = new MenuItem();
+                patch.Icon = patchIcon;
                 patch.Header = App.Text("FileCM.SaveAsPatch");
                 patch.Click += (o, e) => {
                     var dialog = new SaveFileDialog();
@@ -432,14 +440,22 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
+                var stashIcon = new System.Windows.Shapes.Path();
+                stashIcon.Data = FindResource("Icon.Stashes") as System.Windows.Media.Geometry;
+                stashIcon.Width = 10;
                 var stash = new MenuItem();
+                stash.Icon = stashIcon;
                 stash.Header = App.Text("FileCM.StashMulti", changes.Count);
                 stash.Click += (o, e) => {
                     new Popups.Stash(repo, changes).Show();
                     e.Handled = true;
                 };
 
+                var patchIcon = new System.Windows.Shapes.Path();
+                patchIcon.Data = FindResource("Icon.Diff") as System.Windows.Media.Geometry;
+                patchIcon.Width = 10;
                 var patch = new MenuItem();
+                patch.Icon = patchIcon;
                 patch.Header = App.Text("FileCM.SaveAsPatch");
                 patch.Click += (o, e) => {
                     var dialog = new SaveFileDialog();
@@ -491,14 +507,22 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
+                var stashIcon = new System.Windows.Shapes.Path();
+                stashIcon.Data = FindResource("Icon.Stashes") as System.Windows.Media.Geometry;
+                stashIcon.Width = 10;
                 var stash = new MenuItem();
+                stash.Icon = stashIcon;
                 stash.Header = App.Text("FileCM.Stash");
                 stash.Click += (o, e) => {
                     new Popups.Stash(repo, changes).Show();
                     e.Handled = true;
                 };
 
+                var patchIcon = new System.Windows.Shapes.Path();
+                patchIcon.Data = FindResource("Icon.Diff") as System.Windows.Media.Geometry;
+                patchIcon.Width = 10;
                 var patch = new MenuItem();
+                patch.Icon = patchIcon;
                 patch.Header = App.Text("FileCM.SaveAsPatch");
                 patch.Click += (o, e) => {
                     var dialog = new SaveFileDialog();
@@ -553,14 +577,22 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
+                var stashIcon = new System.Windows.Shapes.Path();
+                stashIcon.Data = FindResource("Icon.Stashes") as System.Windows.Media.Geometry;
+                stashIcon.Width = 10;
                 var stash = new MenuItem();
+                stash.Icon = stashIcon;
                 stash.Header = App.Text("FileCM.StashMulti", changes.Count);
                 stash.Click += (o, e) => {
                     new Popups.Stash(repo, changes).Show();
                     e.Handled = true;
                 };
 
+                var patchIcon = new System.Windows.Shapes.Path();
+                patchIcon.Data = FindResource("Icon.Diff") as System.Windows.Media.Geometry;
+                patchIcon.Width = 10;
                 var patch = new MenuItem();
+                patch.Icon = patchIcon;
                 patch.Header = App.Text("FileCM.SaveAsPatch");
                 patch.Click += (o, e) => {
                     var dialog = new SaveFileDialog();

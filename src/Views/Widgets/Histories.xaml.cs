@@ -344,7 +344,11 @@ namespace SourceGit.Views.Widgets {
 
             menu.Items.Add(new Separator());
 
+            var createBranchIcon = new Path();
+            createBranchIcon.Data = FindResource("Icon.Branch.Add") as Geometry;
+            createBranchIcon.Width = 10;
             var createBranch = new MenuItem();
+            createBranch.Icon = createBranchIcon;
             createBranch.Header = App.Text("CreateBranch");
             createBranch.Click += (o, e) => {
                 new Popups.CreateBranch(repo, commit).Show();
@@ -352,7 +356,11 @@ namespace SourceGit.Views.Widgets {
             };
             menu.Items.Add(createBranch);
 
+            var createTagIcon = new Path();
+            createTagIcon.Data = FindResource("Icon.Tag.Add") as Geometry;
+            createTagIcon.Width = 10;
             var createTag = new MenuItem();
+            createTag.Icon = createTagIcon;
             createTag.Header = App.Text("CreateTag");
             createTag.Click += (o, e) => {
                 new Popups.CreateTag(repo, commit).Show();
@@ -361,7 +369,11 @@ namespace SourceGit.Views.Widgets {
             menu.Items.Add(createTag);
             menu.Items.Add(new Separator());
 
+            var saveToPatchIcon = new Path();
+            saveToPatchIcon.Data = FindResource("Icon.Diff") as Geometry;
+            saveToPatchIcon.Width = 10;
             var saveToPatch = new MenuItem();
+            saveToPatch.Icon = saveToPatchIcon;
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += (o, e) => {
                 var dialog = new Controls.FolderDialog();
@@ -371,7 +383,11 @@ namespace SourceGit.Views.Widgets {
             };
             menu.Items.Add(saveToPatch);
 
+            var archiveIcon = new Path();
+            archiveIcon.Data = FindResource("Icon.Archive") as Geometry;
+            archiveIcon.Width = 10;
             var archive = new MenuItem();
+            archive.Icon = archiveIcon;
             archive.Header = App.Text("Archive");
             archive.Click += (o, e) => {
                 new Popups.Archive(repo.Path, commit).Show();
