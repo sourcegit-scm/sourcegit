@@ -236,9 +236,10 @@ namespace SourceGit.Views.Widgets {
             } else if (selected.Count > 2) {
                 mask.Visibility = Visibility.Visible;
                 txtCounter.Text = App.Text("Histories.Selected", selected.Count);
+                txtCounter.Visibility = Visibility.Visible;
             } else {
                 mask.Visibility = Visibility.Visible;
-                txtCounter.Text = App.Text("Histories.Guide");
+                txtCounter.Visibility = Visibility.Collapsed;
             }
         }
 

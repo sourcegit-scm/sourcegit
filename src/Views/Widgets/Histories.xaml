@@ -178,14 +178,7 @@
                         Margin="0,16"
                         FontSize="24" FontWeight="UltraBold" 
                         HorizontalAlignment="Center"
-                        Text="{DynamicResource Text.Histories.Guide}"/>
-
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <TextBlock Text="{DynamicResource Text.Histories.Guide_1}" FontSize="14" Margin="0,2"/>
-                        <TextBlock Text="{DynamicResource Text.Histories.Guide_2}" FontSize="14" Margin="0,2"/>
-                        <TextBlock Text="{DynamicResource Text.Histories.Guide_3}" FontSize="14" Margin="0,2"/>
-                        <TextBlock Text="{DynamicResource Text.Histories.Guide_4}" FontSize="14" Margin="0,2"/>
-                    </StackPanel>
+                        Visibility="Collapsed"/>
                 </StackPanel>
             </Border>
         </Grid>

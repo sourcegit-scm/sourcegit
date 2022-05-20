@@ -274,11 +274,6 @@
     <sys:String x:Key="Text.Histories.GraphMode">Switch Curve/Polyline Graph Mode</sys:String>
     <sys:String x:Key="Text.Histories.DisplayMode">Switch Horizontal/Vertical Layout</sys:String>
     <sys:String x:Key="Text.Histories.Selected">SELECTED {0} COMMITS</sys:String>
-    <sys:String x:Key="Text.Histories.Guide">HISTORIES GUIDE</sys:String>
-    <sys:String x:Key="Text.Histories.Guide_1">1. Select single commit to view detail</sys:String>
-    <sys:String x:Key="Text.Histories.Guide_2">2. Select two commits to show differences</sys:String>
-    <sys:String x:Key="Text.Histories.Guide_3">3. Select more than 2 commits to count</sys:String>
-    <sys:String x:Key="Text.Histories.Guide_4">4. Open context menu to see more options</sys:String>
 
     <sys:String x:Key="Text.Init">Initialize Repository</sys:String>
     <sys:String x:Key="Text.Init.Path">Path :</sys:String>
