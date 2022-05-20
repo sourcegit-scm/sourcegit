@@ -320,20 +320,11 @@ namespace SourceGit.Views.Widgets {
                 return;
             }
 
-            if (Models.Preference.Instance.General.UseWindowsTerminal) {
-                Process.Start(new ProcessStartInfo {
-                    WorkingDirectory = repo.Path,
-                    FileName = "wt",
-                    Arguments = $"-d \"{repo.Path}\" \"{bash}\"",
-                    UseShellExecute = false,
-                });
-            } else {
-                Process.Start(new ProcessStartInfo {
-                    WorkingDirectory = repo.Path,
-                    FileName = bash,
-                    UseShellExecute = true,
-                });
-            }
+            Process.Start(new ProcessStartInfo {
+                WorkingDirectory = repo.Path,
+                FileName = bash,
+                UseShellExecute = true,
+            });
         }
 
         private void OpenInVSCode(object sender, RoutedEventArgs e) {

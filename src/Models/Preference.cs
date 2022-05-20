@@ -68,11 +68,6 @@ namespace SourceGit.Models {
             ///     上一次检测的时间（用于控制每天仅第一次启动软件时，检测）
             /// </summary>
             public int LastCheckDay { get; set; } = 0;
-
-            /// <summary>
-            ///     是否尝试使用 Windows Terminal 打开终端
-            /// </summary>
-            public bool UseWindowsTerminal { get; set; } = false;
         }
 
         /// <summary>

@@ -67,7 +67,6 @@
                         <RowDefinition Height="28"/>
                         <RowDefinition Height="28"/>
                         <RowDefinition Height="28"/>
-                        <RowDefinition Height="28"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -166,13 +165,6 @@
                         Grid.Row="6" Grid.Column="1"
                         Content="{DynamicResource Text.Preference.RestoreTabs}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Restore.IsEnabled, Mode=TwoWay}"/>
-
-                    <!-- Use Windows Terminal -->
-                    <CheckBox
-                        Grid.Row="7" Grid.Column="1"
-                        Content="{DynamicResource Text.Preference.UseWindowsTerminal}"
-                        IsEnabled="{Binding ElementName=me, Path=HasWindowsTerminal}"
-                        IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.UseWindowsTerminal, Mode=TwoWay}"/>
                 </Grid>
             </TabItem>
 

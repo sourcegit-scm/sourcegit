@@ -15,14 +15,9 @@ namespace SourceGit.Views {
         public string Email { get; set; }
         public string CRLF { get; set; }
         public string Version { get; set; }
-        public bool HasWindowsTerminal { get; set; }
 
         public Preference() {
             UpdateGitInfo(false);
-
-            HasWindowsTerminal = Models.ExecutableFinder.Find("wt.exe") != null;
-            if (!HasWindowsTerminal) Models.Preference.Instance.General.UseWindowsTerminal = false;
-
             InitializeComponent();
         }
 

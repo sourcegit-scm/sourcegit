@@ -86,18 +86,10 @@ namespace SourceGit.Views.Widgets {
                     return;
                 }
 
-                if (Models.Preference.Instance.General.UseWindowsTerminal) {
-                    Process.Start(new ProcessStartInfo {
-                        FileName = "wt",
-                        Arguments = $"\"{bash}\"",
-                        UseShellExecute = false,
-                    });
-                } else {
-                    Process.Start(new ProcessStartInfo {
-                        FileName = bash,
-                        UseShellExecute = true,
-                    });
-                }
+                Process.Start(new ProcessStartInfo {
+                    FileName = bash,
+                    UseShellExecute = true,
+                });
 
                 e.Handled = true;
             }
