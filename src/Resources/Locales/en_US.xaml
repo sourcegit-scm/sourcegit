@@ -299,9 +299,9 @@
     <sys:String x:Key="Text.Merge.Mode">Merge Option :</sys:String>
 
     <sys:String x:Key="Text.Welcome.Title">Free &amp; open source GUI for git users</sys:String>
-    <sys:String x:Key="Text.Welcome.OpenOrInit">Open local repository</sys:String>
-    <sys:String x:Key="Text.Welcome.OpenTerminal">Open terminal</sys:String>
-    <sys:String x:Key="Text.Welcome.Clone">Clone remote repository</sys:String>
+    <sys:String x:Key="Text.Welcome.OpenOrInit">Open Repository</sys:String>
+    <sys:String x:Key="Text.Welcome.OpenTerminal">Open Terminal</sys:String>
+    <sys:String x:Key="Text.Welcome.Clone">Clone Repository</sys:String>
     <sys:String x:Key="Text.Welcome.DragDrop">DROP FOLDER HERE</sys:String>
     <sys:String x:Key="Text.Welcome.Start">START</sys:String>
     <sys:String x:Key="Text.Welcome.Recent">RECENT OPENED</sys:String>

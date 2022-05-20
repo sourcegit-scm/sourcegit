@@ -13,7 +13,6 @@ namespace SourceGit.Views.Controls {
 
         public static readonly Brush[] COLORS = new Brush[] {
             Brushes.Transparent,
-            Brushes.White,
             Brushes.Red,
             Brushes.Orange,
             Brushes.Yellow,
@@ -50,12 +49,11 @@ namespace SourceGit.Views.Controls {
             if (mark == null) return;
 
             if (!mark.IsNewPage) {
+                mark.icon.Data = mark.FindResource("Icon.Git") as Geometry;
                 if (mark.Color == 0) {
                     mark.icon.SetResourceReference(Path.FillProperty, "Brush.FG1");
-                    mark.icon.Data = mark.FindResource("Icon.Git") as Geometry;
                 } else {
                     mark.icon.Fill = COLORS[mark.Color % COLORS.Length];
-                    mark.icon.Data = mark.FindResource("Icon.Bookmark") as Geometry;
                 }
             } else {
                 mark.icon.SetResourceReference(Path.FillProperty, "Brush.FG1");

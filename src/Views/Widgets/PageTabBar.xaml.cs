@@ -309,14 +309,14 @@ namespace SourceGit.Views.Widgets {
             menu.Items.Add(closeRight);
 
             if (!tab.IsWelcomePage) {
-                var iconBookmark = FindResource("Icon.Bookmark") as Geometry;
+                var iconBookmark = FindResource("Icon.Git") as Geometry;
                 var bookmark = new MenuItem();
                 bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
                 for (int i = 0; i < Controls.Bookmark.COLORS.Length; i++) {
                     var icon = new System.Windows.Shapes.Path();
                     icon.Data = iconBookmark;
-                    icon.Fill = Controls.Bookmark.COLORS[i];
-                    icon.Width = 8;
+                    icon.Fill = i == 0 ? (FindResource("Brush.FG1") as Brush) : Controls.Bookmark.COLORS[i];
+                    icon.Width = 12;
 
                     var mark = new MenuItem();
                     mark.Icon = icon;
