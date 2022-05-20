@@ -4,13 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
-#if NET6_0
 using System.Net.Http;
-#else
-using System.Net;
-using System.Text;
-#endif
 
 namespace SourceGit.Models {
 
@@ -50,16 +44,11 @@ namespace SourceGit.Models {
                 Preference.Instance.General.LastCheckDay = curDayOfYear;
                 Task.Run(async () => {
                     try {
-#if NET6_0
                         var req = new HttpClient();
                         var rsp = await req.GetAsync("https://api.github.com/repos/sourcegit-scm/sourcegit/releases/latest");
                         rsp.EnsureSuccessStatusCode();
 
                         var raw = await rsp.Content.ReadAsStringAsync();
-#else
-                        var web = new WebClient() { Encoding = Encoding.UTF8 };
-                        var raw = await web.DownloadStringTaskAsync("https://api.github.com/repos/sourcegit-scm/sourcegit/releases/latest");
-#endif
                         var ver = JsonSerializer.Deserialize<Version>(raw);
                         var cur = Assembly.GetExecutingAssembly().GetName().Version;
 

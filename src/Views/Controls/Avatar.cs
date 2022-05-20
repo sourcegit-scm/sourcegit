@@ -10,10 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
-#if NET6_0
 using System.Net.Http;
-#endif
 
 namespace SourceGit.Views.Controls {
 
@@ -196,7 +193,6 @@ namespace SourceGit.Views.Controls {
                 if (!requesting.ContainsKey(email)) return;
 
                 try {
-#if NET6_0
                     var req = new HttpClient().GetAsync(Models.Preference.Instance.General.AvatarServer + md5 + "?d=404");
                     req.Wait();
 
@@ -217,30 +213,6 @@ namespace SourceGit.Views.Controls {
                     } else {
                         if (!loaded.ContainsKey(email)) loaded.Add(email, null);
                     }
-#else
-                    HttpWebRequest req = WebRequest.CreateHttp(Models.Preference.Instance.General.AvatarServer + md5 + "?d=404");
-                    req.Timeout = 2000;
-                    req.Method = "GET";
-
-                    HttpWebResponse rsp = req.GetResponse() as HttpWebResponse;
-                    if (rsp.StatusCode == HttpStatusCode.OK) {
-                        using (Stream reader = rsp.GetResponseStream())
-                        using (FileStream writer = File.OpenWrite(filePath)) {
-                            reader.CopyTo(writer);
-                        }
-
-                        a.Dispatcher.Invoke(() => {
-                            var img = new BitmapImage(new Uri(filePath));
-                            loaded.Add(email, img);
-
-                            if (requesting.ContainsKey(email)) {
-                                foreach (var one in requesting[email]) one.Source = img;
-                            }
-                        });
-                    } else {
-                        if (!loaded.ContainsKey(email)) loaded.Add(email, null);
-                    }
-#endif
                 } catch {
                     if (!loaded.ContainsKey(email)) loaded.Add(email, null);
                 }

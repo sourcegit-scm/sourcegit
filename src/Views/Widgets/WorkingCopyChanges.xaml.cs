@@ -215,11 +215,7 @@ namespace SourceGit.Views.Widgets {
 
                 if (!added) Changes.Add(c);
 
-#if NET48
-                int sepIdx = c.Path.IndexOf("/", StringComparison.Ordinal);
-#else
                 int sepIdx = c.Path.IndexOf('/', StringComparison.Ordinal);
-#endif
                 if (sepIdx < 0) {
                     GetOrAddTreeNode(Nodes, c.Path, c, false);
                 } else {

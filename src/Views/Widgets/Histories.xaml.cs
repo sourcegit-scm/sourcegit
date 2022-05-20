@@ -72,15 +72,6 @@ namespace SourceGit.Views.Widgets {
             } else {
                 searching = true;
                 foreach (var c in cachedCommits) {
-#if NET48
-                    if (c.SHA.Contains(filter)
-                        || c.Subject.Contains(filter)
-                        || c.Message.Contains(filter)
-                        || c.Author.Name.Contains(filter)
-                        || c.Committer.Name.Contains(filter)) {
-                        visible.Add(c);
-                    }
-#else
                     if (c.SHA.Contains(filter, StringComparison.Ordinal)
                         || c.Subject.Contains(filter, StringComparison.Ordinal)
                         || c.Message.Contains(filter, StringComparison.Ordinal)
@@ -88,7 +79,6 @@ namespace SourceGit.Views.Widgets {
                         || c.Committer.Name.Contains(filter, StringComparison.Ordinal)) {
                         visible.Add(c);
                     }
-#endif
                 }
             }
 

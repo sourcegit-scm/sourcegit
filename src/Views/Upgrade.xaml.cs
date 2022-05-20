@@ -16,13 +16,9 @@ namespace SourceGit.Views {
 
         private void Download(object sender, RoutedEventArgs e) {
             var url = $"https://github.com/sourcegit-scm/sourcegit/releases/{Version.TagName}";
-#if NET48
-            Process.Start(url);
-#else
             var info = new ProcessStartInfo("cmd", $"/c start {url}");
             info.CreateNoWindow = true;
             Process.Start(info);
-#endif
         }
 
         private void Quit(object sender, RoutedEventArgs e) {

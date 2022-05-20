@@ -21,10 +21,7 @@ namespace SourceGit.Views {
             InitializeComponent();
 
             var asm = Assembly.GetExecutingAssembly().GetName();
-            var framework = AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName;
-            var dotnetVer = framework.Substring(framework.IndexOf("=") + 1);
-
-            version.Text = $"VERSION : v{asm.Version.Major}.{asm.Version.Minor}   .NET : {dotnetVer}";
+            version.Text = $"VERSION : v{asm.Version.Major}.{asm.Version.Minor}";
 
             hotkeys.ItemsSource = new List<Keymap>() {
                 new Keymap("CTRL + T", "NewTab"),
@@ -39,13 +36,9 @@ namespace SourceGit.Views {
         }
 
         private void OnRequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) {
-#if NET48
-            Process.Start(e.Uri.AbsoluteUri);
-#else
             var info = new ProcessStartInfo("cmd", $"/c start {e.Uri.AbsoluteUri}");
             info.CreateNoWindow = true;
             Process.Start(info);
-#endif
         }
 
         private void Quit(object sender, RoutedEventArgs e) {
