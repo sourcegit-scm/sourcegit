@@ -42,8 +42,8 @@ namespace SourceGit.Views.Popups {
             var branch = cmbBranches.SelectedItem as Models.Branch;
             if (branch == null) return null;
 
-            var rebase = chkUseRebase.IsChecked == true;
-            var autoStash = chkAutoStash.IsChecked == true;
+            var rebase = Models.Preference.Instance.Window.UseRebaseOnPull;
+            var autoStash = Models.Preference.Instance.Window.UseAutoStashOnPull;
 
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo.Path, false);

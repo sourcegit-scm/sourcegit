@@ -5,7 +5,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
-    xmlns:converters="clr-namespace:SourceGit.Views.Converters" 
+    xmlns:converters="clr-namespace:SourceGit.Views.Converters"
+    xmlns:models="clr-namespace:SourceGit.Models"
     mc:Ignorable="d" 
     d:DesignWidth="500">
     <UserControl.Resources>
@@ -81,13 +82,11 @@
 
         <CheckBox Grid.Row="3" Grid.Column="1"
                   Margin="0,4,0,0"
-                  x:Name="chkUseRebase"
-                  IsChecked="True"
+                  IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.UseRebaseOnPull, Mode=TwoWay}"
                   Content="{DynamicResource Text.Pull.UseRebase}"/>
 
         <CheckBox Grid.Row="4" Grid.Column="1"
-                  x:Name="chkAutoStash"
-                  IsChecked="True"
+                  IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Window.UseAutoStashOnPull, Mode=TwoWay}"
                   Content="{DynamicResource Text.Pull.AutoStash}"/>
     </Grid>
 </controls:PopupWidget>

@@ -142,6 +142,16 @@ namespace SourceGit.Models {
             public bool UseCombinedDiff { get; set; } = false;
 
             /// <summary>
+            ///     Pull时是否使用Rebase替换Merge
+            /// </summary>
+            public bool UseRebaseOnPull { get; set; } = true;
+
+            /// <summary>
+            ///     Pull时是否使用自动暂存
+            /// </summary>
+            public bool UseAutoStashOnPull { get; set; } = true;
+
+            /// <summary>
             ///     未暂存视图中变更显示方式
             /// </summary>
             public Change.DisplayMode ChangeInUnstaged { get; set; } = Change.DisplayMode.Tree;
