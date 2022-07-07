@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Text.Json.Serialization;
 
 namespace SourceGit.Models {
@@ -39,6 +40,12 @@ namespace SourceGit.Models {
             }
 
             CommitMessages.Insert(0, message);
+        }
+
+        public bool ExistsInGitDir(string file) {
+            if (string.IsNullOrEmpty(file)) return false;
+            string fullpath = System.IO.Path.Combine(GitDir, file);
+            return Directory.Exists(fullpath) || File.Exists(fullpath);
         }
     }
 }

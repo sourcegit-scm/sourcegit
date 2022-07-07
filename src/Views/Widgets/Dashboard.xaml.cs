@@ -1129,13 +1129,13 @@ namespace SourceGit.Views.Widgets {
 
         #region MERGE_BAR
         private void UpdateMergeBar(List<Models.Change> changes) {
-            if (File.Exists(Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD"))) {
+            if (repo.ExistsInGitDir("CHERRY_PICK_HEAD")) {
                 txtConflictTip.Text = App.Text("Conflict.CherryPick");
-            } else if (File.Exists(Path.Combine(repo.GitDir, "REBASE_HEAD"))) {
+            } else if (repo.ExistsInGitDir("REBASE_HEAD") && repo.ExistsInGitDir("rebase-merge")) {
                 txtConflictTip.Text = App.Text("Conflict.Rebase");
-            } else if (File.Exists(Path.Combine(repo.GitDir, "REVERT_HEAD"))) {
+            } else if (repo.ExistsInGitDir("REVERT_HEAD")) {
                 txtConflictTip.Text = App.Text("Conflict.Revert");
-            } else if (File.Exists(Path.Combine(repo.GitDir, "MERGE_HEAD"))) {
+            } else if (repo.ExistsInGitDir("MERGE_HEAD")) {
                 txtConflictTip.Text = App.Text("Conflict.Merge");
             } else {
                 mergeNavigator.Visibility = Visibility.Collapsed;
@@ -1162,14 +1162,15 @@ namespace SourceGit.Views.Widgets {
 
         private async void ContinueMerge(object sender, RoutedEventArgs e) {
             var cherryPickMerge = Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD");
-            var rebaseMerge = Path.Combine(repo.GitDir, "REBASE_HEAD");
+            var rebaseMerge = Path.Combine(repo.GitDir, "REBASE_HEAD"); 
+            var rebaseMergeFolder = Path.Combine(repo.GitDir, "rebase-merge");
             var revertMerge = Path.Combine(repo.GitDir, "REVERT_HEAD");
             var otherMerge = Path.Combine(repo.GitDir, "MERGE_HEAD");
 
             var mode = "";
             if (File.Exists(cherryPickMerge)) {
                 mode = "cherry-pick";
-            } else if (File.Exists(rebaseMerge)) {
+            } else if (File.Exists(rebaseMerge) && Directory.Exists(rebaseMergeFolder)) {
                 mode = "rebase";
             } else if (File.Exists(revertMerge)) {
                 mode = "revert";
@@ -1191,14 +1192,8 @@ namespace SourceGit.Views.Widgets {
             if (succ) {
                 (pages.Get("working_copy") as WorkingCopy).ClearMessage();
                 if (mode == "rebase") {
-                    var rebaseTempFolder = Path.Combine(repo.GitDir, "rebase-apply");
-                    if (Directory.Exists(rebaseTempFolder)) Directory.Delete(rebaseTempFolder);
-
-                    var rebaseFile = Path.Combine(repo.GitDir, "REBASE_HEAD");
-                    if (File.Exists(rebaseFile)) File.Delete(rebaseFile);
-
-                    var rebaseMergeFolder = Path.Combine(repo.GitDir, "rebase-merge");
-                    if (Directory.Exists(rebaseMergeFolder)) Directory.Delete(rebaseMergeFolder);
+                    if (File.Exists(rebaseMerge)) File.Delete(rebaseMerge);
+                    if (Directory.Exists(rebaseMergeFolder)) Directory.Delete(rebaseMergeFolder);                    
                 }
             }
         }
