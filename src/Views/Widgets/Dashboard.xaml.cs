@@ -271,7 +271,7 @@ namespace SourceGit.Views.Widgets {
 
             Task.Run(() => {
                 var tags = new Commands.Tags(repo.Path).Result();
-                foreach (var t in tags) t.IsFiltered = repo.Filters.Contains(t.Name);
+                foreach (var tag in tags) tag.IsFiltered = repo.Filters.Contains(tag.Name);
                 Dispatcher.Invoke(() => {
                     txtTagCount.Text = $"({tags.Count})";
                     tagList.ItemsSource = tags;
@@ -1100,30 +1100,17 @@ namespace SourceGit.Views.Widgets {
             var toggle = sender as ToggleButton;
             if (toggle == null) return;
 
-            var filter = "";
-            var changed = false;
-
+            var filter = new Models.FilterUpdateParam();
+            filter.IsAdd = (toggle.IsChecked == true);
             if (toggle.DataContext is BranchNode) {
                 var branch = (toggle.DataContext as BranchNode).Data as Models.Branch;
                 if (branch == null) return;
-                filter = branch.FullName;
+                filter.Name = branch.FullName;
             } else if (toggle.DataContext is Models.Tag) {
-                filter = (toggle.DataContext as Models.Tag).Name;
+                filter.Name = (toggle.DataContext as Models.Tag).Name;
             }
 
-            if (toggle.IsChecked == true) {
-                if (!repo.Filters.Contains(filter)) {
-                    repo.Filters.Add(filter);
-                    changed = true;
-                }
-            } else {
-                if (repo.Filters.Contains(filter)) {
-                    repo.Filters.Remove(filter);
-                    changed = true;
-                }
-            }
-
-            if (changed) (pages.Get("histories") as Histories).UpdateCommits();
+            if (repo.UpdateFilters(filter)) (pages.Get("histories") as Histories).UpdateCommits();
         }
         #endregion
 

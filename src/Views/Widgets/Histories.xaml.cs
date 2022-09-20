@@ -52,6 +52,8 @@ namespace SourceGit.Views.Widgets {
 
             Task.Run(() => {
                 var limits = "-20000 ";
+
+                repo.UpdateFilters();
                 if (repo.Filters.Count > 0) {
                     limits += string.Join(" ", repo.Filters);
                 } else {

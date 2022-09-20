@@ -43,11 +43,6 @@ namespace SourceGit.Views.Popups {
                     full = $"refs/remotes/{remote}/{branch}";
                     new Commands.Push(repo, remote, branch).Exec();
                 }
-
-                var exists = Models.Preference.Instance.FindRepository(repo);
-                if (exists != null && exists.Filters.Contains(full)) {
-                    exists.Filters.Remove(full);
-                }
                 
                 finishHandler?.Invoke();
                 Models.Watcher.SetEnabled(repo, true);
