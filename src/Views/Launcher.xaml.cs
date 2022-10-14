@@ -87,7 +87,7 @@ namespace SourceGit.Views {
             iconMode.Width = 12;
             iconMode.Height = 12;
             iconMode.Data = FindResource(icon) as Geometry;
-            iconMode.SetResourceReference(Path.FillProperty, "Brush.FG2");
+            iconMode.SetResourceReference(Path.FillProperty, "Brush.FG1");
 
             var item = new MenuItem();
             item.Icon = iconMode;

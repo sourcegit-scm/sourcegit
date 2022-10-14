@@ -149,6 +149,7 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
 
                                                 <Button Grid.Column="0" Background="Transparent" Width="16" BorderThickness="0" ToolTip="{DynamicResource Text.RepoCM.Bookmark}" Click="OnChangeRepositoryBookmark">
@@ -165,10 +166,13 @@
                                                 <Button Grid.Column="4" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Open}" Click="OnOpenRepository">
                                                     <Path Width="15" Data="{StaticResource Icon.Folder.Open}" Fill="{DynamicResource Brush.Accent1}"/>
                                                 </Button>
-                                                <Button Grid.Column="5" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.OpenTerminal}" Click="OnOpenRepositoryTerminal">
+                                                <Button Grid.Column="5" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Explore}" Click="OnExploreRepository">
+                                                    <Path Width="15" Data="{StaticResource Icon.DiffWith}" Fill="{DynamicResource Brush.Accent1}"/>
+                                                </Button>
+                                                <Button Grid.Column="6" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.OpenTerminal}" Click="OnOpenRepositoryTerminal">
                                                     <Path Width="14" Data="{StaticResource Icon.Terminal}" Fill="{DynamicResource Brush.Accent1}"/>
                                                 </Button>
-                                                <Button Grid.Column="6" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.Delete}" Click="OnRemoveRepository">
+                                                <Button Grid.Column="7" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.Delete}" Click="OnRemoveRepository">
                                                     <Path Width="10" Data="{StaticResource Icon.Close}" Fill="{DynamicResource Brush.Accent1}"/>
                                                 </Button>
                                             </Grid>

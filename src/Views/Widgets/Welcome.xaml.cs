@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace SourceGit.Views.Widgets {
 
@@ -80,6 +81,12 @@ namespace SourceGit.Views.Widgets {
         private void OnOpenRepository(object sender, RoutedEventArgs e) {
             var repo = (sender as Control).DataContext as Models.Repository;
             CheckAndOpen(repo.Path);
+            e.Handled = true;
+        }
+
+        private void OnExploreRepository(object sender, RoutedEventArgs e) {
+            var repo = (sender as Control).DataContext as Models.Repository;
+            Process.Start("explorer", repo.Path);
             e.Handled = true;
         }
 
