@@ -69,23 +69,25 @@ namespace SourceGit.Views.Widgets {
 
         private void OnRemoveRepository(object sender, RoutedEventArgs e) {
             var repo = (sender as Button).DataContext as Models.Repository;
+            if (repo == null) return;
+
             Models.Preference.Instance.RemoveRepository(repo.Path);
             UpdateVisibles();
             e.Handled = true;
         }
 
-        private void OnDoubleClickRepository(object sender, MouseButtonEventArgs e) {
-            OnOpenRepository(sender, e);
-        }
-
         private void OnOpenRepository(object sender, RoutedEventArgs e) {
             var repo = (sender as Control).DataContext as Models.Repository;
+            if (repo == null) return;
+
             CheckAndOpen(repo.Path);
             e.Handled = true;
         }
 
         private void OnExploreRepository(object sender, RoutedEventArgs e) {
             var repo = (sender as Control).DataContext as Models.Repository;
+            if (repo == null) return;
+
             Process.Start("explorer", repo.Path);
             e.Handled = true;
         }
@@ -93,6 +95,7 @@ namespace SourceGit.Views.Widgets {
         private void OnChangeRepositoryBookmark(object sender, RoutedEventArgs e) {
             var btn = (sender as Button);
             var repo = btn.DataContext as Models.Repository;
+            if (repo == null) return;
 
             var menu = new ContextMenu();
             menu.Placement = PlacementMode.Bottom;
@@ -130,6 +133,8 @@ namespace SourceGit.Views.Widgets {
 
         private void OnOpenRepositoryTerminal(object sender, RoutedEventArgs e) {
             var repo = (sender as Button).DataContext as Models.Repository;
+            if (repo == null) return;
+
             var bash = Path.Combine(Models.Preference.Instance.Git.Path, "..", "bash.exe");
             if (!File.Exists(bash)) {
                 Models.Exception.Raise(App.Text("MissingBash"));

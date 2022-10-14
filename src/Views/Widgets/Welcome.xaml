@@ -132,54 +132,48 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Control MouseDoubleClick="OnDoubleClickRepository">
-                                <Control.Template>
-                                    <ControlTemplate>
-                                        <Border
-                                            Height="36"
-                                            Margin="2"
-                                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
-                                            Background="{DynamicResource Brush.Contents}">
-                                            <Grid Margin="8,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
+                            <Border
+                                Height="36"
+                                Margin="2"
+                                BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
+                                Background="{DynamicResource Brush.Contents}">
+                                <Grid Margin="8,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                                                <Button Grid.Column="0" Background="Transparent" Width="16" BorderThickness="0" ToolTip="{DynamicResource Text.RepoCM.Bookmark}" Click="OnChangeRepositoryBookmark">
-                                                    <Path Width="8" Fill="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}">
-                                                        <Path.Data>
-                                                            <EllipseGeometry Center="0,0" RadiusX="14" RadiusY="14"/>
-                                                        </Path.Data>
-                                                    </Path>
-                                                </Button>
+                                    <Button Grid.Column="0" Background="Transparent" Width="16" BorderThickness="0" ToolTip="{DynamicResource Text.RepoCM.Bookmark}" Click="OnChangeRepositoryBookmark">
+                                        <Path Width="8" Fill="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}">
+                                            <Path.Data>
+                                                <EllipseGeometry Center="0,0" RadiusX="14" RadiusY="14"/>
+                                            </Path.Data>
+                                        </Path>
+                                    </Button>
 
-                                                <TextBlock Grid.Column="1" Margin="8,0" Text="{Binding Name}" FontSize="12pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
-                                                <TextBlock Grid.Column="2" Text="{Binding Path}" FontSize="10pt" Foreground="{DynamicResource Brush.FG2}"/>
+                                    <TextBlock Grid.Column="1" Margin="8,0" Text="{Binding Name}" FontSize="12pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Path}" FontSize="10pt" Foreground="{DynamicResource Brush.FG2}"/>
 
-                                                <Button Grid.Column="4" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Open}" Click="OnOpenRepository">
-                                                    <Path Width="15" Data="{StaticResource Icon.Folder.Open}" Fill="{DynamicResource Brush.Accent1}"/>
-                                                </Button>
-                                                <Button Grid.Column="5" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Explore}" Click="OnExploreRepository">
-                                                    <Path Width="15" Data="{StaticResource Icon.DiffWith}" Fill="{DynamicResource Brush.Accent1}"/>
-                                                </Button>
-                                                <Button Grid.Column="6" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.OpenTerminal}" Click="OnOpenRepositoryTerminal">
-                                                    <Path Width="14" Data="{StaticResource Icon.Terminal}" Fill="{DynamicResource Brush.Accent1}"/>
-                                                </Button>
-                                                <Button Grid.Column="7" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.Delete}" Click="OnRemoveRepository">
-                                                    <Path Width="10" Data="{StaticResource Icon.Close}" Fill="{DynamicResource Brush.Accent1}"/>
-                                                </Button>
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Control.Template>
-                            </Control>
+                                    <Button Grid.Column="4" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Open}" Click="OnOpenRepository">
+                                        <Path Width="15" Data="{StaticResource Icon.Folder.Open}" Fill="{DynamicResource Brush.Accent1}"/>
+                                    </Button>
+                                    <Button Grid.Column="5" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Explore}" Click="OnExploreRepository">
+                                        <Path Width="15" Data="{StaticResource Icon.DiffWith}" Fill="{DynamicResource Brush.Accent1}"/>
+                                    </Button>
+                                    <Button Grid.Column="6" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.OpenTerminal}" Click="OnOpenRepositoryTerminal">
+                                        <Path Width="14" Data="{StaticResource Icon.Terminal}" Fill="{DynamicResource Brush.Accent1}"/>
+                                    </Button>
+                                    <Button Grid.Column="7" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.Delete}" Click="OnRemoveRepository">
+                                        <Path Width="10" Data="{StaticResource Icon.Close}" Fill="{DynamicResource Brush.Accent1}"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
