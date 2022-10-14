@@ -279,8 +279,7 @@
     <sys:String x:Key="Text.Init.Tip">点击【确定】将在此目录执行`git init`操作</sys:String>
 
     <sys:String x:Key="Text.Launcher">Source Git</sys:String>
-    <sys:String x:Key="Text.Launcher.Preference">偏好设置</sys:String>
-    <sys:String x:Key="Text.Launcher.About">关于</sys:String>
+    <sys:String x:Key="Text.Launcher.Menu">主菜单</sys:String>
     <sys:String x:Key="Text.Launcher.Error">出错了</sys:String>
 
     <sys:String x:Key="Text.PageTabBar.New">新建空白页</sys:String>

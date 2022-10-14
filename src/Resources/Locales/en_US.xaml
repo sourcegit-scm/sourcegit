@@ -24,7 +24,7 @@
     <sys:String x:Key="Text.SSHKey">SSH Private Key :</sys:String>
     <sys:String x:Key="Text.SSHKey.Placeholder">Private SSH key store path</sys:String>
 
-    <sys:String x:Key="Text.About">ABOUT</sys:String>
+    <sys:String x:Key="Text.About">About</sys:String>
     <sys:String x:Key="Text.About.Title">SourceGit - OPEN SOURCE GIT CLIENT</sys:String>
 
     <sys:String x:Key="Text.Apply">Patch</sys:String>
@@ -280,8 +280,7 @@
     <sys:String x:Key="Text.Init.Tip">Invalid repository detected. Run `git init` under this path?</sys:String>
 
     <sys:String x:Key="Text.Launcher">Source Git</sys:String>
-    <sys:String x:Key="Text.Launcher.Preference">PREFERENCE</sys:String>
-    <sys:String x:Key="Text.Launcher.About">ABOUT</sys:String>
+    <sys:String x:Key="Text.Launcher.Menu">Open Main Menu</sys:String>
     <sys:String x:Key="Text.Launcher.Error">ERROR</sys:String>
 
     <sys:String x:Key="Text.PageTabBar.New">NEW PAGE</sys:String>

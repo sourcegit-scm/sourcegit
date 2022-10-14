@@ -189,11 +189,17 @@ namespace SourceGit.Views.Widgets {
 
         private void CalcScrollerVisibilty(object sender, SizeChangedEventArgs e) {
             if ((sender as StackPanel).ActualWidth > scroller.ActualWidth) {
+                startSeperator.Visibility = Visibility.Hidden;
                 leftScroller.Visibility = Visibility.Visible;
                 rightScroller.Visibility = Visibility.Visible;
             } else {
                 leftScroller.Visibility = Visibility.Collapsed;
                 rightScroller.Visibility = Visibility.Collapsed;
+                if (container.SelectedIndex == 0) {
+                    startSeperator.Visibility = Visibility.Hidden;
+                } else {
+                    startSeperator.Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -223,17 +229,7 @@ namespace SourceGit.Views.Widgets {
         private void SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var tab = container.SelectedItem as Tab;
             if (tab == null) return;
-
-            for (int i = 0; i < Tabs.Count; i++) {
-                if (Tabs[i] == tab) {
-                    tab.IsSeperatorVisible = false;
-                    if (i > 0) Tabs[i - 1].IsSeperatorVisible = false;
-                } else {
-                    Tabs[i].IsSeperatorVisible = true;
-                }
-            }
-
-
+            UpdateSeperators(tab);
             RaiseEvent(new TabEventArgs(TabSelectedEvent, this, tab.Id));
         }
 
@@ -260,6 +256,7 @@ namespace SourceGit.Views.Widgets {
                 RaiseEvent(new TabEventArgs(TabSelectedEvent, this, next.Id));
             } else {
                 Tabs.Remove(tab);
+                UpdateSeperators(curTab);
             }
             RaiseEvent(new TabEventArgs(TabClosedEvent, this, tab.Id));
         }
@@ -365,6 +362,25 @@ namespace SourceGit.Views.Widgets {
 
             menu.IsOpen = true;
             e.Handled = true;
+        }
+
+        private void UpdateSeperators(Tab actived) {
+            int curIdx = 0;
+            for (int i = 0; i < Tabs.Count; i++) {
+                if (Tabs[i] == actived) {
+                    curIdx = i;
+                    actived.IsSeperatorVisible = false;
+                    if (i > 0) Tabs[i - 1].IsSeperatorVisible = false;
+                } else {
+                    Tabs[i].IsSeperatorVisible = true;
+                }
+            }
+
+            if (leftScroller.Visibility == Visibility.Visible || curIdx == 0) {
+                startSeperator.Visibility = Visibility.Hidden;
+            } else {
+                startSeperator.Visibility = Visibility.Visible;
+            }
         }
     }
 }

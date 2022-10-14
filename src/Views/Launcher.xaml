@@ -25,28 +25,34 @@
         <!-- Titlebar -->
         <Grid Grid.Row="0" Background="{DynamicResource Brush.TitleBar}">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="32"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
 
             <!-- Bottom border -->
-            <Rectangle Grid.Column="0" Grid.ColumnSpan="2" Fill="{DynamicResource Brush.Border0}" Height="1" VerticalAlignment="Bottom"/>
+            <Rectangle Grid.Column="0" Grid.ColumnSpan="4" Fill="{DynamicResource Brush.Border0}" Height="1" VerticalAlignment="Bottom"/>
+
+            <!-- Main Menu -->
+            <controls:IconButton
+                Grid.Column="0"
+                Margin="4,4,4,0"
+                Width="14"
+                Icon="{StaticResource Icon.List}"
+                ToolTip="{DynamicResource Text.Launcher.Menu}"
+                WindowChrome.IsHitTestVisibleInChrome="True"
+                Click="ToggleMainMenu"/>
 
             <!-- Tabs -->
             <widgets:PageTabBar 
-                Grid.Column="0" 
+                Grid.Column="1" 
                 x:Name="tabs"
                 TabAdd="OnTabAdding"
                 TabSelected="OnTabSelected"
                 TabClosed="OnTabClosed"/>
 
             <!-- Right controls -->
-            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="27" WindowChrome.IsHitTestVisibleInChrome="True">
-                <controls:IconButton Click="OpenPreference" Width="28" Padding="6" Icon="{StaticResource Icon.Preference}" ToolTip="{DynamicResource Text.Launcher.Preference}"/>
-                <controls:IconButton Click="OpenAbout" Width="28" Padding="6" Icon="{StaticResource Icon.Help}" ToolTip="{DynamicResource Text.Launcher.About}"/>
-
-                <Rectangle Margin="4,0" Width="1" Height="16" VerticalAlignment="Center" Fill="{DynamicResource Brush.Border2}"/>
-
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="27" WindowChrome.IsHitTestVisibleInChrome="True">
                 <controls:IconButton Click="Minimize" Width="28" Padding="9" Icon="{StaticResource Icon.Minimize}" HoverBackground="#40000000" Opacity="1"/>
                 <ToggleButton Style="{StaticResource Style.ToggleButton.MaxOrRestore}" Width="28" IsChecked="{Binding ElementName=me, Path=IsMaximized}"/>
                 <controls:IconButton Click="Quit" Width="28" Padding="9" Icon="{StaticResource Icon.Close}" HoverBackground="Red" Opacity="1"/>

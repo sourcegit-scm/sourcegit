@@ -2,7 +2,11 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace SourceGit.Views {
 
@@ -77,15 +81,49 @@ namespace SourceGit.Views {
         }
         #endregion
 
-        #region RIGHT_COMMANDS
-        private void OpenPreference(object sender, RoutedEventArgs e) {
-            var dialog = new Preference() { Owner = this };
-            dialog.ShowDialog();
+        #region OPERATIONS
+        private void FillMenu(ContextMenu menu, string icon, string header, RoutedEventHandler onClick) {
+            var iconMode = new Path();
+            iconMode.Width = 12;
+            iconMode.Height = 12;
+            iconMode.Data = FindResource(icon) as Geometry;
+            iconMode.SetResourceReference(Path.FillProperty, "Brush.FG2");
+
+            var item = new MenuItem();
+            item.Icon = iconMode;
+            item.Header = App.Text(header);
+            item.Click += onClick;
+
+            menu.Items.Add(item);
         }
 
-        private void OpenAbout(object sender, RoutedEventArgs e) {
-            var dialog = new About() { Owner = this };
-            dialog.ShowDialog();
+        private void ToggleMainMenu(object sender, RoutedEventArgs e) {
+            var btn = (sender as Button);
+            if (btn.ContextMenu != null) {
+                btn.ContextMenu.IsOpen = true;
+                e.Handled = true;
+                return;
+            }
+
+            var menu = new ContextMenu();
+            menu.Placement = PlacementMode.Bottom;
+            menu.PlacementTarget = btn;
+            menu.StaysOpen = false;
+            menu.Focusable = true;
+
+            FillMenu(menu, "Icon.Preference", "Preference", (o, ev) => {
+                var dialog = new Preference() { Owner = this };
+                dialog.ShowDialog();
+            });
+
+            FillMenu(menu, "Icon.Help", "About", (o, ev) => {
+                var dialog = new About() { Owner = this };
+                dialog.ShowDialog();
+            });
+
+            btn.ContextMenu = menu;
+            btn.ContextMenu.IsOpen = true;
+            e.Handled = true;
         }
 
         private void Minimize(object sender, RoutedEventArgs e) {
