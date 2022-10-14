@@ -7,7 +7,7 @@
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="28" d:DesignWidth="800">
-    <Grid>
+    <Grid Margin="6,4,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -19,10 +19,9 @@
             Grid.Column="0"
             x:Name="leftScroller"
             Click="ScrollLeft"
-            Width="18" Padding="5"
-            HoverBackground="{DynamicResource Brush.Accent1}"
-            BorderBrush="{DynamicResource Brush.Border0}"
-            BorderThickness="0,0,1,0"
+            Width="18" Padding="6"
+            HoverBackground="{DynamicResource Brush.NewPageHover}"
+            BorderThickness="0"
             Icon="{StaticResource Icon.ScrollLeft}"
             WindowChrome.IsHitTestVisibleInChrome="True"
             Visibility="Collapsed"/>
@@ -35,7 +34,8 @@
             VerticalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Horizontal" SizeChanged="CalcScrollerVisibilty">
                 <ListBox 
-                    x:Name="container" 
+                    x:Name="container"
+                    BorderBrush="{DynamicResource Brush.Border0}"
                     ItemsSource="{Binding ElementName=me, Path=Tabs}" 
                     WindowChrome.IsHitTestVisibleInChrome="True"
                     SelectionChanged="SelectionChanged">
@@ -54,15 +54,15 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                        <Border x:Name="Border" Background="Transparent" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,1,0">
-                                            <StackPanel Margin="8,0" x:Name="Contents" Orientation="Horizontal" VerticalAlignment="Center" Opacity=".5" ToolTip="{Binding Tooltip}">
+                                        <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="1,1,1,0">
+                                            <StackPanel x:Name="Contents" Orientation="Horizontal" VerticalAlignment="Center" Opacity=".5" ToolTip="{Binding Tooltip}">
                                                 <controls:Bookmark
                                                     Width="14" Height="14"
+                                                    Margin="8,0,0,0"
                                                     IsNewPage="{Binding IsWelcomePage}"
                                                     Color="{Binding Bookmark}"/>
 
                                                 <TextBlock
-                                                    Grid.Column="1"
                                                     Margin="4,0"
                                                     Text="{Binding Title}"/>
                                                 
@@ -73,14 +73,24 @@
                                                     ToolTip="{DynamicResource Text.Close}"
                                                     Icon="{StaticResource Icon.Close}"
                                                     HoverBackground="{DynamicResource Brush.NewPageHover}"/>
+
+                                                <Rectangle
+                                                    x:Name="seperator"
+                                                    Margin="4,2,0,0"
+                                                    Width="1"
+                                                    Fill="Transparent"/>
                                             </StackPanel>
                                         </Border>
 
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
                                                 <Setter TargetName="Border" Property="Background" Value="{DynamicResource Brush.Window}"/>
                                                 <Setter TargetName="Contents" Property="Opacity" Value="1"/>
                                             </Trigger>
+                                            <DataTrigger Binding="{Binding IsSeperatorVisible}" Value="True">
+                                                <Setter TargetName="seperator" Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+                                            </DataTrigger>
                                             <MultiTrigger>
                                                 <MultiTrigger.Conditions>
                                                     <Condition Property="IsSelected" Value="False"/>
@@ -100,8 +110,7 @@
                 </ListBox>
                 
                 <controls:IconButton
-                    Width="20" Height="20"
-                    Margin="4,0" Padding="4"
+                    Width="16" Height="16" Margin="4,0,0,0" Padding="2"
                     Icon="{StaticResource Icon.NewTab}"
                     HoverBackground="{DynamicResource Brush.NewPageHover}"
                     ToolTip="{DynamicResource Text.PageTabBar.New}"
@@ -115,10 +124,9 @@
             Grid.Column="2"  
             x:Name="rightScroller"
             Click="ScrollRight"
-            Width="18" Padding="5"
-            HoverBackground="{DynamicResource Brush.Accent1}"
-            BorderBrush="{DynamicResource Brush.Border0}"
-            BorderThickness="1,0"
+            Width="18" Padding="6"
+            HoverBackground="{DynamicResource Brush.NewPageHover}"
+            BorderThickness="0"
             Icon="{StaticResource Icon.ScrollRight}"
             WindowChrome.IsHitTestVisibleInChrome="True"
             Visibility="Collapsed"/>

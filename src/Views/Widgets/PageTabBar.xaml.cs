@@ -33,6 +33,12 @@ namespace SourceGit.Views.Widgets {
                 get => bookmark;
                 set => SetProperty(ref bookmark, value);
             }
+
+            private bool isSeperatorVisible = false;
+            public bool IsSeperatorVisible {
+                get => isSeperatorVisible;
+                set => SetProperty(ref isSeperatorVisible, value);
+            }
         }
 
         /// <summary>
@@ -217,6 +223,17 @@ namespace SourceGit.Views.Widgets {
         private void SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var tab = container.SelectedItem as Tab;
             if (tab == null) return;
+
+            for (int i = 0; i < Tabs.Count; i++) {
+                if (Tabs[i] == tab) {
+                    tab.IsSeperatorVisible = false;
+                    if (i > 0) Tabs[i - 1].IsSeperatorVisible = false;
+                } else {
+                    Tabs[i].IsSeperatorVisible = true;
+                }
+            }
+
+
             RaiseEvent(new TabEventArgs(TabSelectedEvent, this, tab.Id));
         }
 
