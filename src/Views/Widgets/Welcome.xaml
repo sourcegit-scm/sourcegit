@@ -6,11 +6,13 @@
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
              xmlns:models="clr-namespace:SourceGit.Models"
+             xmlns:converters="clr-namespace:SourceGit.Views.Converters"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="800">
     <Grid Background="Transparent" AllowDrop="True" DragEnter="OnPageDragEnter" DragLeave="OnPageDragLeave" Drop="OnPageDrop">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -18,14 +20,14 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="800"/>
+            <ColumnDefinition Width="600"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- App Name -->
         <TextBlock
-            Grid.Row="1"
-            Grid.Column="1"
+            Grid.Row="0" Grid.Column="1"
+            Margin="0,64,0,0"
             HorizontalAlignment="Left"
             Text="SourceGit"
             FontSize="28pt"
@@ -34,241 +36,163 @@
             RenderOptions.ClearTypeHint="Enabled"/>
         
         <!-- App Desc -->
-        <TextBlock
-            Grid.Row="2"
-            Grid.Column="1"
+        <TextBlock 
+            Grid.Row="1" Grid.Column="1"
             HorizontalAlignment="Left"
             Text="{DynamicResource Text.Welcome.Title}"
             Foreground="{DynamicResource Brush.FG2}"
             FontSize="18pt"
             Margin="0,8"/>
-
-        <Grid x:Name="body" Grid.Row="3" Grid.Column="1" Margin="0,40,0,80" FocusManager.IsFocusScope="True">
+        
+        <!-- Repositories Tool Bar -->
+        <Grid Grid.Row="2" Grid.Column="1" Margin="0,32,0,0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="16"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>                
             </Grid.ColumnDefinitions>
             
-            <!-- Left Panel -->
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                HorizontalAlignment="Left"
+                Text="{DynamicResource Text.Welcome.Repositories}"
+                FontSize="13pt"/>
 
-                <!-- Options -->
-                <TextBlock
-                    Grid.Row="0"
-                    Text="{DynamicResource Text.Welcome.Start}"
-                    FontSize="13pt"/>
-                <StackPanel Grid.Row="1" Margin="4,12,0,0" Orientation="Vertical">
-                    <Button Click="OnOpenClicked" Height="28" Style="{DynamicResource Style.Button.Link}">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <Path Width="16" Height="15" Data="{StaticResource Icon.Folder.Open}" Fill="{DynamicResource Brush.Accent1}"/>
-                            <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.Welcome.OpenOrInit}" Foreground="{DynamicResource Brush.Accent1}"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="OnCloneClicked" Height="28" Style="{DynamicResource Style.Button.Link}">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="16" Height="16" Data="{StaticResource Icon.Pull}" Fill="{DynamicResource Brush.Accent1}"/>
-                            <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.Welcome.Clone}" Foreground="{DynamicResource Brush.Accent1}"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Click="OnOpenTerminalClicked" Height="28" Style="{DynamicResource Style.Button.Link}">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Width="16" Height="14" Data="{StaticResource Icon.Terminal}" Fill="{DynamicResource Brush.Accent1}"/>
-                            <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.Welcome.OpenTerminal}" Foreground="{DynamicResource Brush.Accent1}"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
+            <Button
+                Grid.Column="2"
+                Width="32" Height="28"
+                Style="{DynamicResource Style.Button.Link}"
+                ToolTip="{DynamicResource Text.Welcome.OpenOrInit}"
+                Click="OnOpenClicked">
+                <Path Width="14" Height="14" Data="{StaticResource Icon.NewTab}" Fill="{DynamicResource Brush.Accent1}"/>
+            </Button>
 
-                <!-- Recents -->
-                <TextBlock
-                    Grid.Row="2" Margin="0,32,0,0"
-                    x:Name="lblRecent"
-                    Text="{DynamicResource Text.Welcome.Recent}"
-                    FontSize="13pt"
-                    Visibility="Hidden"/>
-                <DataGrid
-                    Grid.Row="3"
-                    x:Name="list"
-                    Margin="0,12,0,0"
-                    SelectionUnit="FullRow"
-                    SelectionMode="Single"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    LostFocus="OnRecentLostFocus">
-                    <DataGrid.RowStyle>
-                        <Style BasedOn="{StaticResource Style.DataGridRow}" TargetType="{x:Type DataGridRow}">
-                            <EventSetter Event="MouseDoubleClick" Handler="OnRecentDoubleClick"/>
-                            <EventSetter Event="ContextMenuOpening" Handler="OnRecentContextMenuOpening"/>
-                        </Style>
-                    </DataGrid.RowStyle>
-                    
-                    <DataGrid.Columns>
-                        <DataGridTemplateColumn Width="*">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid Height="32" Margin="4,0,0,0" IsHitTestVisible="False">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="22"/>
-                                        </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="3"
+                Width="32" Height="28"
+                Style="{DynamicResource Style.Button.Link}"
+                ToolTip="{DynamicResource Text.Welcome.Clone}"
+                Click="OnCloneClicked">
+                <Path Width="16" Height="15" Data="{StaticResource Icon.Pull}" Fill="{DynamicResource Brush.Accent1}"/>
+            </Button>
 
-                                        <controls:Bookmark
-                                            Grid.Column="0"
-                                            Margin="2,0,0,0"
-                                            x:Name="BookmarkIcon"
-                                            Width="16" Height="16"
-                                            Color="{Binding Bookmark}"
-                                            IsNewPage="False"/>
+            <Button
+                Grid.Column="4"
+                Width="32" Height="28"
+                Style="{DynamicResource Style.Button.Link}"
+                ToolTip="{DynamicResource Text.Welcome.OpenTerminal}"
+                Click="OnOpenTerminalClicked">
+                <Path Width="16" Height="14" Data="{StaticResource Icon.Terminal}" Fill="{DynamicResource Brush.Accent1}"/>
+            </Button>
+        </Grid>
+        
+        <!-- Search Bar -->
+        <Grid Grid.Row="3" Grid.Column="1" Margin="2,8" Height="28" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <TextBlock Margin="8,0" Text="{Binding Name}"/>
-                                            <TextBlock x:Name="Path" Text="{Binding Path}" Foreground="{DynamicResource Brush.FG2}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+            <Border
+                Grid.Column="0" Grid.ColumnSpan="2"
+                BorderBrush="{DynamicResource Brush.Border2}"
+                BorderThickness="1"/>
+            <Path
+                Grid.Column="0"
+                Width="14" Height="14"
+                Fill="{DynamicResource Brush.FG2}"
+                Data="{StaticResource Icon.Search}"
+                IsHitTestVisible="False"/>
+            <controls:TextEdit
+                x:Name="filter"
+                Grid.Column="1"
+                Height="24"
+                Margin="0"
+                Placeholder="{DynamicResource Text.Welcome.Search}"
+                BorderThickness="0"
+                TextChanged="OnSearchFilterChanged"/>
+        </Grid>
+        
+        <!-- Repositories List -->
+        <Grid Grid.Row="4" Grid.Column="1" Margin="0,0,0,8" AllowDrop="True" Drop="OnDropFolder">
+            <Grid.Resources>
+                <converters:IntToBookmarkBrush x:Key="IntToBookmarkBrush"/>
+            </Grid.Resources>
             
-            <!-- Right Panel -->
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <!-- Wrap panel -->
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="repoList">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                <!-- Repositories Label -->
-                <TextBlock
-                    Grid.Row="0"
-                    Text="{DynamicResource Text.Welcome.Repositories}"
-                    FontSize="13pt"
-                    HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                
-                <!-- Repositories Tree DragDrop tip -->
-                <StackPanel Grid.Row="1" x:Name="dropTip" Margin="4,16,0,0" HorizontalAlignment="Left" Orientation="Vertical">
-                    <Path
-                        Data="{DynamicResource Icon.DragDrop}"
-                        Fill="{DynamicResource Brush.FG2}"
-                        Width="48" Height="48"
-                        VerticalAlignment="Top"/>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Control MouseDoubleClick="OnDoubleClickRepository">
+                                <Control.Template>
+                                    <ControlTemplate>
+                                        <Border
+                                            Height="36"
+                                            Margin="2"
+                                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
+                                            Background="{DynamicResource Brush.Contents}">
+                                            <Grid Margin="8,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
 
-                    <TextBlock
-                        Text="{DynamicResource Text.Welcome.DragDrop}"
-                        FontSize="10pt"
-                        Margin="0,8,0,0"
-                        HorizontalAlignment="Center" VerticalAlignment="Top"
-                        Foreground="{DynamicResource Brush.FG2}"/>
-                </StackPanel>
+                                                <Button Grid.Column="0" Background="Transparent" Width="16" BorderThickness="0" ToolTip="{DynamicResource Text.RepoCM.Bookmark}" Click="OnChangeRepositoryBookmark">
+                                                    <Path Width="8" Fill="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}">
+                                                        <Path.Data>
+                                                            <EllipseGeometry Center="0,0" RadiusX="14" RadiusY="14"/>
+                                                        </Path.Data>
+                                                    </Path>
+                                                </Button>
 
-                <!-- Repositories Tree -->
-                <controls:Tree
-                    Grid.Row="1"
-                    x:Name="tree"
-                    Margin="0,8,0,0"
-                    AllowDrop="True"
-                    TextElement.FontSize="14"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    ContextMenuOpening="OnTreeContextMenuOpening"
-                    MouseMove="OnTreeMouseMove"
-                    DragOver="OnTreeDragOver"
-                    Drop="OnTreeDrop"
-                    LostFocus="OnTreeLostFocus">
-                    <controls:Tree.ItemContainerStyle>
-                        <Style TargetType="{x:Type controls:TreeItem}" BasedOn="{StaticResource Style.TreeItem}">
-                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                                                <TextBlock Grid.Column="1" Margin="8,0" Text="{Binding Name}" FontSize="12pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding Path}" FontSize="10pt" Foreground="{DynamicResource Brush.FG2}"/>
 
-                            <EventSetter Event="Expanded" Handler="OnTreeNodeStatusChange"/>
-                            <EventSetter Event="Collapsed" Handler="OnTreeNodeStatusChange"/>
-                            <EventSetter Event="MouseDoubleClick" Handler="OnTreeNodeDoubleClick"/>
-                        </Style>
-                    </controls:Tree.ItemContainerStyle>
-
-                    <controls:Tree.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <Grid Height="32" IsHitTestVisible="False">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="22"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Path Grid.Column="0" Margin="2,0,0,0" x:Name="Icon" Width="16" Height="16" Data="{StaticResource Icon.Folder.Fill}"/>
-
-                                <controls:Bookmark
-                                    Grid.Column="0"
-                                    Margin="2,0,0,0"
-                                    x:Name="BookmarkIcon"
-                                    Width="16" Height="16"
-                                    Color="{Binding Bookmark}"
-                                    IsNewPage="False"/>
-
-                                <StackPanel Grid.Column="1" x:Name="ContentsBookmark" Orientation="Horizontal">
-                                    <TextBlock Margin="8,0" Text="{Binding Name}"/>
-                                    <TextBlock x:Name="Path" Text="{Binding Id}" Foreground="{DynamicResource Brush.FG2}"/>
-                                </StackPanel>
-
-                                <controls:TextEdit
-                                    Grid.Column="1"
-                                    x:Name="EditorBookmarks"
-                                    Height="20"
-                                    Margin="4,0,0,0"
-                                    Text="{Binding Name}"
-                                    FontSize="9pt"
-                                    Loaded="RenameStart"
-                                    KeyDown="RenameKeyDown"
-                                    LostFocus="RenameEnd"
-                                    IsHitTestVisible="True"
-                                    Visibility="Collapsed"/>
-                            </Grid>
-
-                            <HierarchicalDataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding IsGroup}" Value="True">
-                                    <Setter TargetName="Path" Property="Visibility" Value="Collapsed"/>
-                                    <Setter TargetName="Icon" Property="Visibility" Value="Visible"/>
-                                    <Setter TargetName="BookmarkIcon" Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsGroup}" Value="False">
-                                    <Setter TargetName="Path" Property="Visibility" Value="Visible"/>
-                                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
-                                    <Setter TargetName="BookmarkIcon" Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:TreeItem}}, Path=IsExpanded}" Value="True">
-                                    <Setter TargetName="Icon" Property="Data" Value="{StaticResource Icon.Folder.Open}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsEditing}" Value="True">
-                                    <Setter TargetName="EditorBookmarks" Property="Visibility" Value="Visible"/>
-                                    <Setter TargetName="ContentsBookmark" Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </HierarchicalDataTemplate.Triggers>
-                        </HierarchicalDataTemplate>
-                    </controls:Tree.ItemTemplate>
-                </controls:Tree>
-
-                <!-- Drop Area -->
-                <Rectangle
-                    Grid.Row="1"
-                    x:Name="dropArea"
-                    Margin="0,4"
-                    Stroke="{DynamicResource Brush.Border1}"
-                    StrokeThickness="2"
-                    StrokeDashArray="4,4"
-                    SnapsToDevicePixels="True"
-                    Visibility="Hidden"
-                    IsHitTestVisible="False"/>
-            </Grid>
+                                                <Button Grid.Column="4" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Open}" Click="OnOpenRepository">
+                                                    <Path Width="15" Data="{StaticResource Icon.Folder.Open}" Fill="{DynamicResource Brush.Accent1}"/>
+                                                </Button>
+                                                <Button Grid.Column="5" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.OpenTerminal}" Click="OnOpenRepositoryTerminal">
+                                                    <Path Width="14" Data="{StaticResource Icon.Terminal}" Fill="{DynamicResource Brush.Accent1}"/>
+                                                </Button>
+                                                <Button Grid.Column="6" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.Delete}" Click="OnRemoveRepository">
+                                                    <Path Width="10" Data="{StaticResource Icon.Close}" Fill="{DynamicResource Brush.Accent1}"/>
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Control.Template>
+                            </Control>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            
+            <!-- Drop Area -->
+            <Rectangle
+                x:Name="dropArea"
+                Stroke="{DynamicResource Brush.Border1}"
+                StrokeThickness="2"
+                StrokeDashArray="4,4"
+                SnapsToDevicePixels="True"
+                Visibility="Hidden"
+                IsHitTestVisible="False"/>
         </Grid>
         
         <!-- Popup -->
-        <widgets:PopupPanel x:Name="popup" Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3"/>
+        <widgets:PopupPanel x:Name="popup" Grid.Row="0" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="3"/>
     </Grid>
 </UserControl>

@@ -297,18 +297,13 @@
     <sys:String x:Key="Text.Merge.Into">Into :</sys:String>
     <sys:String x:Key="Text.Merge.Mode">Merge Option :</sys:String>
 
-    <sys:String x:Key="Text.Welcome.Title">Free &amp; open source GUI for git users</sys:String>
+    <sys:String x:Key="Text.Welcome.Title">Free &amp; open source GUI tool for git users</sys:String>
     <sys:String x:Key="Text.Welcome.OpenOrInit">Open Repository</sys:String>
     <sys:String x:Key="Text.Welcome.OpenTerminal">Open Terminal</sys:String>
     <sys:String x:Key="Text.Welcome.Clone">Clone Repository</sys:String>
-    <sys:String x:Key="Text.Welcome.DragDrop">DROP FOLDER HERE</sys:String>
-    <sys:String x:Key="Text.Welcome.Start">START</sys:String>
-    <sys:String x:Key="Text.Welcome.Recent">RECENT OPENED</sys:String>
     <sys:String x:Key="Text.Welcome.Repositories">REPOSITORIES</sys:String>
-    <sys:String x:Key="Text.Welcome.NewFolder">Add Folder</sys:String>
-    <sys:String x:Key="Text.Welcome.NewSubFolder">Add Sub-Folder</sys:String>
-    <sys:String x:Key="Text.Welcome.Rename">Rename</sys:String>
     <sys:String x:Key="Text.Welcome.Delete">Delete</sys:String>
+    <sys:String x:Key="Text.Welcome.Search">Search Repositories ...</sys:String>
 
     <sys:String x:Key="Text.Pull">Pull</sys:String>
     <sys:String x:Key="Text.Pull.Title">Pull (Fetch &amp; Merge)</sys:String>

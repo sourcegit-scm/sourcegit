@@ -24,7 +24,7 @@ namespace SourceGit.Views.Popups {
                 if (!succ) return false;
 
                 var gitDir = Path.GetFullPath(Path.Combine(WorkDir, ".git"));
-                var repo = Models.Preference.Instance.AddRepository(WorkDir, gitDir, "");
+                var repo = Models.Preference.Instance.AddRepository(WorkDir, gitDir);
                 Dispatcher.Invoke(() => Models.Watcher.Open(repo));
                 return true;
             });

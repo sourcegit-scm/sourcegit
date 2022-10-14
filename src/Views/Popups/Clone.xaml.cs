@@ -66,7 +66,7 @@ namespace SourceGit.Views.Popups {
                 }
 
                 var gitDir = new Commands.QueryGitDir(path).Result();
-                var repo = Models.Preference.Instance.AddRepository(path, gitDir, "");
+                var repo = Models.Preference.Instance.AddRepository(path, gitDir);
                 if (repo != null) Dispatcher.Invoke(() => Models.Watcher.Open(repo));
                 return true;
             });

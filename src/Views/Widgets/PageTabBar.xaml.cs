@@ -18,7 +18,7 @@ namespace SourceGit.Views.Widgets {
         /// </summary>
         public class Tab : Controls.BindableBase {
             public string Id { get; set; }
-            public bool IsWelcomePage { get; set; }
+            public bool IsRepository { get; set; }
             
             private string title;
             public string Title {
@@ -108,7 +108,7 @@ namespace SourceGit.Views.Widgets {
         public void Add(string title, string repo, int bookmark) {
             var tab = new Tab() {
                 Id = repo,
-                IsWelcomePage = false,
+                IsRepository = true,
                 Title = title,
                 Tooltip = repo,
                 Bookmark = bookmark,
@@ -137,7 +137,7 @@ namespace SourceGit.Views.Widgets {
 
             var replaced = new Tab() {
                 Id = repo,
-                IsWelcomePage = false,
+                IsRepository = true,
                 Title = title,
                 Tooltip = repo,
                 Bookmark = bookmark,
@@ -207,7 +207,7 @@ namespace SourceGit.Views.Widgets {
             var id = Guid.NewGuid().ToString();
             var tab = new Tab() {
                 Id = id,
-                IsWelcomePage = true,
+                IsRepository = false,
                 Title = App.Text("PageTabBar.Welcome.Title"),
                 Tooltip = App.Text("PageTabBar.Welcome.Tip"),
                 Bookmark = 0,
@@ -322,14 +322,14 @@ namespace SourceGit.Views.Widgets {
             menu.Items.Add(closeOther);
             menu.Items.Add(closeRight);
 
-            if (!tab.IsWelcomePage) {
+            if (tab.IsRepository) {
                 var iconBookmark = FindResource("Icon.Git") as Geometry;
                 var bookmark = new MenuItem();
                 bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
-                for (int i = 0; i < Controls.Bookmark.COLORS.Length; i++) {
+                for (int i = 0; i < Converters.IntToBookmarkBrush.COLORS.Length; i++) {
                     var icon = new System.Windows.Shapes.Path();
                     icon.Data = iconBookmark;
-                    icon.Fill = i == 0 ? (FindResource("Brush.FG1") as Brush) : Controls.Bookmark.COLORS[i];
+                    icon.Fill = i == 0 ? (FindResource("Brush.FG1") as Brush) : Converters.IntToBookmarkBrush.COLORS[i];
                     icon.Width = 12;
 
                     var mark = new MenuItem();

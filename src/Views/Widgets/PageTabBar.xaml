@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
+             xmlns:converters="clr-namespace:SourceGit.Views.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="28" d:DesignWidth="800">
     <Grid Margin="0,4,0,0">
@@ -48,6 +49,11 @@
                     ItemsSource="{Binding ElementName=me, Path=Tabs}" 
                     WindowChrome.IsHitTestVisibleInChrome="True"
                     SelectionChanged="SelectionChanged">
+
+                    <ListBox.Resources>
+                        <converters:IntToBookmarkBrush x:Key="IntToBookmarkBrush"/>
+                        <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
+                    </ListBox.Resources>
                     
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -64,32 +70,37 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                         <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="1,1,1,0">
-                                            <StackPanel x:Name="Contents" Orientation="Horizontal" VerticalAlignment="Center" Opacity=".5" ToolTip="{Binding Tooltip}">
-                                                <controls:Bookmark
-                                                    Width="14" Height="14"
-                                                    Margin="8,0,0,0"
-                                                    IsNewPage="{Binding IsWelcomePage}"
-                                                    Color="{Binding Bookmark}"/>
+                                            <Grid x:Name="Contents" Width="160" VerticalAlignment="Center" Opacity=".5" ToolTip="{Binding Tooltip}">
+                                                <Path 
+                                                    Width="8" Margin="8,0,0,0"
+                                                    HorizontalAlignment="Left"
+                                                    Fill="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}"
+                                                    Visibility="{Binding IsRepository, Converter={StaticResource BoolToCollapsed}}">
+                                                    <Path.Data>
+                                                        <EllipseGeometry Center="0,0" RadiusX="14" RadiusY="14"/>
+                                                    </Path.Data>
+                                                </Path>
 
-                                                <TextBlock
-                                                    Margin="4,0"
-                                                    Width="80" MaxWidth="80" TextAlignment="Center"
-                                                    Text="{Binding Title}"/>
-                                                
+                                                <TextBlock Margin="32,0" HorizontalAlignment="Stretch" TextAlignment="Center" Text="{Binding Title}"/>
+
                                                 <controls:IconButton
                                                     Click="CloseTab"
+                                                    x:Name="closer"
                                                     Width="16" Height="16"
-                                                    Margin="0,0,0,0" Padding="4"
+                                                    Margin="0,1,8,0" Padding="4"
                                                     ToolTip="{DynamicResource Text.Close}"
                                                     Icon="{StaticResource Icon.Close}"
-                                                    HoverBackground="{DynamicResource Brush.NewPageHover}"/>
+                                                    HoverBackground="{DynamicResource Brush.NewPageHover}"
+                                                    Visibility="Hidden"
+                                                    HorizontalAlignment="Right"/>
 
                                                 <Rectangle
                                                     x:Name="seperator"
                                                     Margin="4,2,0,0"
                                                     Width="1"
-                                                    Fill="Transparent"/>
-                                            </StackPanel>
+                                                    Fill="Transparent"
+                                                    HorizontalAlignment="Right"/>
+                                            </Grid>
                                         </Border>
 
                                         <ControlTemplate.Triggers>
@@ -97,6 +108,7 @@
                                                 <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
                                                 <Setter TargetName="Border" Property="Background" Value="{DynamicResource Brush.Window}"/>
                                                 <Setter TargetName="Contents" Property="Opacity" Value="1"/>
+                                                <Setter TargetName="closer" Property="Visibility" Value="Visible"/>
                                             </Trigger>
                                             <DataTrigger Binding="{Binding IsSeperatorVisible}" Value="True">
                                                 <Setter TargetName="seperator" Property="Fill" Value="{DynamicResource Brush.FG2}"/>
@@ -107,6 +119,7 @@
                                                     <Condition Property="IsMouseOver" Value="True"/>
                                                 </MultiTrigger.Conditions>
                                                 <Setter TargetName="Contents" Property="Opacity" Value=".85"/>
+                                                <Setter TargetName="closer" Property="Visibility" Value="Visible"/>
                                             </MultiTrigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -118,14 +131,16 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                
-                <controls:IconButton
-                    Width="16" Height="16" Margin="4,0,0,0" Padding="2"
-                    Icon="{StaticResource Icon.NewTab}"
-                    HoverBackground="{DynamicResource Brush.NewPageHover}"
+
+                <Button
+                    Width="16" Height="16" Margin="8,0,0,0"
+                    Background="Transparent"
+                    BorderThickness="0"
                     ToolTip="{DynamicResource Text.PageTabBar.New}"
                     Click="NewTab"
-                    WindowChrome.IsHitTestVisibleInChrome="True"/>
+                    WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Path Width="12" Data="{StaticResource Icon.NewTab}" Fill="{DynamicResource Brush.FG1}"/>
+                </Button>
             </StackPanel>
         </ScrollViewer>
         

@@ -27,7 +27,6 @@ namespace SourceGit.Models {
         public string Name { get; set; } = "";
         public string Path { get; set; } = "";
         public string GitDir { get; set; } = "";
-        public string GroupId { get; set; } = "";
         public int Bookmark { get; set; } = 0;
         public List<SubTree> SubTrees { get; set; } = new List<SubTree>();
         public List<string> Filters { get; set; } = new List<string>();

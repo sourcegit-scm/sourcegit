@@ -22,9 +22,9 @@ namespace SourceGit.Views {
 
             tabs.OnTabEdited += (t) => {
                 foreach (var tab in tabs.Tabs) {
-                    if (!tab.IsWelcomePage) continue;
+                    if (tab.IsRepository) continue;
                     var page = container.Get(tab.Id) as Widgets.Welcome;
-                    if (page != null) page.UpdateNodes(t.Id, t.Bookmark);
+                    if (page != null) page.UpdateVisibles();
                 }
             };
         }
@@ -37,7 +37,7 @@ namespace SourceGit.Views {
             restore.Actived = null;
 
             foreach (var tab in tabs.Tabs) {
-                if (tab.IsWelcomePage) continue;
+                if (!tab.IsRepository) continue;
 
                 // 仅支持恢复加入管理的仓库页，Submodules等未加入管理的不支持
                 var repo = Models.Preference.Instance.FindRepository(tab.Id);
@@ -138,7 +138,7 @@ namespace SourceGit.Views {
         #region TAB_OPERATION
         private void OnTabAdding(object sender, Widgets.PageTabBar.TabEventArgs e) {
             var page = new Widgets.Welcome();
-            page.OnNodeEdited += node => tabs.Update(node.Id, node.Bookmark, node.Name);
+            page.OnBookmarkChanged += repo => tabs.Update(repo.Path, repo.Bookmark, repo.Name);
             container.Add(e.TabId, page);
             Controls.PopupWidget.RegisterContainer(e.TabId, page);
         }

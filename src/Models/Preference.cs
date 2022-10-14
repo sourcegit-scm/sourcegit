@@ -212,9 +212,7 @@ namespace SourceGit.Models {
         public GitInfo Git { get; set; } = new GitInfo();
         public MergeToolInfo MergeTool { get; set; } = new MergeToolInfo();
         public WindowInfo Window { get; set; } = new WindowInfo();
-        public List<Group> Groups { get; set; } = new List<Group>();
         public List<Repository> Repositories { get; set; } = new List<Repository>();
-        public List<string> Recents { get; set; } = new List<string>();
         public RestoreTabs Restore { get; set; } = new RestoreTabs();
         #endregion
 
@@ -251,71 +249,8 @@ namespace SourceGit.Models {
         }
         #endregion
 
-        #region METHOD_ON_GROUPS
-        public Group AddGroup(string name, string parentId) {
-            var group = new Group() {
-                Name = name,
-                Id = Guid.NewGuid().ToString(),
-                Parent = parentId,
-                IsExpanded = false,
-            };
-
-            Groups.Add(group);
-            Groups.Sort((l, r) => l.Name.CompareTo(r.Name));
-
-            return group;
-        }
-
-        public Group FindGroup(string id) {
-            foreach (var group in Groups) {
-                if (group.Id == id) return group;
-            }
-            return null;
-        }
-
-        public void RenameGroup(string id, string newName) {
-            foreach (var group in Groups) {
-                if (group.Id == id) {
-                    group.Name = newName;
-                    break;
-                }
-            }
-
-            Groups.Sort((l, r) => l.Name.CompareTo(r.Name));
-        }
-
-        public void RemoveGroup(string id) {
-            int removedIdx = -1;
-
-            for (int i = 0; i < Groups.Count; i++) {
-                if (Groups[i].Id == id) {
-                    removedIdx = i;
-                    break;
-                }
-            }
-
-            if (removedIdx >= 0) Groups.RemoveAt(removedIdx);
-        }
-
-        public bool IsSubGroup(string parent, string subId) {
-            if (string.IsNullOrEmpty(parent)) return false;
-            if (parent == subId) return true;
-
-            var g = FindGroup(subId);
-            if (g == null) return false;
-
-            g = FindGroup(g.Parent);
-            while (g != null) {
-                if (g.Id == parent) return true;
-                g = FindGroup(g.Parent);
-            }
-
-            return false;
-        }
-        #endregion
-
         #region METHOD_ON_REPOSITORIES
-        public Repository AddRepository(string path, string gitDir, string groupId) {
+        public Repository AddRepository(string path, string gitDir) {
             var repo = FindRepository(path);
             if (repo != null) return repo;
 
@@ -323,8 +258,7 @@ namespace SourceGit.Models {
             repo = new Repository() {
                 Path = dir.FullName,
                 GitDir = gitDir,
-                Name = dir.Name,
-                GroupId = groupId,
+                Name = dir.Name
             };
 
             Repositories.Add(repo);
@@ -340,14 +274,6 @@ namespace SourceGit.Models {
             return null;
         }
 
-        public void RenameRepository(string path, string newName) {
-            var repo = FindRepository(path);
-            if (repo == null) return;
-
-            repo.Name = newName;
-            Repositories.Sort((l, r) => l.Name.CompareTo(r.Name));
-        }
-
         public void RemoveRepository(string path) {
             var dir = new DirectoryInfo(path);
             var removedIdx = -1;
@@ -360,37 +286,6 @@ namespace SourceGit.Models {
             }
 
             if (removedIdx >= 0) Repositories.RemoveAt(removedIdx);
-        }
-        #endregion
-
-        #region RECENTS
-        public void AddRecent(string path) {
-            if (Recents.Count == 0) {
-                Recents.Add(path);
-                return;
-            }
-
-            for (int i = 0; i < Recents.Count; i++) {
-                if (Recents[i] == path) {
-                    if (i != 0) {
-                        Recents.RemoveAt(i);
-                        Recents.Insert(0, path);
-                    }
-
-                    return;
-                }
-            }
-
-            Recents.Insert(0, path);
-        }
-
-        public void RemoveRecent(string path) {
-            for (int i = 0; i < Recents.Count; i++) {
-                if (Recents[i] == path) {
-                    Recents.RemoveAt(i);
-                    return;
-                }
-            }
         }
         #endregion
     }

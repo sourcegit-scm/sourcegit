@@ -49,7 +49,7 @@ namespace SourceGit {
                         var path = new Commands.GetRepositoryRootPath(e.Args[0]).Result();
                         if (path != null) {
                             var gitDir = new Commands.QueryGitDir(path).Result();
-                            repo = Models.Preference.Instance.AddRepository(path, gitDir, "");
+                            repo = Models.Preference.Instance.AddRepository(path, gitDir);
                         }
                     }
 
