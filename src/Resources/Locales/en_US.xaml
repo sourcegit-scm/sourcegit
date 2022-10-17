@@ -297,13 +297,13 @@
     <sys:String x:Key="Text.Merge.Into">Into :</sys:String>
     <sys:String x:Key="Text.Merge.Mode">Merge Option :</sys:String>
 
-    <sys:String x:Key="Text.Welcome.Title">Free &amp; open source GUI tool for git users</sys:String>
     <sys:String x:Key="Text.Welcome.OpenOrInit">Open Repository</sys:String>
     <sys:String x:Key="Text.Welcome.OpenTerminal">Open Terminal</sys:String>
     <sys:String x:Key="Text.Welcome.Clone">Clone Repository</sys:String>
     <sys:String x:Key="Text.Welcome.Repositories">REPOSITORIES</sys:String>
     <sys:String x:Key="Text.Welcome.Delete">Delete</sys:String>
     <sys:String x:Key="Text.Welcome.Search">Search Repositories ...</sys:String>
+    <sys:String x:Key="Text.Welcome.Sort">Sort</sys:String>
 
     <sys:String x:Key="Text.Pull">Pull</sys:String>
     <sys:String x:Key="Text.Pull.Title">Pull (Fetch &amp; Merge)</sys:String>
@@ -508,6 +508,10 @@
     <sys:String x:Key="Text.Month.10">Oct</sys:String>
     <sys:String x:Key="Text.Month.11">Nov</sys:String>
     <sys:String x:Key="Text.Month.12">Dec</sys:String>
+
+    <sys:String x:Key="Text.Sort.NameAsc">By Name</sys:String>
+    <sys:String x:Key="Text.Sort.NameDesc">By Name Inversed</sys:String>
+    <sys:String x:Key="Text.Sort.RecentlyOpened">By Recently Opened</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>

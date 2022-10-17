@@ -34,14 +34,16 @@
             <Rectangle Grid.Column="0" Grid.ColumnSpan="4" Fill="{DynamicResource Brush.Border0}" Height="1" VerticalAlignment="Bottom"/>
 
             <!-- Main Menu -->
-            <controls:IconButton
+            <Button
                 Grid.Column="0"
                 Margin="4,4,4,0"
-                Width="14"
-                Icon="{StaticResource Icon.List}"
-                ToolTip="{DynamicResource Text.Launcher.Menu}"
+                Width="16"
+                Background="Transparent"
+                BorderThickness="0"
                 WindowChrome.IsHitTestVisibleInChrome="True"
-                Click="ToggleMainMenu"/>
+                Click="ToggleMainMenu">
+                <Path Data="{StaticResource Icon.Git}" Fill="{DynamicResource Brush.Logo}"/>
+            </Button>
 
             <!-- Tabs -->
             <widgets:PageTabBar 

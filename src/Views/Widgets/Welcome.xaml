@@ -13,8 +13,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -24,34 +22,15 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- App Name -->
-        <TextBlock
-            Grid.Row="0" Grid.Column="1"
-            Margin="0,64,0,0"
-            HorizontalAlignment="Left"
-            Text="SourceGit"
-            FontSize="28pt"
-            TextOptions.TextFormattingMode="Ideal"
-            TextOptions.TextRenderingMode="ClearType"
-            RenderOptions.ClearTypeHint="Enabled"/>
-        
-        <!-- App Desc -->
-        <TextBlock 
-            Grid.Row="1" Grid.Column="1"
-            HorizontalAlignment="Left"
-            Text="{DynamicResource Text.Welcome.Title}"
-            Foreground="{DynamicResource Brush.FG2}"
-            FontSize="18pt"
-            Margin="0,8"/>
-        
         <!-- Repositories Tool Bar -->
-        <Grid Grid.Row="2" Grid.Column="1" Margin="0,32,0,0">
+        <Grid Grid.Row="0" Grid.Column="1" Margin="0,100,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>                
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             
             <TextBlock
@@ -86,10 +65,19 @@
                 Click="OnOpenTerminalClicked">
                 <Path Width="16" Height="14" Data="{StaticResource Icon.Terminal}" Fill="{DynamicResource Brush.Accent1}"/>
             </Button>
+
+            <Button
+                Grid.Column="5"
+                Width="32" Height="28"
+                Style="{DynamicResource Style.Button.Link}"
+                ToolTip="{DynamicResource Text.Welcome.Sort}"
+                Click="OnSortMethodClicked">
+                <Path Width="16" Height="14" Data="{StaticResource Icon.Sort}" Fill="{DynamicResource Brush.Accent1}"/>
+            </Button>
         </Grid>
         
         <!-- Search Bar -->
-        <Grid Grid.Row="3" Grid.Column="1" Margin="2,8" Height="28" VerticalAlignment="Top">
+        <Grid Grid.Row="1" Grid.Column="1" Margin="2,8" Height="28" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="24"/>
                 <ColumnDefinition Width="*"/>
@@ -116,7 +104,7 @@
         </Grid>
         
         <!-- Repositories List -->
-        <Grid Grid.Row="4" Grid.Column="1" Margin="0,0,0,8" AllowDrop="True" Drop="OnDropFolder">
+        <Grid Grid.Row="2" Grid.Column="1" Margin="0,0,0,80" AllowDrop="True" Drop="OnDropFolder">
             <Grid.Resources>
                 <converters:IntToBookmarkBrush x:Key="IntToBookmarkBrush"/>
             </Grid.Resources>
@@ -191,6 +179,6 @@
         </Grid>
         
         <!-- Popup -->
-        <widgets:PopupPanel x:Name="popup" Grid.Row="0" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="3"/>
+        <widgets:PopupPanel x:Name="popup" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="3"/>
     </Grid>
 </UserControl>

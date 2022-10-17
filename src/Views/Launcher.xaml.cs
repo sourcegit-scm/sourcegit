@@ -78,6 +78,12 @@ namespace SourceGit.Views {
             } else {
                 tabs.Replace(tabs.Current, repo.Name, repo.Path, repo.Bookmark);
             }
+
+            foreach (var tab in tabs.Tabs) {
+                if (tab.IsRepository) continue;
+                var dirty = container.Get(tabs.Current) as Widgets.Welcome;
+                if (dirty != null) dirty.UpdateVisibles();
+            }
         }
         #endregion
 

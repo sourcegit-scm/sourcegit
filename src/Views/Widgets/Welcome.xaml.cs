@@ -67,6 +67,40 @@ namespace SourceGit.Views.Widgets {
             if (MakeSureReady()) new Popups.Clone().Show();
         }
 
+        private void FillSortMenu(ContextMenu menu, Models.Preference.SortMethod desired, string label) {
+            var item = new MenuItem();
+            item.Header = App.Text(label);
+            item.Click += (s, ev) => {
+                Models.Preference.Instance.General.SortBy = desired;
+                UpdateVisibles();
+            };
+
+            if (Models.Preference.Instance.General.SortBy == desired) {
+                var icon = new System.Windows.Shapes.Path();
+                icon.Data = FindResource("Icon.Check") as Geometry;
+                icon.Fill = FindResource("Brush.FG1") as Brush;
+                icon.Width = 12;
+                item.Icon = icon;
+            }
+
+            menu.Items.Add(item);
+        }
+
+        private void OnSortMethodClicked(object sender, RoutedEventArgs e) {
+            var menu = new ContextMenu();
+            menu.Placement = PlacementMode.Bottom;
+            menu.PlacementTarget = sender as Button;
+            menu.StaysOpen = false;
+            menu.Focusable = true;
+
+            FillSortMenu(menu, Models.Preference.SortMethod.ByNameASC, "Sort.NameAsc");
+            FillSortMenu(menu, Models.Preference.SortMethod.ByNameDESC, "Sort.NameDesc");
+            FillSortMenu(menu, Models.Preference.SortMethod.ByRecentlyOpened, "Sort.RecentlyOpened");
+
+            menu.IsOpen = true;
+            e.Handled = true;
+        }
+
         private void OnRemoveRepository(object sender, RoutedEventArgs e) {
             var repo = (sender as Button).DataContext as Models.Repository;
             if (repo == null) return;
@@ -204,6 +238,18 @@ namespace SourceGit.Views.Widgets {
                         visibles.Add(repo);
                     }
                 }
+            }
+
+            switch (Models.Preference.Instance.General.SortBy) {
+            case Models.Preference.SortMethod.ByNameASC:
+                visibles.Sort((l, r) => l.Name.CompareTo(r.Name));
+                break;
+            case Models.Preference.SortMethod.ByNameDESC:
+                visibles.Sort((l, r) => r.Name.CompareTo(l.Name));
+                break;
+            default:
+                visibles.Sort((l, r) => r.LastOpenTime.CompareTo(l.LastOpenTime));
+                break;
             }
 
             repoList.ItemsSource = visibles;

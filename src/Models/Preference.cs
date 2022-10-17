@@ -19,6 +19,15 @@ namespace SourceGit.Models {
         private static Preference instance = null;
 
         /// <summary>
+        ///     起始页仓库列表排序方式
+        /// </summary>
+        public enum SortMethod {
+            ByNameASC,
+            ByNameDESC,
+            ByRecentlyOpened,
+        }
+
+        /// <summary>
         ///     通用配置
         /// </summary>
         public class GeneralInfo {
@@ -68,6 +77,11 @@ namespace SourceGit.Models {
             ///     上一次检测的时间（用于控制每天仅第一次启动软件时，检测）
             /// </summary>
             public int LastCheckDay { get; set; } = 0;
+
+            /// <summary>
+            ///     起始页仓库列表排序规则
+            /// </summary>
+            public SortMethod SortBy { get; set; } = SortMethod.ByNameASC;
         }
 
         /// <summary>

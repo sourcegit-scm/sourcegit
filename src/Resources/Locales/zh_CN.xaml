@@ -296,13 +296,13 @@
     <sys:String x:Key="Text.Merge.Into">目标分支 ：</sys:String>
     <sys:String x:Key="Text.Merge.Mode">合并方式 ：</sys:String>
 
-    <sys:String x:Key="Text.Welcome.Title">开源的轻量级Git图形客户端</sys:String>
     <sys:String x:Key="Text.Welcome.OpenOrInit">打开本地仓库</sys:String>
     <sys:String x:Key="Text.Welcome.OpenTerminal">打开GIT终端</sys:String>
     <sys:String x:Key="Text.Welcome.Clone">克隆远程仓库</sys:String>
     <sys:String x:Key="Text.Welcome.Repositories">收藏/书签</sys:String>
     <sys:String x:Key="Text.Welcome.Delete">删除</sys:String>
     <sys:String x:Key="Text.Welcome.Search">快速查找仓库</sys:String>
+    <sys:String x:Key="Text.Welcome.Sort">排序</sys:String>
 
     <sys:String x:Key="Text.Pull">拉回</sys:String>
     <sys:String x:Key="Text.Pull.Title">拉回（拉取并合并）</sys:String>
@@ -507,6 +507,10 @@
     <sys:String x:Key="Text.Month.10">10月</sys:String>
     <sys:String x:Key="Text.Month.11">11月</sys:String>
     <sys:String x:Key="Text.Month.12">12月</sys:String>
+
+    <sys:String x:Key="Text.Sort.NameAsc">按名称正序</sys:String>
+    <sys:String x:Key="Text.Sort.NameDesc">按名称倒序</sys:String>
+    <sys:String x:Key="Text.Sort.RecentlyOpened">按最近访问</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
     <sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>

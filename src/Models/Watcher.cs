@@ -56,6 +56,7 @@ namespace SourceGit.Models {
             var watcher = new Watcher();
             watcher.Start(repo.Path, repo.GitDir);
             all.Add(repo.Path, watcher);
+            repo.LastOpenTime = DateTime.Now.ToFileTime();
 
             Opened?.Invoke(repo);
         }
