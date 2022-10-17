@@ -24,6 +24,7 @@ namespace SourceGit.Views.Widgets {
         public Welcome() {
             InitializeComponent();
             UpdateVisibles();
+            Models.Theme.AddListener(this, UpdateVisibles);
         }
 
         #region POPUP_CONTAINER
