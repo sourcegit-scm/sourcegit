@@ -135,7 +135,7 @@
                                                     <ColumnDefinition Width="8"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <Border Grid.Column="0" Background="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}"/>
+                                                <Border Grid.Column="0" Width="4" HorizontalAlignment="Left" Background="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}"/>
 
                                                 <StackPanel Grid.Column="1" Margin="4,0" Orientation="Horizontal">
                                                     <TextBlock Text="{Binding Name}" FontSize="12pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
