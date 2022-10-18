@@ -19,7 +19,7 @@ namespace SourceGit.Views.Converters {
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             var index = (int)value;
-            return index == 0 ? (App.Current.FindResource("Brush.FG1") as Brush) : COLORS[index];
+            return COLORS[index];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {

@@ -269,10 +269,23 @@ namespace SourceGit.Views.Widgets {
             if (tab == null || tab != container.SelectedItem) return;
 
             if (e.LeftButton == MouseButtonState.Pressed) {
-                var dragging = new Controls.DragDropAdorner(item);
                 DragDrop.DoDragDrop(item, item.DataContext, DragDropEffects.Move);
-                dragging.Remove();
             }
+        }
+
+        private void OnGiveFeedback(object sender, GiveFeedbackEventArgs e) {
+            if (e.Effects == DragDropEffects.Move) {
+                e.UseDefaultCursors = false;
+                Mouse.SetCursor(Cursors.Hand);
+            } else {
+                e.UseDefaultCursors = true;
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnDragOver(object sender, DragEventArgs e) {
+            OnDrop(sender, e);
         }
 
         private void OnDrop(object sender, DragEventArgs e) {
@@ -323,13 +336,12 @@ namespace SourceGit.Views.Widgets {
             menu.Items.Add(closeRight);
 
             if (tab.IsRepository) {
-                var iconBookmark = FindResource("Icon.Git") as Geometry;
                 var bookmark = new MenuItem();
                 bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
                 for (int i = 0; i < Converters.IntToBookmarkBrush.COLORS.Length; i++) {
                     var icon = new System.Windows.Shapes.Path();
-                    icon.Data = iconBookmark;
-                    icon.Fill = i == 0 ? (FindResource("Brush.FG1") as Brush) : Converters.IntToBookmarkBrush.COLORS[i];
+                    icon.Data = new EllipseGeometry(new Point(0, 0), 12, 12);
+                    icon.Fill = Converters.IntToBookmarkBrush.COLORS[i];
                     icon.Width = 12;
 
                     var mark = new MenuItem();

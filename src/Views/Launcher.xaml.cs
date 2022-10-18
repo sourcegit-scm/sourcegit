@@ -144,7 +144,6 @@ namespace SourceGit.Views {
         #region TAB_OPERATION
         private void OnTabAdding(object sender, Widgets.PageTabBar.TabEventArgs e) {
             var page = new Widgets.Welcome();
-            page.OnBookmarkChanged += repo => tabs.Update(repo.Path, repo.Bookmark, repo.Name);
             container.Add(e.TabId, page);
             Controls.PopupWidget.RegisterContainer(e.TabId, page);
         }

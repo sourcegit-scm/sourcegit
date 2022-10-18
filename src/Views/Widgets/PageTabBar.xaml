@@ -64,6 +64,11 @@
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
                             <EventSetter Event="ContextMenuOpening" Handler="OnTabContextMenuOpening" />
+                            <EventSetter Event="MouseMove" Handler="OnMouseMove"/>
+                            <EventSetter Event="DragOver" Handler="OnDragOver"/>
+                            <EventSetter Event="Drop" Handler="OnDrop"/>
+                            <EventSetter Event="GiveFeedback" Handler="OnGiveFeedback"/>
+                            
                             <Setter Property="AllowDrop" Value="True"/>
                             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                             <Setter Property="Template">
@@ -125,9 +130,6 @@
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
-
-                            <EventSetter Event="MouseMove" Handler="OnMouseMove"/>
-                            <EventSetter Event="Drop" Handler="OnDrop"/>
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>

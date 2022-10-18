@@ -124,25 +124,20 @@
                                             Height="36" Margin="0,2"
                                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
                                             Background="{DynamicResource Brush.Contents}">
-                                            <Grid Margin="8,0">
+                                            <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="8"/>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="32"/>
                                                     <ColumnDefinition Width="32"/>
                                                     <ColumnDefinition Width="32"/>
                                                     <ColumnDefinition Width="32"/>
+                                                    <ColumnDefinition Width="8"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <Button Grid.Column="0" Background="Transparent" Width="16" BorderThickness="0" ToolTip="{DynamicResource Text.RepoCM.Bookmark}" Click="OnChangeRepositoryBookmark">
-                                                    <Path Width="8" Fill="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}">
-                                                        <Path.Data>
-                                                            <EllipseGeometry Center="0,0" RadiusX="14" RadiusY="14"/>
-                                                        </Path.Data>
-                                                    </Path>
-                                                </Button>
+                                                <Border Grid.Column="0" Background="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}"/>
 
-                                                <StackPanel Grid.Column="1" Margin="8,0" Orientation="Horizontal">
+                                                <StackPanel Grid.Column="1" Margin="4,0" Orientation="Horizontal">
                                                     <TextBlock Text="{Binding Name}" FontSize="12pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
                                                     <TextBlock Text="{Binding Path}" FontSize="10pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" Margin="8,0" Foreground="{DynamicResource Brush.FG2}"/>
                                                 </StackPanel>

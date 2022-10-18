@@ -20,37 +20,9 @@ namespace SourceGit.Views.Controls {
             set { SetValue(IsMaximizedProperty, value); }
         }
 
-        private AdornerLayer adornerLayer = null;
-        private List<Adorner> adorners = new List<Adorner>();
-
         public Window() {
             Style = FindResource("Style.Window") as Style;
-
-            Loaded += (_, __) => {
-                adornerLayer = AdornerLayer.GetAdornerLayer(Content as FrameworkElement);
-                OnStateChanged(null);
-            };
-        }
-
-        public static void AddAdorner(FrameworkElement windowContext, Adorner adorner) {
-            var wnd = GetWindow(windowContext) as Window;
-            if (wnd != null && wnd.adornerLayer != null) {
-                wnd.adorners.Add(adorner);
-                wnd.adornerLayer.Add(adorner);
-            }
-        }
-
-        public static void RemoveAdorner(FrameworkElement windowContext, Adorner adorner) {
-            var wnd = GetWindow(windowContext) as Window;
-            if (wnd != null && wnd.adornerLayer != null) {
-                wnd.adorners.Remove(adorner);
-                wnd.adornerLayer.Remove(adorner);
-            }
-        }
-
-        protected override void OnPreviewGiveFeedback(GiveFeedbackEventArgs e) {
-            base.OnPreviewGiveFeedback(e);
-            if (adornerLayer != null && adorners.Count > 0) adornerLayer.Update();
+            Loaded += (_, __) => OnStateChanged(null);
         }
 
         protected override void OnStateChanged(EventArgs e) {

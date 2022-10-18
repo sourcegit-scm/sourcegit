@@ -16,11 +16,6 @@ namespace SourceGit.Views.Widgets {
     /// </summary>
     public partial class Welcome : UserControl, Controls.IPopupContainer {
 
-        /// <summary>
-        ///     修改仓库标签颜色的回调
-        /// </summary>
-        public event Action<Models.Repository> OnBookmarkChanged;
-
         public Welcome() {
             InitializeComponent();
             UpdateVisibles();
@@ -132,45 +127,6 @@ namespace SourceGit.Views.Widgets {
             if (repo == null) return;
 
             Process.Start("explorer", repo.Path);
-            e.Handled = true;
-        }
-
-        private void OnChangeRepositoryBookmark(object sender, RoutedEventArgs e) {
-            var btn = (sender as Button);
-            var repo = btn.DataContext as Models.Repository;
-            if (repo == null) return;
-
-            var menu = new ContextMenu();
-            menu.Placement = PlacementMode.Bottom;
-            menu.PlacementTarget = btn;
-            menu.StaysOpen = false;
-            menu.Focusable = true;
-
-            for (int i = 0; i < Converters.IntToBookmarkBrush.COLORS.Length; i++) {
-                var icon = new System.Windows.Shapes.Path();
-                icon.Data = new EllipseGeometry(new Point(0, 0), 8, 8);
-                icon.Fill = i == 0 ? (FindResource("Brush.FG1") as Brush) : Converters.IntToBookmarkBrush.COLORS[i];
-                icon.Width = 12;
-
-                var mark = new MenuItem();
-                mark.Icon = icon;
-                mark.Header = $"{i}"; 
-
-                var refIdx = i;
-                mark.Click += (o, ev) => {
-                    if (repo != null) {
-                        repo.Bookmark = refIdx;
-                        UpdateVisibles();
-                        OnBookmarkChanged?.Invoke(repo);
-                    }
-                    ev.Handled = true;
-                };
-
-                menu.Items.Add(mark);
-            }
-
-            btn.ContextMenu = menu;
-            btn.ContextMenu.IsOpen = true;
             e.Handled = true;
         }
 
