@@ -92,6 +92,7 @@ namespace SourceGit.Views.Widgets {
             FillSortMenu(menu, Models.Preference.SortMethod.ByNameASC, "Sort.NameAsc");
             FillSortMenu(menu, Models.Preference.SortMethod.ByNameDESC, "Sort.NameDesc");
             FillSortMenu(menu, Models.Preference.SortMethod.ByRecentlyOpened, "Sort.RecentlyOpened");
+            FillSortMenu(menu, Models.Preference.SortMethod.ByBookmark, "Sort.Bookmark");
 
             menu.IsOpen = true;
             e.Handled = true;
@@ -195,8 +196,11 @@ namespace SourceGit.Views.Widgets {
             case Models.Preference.SortMethod.ByNameDESC:
                 visibles.Sort((l, r) => r.Name.CompareTo(l.Name));
                 break;
-            default:
+            case Models.Preference.SortMethod.ByRecentlyOpened:
                 visibles.Sort((l, r) => r.LastOpenTime.CompareTo(l.LastOpenTime));
+                break;
+            default:
+                visibles.Sort((l, r) => l.Bookmark.CompareTo(r.Bookmark));
                 break;
             }
 

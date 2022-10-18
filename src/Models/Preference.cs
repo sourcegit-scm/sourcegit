@@ -25,6 +25,7 @@ namespace SourceGit.Models {
             ByNameASC,
             ByNameDESC,
             ByRecentlyOpened,
+            ByBookmark,
         }
 
         /// <summary>

@@ -504,6 +504,7 @@
     <sys:String x:Key="Text.Sort.NameAsc">按名称正序</sys:String>
     <sys:String x:Key="Text.Sort.NameDesc">按名称倒序</sys:String>
     <sys:String x:Key="Text.Sort.RecentlyOpened">按最近访问</sys:String>
+    <sys:String x:Key="Text.Sort.Bookmark">按书签颜色</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
     <sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>

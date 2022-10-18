@@ -505,6 +505,7 @@
     <sys:String x:Key="Text.Sort.NameAsc">By Name</sys:String>
     <sys:String x:Key="Text.Sort.NameDesc">By Name Inversed</sys:String>
     <sys:String x:Key="Text.Sort.RecentlyOpened">By Recently Opened</sys:String>
+    <sys:String x:Key="Text.Sort.Bookmark">By Bookmark Color</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>
