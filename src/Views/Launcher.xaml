@@ -10,7 +10,7 @@
     xmlns:models="clr-namespace:SourceGit.Models"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
-    MinWidth="1280" MinHeight="720"
+    MinWidth="1024" MinHeight="768"
     Title="{DynamicResource Text.About.Title}"
     Width="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Width, Mode=TwoWay}"
     Height="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Height, Mode=TwoWay}"
