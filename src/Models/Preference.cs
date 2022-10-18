@@ -59,11 +59,6 @@ namespace SourceGit.Models {
             }
 
             /// <summary>
-            ///     头像服务器
-            /// </summary>
-            public string AvatarServer { get; set; } = "https://www.gravatar.com/avatar/";
-
-            /// <summary>
             ///     是否启用深色主题
             /// </summary>
             public bool UseDarkTheme { get; set; } = true;

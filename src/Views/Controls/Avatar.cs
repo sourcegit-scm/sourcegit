@@ -193,7 +193,7 @@ namespace SourceGit.Views.Controls {
                 if (!requesting.ContainsKey(email)) return;
 
                 try {
-                    var req = new HttpClient().GetAsync(Models.Preference.Instance.General.AvatarServer + md5 + "?d=404");
+                    var req = new HttpClient().GetAsync($"https://www.gravatar.com/avatar/{md5}?d=404");
                     req.Wait();
 
                     var rsp = req.Result;

@@ -57,9 +57,8 @@
         <TabControl Grid.Row="2" Margin="0,4">
             <!-- General Setting -->
             <TabItem Header="{DynamicResource Text.Preference.General}">
-                <Grid Margin="0,8">
+                <Grid Margin="8">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="28"/>
                         <RowDefinition Height="28"/>
                         <RowDefinition Height="28"/>
                         <RowDefinition Height="28"/>
@@ -133,36 +132,22 @@
                         </ComboBox.Resources>
                     </ComboBox>
 
-                    <!-- Avatar -->
-                    <TextBlock
-                        Grid.Row="3" Grid.Column="0"
-                        Text="{DynamicResource Text.Preference.AvatarServer}"
-                        HorizontalAlignment="Right"
-                        Margin="0,0,8,0"/>
-                    <ComboBox
-                        Grid.Row="3" Grid.Column="1"
-                        Height="24"
-                        ItemsSource="{Binding Source={x:Static models:AvatarServer.Supported}}"
-                        DisplayMemberPath="Name"
-                        SelectedValuePath="Url"
-                        SelectedValue="{Binding Source={x:Static models:Preference.Instance}, Path=General.AvatarServer, Mode=TwoWay}"/>
-
                     <!-- Enable Check For Update -->
                     <CheckBox
-                        Grid.Row="4" Grid.Column="1"
+                        Grid.Row="3" Grid.Column="1"
                         Content="{DynamicResource Text.Preference.CheckUpdate}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.CheckForUpdate, Mode=TwoWay}"/>
 
                     <!-- Enable Dark Theme -->
                     <CheckBox
-                        Grid.Row="5" Grid.Column="1"
+                        Grid.Row="4" Grid.Column="1"
                         Content="{DynamicResource Text.Preference.UseDarkTheme}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.UseDarkTheme, Mode=TwoWay}"
                         Checked="ChangeTheme" Unchecked="ChangeTheme"/>
 
                     <!-- Restore Windows -->
                     <CheckBox
-                        Grid.Row="6" Grid.Column="1"
+                        Grid.Row="5" Grid.Column="1"
                         Content="{DynamicResource Text.Preference.RestoreTabs}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Restore.IsEnabled, Mode=TwoWay}"/>
                 </Grid>
@@ -170,7 +155,7 @@
 
             <!-- Git Setting -->
             <TabItem Header="{DynamicResource Text.Preference.Git}">
-                <Grid Margin="0,8">
+                <Grid Margin="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="28"/>
                         <RowDefinition Height="28"/>
@@ -310,7 +295,7 @@
             </TabItem>
 
             <TabItem Header="{DynamicResource Text.Preference.Merger}">
-                <Grid Margin="0,8">
+                <Grid Margin="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="28"/>
                         <RowDefinition Height="28"/>
