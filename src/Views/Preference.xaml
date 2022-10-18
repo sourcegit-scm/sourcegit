@@ -65,7 +65,6 @@
                         <RowDefinition Height="28"/>
                         <RowDefinition Height="28"/>
                         <RowDefinition Height="28"/>
-                        <RowDefinition Height="28"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -132,22 +131,16 @@
                         </ComboBox.Resources>
                     </ComboBox>
 
-                    <!-- Enable Check For Update -->
-                    <CheckBox
-                        Grid.Row="3" Grid.Column="1"
-                        Content="{DynamicResource Text.Preference.CheckUpdate}"
-                        IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.CheckForUpdate, Mode=TwoWay}"/>
-
                     <!-- Enable Dark Theme -->
                     <CheckBox
-                        Grid.Row="4" Grid.Column="1"
+                        Grid.Row="3" Grid.Column="1"
                         Content="{DynamicResource Text.Preference.UseDarkTheme}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.UseDarkTheme, Mode=TwoWay}"
                         Checked="ChangeTheme" Unchecked="ChangeTheme"/>
 
                     <!-- Restore Windows -->
                     <CheckBox
-                        Grid.Row="5" Grid.Column="1"
+                        Grid.Row="4" Grid.Column="1"
                         Content="{DynamicResource Text.Preference.RestoreTabs}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Restore.IsEnabled, Mode=TwoWay}"/>
                 </Grid>
