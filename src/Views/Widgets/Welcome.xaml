@@ -27,10 +27,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="8"/>
             </Grid.ColumnDefinitions>
             
             <TextBlock
@@ -41,43 +42,39 @@
 
             <Button
                 Grid.Column="2"
-                Width="32" Height="28"
-                Style="{DynamicResource Style.Button.Link}"
+                Background="Transparent" BorderThickness="0"
                 ToolTip="{DynamicResource Text.Welcome.OpenOrInit}"
                 Click="OnOpenClicked">
-                <Path Width="14" Height="14" Data="{StaticResource Icon.NewTab}" Fill="{DynamicResource Brush.Accent1}"/>
+                <Path Width="16" Height="16" Data="{StaticResource Icon.Folder.Open}"/>
             </Button>
 
             <Button
                 Grid.Column="3"
-                Width="32" Height="28"
-                Style="{DynamicResource Style.Button.Link}"
+                Background="Transparent" BorderThickness="0"
                 ToolTip="{DynamicResource Text.Welcome.Clone}"
                 Click="OnCloneClicked">
-                <Path Width="16" Height="15" Data="{StaticResource Icon.Pull}" Fill="{DynamicResource Brush.Accent1}"/>
+                <Path Width="15" Height="15" Data="{StaticResource Icon.Pull}"/>
             </Button>
 
             <Button
                 Grid.Column="4"
-                Width="32" Height="28"
-                Style="{DynamicResource Style.Button.Link}"
+                Background="Transparent" BorderThickness="0"
                 ToolTip="{DynamicResource Text.Welcome.OpenTerminal}"
                 Click="OnOpenTerminalClicked">
-                <Path Width="16" Height="14" Data="{StaticResource Icon.Terminal}" Fill="{DynamicResource Brush.Accent1}"/>
+                <Path Width="14" Height="14" Data="{StaticResource Icon.Terminal}"/>
             </Button>
 
             <Button
                 Grid.Column="5"
-                Width="32" Height="28"
-                Style="{DynamicResource Style.Button.Link}"
+                Background="Transparent" BorderThickness="0"
                 ToolTip="{DynamicResource Text.Welcome.Sort}"
                 Click="OnSortMethodClicked">
-                <Path Width="16" Height="14" Data="{StaticResource Icon.Sort}" Fill="{DynamicResource Brush.Accent1}"/>
+                <Path Width="16" Height="16" Data="{StaticResource Icon.Sort}"/>
             </Button>
         </Grid>
         
         <!-- Search Bar -->
-        <Grid Grid.Row="1" Grid.Column="1" Margin="2,8" Height="28" VerticalAlignment="Top">
+        <Grid Grid.Row="1" Grid.Column="1" Margin="0,8" Height="28" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="24"/>
                 <ColumnDefinition Width="*"/>
@@ -120,48 +117,54 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border
-                                Height="36"
-                                Margin="2"
-                                BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
-                                Background="{DynamicResource Brush.Contents}">
-                                <Grid Margin="8,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                            <Control MouseDoubleClick="OnDoubleClickRepository">
+                                <Control.Template>
+                                    <ControlTemplate>
+                                        <Border
+                                            Height="36"
+                                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
+                                            Background="{DynamicResource Brush.Contents}">
+                                            <Grid Margin="8,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="32"/>
+                                                    <ColumnDefinition Width="32"/>
+                                                    <ColumnDefinition Width="32"/>
+                                                    <ColumnDefinition Width="32"/>
+                                                </Grid.ColumnDefinitions>
 
-                                    <Button Grid.Column="0" Background="Transparent" Width="16" BorderThickness="0" ToolTip="{DynamicResource Text.RepoCM.Bookmark}" Click="OnChangeRepositoryBookmark">
-                                        <Path Width="8" Fill="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}">
-                                            <Path.Data>
-                                                <EllipseGeometry Center="0,0" RadiusX="14" RadiusY="14"/>
-                                            </Path.Data>
-                                        </Path>
-                                    </Button>
+                                                <Button Grid.Column="0" Background="Transparent" Width="16" BorderThickness="0" ToolTip="{DynamicResource Text.RepoCM.Bookmark}" Click="OnChangeRepositoryBookmark">
+                                                    <Path Width="8" Fill="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}">
+                                                        <Path.Data>
+                                                            <EllipseGeometry Center="0,0" RadiusX="14" RadiusY="14"/>
+                                                        </Path.Data>
+                                                    </Path>
+                                                </Button>
 
-                                    <TextBlock Grid.Column="1" Margin="8,0" Text="{Binding Name}" FontSize="12pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
-                                    <TextBlock Grid.Column="2" Text="{Binding Path}" FontSize="10pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
+                                                <StackPanel Grid.Column="1" Margin="8,0" Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Name}" FontSize="12pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
+                                                    <TextBlock Text="{Binding Path}" FontSize="10pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" Margin="8,0" Foreground="{DynamicResource Brush.FG2}"/>
+                                                </StackPanel>
 
-                                    <Button Grid.Column="4" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Open}" Click="OnOpenRepository">
-                                        <Path Width="15" Data="{StaticResource Icon.Folder.Open}" Fill="{DynamicResource Brush.Accent1}"/>
-                                    </Button>
-                                    <Button Grid.Column="5" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Explore}" Click="OnExploreRepository">
-                                        <Path Width="15" Data="{StaticResource Icon.DiffWith}" Fill="{DynamicResource Brush.Accent1}"/>
-                                    </Button>
-                                    <Button Grid.Column="6" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.OpenTerminal}" Click="OnOpenRepositoryTerminal">
-                                        <Path Width="14" Data="{StaticResource Icon.Terminal}" Fill="{DynamicResource Brush.Accent1}"/>
-                                    </Button>
-                                    <Button Grid.Column="7" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.Delete}" Click="OnRemoveRepository">
-                                        <Path Width="10" Data="{StaticResource Icon.Close}" Fill="{DynamicResource Brush.Accent1}"/>
-                                    </Button>
-                                </Grid>
-                            </Border>
+                                                <Button Grid.Column="2" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Open}" Click="OnOpenRepository">
+                                                    <Path Width="15" Data="{StaticResource Icon.Folder.Open}"/>
+                                                </Button>
+                                                <Button Grid.Column="3" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Explore}" Click="OnExploreRepository">
+                                                    <Path Width="14" Data="{StaticResource Icon.DiffWith}"/>
+                                                </Button>
+                                                <Button Grid.Column="4" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.OpenTerminal}" Click="OnOpenRepositoryTerminal">
+                                                    <Path Width="14" Data="{StaticResource Icon.Terminal}"/>
+                                                </Button>
+                                                <Button Grid.Column="5" Margin="8,0,0,0" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.Welcome.Delete}" Click="OnRemoveRepository">
+                                                    <Path Width="10" Data="{StaticResource Icon.Close}"/>
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Control.Template>
+                            </Control>
+                            
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

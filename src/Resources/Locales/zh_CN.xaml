@@ -537,4 +537,5 @@
     <sys:String x:Key="Text.BadRelativePath">非法的子路径！</sys:String>
     <sys:String x:Key="Text.BadArchiveFile">非法的存档文件路径！</sys:String>
     <sys:String x:Key="Text.Required">内容未填写！</sys:String>
+    <sys:String x:Key="Text.ConfirmRemoveRepo">正在将 '{0}' 从列表中移除，是否要继续？</sys:String>
 </ResourceDictionary>

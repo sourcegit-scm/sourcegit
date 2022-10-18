@@ -106,9 +106,17 @@ namespace SourceGit.Views.Widgets {
             var repo = (sender as Button).DataContext as Models.Repository;
             if (repo == null) return;
 
-            Models.Preference.Instance.RemoveRepository(repo.Path);
-            UpdateVisibles();
+            var result = MessageBox.Show(App.Text("ConfirmRemoveRepo", repo.Path), App.Text("Apply.Warn"), MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) {
+                Models.Preference.Instance.RemoveRepository(repo.Path);
+                UpdateVisibles();
+            }
+            
             e.Handled = true;
+        }
+
+        private void OnDoubleClickRepository(object sender, MouseButtonEventArgs e) {
+            OnOpenRepository(sender, e);
         }
 
         private void OnOpenRepository(object sender, RoutedEventArgs e) {

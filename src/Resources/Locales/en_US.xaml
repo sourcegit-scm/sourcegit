@@ -538,4 +538,5 @@
     <sys:String x:Key="Text.BadRelativePath">Invalid relative path</sys:String>
     <sys:String x:Key="Text.BadArchiveFile">Invalid path for archive file</sys:String>
     <sys:String x:Key="Text.Required">This field is required</sys:String>
+    <sys:String x:Key="Text.ConfirmRemoveRepo">You are removing repository '{0}'. Are you sure to continue?</sys:String>
 </ResourceDictionary>
