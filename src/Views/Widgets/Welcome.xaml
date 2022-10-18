@@ -146,7 +146,7 @@
                                     </Button>
 
                                     <TextBlock Grid.Column="1" Margin="8,0" Text="{Binding Name}" FontSize="12pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
-                                    <TextBlock Grid.Column="2" Text="{Binding Path}" FontSize="10pt" Foreground="{DynamicResource Brush.FG2}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Path}" FontSize="10pt" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
 
                                     <Button Grid.Column="4" BorderThickness="0" Background="Transparent" ToolTip="{DynamicResource Text.RepoCM.Open}" Click="OnOpenRepository">
                                         <Path Width="15" Data="{StaticResource Icon.Folder.Open}" Fill="{DynamicResource Brush.Accent1}"/>
