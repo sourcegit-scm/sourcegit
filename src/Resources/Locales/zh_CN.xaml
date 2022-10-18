@@ -395,13 +395,6 @@
 
     <sys:String x:Key="Text.TwoCommitsDiff">对比提交 : {0} -> {1}</sys:String>
 
-    <sys:String x:Key="Text.UpdateAvailable">检测更新</sys:String>
-    <sys:String x:Key="Text.UpdateAvailable.Title">{0}已发布！</sys:String>
-    <sys:String x:Key="Text.UpdateAvailable.Time">发布时间</sys:String>
-    <sys:String x:Key="Text.UpdateAvailable.Based">GIT版本</sys:String>
-    <sys:String x:Key="Text.UpdateAvailable.IsPreRelease">预览版</sys:String>
-    <sys:String x:Key="Text.UpdateAvailable.Download" xml:space="preserve">下    载</sys:String>
-
     <sys:String x:Key="Text.WorkingCopy">本地更改</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Unstaged">未暂存</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Unstaged.Stage">暂存选中</sys:String>

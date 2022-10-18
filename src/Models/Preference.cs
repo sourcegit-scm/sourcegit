@@ -64,16 +64,6 @@ namespace SourceGit.Models {
             public bool UseDarkTheme { get; set; } = true;
 
             /// <summary>
-            ///     启用更新检测
-            /// </summary>
-            public bool CheckForUpdate { get; set; } = true;
-
-            /// <summary>
-            ///     上一次检测的时间（用于控制每天仅第一次启动软件时，检测）
-            /// </summary>
-            public int LastCheckDay { get; set; } = 0;
-
-            /// <summary>
             ///     起始页仓库列表排序规则
             /// </summary>
             public SortMethod SortBy { get; set; } = SortMethod.ByNameASC;

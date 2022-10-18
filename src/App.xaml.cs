@@ -73,12 +73,6 @@ namespace SourceGit {
             // 主界面显示
             MainWindow = launcher;
             MainWindow.Show();
-
-            // 检测版本更新
-            Models.Version.Check(ver => Dispatcher.Invoke(() => {
-                var dialog = new Views.Upgrade(ver) { Owner = MainWindow };
-                dialog.ShowDialog();
-            }));
         }
 
         /// <summary>

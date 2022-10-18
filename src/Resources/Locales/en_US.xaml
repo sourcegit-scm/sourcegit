@@ -396,13 +396,6 @@
 
     <sys:String x:Key="Text.TwoCommitsDiff">COMMIT : {0} -> {1}</sys:String>
 
-    <sys:String x:Key="Text.UpdateAvailable">UPDATE AVAILABLE</sys:String>
-    <sys:String x:Key="Text.UpdateAvailable.Title">{0} is available!</sys:String>
-    <sys:String x:Key="Text.UpdateAvailable.Time">Publish Time</sys:String>
-    <sys:String x:Key="Text.UpdateAvailable.Based">Base On Commit</sys:String>
-    <sys:String x:Key="Text.UpdateAvailable.IsPreRelease">Is Pre-release</sys:String>
-    <sys:String x:Key="Text.UpdateAvailable.Download" xml:space="preserve">DOWNLOAD</sys:String>
-
     <sys:String x:Key="Text.WorkingCopy">Changes</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Unstaged">UNSTAGED</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Unstaged.Stage">STAGE</sys:String>
