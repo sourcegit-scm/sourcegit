@@ -194,26 +194,9 @@ namespace SourceGit.Views.Widgets {
         private void OnSearchFilterChanged(object sender, TextChangedEventArgs e) {
             UpdateVisibles();
         }
-        #endregion
-
-        #region DRAG_DROP
-        private void OnPageDragEnter(object sender, DragEventArgs e) {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
-                dropArea.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void OnPageDragLeave(object sender, DragEventArgs e) {
-            dropArea.Visibility = Visibility.Hidden;
-        }
 
         private void OnPageDrop(object sender, DragEventArgs e) {
-            dropArea.Visibility = Visibility.Hidden;
-        }
-
-        private void OnDropFolder(object sender, DragEventArgs e) {
             bool rebuild = false;
-            dropArea.Visibility = Visibility.Hidden;
 
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
                 if (!MakeSureReady()) return;

@@ -9,7 +9,7 @@
              xmlns:converters="clr-namespace:SourceGit.Views.Converters"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="800">
-    <Grid Background="Transparent" AllowDrop="True" DragEnter="OnPageDragEnter" DragLeave="OnPageDragLeave" Drop="OnPageDrop">
+    <Grid Background="Transparent" AllowDrop="True" Drop="OnPageDrop">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -101,7 +101,7 @@
         </Grid>
         
         <!-- Repositories List -->
-        <Grid Grid.Row="2" Grid.Column="1" Margin="0,0,0,80" AllowDrop="True" Drop="OnDropFolder">
+        <Grid Grid.Row="2" Grid.Column="1" Margin="0,0,0,80">
             <Grid.Resources>
                 <converters:IntToBookmarkBrush x:Key="IntToBookmarkBrush"/>
             </Grid.Resources>
@@ -121,7 +121,7 @@
                                 <Control.Template>
                                     <ControlTemplate>
                                         <Border
-                                            Height="36"
+                                            Height="36" Margin="0,2"
                                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
                                             Background="{DynamicResource Brush.Contents}">
                                             <Grid Margin="8,0">
@@ -169,16 +169,6 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            
-            <!-- Drop Area -->
-            <Rectangle
-                x:Name="dropArea"
-                Stroke="{DynamicResource Brush.Border1}"
-                StrokeThickness="2"
-                StrokeDashArray="4,4"
-                SnapsToDevicePixels="True"
-                Visibility="Hidden"
-                IsHitTestVisible="False"/>
         </Grid>
         
         <!-- Popup -->
