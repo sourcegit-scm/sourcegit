@@ -205,7 +205,7 @@
                     Height="32"
                     Orientation="Horizontal" 
                     HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Button Click="OnStart" Width="80" Content="{DynamicResource Text.Sure}" BorderBrush="{DynamicResource Brush.FG1}" Background="{DynamicResource Brush.Accent1}" FontWeight="Bold"/>
+                    <Button Click="OnStart" Width="80" Content="{DynamicResource Text.Start}" BorderBrush="{DynamicResource Brush.FG1}" Background="{DynamicResource Brush.Accent1}" FontWeight="Bold"/>
                     <Button Click="OnQuit" Width="80" Margin="8,0,0,0" Content="{DynamicResource Text.Cancel}" FontWeight="Bold"/>
                 </StackPanel>
             </Grid>
