@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Xml.Linq;
 
 namespace SourceGit.Views.Widgets {
 
@@ -20,6 +24,8 @@ namespace SourceGit.Views.Widgets {
         private List<BranchNode> localBranches = new List<BranchNode>();
         private List<BranchNode> remoteBranches = new List<BranchNode>();
         private bool isFirstLoaded = false;
+        private bool isPopupLocked = false;
+        private Controls.PopupWidget curPopup = null;
 
         /// <summary>
         ///     节点类型
@@ -85,15 +91,90 @@ namespace SourceGit.Views.Widgets {
 
         #region POPUP
         public void Show(Controls.PopupWidget widget) {
-            popup.Show(widget);
+            if (isPopupLocked) return;
+
+            curPopup = widget;
+            txtPopupTitle.Text = widget.GetTitle();
+            popupArea.Visibility = Visibility.Hidden;
+            popupWidget.Content = curPopup;
+
+            popupBody.Margin = new Thickness(0, 0, 0, 0);
+            popupBody.UpdateLayout();
+
+            var gone = new Thickness(0, -popupBody.ActualHeight, 0, 0);
+            popupBody.Margin = gone;
+
+            ThicknessAnimation anim = new ThicknessAnimation();
+            anim.Duration = TimeSpan.FromMilliseconds(150);
+            anim.From = gone;
+            anim.To = new Thickness(0);
+            popupArea.Visibility = Visibility.Visible;
+            popupBody.BeginAnimation(MarginProperty, anim);
         }
 
         public void ShowAndStart(Controls.PopupWidget widget) {
-            popup.ShowAndStart(widget);
+            if (isPopupLocked) return;
+            Show(widget);
+            OnPopupSureClicked(this, null);
         }
 
         public void UpdateProgress(string message) {
-            popup.UpdateProgress(message);
+            Dispatcher.Invoke(() => {
+                txtPopupProgress.Text = message;
+            });
+        }
+
+        public void ClosePopups(bool unlock) {
+            if (!unlock && isPopupLocked) return;
+            if (popupArea.Visibility != Visibility.Visible) return;
+
+            ThicknessAnimation anim = new ThicknessAnimation();
+            anim.Duration = TimeSpan.FromMilliseconds(150);
+            anim.From = new Thickness(0);
+            anim.To = new Thickness(0, -popupBody.ActualHeight, 0, 0);
+            anim.Completed += (obj, ev) => {
+                popupArea.Visibility = Visibility.Collapsed;
+                popupWidget.Content = null;
+                curPopup = null;
+                isPopupLocked = false;
+                popupProgressMask.Visibility = Visibility.Collapsed;
+                processing.IsAnimating = false;
+                txtPopupProgress.Text = "";
+            };
+            popupBody.BeginAnimation(MarginProperty, anim);
+        }
+
+        private async void OnPopupSureClicked(object s, RoutedEventArgs e) {
+            if (popupArea.Visibility != Visibility.Visible) return;
+
+            if (curPopup == null) {
+                ClosePopups(true);
+                return;
+            }
+
+            if (isPopupLocked) return;
+
+            isPopupLocked = true;
+            popupProgressMask.Visibility = Visibility.Visible;
+            processing.IsAnimating = true;
+
+            var task = curPopup.Start();
+            if (task != null) {
+                var close = await task;
+                if (close) {
+                    ClosePopups(true);
+                    return;
+                }
+            }
+
+            isPopupLocked = false;
+            popupProgressMask.Visibility = Visibility.Collapsed;
+            processing.IsAnimating = false;
+            txtPopupProgress.Text = "";
+        }
+
+        private void OnPopupCancelClicked(object s, RoutedEventArgs e) {
+            ClosePopups(false);
         }
         #endregion
 
@@ -386,8 +467,8 @@ namespace SourceGit.Views.Widgets {
         }
 
         public void OpenSearch(object sender, RoutedEventArgs e) {
-            if (popup.IsLocked) return;
-            popup.Close();
+            if (isPopupLocked) return;
+            ClosePopups(false);
 
             workspace.SelectedIndex = 0;
             (pages.Get("histories") as Histories).ToggleSearch();

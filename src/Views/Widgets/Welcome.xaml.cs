@@ -7,34 +7,19 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Xml.Linq;
 
 namespace SourceGit.Views.Widgets {
 
     /// <summary>
     ///     新标签页
     /// </summary>
-    public partial class Welcome : UserControl, Controls.IPopupContainer {
+    public partial class Welcome : UserControl {
 
         public Welcome() {
             InitializeComponent();
             UpdateVisibles();
             Models.Theme.AddListener(this, UpdateVisibles);
         }
-
-        #region POPUP_CONTAINER
-        public void Show(Controls.PopupWidget widget) {
-            popup.Show(widget);
-        }
-
-        public void ShowAndStart(Controls.PopupWidget widget) {
-            popup.ShowAndStart(widget);
-        }
-
-        public void UpdateProgress(string message) {
-            popup.UpdateProgress(message);
-        }
-        #endregion
 
         #region FUNC_EVENTS
         private void OnOpenClicked(object sender, RoutedEventArgs e) {
@@ -60,7 +45,11 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnCloneClicked(object sender, RoutedEventArgs e) {
-            if (MakeSureReady()) new Popups.Clone().Show();
+            if (MakeSureReady()) {
+                var dialog = new Clone();
+                dialog.Owner = App.Current.MainWindow;
+                dialog.ShowDialog();
+            }
         }
 
         private void FillSortMenu(ContextMenu menu, Models.Preference.SortMethod desired, string label) {

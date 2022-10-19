@@ -112,7 +112,7 @@ namespace SourceGit.Commands {
             try {
                 proc.Start();
             } catch (Exception e) {
-                if (!DontRaiseError) Models.Exception.Raise(e.Message);
+                if (!DontRaiseError) OnException(e.Message);
                 return false;
             }
 
@@ -124,7 +124,7 @@ namespace SourceGit.Commands {
             proc.Close();
 
             if (!isCancelled && exitCode != 0 && errs.Count > 0) {
-                if (!DontRaiseError) Models.Exception.Raise(string.Join("\n", errs));
+                if (!DontRaiseError) OnException(string.Join("\n", errs));
                 return false;
             } else {
                 return true;
@@ -173,6 +173,15 @@ namespace SourceGit.Commands {
         ///     调用Exec时的读取函数
         /// </summary>
         /// <param name="line"></param>
-        public virtual void OnReadline(string line) { }
+        public virtual void OnReadline(string line) {
+        }
+
+        /// <summary>
+        ///     默认异常处理函数
+        /// </summary>
+        /// <param name="message"></param>
+        public virtual void OnException(string message) {
+            Models.Exception.Raise(message);
+        }
     }
 }

@@ -145,7 +145,6 @@ namespace SourceGit.Views {
         private void OnTabAdding(object sender, Widgets.PageTabBar.TabEventArgs e) {
             var page = new Widgets.Welcome();
             container.Add(e.TabId, page);
-            Controls.PopupWidget.RegisterContainer(e.TabId, page);
         }
 
         private void OnTabSelected(object sender, Widgets.PageTabBar.TabEventArgs e) {
@@ -211,16 +210,8 @@ namespace SourceGit.Views {
             }
 
             if (Keyboard.IsKeyDown(Key.Escape)) {
-                var page = container.Get(tabs.Current);
-
-                var popup = null as Widgets.PopupPanel;
-                if (page is Widgets.Dashboard) {
-                    popup = (page as Widgets.Dashboard).popup;
-                } else if (page is Widgets.Welcome) {
-                    popup = (page as Widgets.Welcome).popup;
-                }
-
-                popup?.CancelDirectly();
+                var popup = container.Get(tabs.Current) as Controls.IPopupContainer;
+                popup?.ClosePopups(false);
             }
         }
         #endregion

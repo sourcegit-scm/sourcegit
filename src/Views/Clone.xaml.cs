@@ -1,16 +1,17 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using SourceGit.Views.Validations;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace SourceGit.Views.Popups {
+namespace SourceGit.Views {
 
     /// <summary>
     ///     克隆
     /// </summary>
-    public partial class Clone : Controls.PopupWidget {
+    public partial class Clone : Controls.Window {
 
         public string Uri { get; set; }
         public string Folder { get; set; }
@@ -24,24 +25,32 @@ namespace SourceGit.Views.Popups {
             ruleRemote.IsOptional = true;
         }
 
-        public override string GetTitle() {
-            return App.Text("Clone");
+        #region EVENTS
+        private void OnQuit(object sender, RoutedEventArgs e) {
+            Close();
         }
 
-        public override Task<bool> Start() {
+        private async void OnStart(object s, RoutedEventArgs e) {
             var checks = new Controls.TextEdit[] { txtUrl, txtFolder, txtLocal, txtRemote };
             foreach (var edit in checks) {
                 edit.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-                if (Validation.GetHasError(edit)) return null;
+                if (Validation.GetHasError(edit)) return;
             }
 
-            var sshKey = txtSSHKey.Text;
+            progress.Visibility = Visibility.Visible;
+            processing.IsAnimating = true;
 
-            return Task.Run(() => {
+            var sshKey = txtSSHKey.Text;
+            var succ = await Task.Run(() => {
                 var extras = string.IsNullOrEmpty(ExtraArgs) ? "" : ExtraArgs;
                 if (!string.IsNullOrEmpty(RemoteName)) extras += $" --origin {RemoteName}";
 
-                var succ = new Commands.Clone(Folder, Uri, LocalName, sshKey, extras, UpdateProgress).Exec();
+                var succ = new Commands.Clone(Folder, Uri, LocalName, sshKey, extras, msg => {
+                    Dispatcher.Invoke(() => txtProgress.Text = msg);
+                }, err => {
+                    Dispatcher.Invoke(() => txtError.Text = err);
+                }).Exec();
+
                 if (!succ) return false;
 
                 var path = Folder;
@@ -70,6 +79,14 @@ namespace SourceGit.Views.Popups {
                 if (repo != null) Dispatcher.Invoke(() => Models.Watcher.Open(repo));
                 return true;
             });
+
+            progress.Visibility = Visibility.Collapsed;
+            processing.IsAnimating = false;
+            if (succ) {
+                Close();
+            } else {
+                exception.Visibility = Visibility.Visible;
+            }
         }
 
         private void OnFolderSelectorClick(object sender, RoutedEventArgs e) {
@@ -101,5 +118,11 @@ namespace SourceGit.Views.Popups {
                 rowSSHKey.Height = new GridLength(0, GridUnitType.Pixel);
             }
         }
+
+        private void OnCloseException(object s, RoutedEventArgs e) {
+            exception.Visibility = Visibility.Collapsed;
+            e.Handled = true;
+        }
+        #endregion
     }
 }

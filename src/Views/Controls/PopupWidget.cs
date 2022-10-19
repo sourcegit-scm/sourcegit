@@ -12,6 +12,7 @@ namespace SourceGit.Views.Controls {
         void Show(PopupWidget widget);
         void ShowAndStart(PopupWidget widget);
         void UpdateProgress(string message);
+        void ClosePopups(bool unlock);
     }
 
     /// <summary>
@@ -45,7 +46,7 @@ namespace SourceGit.Views.Controls {
         /// </summary>
         /// <param name="id">容器ID</param>
         public static void SetCurrentContainer(string id) {
-            currentContainer = id;
+            if (containers.ContainsKey(id)) currentContainer = id;
         }
 
         /// <summary>

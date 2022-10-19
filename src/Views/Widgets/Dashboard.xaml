@@ -569,8 +569,45 @@
                 <controls:PageContainer Grid.Row="1" x:Name="pages"/>
             </Grid>
         </Grid>
-    
+
         <!-- Popup -->
-        <widgets:PopupPanel x:Name="popup" Grid.Row="1"/>
+        <Grid Grid.Row="1" x:Name="popupArea" Visibility="Collapsed" ClipToBounds="True">
+            <!-- Background to close -->
+            <Border Background="Transparent" MouseLeftButtonDown="OnPopupCancelClicked"/>
+
+            <!-- Popup panel -->
+            <Border
+                Background="{DynamicResource Brush.Window}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Width="500"
+                Height="Auto">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="4" ShadowDepth="0" Color="Black" Opacity=".8"/>
+                </Border.Effect>
+
+                <Grid>
+                    <!-- Custom panel -->
+                    <Border x:Name="popupBody">
+                        <StackPanel Margin="8" Orientation="Vertical">
+                            <TextBlock Margin="8,8,0,18" x:Name="txtPopupTitle" FontSize="18" FontWeight="DemiBold" TextOptions.TextFormattingMode="Ideal" RenderOptions.ClearTypeHint="Enabled"/>
+                            <ContentControl x:Name="popupWidget"/>
+                            <StackPanel Margin="0,16,0,0" Height="32" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Click="OnPopupSureClicked" Width="80" Content="{DynamicResource Text.Sure}" BorderBrush="{DynamicResource Brush.FG1}" Background="{DynamicResource Brush.Accent1}" FontWeight="Bold"/>
+                                <Button Click="OnPopupCancelClicked" Width="80" Margin="8,0,0,0" Content="{DynamicResource Text.Cancel}" FontWeight="Bold"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Progress mask -->
+                    <Border x:Name="popupProgressMask" Visibility="Collapsed" Background="{DynamicResource Brush.Popup}" Opacity=".9">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <controls:Loading x:Name="processing" Width="48" Height="48"/>
+                            <TextBlock x:Name="txtPopupProgress" Margin="0,16,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

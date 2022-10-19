@@ -165,8 +165,5 @@
                 </ItemsControl>
             </ScrollViewer>
         </Grid>
-        
-        <!-- Popup -->
-        <widgets:PopupPanel x:Name="popup" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="3"/>
     </Grid>
 </UserControl>
