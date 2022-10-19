@@ -20,7 +20,7 @@
         <Rectangle
             Grid.Column="0"
             x:Name="startSeperator"
-            Width="1" Height="16" Margin="0,2,0,0"
+            Width="1" Height="16"
             Fill="{DynamicResource Brush.FG2}"
             Opacity=".5"/>
 
@@ -101,7 +101,7 @@
 
                                                 <Rectangle
                                                     x:Name="seperator"
-                                                    Margin="4,2,0,0"
+                                                    Margin="4,0,0,0"
                                                     Width="1"
                                                     Fill="Transparent"
                                                     HorizontalAlignment="Right"/>
