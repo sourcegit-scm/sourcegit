@@ -15,6 +15,9 @@ namespace SourceGit.Views {
         public string Email { get; set; }
         public string CRLF { get; set; }
         public string Version { get; set; }
+        public string GPGExec { get; set; }
+        public bool GPGSigningEnabled { get; set; }
+        public string GPGUserSigningKey { get; set; }
 
         public Preference() {
             UpdateGitInfo(false);
@@ -24,22 +27,35 @@ namespace SourceGit.Views {
         private bool UpdateGitInfo(bool updateUi) {
             var isReady = Models.Preference.Instance.IsReady;
             if (isReady) {
-                User = new Commands.Config().Get("user.name");
-                Email = new Commands.Config().Get("user.email");
-                CRLF = new Commands.Config().Get("core.autocrlf");
+                var cmd = new Commands.Config();
+                User = cmd.Get("user.name");
+                Email = cmd.Get("user.email");
+                CRLF = cmd.Get("core.autocrlf");
                 Version = new Commands.Version().Query();
                 if (string.IsNullOrEmpty(CRLF)) CRLF = "false";
+                GPGExec = cmd.Get("gpg.program");
+                if (string.IsNullOrEmpty(GPGExec)) {
+                    string gitInstallFolder = Path.GetDirectoryName(Models.Preference.Instance.Git.Path);
+                    string defaultGPG = Path.GetFullPath(Path.Join(gitInstallFolder, "..", "usr", "bin", "gpg.exe"));
+                    if (File.Exists(defaultGPG)) GPGExec = defaultGPG;
+                }
+                GPGSigningEnabled = cmd.Get("commit.gpgsign") == "true";
+                GPGUserSigningKey = cmd.Get("user.signingkey");
             } else {
                 User = "";
                 Email = "";
                 CRLF = "false";
                 Version = "Unknown";
+                GPGExec = "";
+                GPGSigningEnabled = false;
+                GPGUserSigningKey = "";
             }
             if (updateUi) {
                 editGitUser?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                 editGitEmail?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                 editGitCrlf?.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateTarget();
                 textGitVersion?.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+                txtGPGExec?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             }
             return isReady;
         }
@@ -78,6 +94,19 @@ namespace SourceGit.Views {
             if (dialog.ShowDialog() == true) {
                 Models.Preference.Instance.Git.DefaultCloneDir = dialog.SelectedPath;
                 txtGitCloneDir?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            }
+        }
+
+        private void SelectGPGExec(object sender, RoutedEventArgs e) {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = $"GPG Executable|gpg.exe";
+            dialog.Title = App.Text("Text.GPG.Path.Placeholder");
+            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            dialog.CheckFileExists = true;
+
+            if (dialog.ShowDialog() == true) {
+                GPGExec = dialog.FileName;
+                txtGPGExec?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             }
         }
 
@@ -123,6 +152,16 @@ namespace SourceGit.Views {
 
                 var oldCRLF = cmd.Get("core.autocrlf");
                 if (oldCRLF != CRLF) cmd.Set("core.autocrlf", CRLF);
+
+                var oldGPGExec = cmd.Get("gpg.program");
+                if (oldGPGExec != GPGExec) cmd.Set("gpg.program", GPGExec);
+
+                var oldGPGSigningEnabledStr = cmd.Get("commit.gpgsign");
+                var oldGPGSigningEnabled = "true" == oldGPGSigningEnabledStr;
+                if (oldGPGSigningEnabled != GPGSigningEnabled) cmd.Set("commit.gpgsign", GPGSigningEnabled ? "true" : "false");
+
+                var oldGPGUserSigningKey = cmd.Get("user.signingkey");
+                if (oldGPGUserSigningKey != GPGUserSigningKey) cmd.Set("user.signingkey", GPGUserSigningKey);
             }
 
             Models.Preference.Save();

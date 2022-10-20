@@ -287,6 +287,69 @@
                 </Grid>
             </TabItem>
 
+            <!-- GPG Signing -->
+            <TabItem Header="{DynamicResource Text.GPG}">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="28"/>
+                        <RowDefinition Height="28"/>
+                        <RowDefinition Height="28"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="0"
+                        Text="{DynamicResource Text.GPG.Enabled}"
+                        HorizontalAlignment="Right"/>
+                    <CheckBox
+                        Grid.Row="0" Grid.Column="2"
+                        IsChecked="{Binding ElementName=me, Path=GPGSigningEnabled, Mode=TwoWay}"/>
+
+                    <TextBlock
+                        Grid.Row="1" Grid.Column="0"
+                        Text="{DynamicResource Text.GPG.Path}"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,8,0"/>
+                    <Grid Grid.Row="1" Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <controls:TextEdit
+                            Grid.Column="0"
+                            Height="24"
+                            x:Name="txtGPGExec"
+                            Placeholder="{DynamicResource Text.GPG.Path.Placeholder}"
+                            Text="{Binding ElementName=me, Path=GPGExec, Mode=TwoWay}"/>
+                        <controls:IconButton
+                            Grid.Column="1"
+                            Click="SelectGPGExec"
+                            Width="24" Height="24"
+                            Margin="4,0,0,0" Padding="4"
+                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                            Icon="{StaticResource Icon.Folder.Open}"/>
+                    </Grid>
+
+                    <TextBlock
+                        Grid.Row="2" Grid.Column="0"
+                        Text="{DynamicResource Text.GPG.UserKey}"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,8,0"/>
+                    <controls:TextEdit
+                        Grid.Row="2" Grid.Column="2"
+                        Height="24"
+                        Text="{Binding ElementName=me, Path=GPGUserSigningKey, Mode=TwoWay}"
+                        Placeholder="{DynamicResource Text.GPG.UserKey.Placeholder}"/>
+                </Grid>
+            </TabItem>
+            
+            <!-- External Merger -->
             <TabItem Header="{DynamicResource Text.Preference.Merger}">
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
@@ -295,7 +358,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     

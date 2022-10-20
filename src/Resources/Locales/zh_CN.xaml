@@ -90,11 +90,11 @@
     <sys:String x:Key="Text.CommitViewer.Files">文件列表</sys:String>
 
     <sys:String x:Key="Text.Configure">仓库配置</sys:String>
-    <sys:String x:Key="Text.Configure.User">用户 ：</sys:String>
+    <sys:String x:Key="Text.Configure.User">用户名</sys:String>
     <sys:String x:Key="Text.Configure.User.Placeholder">应用于本仓库的用户名</sys:String>
-    <sys:String x:Key="Text.Configure.Email">邮箱 ：</sys:String>
+    <sys:String x:Key="Text.Configure.Email">电子邮箱</sys:String>
     <sys:String x:Key="Text.Configure.Email.Placeholder">邮箱地址</sys:String>
-    <sys:String x:Key="Text.Configure.Proxy">代理 ：</sys:String>
+    <sys:String x:Key="Text.Configure.Proxy">HTTP代理</sys:String>
     <sys:String x:Key="Text.Configure.Proxy.Placeholder">HTTP网络代理</sys:String>
 
     <sys:String x:Key="Text.CreateBranch">新建分支</sys:String>
@@ -505,6 +505,13 @@
     <sys:String x:Key="Text.Sort.NameDesc">按名称倒序</sys:String>
     <sys:String x:Key="Text.Sort.RecentlyOpened">按最近访问</sys:String>
     <sys:String x:Key="Text.Sort.Bookmark">按书签颜色</sys:String>
+
+    <sys:String x:Key="Text.GPG">GPG签名</sys:String>
+    <sys:String x:Key="Text.GPG.Enabled">启用提交签名</sys:String>
+    <sys:String x:Key="Text.GPG.Path">可执行文件位置</sys:String>
+    <sys:String x:Key="Text.GPG.Path.Placeholder">gpg.exe所在路径</sys:String>
+    <sys:String x:Key="Text.GPG.UserKey">用户签名KEY</sys:String>
+    <sys:String x:Key="Text.GPG.UserKey.Placeholder">输入签名提交所使用的KEY</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
     <sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>

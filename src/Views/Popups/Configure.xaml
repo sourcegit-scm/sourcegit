@@ -13,6 +13,8 @@
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="32"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -52,5 +54,25 @@
             Text="{Binding ElementName=me, Path=Proxy, Mode=TwoWay}"
             Height="24"
             Placeholder="{DynamicResource Text.Configure.Proxy.Placeholder}"/>
+
+        <TextBlock
+            Grid.Row="3" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{DynamicResource Text.GPG.Enabled}"
+            HorizontalAlignment="Right"/>
+        <CheckBox
+            Grid.Row="3" Grid.Column="1"
+            IsChecked="{Binding ElementName=me, Path=GPGSigningEnabled, Mode=TwoWay}"/>
+
+        <TextBlock
+            Grid.Row="4" Grid.Column="0"
+            Margin="0,0,8,0"
+            Text="{DynamicResource Text.GPG.UserKey}"
+            HorizontalAlignment="Right"/>
+        <controls:TextEdit
+            Grid.Row="4" Grid.Column="1"
+            Text="{Binding ElementName=me, Path=GPGUserSigningKey, Mode=TwoWay}"
+            Height="24"
+            Placeholder="{DynamicResource Text.GPG.UserKey.Placeholder}"/>
     </Grid>
 </controls:PopupWidget>

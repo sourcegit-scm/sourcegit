@@ -91,11 +91,11 @@
     <sys:String x:Key="Text.CommitViewer.Files">FILES</sys:String>
 
     <sys:String x:Key="Text.Configure">Configure</sys:String>
-    <sys:String x:Key="Text.Configure.User">User :</sys:String>
+    <sys:String x:Key="Text.Configure.User">User Name</sys:String>
     <sys:String x:Key="Text.Configure.User.Placeholder">User name for this repository</sys:String>
-    <sys:String x:Key="Text.Configure.Email">Email :</sys:String>
+    <sys:String x:Key="Text.Configure.Email">Email Address</sys:String>
     <sys:String x:Key="Text.Configure.Email.Placeholder">Email address</sys:String>
-    <sys:String x:Key="Text.Configure.Proxy">Proxy :</sys:String>
+    <sys:String x:Key="Text.Configure.Proxy">HTTP Proxy</sys:String>
     <sys:String x:Key="Text.Configure.Proxy.Placeholder">HTTP proxy used by this repository</sys:String>
 
     <sys:String x:Key="Text.CreateBranch">Create Branch</sys:String>
@@ -506,6 +506,13 @@
     <sys:String x:Key="Text.Sort.NameDesc">By Name Inversed</sys:String>
     <sys:String x:Key="Text.Sort.RecentlyOpened">By Recently Opened</sys:String>
     <sys:String x:Key="Text.Sort.Bookmark">By Bookmark Color</sys:String>
+
+    <sys:String x:Key="Text.GPG">GPG SIGNING</sys:String>
+    <sys:String x:Key="Text.GPG.Enabled">Commit GPG signing</sys:String>
+    <sys:String x:Key="Text.GPG.Path">Install Path</sys:String>
+    <sys:String x:Key="Text.GPG.Path.Placeholder">Input path for installed gpg program</sys:String>
+    <sys:String x:Key="Text.GPG.UserKey">User Signing Key</sys:String>
+    <sys:String x:Key="Text.GPG.UserKey.Placeholder">User's gpg signing key</sys:String>
 
     <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
     <sys:String x:Key="Text.PathNotFound">Path[{0}] not exists!</sys:String>
