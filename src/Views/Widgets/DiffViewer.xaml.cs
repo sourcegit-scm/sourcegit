@@ -60,6 +60,10 @@ namespace SourceGit.Views.Widgets {
         public void Diff(string repo, Option opt) {
             seq++;
 
+            foreach (var e in editors) e.ItemsSource = null;
+            foreach (var s in splitters) s.Visibility = Visibility.Hidden;
+            ClearCache();
+
             mask.Visibility = Visibility.Collapsed;
             noChange.Visibility = Visibility.Collapsed;
             sizeChange.Visibility = Visibility.Collapsed;
@@ -68,7 +72,6 @@ namespace SourceGit.Views.Widgets {
             loading.IsAnimating = true;
 
             SetTitle(opt.Path, opt.OrgPath);
-            ClearCache();
 
             this.repo = repo;
             this.opt = opt;
