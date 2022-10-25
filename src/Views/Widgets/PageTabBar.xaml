@@ -30,7 +30,7 @@
             x:Name="leftScroller"
             Click="ScrollLeft"
             Width="18" Padding="6"
-            HoverBackground="{DynamicResource Brush.NewPageHover}"
+            HoverBackground="{DynamicResource Brush.TabButtonHover}"
             BorderThickness="0"
             Icon="{StaticResource Icon.ScrollLeft}"
             WindowChrome.IsHitTestVisibleInChrome="True"
@@ -95,7 +95,7 @@
                                                     Margin="0,1,8,0" Padding="4"
                                                     ToolTip="{DynamicResource Text.Close}"
                                                     Icon="{StaticResource Icon.Close}"
-                                                    HoverBackground="{DynamicResource Brush.NewPageHover}"
+                                                    HoverBackground="{DynamicResource Brush.TabButtonHover}"
                                                     Visibility="Hidden"
                                                     HorizontalAlignment="Right"/>
 
@@ -152,7 +152,7 @@
             x:Name="rightScroller"
             Click="ScrollRight"
             Width="18" Padding="6"
-            HoverBackground="{DynamicResource Brush.NewPageHover}"
+            HoverBackground="{DynamicResource Brush.TabButtonHover}"
             BorderThickness="0"
             Icon="{StaticResource Icon.ScrollRight}"
             WindowChrome.IsHitTestVisibleInChrome="True"
