@@ -421,11 +421,6 @@ namespace SourceGit.Views.Widgets {
             });
         }
 
-        private void TriggerRefresh(object sender, RoutedEventArgs e) {
-            Refresh();
-            e.Handled = true;
-        }
-
         private void OpenFetch(object sender, RoutedEventArgs e) {
             if (repo.Remotes.Count == 0) {
                 Models.Exception.Raise("No remotes added to this repository!!!");

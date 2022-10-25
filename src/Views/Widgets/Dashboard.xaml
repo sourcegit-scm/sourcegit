@@ -117,13 +117,6 @@
 
                     <controls:IconButton
                         Margin="8,0"
-                        Padding="0,9,0,8"
-                        Icon="{DynamicResource Icon.Loading}" 
-                        ToolTip="{DynamicResource Text.Dashboard.Refresh}"
-                        Click="TriggerRefresh"/>
-
-                    <controls:IconButton
-                        Margin="8,0"
                         Padding="0,8"
                         Icon="{DynamicResource Icon.Clean}" 
                         ToolTip="{DynamicResource Text.Dashboard.Clean}"
