@@ -134,11 +134,7 @@
                                             <Border
                                                 Grid.Column="0" Grid.ColumnSpan="7"
                                                 BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
-                                                Background="{DynamicResource Brush.Contents}">
-                                                <Border.Effect>
-                                                    <DropShadowEffect Color="Black" ShadowDepth="2" BlurRadius="0" Opacity=".1"/>
-                                                </Border.Effect>
-                                            </Border>
+                                                Background="{DynamicResource Brush.Contents}"/>
 
                                             <Border Grid.Column="0" Width="4" HorizontalAlignment="Left" Background="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}"/>
 
@@ -160,7 +156,6 @@
                                                 <Path Width="10" Data="{StaticResource Icon.Close}"/>
                                             </Button>
                                         </Grid>
-                                        
                                     </ControlTemplate>
                                 </Control.Template>
                             </Control>
