@@ -36,7 +36,7 @@ namespace SourceGit.Views {
                 GPGExec = cmd.Get("gpg.program");
                 if (string.IsNullOrEmpty(GPGExec)) {
                     string gitInstallFolder = Path.GetDirectoryName(Models.Preference.Instance.Git.Path);
-                    string defaultGPG = Path.GetFullPath(Path.Join(gitInstallFolder, "..", "usr", "bin", "gpg.exe"));
+                    string defaultGPG = Path.GetFullPath(gitInstallFolder + "/../usr/bin/gpg.exe");
                     if (File.Exists(defaultGPG)) GPGExec = defaultGPG;
                 }
                 GPGSigningEnabled = cmd.Get("commit.gpgsign") == "true";

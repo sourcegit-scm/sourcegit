@@ -74,11 +74,11 @@ namespace SourceGit.Views.Widgets {
             } else {
                 searching = true;
                 foreach (var c in cachedCommits) {
-                    if (c.SHA.Contains(filter, StringComparison.Ordinal)
-                        || c.Subject.Contains(filter, StringComparison.Ordinal)
-                        || c.Message.Contains(filter, StringComparison.Ordinal)
-                        || c.Author.Name.Contains(filter, StringComparison.Ordinal)
-                        || c.Committer.Name.Contains(filter, StringComparison.Ordinal)) {
+                    if (c.SHA.IndexOf(filter, StringComparison.Ordinal) >= 0
+                        || c.Subject.IndexOf(filter, StringComparison.Ordinal) >= 0
+                        || c.Message.IndexOf(filter, StringComparison.Ordinal) >= 0
+                        || c.Author.Name.IndexOf(filter, StringComparison.Ordinal) >= 0
+                        || c.Committer.Name.IndexOf(filter, StringComparison.Ordinal) >= 0) {
                         visible.Add(c);
                     }
                 }

@@ -45,13 +45,13 @@ namespace SourceGit.Views {
                 var extras = string.IsNullOrEmpty(ExtraArgs) ? "" : ExtraArgs;
                 if (!string.IsNullOrEmpty(RemoteName)) extras += $" --origin {RemoteName}";
 
-                var succ = new Commands.Clone(Folder, Uri, LocalName, sshKey, extras, msg => {
+                var cloneRs = new Commands.Clone(Folder, Uri, LocalName, sshKey, extras, msg => {
                     Dispatcher.Invoke(() => txtProgress.Text = msg);
                 }, err => {
                     Dispatcher.Invoke(() => txtError.Text = err);
                 }).Exec();
 
-                if (!succ) return false;
+                if (!cloneRs) return false;
 
                 var path = Folder;
                 if (!string.IsNullOrEmpty(LocalName)) {

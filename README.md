@@ -29,11 +29,6 @@ Opensouce Git GUI client for Windows.
 
 Pre-build Binaries：[Releases](https://github.com/sourcegit-scm/sourcegit/releases)
 
-| File                     | .NET runtime       | Description                       |
-| ------------------------ | ------------------ | --------------------------------- |
-| SourceGit.exe            | .NET 6 x64         | Need to be installed by user.     |
-| SourceGit.bundle.exe     | Self-contained     | -                                 |
-
 > NOTE: You need install Git first.
 
 ## Screen Shots

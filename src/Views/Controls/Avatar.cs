@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Net.Http;
 
 namespace SourceGit.Views.Controls {
 
@@ -193,14 +192,16 @@ namespace SourceGit.Views.Controls {
                 if (!requesting.ContainsKey(email)) return;
 
                 try {
-                    var req = new HttpClient().GetAsync($"https://www.gravatar.com/avatar/{md5}?d=404");
-                    req.Wait();
+                    var req = WebRequest.CreateHttp($"https://www.gravatar.com/avatar/{md5}?d=404");
+                    req.Timeout = 2000;
+                    req.Method = "GET";
 
-                    var rsp = req.Result;
+                    var rsp = req.GetResponse() as HttpWebResponse;
                     if (rsp != null && rsp.StatusCode == HttpStatusCode.OK) {
-                        var writer = File.OpenWrite(filePath);
-                        rsp.Content.CopyToAsync(writer).Wait();
-                        writer.Close();
+                        using (var reader = rsp.GetResponseStream())
+                        using (var writer = File.OpenWrite(filePath)) {
+                            reader.CopyTo(writer);
+                        }
 
                         a.Dispatcher.Invoke(() => {
                             var img = new BitmapImage(new Uri(filePath));

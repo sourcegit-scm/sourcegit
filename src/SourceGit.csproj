@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net6.0-windows</TargetFrameworks>
+        <TargetFrameworks>net48</TargetFrameworks>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>App.ico</ApplicationIcon>
@@ -17,4 +17,7 @@
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
     </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="System.Text.Json" Version="6.0.6" />
+    </ItemGroup>
 </Project>

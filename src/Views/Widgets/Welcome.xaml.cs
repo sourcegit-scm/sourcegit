@@ -171,8 +171,8 @@ namespace SourceGit.Views.Widgets {
                 visibles.AddRange(Models.Preference.Instance.Repositories);
             } else {
                 foreach (var repo in Models.Preference.Instance.Repositories) {
-                    if (repo.Name.ToLower().Contains(curFilter, StringComparison.Ordinal) ||
-                        repo.Path.ToLower().Contains(curFilter, StringComparison.Ordinal)) {
+                    if (repo.Name.ToLower().IndexOf(curFilter, StringComparison.Ordinal) >= 0 ||
+                        repo.Path.ToLower().IndexOf(curFilter, StringComparison.Ordinal) >= 0) {
                         visibles.Add(repo);
                     }
                 }

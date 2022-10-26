@@ -85,7 +85,7 @@ namespace SourceGit.Commands {
                     isCancelled = true;
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
-                    if (!proc.HasExited) proc.Kill(true);
+                    if (!proc.HasExited) proc.Kill();
                     return;
                 }
 
@@ -97,7 +97,7 @@ namespace SourceGit.Commands {
                     isCancelled = true;
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
-                    if (!proc.HasExited) proc.Kill(true);
+                    if (!proc.HasExited) proc.Kill();
                     return;
                 }
 
