@@ -74,7 +74,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                        <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="1,1,1,0">
+                                        <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="1,1,1,0" CornerRadius="4,4,0,0">
                                             <Grid x:Name="Contents" Width="160" VerticalAlignment="Center" Opacity=".5" ToolTip="{Binding Tooltip}">
                                                 <Path 
                                                     Width="8" Margin="8,0,0,0"

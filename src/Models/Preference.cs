@@ -62,7 +62,7 @@ namespace SourceGit.Models {
             /// <summary>
             ///     是否启用深色主题
             /// </summary>
-            public bool UseDarkTheme { get; set; } = true;
+            public bool UseDarkTheme { get; set; } = false;
 
             /// <summary>
             ///     起始页仓库列表排序规则
