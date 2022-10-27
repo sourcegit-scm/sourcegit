@@ -23,6 +23,7 @@ namespace SourceGit.Views.Widgets {
             public string OrgPath = null;
             public string ExtraArgs = "";
             public bool UseLFS = false;
+            public bool WCChanges = false;
         }
 
         private ulong seq = 0;
@@ -31,6 +32,7 @@ namespace SourceGit.Views.Widgets {
         private List<Models.TextChanges.Line> cachedTextChanges = null;
         private List<DataGrid> editors = new List<DataGrid>();
         private List<Rectangle> splitters = new List<Rectangle>();
+        private string lastWCFileId = "";
 
         public DiffViewer() {
             InitializeComponent();
@@ -51,6 +53,8 @@ namespace SourceGit.Views.Widgets {
             toolbar.Visibility = Visibility.Collapsed;
             noChange.Visibility = Visibility.Collapsed;
             sizeChange.Visibility = Visibility.Collapsed;
+            textDiff.Visibility = Visibility.Collapsed;
+            lastWCFileId = "";
             ClearCache();
 
             foreach (var e in editors) e.ItemsSource = null;
@@ -58,15 +62,27 @@ namespace SourceGit.Views.Widgets {
         }
 
         public void Diff(string repo, Option opt) {
-            seq++;
+            if (opt.WCChanges) {
+                var fileInfo = new System.IO.FileInfo(repo + "/" + opt.Path);
+                if (fileInfo.Exists) {
+                    var wcFileID = string.Format("{0}@{1}", opt.Path, fileInfo.LastWriteTime.ToFileTime());
+                    if (wcFileID == lastWCFileId) return;
+                    lastWCFileId = wcFileID;
+                } else {
+                    lastWCFileId = "";
+                }
+            } else {
+                lastWCFileId = "";
+            }
 
-            foreach (var e in editors) e.ItemsSource = null;
-            foreach (var s in splitters) s.Visibility = Visibility.Hidden;
+            seq++;
             ClearCache();
 
             mask.Visibility = Visibility.Collapsed;
             noChange.Visibility = Visibility.Collapsed;
             sizeChange.Visibility = Visibility.Collapsed;
+            toolbarOptions.Visibility = Visibility.Collapsed;
+            textDiff.Visibility = Visibility.Collapsed;
             toolbar.Visibility = Visibility.Visible;
             loading.Visibility = Visibility.Visible;
             loading.IsAnimating = true;
@@ -140,7 +156,6 @@ namespace SourceGit.Views.Widgets {
 
                 loading.Visibility = Visibility.Collapsed;
                 mask.Visibility = Visibility.Collapsed;
-                toolbarOptions.Visibility = Visibility.Collapsed;
                 sizeChange.Visibility = Visibility.Visible;
 
                 txtSizeChangeTitle.Text = App.Text("Diff.Binary");
@@ -159,7 +174,6 @@ namespace SourceGit.Views.Widgets {
 
                 loading.Visibility = Visibility.Collapsed;
                 mask.Visibility = Visibility.Collapsed;
-                toolbarOptions.Visibility = Visibility.Collapsed;
                 sizeChange.Visibility = Visibility.Visible;
 
                 txtSizeChangeTitle.Text = App.Text("Diff.LFS");
@@ -175,7 +189,6 @@ namespace SourceGit.Views.Widgets {
 
                 loading.Visibility = Visibility.Collapsed;
                 mask.Visibility = Visibility.Collapsed;
-                toolbarOptions.Visibility = Visibility.Collapsed;
                 noChange.Visibility = Visibility.Visible;
             });
         }
@@ -207,11 +220,12 @@ namespace SourceGit.Views.Widgets {
                 loading.Visibility = Visibility.Collapsed;
                 mask.Visibility = Visibility.Collapsed;
                 toolbarOptions.Visibility = Visibility.Visible;
+                textDiff.Visibility = Visibility.Visible;
 
                 var createEditor = editors.Count == 0;
                 var lineNumberWidth = CalcLineNumberColWidth(lastOldLine, lastNewLine);
-                var minWidth = textDiff.ActualWidth - lineNumberWidth * 2;
-                if (textDiff.ActualHeight < cachedTextChanges.Count * 16) minWidth -= 8;
+                var minWidth = body.ActualWidth - lineNumberWidth * 2;
+                if (body.ActualHeight - 26 < cachedTextChanges.Count * 16) minWidth -= 8;
 
                 DataGrid editor;
                 if (createEditor) {
@@ -272,11 +286,12 @@ namespace SourceGit.Views.Widgets {
                 loading.Visibility = Visibility.Collapsed;
                 mask.Visibility = Visibility.Collapsed;
                 toolbarOptions.Visibility = Visibility.Visible;
+                textDiff.Visibility = Visibility.Visible;
 
                 var createEditor = editors.Count == 0;
                 var lineNumberWidth = CalcLineNumberColWidth(lastOldLine, lastNewLine);
-                var minWidth = textDiff.ActualWidth / 2 - lineNumberWidth;
-                if (textDiff.ActualHeight < newSideBlocks.Count * 16) minWidth -= 8;
+                var minWidth = body.ActualWidth / 2 - lineNumberWidth;
+                if (body.ActualHeight - 26 < newSideBlocks.Count * 16) minWidth -= 8;
 
                 DataGrid oldEditor, newEditor;
                 if (createEditor) {
@@ -441,11 +456,11 @@ namespace SourceGit.Views.Widgets {
         private void OnTextDiffSizeChanged(object sender, SizeChangedEventArgs e) {
             if (editors.Count == 0) return;
 
-            var total = textDiff.ActualWidth / editors.Count;
+            var total = body.ActualWidth / editors.Count;
             for (int i = 0; i < editors.Count; i++) {
                 var editor = editors[i];
                 var minWidth = total - editor.NonFrozenColumnsViewportHorizontalOffset;
-                if (editor.Items.Count * 16 > textDiff.ActualHeight) minWidth -= 8;
+                if (editor.Items.Count * 16 > body.ActualHeight - 26) minWidth -= 8;
 
                 var lastColumn = editor.Columns.Count - 1;
                 editor.Columns[lastColumn].MinWidth = minWidth;

@@ -53,16 +53,24 @@ namespace SourceGit.Views.Widgets {
                 btnCommitAndPush.Visibility = Visibility.Collapsed;
             }
 
+            mergePanel.Visibility = Visibility.Collapsed;
+
             var diffTarget = unstagedContainer.DiffTarget;
-            if (diffTarget == null) diffTarget = stagedContainer.DiffTarget;
+            if (diffTarget != null) {
+                if (diffTarget.IsConflit) {
+                    mergePanel.Visibility = Visibility.Visible;
+                    diffViewer.Reset();
+                } else {
+                    diffViewer.Reload();
+                }
+
+                return;
+            }
+
+            diffTarget = stagedContainer.DiffTarget;
             if (diffTarget == null) {
-                mergePanel.Visibility = Visibility.Collapsed;
-                diffViewer.Reset();
-            } else if (diffTarget.IsConflit) {
-                mergePanel.Visibility = Visibility.Visible;
                 diffViewer.Reset();
             } else {
-                mergePanel.Visibility = Visibility.Collapsed;
                 diffViewer.Reload();
             }
         }
@@ -145,14 +153,16 @@ namespace SourceGit.Views.Widgets {
                         ExtraArgs = "--no-index",
                         Path = change.Path,
                         OrgPath = "/dev/null",
-                        UseLFS = isLFSEnabled
+                        UseLFS = isLFSEnabled,
+                        WCChanges = true,
                     });
                     break;
                 default:
                     diffViewer.Diff(repo.Path, new DiffViewer.Option() {
                         Path = change.Path,
                         OrgPath = change.OriginalPath,
-                        UseLFS = isLFSEnabled
+                        UseLFS = isLFSEnabled,
+                        WCChanges = true,
                     });
                     break;
                 }

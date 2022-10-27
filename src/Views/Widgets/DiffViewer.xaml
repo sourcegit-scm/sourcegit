@@ -16,7 +16,7 @@
     </UserControl.Resources>
     
     <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1">
-        <Grid>
+        <Grid x:Name="body">
             <Grid.RowDefinitions>
                 <RowDefinition Height="26"/>
                 <RowDefinition Height="*"/>
@@ -50,7 +50,7 @@
                             Icon="{StaticResource Icon.Down}"
                             ToolTip="{DynamicResource Text.Diff.Next}"
                             Click="GotoNextChange"/>
-                        
+
                         <controls:IconButton
                             Width="14" Height="14"
                             Margin="4,0"
