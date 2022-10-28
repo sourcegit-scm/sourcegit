@@ -69,7 +69,9 @@ namespace SourceGit.Views.Widgets {
                     if (wcFileID == lastWCFileId) return;
                     lastWCFileId = wcFileID;
                 } else {
-                    lastWCFileId = "";
+                    var wcFileID = string.Format("{0}@-1", opt.Path);
+                    if (wcFileID == lastWCFileId) return;
+                    lastWCFileId = wcFileID;
                 }
             } else {
                 lastWCFileId = "";
