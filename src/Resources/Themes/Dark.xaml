@@ -13,7 +13,7 @@
     <SolidColorBrush x:Key="Brush.DecoratorIcon" Color="#FFF8F8F8"/>
     <SolidColorBrush x:Key="Brush.Conflict" Color="#FFFAFAD2"/>
 
-    <SolidColorBrush x:Key="Brush.Border0" Color="#FF101010"/>
+    <SolidColorBrush x:Key="Brush.Border0" Color="#FF181818"/>
     <SolidColorBrush x:Key="Brush.Border1" Color="#FF7C7C7C"/>
     <SolidColorBrush x:Key="Brush.Border2" Color="#FF404040"/>
     <SolidColorBrush x:Key="Brush.Border3" Color="#FF252525"/>
