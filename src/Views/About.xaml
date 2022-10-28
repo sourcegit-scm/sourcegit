@@ -113,7 +113,7 @@
 
             <!-- Official site -->
             <TextBlock HorizontalAlignment="Center" Margin="0,4,0,16">
-                <TextBlock Text="© 2021" Margin="0" Padding="0"/>
+                <TextBlock Text="© 2022" Margin="0" Padding="0"/>
                 <Hyperlink NavigateUri="https://github.com/sourcegit-scm/sourcegit.git" RequestNavigate="OnRequestNavigate" ToolTip="https://github.com/sourcegit-scm/sourcegit.git">
                     <Run Text="SourceGit."/>
                 </Hyperlink>
