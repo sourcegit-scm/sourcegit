@@ -299,7 +299,7 @@
     <sys:String x:Key="Text.Welcome.OpenOrInit">打开本地仓库</sys:String>
     <sys:String x:Key="Text.Welcome.OpenTerminal">打开GIT终端</sys:String>
     <sys:String x:Key="Text.Welcome.Clone">克隆远程仓库</sys:String>
-    <sys:String x:Key="Text.Welcome.Repositories">收藏/书签</sys:String>
+    <sys:String x:Key="Text.Welcome.Repositories">仓库列表</sys:String>
     <sys:String x:Key="Text.Welcome.Delete">删除</sys:String>
     <sys:String x:Key="Text.Welcome.Search">快速查找仓库</sys:String>
     <sys:String x:Key="Text.Welcome.Sort">排序</sys:String>
