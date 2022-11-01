@@ -35,7 +35,7 @@
 
             <!-- Window Commands -->
             <StackPanel Grid.Column="3" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
-                <controls:IconButton Click="Quit" Width="28" Padding="9" Icon="{StaticResource Icon.Close}" HoverBackground="Red" Opacity="1"/>
+                <controls:IconButton Click="Quit" Width="28" Padding="10" Icon="{StaticResource Icon.Close}" HoverBackground="Red" Opacity="1"/>
             </StackPanel>
         </Grid>
 
