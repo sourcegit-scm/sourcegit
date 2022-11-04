@@ -32,21 +32,21 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
                     <controls:IconButton
                         Margin="8,0"
-                        Padding="0,9"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Folder.Open}" 
                         ToolTip="{DynamicResource Text.Dashboard.Explore}"
                         Click="OpenInExplorer"/>
                     <controls:IconButton
                         x:Name="btnVSCode"
                         Margin="8,0"
-                        Padding="0,9"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.VSCode}" 
                         ToolTip="{DynamicResource Text.Dashboard.VSCode}"
                         Visibility="Collapsed"
                         Click="OpenInVSCode"/>
                     <controls:IconButton
                         Margin="8,0"
-                        Padding="0,9"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Terminal}" 
                         ToolTip="{DynamicResource Text.Dashboard.Terminal}"
                         Click="OpenInTerminal"/>
@@ -55,31 +55,31 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <controls:IconButton
                         Margin="16,0"
-                        Padding="0,8"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Fetch}" 
                         ToolTip="{DynamicResource Text.Fetch}"
                         Click="OpenFetch"/>
                     <controls:IconButton
                         Margin="16,0"
-                        Padding="0,8"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Pull}" 
                         ToolTip="{DynamicResource Text.Pull}"
                         Click="OpenPull"/>
                     <controls:IconButton
                         Margin="16,0"
-                        Padding="0,8"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Push}" 
                         ToolTip="{DynamicResource Text.Push}"
                         Click="OpenPush"/>
                     <controls:IconButton
                         Margin="16,0"
-                        Padding="0,8"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Stashes}" 
                         ToolTip="{DynamicResource Text.Stash}"
                         Click="OpenStash"/>
                     <controls:IconButton
                         Margin="16,0"
-                        Padding="0,8"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Diff}" 
                         ToolTip="{DynamicResource Text.Apply}"
                         Click="OpenApply"/>
@@ -92,7 +92,7 @@
 
                     <controls:IconButton
                         Margin="16,0"
-                        Padding="0,8"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Search}" 
                         ToolTip="{DynamicResource Text.Dashboard.Search}"
                         Click="OpenSearch"/>
@@ -110,21 +110,21 @@
 
                     <controls:IconButton
                         Margin="8,0"
-                        Padding="0,8"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Statistics}" 
                         ToolTip="{DynamicResource Text.Dashboard.Statistics}"
                         Click="OpenStatistics"/>
 
                     <controls:IconButton
                         Margin="8,0"
-                        Padding="0,8"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Clean}" 
                         ToolTip="{DynamicResource Text.Dashboard.Clean}"
                         Click="OpenCleanup"/>
 
                     <controls:IconButton
                         Margin="8,0"
-                        Padding="0,8"
+                        IconSize="14"
                         Icon="{DynamicResource Icon.Setting}" 
                         ToolTip="{DynamicResource Text.Dashboard.Configure}"
                         Click="OpenConfigure"/>

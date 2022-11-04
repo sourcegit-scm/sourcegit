@@ -81,7 +81,7 @@
                 Grid.Column="1"
                 Click="OnSelectSSHKey"
                 Width="24" Height="24"
-                Margin="2,0,0,0" Padding="4"
+                Margin="2,0,0,0" IconSize="16"
                 BorderBrush="{DynamicResource Brush.Border1}"
                 BorderThickness="1"
                 Icon="{StaticResource Icon.Folder.Open}"/>

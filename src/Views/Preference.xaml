@@ -42,7 +42,7 @@
             <controls:IconButton
                 Grid.Column="3"
                 Click="Quit"
-                Width="28" Padding="10"
+                Width="28" IconSize="10"
                 Icon="{StaticResource Icon.Close}"
                 HoverBackground="Red"
                 WindowChrome.IsHitTestVisibleInChrome="True"/>
@@ -186,7 +186,7 @@
                             Grid.Column="1"
                             Click="SelectGitPath"
                             Width="24" Height="24"
-                            Margin="4,0,0,0" Padding="4"
+                            Margin="4,0,0,0" IconSize="16"
                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                             Icon="{StaticResource Icon.Folder.Open}"/>
                     </Grid>
@@ -224,7 +224,7 @@
                             Grid.Column="1"
                             Click="SelectGitCloneDir"
                             Width="24" Height="24"
-                            Margin="4,0,0,0" Padding="4"
+                            Margin="4,0,0,0" IconSize="16"
                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                             Icon="{StaticResource Icon.Folder.Open}"/>
                     </Grid>
@@ -331,7 +331,7 @@
                             Grid.Column="1"
                             Click="SelectGPGExec"
                             Width="24" Height="24"
-                            Margin="4,0,0,0" Padding="4"
+                            Margin="4,0,0,0" IconSize="16"
                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                             Icon="{StaticResource Icon.Folder.Open}"/>
                     </Grid>
@@ -399,7 +399,7 @@
                             Grid.Column="1"
                             Click="SelectMergeTool"
                             Width="24" Height="24"
-                            Margin="4,0,0,0" Padding="4"
+                            Margin="4,0,0,0" IconSize="16"
                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                             Icon="{StaticResource Icon.Folder.Open}"/>
                     </Grid>

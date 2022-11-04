@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -18,6 +19,17 @@ namespace SourceGit.Views.Controls {
         public Geometry Icon {
             get { return (Geometry)GetValue(IconProperty); }
             set { SetValue(IconProperty, value); }
+        }
+
+        public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register(
+            "IconSize", 
+            typeof(double), 
+            typeof(IconButton), 
+            new PropertyMetadata(14.0));
+
+        public double IconSize {
+            get { return (double)GetValue(IconSizeProperty); }
+            set { SetValue(IconSizeProperty, value); }
         }
 
         public static readonly DependencyProperty HoverBackgroundProperty = DependencyProperty.Register(

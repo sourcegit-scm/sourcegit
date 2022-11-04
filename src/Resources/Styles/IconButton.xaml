@@ -17,11 +17,14 @@
                         x:Name="Border"
                         BorderBrush="{TemplateBinding BorderBrush}" 
                         BorderThickness="{TemplateBinding BorderThickness}" 
-                        Background="{TemplateBinding Background}"
-                        Padding="{TemplateBinding Padding}">
+                        Background="{TemplateBinding Background}">
                         <Path
+                            Width="{TemplateBinding IconSize}"
+                            Height="{TemplateBinding IconSize}"
                             Fill="{TemplateBinding Foreground}"
-                            Data="{TemplateBinding Icon}"/>
+                            Data="{TemplateBinding Icon}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
                     </Border>
 
                     <ControlTemplate.Triggers>

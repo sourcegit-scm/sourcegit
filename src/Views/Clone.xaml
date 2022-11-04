@@ -39,7 +39,7 @@
                 Grid.Column="3"
                 Click="OnQuit"
                 Width="28"
-                Padding="10" 
+                IconSize="10" 
                 Icon="{StaticResource Icon.Close}" 
                 HoverBackground="Red" 
                 WindowChrome.IsHitTestVisibleInChrome="True"/>
@@ -110,7 +110,7 @@
                         Grid.Column="1"
                         Click="OnSelectSSHKey"
                         Width="24" Height="24"
-                        Margin="2,0,0,0" Padding="4"
+                        Margin="2,0,0,0" IconSize="16"
                         BorderBrush="{DynamicResource Brush.Border1}"
                         BorderThickness="1"
                         Icon="{StaticResource Icon.Folder.Open}"/>
@@ -145,7 +145,7 @@
                         Grid.Column="1"
                         Click="OnFolderSelectorClick"
                         Width="24" Height="24"
-                        Margin="2,0,0,0" Padding="4"
+                        Margin="2,0,0,0" IconSize="16"
                         BorderBrush="{DynamicResource Brush.Border1}"
                         BorderThickness="1"
                         Icon="{StaticResource Icon.Folder.Open}"/>
