@@ -324,9 +324,10 @@ namespace SourceGit.Views.Widgets {
 
             Task.Run(() => {
                 var changes = new Commands.LocalChanges(repo.Path, Models.Preference.Instance.Git.IncludeUntrackedInWC).Result();
+                (pages.Get("working_copy") as WorkingCopy).SetData(changes);
+
                 Dispatcher.Invoke(() => {
                     badgeLocalChanges.Label = $"{changes.Count}";
-                    (pages.Get("working_copy") as WorkingCopy).SetData(changes);
                     UpdateMergeBar(changes);
                 });
             });

@@ -173,70 +173,112 @@ namespace SourceGit.Views.Widgets {
 
         public void SetData(List<Models.Change> changes) {
             isLoadingData = true;
-
-            var oldSet = new Dictionary<string, Models.Change>();
-            var newSet = new Dictionary<string, Models.Change>();
-            foreach (var c in changes) newSet.Add(c.Path, c);
-
-            for (int i = Changes.Count - 1; i >= 0; i--) {
-                var old = Changes[i];
-                if (!newSet.ContainsKey(old.Path)) {
-                    Changes.RemoveAt(i);
-                    RemoveTreeNode(Nodes, old);
-                    if (modeTree.Selected.Contains(old)) modeTree.Selected.Remove(old);
-                    if (DiffTarget == old) DiffTarget = null;
-                    continue;
-                }
-
-                var cur = newSet[old.Path];
-                if (cur.Index != old.Index || cur.WorkTree != old.WorkTree) {
-                    Changes.RemoveAt(i);
-                    RemoveTreeNode(Nodes, old);
-                    if (modeTree.Selected.Contains(old)) modeTree.Selected.Remove(old);
-                    if (DiffTarget == old) DiffTarget = null;
-                    continue;
-                }
-
-                oldSet.Add(old.Path, old);
-            }
-
             var isDefaultExpand = changes.Count <= 50;
-            foreach (var c in changes) {
-                if (oldSet.ContainsKey(c.Path)) continue;
 
-                bool added = false;
-                for (int i = 0; i < Changes.Count; i++) {
-                    if (c.Path.CompareTo(Changes[i].Path) < 0) {
-                        Changes.Insert(i, c);
-                        added = true;
-                        break;
+            if (changes.Count == 0) {
+                Changes.Clear();
+                Nodes.Clear();
+            } else if (Changes.Count == 0) {
+                var nodesMap = new Dictionary<string, ChangeNode>();
+                foreach (var c in changes) {
+                    Changes.Add(c);
+
+                    int sepIdx = c.Path.IndexOf("/", StringComparison.Ordinal);
+                    if (sepIdx < 0) {
+                        var n = AddTreeNode(Nodes, c.Path, c, false, true);
+                        nodesMap.Add(c.Path, n);
+                    } else {
+                        ObservableCollection<ChangeNode> last = Nodes;
+                        do {
+                            ChangeNode parent = null;
+                            var path = c.Path.Substring(0, sepIdx);
+                            if (!nodesMap.TryGetValue(path, out parent)) {
+                                parent = AddTreeNode(last, path, null, isDefaultExpand, true);
+                                nodesMap.Add(path, parent);
+                            }
+
+                            last = parent.Children;
+                            sepIdx = c.Path.IndexOf('/', sepIdx + 1);
+                        } while (sepIdx > 0);
+
+                        var n = AddTreeNode(last, c.Path, c, false, true);
+                        nodesMap.Add(c.Path, n);
                     }
                 }
+                nodesMap.Clear();
+            } else {
+                var oldSet = new Dictionary<string, Models.Change>();
+                var newSet = new Dictionary<string, Models.Change>();
+                foreach (var c in changes) newSet.Add(c.Path, c);
 
-                if (!added) Changes.Add(c);
+                for (int i = Changes.Count - 1; i >= 0; i--) {
+                    var old = Changes[i];
+                    if (!newSet.ContainsKey(old.Path)) {
+                        Changes.RemoveAt(i);
+                        RemoveTreeNode(Nodes, old.Path);
+                        if (modeTree.Selected.Contains(old)) modeTree.Selected.Remove(old);
+                        if (DiffTarget == old) DiffTarget = null;
+                        continue;
+                    }
 
-                int sepIdx = c.Path.IndexOf("/", StringComparison.Ordinal);
-                if (sepIdx < 0) {
-                    GetOrAddTreeNode(Nodes, c.Path, c, false);
-                } else {
-                    ObservableCollection<ChangeNode> last = Nodes;
-                    do {
-                        var path = c.Path.Substring(0, sepIdx);
-                        last = GetOrAddTreeNode(last, path, null, isDefaultExpand).Children;
-                        sepIdx = c.Path.IndexOf('/', sepIdx + 1);
-                    } while (sepIdx > 0);
-                    GetOrAddTreeNode(last, c.Path, c, false);
+                    var cur = newSet[old.Path];
+                    if (cur.Index != old.Index || cur.WorkTree != old.WorkTree) {
+                        Changes.RemoveAt(i);
+                        RemoveTreeNode(Nodes, old.Path);
+                        if (modeTree.Selected.Contains(old)) modeTree.Selected.Remove(old);
+                        if (DiffTarget == old) DiffTarget = null;
+                        continue;
+                    }
+
+                    oldSet.Add(old.Path, old);
                 }
+
+                var nodesMap = new Dictionary<string, ChangeNode>();
+                GetTreeNodes(nodesMap, Nodes);
+
+                for (int i = 0; i < changes.Count; i++) {
+                    var c = changes[i];
+                    if (oldSet.ContainsKey(c.Path)) continue;
+
+                    Changes.Insert(i, c);
+
+                    int sepIdx = c.Path.IndexOf("/", StringComparison.Ordinal);
+                    if (sepIdx < 0) {
+                        var n = AddTreeNode(Nodes, c.Path, c, false, false);
+                        nodesMap.Add(c.Path, n);
+                    } else {
+                        ObservableCollection<ChangeNode> last = Nodes;
+                        do {
+                            ChangeNode parent = null;
+                            var path = c.Path.Substring(0, sepIdx);
+                            if (!nodesMap.TryGetValue(path, out parent)) {
+                                parent = AddTreeNode(last, path, null, isDefaultExpand, false);
+                                nodesMap.Add(path, parent);
+                            }
+
+                            last = parent.Children;
+                            sepIdx = c.Path.IndexOf('/', sepIdx + 1);
+                        } while (sepIdx > 0);
+
+                        var n = AddTreeNode(last, c.Path, c, false, false);
+                        nodesMap.Add(c.Path, n);
+                    }
+                }
+                nodesMap.Clear();
             }
 
             isLoadingData = false;
+            return;
         }
 
-        private ChangeNode GetOrAddTreeNode(ObservableCollection<ChangeNode> nodes, string path, Models.Change change, bool isExpand) {
+        private void GetTreeNodes(Dictionary<string, ChangeNode> map, ObservableCollection<ChangeNode> nodes) {
             foreach (var n in nodes) {
-                if (n.Path == path) return n;
+                map.Add(n.Path, n);
+                if (n.IsFolder) GetTreeNodes(map, n.Children);
             }
+        }
 
+        private ChangeNode AddTreeNode(ObservableCollection<ChangeNode> nodes, string path, Models.Change change, bool isExpand, bool isSorted = false) {
             var node = new ChangeNode();
             node.Path = path;
             node.Change = change;
@@ -245,19 +287,35 @@ namespace SourceGit.Views.Widgets {
             var added = false;
             if (change == null) {
                 for (int i = 0; i < nodes.Count; i++) {
-                    if (!nodes[i].IsFolder || nodes[i].Path.CompareTo(path) > 0) {
+                    var n = nodes[i];
+                    if (!n.IsFolder) {
                         added = true;
-                        nodes.Add(node);
+                        nodes.Insert(i, node);
+                        break;
+                    }
+
+                    if (isSorted) continue;
+
+                    if (n.Path.CompareTo(path) > 0) {
+                        added = true;
+                        nodes.Insert(i, node);
                         break;
                     }
                 }
             } else {
-                for (int i = 0; i < nodes.Count; i++) {
-                    if (nodes[i].IsFolder) continue;
-                    if (nodes[i].Path.CompareTo(path) > 0) {
-                        added = true;
-                        nodes.Add(node);
-                        break;
+                if (isSorted) {
+                    added = true;
+                    nodes.Add(node);
+                } else {
+                    for (int i = 0; i < nodes.Count; i++) {
+                        var n = nodes[i];
+                        if (n.IsFolder) continue;
+
+                        if (n.Path.CompareTo(path) > 0) {
+                            added = true;
+                            nodes.Insert(i, node);
+                            break;
+                        }
                     }
                 }
             }
@@ -266,17 +324,23 @@ namespace SourceGit.Views.Widgets {
             return node;
         }
 
-        private bool RemoveTreeNode(ObservableCollection<ChangeNode> nodes, Models.Change change) {
+        private bool RemoveTreeNode(ObservableCollection<ChangeNode> nodes, string path) {
             for (int i = nodes.Count - 1; i >= 0; i--) {
                 var node = nodes[i];
-                if (node.Change == null) {
-                    if (RemoveTreeNode(node.Children, change)) {
+                if (node.IsFolder) {
+                    if (path.IndexOf(node.Path, StringComparison.Ordinal) < 0) {
+                        continue;
+                    }
+
+                    if (RemoveTreeNode(node.Children, path)) {
                         if (node.Children.Count == 0) nodes.RemoveAt(i);
                         return true;
                     }
-                } else if (node.Change.Path == change.Path) {
-                    nodes.RemoveAt(i);
-                    return true;
+                } else {
+                    if (path.Equals(node.Path, StringComparison.Ordinal)) {
+                        nodes.RemoveAt(i);
+                        return true;
+                    }
                 }
             }
 

@@ -43,36 +43,38 @@ namespace SourceGit.Views.Widgets {
                 }
             }
 
-            unstagedContainer.SetData(unstagedChanges);
-            stagedContainer.SetData(stagedChanges);
+            Dispatcher.Invoke(() => {
+                unstagedContainer.SetData(unstagedChanges);
+                stagedContainer.SetData(stagedChanges);
 
-            var current = repo.Branches.Find(x => x.IsCurrent);
-            if (current != null && !string.IsNullOrEmpty(current.Upstream) && chkAmend.IsChecked != true) {
-                btnCommitAndPush.Visibility = Visibility.Visible;
-            } else {
-                btnCommitAndPush.Visibility = Visibility.Collapsed;
-            }
+                var current = repo.Branches.Find(x => x.IsCurrent);
+                if (current != null && !string.IsNullOrEmpty(current.Upstream) && chkAmend.IsChecked != true) {
+                    btnCommitAndPush.Visibility = Visibility.Visible;
+                } else {
+                    btnCommitAndPush.Visibility = Visibility.Collapsed;
+                }
 
-            mergePanel.Visibility = Visibility.Collapsed;
+                mergePanel.Visibility = Visibility.Collapsed;
 
-            var diffTarget = unstagedContainer.DiffTarget;
-            if (diffTarget != null) {
-                if (diffTarget.IsConflit) {
-                    mergePanel.Visibility = Visibility.Visible;
+                var diffTarget = unstagedContainer.DiffTarget;
+                if (diffTarget != null) {
+                    if (diffTarget.IsConflit) {
+                        mergePanel.Visibility = Visibility.Visible;
+                        diffViewer.Reset();
+                    } else {
+                        diffViewer.Reload();
+                    }
+
+                    return;
+                }
+
+                diffTarget = stagedContainer.DiffTarget;
+                if (diffTarget == null) {
                     diffViewer.Reset();
                 } else {
                     diffViewer.Reload();
                 }
-
-                return;
-            }
-
-            diffTarget = stagedContainer.DiffTarget;
-            if (diffTarget == null) {
-                diffViewer.Reset();
-            } else {
-                diffViewer.Reload();
-            }
+            });
         }
 
         public void TryLoadMergeMessage() {
