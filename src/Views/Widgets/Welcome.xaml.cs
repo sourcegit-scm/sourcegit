@@ -91,12 +91,15 @@ namespace SourceGit.Views.Widgets {
             var repo = (sender as Button).DataContext as Models.Repository;
             if (repo == null) return;
 
-            var result = MessageBox.Show(App.Text("ConfirmRemoveRepo", repo.Path), App.Text("Apply.Warn"), MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes) {
-                Models.Preference.Instance.RemoveRepository(repo.Path);
-                UpdateVisibles();
-            }
-            
+            var confirmDialog = new ConfirmDialog(
+                App.Text("Apply.Warn"),
+                App.Text("ConfirmRemoveRepo", repo.Path),
+                () => {
+                    Models.Preference.Instance.RemoveRepository(repo.Path);
+                    UpdateVisibles();
+                });
+            confirmDialog.Owner = App.Current.MainWindow;
+            confirmDialog.ShowDialog();
             e.Handled = true;
         }
 
