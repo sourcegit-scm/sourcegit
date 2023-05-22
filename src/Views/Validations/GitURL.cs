@@ -11,7 +11,8 @@ namespace SourceGit.Views.Validations {
                 && (url.StartsWith("http://", StringComparison.Ordinal)
                 || url.StartsWith("https://", StringComparison.Ordinal)
                 || url.StartsWith("git@", StringComparison.Ordinal)
-                || url.StartsWith("file://", StringComparison.Ordinal));
+                || url.StartsWith("file://", StringComparison.Ordinal)
+                || url.StartsWith("ssh://", StringComparison.Ordinal));
             return valid ? ValidationResult.ValidResult : new ValidationResult(false, App.Text("BadRemoteUri"));
         }
     }
