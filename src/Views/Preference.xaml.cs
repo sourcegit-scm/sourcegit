@@ -100,7 +100,7 @@ namespace SourceGit.Views {
         private void SelectGPGExec(object sender, RoutedEventArgs e) {
             var dialog = new OpenFileDialog();
             dialog.Filter = $"GPG Executable|gpg.exe";
-            dialog.Title = App.Text("Text.GPG.Path.Placeholder");
+            dialog.Title = App.Text("GPG.Path.Placeholder");
             dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             dialog.CheckFileExists = true;
 
