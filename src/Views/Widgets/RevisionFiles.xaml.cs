@@ -196,7 +196,7 @@ namespace SourceGit.Views.Widgets {
             var grid = sender as DataGrid;
             if (grid == null) return;
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = grid };
 
             var copyIcon = new System.Windows.Shapes.Path();
             copyIcon.Data = FindResource("Icon.Copy") as Geometry;
@@ -328,7 +328,7 @@ namespace SourceGit.Views.Widgets {
                 ev.Handled = true;
             };
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = item };
             menu.Items.Add(history);
             menu.Items.Add(blame);
             menu.Items.Add(explore);

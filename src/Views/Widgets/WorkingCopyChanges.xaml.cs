@@ -868,7 +868,7 @@ namespace SourceGit.Views.Widgets {
                 GetChangesFromNode(o as ChangeNode, changes);
             }
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = sender as UIElement };
             if (IsUnstaged) {
                 OpenUnstagedContextMenuByNodes(menu, nodes, changes);
             } else {
@@ -900,7 +900,7 @@ namespace SourceGit.Views.Widgets {
                 }
             }
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = row };
             if (IsUnstaged) {
                 OpenUnstagedContextMenuByChanges(menu, changes);
             } else {

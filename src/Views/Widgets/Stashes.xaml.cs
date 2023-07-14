@@ -67,7 +67,7 @@ namespace SourceGit.Views.Widgets {
             delete.Header = App.Text("StashCM.Drop");
             delete.Click += (o, e) => new Popups.StashDropConfirm(repo, stash.Name, stash.Message).Show();
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = sender as UIElement };
             menu.Items.Add(apply);
             menu.Items.Add(pop);
             menu.Items.Add(delete);

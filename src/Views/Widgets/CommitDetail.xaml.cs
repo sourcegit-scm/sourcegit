@@ -123,7 +123,7 @@ namespace SourceGit.Views.Widgets {
             }
 
             var selectedCount = changeList.SelectedItems.Count;
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = row };
             if (selectedCount == 1) {
                 var change = changeList.SelectedItems[0] as Models.Change;
                 if (change == null) return;

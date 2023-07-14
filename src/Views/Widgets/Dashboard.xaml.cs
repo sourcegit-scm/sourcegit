@@ -614,7 +614,7 @@ namespace SourceGit.Views.Widgets {
             var node = item.DataContext as BranchNode;
             if (node == null || node.Type == BranchNodeType.Folder) return;
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = item };
             if (node.Type == BranchNodeType.Remote) {
                 FillRemoteContextMenu(menu, node.Data as Models.Remote);
             } else {
@@ -1049,7 +1049,7 @@ namespace SourceGit.Views.Widgets {
                 ev.Handled = true;
             };
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = sender as UIElement };
             menu.Items.Add(createBranch);
             menu.Items.Add(new Separator());
             menu.Items.Add(pushTag);
@@ -1096,7 +1096,7 @@ namespace SourceGit.Views.Widgets {
                 ev.Handled = true;
             };
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = sender as UIElement };
             menu.Items.Add(copy);
             menu.Items.Add(rm);
             menu.IsOpen = true;
@@ -1158,7 +1158,7 @@ namespace SourceGit.Views.Widgets {
                 ev.Handled = true;
             };
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = sender as UIElement };
             menu.Items.Add(edit);
             menu.Items.Add(unlink);
             menu.Items.Add(new Separator());

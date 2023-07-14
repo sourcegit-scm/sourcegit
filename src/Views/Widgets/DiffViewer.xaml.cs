@@ -475,7 +475,7 @@ namespace SourceGit.Views.Widgets {
             var grid = sender as DataGrid;
             if (grid == null) return;
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = grid };
 
             var copyIcon = new Path();
             copyIcon.Data = FindResource("Icon.Copy") as Geometry;

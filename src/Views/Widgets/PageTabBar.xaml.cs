@@ -309,7 +309,7 @@ namespace SourceGit.Views.Widgets {
             var tab = (sender as ListBoxItem).DataContext as Tab;
             if (tab == null) return;
 
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = sender as UIElement };
 
             var close = new MenuItem();
             close.Header = App.Text("PageTabBar.Tab.Close");

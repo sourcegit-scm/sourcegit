@@ -229,8 +229,8 @@ namespace SourceGit.Views.Widgets {
             });
         }
 
-        private void OpenChangeContextMenu(Models.Change change) {
-            var menu = new ContextMenu();
+        private void OpenChangeContextMenu(Models.Change change, UIElement placement) {
+            var menu = new ContextMenu() { PlacementTarget = placement };
             var path = change.Path;
 
             if (change.Index != Models.Change.Status.Deleted) {
@@ -329,7 +329,7 @@ namespace SourceGit.Views.Widgets {
             var node = item.DataContext as ChangeNode;
             if (node == null || node.IsFolder) return;
 
-            OpenChangeContextMenu(node.Change);
+            OpenChangeContextMenu(node.Change, item);
             e.Handled = true;
         }
 
@@ -340,7 +340,7 @@ namespace SourceGit.Views.Widgets {
             var change = row.Item as Models.Change;
             if (change == null) return;
 
-            OpenChangeContextMenu(change);
+            OpenChangeContextMenu(change, row);
             e.Handled = true;
         }
 

@@ -248,7 +248,7 @@ namespace SourceGit.Views.Widgets {
             if (current == null) return;
 
             var merged = commit.IsMerged;
-            var menu = new ContextMenu();
+            var menu = new ContextMenu() { PlacementTarget = row };
             var tags = new List<string>();
 
             // Decorators
