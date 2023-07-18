@@ -66,7 +66,6 @@
             Text="{Binding ElementName=me, Path=Message, Mode=TwoWay}"
             Height="56" Padding="0,2"
             AcceptsReturn="True"
-            Placeholder="{DynamicResource Text.CreateTag.Message.Placeholder}"
-            PlaceholderBaseline="Top"/>
+            Placeholder="{DynamicResource Text.CreateTag.Message.Placeholder}"/>
     </Grid>
 </controls:PopupWidget>

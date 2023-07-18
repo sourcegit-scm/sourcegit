@@ -191,8 +191,9 @@
                 KeyDown="CommitMessageKeyDown"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                Placeholder="{DynamicResource Text.WorkingCopy.CommitMessageTip}"
-                PlaceholderBaseline="Top">
+                Background="{DynamicResource Brush.Contents}"
+                BorderBrush="{DynamicResource Brush.Border2}"
+                Placeholder="{DynamicResource Text.WorkingCopy.CommitMessageTip}">
                 <TextBox.Text>
                     <Binding ElementName="me" Path="CommitMessage" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
