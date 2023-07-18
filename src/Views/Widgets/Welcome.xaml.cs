@@ -192,10 +192,11 @@ namespace SourceGit.Views.Widgets {
                 visibles.Sort((l, r) => r.LastOpenTime.CompareTo(l.LastOpenTime));
                 break;
             default:
-                visibles.Sort((l, r) => l.Bookmark.CompareTo(r.Bookmark));
+                visibles.Sort((l, r) => r.Bookmark - l.Bookmark);
                 break;
             }
 
+            mask.Visibility = visibles.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             repoList.ItemsSource = visibles;
         }
 

@@ -304,6 +304,7 @@
     <sys:String x:Key="Text.Welcome.Delete">Delete</sys:String>
     <sys:String x:Key="Text.Welcome.Search">Search Repositories ...</sys:String>
     <sys:String x:Key="Text.Welcome.Sort">Sort</sys:String>
+    <sys:String x:Key="Text.Welcome.DragDropTip">DRAG &amp; DROP FOLDER HERE</sys:String>
 
     <sys:String x:Key="Text.Pull">Pull</sys:String>
     <sys:String x:Key="Text.Pull.Title">Pull (Fetch &amp; Merge)</sys:String>

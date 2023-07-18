@@ -53,11 +53,10 @@
         <StackPanel Grid.Row="2" Orientation="Vertical">
 
             <!-- LOGO -->
-            <Path 
-                Margin="0,16,0,0" 
-                Width="64" Height="64" 
-                Data="{StaticResource Icon.Git}" 
-                Fill="{DynamicResource Brush.Logo}"/>
+            <Image
+                Margin="0,16,0,0"
+                Width="64" Height="64"
+                Source="pack://application:,,,/App.ico"/>
 
             <!-- Title -->
             <TextBlock

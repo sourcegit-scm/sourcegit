@@ -18,14 +18,14 @@
     Closing="OnClosing">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="28"/>
+            <RowDefinition Height="36"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Titlebar -->
         <Grid Grid.Row="0" Background="{DynamicResource Brush.TitleBar}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="46"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="360"/>
             </Grid.ColumnDefinitions>
@@ -36,13 +36,13 @@
             <!-- Main Menu -->
             <Button
                 Grid.Column="0"
-                Margin="4,4,4,0"
-                Width="16"
+                Margin="0,4,0,0"
+                Width="32" Height="32"
                 Background="Transparent"
                 BorderThickness="0"
                 WindowChrome.IsHitTestVisibleInChrome="True"
                 Click="ToggleMainMenu">
-                <Path Data="{StaticResource Icon.Git}" Fill="{DynamicResource Brush.Logo}"/>
+                <Image Width="20" Height="20" RenderOptions.BitmapScalingMode="HighQuality" Source="pack://application:,,,/App.ico"/>
             </Button>
 
             <!-- Tabs -->

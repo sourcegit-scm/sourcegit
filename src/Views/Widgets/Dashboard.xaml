@@ -11,7 +11,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="32"/>
+            <RowDefinition Height="36"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -21,7 +21,7 @@
         </Grid.Resources>
 
         <!-- Toolbar -->
-        <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1">
+        <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1" Background="{DynamicResource Brush.ToolBar}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -33,7 +33,7 @@
                     <controls:IconButton
                         Margin="8,0"
                         IconSize="14"
-                        Icon="{DynamicResource Icon.Folder.Open}" 
+                        Icon="{DynamicResource Icon.Folder.Open}"
                         ToolTip="{DynamicResource Text.Dashboard.Explore}"
                         Click="OpenInExplorer"/>
                     <controls:IconButton
@@ -576,7 +576,7 @@
                 Width="500"
                 Height="Auto">
                 <Border.Effect>
-                    <DropShadowEffect BlurRadius="4" ShadowDepth="0" Color="Black" Opacity=".8"/>
+                    <DropShadowEffect BlurRadius="6" ShadowDepth="0" Color="Black" Opacity=".8"/>
                 </Border.Effect>
 
                 <Grid>
