@@ -36,13 +36,13 @@
             <!-- Main Menu -->
             <Button
                 Grid.Column="0"
-                Margin="0,4,0,0"
+                Margin="0,6,0,0"
                 Width="32" Height="32"
                 Background="Transparent"
                 BorderThickness="0"
                 WindowChrome.IsHitTestVisibleInChrome="True"
                 Click="ToggleMainMenu">
-                <Image Width="20" Height="20" RenderOptions.BitmapScalingMode="HighQuality" Source="pack://application:,,,/App.ico"/>
+                <Path Width="14" Height="14" Data="{StaticResource Icon.Menu}"/>
             </Button>
 
             <!-- Tabs -->
