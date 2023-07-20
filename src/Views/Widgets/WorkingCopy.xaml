@@ -152,7 +152,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="32"/>
             </Grid.RowDefinitions>
             
             <!-- Diff viewer -->
@@ -204,7 +204,7 @@
             </controls:TextEdit>
             
             <!-- Commit Options -->
-            <Grid Grid.Row="2" Margin="0,0,0,8">
+            <Grid Grid.Row="2" Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
