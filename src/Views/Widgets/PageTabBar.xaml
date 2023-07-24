@@ -7,8 +7,8 @@
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              xmlns:converters="clr-namespace:SourceGit.Views.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="28" d:DesignWidth="800">
-    <Grid Margin="0,6,0,0">
+             d:DesignHeight="32" d:DesignWidth="800">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1"/>
             <ColumnDefinition Width="Auto"/>
