@@ -192,7 +192,7 @@ namespace SourceGit.Views.Controls {
                 if (!requesting.ContainsKey(email)) return;
 
                 try {
-                    var req = WebRequest.CreateHttp($"https://www.gravatar.com/avatar/{md5}?d=404");
+                    var req = WebRequest.CreateHttp($"https://cravatar.cn/avatar/{md5}?d=404");
                     req.Timeout = 2000;
                     req.Method = "GET";
 
