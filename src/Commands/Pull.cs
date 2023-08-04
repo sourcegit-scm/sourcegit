@@ -13,6 +13,7 @@ namespace SourceGit.Commands {
             Cwd = repo;
             TraitErrorAsOutput = true;
             handler = onProgress;
+            needStash = autoStash;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
             if (!string.IsNullOrEmpty(sshKey)) {
@@ -23,13 +24,7 @@ namespace SourceGit.Commands {
             }
 
             Args += "pull --verbose --progress --tags ";
-
             if (useRebase) Args += "--rebase ";
-            if (autoStash) {
-                if (useRebase) Args += "--autostash ";
-                else needStash = true;
-            }
-
             Args += $"{remote} {branch}";
         }
 
@@ -46,7 +41,7 @@ namespace SourceGit.Commands {
             }
 
             var succ = Exec();
-            if (needStash) new Stash(Cwd).Pop("stash@{0}");
+            if (succ && needStash) new Stash(Cwd).Pop("stash@{0}");
             return succ;
         }
 
