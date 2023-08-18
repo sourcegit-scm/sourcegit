@@ -23,8 +23,9 @@ namespace SourceGit.Views.Widgets {
 
         #region FUNC_EVENTS
         private void OnOpenClicked(object sender, RoutedEventArgs e) {
-            var dialog = new Controls.FolderDialog();
-            if (dialog.ShowDialog() == true) CheckAndOpen(dialog.SelectedPath);
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.ShowNewFolderButton = true;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) CheckAndOpen(dialog.SelectedPath);
         }
 
         private void OnOpenTerminalClicked(object sender, RoutedEventArgs e) {

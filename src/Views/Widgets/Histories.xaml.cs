@@ -369,8 +369,9 @@ namespace SourceGit.Views.Widgets {
             saveToPatch.Icon = saveToPatchIcon;
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += (o, e) => {
-                var dialog = new Controls.FolderDialog();
-                if (dialog.ShowDialog() == true) {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                dialog.ShowNewFolderButton = true;
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                     new Commands.FormatPatch(repo.Path, commit.SHA, dialog.SelectedPath).Exec();
                 }
             };

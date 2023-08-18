@@ -95,8 +95,9 @@ namespace SourceGit.Views {
         }
 
         private void OnFolderSelectorClick(object sender, RoutedEventArgs e) {
-            var dialog = new Controls.FolderDialog();
-            if (dialog.ShowDialog() == true) {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.ShowNewFolderButton = true;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 Folder = dialog.SelectedPath;
                 txtFolder.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             }

@@ -90,8 +90,9 @@ namespace SourceGit.Views {
         }
 
         private void SelectGitCloneDir(object sender, RoutedEventArgs e) {
-            var dialog = new Controls.FolderDialog();
-            if (dialog.ShowDialog() == true) {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.ShowNewFolderButton = true;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 Models.Preference.Instance.Git.DefaultCloneDir = dialog.SelectedPath;
                 txtGitCloneDir?.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             }
