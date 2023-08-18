@@ -259,6 +259,7 @@
     <sys:String x:Key="Text.Fetch.Prune">Prune remote dead branches</sys:String>
 
     <sys:String x:Key="Text.FileHistory">File History</sys:String>
+    <sys:String x:Key="Text.FileHistory.UseThisVersion">USE THIS VERSION</sys:String>
 
     <sys:String x:Key="Text.ChangeDisplayMode">CHANGE DISPLAY MODE</sys:String>
     <sys:String x:Key="Text.ChangeDisplayMode.Grid">Show as Grid</sys:String>

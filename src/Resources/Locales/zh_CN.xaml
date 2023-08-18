@@ -258,6 +258,7 @@
     <sys:String x:Key="Text.Fetch.Prune">自动清理远程已删除分支</sys:String>
 
     <sys:String x:Key="Text.FileHistory">文件历史</sys:String>
+    <sys:String x:Key="Text.FileHistory.UseThisVersion">使用该版本</sys:String>
 
     <sys:String x:Key="Text.ChangeDisplayMode">切换变更显示模式</sys:String>
     <sys:String x:Key="Text.ChangeDisplayMode.Grid">网格模式</sys:String>

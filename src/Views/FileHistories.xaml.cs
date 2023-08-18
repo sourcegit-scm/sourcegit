@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,6 +59,24 @@ namespace SourceGit.Views {
 
         private void GotoCommit(object sender, RequestNavigateEventArgs e) {
             Models.Watcher.Get(repo).NavigateTo(e.Uri.OriginalString);
+            e.Handled = true;
+        }
+
+        private async void UseSelectedVersion(object sender, RoutedEventArgs e) {
+            var commit = commitList.SelectedItem as Models.Commit;
+            if (commit == null) return;
+
+            loading.IsAnimating = true;
+            loading.Visibility = Visibility.Visible;
+
+            await Task.Run(() => {
+                Models.Watcher.SetEnabled(repo, false);
+                new Commands.Checkout(repo).FileWithRevision(file, commit.SHA);
+                Models.Watcher.SetEnabled(repo, true);
+            });
+
+            loading.IsAnimating = false;
+            loading.Visibility = Visibility.Collapsed;
             e.Handled = true;
         }
         #endregion

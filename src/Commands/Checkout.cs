@@ -37,6 +37,11 @@ namespace SourceGit.Commands {
             return Exec();
         }
 
+        public bool FileWithRevision(string file, string revision) {
+            Args = $"checkout {revision} -- \"{file}\"";
+            return Exec();
+        }
+
         public bool Files(List<string> files) {
             StringBuilder builder = new StringBuilder();
             builder.Append("checkout -f -q --");
