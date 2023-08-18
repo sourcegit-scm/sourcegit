@@ -654,7 +654,7 @@ namespace SourceGit.Views.Widgets {
                     var upstream = branch.Upstream.Substring(13);
                     var fastForward = new MenuItem();
                     fastForward.Header = App.Text("BranchCM.FastForward", upstream);
-                    fastForward.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrackStatus);
+                    fastForward.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrackStatus) && branch.UpstreamTrackStatus.IndexOf('↑') < 0;
                     fastForward.Click += (o, e) => {
                         new Popups.Merge(repo.Path, upstream, branch.Name).ShowAndStart();
                         e.Handled = true;
@@ -683,6 +683,21 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
                 menu.Items.Add(checkout);
+
+                if (!string.IsNullOrEmpty(branch.Upstream)) {
+                    var upstream = branch.Upstream.Substring(13);
+                    var fastForward = new MenuItem();
+                    fastForward.Header = App.Text("BranchCM.FastForward", upstream);
+                    fastForward.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrackStatus) && branch.UpstreamTrackStatus.IndexOf('↑') < 0;
+                    fastForward.Click += (o, e) => {
+                        new Popups.FastForwardWithoutCheckout(repo.Path, branch.Name, upstream).ShowAndStart();
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(new Separator());
+                    menu.Items.Add(fastForward);
+                }
+
                 menu.Items.Add(new Separator());
                 menu.Items.Add(push);
 

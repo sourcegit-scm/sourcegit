@@ -29,6 +29,22 @@ namespace SourceGit.Commands {
             AutoFetch.MarkFetched(repo);
         }
 
+        public Fetch(string repo, string remote, string localBranch, string remoteBranch, Action<string> outputHandler) {
+            Cwd = repo;
+            TraitErrorAsOutput = true;
+
+            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            if (!string.IsNullOrEmpty(sshKey)) {
+                Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
+                Args = "";
+            } else {
+                Args = "-c credential.helper=manager-core ";
+            }
+
+            Args += $"fetch --progress --verbose {remote} {remoteBranch}:{localBranch}";
+            handler = outputHandler;
+        }
+
         public override void OnReadline(string line) {
             handler?.Invoke(line);
         }
