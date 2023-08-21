@@ -47,7 +47,7 @@ namespace SourceGit.Views.Popups {
 
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo.Path, false);
-                var succ = new Commands.Pull(repo.Path, branch.Remote, branch.Name, rebase, autoStash, UpdateProgress).Exec();
+                var succ = new Commands.Pull(repo.Path, branch.Remote, branch.Name, rebase, autoStash, UpdateProgress).Run();
                 Models.Watcher.SetEnabled(repo.Path, true);
                 return succ;
             });
