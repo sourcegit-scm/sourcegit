@@ -542,4 +542,5 @@
     <sys:String x:Key="Text.BadArchiveFile">Invalid path for archive file</sys:String>
     <sys:String x:Key="Text.Required">This field is required</sys:String>
     <sys:String x:Key="Text.ConfirmRemoveRepo">You are removing repository '{0}'. Are you sure to continue?</sys:String>
+    <sys:String x:Key="Text.ConfirmClearStashes">You are trying to clear all stashes. Are you sure to continue?</sys:String>
 </ResourceDictionary>

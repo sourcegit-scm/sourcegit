@@ -25,6 +25,30 @@ namespace SourceGit.Views.Widgets {
             changeList.ItemsSource = null;
         }
 
+        private void ClearAll(object sender, RoutedEventArgs e) {
+            var confirmDialog = new ConfirmDialog(
+                App.Text("Apply.Warn"),
+                App.Text("ConfirmClearStashes"),
+                async () => {
+                    waiting.Visibility = Visibility.Visible;
+                    waiting.IsAnimating = true;
+                    Models.Watcher.SetEnabled(repo, false);
+                    await Task.Run(() => {
+                        new Commands.Command() {
+                            Cwd = repo,
+                            Args = "stash clear",
+                        }.Exec();
+                    });
+                    Models.Watcher.SetEnabled(repo, true);
+                    waiting.Visibility = Visibility.Collapsed;
+                    waiting.IsAnimating = false;
+                });
+
+            confirmDialog.Owner = App.Current.MainWindow;
+            confirmDialog.ShowDialog();
+            e.Handled = true;
+        }
+
         private async void OnStashSelectionChanged(object sender, SelectionChangedEventArgs e) {
             changeList.ItemsSource = null;
             selected = null;

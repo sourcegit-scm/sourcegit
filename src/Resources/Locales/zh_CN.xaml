@@ -541,4 +541,5 @@
     <sys:String x:Key="Text.BadArchiveFile">非法的存档文件路径！</sys:String>
     <sys:String x:Key="Text.Required">内容未填写！</sys:String>
     <sys:String x:Key="Text.ConfirmRemoveRepo">正在将 '{0}' 从列表中移除，是否要继续？</sys:String>
+    <sys:String x:Key="Text.ConfirmClearStashes">您正在丢弃所有的贮藏，一经操作，无法回退，是否继续？</sys:String>
 </ResourceDictionary>
