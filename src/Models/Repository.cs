@@ -100,10 +100,12 @@ namespace SourceGit.Models {
                 // 未填写参数就检测，去掉无效的过滤
                 if (Filters.Count > 0) {
                     var invalidFilters = new List<string>();
+                    var branches = new Commands.Branches(Path).Result();
                     var tags = new Commands.Tags(Path).Result();
+
                     foreach (var filter in Filters) {
                         if (filter.StartsWith("refs/")) {
-                            if (!ExistsInGitDir(filter)) invalidFilters.Add(filter);
+                            if (branches.FindIndex(b => b.FullName == filter) < 0) invalidFilters.Add(filter);
                         } else {
                             if (tags.FindIndex(t => t.Name == filter) < 0) invalidFilters.Add(filter);
                         }
