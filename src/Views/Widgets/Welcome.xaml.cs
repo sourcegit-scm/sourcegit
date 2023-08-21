@@ -19,6 +19,14 @@ namespace SourceGit.Views.Widgets {
             InitializeComponent();
             UpdateVisibles();
             Models.Theme.AddListener(this, UpdateVisibles);
+
+            Models.Watcher.BookmarkChanged += (repoPath, bookmark) => {
+                var repo = Models.Preference.Instance.FindRepository(repoPath);
+                if (repo != null) {
+                    repo.Bookmark = bookmark;
+                    UpdateVisibles();
+                }
+            };
         }
 
         #region FUNC_EVENTS
@@ -89,7 +97,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnRemoveRepository(object sender, RoutedEventArgs e) {
-            var repo = (sender as Button).DataContext as Models.Repository;
+            var repo = (sender as Control).DataContext as Models.Repository;
             if (repo == null) return;
 
             var confirmDialog = new ConfirmDialog(
@@ -106,6 +114,56 @@ namespace SourceGit.Views.Widgets {
 
         private void OnDoubleClickRepository(object sender, MouseButtonEventArgs e) {
             OnOpenRepository(sender, e);
+        }
+
+        private void OnRepositoryContextMenuOpening(object sender, ContextMenuEventArgs e) {
+            var control = sender as Control;
+            if (control == null) return;
+
+            var repo = control.DataContext as Models.Repository;
+            if (repo == null) return;
+
+            var menu = new ContextMenu();
+            menu.Placement = PlacementMode.MousePoint;
+            menu.PlacementTarget = control;
+            menu.StaysOpen = false;
+            menu.Focusable = true;
+
+            var open = new MenuItem();
+            open.Header = App.Text("RepoCM.Open");
+            open.Click += OnOpenRepository;
+            menu.Items.Add(open);
+            menu.Items.Add(new Separator());
+
+            var bookmark = new MenuItem();
+            bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
+            for (int i = 0; i < Converters.IntToBookmarkBrush.COLORS.Length; i++) {
+                var icon = new System.Windows.Shapes.Path();
+                icon.Data = new EllipseGeometry(new Point(0, 0), 12, 12);
+                icon.Fill = Converters.IntToBookmarkBrush.COLORS[i];
+                icon.Width = 12;
+
+                var mark = new MenuItem();
+                mark.Icon = icon;
+                mark.Header = $"{i}";
+
+                var refIdx = i;
+                mark.Click += (o, ev) => {
+                    Models.Watcher.SetBookmark(repo.Path, refIdx);
+                    ev.Handled = true;
+                };
+                bookmark.Items.Add(mark);
+            }
+            menu.Items.Add(bookmark);
+            menu.Items.Add(new Separator());
+
+            var remove = new MenuItem();
+            remove.Header = App.Text("Welcome.Delete");
+            remove.Click += OnRemoveRepository;
+            menu.Items.Add(remove);
+
+            menu.IsOpen = true;
+            e.Handled = true;
         }
 
         private void OnOpenRepository(object sender, RoutedEventArgs e) {
@@ -125,7 +183,7 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void OnOpenRepositoryTerminal(object sender, RoutedEventArgs e) {
-            var repo = (sender as Button).DataContext as Models.Repository;
+            var repo = (sender as Control).DataContext as Models.Repository;
             if (repo == null) return;
 
             var bash = Path.Combine(Models.Preference.Instance.Git.Path, "..", "bash.exe");

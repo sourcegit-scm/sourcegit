@@ -15,6 +15,11 @@ namespace SourceGit.Models {
         public static event Action<Repository> Opened;
 
         /// <summary>
+        ///     仓库的书签变化了
+        /// </summary>
+        public static event Action<string, int> BookmarkChanged;
+
+        /// <summary>
         ///     跳转到指定提交的事件
         /// </summary>
         public event Action<string> Navigate;
@@ -95,6 +100,15 @@ namespace SourceGit.Models {
                     watcher.lockCount++;
                 }
             }
+        }
+
+        /// <summary>
+        ///     设置仓库标签变化
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="bookmark"></param>
+        public static void SetBookmark(string repo, int bookmark) {
+            BookmarkChanged?.Invoke(repo, bookmark);
         }
 
         /// <summary>

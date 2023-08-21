@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,10 +18,12 @@ namespace SourceGit.Views.Widgets {
         /// <summary>
         ///     标签数据
         /// </summary>
-        public class Tab : Controls.BindableBase {
+        public class Tab : INotifyPropertyChanged {
+            public event PropertyChangedEventHandler PropertyChanged;
+
             public string Id { get; set; }
             public bool IsRepository { get; set; }
-            
+
             private string title;
             public string Title {
                 get => title;
@@ -39,12 +43,13 @@ namespace SourceGit.Views.Widgets {
                 get => isSeperatorVisible;
                 set => SetProperty(ref isSeperatorVisible, value);
             }
-        }
 
-        /// <summary>
-        ///     仓库标签页编辑事件参数
-        /// </summary>
-        public event Action<Tab> OnTabEdited;
+            public void SetProperty<T>(ref T storage, T value, [CallerMemberName] string propName = null) {
+                if (Equals(storage, value)) return;
+                storage = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            }
+        }
 
         /// <summary>
         ///     标签相关事件参数
@@ -99,6 +104,15 @@ namespace SourceGit.Views.Widgets {
         public PageTabBar() {
             Tabs = new ObservableCollection<Tab>();
             InitializeComponent();
+
+            Models.Watcher.BookmarkChanged += (repoPath, bookmark) => {
+                foreach (var tab in Tabs) {
+                    if (tab.Id == repoPath) {
+                        tab.Bookmark = bookmark;
+                        break;
+                    }
+                }
+            };
         }
 
         public void Add() {
@@ -350,12 +364,7 @@ namespace SourceGit.Views.Widgets {
 
                     var refIdx = i;
                     mark.Click += (o, ev) => {
-                        var repo = Models.Preference.Instance.FindRepository(tab.Id);
-                        if (repo != null) {
-                            repo.Bookmark = refIdx;
-                            tab.Bookmark = refIdx;
-                            OnTabEdited?.Invoke(tab);
-                        }
+                        Models.Watcher.SetBookmark(tab.Id, refIdx);
                         ev.Handled = true;
                     };
                     bookmark.Items.Add(mark);

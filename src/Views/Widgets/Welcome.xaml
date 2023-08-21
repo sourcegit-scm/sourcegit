@@ -107,7 +107,7 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Control MouseDoubleClick="OnDoubleClickRepository">
+                            <Control MouseDoubleClick="OnDoubleClickRepository" ContextMenuOpening="OnRepositoryContextMenuOpening">
                                 <Control.Template>
                                     <ControlTemplate>
                                         <Grid Height="38" Margin="2,0,2,6">
