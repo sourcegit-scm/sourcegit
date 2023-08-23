@@ -53,11 +53,6 @@ namespace SourceGit.Commands {
         public bool TraitErrorAsOutput { get; set; } = false;
 
         /// <summary>
-        ///     用于设置该进程独有的环境变量
-        /// </summary>
-        public Dictionary<string, string> Envs { get; set; } = new Dictionary<string, string>();
-
-        /// <summary>
         ///     运行
         /// </summary>
         public bool Exec() {
@@ -72,8 +67,6 @@ namespace SourceGit.Commands {
             start.StandardErrorEncoding = Encoding.UTF8;
 
             if (!string.IsNullOrEmpty(Cwd)) start.WorkingDirectory = Cwd;
-
-            foreach (var kv in Envs) start.EnvironmentVariables[kv.Key] = kv.Value;
 
             var progressFilter = new Regex(@"\s\d+%\s");
             var errs = new List<string>();

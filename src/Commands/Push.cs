@@ -14,8 +14,7 @@ namespace SourceGit.Commands {
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
             if (!string.IsNullOrEmpty(sshKey)) {
-                Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
-                Args = "";
+                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
             } else {
                 Args = "-c credential.helper=manager ";
             }
@@ -34,8 +33,7 @@ namespace SourceGit.Commands {
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
             if (!string.IsNullOrEmpty(sshKey)) {
-                Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
-                Args = "";
+                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
             } else {
                 Args = "-c credential.helper=manager ";
             }
@@ -48,8 +46,7 @@ namespace SourceGit.Commands {
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
             if (!string.IsNullOrEmpty(sshKey)) {
-                Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
-                Args = "";
+                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
             } else {
                 Args = "-c credential.helper=manager ";
             }

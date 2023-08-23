@@ -52,13 +52,16 @@ namespace SourceGit.Views.Popups {
 
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo.Path, false);
+
+                if (string.IsNullOrEmpty(sshKey)) {
+                    new Commands.Config(repo.Path).Set($"remote.{RemoteName}.sshkey", null);
+                } else {
+                    new Commands.Config(repo.Path).Set($"remote.{RemoteName}.sshkey", sshKey);
+                }
+
                 if (remote == null) {
                     var succ = new Commands.Remote(repo.Path).Add(RemoteName, RemoteURL);
                     if (succ) new Commands.Fetch(repo.Path, RemoteName, true, UpdateProgress).Exec();
-
-                    if (!string.IsNullOrEmpty(sshKey)) {
-                        new Commands.Config(repo.Path).Set($"remote.{RemoteName}.sshkey", sshKey);
-                    }
                 } else {
                     if (remote.URL != RemoteURL) {
                         var succ = new Commands.Remote(repo.Path).SetURL(remote.Name, RemoteURL);
@@ -69,11 +72,8 @@ namespace SourceGit.Views.Popups {
                         var succ = new Commands.Remote(repo.Path).Rename(remote.Name, RemoteName);
                         if (succ) remote.Name = RemoteName;
                     }
-
-                    if (!string.IsNullOrEmpty(sshKey)) {
-                        new Commands.Config(repo.Path).Set($"remote.{RemoteName}.sshkey", sshKey);
-                    }
                 }
+
                 Models.Watcher.SetEnabled(repo.Path, true);
                 return true;
             });

@@ -15,9 +15,8 @@ namespace SourceGit.Commands {
             handler = outputHandler;
             onError = errHandler;
 
-            if (!string.IsNullOrEmpty(sshKey)) {
-                Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
-                Args = "";
+            if (string.IsNullOrEmpty(sshKey)) {
+                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
             } else {
                 Args = "-c credential.helper=manager ";
             }
