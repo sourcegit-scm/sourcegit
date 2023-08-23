@@ -17,7 +17,7 @@ namespace SourceGit.Commands {
                 Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
                 Args = "";
             } else {
-                Args = "-c credential.helper=manager-core ";
+                Args = "-c credential.helper=manager ";
             }
 
             Args += "push --progress --verbose ";
@@ -37,7 +37,7 @@ namespace SourceGit.Commands {
                 Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
                 Args = "";
             } else {
-                Args = "-c credential.helper=manager-core ";
+                Args = "-c credential.helper=manager ";
             }
 
             Args += $"push {remote} --delete {branch}";
@@ -51,7 +51,7 @@ namespace SourceGit.Commands {
                 Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
                 Args = "";
             } else {
-                Args = "-c credential.helper=manager-core ";
+                Args = "-c credential.helper=manager ";
             }
 
             Args += "push ";

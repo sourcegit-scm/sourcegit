@@ -19,7 +19,7 @@ namespace SourceGit.Commands {
                 Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
                 Args = "";
             } else {
-                Args = "-c credential.helper=manager-core ";
+                Args = "-c credential.helper=manager ";
             }
 
             Args += "fetch --progress --verbose ";
@@ -38,7 +38,7 @@ namespace SourceGit.Commands {
                 Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{sshKey}'");
                 Args = "";
             } else {
-                Args = "-c credential.helper=manager-core ";
+                Args = "-c credential.helper=manager ";
             }
 
             Args += $"fetch --progress --verbose {remote} {remoteBranch}:{localBranch}";
