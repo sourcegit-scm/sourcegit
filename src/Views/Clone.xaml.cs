@@ -14,7 +14,7 @@ namespace SourceGit.Views {
     /// </summary>
     public partial class Clone : Controls.Window {
         private static readonly Regex[] SSH_PROTOCOAL = new Regex[] {
-            new Regex(@"[\w\-]+@[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-]+\.git$"),
+            new Regex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-]+/[\w\-]+\.git$"),
             new Regex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-]+\.git$"),
         };
 
