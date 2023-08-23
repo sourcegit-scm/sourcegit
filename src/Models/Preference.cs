@@ -54,7 +54,8 @@ namespace SourceGit.Models {
             /// </summary>
             public string FontFamilyContentSetting { get; set; } = "Consolas";
 
-            [JsonIgnore] public string FontFamilyContent {
+            [JsonIgnore] 
+            public string FontFamilyContent {
                 get => FontFamilyContentSetting + ",Microsoft YaHei UI";
                 set => FontFamilyContentSetting = value;
             }
@@ -63,6 +64,11 @@ namespace SourceGit.Models {
             ///     是否启用深色主题
             /// </summary>
             public bool UseDarkTheme { get; set; } = false;
+
+            /// <summary>
+            ///     历史提交记录最多显示的条目数
+            /// </summary>
+            public uint MaxHistoryCommits { get; set; } = 20000;
 
             /// <summary>
             ///     起始页仓库列表排序规则

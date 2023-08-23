@@ -68,7 +68,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -130,17 +130,45 @@
                             </Style>
                         </ComboBox.Resources>
                     </ComboBox>
+                    
+                    <!-- Max Number Of Displayed Commits -->
+                    <TextBlock
+                        Grid.Row="3" Grid.Column="0"
+                        Text="{DynamicResource Text.Preference.MaxHistoryCommits}"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,8,0"/>
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4"/>
+                            <ColumnDefinition Width="56"/>
+                        </Grid.ColumnDefinitions>
 
+                        <Slider
+                            Grid.Column="0"
+                            Minimum="20000" Maximum="100000"
+                            TickPlacement="BottomRight" TickFrequency="5000" IsSnapToTickEnabled="True"
+                            VerticalAlignment="Center" Foreground="{DynamicResource Brush.Border1}"
+                            Value="{Binding Source={x:Static models:Preference.Instance}, Path=General.MaxHistoryCommits, Mode=TwoWay}">
+                        </Slider>
+
+                        <controls:TextEdit
+                            Grid.Column="2"
+                            Height="24"
+                            IsReadOnly="True"
+                            Text="{Binding Source={x:Static models:Preference.Instance}, Path=General.MaxHistoryCommits}"/>
+                    </Grid>
+                    
                     <!-- Enable Dark Theme -->
                     <CheckBox
-                        Grid.Row="3" Grid.Column="1"
+                        Grid.Row="4" Grid.Column="1"
                         Content="{DynamicResource Text.Preference.UseDarkTheme}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=General.UseDarkTheme, Mode=TwoWay}"
                         Checked="ChangeTheme" Unchecked="ChangeTheme"/>
 
                     <!-- Restore Windows -->
                     <CheckBox
-                        Grid.Row="4" Grid.Column="1"
+                        Grid.Row="5" Grid.Column="1"
                         Content="{DynamicResource Text.Preference.RestoreTabs}"
                         IsChecked="{Binding Source={x:Static models:Preference.Instance}, Path=Restore.IsEnabled, Mode=TwoWay}"/>
                 </Grid>
@@ -160,7 +188,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -297,7 +325,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="8"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
@@ -358,7 +386,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     

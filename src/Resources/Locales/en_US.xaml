@@ -355,15 +355,12 @@
 
     <sys:String x:Key="Text.Preference">Preference</sys:String>
     <sys:String x:Key="Text.Preference.General">GENERAL</sys:String>
-    <sys:String x:Key="Text.Preference.Locale">Language</sys:String>
+    <sys:String x:Key="Text.Preference.Locale">Display Language</sys:String>
     <sys:String x:Key="Text.Preference.FontFamilyWindow">Window Font</sys:String>
     <sys:String x:Key="Text.Preference.FontFamilyContent">Content Font</sys:String>
-    <sys:String x:Key="Text.Preference.AvatarServer">Avatar Server</sys:String>
-    <sys:String x:Key="Text.Preference.CheckUpdate">Check for update</sys:String>
     <sys:String x:Key="Text.Preference.UseDarkTheme">Use dark theme</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">Restore windows</sys:String>
-    <sys:String x:Key="Text.Preference.EnableCrashReport">Enable crash report (maybe include related path)</sys:String>
-    <sys:String x:Key="Text.Preference.UseWindowsTerminal">Use Windows Terminal instead of cmd.exe</sys:String>
+    <sys:String x:Key="Text.Preference.MaxHistoryCommits">Max History Commits</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">Install Path</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">Input path for git.exe</sys:String>

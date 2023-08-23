@@ -51,7 +51,7 @@ namespace SourceGit.Views.Widgets {
             });
 
             Task.Run(() => {
-                var limits = "-20000 ";
+                var limits = $"-{Models.Preference.Instance.General.MaxHistoryCommits} ";
 
                 repo.UpdateFilters();
                 if (repo.Filters.Count > 0) {

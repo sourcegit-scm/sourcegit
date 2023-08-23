@@ -357,12 +357,9 @@
     <sys:String x:Key="Text.Preference.Locale">显示语言</sys:String>
     <sys:String x:Key="Text.Preference.FontFamilyWindow">系统字体</sys:String>
     <sys:String x:Key="Text.Preference.FontFamilyContent">文本字体</sys:String>
-    <sys:String x:Key="Text.Preference.AvatarServer">头像服务</sys:String>
-    <sys:String x:Key="Text.Preference.CheckUpdate">启用检测更新</sys:String>
     <sys:String x:Key="Text.Preference.UseDarkTheme">启用暗色主题</sys:String>
     <sys:String x:Key="Text.Preference.RestoreTabs">启动时恢复上次打开的仓库</sys:String>
-    <sys:String x:Key="Text.Preference.EnableCrashReport">开启崩溃上报（可能涉及上报相关路径）</sys:String>
-    <sys:String x:Key="Text.Preference.UseWindowsTerminal">使用 Windows Terminal 打开 Git 终端</sys:String>
+    <sys:String x:Key="Text.Preference.MaxHistoryCommits">最大历史提交数</sys:String>
     <sys:String x:Key="Text.Preference.Git">GIT配置</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path">安装路径</sys:String>
     <sys:String x:Key="Text.Preference.Git.Path.Placeholder">填写git.exe所在位置</sys:String>
