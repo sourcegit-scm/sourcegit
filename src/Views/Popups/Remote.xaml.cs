@@ -28,7 +28,7 @@ namespace SourceGit.Views.Popups {
             InitializeComponent();
 
             ruleName.Repo = repo;
-            if (!string.IsNullOrEmpty(RemoteURL) && RemoteURL.StartsWith("git@")) {
+            if (Validations.GitURL.IsSSH(RemoteURL)) {
                 txtSSHKey.Text = new Commands.Config(repo.Path).Get($"remote.{remote.Name}.sshkey");
             } else {
                 txtSSHKey.Text = "";
@@ -94,8 +94,8 @@ namespace SourceGit.Views.Popups {
         }
 
         private void OnUrlChanged(object sender, TextChangedEventArgs e) {
-            if (!string.IsNullOrEmpty(txtUrl.Text)) {
-                rowSSHKey.Height = new GridLength(txtUrl.Text.StartsWith("git@") ? 32 : 0, GridUnitType.Pixel);
+            if (Validations.GitURL.IsSSH(txtUrl.Text)) {
+                rowSSHKey.Height = new GridLength(32, GridUnitType.Pixel);
             } else {
                 rowSSHKey.Height = new GridLength(0, GridUnitType.Pixel);
             }

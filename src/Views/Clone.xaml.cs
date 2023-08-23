@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
-using SourceGit.Views.Validations;
 using System;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,11 +11,6 @@ namespace SourceGit.Views {
     ///     克隆
     /// </summary>
     public partial class Clone : Controls.Window {
-        private static readonly Regex[] SSH_PROTOCOAL = new Regex[] {
-            new Regex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-]+/[\w\-]+\.git$"),
-            new Regex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-]+\.git$"),
-        };
-
         public string Uri { get; set; }
         public string Folder { get; set; }
         public string LocalName { get; set; }
@@ -118,14 +111,12 @@ namespace SourceGit.Views {
         }
 
         private void OnUrlChanged(object sender, TextChangedEventArgs e) {
-            foreach (var check in SSH_PROTOCOAL) {
-                if (check.IsMatch(txtUrl.Text)) {
-                    rowSSHKey.Height = new GridLength(32, GridUnitType.Pixel);
-                    return;
-                }
-            }
-
-            rowSSHKey.Height = new GridLength(0, GridUnitType.Pixel);
+            var isSSHProtocal = Validations.GitURL.IsSSH(txtUrl.Text);
+            if (isSSHProtocal) {
+                rowSSHKey.Height = new GridLength(32, GridUnitType.Pixel);
+            } else {
+                rowSSHKey.Height = new GridLength(0, GridUnitType.Pixel);
+            }            
         }
 
         private void OnCloseException(object s, RoutedEventArgs e) {
