@@ -107,7 +107,6 @@ namespace SourceGit.Views.Widgets {
                     Models.Preference.Instance.RemoveRepository(repo.Path);
                     UpdateVisibles();
                 });
-            confirmDialog.Owner = App.Current.MainWindow;
             confirmDialog.ShowDialog();
             e.Handled = true;
         }

@@ -373,6 +373,7 @@ namespace SourceGit.Views.Widgets {
                 dialog.ShowNewFolderButton = true;
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                     new Commands.FormatPatch(repo.Path, commit.SHA, dialog.SelectedPath).Exec();
+                    new ConfirmDialog(App.Text("Notice"), App.Text("SaveAsPatchSuccess")).ShowDialog();
                 }
             };
             menu.Items.Add(saveToPatch);

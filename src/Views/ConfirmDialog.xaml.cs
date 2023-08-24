@@ -10,14 +10,30 @@ namespace SourceGit.Views {
         private Action cbOK;
         private Action cbCancel;
 
+        public ConfirmDialog(string title, string message) {
+            Owner = App.Current.MainWindow;
+
+            cbOK = null;
+            cbCancel = null;
+
+            InitializeComponent();
+
+            txtTitle.Text = title;
+            txtMessage.Text = message;
+            btnCancel.Visibility = Visibility.Collapsed;
+        }
+
         public ConfirmDialog(string title, string message, Action onOk, Action onCancel = null) {
+            Owner = App.Current.MainWindow;
+
+            cbOK = onOk;
+            cbCancel = onCancel;
+
             InitializeComponent();
             
             txtTitle.Text = title;
             txtMessage.Text = message;
-
-            cbOK = onOk;
-            cbCancel = onCancel;
+            btnCancel.Visibility = Visibility.Visible;
         }
 
         private void OnSure(object sender, RoutedEventArgs e) {

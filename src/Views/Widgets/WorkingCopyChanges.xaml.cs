@@ -396,6 +396,8 @@ namespace SourceGit.Views.Widgets {
             stream.Flush();
             writer.Close();
             stream.Close();
+
+            new ConfirmDialog(App.Text("Notice"), App.Text("SaveAsPatchSuccess")).ShowDialog();
         }
 
         private void OpenUnstagedContextMenuByNodes(ContextMenu menu, List<ChangeNode> nodes, List<Models.Change> changes) {

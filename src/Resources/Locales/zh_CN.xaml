@@ -14,6 +14,7 @@
     <sys:String x:Key="Text.Filter">过滤</sys:String>
     <sys:String x:Key="Text.Optional">选填</sys:String>
     <sys:String x:Key="Text.OpenFolder">选择文件夹</sys:String>
+    <sys:String x:Key="Text.Notice">系统提示</sys:String>
 
     <sys:String x:Key="Text.URL">仓库地址 ：</sys:String>
     <sys:String x:Key="Text.RepositoryURL">远程仓库地址</sys:String>
@@ -535,4 +536,5 @@
     <sys:String x:Key="Text.Required">内容未填写！</sys:String>
     <sys:String x:Key="Text.ConfirmRemoveRepo">正在将 '{0}' 从列表中移除，是否要继续？</sys:String>
     <sys:String x:Key="Text.ConfirmClearStashes">您正在丢弃所有的贮藏，一经操作，无法回退，是否继续？</sys:String>
+    <sys:String x:Key="Text.SaveAsPatchSuccess">补丁已成功保存！</sys:String>
 </ResourceDictionary>

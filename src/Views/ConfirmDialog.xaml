@@ -6,11 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
-    xmlns:validations="clr-namespace:SourceGit.Views.Validations"
     mc:Ignorable="d"
     WindowStartupLocation="CenterOwner"
     Width="500" SizeToContent="Height"
-    ResizeMode="NoResize">
+    ResizeMode="NoResize">    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="28"/>
@@ -61,7 +60,6 @@
                 <TextBlock
                     Grid.Row="0" Grid.Column="0"
                     x:Name="txtMessage"
-                    Text="{DynamicResource Text.Clone.RemoteURL}"
                     Margin="8, 16"
                     HorizontalAlignment="Center"
                     TextWrapping="Wrap"/>
@@ -72,7 +70,7 @@
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Click="OnSure" Width="80" Content="{DynamicResource Text.Sure}" FontWeight="Bold"/>
-                    <Button Click="OnQuit" Width="80" Margin="8,0,0,0" Content="{DynamicResource Text.Cancel}" FontWeight="Bold"/>
+                    <Button x:Name="btnCancel" Click="OnQuit" Width="80" Margin="8,0,0,0" Content="{DynamicResource Text.Cancel}" FontWeight="Bold"/>
                 </StackPanel>
             </Grid>
         </Grid>

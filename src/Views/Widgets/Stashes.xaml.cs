@@ -43,8 +43,6 @@ namespace SourceGit.Views.Widgets {
                     waiting.Visibility = Visibility.Collapsed;
                     waiting.IsAnimating = false;
                 });
-
-            confirmDialog.Owner = App.Current.MainWindow;
             confirmDialog.ShowDialog();
             e.Handled = true;
         }

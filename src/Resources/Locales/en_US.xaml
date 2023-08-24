@@ -15,6 +15,7 @@
     <sys:String x:Key="Text.Filter">FILTER</sys:String>
     <sys:String x:Key="Text.Optional">Optional.</sys:String>
     <sys:String x:Key="Text.OpenFolder">SELECT FOLDER</sys:String>
+    <sys:String x:Key="Text.Notice">NOTICE</sys:String>
 
     <sys:String x:Key="Text.URL">URL :</sys:String>
     <sys:String x:Key="Text.RepositoryURL">Git Repository URL</sys:String>
@@ -536,4 +537,5 @@
     <sys:String x:Key="Text.Required">This field is required</sys:String>
     <sys:String x:Key="Text.ConfirmRemoveRepo">You are removing repository '{0}'. Are you sure to continue?</sys:String>
     <sys:String x:Key="Text.ConfirmClearStashes">You are trying to clear all stashes. Are you sure to continue?</sys:String>
+    <sys:String x:Key="Text.SaveAsPatchSuccess">Patch has been saved successfully!</sys:String>
 </ResourceDictionary>
