@@ -15,13 +15,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="28"/>
             <RowDefinition Height="1"/>
-            <RowDefinition Height="24"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Title Bar -->
         <Grid Grid.Row="0" Background="{DynamicResource Brush.TitleBar}">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -34,8 +34,17 @@
             <!-- Title -->
             <TextBlock Grid.Column="1" Text="{DynamicResource Text.Blame}"/>
 
+            <!-- Description -->
+            <TextBlock 
+                Grid.Column="2" 
+                x:Name="txtFile"
+                Margin="8,0,0,0" 
+                FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"
+                Foreground="{DynamicResource Brush.FG2}"
+                FontSize="11"/>
+
             <!-- Window Commands -->
-            <StackPanel Grid.Column="3" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
+            <StackPanel Grid.Column="4" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
                 <controls:IconButton Click="Minimize" Width="48" IconSize="10" Icon="{StaticResource Icon.Minimize}" HoverBackground="#40000000" Opacity="1"/>
                 <ToggleButton Style="{StaticResource Style.ToggleButton.MaxOrRestore}" Width="48" IsChecked="{Binding ElementName=me, Path=IsMaximized}"/>
                 <controls:IconButton Click="Quit" Width="48" IconSize="10" Icon="{StaticResource Icon.Close}" HoverBackground="Red" Opacity="1"/>
@@ -49,49 +58,72 @@
             HorizontalAlignment="Stretch"
             Fill="{DynamicResource Brush.Border0}"/>
 
-        <!-- Description -->
-        <Border Grid.Row="2">
-            <Grid Margin="4,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" x:Name="txtFile" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Foreground="{DynamicResource Brush.FG2}" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" FontSize="11" Text="{DynamicResource Text.Blame.Tip}"/>
-            </Grid>
-        </Border>
-
         <!-- Viewer -->
         <DataGrid
-            Grid.Row="3"
+            Grid.Row="2"
             x:Name="blame"
             GridLinesVisibility="Vertical"
             VerticalGridLinesBrush="{DynamicResource Brush.Border2}"
             BorderBrush="{DynamicResource Brush.Border2}"
             BorderThickness="1"
-            FrozenColumnCount="1"
+            FrozenColumnCount="2"
             RowHeight="16"
             SelectionUnit="FullRow"
             SelectionMode="Single"
-            SizeChanged="OnViewerSizeChanged">
+            SizeChanged="OnViewerSizeChanged"
+            SelectionChanged="OnSelectionChanged">
 
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
                     <EventSetter Event="RequestBringIntoView" Handler="OnViewerRequestBringIntoView"/>
-                    <EventSetter Event="ContextMenuOpening" Handler="OnViewerContextMenuOpening"/>
                 </Style>
             </DataGrid.RowStyle>
 
             <DataGrid.Columns>
+                <DataGridTemplateColumn Width="Auto" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid x:Name="BG">
+                                <Border x:Name="Content" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,1,0,0">
+                                    <StackPanel Orientation="Horizontal" Margin="4,0" MaxWidth="300">
+                                        <TextBlock Text="{Binding Line.CommitSHA}" Foreground="#FFFFB835"/>
+                                        <TextBlock Text="{Binding Line.Time}" Margin="8,0"/>
+                                        <TextBlock Text="{Binding Line.Author}" Foreground="#FFFFB835"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsFirstLine}" Value="True">
+                                    <Setter TargetName="Content" Property="BorderThickness" Value="0"/>
+                                </DataTrigger>
+                                
+                                <DataTrigger Binding="{Binding IsFirstLineInGroup}" Value="False">
+                                    <Setter TargetName="Content" Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.Accent1}"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
                 <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding Line.LineNumber}" ElementStyle="{StaticResource Style.TextBlock.LineNumber}"/>
 
                 <DataGridTemplateColumn Width="SizeToCells" MinWidth="1" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Border Background="{Binding BG}" BorderThickness="0">
+                            <Border x:Name="BG" BorderThickness="0">
                                 <TextBlock Text="{Binding Line.Content}" Style="{DynamicResource Style.TextBlock.LineContent}"/>
                             </Border>
+
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter TargetName="BG" Property="Background" Value="#44000000"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -111,30 +143,5 @@
 
         <!-- Loading -->
         <controls:Loading x:Name="loading" Grid.Row="3" Width="48" Height="48" IsAnimating="True"/>
-
-        <!-- Popup to show commit info -->
-        <Popup x:Name="popup" Grid.Row="3" Placement="MousePoint" IsOpen="False" StaysOpen="False" Focusable="True">
-            <Border BorderBrush="{DynamicResource Brush.Accent1}" BorderThickness="1" Background="{DynamicResource Brush.Popup}">
-                <Grid Margin="4">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="24"/>
-                        <RowDefinition Height="24"/>
-                        <RowDefinition Height="24"/>
-                    </Grid.RowDefinitions>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Text.Blame.SHA}" Foreground="{DynamicResource Brush.FG2}" Margin="4,0"/>
-                    <Label Grid.Row="0" Grid.Column="1" x:Name="commitID" Margin="8,0,4,0" Padding="0" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource Text.Blame.Author}" Foreground="{DynamicResource Brush.FG2}" Margin="4,0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" x:Name="authorName" Margin="8,0,4,0"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource Text.Blame.ModifyTime}" Foreground="{DynamicResource Brush.FG2}" Margin="4,0"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="authorTime" Margin="8,0,4,0"/>
-                </Grid>
-            </Border>
-        </Popup>
     </Grid>
 </controls:Window>

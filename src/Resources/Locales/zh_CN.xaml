@@ -48,10 +48,6 @@
     <sys:String x:Key="Text.Archive.File.Placeholder">选择存档文件的存放路径</sys:String>
 
     <sys:String x:Key="Text.Blame">逐行追溯</sys:String>
-    <sys:String x:Key="Text.Blame.Tip">右键点击查看所选行修改记录</sys:String>
-    <sys:String x:Key="Text.Blame.SHA">提交指纹</sys:String>
-    <sys:String x:Key="Text.Blame.Author">修改者</sys:String>
-    <sys:String x:Key="Text.Blame.ModifyTime">修改时间</sys:String>
 
     <sys:String x:Key="Text.Submodule">子模块</sys:String>
     <sys:String x:Key="Text.Submodule.Add">添加子模块</sys:String>

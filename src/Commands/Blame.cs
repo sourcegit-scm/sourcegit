@@ -9,6 +9,8 @@ namespace SourceGit.Commands {
     public class Blame : Command {
         private static readonly Regex REG_FORMAT = new Regex(@"^\^?([0-9a-f]+)\s+.*\((.*)\s+(\d+)\s+[\-\+]?\d+\s+\d+\) (.*)");
         private Data data = new Data();
+        private bool needUnifyCommitSHA = false;
+        private int minSHALen = 0;
 
         public class Data {
             public List<Models.BlameLine> Lines = new List<Models.BlameLine>();
@@ -22,6 +24,15 @@ namespace SourceGit.Commands {
 
         public Data Result() {
             Exec();
+
+            if (needUnifyCommitSHA) {
+                foreach (var line in data.Lines) {
+                    if (line.CommitSHA.Length > minSHALen) {
+                        line.CommitSHA = line.CommitSHA.Substring(0, minSHALen);
+                    }
+                }
+            }
+
             return data;
         }
 
@@ -51,6 +62,12 @@ namespace SourceGit.Commands {
                 Time = when,
                 Content = content,
             };
+
+            if (line[0] == '^') {
+                needUnifyCommitSHA = true;
+                if (minSHALen == 0) minSHALen = commit.Length;
+                else if (commit.Length < minSHALen) minSHALen = commit.Length;
+            }
 
             data.Lines.Add(blameLine);
         }

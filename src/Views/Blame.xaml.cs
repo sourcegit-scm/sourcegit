@@ -1,10 +1,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace SourceGit.Views {
@@ -12,33 +10,45 @@ namespace SourceGit.Views {
     ///     逐行追溯
     /// </summary>
     public partial class Blame : Controls.Window {
-        private static readonly Brush[] BG = new Brush[] {
-            Brushes.Transparent,
-            new SolidColorBrush(Color.FromArgb(128, 0, 0, 0))
-        };
-
-        private string repo = null;
-        private string lastSHA = null;
-        private int lastBG = 1;
-
+        /// <summary>
+        ///     DataGrid数据源结构
+        /// </summary>
         public class Record : INotifyPropertyChanged {
-            private Brush bg = null;
-
             public event PropertyChangedEventHandler PropertyChanged;
 
+            /// <summary>
+            ///     原始Blame行数据
+            /// </summary>
             public Models.BlameLine Line { get; set; }
-            public Brush OrgBG { get; set; }
-            public Brush BG {
-                get { return bg; }
+
+            /// <summary>
+            ///     是否是第一行
+            /// </summary>
+            public bool IsFirstLine { get; set; } = false;
+
+            /// <summary>
+            ///     前一行与本行的提交不同
+            /// </summary>
+            public bool IsFirstLineInGroup { get; set; } = false;
+
+            /// <summary>
+            ///     是否当前选中，会影响背景色
+            /// </summary>
+            private bool isSelected = false;
+            public bool IsSelected {
+                get { return isSelected; }
                 set {
-                    if (value != bg) {
-                        bg = value;
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("BG"));
+                    if (isSelected != value) {
+                        isSelected = value;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsSelected"));
                     }
                 }
             }
         }
 
+        /// <summary>
+        ///     Blame数据
+        /// </summary>
         public ObservableCollection<Record> Records { get; set; }
 
         public Blame(string repo, string file, string revision) {
@@ -67,46 +77,31 @@ namespace SourceGit.Views {
                         notSupport.Visibility = Visibility.Visible;
                     });
                 } else {
+                    string lastSHA = null;
                     foreach (var line in rs.Lines) {
                         var r = new Record();
                         r.Line = line;
-                        r.BG = GetBG(line.CommitSHA);
-                        r.OrgBG = r.BG;
+                        r.IsSelected = false;
+
+                        if (line.CommitSHA != lastSHA) {
+                            lastSHA = line.CommitSHA;
+                            r.IsFirstLineInGroup = true;
+                        } else {
+                            r.IsFirstLineInGroup = false;
+                        }
+
                         Records.Add(r);
                     }
+
+                    if (Records.Count > 0) Records[0].IsFirstLine = true;
 
                     Dispatcher.Invoke(() => {
                         loading.IsAnimating = false;
                         loading.Visibility = Visibility.Collapsed;
-
-                        var formatted = new FormattedText(
-                            $"{Records.Count}",
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            new Typeface(blame.FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
-                            12.0,
-                            Brushes.Black,
-                            VisualTreeHelper.GetDpi(this).PixelsPerDip);
-
-                        var lineNumberWidth = formatted.Width + 16;
-                        var minWidth = blame.ActualWidth - lineNumberWidth;
-                        if (Records.Count * 16 > blame.ActualHeight) minWidth -= 8;
-                        blame.Columns[0].Width = lineNumberWidth;
-                        blame.Columns[1].MinWidth = minWidth;
                         blame.ItemsSource = Records;
-                        blame.UpdateLayout();
                     });
                 }
             });
-        }
-
-        private Brush GetBG(string sha) {
-            if (lastSHA != sha) {
-                lastSHA = sha;
-                lastBG = 1 - lastBG;
-            }
-
-            return BG[lastBG];
         }
 
         #region WINDOW_COMMANDS
@@ -148,8 +143,8 @@ namespace SourceGit.Views {
             var scroller = GetVisualChild<ScrollViewer>(blame);
             if (scroller != null && scroller.ComputedVerticalScrollBarVisibility == Visibility.Visible) minWidth -= 8;
 
-            blame.Columns[1].MinWidth = minWidth;
-            blame.Columns[1].Width = DataGridLength.SizeToCells;
+            blame.Columns[2].MinWidth = minWidth;
+            blame.Columns[2].Width = DataGridLength.SizeToCells;
             blame.UpdateLayout();
         }
 
@@ -157,31 +152,18 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void OnViewerContextMenuOpening(object sender, ContextMenuEventArgs ev) {
-            var record = (sender as DataGridRow).DataContext as Record;
-            if (record == null) return;
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var r = blame.SelectedItem as Record;
+            if (r == null) return;
 
-            foreach (var r in Records) {
-                if (r.Line.CommitSHA == record.Line.CommitSHA) {
-                    r.BG = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
-                } else {
-                    r.BG = r.OrgBG;
-                }
+            Models.Watcher.Get(repo).NavigateTo(r.Line.CommitSHA);
+
+            foreach (var one in Records) {
+                one.IsSelected = one.Line.CommitSHA == r.Line.CommitSHA;
             }
-
-            Hyperlink link = new Hyperlink(new Run(record.Line.CommitSHA));
-            link.ToolTip = App.Text("Goto");
-            link.Click += (o, e) => {
-                Models.Watcher.Get(repo).NavigateTo(record.Line.CommitSHA);
-                e.Handled = true;
-            };
-
-            commitID.Content = link;
-            authorName.Text = record.Line.Author;
-            authorTime.Text = record.Line.Time;
-            popup.IsOpen = true;
-            ev.Handled = true;
         }
         #endregion
+
+        private string repo = null;
     }
 }

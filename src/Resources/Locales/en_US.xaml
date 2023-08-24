@@ -49,10 +49,6 @@
     <sys:String x:Key="Text.Archive.File.Placeholder">Select archive file path</sys:String>
 
     <sys:String x:Key="Text.Blame">Blame</sys:String>
-    <sys:String x:Key="Text.Blame.Tip">Right click to see commit info</sys:String>
-    <sys:String x:Key="Text.Blame.SHA">COMMIT SHA</sys:String>
-    <sys:String x:Key="Text.Blame.Author">AUTHOR</sys:String>
-    <sys:String x:Key="Text.Blame.ModifyTime">MODIFY TIME</sys:String>
     
     <sys:String x:Key="Text.Submodule">SUBMODULES</sys:String>
     <sys:String x:Key="Text.Submodule.Add">Add Submodule</sys:String>
