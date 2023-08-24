@@ -98,6 +98,12 @@ namespace SourceGit.Views.Widgets {
         }
 
         #region STAGE_UNSTAGE
+        private void ViewAssumeUnchanged(object sender, RoutedEventArgs e) {
+            var dialog = new AssumeUnchanged(repo.Path);
+            dialog.Owner = App.Current.MainWindow;
+            dialog.ShowDialog();
+        }
+
         private void StageSelected(object sender, RoutedEventArgs e) {
             unstagedContainer.StageSelected();
         }

@@ -217,6 +217,7 @@
     <sys:String x:Key="Text.FileCM.DiscardMulti">Discard {0} files...</sys:String>
     <sys:String x:Key="Text.FileCM.StashMulti">Stash {0} files...</sys:String>
     <sys:String x:Key="Text.FileCM.SaveAsPatch">Save As Patch...</sys:String>
+    <sys:String x:Key="Text.FileCM.AssumeUnchanged">Assume unchaged</sys:String>
 
     <sys:String x:Key="Text.DeleteBranch">Confirm To Delete Branch</sys:String>
     <sys:String x:Key="Text.DeleteBranch.Branch">Branch :</sys:String>
@@ -394,6 +395,7 @@
 
     <sys:String x:Key="Text.WorkingCopy">Changes</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Unstaged">UNSTAGED</sys:String>
+    <sys:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged">VIEW ASSUME UNCHANGED</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Unstaged.Stage">STAGE</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Unstaged.StageAll">STAGE ALL</sys:String>
     <sys:String x:Key="Text.WorkingCopy.Staged">STAGED</sys:String>
@@ -476,6 +478,10 @@
     <sys:String x:Key="Text.Statistics.TotalCommitsCount">Total Commits：{0}</sys:String>
     <sys:String x:Key="Text.Statistics.CommitterName">COMMITTER</sys:String>
     <sys:String x:Key="Text.Statistics.CommitAmount">COMMITS</sys:String>
+
+    <sys:String x:Key="Text.AssumeUnchanged">FILES ASSUME UNCHANGED</sys:String>
+    <sys:String x:Key="Text.AssumeUnchanged.Remove">REMOVE</sys:String>
+    <sys:String x:Key="Text.AssumeUnchanged.Empty">NO FILES ASSUMED AS UNCHANGED</sys:String>
 
     <sys:String x:Key="Text.Weekday.0">SUN</sys:String>
     <sys:String x:Key="Text.Weekday.1">MON</sys:String>

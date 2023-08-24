@@ -1,4 +1,5 @@
 using Microsoft.Win32;
+using SourceGit.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -484,6 +485,14 @@ namespace SourceGit.Views.Widgets {
                 menu.Items.Add(patch);
                 menu.Items.Add(new Separator());
                 if (node.Change != null) {
+                    var assumeUnchanged = new MenuItem();
+                    assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
+                    assumeUnchanged.Click += (o, e) => {
+                        new Commands.AssumeUnchanged(repo).Add(node.Path);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(assumeUnchanged);
+
                     var history = new MenuItem();
                     history.Header = App.Text("FileHistory");
                     history.Click += (o, e) => {
@@ -622,6 +631,13 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
+                var assumeUnchanged = new MenuItem();
+                assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
+                assumeUnchanged.Click += (o, e) => {
+                    new Commands.AssumeUnchanged(repo).Add(change.Path);
+                    e.Handled = true;
+                };
+
                 menu.Items.Add(explore);
                 menu.Items.Add(new Separator());
                 menu.Items.Add(stage);
@@ -629,6 +645,7 @@ namespace SourceGit.Views.Widgets {
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
                 menu.Items.Add(new Separator());
+                menu.Items.Add(assumeUnchanged);
                 menu.Items.Add(history);
                 menu.Items.Add(new Separator());
                 menu.Items.Add(copyPath);
