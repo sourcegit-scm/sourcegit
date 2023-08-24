@@ -384,6 +384,14 @@ namespace SourceGit.Views.Widgets {
             IsStaging = false;
         }
 
+        private void Disard(List<Models.Change> changes) {
+            if (changes.Count >= Changes.Count) {
+                new Popups.Discard(repo, null).Show();
+            } else {
+                new Popups.Discard(repo, changes).Show();
+            }
+        }
+
         private async void SaveAsPatch(string saveTo, List<Models.Change> changes) {
             var stream = new FileStream(saveTo, FileMode.Create);
             var writer = new StreamWriter(stream);
@@ -427,7 +435,7 @@ namespace SourceGit.Views.Widgets {
                 var discard = new MenuItem();
                 discard.Header = App.Text("FileCM.Discard");
                 discard.Click += (o, e) => {
-                    new Popups.Discard(repo, changes).Show();
+                    Disard(changes);
                     e.Handled = true;
                 };
 
@@ -498,7 +506,7 @@ namespace SourceGit.Views.Widgets {
                 var discard = new MenuItem();
                 discard.Header = App.Text("FileCM.DiscardMulti", changes.Count);
                 discard.Click += (o, e) => {
-                    new Popups.Discard(repo, changes).Show();
+                    Disard(changes);
                     e.Handled = true;
                 };
 
@@ -565,7 +573,7 @@ namespace SourceGit.Views.Widgets {
                 var discard = new MenuItem();
                 discard.Header = App.Text("FileCM.Discard");
                 discard.Click += (o, e) => {
-                    new Popups.Discard(repo, changes).Show();
+                    Disard(changes);
                     e.Handled = true;
                 };
 
@@ -635,7 +643,7 @@ namespace SourceGit.Views.Widgets {
                 var discard = new MenuItem();
                 discard.Header = App.Text("FileCM.DiscardMulti", changes.Count);
                 discard.Click += (o, e) => {
-                    new Popups.Discard(repo, changes).Show();
+                    Disard(changes);
                     e.Handled = true;
                 };
 
