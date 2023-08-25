@@ -80,6 +80,8 @@
             </DataGrid.RowStyle>
 
             <DataGrid.Columns>
+                <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding Line.LineNumber}" ElementStyle="{StaticResource Style.TextBlock.LineNumber}"/>
+
                 <DataGridTemplateColumn Width="Auto" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -109,8 +111,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
-                <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding Line.LineNumber}" ElementStyle="{StaticResource Style.TextBlock.LineNumber}"/>
 
                 <DataGridTemplateColumn Width="SizeToCells" MinWidth="1" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>

@@ -53,7 +53,7 @@ namespace SourceGit.Commands {
             var author = match.Groups[2].Value;
             var timestamp = int.Parse(match.Groups[3].Value);
             var content = match.Groups[4].Value;
-            var when = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestamp).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+            var when = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestamp).ToLocalTime().ToString("yyyy/MM/dd");
 
             var blameLine = new Models.BlameLine() {
                 LineNumber = $"{data.Lines.Count + 1}",
