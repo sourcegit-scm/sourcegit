@@ -1,5 +1,4 @@
 using Microsoft.Win32;
-using SourceGit.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
