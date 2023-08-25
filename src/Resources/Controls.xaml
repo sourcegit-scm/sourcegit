@@ -13,6 +13,7 @@
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/RadioButton.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/ScrollBar.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/ScrollViewer.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Resources/Styles/Slider.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/TabControl.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/TextBlock.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/TextBox.xaml"/>

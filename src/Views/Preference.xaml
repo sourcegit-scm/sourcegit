@@ -140,8 +140,7 @@
                     <Grid Grid.Row="3" Grid.Column="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="4"/>
-                            <ColumnDefinition Width="56"/>
+                            <ColumnDefinition Width="48"/>
                         </Grid.ColumnDefinitions>
 
                         <Slider
@@ -152,10 +151,10 @@
                             Value="{Binding Source={x:Static models:Preference.Instance}, Path=General.MaxHistoryCommits, Mode=TwoWay}">
                         </Slider>
 
-                        <controls:TextEdit
-                            Grid.Column="2"
-                            Height="24"
-                            IsReadOnly="True"
+                        <TextBlock 
+                            Grid.Column="1" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center" 
+                            Foreground="{DynamicResource Brush.FG1}"
                             Text="{Binding Source={x:Static models:Preference.Instance}, Path=General.MaxHistoryCommits}"/>
                     </Grid>
                     
