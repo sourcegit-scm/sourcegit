@@ -74,13 +74,54 @@
             SelectionChanged="OnSelectionChanged">
 
             <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
+                <Style TargetType="{x:Type DataGridRow}">
                     <EventSetter Event="RequestBringIntoView" Handler="OnViewerRequestBringIntoView"/>
+                    
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource Brush.Accent2}"/>
+                        </MultiTrigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
 
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>
+
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+
             <DataGrid.Columns>
-                <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding Line.LineNumber}" ElementStyle="{StaticResource Style.TextBlock.LineNumber}"/>
+                <DataGridTemplateColumn Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock x:Name="LineNumber" Text="{Binding Line.LineNumber}" HorizontalAlignment="Right" Padding="8,0"/>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter TargetName="LineNumber" Property="Foreground" Value="DarkOrange"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="Auto" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
@@ -94,7 +135,7 @@
                                             </Hyperlink>
                                         </TextBlock>
                                         <TextBlock Text="{Binding Line.Time}" Margin="8,0"/>
-                                        <TextBlock Text="{Binding Line.Author}" Foreground="#FFFFB835"/>
+                                        <TextBlock Text="{Binding Line.Author}" Foreground="DarkOrange"/>
                                     </StackPanel>
                                 </Border>
                             </Grid>
@@ -109,7 +150,7 @@
                                 </DataTrigger>
 
                                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                    <Setter TargetName="BG" Property="Background" Value="{DynamicResource Brush.Accent1}"/>
+                                    <Setter TargetName="BG" Property="Background" Value="#44000000"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
