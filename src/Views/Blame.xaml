@@ -88,7 +88,11 @@
                             <Grid x:Name="BG">
                                 <Border x:Name="Content" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,1,0,0">
                                     <StackPanel Orientation="Horizontal" Margin="4,0" MaxWidth="300">
-                                        <TextBlock Text="{Binding Line.CommitSHA}" Foreground="#FFFFB835"/>
+                                        <TextBlock>
+                                            <Hyperlink NavigateUri="{Binding Line.CommitSHA}" RequestNavigate="GotoCommit" Foreground="DarkOrange" ToolTip="GOTO COMMIT">
+                                                <Run Text="{Binding Line.CommitSHA, Mode=OneWay}"/>
+                                            </Hyperlink>
+                                        </TextBlock>
                                         <TextBlock Text="{Binding Line.Time}" Margin="8,0"/>
                                         <TextBlock Text="{Binding Line.Author}" Foreground="#FFFFB835"/>
                                     </StackPanel>

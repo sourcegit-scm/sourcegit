@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Navigation;
 
 namespace SourceGit.Views {
     /// <summary>
@@ -156,11 +157,14 @@ namespace SourceGit.Views {
             var r = blame.SelectedItem as Record;
             if (r == null) return;
 
-            Models.Watcher.Get(repo).NavigateTo(r.Line.CommitSHA);
-
             foreach (var one in Records) {
                 one.IsSelected = one.Line.CommitSHA == r.Line.CommitSHA;
             }
+        }
+
+        private void GotoCommit(object sender, RequestNavigateEventArgs e) {
+            Models.Watcher.Get(repo).NavigateTo(e.Uri.OriginalString);
+            e.Handled = true;
         }
         #endregion
 
