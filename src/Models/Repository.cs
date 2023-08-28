@@ -27,11 +27,20 @@ namespace SourceGit.Models {
         public string Name { get; set; } = "";
         public string Path { get; set; } = "";
         public string GitDir { get; set; } = "";
-        public int Bookmark { get; set; } = 0;
         public long LastOpenTime { get; set; } = 0;
         public List<SubTree> SubTrees { get; set; } = new List<SubTree>();
         public List<string> Filters { get; set; } = new List<string>();
         public List<string> CommitMessages { get; set; } = new List<string>();
+
+        public int Bookmark {
+            get { return bookmark; }
+            set {
+                if (value != bookmark) {
+                    bookmark = value;
+                    Watcher.NotifyBookmarkChanged(this);
+                }
+            }
+        }
         #endregion
 
         #region PROPERTIES_RUNTIME
@@ -122,5 +131,6 @@ namespace SourceGit.Models {
         }
 
         private readonly object updateFilterLock = new object();
+        private int bookmark = 0;
     }
 }

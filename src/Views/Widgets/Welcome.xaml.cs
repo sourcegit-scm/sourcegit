@@ -18,15 +18,9 @@ namespace SourceGit.Views.Widgets {
         public Welcome() {
             InitializeComponent();
             UpdateVisibles();
-            Models.Theme.AddListener(this, UpdateVisibles);
 
-            Models.Watcher.BookmarkChanged += (repoPath, bookmark) => {
-                var repo = Models.Preference.Instance.FindRepository(repoPath);
-                if (repo != null) {
-                    repo.Bookmark = bookmark;
-                    UpdateVisibles();
-                }
-            };
+            Models.Theme.AddListener(this, UpdateVisibles);
+            Models.Watcher.BookmarkChanged += (_, __) => { UpdateVisibles(); };
         }
 
         #region FUNC_EVENTS
@@ -148,7 +142,7 @@ namespace SourceGit.Views.Widgets {
 
                 var refIdx = i;
                 mark.Click += (o, ev) => {
-                    Models.Watcher.SetBookmark(repo.Path, refIdx);
+                    repo.Bookmark = refIdx;
                     ev.Handled = true;
                 };
                 bookmark.Items.Add(mark);

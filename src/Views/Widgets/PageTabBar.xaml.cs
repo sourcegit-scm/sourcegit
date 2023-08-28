@@ -364,7 +364,8 @@ namespace SourceGit.Views.Widgets {
 
                     var refIdx = i;
                     mark.Click += (o, ev) => {
-                        Models.Watcher.SetBookmark(tab.Id, refIdx);
+                        var repo = Models.Preference.Instance.FindRepository(tab.Id);
+                        if (repo != null) repo.Bookmark = refIdx;
                         ev.Handled = true;
                     };
                     bookmark.Items.Add(mark);

@@ -103,12 +103,11 @@ namespace SourceGit.Models {
         }
 
         /// <summary>
-        ///     设置仓库标签变化
+        ///     通知仓库标签变化
         /// </summary>
         /// <param name="repo"></param>
-        /// <param name="bookmark"></param>
-        public static void SetBookmark(string repo, int bookmark) {
-            BookmarkChanged?.Invoke(repo, bookmark);
+        public static void NotifyBookmarkChanged(Repository repo) {
+            BookmarkChanged?.Invoke(repo.Path, repo.Bookmark);
         }
 
         /// <summary>
