@@ -5,14 +5,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
-    xmlns:converters="clr-namespace:SourceGit.Views.Converters"
     xmlns:models="clr-namespace:SourceGit.Models"
     mc:Ignorable="d" 
-    d:DesignWidth="500">
-    <UserControl.Resources>
-        <converters:BranchToName x:Key="BranchToName"/>
-    </UserControl.Resources>
-    
+    d:DesignWidth="500">    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>

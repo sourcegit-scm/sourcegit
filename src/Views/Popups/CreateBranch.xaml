@@ -6,15 +6,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
-    xmlns:converters="clr-namespace:SourceGit.Views.Converters"
     xmlns:validations="clr-namespace:SourceGit.Views.Validations"
     mc:Ignorable="d" 
     d:DesignWidth="500">
-    <Grid>
-        <Grid.Resources>
-            <converters:InverseBool x:Key="InverseBool"/>
-        </Grid.Resources>
-        
+    <Grid>        
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>

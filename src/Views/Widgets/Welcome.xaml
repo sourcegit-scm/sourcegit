@@ -3,16 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SourceGit.Views.Widgets"
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              xmlns:models="clr-namespace:SourceGit.Models"
-             xmlns:converters="clr-namespace:SourceGit.Views.Converters"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="800"
              UseLayoutRounding="True">
     <Grid AllowDrop="True" Drop="OnPageDrop">
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
-            <RowDefinition Height="48"/>
+            <RowDefinition Height="56"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -92,11 +92,7 @@
         </Grid>
 
         <!-- Repositories List -->
-        <Grid Grid.Row="2" Width="600" HorizontalAlignment="Center" Margin="0,0,0,8" AllowDrop="True" Drop="OnPageDrop">
-            <Grid.Resources>
-                <converters:IntToBookmarkBrush x:Key="IntToBookmarkBrush"/>
-            </Grid.Resources>
-            
+        <Grid Grid.Row="2" Width="600" HorizontalAlignment="Center" Margin="0,0,0,8" AllowDrop="True" Drop="OnPageDrop">            
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <ItemsControl x:Name="repoList">
                     <ItemsControl.ItemsPanel>
@@ -121,16 +117,11 @@
                                                 BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                                                 Background="{DynamicResource Brush.Popup}"
                                                 UseLayoutRounding="True"
-                                                SnapsToDevicePixels="True">
-                                                <Path 
-                                                    Width="14" Height="14"
-                                                    Data="M 1,0 L8,0 L1,7 z"
-                                                    HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                    Fill="{Binding Bookmark, Converter={StaticResource IntToBookmarkBrush}}"/>
-                                            </Border>
+                                                SnapsToDevicePixels="True"/>
 
                                             <StackPanel Grid.Column="0" Margin="8,0" Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Name}" FontSize="12pt" Margin="4,0,0,0" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" />
+                                                <local:Bookmark Width="16" Height="16" Color="{Binding Bookmark}"/>
+                                                <TextBlock Text="{Binding Name}" FontSize="12pt" Margin="8,0,0,0" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
                                                 <TextBlock Text="{Binding Path}" FontSize="10pt" Margin="8,0,0,0" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
                                             </StackPanel>
 

@@ -1,0 +1,14 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:SourceGit.Views.Converters">
+    <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
+    <converters:BranchToName x:Key="BranchToName"/>
+    <converters:FontFamiliesToName x:Key="FontFamiliesToName"/>
+    <converters:IntToBookmarkBrush x:Key="IntToBookmarkBrush"/>
+    <converters:IntToBookmarkStrokeBrush x:Key="IntToBookmarkStrokeBrush"/>
+    <converters:InverseBool x:Key="InverseBool"/>
+    <converters:PureFileName x:Key="PureFileName"/>
+    <converters:PureFolderName x:Key="PureFolderName"/>
+    <converters:WindowStateToTitleBarHeight x:Key="WindowStateToTitleBarHeight"/>
+</ResourceDictionary>

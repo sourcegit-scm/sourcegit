@@ -5,17 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:converters="clr-namespace:SourceGit.Views.Converters"
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
     xmlns:models="clr-namespace:SourceGit.Models"
     xmlns:validations="clr-namespace:SourceGit.Views.Validations"
     mc:Ignorable="d" 
     d:DesignWidth="800">
-    <Grid>
-        <Grid.Resources>
-            <converters:InverseBool x:Key="InverseBool"/>
-        </Grid.Resources>
-        
+    <Grid>        
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>

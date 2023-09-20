@@ -5,6 +5,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Icons.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Converters.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Controls.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Themes/Light.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Locales/en_US.xaml"/>

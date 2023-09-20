@@ -8,7 +8,6 @@
     xmlns:controls="clr-namespace:SourceGit.Views.Controls"
     xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
     xmlns:models="clr-namespace:SourceGit.Models"
-    xmlns:converters="clr-namespace:SourceGit.Views.Converters"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
     MinWidth="1024" MinHeight="768"
@@ -16,11 +15,7 @@
     Width="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Width, Mode=TwoWay}"
     Height="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Height, Mode=TwoWay}"
     WindowState="{Binding Source={x:Static models:Preference.Instance}, Path=Window.State, Mode=TwoWay}"
-    Closing="OnClosing">
-    <Window.Resources>
-        <converters:WindowStateToTitleBarHeight x:Key="WindowStateToTitleBarHeight"/>
-    </Window.Resources>
-    
+    Closing="OnClosing">    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="{Binding ElementName=me, Path=WindowState, Converter={StaticResource WindowStateToTitleBarHeight}}"/>

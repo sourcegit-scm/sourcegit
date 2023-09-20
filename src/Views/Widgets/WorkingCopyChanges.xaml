@@ -5,13 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
-             xmlns:converters="clr-namespace:SourceGit.Views.Converters"
              xmlns:models="clr-namespace:SourceGit.Models"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <converters:PureFileName x:Key="PureFileName"/>
-        <converters:PureFolderName x:Key="PureFolderName"/>
         <Style x:Key="Style.DataGridRow.Change" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
             <EventSetter Event="RequestBringIntoView" Handler="OnRequestBringIntoView"/>
             <EventSetter Event="ContextMenuOpening" Handler="OnDataGridContextMenuOpening"/>

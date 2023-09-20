@@ -4,16 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
-             xmlns:converters="clr-namespace:SourceGit.Views.Converters"
              xmlns:models="clr-namespace:SourceGit.Models"
              xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid x:Name="layout">
-        <Grid.Resources>
-            <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
-        </Grid.Resources>
-        
         <Border x:Name="commitListPanel" Background="{DynamicResource Brush.Contents}">
             <Grid ClipToBounds="True">
                 <Grid.RowDefinitions>

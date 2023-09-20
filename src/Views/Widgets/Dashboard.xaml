@@ -6,7 +6,6 @@
              xmlns:controls="clr-namespace:SourceGit.Views.Controls"
              xmlns:models="clr-namespace:SourceGit.Models"
              xmlns:widgets="clr-namespace:SourceGit.Views.Widgets"
-             xmlns:converters="clr-namespace:SourceGit.Views.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -14,11 +13,6 @@
             <RowDefinition Height="36"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <Grid.Resources>
-            <converters:InverseBool x:Key="InverseBool"/>
-            <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
-        </Grid.Resources>
 
         <!-- Toolbar -->
         <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1" Background="{DynamicResource Brush.ToolBar}">
@@ -156,10 +150,6 @@
                     <RowDefinition Height="24"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
-                <Grid.Resources>
-                    <converters:BoolToCollapsed x:Key="BoolToCollapsed"/>
-                </Grid.Resources>
 
                 <!-- Workspace -->
                 <TextBlock Grid.Row="0" Style="{DynamicResource Style.TextBlock.Group}" Text="{DynamicResource Text.Dashboard.Workspace}"/>

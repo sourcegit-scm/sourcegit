@@ -353,13 +353,8 @@ namespace SourceGit.Views.Widgets {
                 var bookmark = new MenuItem();
                 bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
                 for (int i = 0; i < Converters.IntToBookmarkBrush.COLORS.Length; i++) {
-                    var icon = new System.Windows.Shapes.Path();
-                    icon.Data = new EllipseGeometry(new Point(0, 0), 12, 12);
-                    icon.Fill = Converters.IntToBookmarkBrush.COLORS[i];
-                    icon.Width = 12;
-
                     var mark = new MenuItem();
-                    mark.Icon = icon;
+                    mark.Icon = new Bookmark() { Color = i, Width = 14, Height = 14 };
                     mark.Header = $"{i}";
 
                     var refIdx = i;
