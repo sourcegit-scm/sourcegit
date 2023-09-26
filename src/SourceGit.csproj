@@ -17,11 +17,14 @@
         <RepositoryType>Public</RepositoryType>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
     <ItemGroup>
       <Resource Include="App.ico" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="System.Text.Json" Version="6.0.6" />
+        <PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="All" />
+        <PackageReference Include="System.Text.Json" Version="7.0.3" />
     </ItemGroup>
 </Project>
