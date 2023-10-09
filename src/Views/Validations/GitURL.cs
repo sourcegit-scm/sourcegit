@@ -6,9 +6,9 @@ namespace SourceGit.Views.Validations {
 
     public class GitURL : ValidationRule {
         private static readonly Regex[] VALID_FORMATS = new Regex[] {
-            new Regex(@"^http[s]?://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-]+\.git$"),
-            new Regex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-]+/[\w\-]+\.git$"),
-            new Regex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-]+\.git$"),
+            new Regex(@"^http[s]?://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-\.]+\.git$"),
+            new Regex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-]+/[\w\-\.]+\.git$"),
+            new Regex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-\.]+\.git$"),
         };
 
         public static bool IsSSH(string url) {
