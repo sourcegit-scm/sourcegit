@@ -29,7 +29,8 @@ namespace SourceGit.Views.Popups {
             return Task.Run(() => {
                 Models.Watcher.SetEnabled(repo, false);
 
-                if (changes == null || changes.Count == 0) {
+                var bFull = changes == null || changes.Count == 0;
+                if (bFull) {
                     changes = new Commands.LocalChanges(repo).Result();
                 }
 
@@ -42,7 +43,7 @@ namespace SourceGit.Views.Popups {
                     }
                 }
 
-                if (jobs.Count > 0) new Commands.Stash(repo).Push(changes, message);
+                if (jobs.Count > 0) new Commands.Stash(repo).Push(changes, message, bFull);
                 Models.Watcher.SetEnabled(repo, true);
                 return true;
             });

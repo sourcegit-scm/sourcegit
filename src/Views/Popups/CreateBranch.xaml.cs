@@ -67,7 +67,7 @@ namespace SourceGit.Views.Popups {
                     var changes = new Commands.LocalChanges(repo).Result();
                     if (changes.Count > 0) {
                         if (AutoStash) {
-                            if (!new Commands.Stash(repo).Push(changes, "NEWBRANCH_AUTO_STASH")) {
+                            if (!new Commands.Stash(repo).Push(changes, "NEWBRANCH_AUTO_STASH", true)) {
                                 return false;
                             }
                         } else {
