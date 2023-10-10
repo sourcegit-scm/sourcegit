@@ -145,7 +145,7 @@ namespace SourceGit.Commands {
                 proc.Start();
             } catch (Exception e) {
                 return new ReadToEndResult() {
-                    Output = "",
+                    Output = string.Empty,
                     Error = e.Message,
                     IsSuccess = false,
                 };

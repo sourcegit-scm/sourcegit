@@ -1,26 +1,36 @@
-using System;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace SourceGit.Models {
     /// <summary>
     ///     Git用户
     /// </summary>
     public class User {
-        private static readonly Regex REG_FORMAT = new Regex(@"\w+ (.*) <(.*)> (\d{10}) [\+\-]\d+");
+        public static User Invalid = new User();
+        public static Dictionary<string, User> Caches = new Dictionary<string, User>();
 
-        public string Name { get; set; } = "";
-        public string Email { get; set; } = "";
-        public string Time { get; set; } = "";
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
-        public void Parse(string data) {
-            var match = REG_FORMAT.Match(data);
-            if (!match.Success) return;
+        public override bool Equals(object obj) {
+            if (obj == null || !(obj is User)) return false; 
+            
+            var other = obj as User;
+            return Name == other.Name && Email == other.Email;
+        }
 
-            var time = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(int.Parse(match.Groups[3].Value));
+        public override int GetHashCode() {
+            return base.GetHashCode();
+        }
 
-            Name = match.Groups[1].Value;
-            Email = match.Groups[2].Value;
-            Time = time.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+        public static User FindOrAdd(string name, string email) {
+            string key = $"{name}#&#{email}";
+            if (Caches.ContainsKey(key)) {
+                return Caches[key];
+            } else {
+                User user = new User() { Name = name, Email = email };
+                Caches.Add(key, user);
+                return user;
+            }
         }
     }
 }

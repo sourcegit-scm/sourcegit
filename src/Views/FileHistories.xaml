@@ -105,7 +105,7 @@
 
                                                 <TextBlock
                                                     Grid.Column="1" 
-                                                    Text="{Binding Author.Time}"
+                                                    Text="{Binding AuthorTimeStr}"
                                                     Foreground="{DynamicResource Brush.FG2}" 
                                                     Margin="4,0,0,0" 
                                                     HorizontalAlignment="Right"/>

@@ -49,20 +49,20 @@ namespace SourceGit.Views.Widgets {
             avatarAuthor.FallbackLabel = commit.Author.Name;
             txtAuthorName.Text = commit.Author.Name;
             txtAuthorEmail.Text = commit.Author.Email;
-            txtAuthorTime.Text = commit.Author.Time;
+            txtAuthorTime.Text = commit.AuthorTimeStr;
 
-            avatarCommitter.Email = commit.Committer.Email;
-            avatarCommitter.FallbackLabel = commit.Committer.Name;
-            txtCommitterName.Text = commit.Committer.Name;
-            txtCommitterEmail.Text = commit.Committer.Email;
-            txtCommitterTime.Text = commit.Committer.Time;
-
-            if (commit.Committer.Email == commit.Author.Email && commit.Committer.Time == commit.Author.Time) {
+            if (commit.Committer.Equals(commit.Author) && commit.CommitterTime == commit.AuthorTime) {
                 avatarCommitter.Visibility = Visibility.Hidden;
                 committerInfoPanel.Visibility = Visibility.Hidden;
             } else {
                 avatarCommitter.Visibility = Visibility.Visible;
                 committerInfoPanel.Visibility = Visibility.Visible;
+
+                avatarCommitter.Email = commit.Committer.Email;
+                avatarCommitter.FallbackLabel = commit.Committer.Name;
+                txtCommitterName.Text = commit.Committer.Name;
+                txtCommitterEmail.Text = commit.Committer.Email;
+                txtCommitterTime.Text = commit.CommitterTimeStr;
             }
 
             if (commit.Parents.Count == 0) {

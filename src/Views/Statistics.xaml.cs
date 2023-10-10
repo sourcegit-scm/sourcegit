@@ -58,6 +58,7 @@ namespace SourceGit.Views {
             var weekStart = today.AddSeconds(-(int)today.DayOfWeek * 3600 * 24 - today.Hour * 3600 - today.Minute * 60 - today.Second);
             var weekEnd = weekStart.AddDays(7);
             var month = today.Month;
+            var utcStart = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
 
             var limits = $"--branches --remotes --since=\"{today.ToString("yyyy-01-01 00:00:00")}\"";
             var commits = new Commands.Commits(repo, limits).Result();
@@ -65,7 +66,7 @@ namespace SourceGit.Views {
             var totalCommitsMonth = 0;
             var totalCommitsYear = commits.Count;
             foreach (var c in commits) {
-                var commitTime = DateTime.Parse(c.Committer.Time);
+                var commitTime = utcStart.AddSeconds(c.CommitterTime);
                 if (commitTime.CompareTo(weekStart) >= 0 && commitTime.CompareTo(weekEnd) < 0) {
                     mapsWeek[(int)commitTime.DayOfWeek].Count++;
                     totalCommitsWeek++;

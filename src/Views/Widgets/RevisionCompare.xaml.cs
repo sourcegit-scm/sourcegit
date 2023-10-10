@@ -17,14 +17,14 @@ namespace SourceGit.Views.Widgets {
             avatarStart.FallbackLabel = start.Committer.Name;
             avatarStart.ToolTip = start.Committer.Name;
             txtStartSHA.Text = start.ShortSHA;
-            txtStartTime.Text = start.Committer.Time;
+            txtStartTime.Text = start.CommitterTimeStr;
             txtStartSubject.Text = start.Subject;
 
             avatarEnd.Email = end.Committer.Email;
             avatarEnd.FallbackLabel = end.Committer.Name;
             avatarEnd.ToolTip = end.Committer.Name;
             txtEndSHA.Text = end.ShortSHA;
-            txtEndTime.Text = end.Committer.Time;
+            txtEndTime.Text = end.CommitterTimeStr;
             txtEndSubject.Text = end.Subject;
 
             Task.Run(() => {

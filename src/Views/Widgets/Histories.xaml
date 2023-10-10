@@ -147,7 +147,7 @@
                         <DataGridTemplateColumn Width="140" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Committer.Time}" HorizontalAlignment="Right" Margin="0,0,4,0"/>
+                                    <TextBlock Text="{Binding CommitterTimeStr}" HorizontalAlignment="Right" Margin="0,0,4,0"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

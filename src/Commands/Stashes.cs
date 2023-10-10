@@ -37,7 +37,11 @@ namespace SourceGit.Commands {
             } else if (line.StartsWith("Reflog message: ", StringComparison.Ordinal)) {
                 current.Message = line.Substring(16);
             } else if (line.StartsWith("author ", StringComparison.Ordinal)) {
-                current.Author.Parse(line);
+                Models.User user = Models.User.Invalid;
+                ulong time = 0;
+                Models.Commit.ParseUserAndTime(line, ref user, ref time);
+                current.Author = user;
+                current.Time = time;
             }
         }
     }

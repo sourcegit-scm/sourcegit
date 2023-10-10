@@ -75,9 +75,17 @@ namespace SourceGit.Commands {
             } else if (line.StartsWith("parent ", StringComparison.Ordinal)) {
                 current.Parents.Add(line.Substring("parent ".Length));
             } else if (line.StartsWith("author ", StringComparison.Ordinal)) {
-                current.Author.Parse(line);
+                Models.User user = Models.User.Invalid;
+                ulong time = 0;
+                Models.Commit.ParseUserAndTime(line, ref user, ref time);
+                current.Author = user;
+                current.AuthorTime = time;
             } else if (line.StartsWith("committer ", StringComparison.Ordinal)) {
-                current.Committer.Parse(line);
+                Models.User user = Models.User.Invalid;
+                ulong time = 0;
+                Models.Commit.ParseUserAndTime(line, ref user, ref time);
+                current.Committer = user;
+                current.CommitterTime = time;
             } else if (string.IsNullOrEmpty(current.Subject)) {
                 current.Subject = line.Trim();
             } else {
@@ -129,7 +137,7 @@ namespace SourceGit.Commands {
         }
 
         private void MarkFirstMerged() {
-            Args = $"log --since=\"{commits.Last().Committer.Time}\" --format=\"%H\"";
+            Args = $"log --since=\"{commits.Last().CommitterTimeStr}\" --format=\"%H\"";
 
             var rs = ReadToEnd();
             var shas = rs.Output.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);

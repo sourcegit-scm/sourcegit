@@ -61,9 +61,9 @@ namespace SourceGit.Commands {
         }
 
         private string ParseTrackStatus(string data) {
-            if (string.IsNullOrEmpty(data)) return "";
+            if (string.IsNullOrEmpty(data)) return string.Empty;
 
-            string track = "";
+            string track = string.Empty;
 
             var ahead = REG_AHEAD.Match(data);
             if (ahead.Success) {

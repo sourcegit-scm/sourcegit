@@ -404,7 +404,7 @@ namespace SourceGit.Views.Widgets {
             copyInfo.Click += (o, e) => {
                 Clipboard.SetDataObject(string.Format(
                     "SHA: {0}\nTITLE: {1}\nAUTHOR: {2} <{3}>\nTIME: {4}",
-                    commit.SHA, commit.Subject, commit.Committer.Name, commit.Committer.Email, commit.Committer.Time), true);
+                    commit.SHA, commit.Subject, commit.Committer.Name, commit.Committer.Email, commit.CommitterTime), true);
             };
             menu.Items.Add(copyInfo);
 
