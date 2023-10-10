@@ -503,8 +503,7 @@
     <sys:String x:Key="Text.Month.11">11月</sys:String>
     <sys:String x:Key="Text.Month.12">12月</sys:String>
 
-    <sys:String x:Key="Text.Sort.NameAsc">按名称正序</sys:String>
-    <sys:String x:Key="Text.Sort.NameDesc">按名称倒序</sys:String>
+    <sys:String x:Key="Text.Sort.Name">按名称升序</sys:String>
     <sys:String x:Key="Text.Sort.RecentlyOpened">按最近访问</sys:String>
     <sys:String x:Key="Text.Sort.Bookmark">按书签颜色</sys:String>
 

@@ -504,8 +504,7 @@
     <sys:String x:Key="Text.Month.11">Nov</sys:String>
     <sys:String x:Key="Text.Month.12">Dec</sys:String>
 
-    <sys:String x:Key="Text.Sort.NameAsc">By Name</sys:String>
-    <sys:String x:Key="Text.Sort.NameDesc">By Name Inversed</sys:String>
+    <sys:String x:Key="Text.Sort.Name">By Name</sys:String>
     <sys:String x:Key="Text.Sort.RecentlyOpened">By Recently Opened</sys:String>
     <sys:String x:Key="Text.Sort.Bookmark">By Bookmark Color</sys:String>
 

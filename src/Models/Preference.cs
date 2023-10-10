@@ -22,8 +22,7 @@ namespace SourceGit.Models {
         ///     起始页仓库列表排序方式
         /// </summary>
         public enum SortMethod {
-            ByNameASC,
-            ByNameDESC,
+            ByName,
             ByRecentlyOpened,
             ByBookmark,
         }
@@ -73,7 +72,7 @@ namespace SourceGit.Models {
             /// <summary>
             ///     起始页仓库列表排序规则
             /// </summary>
-            public SortMethod SortBy { get; set; } = SortMethod.ByNameASC;
+            public SortMethod SortBy { get; set; } = SortMethod.ByName;
         }
 
         /// <summary>
