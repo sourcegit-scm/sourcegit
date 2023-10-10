@@ -103,10 +103,9 @@ namespace SourceGit.Views.Controls {
         /// </summary>
         /// <param name="dc"></param>
         protected override void OnRender(DrawingContext dc) {
-            base.OnRender(dc);
+            var corner = Math.Max(2, Width / 16);
 
             if (Source == null && label != null) {
-                var corner = Math.Max(2, Width / 16);
                 var offsetX = (double)0;
                 if (HorizontalAlignment == HorizontalAlignment.Right) {
                     offsetX = -Width * 0.5;
@@ -114,9 +113,12 @@ namespace SourceGit.Views.Controls {
                     offsetX = Width * 0.5;
                 }
 
-                Brush brush = BACKGROUND_BRUSHES[colorIdx];
+                Brush brush = BACKGROUND_BRUSHES[colorIdx]; 
                 dc.DrawRoundedRectangle(brush, null, new Rect(-Width * 0.5 + offsetX, -Height * 0.5, Width, Height), corner, corner);
                 dc.DrawText(label, new Point(label.Width * -0.5 + offsetX, label.Height * -0.5));
+            } else {
+                dc.PushClip(new RectangleGeometry(new Rect(0, 0, Width, Height), corner, corner));
+                base.OnRender(dc);
             }
         }
 
