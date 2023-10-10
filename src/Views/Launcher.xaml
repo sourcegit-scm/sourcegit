@@ -15,7 +15,12 @@
     Width="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Width, Mode=TwoWay}"
     Height="{Binding Source={x:Static models:Preference.Instance}, Path=Window.Height, Mode=TwoWay}"
     WindowState="{Binding Source={x:Static models:Preference.Instance}, Path=Window.State, Mode=TwoWay}"
-    Closing="OnClosing">    
+    Closing="OnClosing">
+
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="None"/>
+    </Window.TaskbarItemInfo>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="{Binding ElementName=me, Path=WindowState, Converter={StaticResource WindowStateToTitleBarHeight}}"/>

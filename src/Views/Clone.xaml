@@ -12,6 +12,11 @@
     Title="{DynamicResource Text.Clone}" 
     Width="500" SizeToContent="Height"
     ResizeMode="NoResize">
+
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="None"/>
+    </Window.TaskbarItemInfo>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="28"/>

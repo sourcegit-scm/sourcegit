@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Shell;
 
 namespace SourceGit.Views {
 
@@ -35,6 +36,7 @@ namespace SourceGit.Views {
                 if (Validation.GetHasError(edit)) return;
             }
 
+            TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;
             progress.Visibility = Visibility.Visible;
             processing.IsAnimating = true;
 
@@ -78,6 +80,7 @@ namespace SourceGit.Views {
                 return true;
             });
 
+            TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
             progress.Visibility = Visibility.Collapsed;
             processing.IsAnimating = false;
             if (succ) {

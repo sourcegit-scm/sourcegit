@@ -10,6 +10,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Shell;
 
 namespace SourceGit.Views.Widgets {
 
@@ -154,14 +155,18 @@ namespace SourceGit.Views.Widgets {
             isPopupLocked = true;
             popupProgressMask.Visibility = Visibility.Visible;
             processing.IsAnimating = true;
+            App.Current.MainWindow.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;
 
             var task = curPopup.Start();
             if (task != null) {
                 var close = await task;
+                App.Current.MainWindow.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
                 if (close) {
                     ClosePopups(true);
                     return;
                 }
+            } else {
+                App.Current.MainWindow.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
             }
 
             isPopupLocked = false;
