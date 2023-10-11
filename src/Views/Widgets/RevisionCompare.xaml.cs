@@ -13,16 +13,18 @@ namespace SourceGit.Views.Widgets {
         }
 
         public void SetData(string repo, Models.Commit start, Models.Commit end) {
-            avatarStart.Email = start.Committer.Email;
-            avatarStart.FallbackLabel = start.Committer.Name;
+            avatarStart.Email = start.Author.Email;
+            avatarStart.FallbackLabel = start.Author.Name;
             avatarStart.ToolTip = start.Committer.Name;
+            txtStartAuthor.Text = start.Author.Name;
             txtStartSHA.Text = start.ShortSHA;
             txtStartTime.Text = start.CommitterTimeStr;
             txtStartSubject.Text = start.Subject;
 
-            avatarEnd.Email = end.Committer.Email;
-            avatarEnd.FallbackLabel = end.Committer.Name;
+            avatarEnd.Email = end.Author.Email;
+            avatarEnd.FallbackLabel = end.Author.Name;
             avatarEnd.ToolTip = end.Committer.Name;
+            txtEndAuthor.Text = end.Author.Name;
             txtEndSHA.Text = end.ShortSHA;
             txtEndTime.Text = end.CommitterTimeStr;
             txtEndSubject.Text = end.Subject;

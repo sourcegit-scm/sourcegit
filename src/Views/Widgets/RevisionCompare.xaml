@@ -10,7 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="4,8,4,4">
         <Grid.RowDefinitions>
-            <RowDefinition Height="44"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -28,33 +28,30 @@
                 BorderBrush="{DynamicResource Brush.Border2}"
                 BorderThickness="1"
                 Background="{DynamicResource Brush.Contents}"
-                CornerRadius="4">
-                <Grid Margin="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                CornerRadius="4"
+                Padding="4"
+                TextElement.FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                    <controls:Avatar Grid.Column="0" Width="32" Height="32" x:Name="avatarStart"/>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Column="1" Margin="8,0,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" x:Name="txtStartSHA" Foreground="DarkOrange" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
-                            <TextBlock Grid.Column="1" x:Name="txtStartTime" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}"/>
-                        </Grid>
-
-                        <TextBlock Grid.Row="1" x:Name="txtStartSubject" VerticalAlignment="Bottom" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" FontSize="10pt"/>
+                        <controls:Avatar Grid.Column="0" Width="14" Height="14" x:Name="avatarStart"/>
+                        <TextBlock Grid.Column="1" x:Name="txtStartAuthor" Foreground="{DynamicResource Brush.FG1}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="2" x:Name="txtStartSHA" Foreground="DarkOrange" Margin="8,0,0,0" />
+                        <TextBlock Grid.Column="3" x:Name="txtStartTime" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                     </Grid>
+
+                    <TextBlock Grid.Row="1" Margin="4,0" x:Name="txtStartSubject" VerticalAlignment="Bottom" FontSize="10pt"/>
                 </Grid>
             </Border>
 
@@ -74,33 +71,30 @@
                 BorderBrush="{DynamicResource Brush.Border2}"
                 BorderThickness="1"
                 Background="{DynamicResource Brush.Contents}"
-                CornerRadius="4">
-                <Grid Margin="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                Padding="4"
+                CornerRadius="4"
+                TextElement.FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                    <controls:Avatar Grid.Column="0" Width="32" Height="32" x:Name="avatarEnd"/>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Column="1" Margin="8,0,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" x:Name="txtEndSHA" Foreground="DarkOrange" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" />
-                            <TextBlock Grid.Column="1" x:Name="txtEndTime" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" />
-                        </Grid>
-
-                        <TextBlock Grid.Row="1" x:Name="txtEndSubject" VerticalAlignment="Bottom" FontFamily="{Binding Source={x:Static models:Preference.Instance}, Path=General.FontFamilyContent, Mode=OneWay}" FontSize="10pt"/>
+                        <controls:Avatar Grid.Column="0" Width="14" Height="14" x:Name="avatarEnd"/>
+                        <TextBlock Grid.Column="1" x:Name="txtEndAuthor" Foreground="{DynamicResource Brush.FG1}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="2" x:Name="txtEndSHA" Foreground="DarkOrange" Margin="8,0,0,0" />
+                        <TextBlock Grid.Column="3" x:Name="txtEndTime" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                     </Grid>
+
+                    <TextBlock Grid.Row="1" Margin="4,0" x:Name="txtEndSubject" VerticalAlignment="Bottom" FontSize="10pt"/>
                 </Grid>
             </Border>
         </Grid>

@@ -122,8 +122,8 @@
                                     <controls:Avatar 
                                         Width="16" Height="16" 
                                         HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                        Email="{Binding Committer.Email}" 
-                                        FallbackLabel="{Binding Committer.Name}"/>
+                                        Email="{Binding Author.Email}" 
+                                        FallbackLabel="{Binding Author.Name}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -131,7 +131,7 @@
                         <DataGridTemplateColumn Width="80" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Committer.Name}" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Author.Name}" Margin="0,0,8,0"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
