@@ -27,6 +27,8 @@ namespace SourceGit.Models {
 
         public string AuthorTimeStr => UTC_START.AddSeconds(AuthorTime).ToString("yyyy-MM-dd HH:mm:ss");
         public string CommitterTimeStr => UTC_START.AddSeconds(CommitterTime).ToString("yyyy-MM-dd HH:mm:ss");
+        public string AuthorTimeShortStr => UTC_START.AddSeconds(AuthorTime).ToString("yyyy/MM/dd");
+        public string CommitterTimeShortStr => UTC_START.AddSeconds(CommitterTime).ToString("yyyy/MM/dd");
 
         public static void ParseUserAndTime(string data, ref User user, ref ulong time) {
             var match = REG_USER_FORMAT.Match(data);

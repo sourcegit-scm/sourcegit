@@ -60,7 +60,6 @@
             <DataGrid
                 x:Name="commitList"
                 Grid.Column="0"
-                Background="{DynamicResource Brush.Contents}"
                 BorderBrush="{DynamicResource Brush.Border0}"
                 BorderThickness="0,0,1,0"
                 SelectionMode="Single"
@@ -71,51 +70,39 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate DataType="{x:Type models:Commit}">
                                 <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="36"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="1" Margin="2,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
 
-                                        <controls:Avatar 
-                                            Grid.Column="0" 
-                                            HorizontalAlignment="Center"
-                                            Width="32" Height="32"
-                                            Email="{Binding Author.Email}"
-                                            FallbackLabel="{Binding Author.Name}"
-                                            ToolTip="{Binding Author.Name}"/>
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <Grid Grid.Column="1" Margin="8,0,0,0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
+                                            <controls:Avatar 
+                                                Grid.Column="0" 
+                                                HorizontalAlignment="Center"
+                                                Width="14" Height="14"
+                                                Email="{Binding Author.Email}"
+                                                FallbackLabel="{Binding Author.Name}"
+                                                ToolTip="{Binding Author.Name}"/>
 
-                                            <Grid Grid.Row="0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="72"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{Binding Author.Name}" Foreground="{DynamicResource Brush.FG1}"/>
+                                            <TextBlock Grid.Column="3" Margin="8,0,0,0" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}"/>
 
-                                                <TextBlock Grid.Column="0">
-                                                        <Hyperlink NavigateUri="{Binding SHA}" RequestNavigate="GotoCommit" Foreground="DarkOrange" ToolTip="GOTO COMMIT">
-                                                            <Run Text="{Binding ShortSHA, Mode=OneWay}"/>
-                                                        </Hyperlink>
-                                                </TextBlock>
-
-                                                <TextBlock
-                                                    Grid.Column="1" 
-                                                    Text="{Binding AuthorTimeStr}"
-                                                    Foreground="{DynamicResource Brush.FG2}" 
-                                                    Margin="4,0,0,0" 
-                                                    HorizontalAlignment="Right"/>
-                                            </Grid>
-
-                                            <TextBlock
-                                                Grid.Row="1" 
-                                                Text="{Binding Subject}"
-                                                Margin="0,6,0,0"/>
+                                            <TextBlock Grid.Column="2" Margin="8,0,0,0">
+                                                <Hyperlink NavigateUri="{Binding SHA}" RequestNavigate="GotoCommit" Foreground="DarkOrange" ToolTip="GOTO COMMIT">
+                                                    <Run Text="{Binding ShortSHA, Mode=OneWay}"/>
+                                                </Hyperlink>
+                                            </TextBlock>
                                         </Grid>
+
+                                        <TextBlock Grid.Row="1" Text="{Binding Subject}" Margin="0,6,0,0" FontSize="13"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
