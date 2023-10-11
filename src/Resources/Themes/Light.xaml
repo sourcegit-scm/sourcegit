@@ -18,7 +18,6 @@
     <SolidColorBrush x:Key="Brush.Border1" Color="#FF898989"/>
     <SolidColorBrush x:Key="Brush.Border2" Color="#FFCFCFCF"/>
     <SolidColorBrush x:Key="Brush.Border3" Color="#FFEFEFEF"/>
-    <SolidColorBrush x:Key="Brush.WelcomeBorder">#FFCFCFCF</SolidColorBrush>
     
     <SolidColorBrush x:Key="Brush.FG1" Color="#FF1F1F1F"/>
     <SolidColorBrush x:Key="Brush.FG2" Color="#FF6F6F6F"/>
