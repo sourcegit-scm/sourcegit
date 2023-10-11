@@ -71,7 +71,9 @@ namespace SourceGit.Views.Controls {
             set { SetValue(FallbackLabelProperty, value); }
         }
 
-        private static Dictionary<string, List<Avatar>> requesting = new Dictionary<string, List<Avatar>>();
+        private static event Action<string> RefetchRequested;
+        private static event Action<string> FetchCompleted;
+
         private static Dictionary<string, BitmapImage> loaded = new Dictionary<string, BitmapImage>();
         private static Task loader = null;
 
@@ -79,23 +81,45 @@ namespace SourceGit.Views.Controls {
         private FormattedText label = null;
 
         public Avatar() {
+            RefetchRequested += email => {
+                if (email == Email) {
+                    Source = null;
+                    InvalidateVisual();
+                }
+            };
+
+            FetchCompleted += email => {
+                if (email == Email) {
+                    Source = loaded[Email];
+                    InvalidateVisual();
+                }
+            };
+
             SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.HighQuality);
             SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Auto);
-            Unloaded += (o, e) => Cancel(Email);
+
+            var refetch = new MenuItem();
+            refetch.Header = App.Text("Dashboard.Refresh");
+            refetch.Click += (o, e) => Refetch();
+
+            ContextMenu = new ContextMenu();
+            ContextMenu.Items.Add(refetch);
         }
 
         /// <summary>
-        ///     取消一个下载任务
+        ///     手动刷新
         /// </summary>
-        /// <param name="email"></param>
-        private void Cancel(string email) {
-            if (!string.IsNullOrEmpty(email) && requesting.ContainsKey(email)) {
-                if (requesting[email].Count <= 1) {
-                    requesting.Remove(email);
-                } else {
-                    requesting[email].Remove(this);
-                }
-            }
+        private void Refetch() {
+            byte[] hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(Email.ToLower().Trim()));
+            string md5 = "";
+            for (int i = 0; i < hash.Length; i++) md5 += hash[i].ToString("x2");
+            md5 = md5.ToLower();
+            string filePath = Path.Combine(CACHE_PATH, md5);
+            if (File.Exists(filePath)) File.Delete(filePath);
+
+            RefetchRequested?.Invoke(Email);
+            if (loaded.ContainsKey(Email)) loaded.Remove(Email);
+            OnEmailChanged(this, new DependencyPropertyChangedEventArgs(EmailProperty, null, Email));
         }
 
         /// <summary>
@@ -146,6 +170,7 @@ namespace SourceGit.Views.Controls {
             var chars = placeholder.ToCharArray();
             foreach (var ch in chars) a.colorIdx += Math.Abs(ch);
             a.colorIdx = a.colorIdx % BACKGROUND_BRUSHES.Length;
+            if (a.Source == null) a.InvalidateVisual();
         }
 
         /// <summary>
@@ -157,20 +182,16 @@ namespace SourceGit.Views.Controls {
             Avatar a = d as Avatar;
             if (a == null) return;
 
-            a.Cancel(e.OldValue as string);
-            a.Source = null;
-            a.InvalidateVisual();
+            if (a.Source != null) {
+                a.Source = null;
+                a.InvalidateVisual();
+            }
 
             var email = e.NewValue as string;
             if (string.IsNullOrEmpty(email)) return;
 
             if (loaded.ContainsKey(email)) {
                 a.Source = loaded[email];
-                return;
-            }
-
-            if (requesting.ContainsKey(email)) {
-                requesting[email].Add(a);
                 return;
             }
 
@@ -181,18 +202,15 @@ namespace SourceGit.Views.Controls {
 
             string filePath = Path.Combine(CACHE_PATH, md5);
             if (File.Exists(filePath)) {
-                var img = new BitmapImage(new Uri(filePath));
+                var img = LoadFromFile(filePath);
                 loaded.Add(email, img);
                 a.Source = img;
                 return;
             }
 
-            requesting.Add(email, new List<Avatar>());
-            requesting[email].Add(a);
+            loaded.Add(email, null);
 
             Action job = () => {
-                if (!requesting.ContainsKey(email)) return;
-
                 try {
                     var req = WebRequest.CreateHttp($"https://cravatar.cn/avatar/{md5}?d=404");
                     req.Timeout = 2000;
@@ -200,27 +218,18 @@ namespace SourceGit.Views.Controls {
 
                     var rsp = req.GetResponse() as HttpWebResponse;
                     if (rsp != null && rsp.StatusCode == HttpStatusCode.OK) {
-                        using (var reader = rsp.GetResponseStream())
-                        using (var writer = File.OpenWrite(filePath)) {
-                            reader.CopyTo(writer);
-                        }
+                        using (var reader = rsp.GetResponseStream()) {
+                            using (var writer = File.OpenWrite(filePath)) {
+                                reader.CopyTo(writer);
+                            }
+                        }                        
 
                         a.Dispatcher.Invoke(() => {
-                            var img = new BitmapImage(new Uri(filePath));
-                            loaded.Add(email, img);
-
-                            if (requesting.ContainsKey(email)) {
-                                foreach (var one in requesting[email]) one.Source = img;
-                            }
+                            loaded[email] = LoadFromFile(filePath);
+                            FetchCompleted?.Invoke(email);
                         });
-                    } else {
-                        if (!loaded.ContainsKey(email)) loaded.Add(email, null);
                     }
-                } catch {
-                    if (!loaded.ContainsKey(email)) loaded.Add(email, null);
-                }
-
-                requesting.Remove(email);
+                } catch {}
             };
 
             if (loader != null && !loader.IsCompleted) {
@@ -228,6 +237,14 @@ namespace SourceGit.Views.Controls {
             } else {
                 loader = Task.Run(job);
             }
+        }
+
+        private static BitmapImage LoadFromFile(string file) {
+            var img = new BitmapImage();
+            img.BeginInit();
+            img.StreamSource = new MemoryStream(File.ReadAllBytes(file));
+            img.EndInit();
+            return img;
         }
     }
 }
