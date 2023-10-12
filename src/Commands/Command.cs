@@ -17,6 +17,7 @@ namespace SourceGit.Commands {
     ///     命令接口
     /// </summary>
     public class Command {
+        private static readonly Regex PROGRESS_REG = new Regex(@"\d+%");
 
         /// <summary>
         ///     读取全部输出时的结果
@@ -68,7 +69,6 @@ namespace SourceGit.Commands {
 
             if (!string.IsNullOrEmpty(Cwd)) start.WorkingDirectory = Cwd;
 
-            var progressFilter = new Regex(@"\s\d+%\s");
             var errs = new List<string>();
             var proc = new Process() { StartInfo = start };
             var isCancelled = false;
@@ -97,8 +97,12 @@ namespace SourceGit.Commands {
                 if (string.IsNullOrEmpty(e.Data)) return;
                 if (TraitErrorAsOutput) OnReadline(e.Data);
 
-                if (progressFilter.IsMatch(e.Data)) return;
+                // 错误信息中忽略进度相关的输出
+                if (e.Data.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal)) return;
                 if (e.Data.StartsWith("remote: Counting objects:", StringComparison.Ordinal)) return;
+                if (e.Data.StartsWith("remote: Compressing objects:", StringComparison.Ordinal)) return;
+                if (e.Data.StartsWith("Filtering content:", StringComparison.Ordinal)) return;
+                if (PROGRESS_REG.IsMatch(e.Data)) return;
                 errs.Add(e.Data);
             };
 

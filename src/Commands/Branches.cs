@@ -9,8 +9,7 @@ namespace SourceGit.Commands {
     public class Branches : Command {
         private static readonly string PREFIX_LOCAL = "refs/heads/";
         private static readonly string PREFIX_REMOTE = "refs/remotes/";
-        private static readonly string CMD = "branch -l --all -v --format=\"$%(refname)$%(objectname)$%(HEAD)$%(upstream)$%(upstream:track)$%(contents:subject)\"";
-        private static readonly Regex REG_FORMAT = new Regex(@"\$(.*)\$(.*)\$([\* ])\$(.*)\$(.*?)\$(.*)");
+        private static readonly string CMD = "branch -l --all -v --format=\"%(refname)$%(objectname)$%(HEAD)$%(upstream)$%(upstream:track)\"";
         private static readonly Regex REG_AHEAD = new Regex(@"ahead (\d+)");
         private static readonly Regex REG_BEHIND = new Regex(@"behind (\d+)");
 
@@ -27,11 +26,11 @@ namespace SourceGit.Commands {
         }
 
         public override void OnReadline(string line) {
-            var match = REG_FORMAT.Match(line);
-            if (!match.Success) return;
+            var parts = line.Split('$');
+            if (parts.Length != 5) return;
 
             var branch = new Models.Branch();
-            var refName = match.Groups[1].Value;
+            var refName = parts[0];
             if (refName.EndsWith("/HEAD")) return;
 
             if (refName.StartsWith(PREFIX_LOCAL, StringComparison.Ordinal)) {
@@ -51,11 +50,10 @@ namespace SourceGit.Commands {
             }
 
             branch.FullName = refName;
-            branch.Head = match.Groups[2].Value;
-            branch.IsCurrent = match.Groups[3].Value == "*";
-            branch.Upstream = match.Groups[4].Value;
-            branch.UpstreamTrackStatus = ParseTrackStatus(match.Groups[5].Value);
-            branch.HeadSubject = match.Groups[6].Value;
+            branch.Head = parts[1];
+            branch.IsCurrent = parts[2] == "*";
+            branch.Upstream = parts[3];
+            branch.UpstreamTrackStatus = ParseTrackStatus(parts[4]);
 
             loaded.Add(branch);
         }

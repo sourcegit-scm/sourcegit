@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
     /// <summary>
@@ -7,8 +7,6 @@ namespace SourceGit.Commands {
     /// </summary>
     public class Tags : Command {
         public static readonly string CMD = "for-each-ref --sort=-creatordate --format=\"$%(refname:short)$%(objectname)$%(*objectname)\" refs/tags";
-        public static readonly Regex REG_FORMAT = new Regex(@"\$(.*)\$(.*)\$(.*)");
-
         private List<Models.Tag> loaded = new List<Models.Tag>();
 
         public Tags(string path) {
@@ -22,22 +20,16 @@ namespace SourceGit.Commands {
         }
 
         public override void OnReadline(string line) {
-            var match = REG_FORMAT.Match(line);
-            if (!match.Success) return;
-
-            var name = match.Groups[1].Value;
-            var commit = match.Groups[2].Value;
-            var dereference = match.Groups[3].Value;
-
-            if (string.IsNullOrEmpty(dereference)) {
+            var subs = line.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries);
+            if (subs.Length == 2) {
                 loaded.Add(new Models.Tag() {
-                    Name = name,
-                    SHA = commit,
+                    Name = subs[0],
+                    SHA = subs[1],
                 });
-            } else {
+            } else if (subs.Length == 3) {
                 loaded.Add(new Models.Tag() {
-                    Name = name,
-                    SHA = dereference,
+                    Name = subs[0],
+                    SHA = subs[2],
                 });
             }
         }

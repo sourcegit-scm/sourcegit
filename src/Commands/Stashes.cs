@@ -39,7 +39,7 @@ namespace SourceGit.Commands {
             } else if (line.StartsWith("author ", StringComparison.Ordinal)) {
                 Models.User user = Models.User.Invalid;
                 ulong time = 0;
-                Models.Commit.ParseUserAndTime(line, ref user, ref time);
+                Models.Commit.ParseUserAndTime(line.Substring(7), ref user, ref time);
                 current.Author = user;
                 current.Time = time;
             }

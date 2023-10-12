@@ -22,13 +22,16 @@ namespace SourceGit.Models {
             return base.GetHashCode();
         }
 
-        public static User FindOrAdd(string name, string email) {
-            string key = $"{name}#&#{email}";
-            if (Caches.ContainsKey(key)) {
-                return Caches[key];
+        public static User FindOrAdd(string data) {
+            if (Caches.ContainsKey(data)) {
+                return Caches[data];
             } else {
+                var nameEndIdx = data.IndexOf('<');
+                var name = nameEndIdx >= 2 ? data.Substring(0, nameEndIdx - 1) : string.Empty;
+                var email = data.Substring(nameEndIdx + 1);
+
                 User user = new User() { Name = name, Email = email };
-                Caches.Add(key, user);
+                Caches.Add(data, user);
                 return user;
             }
         }

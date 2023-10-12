@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace SourceGit.Models {
@@ -8,7 +7,6 @@ namespace SourceGit.Models {
     ///     提交记录
     /// </summary>
     public class Commit {
-        private static readonly Regex REG_USER_FORMAT = new Regex(@"\w+ (.*) <(.*)> (\d{10}) [\+\-]\d+");
         private static readonly DateTime UTC_START = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
 
         public string SHA { get; set; } = string.Empty;
@@ -31,11 +29,12 @@ namespace SourceGit.Models {
         public string CommitterTimeShortStr => UTC_START.AddSeconds(CommitterTime).ToString("yyyy/MM/dd");
 
         public static void ParseUserAndTime(string data, ref User user, ref ulong time) {
-            var match = REG_USER_FORMAT.Match(data);
-            if (!match.Success) return;
+            var userEndIdx = data.IndexOf('>');
+            if (userEndIdx < 0) return;
 
-            user = User.FindOrAdd(match.Groups[1].Value, match.Groups[2].Value);
-            time = ulong.Parse(match.Groups[3].Value);
+            var timeEndIdx = data.IndexOf(' ', userEndIdx + 2);
+            user = User.FindOrAdd(data.Substring(0, userEndIdx));
+            time = timeEndIdx < 0 ? 0 : ulong.Parse(data.Substring(userEndIdx + 2, timeEndIdx - userEndIdx - 2));
         }
     }
 }
