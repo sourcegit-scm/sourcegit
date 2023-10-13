@@ -7,6 +7,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Shell;
 
 namespace SourceGit.Views {
 
@@ -14,6 +15,7 @@ namespace SourceGit.Views {
     ///     主窗体
     /// </summary>
     public partial class Launcher : Controls.Window {
+        private int taskBarProgressRequest = 0;
 
         public Launcher() {
             Models.Watcher.Opened += OpenRepository;
@@ -21,6 +23,22 @@ namespace SourceGit.Views {
             tabs.Add();
         }
 
+        #region TASKBAR_PROGRESS
+        public void IncreaseProgressBar() {
+            if (taskBarProgressRequest == 0) TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;
+            taskBarProgressRequest++;
+        }
+
+        public void DecreaseProgressBar() {
+            taskBarProgressRequest--;
+            if (taskBarProgressRequest <= 0) {
+                taskBarProgressRequest = 0;
+                TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
+            }
+        }
+        #endregion
+
+        #region WINDOW_EVENTS
         private void OnClosing(object sender, CancelEventArgs e) {
             var restore = Models.Preference.Instance.Restore;
             if (!restore.IsEnabled) return;
@@ -46,6 +64,7 @@ namespace SourceGit.Views {
 
             Models.Preference.Save();
         }
+        #endregion
 
         #region OPEN_REPO
         private void OpenRepository(Models.Repository repo) {

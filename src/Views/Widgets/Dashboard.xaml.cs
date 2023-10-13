@@ -155,18 +155,20 @@ namespace SourceGit.Views.Widgets {
             isPopupLocked = true;
             popupProgressMask.Visibility = Visibility.Visible;
             processing.IsAnimating = true;
-            App.Current.MainWindow.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;
+
+            var launcher = App.Current.MainWindow as Launcher;
+            launcher.IncreaseProgressBar();
 
             var task = curPopup.Start();
             if (task != null) {
                 var close = await task;
-                App.Current.MainWindow.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
+                launcher.DecreaseProgressBar();
                 if (close) {
                     ClosePopups(true);
                     return;
                 }
             } else {
-                App.Current.MainWindow.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
+                launcher.DecreaseProgressBar();
             }
 
             isPopupLocked = false;
