@@ -10,9 +10,31 @@ namespace SourceGit.Views.Widgets {
     public partial class Exceptions : UserControl {
         public ObservableCollection<string> Messages { get; set; }
 
+        /// <summary>
+        ///     用于判断异常是否属于自己的上下文属性
+        /// </summary>
+        public static readonly DependencyProperty ContextProperty = DependencyProperty.Register(
+            "Context",
+            typeof(string),
+            typeof(Exceptions),
+            new PropertyMetadata(null));
+
+        /// <summary>
+        ///     上下文
+        /// </summary>
+        public string Context {
+            get { return (string)GetValue(ContextProperty); }
+            set { SetValue(ContextProperty, value); }
+        }
+
         public Exceptions() {
+            App.ExceptionRaised += (ctx, detail) => {
+                Dispatcher.Invoke(() => {
+                    if (ctx == Context) Messages.Add(detail);
+                });
+            };
+
             Messages = new ObservableCollection<string>();
-            Models.Exception.Handler = e => Dispatcher.Invoke(() => Messages.Add(e));
             InitializeComponent();
         }
 

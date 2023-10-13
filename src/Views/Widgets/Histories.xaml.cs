@@ -303,7 +303,7 @@ namespace SourceGit.Views.Widgets {
                         }
                     }
 
-                    Models.Exception.Raise("Can NOT found parent of HEAD!");
+                    App.Exception(repo.Path, "Can NOT found parent of HEAD!");
                     e.Handled = true;
                 };
                 menu.Items.Add(squash);

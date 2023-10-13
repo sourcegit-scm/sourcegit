@@ -14,7 +14,7 @@ namespace SourceGit.Views.Popups {
         public FastForwardWithoutCheckout(string repo, string branch, string upstream) {
             int idx = upstream.IndexOf('/');
             if (idx < 0 || idx == upstream.Length - 1) {
-                Models.Exception.Raise($"Invalid upstream: {upstream}");
+                App.Exception(repo, $"Invalid upstream: {upstream}");
                 return;
             }
 

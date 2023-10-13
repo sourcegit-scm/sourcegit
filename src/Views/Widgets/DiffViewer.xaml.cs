@@ -604,7 +604,7 @@ namespace SourceGit.Views.Widgets {
 
             var merger = Models.MergeTool.Supported.Find(x => x.Type == mergeType);
             if (merger == null || merger.Type == 0 || !System.IO.File.Exists(mergeExe)) {
-                Models.Exception.Raise("Invalid merge tool in preference setting!");
+                App.Exception(repo, "Invalid merge tool in preference setting!");
                 return;
             }
 

@@ -178,7 +178,7 @@ namespace SourceGit.Commands {
         /// </summary>
         /// <param name="message"></param>
         public virtual void OnException(string message) {
-            Models.Exception.Raise(message);
+            App.Exception(Cwd, message);
         }
     }
 }

@@ -1,4 +1,5 @@
 <UserControl x:Class="SourceGit.Views.Widgets.Dashboard"
+             x:Name="me"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -592,5 +593,12 @@
                 </Grid>
             </Border>
         </Grid>
+
+        <!-- Alerts -->
+        <widgets:Exceptions
+            Grid.Row="1" 
+            HorizontalAlignment="Right" VerticalAlignment="Top"
+            Width="330" Height="Auto"
+            Context="{Binding ElementName=me, Path=ExceptionContext}"/>
     </Grid>
 </UserControl>

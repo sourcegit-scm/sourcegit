@@ -14,8 +14,14 @@ namespace SourceGit.Views.Widgets {
     ///     新标签页
     /// </summary>
     public partial class Welcome : UserControl {
+        public string ExceptionContext {
+            get;
+            set;
+        }
 
         public Welcome() {
+            ExceptionContext = Guid.NewGuid().ToString();
+
             InitializeComponent();
             UpdateVisibles();
 
@@ -34,7 +40,7 @@ namespace SourceGit.Views.Widgets {
             if (MakeSureReady()) {
                 var bash = Path.Combine(Models.Preference.Instance.Git.Path, "..", "bash.exe");
                 if (!File.Exists(bash)) {
-                    Models.Exception.Raise(App.Text("MissingBash"));
+                    App.Exception(ExceptionContext, App.Text("MissingBash"));
                     return;
                 }
 
@@ -175,7 +181,7 @@ namespace SourceGit.Views.Widgets {
 
             var bash = Path.Combine(Models.Preference.Instance.Git.Path, "..", "bash.exe");
             if (!File.Exists(bash)) {
-                Models.Exception.Raise(App.Text("MissingBash"));
+                App.Exception(ExceptionContext, App.Text("MissingBash"));
                 return;
             }
 
@@ -245,7 +251,7 @@ namespace SourceGit.Views.Widgets {
 
         private bool MakeSureReady() {
             if (!Models.Preference.Instance.IsReady) {
-                Models.Exception.Raise(App.Text("NotConfigured"));
+                App.Exception(ExceptionContext, App.Text("NotConfigured"));
                 return false;
             }
             return true;
@@ -255,7 +261,7 @@ namespace SourceGit.Views.Widgets {
             if (!MakeSureReady()) return;
 
             if (!Directory.Exists(path)) {
-                Models.Exception.Raise(App.Text("PathNotFound", path));
+                App.Exception(ExceptionContext, App.Text("PathNotFound", path));
                 return;
             }
 

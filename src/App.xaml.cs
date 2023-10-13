@@ -8,6 +8,7 @@ namespace SourceGit {
     ///     程序入口.
     /// </summary>
     public partial class App : Application {
+        public static event Action<string, string> ExceptionRaised;
 
         /// <summary>
         ///     读取本地化字串
@@ -19,6 +20,15 @@ namespace SourceGit {
             var data = Current.FindResource($"Text.{key}") as string;
             if (string.IsNullOrEmpty(data)) return $"Text.{key}";
             return string.Format(data, args);
+        }
+
+        /// <summary>
+        ///     触发错误
+        /// </summary>
+        /// <param name="ctx">错误上下文</param>
+        /// <param name="detail">错误内容</param>
+        public static void Exception(string ctx, string detail) {
+            ExceptionRaised?.Invoke(ctx, detail);
         }
 
         /// <summary>

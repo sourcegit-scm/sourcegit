@@ -63,7 +63,7 @@ namespace SourceGit.Views {
                 }
 
                 if (!Directory.Exists(path)) {
-                    Models.Exception.Raise($"Folder {path} not found!");
+                    Dispatcher.Invoke(() => txtError.Text = $"Folder {path} not found!");
                     return false;
                 }
 

@@ -54,6 +54,8 @@ namespace SourceGit.Views.Widgets {
             }
         }
 
+        public string ExceptionContext => repo.Path;
+
         public Dashboard(Models.Repository repo) {
             this.repo = repo;
 
@@ -402,7 +404,7 @@ namespace SourceGit.Views.Widgets {
         private void OpenInTerminal(object sender, RoutedEventArgs e) {
             var bash = Path.Combine(Models.Preference.Instance.Git.Path, "..", "bash.exe");
             if (!File.Exists(bash)) {
-                Models.Exception.Raise(App.Text("MissingBash"));
+                App.Exception(repo.Path, App.Text("MissingBash"));
                 return;
             }
 
@@ -428,7 +430,7 @@ namespace SourceGit.Views.Widgets {
 
         private void OpenFetch(object sender, RoutedEventArgs e) {
             if (repo.Remotes.Count == 0) {
-                Models.Exception.Raise("No remotes added to this repository!!!");
+                App.Exception(repo.Path, "No remotes added to this repository!!!");
                 return;
             }
 
@@ -438,7 +440,7 @@ namespace SourceGit.Views.Widgets {
 
         private void OpenPull(object sender, RoutedEventArgs e) {
             if (repo.Remotes.Count == 0) {
-                Models.Exception.Raise("No remotes added to this repository!!!");
+                App.Exception(repo.Path, "No remotes added to this repository!!!");
                 return;
             }
 
@@ -448,7 +450,7 @@ namespace SourceGit.Views.Widgets {
 
         private void OpenPush(object sender, RoutedEventArgs e) {
             if (repo.Remotes.Count == 0) {
-                Models.Exception.Raise("No remotes added to this repository!!!");
+                App.Exception(repo.Path, "No remotes added to this repository!!!");
                 return;
             }
 
@@ -576,7 +578,7 @@ namespace SourceGit.Views.Widgets {
             if (current != null) {
                 new Popups.CreateBranch(repo, current).Show();
             } else {
-                Models.Exception.Raise(App.Text("CreateBranch.Idle"));
+                App.Exception(repo.Path, App.Text("CreateBranch.Idle"));
             }
             e.Handled = true;
         }

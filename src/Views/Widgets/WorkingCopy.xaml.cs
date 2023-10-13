@@ -220,7 +220,7 @@ namespace SourceGit.Views.Widgets {
 
             var merger = Models.MergeTool.Supported.Find(x => x.Type == mergeType);
             if (merger == null || merger.Type == 0 || !File.Exists(mergeExe)) {
-                Models.Exception.Raise("Invalid merge tool in preference setting!");
+                App.Exception(repo.Path, "Invalid merge tool in preference setting!");
                 return;
             }
 
@@ -289,7 +289,7 @@ namespace SourceGit.Views.Widgets {
         private void StartAmend(object sender, RoutedEventArgs e) {
             var commits = new Commands.Commits(repo.Path, "-n 1", false).Result();
             if (commits.Count == 0) {
-                Models.Exception.Raise("No commits to amend!");
+                App.Exception(repo.Path, "No commits to amend!");
                 chkAmend.IsChecked = false;
                 return;
             }
@@ -316,12 +316,12 @@ namespace SourceGit.Views.Widgets {
             var changes = await Task.Run(() => new Commands.LocalChanges(repo.Path).Result());
             var conflict = changes.Find(x => x.IsConflit);
             if (conflict != null) {
-                Models.Exception.Raise("You have unsolved conflicts in your working copy!");
+                App.Exception(repo.Path, "You have unsolved conflicts in your working copy!");
                 return;
             }
 
             if (stagedContainer.Changes.Count == 0) {
-                Models.Exception.Raise("No files added to commit!");
+                App.Exception(repo.Path, "No files added to commit!");
                 return;
             }
 
@@ -351,12 +351,12 @@ namespace SourceGit.Views.Widgets {
             var changes = await Task.Run(() => new Commands.LocalChanges(repo.Path).Result());
             var conflict = changes.Find(x => x.IsConflit);
             if (conflict != null) {
-                Models.Exception.Raise("You have unsolved conflicts in your working copy!");
+                App.Exception(repo.Path, "You have unsolved conflicts in your working copy!");
                 return;
             }
 
             if (stagedContainer.Changes.Count == 0) {
-                Models.Exception.Raise("No files added to commit!");
+                App.Exception(repo.Path, "No files added to commit!");
                 return;
             }
 

@@ -34,7 +34,7 @@ namespace SourceGit.Views.Popups {
 
             var squash = chkSquash.IsChecked == true;
             if (repo.SubTrees.FindIndex(x => x.Prefix == Prefix) >= 0) {
-                Models.Exception.Raise($"Subtree add failed. Prefix({Prefix}) already exists!");
+                App.Exception(repo.Path, $"Subtree add failed. Prefix({Prefix}) already exists!");
                 return null;
             }
 

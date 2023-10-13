@@ -70,11 +70,5 @@
 
         <!-- Contents -->
         <controls:PageContainer x:Name="container" Grid.Row="1"/>
-
-        <!-- Alerts -->
-        <widgets:Exceptions
-            Grid.Row="1" 
-            HorizontalAlignment="Right" VerticalAlignment="Top"
-            Width="330" Height="Auto"/>
     </Grid>
 </controls:Window>
