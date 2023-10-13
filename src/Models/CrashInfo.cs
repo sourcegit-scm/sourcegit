@@ -8,17 +8,17 @@ namespace SourceGit.Models {
     /// <summary>
     ///     崩溃日志生成
     /// </summary>
-    public class Issue {
-        public static void Create(System.Exception e) {
+    public class CrashInfo {
+        public static void Create(Exception e) {
             var builder = new StringBuilder();
             builder.Append("Crash: ");
             builder.Append(e.Message);
             builder.Append("\n\n");
             builder.Append("----------------------------\n");
             builder.Append($"Windows OS: {Environment.OSVersion}\n");
-            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}");
-            builder.Append($"Platform: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}");
-            builder.Append($"Source: {e.Source}");
+            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
+            builder.Append($"Platform: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
+            builder.Append($"Source: {e.Source}\n");
             builder.Append($"---------------------------\n\n");
             builder.Append(e.StackTrace);
 

@@ -39,8 +39,8 @@ namespace SourceGit {
         protected override void OnStartup(StartupEventArgs e) {
             base.OnStartup(e);
 
-            // 崩溃上报
-            AppDomain.CurrentDomain.UnhandledException += (_, ev) => Models.Issue.Create(ev.ExceptionObject as Exception);
+            // 崩溃文件生成
+            AppDomain.CurrentDomain.UnhandledException += (_, ev) => Models.CrashInfo.Create(ev.ExceptionObject as Exception);
 
             // 创建必要目录
             if (!Directory.Exists(Views.Controls.Avatar.CACHE_PATH)) {
