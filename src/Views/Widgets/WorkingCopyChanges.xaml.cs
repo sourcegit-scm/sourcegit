@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SourceGit.Views.Widgets {
     /// <summary>
@@ -385,10 +386,14 @@ namespace SourceGit.Views.Widgets {
         }
 
         private void Disard(List<Models.Change> changes) {
-            if (changes.Count >= Changes.Count) {
-                new Popups.Discard(repo, null).Show();
-            } else {
-                new Popups.Discard(repo, changes).Show();
+            DependencyObject parent = VisualTreeHelper.GetParent(this);
+            while (parent != null) {
+                if (parent is WorkingCopy wc) {
+                    wc.Discard(changes);
+                    return;
+                }
+
+                parent = VisualTreeHelper.GetParent(parent);
             }
         }
 

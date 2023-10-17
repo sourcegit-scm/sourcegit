@@ -97,6 +97,14 @@ namespace SourceGit.Views.Widgets {
             if (watcher != null) watcher.RefreshWC();
         }
 
+        public void Discard(List<Models.Change> changes) {
+            if (changes.Count >= unstagedContainer.Changes.Count && stagedContainer.Changes.Count == 0) {
+                new Popups.Discard(repo.Path, null).Show();
+            } else {
+                new Popups.Discard(repo.Path, changes).Show();
+            }
+        }
+
         #region STAGE_UNSTAGE
         private void ViewAssumeUnchanged(object sender, RoutedEventArgs e) {
             var dialog = new AssumeUnchanged(repo.Path);
