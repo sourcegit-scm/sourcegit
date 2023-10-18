@@ -8,6 +8,27 @@ namespace SourceGit.Views.Controls {
     ///     变更状态图标
     /// </summary>
     class ChangeStatusIcon : FrameworkElement {
+        public static readonly Brush[] Backgrounds = new Brush[] {
+            Brushes.Transparent,
+            new LinearGradientBrush(Color.FromRgb(238, 160, 14), Color.FromRgb(228, 172, 67), 90),
+            new LinearGradientBrush(Color.FromRgb(47, 185, 47), Color.FromRgb(75, 189, 75), 90),
+            new LinearGradientBrush(Colors.Tomato, Color.FromRgb(252, 165, 150), 90),
+            new LinearGradientBrush(Colors.Orchid, Color.FromRgb(248, 161, 245), 90),
+            new LinearGradientBrush(Color.FromRgb(238, 160, 14), Color.FromRgb(228, 172, 67), 90),
+            new LinearGradientBrush(Color.FromRgb(238, 160, 14), Color.FromRgb(228, 172, 67), 90),
+            new LinearGradientBrush(Color.FromRgb(47, 185, 47), Color.FromRgb(75, 189, 75), 90),
+        };
+
+        public static readonly string[] Labels = new string[] {
+            "?",
+            "±",
+            "+",
+            "−",
+            "➜",
+            "❏",
+            "U",
+            "★",
+        };
 
         public static readonly DependencyProperty ChangeProperty = DependencyProperty.Register(
             "Change",
@@ -62,12 +83,12 @@ namespace SourceGit.Views.Controls {
                     icon.background = Brushes.OrangeRed;
                     txt = "!";
                 } else {
-                    icon.background = GetBackground(icon.Change.WorkTree);
-                    txt = GetLabel(icon.Change.WorkTree);
+                    icon.background = Backgrounds[(int)icon.Change.WorkTree];
+                    txt = Labels[(int)icon.Change.WorkTree];
                 }
             } else {
-                icon.background = GetBackground(icon.Change.Index);
-                txt = GetLabel(icon.Change.Index);
+                icon.background = Backgrounds[(int)icon.Change.Index];
+                txt = Labels[(int)icon.Change.Index];
             }
 
             icon.label = new FormattedText(
@@ -80,32 +101,6 @@ namespace SourceGit.Views.Controls {
                 VisualTreeHelper.GetDpi(icon).PixelsPerDip);
 
             icon.InvalidateVisual();
-        }
-
-        private static Brush GetBackground(Models.Change.Status status) {
-            switch (status) {
-            case Models.Change.Status.Modified: return new LinearGradientBrush(Color.FromRgb(238, 160, 14), Color.FromRgb(228, 172, 67), 90);
-            case Models.Change.Status.Added: return new LinearGradientBrush(Color.FromRgb(47, 185, 47), Color.FromRgb(75, 189, 75), 90);
-            case Models.Change.Status.Deleted: return new LinearGradientBrush(Colors.Tomato, Color.FromRgb(252, 165, 150), 90);
-            case Models.Change.Status.Renamed: return new LinearGradientBrush(Colors.Orchid, Color.FromRgb(248, 161, 245), 90);
-            case Models.Change.Status.Copied: return new LinearGradientBrush(Color.FromRgb(238, 160, 14), Color.FromRgb(228, 172, 67), 90);
-            case Models.Change.Status.Unmerged: return new LinearGradientBrush(Color.FromRgb(238, 160, 14), Color.FromRgb(228, 172, 67), 90);
-            case Models.Change.Status.Untracked: return new LinearGradientBrush(Color.FromRgb(47, 185, 47), Color.FromRgb(75, 189, 75), 90);
-            default: return Brushes.Transparent;
-            }
-        }
-
-        private static string GetLabel(Models.Change.Status status) {
-            switch (status) {
-            case Models.Change.Status.Modified: return "±";
-            case Models.Change.Status.Added: return "+";
-            case Models.Change.Status.Deleted: return "−";
-            case Models.Change.Status.Renamed: return "➜";
-            case Models.Change.Status.Copied: return "❏";
-            case Models.Change.Status.Unmerged: return "U";
-            case Models.Change.Status.Untracked: return "★";
-            default: return "?";
-            }
         }
     }
 }

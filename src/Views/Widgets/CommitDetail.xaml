@@ -170,6 +170,9 @@
                         BorderThickness="0"
                         TextWrapping="Wrap"
                         Margin="11,5,16,0"
+                        MaxHeight="80"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto"
                         VerticalAlignment="Top"/>
                 </Grid>
 
@@ -193,7 +196,7 @@
                         Grid.Column="1"
                         x:Name="changeList"
                         RowHeight="24"
-                        Margin="11,0,0,2">
+                        Margin="11,0,16,2">
                         <DataGrid.RowStyle>
                             <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource Style.DataGridRow}">
                                 <EventSetter Event="ContextMenuOpening" Handler="OnChangeListContextMenuOpening"/>
