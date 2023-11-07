@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Navigation;
 
 namespace SourceGit.Views.Widgets {
@@ -44,6 +45,7 @@ namespace SourceGit.Views.Widgets {
         private void UpdateInformation(Models.Commit commit) {
             txtSHA.Text = commit.SHA;
             txtMessage.Text = (commit.Subject + "\n\n" + commit.Message.Trim()).Trim();
+            txtMessage.ScrollToHome();
 
             avatarAuthor.Email = commit.Author.Email;
             avatarAuthor.FallbackLabel = commit.Author.Name;
@@ -90,6 +92,10 @@ namespace SourceGit.Views.Widgets {
 
                 Dispatcher.Invoke(() => {
                     changeList.ItemsSource = changes;
+
+                    ScrollViewer sw = GetVisualChild<ScrollViewer>(changeList);
+                    if (sw != null) sw.ScrollToHome();
+
                     changeContainer.SetData(repo, new List<Models.Commit>() { commit }, changes);
                 });
             });
@@ -189,5 +195,25 @@ namespace SourceGit.Views.Widgets {
             e.Handled = true;
         }
         #endregion
+
+        private T GetVisualChild<T>(DependencyObject parent) where T : Visual {
+            T child = null;
+
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++) {
+                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
+                child = v as T;
+
+                if (child == null) {
+                    child = GetVisualChild<T>(v);
+                }
+
+                if (child != null) {
+                    break;
+                }
+            }
+
+            return child;
+        }
     }
 }

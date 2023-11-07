@@ -35,6 +35,24 @@ namespace SourceGit.Views.Controls {
             SelectionChanged += OnSelectionChanged;
         }
 
+        protected override void OnMouseWheel(MouseWheelEventArgs e) {
+            base.OnMouseWheel(e);
+
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) {
+                if (e.Delta > 0) {
+                    LineLeft();
+                } else {
+                    LineRight();
+                }
+            } else {
+                if (e.Delta > 0) {
+                    LineUp();
+                } else {
+                    LineDown();
+                }
+            }
+        }
+
         private void OnTextChanged(object sender, TextChangedEventArgs e) {
             PlaceholderVisibility = string.IsNullOrEmpty(Text) ? Visibility.Visible : Visibility.Collapsed;
         }

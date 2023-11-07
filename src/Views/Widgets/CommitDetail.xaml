@@ -170,7 +170,7 @@
                         BorderThickness="0"
                         TextWrapping="Wrap"
                         Margin="11,5,16,0"
-                        MaxHeight="80"
+                        MaxHeight="100"
                         HorizontalScrollBarVisibility="Disabled"
                         VerticalScrollBarVisibility="Auto"
                         VerticalAlignment="Top"/>

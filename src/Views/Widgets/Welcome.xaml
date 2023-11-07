@@ -53,10 +53,11 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="24"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
                         </Grid.ColumnDefinitions>
 
                         <Border
-                            Grid.Column="0" Grid.ColumnSpan="2"
+                            Grid.Column="0" Grid.ColumnSpan="3"
                             Background="{DynamicResource Brush.Contents}"
                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border0}"
                             CornerRadius="14"/>
