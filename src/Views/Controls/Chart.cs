@@ -10,7 +10,6 @@ namespace SourceGit.Views.Controls {
     ///     绘制提交频率柱状图
     /// </summary>
     public class Chart : FrameworkElement {
-        public static readonly int LABEL_UNIT = 32;
         public static readonly double MAX_SHAPE_WIDTH = 24;
 
         public static readonly DependencyProperty LineBrushProperty = DependencyProperty.Register(
@@ -51,7 +50,22 @@ namespace SourceGit.Views.Controls {
             foreach (var s in samples) {
                 if (maxV < s.Count) maxV = s.Count;
             }
-            maxV = (int)Math.Ceiling(maxV / 10.0) * 10;
+
+            if (maxV <= 5) {
+                maxV = 5;
+            } else if (maxV <= 10) {
+                maxV = 10;
+            } else if (maxV <= 50) {
+                maxV = 50;
+            } else if (maxV <= 100) {
+                maxV = 100;
+            } else if (maxV <= 200) {
+                maxV = 200;
+            } else if (maxV <= 500) {
+                maxV = 500;
+            } else {
+                maxV = (int)Math.Ceiling(maxV / 500.0) * 500;
+            }            
             
             InvalidateVisual();
         }
@@ -65,61 +79,72 @@ namespace SourceGit.Views.Controls {
             base.OnRender(dc);
 
             var font = new FontFamily("Consolas");
+            var culture = CultureInfo.CurrentCulture;
+            var typeface = new Typeface(font, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+            var ppi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
             var pen = new Pen(LineBrush, 1);
-            dc.DrawLine(pen, new Point(LABEL_UNIT, 0), new Point(LABEL_UNIT, ActualHeight - LABEL_UNIT));
-            dc.DrawLine(pen, new Point(LABEL_UNIT, ActualHeight - LABEL_UNIT), new Point(ActualWidth, ActualHeight - LABEL_UNIT));
+            
+            // 坐标系绘制
+            var maxLabel = new FormattedText($"{maxV}", culture, FlowDirection.LeftToRight, typeface, 12.0, LineBrush, ppi);
+            var horizonStart = maxLabel.Width + 8;
+            var labelHeight = 32;
+            dc.DrawText(maxLabel, new Point(0, - maxLabel.Height * 0.5));
+            dc.DrawLine(pen, new Point(horizonStart, 0), new Point(horizonStart, ActualHeight - labelHeight));
+            dc.DrawLine(pen, new Point(horizonStart, ActualHeight - labelHeight), new Point(ActualWidth, ActualHeight - labelHeight));
 
             if (samples.Count == 0) return;
 
-            var stepV = (ActualHeight - LABEL_UNIT) / 5;
+            // 绘制纵坐标数值参考线
+            var stepX = (ActualWidth - horizonStart) / samples.Count;
+            var stepV = (ActualHeight - labelHeight) / 5;
             var labelStepV = maxV / 5;
             var gridPen = new Pen(LineBrush, 1) { DashStyle = DashStyles.Dash };
             for (int i = 1; i < 5; i++) {
                 var vLabel = new FormattedText(
                     $"{maxV - i * labelStepV}",
-                    CultureInfo.CurrentCulture,
+                    culture,
                     FlowDirection.LeftToRight,
-                    new Typeface(font, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                    typeface,
                     12.0,
                     LineBrush,
-                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                    ppi);
 
                 var dashHeight = i * stepV;
                 var vy = Math.Max(0, dashHeight - vLabel.Height * 0.5);
                 dc.PushOpacity(.1);
-                dc.DrawLine(gridPen, new Point(LABEL_UNIT + 1, dashHeight), new Point(ActualWidth, dashHeight));
+                dc.DrawLine(gridPen, new Point(horizonStart + 1, dashHeight), new Point(ActualWidth, dashHeight));
                 dc.Pop();
-                dc.DrawText(vLabel, new Point(0, vy));
+                dc.DrawText(vLabel, new Point(horizonStart - vLabel.Width - 8, vy));
             }
 
-            var stepX = (ActualWidth - LABEL_UNIT) / samples.Count;
+            // 先计算一下当前每个样本的碰撞区域，用于当鼠标移动上去时显示数值
             if (hitboxes.Count == 0) {
-                var shapeWidth = Math.Min(LABEL_UNIT, stepX - 4);
+                var shapeWidth = Math.Min(32, stepX - 4);
                 for (int i = 0; i < samples.Count; i++) {
-                    var h = samples[i].Count * (ActualHeight - LABEL_UNIT) / maxV;
-                    var x = LABEL_UNIT + 1 + stepX * i + (stepX - shapeWidth) * 0.5;
-                    var y = ActualHeight - LABEL_UNIT - h;
+                    var h = samples[i].Count * (ActualHeight - labelHeight) / maxV;
+                    var x = horizonStart + 1 + stepX * i + (stepX - shapeWidth) * 0.5;
+                    var y = ActualHeight - labelHeight - h;
                     hitboxes.Add(new Rect(x, y, shapeWidth, h));
                 }
             }
 
-            var mouse = Mouse.GetPosition(this);
+            // 绘制样本
             for (int i = 0; i < samples.Count; i++) {
                 var hLabel = new FormattedText(
                     samples[i].Name,
-                    CultureInfo.CurrentCulture,
+                    culture,
                     FlowDirection.LeftToRight,
-                    new Typeface(font, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                    typeface,
                     10.0,
                     LineBrush,
-                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                    ppi);
                 var rect = hitboxes[i];
                 var xLabel = rect.X - (hLabel.Width - rect.Width) * 0.5;
-                var yLabel = ActualHeight - LABEL_UNIT + 4;
+                var yLabel = ActualHeight - labelHeight + 4;
 
                 dc.DrawRectangle(ChartBrush, null, rect);
 
-                if (stepX < LABEL_UNIT) {
+                if (stepX < 32) {
                     dc.PushTransform(new TranslateTransform(xLabel, yLabel));
                     dc.PushTransform(new RotateTransform(45, hLabel.Width * 0.5, hLabel.Height * 0.5));
                     dc.DrawText(hLabel, new Point(0, 0));
@@ -130,17 +155,19 @@ namespace SourceGit.Views.Controls {
                 }           
             }
 
+            // 当鼠标移动上去时显示数值
+            var mouse = Mouse.GetPosition(this);
             for (int i = 0; i < samples.Count; i++) {
                 var rect = hitboxes[i];
                 if (rect.Contains(mouse)) {
                     var tooltip = new FormattedText(
                         $"{samples[i].Count}",
-                        CultureInfo.CurrentCulture,
+                        culture,
                         FlowDirection.LeftToRight,
-                        new Typeface(font, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                        typeface,
                         12.0,
                         FindResource("Brush.FG1") as Brush,
-                        VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                        ppi);
 
                     var tx = rect.X - (tooltip.Width - rect.Width) * 0.5;
                     var ty = rect.Y - tooltip.Height - 4;
