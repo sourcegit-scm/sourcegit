@@ -371,7 +371,7 @@ namespace SourceGit.Views.Widgets {
         private async void DoStage(List<string> files) {
             IsStaging = true;
             Models.Watcher.SetEnabled(repo, false);
-            if (files == null || files.Count == 0) {
+            if (files == null || files.Count == 0 || files.Count == Changes.Count) {
                 await Task.Run(() => new Commands.Add(repo).Exec());
             } else {
                 for (int i = 0; i < files.Count; i += 10) {
@@ -709,7 +709,7 @@ namespace SourceGit.Views.Widgets {
         #region STAGED
         private async void DoUnstage(List<string> files) {
             Models.Watcher.SetEnabled(repo, false);
-            if (files == null || files.Count == 0) {
+            if (files == null || files.Count == 0 || files.Count == Changes.Count) {
                 await Task.Run(() => new Commands.Reset(repo).Exec());
             } else {
                 for (int i = 0; i < files.Count; i += 10) {
