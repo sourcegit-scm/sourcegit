@@ -15,6 +15,7 @@
     <sys:String x:Key="Text.Optional">选填</sys:String>
     <sys:String x:Key="Text.OpenFolder">选择文件夹</sys:String>
     <sys:String x:Key="Text.Notice">系统提示</sys:String>
+    <sys:String x:Key="Text.OpenWith">打开文件...</sys:String>
 
     <sys:String x:Key="Text.URL">仓库地址 ：</sys:String>
     <sys:String x:Key="Text.RepositoryURL">远程仓库地址</sys:String>

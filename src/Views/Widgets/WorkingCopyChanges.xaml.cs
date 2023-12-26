@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace SourceGit.Views.Widgets {
     /// <summary>
@@ -430,6 +432,18 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
+                menu.Items.Add(explore);
+
+                if (!node.IsFolder && File.Exists(path)) {
+                    var openWith = new MenuItem();
+                    openWith.Header = App.Text("OpenWith");
+                    openWith.Click += (o, e) => {
+                        Process.Start($"\"{path}\"");
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(openWith);
+                }
+
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.Stage");
                 stage.Click += (o, e) => {
@@ -481,7 +495,6 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
-                menu.Items.Add(explore);
                 menu.Items.Add(new Separator());
                 menu.Items.Add(stage);
                 menu.Items.Add(discard);
@@ -576,6 +589,18 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
+                menu.Items.Add(explore);
+
+                if (File.Exists(path)) {
+                    var openWith = new MenuItem();
+                    openWith.Header = App.Text("OpenWith");
+                    openWith.Click += (o, e) => {
+                        Process.Start($"\"{path}\"");
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(openWith);
+                }
+
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.Stage");
                 stage.Click += (o, e) => {
@@ -642,7 +667,6 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
-                menu.Items.Add(explore);
                 menu.Items.Add(new Separator());
                 menu.Items.Add(stage);
                 menu.Items.Add(discard);
@@ -738,6 +762,18 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
+                menu.Items.Add(explore);
+
+                if (!node.IsFolder && File.Exists(path)) {
+                    var openWith = new MenuItem();
+                    openWith.Header = App.Text("OpenWith");
+                    openWith.Click += (o, e) => {
+                        Process.Start($"\"{path}\"");
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(openWith);
+                }
+
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.Unstage");
                 unstage.Click += (o, e) => {
@@ -752,7 +788,6 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
-                menu.Items.Add(explore);
                 menu.Items.Add(unstage);
                 menu.Items.Add(copyPath);
             } else {
@@ -782,6 +817,18 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
+                menu.Items.Add(explore);
+
+                if (File.Exists(path)) {
+                    var openWith = new MenuItem();
+                    openWith.Header = App.Text("OpenWith");
+                    openWith.Click += (o, e) => {
+                        Process.Start($"\"{path}\"");
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(openWith);
+                }
+
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.Unstage");
                 unstage.Click += (o, e) => {
@@ -796,7 +843,6 @@ namespace SourceGit.Views.Widgets {
                     e.Handled = true;
                 };
 
-                menu.Items.Add(explore);
                 menu.Items.Add(new Separator());
                 menu.Items.Add(unstage);
                 menu.Items.Add(new Separator());

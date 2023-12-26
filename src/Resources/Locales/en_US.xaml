@@ -16,6 +16,7 @@
     <sys:String x:Key="Text.Optional">Optional.</sys:String>
     <sys:String x:Key="Text.OpenFolder">SELECT FOLDER</sys:String>
     <sys:String x:Key="Text.Notice">NOTICE</sys:String>
+    <sys:String x:Key="Text.OpenWith">Open With ...</sys:String>
 
     <sys:String x:Key="Text.URL">URL :</sys:String>
     <sys:String x:Key="Text.RepositoryURL">Git Repository URL</sys:String>
