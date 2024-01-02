@@ -66,32 +66,42 @@
             </Border>
             
             <!-- Stashes List -->
-            <ListView
+            <DataGrid
                 Grid.Row="1"
-                x:Name="stashList"
+                x:Name="stashList"                
                 Background="{DynamicResource Brush.Contents}"
                 BorderThickness="0"
-                ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                SelectionChanged="OnStashSelectionChanged">
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type models:Stash}">
-                        <Border BorderBrush="{DynamicResource Brush.Border3}" BorderThickness="0,0,0,1" Background="Transparent" Padding="6" ContextMenuOpening="OnStashContextMenuOpening">
-                            <StackPanel Orientation="Vertical">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding SHA}" Foreground="{DynamicResource Brush.FG2}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Author.Time}" Foreground="{DynamicResource Brush.FG2}"/>
-                                </Grid>
-                                <TextBlock Text="{Binding Message}" Margin="0,8,0,0"/>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                SelectionMode="Single"
+                SelectionUnit="FullRow"
+                SelectedCellsChanged="OnStashSelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate DataType="{x:Type models:Stash}">
+                                <Border BorderBrush="{DynamicResource Brush.Border3}" BorderThickness="0,0,0,1" Background="Transparent" Padding="6" ContextMenuOpening="OnStashContextMenuOpening">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding SHA}" Foreground="DarkOrange"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}"/>
+                                        </Grid>
+
+                                        <TextBlock Grid.Row="1" Text="{Binding Message}" Margin="0,8,0,0"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
             
             <!-- Change List Group -->
             <Border Grid.Row="2" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,1">

@@ -47,7 +47,7 @@ namespace SourceGit.Views.Widgets {
             e.Handled = true;
         }
 
-        private async void OnStashSelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void OnStashSelectionChanged(object sender, SelectedCellsChangedEventArgs e) {
             changeList.ItemsSource = null;
             selected = null;
 
