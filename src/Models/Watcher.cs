@@ -15,6 +15,11 @@ namespace SourceGit.Models {
         public static event Action<Repository> Opened;
 
         /// <summary>
+        ///     仓库的显示名变化了
+        /// </summary>
+        public static event Action<string, string> DisplayNameChanged;
+
+        /// <summary>
         ///     仓库的书签变化了
         /// </summary>
         public static event Action<string, int> BookmarkChanged;
@@ -100,6 +105,14 @@ namespace SourceGit.Models {
                     watcher.lockCount++;
                 }
             }
+        }
+
+        /// <summary>
+        ///     通知仓库显示名变化
+        /// </summary>
+        /// <param name="repo"></param>
+        public static void NotifyDisplayNameChanged(Repository repo) {
+            DisplayNameChanged?.Invoke(repo.Path, repo.Name);
         }
 
         /// <summary>

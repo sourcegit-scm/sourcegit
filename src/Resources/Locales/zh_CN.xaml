@@ -304,6 +304,8 @@
     <sys:String x:Key="Text.Welcome.Search">快速查找仓库</sys:String>
     <sys:String x:Key="Text.Welcome.Sort">排序</sys:String>
     <sys:String x:Key="Text.Welcome.DragDropTip">支持拖放目录添加</sys:String>
+    <sys:String x:Key="Text.Welcome.Rename">修改显示名称</sys:String>
+    <sys:String x:Key="Text.Welcome.NewName">显示名称 ：</sys:String>
 
     <sys:String x:Key="Text.Pull">拉回</sys:String>
     <sys:String x:Key="Text.Pull.Title">拉回（拉取并合并）</sys:String>

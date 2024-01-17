@@ -24,7 +24,16 @@ namespace SourceGit.Models {
     public class Repository {
 
         #region PROPERTIES_SAVED
-        public string Name { get; set; } = "";
+        public string Name {
+            get => name;
+            set {
+                if (name != value) {
+                    name = value;
+                    Watcher.NotifyDisplayNameChanged(this);
+                }
+            }
+        }
+
         public string Path { get; set; } = "";
         public string GitDir { get; set; } = "";
         public long LastOpenTime { get; set; } = 0;
@@ -131,6 +140,7 @@ namespace SourceGit.Models {
         }
 
         private readonly object updateFilterLock = new object();
+        private string name = string.Empty;
         private int bookmark = 0;
     }
 }

@@ -133,6 +133,17 @@ namespace SourceGit.Views.Widgets {
             menu.Items.Add(open);
             menu.Items.Add(new Separator());
 
+            var rename = new MenuItem();
+            rename.Header = App.Text("Welcome.Rename");
+            rename.Click += (o, ev) => {
+                var dialog = new EditRepositoryDisplayName(repo);
+                dialog.Owner = App.Current.MainWindow;
+                if (dialog.ShowDialog() == true) {
+                    UpdateVisibles();
+                }
+            };
+            menu.Items.Add(rename);
+
             var bookmark = new MenuItem();
             bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
             for (int i = 0; i < Converters.IntToBookmarkBrush.COLORS.Length; i++) {

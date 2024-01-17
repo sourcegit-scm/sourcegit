@@ -105,6 +105,15 @@ namespace SourceGit.Views.Widgets {
             Tabs = new ObservableCollection<Tab>();
             InitializeComponent();
 
+            Models.Watcher.DisplayNameChanged += (repoPath, repoName) => {
+                foreach (var tab in Tabs) {
+                    if (tab.Id == repoPath) {
+                        tab.Title = repoName;
+                        break;
+                    }
+                }
+            };
+
             Models.Watcher.BookmarkChanged += (repoPath, bookmark) => {
                 foreach (var tab in Tabs) {
                     if (tab.Id == repoPath) {
