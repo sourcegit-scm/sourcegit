@@ -55,7 +55,8 @@ namespace SourceGit.Views {
                     typeface,
                     FontSize,
                     Foreground);
-            return new Size(formatted.Width, formatted.Height);
+
+            return new Size(formatted.Width - 16, formatted.Height);
         }
 
         public override void Render(DrawingContext context) {
@@ -90,7 +91,9 @@ namespace SourceGit.Views {
                     context.DrawLine(underlinePen, new Point(offsetX, lineY), new Point(offsetX + formatted.Width, lineY));
                     offsetX += formatted.Width;
                 } else {
-                    offsetX += formatted.Width + 4;
+                    offsetX += formatted.Width;
+                    if (part.StartsWith(' ')) offsetX += 2;
+                    if (part.EndsWith(' ')) offsetX += 4;
                 }
 
                 isName = !isName;
