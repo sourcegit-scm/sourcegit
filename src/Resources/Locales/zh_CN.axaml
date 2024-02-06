@@ -180,17 +180,17 @@
   <sys:String x:Key="Text.RepoCM.Open">打开</sys:String>
   <sys:String x:Key="Text.RepoCM.Explore">在浏览器中查看</sys:String>
 
-  <sys:String x:Key="Text.BranchCM.Push">推送 '{0}'</sys:String>
+  <sys:String x:Key="Text.BranchCM.Push">推送 ${0}$</sys:String>
   <sys:String x:Key="Text.BranchCM.DiscardAll">放弃所有更改</sys:String>
-  <sys:String x:Key="Text.BranchCM.FastForward">快进到 '{0}'</sys:String>
-  <sys:String x:Key="Text.BranchCM.Pull">拉回 '{0}'</sys:String>
-  <sys:String x:Key="Text.BranchCM.PullInto">拉回 '{0}' 内容至 '{1}'</sys:String>
-  <sys:String x:Key="Text.BranchCM.Checkout">检出 '{0}'</sys:String>
-  <sys:String x:Key="Text.BranchCM.Merge">合并 '{0}' 到 '{1}'</sys:String>
-  <sys:String x:Key="Text.BranchCM.Rebase">变基 '{0}' 分支至 '{1}'</sys:String>
-  <sys:String x:Key="Text.BranchCM.Finish">GIT工作流 - 完成 '{0}'</sys:String>
-  <sys:String x:Key="Text.BranchCM.Rename">重命名 '{0}'</sys:String>
-  <sys:String x:Key="Text.BranchCM.Delete">删除 '{0}'</sys:String>
+  <sys:String x:Key="Text.BranchCM.FastForward">快进到 ${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Pull">拉回 ${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.PullInto">拉回 ${0}$ 内容至 ${1}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Checkout">检出 ${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Merge">合并 ${0}$ 到 ${1}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Rebase">变基 ${0}$ 分支至 ${1}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Finish">GIT工作流 - 完成 ${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Rename">重命名 ${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Delete">删除 ${0}$</sys:String>
   <sys:String x:Key="Text.BranchCM.Tracking">切换上游分支...</sys:String>
   <sys:String x:Key="Text.BranchCM.CopyName">复制分支名</sys:String>
   <sys:String x:Key="Text.BranchCM.UnsetUpstream">取消追踪</sys:String>
@@ -202,8 +202,8 @@
   <sys:String x:Key="Text.RemoteCM.Delete">删除 ...</sys:String>
   <sys:String x:Key="Text.RemoteCM.CopyURL">复制远程地址</sys:String>
 
-  <sys:String x:Key="Text.CommitCM.Reset">重置 '{0}' 到此处</sys:String>
-  <sys:String x:Key="Text.CommitCM.Rebase">变基 '{0}' 到此处</sys:String>
+  <sys:String x:Key="Text.CommitCM.Reset">重置 ${0}$ 到此处</sys:String>
+  <sys:String x:Key="Text.CommitCM.Rebase">变基 ${0}$ 到此处</sys:String>
   <sys:String x:Key="Text.CommitCM.CherryPick">挑选此提交</sys:String>
   <sys:String x:Key="Text.CommitCM.Reword">编辑提交信息</sys:String>
   <sys:String x:Key="Text.CommitCM.Squash">合并此提交到上一个提交</sys:String>
@@ -211,8 +211,8 @@
   <sys:String x:Key="Text.CommitCM.SaveAsPatch">另存为补丁 ...</sys:String>
   <sys:String x:Key="Text.CommitCM.CopySHA">复制提交指纹</sys:String>
 
-  <sys:String x:Key="Text.TagCM.Push">推送 '{0}'</sys:String>
-  <sys:String x:Key="Text.TagCM.Delete">删除 '{0}'</sys:String>
+  <sys:String x:Key="Text.TagCM.Push">推送 ${0}$</sys:String>
+  <sys:String x:Key="Text.TagCM.Delete">删除 ${0}$</sys:String>
   <sys:String x:Key="Text.TagCM.Copy">复制标签名</sys:String>
 
   <sys:String x:Key="Text.StashCM.Apply">应用</sys:String>
@@ -457,66 +457,12 @@
   <sys:String x:Key="Text.Squash.To">合并到 :</sys:String>
   <sys:String x:Key="Text.Squash.Message">修改提交信息：</sys:String>
 
-  <sys:String x:Key="Text.Statistics">提交统计</sys:String>
-  <sys:String x:Key="Text.Statistics.ThisWeek">本周</sys:String>
-  <sys:String x:Key="Text.Statistics.ThisMonth">本月</sys:String>
-  <sys:String x:Key="Text.Statistics.ThisYear">本年</sys:String>
-  <sys:String x:Key="Text.Statistics.TotalCommitterCount">提交者人数：{0}</sys:String>
-  <sys:String x:Key="Text.Statistics.TotalCommitsCount">总计提交次数：{0}</sys:String>
-  <sys:String x:Key="Text.Statistics.CommitterName">提交者</sys:String>
-  <sys:String x:Key="Text.Statistics.CommitAmount">提交次数</sys:String>
-
   <sys:String x:Key="Text.AssumeUnchanged">不跟踪更改的文件</sys:String>
   <sys:String x:Key="Text.AssumeUnchanged.Remove">移除</sys:String>
   <sys:String x:Key="Text.AssumeUnchanged.Empty">没有不跟踪更改的文件</sys:String>
 
-  <sys:String x:Key="Text.Weekday.0">星期日</sys:String>
-  <sys:String x:Key="Text.Weekday.1">星期一</sys:String>
-  <sys:String x:Key="Text.Weekday.2">星期二</sys:String>
-  <sys:String x:Key="Text.Weekday.3">星期三</sys:String>
-  <sys:String x:Key="Text.Weekday.4">星期四</sys:String>
-  <sys:String x:Key="Text.Weekday.5">星期五</sys:String>
-  <sys:String x:Key="Text.Weekday.6">星期六</sys:String>
-
-  <sys:String x:Key="Text.Month.1">1月</sys:String>
-  <sys:String x:Key="Text.Month.2">2月</sys:String>
-  <sys:String x:Key="Text.Month.3">3月</sys:String>
-  <sys:String x:Key="Text.Month.4">4月</sys:String>
-  <sys:String x:Key="Text.Month.5">5月</sys:String>
-  <sys:String x:Key="Text.Month.6">6月</sys:String>
-  <sys:String x:Key="Text.Month.7">7月</sys:String>
-  <sys:String x:Key="Text.Month.8">8月</sys:String>
-  <sys:String x:Key="Text.Month.9">9月</sys:String>
-  <sys:String x:Key="Text.Month.10">10月</sys:String>
-  <sys:String x:Key="Text.Month.11">11月</sys:String>
-  <sys:String x:Key="Text.Month.12">12月</sys:String>
-
-  <sys:String x:Key="Text.Sort.Name">按名称升序</sys:String>
-  <sys:String x:Key="Text.Sort.RecentlyOpened">按最近访问</sys:String>
-  <sys:String x:Key="Text.Sort.Bookmark">按书签颜色</sys:String>
-
   <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
-  <sys:String x:Key="Text.PathNotFound">路径（{0}）不存在或不可读取!</sys:String>
-  <sys:String x:Key="Text.MissingBash">无法找到bash.exe，请确保其在git.exe同目录中！</sys:String>
   <sys:String x:Key="Text.BinaryNotSupported">二进制文件不支持该操作!!!</sys:String>
   <sys:String x:Key="Text.BlameTypeNotSupported">选中文件不支持该操作!!!</sys:String>
-  <sys:String x:Key="Text.GitDirNotFound">获取仓库GIT_DIR失败!</sys:String>
-  <sys:String x:Key="Text.InitGitFlowFailed">初始化GIT FLOW失败!</sys:String>
-  <sys:String x:Key="Text.BadGitFlowType">不支持的GIT FLOW分支!</sys:String>
-  <sys:String x:Key="Text.BadCloneFolder">目录不存在或不可写!!!</sys:String>
-  <sys:String x:Key="Text.BadRemoteUri">非法的远程仓库地址!</sys:String>
-  <sys:String x:Key="Text.BadLocalName">非法的本地仓库地址!</sys:String>
-  <sys:String x:Key="Text.EmptyRemoteName">远程仓库地址不可为空</sys:String>
-  <sys:String x:Key="Text.BadRemoteName">远程仓库地址包含非法字符！仅支持字母、数字、下划线、横线或英文点号！</sys:String>
-  <sys:String x:Key="Text.DuplicatedRemoteName">远程仓库名已存在!</sys:String>
-  <sys:String x:Key="Text.EmptyBranchName">分支名不可为空</sys:String>
-  <sys:String x:Key="Text.BadBranchName">分支名包含非法字符！仅支持字母、数字、下划线、横线或英文点号！</sys:String>
-  <sys:String x:Key="Text.DuplicatedBranchName">分支名已存在!</sys:String>
-  <sys:String x:Key="Text.EmptyCommitMessage">提交信息未填写!</sys:String>
-  <sys:String x:Key="Text.BadPatchFile">补丁文件不存在或不可访问！</sys:String>
-  <sys:String x:Key="Text.BadRelativePath">非法的子路径！</sys:String>
-  <sys:String x:Key="Text.BadArchiveFile">非法的存档文件路径！</sys:String>
-  <sys:String x:Key="Text.Required">内容未填写！</sys:String>
-  <sys:String x:Key="Text.ConfirmRemoveRepo">正在将 '{0}' 从列表中移除，是否要继续？</sys:String>
   <sys:String x:Key="Text.SaveAsPatchSuccess">补丁已成功保存！</sys:String>
 </ResourceDictionary>
