@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Collections;
+using System;
 using System.Collections.Generic;
 
 namespace SourceGit.Models {
@@ -13,6 +14,7 @@ namespace SourceGit.Models {
         public BranchTreeNodeType Type { get; set; }
         public object Backend { get; set; }
         public bool IsExpanded { get; set; }
+        public bool IsFiltered { get; set; }
         public List<BranchTreeNode> Children { get; set; } = new List<BranchTreeNode>();
 
         public bool IsUpstreamTrackStatusVisible {
@@ -58,16 +60,21 @@ namespace SourceGit.Models {
                 }
 
                 foreach (var branch in branches) {
+                    var isFiltered = _filters.Contains(branch.FullName);
                     if (branch.IsLocal) {
-                        MakeBranchNode(branch, _locals, "local");
+                        MakeBranchNode(branch, _locals, "local", isFiltered);
                     } else {
                         var remote = _remotes.Find(x => x.Name == branch.Remote);
-                        if (remote != null) MakeBranchNode(branch, remote.Children, $"remote/{remote.Name}");
+                        if (remote != null) MakeBranchNode(branch, remote.Children, $"remote/{remote.Name}", isFiltered);
                     }
                 }
 
                 SortNodes(_locals);
                 SortNodes(_remotes);
+            }
+
+            public void SetFilters(AvaloniaList<string> filters) {
+                _filters.AddRange(filters);
             }
 
             public void CollectExpandedNodes(List<BranchTreeNode> nodes, bool isLocal) {
@@ -82,7 +89,7 @@ namespace SourceGit.Models {
                 }
             }
 
-            private void MakeBranchNode(Branch branch, List<BranchTreeNode> roots, string prefix) {
+            private void MakeBranchNode(Branch branch, List<BranchTreeNode> roots, string prefix, bool isFiltered) {
                 var subs = branch.Name.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (subs.Length == 1) {
@@ -91,6 +98,7 @@ namespace SourceGit.Models {
                         Type = BranchTreeNodeType.Branch,
                         Backend = branch,
                         IsExpanded = false,
+                        IsFiltered = isFiltered,
                     };
                     roots.Add(node);
                     return;
@@ -127,6 +135,7 @@ namespace SourceGit.Models {
                     Type = BranchTreeNodeType.Branch,
                     Backend = branch,
                     IsExpanded = false,
+                    IsFiltered = isFiltered,
                 };
                 lastFolder.Children.Add(last);
             }
@@ -146,6 +155,7 @@ namespace SourceGit.Models {
             private List<BranchTreeNode> _locals = new List<BranchTreeNode>();
             private List<BranchTreeNode> _remotes = new List<BranchTreeNode>();
             private HashSet<string> _expanded = new HashSet<string>();
+            private List<string> _filters = new List<string>();
             private Dictionary<string, BranchTreeNode> _maps = new Dictionary<string, BranchTreeNode>();
         }
     }

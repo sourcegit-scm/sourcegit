@@ -178,7 +178,14 @@
                   <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}"/>
                 </Border>
 
-                <ToggleButton Grid.Column="3" Classes="filter" Margin="0,0,8,0" Background="Transparent" IsVisible="{Binding IsBranch}" Checked="OnToggleFilter" Unchecked="OnToggleFilter"/>
+                <ToggleButton Grid.Column="3" 
+                              Classes="filter" 
+                              Margin="0,0,8,0" 
+                              Background="Transparent" 
+                              IsVisible="{Binding IsBranch}" 
+                              Checked="OnToggleFilter" 
+                              Unchecked="OnToggleFilter"
+                              IsChecked="{Binding IsFiltered}"/>
               </Grid>
             </TreeDataTemplate>
           </TreeView.ItemTemplate>
@@ -204,8 +211,17 @@
                 <Path Grid.Column="0" Classes="folder_icon" Width="10" Height="10" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" VerticalAlignment="Center"/>
                 <Path Grid.Column="0" Width="10" Height="10" Margin="0,4,0,0" Data="{StaticResource Icons.Remote}" IsVisible="{Binding IsRemote}" VerticalAlignment="Center"/>
                 <Path Grid.Column="0" Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}" VerticalAlignment="Center"/>
+                
                 <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontSize="12" Margin="8,0,4,0"/>
-                <ToggleButton Grid.Column="2" Classes="filter" Margin="0,0,8,0" Background="Transparent" Checked="OnToggleFilter" Unchecked="OnToggleFilter" IsVisible="{Binding IsBranch}"/>
+                
+                <ToggleButton Grid.Column="2" 
+                              Classes="filter" 
+                              Margin="0,0,8,0" 
+                              Background="Transparent" 
+                              Checked="OnToggleFilter" 
+                              Unchecked="OnToggleFilter" 
+                              IsVisible="{Binding IsBranch}"
+                              IsChecked="{Binding IsFiltered}"/>
               </Grid>
             </TreeDataTemplate>
           </TreeView.ItemTemplate>
@@ -251,7 +267,7 @@
             <DataGridTemplateColumn Width="*" Header="NAME">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate x:DataType="{x:Type m:Tag}">
-                  <TextBlock Text="{Binding Name}" Classes="monospace" FontSize="12" />
+                  <TextBlock Text="{Binding Name}" Classes="monospace" FontSize="12" TextTrimming="CharacterEllipsis" />
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
@@ -259,7 +275,12 @@
             <DataGridTemplateColumn Header="FILTER">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate x:DataType="{x:Type m:Tag}">
-                  <ToggleButton Grid.Column="2" Classes="filter" Margin="0,0,8,0" Background="Transparent" Checked="OnToggleFilter" Unchecked="OnToggleFilter"/>
+                  <ToggleButton Classes="filter" 
+                                Margin="0,0,8,0" 
+                                Background="Transparent" 
+                                Checked="OnToggleFilter" 
+                                Unchecked="OnToggleFilter"
+                                IsChecked="{Binding IsFiltered}"/>
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

@@ -23,12 +23,12 @@ namespace SourceGit.ViewModels {
 
         public AvaloniaList<string> Filters {
             get;
-            private set;
+            set;
         } = new AvaloniaList<string>();
 
         public AvaloniaList<string> CommitMessages {
             get;
-            private set;
+            set;
         } = new AvaloniaList<string>();
 
         [JsonIgnore]
@@ -401,6 +401,7 @@ namespace SourceGit.ViewModels {
             var remotes = new Commands.QueryRemotes(FullPath).Result();
 
             var builder = new Models.BranchTreeNode.Builder();
+            builder.SetFilters(Filters);
             builder.CollectExpandedNodes(_localBranchTrees, true);
             builder.CollectExpandedNodes(_remoteBranchTrees, false);
             builder.Run(branches, remotes);
@@ -418,6 +419,7 @@ namespace SourceGit.ViewModels {
 
         public void RefreshTags() {
             var tags = new Commands.QueryTags(FullPath).Result();
+            foreach (var tag in tags) tag.IsFiltered = Filters.Contains(tag.Name);
             Dispatcher.UIThread.Invoke(() => {
                 Tags = tags;
             });
