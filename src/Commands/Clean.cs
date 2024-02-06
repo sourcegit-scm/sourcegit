@@ -1,14 +1,11 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     清理指令
-    /// </summary>
     public class Clean : Command {
-
         public Clean(string repo) {
-            Cwd = repo;
+            WorkingDirectory = repo;
+            Context = repo;
             Args = "clean -qfd";
         }
 
@@ -21,7 +18,8 @@ namespace SourceGit.Commands {
                 builder.Append("\"");
             }
 
-            Cwd = repo;
+            WorkingDirectory = repo;
+            Context = repo;
             Args = builder.ToString();
         }
     }

@@ -1,27 +1,24 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     `git add`命令
-    /// </summary>
     public class Add : Command {
-        public Add(string repo) {
-            Cwd = repo;
-            Args = "add .";
-        }
+        public Add(string repo, List<Models.Change> changes = null) {
+            WorkingDirectory = repo;
+            Context = repo;
 
-        public Add(string repo, List<string> paths) {
-            StringBuilder builder = new StringBuilder();
-            builder.Append("add --");
-            foreach (var p in paths) {
-                builder.Append(" \"");
-                builder.Append(p);
-                builder.Append("\"");
+            if (changes == null || changes.Count == 0) {
+                Args = "add .";
+            } else {
+                var builder = new StringBuilder();
+                builder.Append("add --");
+                foreach (var c in changes) {
+                    builder.Append(" \"");
+                    builder.Append(c.Path);
+                    builder.Append("\"");
+                }
+                Args = builder.ToString();
             }
-
-            Cwd = repo;
-            Args = builder.ToString();
         }
     }
 }

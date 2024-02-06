@@ -1,0 +1,120 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.DiffView"
+             x:DataType="vm:DiffContext">
+  <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" Background="{DynamicResource Brush.Window}">
+    <Grid RowDefinitions="26,*">
+      <!-- Toolbar -->
+      <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <StackPanel Grid.Column="0" Orientation="Horizontal" IsVisible="{Binding IsOrgFilePathVisible}" VerticalAlignment="Center">
+            <Path Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
+            <TextBlock Margin="4,0,0,0" Text="{Binding OrgFilePath, Converter={x:Static c:PathConverters.TruncateIfTooLong}}" FontSize="11"/>
+            <TextBlock Margin="8,0,0,0" Text="→"/>
+          </StackPanel>
+
+          <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+            <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="1" Margin="4,0,0,0" Text="{Binding FilePath, Converter={x:Static c:PathConverters.TruncateIfTooLong}}" FontSize="11"/>
+            <Path Grid.Column="2" Classes="rotating" Width="10" Height="10" Margin="8,0" Data="{DynamicResource Icons.Loading}" IsVisible="{Binding IsLoading}"/>
+          </StackPanel>
+
+          <StackPanel Grid.Column="2" Margin="32,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsTextDiff}" VerticalAlignment="Center">
+            <ToggleButton x:Name="toggleDisplayMode"
+                          Classes="layout_direction"
+                          Width="32" Height="26"
+                          Padding="9,6"
+                          IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseCombinedTextDiff, Mode=TwoWay}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.Mode}"/>
+            <Button Classes="icon_button" Width="32" Command="{Binding OpenExternalMergeTool}" ToolTip.Tip="{DynamicResource Text.Diff.UseMerger}">
+              <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.OpenWith}"/>
+            </Button>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <!-- Same Page -->
+      <Border Grid.Row="1" Background="{DynamicResource Brush.Window}" IsVisible="{Binding IsNoChange}">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+          <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="{DynamicResource Brush.FG2}"/>
+          <TextBlock Margin="0,16,0,0"
+                     Text="{DynamicResource Text.Diff.NoChange}"
+                     FontSize="18" FontWeight="Bold"
+                     Foreground="{DynamicResource Brush.FG2}"
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+
+      <!-- Diff Contents -->
+      <ContentControl Grid.Row="1" Content="{Binding Content}">
+        <ContentControl.DataTemplates>
+          <!-- Binary Diff -->
+          <DataTemplate DataType="m:BinaryDiff">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+              <TextBlock Text="{DynamicResource Text.Diff.Binary}"
+                         Margin="0,0,0,32"
+                         FontSize="18" FontWeight="Bold"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         HorizontalAlignment="Center"/>
+              <Path Width="64" Height="64" Data="{StaticResource Icons.Binary}" Fill="{DynamicResource Brush.FG2}"/>
+              <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto,Auto" TextElement.FontFamily="{StaticResource JetBrainsMono}">
+                <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
+                  <TextBlock Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
+                </Border>
+
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OldSize}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
+
+                <Border Grid.Row="1" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Accent1}" CornerRadius="8" VerticalAlignment="Center">
+                  <TextBlock Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10"/>
+                </Border>
+
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding NewSize}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
+              </Grid>
+            </StackPanel>
+          </DataTemplate>
+
+          <!-- LFS Diff -->
+          <DataTemplate DataType="m:LFSDiff">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+              <TextBlock Text="{DynamicResource Text.Diff.LFS}"
+                         Margin="0,0,0,32"
+                         FontSize="18" FontWeight="Bold"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         HorizontalAlignment="Center"/>
+              <Path Width="64" Height="64" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
+              <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto,Auto" TextElement.FontFamily="{StaticResource JetBrainsMono}">
+                <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
+                  <TextBlock Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
+                </Border>
+
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Old.Size}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
+
+                <Border Grid.Row="1" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Accent1}" CornerRadius="8" VerticalAlignment="Center">
+                  <TextBlock Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10"/>
+                </Border>
+
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding New.Size}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
+              </Grid>
+            </StackPanel>
+          </DataTemplate>
+
+          <!-- Text Diff -->
+          <DataTemplate DataType="m:TextDiff">
+            <v:TextDiffView TextDiff="{Binding}" UseCombined="{Binding #toggleDisplayMode.IsChecked}"/>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+    </Grid>
+  </Border>
+</UserControl>

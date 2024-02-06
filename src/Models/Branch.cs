@@ -1,7 +1,4 @@
-namespace SourceGit.Models {
-    /// <summary>
-    ///     分支数据
-    /// </summary>
+﻿namespace SourceGit.Models {
     public class Branch {
         public string Name { get; set; }
         public string FullName { get; set; }

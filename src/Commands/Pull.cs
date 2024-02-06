@@ -1,19 +1,12 @@
-using System;
+﻿using System;
 
 namespace SourceGit.Commands {
-
-    /// <summary>
-    ///     拉回
-    /// </summary>
     public class Pull : Command {
-        private Action<string> handler = null;
-        private bool needStash = false;
-
-        public Pull(string repo, string remote, string branch, bool useRebase, bool autoStash, Action<string> onProgress) {
-            Cwd = repo;
+        public Pull(string repo, string remote, string branch, bool useRebase, Action<string> outputHandler) {
+            _outputHandler = outputHandler;
+            WorkingDirectory = repo;
+            Context = repo;
             TraitErrorAsOutput = true;
-            handler = onProgress;
-            needStash = autoStash;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
             if (!string.IsNullOrEmpty(sshKey)) {
@@ -27,25 +20,10 @@ namespace SourceGit.Commands {
             Args += $"{remote} {branch}";
         }
 
-        public bool Run() {
-            if (needStash) {
-                var changes = new LocalChanges(Cwd).Result();
-                if (changes.Count > 0) {
-                    if (!new Stash(Cwd).Push(changes, "PULL_AUTO_STASH", true)) {
-                        return false;
-                    }
-                } else {
-                    needStash = false;
-                }
-            }
-
-            var succ = Exec();
-            if (succ && needStash) new Stash(Cwd).Pop("stash@{0}");
-            return succ;
+        protected override void OnReadline(string line) {
+            _outputHandler?.Invoke(line);
         }
 
-        public override void OnReadline(string line) {
-            handler?.Invoke(line);
-        }
+        private Action<string> _outputHandler;
     }
 }

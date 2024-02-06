@@ -3,5 +3,4 @@
 .vscode
 bin
 obj
-publish
 *.user

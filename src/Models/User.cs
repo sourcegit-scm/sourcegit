@@ -1,9 +1,6 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SourceGit.Models {
-    /// <summary>
-    ///     Git用户
-    /// </summary>
     public class User {
         public static User Invalid = new User();
         public static Dictionary<string, User> Caches = new Dictionary<string, User>();
@@ -12,8 +9,8 @@ namespace SourceGit.Models {
         public string Email { get; set; } = string.Empty;
 
         public override bool Equals(object obj) {
-            if (obj == null || !(obj is User)) return false; 
-            
+            if (obj == null || !(obj is User)) return false;
+
             var other = obj as User;
             return Name == other.Name && Email == other.Email;
         }

@@ -1,23 +1,20 @@
-using System.IO;
+﻿using System.IO;
 
 namespace SourceGit.Commands {
-
-    /// <summary>
-    ///     取得GitDir
-    /// </summary>
     public class QueryGitDir : Command {
         public QueryGitDir(string workDir) {
-            Cwd = workDir;
+            WorkingDirectory = workDir;
             Args = "rev-parse --git-dir";
+            RaiseError = false;
         }
 
         public string Result() {
-            var rs = ReadToEnd().Output;
+            var rs = ReadToEnd().StdOut;
             if (string.IsNullOrEmpty(rs)) return null;
 
             rs = rs.Trim();
             if (Path.IsPathRooted(rs)) return rs;
-            return Path.GetFullPath(Path.Combine(Cwd, rs));
+            return Path.GetFullPath(Path.Combine(WorkingDirectory, rs));
         }
     }
 }

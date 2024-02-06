@@ -1,0 +1,225 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.RevisionCompare"
+             x:DataType="vm:RevisionCompare"
+             Background="{DynamicResource Brush.Window}">
+  <Grid RowDefinitions="50,*" Margin="4">
+    <Grid Grid.Row="0" ColumnDefinitions="48,*,48,*,48" Margin="0,0,0,4">
+      <Border Grid.Column="1" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+        <Grid RowDefinitions="Auto,*">
+          <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
+            <v:Avatar Width="16" Height="16"
+                      VerticalAlignment="Center"
+                      IsHitTestVisible="False"
+                      User="{Binding StartPoint.Author}"
+                      FallbackFontFamily="{StaticResource JetBrainsMono}"/>
+            <TextBlock Grid.Column="1" FontSize="12" Text="{Binding StartPoint.Author.Name}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="2" FontSize="12" Text="{Binding StartPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
+            <TextBlock Grid.Column="3" FontSize="12" Text="{Binding StartPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+          </Grid>
+
+          <TextBlock Grid.Row="1" Text="{Binding StartPoint.Subject}" FontSize="12" VerticalAlignment="Bottom"/>
+        </Grid>
+      </Border>
+
+      <Path Grid.Column="2" Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Down}" RenderTransformOrigin="50%,50%" RenderTransform="rotate(270deg)"/>
+
+      <Border Grid.Column="3" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+        <Grid RowDefinitions="Auto,*">
+          <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
+            <v:Avatar Width="16" Height="16"
+                      VerticalAlignment="Center"
+                      IsHitTestVisible="False"
+                      User="{Binding EndPoint.Author}"
+                      FallbackFontFamily="{StaticResource JetBrainsMono}"/>
+            <TextBlock Grid.Column="1" FontSize="12" Text="{Binding EndPoint.Author.Name}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="2" FontSize="12" Text="{Binding EndPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
+            <TextBlock Grid.Column="3" FontSize="12" Text="{Binding EndPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+          </Grid>
+
+          <TextBlock Grid.Row="1" Text="{Binding EndPoint.Subject}" FontSize="12" VerticalAlignment="Bottom"/>
+        </Grid>
+      </Border>
+    </Grid>
+
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="256" MinWidth="200" MaxWidth="480"/>
+        <ColumnDefinition Width="1"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Grid Grid.Column="0" RowDefinitions="26,*">
+        <!-- Search & Display Mode -->
+        <Grid Grid.Row="0" ColumnDefinitions="24,*,24,24">
+          <Border Grid.Column="0" Grid.ColumnSpan="3"
+                  Background="Transparent"
+                  BorderBrush="{DynamicResource Brush.Border2}"
+                  BorderThickness="1"/>
+          <Path Grid.Column="0"
+                Width="14" Height="14"
+                Fill="{DynamicResource Brush.FG2}"
+                Data="{StaticResource Icons.Search}"/>
+          <TextBox Grid.Column="1"
+                   Classes="no_background no_border"
+                   FontSize="12"
+                   Height="24"
+                   CornerRadius="0"
+                   Watermark="{DynamicResource Text.CommitDetail.Changes.Search}"
+                   Text="{Binding SearchFilter, Mode=TwoWay}"/>
+          <Button Grid.Column="2"
+                  Classes="icon_button"
+                  IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                  Command="{Binding ClearSearchFilter}">
+            <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
+          </Button>
+
+          <v:ChangeViewModeSwitcher Grid.Column="3"
+                                    Width="18" Height="18"
+                                    HorizontalAlignment="Right"
+                                    ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
+        </Grid>
+
+        <!-- Changes -->
+        <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
+          <Grid>
+            <DataGrid Background="Transparent"
+                      ItemsSource="{Binding VisibleChanges}"
+                      SelectedItem="{Binding SelectedChange, Mode=TwoWay}"
+                      SelectionMode="Single"
+                      CanUserReorderColumns="False"
+                      CanUserResizeColumns="False"
+                      CanUserSortColumns="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="None"
+                      Focusable="False"
+                      RowHeight="26"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      SelectionChanged="OnDataGridSelectionChanged"
+                      ContextRequested="OnDataGridContextRequested"
+                      IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsList}}">
+              <DataGrid.Columns>
+                <DataGridTemplateColumn Header="ICON">
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="*" Header="PATH">
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Path}" Margin="4,0,0,0" FontSize="12"/>
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+              </DataGrid.Columns>
+            </DataGrid>
+
+            <DataGrid Background="Transparent"
+                      ItemsSource="{Binding VisibleChanges}"
+                      SelectedItem="{Binding SelectedChange, Mode=TwoWay}"
+                      SelectionMode="Single"
+                      CanUserReorderColumns="False"
+                      CanUserResizeColumns="False"
+                      CanUserSortColumns="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="None"
+                      Focusable="False"
+                      RowHeight="26"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      SelectionChanged="OnDataGridSelectionChanged"
+                      ContextRequested="OnDataGridContextRequested"
+                      IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsGrid}}">
+              <DataGrid.Columns>
+                <DataGridTemplateColumn Header="ICON">
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="FILE_NAME">
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0,0,0" FontSize="12" />
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="FOLDER_PATH">
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Margin="4,0,0,0" FontSize="12" Foreground="{DynamicResource Brush.FG2}"/>
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+              </DataGrid.Columns>
+            </DataGrid>
+
+            <TreeView ItemsSource="{Binding ChangeTree}"
+                      SelectedItem="{Binding SelectedNode, Mode=TwoWay}"
+                      AutoScrollToSelectedItem="True"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ContextRequested="OnTreeViewContextRequested"
+                      IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsTree}}">
+              <TreeView.Styles>
+                <Style Selector="TreeViewItem" x:DataType="vm:FileTreeNode">
+                  <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                </Style>
+              </TreeView.Styles>
+
+              <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:FileTreeNode}">
+                  <Grid Height="24" ColumnDefinitions="Auto,*">
+                    <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
+                    <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding Backend}" IconFontFamily="{StaticResource JetBrainsMono}" IsVisible="{Binding !IsFolder}"/>
+                    <TextBlock Grid.Column="1" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" FontSize="12" Margin="6,0,0,0"/>
+                  </Grid>
+                </TreeDataTemplate>
+              </TreeView.ItemTemplate>
+            </TreeView>
+          </Grid>
+        </Border>
+      </Grid>
+
+      <GridSplitter Grid.Column="1"
+                    Width="1" MinWidth=".5"
+                    HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                    Background="Transparent"/>
+
+      <Grid Grid.Column="2" Margin="4,0,0,0">
+        <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+          <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
+            <TextBlock Margin="0,16,0,0"
+                       Text="{DynamicResource Text.Diff.Welcome}"
+                       FontSize="18" FontWeight="Bold"
+                       Foreground="{DynamicResource Brush.FG2}"
+                       HorizontalAlignment="Center"/>
+          </StackPanel>
+        </Border>
+
+        <ContentControl Content="{Binding DiffContext}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:DiffContext">
+              <v:DiffView/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>

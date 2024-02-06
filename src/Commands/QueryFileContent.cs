@@ -1,26 +1,23 @@
-using System.Collections.Generic;
+﻿using System.Text;
 
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     取得指定提交下的某文件内容
-    /// </summary>
     public class QueryFileContent : Command {
-        private List<Models.TextLine> lines = new List<Models.TextLine>();
-        private int added = 0;
-
-        public QueryFileContent(string repo, string commit, string path) {
-            Cwd = repo;
-            Args = $"show {commit}:\"{path}\"";
+        public QueryFileContent(string repo, string revision, string file) {
+            WorkingDirectory = repo;
+            Context = repo;
+            Args = $"show {revision}:\"{file}\"";
         }
 
-        public List<Models.TextLine> Result() {
+        public string Result() {
             Exec();
-            return lines;
+            return _builder.ToString();
         }
 
-        public override void OnReadline(string line) {
-            added++;
-            lines.Add(new Models.TextLine() { Number = added, Data = line });
+        protected override void OnReadline(string line) {
+            _builder.Append(line);
+            _builder.Append('\n');
         }
+
+        private StringBuilder _builder = new StringBuilder();
     }
 }

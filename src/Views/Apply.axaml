@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.Apply"
+             x:DataType="vm:Apply">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+				       Classes="bold"
+				       Text="{DynamicResource Text.Apply.Title}"/>
+
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="150,*">
+      <TextBlock Grid.Column="0"
+					       HorizontalAlignment="Right" VerticalAlignment="Center"
+					       Margin="0,0,8,0"
+					       Text="{DynamicResource Text.Apply.File}"/>
+      <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,Auto">
+        <TextBox Grid.Column="0"
+                 x:Name="txtPatchFile"
+                 Height="28"
+                 CornerRadius="3"
+                 Watermark="{DynamicResource Text.Apply.File.Placeholder}"
+                 Text="{Binding PatchFile, Mode=TwoWay}"/>
+        <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectPatchFile">
+          <Path Data="{StaticResource Icons.Folder.Open}"/>
+        </Button>
+      </Grid>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+					       HorizontalAlignment="Right" VerticalAlignment="Center"
+					       Margin="0,0,8,0"
+					       Text="{DynamicResource Text.Apply.WS}"/>
+      <ComboBox Grid.Row="1" Grid.Column="1"
+                Height="28" Padding="8,0"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding WhiteSpaceModes}"
+                SelectedItem="{Binding SelectedWhiteSpaceMode, Mode=TwoWay}"
+                IsEnabled="{Binding !IgnoreWhiteSpace}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate x:DataType="{x:Type m:ApplyWhiteSpaceMode}">
+            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+              <TextBlock Text="{Binding Name}"/>
+              <TextBlock Text="{Binding Desc}" Margin="8,0,0,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+            </StackPanel>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+
+      <CheckBox Grid.Row="2" Grid.Column="1"
+                Content="{DynamicResource Text.Apply.IgnoreWS}"
+                IsChecked="{Binding IgnoreWhiteSpace, Mode=TwoWay}"/>
+    </Grid>
+  </StackPanel>
+</UserControl>

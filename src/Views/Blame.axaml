@@ -1,0 +1,76 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="using:SourceGit.Models"
+        xmlns:vm="using:SourceGit.ViewModels"
+        xmlns:v="using:SourceGit.Views"
+        xmlns:c="using:SourceGit.Converters"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SourceGit.Views.Blame"
+        x:Name="me"
+        x:DataType="vm:Blame"
+        Title="{DynamicResource Text.Blame}"
+        WindowStartupLocation="CenterOwner"
+        BorderThickness="1"
+        BorderBrush="{DynamicResource Brush.Border0}"
+        Background="{DynamicResource Brush.TitleBar}"
+        MinWidth="1280" MinHeight="720"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome">
+  <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToTitleBarHeight}}"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+      <!-- Bottom border -->
+      <Rectangle Grid.Column="0" Grid.ColumnSpan="5" Fill="{DynamicResource Brush.Border0}" Height="1" VerticalAlignment="Bottom"/>
+
+      <!-- Caption Buttons (macOS) -->
+      <Border Grid.Column="0" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
+        <v:CaptionButtonsMacOS/>
+      </Border>
+
+      <!-- Icon -->
+      <Path Grid.Column="1" Margin="8,0,0,0" Width="12" Height="12" Data="{StaticResource Icons.Blame}"/>
+
+      <!-- Title -->
+      <TextBlock Grid.Column="2" Margin="8,0" Text="{DynamicResource Text.Blame}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"/>
+
+      <!-- Blame information -->
+      <TextBlock Grid.Column="3" Text="{Binding Title}" FontSize="11" FontStyle="Italic" IsHitTestVisible="False" VerticalAlignment="Center"/>
+
+      <!-- Caption Buttons (Windows) -->
+      <Border Grid.Column="4" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
+        <v:CaptionButtons/>
+      </Border>
+    </Grid>
+
+    <Grid Grid.Row="1" Background="{DynamicResource Brush.Window}">
+      <!-- Blame View -->
+      <v:BlameTextEditor HorizontalScrollBarVisibility="Auto"
+                         VerticalScrollBarVisibility="Auto" 
+                         BorderBrush="{DynamicResource Brush.Border2}"
+                         BorderThickness="0"
+                         Foreground="{DynamicResource Brush.FG1}"
+                         FontFamily="{StaticResource JetBrainsMono}"
+                         FontSize="12"
+                         BlameData="{Binding Data}"/>
+      
+      <!-- Not supported mask (for binary files) -->
+      <StackPanel Orientation="Vertical"
+                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                  IsVisible="{Binding IsBinary}">
+        <Path Width="64" Height="64" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Error}"/>
+        <TextBlock Margin="0,16,0,0" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.BlameTypeNotSupported}"/>
+      </StackPanel>
+    </Grid>
+
+    <!-- Loading -->
+    <Grid Grid.Row="1" Background="{DynamicResource Brush.Window}" IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}">
+      <Path Width="48" Height="48" Classes="rotating" Data="{StaticResource Icons.Loading}" IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}"/>
+    </Grid>
+  </Grid>
+</Window>

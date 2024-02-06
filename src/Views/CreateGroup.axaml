@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.CreateGroup"
+             x:DataType="vm:CreateGroup">
+  <StackPanel Orientation="Vertical" Margin="8,0,0,0">
+    <TextBlock Classes="bold" FontSize="18" Text="{DynamicResource Text.Welcome.AddRootFolder}"/>
+
+    <Grid Margin="8,16,0,0" Height="28" ColumnDefinitions="Auto,*">
+      <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="8,0" Text="{DynamicResource Text.Name}"/>
+      <TextBox Grid.Column="1" CornerRadius="3" Text="{Binding Name, Mode=TwoWay}"/>
+    </Grid>
+  </StackPanel>
+</UserControl>

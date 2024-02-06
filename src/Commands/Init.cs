@@ -1,12 +1,8 @@
-namespace SourceGit.Commands {
-
-    /// <summary>
-    ///     初始化Git仓库
-    /// </summary>
+﻿namespace SourceGit.Commands {
     public class Init : Command {
-
-        public Init(string workDir) {
-            Cwd = workDir;
+        public Init(string ctx, string dir) {
+            Context = ctx;
+            WorkingDirectory = dir;
             Args = "init -q";
         }
     }

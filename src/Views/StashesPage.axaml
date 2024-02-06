@@ -1,0 +1,151 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.StashesPage"
+             x:DataType="vm:StashesPage">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="300" MinWidth="300"/>
+      <ColumnDefinition Width="1"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <!-- Left -->
+    <Grid Grid.Column="0" RowDefinitions="28,*,28,*">
+      <!-- Stash Bar -->
+      <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
+        <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+          <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Stashes}"/>
+          <TextBlock Grid.Column="1" Text="{DynamicResource Text.Stashes.Stashes}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
+
+          <Button Grid.Column="3"
+                  Classes="icon_button"
+                  Width="26" Height="14"
+                  Padding="0"
+                  Command="{Binding Clear}"
+                  IsEnabled="{Binding Stashes.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Clear2}"/>
+          </Button>
+        </Grid>
+      </Border>
+
+      <!-- Stash List -->
+      <DataGrid Grid.Row="1"
+                Background="{DynamicResource Brush.Contents}"
+								ItemsSource="{Binding Stashes}"
+                SelectedItem="{Binding SelectedStash, Mode=TwoWay}"
+								SelectionMode="Single"
+								CanUserReorderColumns="False"
+								CanUserResizeColumns="False"
+								CanUserSortColumns="False"
+								IsReadOnly="True"
+								HeadersVisibility="None"
+								Focusable="False"
+								RowHeight="50"
+								HorizontalScrollBarVisibility="Disabled"
+								VerticalScrollBarVisibility="Auto">
+        <DataGrid.Columns>
+          <DataGridTemplateColumn Width="*">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate DataType="m:Stash">
+                <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4" Background="Transparent">
+                  <Border.ContextMenu>
+                    <ContextMenu>
+                      <MenuItem Header="{DynamicResource Text.StashCM.Apply}" Command="{Binding $parent[v:StashesPage].DataContext.(vm:StashesPage).Apply}" CommandParameter="{Binding}"/>
+                      <MenuItem Header="{DynamicResource Text.StashCM.Pop}" Command="{Binding $parent[v:StashesPage].DataContext.(vm:StashesPage).Pop}" CommandParameter="{Binding}"/>
+                      <MenuItem Header="{DynamicResource Text.StashCM.Drop}" Command="{Binding $parent[v:StashesPage].DataContext.(vm:StashesPage).Drop}" CommandParameter="{Binding}"/>
+                    </ContextMenu>
+                  </Border.ContextMenu>
+
+                  <Grid RowDefinitions="Auto,*" >
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                      <TextBlock Grid.Column="0" FontSize="12" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" TextDecorations="Underline" Cursor="Hand" FontFamily="{StaticResource JetBrainsMono}"/>
+                      <TextBlock Grid.Column="1" FontSize="12" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0" FontFamily="{StaticResource JetBrainsMono}"/>
+                    </Grid>
+
+                    <TextBlock Grid.Row="1" Text="{Binding Message}" FontSize="12" VerticalAlignment="Bottom"/>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+
+      <!-- Changes Bar -->
+      <Border Grid.Row="2" BorderThickness="0,1" BorderBrush="{DynamicResource Brush.Border0}">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+          <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.File}"/>
+          <TextBlock Grid.Column="1" Text="{DynamicResource Text.Stashes.Changes}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
+        </Grid>
+      </Border>
+
+      <!-- View Changes -->
+      <DataGrid Grid.Row="3"
+                Background="{DynamicResource Brush.Contents}"
+                ItemsSource="{Binding Changes}"
+                SelectedItem="{Binding SelectedChange, Mode=TwoWay}"
+                SelectionMode="Single"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserSortColumns="False"
+                IsReadOnly="True"
+                HeadersVisibility="None"
+                Focusable="False"
+                RowHeight="26"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Auto">
+        <DataGrid.Columns>
+          <DataGridTemplateColumn Header="ICON">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <DataGridTemplateColumn Width="*" Header="PATH">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Path}" Margin="4,0,0,0" FontSize="12"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+    </Grid>
+
+    <GridSplitter Grid.Column="1"
+                  Width="1" MinWidth=".5"
+                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                  Background="{DynamicResource Brush.Border0}"/>
+
+    <!-- Right -->
+    <Grid Grid.Column="2" Margin="4">
+      <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+          <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
+          <TextBlock Margin="0,16,0,0"
+                     Text="{DynamicResource Text.Diff.Welcome}"
+                     FontSize="18" FontWeight="Bold"
+                     Foreground="{DynamicResource Brush.FG2}"
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+
+      <ContentControl Content="{Binding DiffContext}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="vm:DiffContext">
+            <v:DiffView/>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+    </Grid>
+  </Grid>
+</UserControl>

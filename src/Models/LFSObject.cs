@@ -1,9 +1,6 @@
-namespace SourceGit.Models {
-    /// <summary>
-    ///     LFS对象
-    /// </summary>
+﻿namespace SourceGit.Models {
     public class LFSObject {
-        public string OID { get; set; }
-        public long Size { get; set; }
+        public string Oid { get; set; } = string.Empty;
+        public long Size { get; set; } = 0;
     }
 }

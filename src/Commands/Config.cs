@@ -1,32 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     config命令
-    /// </summary>
-    public class Config : Command {
+    public class Config : Command {        
+        public Config(string repository) {
+            WorkingDirectory = repository;
+            Context = repository;
+            RaiseError = false;
+        }
 
-        public Config() { }
+        public Dictionary<string, string> ListAll() {
+            Args = "config -l";
 
-        public Config(string repo) {
-            Cwd = repo;
+            var output = ReadToEnd();
+            var rs = new Dictionary<string, string>();
+            if (output.IsSuccess) {
+                var lines = output.StdOut.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var line in lines) {
+                    var idx = line.IndexOf('=');
+                    if (idx != -1) {
+                        var key = line.Substring(0, idx).Trim();
+                        var val = line.Substring(idx+1).Trim();
+                        if (rs.ContainsKey(key)) {
+                            rs[key] = val;
+                        } else {
+                            rs.Add(key, val);
+                        }                        
+                    }
+                }
+            }
+
+            return rs;
         }
 
         public string Get(string key) {
             Args = $"config {key}";
-            return ReadToEnd().Output.Trim();
+            return ReadToEnd().StdOut.Trim();
         }
 
-        public bool Set(string key, string val, bool allowEmpty = false) {
-            if (!allowEmpty && string.IsNullOrEmpty(val)) {
-                if (string.IsNullOrEmpty(Cwd)) {
+        public bool Set(string key, string value, bool allowEmpty = false) {
+            if (!allowEmpty && string.IsNullOrWhiteSpace(value)) {
+                if (string.IsNullOrEmpty(WorkingDirectory)) {
                     Args = $"config --global --unset {key}";
                 } else {
                     Args = $"config --unset {key}";
                 }
             } else {
-                if (string.IsNullOrEmpty(Cwd)) {
-                    Args = $"config --global {key} \"{val}\"";
+                if (string.IsNullOrWhiteSpace(WorkingDirectory)) {
+                    Args = $"config --global {key} \"{value}\"";
                 } else {
-                    Args = $"config {key} \"{val}\"";
+                    Args = $"config {key} \"{value}\"";
                 }
             }
 

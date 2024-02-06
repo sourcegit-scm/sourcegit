@@ -1,0 +1,177 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.Histories"
+             x:DataType="vm:Histories">
+  <v:LayoutableGrid RowDefinitions="*,1,*" ColumnDefinitions="*,1,*"
+                    UseHorizontal="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories}">
+    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+      <DataGrid x:Name="commitDataGrid"
+				        Background="{DynamicResource Brush.Contents}"
+				        ItemsSource="{Binding Commits}"
+				        SelectionMode="Extended"
+				        SelectedItem="{Binding AutoSelectedCommit}"
+				        CanUserReorderColumns="False"
+				        CanUserResizeColumns="False"
+				        CanUserSortColumns="False"
+				        IsReadOnly="True"
+				        HeadersVisibility="None"
+				        Focusable="False"
+				        RowHeight="{Binding DataGridRowHeight}"
+				        HorizontalScrollBarVisibility="Disabled"
+				        VerticalScrollBarVisibility="Auto"
+				        DisplayRegionChanged="OnCommitDataGridDisplayRegionChanged"
+				        SelectionChanged="OnCommitDataGridSelectionChanged"
+				        ContextRequested="OnCommitDataGridContextRequested">
+        <DataGrid.Columns>
+          <DataGridTemplateColumn Width="*" Header="GRAPH">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate x:DataType="{x:Type m:Commit}">
+                <Border Margin="{Binding Margin}">
+                  <StackPanel Orientation="Horizontal" Margin="2,0,0,0">
+                    <ItemsControl ItemsSource="{Binding Decorators}" IsVisible="{Binding HasDecorators}">
+                      <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                          <WrapPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                      </ItemsControl.ItemsPanel>
+
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type m:Decorator}">
+                          <Border Height="16" Margin="0,0,4,0" CornerRadius="2" ClipToBounds="True">
+                            <StackPanel Orientation="Horizontal">
+                              <Border Background="{DynamicResource Brush.Decorator}" Width="16">
+                                <Path Width="8" Height="8" Stretch="Fill" Data="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToIcon}}" Fill="{DynamicResource Brush.DecoratorIcon}"/>
+                              </Border>
+                              <Border Background="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToBackground}}">
+                                <TextBlock Text="{Binding Name}" FontSize="10" Margin="4,0" Foreground="Black"/>
+                              </Border>
+                            </StackPanel>
+                          </Border>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Text="{Binding Subject}" FontSize="12" Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <DataGridTemplateColumn Header="AVATAR">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate x:DataType="{x:Type m:Commit}">
+                <v:Avatar Width="16" Height="16"
+                          Margin="16,0,8,0"
+                          VerticalAlignment="Center"
+                          IsHitTestVisible="False"
+                          User="{Binding Author}"
+                          FallbackFontFamily="{StaticResource JetBrainsMono}"
+                          Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <DataGridTemplateColumn MaxWidth="100" Header="AUTHOR">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate x:DataType="{x:Type m:Commit}">
+                <TextBlock Text="{Binding Author.Name}"
+                           FontSize="11"
+                           FontFamily="{StaticResource JetBrainsMono}"
+                           Margin="0,0,8,0"
+                           Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <DataGridTemplateColumn Header="SHA">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate x:DataType="{x:Type m:Commit}">
+                <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                           FontSize="11"
+                           Margin="12,0"
+                           FontFamily="{StaticResource JetBrainsMono}"
+                           Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <DataGridTemplateColumn Header="TIME">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate x:DataType="{x:Type m:Commit}">
+                <TextBlock Text="{Binding CommitterTimeStr}"
+                           FontSize="11"
+                           Margin="8,0"
+                           FontFamily="{StaticResource JetBrainsMono}"
+                           Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+
+      <v:CommitGraph x:Name="commitGraph"
+                     BindingDataGrid="{Binding #commitDataGrid}"
+                     Graph="{Binding Graph}"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                     IsHitTestVisible="False"
+                     ClipToBounds="True"/>
+
+      <Path Classes="rotating"
+            Width="48" Height="48"
+            Data="{DynamicResource Icons.Loading}"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            IsVisible="{Binding IsLoading}"/>
+    </Grid>
+
+    <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                  MinWidth="1" MinHeight="1"
+					        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+					        Background="{DynamicResource Brush.Border0}"/>
+
+    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+      <Border Background="{DynamicResource Brush.Window}">
+        <Path Width="128" Height="128"
+              Data="{StaticResource Icons.Detail}"
+              HorizontalAlignment="Center"
+              Fill="{DynamicResource Brush.FG2}"/>
+      </Border>
+
+      <ContentControl Content="{Binding DetailContext}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="vm:CommitDetail">
+            <v:CommitDetail/>
+          </DataTemplate>
+
+          <DataTemplate DataType="vm:RevisionCompare">
+            <v:RevisionCompare/>
+          </DataTemplate>
+
+          <DataTemplate DataType="vm:CountSelectedCommits">
+            <Grid Background="{DynamicResource Brush.Window}">
+              <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Path Width="128" Height="128"
+                      Data="{StaticResource Icons.Detail}"
+                      HorizontalAlignment="Center"
+                      Fill="{DynamicResource Brush.FG2}"/>
+
+                <TextBlock HorizontalAlignment="Center"
+                           Margin="0,16"
+                           FontSize="24" FontWeight="Bold"
+                           Foreground="{DynamicResource Brush.FG2}"
+                           Text="{Binding Count, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
+              </StackPanel>
+            </Grid>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+    </Grid>
+  </v:LayoutableGrid>
+</UserControl>

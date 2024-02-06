@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
+             x:Class="SourceGit.Views.InitGitFlow"
+             x:DataType="vm:InitGitFlow">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+				       Classes="bold"
+				       Text="{DynamicResource Text.GitFlow.Init}"/>
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,8,32,32,32,32" ColumnDefinitions="150,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+					       HorizontalAlignment="Right" VerticalAlignment="Center"
+					       Margin="0,0,8,0"
+					       Text="{DynamicResource Text.GitFlow.ProductionBranch}"/>
+      <TextBox Grid.Row="0" Grid.Column="1"
+               Height="26"
+               VerticalAlignment="Center"
+               CornerRadius="2"
+               Text="{Binding Master, Mode=TwoWay}"/>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+					       HorizontalAlignment="Right" VerticalAlignment="Center"
+					       Margin="0,0,8,0"
+					       Text="{DynamicResource Text.GitFlow.DevelopBranch}"/>
+      <TextBox Grid.Row="1" Grid.Column="1"
+               Height="26"
+               VerticalAlignment="Center"
+               CornerRadius="2"
+               Text="{Binding Develop, Mode=TwoWay}"/>
+
+      <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                 Height="1"
+                 Fill="{DynamicResource Brush.Border2}"
+                 VerticalAlignment="Center"/>
+
+      <TextBlock Grid.Row="3" Grid.Column="0"
+					       HorizontalAlignment="Right" VerticalAlignment="Center"
+					       Margin="0,0,8,0"
+					       Text="{DynamicResource Text.GitFlow.FeaturePrefix}"/>
+      <TextBox Grid.Row="3" Grid.Column="1"
+               Height="26"
+               VerticalAlignment="Center"
+               CornerRadius="2"
+               Text="{Binding FeturePrefix, Mode=TwoWay}"/>
+
+      <TextBlock Grid.Row="4" Grid.Column="0"
+					       HorizontalAlignment="Right" VerticalAlignment="Center"
+					       Margin="0,0,8,0"
+					       Text="{DynamicResource Text.GitFlow.ReleasePrefix}"/>
+      <TextBox Grid.Row="4" Grid.Column="1"
+               Height="26"
+               VerticalAlignment="Center"
+               CornerRadius="2"
+               Text="{Binding ReleasePrefix, Mode=TwoWay}"/>
+
+      <TextBlock Grid.Row="5" Grid.Column="0"
+					       HorizontalAlignment="Right" VerticalAlignment="Center"
+					       Margin="0,0,8,0"
+					       Text="{DynamicResource Text.GitFlow.HotfixPrefix}"/>
+      <TextBox Grid.Row="5" Grid.Column="1"
+               Height="26"
+               VerticalAlignment="Center"
+               CornerRadius="2"
+               Text="{Binding HotfixPrefix, Mode=TwoWay}"/>
+
+      <TextBlock Grid.Row="6" Grid.Column="0"
+					       HorizontalAlignment="Right" VerticalAlignment="Center"
+					       Margin="0,0,8,0"
+					       Text="{DynamicResource Text.GitFlow.TagPrefix}"/>
+      <TextBox Grid.Row="6" Grid.Column="1"
+               Height="26"
+               VerticalAlignment="Center"
+               CornerRadius="2"
+               Watermark="{DynamicResource Text.Optional}"
+               Text="{Binding TagPrefix, Mode=TwoWay}"/>
+    </Grid>
+  </StackPanel>
+</UserControl>

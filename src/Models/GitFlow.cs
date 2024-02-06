@@ -1,7 +1,4 @@
-namespace SourceGit.Models {
-    /// <summary>
-    ///     GitFlow的分支类型
-    /// </summary>
+﻿namespace SourceGit.Models {
     public enum GitFlowBranchType {
         None,
         Feature,
@@ -9,9 +6,6 @@ namespace SourceGit.Models {
         Hotfix,
     }
 
-    /// <summary>
-    ///     GitFlow相关设置
-    /// </summary>
     public class GitFlow {
         public string Feature { get; set; }
         public string Release { get; set; }

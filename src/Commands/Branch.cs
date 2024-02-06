@@ -1,38 +1,39 @@
-namespace SourceGit.Commands {
-    /// <summary>
-    ///     分支相关操作
-    /// </summary>
-    class Branch : Command {
-        private string target = null;
-
-        public Branch(string repo, string branch) {
-            Cwd = repo;
-            target = branch;
+﻿namespace SourceGit.Commands {
+    public static class Branch {
+        public static bool Create(string repo, string name, string basedOn) {
+            var cmd = new Command();
+            cmd.WorkingDirectory = repo;
+            cmd.Context = repo;
+            cmd.Args = $"branch {name} {basedOn}";
+            return cmd.Exec();
         }
 
-        public void Create(string basedOn) {
-            Args = $"branch {target} {basedOn}";
-            Exec();
+        public static bool Rename(string repo, string name, string to) {
+            var cmd = new Command();
+            cmd.WorkingDirectory = repo;
+            cmd.Context = repo;
+            cmd.Args = $"branch -M {name} {to}";
+            return cmd.Exec();
         }
 
-        public void Rename(string to) {
-            Args = $"branch -M {target} {to}";
-            Exec();
-        }
-
-        public void SetUpstream(string upstream) {
-            Args = $"branch {target} ";
+        public static bool SetUpstream(string repo, string name, string upstream) {
+            var cmd = new Command();
+            cmd.WorkingDirectory = repo;
+            cmd.Context = repo;
             if (string.IsNullOrEmpty(upstream)) {
-                Args += "--unset-upstream";
+                cmd.Args = $"branch {name} --unset-upstream";
             } else {
-                Args += $"-u {upstream}";
+                cmd.Args = $"branch {name} -u {upstream}";
             }
-            Exec();
+            return cmd.Exec();
         }
 
-        public void Delete() {
-            Args = $"branch -D {target}";
-            Exec();
+        public static bool Delete(string repo, string name) {
+            var cmd = new Command();
+            cmd.WorkingDirectory = repo;
+            cmd.Context = repo;
+            cmd.Args = $"branch -D {name}";
+            return cmd.Exec();
         }
     }
 }

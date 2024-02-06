@@ -1,0 +1,158 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="using:SourceGit.Converters"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.Welcome"
+             x:DataType="vm:Welcome">
+  <Grid RowDefinitions="36,*,36" Background="{DynamicResource Brush.Window}">
+    <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1" Background="{DynamicResource Brush.ToolBar}">
+      <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+        <Button Classes="icon_button" Width="32" Click="OpenLocalRepository" ToolTip.Tip="{DynamicResource Text.Welcome.OpenOrInit}">
+          <Path Width="15" Height="13" Data="{StaticResource Icons.Folder.Open}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Command="{Binding Clone}" CommandParameter="{Binding $parent[v:Launcher].DataContext.(vm:Launcher).ActivePage}" ToolTip.Tip="{DynamicResource Text.Welcome.Clone}">
+          <Path Width="13" Height="13" Data="{StaticResource Icons.Pull}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Command="{Binding OpenTerminal}" ToolTip.Tip="{DynamicResource Text.Welcome.OpenTerminal}">
+          <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
+        </Button>
+      </StackPanel>
+    </Border>
+
+    <Grid Grid.Row="1" Margin="0,8" ColumnDefinitions="*,600,*">
+      <Grid Grid.Column="1" RowDefinitions="Auto,*">
+        <Grid Grid.Row="0" ColumnDefinitions="28,*,Auto">
+          <Border Grid.Column="0" Grid.ColumnSpan="3"
+                  Height="32"
+                  CornerRadius="16"
+                  BorderBrush="{DynamicResource Brush.Border0}"
+                  BorderThickness="1"
+                  Background="{DynamicResource Brush.Contents}"/>
+
+          <Path Grid.Column="0"
+                Width="16" Height="16"
+                Margin="4,0,0,0"
+                Data="{StaticResource Icons.Search}"/>
+
+          <TextBox Grid.Column="1"
+                   Height="24"
+                   Padding="0"
+                   Classes="no_border no_background"
+                   Watermark="{DynamicResource Text.Welcome.Search}"
+                   VerticalContentAlignment="Center"
+                   Text="{Binding SearchFilter, Mode=TwoWay}"/>
+
+          <Button Grid.Column="2" Classes="icon_button" IsVisible="{Binding IsClearSearchVisible}" Command="{Binding ClearSearchFilter}">
+            <Path Width="16" Height="16" Margin="0,0,4,0" Data="{StaticResource Icons.Clear}"/>
+          </Button>
+        </Grid>
+
+        <TreeView Grid.Row="1"
+                  Margin="0,8,8,0"
+                  ItemsSource="{Binding RepositoryNodes}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  Loaded="SetupTreeViewDragAndDrop"
+                  LostFocus="OnTreeViewLostFocus">
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="{DynamicResource Text.Welcome.AddRootFolder}" Command="{Binding AddFolder}">
+                <MenuItem.Icon>
+                  <Path Width="12" Height="12" Data="{DynamicResource Icons.Folder.Add}"/>
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+
+          <TreeView.Styles>
+            <Style Selector="TreeViewItem" x:DataType="vm:RepositoryNode">
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+              <Setter Property="IsVisible" Value="{Binding IsVisible}"/>
+              <Setter Property="CornerRadius" Value="4"/>
+              <Setter Property="ContextMenu">
+                <Setter.Value>
+                  <ContextMenu>
+                    <MenuItem Header="{DynamicResource Text.Welcome.Edit}" Command="{Binding Edit}">
+                      <MenuItem.Icon>
+                        <Path Width="12" Height="12" Data="{DynamicResource Icons.Edit}"/>
+                      </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{DynamicResource Text.Welcome.AddSubFolder}" Command="{Binding AddSubFolder}" IsVisible="{Binding !IsRepository}">
+                      <MenuItem.Icon>
+                        <Path Width="12" Height="12" Data="{DynamicResource Icons.Folder.Add}"/>
+                      </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{DynamicResource Text.RepoCM.Explore}" Command="{Binding OpenInFileManager}" IsVisible="{Binding IsRepository}">
+                      <MenuItem.Icon>
+                        <Path Width="12" Height="12" Data="{DynamicResource Icons.OpenWith}"/>
+                      </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{DynamicResource Text.Welcome.OpenTerminal}" Command="{Binding OpenTerminal}" IsVisible="{Binding IsRepository}">
+                      <MenuItem.Icon>
+                        <Path Width="12" Height="12" Data="{DynamicResource Icons.Terminal}"/>
+                      </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{DynamicResource Text.Welcome.Delete}" Command="{Binding Delete}">
+                      <MenuItem.Icon>
+                        <Path Width="12" Height="12" Data="{DynamicResource Icons.Clear}"/>
+                      </MenuItem.Icon>
+                    </MenuItem>
+                  </ContextMenu>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </TreeView.Styles>
+
+          <TreeView.ItemTemplate>
+            <TreeDataTemplate ItemsSource="{Binding SubNodes}">
+              <Grid Height="30"
+                    ColumnDefinitions="Auto,Auto,*"
+                    Background="Transparent"
+                    PointerPressed="OnPointerPressedTreeNode"
+                    PointerMoved="OnPointerMovedOverTreeNode"
+                    PointerReleased="OnPointerReleasedOnTreeNode"
+                    DoubleTapped="OnDoubleTappedTreeNode"
+                    Loaded="SetupTreeNodeDragAndDrop"
+                    ClipToBounds="True">
+                <Path Grid.Column="0" Width="12" Height="12" Margin="0,0,8,0"
+                      Fill="{Binding Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
+                      StrokeThickness="{Binding Bookmark, Converter={x:Static c:BookmarkConverters.ToStrokeThickness}}"
+                      Stroke="{DynamicResource Brush.FG1}"
+                      HorizontalAlignment="Left"
+                      Data="{StaticResource Icons.Bookmark}"
+                      IsVisible="{Binding IsRepository}"/>
+                <Path Grid.Column="0" Classes="folder_icon"
+                      Width="12" Height="12" Margin="0,2,8,0"
+                      Fill="{DynamicResource Brush.FG1}"
+                      HorizontalAlignment="Left"
+                      IsVisible="{Binding !IsRepository}"/>
+
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Name}"/>
+                <TextBlock Grid.Column="2"
+                           Margin="8,0"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                           Foreground="{DynamicResource Brush.FG2}"
+                           Text="{Binding Id}"
+                           IsVisible="{Binding IsRepository}"/>
+              </Grid>
+            </TreeDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
+      </Grid>
+    </Grid>
+
+    <TextBlock Grid.Row="2"
+               Classes="italic"
+               Margin="0,0,8,0"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               FontSize="12"
+               Text="{DynamicResource Text.Welcome.DragDropTip}"
+               Foreground="{DynamicResource Brush.FG2}"/>
+  </Grid>
+</UserControl>

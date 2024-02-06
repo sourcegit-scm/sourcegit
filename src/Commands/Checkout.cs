@@ -1,29 +1,25 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     检出
-    /// </summary>
     public class Checkout : Command {
-        private Action<string> handler = null;
-
         public Checkout(string repo) {
-            Cwd = repo;
+            WorkingDirectory = repo;
+            Context = repo;
         }
 
         public bool Branch(string branch, Action<string> onProgress) {
             Args = $"checkout --progress {branch}";
             TraitErrorAsOutput = true;
-            handler = onProgress;
+            _outputHandler = onProgress;
             return Exec();
         }
 
         public bool Branch(string branch, string basedOn, Action<string> onProgress) {
             Args = $"checkout --progress -b {branch} {basedOn}";
             TraitErrorAsOutput = true;
-            handler = onProgress;
+            _outputHandler = onProgress;
             return Exec();
         }
 
@@ -54,8 +50,10 @@ namespace SourceGit.Commands {
             return Exec();
         }
 
-        public override void OnReadline(string line) {
-            handler?.Invoke(line);
+        protected override void OnReadline(string line) {
+            _outputHandler?.Invoke(line);
         }
+
+        private Action<string> _outputHandler;
     }
 }

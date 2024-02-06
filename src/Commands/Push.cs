@@ -1,16 +1,12 @@
-using System;
+﻿using System;
 
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     推送
-    /// </summary>
     public class Push : Command {
-        private Action<string> handler = null;
-
         public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool force, bool track, Action<string> onProgress) {
-            Cwd = repo;
+            WorkingDirectory = repo;
+            Context = repo;
             TraitErrorAsOutput = true;
-            handler = onProgress;
+            _outputHandler = onProgress;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
             if (!string.IsNullOrEmpty(sshKey)) {
@@ -28,8 +24,16 @@ namespace SourceGit.Commands {
             Args += $"{remote} {local}:{remoteBranch}";
         }
 
+        /// <summary>
+        ///     Only used to delete a remote branch!!!!!!
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="remote"></param>
+        /// <param name="branch"></param>
         public Push(string repo, string remote, string branch) {
-            Cwd = repo;
+            WorkingDirectory = repo;
+            Context = repo;
+            TraitErrorAsOutput = true;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
             if (!string.IsNullOrEmpty(sshKey)) {
@@ -42,7 +46,8 @@ namespace SourceGit.Commands {
         }
 
         public Push(string repo, string remote, string tag, bool isDelete) {
-            Cwd = repo;
+            WorkingDirectory = repo;
+            Context = repo;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
             if (!string.IsNullOrEmpty(sshKey)) {
@@ -56,8 +61,10 @@ namespace SourceGit.Commands {
             Args += $"{remote} refs/tags/{tag}";
         }
 
-        public override void OnReadline(string line) {
-            handler?.Invoke(line);
+        protected override void OnReadline(string line) {
+            _outputHandler?.Invoke(line);
         }
+
+        private Action<string> _outputHandler = null;
     }
 }

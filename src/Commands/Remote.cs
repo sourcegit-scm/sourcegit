@@ -1,11 +1,8 @@
-namespace SourceGit.Commands {
-    /// <summary>
-    ///     远程操作
-    /// </summary>
+﻿namespace SourceGit.Commands {
     public class Remote : Command {
-
         public Remote(string repo) {
-            Cwd = repo;
+            WorkingDirectory = repo;
+            Context = repo;
         }
 
         public bool Add(string name, string url) {

@@ -1,18 +1,14 @@
-using System;
-
-namespace SourceGit.Commands {
-    /// <summary>
-    ///     检测git是否可用，并获取git版本信息
-    /// </summary>
+﻿namespace SourceGit.Commands {
     public class Version : Command {
-        const string GitVersionPrefix = "git version ";
+        public Version() {
+            Args = "-v";
+            RaiseError = false;
+        }
+
         public string Query() {
-            Args = $"--version";
-            var result = ReadToEnd();
-            if (!result.IsSuccess || string.IsNullOrEmpty(result.Output)) return null;
-            var version = result.Output.Trim();
-            if (!version.StartsWith(GitVersionPrefix, StringComparison.Ordinal)) return null;
-            return version.Substring(GitVersionPrefix.Length);
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess || string.IsNullOrWhiteSpace(rs.StdOut)) return string.Empty;
+            return rs.StdOut.Trim().Substring("git version ".Length);
         }
     }
 }

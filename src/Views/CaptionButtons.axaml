@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.CaptionButtons">
+  <Grid Classes="caption_button_box">
+    <StackPanel Orientation="Horizontal">
+      <Button Classes="caption_button" Click="MinimizeWindow">
+        <Path Data="{StaticResource Icons.Window.Minimize}"/>
+      </Button>
+      <Button Classes="caption_button" Click="MaximizeOrRestoreWindow">
+        <Path Data="{Binding $parent[Window].WindowState, Converter={x:Static c:WindowStateConverters.ToMaxOrRestoreIcon}}"/>
+      </Button>
+      <Button Classes="caption_button" Click="CloseWindow">
+        <Path Data="{StaticResource Icons.Window.Close}"/>
+      </Button>
+    </StackPanel>
+  </Grid>
+</UserControl>

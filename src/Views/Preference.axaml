@@ -1,0 +1,312 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="using:SourceGit.Models"
+        xmlns:c="using:SourceGit.Converters"
+        xmlns:vm="using:SourceGit.ViewModels"
+        xmlns:v="using:SourceGit.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SourceGit.Views.Preference"
+        x:DataType="vm:Preference"
+        x:Name="me"
+        Title="{DynamicResource Text.Preference}"
+        Background="{DynamicResource Brush.Window}"
+        Width="600" SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome">
+  <Grid RowDefinitions="30,Auto">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+      <Border Grid.Column="0" Grid.ColumnSpan="3"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              IsHitTestVisible="False"/>
+
+      <Path Grid.Column="0"
+            Width="14" Height="14"
+            Data="{StaticResource Icons.Settings2}"
+            Margin="10,0,0,0"
+            IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}"/>
+
+      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
+        <Button Classes="caption_button_macos" Click="CloseWindow">
+          <Grid>
+            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
+            <Path Height="7" Width="7" Stretch="Fill" Data="{StaticResource Icons.MacOS.Close}"/>
+          </Grid>
+        </Button>
+      </Grid>
+
+      <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Preference}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <Button Grid.Column="2" Classes="caption_button" Click="CloseWindow" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
+        <Path Data="{StaticResource Icons.Window.Close}"/>
+      </Button>
+    </Grid>
+
+    <TabControl Grid.Row="1">
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
+        </TabItem.Header>
+        <Grid Margin="8" RowDefinitions="32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Row="0" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.General.Locale}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <ComboBox Grid.Row="0" Grid.Column="1"
+                    MinHeight="28"
+                    Padding="8,0"
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding Source={x:Static m:Locale.Supported}}"
+                    DisplayMemberBinding="{Binding Name, x:DataType=m:Locale}"
+                    SelectedItem="{Binding Locale, Mode=TwoWay, Converter={x:Static c:StringConverters.ToLocale}}"/>
+
+          <TextBlock Grid.Row="1" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.General.Theme}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <ComboBox Grid.Row="1" Grid.Column="1"
+                    MinHeight="28"
+                    Padding="8,0"
+                    HorizontalAlignment="Stretch"
+                    DisplayMemberBinding="{Binding Key, x:DataType=ThemeVariant}"
+                    SelectedItem="{Binding Theme, Mode=TwoWay, Converter={x:Static c:StringConverters.ToTheme}}">
+            <ComboBox.Items>
+              <ThemeVariant>Default</ThemeVariant>
+              <ThemeVariant>Dark</ThemeVariant>
+              <ThemeVariant>Light</ThemeVariant>
+            </ComboBox.Items>
+          </ComboBox>
+
+          <TextBlock Grid.Row="2" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.General.MaxHistoryCommits}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,64">
+            <Slider Grid.Column="0"
+                    Minimum="20000" Maximum="100000"
+                    TickPlacement="BottomRight" TickFrequency="5000"
+                    IsSnapToTickEnabled="True"
+                    VerticalAlignment="Center"
+                    Foreground="{DynamicResource Brush.Border1}"
+                    Value="{Binding MaxHistoryCommits, Mode=TwoWay}">
+              <Slider.Resources>
+                <Thickness x:Key="SliderTopHeaderMargin">0,0,0,4</Thickness>
+                <GridLength x:Key="SliderPreContentMargin">0</GridLength>
+                <GridLength x:Key="SliderPostContentMargin">0</GridLength>
+                <CornerRadius x:Key="SliderThumbCornerRadius">8</CornerRadius>
+                <x:Double x:Key="SliderHorizontalThumbWidth">16</x:Double>
+                <x:Double x:Key="SliderHorizontalThumbHeight">16</x:Double>
+              </Slider.Resources>
+            </Slider>
+
+            <TextBlock Grid.Column="1"
+                       HorizontalAlignment="Right" VerticalAlignment="Center"
+                       Foreground="{DynamicResource Brush.FG1}"
+                       Text="{Binding MaxHistoryCommits}"/>
+          </Grid>
+
+          <CheckBox Grid.Row="3" Grid.Column="1"
+                    Content="{DynamicResource Text.Preference.General.RestoreTabs}"
+                    IsChecked="{Binding RestoreTabs, Mode=TwoWay}"/>
+
+          <CheckBox Grid.Row="4" Grid.Column="1"
+                    Height="32"
+                    Content="{DynamicResource Text.Preference.General.UseMacOSStyle}"
+                    IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Mode=TwoWay}"
+                    IsVisible="{Binding #me.CanChangeTitleBarStyle}"/>
+        </Grid>
+      </TabItem>
+
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Git}"/>
+        </TabItem.Header>
+
+        <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Row="0" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.Git.Path}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,Auto">
+            <TextBox Grid.Column="0"
+                     Height="28"
+                     CornerRadius="3"
+                     Text="{Binding GitInstallDir, Mode=TwoWay}"/>
+            <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectGitInstallDir">
+              <Path Data="{StaticResource Icons.Folder.Open}"/>
+            </Button>
+          </Grid>
+
+          <TextBlock Grid.Row="1" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.Git.Version}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <TextBlock Grid.Row="1" Grid.Column="1"
+                     x:Name="txtVersion"/>
+
+          <TextBlock Grid.Row="2" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.Git.DefaultCloneDir}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,Auto">
+            <TextBox Grid.Column="0"
+                     Height="28"
+                     CornerRadius="3"
+                     Text="{Binding GitDefaultCloneDir, Mode=TwoWay}"/>
+            <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectDefaultCloneDir">
+              <Path Data="{StaticResource Icons.Folder.Open}"/>
+            </Button>
+          </Grid>
+
+          <TextBlock Grid.Row="3" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.Git.User}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <TextBox Grid.Row="3" Grid.Column="1"
+                   Height="28"
+                   CornerRadius="3"
+                   Text="{Binding #me.DefaultUser, Mode=TwoWay}"
+                   Watermark="{DynamicResource Text.Preference.Git.User.Placeholder}"/>
+
+          <TextBlock Grid.Row="4" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.Git.Email}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <TextBox Grid.Row="4" Grid.Column="1"
+                   Height="28"
+                   CornerRadius="3"
+                   Text="{Binding #me.DefaultEmail, Mode=TwoWay}"
+                   Watermark="{DynamicResource Text.Preference.Git.Email.Placeholder}"/>
+
+          <TextBlock Grid.Row="5" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.Git.CRLF}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <ComboBox Grid.Row="5" Grid.Column="1"
+                    MinHeight="28"
+                    Padding="8,0"
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding Source={x:Static m:CRLFMode.Supported}}"
+                    SelectedItem="{Binding #me.CRLFMode, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate x:DataType="{x:Type m:CRLFMode}">
+                <Grid ColumnDefinitions="64,*">
+                  <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Desc}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+                </Grid>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+
+          <CheckBox Grid.Row="6" Grid.Column="1"
+                    Content="{DynamicResource Text.Preference.Git.AutoFetch}"
+                    IsChecked="{Binding GitAutoFetch, Mode=TwoWay}"/>
+        </Grid>
+      </TabItem>
+
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.GPG}"/>
+        </TabItem.Header>
+
+        <Grid Margin="8" RowDefinitions="32,32,32" ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Row="0" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.GPG.Enabled}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <CheckBox Grid.Row="0" Grid.Column="1"
+                    IsChecked="{Binding #me.EnableGPGSigning, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="1" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.GPG.Path}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,Auto">
+            <TextBox Grid.Column="0"
+                     x:Name="txtGPGExecutable"
+                     Height="28"
+                     CornerRadius="3"
+                     Text="{Binding #me.GPGExecutableFile, Mode=TwoWay}"/>
+            <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectGPGExecutable">
+              <Path Data="{StaticResource Icons.Folder.Open}"/>
+            </Button>
+          </Grid>
+
+          <TextBlock Grid.Row="2" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.GPG.UserKey}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <TextBox Grid.Row="2" Grid.Column="1"
+                   Height="28"
+                   CornerRadius="3"
+                   Text="{Binding #me.GPGUserKey, Mode=TwoWay}"
+                   Watermark="{DynamicResource Text.Preference.GPG.UserKey.Placeholder}"/>
+        </Grid>
+      </TabItem>
+
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Merger}"/>
+        </TabItem.Header>
+
+        <Grid Margin="8" RowDefinitions="32,32,Auto,Auto" ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Row="0" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.Merger.Type}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <ComboBox Grid.Row="0" Grid.Column="1"
+                    MinHeight="28"
+                    Padding="8,0"
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding Source={x:Static m:ExternalMergeTools.Supported}}"
+                    DisplayMemberBinding="{Binding Name, x:DataType=m:ExternalMergeTools}"
+                    SelectedIndex="{Binding ExternalMergeToolType, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="1" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.Merger.Path}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,16,0"/>
+          <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,Auto">
+            <TextBox Grid.Column="0"
+                     Height="28"
+                     CornerRadius="3"
+                     Text="{Binding ExternalMergeToolPath, Mode=TwoWay}"/>
+            <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectExternalMergeTool">
+              <Path Data="{StaticResource Icons.Folder.Open}"/>
+            </Button>
+          </Grid>
+
+          <TextBlock Grid.Row="2" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.Merger.CustomMergeCmd}"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Margin="0,0,16,0"
+                     IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
+          <TextBox Grid.Row="2" Grid.Column="1"
+                   Height="28" Margin="0,2"
+                   CornerRadius="3"
+                   Text="{Binding ExternalMergeToolCmd, Mode=TwoWay}"
+                   IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
+
+          <TextBlock Grid.Row="3" Grid.Column="0"
+                     Text="{DynamicResource Text.Preference.Merger.CustomDiffCmd}"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Margin="0,0,16,0"
+                     IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
+          <TextBox Grid.Row="3" Grid.Column="1"
+                   Height="28" Margin="0,2"
+                   CornerRadius="3"
+                   Text="{Binding ExternalMergeToolDiffCmd, Mode=TwoWay}"
+                   IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
+        </Grid>
+      </TabItem>
+    </TabControl>
+  </Grid>
+</Window>

@@ -1,52 +1,41 @@
-namespace SourceGit.Models {
+﻿namespace SourceGit.Models {
+    public enum ChangeViewMode {
+        List,
+        Grid,
+        Tree,
+    }
 
-    /// <summary>
-    ///     Git变更
-    /// </summary>
+    public enum ChangeState {
+        None,
+        Modified,
+        Added,
+        Deleted,
+        Renamed,
+        Copied,
+        Unmerged,
+        Untracked
+    }
+
     public class Change {
-
-        /// <summary>
-        ///     显示模式
-        /// </summary>
-        public enum DisplayMode {
-            Tree,
-            List,
-            Grid,
-        }
-
-        /// <summary>
-        ///     变更状态码
-        /// </summary>
-        public enum Status {
-            None,
-            Modified,
-            Added,
-            Deleted,
-            Renamed,
-            Copied,
-            Unmerged,
-            Untracked,
-        }
-
-        public Status Index { get; set; }
-        public Status WorkTree { get; set; } = Status.None;
+        public ChangeState Index { get; set; }
+        public ChangeState WorkTree { get; set; } = ChangeState.None;
         public string Path { get; set; } = "";
         public string OriginalPath { get; set; } = "";
 
         public bool IsConflit {
             get {
-                if (Index == Status.Unmerged || WorkTree == Status.Unmerged) return true;
-                if (Index == Status.Added && WorkTree == Status.Added) return true;
-                if (Index == Status.Deleted && WorkTree == Status.Deleted) return true;
+                if (Index == ChangeState.Unmerged || WorkTree == ChangeState.Unmerged) return true;
+                if (Index == ChangeState.Added && WorkTree == ChangeState.Added) return true;
+                if (Index == ChangeState.Deleted && WorkTree == ChangeState.Deleted) return true;
                 return false;
             }
         }
 
-        public void Set(Status index, Status workTree = Status.None) {
+        public void Set(ChangeState index, ChangeState workTree = ChangeState.None) {
             Index = index;
             WorkTree = workTree;
 
-            if (index == Status.Renamed || workTree == Status.Renamed) {
+            if (index == ChangeState.Renamed || workTree == ChangeState.Renamed) {
                 var idx = Path.IndexOf('\t');
                 if (idx >= 0) {
                     OriginalPath = Path.Substring(0, idx);

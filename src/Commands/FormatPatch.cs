@@ -1,12 +1,9 @@
-namespace SourceGit.Commands {
-    /// <summary>
-    ///     将Commit另存为Patch文件
-    /// </summary>
+﻿namespace SourceGit.Commands {
     public class FormatPatch : Command {
-
-        public FormatPatch(string repo, string commit, string path) {
-            Cwd = repo;
-            Args = $"format-patch {commit} -1 -o \"{path}\"";
+        public FormatPatch(string repo, string commit, string saveTo) {
+            WorkingDirectory = repo;
+            Context = repo;
+            Args = $"format-patch {commit} -1 -o \"{saveTo}\"";
         }
     }
 }

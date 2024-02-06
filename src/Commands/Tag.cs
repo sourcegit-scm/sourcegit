@@ -1,38 +1,35 @@
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace SourceGit.Commands {
-
-    /// <summary>
-    ///     标签相关指令
-    /// </summary>
-    public class Tag : Command {
-
-        public Tag(string repo) {
-            Cwd = repo;
-        }
-
-        public bool Add(string name, string basedOn, string message) {
-            Args = $"tag -a {name} {basedOn} ";
+    public static class Tag {
+        public static bool Add(string repo, string name, string basedOn, string message) {
+            var cmd = new Command();
+            cmd.WorkingDirectory = repo;
+            cmd.Context = repo;
+            cmd.Args = $"tag -a {name} {basedOn} ";
 
             if (!string.IsNullOrEmpty(message)) {
                 string tmp = Path.GetTempFileName();
                 File.WriteAllText(tmp, message);
-                Args += $"-F \"{tmp}\"";
+                cmd.Args += $"-F \"{tmp}\"";
             } else {
-                Args += $"-m {name}";
+                cmd.Args += $"-m {name}";
             }
 
-            return Exec();
+            return cmd.Exec();
         }
 
-        public bool Delete(string name, bool push) {
-            Args = $"tag --delete {name}";
-            if (!Exec()) return false;
+        public static bool Delete(string repo, string name, List<Models.Remote> remotes) {
+            var cmd = new Command();
+            cmd.WorkingDirectory = repo;
+            cmd.Context = repo;
+            cmd.Args = $"tag --delete {name}";
+            if (!cmd.Exec()) return false;
 
-            if (push) {
-                var remotes = new Remotes(Cwd).Result();
+            if (remotes != null) {
                 foreach (var r in remotes) {
-                    new Push(Cwd, r.Name, name, true).Exec();
+                    new Push(repo, r.Name, name, true).Exec();
                 }
             }
 

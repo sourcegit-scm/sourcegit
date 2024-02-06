@@ -1,0 +1,1 @@
+dotnet publish -c Release -r win-x64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained

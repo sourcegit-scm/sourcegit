@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.Clone"
+             x:DataType="vm:Clone">
+  <StackPanel Orientation="Vertical" Margin="8,0,0,0">
+    <TextBlock Classes="bold" FontSize="18" Text="{DynamicResource Text.Clone}"/>
+
+    <Grid Margin="8,16,0,0" Height="28" ColumnDefinitions="120,*">
+      <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.RemoteURL}"/>
+      <TextBox Grid.Column="1" CornerRadius="3" Text="{Binding Remote, Mode=TwoWay}"/>
+    </Grid>
+    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*" IsVisible="{Binding UseSSH}">
+      <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.SSHKey}"/>
+      <Grid Grid.Column="1" ColumnDefinitions="*,Auto">
+        <TextBox Grid.Column="0"
+                 x:Name="txtSSHKey"
+                 Height="28"
+                 CornerRadius="3"
+                 Watermark="{DynamicResource Text.SSHKey.Placeholder}"
+                 Text="{Binding SSHKey, Mode=TwoWay}"/>
+        <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectSSHKey">
+          <Path Data="{StaticResource Icons.Folder.Open}"/>
+        </Button>
+      </Grid>
+    </Grid>
+    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*">
+      <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.ParentFolder}"/>
+      <Grid Grid.Column="1" ColumnDefinitions="*,Auto">
+        <TextBox Grid.Column="0"
+                 x:Name="txtParentFolder"
+                 Height="28"
+                 CornerRadius="3"
+                 Text="{Binding ParentFolder, Mode=TwoWay}"/>
+        <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectParentFolder">
+          <Path Data="{StaticResource Icons.Folder.Open}"/>
+        </Button>
+      </Grid>
+    </Grid>
+    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*">
+      <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.LocalName}"/>
+      <TextBox Grid.Column="1" CornerRadius="3" Watermark="{DynamicResource Text.Clone.LocalName.Placeholder}" Text="{Binding Local, Mode=TwoWay}"/>
+    </Grid>
+    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*">
+      <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.AdditionalParam}"/>
+      <TextBox Grid.Column="1" CornerRadius="3" Watermark="{DynamicResource Text.Clone.AdditionalParam.Placeholder}" Text="{Binding ExtraArgs, Mode=TwoWay}"/>
+    </Grid>
+  </StackPanel>
+</UserControl>

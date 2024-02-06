@@ -1,22 +1,19 @@
-using System;
+﻿using System;
 
 namespace SourceGit.Commands {
-
-    /// <summary>
-    ///     存档命令
-    /// </summary>
     public class Archive : Command {
-        private Action<string> handler;
-
-        public Archive(string repo, string revision, string to, Action<string> onProgress) {
-            Cwd = repo;
-            Args = $"archive --format=zip --verbose --output=\"{to}\" {revision}";
+        public Archive(string repo, string revision, string saveTo, Action<string> outputHandler) {
+            WorkingDirectory = repo;
+            Context = repo;
+            Args = $"archive --format=zip --verbose --output=\"{saveTo}\" {revision}";
             TraitErrorAsOutput = true;
-            handler = onProgress;
+            _outputHandler = outputHandler;
         }
 
-        public override void OnReadline(string line) {
-            handler?.Invoke(line);
+        protected override void OnReadline(string line) {
+            _outputHandler?.Invoke(line);
         }
+
+        private Action<string> _outputHandler;
     }
 }

@@ -1,30 +1,34 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFrameworks>net48</TargetFrameworks>
-        <OutputType>WinExe</OutputType>
-        <UseWPF>true</UseWPF>
-        <UseWindowsForms>true</UseWindowsForms>
-        <ApplicationIcon>App.ico</ApplicationIcon>
-        <Company>sourcegit</Company>
-        <Description>OpenSource GIT client for Windows</Description>
-        <Copyright>Copyright © sourcegit 2023. All rights reserved.</Copyright>
-        <ApplicationManifest>App.manifest</ApplicationManifest>
-        <Version>7.0</Version>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <StartupObject>SourceGit.App</StartupObject>
-        <PackageProjectUrl>https://github.com/sourcegit-scm/sourcegit.git</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/sourcegit-scm/sourcegit.git</RepositoryUrl>
-        <RepositoryType>Public</RepositoryType>
-        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    </PropertyGroup>
-    <ItemGroup>
-      <Resource Include="App.ico" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="All" />
-        <PackageReference Include="System.Text.Json" Version="7.0.3" />
-    </ItemGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>App.manifest</ApplicationManifest>
+    <ApplicationIcon>App.ico</ApplicationIcon>
+    <Version>8.0</Version>
+    <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="App.ico" />
+    <AvaloniaResource Include="Resources/Fonts/*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.7" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.7" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.7" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.7" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.0.7" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="OneWare.AvaloniaEdit" Version="11.0.7" />
+    <PackageReference Include="OneWare.AvaloniaEdit.TextMate" Version="11.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TrimmerRootAssembly Include="SourceGit" />
+    <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
+  </ItemGroup>
 </Project>

@@ -1,25 +1,22 @@
-using System;
+﻿using System;
 
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     子模块
-    /// </summary>
     public class Submodule : Command {
-        private Action<string> onProgress = null;
-
-        public Submodule(string cwd) {
-            Cwd = cwd;
+        public Submodule(string repo) {
+            WorkingDirectory = repo;
+            Context = repo;
         }
 
-        public bool Add(string url, string path, bool recursive, Action<string> handler) {
-            Args = $"submodule add {url} {path}";
-            onProgress = handler;
+        public bool Add(string url, string relativePath, bool recursive, Action<string> outputHandler) {
+            _outputHandler = outputHandler;
+            Args = $"submodule add {url} {relativePath}";
             if (!Exec()) return false;
 
             if (recursive) {
-                Args = $"submodule update --init --recursive -- {path}";
+                Args = $"submodule update --init --recursive -- {relativePath}";
                 return Exec();
             } else {
+                Args = $"submodule update --init -- {relativePath}";
                 return true;
             }
         }
@@ -29,16 +26,18 @@ namespace SourceGit.Commands {
             return Exec();
         }
 
-        public bool Delete(string path) {
-            Args = $"submodule deinit -f {path}";
+        public bool Delete(string relativePath) {
+            Args = $"submodule deinit -f {relativePath}";
             if (!Exec()) return false;
 
-            Args = $"rm -rf {path}";
+            Args = $"rm -rf {relativePath}";
             return Exec();
         }
 
-        public override void OnReadline(string line) {
-            onProgress?.Invoke(line);
+        protected override void OnReadline(string line) {
+            _outputHandler?.Invoke(line);
         }
+
+        private Action<string> _outputHandler;
     }
 }

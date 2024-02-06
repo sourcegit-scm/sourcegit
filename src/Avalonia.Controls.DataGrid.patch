@@ -1,0 +1,81 @@
+diff --git a/src/Avalonia.Controls.DataGrid/DataGrid.cs b/src/Avalonia.Controls.DataGrid/DataGrid.cs
+index e4573c3759a8a1eeece45c8bacb4fa853201f8e7..aa29066173e03092b61477985aed73beb08ec8fc 100644
+--- a/src/Avalonia.Controls.DataGrid/DataGrid.cs
++++ b/src/Avalonia.Controls.DataGrid/DataGrid.cs
+@@ -716,6 +716,16 @@ public DataGridRowDetailsVisibilityMode RowDetailsVisibilityMode
+             set { SetValue(RowDetailsVisibilityModeProperty, value); }
+         }
+ 
++        public static readonly RoutedEvent<RoutedEventArgs> DisplayRegionChangedEvent = RoutedEvent.Register<DataGrid, RoutedEventArgs>(
++            nameof(DisplayRegionChanged),
++            RoutingStrategies.Bubble);
++
++        public event EventHandler<RoutedEventArgs> DisplayRegionChanged
++        {
++            add => AddHandler(DisplayRegionChangedEvent, value);
++            remove => RemoveHandler(DisplayRegionChangedEvent, value);
++        }
++
+         static DataGrid()
+         {
+             AffectsMeasure<DataGrid>(
+@@ -2428,6 +2438,11 @@ protected virtual void OnUnloadingRow(DataGridRowEventArgs e)
+             }
+         }
+ 
++        protected virtual void OnDisplayRegionChanged()
++        {
++            RaiseEvent(new RoutedEventArgs(DisplayRegionChangedEvent));
++        }
++
+         /// <summary>
+         /// Comparator class so we can sort list by the display index
+         /// </summary>
+@@ -3879,6 +3894,7 @@ private void InvalidateColumnHeadersMeasure()
+             {
+                 EnsureColumnHeadersVisibility();
+                 _columnHeadersPresenter.InvalidateMeasure();
++                OnDisplayRegionChanged();
+             }
+         }
+ 
+@@ -3903,6 +3919,8 @@ private void InvalidateRowsMeasure(bool invalidateIndividualElements)
+                         element.InvalidateMeasure();
+                     }
+                 }
++
++                OnDisplayRegionChanged();
+             }
+         }
+ 
+@@ -6211,5 +6229,30 @@ protected virtual void OnAutoGeneratingColumn(DataGridAutoGeneratingColumnEventA
+         {
+             AutoGeneratingColumn?.Invoke(this, e);
+         }
++
++        public Vector GetDisplayOffset()
++        {
++            // Has bug when using arrow keys via keyboard.
++            // return new Vector(_horizontalOffset, _verticalOffset);
++
++            double startX = 0;
++            double startY = 0;
++
++            foreach (var child in _rowsPresenter.Children)
++            {
++                var row = child as DataGridRow;
++                if (row.Slot >= 0 && row.Bounds.Top <= 0 && row.Bounds.Top > -RowHeight)
++                {
++                    var testY = RowHeight * row.Index - row.Bounds.Top;
++                    if (startY < testY)
++                    {
++                        startY = testY;
++                        startX = row.Bounds.Left;
++                    }
++                }
++            }
++
++            return new Vector(startX, startY);
++        }
+     }
+ }

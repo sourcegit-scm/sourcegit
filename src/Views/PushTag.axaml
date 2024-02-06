@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.PushTag"
+             x:DataType="vm:PushTag">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+				       Classes="bold"
+				       Text="{DynamicResource Text.PushTag}"/>
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="150,*">
+      <TextBlock Grid.Column="0"
+					       HorizontalAlignment="Right" VerticalAlignment="Center"
+					       Margin="0,0,8,0"
+					       Text="{DynamicResource Text.PushTag.Tag}"/>
+
+      <StackPanel Grid.Column="1" Orientation="Horizontal">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
+        <TextBlock Text="{Binding Target.Name}" Margin="8,0,0,0"/>
+      </StackPanel>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+					       HorizontalAlignment="Right" VerticalAlignment="Center"
+					       Margin="0,0,8,0"
+					       Text="{DynamicResource Text.PushTag.Remote}"/>
+      <ComboBox Grid.Row="1" Grid.Column="1"
+                Height="28" Padding="8,0"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Remotes}"
+                SelectedItem="{Binding SelectedRemote, Mode=TwoWay}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate x:DataType="{x:Type m:Remote}">
+            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+              <Path Margin="0,6,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Remote}"/>
+              <TextBlock Text="{Binding Name}"/>
+            </StackPanel>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </Grid>
+  </StackPanel>
+</UserControl>

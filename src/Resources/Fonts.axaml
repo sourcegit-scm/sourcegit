@@ -1,0 +1,6 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <FontFamily x:Key="JetBrainsMono">avares://SourceGit/Resources/Fonts/JetBrainsMono-Regular.ttf#JetBrains Mono</FontFamily>
+  <FontFamily x:Key="JetBrainsMonoBold">avares://SourceGit/Resources/Fonts/JetBrainsMono-Bold.ttf#JetBrains Mono</FontFamily>
+  <FontFamily x:Key="JetBrainsMonoItalic">avares://SourceGit/Resources/Fonts/JetBrainsMono-Italic.ttf#JetBrains Mono</FontFamily>
+</ResourceDictionary>

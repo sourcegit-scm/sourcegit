@@ -1,0 +1,154 @@
+﻿using Avalonia.Collections;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.IO;
+
+namespace SourceGit.ViewModels {
+    public class Launcher : ObservableObject {
+        public AvaloniaList<LauncherPage> Pages {
+            get;
+            private set;
+        }
+
+        public LauncherPage ActivePage {
+            get => _activePage;
+            set {
+                if (SetProperty(ref _activePage, value)) {
+                    PopupHost.Active = value;
+                }
+            }
+        }
+
+        public Launcher() {
+            Pages = new AvaloniaList<LauncherPage>();
+            AddNewTab();
+        }
+
+        public void AddNewTab() {
+            var page = new LauncherPage();
+            Pages.Add(page);
+            ActivePage = page;
+        }
+
+        public void MoveTab(LauncherPage from, LauncherPage to) {
+            var fromIdx = Pages.IndexOf(from);
+            var toIdx = Pages.IndexOf(to);
+            Pages.Move(fromIdx, toIdx);
+            ActivePage = from;
+        }
+
+        public void GotoNextTab() {
+            if (Pages.Count == 1) return;
+
+            var activeIdx = Pages.IndexOf(_activePage);
+            var nextIdx = (activeIdx + 1) % Pages.Count;
+            ActivePage = Pages[nextIdx];
+        }
+
+        public void CloseTab(object param) {
+            if (Pages.Count == 1) {
+                App.Quit();
+                return;
+            }
+
+            LauncherPage page = param as LauncherPage;
+            if (page == null) page = _activePage;
+
+            CloseRepositoryInTab(page);
+
+            var removeIdx = Pages.IndexOf(page);
+            var activeIdx = Pages.IndexOf(_activePage);
+            if (removeIdx == activeIdx) {
+                if (removeIdx == Pages.Count - 1) {
+                    ActivePage = Pages[removeIdx - 1];
+                } else {
+                    ActivePage = Pages[removeIdx + 1];
+                }
+
+                Pages.RemoveAt(removeIdx);
+                OnPropertyChanged(nameof(Pages));
+            } else if (removeIdx + 1 == activeIdx) {
+                Pages.RemoveAt(removeIdx);
+                OnPropertyChanged(nameof(Pages));
+            } else {
+                Pages.RemoveAt(removeIdx);
+            }
+        }
+
+        public void CloseOtherTabs(object param) {
+            if (Pages.Count == 1) return;
+
+            LauncherPage page = param as LauncherPage;
+            if (page == null) page = _activePage;
+
+            foreach (var one in Pages) {
+                if (one.Node.Id != page.Node.Id) {
+                    CloseRepositoryInTab(one);
+                }
+            }
+
+            ActivePage = page;
+            Pages = new AvaloniaList<LauncherPage> { page };
+            OnPropertyChanged(nameof(Pages));
+        }
+
+        public void CloseRightTabs(object param) {
+            LauncherPage page = param as LauncherPage;
+            if (page == null) page = _activePage;
+
+            var endIdx = Pages.IndexOf(page);
+            var activeIdx = Pages.IndexOf(_activePage);
+            if (endIdx < activeIdx) {
+                ActivePage = page;
+            }
+
+            for (var i = Pages.Count - 1; i > endIdx; i--) {
+                CloseRepositoryInTab(Pages[i]);
+                Pages.Remove(Pages[i]);
+            }
+        }
+
+        public void OpenRepositoryInTab(RepositoryNode node, LauncherPage page) {
+            foreach (var one in Pages) {
+                if (one.Node.Id == node.Id) {
+                    ActivePage = one;
+                    return;
+                }
+            }
+
+            var repo = Preference.FindRepository(node.Id);
+            if (repo == null || !Path.Exists(repo.FullPath)) {
+                var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
+                App.RaiseException(ctx, "Repository does NOT exists any more. Please remove it.");
+                return;
+            }
+
+            repo.Open();
+
+            if (page == null) {
+                if (ActivePage == null || ActivePage.Node.IsRepository) {
+                    page = new LauncherPage(node, repo);
+                    Pages.Add(page);
+                } else {
+                    page.Node = node;
+                    page.View = new Views.Repository() { DataContext = repo };
+                }
+            } else {
+                page.Node = node;
+                page.View = new Views.Repository() { DataContext = repo };
+            }
+
+            ActivePage = page;
+        }
+
+        private void CloseRepositoryInTab(LauncherPage page) {
+            if (!page.Node.IsRepository) return;
+
+            var repo = Preference.FindRepository(page.Node.Id);
+            if (repo == null) return;
+
+            repo.Close();
+        }
+
+        private LauncherPage _activePage = null;
+    }
+}

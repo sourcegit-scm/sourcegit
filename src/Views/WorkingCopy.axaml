@@ -1,0 +1,400 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.WorkingCopy"
+             x:DataType="vm:WorkingCopy">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="300" MinWidth="300"/>
+      <ColumnDefinition Width="1"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <!-- Left -->
+    <Grid Grid.Column="0" RowDefinitions="28,*,28,*">
+      <!-- Unstaged Toolbar -->
+      <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
+          <v:ChangeViewModeSwitcher Grid.Column="0" Width="14" Height="14" Margin="8,0,0,0" ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"/>
+          <TextBlock Grid.Column="1" Text="{DynamicResource Text.WorkingCopy.Unstaged}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
+          <Path Grid.Column="2" Classes="rotating" Width="14" Height="14" Data="{StaticResource Icons.Loading}" Margin="8,0,0,0" IsVisible="{Binding IsStaging}"/>
+
+          <Button Grid.Column="4"
+                  Classes="icon_button"
+                  Width="26" Height="14"
+                  Padding="0"
+                  ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.ViewAssumeUnchaged}"
+                  Click="ViewAssumeUnchanged">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.File.Ignore}"/>
+          </Button>
+          <ToggleButton Grid.Column="5"
+                        Classes="toggle_untracked"
+                        Width="26" Height="14"
+                        ToolTip.Tip="{DynamicResource Text.WorkingCopy.IncludeUntracked}"
+                        IsChecked="{Binding $parent[v:Repository].DataContext.(vm:Repository).IncludeUntracked, Mode=TwoWay}"/>
+          <Button Grid.Column="6"
+                  Classes="icon_button"
+                  Width="26" Height="14"
+                  Padding="0"
+                  ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.Stage}" Click="StageSelected">
+            <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+          </Button>
+          <Button Grid.Column="7"
+                  Classes="icon_button"
+                  Width="26" Height="14"
+                  Padding="0"
+                  ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.StageAll}" Click="StageAll">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleDown}"/>
+          </Button>
+        </Grid>
+      </Border>
+
+      <!-- Unstaged Changes -->
+      <Grid Grid.Row="1" Background="{DynamicResource Brush.Contents}">
+        <DataGrid x:Name="unstagedList"
+                  Background="Transparent"
+                  ItemsSource="{Binding Unstaged}"
+                  SelectionMode="Extended"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="False"
+                  IsReadOnly="True"
+                  HeadersVisibility="None"
+                  Focusable="False"
+                  RowHeight="26"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto"
+                  SelectionChanged="OnUnstagedListSelectionChanged"
+                  KeyDown="OnUnstagedListKeyDown"
+                  ContextRequested="OnUnstagedListContextRequested"
+                  IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsList}}">
+          <DataGrid.Columns>
+            <DataGridTemplateColumn Header="ICON">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="True" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Width="*" Header="PATH">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Path}" Margin="4,0,0,0" FontSize="12"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid x:Name="unstagedGrid"
+                  Background="Transparent"
+                  ItemsSource="{Binding Unstaged}"
+                  SelectionMode="Extended"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="False"
+                  IsReadOnly="True"
+                  HeadersVisibility="None"
+                  Focusable="False"
+                  RowHeight="26"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto"
+                  SelectionChanged="OnUnstagedListSelectionChanged"
+                  KeyDown="OnUnstagedListKeyDown"
+                  ContextRequested="OnUnstagedListContextRequested"
+                  IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsGrid}}">
+          <DataGrid.Columns>
+            <DataGridTemplateColumn Header="ICON">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="True" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Header="FILE_NAME">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0,0,0" FontSize="12" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Header="FOLDER_PATH">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Margin="4,0,0,0" FontSize="12" Foreground="{DynamicResource Brush.FG2}"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+
+        <TreeView x:Name="unstagedTree"
+                  ItemsSource="{Binding UnstagedTree}"
+                  SelectionMode="Multiple"
+                  AutoScrollToSelectedItem="True"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  SelectionChanged="OnUnstagedTreeViewSelectionChanged"
+                  KeyDown="OnUnstagedTreeViewKeyDown"
+                  ContextRequested="OnUnstagedTreeViewContextRequested"
+                  IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsTree}}">
+          <TreeView.Styles>
+            <Style Selector="TreeViewItem" x:DataType="vm:FileTreeNode">
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.Styles>
+
+          <TreeView.ItemTemplate>
+            <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:FileTreeNode}">
+              <Grid Height="24" ColumnDefinitions="Auto,*">
+                <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
+                <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" IsWorkingCopyChange="True" Change="{Binding Backend}" IconFontFamily="{StaticResource JetBrainsMono}" IsVisible="{Binding !IsFolder}"/>
+                <TextBlock Grid.Column="1" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" FontSize="12" Margin="6,0,0,0"/>
+              </Grid>
+            </TreeDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
+      </Grid>
+
+      <!-- Staged Toolbar -->
+      <Border Grid.Row="2" BorderThickness="0,1" BorderBrush="{DynamicResource Brush.Border0}">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto">
+          <v:ChangeViewModeSwitcher Grid.Column="0" Width="14" Height="14" Margin="8,0,0,0" ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"/>
+          <TextBlock Grid.Column="1" Text="{DynamicResource Text.WorkingCopy.Staged}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
+          <Path Grid.Column="2" Classes="rotating" Width="14" Height="14" Data="{StaticResource Icons.Loading}" Margin="8,0,0,0" IsVisible="{Binding IsUnstaging}"/>
+          <Button Grid.Column="4" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.Unstage}" Click="UnstageSelected">
+            <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+          </Button>
+          <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}" Click="UnstageAll">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleUp}"/>
+          </Button>
+        </Grid>
+      </Border>
+
+      <!-- Staged Changes -->
+      <Grid Grid.Row="3" Background="{DynamicResource Brush.Contents}">
+        <DataGrid x:Name="stagedList"
+                  Background="Transparent"
+									ItemsSource="{Binding Staged}"
+									SelectionMode="Extended"
+									CanUserReorderColumns="False"
+									CanUserResizeColumns="False"
+									CanUserSortColumns="False"
+									IsReadOnly="True"
+									HeadersVisibility="None"
+									Focusable="False"
+									RowHeight="26"
+									HorizontalScrollBarVisibility="Auto"
+									VerticalScrollBarVisibility="Auto"
+                  SelectionChanged="OnStagedListSelectionChanged"
+                  KeyDown="OnStagedListKeyDown"
+                  ContextRequested="OnStagedListContextRequested"
+									IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsList}}">
+          <DataGrid.Columns>
+            <DataGridTemplateColumn Header="ICON">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Width="*" Header="PATH">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Path}" Margin="4,0,0,0" FontSize="12"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid x:Name="stagedGrid"
+                  Background="Transparent"
+                  ItemsSource="{Binding Staged}"
+                  SelectionMode="Extended"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="False"
+                  IsReadOnly="True"
+                  HeadersVisibility="None"
+                  Focusable="False"
+                  RowHeight="26"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto"
+                  SelectionChanged="OnStagedListSelectionChanged"
+                  KeyDown="OnStagedListKeyDown"
+                  ContextRequested="OnStagedListContextRequested"
+                  IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsGrid}}">
+          <DataGrid.Columns>
+            <DataGridTemplateColumn Header="ICON">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Header="FILE_NAME">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0,0,0" FontSize="12" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Header="FOLDER_PATH">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Margin="4,0,0,0" FontSize="12" Foreground="{DynamicResource Brush.FG2}"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+
+        <TreeView x:Name="stagedTree"
+                  ItemsSource="{Binding StagedTree}"
+                  SelectionMode="Multiple"
+                  AutoScrollToSelectedItem="True"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  SelectionChanged="OnStagedTreeViewSelectionChanged"
+                  KeyDown="OnStagedTreeViewKeyDown"
+                  ContextRequested="OnStagedTreeViewContextRequested"
+                  IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsTree}}">
+          <TreeView.Styles>
+            <Style Selector="TreeViewItem" x:DataType="vm:FileTreeNode">
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.Styles>
+
+          <TreeView.ItemTemplate>
+            <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:FileTreeNode}">
+              <Grid Height="24" ColumnDefinitions="Auto,*">
+                <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
+                <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding Backend}" IconFontFamily="{StaticResource JetBrainsMono}" IsVisible="{Binding !IsFolder}"/>
+                <TextBlock Grid.Column="1" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" FontSize="12" Margin="6,0,0,0"/>
+              </Grid>
+            </TreeDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
+      </Grid>
+    </Grid>
+
+    <GridSplitter Grid.Column="1"
+                  Width="1" MinWidth=".5"
+                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                  Background="{DynamicResource Brush.Border0}"/>
+
+    <!-- Right -->
+    <Grid Grid.Column="2" Margin="4" RowDefinitions="*,Auto,32">
+      <!-- Select Change Detail -->
+      <Grid Grid.Row="0">
+        <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+          <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
+            <TextBlock Margin="0,16,0,0"
+                       Text="{DynamicResource Text.Diff.Welcome}"
+                       FontSize="18" FontWeight="Bold"
+                       Foreground="{DynamicResource Brush.FG2}"
+                       HorizontalAlignment="Center"/>
+          </StackPanel>
+        </Border>
+
+        <ContentControl Content="{Binding DetailContext}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:ConflictContext">
+              <Border Background="{DynamicResource Brush.Window}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Margin="0,16,0,28" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Classes="flat" FontWeight="Regular" Content="{DynamicResource Text.WorkingCopy.UseTheirs}" Height="26" Padding="16,0" Command="{Binding $parent[v:WorkingCopy].DataContext.(vm:WorkingCopy).UseTheirs}"/>
+                    <Button Classes="flat" FontWeight="Regular" Content="{DynamicResource Text.WorkingCopy.UseMine}" Height="26" Padding="16,0" Margin="8,0" Command="{Binding $parent[v:WorkingCopy].DataContext.(vm:WorkingCopy).UseMine}"/>
+                    <Button Classes="flat" FontWeight="Regular" Content="{DynamicResource Text.WorkingCopy.OpenMerger}" Height="26" Padding="16,0" Command="{Binding $parent[v:WorkingCopy].DataContext.(vm:WorkingCopy).UseExternalMergeTool}"/>
+                  </StackPanel>
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+
+            <DataTemplate DataType="vm:DiffContext">
+              <v:DiffView/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+      </Grid>
+
+      <!-- Commit Message -->
+      <TextBox Grid.Row="1"
+               Height="80"
+               Margin="0,4" Padding="2,1"
+               AcceptsReturn="True" AcceptsTab="True"
+               TextWrapping="Wrap"
+               VerticalContentAlignment="Top"
+               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+               ScrollViewer.VerticalScrollBarVisibility="Auto"
+               Background="{DynamicResource Brush.Contents}"
+               BorderThickness="1"
+               BorderBrush="{DynamicResource Brush.Border2}"
+               Watermark="{DynamicResource Text.WorkingCopy.CommitMessageTip}"
+               Text="{Binding CommitMessage, Mode=TwoWay}"/>
+
+      <!-- Commit Options -->
+      <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto">
+        <Button Grid.Column="0"
+                Classes="icon_button"
+                Width="14" Height="14"
+                ToolTip.Tip="{DynamicResource Text.WorkingCopy.MessageHistories}">
+          <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.List}"/>
+        </Button>
+
+        <CheckBox Grid.Column="1"
+                  Height="24"
+                  Margin="12,0,0,0"
+                  HorizontalAlignment="Left"
+                  IsChecked="{Binding UseAmend, Mode=TwoWay}"
+                  Content="{DynamicResource Text.WorkingCopy.Amend}"
+                  Checked="StartAmend"/>
+
+        <Path Grid.Column="3"
+              Classes="rotating"
+              Width="18" Height="18"
+              Data="{StaticResource Icons.Loading}"
+              IsVisible="{Binding IsCommitting}"/>
+
+        <Button Grid.Column="4"
+                Classes="flat primary"
+                Content="{DynamicResource Text.WorkingCopy.Commit}"
+                Height="24"
+                Margin="8,0,0,0"
+                Padding="8,0"
+                Click="Commit"/>
+
+        <Button Grid.Column="5"
+                Classes="flat"
+                Content="{DynamicResource Text.WorkingCopy.CommitAndPush}"
+                Height="24"
+                Margin="8,0,0,0"
+                Padding="8,0"
+                Click="CommitWithPush">
+          <Button.IsVisible>
+            <MultiBinding Converter="{x:Static BoolConverters.And}">
+              <Binding Path="$parent[v:Repository].DataContext.(vm:Repository).CanCommitWithPush"/>
+              <Binding Path="!UseAmend"/>
+            </MultiBinding>
+          </Button.IsVisible>
+        </Button>
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>

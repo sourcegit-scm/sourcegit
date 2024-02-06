@@ -1,0 +1,152 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace SourceGit.Models {
+    public enum BranchTreeNodeType {
+        Remote,
+        Folder,
+        Branch,
+    }
+
+    public class BranchTreeNode {
+        public string Name { get; set; }
+        public BranchTreeNodeType Type { get; set; }
+        public object Backend { get; set; }
+        public bool IsExpanded { get; set; }
+        public List<BranchTreeNode> Children { get; set; } = new List<BranchTreeNode>();
+
+        public bool IsUpstreamTrackStatusVisible {
+            get => IsBranch && !string.IsNullOrEmpty((Backend as Branch).UpstreamTrackStatus);
+        }
+
+        public string UpstreamTrackStatus {
+            get => Type == BranchTreeNodeType.Branch ? (Backend as Branch).UpstreamTrackStatus : "";
+        }
+
+        public bool IsRemote {
+            get => Type == BranchTreeNodeType.Remote;
+        }
+
+        public bool IsFolder {
+            get => Type == BranchTreeNodeType.Folder;
+        }
+
+        public bool IsBranch {
+            get => Type == BranchTreeNodeType.Branch;
+        }
+
+        public bool IsCurrent {
+            get => IsBranch && (Backend as Branch).IsCurrent;
+        }        
+
+        public class Builder {
+            public List<BranchTreeNode> Locals => _locals;
+            public List<BranchTreeNode> Remotes => _remotes;
+
+            public void Run(List<Branch> branches, List<Remote> remotes) {                
+                foreach (var remote in remotes) {
+                    var path = $"remote/{remote.Name}";
+                    var node = new BranchTreeNode() {
+                        Name = remote.Name,
+                        Type = BranchTreeNodeType.Remote,
+                        Backend = remote,
+                        IsExpanded = _expanded.Contains(path),
+                    };
+
+                    _maps.Add(path, node);
+                    _remotes.Add(node);
+                }
+
+                foreach (var branch in branches) {
+                    if (branch.IsLocal) {
+                        MakeBranchNode(branch, _locals, "local");
+                    } else {
+                        var remote = _remotes.Find(x => x.Name == branch.Remote);
+                        if (remote != null) MakeBranchNode(branch, remote.Children, $"remote/{remote.Name}");
+                    }
+                }
+
+                SortNodes(_locals);
+                SortNodes(_remotes);
+            }
+
+            public void CollectExpandedNodes(List<BranchTreeNode> nodes, bool isLocal) {
+                CollectExpandedNodes(nodes, isLocal ? "local" : "remote");
+            }
+
+            private void CollectExpandedNodes(List<BranchTreeNode> nodes, string prefix) {
+                foreach (var node in nodes) {
+                    var path = prefix + "/" + node.Name;
+                    if (node.Type != BranchTreeNodeType.Branch && node.IsExpanded) _expanded.Add(path);
+                    CollectExpandedNodes(node.Children, path);
+                }
+            }
+
+            private void MakeBranchNode(Branch branch, List<BranchTreeNode> roots, string prefix) {
+                var subs = branch.Name.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (subs.Length == 1) {
+                    var node = new BranchTreeNode() {
+                        Name = subs[0],
+                        Type = BranchTreeNodeType.Branch,
+                        Backend = branch,
+                        IsExpanded = false,
+                    };
+                    roots.Add(node);
+                    return;
+                }
+
+                BranchTreeNode lastFolder = null;
+                string path = prefix;
+                for (int i = 0; i < subs.Length - 1; i++) {
+                    path = string.Concat(path, "/", subs[i]);
+                    if (_maps.ContainsKey(path)) {
+                        lastFolder = _maps[path];
+                    } else if (lastFolder == null) {
+                        lastFolder = new BranchTreeNode() {
+                            Name = subs[i],
+                            Type = BranchTreeNodeType.Folder,
+                            IsExpanded = _expanded.Contains(path),
+                        };
+                        roots.Add(lastFolder);
+                        _maps.Add(path, lastFolder);
+                    } else {
+                        var folder = new BranchTreeNode() {
+                            Name = subs[i],
+                            Type = BranchTreeNodeType.Folder,
+                            IsExpanded = _expanded.Contains(path),
+                        };
+                        _maps.Add(path, folder);
+                        lastFolder.Children.Add(folder);
+                        lastFolder = folder;
+                    }
+                }
+
+                var last = new BranchTreeNode() {
+                    Name = subs[subs.Length - 1],
+                    Type = BranchTreeNodeType.Branch,
+                    Backend = branch,
+                    IsExpanded = false,
+                };
+                lastFolder.Children.Add(last);
+            }
+
+            private void SortNodes(List<BranchTreeNode> nodes) {
+                nodes.Sort((l, r) => {
+                    if (l.Type == r.Type) {
+                        return l.Name.CompareTo(r.Name);
+                    } else {
+                        return (int)(l.Type) - (int)(r.Type);
+                    }
+                });
+
+                foreach (var node in nodes) SortNodes(node.Children);
+            }
+
+            private List<BranchTreeNode> _locals = new List<BranchTreeNode>();
+            private List<BranchTreeNode> _remotes = new List<BranchTreeNode>();
+            private HashSet<string> _expanded = new HashSet<string>();
+            private Dictionary<string, BranchTreeNode> _maps = new Dictionary<string, BranchTreeNode>();
+        }
+    }
+}

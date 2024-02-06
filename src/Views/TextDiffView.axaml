@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.TextDiffView">
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="m:TextDiff">
+      <v:CombinedTextDiffPresenter HorizontalScrollBarVisibility="Auto"
+                                   VerticalScrollBarVisibility="Auto"
+                                   BorderBrush="{DynamicResource Brush.Border2}"
+                                   BorderThickness="0"
+                                   Foreground="{DynamicResource Brush.FG1}"
+                                   SecondaryFG="{DynamicResource Brush.FG2}"
+                                   FontFamily="{StaticResource JetBrainsMono}"
+                                   FontSize="12"
+                                   DiffData="{Binding}"/>
+    </DataTemplate>
+
+    <DataTemplate DataType="vm:TwoSideTextDiff">
+      <Grid ColumnDefinitions="*,1,*">
+        <v:SingleSideTextDiffPresenter Grid.Column="0"
+                                       SyncScrollOffset="{Binding SyncScrollOffset, Mode=TwoWay}"
+                                       IsOld="True"
+                                       HorizontalScrollBarVisibility="Auto"
+                                       VerticalScrollBarVisibility="Auto"
+                                       BorderBrush="{DynamicResource Brush.Border2}"
+                                       BorderThickness="0"
+                                       Foreground="{DynamicResource Brush.FG1}"
+                                       SecondaryFG="{DynamicResource Brush.FG2}"
+                                       FontFamily="{StaticResource JetBrainsMono}"
+                                       FontSize="12"
+                                       DiffData="{Binding}"/>
+
+        <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+
+        <v:SingleSideTextDiffPresenter Grid.Column="2"
+                                       SyncScrollOffset="{Binding SyncScrollOffset, Mode=TwoWay}"
+                                       IsOld="False"
+                                       HorizontalScrollBarVisibility="Auto"
+                                       VerticalScrollBarVisibility="Auto"
+                                       BorderBrush="{DynamicResource Brush.Border2}"
+                                       BorderThickness="0"
+                                       Foreground="{DynamicResource Brush.FG1}"
+                                       SecondaryFG="{DynamicResource Brush.FG2}"
+                                       FontFamily="{StaticResource JetBrainsMono}"
+                                       FontSize="12"
+                                       DiffData="{Binding}"/>
+      </Grid>
+    </DataTemplate>
+  </UserControl.DataTemplates>
+</UserControl>

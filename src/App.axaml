@@ -1,0 +1,25 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="SourceGit.App"
+             Name="SourceGit"
+             RequestedThemeVariant="Dark">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="/Resources/Fonts.axaml"/>
+        <ResourceInclude Source="/Resources/Icons.axaml"/>
+        <ResourceInclude Source="/Resources/Themes.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <ResourceInclude x:Key="en_US" Source="/Resources/Locales/en_US.axaml"/>
+      <ResourceInclude x:Key="zh_CN" Source="/Resources/Locales/zh_CN.axaml"/>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+    <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+    <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+    <StyleInclude Source="/Resources/Styles.axaml"/>
+  </Application.Styles>
+</Application>

@@ -1,24 +1,22 @@
-namespace SourceGit.Commands {
-    /// <summary>
-    ///     Git-Flow命令
-    /// </summary>
-    public class GitFlow : Command {
+﻿using System.Collections.Generic;
 
+namespace SourceGit.Commands {
+    public class GitFlow : Command {
         public GitFlow(string repo) {
-            Cwd = repo;
+            WorkingDirectory = repo;
+            Context = repo;
         }
 
-        public bool Init(string master, string develop, string feature, string release, string hotfix, string version) {
-            var branches = new Branches(Cwd).Result();
+        public bool Init(List<Models.Branch> branches, string master, string develop, string feature, string release, string hotfix, string version) {
             var current = branches.Find(x => x.IsCurrent);
 
             var masterBranch = branches.Find(x => x.Name == master);
-            if (masterBranch == null && current != null) new Branch(Cwd, develop).Create(current.Head);
+            if (masterBranch == null && current != null) Branch.Create(WorkingDirectory, master, current.Head);
 
             var devBranch = branches.Find(x => x.Name == develop);
-            if (devBranch == null && current != null) new Branch(Cwd, develop).Create(current.Head);
+            if (devBranch == null && current != null) Branch.Create(WorkingDirectory, develop, current.Head);
 
-            var cmd = new Config(Cwd);
+            var cmd = new Config(WorkingDirectory);
             cmd.Set("gitflow.branch.master", master);
             cmd.Set("gitflow.branch.develop", develop);
             cmd.Set("gitflow.prefix.feature", feature);
@@ -32,7 +30,7 @@ namespace SourceGit.Commands {
             return Exec();
         }
 
-        public void Start(Models.GitFlowBranchType type, string name) {
+        public bool Start(Models.GitFlowBranchType type, string name) {
             switch (type) {
             case Models.GitFlowBranchType.Feature:
                 Args = $"flow feature start {name}";
@@ -44,13 +42,14 @@ namespace SourceGit.Commands {
                 Args = $"flow hotfix start {name}";
                 break;
             default:
-                return;
+                App.RaiseException(Context, "Bad branch type!!!");
+                return false;
             }
 
-            Exec();
+            return Exec();
         }
 
-        public void Finish(Models.GitFlowBranchType type, string name, bool keepBranch) {
+        public bool Finish(Models.GitFlowBranchType type, string name, bool keepBranch) {
             var option = keepBranch ? "-k" : string.Empty;
             switch (type) {
             case Models.GitFlowBranchType.Feature:
@@ -63,10 +62,11 @@ namespace SourceGit.Commands {
                 Args = $"flow hotfix finish {option} {name} -m \"HOTFIX_DONE\"";
                 break;
             default:
-                return;
+                App.RaiseException(Context, "Bad branch type!!!");
+                return false;
             }
 
-            Exec();
+            return Exec();
         }
     }
 }

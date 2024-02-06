@@ -1,28 +1,19 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     忽略变更
-    /// </summary>
-    public class Discard {
-        private string repo = null;
-
-        public Discard(string repo) {
-            this.repo = repo;
-        }
-
-        public void Whole() {
+    public static class Discard {
+        public static void All(string repo) {
             new Reset(repo, "HEAD", "--hard").Exec();
             new Clean(repo).Exec();
         }
 
-        public void Changes(List<Models.Change> changes) {
+        public static void Changes(string repo, List<Models.Change> changes) {
             var needClean = new List<string>();
             var needCheckout = new List<string>();
 
             foreach (var c in changes) {
-                if (c.WorkTree == Models.Change.Status.Untracked || c.WorkTree == Models.Change.Status.Added) {
+                if (c.WorkTree == Models.ChangeState.Untracked || c.WorkTree == Models.ChangeState.Added) {
                     needClean.Add(c.Path);
                 } else {
                     needCheckout.Add(c.Path);

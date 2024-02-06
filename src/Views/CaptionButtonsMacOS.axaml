@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.CaptionButtonsMacOS">
+  <Grid Classes="caption_button_box">
+    <StackPanel Orientation="Horizontal">
+      <Button Classes="caption_button_macos" Click="CloseWindow" Margin="10,0,0,0">
+        <Grid>
+          <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
+          <Path Height="7" Width="7" Stretch="Fill" Data="{StaticResource Icons.MacOS.Close}"/>
+        </Grid>
+      </Button>
+      <Button Classes="caption_button_macos" Click="MinimizeWindow">
+        <Grid>
+          <Ellipse Fill="{DynamicResource Brush.MacOS.Minimize}"/>
+          <Path Height="2" Width="8" Stretch="Fill" Data="{StaticResource Icons.MacOS.Minimize}"/>
+        </Grid>
+      </Button>
+      <Button Classes="caption_button_macos" Click="MaximizeOrRestoreWindow">
+        <Grid>
+          <Ellipse Fill="{DynamicResource Brush.MacOS.Maximize}"/>
+          <Path Height="8" Width="8" Stretch="Fill" Data="{StaticResource Icons.MacOS.Maximize}}"/>
+        </Grid>
+      </Button>
+    </StackPanel>
+  </Grid>
+</UserControl>

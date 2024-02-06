@@ -1,7 +1,4 @@
-namespace SourceGit.Models {
-    /// <summary>
-    ///     提交中元素类型
-    /// </summary>
+﻿namespace SourceGit.Models {
     public enum ObjectType {
         None,
         Blob,
@@ -10,9 +7,6 @@ namespace SourceGit.Models {
         Commit,
     }
 
-    /// <summary>
-    ///     Git提交中的元素
-    /// </summary>
     public class Object {
         public string SHA { get; set; }
         public ObjectType Type { get; set; }

@@ -1,111 +1,147 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     Diff命令（用于文件文件比对）
-    /// </summary>
     public class Diff : Command {
         private static readonly Regex REG_INDICATOR = new Regex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@");
-        private Models.TextChanges changes = new Models.TextChanges();
-        private List<Models.TextChanges.Line> deleted = new List<Models.TextChanges.Line>();
-        private List<Models.TextChanges.Line> added = new List<Models.TextChanges.Line>();
-        private int oldLine = 0;
-        private int newLine = 0;
-        private int lineIndex = 0;
+        private static readonly string PREFIX_LFS = " version https://git-lfs.github.com/spec/";
 
-        public Diff(string repo, string args) {
-            Cwd = repo;
-            Args = $"diff --ignore-cr-at-eol --unified=4 {args}";
+        public Diff(string repo, Models.DiffOption opt) {
+            WorkingDirectory = repo;
+            Context = repo;
+            Args = $"diff --ignore-cr-at-eol --unified=4 {opt}";
         }
 
-        public Models.TextChanges Result() {
+        public Models.DiffResult Result() {
             Exec();
-            ProcessChanges();
-            if (changes.IsBinary) changes.Lines.Clear();
-            lineIndex = 0;
-            return changes;
+
+            if (_result.IsBinary || _result.IsLFS) {
+                _result.TextDiff = null;
+            } else {
+                ProcessInlineHighlights();
+
+                if (_result.TextDiff.Lines.Count == 0) {
+                    _result.TextDiff = null;
+                } else {
+                    _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
+                }                
+            }
+
+            return _result;
         }
 
-        public override void OnReadline(string line) {
-            if (changes.IsBinary) return;
+        protected override void OnReadline(string line) {
+            if (_result.IsBinary) return;
 
-            if (changes.Lines.Count == 0) {
+            if (_result.IsLFS) {
+                var ch = line[0];
+                if (ch == '-') {
+                    line = line.Substring(1);
+                    if (line.StartsWith("oid sha256:")) {
+                        _result.LFSDiff.Old.Oid = line.Substring(11);
+                    } else if (line.StartsWith("size ")) {
+                        _result.LFSDiff.Old.Size = long.Parse(line.Substring(5));
+                    }
+                } else if (ch == '+') {
+                    line = line.Substring(1);
+                    if (line.StartsWith("oid sha256:")) {
+                        _result.LFSDiff.New.Oid = line.Substring(11);
+                    } else if (line.StartsWith("size ")) {
+                        _result.LFSDiff.New.Size = long.Parse(line.Substring(5));
+                    }
+                } else if (line.StartsWith(" size ")) {
+                    _result.LFSDiff.New.Size = _result.LFSDiff.Old.Size = long.Parse(line.Substring(6));
+                }
+                return;
+            }
+
+            if (_result.TextDiff.Lines.Count == 0) {
                 var match = REG_INDICATOR.Match(line);
                 if (!match.Success) {
-                    if (line.StartsWith("Binary", StringComparison.Ordinal)) changes.IsBinary = true;
+                    if (line.StartsWith("Binary", StringComparison.Ordinal)) _result.IsBinary = true;
                     return;
                 }
 
-                oldLine = int.Parse(match.Groups[1].Value);
-                newLine = int.Parse(match.Groups[2].Value);
-                changes.Lines.Add(new Models.TextChanges.Line(lineIndex++, Models.TextChanges.LineMode.Indicator, line, "", ""));
+                _oldLine = int.Parse(match.Groups[1].Value);
+                _newLine = int.Parse(match.Groups[2].Value);
+                _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, "", ""));
             } else {
                 if (line.Length == 0) {
-                    ProcessChanges();
-                    changes.Lines.Add(new Models.TextChanges.Line(lineIndex++, Models.TextChanges.LineMode.Normal, "", $"{oldLine}", $"{newLine}"));
-                    oldLine++;
-                    newLine++;
+                    ProcessInlineHighlights();
+                    _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, "", $"{_oldLine}", $"{_newLine}"));
+                    _oldLine++;
+                    _newLine++;
                     return;
                 }
 
                 var ch = line[0];
                 if (ch == '-') {
-                    deleted.Add(new Models.TextChanges.Line(lineIndex++, Models.TextChanges.LineMode.Deleted, line.Substring(1), $"{oldLine}", ""));
-                    oldLine++;
+                    _deleted.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), $"{_oldLine}", ""));
+                    _oldLine++;
                 } else if (ch == '+') {
-                    added.Add(new Models.TextChanges.Line(lineIndex++, Models.TextChanges.LineMode.Added, line.Substring(1), "", $"{newLine}"));
-                    newLine++;
+                    _added.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), "", $"{_newLine}"));
+                    _newLine++;
                 } else if (ch != '\\') {
-                    ProcessChanges();
+                    ProcessInlineHighlights();
                     var match = REG_INDICATOR.Match(line);
                     if (match.Success) {
-                        oldLine = int.Parse(match.Groups[1].Value);
-                        newLine = int.Parse(match.Groups[2].Value);
-                        changes.Lines.Add(new Models.TextChanges.Line(lineIndex++, Models.TextChanges.LineMode.Indicator, line, "", ""));
+                        _oldLine = int.Parse(match.Groups[1].Value);
+                        _newLine = int.Parse(match.Groups[2].Value);
+                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, "", ""));
                     } else {
-                        changes.Lines.Add(new Models.TextChanges.Line(lineIndex++, Models.TextChanges.LineMode.Normal, line.Substring(1), $"{oldLine}", $"{newLine}"));
-                        oldLine++;
-                        newLine++;
+                        if (line.StartsWith(PREFIX_LFS)) {
+                            _result.IsLFS = true;
+                            _result.LFSDiff = new Models.LFSDiff();
+                            return;
+                        }
+
+                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, line.Substring(1), $"{_oldLine}", $"{_newLine}"));
+                        _oldLine++;
+                        _newLine++;
                     }
                 }
             }
         }
 
-        private void ProcessChanges() {
-            if (deleted.Any()) {
-                if (added.Count == deleted.Count) {
-                    for (int i = added.Count - 1; i >= 0; i--) {
-                        var left = deleted[i];
-                        var right = added[i];
+        private void ProcessInlineHighlights() {
+            if (_deleted.Count > 0) {
+                if (_added.Count == _deleted.Count) {
+                    for (int i = _added.Count - 1; i >= 0; i--) {
+                        var left = _deleted[i];
+                        var right = _added[i];
 
                         if (left.Content.Length > 1024 || right.Content.Length > 1024) continue;
 
-                        var chunks = Models.TextCompare.Process(left.Content, right.Content);
+                        var chunks = Models.TextInlineChange.Compare(left.Content, right.Content);
                         if (chunks.Count > 4) continue;
 
                         foreach (var chunk in chunks) {
                             if (chunk.DeletedCount > 0) {
-                                left.Highlights.Add(new Models.TextChanges.HighlightRange(chunk.DeletedStart, chunk.DeletedCount));
+                                left.Highlights.Add(new Models.TextInlineRange(chunk.DeletedStart, chunk.DeletedCount));
                             }
 
                             if (chunk.AddedCount > 0) {
-                                right.Highlights.Add(new Models.TextChanges.HighlightRange(chunk.AddedStart, chunk.AddedCount));
+                                right.Highlights.Add(new Models.TextInlineRange(chunk.AddedStart, chunk.AddedCount));
                             }
                         }
                     }
                 }
 
-                changes.Lines.AddRange(deleted);
-                deleted.Clear();
+                _result.TextDiff.Lines.AddRange(_deleted);
+                _deleted.Clear();
             }
 
-            if (added.Any()) {
-                changes.Lines.AddRange(added);
-                added.Clear();
+            if (_added.Count > 0) {
+                _result.TextDiff.Lines.AddRange(_added);
+                _added.Clear();
             }
         }
+
+        private Models.DiffResult _result = new Models.DiffResult() { TextDiff = new Models.TextDiff() };
+        private List<Models.TextDiffLine> _deleted = new List<Models.TextDiffLine>();
+        private List<Models.TextDiffLine> _added = new List<Models.TextDiffLine>();
+        private int _oldLine = 0;
+        private int _newLine = 0;
     }
 }

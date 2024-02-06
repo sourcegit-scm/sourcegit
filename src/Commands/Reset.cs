@@ -1,33 +1,32 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     重置命令
-    /// </summary>
     public class Reset : Command {
-
         public Reset(string repo) {
-            Cwd = repo;
+            WorkingDirectory = repo;
+            Context = repo;
             Args = "reset";
         }
 
-        public Reset(string repo, string revision, string mode) {
-            Cwd = repo;
-            Args = $"reset {mode} {revision}";
-        }
+        public Reset(string repo, List<Models.Change> changes) {
+            WorkingDirectory = repo;
+            Context = repo;
 
-        public Reset(string repo, List<string> files) {
-            Cwd = repo;
-
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append("reset --");
-            foreach (var f in files) {
+            foreach (var c in changes) {
                 builder.Append(" \"");
-                builder.Append(f);
+                builder.Append(c.Path);
                 builder.Append("\"");
             }
             Args = builder.ToString();
         }
+
+        public Reset(string repo, string revision, string mode) {
+            WorkingDirectory = repo;
+            Context = repo;
+            Args = $"reset {mode} {revision}";
+        }        
     }
 }

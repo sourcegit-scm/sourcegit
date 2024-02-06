@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System;
 
 namespace SourceGit.Commands {
-
-    /// <summary>
-    ///     拉取
-    /// </summary>
     public class Fetch : Command {
-        private Action<string> handler = null;
-
         public Fetch(string repo, string remote, bool prune, Action<string> outputHandler) {
-            Cwd = repo;
+            _outputHandler = outputHandler;
+            WorkingDirectory = repo;
+            Context = repo;
             TraitErrorAsOutput = true;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
@@ -24,12 +18,12 @@ namespace SourceGit.Commands {
             Args += "fetch --progress --verbose ";
             if (prune) Args += "--prune ";
             Args += remote;
-            handler = outputHandler;
-            AutoFetch.MarkFetched(repo);
         }
 
         public Fetch(string repo, string remote, string localBranch, string remoteBranch, Action<string> outputHandler) {
-            Cwd = repo;
+            _outputHandler = outputHandler;
+            WorkingDirectory = repo;
+            Context = repo;
             TraitErrorAsOutput = true;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
@@ -40,63 +34,12 @@ namespace SourceGit.Commands {
             }
 
             Args += $"fetch --progress --verbose {remote} {remoteBranch}:{localBranch}";
-            handler = outputHandler;
         }
 
-        public override void OnReadline(string line) {
-            handler?.Invoke(line);
-        }
-    }
-
-    /// <summary>
-    ///     自动拉取（每隔10分钟）
-    /// </summary>
-    public class AutoFetch {
-        private static Dictionary<string, AutoFetch> jobs = new Dictionary<string, AutoFetch>();
-
-        private Fetch cmd = null;
-        private long nextFetchPoint = 0;
-        private Timer timer = null;
-
-        public static void Start(string repo) {
-            if (!Models.Preference.Instance.Git.AutoFetchRemotes) return;
-
-            // 只自动更新加入管理列表中的仓库（子模块等不自动更新）
-            var exists = Models.Preference.Instance.FindRepository(repo);
-            if (exists == null) return;
-
-            var job = new AutoFetch(repo);
-            jobs.Add(repo, job);
+        protected override void OnReadline(string line) {
+            _outputHandler?.Invoke(line);
         }
 
-        public static void MarkFetched(string repo) {
-            if (!jobs.ContainsKey(repo)) return;
-            jobs[repo].nextFetchPoint = DateTime.Now.AddMinutes(10).ToFileTime();
-        }
-
-        public static void Stop(string repo) {
-            if (!jobs.ContainsKey(repo)) return;
-
-            jobs[repo].timer.Dispose();
-            jobs.Remove(repo);
-        }
-
-        public AutoFetch(string repo) {
-            cmd = new Fetch(repo, "--all", true, null);
-            cmd.DontRaiseError = true;
-
-            nextFetchPoint = DateTime.Now.AddMinutes(10).ToFileTime();
-            timer = new Timer(OnTick, null, 60000, 10000);
-        }
-
-        private void OnTick(object o) {
-            var now = DateTime.Now.ToFileTime();
-            if (nextFetchPoint > now) return;
-
-            Models.Watcher.SetEnabled(cmd.Cwd, false);
-            cmd.Exec();
-            nextFetchPoint = DateTime.Now.AddMinutes(10).ToFileTime();
-            Models.Watcher.SetEnabled(cmd.Cwd, true);
-        }
+        private Action<string> _outputHandler;
     }
 }

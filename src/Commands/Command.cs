@@ -1,3 +1,4 @@
+using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -5,60 +6,27 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-
-    /// <summary>
-    ///     用于取消命令执行的上下文对象
-    /// </summary>
-    public class Context {
-        public bool IsCancelRequested { get; set; } = false;
-    }
-
-    /// <summary>
-    ///     命令接口
-    /// </summary>
     public class Command {
-        private static readonly Regex PROGRESS_REG = new Regex(@"\d+%");
-
-        /// <summary>
-        ///     读取全部输出时的结果
-        /// </summary>
-        public class ReadToEndResult {
-            public bool IsSuccess { get; set; }
-            public string Output { get; set; }
-            public string Error { get; set; }
+        public class CancelToken {
+            public bool Requested { get; set; } = false;
         }
 
-        /// <summary>
-        ///     上下文
-        /// </summary>
-        public Context Ctx { get; set; } = null;
+        public class ReadToEndResult {
+            public bool IsSuccess { get; set; }
+            public string StdOut { get; set; }
+            public string StdErr { get; set; }
+        }
 
-        /// <summary>
-        ///     运行路径
-        /// </summary>
-        public string Cwd { get; set; } = "";
-
-        /// <summary>
-        ///     参数
-        /// </summary>
-        public string Args { get; set; } = "";
-
-        /// <summary>
-        ///     是否忽略错误
-        /// </summary>
-        public bool DontRaiseError { get; set; } = false;
-
-        /// <summary>
-        ///     使用标准错误输出
-        /// </summary>
+        public string Context { get; set; } = string.Empty;
+        public CancelToken Cancel { get; set; } = null;
+        public string WorkingDirectory { get; set; } = null;
+        public string Args { get; set; } = string.Empty;
+        public bool RaiseError { get; set; } = true;
         public bool TraitErrorAsOutput { get; set; } = false;
 
-        /// <summary>
-        ///     运行
-        /// </summary>
         public bool Exec() {
             var start = new ProcessStartInfo();
-            start.FileName = Models.Preference.Instance.Git.Path;
+            start.FileName = Native.OS.GitExecutableFile;
             start.Arguments = "--no-pager -c core.quotepath=off " + Args;
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
@@ -67,49 +35,53 @@ namespace SourceGit.Commands {
             start.StandardOutputEncoding = Encoding.UTF8;
             start.StandardErrorEncoding = Encoding.UTF8;
 
-            if (!string.IsNullOrEmpty(Cwd)) start.WorkingDirectory = Cwd;
+            if (!string.IsNullOrEmpty(WorkingDirectory)) start.WorkingDirectory = WorkingDirectory;
 
             var errs = new List<string>();
             var proc = new Process() { StartInfo = start };
             var isCancelled = false;
 
-            proc.OutputDataReceived += (o, e) => {
-                if (Ctx != null && Ctx.IsCancelRequested) {
+            proc.OutputDataReceived += (_, e) => {
+                if (Cancel != null && Cancel.Requested) {
                     isCancelled = true;
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
-                    if (!proc.HasExited) proc.Kill();
+                    if (!proc.HasExited) proc.Kill(true);
                     return;
                 }
 
-                if (e.Data == null) return;
-                OnReadline(e.Data);
+                if (e.Data != null) OnReadline(e.Data);
             };
-            proc.ErrorDataReceived += (o, e) => {
-                if (Ctx != null && Ctx.IsCancelRequested) {
+
+            proc.ErrorDataReceived += (_, e) => {
+                if (Cancel != null && Cancel.Requested) {
                     isCancelled = true;
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
-                    if (!proc.HasExited) proc.Kill();
+                    if (!proc.HasExited) proc.Kill(true);
                     return;
                 }
 
                 if (string.IsNullOrEmpty(e.Data)) return;
                 if (TraitErrorAsOutput) OnReadline(e.Data);
 
-                // 错误信息中忽略进度相关的输出
+                // Ignore progress messages
                 if (e.Data.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal)) return;
                 if (e.Data.StartsWith("remote: Counting objects:", StringComparison.Ordinal)) return;
                 if (e.Data.StartsWith("remote: Compressing objects:", StringComparison.Ordinal)) return;
                 if (e.Data.StartsWith("Filtering content:", StringComparison.Ordinal)) return;
-                if (PROGRESS_REG.IsMatch(e.Data)) return;
+                if (_progressRegex.IsMatch(e.Data)) return;
                 errs.Add(e.Data);
             };
 
             try {
                 proc.Start();
             } catch (Exception e) {
-                if (!DontRaiseError) OnException(e.Message);
+                if (RaiseError) {
+                    Dispatcher.UIThread.Invoke(() => {
+                        App.RaiseException(Context, e.Message);
+                    });
+                }
                 return false;
             }
 
@@ -121,19 +93,20 @@ namespace SourceGit.Commands {
             proc.Close();
 
             if (!isCancelled && exitCode != 0 && errs.Count > 0) {
-                if (!DontRaiseError) OnException(string.Join("\n", errs));
+                if (RaiseError) {
+                    Dispatcher.UIThread.Invoke(() => {
+                        App.RaiseException(Context, string.Join("\n", errs));
+                    });
+                }
                 return false;
             } else {
                 return true;
             }
         }
 
-        /// <summary>
-        ///     直接读取全部标准输出
-        /// </summary>
         public ReadToEndResult ReadToEnd() {
             var start = new ProcessStartInfo();
-            start.FileName = Models.Preference.Instance.Git.Path;
+            start.FileName = Native.OS.GitExecutableFile;
             start.Arguments = "--no-pager -c core.quotepath=off " + Args;
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
@@ -142,22 +115,23 @@ namespace SourceGit.Commands {
             start.StandardOutputEncoding = Encoding.UTF8;
             start.StandardErrorEncoding = Encoding.UTF8;
 
-            if (!string.IsNullOrEmpty(Cwd)) start.WorkingDirectory = Cwd;
+            if (!string.IsNullOrEmpty(WorkingDirectory)) start.WorkingDirectory = WorkingDirectory;
 
             var proc = new Process() { StartInfo = start };
             try {
                 proc.Start();
             } catch (Exception e) {
                 return new ReadToEndResult() {
-                    Output = string.Empty,
-                    Error = e.Message,
                     IsSuccess = false,
+                    StdOut = string.Empty,
+                    StdErr = e.Message,
                 };
             }
 
-            var rs = new ReadToEndResult();
-            rs.Output = proc.StandardOutput.ReadToEnd();
-            rs.Error = proc.StandardError.ReadToEnd();
+            var rs = new ReadToEndResult() {
+                StdOut = proc.StandardOutput.ReadToEnd(),
+                StdErr = proc.StandardError.ReadToEnd(),
+            };
 
             proc.WaitForExit();
             rs.IsSuccess = proc.ExitCode == 0;
@@ -166,19 +140,8 @@ namespace SourceGit.Commands {
             return rs;
         }
 
-        /// <summary>
-        ///     调用Exec时的读取函数
-        /// </summary>
-        /// <param name="line"></param>
-        public virtual void OnReadline(string line) {
-        }
+        protected virtual void OnReadline(string line) { }
 
-        /// <summary>
-        ///     默认异常处理函数
-        /// </summary>
-        /// <param name="message"></param>
-        public virtual void OnException(string message) {
-            App.Exception(Cwd, message);
-        }
+        private static readonly Regex _progressRegex = new Regex(@"\d+%");
     }
 }

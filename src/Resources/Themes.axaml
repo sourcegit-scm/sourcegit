@@ -1,0 +1,95 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.ThemeDictionaries>
+    <ResourceDictionary x:Key="Light">
+      <Color x:Key="Color.MacOS.Close">#FFFF6059</Color>
+      <Color x:Key="Color.MacOS.Minimize">#FFFFBE2F</Color>
+      <Color x:Key="Color.MacOS.Maximize">#FF29c941</Color>
+      <Color x:Key="Color.Window">#FFF0F5F9</Color>
+      <Color x:Key="Color.TitleBar">#FFCFDEEA</Color>
+      <Color x:Key="Color.ToolBar">#FFF0F5F9</Color>
+      <Color x:Key="Color.Popup">#FFF8F8F8</Color>
+      <Color x:Key="Color.Contents">#FFFAFAFA</Color>
+      <Color x:Key="Color.Badge">#FFB0CEE8</Color>
+      <Color x:Key="Color.Decorator">#FF6F6F6F</Color>
+      <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
+      <Color x:Key="Color.Conflict">#FF836C2E</Color>
+      <Color x:Key="Color.SwitcherHover">#FFDFDFDF</Color>
+      <Color x:Key="Color.SwitcherBG">#FFCFCFCF</Color>
+      <Color x:Key="Color.Border0">#FFCFCFCF</Color>
+      <Color x:Key="Color.Border1">#FF898989</Color>
+      <Color x:Key="Color.Border2">#FFCFCFCF</Color>
+      <Color x:Key="Color.Border3">#FFEFEFEF</Color>
+      <Color x:Key="Color.FlatButton.Background">#FFF8F8F8</Color>
+      <Color x:Key="Color.FlatButton.BackgroundHovered">White</Color>
+      <Color x:Key="Color.FlatButton.PrimaryBackground">#FF4295FF</Color>
+      <Color x:Key="Color.FlatButton.PrimaryBackgroundHovered">#FF529DFB</Color>
+      <Color x:Key="Color.FG1">#FF1F1F1F</Color>
+      <Color x:Key="Color.FG2">#FF6F6F6F</Color>
+      <Color x:Key="Color.FG3">#FFFFFFFF</Color>
+      <Color x:Key="Color.Accent1">#FF4295FF</Color>
+      <Color x:Key="Color.Accent1Hovered">#FF529DFB</Color>
+      <Color x:Key="Color.Accent2">#4C007ACC</Color>
+    </ResourceDictionary>
+
+    <ResourceDictionary x:Key="Dark">
+      <Color x:Key="Color.MacOS.Close">#FFFF5E56</Color>
+      <Color x:Key="Color.MacOS.Minimize">#FFFCBB2D</Color>
+      <Color x:Key="Color.MacOS.Maximize">#FF25C53C</Color>
+      <Color x:Key="Color.Window">#FF252525</Color>
+      <Color x:Key="Color.TitleBar">#FF1F1F1F</Color>
+      <Color x:Key="Color.ToolBar">#FF2C2C2C</Color>
+      <Color x:Key="Color.Popup">#FF2B2B2B</Color>
+      <Color x:Key="Color.Contents">#FF181818</Color>
+      <Color x:Key="Color.Badge">#FF8F8F8F</Color>
+      <Color x:Key="Color.Decorator">#FF505050</Color>
+      <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
+      <Color x:Key="Color.Conflict">#FFFAFAD2</Color>
+      <Color x:Key="Color.SwitcherHover">#FF323232</Color>
+      <Color x:Key="Color.SwitcherBG">#FF3F3F3F</Color>
+      <Color x:Key="Color.Border0">#FF181818</Color>
+      <Color x:Key="Color.Border1">#FF7C7C7C</Color>
+      <Color x:Key="Color.Border2">#FF404040</Color>
+      <Color x:Key="Color.Border3">#FF252525</Color>
+      <Color x:Key="Color.FlatButton.Background">#FF303030</Color>
+      <Color x:Key="Color.FlatButton.BackgroundHovered">#FF333333</Color>
+      <Color x:Key="Color.FlatButton.PrimaryBackground">#FF3A3A3A</Color>
+      <Color x:Key="Color.FlatButton.PrimaryBackgroundHovered">#FF404040</Color>
+      <Color x:Key="Color.FG1">#FFF1F1F1</Color>
+      <Color x:Key="Color.FG2">#40F1F1F1</Color>
+      <Color x:Key="Color.FG3">#FF252525</Color>
+      <Color x:Key="Color.Accent1">#FF007ACC</Color>
+      <Color x:Key="Color.Accent1Hovered">#FF006BBE</Color>
+      <Color x:Key="Color.Accent2">#8C007ACC</Color>
+    </ResourceDictionary>
+  </ResourceDictionary.ThemeDictionaries>
+
+  <SolidColorBrush x:Key="Brush.MacOS.Close" Color="{DynamicResource Color.MacOS.Close}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.Minimize" Color="{DynamicResource Color.MacOS.Minimize}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.Maximize" Color="{DynamicResource Color.MacOS.Maximize}"/>
+  <SolidColorBrush x:Key="Brush.Window" Color="{DynamicResource Color.Window}"/>
+  <SolidColorBrush x:Key="Brush.TitleBar" Color="{DynamicResource Color.TitleBar}"/>
+  <SolidColorBrush x:Key="Brush.ToolBar" Color="{DynamicResource Color.ToolBar}"/>
+  <SolidColorBrush x:Key="Brush.Popup" Color="{DynamicResource Color.Popup}"/>
+  <SolidColorBrush x:Key="Brush.Contents" Color="{DynamicResource Color.Contents}"/>
+  <SolidColorBrush x:Key="Brush.Badge" Color="{DynamicResource Color.Badge}"/>
+  <SolidColorBrush x:Key="Brush.Decorator" Color="{DynamicResource Color.Decorator}"/>
+  <SolidColorBrush x:Key="Brush.DecoratorIcon" Color="{DynamicResource Color.DecoratorIcon}"/>
+  <SolidColorBrush x:Key="Brush.Conflict" Color="{DynamicResource Color.Conflict}"/>
+  <SolidColorBrush x:Key="Brush.SwitcherHover" Color="{DynamicResource Color.SwitcherHover}"/>
+  <SolidColorBrush x:Key="Brush.SwitcherBG" Color="{DynamicResource Color.SwitcherBG}"/>
+  <SolidColorBrush x:Key="Brush.Border0" Color="{DynamicResource Color.Border0}"/>
+  <SolidColorBrush x:Key="Brush.Border1" Color="{DynamicResource Color.Border1}"/>
+  <SolidColorBrush x:Key="Brush.Border2" Color="{DynamicResource Color.Border2}"/>
+  <SolidColorBrush x:Key="Brush.Border3" Color="{DynamicResource Color.Border3}"/>
+  <SolidColorBrush x:Key="Brush.FlatButton.Background" Color="{DynamicResource Color.FlatButton.Background}"/>
+  <SolidColorBrush x:Key="Brush.FlatButton.BackgroundHovered" Color="{DynamicResource Color.FlatButton.BackgroundHovered}"/>
+  <SolidColorBrush x:Key="Brush.FlatButton.PrimaryBackground" Color="{DynamicResource Color.FlatButton.PrimaryBackground}"/>
+  <SolidColorBrush x:Key="Brush.FlatButton.PrimaryBackgroundHovered" Color="{DynamicResource Color.FlatButton.PrimaryBackgroundHovered}"/>
+  <SolidColorBrush x:Key="Brush.FG1" Color="{DynamicResource Color.FG1}"/>
+  <SolidColorBrush x:Key="Brush.FG2" Color="{DynamicResource Color.FG2}"/>
+  <SolidColorBrush x:Key="Brush.FG3" Color="{DynamicResource Color.FG3}"/>
+  <SolidColorBrush x:Key="Brush.Accent1" Color="{DynamicResource Color.Accent1}"/>
+  <SolidColorBrush x:Key="Brush.Accent1Hovered" Color="{DynamicResource Color.Accent1Hovered}"/>
+  <SolidColorBrush x:Key="Brush.Accent2" Color="{DynamicResource Color.Accent2}"/>
+</ResourceDictionary>

@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.ChangeViewModeSwitcher"
+             x:DataType="v:ChangeViewModeSwitcher">
+  <Button Classes="icon_button" Padding="0" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip.Tip="{DynamicResource Text.ChangeDisplayMode}">
+    <Button.Flyout>
+      <MenuFlyout Placement="BottomEdgeAlignedLeft">
+        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.List}" Command="{Binding SwitchMode}" CommandParameter="{x:Static m:ChangeViewMode.List}">
+          <MenuItem.Icon>
+            <Path Width="12" Height="12" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.List}"/>
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Grid}" Command="{Binding SwitchMode}" CommandParameter="{x:Static m:ChangeViewMode.Grid}">
+          <MenuItem.Icon>
+            <Path Width="12" Height="12" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Grid}"/>
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Tree}" Command="{Binding SwitchMode}" CommandParameter="{x:Static m:ChangeViewMode.Tree}">
+          <MenuItem.Icon>
+            <Path Width="12" Height="12" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Tree}"/>
+          </MenuItem.Icon>
+        </MenuItem>
+      </MenuFlyout>
+    </Button.Flyout>
+
+    <Path Stretch="Uniform" Fill="{DynamicResource Brush.FG2}" Data="{Binding ViewMode, Converter={x:Static c:ChangeViewModeConverters.ToIcon}}"/>
+  </Button>
+</UserControl>

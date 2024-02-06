@@ -1,11 +1,10 @@
 # SourceGit
 
-Opensouce Git GUI client for Windows.
+Opensouce Git GUI client.
 
 ## High-lights
 
 * Opensource/Free
-* Light-weight
 * Fast
 * English/简体中文
 * Build-in light/dark themes
@@ -28,8 +27,6 @@ Opensouce Git GUI client for Windows.
 ## Download
 
 Pre-build Binaries：[Releases](https://github.com/sourcegit-scm/sourcegit/releases)
-
-> NOTE: You need install Git first.
 
 ## Screen Shots
 

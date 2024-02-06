@@ -1,44 +1,60 @@
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 
 namespace SourceGit.Commands {
-    /// <summary>
-    ///     保存指定版本的文件
-    /// </summary>
-    public class SaveRevisionFile {
-        private string cwd = "";
-        private string bat = "";
-
-        public SaveRevisionFile(string repo, string path, string sha, string saveTo) {
-            var tmp = Path.GetTempFileName();
-            var cmd = $"\"{Models.Preference.Instance.Git.Path}\" --no-pager ";
-
-            var isLFS = new LFS(repo).IsFiltered(path);
-            if (isLFS) {
-                cmd += $"show {sha}:\"{path}\" > {tmp}.lfs\n";
-                cmd += $"\"{Models.Preference.Instance.Git.Path}\" --no-pager lfs smudge < {tmp}.lfs > \"{saveTo}\"\n";
+    public static class SaveRevisionFile {
+        public static void Run(string repo, string revision, string file, string saveTo) {
+            var isLFSFiltered = new IsLFSFiltered(repo, file).Result();
+            if (isLFSFiltered) {
+                var tmpFile = saveTo + ".tmp";
+                if (ExecCmd(repo, $"show {revision}:\"{file}\"", tmpFile)) {
+                    ExecCmd(repo, $"lfs smudge", saveTo, tmpFile);
+                }                
+                File.Delete(tmpFile);
             } else {
-                cmd += $"show {sha}:\"{path}\" > \"{saveTo}\"\n";
+                ExecCmd(repo, $"show {revision}:\"{file}\"", saveTo);
             }
-
-            cwd = repo;
-            bat = tmp + ".bat";
-
-            File.WriteAllText(bat, cmd);
         }
-
-        public void Exec() {
+        
+        private static bool ExecCmd(string repo, string args, string outputFile, string inputFile = null) {
             var starter = new ProcessStartInfo();
-            starter.FileName = bat;
-            starter.WorkingDirectory = cwd;
+            starter.WorkingDirectory = repo;
+            starter.FileName = Native.OS.GitExecutableFile;
+            starter.Arguments = args;
+            starter.UseShellExecute = false;
             starter.CreateNoWindow = true;
             starter.WindowStyle = ProcessWindowStyle.Hidden;
+            starter.RedirectStandardInput = true;
+            starter.RedirectStandardOutput = true;
+            starter.RedirectStandardError = true;
 
-            var proc = Process.Start(starter);
-            proc.WaitForExit();
-            proc.Close();
+            using (var sw = File.OpenWrite(outputFile)) {
+                try {
+                    var proc = new Process() { StartInfo = starter };
+                    proc.Start();
 
-            File.Delete(bat);
+                    if (inputFile != null) {
+                        using (StreamReader sr = new StreamReader(inputFile)) {
+                            while (true) {
+                                var line = sr.ReadLine();
+                                if (line == null) break;
+                                proc.StandardInput.WriteLine(line);
+                            }
+                        }
+                    }
+
+                    proc.StandardOutput.BaseStream.CopyTo(sw);
+                    proc.WaitForExit();
+                    var rs = proc.ExitCode == 0;
+                    proc.Close();
+
+                    return rs;
+                } catch (Exception e) {
+                    App.RaiseException(repo, "Save file failed: " + e.Message);
+                    return false;
+                }
+            }
         }
     }
 }

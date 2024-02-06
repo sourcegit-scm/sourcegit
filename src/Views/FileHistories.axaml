@@ -1,0 +1,113 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="using:SourceGit.Models"
+        xmlns:vm="using:SourceGit.ViewModels"
+        xmlns:v="using:SourceGit.Views"
+        xmlns:c="using:SourceGit.Converters"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SourceGit.Views.FileHistories"
+        x:DataType="vm:FileHistories"
+        x:Name="me"
+        Title="{DynamicResource Text.FileHistory}"
+        MinWidth="1280" MinHeight="720"
+        BorderThickness="1"
+        BorderBrush="{DynamicResource Brush.Border0}"
+        Background="{DynamicResource Brush.TitleBar}"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome">
+  <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToTitleBarHeight}}"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+      <!-- Bottom border -->
+      <Rectangle Grid.Column="0" Grid.ColumnSpan="5" Fill="{DynamicResource Brush.Border0}" Height="1" VerticalAlignment="Bottom"/>
+
+      <!-- Caption Buttons (macOS) -->
+      <Border Grid.Column="0" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
+        <v:CaptionButtonsMacOS/>
+      </Border>
+
+      <!-- Icon -->
+      <Path Grid.Column="1" Margin="8,0,0,0" Width="12" Height="12" Stretch="Uniform" Data="{StaticResource Icons.Histories}"/>
+
+      <!-- Title -->
+      <TextBlock Grid.Column="2" Margin="4,0,8,0" Text="{DynamicResource Text.FileHistory}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"/>
+
+      <!-- Target File -->
+      <TextBlock Grid.Column="3" Text="{Binding File}" FontSize="11" FontStyle="Italic" IsHitTestVisible="False" VerticalAlignment="Center"/>
+
+      <!-- Caption Buttons (Windows) -->
+      <Border Grid.Column="4" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
+        <v:CaptionButtons/>
+      </Border>
+    </Grid>
+
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="300" MinWidth="300" MaxWidth="600"/>
+        <ColumnDefinition Width="1"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <DataGrid Grid.Column="0"
+                Background="{DynamicResource Brush.Contents}"
+                ItemsSource="{Binding Commits}"
+                SelectedItem="{Binding SelectedCommit, Mode=TwoWay}"
+                SelectionMode="Single"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserSortColumns="False"
+                IsReadOnly="True"
+                HeadersVisibility="None"
+                Focusable="False"
+                RowHeight="50"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+        <DataGrid.Columns>
+          <DataGridTemplateColumn Width="*">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate DataType="m:Commit">
+                <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4">
+                  <Grid RowDefinitions="Auto,*">
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
+                      <v:Avatar Width="16" Height="16"
+                                VerticalAlignment="Center"
+                                IsHitTestVisible="False"
+                                User="{Binding Author}"
+                                FallbackFontFamily="{StaticResource JetBrainsMono}"/>
+                      <TextBlock Grid.Column="1" FontSize="12" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="2" FontSize="12" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA" FontFamily="{StaticResource JetBrainsMono}"/>
+                      <TextBlock Grid.Column="3" FontSize="12" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0" FontFamily="{StaticResource JetBrainsMono}"/>
+                    </Grid>
+
+                    <TextBlock Grid.Row="1" Text="{Binding Subject}" FontSize="12" VerticalAlignment="Bottom"/>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+
+      <GridSplitter Grid.Column="1"
+                    Width="1" MinWidth=".5"
+                    HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                    Background="Transparent"/>
+
+      <Grid Grid.Column="2">
+        <ContentControl Content="{Binding DiffContext}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:DiffContext">
+              <v:DiffView/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>

@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
+             x:Class="SourceGit.Views.Cleanup"
+             x:DataType="vm:Cleanup">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+				       Classes="bold"
+				       Text="{DynamicResource Text.Repository.Clean}"/>
+    <TextBlock Text="{DynamicResource Text.Repository.CleanTips}"
+               Margin="0,16,0,0"
+               HorizontalAlignment="Center"/>
+  </StackPanel>
+</UserControl>
