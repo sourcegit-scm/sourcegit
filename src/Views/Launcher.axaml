@@ -41,7 +41,7 @@
               VerticalAlignment="Bottom"
               IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
         <Button.Flyout>
-          <MenuFlyout Placement="BottomEdgeAlignedLeft">
+          <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
             <MenuItem Header="{DynamicResource Text.Preference}" Click="OpenPreference">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Settings2}"/>
@@ -54,7 +54,7 @@
             </MenuItem>
           </MenuFlyout>
         </Button.Flyout>
-        <Image Height="18" Width="18" Source="/App.ico" VerticalAlignment="Bottom"/>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Menu}"/>
       </Button>
 
       <!-- Pages Tabs-->
