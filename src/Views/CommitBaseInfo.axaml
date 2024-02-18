@@ -103,7 +103,7 @@
 
           <!-- Messages -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
-          <ScrollViewer Grid.Row="3" Grid.Column="1" Margin="12,4,0,0" MaxHeight="100" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+          <ScrollViewer Grid.Row="3" Grid.Column="1" Margin="12,5,0,0" MaxHeight="100" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <SelectableTextBlock Text="{Binding FullMessage}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" TextWrapping="Wrap"/>
           </ScrollViewer>
         </Grid>

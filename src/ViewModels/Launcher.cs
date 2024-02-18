@@ -123,6 +123,7 @@ namespace SourceGit.ViewModels {
             }
 
             repo.Open();
+            Commands.AutoFetch.AddRepository(repo.FullPath);
 
             if (page == null) {
                 if (ActivePage == null || ActivePage.Node.IsRepository) {
@@ -146,6 +147,7 @@ namespace SourceGit.ViewModels {
             var repo = Preference.FindRepository(page.Node.Id);
             if (repo == null) return;
 
+            Commands.AutoFetch.RemoveRepository(repo.FullPath);
             repo.Close();
         }
 

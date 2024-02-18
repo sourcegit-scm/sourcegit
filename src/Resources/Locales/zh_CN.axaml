@@ -392,7 +392,7 @@
   <sys:String x:Key="Text.Preference.Git.Email">邮箱</sys:String>
   <sys:String x:Key="Text.Preference.Git.Email.Placeholder">默认GIT用户邮箱</sys:String>
   <sys:String x:Key="Text.Preference.Git.CRLF">自动换行转换</sys:String>
-  <sys:String x:Key="Text.Preference.Git.AutoFetch">启用定时自动拉取远程更新（重启生效）</sys:String>
+  <sys:String x:Key="Text.Preference.Git.AutoFetch">启用定时自动拉取远程更新</sys:String>
   <sys:String x:Key="Text.Preference.GPG">GPG签名</sys:String>
   <sys:String x:Key="Text.Preference.GPG.Enabled">启用提交签名</sys:String>
   <sys:String x:Key="Text.Preference.GPG.Path">可执行文件位置</sys:String>

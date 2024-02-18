@@ -112,8 +112,13 @@ namespace SourceGit.ViewModels {
         }
 
         public bool GitAutoFetch {
-            get => _gitAutoFetch;
-            set => SetProperty(ref _gitAutoFetch, value);
+            get => Commands.AutoFetch.IsEnabled;
+            set {
+                if (Commands.AutoFetch.IsEnabled != value) {
+                    Commands.AutoFetch.IsEnabled = value;
+                    OnPropertyChanged(nameof(GitAutoFetch));
+                }
+            }
         }
 
         public int ExternalMergeToolType {
@@ -242,7 +247,6 @@ namespace SourceGit.ViewModels {
         private Models.ChangeViewMode _commitChangeViewMode = Models.ChangeViewMode.List;
 
         private string _gitDefaultCloneDir = string.Empty;
-        private bool _gitAutoFetch = false;
 
         private int _externalMergeToolType = 0;
         private string _externalMergeToolPath = string.Empty;

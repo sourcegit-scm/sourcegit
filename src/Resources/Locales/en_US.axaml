@@ -393,7 +393,7 @@
   <sys:String x:Key="Text.Preference.Git.Email">User Email</sys:String>
   <sys:String x:Key="Text.Preference.Git.Email.Placeholder">Global git user email</sys:String>
   <sys:String x:Key="Text.Preference.Git.CRLF">Enable Auto CRLF</sys:String>
-  <sys:String x:Key="Text.Preference.Git.AutoFetch">Fetch remotes automatically (need restart)</sys:String>
+  <sys:String x:Key="Text.Preference.Git.AutoFetch">Fetch remotes automatically</sys:String>
   <sys:String x:Key="Text.Preference.GPG">GPG SIGNING</sys:String>
   <sys:String x:Key="Text.Preference.GPG.Enabled">Commit GPG signing</sys:String>
   <sys:String x:Key="Text.Preference.GPG.Path">Install Path</sys:String>
