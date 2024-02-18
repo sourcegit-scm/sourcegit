@@ -64,7 +64,7 @@ namespace SourceGit.Views {
             if (string.IsNullOrEmpty(text)) return;
 
             var normalTypeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Normal, FontStretch.Normal);
-            var highlightTypeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold, FontStretch.Normal);
+            //var highlightTypeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold, FontStretch.Normal);
             var underlinePen = new Pen(Foreground, 1);
             var offsetX = 0.0;
 
@@ -80,20 +80,20 @@ namespace SourceGit.Views {
                     part,
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
-                    isName ? highlightTypeface : normalTypeface,
+                    //isName ? highlightTypeface : normalTypeface,
+                    normalTypeface,
                     FontSize,
                     Foreground);
 
-                context.DrawText(formatted, new Point(offsetX, 0));
-
                 if (isName) {
                     var lineY = formatted.Baseline + 2;
+                    offsetX += 4;
+                    context.DrawText(formatted, new Point(offsetX, 0));
                     context.DrawLine(underlinePen, new Point(offsetX, lineY), new Point(offsetX + formatted.Width, lineY));
-                    offsetX += formatted.Width;
+                    offsetX += formatted.Width + 4;
                 } else {
+                    context.DrawText(formatted, new Point(offsetX, 0));
                     offsetX += formatted.Width;
-                    if (part.StartsWith(' ')) offsetX += 2;
-                    if (part.EndsWith(' ')) offsetX += 4;
                 }
 
                 isName = !isName;

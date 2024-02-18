@@ -52,7 +52,7 @@
         <Grid RowDefinitions="24,Auto,Auto,Auto" ColumnDefinitions="96,*">
           <!-- SHA -->
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
-          <SelectableTextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SHA}" Margin="12,0,0,0" FontSize="12" VerticalAlignment="Center"/>
+          <SelectableTextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SHA}" Margin="12,0,0,0" FontSize="12" VerticalAlignment="Center" FontFamily="{StaticResource JetBrainsMono}"/>
 
           <!-- PARENTS -->
           <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Parents}" IsVisible="{Binding Parents.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
@@ -67,6 +67,7 @@
               <DataTemplate>
                 <TextBlock Text="{Binding, Converter={x:Static c:StringConverters.ToShortSHA}}"
                            FontSize="12"
+                           FontFamily="{StaticResource JetBrainsMono}"
                            Foreground="DarkOrange"
                            TextDecorations="Underline"
                            Margin="0,0,16,0"
@@ -92,7 +93,7 @@
                       <Path Width="8" Height="8" Stretch="Fill" Data="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToIcon}}" Fill="{DynamicResource Brush.DecoratorIcon}"/>
                     </Border>
                     <Border Background="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToBackground}}">
-                      <TextBlock Text="{Binding Name}" FontSize="10" Margin="4,0" Foreground="Black"/>
+                      <TextBlock Text="{Binding Name}" FontSize="10" FontFamily="{StaticResource JetBrainsMono}" Margin="4,0" Foreground="Black"/>
                     </Border>
                   </StackPanel>
                 </Border>
@@ -103,7 +104,7 @@
           <!-- Messages -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
           <ScrollViewer Grid.Row="3" Grid.Column="1" Margin="12,4,0,0" MaxHeight="100" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <SelectableTextBlock Text="{Binding FullMessage}" FontSize="12" TextWrapping="Wrap"/>
+            <SelectableTextBlock Text="{Binding FullMessage}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" TextWrapping="Wrap"/>
           </ScrollViewer>
         </Grid>
 

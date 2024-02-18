@@ -181,17 +181,17 @@
   <sys:String x:Key="Text.RepoCM.Open">Open</sys:String>
   <sys:String x:Key="Text.RepoCM.Explore">Explore in File Manager</sys:String>
 
-  <sys:String x:Key="Text.BranchCM.Push">Push ${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Push">Push${0}$</sys:String>
   <sys:String x:Key="Text.BranchCM.DiscardAll">Discard all changes</sys:String>
-  <sys:String x:Key="Text.BranchCM.FastForward">Fast-Forward to ${0}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Pull">Pull ${0}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.PullInto">Pull ${0}$ into ${1}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Checkout">Checkout ${0}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Merge">Merge ${0}$ into ${1}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Rebase">Rebase ${0}$ on ${1}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Finish">Git Flow - Finish ${0}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Rename">Rename ${0}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Delete">Delete ${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.FastForward">Fast-Forward to${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Pull">Pull${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.PullInto">Pull${0}$into${1}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Checkout">Checkout${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Merge">Merge${0}$into${1}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Rebase">Rebase${0}$on${1}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Finish">Git Flow - Finish${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Rename">Rename${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Delete">Delete${0}$</sys:String>
   <sys:String x:Key="Text.BranchCM.Tracking">Tracking ...</sys:String>
   <sys:String x:Key="Text.BranchCM.CopyName">Copy Branch Name</sys:String>
   <sys:String x:Key="Text.BranchCM.UnsetUpstream">Unset Upstream</sys:String>
@@ -203,8 +203,8 @@
   <sys:String x:Key="Text.RemoteCM.Delete">Delete ...</sys:String>
   <sys:String x:Key="Text.RemoteCM.CopyURL">Copy URL</sys:String>
 
-  <sys:String x:Key="Text.CommitCM.Reset">Reset ${0}$ to Here</sys:String>
-  <sys:String x:Key="Text.CommitCM.Rebase">Rebase ${0}$ to Here</sys:String>
+  <sys:String x:Key="Text.CommitCM.Reset">Reset${0}$to Here</sys:String>
+  <sys:String x:Key="Text.CommitCM.Rebase">Rebase${0}$to Here</sys:String>
   <sys:String x:Key="Text.CommitCM.CherryPick">Cherry-Pick This Commit</sys:String>
   <sys:String x:Key="Text.CommitCM.Reword">Reword</sys:String>
   <sys:String x:Key="Text.CommitCM.Squash">Squash Into Parent</sys:String>
@@ -212,8 +212,8 @@
   <sys:String x:Key="Text.CommitCM.SaveAsPatch">Save as Patch ...</sys:String>
   <sys:String x:Key="Text.CommitCM.CopySHA">Copy SHA</sys:String>
 
-  <sys:String x:Key="Text.TagCM.Push">Push ${0}$</sys:String>
-  <sys:String x:Key="Text.TagCM.Delete">Delete ${0}$</sys:String>
+  <sys:String x:Key="Text.TagCM.Push">Push${0}$</sys:String>
+  <sys:String x:Key="Text.TagCM.Delete">Delete${0}$</sys:String>
   <sys:String x:Key="Text.TagCM.Copy">Copy Tag Name</sys:String>
 
   <sys:String x:Key="Text.StashCM.Apply">Apply</sys:String>

@@ -180,17 +180,17 @@
   <sys:String x:Key="Text.RepoCM.Open">打开</sys:String>
   <sys:String x:Key="Text.RepoCM.Explore">在浏览器中查看</sys:String>
 
-  <sys:String x:Key="Text.BranchCM.Push">推送 ${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Push">推送${0}$</sys:String>
   <sys:String x:Key="Text.BranchCM.DiscardAll">放弃所有更改</sys:String>
-  <sys:String x:Key="Text.BranchCM.FastForward">快进到 ${0}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Pull">拉回 ${0}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.PullInto">拉回 ${0}$ 内容至 ${1}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Checkout">检出 ${0}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Merge">合并 ${0}$ 到 ${1}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Rebase">变基 ${0}$ 分支至 ${1}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Finish">GIT工作流 - 完成 ${0}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Rename">重命名 ${0}$</sys:String>
-  <sys:String x:Key="Text.BranchCM.Delete">删除 ${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.FastForward">快进到${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Pull">拉回${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.PullInto">拉回${0}$内容至${1}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Checkout">检出${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Merge">合并${0}$到${1}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Rebase">变基${0}$分支至${1}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Finish">GIT工作流 - 完成${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Rename">重命名${0}$</sys:String>
+  <sys:String x:Key="Text.BranchCM.Delete">删除${0}$</sys:String>
   <sys:String x:Key="Text.BranchCM.Tracking">切换上游分支...</sys:String>
   <sys:String x:Key="Text.BranchCM.CopyName">复制分支名</sys:String>
   <sys:String x:Key="Text.BranchCM.UnsetUpstream">取消追踪</sys:String>
@@ -202,8 +202,8 @@
   <sys:String x:Key="Text.RemoteCM.Delete">删除 ...</sys:String>
   <sys:String x:Key="Text.RemoteCM.CopyURL">复制远程地址</sys:String>
 
-  <sys:String x:Key="Text.CommitCM.Reset">重置 ${0}$ 到此处</sys:String>
-  <sys:String x:Key="Text.CommitCM.Rebase">变基 ${0}$ 到此处</sys:String>
+  <sys:String x:Key="Text.CommitCM.Reset">重置${0}$到此处</sys:String>
+  <sys:String x:Key="Text.CommitCM.Rebase">变基${0}$到此处</sys:String>
   <sys:String x:Key="Text.CommitCM.CherryPick">挑选此提交</sys:String>
   <sys:String x:Key="Text.CommitCM.Reword">编辑提交信息</sys:String>
   <sys:String x:Key="Text.CommitCM.Squash">合并此提交到上一个提交</sys:String>
@@ -211,8 +211,8 @@
   <sys:String x:Key="Text.CommitCM.SaveAsPatch">另存为补丁 ...</sys:String>
   <sys:String x:Key="Text.CommitCM.CopySHA">复制提交指纹</sys:String>
 
-  <sys:String x:Key="Text.TagCM.Push">推送 ${0}$</sys:String>
-  <sys:String x:Key="Text.TagCM.Delete">删除 ${0}$</sys:String>
+  <sys:String x:Key="Text.TagCM.Push">推送${0}$</sys:String>
+  <sys:String x:Key="Text.TagCM.Delete">删除${0}$</sys:String>
   <sys:String x:Key="Text.TagCM.Copy">复制标签名</sys:String>
 
   <sys:String x:Key="Text.StashCM.Apply">应用</sys:String>

@@ -37,7 +37,7 @@
       <!-- Menu (Windows) -->
       <Button Grid.Column="0"
               Classes="icon_button"
-              Margin="8,0,2,0"
+              Margin="8,0,2,3"
               VerticalAlignment="Bottom"
               IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
         <Button.Flyout>
@@ -54,7 +54,7 @@
             </MenuItem>
           </MenuFlyout>
         </Button.Flyout>
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Menu}"/>
+        <Path Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
       </Button>
 
       <!-- Pages Tabs-->
@@ -160,12 +160,14 @@
                                  TextAlignment="Center"
                                  Text="{Binding Node.Name}"
                                  IsVisible="{Binding Node.IsRepository}"
+                                 FontFamily="{StaticResource JetBrainsMono}"
                                  IsHitTestVisible="False"/>
                       <TextBlock Grid.Column="1"
                                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                  TextAlignment="Center"
                                  Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                                  IsVisible="{Binding !Node.IsRepository}"
+                                 FontFamily="{StaticResource JetBrainsMono}"
                                  IsHitTestVisible="False"/>
                       <Button Grid.Column="2"
                               Classes="icon_button"

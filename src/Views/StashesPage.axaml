@@ -69,7 +69,7 @@
                       <TextBlock Grid.Column="1" FontSize="12" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0" FontFamily="{StaticResource JetBrainsMono}"/>
                     </Grid>
 
-                    <TextBlock Grid.Row="1" Text="{Binding Message}" FontSize="12" VerticalAlignment="Bottom"/>
+                    <TextBlock Grid.Row="1" Text="{Binding Message}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" VerticalAlignment="Bottom"/>
                   </Grid>
                 </Border>
               </DataTemplate>
@@ -113,7 +113,7 @@
           <DataGridTemplateColumn Width="*" Header="PATH">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Path}" Margin="4,0,0,0" FontSize="12"/>
+                <TextBlock Text="{Binding Path}" Margin="4,0,0,0" FontSize="12" FontFamily="{StaticResource JetBrainsMono}"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>

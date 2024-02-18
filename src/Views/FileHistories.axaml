@@ -80,12 +80,12 @@
                                 IsHitTestVisible="False"
                                 User="{Binding Author}"
                                 FallbackFontFamily="{StaticResource JetBrainsMono}"/>
-                      <TextBlock Grid.Column="1" FontSize="12" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="1" FontSize="12" Text="{Binding Author.Name}" FontFamily="{StaticResource JetBrainsMono}" Margin="8,0,0,0"/>
                       <TextBlock Grid.Column="2" FontSize="12" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA" FontFamily="{StaticResource JetBrainsMono}"/>
                       <TextBlock Grid.Column="3" FontSize="12" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0" FontFamily="{StaticResource JetBrainsMono}"/>
                     </Grid>
 
-                    <TextBlock Grid.Row="1" Text="{Binding Subject}" FontSize="12" VerticalAlignment="Bottom"/>
+                    <TextBlock Grid.Row="1" Text="{Binding Subject}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" VerticalAlignment="Bottom"/>
                   </Grid>
                 </Border>
               </DataTemplate>
