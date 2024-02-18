@@ -6,7 +6,7 @@ namespace SourceGit.Native {
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend {
         public string FindGitInstallDir() {
-            if (File.Exists("/usr/bin/git")) return "/usr/bin/git";
+            if (File.Exists("/usr/bin/git")) return "/usr";
             return string.Empty;
         }
 
@@ -26,7 +26,7 @@ namespace SourceGit.Native {
             if (Directory.Exists(path)) {
                 Process.Start("open", path);
             } else if (File.Exists(path)) {
-                Process.Start("open", $"\"{path}\" -a Finder");
+                Process.Start("open", $"\"{path}\" -R");
             }
         }
 

@@ -74,7 +74,7 @@ namespace SourceGit.Views {
             if (DefaultUser != oldUser) cmd.Set("user.name", DefaultUser);
             if (DefaultEmail != oldEmail) cmd.Set("user.email", DefaultEmail);
             if (GPGUserKey != oldGPGSignKey) cmd.Set("user.signingkey", GPGUserKey);
-            if (CRLFMode.Value != oldCRLF) cmd.Set("core.autocrlf", CRLFMode.Value);
+            if (CRLFMode != null && CRLFMode.Value != oldCRLF) cmd.Set("core.autocrlf", CRLFMode.Value);
             if (EnableGPGSigning != (oldGPGSignEnable == "true")) cmd.Set("commit.gpgsign", EnableGPGSigning ?  "true" : "false");
             if (GPGExecutableFile != oldGPGExec) cmd.Set("gpg.program", GPGExecutableFile);
 

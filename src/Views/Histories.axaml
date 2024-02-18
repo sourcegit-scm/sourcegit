@@ -16,7 +16,7 @@
 				        Background="{DynamicResource Brush.Contents}"
 				        ItemsSource="{Binding Commits}"
 				        SelectionMode="Extended"
-				        SelectedItem="{Binding AutoSelectedCommit}"
+				        SelectedItem="{Binding AutoSelectedCommit, Mode=OneWay}"
 				        CanUserReorderColumns="False"
 				        CanUserResizeColumns="False"
 				        CanUserSortColumns="False"
