@@ -384,5 +384,14 @@ namespace SourceGit.Views {
                 if (change != null && !outs.Contains(change)) outs.Add(change);
             }
         }
+
+        private void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e) {
+            if (sender is Button button && DataContext is ViewModels.WorkingCopy vm) {
+                var menu = vm.CreateContextMenuForCommitMessages();
+                menu.Placement = PlacementMode.TopEdgeAlignedLeft;
+                menu.Open(button);
+                e.Handled = true;
+            }
+        }
     }
 }

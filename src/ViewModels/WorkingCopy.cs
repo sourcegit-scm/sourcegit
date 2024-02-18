@@ -557,6 +557,38 @@ namespace SourceGit.ViewModels {
             return menu;
         }
 
+        public ContextMenu CreateContextMenuForCommitMessages() {
+            var menu = new ContextMenu();
+            if (_repo.CommitMessages.Count == 0) {
+                var empty = new MenuItem();
+                empty.Header = App.Text("WorkingCopy.NoCommitHistories");
+                empty.IsEnabled = false;
+                menu.Items.Add(empty);
+                return menu;
+            }
+
+            var tip = new MenuItem();
+            tip.Header = App.Text("WorkingCopy.HasCommitHistories");
+            tip.IsEnabled = false;
+            menu.Items.Add(tip);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            foreach (var message in _repo.CommitMessages) {
+                var dump = message;
+
+                var item = new MenuItem();
+                item.Header = dump;
+                item.Click += (o, e) => {
+                    CommitMessage = dump;
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(item);
+            }
+
+            return menu;
+        }
+
         private Avalonia.Controls.Shapes.Path CreateMenuIcon(string key) {
             var icon = new Avalonia.Controls.Shapes.Path();
             icon.Width = 12;

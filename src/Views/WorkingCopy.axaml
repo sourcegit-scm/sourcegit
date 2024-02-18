@@ -354,6 +354,7 @@
         <Button Grid.Column="0"
                 Classes="icon_button"
                 Width="14" Height="14"
+                Click="OnOpenCommitMessagePicker"
                 ToolTip.Tip="{DynamicResource Text.WorkingCopy.MessageHistories}">
           <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.List}"/>
         </Button>
