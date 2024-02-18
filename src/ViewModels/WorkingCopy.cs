@@ -138,6 +138,7 @@ namespace SourceGit.ViewModels {
         public async void StageChanges(List<Models.Change> changes) {
             if (_unstaged.Count == 0 || changes.Count == 0) return;
 
+            SetDetail(null, true);
             IsStaging = true;
             _repo.SetWatcherEnabled(false);
             if (changes.Count == _unstaged.Count) {
@@ -157,6 +158,7 @@ namespace SourceGit.ViewModels {
         public async void UnstageChanges(List<Models.Change> changes) {
             if (_staged.Count == 0 || changes.Count == 0) return;
 
+            SetDetail(null, false);
             IsUnstaging = true;
             _repo.SetWatcherEnabled(false);
             if (changes.Count == _staged.Count) {

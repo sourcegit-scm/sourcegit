@@ -133,12 +133,13 @@
                       HorizontalAlignment="Left"
                       IsVisible="{Binding !IsRepository}"/>
 
-                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Name}"/>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Name}" FontFamily="{StaticResource JetBrainsMono}"/>
                 <TextBlock Grid.Column="2"
                            Margin="8,0"
                            HorizontalAlignment="Right" VerticalAlignment="Center"
                            Foreground="{DynamicResource Brush.FG2}"
                            Text="{Binding Id}"
+                           FontFamily="{StaticResource JetBrainsMono}"
                            IsVisible="{Binding IsRepository}"/>
               </Grid>
             </TreeDataTemplate>
