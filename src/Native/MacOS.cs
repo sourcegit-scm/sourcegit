@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Runtime.Versioning;
+using System.Text;
 
 namespace SourceGit.Native {
     [SupportedOSPlatform("macOS")]
@@ -31,11 +32,20 @@ namespace SourceGit.Native {
         }
 
         public void OpenTerminal(string workdir) {
-            Process.Start(new ProcessStartInfo() {
-                WorkingDirectory = workdir,
-                FileName = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal",
-                UseShellExecute = false,
-            });
+            var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
+            var builder = new StringBuilder();
+            builder.AppendLine("on run argv");
+            builder.AppendLine("    tell application \"Terminal\"");
+            builder.AppendLine($"        do script \"cd '{dir}'\"");
+            builder.AppendLine("        activate");
+            builder.AppendLine("    end tell");
+            builder.AppendLine("end run");
+
+            var tmp = Path.GetTempFileName();
+            File.WriteAllText(tmp, builder.ToString());
+
+            var proc = Process.Start("/usr/bin/osascript", $"\"{tmp}\"");
+            proc.Exited += (o, e) => File.Delete(tmp);
         }
 
         public void OpenWithDefaultEditor(string file) {
