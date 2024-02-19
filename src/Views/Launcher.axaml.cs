@@ -43,7 +43,9 @@ namespace SourceGit.Views {
         }
 
         protected override void OnClosing(WindowClosingEventArgs e) {
-            ViewModels.Preference.Save();
+            var vm = DataContext as ViewModels.Launcher;
+            vm.Quit();
+
             base.OnClosing(e);
         }
 

@@ -21,6 +21,27 @@ namespace SourceGit.ViewModels {
         public Launcher() {
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
+
+            if (Preference.Instance.RestoreTabs) {
+                foreach (var id in Preference.Instance.OpenedTabs) {
+                    var node = Preference.FindNode(id);
+                    if (node == null) continue;
+
+                    OpenRepositoryInTab(node, null);
+                }
+            }
+        }
+
+        public void Quit() {
+            Preference.Instance.OpenedTabs.Clear();
+
+            if (Preference.Instance.RestoreTabs) {
+                foreach (var page in Pages) {
+                    if (page.Node.IsRepository) Preference.Instance.OpenedTabs.Add(page.Node.Id);
+                }
+            }
+
+            Preference.Save();
         }
 
         public void AddNewTab() {
@@ -130,6 +151,7 @@ namespace SourceGit.ViewModels {
                     page = new LauncherPage(node, repo);
                     Pages.Add(page);
                 } else {
+                    page = ActivePage;
                     page.Node = node;
                     page.View = new Views.Repository() { DataContext = repo };
                 }

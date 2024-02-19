@@ -158,6 +158,11 @@ namespace SourceGit.ViewModels {
             set => SetProperty(ref _repositoryNodes, value);
         }
 
+        public List<string> OpenedTabs {
+            get;
+            set;
+        } = new List<string>();
+
         public static void AddNode(RepositoryNode node, RepositoryNode to = null) {
             var collection = to == null ? _instance._repositoryNodes : to.SubNodes;
             var list = new List<RepositoryNode>();
@@ -175,6 +180,10 @@ namespace SourceGit.ViewModels {
             foreach (var one in list) {
                 collection.Add(one);
             }
+        }
+
+        public static RepositoryNode FindNode(string id) {
+            return FindNodeRecursive(id, _instance.RepositoryNodes);
         }
 
         public static void MoveNode(RepositoryNode node, RepositoryNode to = null) {
@@ -220,6 +229,17 @@ namespace SourceGit.ViewModels {
 
             var data = JsonSerializer.Serialize(_instance, JsonSerializationCodeGen.Default.Preference);
             File.WriteAllText(_savePath, data);
+        }
+
+        private static RepositoryNode FindNodeRecursive(string id, AvaloniaList<RepositoryNode> collection) {
+            foreach (var node in collection) {
+                if (node.Id == id) return node;
+
+                var sub = FindNodeRecursive(id, node.SubNodes);
+                if (sub != null) return sub;
+            }
+
+            return null;
         }
 
         private static bool RemoveNodeRecursive(RepositoryNode node, AvaloniaList<RepositoryNode> collection) {
