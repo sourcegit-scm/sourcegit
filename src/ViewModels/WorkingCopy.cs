@@ -246,6 +246,7 @@ namespace SourceGit.ViewModels {
 
             PushCommitMessage();
 
+            SetDetail(null, false);
             IsCommitting = true;
             _repo.SetWatcherEnabled(false);
             var succ = await Task.Run(() => new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend).Exec());
