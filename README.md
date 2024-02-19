@@ -2,8 +2,11 @@
 
 Opensouce Git GUI client.
 
+> To use this tool, you need to install Git first.
+
 ## High-lights
 
+* Supports Windows/macOS
 * Opensource/Free
 * Fast
 * English/简体中文
@@ -17,7 +20,6 @@ Opensouce Git GUI client.
   * Tags
   * Stashes
   * Submodules
-  * Subtrees
   * Archive
   * Patch/apply
   * File histories
