@@ -205,7 +205,7 @@ namespace SourceGit.Views {
 
     public partial class Histories : UserControl {
         public Histories() {
-            InitializeComponent();    
+            InitializeComponent();
         }
 
         protected override void OnUnloaded(RoutedEventArgs e) {

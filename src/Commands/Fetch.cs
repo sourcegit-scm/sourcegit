@@ -81,6 +81,8 @@ namespace SourceGit.Commands {
                         job.Cmd.Exec();
                         job.NextRunTimepoint = DateTime.Now.AddSeconds(_fetchInterval);
                     }
+
+                    Thread.Sleep(2000);
                 }
             });
         }
