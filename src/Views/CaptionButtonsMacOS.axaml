@@ -12,7 +12,7 @@
       <Button Classes="caption_button_macos" Click="CloseWindow" Margin="10,0,0,0">
         <Grid>
           <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
-          <Path Height="7" Width="7" Stretch="Fill" Fill="#404040" Data="{StaticResource Icons.MacOS.Close}"/>
+          <Path Height="7" Width="7" Stretch="Fill" Fill="#804040" Data="{StaticResource Icons.MacOS.Close}"/>
         </Grid>
       </Button>
       <Button Classes="caption_button_macos" Click="MinimizeWindow">
