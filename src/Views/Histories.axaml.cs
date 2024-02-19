@@ -1,7 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using System;
 
 namespace SourceGit.Views {
@@ -77,7 +79,7 @@ namespace SourceGit.Views {
         }
 
         static CommitGraph() {
-            AffectsMeasure<CommitGraph>(BindingDataGridProperty, GraphProperty);
+            AffectsRender<CommitGraph>(BindingDataGridProperty, GraphProperty);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
@@ -91,16 +93,31 @@ namespace SourceGit.Views {
         public override void Render(DrawingContext context) {
             base.Render(context);
 
-            if (Graph == null || BindingDataGrid == null) return;
+            var graph = Graph;
+            var grid = BindingDataGrid;
+            if (graph == null || grid == null) return;
+
+            var rowsPresenter = grid.FindDescendantOfType<DataGridRowsPresenter>();
+            if (rowsPresenter == null) return;
+
+            // Find the content display offset Y of binding DataGrid.
+            double rowHeight = grid.RowHeight;
+            double startY = 0;
+            foreach (var child in rowsPresenter.Children) {
+                var row = child as DataGridRow;
+                if (row.IsVisible && row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight) {
+                    var test = rowHeight * row.GetIndex() - row.Bounds.Top;
+                    if (startY < test) startY = test;
+                }
+            }
 
             // Apply scroll offset.
-            var offset = BindingDataGrid.GetDisplayOffset();
-            context.PushClip(new Rect(Bounds.Left, Bounds.Top, BindingDataGrid.Columns[0].ActualWidth, Bounds.Height));
-            context.PushTransform(Matrix.CreateTranslation(0, -offset.Y));
+            context.PushClip(new Rect(Bounds.Left, Bounds.Top, grid.Columns[0].ActualWidth, Bounds.Height));
+            context.PushTransform(Matrix.CreateTranslation(0, -startY));
 
             // Calculate bounds.
-            var top = offset.Y;
-            var bottom = offset.Y + BindingDataGrid.Bounds.Height + BindingDataGrid.RowHeight * 2;
+            var top = startY;
+            var bottom = startY + grid.Bounds.Height + rowHeight * 2;
 
             // Draw all curves
             DrawCurves(context, top, bottom);
@@ -110,7 +127,7 @@ namespace SourceGit.Views {
             if (App.Current.TryGetResource("Brush.Contents", App.Current.ActualThemeVariant, out object res) && res is SolidColorBrush) {
                 dotFill = res as SolidColorBrush;
             }
-            foreach (var dot in Graph.Dots) {
+            foreach (var dot in graph.Dots) {
                 if (dot.Center.Y < top) continue;
                 if (dot.Center.Y > bottom) break;
 
@@ -196,8 +213,8 @@ namespace SourceGit.Views {
             GC.Collect();
         }
 
-        private void OnCommitDataGridDisplayRegionChanged(object sender, RoutedEventArgs e) {
-            commitGraph.InvalidateMeasure();
+        private void OnCommitDataGridLayoutUpdated(object sender, EventArgs e) {
+            commitGraph.InvalidateVisual();
         }
 
         private void OnCommitDataGridSelectionChanged(object sender, SelectionChangedEventArgs e) {

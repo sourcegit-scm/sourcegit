@@ -13,22 +13,22 @@
                     UseHorizontal="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories}">
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
       <DataGrid x:Name="commitDataGrid"
-				        Background="{DynamicResource Brush.Contents}"
-				        ItemsSource="{Binding Commits}"
-				        SelectionMode="Extended"
-				        SelectedItem="{Binding AutoSelectedCommit, Mode=OneWay}"
-				        CanUserReorderColumns="False"
-				        CanUserResizeColumns="False"
-				        CanUserSortColumns="False"
-				        IsReadOnly="True"
-				        HeadersVisibility="None"
-				        Focusable="False"
-				        RowHeight="{Binding DataGridRowHeight}"
-				        HorizontalScrollBarVisibility="Disabled"
-				        VerticalScrollBarVisibility="Auto"
-				        DisplayRegionChanged="OnCommitDataGridDisplayRegionChanged"
-				        SelectionChanged="OnCommitDataGridSelectionChanged"
-				        ContextRequested="OnCommitDataGridContextRequested">
+                Background="{DynamicResource Brush.Contents}"
+                ItemsSource="{Binding Commits}"
+                SelectionMode="Extended"
+                SelectedItem="{Binding AutoSelectedCommit, Mode=OneWay}"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserSortColumns="False"
+                IsReadOnly="True"
+                HeadersVisibility="None"
+                Focusable="False"
+                RowHeight="{Binding DataGridRowHeight}"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto"
+                LayoutUpdated="OnCommitDataGridLayoutUpdated"
+                SelectionChanged="OnCommitDataGridSelectionChanged"
+                ContextRequested="OnCommitDataGridContextRequested">
         <DataGrid.Columns>
           <DataGridTemplateColumn Width="*" Header="GRAPH">
             <DataGridTemplateColumn.CellTemplate>
@@ -133,8 +133,8 @@
 
     <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                   MinWidth="1" MinHeight="1"
-					        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-					        Background="{DynamicResource Brush.Border0}"/>
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  Background="{DynamicResource Brush.Border0}"/>
 
     <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
       <Border Background="{DynamicResource Brush.Window}">
