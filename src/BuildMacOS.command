@@ -19,5 +19,5 @@ cp App.icns macOS/arm64/SourceGit.app/Contents/Resources/App.icns
 cp -r bin/Release/net8.0/osx-x64/publish/* macOS/x64/SourceGit.app/Contents/MacOS/
 cp -r bin/Release/net8.0/osx-arm64/publish/* macOS/arm64/SourceGit.app/Contents/MacOS/
 
-rm -f macOS/x64/SourceGit.app/Contents/MacOS/*.dsym
-rm -f macOS/arm64/SourceGit.app/Contents/MacOS/*.dsym
+rm -rf macOS/x64/SourceGit.app/Contents/MacOS/SourceGit.dsym
+rm -rf macOS/arm64/SourceGit.app/Contents/MacOS/SourceGit.dsym
