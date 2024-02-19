@@ -123,7 +123,14 @@ namespace SourceGit.ViewModels {
 
         public int ExternalMergeToolType {
             get => _externalMergeToolType;
-            set => SetProperty(ref _externalMergeToolType, value);
+            set {
+                var changed = SetProperty(ref _externalMergeToolType, value);
+                if (changed && !OperatingSystem.IsWindows() && value >= 0 && value < Models.ExternalMergeTools.Supported.Count) {
+                    var tool = Models.ExternalMergeTools.Supported[value];
+                    if (File.Exists(tool.Exec)) ExternalMergeToolPath = tool.Exec;
+                    else ExternalMergeToolPath = string.Empty;
+                }
+            }
         }
 
         public string ExternalMergeToolPath {

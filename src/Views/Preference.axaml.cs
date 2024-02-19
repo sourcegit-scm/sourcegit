@@ -115,14 +115,15 @@ namespace SourceGit.Views {
 
         private async void SelectExternalMergeTool(object sender, RoutedEventArgs e) {
             var type = ViewModels.Preference.Instance.ExternalMergeToolType;
-            if (type == 0 || type >= Models.ExternalMergeTools.Supported.Count) {
-                ViewModels.Preference.Instance.ExternalMergeToolType = 1;
-                type = 1;
+            if (type < 0 || type >= Models.ExternalMergeTools.Supported.Count) {
+                ViewModels.Preference.Instance.ExternalMergeToolType = 0;
+                type = 0;
             }
 
             var tool = Models.ExternalMergeTools.Supported[type];
+            var pattern = Path.GetFileName(tool.Exec);
             var options = new FilePickerOpenOptions() {
-                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = [tool.Exec] }],
+                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = [pattern] }],
                 AllowMultiple = false,
             };
 
