@@ -73,7 +73,7 @@
 
           <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
             <TextBlock Text="{DynamicResource Text.About.Editor}" />
-            <TextBlock Text="OneWare.AvaloniaEdit" Cursor="Hand" Foreground="{DynamicResource Brush.Accent1}" TextDecorations="Underline" PointerPressed="OnVisitAvaloniaEdit"/>
+            <TextBlock Text="AvaloniaEdit" Cursor="Hand" Foreground="{DynamicResource Brush.Accent1}" TextDecorations="Underline" PointerPressed="OnVisitAvaloniaEdit"/>
           </StackPanel>
 
           <StackPanel Orientation="Horizontal" Margin="0,2,0,0">

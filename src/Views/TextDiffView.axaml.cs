@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Styling;
@@ -517,7 +518,7 @@ namespace SourceGit.Views {
         }
 
         private void OnTextViewScrollOffsetChanged(object sender, EventArgs e) {
-            SyncScrollOffset = ScrollViewer.Offset;
+            SyncScrollOffset = TextArea.TextView.ScrollOffset;
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e) {
@@ -566,8 +567,9 @@ namespace SourceGit.Views {
                     Text = string.Empty;
                 }
             } else if (change.Property == SyncScrollOffsetProperty) {
-                if (ScrollViewer.Offset != SyncScrollOffset) {
-                    ScrollViewer.Offset = SyncScrollOffset;
+                if (TextArea.TextView.ScrollOffset != SyncScrollOffset) {
+                    IScrollable scrollable = TextArea.TextView;
+                    scrollable.Offset = SyncScrollOffset;
                 }
             } else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null && _textMate != null) {
                 if (App.Current?.ActualThemeVariant == ThemeVariant.Dark) {

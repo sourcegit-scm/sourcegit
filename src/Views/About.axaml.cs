@@ -27,7 +27,7 @@ namespace SourceGit.Views {
         }
 
         private void OnVisitAvaloniaEdit(object sender, PointerPressedEventArgs e) {
-            Native.OS.OpenBrowser("https://www.nuget.org/packages/OneWare.AvaloniaEdit");
+            Native.OS.OpenBrowser("https://github.com/AvaloniaUI/AvaloniaEdit");
             e.Handled = true;
         }
 
