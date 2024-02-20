@@ -96,6 +96,17 @@ namespace SourceGit.ViewModels {
             });
         }
 
+        public void Cleanup() {
+            _repo = null;
+            if (_changes != null) _changes.Clear();
+            if (_visibleChanges != null) _visibleChanges.Clear();
+            if (_changeTree != null) _changeTree.Clear();
+            _selectedChange = null;
+            _selectedNode = null;
+            _searchFilter = null;
+            _diffContext = null;
+        }
+
         public void NavigateTo(string commitSHA) {
             var repo = Preference.FindRepository(_repo);
             if (repo != null) repo.NavigateToCommit(commitSHA);

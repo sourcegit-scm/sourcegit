@@ -114,6 +114,24 @@ namespace SourceGit.ViewModels {
             _repo = repo;
         }
 
+        public void Cleanup() {
+            _repo = null;
+            _commit = null;
+            if (_changes != null) _changes.Clear();
+            if (_visibleChanges != null) _visibleChanges.Clear();
+            if (_changeTree != null) _changeTree.Clear();
+            _selectedChange = null;
+            _selectedChangeNode = null;
+            _searchChangeFilter = null;
+            _diffContext = null;
+            if (_revisionFiles != null) _revisionFiles.Clear();
+            if (_revisionFilesTree != null) _revisionFilesTree.Clear();
+            _selectedRevisionFileNode = null;
+            _searchFileFilter = null;
+            _viewRevisionFileContent = null;
+            _cancelToken = null;
+        }
+
         public void NavigateTo(string commitSHA) {
             var repo = Preference.FindRepository(_repo);
             if (repo != null) repo.NavigateToCommit(commitSHA);

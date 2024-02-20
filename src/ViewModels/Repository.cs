@@ -189,12 +189,17 @@ namespace SourceGit.ViewModels {
         }
 
         public void Close() {
+            SelectedView = 0.0; // Do NOT modify. Used to remove exists widgets for GC.Collect
+
             _watcher.Dispose();
+            _histories.Cleanup();
+            _workingCopy.Cleanup();
+            _stashesPage.Cleanup();
+
             _watcher = null;
             _histories = null;
             _workingCopy = null;
             _stashesPage = null;
-            _selectedView = null;
             _isSearching = false;
             _searchCommitFilter = string.Empty;
 
@@ -205,8 +210,6 @@ namespace SourceGit.ViewModels {
             _tags.Clear();
             _submodules.Clear();
             _searchedCommits.Clear();
-
-            GC.Collect();
         }
 
         public void OpenInFileManager() {

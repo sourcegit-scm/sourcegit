@@ -56,6 +56,22 @@ namespace SourceGit.ViewModels {
             _repo = repo;
         }
 
+        public void Cleanup() {
+            Commits = new List<Models.Commit>();
+
+            _repo = null;
+            _graph = null;
+            _autoSelectedCommit = null;
+
+            if (_detailContext is CommitDetail cd) {
+                cd.Cleanup();
+            } else if (_detailContext is RevisionCompare rc) {
+                rc.Cleanup();
+            }
+
+            _detailContext = null;
+        }
+
         public void NavigateTo(string commitSHA) {
             var commit = _commits.Find(x => x.SHA.StartsWith(commitSHA));
             if (commit != null) {

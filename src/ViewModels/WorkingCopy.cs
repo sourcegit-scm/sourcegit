@@ -78,6 +78,17 @@ namespace SourceGit.ViewModels {
             _repo = repo;
         }
 
+        public void Cleanup() {
+            _repo = null;
+            if (_unstaged != null) _unstaged.Clear();
+            if (_staged != null) _staged.Clear();
+            if (_unstagedTree != null) _unstagedTree.Clear();
+            if (_stagedTree != null) _stagedTree.Clear();
+            _lastViewChange = null;
+            _detailContext = null;
+            _commitMessage = string.Empty;
+        }
+
         public bool SetData(List<Models.Change> changes) {
             var unstaged = new List<Models.Change>();
             var staged = new List<Models.Change>();

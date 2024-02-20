@@ -67,6 +67,15 @@ namespace SourceGit.ViewModels {
             _repo = repo;
         }
 
+        public void Cleanup() {
+            _repo = null;
+            if (_stashes != null) _stashes.Clear();
+            _selectedStash = null;
+            if (_changes != null) _changes.Clear();
+            _selectedChange = null;
+            _diffContext = null;
+        }
+
         public void Apply(object param) {
             if (param is Models.Stash stash) {
                 Task.Run(() => {

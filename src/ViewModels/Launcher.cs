@@ -1,5 +1,8 @@
 ﻿using Avalonia.Collections;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace SourceGit.ViewModels {
@@ -74,8 +77,6 @@ namespace SourceGit.ViewModels {
             LauncherPage page = param as LauncherPage;
             if (page == null) page = _activePage;
 
-            CloseRepositoryInTab(page);
-
             var removeIdx = Pages.IndexOf(page);
             var activeIdx = Pages.IndexOf(_activePage);
             if (removeIdx == activeIdx) {
@@ -85,31 +86,37 @@ namespace SourceGit.ViewModels {
                     ActivePage = Pages[removeIdx + 1];
                 }
 
+                CloseRepositoryInTab(page);
                 Pages.RemoveAt(removeIdx);
                 OnPropertyChanged(nameof(Pages));
             } else if (removeIdx + 1 == activeIdx) {
+                CloseRepositoryInTab(page);
                 Pages.RemoveAt(removeIdx);
                 OnPropertyChanged(nameof(Pages));
             } else {
+                CloseRepositoryInTab(page);
                 Pages.RemoveAt(removeIdx);
             }
+
+            GC.Collect();
         }
 
         public void CloseOtherTabs(object param) {
             if (Pages.Count == 1) return;
 
-            LauncherPage page = param as LauncherPage;
+            var page = param as LauncherPage;
             if (page == null) page = _activePage;
 
+            ActivePage = page;
+
             foreach (var one in Pages) {
-                if (one.Node.Id != page.Node.Id) {
-                    CloseRepositoryInTab(one);
-                }
+                if (one.Node.Id != page.Node.Id) CloseRepositoryInTab(one);
             }
 
-            ActivePage = page;
             Pages = new AvaloniaList<LauncherPage> { page };
             OnPropertyChanged(nameof(Pages));
+
+            GC.Collect();
         }
 
         public void CloseRightTabs(object param) {
@@ -126,6 +133,8 @@ namespace SourceGit.ViewModels {
                 CloseRepositoryInTab(Pages[i]);
                 Pages.Remove(Pages[i]);
             }
+
+            GC.Collect();
         }
 
         public void OpenRepositoryInTab(RepositoryNode node, LauncherPage page) {
@@ -164,13 +173,15 @@ namespace SourceGit.ViewModels {
         }
 
         private void CloseRepositoryInTab(LauncherPage page) {
-            if (!page.Node.IsRepository) return;
+            if (page.Node.IsRepository) {
+                var repo = Preference.FindRepository(page.Node.Id);
+                if (repo != null) {
+                    Commands.AutoFetch.RemoveRepository(repo.FullPath);
+                    repo.Close();
+                }
+            }
 
-            var repo = Preference.FindRepository(page.Node.Id);
-            if (repo == null) return;
-
-            Commands.AutoFetch.RemoveRepository(repo.FullPath);
-            repo.Close();
+            page.View = null;
         }
 
         private LauncherPage _activePage = null;

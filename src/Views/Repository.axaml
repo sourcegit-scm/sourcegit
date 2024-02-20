@@ -466,6 +466,10 @@
             <DataTemplate DataType="vm:StashesPage">
               <v:StashesPage/>
             </DataTemplate>
+
+            <DataTemplate DataType="x:Double">
+              <Border/>
+            </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>
       </Grid>
