@@ -6,8 +6,8 @@ using System.Text;
 namespace SourceGit.Native {
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend {
-        public string FindGitInstallDir() {
-            if (File.Exists("/usr/bin/git")) return "/usr";
+        public string FindGitExecutable() {
+            if (File.Exists("/usr/bin/git")) return "/usr/bin/git";
             return string.Empty;
         }
 

@@ -11,14 +11,14 @@ namespace SourceGit.Native {
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
 
-        public string FindGitInstallDir() {
+        public string FindGitExecutable() {
             var reg = Microsoft.Win32.RegistryKey.OpenBaseKey(
                 Microsoft.Win32.RegistryHive.LocalMachine,
                 Microsoft.Win32.RegistryView.Registry64);
 
             var git = reg.OpenSubKey("SOFTWARE\\GitForWindows");
             if (git != null) {
-                return git.GetValue("InstallPath") as string;
+                return Path.Combine(git.GetValue("InstallPath") as string, "bin", "git.exe");
             }
 
             var builder = new StringBuilder("git.exe", 259);
@@ -29,15 +29,7 @@ namespace SourceGit.Native {
             var exePath = builder.ToString();
             if (string.IsNullOrEmpty(exePath)) return null;
 
-            var binDir = Path.GetDirectoryName(exePath);
-            var bashPath = Path.Combine(binDir, "bash.exe");
-            if (File.Exists(bashPath)) return Path.GetDirectoryName(binDir);
-
-            binDir = Path.Combine(Path.GetDirectoryName(binDir), "bin");
-            bashPath = Path.Combine(binDir, "bash.exe");
-            if (File.Exists(bashPath)) return Path.GetDirectoryName(binDir);
-
-            return null;
+            return exePath;
         }
 
         public string FindVSCode() {
@@ -75,9 +67,9 @@ namespace SourceGit.Native {
         }
 
         public void OpenTerminal(string workdir) {
-            var bash = Path.Combine(ViewModels.Preference.Instance.GitInstallDir, "bin", "bash.exe");
+            var bash = Path.Combine(Path.GetDirectoryName(OS.GitInstallPath), "bash.exe");
             if (!File.Exists(bash)) {
-                App.RaiseException("", $"Can NOT found bash.exe under '{ViewModels.Preference.Instance.GitInstallDir}'");
+                App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Can NOT found bash.exe under '{Path.GetDirectoryName(OS.GitInstallPath)}'");
                 return;
             }
 

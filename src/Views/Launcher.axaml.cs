@@ -16,8 +16,11 @@ namespace SourceGit.Views {
                     var pageId = page.Node.Id.Replace("\\", "/");
                     if (pageId == ctx) {
                         page.Notifications.Add(notice);
+                        return;
                     }
                 }
+
+                if (vm.ActivePage != null) vm.ActivePage.Notifications.Add(notice);
             }
         }
 

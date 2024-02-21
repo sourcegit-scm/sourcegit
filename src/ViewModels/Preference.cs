@@ -26,7 +26,7 @@ namespace SourceGit.ViewModels {
                 _instance.Repositories.RemoveAll(x => !Directory.Exists(x.FullPath));
 
                 if (!_instance.IsGitConfigured) {
-                    _instance.GitInstallDir = Native.OS.FindGitInstallDir();
+                    _instance.GitInstallPath = Native.OS.FindGitExecutable();
                 }
 
                 return _instance;
@@ -93,15 +93,15 @@ namespace SourceGit.ViewModels {
 
         [JsonIgnore]
         public bool IsGitConfigured {
-            get => !string.IsNullOrEmpty(GitInstallDir) && Directory.Exists(GitInstallDir);
+            get => !string.IsNullOrEmpty(GitInstallPath) && File.Exists(GitInstallPath);
         }
 
-        public string GitInstallDir {
-            get => Native.OS.GitInstallDir;
+        public string GitInstallPath {
+            get => Native.OS.GitInstallPath;
             set {
-                if (Native.OS.GitInstallDir != value) {
-                    Native.OS.GitInstallDir = value;
-                    OnPropertyChanged(nameof(GitInstallDir));
+                if (Native.OS.GitInstallPath != value) {
+                    Native.OS.GitInstallPath = value;
+                    OnPropertyChanged(nameof(GitInstallPath));
                 }
             }
         }

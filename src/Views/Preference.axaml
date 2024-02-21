@@ -139,8 +139,8 @@
             <TextBox Grid.Column="0"
                      Height="28"
                      CornerRadius="3"
-                     Text="{Binding GitInstallDir, Mode=TwoWay}"/>
-            <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectGitInstallDir">
+                     Text="{Binding GitInstallPath, Mode=TwoWay}"/>
+            <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectGitExecutable">
               <Path Data="{StaticResource Icons.Folder.Open}"/>
             </Button>
           </Grid>

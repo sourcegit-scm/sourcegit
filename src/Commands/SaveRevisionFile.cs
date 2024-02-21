@@ -20,7 +20,7 @@ namespace SourceGit.Commands {
         private static bool ExecCmd(string repo, string args, string outputFile, string inputFile = null) {
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = repo;
-            starter.FileName = Native.OS.GitExecutableFile;
+            starter.FileName = Native.OS.GitInstallPath;
             starter.Arguments = args;
             starter.UseShellExecute = false;
             starter.CreateNoWindow = true;

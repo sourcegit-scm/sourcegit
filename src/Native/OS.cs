@@ -5,7 +5,7 @@ using System.IO;
 namespace SourceGit.Native {
     public static class OS {
         public interface IBackend {
-            string FindGitInstallDir();
+            string FindGitExecutable();
             string FindVSCode();
 
             void OpenTerminal(string workdir);
@@ -14,13 +14,9 @@ namespace SourceGit.Native {
             void OpenWithDefaultEditor(string file);
         }
 
-        public static string GitInstallDir {
+        public static string GitInstallPath {
             get;
             set;
-        }
-
-        public static string GitExecutableFile {
-            get => Path.Combine(GitInstallDir, "bin", OperatingSystem.IsWindows() ? "git.exe" : "git");
         }
 
         public static string VSCodeExecutableFile {
@@ -40,8 +36,8 @@ namespace SourceGit.Native {
             }
         }
 
-        public static string FindGitInstallDir() {
-            return _backend?.FindGitInstallDir();
+        public static string FindGitExecutable() {
+            return _backend?.FindGitExecutable();
         }
 
         public static void OpenInFileManager(string path, bool select = false) {

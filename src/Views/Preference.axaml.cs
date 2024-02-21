@@ -81,16 +81,20 @@ namespace SourceGit.Views {
             Close();
         }
 
-        private async void SelectGitInstallDir(object sender, RoutedEventArgs e) {
-            var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-            var selected = await StorageProvider.OpenFolderPickerAsync(options);
+        private async void SelectGitExecutable(object sender, RoutedEventArgs e) {
+            var pattern = OperatingSystem.IsWindows() ? "git.exe" : "git";
+            var options = new FilePickerOpenOptions() {
+                FileTypeFilter = [new FilePickerFileType("Git Executable") { Patterns = [ pattern ] }],
+                AllowMultiple = false,
+            };
+
+            var selected = await StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1) {
-                var testExec = Path.Combine(selected[0].Path.LocalPath, "bin", OperatingSystem.IsWindows() ? "git.exe" : "git");
-                if (File.Exists(testExec)) {
-                    ViewModels.Preference.Instance.GitInstallDir = selected[0].Path.LocalPath;
-                    txtVersion.Text = new Commands.Version().Query();
-                }
+                ViewModels.Preference.Instance.GitInstallPath = selected[0].Path.LocalPath;
+                txtVersion.Text = new Commands.Version().Query();
             }
+
+            e.Handled = true;
         }
 
         private async void SelectDefaultCloneDir(object sender, RoutedEventArgs e) {
@@ -102,8 +106,9 @@ namespace SourceGit.Views {
         }
 
         private async void SelectGPGExecutable(object sender, RoutedEventArgs e) {
+            var pattern = OperatingSystem.IsWindows() ? "gpg.exe" : "gpg";
             var options = new FilePickerOpenOptions() {
-                FileTypeFilter = [new FilePickerFileType("GPG Executable") { Patterns = ["gpg.exe"] }],
+                FileTypeFilter = [new FilePickerFileType("GPG Executable") { Patterns = [ pattern ] }],
                 AllowMultiple = false,
             };
 
