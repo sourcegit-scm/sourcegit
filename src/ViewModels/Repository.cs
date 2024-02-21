@@ -444,8 +444,10 @@ namespace SourceGit.ViewModels {
 
             var commits = new Commands.QueryCommits(FullPath, limits).Result();
             Dispatcher.UIThread.Invoke(() => {
-                _histories.IsLoading = false;
-                _histories.Commits = commits;
+                if (_histories != null) {
+                    _histories.IsLoading = false;
+                    _histories.Commits = commits;
+                }                
             });
         }
 
@@ -488,7 +490,7 @@ namespace SourceGit.ViewModels {
         public void RefreshStashes() {
             var stashes = new Commands.QueryStashes(FullPath).Result();
             Dispatcher.UIThread.Invoke(() => {
-                _stashesPage.Stashes = stashes;
+                if (_stashesPage != null) _stashesPage.Stashes = stashes;
                 OnPropertyChanged(nameof(StashesCount));
             });
         }
