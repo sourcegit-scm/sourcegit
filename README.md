@@ -21,10 +21,12 @@ Opensouce Git GUI client.
   * Stashes
   * Submodules
   * Archive
-  * Patch/apply
+  * Diff
+  * Save as patch/apply
   * File histories
   * Blame
   * Revision Diffs
+* GitFlow support
 
 ## Download
 
