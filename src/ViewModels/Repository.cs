@@ -294,10 +294,6 @@ namespace SourceGit.ViewModels {
             SearchedCommits = visible;
         }
 
-        public void ExitSearchMode() {
-            IsSearching = false;
-        }
-
         public void SetWatcherEnabled(bool enabled) {
             if (_watcher != null) _watcher.SetEnabled(enabled);
         }
