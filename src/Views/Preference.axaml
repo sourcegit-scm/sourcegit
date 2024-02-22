@@ -10,6 +10,7 @@
         x:Class="SourceGit.Views.Preference"
         x:DataType="vm:Preference"
         x:Name="me"
+        Icon="/App.ico"
         Title="{DynamicResource Text.Preference}"
         Background="{DynamicResource Brush.Window}"
         Width="600" SizeToContent="Height"

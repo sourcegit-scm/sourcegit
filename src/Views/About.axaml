@@ -7,6 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="SourceGit.Views.About"
         x:DataType="v:About"
+        Icon="/App.ico"
         Title="{DynamicResource Text.About}"
         Background="{DynamicResource Brush.Window}"
         SizeToContent="WidthAndHeight"

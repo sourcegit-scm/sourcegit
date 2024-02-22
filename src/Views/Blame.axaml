@@ -10,6 +10,7 @@
         x:Class="SourceGit.Views.Blame"
         x:Name="me"
         x:DataType="vm:Blame"
+        Icon="/App.ico"
         Title="{DynamicResource Text.Blame}"
         WindowStartupLocation="CenterOwner"
         BorderThickness="1"

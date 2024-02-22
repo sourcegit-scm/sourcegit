@@ -10,6 +10,7 @@
         x:Class="SourceGit.Views.FileHistories"
         x:DataType="vm:FileHistories"
         x:Name="me"
+        Icon="/App.ico"
         Title="{DynamicResource Text.FileHistory}"
         MinWidth="1280" MinHeight="720"
         BorderThickness="1"
