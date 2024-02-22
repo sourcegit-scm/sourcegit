@@ -39,10 +39,7 @@ namespace SourceGit.Views {
             }
 
             _textMate = this.InstallTextMate(_registryOptions);
-
-            if (DataContext != null && DataContext is Models.RevisionTextFile source) {
-                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(Path.GetExtension(source.FileName)));
-            }
+            UpdateGrammar();
         }
 
         protected override void OnUnloaded(RoutedEventArgs e) {
@@ -60,7 +57,7 @@ namespace SourceGit.Views {
 
             var source = DataContext as Models.RevisionTextFile;
             if (source != null) {
-                if (_textMate != null) _textMate.SetGrammar(_registryOptions.GetScopeByExtension(Path.GetExtension(source.FileName)));
+                UpdateGrammar();
                 Text = source.Content;
             }
         }
@@ -99,6 +96,20 @@ namespace SourceGit.Views {
             menu.Items.Add(copy);
             menu.Open(TextArea.TextView);
             e.Handled = true;
+        }
+
+        private void UpdateGrammar() {
+            if (_textMate == null) return;
+
+            var src = DataContext as Models.RevisionTextFile;
+            if (src == null) return;
+
+            var ext = Path.GetExtension(src.FileName);
+            if (ext == ".h") {
+                _textMate.SetGrammar(_registryOptions.GetScopeByLanguageId("cpp"));
+            } else {
+                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(ext));
+            }
         }
 
         private RegistryOptions _registryOptions = null;

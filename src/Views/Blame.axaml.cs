@@ -172,10 +172,7 @@ namespace SourceGit.Views {
             }
 
             _textMate = this.InstallTextMate(_registryOptions);
-
-            if (BlameData != null) {
-                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(Path.GetExtension(BlameData.File)));
-            }
+            UpdateGrammar();
         }
 
         protected override void OnUnloaded(RoutedEventArgs e) {
@@ -195,7 +192,7 @@ namespace SourceGit.Views {
             if (change.Property == BlameDataProperty) {
                 if (BlameData != null) {
                     Text = BlameData.Content;
-                    if (_textMate != null) _textMate.SetGrammar(_registryOptions.GetScopeByExtension(Path.GetExtension(BlameData.File)));
+                    UpdateGrammar();
                 } else {
                     Text = string.Empty;
                 }
@@ -230,6 +227,17 @@ namespace SourceGit.Views {
             menu.Items.Add(copy);
             menu.Open(TextArea.TextView);
             e.Handled = true;
+        }
+
+        private void UpdateGrammar() {
+            if (_textMate == null || BlameData == null) return;
+
+            var ext = Path.GetExtension(BlameData.File);
+            if (ext == ".h") {
+                _textMate.SetGrammar(_registryOptions.GetScopeByLanguageId("cpp"));
+            } else {
+                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(ext));
+            }
         }
 
         private RegistryOptions _registryOptions = null;

@@ -214,10 +214,7 @@ namespace SourceGit.Views {
             }
 
             _textMate = this.InstallTextMate(_registryOptions);
-
-            if (DiffData != null) {
-                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(Path.GetExtension(DiffData.File)));
-            }
+            UpdateGrammar();
         }
 
         protected override void OnUnloaded(RoutedEventArgs e) {
@@ -267,7 +264,7 @@ namespace SourceGit.Views {
                         builder.AppendLine(line.Content);
                     }
 
-                    if (_textMate != null) _textMate.SetGrammar(_registryOptions.GetScopeByExtension(Path.GetExtension(DiffData.File)));
+                    UpdateGrammar();
                     Text = builder.ToString();                    
                 } else {
                     Text = string.Empty;
@@ -278,6 +275,17 @@ namespace SourceGit.Views {
                 } else {
                     _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.LightPlus));
                 }
+            }
+        }
+
+        private void UpdateGrammar() {
+            if (_textMate == null || DiffData == null) return;
+
+            var ext = Path.GetExtension(DiffData.File);
+            if (ext == ".h") {
+                _textMate.SetGrammar(_registryOptions.GetScopeByLanguageId("cpp"));
+            } else {
+                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(ext));
             }
         }
 
@@ -497,10 +505,7 @@ namespace SourceGit.Views {
             }
 
             _textMate = this.InstallTextMate(_registryOptions);
-
-            if (DiffData != null) {
-                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(Path.GetExtension(DiffData.File)));
-            }
+            UpdateGrammar();
         }
 
         protected override void OnUnloaded(RoutedEventArgs e) {
@@ -561,7 +566,7 @@ namespace SourceGit.Views {
                         }
                     }
 
-                    if (_textMate != null) _textMate.SetGrammar(_registryOptions.GetScopeByExtension(Path.GetExtension(DiffData.File)));
+                    UpdateGrammar();
                     Text = builder.ToString();
                 } else {
                     Text = string.Empty;
@@ -577,6 +582,17 @@ namespace SourceGit.Views {
                 } else {
                     _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.LightPlus));
                 }
+            }
+        }
+
+        private void UpdateGrammar() {
+            if (_textMate == null || DiffData == null) return;
+
+            var ext = Path.GetExtension(DiffData.File);
+            if (ext == ".h") {
+                _textMate.SetGrammar(_registryOptions.GetScopeByLanguageId("cpp"));
+            } else {
+                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(ext));
             }
         }
 
