@@ -34,7 +34,8 @@ namespace SourceGit.ViewModels {
         }
 
         public void Clone(object param) {
-            var page = param as LauncherPage;
+            var launcher = param as Launcher;
+            var page = launcher.ActivePage;
 
             if (!Preference.Instance.IsGitConfigured) {
                 App.RaiseException(page.GetId(), App.Text("NotConfigured"));
@@ -42,7 +43,7 @@ namespace SourceGit.ViewModels {
             }
 
             if (PopupHost.CanCreatePopup()) {
-                PopupHost.ShowPopup(new Clone(page));
+                PopupHost.ShowPopup(new Clone(launcher, page));
             }
         }
 

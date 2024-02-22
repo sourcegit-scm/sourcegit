@@ -41,9 +41,11 @@ namespace SourceGit.ViewModels {
             set => SetProperty(ref _extraArgs, value);
         }
 
-        public Clone(LauncherPage page) {
-            View = new Views.Clone() { DataContext = this };
+        public Clone(Launcher launcher, LauncherPage page) {
+            _launcher = launcher;
             _page = page;
+
+            View = new Views.Clone() { DataContext = this };
         }
 
         public static ValidationResult ValidateRemote(string remote, ValidationContext _) {
@@ -92,14 +94,14 @@ namespace SourceGit.ViewModels {
                     };
                     Preference.AddNode(node);
 
-                    _page.View = new Views.Repository() { DataContext = repo };
-                    _page.Node = node;
+                    _launcher.OpenRepositoryInTab(node, _page);
                 });
 
                 return true;
             });
         }
 
+        private Launcher _launcher = null;
         private LauncherPage _page = null;
         private string _remote = string.Empty;
         private bool _useSSH = false;

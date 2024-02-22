@@ -106,12 +106,12 @@ namespace SourceGit.ViewModels {
 
         [JsonIgnore]
         public int WorkingCopyChangesCount {
-            get => _workingCopy.Count;
+            get => _workingCopy == null ? 0 : _workingCopy.Count;
         }
 
         [JsonIgnore]
         public int StashesCount {
-            get => _stashesPage.Count;
+            get => _stashesPage == null ? 0 : _stashesPage.Count;
         }
 
         [JsonIgnore]

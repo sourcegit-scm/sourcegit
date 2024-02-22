@@ -15,7 +15,7 @@
           <Path Width="15" Height="13" Data="{StaticResource Icons.Folder.Open}"/>
         </Button>
 
-        <Button Classes="icon_button" Width="32" Command="{Binding Clone}" CommandParameter="{Binding $parent[v:Launcher].DataContext.(vm:Launcher).ActivePage}" ToolTip.Tip="{DynamicResource Text.Welcome.Clone}">
+        <Button Classes="icon_button" Width="32" Command="{Binding Clone}" CommandParameter="{Binding $parent[v:Launcher].DataContext}" ToolTip.Tip="{DynamicResource Text.Welcome.Clone}">
           <Path Width="13" Height="13" Data="{StaticResource Icons.Pull}"/>
         </Button>
 
