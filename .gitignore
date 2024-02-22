@@ -2,5 +2,7 @@
 .vs
 .vscode
 bin
+build
 obj
 *.user
+.DS_Store
