@@ -67,17 +67,17 @@
         <TextBlock Margin="2,0,0,0" Text="{DynamicResource Text.About.Copyright}" Foreground="{DynamicResource Brush.FG2}"/>
 
         <StackPanel Orientation="Vertical" Margin="0,28,0,0">
-          <StackPanel Orientation="Horizontal">
+          <StackPanel Orientation="Horizontal" Height="18">
             <TextBlock Text="{DynamicResource Text.About.BuildWith}" />
             <TextBlock Text="Avalonia UI" Cursor="Hand" Foreground="{DynamicResource Brush.Accent1}" TextDecorations="Underline" PointerPressed="OnVisitAvaloniaUI"/>
           </StackPanel>
 
-          <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+          <StackPanel Orientation="Horizontal" Height="18" Margin="0,2,0,0">
             <TextBlock Text="{DynamicResource Text.About.Editor}" />
             <TextBlock Text="AvaloniaEdit" Cursor="Hand" Foreground="{DynamicResource Brush.Accent1}" TextDecorations="Underline" PointerPressed="OnVisitAvaloniaEdit"/>
           </StackPanel>
 
-          <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+          <StackPanel Orientation="Horizontal" Height="18" Margin="0,2,0,0">
             <TextBlock Text="{DynamicResource Text.About.Fonts}" />
             <TextBlock Text="JetBrains Mono" Cursor="Hand" Foreground="{DynamicResource Brush.Accent1}" TextDecorations="Underline" PointerPressed="OnVisitJetBrainsMonoFont"/>
           </StackPanel>

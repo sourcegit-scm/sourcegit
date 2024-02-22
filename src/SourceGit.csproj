@@ -9,6 +9,15 @@
     <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+
+    <Product>SourceGit</Product>
+    <Description>OpenSource GIT client</Description>
+    <Company>sourcegit-scm</Company>
+    <Copyright>Copyright © 2024 sourcegit-scm.</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/sourcegit-scm/sourcegit.git</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sourcegit-scm/sourcegit.git</RepositoryUrl>
+    <RepositoryType>Public</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

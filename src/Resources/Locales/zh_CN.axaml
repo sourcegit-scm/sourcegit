@@ -32,7 +32,7 @@
   <sys:String x:Key="Text.SSHKey.Placeholder">SSH密钥文件</sys:String>
 
   <sys:String x:Key="Text.About">关于软件</sys:String>
-  <sys:String x:Key="Text.About.Copyright">Copyright © 2023-2024 sourcegit-scm</sys:String>
+  <sys:String x:Key="Text.About.Copyright">Copyright © 2024 sourcegit-scm.</sys:String>
   <sys:String x:Key="Text.About.BuildWith" xml:space="preserve">• 使用的框架为 </sys:String>
   <sys:String x:Key="Text.About.Editor" xml:space="preserve">• 文本编辑器使用 </sys:String>
   <sys:String x:Key="Text.About.Fonts" xml:space="preserve">• 等宽字体来自于 </sys:String>

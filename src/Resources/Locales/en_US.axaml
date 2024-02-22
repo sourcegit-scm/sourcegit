@@ -33,7 +33,7 @@
   <sys:String x:Key="Text.SSHKey.Placeholder">Private SSH key store path</sys:String>
 
   <sys:String x:Key="Text.About">About</sys:String>
-  <sys:String x:Key="Text.About.Copyright">Copyright © 2023-2024 sourcegit-scm</sys:String>
+  <sys:String x:Key="Text.About.Copyright">Copyright © 2024 sourcegit-scm.</sys:String>
   <sys:String x:Key="Text.About.BuildWith" xml:space="preserve">• Build with </sys:String>
   <sys:String x:Key="Text.About.Editor" xml:space="preserve">• TextEditor from </sys:String>
   <sys:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace fonts come from </sys:String>
