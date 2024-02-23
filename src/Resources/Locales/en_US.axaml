@@ -147,8 +147,6 @@
   <sys:String x:Key="Text.Repository.Submodules">SUBMODULES</sys:String>
   <sys:String x:Key="Text.Repository.Submodules.Add">ADD SUBMODULE</sys:String>
   <sys:String x:Key="Text.Repository.Submodules.Update">UPDATE SUBMODULE</sys:String>
-  <sys:String x:Key="Text.Repository.SubTrees">SUBTREES</sys:String>
-  <sys:String x:Key="Text.Repository.SubTrees.Add">ADD/LINK SUBTREE</sys:String>
   <sys:String x:Key="Text.Repository.Resolve">RESOLVE</sys:String>
   <sys:String x:Key="Text.Repository.Continue">CONTINUE</sys:String>
   <sys:String x:Key="Text.Repository.Abort">ABORT</sys:String>
@@ -458,6 +456,15 @@
   <sys:String x:Key="Text.AssumeUnchanged">FILES ASSUME UNCHANGED</sys:String>
   <sys:String x:Key="Text.AssumeUnchanged.Remove">REMOVE</sys:String>
   <sys:String x:Key="Text.AssumeUnchanged.Empty">NO FILES ASSUMED AS UNCHANGED</sys:String>
+
+  <sys:String x:Key="Text.Statistics">Statistics</sys:String>
+  <sys:String x:Key="Text.Statistics.ThisWeek">WEEK</sys:String>
+  <sys:String x:Key="Text.Statistics.ThisMonth">MONTH</sys:String>
+  <sys:String x:Key="Text.Statistics.ThisYear">YEAR</sys:String>
+  <sys:String x:Key="Text.Statistics.TotalAuthors">Total Authors</sys:String>
+  <sys:String x:Key="Text.Statistics.TotalCommits">Total Commits</sys:String>
+  <sys:String x:Key="Text.Statistics.AuthorName">AUTHOR</sys:String>
+  <sys:String x:Key="Text.Statistics.CommitAmount">COMMITS</sys:String>
 
   <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
   <sys:String x:Key="Text.BinaryNotSupported">BINARY FILE NOT SUPPORTED!!!</sys:String>

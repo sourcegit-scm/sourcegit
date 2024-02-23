@@ -188,6 +188,14 @@ namespace SourceGit.Views {
                 }
             }
         }
+
+        private async void OpenStatistics(object sender, RoutedEventArgs e) {
+            if (DataContext is ViewModels.Repository repo) {
+                var dialog = new Statistics() { DataContext = new ViewModels.Statistics(repo.FullPath) };
+                await dialog.ShowDialog(TopLevel.GetTopLevel(this) as Window);
+                e.Handled = true;
+            }
+        }
     }
 }
 

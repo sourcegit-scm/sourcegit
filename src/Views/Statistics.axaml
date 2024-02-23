@@ -1,0 +1,222 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="using:SourceGit.Models"
+        xmlns:vm="using:SourceGit.ViewModels"
+        xmlns:v="using:SourceGit.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SourceGit.Views.Statistics"
+        x:DataType="vm:Statistics"
+        Title="{DynamicResource Text.Statistics}"
+        Background="{DynamicResource Brush.Window}"
+        Width="800" Height="450"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome">
+  <Grid RowDefinitions="30,*">
+    <!-- Title bar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+      <Border Grid.Column="0" Grid.ColumnSpan="3"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              IsHitTestVisible="False"/>
+      
+      <Path Grid.Column="0"
+            Width="14" Height="14"
+            Margin="10,0,0,0"
+            Data="{StaticResource Icons.Statistics}"
+            IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}"/>
+
+      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
+        <Button Classes="caption_button_macos" Click="CloseWindow">
+          <Grid>
+            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
+            <Path Height="6" Width="6" Stretch="Fill" Fill="#404040" Stroke="#404040" StrokeThickness="1" Data="{StaticResource Icons.Window.Close}"/>
+          </Grid>
+        </Button>
+      </Grid>
+
+      <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Statistics}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <Button Grid.Column="2"
+              Classes="caption_button"
+              Click="CloseWindow"
+              IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
+        <Path Data="{StaticResource Icons.Window.Close}"/>
+      </Button>
+    </Grid>
+
+    <!-- Body -->
+    <TabControl Grid.Row="1" Margin="0,8,0,0">
+      <TabControl.Styles>
+        <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter">
+          <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+      </TabControl.Styles>
+      
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Statistics.ThisYear}"/>
+        </TabItem.Header>
+
+        <Grid RowDefinitions="*,32" ColumnDefinitions="Auto,*" Margin="8">
+          <!-- Table By Author -->
+          <DataGrid Grid.Row="0" Grid.Column="0"
+                    ItemsSource="{Binding Data.YearByAuthor}"
+                    SelectionMode="Single"
+                    CanUserReorderColumns="False"
+                    CanUserResizeColumns="False"
+                    CanUserSortColumns="False"
+                    HeadersVisibility="Column"
+                    GridLinesVisibility="All"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource Brush.Border1}"
+                    Background="{DynamicResource Brush.Contents}"
+                    IsReadOnly="True"
+                    RowHeight="26"
+                    HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+              <DataGridTextColumn Width="150" Header="{DynamicResource Text.Statistics.AuthorName}" Binding="{Binding Name}"/>
+              <DataGridTextColumn Width="100" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
+            </DataGrid.Columns>
+          </DataGrid>
+
+          <!-- Total Authors -->
+          <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <TextBlock Text="{DynamicResource Text.Statistics.TotalAuthors}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Data.YearByAuthor.Count}" Margin="4,0,0,0"/>
+          </StackPanel>
+
+          <!-- Graph -->
+          <v:Chart Grid.Row="0" Grid.Column="1"
+                   Margin="16,8,0,0"
+                   FontFamily="{StaticResource JetBrainsMono}"
+                   LineBrush="{DynamicResource Brush.FG1}"
+                   ShapeBrush="{DynamicResource Brush.Accent1}"
+                   Samples="{Binding Data.Year}"/>
+
+          <!-- Total Commits -->
+          <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Text="{DynamicResource Text.Statistics.TotalCommits}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Data.TotalYear}" Margin="4,0,0,0"/>
+          </StackPanel>
+        </Grid>
+      </TabItem>
+
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Statistics.ThisMonth}"/>
+        </TabItem.Header>
+
+        <Grid RowDefinitions="*,32" ColumnDefinitions="Auto,*" Margin="8">
+          <!-- Table By Author -->
+          <DataGrid Grid.Row="0" Grid.Column="0"
+                    ItemsSource="{Binding Data.MonthByAuthor}"
+                    SelectionMode="Single"
+                    CanUserReorderColumns="False"
+                    CanUserResizeColumns="False"
+                    CanUserSortColumns="False"
+                    HeadersVisibility="Column"
+                    GridLinesVisibility="All"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource Brush.Border1}"
+                    Background="{DynamicResource Brush.Contents}"
+                    IsReadOnly="True"
+                    RowHeight="26"
+                    HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+              <DataGridTextColumn Width="150" Header="{DynamicResource Text.Statistics.AuthorName}" Binding="{Binding Name}"/>
+              <DataGridTextColumn Width="100" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
+            </DataGrid.Columns>
+          </DataGrid>
+
+          <!-- Total Authors -->
+          <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <TextBlock Text="{DynamicResource Text.Statistics.TotalAuthors}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Data.MonthByAuthor.Count}" Margin="4,0,0,0"/>
+          </StackPanel>
+
+          <!-- Graph -->
+          <v:Chart Grid.Row="0" Grid.Column="1"
+                   Margin="16,8,0,0"
+                   FontFamily="{StaticResource JetBrainsMono}"
+                   LineBrush="{DynamicResource Brush.FG1}"
+                   ShapeBrush="{DynamicResource Brush.Accent1}"
+                   Samples="{Binding Data.Month}"/>
+
+          <!-- Total Commits -->
+          <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Text="{DynamicResource Text.Statistics.TotalCommits}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Data.TotalMonth}" Margin="4,0,0,0"/>
+          </StackPanel>
+        </Grid>
+      </TabItem>
+
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Statistics.ThisWeek}"/>
+        </TabItem.Header>
+
+        <Grid RowDefinitions="*,32" ColumnDefinitions="Auto,*" Margin="8">
+          <!-- Table By Author -->
+          <DataGrid Grid.Row="0" Grid.Column="0"
+                    ItemsSource="{Binding Data.WeekByAuthor}"
+                    SelectionMode="Single"
+                    CanUserReorderColumns="False"
+                    CanUserResizeColumns="False"
+                    CanUserSortColumns="False"
+                    HeadersVisibility="Column"
+                    GridLinesVisibility="All"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource Brush.Border1}"
+                    Background="{DynamicResource Brush.Contents}"
+                    IsReadOnly="True"
+                    RowHeight="26"
+                    HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+              <DataGridTextColumn Width="150" Header="{DynamicResource Text.Statistics.AuthorName}" Binding="{Binding Name}"/>
+              <DataGridTextColumn Width="100" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
+            </DataGrid.Columns>
+          </DataGrid>
+
+          <!-- Total Authors -->
+          <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <TextBlock Text="{DynamicResource Text.Statistics.TotalAuthors}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Data.WeekByAuthor.Count}" Margin="4,0,0,0"/>
+          </StackPanel>
+
+          <!-- Graph -->
+          <v:Chart Grid.Row="0" Grid.Column="1"
+                   Margin="16,8,0,0"
+                   FontFamily="{StaticResource JetBrainsMono}"
+                   LineBrush="{DynamicResource Brush.FG1}"
+                   ShapeBrush="{DynamicResource Brush.Accent1}"
+                   Samples="{Binding Data.Week}"/>
+
+          <!-- Total Commits -->
+          <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Text="{DynamicResource Text.Statistics.TotalCommits}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Data.TotalWeek}" Margin="4,0,0,0"/>
+          </StackPanel>
+        </Grid>
+      </TabItem>
+    </TabControl>
+
+    <!-- Loading Mask -->
+    <Path Grid.Row="1" 
+          Classes="rotating"
+          Width="48" Height="48"
+          Data="{DynamicResource Icons.Loading}"
+          HorizontalAlignment="Center" VerticalAlignment="Center"
+          IsVisible="{Binding IsLoading}"/>
+  </Grid>
+</Window>

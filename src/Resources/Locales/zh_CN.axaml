@@ -146,8 +146,6 @@
   <sys:String x:Key="Text.Repository.Submodules">子模块列表</sys:String>
   <sys:String x:Key="Text.Repository.Submodules.Add">添加子模块</sys:String>
   <sys:String x:Key="Text.Repository.Submodules.Update">更新子模块</sys:String>
-  <sys:String x:Key="Text.Repository.SubTrees">子树列表</sys:String>
-  <sys:String x:Key="Text.Repository.SubTrees.Add">添加子树</sys:String>
   <sys:String x:Key="Text.Repository.Resolve">解决冲突</sys:String>
   <sys:String x:Key="Text.Repository.Continue">下一步</sys:String>
   <sys:String x:Key="Text.Repository.Abort">终止冲突解决</sys:String>
@@ -457,6 +455,15 @@
   <sys:String x:Key="Text.AssumeUnchanged">不跟踪更改的文件</sys:String>
   <sys:String x:Key="Text.AssumeUnchanged.Remove">移除</sys:String>
   <sys:String x:Key="Text.AssumeUnchanged.Empty">没有不跟踪更改的文件</sys:String>
+
+  <sys:String x:Key="Text.Statistics">提交统计</sys:String>
+  <sys:String x:Key="Text.Statistics.ThisWeek">本周</sys:String>
+  <sys:String x:Key="Text.Statistics.ThisMonth">本月</sys:String>
+  <sys:String x:Key="Text.Statistics.ThisYear">本年</sys:String>
+  <sys:String x:Key="Text.Statistics.TotalAuthors">作者人数</sys:String>
+  <sys:String x:Key="Text.Statistics.TotalCommits">总计提交次数</sys:String>
+  <sys:String x:Key="Text.Statistics.AuthorName">作者</sys:String>
+  <sys:String x:Key="Text.Statistics.CommitAmount">提交次数</sys:String>
 
   <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
   <sys:String x:Key="Text.BinaryNotSupported">二进制文件不支持该操作!!!</sys:String>

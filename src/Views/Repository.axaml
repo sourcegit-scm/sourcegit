@@ -81,6 +81,10 @@
             <Path Width="14" Height="14" Data="{StaticResource Icons.Clean}"/>
           </Button>
 
+          <Button Classes="icon_button" Width="32" Click="OpenStatistics" ToolTip.Tip="{DynamicResource Text.Repository.Statistics}">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Statistics}"/>
+          </Button>
+
           <Button Classes="icon_button" Width="32" Command="{Binding OpenConfigure}" ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
             <Path Width="15" Height="15" Data="{StaticResource Icons.Settings1}"/>
           </Button>
