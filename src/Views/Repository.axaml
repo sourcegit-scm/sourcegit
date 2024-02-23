@@ -60,8 +60,12 @@
                      VerticalAlignment="Center"
                      Fill="{DynamicResource Brush.Border2}"/>
 
-          <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="OpenGitFlowMenu" ToolTip.Tip="{DynamicResource Text.GitFlow}">
-            <Path Width="12" Height="12" Data="{StaticResource Icons.Flow}"/>
+          <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Branch.Add}"/>
+          </Button>
+
+          <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitFlowMenu" ToolTip.Tip="{DynamicResource Text.GitFlow}">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Flow}"/>
           </Button>
         </StackPanel>
 
@@ -72,6 +76,10 @@
                         IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=TwoWay}"
                         IsVisible="{Binding SelectedViewIndex, Converter={x:Static c:IntConverters.IsZero}}"
                         ToolTip.Tip="{DynamicResource Text.Histories.DisplayMode}"/>
+
+          <Button Classes="icon_button" Width="32" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Clean}"/>
+          </Button>
 
           <Button Classes="icon_button" Width="32" Command="{Binding OpenConfigure}" ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
             <Path Width="15" Height="15" Data="{StaticResource Icons.Settings1}"/>
@@ -91,12 +99,7 @@
       <!-- Left Normal Mode -->
       <Grid Grid.Column="0" RowDefinitions="28,Auto,28,Auto,28,*,28,Auto,28,Auto" Margin="0,0,0,4" IsVisible="{Binding !IsSearching}">
         <!-- WorkingCopy -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
-          <TextBlock Grid.Column="0" Classes="group_header_label" Text="{DynamicResource Text.Repository.Workspace}"/>
-          <Button Grid.Column="1" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
-            <Path Width="12" Height="12" Data="{StaticResource Icons.Clean}"/>
-          </Button>
-        </Grid>
+        <TextBlock Grid.Row="0" Classes="group_header_label" Text="{DynamicResource Text.Repository.Workspace}"/>
         <ListBox Grid.Row="1" Classes="page_switcher" Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}">
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
@@ -145,12 +148,7 @@
         </ListBox>
 
         <!-- Local Branches -->
-        <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
-          <TextBlock Grid.Column="0" Classes="group_header_label" Text="{DynamicResource Text.Repository.LocalBranches}"/>
-          <Button Grid.Column="1" Classes="icon_button" Width="14" Margin="0,0,6,0" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
-            <Path Width="12" Height="12" Data="{StaticResource Icons.Branch.Add}"/>
-          </Button>
-        </Grid>
+        <TextBlock Grid.Row="2" Classes="group_header_label" Text="{DynamicResource Text.Repository.LocalBranches}"/>
         <TreeView Grid.Row="3"
                   x:Name="localBranchTree"
                   MaxHeight="400"
