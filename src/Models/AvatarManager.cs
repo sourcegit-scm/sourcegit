@@ -9,10 +9,15 @@ using System.Threading.Tasks;
 
 namespace SourceGit.Models {
     public interface IAvatarHost {
-        void OnAvatarResourceReady(string md5, Bitmap bitmap);
+        void OnAvatarResourceChanged(string md5);
     }
 
     public static class AvatarManager {
+        public static string SelectedServer {
+            get;
+            set;
+        } = "https://www.gravatar.com/avatar/";
+
         static AvatarManager() {
             _storePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SourceGit", "avatars");
             if (!Directory.Exists(_storePath)) Directory.CreateDirectory(_storePath);
@@ -37,7 +42,7 @@ namespace SourceGit.Models {
                     var img = null as Bitmap;
                     try {
                         var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(2) };
-                        var task = client.GetAsync($"https://cravatar.cn/avatar/{md5}?d=404");
+                        var task = client.GetAsync($"{SelectedServer}{md5}?d=404");
                         task.Wait();
 
                         var rsp = task.Result;
@@ -61,19 +66,28 @@ namespace SourceGit.Models {
                     Dispatcher.UIThread.InvokeAsync(() => {
                         if (_resources.ContainsKey(md5)) _resources[md5] = img;
                         else _resources.Add(md5, img);
-                        if (img != null) NotifyResourceReady(md5, img);
+                        NotifyResourceChanged(md5);
                     });
                 }
             });
         }
 
         public static void Subscribe(IAvatarHost host) {
-            _avatars.Add(new WeakReference<IAvatarHost>(host));
+            _avatars.Add(host);
+        }
+
+        public static void Unsubscribe(IAvatarHost host) {
+            _avatars.Remove(host);
         }
 
         public static Bitmap Request(string md5, bool forceRefetch = false) {
             if (forceRefetch) {
-                if (_resources.ContainsKey(md5)) _resources.Remove(md5);                
+                if (_resources.ContainsKey(md5)) _resources.Remove(md5);
+
+                var localFile = Path.Combine(_storePath, md5);
+                if (File.Exists(localFile)) File.Delete(localFile);
+
+                NotifyResourceChanged(md5);
             } else {
                 if (_resources.ContainsKey(md5)) return _resources[md5];
 
@@ -96,24 +110,15 @@ namespace SourceGit.Models {
             return null;
         }
 
-        private static void NotifyResourceReady(string md5, Bitmap bitmap) {
-            List<WeakReference<IAvatarHost>> invalids = new List<WeakReference<IAvatarHost>>();
+        private static void NotifyResourceChanged(string md5) {
             foreach (var avatar in _avatars) {
-                IAvatarHost retrived = null;
-                if (avatar.TryGetTarget(out retrived)) {
-                    retrived.OnAvatarResourceReady(md5, bitmap);
-                    break;
-                } else {
-                    invalids.Add(avatar);
-                }
+                avatar.OnAvatarResourceChanged(md5);
             }
-
-            foreach (var invalid in invalids) _avatars.Remove(invalid);
         }
 
         private static object _synclock = new object();
         private static string _storePath = string.Empty;
-        private static List<WeakReference<IAvatarHost>> _avatars = new List<WeakReference<IAvatarHost>>();
+        private static List<IAvatarHost> _avatars = new List<IAvatarHost>();
         private static Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
         private static HashSet<string> _requesting = new HashSet<string>();
     }

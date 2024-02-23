@@ -270,15 +270,11 @@
   <sys:String x:Key="Text.FastForwardWithoutCheck">快进（无需Checkout）</sys:String>
 
   <sys:String x:Key="Text.FileHistory">文件历史</sys:String>
-  <sys:String x:Key="Text.FileHistory.UseThisVersion">使用该版本</sys:String>
 
   <sys:String x:Key="Text.ChangeDisplayMode">切换变更显示模式</sys:String>
   <sys:String x:Key="Text.ChangeDisplayMode.Grid">网格模式</sys:String>
   <sys:String x:Key="Text.ChangeDisplayMode.List">列表模式</sys:String>
   <sys:String x:Key="Text.ChangeDisplayMode.Tree">树形模式</sys:String>
-
-  <sys:String x:Key="Text.FolderDialog">选择目录...</sys:String>
-  <sys:String x:Key="Text.FolderDialog.Selected">当前选择 ：</sys:String>
 
   <sys:String x:Key="Text.Histories">历史记录</sys:String>
   <sys:String x:Key="Text.Histories.Search">查询提交指纹、信息、作者。回车键开始，ESC键取消</sys:String>
@@ -379,6 +375,7 @@
   <sys:String x:Key="Text.Preference">偏好设置</sys:String>
   <sys:String x:Key="Text.Preference.General">通用配置</sys:String>
   <sys:String x:Key="Text.Preference.General.Locale">显示语言</sys:String>
+  <sys:String x:Key="Text.Preference.General.AvatarServer">头像服务</sys:String>
   <sys:String x:Key="Text.Preference.General.Theme">主题</sys:String>
   <sys:String x:Key="Text.Preference.General.MaxHistoryCommits">最大历史提交数</sys:String>
   <sys:String x:Key="Text.Preference.General.RestoreTabs">启动时恢复上次打开的仓库</sys:String>

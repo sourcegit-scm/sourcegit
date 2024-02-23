@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using System;
 using System.Globalization;
 using System.Security.Cryptography;
@@ -42,25 +42,24 @@ namespace SourceGit.Views {
             var refetch = new MenuItem() { Header = App.Text("RefetchAvatar") };
             refetch.Click += (o, e) => {
                 if (User != null) {
-                    _image = Models.AvatarManager.Request(_emailMD5, true);
+                    Models.AvatarManager.Request(_emailMD5, true);
                     InvalidateVisual();
                 }
             };
 
             ContextMenu = new ContextMenu();
             ContextMenu.Items.Add(refetch);
-
-            Models.AvatarManager.Subscribe(this);
         }
 
         public override void Render(DrawingContext context) {
             if (User == null) return;
 
-            float corner = (float)Math.Max(2, Bounds.Width / 16);
-            if (_image != null) {
+            var corner = (float)Math.Max(2, Bounds.Width / 16);
+            var img = Models.AvatarManager.Request(_emailMD5, false);
+            if (img != null) {
                 var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
                 context.PushClip(new RoundedRect(rect, corner));
-                context.DrawImage(_image, rect);
+                context.DrawImage(img, rect);
             } else {
                 Point textOrigin = new Point((Bounds.Width - _fallbackLabel.Width) * 0.5, (Bounds.Height - _fallbackLabel.Height) * 0.5);
                 context.DrawRectangle(_fallbackBrush, null, new Rect(0, 0, Bounds.Width, Bounds.Height), corner, corner);
@@ -68,11 +67,20 @@ namespace SourceGit.Views {
             }            
         }
 
-        public void OnAvatarResourceReady(string md5, Bitmap bitmap) {
+        public void OnAvatarResourceChanged(string md5) {
             if (_emailMD5 == md5) {
-                _image = bitmap;
                 InvalidateVisual();
             }
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e) {
+            base.OnLoaded(e);
+            Models.AvatarManager.Subscribe(this);
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e) {
+            base.OnUnloaded(e);
+            Models.AvatarManager.Unsubscribe(this);
         }
 
         private static void OnUserPropertyChanged(Avatar avatar, AvaloniaPropertyChangedEventArgs e) {
@@ -90,10 +98,7 @@ namespace SourceGit.Views {
             var builder = new StringBuilder();
             foreach (var c in hash) builder.Append(c.ToString("x2"));
             var md5 = builder.ToString();
-            if (avatar._emailMD5 != md5) {
-                avatar._emailMD5 = md5;
-                avatar._image = Models.AvatarManager.Request(md5, false);
-            }
+            if (avatar._emailMD5 != md5) avatar._emailMD5 = md5;
 
             avatar._fallbackBrush = new LinearGradientBrush {
                 GradientStops = FALLBACK_GRADIENTS[sum % FALLBACK_GRADIENTS.Length],
@@ -117,6 +122,5 @@ namespace SourceGit.Views {
         private FormattedText _fallbackLabel = null;
         private LinearGradientBrush _fallbackBrush = null;
         private string _emailMD5 = null;
-        private Bitmap _image = null;
     }
 }

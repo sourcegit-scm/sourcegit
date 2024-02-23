@@ -271,15 +271,11 @@
   <sys:String x:Key="Text.FastForwardWithoutCheck">Fast-Forward (without checkout)</sys:String>
 
   <sys:String x:Key="Text.FileHistory">File History</sys:String>
-  <sys:String x:Key="Text.FileHistory.UseThisVersion">USE THIS VERSION</sys:String>
 
   <sys:String x:Key="Text.ChangeDisplayMode">CHANGE DISPLAY MODE</sys:String>
   <sys:String x:Key="Text.ChangeDisplayMode.Grid">Show as Grid</sys:String>
   <sys:String x:Key="Text.ChangeDisplayMode.List">Show as List</sys:String>
   <sys:String x:Key="Text.ChangeDisplayMode.Tree">Show as Tree</sys:String>
-
-  <sys:String x:Key="Text.FolderDialog">SELECT FOLDER</sys:String>
-  <sys:String x:Key="Text.FolderDialog.Selected">SELECTED :</sys:String>
 
   <sys:String x:Key="Text.Histories">Histories</sys:String>
   <sys:String x:Key="Text.Histories.Search">SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT</sys:String>
@@ -380,6 +376,7 @@
   <sys:String x:Key="Text.Preference">Preference</sys:String>
   <sys:String x:Key="Text.Preference.General">GENERAL</sys:String>
   <sys:String x:Key="Text.Preference.General.Locale">Language</sys:String>
+  <sys:String x:Key="Text.Preference.General.AvatarServer">Avatar Server</sys:String>
   <sys:String x:Key="Text.Preference.General.Theme">Theme</sys:String>
   <sys:String x:Key="Text.Preference.General.MaxHistoryCommits">History Commits</sys:String>
   <sys:String x:Key="Text.Preference.General.RestoreTabs">Restore windows</sys:String>

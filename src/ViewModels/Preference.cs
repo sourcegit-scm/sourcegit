@@ -51,6 +51,16 @@ namespace SourceGit.ViewModels {
             }
         }
 
+        public string AvatarServer {
+            get => Models.AvatarManager.SelectedServer;
+            set {
+                if (Models.AvatarManager.SelectedServer != value) {
+                    Models.AvatarManager.SelectedServer = value;
+                    OnPropertyChanged(nameof(AvatarServer));
+                }
+            }
+        }
+
         public int MaxHistoryCommits {
             get => _maxHistoryCommits;
             set => SetProperty(ref _maxHistoryCommits, value);
