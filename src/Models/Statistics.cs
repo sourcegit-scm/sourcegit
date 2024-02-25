@@ -2,23 +2,41 @@
 using System.Collections.Generic;
 
 namespace SourceGit.Models {
-    public class Sample {
+    public class StatisticsSample {
         public string Name { get; set; }
         public int Count { get; set; }
     }
 
+    public class StatisticsReport {
+        public int Total { get; set; } = 0;
+        public List<StatisticsSample> Samples { get; set; } = new List<StatisticsSample>();
+        public List<StatisticsSample> ByCommitter { get; set; } = new List<StatisticsSample>();
+
+        public void AddCommit(int index, string committer) {
+            Total++;
+            Samples[index].Count++;
+
+            if (_mapByCommitter.ContainsKey(committer)) {
+                _mapByCommitter[committer].Count++;
+            } else {
+                var sample = new StatisticsSample() { Name = committer, Count = 1 };
+                _mapByCommitter.Add(committer, sample);
+                ByCommitter.Add(sample);
+            }
+        }
+
+        public void Complete() {
+            ByCommitter.Sort((l, r) => r.Count - l.Count);
+            _mapByCommitter.Clear();
+        }
+
+        private Dictionary<string, StatisticsSample> _mapByCommitter = new Dictionary<string, StatisticsSample>();
+    }
+
     public class Statistics {
-        public int TotalYear { get; set; } = 0;
-        public int TotalMonth { get; set; } = 0;
-        public int TotalWeek { get; set; } = 0;
-
-        public List<Sample> Year { get; set; } = new List<Sample>();
-        public List<Sample> Month { get; set; } = new List<Sample>();
-        public List<Sample> Week { get; set; } = new List<Sample>();
-
-        public List<Sample> YearByAuthor { get; set; } = new List<Sample>();
-        public List<Sample> MonthByAuthor { get; set; } = new List<Sample>();
-        public List<Sample> WeekByAuthor { get; set; } = new List<Sample>();
+        public StatisticsReport Year { get; set; } = new StatisticsReport();
+        public StatisticsReport Month { get; set; } = new StatisticsReport();
+        public StatisticsReport Week { get; set; } = new StatisticsReport();
 
         public Statistics() {
             _utcStart = DateTime.UnixEpoch;
@@ -42,7 +60,7 @@ namespace SourceGit.Models {
             ];
 
             for (int i = 0; i < monthNames.Length; i++) {
-                Year.Add(new Sample {
+                Year.Samples.Add(new StatisticsSample {
                     Name = monthNames[i],
                     Count = 0,
                 });
@@ -50,7 +68,7 @@ namespace SourceGit.Models {
 
             var monthDays = DateTime.DaysInMonth(_today.Year, _today.Month);
             for (int i = 0; i < monthDays; i++) {
-                Month.Add(new Sample {
+                Month.Samples.Add(new StatisticsSample {
                     Name = $"{i + 1}",
                     Count = 0,
                 });
@@ -67,7 +85,7 @@ namespace SourceGit.Models {
             ];
 
             for (int i = 0; i < weekDayNames.Length; i++) {
-                Week.Add(new Sample {
+                Week.Samples.Add(new StatisticsSample {
                     Name = weekDayNames[i],
                     Count = 0,
                 });
@@ -78,52 +96,28 @@ namespace SourceGit.Models {
             return _today.ToString("yyyy-01-01 00:00:00");
         }
 
-        public void AddCommit(string author, double timestamp) {
-            var authorTime = _utcStart.AddSeconds(timestamp);
-            if (authorTime.CompareTo(_thisWeekStart) >= 0 && authorTime.CompareTo(_thisWeekEnd) < 0) {
-                Week[(int)authorTime.DayOfWeek].Count++;
-                TotalWeek++;
-                AddByAuthor(_mapWeekByAuthor, WeekByAuthor, author);
+        public void AddCommit(string committer, double timestamp) {
+            var time = _utcStart.AddSeconds(timestamp);
+            if (time.CompareTo(_thisWeekStart) >= 0 && time.CompareTo(_thisWeekEnd) < 0) {
+                Week.AddCommit((int)time.DayOfWeek, committer);
             }
 
-            if (authorTime.Month == _today.Month) {
-                Month[authorTime.Day - 1].Count++;
-                TotalMonth++;
-                AddByAuthor(_mapMonthByAuthor, MonthByAuthor, author);
+            if (time.Month == _today.Month) {
+                Month.AddCommit(time.Day - 1, committer);
             }
 
-            Year[authorTime.Month - 1].Count++;
-            TotalYear++;
-            AddByAuthor(_mapYearByAuthor, YearByAuthor, author);
+            Year.AddCommit(time.Month, committer); 
         }
 
         public void Complete() {
-            _mapYearByAuthor.Clear();
-            _mapMonthByAuthor.Clear();
-            _mapWeekByAuthor.Clear();
-
-            YearByAuthor.Sort((l, r) => r.Count - l.Count);
-            MonthByAuthor.Sort((l, r) => r.Count - l.Count);
-            WeekByAuthor.Sort((l, r) => r.Count - l.Count);
-        }
-
-        private void AddByAuthor(Dictionary<string, Sample> map, List<Sample> collection, string author) {
-            if (map.ContainsKey(author)) {
-                map[author].Count++;
-            } else {
-                var sample = new Sample { Name = author, Count = 1 };
-                map.Add(author, sample);
-                collection.Add(sample);
-            }
+            Year.Complete();
+            Month.Complete();
+            Week.Complete();
         }
 
         private DateTime _utcStart;
         private DateTime _today;
         private DateTime _thisWeekStart;
         private DateTime _thisWeekEnd;
-
-        private Dictionary<string, Sample> _mapYearByAuthor = new Dictionary<string, Sample>();
-        private Dictionary<string, Sample> _mapMonthByAuthor = new Dictionary<string, Sample>();
-        private Dictionary<string, Sample> _mapWeekByAuthor = new Dictionary<string, Sample>();
     }
 }

@@ -33,10 +33,10 @@ namespace SourceGit.Views {
             set => SetValue(ShapeBrushProperty, value);
         }
 
-        public static readonly StyledProperty<List<Models.Sample>> SamplesProperty =
-            AvaloniaProperty.Register<Chart, List<Models.Sample>>(nameof(Samples), null);
+        public static readonly StyledProperty<List<Models.StatisticsSample>> SamplesProperty =
+            AvaloniaProperty.Register<Chart, List<Models.StatisticsSample>>(nameof(Samples), null);
 
-        public List<Models.Sample> Samples {
+        public List<Models.StatisticsSample> Samples {
             get => GetValue(SamplesProperty);
             set => SetValue(SamplesProperty, value);
         }

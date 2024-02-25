@@ -461,9 +461,9 @@
   <sys:String x:Key="Text.Statistics.ThisWeek">WEEK</sys:String>
   <sys:String x:Key="Text.Statistics.ThisMonth">MONTH</sys:String>
   <sys:String x:Key="Text.Statistics.ThisYear">YEAR</sys:String>
-  <sys:String x:Key="Text.Statistics.TotalAuthors">Total Authors</sys:String>
+  <sys:String x:Key="Text.Statistics.TotalCommitters">Total Committers</sys:String>
   <sys:String x:Key="Text.Statistics.TotalCommits">Total Commits</sys:String>
-  <sys:String x:Key="Text.Statistics.AuthorName">AUTHOR</sys:String>
+  <sys:String x:Key="Text.Statistics.Committer">COMMITTER</sys:String>
   <sys:String x:Key="Text.Statistics.CommitAmount">COMMITS</sys:String>
 
   <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>

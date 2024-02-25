@@ -460,9 +460,9 @@
   <sys:String x:Key="Text.Statistics.ThisWeek">本周</sys:String>
   <sys:String x:Key="Text.Statistics.ThisMonth">本月</sys:String>
   <sys:String x:Key="Text.Statistics.ThisYear">本年</sys:String>
-  <sys:String x:Key="Text.Statistics.TotalAuthors">作者人数</sys:String>
+  <sys:String x:Key="Text.Statistics.TotalCommitters">提交者人数</sys:String>
   <sys:String x:Key="Text.Statistics.TotalCommits">总计提交次数</sys:String>
-  <sys:String x:Key="Text.Statistics.AuthorName">作者</sys:String>
+  <sys:String x:Key="Text.Statistics.Committer">提交者</sys:String>
   <sys:String x:Key="Text.Statistics.CommitAmount">提交次数</sys:String>
 
   <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
