@@ -97,7 +97,7 @@ namespace SourceGit.Models {
         }
 
         public void AddCommit(string committer, double timestamp) {
-            var time = _utcStart.AddSeconds(timestamp);
+            var time = _utcStart.AddSeconds(timestamp).ToLocalTime();
             if (time.CompareTo(_thisWeekStart) >= 0 && time.CompareTo(_thisWeekEnd) < 0) {
                 Week.AddCommit((int)time.DayOfWeek, committer);
             }
@@ -106,7 +106,7 @@ namespace SourceGit.Models {
                 Month.AddCommit(time.Day - 1, committer);
             }
 
-            Year.AddCommit(time.Month, committer); 
+            Year.AddCommit(time.Month - 1, committer); 
         }
 
         public void Complete() {
