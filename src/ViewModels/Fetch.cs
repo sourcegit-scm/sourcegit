@@ -24,7 +24,7 @@ namespace SourceGit.ViewModels {
 
         public Fetch(Repository repo, Models.Remote preferedRemote = null) {
             _repo = repo;
-            _fetchAllRemotes = true;
+            _fetchAllRemotes = preferedRemote == null;
             SelectedRemote = preferedRemote != null ? preferedRemote : _repo.Remotes[0];
             Prune = true;
             View = new Views.Fetch() { DataContext = this };
