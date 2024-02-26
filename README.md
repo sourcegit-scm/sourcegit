@@ -2,8 +2,6 @@
 
 Opensouce Git GUI client.
 
-> To use this tool, you need to install Git first.
-
 ## High-lights
 
 * Supports Windows/macOS
@@ -28,9 +26,18 @@ Opensouce Git GUI client.
   * Revision Diffs
 * GitFlow support
 
-## Download
+## How to use
 
-Pre-build Binaries：[Releases](https://github.com/sourcegit-scm/sourcegit/releases)
+**To use this tool, you need to install Git first.**
+
+Download pre-build binaries：[Releases](https://github.com/sourcegit-scm/sourcegit/releases)
+
+For **macOS** users:
+
+* Download `SourceGit.macOS.zip`.
+* Choose the app that fits your system's CPU architecture and copy it to Applications. `x64` for Intel and `arm64` for Apple Silicon.
+* Make sure your mac trusts all software from anywhere. For more information, search `spctl --master-disable`.
+* You may need to run `sudo xattr -cr /Applications/SourceGit.app` to make sure the software works.
 
 ## Screen Shots
 
