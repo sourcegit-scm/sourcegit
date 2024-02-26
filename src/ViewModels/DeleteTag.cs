@@ -21,8 +21,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Deleting tag '{Target.Name}' ...";
+
             return Task.Run(() => {
-                SetProgressDescription($"Deleting tag '{Target.Name}' ...");
                 var remotes = ShouldPushToRemote ? _repo.Remotes : null;
                 var succ = Commands.Tag.Delete(_repo.FullPath, Target.Name, remotes);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

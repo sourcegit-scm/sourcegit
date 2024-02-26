@@ -53,8 +53,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Reset current branch to {To.SHA} ...";
+
             return Task.Run(() => {
-                SetProgressDescription($"Reset current branch to {To.SHA} ...");
                 var succ = new Commands.Reset(_repo.FullPath, To.SHA, SelectedMode.Arg).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

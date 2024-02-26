@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Threading;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -35,7 +36,9 @@ namespace SourceGit.Commands {
 
                 return rs;
             } catch (Exception e) {
-                App.RaiseException(repo, "Save change to patch failed: " + e.Message);
+                Dispatcher.UIThread.Invoke(() => {
+                    App.RaiseException(repo, "Save change to patch failed: " + e.Message);
+                });                
                 return false;
             }
         }

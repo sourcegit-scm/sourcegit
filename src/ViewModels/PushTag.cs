@@ -26,8 +26,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Pushing tag '{Target.Name}' to remote '{SelectedRemote.Name}' ...";
+
             return Task.Run(() => {
-                SetProgressDescription($"Pushing tag '{Target.Name}' to remote '{SelectedRemote.Name}' ...");
                 var succ = new Commands.Push(_repo.FullPath, SelectedRemote.Name, Target.Name, false).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

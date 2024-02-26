@@ -21,8 +21,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Revert commit '{Target.SHA}' ...";
+
             return Task.Run(() => {
-                SetProgressDescription($"Revert commit '{Target.SHA}' ...");
                 var succ = new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

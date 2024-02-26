@@ -10,8 +10,8 @@ namespace SourceGit.ViewModels {
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Cleanup (GC & prune) ...";
+
             return Task.Run(() => {
-                SetProgressDescription("Run GC ...");
                 new Commands.GC(_repo.FullPath, SetProgressDescription).Exec();
 
                 var lfs = new Commands.LFS(_repo.FullPath);

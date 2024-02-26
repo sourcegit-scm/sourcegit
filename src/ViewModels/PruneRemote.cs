@@ -15,8 +15,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Run `prune` on remote ...";
+
             return Task.Run(() => {
-                SetProgressDescription("Run `prune` on remote ...");
                 var succ = new Commands.Remote(_repo.FullPath).Prune(Remote.Name);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

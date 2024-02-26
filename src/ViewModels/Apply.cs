@@ -51,6 +51,8 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Apply patch...";
+
             return Task.Run(() => {
                 var succ = new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

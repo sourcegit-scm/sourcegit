@@ -21,8 +21,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Fast-Forward ...";
+
             return Task.Run(() => {
-                SetProgressDescription("Fast-Forward ...");
                 new Commands.Fetch(_repo.FullPath, To.Remote, Local.Name, To.Name, SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;

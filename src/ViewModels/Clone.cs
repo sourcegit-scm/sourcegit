@@ -59,6 +59,8 @@ namespace SourceGit.ViewModels {
         }
 
         public override Task<bool> Sure() {
+            ProgressDescription = "Clone ...";
+
             return Task.Run(() => {
                 var cmd = new Commands.Clone(HostPageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs, SetProgressDescription);
                 if (!cmd.Exec()) return false;

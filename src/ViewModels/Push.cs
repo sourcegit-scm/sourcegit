@@ -111,9 +111,11 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+
+            var remoteBranchName = _selectedRemoteBranch.Name.Replace(" (new)", "");
+            ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...";
+
             return Task.Run(() => {
-                var remoteBranchName = _selectedRemoteBranch.Name.Replace(" (new)", "");
-                SetProgressDescription($"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...");
                 var succ = new Commands.Push(
                     _repo.FullPath,
                     _selectedLocalBranch.Name,

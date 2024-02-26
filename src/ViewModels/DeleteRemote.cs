@@ -15,8 +15,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Deleting remote ...";
+
             return Task.Run(() => {
-                SetProgressDescription("Deleting remote ...");
                 var succ = new Commands.Remote(_repo.FullPath).Delete(Remote.Name);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

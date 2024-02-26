@@ -9,6 +9,8 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Clear all stashes...";
+
             return Task.Run(() => {
                 new Commands.Stash(_repo.FullPath).Clear();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

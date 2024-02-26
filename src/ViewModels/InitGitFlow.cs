@@ -72,6 +72,8 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Init git-flow ...";
+
             return Task.Run(() => {
                 var succ = new Commands.GitFlow(_repo.FullPath).Init(_repo.Branches, _master, _develop, _featurePrefix, _releasePrefix, _hotfixPrefix, _tagPrefix);
                 if (succ) {

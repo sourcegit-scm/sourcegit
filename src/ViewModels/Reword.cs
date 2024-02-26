@@ -25,8 +25,9 @@ namespace SourceGit.ViewModels {
             if (_message == Head.FullMessage) return null;
 
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Editing head commit message ...";
+
             return Task.Run(() => {
-                SetProgressDescription($"Editing head commit message ...");
                 var succ = new Commands.Commit(_repo.FullPath, _message, true, true).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

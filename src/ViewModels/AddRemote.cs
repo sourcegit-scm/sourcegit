@@ -57,8 +57,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Adding remote ...";
+
             return Task.Run(() => {
-                SetProgressDescription("Adding remote ...");
                 var succ = new Commands.Remote(_repo.FullPath).Add(_name, _url);
                 if (succ) {
                     SetProgressDescription("Fetching from added remote ...");

@@ -30,12 +30,12 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = _changes == null ? "Discard all local changes ..." : $"Discard total {_changes.Count} changes ...";
+
             return Task.Run(() => {
                 if (_changes == null) {
-                    SetProgressDescription("Discard all local changes ...");
                     Commands.Discard.All(_repo.FullPath);
                 } else {
-                    SetProgressDescription($"Discard total {_changes.Count} changes ...");
                     Commands.Discard.Changes(_repo.FullPath, _changes);
                 }
 

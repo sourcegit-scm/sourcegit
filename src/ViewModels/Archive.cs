@@ -42,9 +42,15 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Archiving ...";
+
             return Task.Run(() => {
                 var succ = new Commands.Archive(_repo.FullPath, _revision, _saveFile, SetProgressDescription).Exec();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() => {
+                    _repo.SetWatcherEnabled(true);
+                    if (succ) App.SendNotification(_repo.FullPath, $"Save archive to : {_saveFile}");
+                });
+
                 return succ;
             });
         }

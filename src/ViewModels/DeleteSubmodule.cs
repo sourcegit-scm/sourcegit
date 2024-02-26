@@ -16,6 +16,8 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Deleting submodule ...";
+
             return Task.Run(() => {
                 var succ = new Commands.Submodule(_repo.FullPath).Delete(Submodule);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

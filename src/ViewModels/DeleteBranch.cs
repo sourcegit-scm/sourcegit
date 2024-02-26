@@ -15,6 +15,8 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Deleting branch...";
+
             return Task.Run(() => {
                 if (Target.IsLocal) {
                     Commands.Branch.Delete(_repo.FullPath, Target.Name);

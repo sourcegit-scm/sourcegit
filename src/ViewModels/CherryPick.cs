@@ -21,8 +21,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Cherry-Pick commit '{Target.SHA}' ...";
+
             return Task.Run(() => {
-                SetProgressDescription($"Cherry-Pick commit '{Target.SHA}' ...");
                 var succ = new Commands.CherryPick(_repo.FullPath, Target.SHA, !AutoCommit).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

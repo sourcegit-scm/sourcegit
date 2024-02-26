@@ -37,6 +37,8 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Rebasing ...";
+
             return Task.Run(() => {
                 var succ = new Commands.Rebase(_repo.FullPath, _revision, AutoStash).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

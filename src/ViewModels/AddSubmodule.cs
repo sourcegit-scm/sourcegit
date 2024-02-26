@@ -47,6 +47,8 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Adding submodule...";
+
             return Task.Run(() => {
                 var succ = new Commands.Submodule(_repo.FullPath).Add(_url, _relativePath, Recursive, SetProgressDescription);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Threading;
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -51,7 +52,9 @@ namespace SourceGit.Commands {
 
                     return rs;
                 } catch (Exception e) {
-                    App.RaiseException(repo, "Save file failed: " + e.Message);
+                    Dispatcher.UIThread.Invoke(() => {
+                        App.RaiseException(repo, "Save file failed: " + e.Message);
+                    });                    
                     return false;
                 }
             }

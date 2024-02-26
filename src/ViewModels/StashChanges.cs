@@ -42,6 +42,8 @@ namespace SourceGit.ViewModels {
             if (jobs.Count == 0) return null;
 
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Stash changes ...";
+
             return Task.Run(() => {
                 new Commands.Stash(_repo.FullPath).Push(jobs, Message);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

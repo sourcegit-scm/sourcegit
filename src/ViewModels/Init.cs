@@ -14,8 +14,9 @@ namespace SourceGit.ViewModels {
         }
 
         public override Task<bool> Sure() {
+            ProgressDescription = $"Initialize git repository at: '{_targetPath}'";
+
             return Task.Run(() => {
-                SetProgressDescription($"Initialize git repository at: '{_targetPath}'");
                 var succ = new Commands.Init(HostPageId, _targetPath).Exec();
                 if (!succ) return false;
 

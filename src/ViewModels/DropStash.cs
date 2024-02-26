@@ -11,6 +11,8 @@ namespace SourceGit.ViewModels {
         }
 
         public override Task<bool> Sure() {
+            ProgressDescription = $"Dropping stash: {Stash.Name}";
+
             return Task.Run(() => {
                 new Commands.Stash(_repo).Drop(Stash.Name);
                 return true;

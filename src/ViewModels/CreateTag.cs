@@ -50,6 +50,8 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Create tag...";
+
             return Task.Run(() => {
                 Commands.Tag.Add(_repo.FullPath, TagName, _basedOn, Message);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

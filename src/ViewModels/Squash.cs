@@ -29,6 +29,8 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = "Squashing ...";
+
             return Task.Run(() => {
                 var succ = new Commands.Reset(_repo.FullPath, Parent.SHA, "--soft").Exec();
                 if (succ) succ = new Commands.Commit(_repo.FullPath, _message, true).Exec();

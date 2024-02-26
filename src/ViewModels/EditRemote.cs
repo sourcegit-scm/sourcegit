@@ -68,9 +68,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
-            return Task.Run(() => {
-                SetProgressDescription($"Editing remote '{_remote.Name}' ...");
+            ProgressDescription = $"Editing remote '{_remote.Name}' ...";
 
+            return Task.Run(() => {
                 if (_remote.Name != _name) {
                     var succ = new Commands.Remote(_repo.FullPath).Rename(_remote.Name, _name);
                     if (succ) _remote.Name = _name;

@@ -39,8 +39,9 @@ namespace SourceGit.ViewModels {
             if (_name == Target.Name) return null;
 
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Rename '{Target.Name}'";
+
             return Task.Run(() => {
-                SetProgressDescription($"Rename '{Target.Name}'");
                 var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, _name);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

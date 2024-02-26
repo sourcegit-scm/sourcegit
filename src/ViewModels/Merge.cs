@@ -51,8 +51,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Merging '{Source}' into '{Into}' ...";
+
             return Task.Run(() => {
-                SetProgressDescription($"Merging '{Source}' into '{Into}' ...");
                 var succ = new Commands.Merge(_repo.FullPath, Source, SelectedMode.Arg, SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

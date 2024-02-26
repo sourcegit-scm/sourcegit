@@ -15,8 +15,9 @@ namespace SourceGit.ViewModels {
 
         public override Task<bool> Sure() {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Checkout '{Branch}' ...";
+
             return Task.Run(() => {
-                SetProgressDescription($"Checkout '{Branch}' ...");
                 var succ = new Commands.Checkout(_repo.FullPath).Branch(Branch, SetProgressDescription);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

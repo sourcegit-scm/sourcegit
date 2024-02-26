@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Avalonia.Threading;
+using System.Collections.Generic;
 
 namespace SourceGit.Commands {
     public class GitFlow : Command {
@@ -42,7 +43,9 @@ namespace SourceGit.Commands {
                 Args = $"flow hotfix start {name}";
                 break;
             default:
-                App.RaiseException(Context, "Bad branch type!!!");
+                Dispatcher.UIThread.Invoke(() => {
+                    App.RaiseException(Context, "Bad branch type!!!");
+                });
                 return false;
             }
 
@@ -62,7 +65,9 @@ namespace SourceGit.Commands {
                 Args = $"flow hotfix finish {option} {name} -m \"HOTFIX_DONE\"";
                 break;
             default:
-                App.RaiseException(Context, "Bad branch type!!!");
+                Dispatcher.UIThread.Invoke(() => {
+                    App.RaiseException(Context, "Bad branch type!!!");
+                });
                 return false;
             }
 
