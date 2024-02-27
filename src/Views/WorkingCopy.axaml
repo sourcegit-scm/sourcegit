@@ -60,6 +60,7 @@
         <DataGrid x:Name="unstagedList"
                   Background="Transparent"
                   ItemsSource="{Binding Unstaged}"
+                  SelectedItem="{Binding SelectedUnstagedChange, Mode=TwoWay}"
                   SelectionMode="Extended"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
@@ -70,7 +71,6 @@
                   RowHeight="26"
                   HorizontalScrollBarVisibility="Auto"
                   VerticalScrollBarVisibility="Auto"
-                  SelectionChanged="OnUnstagedListSelectionChanged"
                   KeyDown="OnUnstagedListKeyDown"
                   ContextRequested="OnUnstagedListContextRequested"
                   IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsList}}">
@@ -96,6 +96,7 @@
         <DataGrid x:Name="unstagedGrid"
                   Background="Transparent"
                   ItemsSource="{Binding Unstaged}"
+                  SelectedItem="{Binding SelectedUnstagedChange, Mode=TwoWay}"
                   SelectionMode="Extended"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
@@ -106,7 +107,6 @@
                   RowHeight="26"
                   HorizontalScrollBarVisibility="Auto"
                   VerticalScrollBarVisibility="Auto"
-                  SelectionChanged="OnUnstagedListSelectionChanged"
                   KeyDown="OnUnstagedListKeyDown"
                   ContextRequested="OnUnstagedListContextRequested"
                   IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsGrid}}">
@@ -139,11 +139,11 @@
 
         <TreeView x:Name="unstagedTree"
                   ItemsSource="{Binding UnstagedTree}"
+                  SelectedItem="{Binding SelectedUnstagedTreeNode, Mode=TwoWay}"
                   SelectionMode="Multiple"
                   AutoScrollToSelectedItem="True"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  SelectionChanged="OnUnstagedTreeViewSelectionChanged"
                   KeyDown="OnUnstagedTreeViewKeyDown"
                   ContextRequested="OnUnstagedTreeViewContextRequested"
                   IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsTree}}">
@@ -185,6 +185,7 @@
         <DataGrid x:Name="stagedList"
                   Background="Transparent"
 									ItemsSource="{Binding Staged}"
+                  SelectedItem="{Binding SelectedStagedChange, Mode=TwoWay}"
 									SelectionMode="Extended"
 									CanUserReorderColumns="False"
 									CanUserResizeColumns="False"
@@ -195,7 +196,6 @@
 									RowHeight="26"
 									HorizontalScrollBarVisibility="Auto"
 									VerticalScrollBarVisibility="Auto"
-                  SelectionChanged="OnStagedListSelectionChanged"
                   KeyDown="OnStagedListKeyDown"
                   ContextRequested="OnStagedListContextRequested"
 									IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsList}}">
@@ -221,6 +221,7 @@
         <DataGrid x:Name="stagedGrid"
                   Background="Transparent"
                   ItemsSource="{Binding Staged}"
+                  SelectedItem="{Binding SelectedStagedChange, Mode=TwoWay}"
                   SelectionMode="Extended"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
@@ -231,7 +232,6 @@
                   RowHeight="26"
                   HorizontalScrollBarVisibility="Auto"
                   VerticalScrollBarVisibility="Auto"
-                  SelectionChanged="OnStagedListSelectionChanged"
                   KeyDown="OnStagedListKeyDown"
                   ContextRequested="OnStagedListContextRequested"
                   IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsGrid}}">
@@ -264,11 +264,11 @@
 
         <TreeView x:Name="stagedTree"
                   ItemsSource="{Binding StagedTree}"
+                  SelectedItem="{Binding SelectedStagedTreeNode, Mode=TwoWay}"
                   SelectionMode="Multiple"
                   AutoScrollToSelectedItem="True"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  SelectionChanged="OnStagedTreeViewSelectionChanged"
                   KeyDown="OnStagedTreeViewKeyDown"
                   ContextRequested="OnStagedTreeViewContextRequested"
                   IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsTree}}">

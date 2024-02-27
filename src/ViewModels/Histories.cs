@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -148,7 +147,7 @@ namespace SourceGit.ViewModels {
             if (current.Head != commit.SHA) {
                 var reset = new MenuItem();
                 reset.Header = CreateHighlightLabel("CommitCM.Reset", current.Name);
-                reset.Icon = CreateMenuIcon("Icons.Reset");
+                reset.Icon = App.CreateMenuIcon("Icons.Reset");
                 reset.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Reset(_repo, current, commit));
                     e.Handled = true;
@@ -157,7 +156,7 @@ namespace SourceGit.ViewModels {
             } else {
                 var reword = new MenuItem();
                 reword.Header = App.Text("CommitCM.Reword");
-                reword.Icon = CreateMenuIcon("Icons.Edit");
+                reword.Icon = App.CreateMenuIcon("Icons.Edit");
                 reword.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Reword(_repo, commit));
                     e.Handled = true;
@@ -166,7 +165,7 @@ namespace SourceGit.ViewModels {
 
                 var squash = new MenuItem();
                 squash.Header = App.Text("CommitCM.Squash");
-                squash.Icon = CreateMenuIcon("Icons.SquashIntoParent");
+                squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
                 squash.IsEnabled = commit.Parents.Count == 1;
                 squash.Click += (o, e) => {
                     if (commit.Parents.Count == 1) {
@@ -182,7 +181,7 @@ namespace SourceGit.ViewModels {
             if (!commit.IsMerged) {
                 var rebase = new MenuItem();
                 rebase.Header = CreateHighlightLabel("CommitCM.Rebase", current.Name);
-                rebase.Icon = CreateMenuIcon("Icons.Rebase");
+                rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
                 rebase.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Rebase(_repo, current, commit));
                     e.Handled = true;
@@ -191,7 +190,7 @@ namespace SourceGit.ViewModels {
 
                 var cherryPick = new MenuItem();
                 cherryPick.Header = App.Text("CommitCM.CherryPick");
-                cherryPick.Icon = CreateMenuIcon("Icons.CherryPick");
+                cherryPick.Icon = App.CreateMenuIcon("Icons.CherryPick");
                 cherryPick.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new CherryPick(_repo, commit));
                     e.Handled = true;
@@ -200,7 +199,7 @@ namespace SourceGit.ViewModels {
             } else {
                 var revert = new MenuItem();
                 revert.Header = App.Text("CommitCM.Revert");
-                revert.Icon = CreateMenuIcon("Icons.Undo");
+                revert.Icon = App.CreateMenuIcon("Icons.Undo");
                 revert.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Revert(_repo, commit));
                     e.Handled = true;
@@ -211,7 +210,7 @@ namespace SourceGit.ViewModels {
             menu.Items.Add(new MenuItem() { Header = "-" });
 
             var createBranch = new MenuItem();
-            createBranch.Icon = CreateMenuIcon("Icons.Branch.Add");
+            createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
             createBranch.Header = App.Text("CreateBranch");
             createBranch.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new CreateBranch(_repo, commit));
@@ -220,7 +219,7 @@ namespace SourceGit.ViewModels {
             menu.Items.Add(createBranch);
 
             var createTag = new MenuItem();
-            createTag.Icon = CreateMenuIcon("Icons.Tag.Add");
+            createTag.Icon = App.CreateMenuIcon("Icons.Tag.Add");
             createTag.Header = App.Text("CreateTag");
             createTag.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new CreateTag(_repo, commit));
@@ -230,7 +229,7 @@ namespace SourceGit.ViewModels {
             menu.Items.Add(new MenuItem() { Header = "-" });
 
             var saveToPatch = new MenuItem();
-            saveToPatch.Icon = CreateMenuIcon("Icons.Diff");
+            saveToPatch.Icon = App.CreateMenuIcon("Icons.Diff");
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += async (_, e) => {
                 var topLevel = App.GetTopLevel();
@@ -248,7 +247,7 @@ namespace SourceGit.ViewModels {
             menu.Items.Add(saveToPatch);
 
             var archive = new MenuItem();
-            archive.Icon = CreateMenuIcon("Icons.Archive");
+            archive.Icon = App.CreateMenuIcon("Icons.Archive");
             archive.Header = App.Text("Archive");
             archive.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Archive(_repo, commit));
@@ -259,7 +258,7 @@ namespace SourceGit.ViewModels {
 
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
-            copySHA.Icon = CreateMenuIcon("Icons.Copy");
+            copySHA.Icon = App.CreateMenuIcon("Icons.Copy");
             copySHA.Click += (o, e) => {
                 App.CopyText(commit.SHA);
                 e.Handled = true;
@@ -270,7 +269,7 @@ namespace SourceGit.ViewModels {
 
         private void FillCurrentBranchMenu(ContextMenu menu, Models.Branch current) {
             var submenu = new MenuItem();
-            submenu.Icon = CreateMenuIcon("Icons.Branch");
+            submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = current.Name;
 
             var dirty = !string.IsNullOrEmpty(current.UpstreamTrackStatus);
@@ -279,7 +278,7 @@ namespace SourceGit.ViewModels {
 
                 var fastForward = new MenuItem();
                 fastForward.Header = CreateHighlightLabel("BranchCM.FastForward", upstream);
-                fastForward.Icon = CreateMenuIcon("Icons.FastForward");
+                fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
                 fastForward.IsEnabled = dirty;
                 fastForward.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowAndStartPopup(new Merge(_repo, upstream, current.Name));
@@ -289,7 +288,7 @@ namespace SourceGit.ViewModels {
 
                 var pull = new MenuItem();
                 pull.Header = CreateHighlightLabel("BranchCM.Pull", upstream);
-                pull.Icon = CreateMenuIcon("Icons.Pull");
+                pull.Icon = App.CreateMenuIcon("Icons.Pull");
                 pull.IsEnabled = dirty;
                 pull.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Pull(_repo, null));
@@ -300,7 +299,7 @@ namespace SourceGit.ViewModels {
 
             var push = new MenuItem();
             push.Header = CreateHighlightLabel("BranchCM.Push", current.Name);
-            push.Icon = CreateMenuIcon("Icons.Push");
+            push.Icon = App.CreateMenuIcon("Icons.Push");
             push.IsEnabled = _repo.Remotes.Count > 0 && dirty;
             push.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Push(_repo, current));
@@ -313,7 +312,7 @@ namespace SourceGit.ViewModels {
             if (type != Models.GitFlowBranchType.None) {
                 var finish = new MenuItem();
                 finish.Header = CreateHighlightLabel("BranchCM.Finish", current.Name);
-                finish.Icon = CreateMenuIcon("Icons.Flow");
+                finish.Icon = App.CreateMenuIcon("Icons.Flow");
                 finish.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new GitFlowFinish(_repo, current, type));
                     e.Handled = true;
@@ -324,7 +323,7 @@ namespace SourceGit.ViewModels {
 
             var rename = new MenuItem();
             rename.Header = CreateHighlightLabel("BranchCM.Rename", current.Name);
-            rename.Icon = CreateMenuIcon("Icons.Rename");
+            rename.Icon = App.CreateMenuIcon("Icons.Rename");
             rename.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new RenameBranch(_repo, current));
                 e.Handled = true;
@@ -336,12 +335,12 @@ namespace SourceGit.ViewModels {
 
         private void FillOtherLocalBranchMenu(ContextMenu menu, Models.Branch branch, Models.Branch current, bool merged) {
             var submenu = new MenuItem();
-            submenu.Icon = CreateMenuIcon("Icons.Branch");
+            submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = branch.Name;
 
             var checkout = new MenuItem();
             checkout.Header = CreateHighlightLabel("BranchCM.Checkout", branch.Name);
-            checkout.Icon = CreateMenuIcon("Icons.Check");
+            checkout.Icon = App.CreateMenuIcon("Icons.Check");
             checkout.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowAndStartPopup(new Checkout(_repo, branch.Name));
                 e.Handled = true;
@@ -350,7 +349,7 @@ namespace SourceGit.ViewModels {
 
             var merge = new MenuItem();
             merge.Header = CreateHighlightLabel("BranchCM.Merge", branch.Name, current.Name);
-            merge.Icon = CreateMenuIcon("Icons.Merge");
+            merge.Icon = App.CreateMenuIcon("Icons.Merge");
             merge.IsEnabled = !merged;
             merge.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Merge(_repo, branch.Name, current.Name));
@@ -363,7 +362,7 @@ namespace SourceGit.ViewModels {
             if (type != Models.GitFlowBranchType.None) {
                 var finish = new MenuItem();
                 finish.Header = CreateHighlightLabel("BranchCM.Finish", branch.Name);
-                finish.Icon = CreateMenuIcon("Icons.Flow");
+                finish.Icon = App.CreateMenuIcon("Icons.Flow");
                 finish.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new GitFlowFinish(_repo, branch, type));
                     e.Handled = true;
@@ -374,7 +373,7 @@ namespace SourceGit.ViewModels {
 
             var rename = new MenuItem();
             rename.Header = CreateHighlightLabel("BranchCM.Rename", branch.Name);
-            rename.Icon = CreateMenuIcon("Icons.Rename");
+            rename.Icon = App.CreateMenuIcon("Icons.Rename");
             rename.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new RenameBranch(_repo, branch));
                 e.Handled = true;
@@ -383,7 +382,7 @@ namespace SourceGit.ViewModels {
 
             var delete = new MenuItem();
             delete.Header = CreateHighlightLabel("BranchCM.Delete", branch.Name);
-            delete.Icon = CreateMenuIcon("Icons.Clear");
+            delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new DeleteBranch(_repo, branch));
                 e.Handled = true;
@@ -397,12 +396,12 @@ namespace SourceGit.ViewModels {
             var name = $"{branch.Remote}/{branch.Name}";
 
             var submenu = new MenuItem();
-            submenu.Icon = CreateMenuIcon("Icons.Branch");
+            submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = name;
 
             var checkout = new MenuItem();
             checkout.Header = CreateHighlightLabel("BranchCM.Checkout", name);
-            checkout.Icon = CreateMenuIcon("Icons.Check");
+            checkout.Icon = App.CreateMenuIcon("Icons.Check");
             checkout.Click += (o, e) => {
                 foreach (var b in _repo.Branches) {
                     if (b.IsLocal && b.Upstream == branch.FullName) {
@@ -419,7 +418,7 @@ namespace SourceGit.ViewModels {
 
             var merge = new MenuItem();
             merge.Header = CreateHighlightLabel("BranchCM.Merge", name, current.Name);
-            merge.Icon = CreateMenuIcon("Icons.Merge");
+            merge.Icon = App.CreateMenuIcon("Icons.Merge");
             merge.IsEnabled = !merged;
             merge.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Merge(_repo, name, current.Name));
@@ -431,7 +430,7 @@ namespace SourceGit.ViewModels {
 
             var delete = new MenuItem();
             delete.Header = CreateHighlightLabel("BranchCM.Delete", name);
-            delete.Icon = CreateMenuIcon("Icons.Clear");
+            delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new DeleteBranch(_repo, branch));
                 e.Handled = true;
@@ -444,12 +443,12 @@ namespace SourceGit.ViewModels {
         private void FillTagMenu(ContextMenu menu, Models.Tag tag) {
             var submenu = new MenuItem();
             submenu.Header = tag.Name;
-            submenu.Icon = CreateMenuIcon("Icons.Tag");
+            submenu.Icon = App.CreateMenuIcon("Icons.Tag");
             submenu.MinWidth = 200;
 
             var push = new MenuItem();
             push.Header = CreateHighlightLabel("TagCM.Push", tag.Name);
-            push.Icon = CreateMenuIcon("Icons.Push");
+            push.Icon = App.CreateMenuIcon("Icons.Push");
             push.IsEnabled = _repo.Remotes.Count > 0;
             push.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new PushTag(_repo, tag));
@@ -459,7 +458,7 @@ namespace SourceGit.ViewModels {
 
             var delete = new MenuItem();
             delete.Header = CreateHighlightLabel("TagCM.Delete", tag.Name);
-            delete.Icon = CreateMenuIcon("Icons.Clear");
+            delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new DeleteTag(_repo, tag));
                 e.Handled = true;
@@ -474,15 +473,6 @@ namespace SourceGit.ViewModels {
             label.Text = App.Text(key, args);
             label.VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
             return label;
-        }
-
-        private Avalonia.Controls.Shapes.Path CreateMenuIcon(string key) {
-            var icon = new Avalonia.Controls.Shapes.Path();
-            icon.Width = 12;
-            icon.Height = 12;
-            icon.Stretch = Stretch.Uniform;
-            icon.Data = App.Current?.FindResource(key) as StreamGeometry;
-            return icon;
         }
 
         private Repository _repo = null;

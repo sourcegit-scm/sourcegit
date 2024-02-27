@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Media;
+﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,11 +10,6 @@ using System.Threading.Tasks;
 namespace SourceGit.ViewModels {
     public class ConflictContext {
         public Models.Change Change { get; set; }
-    }
-
-    public class ViewChangeDetailContext {
-        public string FilePath { get; set; } = string.Empty;
-        public bool IsUnstaged { get; set; } = false;
     }
 
     public class WorkingCopy : ObservableObject {
@@ -54,6 +47,28 @@ namespace SourceGit.ViewModels {
             get => _count;
         }
 
+        public Models.Change SelectedUnstagedChange {
+            get => _selectedUnstagedChange;
+            set {
+                if (SetProperty(ref _selectedUnstagedChange, value) && value != null) {
+                    SelectedStagedChange = null;
+                    SelectedStagedTreeNode = null;
+                    SetDetail(value, true);
+                }
+            }
+        }
+
+        public Models.Change SelectedStagedChange {
+            get => _selectedStagedChange;
+            set {
+                if (SetProperty(ref _selectedStagedChange, value) && value != null) {
+                    SelectedUnstagedChange = null;
+                    SelectedUnstagedTreeNode = null;
+                    SetDetail(value, false);
+                }
+            }
+        }
+
         public List<FileTreeNode> UnstagedTree {
             get => _unstagedTree; 
             private set => SetProperty(ref _unstagedTree, value);
@@ -62,6 +77,44 @@ namespace SourceGit.ViewModels {
         public List<FileTreeNode> StagedTree {
             get => _stagedTree;
             private set => SetProperty(ref _stagedTree, value);
+        }
+
+        public FileTreeNode SelectedUnstagedTreeNode {
+            get => _selectedUnstagedTreeNode;
+            set {
+                if (SetProperty(ref _selectedUnstagedTreeNode, value)) {
+                    if (value == null) {
+                        SelectedUnstagedChange = null;
+                    } else {
+                        SelectedUnstagedChange = value.Backend as Models.Change;
+                        SelectedStagedTreeNode = null;
+                        SelectedStagedChange = null;
+
+                        if (value.IsFolder) {
+                            SetDetail(null, true);
+                        }
+                    }
+                }
+            }
+        }
+
+        public FileTreeNode SelectedStagedTreeNode {
+            get => _selectedStagedTreeNode;
+            set {
+                if (SetProperty(ref _selectedStagedTreeNode, value)) {
+                    if (value == null) {
+                        SelectedStagedChange = null;
+                    } else {
+                        SelectedStagedChange = value.Backend as Models.Change;
+                        SelectedUnstagedTreeNode = null;
+                        SelectedUnstagedChange = null;
+
+                        if (value.IsFolder) {
+                            SetDetail(null, false);
+                        }
+                    }
+                }
+            }
         }
 
         public object DetailContext {
@@ -84,7 +137,10 @@ namespace SourceGit.ViewModels {
             if (_staged != null) _staged.Clear();
             if (_unstagedTree != null) _unstagedTree.Clear();
             if (_stagedTree != null) _stagedTree.Clear();
-            _lastViewChange = null;
+            _selectedUnstagedChange = null;
+            _selectedStagedChange = null;
+            _selectedUnstagedTreeNode = null;
+            _selectedStagedTreeNode = null;
             _detailContext = null;
             _commitMessage = string.Empty;
         }
@@ -93,24 +149,34 @@ namespace SourceGit.ViewModels {
             var unstaged = new List<Models.Change>();
             var staged = new List<Models.Change>();
             
-            var viewFile = _lastViewChange == null ? string.Empty : _lastViewChange.FilePath;
+            var viewFile = string.Empty;
+            var lastSelectedIsUnstaged = false;
+            if (_selectedUnstagedChange != null) {
+                viewFile = _selectedUnstagedChange.Path;
+                lastSelectedIsUnstaged = true;
+            } else if (_selectedStagedChange != null) {
+                viewFile = _selectedStagedChange.Path;
+            }
+
             var viewChange = null as Models.Change;
             var hasConflict = false;
             foreach (var c in changes) {
-                if (c.Path == viewFile) {
-                    viewChange = c;
-                }
-
                 if (c.Index == Models.ChangeState.Modified
                     || c.Index == Models.ChangeState.Added
                     || c.Index == Models.ChangeState.Deleted
                     || c.Index == Models.ChangeState.Renamed) {
                     staged.Add(c);
+                    if (!lastSelectedIsUnstaged && c.Path == viewFile) {
+                        viewChange = c;
+                    }
                 }
 
                 if (c.WorkTree != Models.ChangeState.None) {
                     unstaged.Add(c);
                     hasConflict |= c.IsConflit;
+                    if (lastSelectedIsUnstaged && c.Path == viewFile) {
+                        viewChange = c;
+                    }
                 }
             }
 
@@ -125,7 +191,23 @@ namespace SourceGit.ViewModels {
                 UnstagedTree = unstagedTree;
                 StagedTree = stagedTree;
                 _isLoadingData = false;
-                SetDetail(viewChange, _lastViewChange == null || _lastViewChange.IsUnstaged);
+
+                // Restore last selection states.
+                if (viewChange != null) {
+                    if (lastSelectedIsUnstaged) {
+                        SelectedUnstagedChange = viewChange;
+                        SelectedUnstagedTreeNode = FileTreeNode.SelectByPath(_unstagedTree, viewFile);
+                    } else {
+                        SelectedStagedChange = viewChange;
+                        SelectedStagedTreeNode = FileTreeNode.SelectByPath(_stagedTree, viewFile);
+                    }
+                } else {
+                    SelectedUnstagedChange = null;
+                    SelectedUnstagedTreeNode = null;
+                    SelectedStagedChange = null;
+                    SelectedStagedTreeNode = null;
+                    SetDetail(null, false);
+                }
             });
 
             return hasConflict;
@@ -135,13 +217,10 @@ namespace SourceGit.ViewModels {
             if (_isLoadingData) return;
 
             if (change == null) {
-                _lastViewChange = null;
                 DetailContext = null;
             } else if (change.IsConflit) {
-                _lastViewChange = new ViewChangeDetailContext() { FilePath = change.Path, IsUnstaged = isUnstaged };
                 DetailContext = new ConflictContext() { Change = change };
             } else {
-                _lastViewChange = new ViewChangeDetailContext() { FilePath = change.Path, IsUnstaged = isUnstaged };
                 DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged));
             }
         }
@@ -284,7 +363,7 @@ namespace SourceGit.ViewModels {
 
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
-                explore.Icon = CreateMenuIcon("Icons.Folder.Open");
+                explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Click += (_, e) => {
                     Native.OS.OpenInFileManager(path, true);
@@ -293,7 +372,7 @@ namespace SourceGit.ViewModels {
                 
                 var openWith = new MenuItem();
                 openWith.Header = App.Text("OpenWith");
-                openWith.Icon = CreateMenuIcon("Icons.OpenWith");
+                openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
                 openWith.IsEnabled = File.Exists(path);
                 openWith.Click += (_, e) => {
                     Native.OS.OpenWithDefaultEditor(path);
@@ -302,7 +381,7 @@ namespace SourceGit.ViewModels {
 
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.Stage");
-                stage.Icon = CreateMenuIcon("Icons.File.Add");
+                stage.Icon = App.CreateMenuIcon("Icons.File.Add");
                 stage.Click += (_, e) => {
                     StageChanges(changes);
                     e.Handled = true;
@@ -310,7 +389,7 @@ namespace SourceGit.ViewModels {
 
                 var discard = new MenuItem();
                 discard.Header = App.Text("FileCM.Discard");
-                discard.Icon = CreateMenuIcon("Icons.Undo");
+                discard.Icon = App.CreateMenuIcon("Icons.Undo");
                 discard.Click += (_, e) => {
                     Discard(changes);
                     e.Handled = true;
@@ -318,7 +397,7 @@ namespace SourceGit.ViewModels {
 
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.Stash");
-                stash.Icon = CreateMenuIcon("Icons.Stashes");
+                stash.Icon = App.CreateMenuIcon("Icons.Stashes");
                 stash.Click += (_, e) => {
                     if (PopupHost.CanCreatePopup()) {
                         PopupHost.ShowPopup(new StashChanges(_repo, changes, false));
@@ -328,7 +407,7 @@ namespace SourceGit.ViewModels {
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Diff");
                 patch.Click += async (_, e) => {
                     var topLevel = App.GetTopLevel();
                     if (topLevel == null) return;
@@ -349,7 +428,7 @@ namespace SourceGit.ViewModels {
 
                 var history = new MenuItem();
                 history.Header = App.Text("FileHistory");
-                history.Icon = CreateMenuIcon("Icons.Histories");
+                history.Icon = App.CreateMenuIcon("Icons.Histories");
                 history.Click += (_, e) => {
                     var window = new Views.FileHistories() { DataContext = new FileHistories(_repo.FullPath, change.Path) };
                     window.Show();
@@ -358,7 +437,7 @@ namespace SourceGit.ViewModels {
 
                 var assumeUnchanged = new MenuItem();
                 assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
-                assumeUnchanged.Icon = CreateMenuIcon("Icons.File.Ignore");
+                assumeUnchanged.Icon = App.CreateMenuIcon("Icons.File.Ignore");
                 assumeUnchanged.IsEnabled = change.WorkTree != Models.ChangeState.Untracked;
                 assumeUnchanged.Click += (_, e) => {
                     new Commands.AssumeUnchanged(_repo.FullPath).Add(change.Path);
@@ -367,7 +446,7 @@ namespace SourceGit.ViewModels {
 
                 var copy = new MenuItem();
                 copy.Header = App.Text("CopyPath");
-                copy.Icon = CreateMenuIcon("Icons.Copy");
+                copy.Icon = App.CreateMenuIcon("Icons.Copy");
                 copy.Click += (_, e) => {
                     App.CopyText(change.Path);
                     e.Handled = true;
@@ -388,7 +467,7 @@ namespace SourceGit.ViewModels {
             } else {
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.StageMulti", changes.Count);
-                stage.Icon = CreateMenuIcon("Icons.File.Add");
+                stage.Icon = App.CreateMenuIcon("Icons.File.Add");
                 stage.Click += (_, e) => {
                     StageChanges(changes);
                     e.Handled = true;
@@ -396,7 +475,7 @@ namespace SourceGit.ViewModels {
 
                 var discard = new MenuItem();
                 discard.Header = App.Text("FileCM.DiscardMulti", changes.Count);
-                discard.Icon = CreateMenuIcon("Icons.Undo");
+                discard.Icon = App.CreateMenuIcon("Icons.Undo");
                 discard.Click += (_, e) => {
                     Discard(changes);
                     e.Handled = true;
@@ -404,7 +483,7 @@ namespace SourceGit.ViewModels {
 
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.StashMulti", changes.Count);
-                stash.Icon = CreateMenuIcon("Icons.Stashes");
+                stash.Icon = App.CreateMenuIcon("Icons.Stashes");
                 stash.Click += (_, e) => {
                     if (PopupHost.CanCreatePopup()) {
                         PopupHost.ShowPopup(new StashChanges(_repo, changes, false));
@@ -414,7 +493,7 @@ namespace SourceGit.ViewModels {
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Diff");
                 patch.Click += async (o, e) => {
                     var topLevel = App.GetTopLevel();
                     if (topLevel == null) return;
@@ -453,7 +532,7 @@ namespace SourceGit.ViewModels {
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Header = App.Text("RevealFile");
-                explore.Icon = CreateMenuIcon("Icons.Folder.Open");
+                explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
                 explore.Click += (o, e) => {
                     Native.OS.OpenInFileManager(path, true);
                     e.Handled = true;
@@ -461,7 +540,7 @@ namespace SourceGit.ViewModels {
 
                 var openWith = new MenuItem();
                 openWith.Header = App.Text("OpenWith");
-                openWith.Icon = CreateMenuIcon("Icons.OpenWith");
+                openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
                 openWith.IsEnabled = File.Exists(path);
                 openWith.Click += (_, e) => {
                     Native.OS.OpenWithDefaultEditor(path);
@@ -470,7 +549,7 @@ namespace SourceGit.ViewModels {
 
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.Unstage");
-                unstage.Icon = CreateMenuIcon("Icons.File.Remove");
+                unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
                 unstage.Click += (o, e) => {
                     UnstageChanges(changes);
                     e.Handled = true;
@@ -478,7 +557,7 @@ namespace SourceGit.ViewModels {
 
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.Stash");
-                stash.Icon = CreateMenuIcon("Icons.Stashes");
+                stash.Icon = App.CreateMenuIcon("Icons.Stashes");
                 stash.Click += (_, e) => {
                     if (PopupHost.CanCreatePopup()) {
                         PopupHost.ShowPopup(new StashChanges(_repo, changes, false));
@@ -488,7 +567,7 @@ namespace SourceGit.ViewModels {
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Diff");
                 patch.Click += async (o, e) => {
                     var topLevel = App.GetTopLevel();
                     if (topLevel == null) return;
@@ -509,7 +588,7 @@ namespace SourceGit.ViewModels {
 
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
-                copyPath.Icon = CreateMenuIcon("Icons.Copy");
+                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyPath.Click += (o, e) => {
                     App.CopyText(change.Path);
                     e.Handled = true;
@@ -526,7 +605,7 @@ namespace SourceGit.ViewModels {
             } else {
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.UnstageMulti", changes.Count);
-                unstage.Icon = CreateMenuIcon("Icons.File.Remove");
+                unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
                 unstage.Click += (o, e) => {
                     UnstageChanges(changes);
                     e.Handled = true;
@@ -534,7 +613,7 @@ namespace SourceGit.ViewModels {
 
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.StashMulti", changes.Count);
-                stash.Icon = CreateMenuIcon("Icons.Stashes");
+                stash.Icon = App.CreateMenuIcon("Icons.Stashes");
                 stash.Click += (_, e) => {
                     if (PopupHost.CanCreatePopup()) {
                         PopupHost.ShowPopup(new StashChanges(_repo, changes, false));
@@ -544,7 +623,7 @@ namespace SourceGit.ViewModels {
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Diff");
                 patch.Click += async (_, e) => {
                     var topLevel = App.GetTopLevel();
                     if (topLevel == null) return;
@@ -603,15 +682,6 @@ namespace SourceGit.ViewModels {
             return menu;
         }
 
-        private Avalonia.Controls.Shapes.Path CreateMenuIcon(string key) {
-            var icon = new Avalonia.Controls.Shapes.Path();
-            icon.Width = 12;
-            icon.Height = 12;
-            icon.Stretch = Stretch.Uniform;
-            icon.Data = App.Current?.FindResource(key) as StreamGeometry;
-            return icon;
-        }
-
         private void PushCommitMessage() {
             var existIdx = _repo.CommitMessages.IndexOf(CommitMessage);
             if (existIdx == 0) {
@@ -636,10 +706,13 @@ namespace SourceGit.ViewModels {
         private bool _useAmend = false;
         private List<Models.Change> _unstaged = null;
         private List<Models.Change> _staged = null;
+        private Models.Change _selectedUnstagedChange = null;
+        private Models.Change _selectedStagedChange = null;
         private int _count = 0;
         private List<FileTreeNode> _unstagedTree = null;
         private List<FileTreeNode> _stagedTree = null;
-        private ViewChangeDetailContext _lastViewChange = null;
+        private FileTreeNode _selectedUnstagedTreeNode = null;
+        private FileTreeNode _selectedStagedTreeNode = null;
         private object _detailContext = null;
         private string _commitMessage = string.Empty;
     }

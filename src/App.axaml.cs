@@ -120,6 +120,15 @@ namespace SourceGit {
             return string.Format(fmt, args);
         }
 
+        public static Avalonia.Controls.Shapes.Path CreateMenuIcon(string key) {
+            var icon = new Avalonia.Controls.Shapes.Path();
+            icon.Width = 12;
+            icon.Height = 12;
+            icon.Stretch = Stretch.Uniform;
+            icon.Data = Current.FindResource(key) as StreamGeometry;
+            return icon;
+        }
+
         public static TopLevel GetTopLevel() {
             if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) {
                 return desktop.MainWindow;

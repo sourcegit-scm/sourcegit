@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Media;
+﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -151,7 +149,7 @@ namespace SourceGit.ViewModels {
             if (change.Index != Models.ChangeState.Deleted) {
                 var history = new MenuItem();
                 history.Header = App.Text("FileHistory");
-                history.Icon = CreateMenuIcon("Icons.Histories");
+                history.Icon = App.CreateMenuIcon("Icons.Histories");
                 history.Click += (_, ev) => {
                     var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
                     window.Show();
@@ -160,7 +158,7 @@ namespace SourceGit.ViewModels {
 
                 var blame = new MenuItem();
                 blame.Header = App.Text("Blame");
-                blame.Icon = CreateMenuIcon("Icons.Blame");
+                blame.Icon = App.CreateMenuIcon("Icons.Blame");
                 blame.Click += (o, ev) => {
                     var window = new Views.Blame() { DataContext = new Blame(_repo, change.Path, _commit.SHA) };
                     window.Show();
@@ -170,7 +168,7 @@ namespace SourceGit.ViewModels {
                 var full = Path.GetFullPath(Path.Combine(_repo, change.Path));
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
-                explore.Icon = CreateMenuIcon("Icons.Folder.Open");
+                explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
                 explore.IsEnabled = File.Exists(full);
                 explore.Click += (_, ev) => {
                     Native.OS.OpenInFileManager(full, true);
@@ -184,7 +182,7 @@ namespace SourceGit.ViewModels {
 
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
-            copyPath.Icon = CreateMenuIcon("Icons.Copy");
+            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
             copyPath.Click += (_, ev) => {
                 App.CopyText(change.Path);
                 ev.Handled = true;
@@ -197,7 +195,7 @@ namespace SourceGit.ViewModels {
         public ContextMenu CreateRevisionFileContextMenu(Models.Object file) {
             var history = new MenuItem();
             history.Header = App.Text("FileHistory");
-            history.Icon = CreateMenuIcon("Icons.Histories");
+            history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) => {
                 var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path) };
                 window.Show();
@@ -206,7 +204,7 @@ namespace SourceGit.ViewModels {
 
             var blame = new MenuItem();
             blame.Header = App.Text("Blame");
-            blame.Icon = CreateMenuIcon("Icons.Blame");
+            blame.Icon = App.CreateMenuIcon("Icons.Blame");
             blame.Click += (o, ev) => {
                 var window = new Views.Blame() { DataContext = new Blame(_repo, file.Path, _commit.SHA) };
                 window.Show();
@@ -216,7 +214,7 @@ namespace SourceGit.ViewModels {
             var full = Path.GetFullPath(Path.Combine(_repo, file.Path));
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
-            explore.Icon = CreateMenuIcon("Icons.Folder.Open");
+            explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
             explore.Click += (_, ev) => {
                 Native.OS.OpenInFileManager(full, file.Type == Models.ObjectType.Blob);
                 ev.Handled = true;
@@ -224,7 +222,7 @@ namespace SourceGit.ViewModels {
 
             var saveAs = new MenuItem();
             saveAs.Header = App.Text("SaveAs");
-            saveAs.Icon = CreateMenuIcon("Icons.Save");
+            saveAs.Icon = App.CreateMenuIcon("Icons.Save");
             saveAs.IsEnabled = file.Type == Models.ObjectType.Blob;
             saveAs.Click += async (_, ev) => {
                 var topLevel = App.GetTopLevel();
@@ -242,7 +240,7 @@ namespace SourceGit.ViewModels {
 
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
-            copyPath.Icon = CreateMenuIcon("Icons.Copy");
+            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
             copyPath.Click += (_, ev) => {
                 App.CopyText(file.Path);
                 ev.Handled = true;
@@ -395,15 +393,6 @@ namespace SourceGit.ViewModels {
                 ViewRevisionFileContent = null;
                 break;
             }
-        }
-
-        private Avalonia.Controls.Shapes.Path CreateMenuIcon(string key) {
-            var icon = new Avalonia.Controls.Shapes.Path();
-            icon.Width = 12;
-            icon.Height = 12;
-            icon.Stretch = Stretch.Uniform;
-            icon.Data = App.Current?.FindResource(key) as StreamGeometry;
-            return icon;
         }
 
         private string _repo = string.Empty;
