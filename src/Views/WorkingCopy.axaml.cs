@@ -13,6 +13,10 @@ namespace SourceGit.Views {
 
         protected override void OnUnloaded(RoutedEventArgs e) {
             var vm = DataContext as ViewModels.WorkingCopy;
+            vm.SelectedStagedChange = null;
+            vm.SelectedStagedTreeNode = null;
+            vm.SelectedUnstagedChange = null;
+            vm.SelectedUnstagedTreeNode = null;
             vm.SetDetail(null, false);
 
             base.OnUnloaded(e);
