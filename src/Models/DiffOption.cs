@@ -3,6 +3,8 @@ using System.Text;
 
 namespace SourceGit.Models {
     public class DiffOption {
+        public Change WorkingCopyChange => _workingCopyChange;
+        public bool IsUnstaged => _isUnstaged;
         public List<string> Revisions => _revisions;
         public string Path => _path;
         public string OrgPath => _orgPath;
@@ -13,6 +15,9 @@ namespace SourceGit.Models {
         /// <param name="change"></param>
         /// <param name="isUnstaged"></param>
         public DiffOption(Change change, bool isUnstaged) {
+            _workingCopyChange = change;
+            _isUnstaged = isUnstaged;
+
             if (isUnstaged) {
                 switch (change.WorkTree) {
                 case ChangeState.Added:
@@ -47,7 +52,7 @@ namespace SourceGit.Models {
         }
 
         /// <summary>
-        ///     Diff with filepath.
+        ///     Diff with filepath. Used by FileHistories
         /// </summary>
         /// <param name="commit"></param>
         /// <param name="file"></param>
@@ -87,6 +92,8 @@ namespace SourceGit.Models {
             return builder.ToString();
         }
 
+        private Change _workingCopyChange = null;
+        private bool _isUnstaged = false;
         private string _orgPath = string.Empty;
         private string _path = string.Empty;
         private string _extra = string.Empty;

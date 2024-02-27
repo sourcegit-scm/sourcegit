@@ -65,11 +65,11 @@ namespace SourceGit.Commands {
 
                 _oldLine = int.Parse(match.Groups[1].Value);
                 _newLine = int.Parse(match.Groups[2].Value);
-                _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, "", ""));
+                _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
             } else {
                 if (line.Length == 0) {
                     ProcessInlineHighlights();
-                    _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, "", $"{_oldLine}", $"{_newLine}"));
+                    _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, "", _oldLine, _newLine));
                     _oldLine++;
                     _newLine++;
                     return;
@@ -77,10 +77,10 @@ namespace SourceGit.Commands {
 
                 var ch = line[0];
                 if (ch == '-') {
-                    _deleted.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), $"{_oldLine}", ""));
+                    _deleted.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), _oldLine, 0));
                     _oldLine++;
                 } else if (ch == '+') {
-                    _added.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), "", $"{_newLine}"));
+                    _added.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), 0, _newLine));
                     _newLine++;
                 } else if (ch != '\\') {
                     ProcessInlineHighlights();
@@ -88,7 +88,7 @@ namespace SourceGit.Commands {
                     if (match.Success) {
                         _oldLine = int.Parse(match.Groups[1].Value);
                         _newLine = int.Parse(match.Groups[2].Value);
-                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, "", ""));
+                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
                     } else {
                         if (line.StartsWith(PREFIX_LFS)) {
                             _result.IsLFS = true;
@@ -96,7 +96,7 @@ namespace SourceGit.Commands {
                             return;
                         }
 
-                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, line.Substring(1), $"{_oldLine}", $"{_newLine}"));
+                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, line.Substring(1), _oldLine, _newLine));
                         _oldLine++;
                         _newLine++;
                     }

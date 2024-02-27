@@ -227,6 +227,9 @@
   <sys:String x:Key="Text.FileCM.StashMulti">贮藏选中的 {0} 个文件...</sys:String>
   <sys:String x:Key="Text.FileCM.SaveAsPatch">另存为补丁...</sys:String>
   <sys:String x:Key="Text.FileCM.AssumeUnchanged">不跟踪此文件的更改</sys:String>
+  <sys:String x:Key="Text.FileCM.StageSelectedLines">暂存选中的更改</sys:String>
+  <sys:String x:Key="Text.FileCM.DiscardSelectedLines">放弃选中的更改</sys:String>
+  <sys:String x:Key="Text.FileCM.UnstageSelectedLines">从暂存中移除选中的更改</sys:String>
 
   <sys:String x:Key="Text.DeleteBranch">确定要删除此分支吗？</sys:String>
   <sys:String x:Key="Text.DeleteBranch.Branch">分支名 ：</sys:String>

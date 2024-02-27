@@ -18,16 +18,19 @@ namespace SourceGit.Models {
     public class TextDiffLine {
         public TextDiffLineType Type { get; set; } = TextDiffLineType.None;
         public string Content { get; set; } = "";
-        public string OldLine { get; set; } = "";
-        public string NewLine { get; set; } = "";
+        public int OldLineNumber { get; set; } = 0;
+        public int NewLineNumber { get; set; } = 0;
         public List<TextInlineRange> Highlights { get; set; } = new List<TextInlineRange>();
 
+        public string OldLine => OldLineNumber == 0 ? string.Empty : OldLineNumber.ToString();
+        public string NewLine => NewLineNumber == 0 ? string.Empty : NewLineNumber.ToString();
+
         public TextDiffLine() { }
-        public TextDiffLine(TextDiffLineType type, string content, string oldLine, string newLine) {
+        public TextDiffLine(TextDiffLineType type, string content, int oldLine, int newLine) {
             Type = type;
             Content = content;
-            OldLine = oldLine;
-            NewLine = newLine;
+            OldLineNumber = oldLine;
+            NewLineNumber = newLine;
         }
     }
 

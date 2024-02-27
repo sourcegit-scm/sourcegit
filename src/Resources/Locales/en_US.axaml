@@ -228,6 +228,9 @@
   <sys:String x:Key="Text.FileCM.StashMulti">Stash {0} files...</sys:String>
   <sys:String x:Key="Text.FileCM.SaveAsPatch">Save As Patch...</sys:String>
   <sys:String x:Key="Text.FileCM.AssumeUnchanged">Assume unchaged</sys:String>
+  <sys:String x:Key="Text.FileCM.StageSelectedLines">Stage Changes in Selected Line(s)</sys:String>
+  <sys:String x:Key="Text.FileCM.DiscardSelectedLines">Discard Changes in Selected Line(s)</sys:String>
+  <sys:String x:Key="Text.FileCM.UnstageSelectedLines">Unstage Changes in Selected Line(s)</sys:String>
 
   <sys:String x:Key="Text.DeleteBranch">Delete Branch</sys:String>
   <sys:String x:Key="Text.DeleteBranch.Branch">Branch :</sys:String>
