@@ -28,7 +28,7 @@
 
           <StackPanel Grid.Column="2" Margin="32,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsTextDiff}" VerticalAlignment="Center">
             <ToggleButton x:Name="toggleDisplayMode"
-                          Classes="layout_direction"
+                          Classes="textdiffviewer_mode"
                           Width="32" Height="26"
                           Padding="9,6"
                           IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseCombinedTextDiff, Mode=TwoWay}"
