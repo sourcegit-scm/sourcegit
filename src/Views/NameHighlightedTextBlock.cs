@@ -43,6 +43,11 @@ namespace SourceGit.Views {
             AffectsMeasure<NameHighlightedTextBlock>(TextProperty);
         }
 
+        public NameHighlightedTextBlock(string nameKey, params object[] args) {
+            Text = App.Text(nameKey, args);
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
+        }
+
         protected override Size MeasureOverride(Size availableSize) {
             var text = Text;
             if (string.IsNullOrEmpty(text)) return base.MeasureOverride(availableSize);
