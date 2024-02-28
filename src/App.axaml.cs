@@ -6,7 +6,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Styling;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;

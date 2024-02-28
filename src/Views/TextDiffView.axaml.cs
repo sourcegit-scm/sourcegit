@@ -16,23 +16,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
 using TextMateSharp.Grammars;
 
 namespace SourceGit.Views {
-    public class TextDiffUnifiedSelection {
-        public int StartLine { get; set; } = 0;
-        public int EndLine { get; set; } = 0;
-        public bool HasChanges { get; set; } = false;
-        public bool HasLeftChanges { get; set; } = false;
-        public int IgnoredAdds { get; set; } = 0;
-        public int IgnoredDeletes { get; set; } = 0;
-
-        public bool IsInRange(int idx) {
-            return idx >= StartLine - 1 && idx < EndLine;
-        }
-    }
-
     public class CombinedTextDiffPresenter : TextEditor {
         public class LineNumberMargin : AbstractMargin {
             public LineNumberMargin(CombinedTextDiffPresenter editor, bool isOldLine) {
@@ -706,10 +692,13 @@ namespace SourceGit.Views {
 
                         var tmpFile = Path.GetTempFileName();
                         if (change.WorkTree == Models.ChangeState.Untracked) {
-                            GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
+                            TextDiff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
                         } else if (UseCombined) {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
-                            GenerateCombinedPatchFromSelection(change, treeGuid, selection, false, tmpFile);
+                            TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
+                        } else {
+                            var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
+                            TextDiff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, isOldSide, tmpFile);
                         }
 
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--cache --index").Exec();
@@ -729,10 +718,13 @@ namespace SourceGit.Views {
 
                         var tmpFile = Path.GetTempFileName();
                         if (change.WorkTree == Models.ChangeState.Untracked) {
-                            GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
+                            TextDiff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
                         } else if (UseCombined) {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
-                            GenerateCombinedPatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                            TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                        } else {
+                            var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
+                            TextDiff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
                         }
 
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--reverse").Exec();
@@ -756,9 +748,11 @@ namespace SourceGit.Views {
                         var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
                         var tmpFile = Path.GetTempFileName();
                         if (change.Index == Models.ChangeState.Added) {
-                            GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                            TextDiff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
                         } else if (UseCombined) {
-                            GenerateCombinedPatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                            TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                        } else {
+                            TextDiff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
                         }
 
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--cache --index --reverse").Exec();
@@ -789,203 +783,88 @@ namespace SourceGit.Views {
             }
         }
 
-        private TextDiffUnifiedSelection GetUnifiedSelection(int startLine, int endLine, bool isOldSide) {
-            var rs = new TextDiffUnifiedSelection();
-            if (Content is Models.TextDiff combined) {
-                rs.StartLine = startLine;
-                rs.EndLine = endLine;
+        private Models.TextDiffSelection GetUnifiedSelection(int startLine, int endLine, bool isOldSide) {
+            var rs = new Models.TextDiffSelection();
+            var diff = TextDiff;
 
-                for (int i = 0; i < startLine - 1; i++) {
-                    var line = combined.Lines[i];
-                    if (line.Type == Models.TextDiffLineType.Added) {
-                        rs.HasLeftChanges = true;
-                        rs.IgnoredAdds++;
-                    } else if (line.Type == Models.TextDiffLineType.Deleted) {
-                        rs.HasLeftChanges = true;
-                        rs.IgnoredDeletes++;
-                    }
-                }
-
+            if (Content is ViewModels.TwoSideTextDiff twoSides) {
+                var target = isOldSide ? twoSides.Old : twoSides.New;
+                var firstContentLine = -1;
                 for (int i = startLine - 1; i < endLine; i++) {
-                    var line = combined.Lines[i];
-                    if (line.Type == Models.TextDiffLineType.Added || line.Type == Models.TextDiffLineType.Deleted) {
-                        rs.HasChanges = true;
+                    var line = target[i];
+                    if (line.Type != Models.TextDiffLineType.None) {
+                        firstContentLine = i;
                         break;
                     }
                 }
 
-                if (!rs.HasLeftChanges) {
-                    for (int i = endLine; i < combined.Lines.Count; i++) {
-                        var line = combined.Lines[i];
-                        if (line.Type == Models.TextDiffLineType.Added || line.Type == Models.TextDiffLineType.Deleted) {
-                            rs.HasLeftChanges = true;
-                            break;
-                        }
+                if (firstContentLine < 0) return rs;
+
+                var endContentLine = -1;
+                for (int i = Math.Min(endLine - 1, target.Count - 1); i >= startLine - 1; i--) {
+                    var line = target[i];
+                    if (line.Type != Models.TextDiffLineType.None) {
+                        endContentLine = i;
+                        break;
                     }
                 }
-            } else if (Content is ViewModels.TwoSideTextDiff twoSides) {
 
+                if (endContentLine < 0) return rs;
+
+                var firstContent = target[firstContentLine];
+                var endContent = target[endContentLine];
+                startLine = TextDiff.Lines.IndexOf(firstContent) + 1;
+                endLine = TextDiff.Lines.IndexOf(endContent) + 1;
+            }
+
+            rs.StartLine = startLine;
+            rs.EndLine = endLine;
+
+            for (int i = 0; i < startLine - 1; i++) {
+                var line = diff.Lines[i];
+                if (line.Type == Models.TextDiffLineType.Added) {
+                    rs.HasLeftChanges = true;
+                    rs.IgnoredAdds++;
+                } else if (line.Type == Models.TextDiffLineType.Deleted) {
+                    rs.HasLeftChanges = true;
+                    rs.IgnoredDeletes++;
+                }
+            }
+
+            for (int i = startLine - 1; i < endLine; i++) {
+                var line = diff.Lines[i];
+                if (line.Type == Models.TextDiffLineType.Added) {
+                    if (UseCombined) {
+                        rs.HasChanges = true;
+                        break;
+                    } else if (isOldSide) {
+                        rs.HasLeftChanges = true;
+                    } else {
+                        rs.HasChanges = true;
+                    }
+                } else if (line.Type == Models.TextDiffLineType.Deleted) {
+                    if (UseCombined) {
+                        rs.HasChanges = true;
+                        break;
+                    } else if (isOldSide) {
+                        rs.HasChanges = true;
+                    } else {
+                        rs.HasLeftChanges = true;
+                    }
+                }
+            }
+
+            if (!rs.HasLeftChanges) {
+                for (int i = endLine; i < diff.Lines.Count; i++) {
+                    var line = diff.Lines[i];
+                    if (line.Type == Models.TextDiffLineType.Added || line.Type == Models.TextDiffLineType.Deleted) {
+                        rs.HasLeftChanges = true;
+                        break;
+                    }
+                }
             }
 
             return rs;
-        }
-
-        private void GenerateNewPatchFromSelection(Models.Change change, string fileBlobGuid, TextDiffUnifiedSelection selection, bool revert, string output) {
-            var isTracked = !string.IsNullOrEmpty(fileBlobGuid);
-            var fileGuid = isTracked ? fileBlobGuid.Substring(0, 8) : "00000000";
-
-            var builder = new StringBuilder();
-            builder.Append("diff --git a/").Append(change.Path).Append(" b/").Append(change.Path).Append('\n');
-            if (!revert && !isTracked) builder.Append("new file mode 100644\n");
-            builder.Append("index 00000000...").Append(fileGuid).Append('\n');
-            builder.Append("--- ").Append((revert || isTracked) ? $"a/{change.Path}\n" : "/dev/null\n");
-            builder.Append("+++ b/").Append(change.Path).Append('\n');
-
-            var additions = selection.EndLine - selection.StartLine;
-            if (selection.StartLine != 1) additions++;
-
-            if (revert) {
-                var totalLines = TextDiff.Lines.Count - 1;
-                builder.Append($"@@ -0,").Append(totalLines - additions).Append(" +0,").Append(totalLines).Append(" @@");
-                for (int i = 1; i <= totalLines; i++) {
-                    var line = TextDiff.Lines[i];
-                    if (line.Type != Models.TextDiffLineType.Added) continue;
-                    builder.Append(selection.IsInRange(i) ? "\n+" : "\n ").Append(line.Content);
-                }
-            } else {
-                builder.Append("@@ -0,0 +0,").Append(additions).Append(" @@");
-                for (int i = selection.StartLine - 1; i < selection.EndLine; i++) {
-                    var line = TextDiff.Lines[i];
-                    if (line.Type != Models.TextDiffLineType.Added) continue;
-                    builder.Append("\n+").Append(line.Content);
-                }
-            }
-
-            builder.Append("\n\\ No newline at end of file\n");
-            File.WriteAllText(output, builder.ToString());
-        }
-
-        private void GenerateCombinedPatchFromSelection(Models.Change change, string fileTreeGuid, TextDiffUnifiedSelection selection, bool revert, string output) {
-            var orgFile = !string.IsNullOrEmpty(change.OriginalPath) ? change.OriginalPath : change.Path;
-            var indicatorRegex = new Regex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@");
-            var diff = TextDiff;
-
-            var builder = new StringBuilder();
-            builder.Append("diff --git a/").Append(change.Path).Append(" b/").Append(change.Path).Append('\n');
-            builder.Append("index 00000000...").Append(fileTreeGuid).Append(" 100644\n");
-            builder.Append("--- a/").Append(orgFile).Append('\n');
-            builder.Append("+++ b/").Append(change.Path).Append('\n');
-
-            // If last line of selection is a change. Find one more line.
-            var tail = null as string;
-            if (selection.EndLine < diff.Lines.Count) {
-                var lastLine = diff.Lines[selection.EndLine - 1];
-                if (lastLine.Type == Models.TextDiffLineType.Added || lastLine.Type == Models.TextDiffLineType.Deleted) {
-                    for (int i = selection.EndLine; i < diff.Lines.Count; i++) {
-                        var line = diff.Lines[i];
-                        if (line.Type == Models.TextDiffLineType.Indicator) break;
-                        if (line.Type == Models.TextDiffLineType.Normal || line.Type == Models.TextDiffLineType.Deleted) {
-                            tail = line.Content;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            // If the first line is not indicator.
-            if (diff.Lines[selection.StartLine - 1].Type != Models.TextDiffLineType.Indicator) {
-                var indicator = selection.StartLine - 1;
-                for (int i = selection.StartLine - 2; i >= 0; i--) {
-                    var line = diff.Lines[i];
-                    if (line.Type == Models.TextDiffLineType.Indicator) {
-                        indicator = i;
-                        break;
-                    }
-                }
-
-                var ignoreAdds = 0;
-                var ignoreRemoves = 0;
-                for (int i = 0; i < indicator; i++) {
-                    var line = diff.Lines[i];
-                    if (line.Type == Models.TextDiffLineType.Added) {
-                        ignoreAdds++;
-                    } else if (line.Type == Models.TextDiffLineType.Deleted) {
-                        ignoreRemoves++;
-                    }
-                }
-
-                for (int i = indicator; i < selection.StartLine - 1; i++) {
-                    var line = diff.Lines[i];
-                    if (line.Type == Models.TextDiffLineType.Indicator) {
-                        ProcessIndicatorForPatch(builder, line, i, selection.StartLine, selection.EndLine, ignoreRemoves, ignoreAdds, tail != null);
-                    } else if (line.Type == Models.TextDiffLineType.Added) {
-                        // Ignores
-                    } else if (line.Type == Models.TextDiffLineType.Deleted || line.Type == Models.TextDiffLineType.Normal) {
-                        // Traits ignored deleted as normal.
-                        builder.Append("\n ").Append(line.Content);
-                    }
-                }
-            }
-
-            // Outputs the selected lines.
-            for (int i = selection.StartLine - 1; i < selection.EndLine; i++) {
-                var line = diff.Lines[i];
-                if (line.Type == Models.TextDiffLineType.Indicator) {
-                    if (!ProcessIndicatorForPatch(builder, line, i, selection.StartLine, selection.EndLine, selection.IgnoredDeletes, selection.IgnoredAdds, tail != null)) {
-                        break;
-                    }
-                } else if (line.Type == Models.TextDiffLineType.Normal) {
-                    builder.Append("\n ").Append(line.Content);
-                } else if (line.Type == Models.TextDiffLineType.Added) {
-                    builder.Append("\n+").Append(line.Content);
-                } else if (line.Type == Models.TextDiffLineType.Deleted) {
-                    builder.Append("\n-").Append(line.Content);
-                }
-            }
-
-            builder.Append("\n ").Append(tail);
-            builder.Append("\n");
-            File.WriteAllText(output, builder.ToString());
-        }
-
-        private bool ProcessIndicatorForPatch(StringBuilder builder, Models.TextDiffLine indicator, int idx, int start, int end, int ignoreRemoves, int ignoreAdds, bool tailed) {
-            var indicatorRegex = new Regex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@");
-            var diff = TextDiff;
-
-            var match = indicatorRegex.Match(indicator.Content);
-            var oldStart = int.Parse(match.Groups[1].Value);
-            var newStart = int.Parse(match.Groups[2].Value) + ignoreRemoves - ignoreAdds;
-            var oldCount = 0;
-            var newCount = 0;
-            for (int i = idx + 1; i < end; i++) {
-                var test = diff.Lines[i];
-                if (test.Type == Models.TextDiffLineType.Indicator) break;
-
-                if (test.Type == Models.TextDiffLineType.Normal) {
-                    oldCount++;
-                    newCount++;
-                } else if (test.Type == Models.TextDiffLineType.Added) {
-                    if (i >= start - 1) newCount++;
-
-                    if (i == end - 1 && tailed) {
-                        newCount++;
-                        oldCount++;
-                    }
-                } else if (test.Type == Models.TextDiffLineType.Deleted) {
-                    if (i < start - 1) newCount++;
-                    oldCount++;
-
-                    if (i == end - 1 && tailed) {
-                        newCount++;
-                        oldCount++;
-                    }
-                }
-            }
-
-            if (oldCount == 0 && newCount == 0) return false;
-
-            builder.Append($"@@ -{oldStart},{oldCount} +{newStart},{newCount} @@");
-            return true;
-        }
+        }        
     }
 }
