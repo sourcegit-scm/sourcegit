@@ -676,7 +676,24 @@ namespace SourceGit.Views {
                         workcopy.UnstageChanges(new List<Models.Change> { change });
                         e.Handled = true;
                     };
+
+                    var discard = new MenuItem();
+                    discard.Header = App.Text("FileCM.DiscardSelectedLines");
+                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
+                    discard.Click += (_, e) => {
+                        var repoView = this.FindAncestorOfType<Repository>();
+                        if (repoView == null) return;
+
+                        var repo = repoView.DataContext as ViewModels.Repository;
+                        repo.SetWatcherEnabled(false);
+                        new Commands.Restore(repo.FullPath, new List<string> { change.Path }, "--staged --worktree").Exec();
+                        repo.RefreshWorkingCopyChanges();
+                        repo.SetWatcherEnabled(true);
+                        e.Handled = true;
+                    };
+
                     menu.Items.Add(unstage);
+                    menu.Items.Add(discard);
                 }
             } else {
                 var repoView = this.FindAncestorOfType<Repository>();
@@ -762,7 +779,36 @@ namespace SourceGit.Views {
                         repo.SetWatcherEnabled(true);
                         e.Handled = true;
                     };
+
+                    var discard = new MenuItem();
+                    discard.Header = App.Text("FileCM.DiscardSelectedLines");
+                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
+                    discard.Click += (_, e) => {
+                        var repo = repoView.DataContext as ViewModels.Repository;
+                        repo.SetWatcherEnabled(false);
+
+                        var tmpFile = Path.GetTempFileName();
+                        if (change.WorkTree == Models.ChangeState.Untracked) {
+                            TextDiff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
+                        } else if (UseCombined) {
+                            var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
+                            TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                        } else {
+                            var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
+                            TextDiff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
+                        }
+
+                        new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--cache --index --reverse").Exec();
+                        new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--reverse").Exec();
+                        File.Delete(tmpFile);
+
+                        repo.RefreshWorkingCopyChanges();
+                        repo.SetWatcherEnabled(true);
+                        e.Handled = true;
+                    };
+
                     menu.Items.Add(unstage);
+                    menu.Items.Add(discard);
                 }
             }
 

@@ -458,8 +458,6 @@ namespace SourceGit.ViewModels {
         }
 
         public void RefreshWorkingCopyChanges() {
-            _watcher.MarkWorkingCopyRefreshed();
-
             var changes = new Commands.QueryLocalChanges(FullPath, _includeUntracked).Result();
             var hasUnsolvedConflict = _workingCopy.SetData(changes);
 
@@ -484,6 +482,8 @@ namespace SourceGit.ViewModels {
                 HasUnsolvedConflict = hasUnsolvedConflict;
                 OnPropertyChanged(nameof(WorkingCopyChangesCount));
             });
+
+            _watcher.MarkWorkingCopyRefreshed();
         }
 
         public void RefreshStashes() {
