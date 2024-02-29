@@ -852,6 +852,7 @@ namespace SourceGit.Views {
             var rs = new Models.TextDiffSelection();
             var diff = TextDiff;
 
+            endLine = Math.Min(endLine, TextDiff.Lines.Count);
             if (Content is ViewModels.TwoSideTextDiff twoSides) {
                 var target = isOldSide ? twoSides.Old : twoSides.New;
                 var firstContentLine = -1;
