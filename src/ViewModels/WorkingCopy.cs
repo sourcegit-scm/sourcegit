@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -194,6 +195,9 @@ namespace SourceGit.ViewModels {
 
                 // Restore last selection states.
                 if (viewChange != null) {
+                    var scrollOffset = Vector.Zero;
+                    if (_detailContext is DiffContext old) scrollOffset = old.SyncScrollOffset;
+
                     if (lastSelectedIsUnstaged) {
                         SelectedUnstagedChange = viewChange;
                         SelectedUnstagedTreeNode = FileTreeNode.SelectByPath(_unstagedTree, viewFile);
@@ -201,6 +205,8 @@ namespace SourceGit.ViewModels {
                         SelectedStagedChange = viewChange;
                         SelectedStagedTreeNode = FileTreeNode.SelectByPath(_stagedTree, viewFile);
                     }
+
+                    if (_detailContext is DiffContext cur) cur.SyncScrollOffset = scrollOffset;
                 } else {
                     SelectedUnstagedChange = null;
                     SelectedUnstagedTreeNode = null;

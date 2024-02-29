@@ -188,6 +188,14 @@ namespace SourceGit.Views {
             set => SetValue(SecondaryFGProperty, value);
         }
 
+        public static readonly StyledProperty<Vector> SyncScrollOffsetProperty =
+            AvaloniaProperty.Register<SingleSideTextDiffPresenter, Vector>(nameof(SyncScrollOffset));
+
+        public Vector SyncScrollOffset {
+            get => GetValue(SyncScrollOffsetProperty);
+            set => SetValue(SyncScrollOffsetProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public CombinedTextDiffPresenter() : base(new TextArea(), new TextDocument()) {
@@ -208,6 +216,7 @@ namespace SourceGit.Views {
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
             TextArea.TextView.LineTransformers.Add(new LineStyleTransformer(this, SecondaryFG));
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+            TextArea.TextView.ScrollOffsetChanged += OnTextViewScrollOffsetChanged;
 
             if (App.Current?.ActualThemeVariant == ThemeVariant.Dark) {
                 _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
@@ -226,6 +235,7 @@ namespace SourceGit.Views {
             TextArea.TextView.BackgroundRenderers.Clear();
             TextArea.TextView.LineTransformers.Clear();
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
+            TextArea.TextView.ScrollOffsetChanged -= OnTextViewScrollOffsetChanged;
             _registryOptions = null;
             _textMate.Dispose();
             _textMate = null;
@@ -255,6 +265,10 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
+        private void OnTextViewScrollOffsetChanged(object sender, EventArgs e) {
+            SyncScrollOffset = TextArea.TextView.ScrollOffset;
+        }
+
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
             base.OnPropertyChanged(change);
 
@@ -269,6 +283,11 @@ namespace SourceGit.Views {
                     Text = builder.ToString();
                 } else {
                     Text = string.Empty;
+                }
+            } else if (change.Property == SyncScrollOffsetProperty) {
+                if (TextArea.TextView.ScrollOffset != SyncScrollOffset) {
+                    IScrollable scrollable = TextArea.TextView;
+                    scrollable.Offset = SyncScrollOffset;
                 }
             } else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null && _textMate != null) {
                 if (App.Current?.ActualThemeVariant == ThemeVariant.Dark) {

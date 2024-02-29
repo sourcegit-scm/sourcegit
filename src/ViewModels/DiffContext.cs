@@ -1,4 +1,5 @@
-﻿using Avalonia.Threading;
+﻿using Avalonia;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -47,6 +48,11 @@ namespace SourceGit.ViewModels {
         public object Content {
             get => _content;
             private set => SetProperty(ref _content, value);
+        }
+
+        public Vector SyncScrollOffset {
+            get => _syncScrollOffset;
+            set => SetProperty(ref _syncScrollOffset, value);
         }
 
         public DiffContext(string repo, Models.DiffOption option) {
@@ -113,5 +119,6 @@ namespace SourceGit.ViewModels {
         private bool _isNoChange = false;
         private bool _isTextDiff = false;
         private object _content = null;
+        private Vector _syncScrollOffset = Vector.Zero;
     }
 }

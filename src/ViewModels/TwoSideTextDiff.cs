@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 namespace SourceGit.ViewModels {
     public class TwoSideTextDiff : ObservableObject {
-        public Vector SyncScrollOffset {
-            get => _syncScrollOffset;
-            set => SetProperty(ref _syncScrollOffset, value);
-        }
-
         public string File { get; set; } = string.Empty;
         public List<Models.TextDiffLine> Old { get; set; } = new List<Models.TextDiffLine>();
         public List<Models.TextDiffLine> New { get; set; } = new List<Models.TextDiffLine>();
@@ -46,7 +41,5 @@ namespace SourceGit.ViewModels {
                 for (int i = 0; i < diff; i++) New.Add(new Models.TextDiffLine());
             }
         }
-
-        private Vector _syncScrollOffset;
     }
 }

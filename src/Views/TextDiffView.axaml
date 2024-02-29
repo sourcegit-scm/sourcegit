@@ -18,13 +18,14 @@
                                    SecondaryFG="{DynamicResource Brush.FG2}"
                                    FontFamily="{StaticResource JetBrainsMono}"
                                    FontSize="12"
-                                   DiffData="{Binding}"/>
+                                   DiffData="{Binding}"
+                                   SyncScrollOffset="{Binding $parent[v:DiffView].DataContext.(vm:DiffContext).SyncScrollOffset, Mode=TwoWay}"/>
     </DataTemplate>
 
     <DataTemplate DataType="vm:TwoSideTextDiff">
       <Grid ColumnDefinitions="*,1,*">
         <v:SingleSideTextDiffPresenter Grid.Column="0"
-                                       SyncScrollOffset="{Binding SyncScrollOffset, Mode=TwoWay}"
+                                       SyncScrollOffset="{Binding $parent[v:DiffView].DataContext.(vm:DiffContext).SyncScrollOffset, Mode=TwoWay}"
                                        IsOld="True"
                                        HorizontalScrollBarVisibility="Auto"
                                        VerticalScrollBarVisibility="Auto"
@@ -39,7 +40,7 @@
         <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
         <v:SingleSideTextDiffPresenter Grid.Column="2"
-                                       SyncScrollOffset="{Binding SyncScrollOffset, Mode=TwoWay}"
+                                       SyncScrollOffset="{Binding $parent[v:DiffView].DataContext.(vm:DiffContext).SyncScrollOffset, Mode=TwoWay}"
                                        IsOld="False"
                                        HorizontalScrollBarVisibility="Auto"
                                        VerticalScrollBarVisibility="Auto"
