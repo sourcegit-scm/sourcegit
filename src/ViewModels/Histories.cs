@@ -272,14 +272,13 @@ namespace SourceGit.ViewModels {
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = current.Name;
 
-            var dirty = !string.IsNullOrEmpty(current.UpstreamTrackStatus);
             if (!string.IsNullOrEmpty(current.Upstream)) {
                 var upstream = current.Upstream.Substring(13);
 
                 var fastForward = new MenuItem();
                 fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream);
                 fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                fastForward.IsEnabled = dirty;
+                fastForward.IsEnabled = !string.IsNullOrEmpty(current.UpstreamTrackStatus) && current.UpstreamTrackStatus.IndexOf('↑') < 0; ;
                 fastForward.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowAndStartPopup(new Merge(_repo, upstream, current.Name));
                     e.Handled = true;
@@ -289,7 +288,6 @@ namespace SourceGit.ViewModels {
                 var pull = new MenuItem();
                 pull.Header = new Views.NameHighlightedTextBlock("BranchCM.Pull", upstream);
                 pull.Icon = App.CreateMenuIcon("Icons.Pull");
-                pull.IsEnabled = dirty;
                 pull.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Pull(_repo, null));
                     e.Handled = true;
@@ -300,7 +298,7 @@ namespace SourceGit.ViewModels {
             var push = new MenuItem();
             push.Header = new Views.NameHighlightedTextBlock("BranchCM.Push", current.Name);
             push.Icon = App.CreateMenuIcon("Icons.Push");
-            push.IsEnabled = _repo.Remotes.Count > 0 && dirty;
+            push.IsEnabled = _repo.Remotes.Count > 0;
             push.Click += (o, e) => {
                 if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Push(_repo, current));
                 e.Handled = true;

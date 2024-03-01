@@ -597,6 +597,7 @@ namespace SourceGit.ViewModels {
                 var discard = new MenuItem();
                 discard.Header = App.Text("BranchCM.DiscardAll");
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
+                discard.IsEnabled = _workingCopy.Count > 0;
                 discard.Click += (o, e) => {
                     if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Discard(this));
                     e.Handled = true;
@@ -619,7 +620,6 @@ namespace SourceGit.ViewModels {
                     var pull = new MenuItem();
                     pull.Header = new Views.NameHighlightedTextBlock("BranchCM.Pull", upstream);
                     pull.Icon = App.CreateMenuIcon("Icons.Pull");
-                    pull.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrackStatus);
                     pull.Click += (o, e) => {
                         if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new Pull(this, null));
                         e.Handled = true;
