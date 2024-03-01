@@ -13,9 +13,17 @@ namespace SourceGit.ViewModels {
             private set;
         }
 
-        public Discard(Repository repo, List<Models.Change> changes = null) {
+        public Discard(Repository repo) {
+            _repo = repo;
+
+            Mode = new DiscardModeAll();
+            View = new Views.Discard { DataContext = this };
+        }
+
+        public Discard(Repository repo, List<Models.Change> changes, bool isUnstaged) {
             _repo = repo;
             _changes = changes;
+            _isUnstaged = isUnstaged;
 
             if (_changes == null) {
                 Mode = new DiscardModeAll();
@@ -35,8 +43,10 @@ namespace SourceGit.ViewModels {
             return Task.Run(() => {
                 if (_changes == null) {
                     Commands.Discard.All(_repo.FullPath);
+                } else if (_isUnstaged) {
+                    Commands.Discard.ChangesInWorkTree(_repo.FullPath, _changes);
                 } else {
-                    Commands.Discard.Changes(_repo.FullPath, _changes);
+                    Commands.Discard.ChangesInStaged(_repo.FullPath, _changes);
                 }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
@@ -46,5 +56,6 @@ namespace SourceGit.ViewModels {
 
         private Repository _repo = null;
         private List<Models.Change> _changes = null;
+        private bool _isUnstaged = true;
     }
 }

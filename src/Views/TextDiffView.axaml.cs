@@ -680,7 +680,7 @@ namespace SourceGit.Views {
                     discard.Icon = App.CreateMenuIcon("Icons.Undo");
                     discard.Click += (_, e) => {
                         var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                        workcopy.Discard(new List<Models.Change> { change });
+                        workcopy.Discard(new List<Models.Change> { change }, true);
                         e.Handled = true;
                     };
 
@@ -700,14 +700,8 @@ namespace SourceGit.Views {
                     discard.Header = App.Text("FileCM.DiscardSelectedLines");
                     discard.Icon = App.CreateMenuIcon("Icons.Undo");
                     discard.Click += (_, e) => {
-                        var repoView = this.FindAncestorOfType<Repository>();
-                        if (repoView == null) return;
-
-                        var repo = repoView.DataContext as ViewModels.Repository;
-                        repo.SetWatcherEnabled(false);
-                        new Commands.Restore(repo.FullPath, new List<string> { change.Path }, "--staged --worktree").Exec();
-                        repo.RefreshWorkingCopyChanges();
-                        repo.SetWatcherEnabled(true);
+                        var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
+                        workcopy.Discard(new List<Models.Change> { change }, false);
                         e.Handled = true;
                     };
 

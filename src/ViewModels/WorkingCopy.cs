@@ -271,12 +271,20 @@ namespace SourceGit.ViewModels {
             IsUnstaging = false;
         }
 
-        public void Discard(List<Models.Change> changes) {
+        public void Discard(List<Models.Change> changes, bool isUnstaged) {
             if (PopupHost.CanCreatePopup()) {
-                if (changes.Count == _count) {
-                    PopupHost.ShowPopup(new Discard(_repo));
+                if (isUnstaged) {
+                    if (changes.Count == _unstaged.Count && _staged.Count == 0) {
+                        PopupHost.ShowPopup(new Discard(_repo));
+                    } else {
+                        PopupHost.ShowPopup(new Discard(_repo, changes, true));
+                    }
                 } else {
-                    PopupHost.ShowPopup(new Discard(_repo, changes));
+                    if (changes.Count == _staged.Count && _unstaged.Count == 0) {
+                        PopupHost.ShowPopup(new Discard(_repo));
+                    } else {
+                        PopupHost.ShowPopup(new Discard(_repo, changes, false));
+                    }
                 }
             }            
         }
@@ -397,7 +405,7 @@ namespace SourceGit.ViewModels {
                 discard.Header = App.Text("FileCM.Discard");
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
                 discard.Click += (_, e) => {
-                    Discard(changes);
+                    Discard(changes, true);
                     e.Handled = true;
                 };
 
@@ -483,7 +491,7 @@ namespace SourceGit.ViewModels {
                 discard.Header = App.Text("FileCM.DiscardMulti", changes.Count);
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
                 discard.Click += (_, e) => {
-                    Discard(changes);
+                    Discard(changes, true);
                     e.Handled = true;
                 };
 
@@ -561,6 +569,14 @@ namespace SourceGit.ViewModels {
                     e.Handled = true;
                 };
 
+                var discard = new MenuItem();
+                discard.Header = App.Text("FileCM.Discard");
+                discard.Icon = App.CreateMenuIcon("Icons.Undo");
+                discard.Click += (_, e) => {
+                    Discard(changes, false);
+                    e.Handled = true;
+                };
+
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.Stash");
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes");
@@ -604,6 +620,7 @@ namespace SourceGit.ViewModels {
                 menu.Items.Add(openWith);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(unstage);
+                menu.Items.Add(discard);
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
                 menu.Items.Add(new MenuItem() { Header = "-" });
@@ -614,6 +631,14 @@ namespace SourceGit.ViewModels {
                 unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
                 unstage.Click += (o, e) => {
                     UnstageChanges(changes);
+                    e.Handled = true;
+                };
+
+                var discard = new MenuItem();
+                discard.Header = App.Text("FileCM.DiscardMulti", changes.Count);
+                discard.Icon = App.CreateMenuIcon("Icons.Undo");
+                discard.Click += (_, e) => {
+                    Discard(changes, false);
                     e.Handled = true;
                 };
 
@@ -649,6 +674,7 @@ namespace SourceGit.ViewModels {
                 };
 
                 menu.Items.Add(unstage);
+                menu.Items.Add(discard);
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
             }
