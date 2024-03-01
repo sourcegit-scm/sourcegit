@@ -2,8 +2,27 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using System;
 
 namespace SourceGit.Views {
+    public class LauncherTab : Grid {
+        public static readonly StyledProperty<bool> UseFixedTabWidthProperty =
+            AvaloniaProperty.Register<LauncherTab, bool>(nameof(UseFixedTabWidth), false);
+
+        public bool UseFixedTabWidth {
+            get => GetValue(UseFixedTabWidthProperty);
+            set => SetValue(UseFixedTabWidthProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(Grid);
+
+        static LauncherTab() {
+            UseFixedTabWidthProperty.Changed.AddClassHandler<LauncherTab>((tab, ev) => {
+                tab.Width = tab.UseFixedTabWidth ? 200.0 : double.NaN;
+            });
+        }
+    }
+
     public partial class Launcher : Window, Models.INotificationReceiver {
         public Launcher() {
             DataContext = new ViewModels.Launcher();

@@ -380,6 +380,7 @@
   <sys:String x:Key="Text.Preference.General.Theme">主题</sys:String>
   <sys:String x:Key="Text.Preference.General.MaxHistoryCommits">最大历史提交数</sys:String>
   <sys:String x:Key="Text.Preference.General.RestoreTabs">启动时恢复上次打开的仓库</sys:String>
+  <sys:String x:Key="Text.Preference.General.UseFixedTabWidth">使用固定宽度的标题栏标签</sys:String>
   <sys:String x:Key="Text.Preference.General.UseMacOSStyle">使用macOS风格的标题栏</sys:String>
   <sys:String x:Key="Text.Preference.Git">GIT配置</sys:String>
   <sys:String x:Key="Text.Preference.Git.Path">安装路径</sys:String>

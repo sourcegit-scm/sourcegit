@@ -138,19 +138,17 @@
                       </ContextMenu>
                     </Border.ContextMenu>
 
-                    <Grid Classes="launcher_pagetab_container" Width="200" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
-                      <Path Classes="launcher_pagetab_icon"
-                            Grid.Column="0"
-                            Width="12" Height="12" Margin="12,0,8,0"
+                    <v:LauncherTab UseFixedTabWidth="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+                      <Path Grid.Column="0"
+                            Width="12" Height="12" Margin="12,0"
                             Fill="{Binding Node.Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
                             StrokeThickness="{Binding Node.Bookmark, Converter={x:Static c:BookmarkConverters.ToStrokeThickness}}"
                             Stroke="{DynamicResource Brush.FG1}"
                             Data="{StaticResource Icons.Bookmark}"
                             IsVisible="{Binding Node.IsRepository}"
                             IsHitTestVisible="False"/>
-                      <Path Classes="launcher_pagetab_icon"
-                            Grid.Column="0"
-                            Width="12" Height="12" Margin="12,0,8,0"
+                      <Path Grid.Column="0"
+                            Width="12" Height="12" Margin="12,0"
                             Fill="{DynamicResource Brush.FG1}"
                             Data="{StaticResource Icons.Repositories}"
                             IsVisible="{Binding !Node.IsRepository}"
@@ -171,7 +169,7 @@
                                  IsHitTestVisible="False"/>
                       <Button Grid.Column="2"
                               Classes="icon_button"
-                              Width="16" Height="16" Margin="8,0"
+                              Width="16" Height="16" Margin="12,0"
                               Command="{Binding #me.DataContext.(vm:Launcher).CloseTab}"
                               CommandParameter="{Binding}"
                               ToolTip.Tip="{DynamicResource Text.PageTabBar.Tab.Close}">
@@ -186,7 +184,7 @@
                           </MultiBinding>
                         </Rectangle.IsVisible>
                       </Rectangle>
-                    </Grid>
+                    </v:LauncherTab>
                   </Border>
                 </DataTemplate>
               </ListBox.ItemTemplate>

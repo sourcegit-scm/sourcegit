@@ -57,7 +57,7 @@
         <TabItem.Header>
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
         </TabItem.Header>
-        <Grid Margin="8" RowDefinitions="32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+        <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      Text="{DynamicResource Text.Preference.General.Locale}"
                      HorizontalAlignment="Right"
@@ -135,6 +135,11 @@
                     IsChecked="{Binding RestoreTabs, Mode=TwoWay}"/>
 
           <CheckBox Grid.Row="5" Grid.Column="1"
+                    Height="32"
+                    Content="{DynamicResource Text.Preference.General.UseFixedTabWidth}"
+                    IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Mode=TwoWay}"/>
+
+          <CheckBox Grid.Row="6" Grid.Column="1"
                     Height="32"
                     Content="{DynamicResource Text.Preference.General.UseMacOSStyle}"
                     IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Mode=TwoWay}"
