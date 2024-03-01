@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -50,35 +49,25 @@ namespace SourceGit.Commands {
 
             _content.AppendLine(match.Groups[4].Value);
 
-            var commit = match.Groups[1].Value;
-            if (commit == _lastSHA) {
-                var info = new Models.BlameLineInfo() {
-                    CommitSHA = commit,
-                    Author = string.Empty,
-                    Time = string.Empty,
-                };
+            var commit = match.Groups[1].Value; 
+            var author = match.Groups[2].Value;
+            var timestamp = int.Parse(match.Groups[3].Value);
+            var when = UTC_START.AddSeconds(timestamp).ToString("yyyy/MM/dd");
 
-                _result.LineInfos.Add(info);
-            } else {
-                var author = match.Groups[2].Value;
-                var timestamp = int.Parse(match.Groups[3].Value);
-                var when = UTC_START.AddSeconds(timestamp).ToString("yyyy/MM/dd");
+            var info = new Models.BlameLineInfo() {
+                IsFirstInGroup = commit != _lastSHA,
+                CommitSHA = commit,
+                Author = author,
+                Time = when,
+            };
 
-                var blameLine = new Models.BlameLineInfo() {
-                    IsFirstInGroup = true,
-                    CommitSHA = commit,
-                    Author = author,
-                    Time = when,
-                };
-
-                _lastSHA = commit;
-                _result.LineInfos.Add(blameLine);
-            }
+            _result.LineInfos.Add(info);
+            _lastSHA = commit;
 
             if (line[0] == '^') {
                 _needUnifyCommitSHA = true;
                 _minSHALen = Math.Min(_minSHALen, commit.Length);
-            }            
+            }
         }
 
         private Models.BlameData _result = new Models.BlameData();

@@ -15,6 +15,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using TextMateSharp.Grammars;
+using System.Collections.Generic;
 
 namespace SourceGit.Views {
     public class BlameTextEditor : TextEditor {
@@ -37,10 +38,9 @@ namespace SourceGit.Views {
                         if (lineNumber > _editor.BlameData.LineInfos.Count) break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
-                        if (!info.IsFirstInGroup) continue;
-
                         var x = 0.0;
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
+                        if (!info.IsFirstInGroup && y > view.DefaultLineHeight * 0.6) continue;
 
                         var shaLink = new FormattedText(
                             info.CommitSHA,
@@ -76,7 +76,53 @@ namespace SourceGit.Views {
             }
 
             protected override Size MeasureOverride(Size availableSize) {
-                return new Size(250, 0);
+                var view = TextView;
+                var maxWidth = 0.0;
+                if (view != null && view.VisualLinesValid && _editor.BlameData != null) {
+                    var typeface = view.CreateTypeface();
+                    var calculated = new HashSet<string>();
+                    foreach (var line in view.VisualLines) {
+                        var lineNumber = line.FirstDocumentLine.LineNumber;
+                        if (lineNumber > _editor.BlameData.LineInfos.Count) break;
+
+                        var info = _editor.BlameData.LineInfos[lineNumber - 1];
+
+                        if (calculated.Contains(info.CommitSHA)) continue;
+                        calculated.Add(info.CommitSHA);
+
+                        var x = 0.0;
+                        var shaLink = new FormattedText(
+                            info.CommitSHA,
+                            CultureInfo.CurrentCulture,
+                            FlowDirection.LeftToRight,
+                            typeface,
+                            _editor.FontSize,
+                            Brushes.DarkOrange);
+                        x += shaLink.Width + 8;
+
+                        var time = new FormattedText(
+                            info.Time,
+                            CultureInfo.CurrentCulture,
+                            FlowDirection.LeftToRight,
+                            typeface,
+                            _editor.FontSize,
+                            _editor.Foreground);
+                        x += time.Width + 8;
+
+                        var author = new FormattedText(
+                            info.Author,
+                            CultureInfo.CurrentCulture,
+                            FlowDirection.LeftToRight,
+                            typeface,
+                            _editor.FontSize,
+                            _editor.Foreground);
+                        x += author.Width;
+
+                        if (maxWidth < x) maxWidth = x;
+                    }
+                }
+
+                return new Size(maxWidth, 0);
             }
 
             protected override void OnPointerPressed(PointerPressedEventArgs e) {
@@ -92,8 +138,6 @@ namespace SourceGit.Views {
                         if (lineNumber >= _editor.BlameData.LineInfos.Count) break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
-                        if (!info.IsFirstInGroup) continue;
-
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
                         var shaLink = new FormattedText(
                             info.CommitSHA,
@@ -163,6 +207,7 @@ namespace SourceGit.Views {
             TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+            TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.Margin = new Thickness(4, 0);
 
             if (App.Current?.ActualThemeVariant == ThemeVariant.Dark) {
@@ -180,6 +225,7 @@ namespace SourceGit.Views {
 
             TextArea.LeftMargins.Clear();
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
+            TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
             _registryOptions = null;
             _textMate.Dispose();
@@ -227,6 +273,15 @@ namespace SourceGit.Views {
             menu.Items.Add(copy);
             menu.Open(TextArea.TextView);
             e.Handled = true;
+        }
+
+        private void OnTextViewVisualLinesChanged(object sender, EventArgs e) {
+            foreach (var margin in TextArea.LeftMargins) {
+                if (margin is CommitInfoMargin commitInfo) {
+                    commitInfo.InvalidateMeasure();
+                    break;
+                }
+            }
         }
 
         private void UpdateGrammar() {
