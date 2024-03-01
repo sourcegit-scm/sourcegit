@@ -81,17 +81,25 @@ namespace SourceGit.Native {
         }
 
         public void OpenInFileManager(string path, bool select) {
-            if (select) {
-                Process.Start("explorer", $"/select,\"{path}\"");
+            var fullpath = string.Empty;
+            if (File.Exists(path)) {
+                fullpath = new FileInfo(path).FullName;
             } else {
-                Process.Start("explorer", path);
+                fullpath = new DirectoryInfo(path).FullName;
+            }
+
+            if (select) {
+                Process.Start("explorer", $"/select,\"{fullpath}\"");
+            } else {
+                Process.Start("explorer", fullpath);
             }
         }
 
         public void OpenWithDefaultEditor(string file) {
-            var info = new ProcessStartInfo("cmd", $"/c start {file}");
-            info.CreateNoWindow = true;
-            Process.Start(info);
+            var info = new FileInfo(file);
+            var start = new ProcessStartInfo("cmd", $"/c start {info.FullName}");
+            start.CreateNoWindow = true;
+            Process.Start(start);
         }
     }
 }
