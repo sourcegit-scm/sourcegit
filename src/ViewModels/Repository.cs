@@ -12,7 +12,14 @@ namespace SourceGit.ViewModels {
     public class Repository : ObservableObject, Models.IRepository {
         public string FullPath {
             get => _fullpath;
-            set => SetProperty(ref _fullpath, value);
+            set {
+                if (value != null) {
+                    var normalized = value.Replace('\\', '/');
+                    SetProperty(ref _fullpath, normalized);
+                } else {
+                    SetProperty(ref _fullpath, null);
+                }
+            }
         }
 
         public string GitDir {
@@ -1009,8 +1016,8 @@ namespace SourceGit.ViewModels {
                 var gitDir = new Commands.QueryGitDir(root).Result();
                 var repo = Preference.AddRepository(root, gitDir);
                 var node = new RepositoryNode() {
-                    Id = root,
-                    Name = Path.GetFileName(root),
+                    Id = repo.FullPath,
+                    Name = Path.GetFileName(repo.FullPath),
                     Bookmark = 0,
                     IsRepository = true,
                 };

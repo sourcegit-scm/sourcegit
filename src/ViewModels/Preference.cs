@@ -209,23 +209,22 @@ namespace SourceGit.ViewModels {
         }
 
         public static Repository FindRepository(string path) {
-            var dir = new DirectoryInfo(path);
             foreach (var repo in _instance.Repositories) {
-                if (repo.FullPath == dir.FullName) return repo;
+                if (repo.FullPath == path) return repo;
             }
             return null;
         }
 
         public static Repository AddRepository(string rootDir, string gitDir) {
-            var repo = FindRepository(rootDir);
+            var normalized = rootDir.Replace('\\', '/');
+            var repo = FindRepository(normalized);
             if (repo != null) {
                 repo.GitDir = gitDir;
                 return repo;
             }
 
-            var dir = new DirectoryInfo(rootDir);
             repo = new Repository() {
-                FullPath = dir.FullName,
+                FullPath = normalized,
                 GitDir = gitDir
             };
 

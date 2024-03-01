@@ -66,17 +66,15 @@ namespace SourceGit {
 
         public static void RaiseException(string context, string message) {
             if (Current is App app && app._notificationReceiver != null) {
-                var ctx = context.Replace('\\', '/');
                 var notice = new Models.Notification() { IsError = true, Message = message };
-                app._notificationReceiver.OnReceiveNotification(ctx, notice);
+                app._notificationReceiver.OnReceiveNotification(context, notice);
             }
         }
 
         public static void SendNotification(string context, string message) {
             if (Current is App app && app._notificationReceiver != null) {
-                var ctx = context.Replace('\\', '/');
                 var notice = new Models.Notification() { IsError = false, Message = message };
-                app._notificationReceiver.OnReceiveNotification(ctx, notice);
+                app._notificationReceiver.OnReceiveNotification(context, notice);
             }
         }
 

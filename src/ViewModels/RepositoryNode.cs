@@ -6,7 +6,10 @@ namespace SourceGit.ViewModels {
     public class RepositoryNode : ObservableObject {
         public string Id {
             get => _id;
-            set => SetProperty(ref _id, value);
+            set {
+                var normalized = value.Replace('\\', '/');
+                SetProperty(ref _id, normalized);
+            }
         }
 
         public string Name {
