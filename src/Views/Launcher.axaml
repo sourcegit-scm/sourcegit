@@ -223,8 +223,8 @@
       </Border>
     </Grid>
 
-    <!-- Page container -->
-    <ContentControl Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" Content="{Binding ActivePage.View}"/>
+    <!-- Page body -->
+    <v:LauncherBody Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" Data="{Binding ActivePage.Data}"/>
 
     <!-- Popup container -->
     <Grid Grid.Row="1" x:Name="popupContainer" Margin="0,36,0,0" ClipToBounds="True" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}">

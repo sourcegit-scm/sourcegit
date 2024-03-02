@@ -2,25 +2,12 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
-using System;
 using System.Collections.Generic;
 
 namespace SourceGit.Views {
     public partial class WorkingCopy : UserControl {
         public WorkingCopy() {
             InitializeComponent();
-        }
-
-        protected override void OnUnloaded(RoutedEventArgs e) {
-            var vm = DataContext as ViewModels.WorkingCopy;
-            vm.SelectedStagedChange = null;
-            vm.SelectedStagedTreeNode = null;
-            vm.SelectedUnstagedChange = null;
-            vm.SelectedUnstagedTreeNode = null;
-            vm.SetDetail(null, false);
-
-            base.OnUnloaded(e);
-            GC.Collect();
         }
 
         private void ViewAssumeUnchanged(object sender, RoutedEventArgs e) {

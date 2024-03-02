@@ -8,9 +8,9 @@ namespace SourceGit.ViewModels {
             set => SetProperty(ref _node, value);
         }
 
-        public object View {
-            get => _view;
-            set => SetProperty(ref _view, value);
+        public object Data {
+            get => _data;
+            set => SetProperty(ref _data, value);
         }
 
         public AvaloniaList<Models.Notification> Notifications {
@@ -25,12 +25,12 @@ namespace SourceGit.ViewModels {
                 Bookmark = 0,
                 IsRepository = false,
             };
-            _view = new Views.Welcome() { DataContext = new Welcome() };
+            _data = new Welcome();
         }
 
         public LauncherPage(RepositoryNode node, Repository repo) {
             _node = node;
-            _view = new Views.Repository() { DataContext = repo };
+            _data = repo;
         }
 
         public override string GetId() {
@@ -48,6 +48,6 @@ namespace SourceGit.ViewModels {
         }
 
         private RepositoryNode _node = null;
-        private object _view = null;
+        private object _data = null;
     }
 }

@@ -160,26 +160,23 @@ namespace SourceGit.ViewModels {
                 } else {
                     page = ActivePage;
                     page.Node = node;
-                    page.View = new Views.Repository() { DataContext = repo };
+                    page.Data = repo;
                 }
             } else {
                 page.Node = node;
-                page.View = new Views.Repository() { DataContext = repo };
+                page.Data = repo;
             }
 
             ActivePage = page;
         }
 
         private void CloseRepositoryInTab(LauncherPage page) {
-            if (page.Node.IsRepository) {
-                var repo = Preference.FindRepository(page.Node.Id);
-                if (repo != null) {
-                    Commands.AutoFetch.RemoveRepository(repo.FullPath);
-                    repo.Close();
-                }
+            if (page.Data is Repository repo) {
+                Commands.AutoFetch.RemoveRepository(repo.FullPath);
+                repo.Close();
             }
 
-            page.View = null;
+            page.Data = null;
         }
 
         private LauncherPage _activePage = null;

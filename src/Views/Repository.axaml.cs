@@ -1,11 +1,45 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using SourceGit.ViewModels;
+using System;
 using System.Threading.Tasks;
 
 namespace SourceGit.Views {
+    public class RepositorySubView : Border {
+        public static readonly StyledProperty<object> DataProperty =
+            AvaloniaProperty.Register<RepositorySubView, object>(nameof(Data), false);
+
+        public object Data {
+            get => GetValue(DataProperty);
+            set => SetValue(DataProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(Border);
+
+        static RepositorySubView() {
+            DataProperty.Changed.AddClassHandler<RepositorySubView>((view, ev) => {
+                var data = view.Data;
+
+                if (data == null) {
+                    view.Child = null;
+                } else if (data is ViewModels.Histories) {
+                    view.Child = new Histories { DataContext = data };
+                } else if (data is ViewModels.WorkingCopy) {
+                    view.Child = new WorkingCopy { DataContext = data };
+                } else if (data is ViewModels.StashesPage) {
+                    view.Child = new StashesPage { DataContext = data };
+                } else {
+                    view.Child = null;
+                }
+
+                GC.Collect();
+            });
+        }
+    }
+
     public partial class Repository : UserControl {
         public Repository() {
             InitializeComponent();

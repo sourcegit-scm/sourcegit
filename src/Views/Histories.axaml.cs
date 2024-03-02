@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 using System;
@@ -206,11 +205,6 @@ namespace SourceGit.Views {
     public partial class Histories : UserControl {
         public Histories() {
             InitializeComponent();
-        }
-
-        protected override void OnUnloaded(RoutedEventArgs e) {
-            base.OnUnloaded(e);
-            GC.Collect();
         }
 
         private void OnCommitDataGridLayoutUpdated(object sender, EventArgs e) {

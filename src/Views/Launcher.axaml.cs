@@ -23,6 +23,34 @@ namespace SourceGit.Views {
         }
     }
 
+    public class LauncherBody : Border {
+        public static readonly StyledProperty<object> DataProperty =
+            AvaloniaProperty.Register<LauncherBody, object>(nameof(Data), false);
+
+        public object Data {
+            get => GetValue(DataProperty);
+            set => SetValue(DataProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(Border);
+
+        static LauncherBody() {
+            DataProperty.Changed.AddClassHandler<LauncherBody>((body, ev) => {
+                var data = body.Data;
+                
+                if (data == null) {
+                    body.Child = null;
+                } else if (data is ViewModels.Welcome) {
+                    body.Child = new Welcome { DataContext = data };
+                } else if (data is ViewModels.Repository) {
+                    body.Child = new Repository { DataContext = data };
+                } else {
+                    body.Child = null;
+                }
+            });
+        }
+    }
+
     public partial class Launcher : Window, Models.INotificationReceiver {
         public Launcher() {
             DataContext = new ViewModels.Launcher();
