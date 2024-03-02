@@ -1,8 +1,6 @@
 ﻿using Avalonia.Collections;
-using Avalonia.Markup.Xaml.MarkupExtensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace SourceGit.ViewModels {
