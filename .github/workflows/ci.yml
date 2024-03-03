@@ -34,4 +34,9 @@ jobs:
       - name: Build
         run: dotnet build -c Release
       - name: Publish
-        run: dotnet publish -c Release -r ${{ matrix.platform }} -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
+        run: dotnet publish -c Release -o publish -r ${{ matrix.platform }} -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}
+          path: publish
