@@ -54,7 +54,7 @@
 
     <!-- View mode switcher -->
     <ListBox Grid.Row="1"
-             Margin="0,8,0,0"
+             Margin="0,8"
              SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
              HorizontalAlignment="Center"
              VerticalAlignment="Center"
@@ -116,7 +116,7 @@
     <ContentControl Grid.Row="2" Content="{Binding SelectedReport, Mode=OneWay}">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="m:StatisticsReport">
-          <Grid RowDefinitions="*,32" ColumnDefinitions="Auto,*" Margin="8">
+          <Grid RowDefinitions="*,32" ColumnDefinitions="256,*" Margin="8">
             <!-- Table By Committer -->
             <DataGrid Grid.Row="0" Grid.Column="0"
                       ItemsSource="{Binding ByCommitter}"
@@ -135,7 +135,7 @@
                       VerticalScrollBarVisibility="Auto">
               <DataGrid.Columns>
                 <DataGridTextColumn Width="150" Header="{DynamicResource Text.Statistics.Committer}" Binding="{Binding Name}"/>
-                <DataGridTextColumn Width="100" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
+                <DataGridTextColumn Width="*" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
               </DataGrid.Columns>
             </DataGrid>
 
@@ -164,7 +164,7 @@
     </ContentControl>
 
     <!-- Loading Mask -->
-    <Path Grid.Row="1" 
+    <Path Grid.Row="2" 
           Classes="rotating"
           Width="48" Height="48"
           Data="{DynamicResource Icons.Loading}"

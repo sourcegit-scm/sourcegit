@@ -78,7 +78,7 @@ namespace SourceGit.Views {
             // Draw coordinate
             var maxLabel = new FormattedText($"{maxV}", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 12.0, LineBrush);
             var horizonStart = maxLabel.Width + 8;
-            var labelHeight = 32;
+            var labelHeight = maxLabel.Height;
             context.DrawText(maxLabel, new Point(0, -maxLabel.Height * 0.5));
             context.DrawLine(pen, new Point(horizonStart, 0), new Point(horizonStart, height - labelHeight));
             context.DrawLine(pen, new Point(horizonStart, height - labelHeight), new Point(width, height - labelHeight));
