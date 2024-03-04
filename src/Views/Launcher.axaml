@@ -37,7 +37,7 @@
       <!-- Menu (Windows) -->
       <Button Grid.Column="0"
               Classes="icon_button"
-              Margin="8,0,2,3"
+              Margin="4,0,2,3"
               VerticalAlignment="Bottom"
               IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
         <Button.Flyout>
