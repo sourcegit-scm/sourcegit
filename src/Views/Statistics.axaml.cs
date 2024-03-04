@@ -42,7 +42,11 @@ namespace SourceGit.Views {
         }
 
         static Chart() {
-            AffectsRender<Chart>(SamplesProperty);
+            SamplesProperty.Changed.AddClassHandler<Chart>((c, e) => {
+                c._hitBoxes.Clear();
+                c._lastHitIdx = -1;
+                c.InvalidateVisual();
+            });
         }
 
         public override void Render(DrawingContext context) {
@@ -74,6 +78,9 @@ namespace SourceGit.Views {
             var pen = new Pen(LineBrush, 1);
             var width = Bounds.Width;
             var height = Bounds.Height;
+
+            // Transparent background to block mouse move events.
+            context.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, Bounds.Width, Bounds.Height));
 
             // Draw coordinate
             var maxLabel = new FormattedText($"{maxV}", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 12.0, LineBrush);
@@ -108,13 +115,14 @@ namespace SourceGit.Views {
             }
 
             // Calculate hit boxes
-            var shapeWidth = Math.Min(32, stepX - 4);
-            var hitboxes = new List<Rect>();
-            for (int i = 0; i < samples.Count; i++) {
-                var h = samples[i].Count * (height - labelHeight) / maxV;
-                var x = horizonStart + 1 + stepX * i + (stepX - shapeWidth) * 0.5;
-                var y = height - labelHeight - h;
-                hitboxes.Add(new Rect(x, y, shapeWidth, h));
+            if (_hitBoxes.Count == 0) {
+                var shapeWidth = Math.Min(32, stepX - 4);
+                for (int i = 0; i < samples.Count; i++) {
+                    var h = samples[i].Count * (height - labelHeight) / maxV;
+                    var x = horizonStart + 1 + stepX * i + (stepX - shapeWidth) * 0.5;
+                    var y = height - labelHeight - h;
+                    _hitBoxes.Add(new Rect(x, y, shapeWidth, h - 1));
+                }
             }
 
             // Draw shapes
@@ -126,7 +134,7 @@ namespace SourceGit.Views {
                     typeface,
                     10.0,
                     LineBrush);
-                var rect = hitboxes[i];
+                var rect = _hitBoxes[i];
                 var xLabel = rect.X - (hLabel.Width - rect.Width) * 0.5;
                 var yLabel = height - labelHeight + 4;
 
@@ -145,32 +153,45 @@ namespace SourceGit.Views {
             }
 
             // Draw labels on hover
-            for (int i = 0; i < samples.Count; i++) {
-                var rect = hitboxes[i];
-                if (rect.Contains(_mousePos)) {
-                    var tooltip = new FormattedText(
-                        $"{samples[i].Count}",
+            if (_lastHitIdx >= 0 && _lastHitIdx < samples.Count) {
+                var rect = _hitBoxes[_lastHitIdx];
+                var tooltip = new FormattedText(
+                        $"{samples[_lastHitIdx].Count}",
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         typeface,
                         12.0,
                         LineBrush);
 
-                    var tx = rect.X - (tooltip.Width - rect.Width) * 0.5;
-                    var ty = rect.Y - tooltip.Height - 4;
-                    context.DrawText(tooltip, new Point(tx, ty));
-                    break;
-                }
+                var tx = rect.X - (tooltip.Width - rect.Width) * 0.5;
+                var ty = rect.Y - tooltip.Height - 4;
+                context.DrawText(tooltip, new Point(tx, ty));
             }
         }
 
         protected override void OnPointerMoved(PointerEventArgs e) {
             base.OnPointerMoved(e);
-            _mousePos = e.GetPosition(this);
-            InvalidateVisual();
+
+            var p = e.GetPosition(this);
+            for (int i = 0; i < _hitBoxes.Count; i++) {
+                if (_hitBoxes[i].Contains(p)) {
+                    if (_lastHitIdx != i) {
+                        _lastHitIdx = i;
+                        InvalidateVisual();
+                    }
+                    
+                    return;
+                }
+            }
+
+            if (_lastHitIdx != -1) {
+                _lastHitIdx = -1;
+                InvalidateVisual();
+            }            
         }
 
-        private Point _mousePos = new Point(0, 0);
+        private List<Rect> _hitBoxes = new List<Rect>();
+        private int _lastHitIdx = -1;
     }
 
     public partial class Statistics : Window {
