@@ -89,7 +89,7 @@
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionTextFile">
-              <v:RevisionTextFileView FontFamily="{StaticResource JetBrainsMono}" FontSize="12" />
+              <v:RevisionTextFileView FontFamily="{StaticResource JetBrainsMono}" FontSize="12" Background="{DynamicResource Brush.Contents}"/>
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionLFSObject">

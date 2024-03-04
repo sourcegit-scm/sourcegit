@@ -27,7 +27,7 @@
 
     <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
       <!-- Bottom border -->
-      <Rectangle Grid.Column="0" Grid.ColumnSpan="5" Fill="{DynamicResource Brush.Border0}" Height="1" VerticalAlignment="Bottom"/>
+      <Rectangle Grid.Column="0" Grid.ColumnSpan="5" Fill="{DynamicResource Brush.Border2}" Height="1" VerticalAlignment="Bottom"/>
 
       <!-- Caption Buttons (macOS) -->
       <Border Grid.Column="0" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
@@ -55,6 +55,7 @@
                          VerticalScrollBarVisibility="Auto" 
                          BorderBrush="{DynamicResource Brush.Border2}"
                          BorderThickness="0"
+                         Background="{DynamicResource Brush.Contents}"
                          Foreground="{DynamicResource Brush.FG1}"
                          FontFamily="{StaticResource JetBrainsMono}"
                          FontSize="12"
