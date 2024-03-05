@@ -6,3 +6,4 @@ build
 obj
 *.user
 .DS_Store
+publish

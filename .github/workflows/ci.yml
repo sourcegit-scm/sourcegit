@@ -1,0 +1,42 @@
+name: Continuous Integration
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches: [main]
+jobs:
+  build:
+    name: Build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux-x64
+          - os: windows-latest
+            platform: win-x64
+          - os: macos-latest
+            platform: osx-x64
+          - os: macos-latest
+            platform: osx-arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build
+        run: dotnet build -c Release
+      - name: Publish
+        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r ${{ matrix.platform }} -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}
+          path: publish
