@@ -51,6 +51,8 @@ For **macOS** users:
 
 ## Thanks
 
+* [gigi81](https://github.com/gigi81) Github actions integration
+* [kekekeks](https://github.com/kekekeks) Way to stage/unstage/discard selected changes in a file.
 * [XiaoLinger](https://gitee.com/LingerNN) Hotkey: `CTRL + Enter` to commit
 * [carterl](https://gitee.com/carterl) Supports Windows Terminal; Rewrite way to find git executable
 * [PUMA](https://gitee.com/whgfu) Configure for default user
