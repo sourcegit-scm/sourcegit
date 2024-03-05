@@ -282,6 +282,7 @@
                   </StackPanel>
                   <TextBlock HorizontalAlignment="Stretch"
                              TextWrapping="Wrap"
+                             FontSize="12"
                              FontStyle="Italic"
                              Text="{Binding ProgressDescription}"/>
                   <ProgressBar Margin="0,8,0,0"

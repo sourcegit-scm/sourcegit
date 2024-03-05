@@ -21,24 +21,11 @@ namespace SourceGit.ViewModels {
             Active.Popup = popup;
         }
 
-        public static async void ShowAndStartPopup(Popup popup) {
-            popup.HostPageId = Active.GetId();
-            Active.Popup = popup;
-
-            if (!popup.Check()) return;
-
-            popup.InProgress = true;
-            var task = popup.Sure();
-            if (task != null) {
-                var finished = await task;
-                if (finished) {
-                    Active.Popup = null;
-                } else {
-                    popup.InProgress = false;
-                }
-            } else {
-                Active.Popup = null;
-            }
+        public static void ShowAndStartPopup(Popup popup) {
+            var dumpPage = Active;
+            popup.HostPageId = dumpPage.GetId();
+            dumpPage.Popup = popup;
+            dumpPage.ProcessPopup();
         }
 
         public virtual string GetId() {
