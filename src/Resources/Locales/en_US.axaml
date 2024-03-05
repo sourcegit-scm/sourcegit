@@ -470,6 +470,19 @@
   <sys:String x:Key="Text.Statistics.Committer">COMMITTER</sys:String>
   <sys:String x:Key="Text.Statistics.CommitAmount">COMMITS</sys:String>
 
+  <sys:String x:Key="Text.Hotkeys">HotKeys</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Global">GLOBAL</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Global.NewTab">Create new page</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Global.CloseTab">Close current page</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Global.GotoNextTab">Go to next page</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Global.CancelPopup">Cancel current popup</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo">REPOSITORY</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo.ViewHistories">Switch to 'Histories'</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo.ViewChanges">Switch to 'Changes'</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo.ViewStashes">Switch to 'Stashes'</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo.ToggleSearch">Toggle commit search</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected">Stage/Unstage selected changes</sys:String>
+  
   <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
   <sys:String x:Key="Text.BinaryNotSupported">BINARY FILE NOT SUPPORTED!!!</sys:String>
   <sys:String x:Key="Text.BlameTypeNotSupported">BLAME ON THIS FILE IS NOT SUPPORTED!!!</sys:String>

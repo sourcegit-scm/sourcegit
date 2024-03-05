@@ -82,7 +82,25 @@ namespace SourceGit.Views {
                     vm.GotoNextTab();
                     e.Handled = true;
                     return;
-                }
+                } else if (vm.ActivePage.Data is ViewModels.Repository repo) {
+                    if (e.Key == Key.D1 || e.Key == Key.NumPad1) {
+                        repo.SelectedViewIndex = 0;
+                        e.Handled = true;
+                        return;
+                    } else if (e.Key == Key.D2 || e.Key == Key.NumPad2) {
+                        repo.SelectedViewIndex = 1;
+                        e.Handled = true;
+                        return;
+                    } else if (e.Key == Key.D3 || e.Key == Key.NumPad3) {
+                        repo.SelectedViewIndex = 2;
+                        e.Handled = true;
+                        return;
+                    } else if (e.Key == Key.F) {
+                        repo.IsSearching = !repo.IsSearching;
+                        e.Handled = true;
+                        return;
+                    }
+                }                
             } else if (e.Key == Key.Escape) {
                 vm.ActivePage.CancelPopup();
                 e.Handled = true;
@@ -209,6 +227,12 @@ namespace SourceGit.Views {
 
         private async void OpenPreference(object sender, RoutedEventArgs e) {
             var dialog = new Preference();
+            await dialog.ShowDialog(this);
+            e.Handled = true;
+        }
+
+        private async void OpenHotkeys(object sender, RoutedEventArgs e) {
+            var dialog = new Hotkeys();
             await dialog.ShowDialog(this);
             e.Handled = true;
         }

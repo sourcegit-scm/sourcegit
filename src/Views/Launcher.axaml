@@ -47,6 +47,11 @@
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Settings2}"/>
               </MenuItem.Icon>
             </MenuItem>
+            <MenuItem Header="{DynamicResource Text.Hotkeys}" Click="OpenHotkeys">
+              <MenuItem.Icon>
+                <Path Width="14" Height="14" Data="{StaticResource Icons.Hotkeys}"/>
+              </MenuItem.Icon>
+            </MenuItem>
             <MenuItem Header="{DynamicResource Text.About}" Click="OpenAboutDialog">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Info}"/>
@@ -210,6 +215,10 @@
       <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="32,0,8,0" Height="30" VerticalAlignment="Bottom" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
         <Button Classes="icon_button" Width="32" Height="28" Click="OpenPreference" ToolTip.Tip="{DynamicResource Text.Preference}">
           <Path Width="16" Height="16" Data="{StaticResource Icons.Settings2}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Height="28" Click="OpenHotkeys" ToolTip.Tip="{DynamicResource Text.Hotkeys}">
+          <Path Width="16" Height="16" Data="{StaticResource Icons.Hotkeys}"/>
         </Button>
 
         <Button Classes="icon_button" Width="32" Height="28" Click="OpenAboutDialog" ToolTip.Tip="{DynamicResource Text.About}">

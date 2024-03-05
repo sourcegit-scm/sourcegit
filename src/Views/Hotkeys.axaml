@@ -1,0 +1,92 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:SourceGit.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SourceGit.Views.Hotkeys"
+        Icon="/App.ico"
+        Title="{DynamicResource Text.Hotkeys}"
+        Background="{DynamicResource Brush.Window}"
+        SizeToContent="WidthAndHeight"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome">
+  <Grid RowDefinitions="30,*">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+      <Path Grid.Column="0"
+            Width="14" Height="14"
+            Margin="10,0,0,0"
+            Data="{StaticResource Icons.Hotkeys}"
+            IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}"/>
+
+      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
+        <Button Classes="caption_button_macos" Click="CloseWindow">
+          <Grid>
+            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
+            <Path Height="6" Width="6" Stretch="Fill" Fill="#404040" Stroke="#404040" StrokeThickness="1" Data="{StaticResource Icons.Window.Close}"/>
+          </Grid>
+        </Button>
+      </Grid>
+
+      <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Hotkeys}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <Button Grid.Column="2"
+              Classes="caption_button"
+              Click="CloseWindow"
+              IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
+        <Path Data="{StaticResource Icons.Window.Close}"/>
+      </Button>
+    </Grid>
+
+    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="16,8,16,16">
+      <TextBlock Text="{DynamicResource Text.Hotkeys.Global}"
+                 Foreground="{DynamicResource Brush.FG2}"
+                 FontWeight="Bold"
+                 FontSize="13"
+                 Margin="0,0,0,8"/>
+
+      <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Ctrl+T" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.NewTab}" />
+        
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Ctrl+W" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CloseTab}" />
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Ctrl+Tab" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoNextTab}" />
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="ESC" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CancelPopup}" />
+      </Grid>
+
+      <TextBlock Text="{DynamicResource Text.Hotkeys.Repo}"
+                 Foreground="{DynamicResource Brush.FG2}"
+                 FontWeight="Bold"
+                 FontSize="13"
+                 Margin="0,8"/>
+
+      <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Ctrl+F" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ToggleSearch}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Ctrl+1" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewHistories}" />
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Ctrl+2" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewChanges}" />
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Ctrl+3" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewStashes}" />
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="SPACE" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
+      </Grid>
+    </StackPanel>
+  </Grid>
+</Window>

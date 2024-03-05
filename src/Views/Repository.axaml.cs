@@ -45,18 +45,6 @@ namespace SourceGit.Views {
             InitializeComponent();
         }
 
-        protected override void OnKeyDown(KeyEventArgs e) {
-            if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control) {
-                if (DataContext is ViewModels.Repository repo) {
-                    repo.IsSearching = true;
-                    e.Handled = true;
-                    return;
-                }
-            }
-
-            base.OnKeyDown(e);
-        }
-
         private void OnLocalBranchTreeLostFocus(object sender, RoutedEventArgs e) {
             if (sender is TreeView tree) tree.UnselectAll();
         }

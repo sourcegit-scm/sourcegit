@@ -469,6 +469,19 @@
   <sys:String x:Key="Text.Statistics.Committer">提交者</sys:String>
   <sys:String x:Key="Text.Statistics.CommitAmount">提交次数</sys:String>
 
+  <sys:String x:Key="Text.Hotkeys">快捷键</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Global">全局快捷键</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Global.NewTab">新建页面</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Global.CloseTab">关闭当前页面</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Global.GotoNextTab">切换到下一个页面</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Global.CancelPopup">取消弹出面板</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo">仓库页面快捷键</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo.ViewHistories">显示历史记录</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo.ViewChanges">显示本地更改</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo.ViewStashes">显示贮藏列表</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo.ToggleSearch">打开/关闭历史搜索</sys:String>
+  <sys:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected">将选中的变更暂存或从暂存列表中移除</sys:String>
+  
   <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
   <sys:String x:Key="Text.BinaryNotSupported">二进制文件不支持该操作!!!</sys:String>
   <sys:String x:Key="Text.BlameTypeNotSupported">选中文件不支持该操作!!!</sys:String>
