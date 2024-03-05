@@ -76,17 +76,13 @@
                 <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4">
                   <Grid RowDefinitions="Auto,*">
                     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
-                      <v:Avatar Width="16" Height="16"
-                                VerticalAlignment="Center"
-                                IsHitTestVisible="False"
-                                User="{Binding Author}"
-                                FallbackFontFamily="{StaticResource JetBrainsMono}"/>
-                      <TextBlock Grid.Column="1" FontSize="12" Text="{Binding Author.Name}" FontFamily="{StaticResource JetBrainsMono}" Margin="8,0,0,0"/>
-                      <TextBlock Grid.Column="2" FontSize="12" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA" FontFamily="{StaticResource JetBrainsMono}"/>
-                      <TextBlock Grid.Column="3" FontSize="12" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0" FontFamily="{StaticResource JetBrainsMono}"/>
+                      <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
+                      <TextBlock Grid.Column="1" Classes="monospace" FontSize="12" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="2" Classes="monospace" FontSize="12" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
+                      <TextBlock Grid.Column="3" Classes="monospace" FontSize="12" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                     </Grid>
 
-                    <TextBlock Grid.Row="1" Text="{Binding Subject}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" VerticalAlignment="Bottom"/>
+                    <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding Subject}" FontSize="12" VerticalAlignment="Bottom"/>
                   </Grid>
                 </Border>
               </DataTemplate>

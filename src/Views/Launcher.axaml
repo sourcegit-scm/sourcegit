@@ -159,18 +159,18 @@
                             IsVisible="{Binding !Node.IsRepository}"
                             IsHitTestVisible="False"/>
                       <TextBlock Grid.Column="1"
+                                 Classes="monospace"
                                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                  TextAlignment="Center"
                                  Text="{Binding Node.Name}"
                                  IsVisible="{Binding Node.IsRepository}"
-                                 FontFamily="{StaticResource JetBrainsMono}"
                                  IsHitTestVisible="False"/>
                       <TextBlock Grid.Column="1"
+                                 Classes="monospace"
                                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                  TextAlignment="Center"
                                  Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                                  IsVisible="{Binding !Node.IsRepository}"
-                                 FontFamily="{StaticResource JetBrainsMono}"
                                  IsHitTestVisible="False"/>
                       <Button Grid.Column="2"
                               Classes="icon_button"

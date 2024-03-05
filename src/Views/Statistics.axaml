@@ -148,7 +148,6 @@
             <!-- Graph -->
             <v:Chart Grid.Row="0" Grid.Column="1"
                      Margin="16,8,0,0"
-                     FontFamily="{StaticResource JetBrainsMono}"
                      LineBrush="{DynamicResource Brush.FG1}"
                      ShapeBrush="{DynamicResource Brush.Accent1}"
                      Samples="{Binding Samples}"/>

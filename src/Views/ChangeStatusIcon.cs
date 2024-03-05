@@ -63,22 +63,14 @@ namespace SourceGit.Views {
             set => SetValue(ChangeProperty, value);
         }
 
-        public static readonly StyledProperty<FontFamily> IconFontFamilyProperty =
-            AvaloniaProperty.Register<Avatar, FontFamily>(nameof(IconFontFamily));
-
-        public FontFamily IconFontFamily {
-            get => GetValue(IconFontFamilyProperty);
-            set => SetValue(IconFontFamilyProperty, value);
-        }
-
         static ChangeStatusIcon() {
-            AffectsRender<ChangeStatusIcon>(IsWorkingCopyChangeProperty, ChangeProperty, IconFontFamilyProperty);
+            AffectsRender<ChangeStatusIcon>(IsWorkingCopyChangeProperty, ChangeProperty);
         }
 
         public override void Render(DrawingContext context) {
             if (Change == null || Bounds.Width <= 0) return;
 
-            var typeface = IconFontFamily == null ? Typeface.Default : new Typeface(IconFontFamily);
+            var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
 
             IBrush background = null;
             string indicator;

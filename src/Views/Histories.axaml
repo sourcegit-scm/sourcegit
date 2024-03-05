@@ -50,7 +50,7 @@
                                 <Path Width="8" Height="8" Stretch="Fill" Data="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToIcon}}" Fill="{DynamicResource Brush.DecoratorIcon}"/>
                               </Border>
                               <Border Background="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToBackground}}">
-                                <TextBlock Text="{Binding Name}" FontSize="10" FontFamily="{StaticResource JetBrainsMono}" Margin="4,0" Foreground="Black"/>
+                                <TextBlock Classes="monospace" Text="{Binding Name}" FontSize="10" Margin="4,0" Foreground="Black"/>
                               </Border>
                             </StackPanel>
                           </Border>
@@ -58,7 +58,7 @@
                       </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <TextBlock Text="{Binding Subject}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
+                    <TextBlock Classes="monospace" Text="{Binding Subject}" FontSize="12" Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
                   </StackPanel>
                 </Border>
               </DataTemplate>
@@ -73,7 +73,6 @@
                           VerticalAlignment="Center"
                           IsHitTestVisible="False"
                           User="{Binding Author}"
-                          FallbackFontFamily="{StaticResource JetBrainsMono}"
                           Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
@@ -82,9 +81,9 @@
           <DataGridTemplateColumn MaxWidth="100" Header="AUTHOR">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
-                <TextBlock Text="{Binding Author.Name}"
+                <TextBlock Classes="monospace"
+                           Text="{Binding Author.Name}"
                            FontSize="11"
-                           FontFamily="{StaticResource JetBrainsMono}"
                            Margin="0,0,8,0"
                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
               </DataTemplate>
@@ -94,10 +93,10 @@
           <DataGridTemplateColumn Header="SHA">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
-                <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                <TextBlock Classes="monospace" 
+                           Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                            FontSize="11"
                            Margin="12,0"
-                           FontFamily="{StaticResource JetBrainsMono}"
                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
@@ -106,10 +105,10 @@
           <DataGridTemplateColumn Header="TIME">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
-                <TextBlock Text="{Binding CommitterTimeStr}"
+                <TextBlock Classes="monospace" 
+                           Text="{Binding CommitterTimeStr}"
                            FontSize="11"
                            Margin="8,0"
-                           FontFamily="{StaticResource JetBrainsMono}"
                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>

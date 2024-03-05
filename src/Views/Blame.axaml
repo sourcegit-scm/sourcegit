@@ -57,7 +57,7 @@
                          BorderThickness="0"
                          Background="{DynamicResource Brush.Contents}"
                          Foreground="{DynamicResource Brush.FG1}"
-                         FontFamily="{StaticResource JetBrainsMono}"
+                         FontFamily="fonts:SourceGit#JetBrains Mono"
                          FontSize="12"
                          BlameData="{Binding Data}"/>
       

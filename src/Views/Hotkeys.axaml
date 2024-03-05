@@ -52,16 +52,16 @@
                  Margin="0,0,0,8"/>
 
       <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Ctrl+T" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace" Text="Ctrl+T"/>
         <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.NewTab}" />
         
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Ctrl+W" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace" Text="Ctrl+W" />
         <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CloseTab}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Ctrl+Tab" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace" Text="Ctrl+Tab"/>
         <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoNextTab}" />
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="ESC" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace" Text="ESC"/>
         <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CancelPopup}" />
       </Grid>
 
@@ -72,19 +72,19 @@
                  Margin="0,8"/>
 
       <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Ctrl+F" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace" Text="Ctrl+F"/>
         <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ToggleSearch}" />
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Ctrl+1" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace" Text="Ctrl+1"/>
         <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewHistories}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Ctrl+2" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace" Text="Ctrl+2"/>
         <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewChanges}" />
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Ctrl+3" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace" Text="Ctrl+3"/>
         <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewStashes}" />
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="SPACE" FontFamily="{StaticResource JetBrainsMono}"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace" Text="SPACE"/>
         <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
       </Grid>
     </StackPanel>

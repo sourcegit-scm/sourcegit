@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Media.Fonts;
 using Avalonia.Styling;
 using System;
 using System.IO;
@@ -41,15 +42,23 @@ namespace SourceGit {
         public static AppBuilder BuildAvaloniaApp() {
             var builder = AppBuilder.Configure<App>();
             builder.UsePlatformDetect();
+            builder.ConfigureFonts(manager => {
+                var monospace = new EmbeddedFontCollection(
+                    new Uri("fonts:SourceGit", UriKind.Absolute),
+                    new Uri("avares://SourceGit/Resources/Fonts", UriKind.Absolute));
+                manager.AddFontCollection(monospace);
+            });
 
             if (OperatingSystem.IsWindows()) {
                 builder.With(new FontManagerOptions() {
+                    DefaultFamilyName = "Microsoft YaHei UI",
                     FontFallbacks = [
                         new FontFallback { FontFamily = new FontFamily("Microsoft YaHei UI") }
                     ]
                 });
             } else if (OperatingSystem.IsMacOS()) {
                 builder.With(new FontManagerOptions() {
+                    DefaultFamilyName = "PingFang SC",
                     FontFallbacks = [
                         new FontFallback { FontFamily = new FontFamily("PingFang SC") }
                     ]

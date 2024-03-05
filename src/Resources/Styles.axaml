@@ -68,13 +68,7 @@
     <Setter Property="FontStyle" Value="Italic"/>
   </Style>
   <Style Selector="TextBlock.monospace">
-    <Setter Property="FontFamily" Value="{StaticResource JetBrainsMono}"/>
-  </Style>
-  <Style Selector="TextBlock[FontWeight=Bold].monospace">
-    <Setter Property="FontFamily" Value="{StaticResource JetBrainsMonoBold}"/>
-  </Style>
-  <Style Selector="TextBlock[FontStyle=Italic].monospace">
-    <Setter Property="FontFamily" Value="{StaticResource JetBrainsMonoItalic}"/>
+    <Setter Property="FontFamily" Value="fonts:SourceGit#JetBrains Mono"/>
   </Style>
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
@@ -400,7 +394,7 @@
         <Setter Property="Height" Value="26"/>
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}" />
-        <Setter Property="TextElement.FontSize" Value="13"/>
+        <Setter Property="TextElement.FontSize" Value="12"/>
         <Setter Property="Template">
           <ControlTemplate>
             <Panel>

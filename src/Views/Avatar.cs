@@ -17,14 +17,6 @@ namespace SourceGit.Views {
             new GradientStops() { new GradientStop(Colors.Tomato, 0), new GradientStop(Color.FromRgb(252, 165, 150), 1) },
         ];
 
-        public static readonly StyledProperty<FontFamily> FallbackFontFamilyProperty =
-            AvaloniaProperty.Register<Avatar, FontFamily>(nameof(FallbackFontFamily));
-
-        public FontFamily FallbackFontFamily {
-            get => GetValue(FallbackFontFamilyProperty);
-            set => SetValue(FallbackFontFamilyProperty, value);
-        }
-
         public static readonly StyledProperty<Models.User> UserProperty =
             AvaloniaProperty.Register<Avatar, Models.User>(nameof(User));
 
@@ -34,7 +26,6 @@ namespace SourceGit.Views {
         }
 
         static Avatar() {
-            AffectsRender<Avatar>(FallbackFontFamilyProperty);
             UserProperty.Changed.AddClassHandler<Avatar>(OnUserPropertyChanged);
         }
 
@@ -106,7 +97,7 @@ namespace SourceGit.Views {
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
             };
 
-            var typeface = avatar.FallbackFontFamily == null ? Typeface.Default : new Typeface(avatar.FallbackFontFamily);
+            var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
 
             avatar._fallbackLabel = new FormattedText(
                 placeholder, 

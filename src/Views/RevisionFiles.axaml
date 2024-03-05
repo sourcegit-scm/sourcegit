@@ -63,7 +63,7 @@
               <Grid Height="24" ColumnDefinitions="Auto,*">
                 <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
                 <Path Grid.Column="0" Width="14" Height="14" IsVisible="{Binding !IsFolder}" Data="{StaticResource Icons.File}" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" Margin="6,0,0,0"/>
+                <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" FontSize="12" Margin="6,0,0,0"/>
               </Grid>
             </TreeDataTemplate>
           </TreeView.ItemTemplate>
@@ -89,7 +89,7 @@
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionTextFile">
-              <v:RevisionTextFileView FontFamily="{StaticResource JetBrainsMono}" FontSize="12" Background="{DynamicResource Brush.Contents}"/>
+              <v:RevisionTextFileView FontFamily="fonts:SourceGit#JetBrains Mono" FontSize="12" Background="{DynamicResource Brush.Contents}"/>
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionLFSObject">
@@ -98,7 +98,7 @@
                 <Path Width="64" Height="64" Margin="0,24,0,0" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
                 <SelectableTextBlock Margin="0,16,0,0" Text="{Binding Object.Oid}" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
                 <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-                  <TextBlock Text="{Binding Object.Size}" Foreground="{DynamicResource Brush.FG2}" FontFamily="{StaticResource JetBrainsMono}"/>
+                  <TextBlock Classes="monospace" Text="{Binding Object.Size}" Foreground="{DynamicResource Brush.FG2}"/>
                   <TextBlock Text="{DynamicResource Text.Bytes}" Margin="8,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
                 </StackPanel>
               </StackPanel>

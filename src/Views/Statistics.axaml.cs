@@ -9,14 +9,6 @@ using System.Globalization;
 
 namespace SourceGit.Views {
     public class Chart : Control {
-        public static readonly StyledProperty<FontFamily> FontFamilyProperty =
-            AvaloniaProperty.Register<Chart, FontFamily>(nameof(FontFamily));
-
-        public FontFamily FontFamily {
-            get => GetValue(FontFamilyProperty);
-            set => SetValue(FontFamilyProperty, value);
-        }
-
         public static readonly StyledProperty<IBrush> LineBrushProperty =
             AvaloniaProperty.Register<Chart, IBrush>(nameof(LineBrush), Brushes.Gray);
 
@@ -74,7 +66,7 @@ namespace SourceGit.Views {
                 maxV = (int)Math.Ceiling(maxV / 500.0) * 500;
             }
 
-            var typeface = new Typeface(FontFamily);
+            var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
             var pen = new Pen(LineBrush, 1);
             var width = Bounds.Width;
             var height = Bounds.Height;

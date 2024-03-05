@@ -65,11 +65,11 @@
 
                   <Grid RowDefinitions="Auto,*" >
                     <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
-                      <TextBlock Grid.Column="0" FontSize="12" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" TextDecorations="Underline" Cursor="Hand" FontFamily="{StaticResource JetBrainsMono}"/>
-                      <TextBlock Grid.Column="1" FontSize="12" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0" FontFamily="{StaticResource JetBrainsMono}"/>
+                      <TextBlock Grid.Column="0" Classes="monospace" FontSize="12" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" TextDecorations="Underline" Cursor="Hand"/>
+                      <TextBlock Grid.Column="1" Classes="monospace" FontSize="12" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                     </Grid>
 
-                    <TextBlock Grid.Row="1" Text="{Binding Message}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" VerticalAlignment="Bottom"/>
+                    <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding Message}" FontSize="12" VerticalAlignment="Bottom"/>
                   </Grid>
                 </Border>
               </DataTemplate>
@@ -105,7 +105,7 @@
           <DataGridTemplateColumn Header="ICON">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+                <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
@@ -113,7 +113,7 @@
           <DataGridTemplateColumn Width="*" Header="PATH">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Path}" Margin="4,0,0,0" FontSize="12" FontFamily="{StaticResource JetBrainsMono}"/>
+                <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0,0,0" FontSize="12"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>

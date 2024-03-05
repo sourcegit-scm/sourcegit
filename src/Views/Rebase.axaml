@@ -38,7 +38,7 @@
           <DataTemplate DataType="m:Commit">
             <StackPanel Orientation="Horizontal">
               <Path Width="14" Height="14" Margin="0,8,0,0" Data="{StaticResource Icons.Commit}"/>
-              <TextBlock VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" FontFamily="{StaticResource JetBrainsMono}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+              <TextBlock Classes="monospace" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
               <TextBlock VerticalAlignment="Center" Text="{Binding Subject}}" Margin="4,0,0,0"/>
             </StackPanel>
           </DataTemplate>

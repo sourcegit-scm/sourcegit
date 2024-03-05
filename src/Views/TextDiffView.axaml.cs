@@ -138,9 +138,7 @@ namespace SourceGit.Views {
             public LineStyleTransformer(CombinedTextDiffPresenter editor, IBrush indicatorFG) {
                 _editor = editor;
                 _indicatorFG = indicatorFG;
-
-                var font = App.Current.FindResource("JetBrainsMonoItalic") as FontFamily;
-                _indicatorTypeface = new Typeface(font, FontStyle.Italic, FontWeight.Regular);
+                _indicatorTypeface = new Typeface("fonts:SourceGit#JetBrains Mono", FontStyle.Italic);
             }
 
             protected override void ColorizeLine(DocumentLine line) {
@@ -214,7 +212,6 @@ namespace SourceGit.Views {
 
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
-            TextArea.TextView.LineTransformers.Add(new LineStyleTransformer(this, SecondaryFG));
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.ScrollOffsetChanged += OnTextViewScrollOffsetChanged;
 
@@ -226,6 +223,9 @@ namespace SourceGit.Views {
 
             _textMate = this.InstallTextMate(_registryOptions);
             UpdateGrammar();
+
+            // This line must after InstallTextMate.
+            TextArea.TextView.LineTransformers.Add(new LineStyleTransformer(this, SecondaryFG));
         }
 
         protected override void OnUnloaded(RoutedEventArgs e) {
@@ -432,9 +432,7 @@ namespace SourceGit.Views {
             public LineStyleTransformer(SingleSideTextDiffPresenter editor, IBrush indicatorFG) {
                 _editor = editor;
                 _indicatorFG = indicatorFG;
-
-                var font = App.Current.FindResource("JetBrainsMonoItalic") as FontFamily;
-                _indicatorTypeface = new Typeface(font, FontStyle.Italic, FontWeight.Regular);
+                _indicatorTypeface = new Typeface("fonts:SourceGit#JetBrains Mono", FontStyle.Italic);
             }
 
             protected override void ColorizeLine(DocumentLine line) {
@@ -514,7 +512,6 @@ namespace SourceGit.Views {
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
-            TextArea.TextView.LineTransformers.Add(new LineStyleTransformer(this, SecondaryFG));
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.ScrollOffsetChanged += OnTextViewScrollOffsetChanged;
 
@@ -526,6 +523,9 @@ namespace SourceGit.Views {
 
             _textMate = this.InstallTextMate(_registryOptions);
             UpdateGrammar();
+
+            // This line must after InstallTextMate
+            TextArea.TextView.LineTransformers.Add(new LineStyleTransformer(this, SecondaryFG));
         }
 
         protected override void OnUnloaded(RoutedEventArgs e) {

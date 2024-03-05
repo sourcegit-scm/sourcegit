@@ -6,7 +6,6 @@
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceInclude Source="/Resources/Fonts.axaml"/>
         <ResourceInclude Source="/Resources/Icons.axaml"/>
         <ResourceInclude Source="/Resources/Themes.axaml"/>
       </ResourceDictionary.MergedDictionaries>

@@ -42,7 +42,7 @@
             <DataGridTemplateColumn Header="ICON">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
-                  <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+                  <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
@@ -50,7 +50,7 @@
             <DataGridTemplateColumn Width="*" Header="PATH">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding Path}" Margin="8,0,0,0" FontSize="12" FontFamily="{StaticResource JetBrainsMono}"/>
+                  <TextBlock Classes="monospace" Text="{Binding Path}" Margin="8,0,0,0" FontSize="12"/>
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

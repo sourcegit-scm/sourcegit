@@ -18,14 +18,13 @@
             <v:Avatar Width="16" Height="16"
                       VerticalAlignment="Center"
                       IsHitTestVisible="False"
-                      User="{Binding StartPoint.Author}"
-                      FallbackFontFamily="{StaticResource JetBrainsMono}"/>
-            <TextBlock Grid.Column="1" FontSize="12" Text="{Binding StartPoint.Author.Name}" FontFamily="{StaticResource JetBrainsMono}" Margin="8,0,0,0"/>
-            <TextBlock Grid.Column="2" FontSize="12" Text="{Binding StartPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" FontFamily="{StaticResource JetBrainsMono}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
-            <TextBlock Grid.Column="3" FontSize="12" Text="{Binding StartPoint.CommitterTimeStr}" FontFamily="{StaticResource JetBrainsMono}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                      User="{Binding StartPoint.Author}"/>
+            <TextBlock Grid.Column="1" Classes="monospace" FontSize="12" Text="{Binding StartPoint.Author.Name}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="2" Classes="monospace" FontSize="12" Text="{Binding StartPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
+            <TextBlock Grid.Column="3" Classes="monospace" FontSize="12" Text="{Binding StartPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
           </Grid>
 
-          <TextBlock Grid.Row="1" Text="{Binding StartPoint.Subject}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" VerticalAlignment="Bottom"/>
+          <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding StartPoint.Subject}" FontSize="12" VerticalAlignment="Bottom"/>
         </Grid>
       </Border>
 
@@ -37,14 +36,13 @@
             <v:Avatar Width="16" Height="16"
                       VerticalAlignment="Center"
                       IsHitTestVisible="False"
-                      User="{Binding EndPoint.Author}"
-                      FallbackFontFamily="{StaticResource JetBrainsMono}"/>
-            <TextBlock Grid.Column="1" FontSize="12" Text="{Binding EndPoint.Author.Name}" FontFamily="{StaticResource JetBrainsMono}" Margin="8,0,0,0"/>
-            <TextBlock Grid.Column="2" FontSize="12" Text="{Binding EndPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" FontFamily="{StaticResource JetBrainsMono}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
-            <TextBlock Grid.Column="3" FontSize="12" Text="{Binding EndPoint.CommitterTimeStr}" FontFamily="{StaticResource JetBrainsMono}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                      User="{Binding EndPoint.Author}"/>
+            <TextBlock Grid.Column="1" Classes="monospace" FontSize="12" Text="{Binding EndPoint.Author.Name}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="2" Classes="monospace" FontSize="12" Text="{Binding EndPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
+            <TextBlock Grid.Column="3" Classes="monospace" FontSize="12" Text="{Binding EndPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
           </Grid>
 
-          <TextBlock Grid.Row="1" Text="{Binding EndPoint.Subject}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" VerticalAlignment="Bottom"/>
+          <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding EndPoint.Subject}" FontSize="12" VerticalAlignment="Bottom"/>
         </Grid>
       </Border>
     </Grid>
@@ -110,7 +108,7 @@
                 <DataGridTemplateColumn Header="ICON">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                      <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+                      <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -118,7 +116,7 @@
                 <DataGridTemplateColumn Width="*" Header="PATH">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                      <TextBlock Text="{Binding Path}" Margin="4,0,0,0" FontSize="12" FontFamily="{StaticResource JetBrainsMono}"/>
+                      <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0,0,0" FontSize="12"/>
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -145,7 +143,7 @@
                 <DataGridTemplateColumn Header="ICON">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                      <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}" IconFontFamily="{StaticResource JetBrainsMono}"/>
+                      <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -153,7 +151,7 @@
                 <DataGridTemplateColumn Header="FILE_NAME">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                      <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0,0,0" FontSize="12" FontFamily="{StaticResource JetBrainsMono}"/>
+                      <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0,0,0" FontSize="12"/>
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -161,7 +159,7 @@
                 <DataGridTemplateColumn Header="FOLDER_PATH">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                      <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Margin="4,0,0,0" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" Foreground="{DynamicResource Brush.FG2}"/>
+                      <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Margin="4,0,0,0" FontSize="12" Foreground="{DynamicResource Brush.FG2}"/>
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -185,8 +183,8 @@
                 <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:FileTreeNode}">
                   <Grid Height="24" ColumnDefinitions="Auto,*">
                     <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
-                    <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding Backend}" IconFontFamily="{StaticResource JetBrainsMono}" IsVisible="{Binding !IsFolder}"/>
-                    <TextBlock Grid.Column="1" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" FontSize="12" FontFamily="{StaticResource JetBrainsMono}" Margin="6,0,0,0"/>
+                    <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding Backend}" IsVisible="{Binding !IsFolder}"/>
+                    <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" FontSize="12" Margin="6,0,0,0"/>
                   </Grid>
                 </TreeDataTemplate>
               </TreeView.ItemTemplate>
