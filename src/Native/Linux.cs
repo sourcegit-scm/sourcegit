@@ -42,14 +42,14 @@ namespace SourceGit.Native {
 
         public void OpenTerminal(string workdir) {
             var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
-            if (File.Exists("/usr/bin/gnome-ternimal")) {
-                Process.Start("/usr/bin/gnome-ternimal", $"--working-directory=\"{dir}\"");
+            if (File.Exists("/usr/bin/gnome-terminal")) {
+                Process.Start("/usr/bin/gnome-terminal", $"--working-directory=\"{dir}\"");
             } else if (File.Exists("/usr/bin/konsole")) {
                 Process.Start("/usr/bin/konsole", $"--workdir \"{dir}\"");
             } else if (File.Exists("/usr/bin/xfce4-terminal")) {
                 Process.Start("/usr/bin/xfce4-terminal", $"--working-directory=\"{dir}\"");
             } else {
-                App.RaiseException("", $"Only supports gnome-ternimal/konsole/xfce4-terminal!");
+                App.RaiseException("", $"Only supports gnome-terminal/konsole/xfce4-terminal!");
                 return;
             }
         }
