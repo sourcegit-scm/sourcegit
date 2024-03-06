@@ -30,6 +30,11 @@ namespace SourceGit.ViewModels {
 
                     OpenRepositoryInTab(node, null);
                 }
+
+                var lastActiveIdx = Preference.Instance.LastActiveTabIdx;
+                if (lastActiveIdx >= 0 && lastActiveIdx < Pages.Count) {
+                    ActivePage = Pages[lastActiveIdx];
+                }
             }
         }
 
@@ -42,6 +47,7 @@ namespace SourceGit.ViewModels {
                 }
             }
 
+            Preference.Instance.LastActiveTabIdx = Pages.IndexOf(ActivePage);
             Preference.Save();
         }
 

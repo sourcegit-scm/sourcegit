@@ -178,6 +178,11 @@ namespace SourceGit.ViewModels {
             set;
         } = new List<string>();
 
+        public int LastActiveTabIdx {
+            get;
+            set;
+        } = 0;
+
         public static void AddNode(RepositoryNode node, RepositoryNode to = null) {
             var collection = to == null ? _instance._repositoryNodes : to.SubNodes;
             var list = new List<RepositoryNode>();
