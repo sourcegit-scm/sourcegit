@@ -236,20 +236,19 @@
     <v:LauncherBody Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" Data="{Binding ActivePage.Data}"/>
 
     <!-- Popup container -->
-    <Grid Grid.Row="1" x:Name="popupContainer" Margin="0,36,0,0" ClipToBounds="True" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
-      <Border Background="Transparent" PointerPressed="OnPopupCancelByClickMask"/>
+    <ContentControl Grid.Row="1" Margin="0,36,0,0" Content="{Binding ActivePage.Popup}" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <ContentControl.DataTemplates>
+        <DataTemplate DataType="vm:Popup">
+          <Grid>
+            <Border Background="Transparent" PointerPressed="OnPopupCancelByClickMask"/>
 
-      <Border Background="{DynamicResource Brush.Popup}"
-              HorizontalAlignment="Center" VerticalAlignment="Top"
-              Width="500"
-              CornerRadius="0,0,4,4">
-        <Border.Effect>
-          <DropShadowEffect BlurRadius="8" Color="Black" Opacity=".6" OffsetX="0" OffsetY="0"/>
-        </Border.Effect>
+            <Grid Width="500" HorizontalAlignment="Center" VerticalAlignment="Top">
+              <Border Background="{DynamicResource Brush.Popup}" CornerRadius="0,0,4,4">
+                <Border.Effect>
+                  <DropShadowEffect BlurRadius="8" Color="Black" Opacity=".6" OffsetX="0" OffsetY="0"/>
+                </Border.Effect>
+              </Border>
 
-        <ContentControl Content="{Binding ActivePage.Popup}">
-          <ContentControl.DataTemplates>
-            <DataTemplate DataType="vm:Popup">
               <StackPanel Margin="8" Orientation="Vertical">
                 <!-- Popup Widget -->
                 <ContentControl Margin="0,8"
@@ -274,7 +273,7 @@
                 </StackPanel>
 
                 <!-- Running -->
-                <StackPanel Orientation="Vertical" Margin="8" IsVisible="{Binding InProgress}">                  
+                <StackPanel Orientation="Vertical" Margin="8" IsVisible="{Binding InProgress}">
                   <Rectangle Height="1" Margin="-8,0" HorizontalAlignment="Stretch" Fill="{DynamicResource Brush.Border1}" />
                   <StackPanel Orientation="Horizontal" Margin="0,8">
                     <Path Width="12" Height="12" Classes="waiting" Data="{StaticResource Icons.Waiting}" IsVisible="{Binding InProgress}"/>
@@ -292,11 +291,11 @@
                                Minimum="0" Maximum="100"/>
                 </StackPanel>
               </StackPanel>
-            </DataTemplate>
-          </ContentControl.DataTemplates>
-        </ContentControl>
-      </Border>
-    </Grid>
+            </Grid>
+          </Grid>
+        </DataTemplate>
+      </ContentControl.DataTemplates>
+    </ContentControl>
 
     <!-- Notification container -->
     <Grid Grid.Row="1" Width="360" Margin="0,36,0,0" HorizontalAlignment="Right" VerticalAlignment="Top">
