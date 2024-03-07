@@ -292,7 +292,9 @@ namespace SourceGit.ViewModels {
                     || c.Subject.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
                     || c.Message.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
                     || c.Author.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                    || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)) {
+                    || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                    || c.Author.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                    || c.Committer.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)) {
                     visible.Add(c);
                 }
             }

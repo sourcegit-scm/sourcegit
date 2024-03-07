@@ -88,6 +88,13 @@ namespace SourceGit.Views {
             }
         }
 
+        private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
+            var grid = sender as Grid;
+            if (e.Property == IsVisibleProperty && grid.IsVisible) {
+                txtSearchCommitsBox.Focus();
+            }
+        }
+
         private void OnSearchKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
                 if (DataContext is ViewModels.Repository repo) {
