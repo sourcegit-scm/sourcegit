@@ -72,7 +72,7 @@
                 <TextBlock Grid.Row="0" Grid.Column="1" Classes="monospace" Text="{Binding OldSize}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
                 <TextBlock Grid.Row="0" Grid.Column="2" Classes="monospace" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
 
-                <Border Grid.Row="1" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Accent1}" CornerRadius="8" VerticalAlignment="Center">
+                <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
                   <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10"/>
                 </Border>
 
@@ -99,7 +99,7 @@
                 <TextBlock Grid.Row="0" Grid.Column="1" Classes="monospace" Text="{Binding Old.Size}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
                 <TextBlock Grid.Row="0" Grid.Column="2" Classes="monospace" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
 
-                <Border Grid.Row="1" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Accent1}" CornerRadius="8" VerticalAlignment="Center">
+                <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
                   <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10"/>
                 </Border>
 

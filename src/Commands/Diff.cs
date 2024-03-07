@@ -5,7 +5,9 @@ using System.Text.RegularExpressions;
 namespace SourceGit.Commands {
     public class Diff : Command {
         private static readonly Regex REG_INDICATOR = new Regex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@");
-        private static readonly string PREFIX_LFS = " version https://git-lfs.github.com/spec/";
+        private static readonly string PREFIX_LFS_NEW = "+version https://git-lfs.github.com/spec/";
+        private static readonly string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
+        private static readonly string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
 
         public Diff(string repo, Models.DiffOption opt) {
             WorkingDirectory = repo;
@@ -77,9 +79,21 @@ namespace SourceGit.Commands {
 
                 var ch = line[0];
                 if (ch == '-') {
+                    if (_oldLine == 1 && _newLine == 0 && line.StartsWith(PREFIX_LFS_DEL, StringComparison.Ordinal)) {
+                        _result.IsLFS = true;
+                        _result.LFSDiff = new Models.LFSDiff();
+                        return;
+                    }
+
                     _deleted.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), _oldLine, 0));
                     _oldLine++;
                 } else if (ch == '+') {
+                    if (_oldLine == 0 && _newLine == 1 && line.StartsWith(PREFIX_LFS_NEW, StringComparison.Ordinal)) {
+                        _result.IsLFS = true;
+                        _result.LFSDiff = new Models.LFSDiff();
+                        return;
+                    }
+
                     _added.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), 0, _newLine));
                     _newLine++;
                 } else if (ch != '\\') {
@@ -90,7 +104,7 @@ namespace SourceGit.Commands {
                         _newLine = int.Parse(match.Groups[2].Value);
                         _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
                     } else {
-                        if (line.StartsWith(PREFIX_LFS)) {
+                        if (_oldLine == 1 && _newLine == 1 && line.StartsWith(PREFIX_LFS_MODIFY, StringComparison.Ordinal)) {
                             _result.IsLFS = true;
                             _result.LFSDiff = new Models.LFSDiff();
                             return;
