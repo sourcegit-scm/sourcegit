@@ -28,7 +28,7 @@ namespace SourceGit.ViewModels {
 
         public CreateBranch(Repository repo, Models.Branch branch) {
             _repo = repo;
-            _baseOnRevision = branch.Head;
+            _baseOnRevision = branch.FullName;
 
             BasedOn = branch;
             View = new Views.CreateBranch() { DataContext = this };
