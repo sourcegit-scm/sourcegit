@@ -14,18 +14,23 @@
         Width="600" Height="400"
         CanResize="False"
         WindowStartupLocation="CenterOwner"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome">
-  <Grid RowDefinitions="30,1,*">
+        ExtendClientAreaToDecorationsHint="{OnPlatform True, Linux=False}"
+        ExtendClientAreaChromeHints="{OnPlatform NoChrome, Linux=Default}">
+  <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Background="{DynamicResource Brush.TitleBar}">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{OnPlatform True, Linux=False}">
+      <Border Grid.Column="0" Grid.ColumnSpan="3"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              IsHitTestVisible="False"/>
+      
       <Path Grid.Column="0"
             Width="14" Height="14"
             Margin="10,0,0,0"
             Data="{StaticResource Icons.File.Ignore}"
-            IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}"/>
+            IsVisible="{OnPlatform False, Windows=True}"/>
 
-      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
+      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
         <Button Classes="caption_button_macos" Click="CloseWindow">
           <Grid>
             <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
@@ -43,16 +48,13 @@
       <Button Grid.Column="2"
               Classes="caption_button"
               Click="CloseWindow"
-              IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
+              IsVisible="{OnPlatform False, Windows=True}">
         <Path Data="{StaticResource Icons.Window.Close}"/>
       </Button>
     </Grid>
-
-    <!-- Line -->
-    <Rectangle Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1" Fill="{DynamicResource Brush.Border0}"/>
-
+    
     <!-- Unchanged Files -->
-    <DataGrid Grid.Row="2"
+    <DataGrid Grid.Row="1"
               Margin="8"
               Background="{DynamicResource Brush.Contents}"
               ItemsSource="{Binding Files}"

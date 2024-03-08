@@ -15,35 +15,38 @@
         MinWidth="1280" MinHeight="720"
         BorderThickness="1"
         BorderBrush="{DynamicResource Brush.Border0}"
-        Background="{DynamicResource Brush.TitleBar}"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome">
+        Background="{DynamicResource Brush.Window}"
+        ExtendClientAreaToDecorationsHint="{OnPlatform True, Linux=False}"
+        ExtendClientAreaChromeHints="{OnPlatform NoChrome, Linux=Default}">
   <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
     <Grid.RowDefinitions>
-      <RowDefinition Height="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToTitleBarHeight}}"/>
+      <RowDefinition Height="30"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
     <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
       <!-- Bottom border -->
-      <Rectangle Grid.Column="0" Grid.ColumnSpan="5" Fill="{DynamicResource Brush.Border0}" Height="1" VerticalAlignment="Bottom"/>
+      <Border Grid.Column="0" Grid.ColumnSpan="5"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              IsHitTestVisible="False"/>
 
       <!-- Caption Buttons (macOS) -->
-      <Border Grid.Column="0" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
+      <Border Grid.Column="0" IsVisible="{OnPlatform False, macOS=True}">
         <v:CaptionButtonsMacOS/>
       </Border>
 
       <!-- Icon -->
       <Path Grid.Column="1" Margin="8,0,0,0" Width="12" Height="12" Stretch="Uniform" Data="{StaticResource Icons.Histories}"/>
 
-      <!-- Title -->
-      <TextBlock Grid.Column="2" Margin="4,0,8,0" Text="{DynamicResource Text.FileHistory}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"/>
+      <!-- Title (Hide on Linux) -->
+      <TextBlock Grid.Column="2" Margin="4,0,8,0" Text="{DynamicResource Text.FileHistory}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center" IsVisible="{OnPlatform True, Linux=False}"/>
 
       <!-- Target File -->
       <TextBlock Grid.Column="3" Text="{Binding File}" FontSize="11" FontStyle="Italic" IsHitTestVisible="False" VerticalAlignment="Center"/>
 
       <!-- Caption Buttons (Windows) -->
-      <Border Grid.Column="4" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
+      <Border Grid.Column="4" IsVisible="{OnPlatform False, Windows=true}">
         <v:CaptionButtons/>
       </Border>
     </Grid>

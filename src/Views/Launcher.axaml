@@ -14,11 +14,11 @@
         Title="SourceGit"
         BorderThickness="1"
         BorderBrush="{DynamicResource Brush.Border0}"
-        Background="{DynamicResource Brush.TitleBar}"
+        Background="{DynamicResource Brush.Window}"
         MinWidth="1280" MinHeight="720"
         WindowStartupLocation="CenterScreen"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome">
+        ExtendClientAreaToDecorationsHint="{OnPlatform True, Linux=False}"
+        ExtendClientAreaChromeHints="{OnPlatform NoChrome, Linux=Default}">
   <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
     <Grid.RowDefinitions>
       <RowDefinition Height="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToTitleBarHeight}}"/>
@@ -27,10 +27,13 @@
 
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
       <!-- Bottom border -->
-      <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Fill="{DynamicResource Brush.Border0}" Height="1" VerticalAlignment="Bottom"/>
+      <Border Grid.Column="0" Grid.ColumnSpan="3"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              IsHitTestVisible="False"/>
 
       <!-- Caption Buttons (macOS) -->
-      <Border Grid.Column="0" VerticalAlignment="Stretch" Margin="2,0,8,3" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
+      <Border Grid.Column="0" VerticalAlignment="Stretch" Margin="2,0,8,3" IsVisible="{OnPlatform False, macOS=True}">
         <v:CaptionButtonsMacOS VerticalAlignment="Bottom"/>
       </Border>
 
@@ -39,7 +42,7 @@
               Classes="icon_button"
               Margin="4,0,2,3"
               VerticalAlignment="Bottom"
-              IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
+              IsVisible="{OnPlatform True, macOS=False}">
         <Button.Flyout>
           <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
             <MenuItem Header="{DynamicResource Text.Preference}" Click="OpenPreference">
@@ -212,7 +215,7 @@
       </Grid>
 
       <!-- Extra Buttons (macOS) -->
-      <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="32,0,8,0" Height="30" VerticalAlignment="Bottom" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
+      <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="32,0,8,0" Height="30" VerticalAlignment="Bottom" IsVisible="{OnPlatform False, macOS=True}">
         <Button Classes="icon_button" Width="32" Height="28" Click="OpenPreference" ToolTip.Tip="{DynamicResource Text.Preference}">
           <Path Width="16" Height="16" Data="{StaticResource Icons.Settings2}"/>
         </Button>
@@ -227,7 +230,7 @@
       </StackPanel>
 
       <!-- Caption Buttons (Windows)-->
-      <Border Grid.Column="2" Margin="32,0,0,0" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
+      <Border Grid.Column="2" Margin="32,0,0,0" IsVisible="{OnPlatform False, Windows=True}">
         <v:CaptionButtons Height="30" VerticalAlignment="Top"/>
       </Border>
     </Grid>

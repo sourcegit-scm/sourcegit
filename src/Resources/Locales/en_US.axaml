@@ -382,7 +382,6 @@
   <sys:String x:Key="Text.Preference.General.MaxHistoryCommits">History Commits</sys:String>
   <sys:String x:Key="Text.Preference.General.RestoreTabs">Restore windows</sys:String>
   <sys:String x:Key="Text.Preference.General.UseFixedTabWidth">Use fixed tab width in titlebar</sys:String>
-  <sys:String x:Key="Text.Preference.General.UseMacOSStyle">Use macOS style titlebar</sys:String>
   <sys:String x:Key="Text.Preference.Git">GIT</sys:String>
   <sys:String x:Key="Text.Preference.Git.Path">Install Path</sys:String>
   <sys:String x:Key="Text.Preference.Git.Version">Git version</sys:String>

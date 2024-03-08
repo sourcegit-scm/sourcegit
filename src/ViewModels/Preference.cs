@@ -76,11 +76,6 @@ namespace SourceGit.ViewModels {
             set => SetProperty(ref _useFixedTabWidth, value);
         }
 
-        public bool UseMacOSStyle {
-            get => _useMacOSStyle;
-            set => SetProperty(ref _useMacOSStyle, value);
-        }
-
         public bool UseTwoColumnsLayoutInHistories {
             get => _useTwoColumnsLayoutInHistories;
             set => SetProperty(ref _useTwoColumnsLayoutInHistories, value);
@@ -285,7 +280,6 @@ namespace SourceGit.ViewModels {
         private int _maxHistoryCommits = 20000;
         private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
-        private bool _useMacOSStyle = OperatingSystem.IsMacOS();
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _useCombinedTextDiff = true;
 

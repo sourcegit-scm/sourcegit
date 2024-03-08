@@ -15,41 +15,44 @@
         WindowStartupLocation="CenterOwner"
         BorderThickness="1"
         BorderBrush="{DynamicResource Brush.Border0}"
-        Background="{DynamicResource Brush.TitleBar}"
+        Background="{DynamicResource Brush.Window}"
         MinWidth="1280" MinHeight="720"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome">
+        ExtendClientAreaToDecorationsHint="{OnPlatform True, Linux=False}"
+        ExtendClientAreaChromeHints="{OnPlatform NoChrome, Linux=Default}">
   <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
     <Grid.RowDefinitions>
-      <RowDefinition Height="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToTitleBarHeight}}"/>
+      <RowDefinition Height="30"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
     <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
       <!-- Bottom border -->
-      <Rectangle Grid.Column="0" Grid.ColumnSpan="5" Fill="{DynamicResource Brush.Border2}" Height="1" VerticalAlignment="Bottom"/>
+      <Border Grid.Column="0" Grid.ColumnSpan="5"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+              IsHitTestVisible="False"/>
 
       <!-- Caption Buttons (macOS) -->
-      <Border Grid.Column="0" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle}">
+      <Border Grid.Column="0" IsVisible="{OnPlatform False, macOS=True}">
         <v:CaptionButtonsMacOS/>
       </Border>
 
       <!-- Icon -->
       <Path Grid.Column="1" Margin="8,0,0,0" Width="12" Height="12" Data="{StaticResource Icons.Blame}"/>
 
-      <!-- Title -->
-      <TextBlock Grid.Column="2" Margin="8,0" Text="{DynamicResource Text.Blame}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"/>
+      <!-- Title (Hide on Linux) -->
+      <TextBlock Grid.Column="2" Margin="8,0" Text="{DynamicResource Text.Blame}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center" IsVisible="{OnPlatform True, Linux=False}"/>
 
       <!-- Blame information -->
       <TextBlock Grid.Column="3" Text="{Binding Title}" FontSize="11" FontStyle="Italic" IsHitTestVisible="False" VerticalAlignment="Center"/>
 
       <!-- Caption Buttons (Windows) -->
-      <Border Grid.Column="4" IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=UseMacOSStyle, Converter={x:Static BoolConverters.Not}}">
+      <Border Grid.Column="4" IsVisible="{OnPlatform False, Windows=True}">
         <v:CaptionButtons/>
       </Border>
     </Grid>
 
-    <Grid Grid.Row="1" Background="{DynamicResource Brush.Window}">
+    <Grid Grid.Row="1">
       <!-- Blame View -->
       <v:BlameTextEditor HorizontalScrollBarVisibility="Auto"
                          VerticalScrollBarVisibility="Auto" 
@@ -68,11 +71,12 @@
         <Path Width="64" Height="64" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Error}"/>
         <TextBlock Margin="0,16,0,0" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.BlameTypeNotSupported}"/>
       </StackPanel>
-    </Grid>
 
-    <!-- Loading -->
-    <Grid Grid.Row="1" Background="{DynamicResource Brush.Window}" IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}">
-      <Path Width="48" Height="48" Classes="rotating" Data="{StaticResource Icons.Loading}" IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}"/>
+      <!-- Loading -->
+      <Path Width="48" Height="48" 
+            Classes="rotating" 
+            Data="{StaticResource Icons.Loading}" 
+            IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}"/>
     </Grid>
   </Grid>
 </Window>

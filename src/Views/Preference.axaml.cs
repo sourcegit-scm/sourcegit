@@ -6,8 +6,6 @@ using System.IO;
 
 namespace SourceGit.Views {
     public partial class Preference : Window {
-        public bool CanChangeTitleBarStyle => !OperatingSystem.IsMacOS();
-
         public string DefaultUser {
             get;
             set;
