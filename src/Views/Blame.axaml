@@ -41,10 +41,10 @@
       <Path Grid.Column="1" Margin="8,0,0,0" Width="12" Height="12" Data="{StaticResource Icons.Blame}"/>
 
       <!-- Title (Hide on Linux) -->
-      <TextBlock Grid.Column="2" Margin="8,0" Text="{DynamicResource Text.Blame}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center" IsVisible="{OnPlatform True, Linux=False}"/>
+      <TextBlock Grid.Column="2" Margin="8,0,0,0" Text="{DynamicResource Text.Blame}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center" IsVisible="{OnPlatform True, Linux=False}"/>
 
       <!-- Blame information -->
-      <TextBlock Grid.Column="3" Text="{Binding Title}" FontSize="11" FontStyle="Italic" IsHitTestVisible="False" VerticalAlignment="Center"/>
+      <TextBlock Grid.Column="3" Margin="8,0,0,0" Text="{Binding Title}" FontSize="11" FontStyle="Italic" IsHitTestVisible="False" VerticalAlignment="Center"/>
 
       <!-- Caption Buttons (Windows) -->
       <Border Grid.Column="4" IsVisible="{OnPlatform False, Windows=True}">
