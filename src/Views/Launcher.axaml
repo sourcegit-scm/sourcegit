@@ -248,11 +248,14 @@
             <DataTemplate DataType="vm:Popup">
               <Border Margin="8,0,8,8"
                       Background="{DynamicResource Brush.Popup}"
-                      BorderThickness="1,0,1,1"
                       BorderBrush="{DynamicResource Brush.Border0}">
                 <Border.CornerRadius>
                   <OnPlatform Default="0,0,4,4" Linux="0"/>
                 </Border.CornerRadius>
+
+                <Border.BorderThickness>
+                  <OnPlatform Default="0" Linux="1,0,1,1"/>
+                </Border.BorderThickness>
 
                 <Border.Effect>
                   <OnPlatform>

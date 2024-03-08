@@ -23,7 +23,7 @@ namespace SourceGit.Commands {
                         b.UpstreamTrackStatus = string.Empty;
                     } else {
                         b.UpstreamTrackStatus = ParseTrackStatus(b.Name, b.Upstream);
-                    }                    
+                    }
                 }
             }
 
