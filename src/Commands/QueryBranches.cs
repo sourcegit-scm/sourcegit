@@ -11,11 +11,22 @@ namespace SourceGit.Commands {
         public QueryBranches(string repo) {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "branch -l --all -v --format=\"%(refname)$%(objectname)$%(HEAD)$%(upstream)$(upstream:trackshort)\"";
+            Args = "branch -l --all -v --format=\"%(refname)$%(objectname)$%(HEAD)$%(upstream)$%(upstream:trackshort)\"";
         }
 
         public List<Models.Branch> Result() {
             Exec();
+
+            foreach (var b in _branches) {
+                if (b.IsLocal && !string.IsNullOrEmpty(b.UpstreamTrackStatus)) {
+                    if (b.UpstreamTrackStatus == "=") {
+                        b.UpstreamTrackStatus = string.Empty;
+                    } else {
+                        b.UpstreamTrackStatus = ParseTrackStatus(b.Name, b.Upstream);
+                    }                    
+                }
+            }
+
             return _branches;
         }
 
@@ -47,11 +58,7 @@ namespace SourceGit.Commands {
             branch.Head = parts[1];
             branch.IsCurrent = parts[2] == "*";
             branch.Upstream = parts[3];
-
-            if (!string.IsNullOrEmpty(parts[4]) && !parts[4].Equals("=")) {
-                branch.UpstreamTrackStatus = ParseTrackStatus(branch.FullName, branch.Upstream);
-            }
-
+            branch.UpstreamTrackStatus = parts[4];
             _branches.Add(branch);
         }
 
