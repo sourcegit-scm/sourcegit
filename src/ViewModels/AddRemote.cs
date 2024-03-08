@@ -70,7 +70,10 @@ namespace SourceGit.ViewModels {
                         new Commands.Config(_repo.FullPath).Set($"remote.{_name}.sshkey", SSHKey);
                     }
                 }
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() => {
+                    _repo.MarkBranchesDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+                });
                 return succ;
             });
         }

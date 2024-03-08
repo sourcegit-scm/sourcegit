@@ -19,7 +19,10 @@ namespace SourceGit.ViewModels {
 
             return Task.Run(() => {
                 var succ = new Commands.Remote(_repo.FullPath).Delete(Remote.Name);
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() => {
+                    _repo.MarkBranchesDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+                });
                 return succ;
             });
         }

@@ -246,7 +246,7 @@ namespace SourceGit.ViewModels {
                     await Task.Run(() => new Commands.Add(_repo.FullPath, step).Exec());
                 }
             }
-            _repo.RefreshWorkingCopyChanges();
+            _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsStaging = false;
         }
@@ -266,7 +266,7 @@ namespace SourceGit.ViewModels {
                     await Task.Run(() => new Commands.Reset(_repo.FullPath, step).Exec());
                 }
             }
-            _repo.RefreshWorkingCopyChanges();
+            _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsUnstaging = false;
         }
@@ -296,7 +296,7 @@ namespace SourceGit.ViewModels {
                 if (succ) {
                     await Task.Run(() => new Commands.Add(_repo.FullPath, [ctx.Change]).Exec());
                 }
-                _repo.RefreshWorkingCopyChanges();
+                _repo.MarkWorkingCopyDirtyManually();
                 _repo.SetWatcherEnabled(true);
             }
         }
@@ -308,7 +308,7 @@ namespace SourceGit.ViewModels {
                 if (succ) {
                     await Task.Run(() => new Commands.Add(_repo.FullPath, [ctx.Change]).Exec());
                 }
-                _repo.RefreshWorkingCopyChanges();
+                _repo.MarkWorkingCopyDirtyManually();
                 _repo.SetWatcherEnabled(true);
             }
         }
@@ -362,7 +362,7 @@ namespace SourceGit.ViewModels {
                     PopupHost.ShowAndStartPopup(new Push(_repo, null));
                 }
             }
-            _repo.RefreshWorkingCopyChanges();
+            _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsCommitting = false;
         }

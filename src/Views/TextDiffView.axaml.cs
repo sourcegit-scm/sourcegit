@@ -734,7 +734,7 @@ namespace SourceGit.Views {
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--cache --index").Exec();
                         File.Delete(tmpFile);
 
-                        repo.RefreshWorkingCopyChanges();
+                        repo.MarkWorkingCopyDirtyManually();
                         repo.SetWatcherEnabled(true);
                         e.Handled = true;
                     };
@@ -760,7 +760,7 @@ namespace SourceGit.Views {
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--reverse").Exec();
                         File.Delete(tmpFile);
 
-                        repo.RefreshWorkingCopyChanges();
+                        repo.MarkWorkingCopyDirtyManually();
                         repo.SetWatcherEnabled(true);
                         e.Handled = true;
                     };
@@ -788,7 +788,7 @@ namespace SourceGit.Views {
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--cache --index --reverse").Exec();
                         File.Delete(tmpFile);
 
-                        repo.RefreshWorkingCopyChanges();
+                        repo.MarkWorkingCopyDirtyManually();
                         repo.SetWatcherEnabled(true);
                         e.Handled = true;
                     };
@@ -814,7 +814,7 @@ namespace SourceGit.Views {
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--index --reverse").Exec();
                         File.Delete(tmpFile);
 
-                        repo.RefreshWorkingCopyChanges();
+                        repo.MarkWorkingCopyDirtyManually();
                         repo.SetWatcherEnabled(true);
                         e.Handled = true;
                     };
