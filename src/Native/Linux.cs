@@ -1,10 +1,17 @@
-﻿using System.Diagnostics;
+﻿using Avalonia;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Versioning;
 
 namespace SourceGit.Native {
     [SupportedOSPlatform("linux")]
     internal class Linux : OS.IBackend {
+        public void SetupFonts(AppBuilder builder) {
+        #if USE_FONT_INTER
+            builder.WithInterFont();
+        #endif
+        }
+
         public string FindGitExecutable() {
             if (File.Exists("/usr/bin/git")) return "/usr/bin/git";
             return string.Empty;

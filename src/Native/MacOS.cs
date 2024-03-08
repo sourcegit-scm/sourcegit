@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using Avalonia;
+using Avalonia.Media;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Text;
@@ -6,6 +8,15 @@ using System.Text;
 namespace SourceGit.Native {
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend {
+        public void SetupFonts(AppBuilder builder) {
+            builder.With(new FontManagerOptions() {
+                DefaultFamilyName = "PingFang SC",
+                FontFallbacks = [
+                    new FontFallback { FontFamily = new FontFamily("PingFang SC") }
+                ]
+            });
+        }
+
         public string FindGitExecutable() {
             if (File.Exists("/usr/bin/git")) return "/usr/bin/git";
             return string.Empty;

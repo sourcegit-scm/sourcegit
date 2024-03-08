@@ -42,6 +42,7 @@ namespace SourceGit {
         public static AppBuilder BuildAvaloniaApp() {
             var builder = AppBuilder.Configure<App>();
             builder.UsePlatformDetect();
+            builder.LogToTrace();
             builder.ConfigureFonts(manager => {
                 var monospace = new EmbeddedFontCollection(
                     new Uri("fonts:SourceGit", UriKind.Absolute),
@@ -49,27 +50,7 @@ namespace SourceGit {
                 manager.AddFontCollection(monospace);
             });
 
-            if (OperatingSystem.IsWindows()) {
-                builder.With(new FontManagerOptions() {
-                    DefaultFamilyName = "Microsoft YaHei UI",
-                    FontFallbacks = [
-                        new FontFallback { FontFamily = new FontFamily("Microsoft YaHei UI") }
-                    ]
-                });
-            } else if (OperatingSystem.IsMacOS()) {
-                builder.With(new FontManagerOptions() {
-                    DefaultFamilyName = "PingFang SC",
-                    FontFallbacks = [
-                        new FontFallback { FontFamily = new FontFamily("PingFang SC") }
-                    ]
-                });
-                builder.With(new MacOSPlatformOptions() {
-                    DisableDefaultApplicationMenuItems = true,
-                    DisableNativeMenus = true,
-                });
-            }
-            
-            builder.LogToTrace();
+            Native.OS.SetupFonts(builder);
             return builder;
         }
 
@@ -104,11 +85,11 @@ namespace SourceGit {
 
         public static void SetTheme(string theme) {
             if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase)) {
-                App.Current.RequestedThemeVariant = ThemeVariant.Light;
+                Current.RequestedThemeVariant = ThemeVariant.Light;
             } else if (theme.Equals("Dark", StringComparison.OrdinalIgnoreCase)) {
-                App.Current.RequestedThemeVariant = ThemeVariant.Dark;
+                Current.RequestedThemeVariant = ThemeVariant.Dark;
             } else {
-                App.Current.RequestedThemeVariant = ThemeVariant.Default;
+                Current.RequestedThemeVariant = ThemeVariant.Default;
             }
         }
 

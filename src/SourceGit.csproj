@@ -19,6 +19,10 @@
     <RepositoryUrl>https://github.com/sourcegit-scm/sourcegit.git</RepositoryUrl>
     <RepositoryType>Public</RepositoryType>
   </PropertyGroup>
+  
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+    <DefineConstants>$(DefineConstants);USE_FONT_INTER</DefineConstants>
+  </PropertyGroup>
 
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
@@ -27,6 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.10" Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.10" />

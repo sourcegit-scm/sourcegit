@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Avalonia;
+using System;
 using System.Diagnostics;
 
 namespace SourceGit.Native {
     public static class OS {
         public interface IBackend {
+            void SetupFonts(AppBuilder builder);
+
             string FindGitExecutable();
             string FindVSCode();
 
@@ -36,6 +39,10 @@ namespace SourceGit.Native {
             } else {
                 throw new Exception("Platform unsupported!!!");
             }
+        }
+
+        public static void SetupFonts(AppBuilder builder) {
+            _backend?.SetupFonts(builder);
         }
 
         public static string FindGitExecutable() {

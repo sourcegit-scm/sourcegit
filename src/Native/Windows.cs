@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Avalonia;
+using Avalonia.Media;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -10,6 +12,15 @@ namespace SourceGit.Native {
     internal class Windows : OS.IBackend {
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
+
+        public void SetupFonts(AppBuilder builder) {
+            builder.With(new FontManagerOptions() {
+                DefaultFamilyName = "Microsoft YaHei UI",
+                FontFallbacks = [
+                    new FontFallback { FontFamily = new FontFamily("Microsoft YaHei UI") }
+                ]
+            });
+        }
 
         public string FindGitExecutable() {
             var reg = Microsoft.Win32.RegistryKey.OpenBaseKey(
