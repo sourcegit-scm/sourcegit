@@ -30,6 +30,10 @@ namespace SourceGit.ViewModels {
             _repo = repo;
             _baseOnRevision = branch.FullName;
 
+            if (!branch.IsLocal && repo.Branches.Find(x => x.IsLocal && x.Name == branch.Name) == null) {
+                Name = branch.Name;
+            }
+
             BasedOn = branch;
             View = new Views.CreateBranch() { DataContext = this };
         }
