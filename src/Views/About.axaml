@@ -61,10 +61,7 @@
       <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,20,32,0">
         <StackPanel Height="48" Orientation="Horizontal">
           <TextBlock Classes="bold" Text="SourceGit" FontSize="32" />
-          <Border Margin="12,0,0,0" Height="20" CornerRadius="10" Background="{DynamicResource Brush.Accent1}">
-            <Border.Effect>
-              <DropShadowEffect OffsetX="0" OffsetY="0" BlurRadius="6" Color="Black" Opacity=".3"/>
-            </Border.Effect>
+          <Border Margin="12,0,0,0" Height="20" CornerRadius="10" Background="{DynamicResource Brush.Accent1}" Effect="drop-shadow(0 0 6 #40000000)">
             <TextBlock Classes="monospace" Margin="8,0" Text="{Binding Version}" FontSize="12" Foreground="White"/>
           </Border>
         </StackPanel>

@@ -251,20 +251,43 @@
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.Background}"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="Effect">
-      <Setter.Value>
-        <DropShadowEffect BlurRadius="2" OffsetX="0" OffsetY="0" Color="Black" Opacity=".65"/>
-      </Setter.Value>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid>
+          <Border x:Name="PART_Border"
+                  Margin="2" 
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Effect="drop-shadow(0 0 2 #80000000)"/>
+
+          <ContentPresenter x:Name="PART_ContentPresenter"
+                            Margin="2"
+                            Background="Transparent"
+                            Padding="{TemplateBinding Padding}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"/>
+        </Grid>
+      </ControlTemplate>
     </Setter>
   </Style>
-  <Style Selector="Button.flat:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+  <Style Selector="Button.flat:pointerover /template/ Border#PART_Border">
     <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.BackgroundHovered}"/>
+  </Style>
+  <Style Selector="Button.flat:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
   </Style>
   <Style Selector="Button.flat.primary">
     <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.PrimaryBackground}"/>
   </Style>
-  <Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+  <Style Selector="Button.flat.primary:pointerover /template/ Border#PART_Border">
     <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.PrimaryBackgroundHovered}"/>
+  </Style>
+  <Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
   </Style>
 
   <Style Selector="Border.launcher_pagetab">

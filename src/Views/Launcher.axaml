@@ -239,66 +239,77 @@
     <v:LauncherBody Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" Data="{Binding ActivePage.Data}"/>
 
     <!-- Popup container -->
-    <ContentControl Grid.Row="1" Margin="0,36,0,0" Content="{Binding ActivePage.Popup}" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
-      <ContentControl.DataTemplates>
-        <DataTemplate DataType="vm:Popup">
-          <Grid>
-            <Border Background="Transparent" PointerPressed="OnPopupCancelByClickMask"/>
+    <Grid Grid.Row="1" Margin="0,36,0,0" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <Border Background="Transparent" PointerPressed="OnPopupCancelByClickMask"/>
 
-            <Grid Width="500" HorizontalAlignment="Center" VerticalAlignment="Top">
-              <Border Background="{DynamicResource Brush.Popup}" CornerRadius="0,0,4,4">
+      <Grid Width="500" HorizontalAlignment="Center" VerticalAlignment="Top">                
+        <ContentControl Content="{Binding ActivePage.Popup}" ClipToBounds="True">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:Popup">
+              <Border Margin="8,0,8,8"
+                      Background="{DynamicResource Brush.Popup}"
+                      BorderThickness="1,0,1,1"
+                      BorderBrush="{DynamicResource Brush.Border0}">
+                <Border.CornerRadius>
+                  <OnPlatform Default="0,0,4,4" Linux="0"/>
+                </Border.CornerRadius>
+
                 <Border.Effect>
-                  <DropShadowEffect BlurRadius="8" Color="Black" Opacity=".6" OffsetX="0" OffsetY="0"/>
+                  <OnPlatform>
+                    <On Options="Windows, macOS">
+                      <DropShadowEffect BlurRadius="8" OffsetX="0" OffsetY="0" Color="Black" Opacity=".5"/>
+                    </On>
+                  </OnPlatform>
                 </Border.Effect>
-              </Border>
+                
+                <StackPanel Margin="8" Orientation="Vertical">
+                  <!-- Popup Widget -->
+                  <ContentPresenter Margin="0,8"
+                                    Content="{Binding View}"
+                                    IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
 
-              <StackPanel Margin="8" Orientation="Vertical">
-                <!-- Popup Widget -->
-                <ContentControl Margin="0,8"
-                                Content="{Binding View}"
-                                IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
-
-                <!-- Options -->
-                <StackPanel Margin="0,8,0,0"
-                            Height="32"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                  <Button Classes="flat primary"
-                          Width="80"
-                          Content="{DynamicResource Text.Sure}"
-                          Click="OnPopupSure"/>
-                  <Button Classes="flat"
-                          Width="80"
-                          Margin="8,0,0,0"
-                          Content="{DynamicResource Text.Cancel}"
-                          Click="OnPopupCancel"/>
-                </StackPanel>
-
-                <!-- Running -->
-                <StackPanel Orientation="Vertical" Margin="8" IsVisible="{Binding InProgress}">
-                  <Rectangle Height="1" Margin="-8,0" HorizontalAlignment="Stretch" Fill="{DynamicResource Brush.Border1}" />
-                  <StackPanel Orientation="Horizontal" Margin="0,8">
-                    <Path Width="12" Height="12" Classes="waiting" Data="{StaticResource Icons.Waiting}" IsVisible="{Binding InProgress}"/>
-                    <TextBlock Margin="6,0,0,0" FontSize="14" FontWeight="Bold" Text="{DynamicResource Text.Running}"/>
+                  <!-- Options -->
+                  <StackPanel Margin="0,8,0,0"
+                              Height="32"
+                              Orientation="Horizontal"
+                              HorizontalAlignment="Right"
+                              IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                    <Button Classes="flat primary"
+                            Width="80"
+                            Content="{DynamicResource Text.Sure}"
+                            Click="OnPopupSure"/>
+                    <Button Classes="flat"
+                            Width="80"
+                            Margin="8,0,0,0"
+                            Content="{DynamicResource Text.Cancel}"
+                            Click="OnPopupCancel"/>
                   </StackPanel>
-                  <TextBlock HorizontalAlignment="Stretch"
-                             TextWrapping="Wrap"
-                             FontSize="12"
-                             FontStyle="Italic"
-                             Text="{Binding ProgressDescription}"/>
-                  <ProgressBar Margin="0,8,0,0"
-                               HorizontalAlignment="Stretch"
-                               IsIndeterminate="True"
-                               Background="{DynamicResource Brush.FG2}" Foreground="{DynamicResource Brush.Accent1}"
-                               Minimum="0" Maximum="100"/>
+
+                  <!-- Running -->
+                  <StackPanel Orientation="Vertical" Margin="8" IsVisible="{Binding InProgress}">
+                    <Rectangle Height="1" Margin="-8,0" HorizontalAlignment="Stretch" Fill="{DynamicResource Brush.Border1}" />
+                    <StackPanel Orientation="Horizontal" Margin="0,8">
+                      <Path Width="12" Height="12" Classes="waiting" Data="{StaticResource Icons.Waiting}" IsVisible="{Binding InProgress}"/>
+                      <TextBlock Margin="6,0,0,0" FontSize="14" FontWeight="Bold" Text="{DynamicResource Text.Running}"/>
+                    </StackPanel>
+                    <TextBlock HorizontalAlignment="Stretch"
+                               TextWrapping="Wrap"
+                               FontSize="12"
+                               FontStyle="Italic"
+                               Text="{Binding ProgressDescription}"/>
+                    <ProgressBar Margin="0,8,0,0"
+                                 HorizontalAlignment="Stretch"
+                                 IsIndeterminate="True"
+                                 Background="{DynamicResource Brush.FG2}" Foreground="{DynamicResource Brush.Accent1}"
+                                 Minimum="0" Maximum="100"/>
+                  </StackPanel>
                 </StackPanel>
-              </StackPanel>
-            </Grid>
-          </Grid>
-        </DataTemplate>
-      </ContentControl.DataTemplates>
-    </ContentControl>
+              </Border>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+      </Grid>
+    </Grid>
 
     <!-- Notification container -->
     <Grid Grid.Row="1" Width="360" Margin="0,36,0,0" HorizontalAlignment="Right" VerticalAlignment="Top">
@@ -307,11 +318,7 @@
           <ItemsControl.ItemTemplate>
             <DataTemplate DataType="m:Notification">
               <Grid Width="320" Margin="8">
-                <Border Background="{DynamicResource Brush.Window}" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="1" CornerRadius="4">
-                  <Border.Effect>
-                    <DropShadowEffect OffsetX="0" OffsetY="0" BlurRadius="8" Color="Black" Opacity=".4"/>
-                  </Border.Effect>
-                </Border>
+                <Border Background="{DynamicResource Brush.Window}" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="1" CornerRadius="4" Effect="drop-shadow(0 0 8 #40000000)"/>
 
                 <Grid Margin="8" RowDefinitions="26,Auto,Auto">
                   <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsError}">
@@ -334,7 +341,7 @@
                            Text="{Binding Message}"/>
                   <Button Grid.Row="3"
                           Classes="flat primary"
-                          Height="25"
+                          Height="30"
                           Margin="4,0"
                           Command="{Binding #me.DataContext.(vm:Launcher).ActivePage.DismissNotification}"
                           CommandParameter="{Binding}"

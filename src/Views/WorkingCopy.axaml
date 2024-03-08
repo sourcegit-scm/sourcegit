@@ -376,7 +376,7 @@
         <Button Grid.Column="4"
                 Classes="flat primary"
                 Content="{DynamicResource Text.WorkingCopy.Commit}"
-                Height="24"
+                Height="28"
                 Margin="8,0,0,0"
                 Padding="8,0"
                 Click="Commit"/>
@@ -384,7 +384,7 @@
         <Button Grid.Column="5"
                 Classes="flat"
                 Content="{DynamicResource Text.WorkingCopy.CommitAndPush}"
-                Height="24"
+                Height="28"
                 Margin="8,0,0,0"
                 Padding="8,0"
                 Click="CommitWithPush">
