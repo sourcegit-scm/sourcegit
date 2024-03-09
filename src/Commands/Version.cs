@@ -1,7 +1,7 @@
 ﻿namespace SourceGit.Commands {
     public class Version : Command {
         public Version() {
-            Args = "-v";
+            Args = "--version";
             RaiseError = false;
         }
 
