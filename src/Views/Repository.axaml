@@ -161,6 +161,11 @@
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   LostFocus="OnLocalBranchTreeLostFocus"
                   SelectionChanged="OnLocalBranchTreeSelectionChanged">
+          <TreeView.Styles>
+            <Style Selector="TreeViewItem" x:DataType="m:BranchTreeNode">
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.Styles>
           <TreeView.ItemTemplate>
             <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type m:BranchTreeNode}">
               <Grid Height="24" ColumnDefinitions="Auto,*,Auto,Auto" Background="Transparent" ContextRequested="OnLocalBranchContextMenuRequested" DoubleTapped="OnDoubleTappedLocalBranchNode">
@@ -208,6 +213,12 @@
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   LostFocus="OnRemoteBranchTreeLostFocus"
                   SelectionChanged="OnRemoteBranchTreeSelectionChanged">
+          <TreeView.Styles>
+            <Style Selector="TreeViewItem" x:DataType="m:BranchTreeNode">
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeView.Styles>
+          
           <TreeView.ItemTemplate>
             <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type m:BranchTreeNode}">
               <Grid Height="24" ColumnDefinitions="Auto,*,Auto" Background="Transparent" ContextRequested="OnRemoteBranchContextMenuRequested">

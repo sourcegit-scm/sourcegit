@@ -114,7 +114,7 @@ namespace SourceGit.Models {
                         lastFolder = new BranchTreeNode() {
                             Name = subs[i],
                             Type = BranchTreeNodeType.Folder,
-                            IsExpanded = _expanded.Contains(path),
+                            IsExpanded = branch.IsCurrent || _expanded.Contains(path),
                         };
                         roots.Add(lastFolder);
                         _maps.Add(path, lastFolder);
@@ -122,7 +122,7 @@ namespace SourceGit.Models {
                         var folder = new BranchTreeNode() {
                             Name = subs[i],
                             Type = BranchTreeNodeType.Folder,
-                            IsExpanded = _expanded.Contains(path),
+                            IsExpanded = branch.IsCurrent || _expanded.Contains(path),
                         };
                         _maps.Add(path, folder);
                         lastFolder.Children.Add(folder);
