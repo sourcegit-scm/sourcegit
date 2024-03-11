@@ -292,7 +292,7 @@
         <Border Name="PART_Border"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="{TemplateBinding CornerRadius}"
-                BorderBrush="{DynamicResource Brush.Border0}"
+                BorderBrush="{DynamicResource Brush.Border2}"
                 Background="{DynamicResource Brush.Popup}"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
