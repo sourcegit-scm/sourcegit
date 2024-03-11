@@ -19,30 +19,26 @@
 
     <Grid Grid.Column="0" RowDefinitions="26,*">
       <!-- Search -->
-      <Grid Grid.Row="0" ColumnDefinitions="24,*,24">
-        <Border Grid.Column="0" Grid.ColumnSpan="3"
-                Background="Transparent"
-                BorderBrush="{DynamicResource Brush.Border2}"
-                BorderThickness="1"/>
-        <Path Grid.Column="0"
-              Width="14" Height="14"
-              Fill="{DynamicResource Brush.FG2}"
-              Data="{StaticResource Icons.Search}"/>
-        <TextBox Grid.Column="1"
-                 Classes="no_background no_border"
-                 FontSize="12"
-                 Height="24"
-                 CornerRadius="0"
-                 Watermark="{DynamicResource Text.CommitDetail.Changes.Search}"
-                 Text="{Binding SearchFileFilter, Mode=TwoWay}"/>
-        <Button Grid.Column="2"
-                Classes="icon_button"
-                IsVisible="{Binding SearchFileFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                Command="{Binding ClearSearchFileFilter}">
-          <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
-        </Button>
-      </Grid>
+      <TextBox Grid.Row="0"
+               FontSize="12"
+               Height="26"
+               BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+               Background="Transparent"
+               Watermark="{DynamicResource Text.CommitDetail.Changes.Search}"
+               Text="{Binding SearchFileFilter, Mode=TwoWay}">
+        <TextBox.InnerLeftContent>
+          <Path Width="14" Height="14" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
+        </TextBox.InnerLeftContent>
 
+        <TextBox.InnerRightContent>
+          <Button Classes="icon_button"
+                  IsVisible="{Binding SearchFileFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                  Command="{Binding ClearSearchFileFilter}">
+            <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
+          </Button>
+        </TextBox.InnerRightContent>
+      </TextBox>
+      
       <!-- File Tree -->
       <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
         <TreeView Grid.Row="5"

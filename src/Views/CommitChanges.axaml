@@ -17,30 +17,28 @@
 
     <Grid Grid.Column="0" RowDefinitions="26,*">
       <!-- Search & Display Mode -->
-      <Grid Grid.Row="0" ColumnDefinitions="24,*,24,24">
-        <Border Grid.Column="0" Grid.ColumnSpan="3"
-                Background="Transparent"
-                BorderBrush="{DynamicResource Brush.Border2}"
-                BorderThickness="1"/>
-        <Path Grid.Column="0"
-              Width="14" Height="14"
-              Fill="{DynamicResource Brush.FG2}"
-              Data="{StaticResource Icons.Search}"/>
-        <TextBox Grid.Column="1"
-                 Classes="no_background no_border"
-                 Height="24"
+      <Grid Grid.Row="0" ColumnDefinitions="*,24">
+        <TextBox Grid.Column="0"
                  FontSize="12"
-                 CornerRadius="0"
+                 Height="26"
+                 BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
+                 Background="Transparent"
                  Watermark="{DynamicResource Text.CommitDetail.Changes.Search}"
-                 Text="{Binding SearchChangeFilter, Mode=TwoWay}"/>
-        <Button Grid.Column="2"
-                Classes="icon_button"
-                IsVisible="{Binding SearchChangeFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                Command="{Binding ClearSearchChangeFilter}">
-          <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
-        </Button>
+                 Text="{Binding SearchChangeFilter, Mode=TwoWay}">
+          <TextBox.InnerLeftContent>
+            <Path Width="14" Height="14" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
+          </TextBox.InnerLeftContent>
 
-        <v:ChangeViewModeSwitcher Grid.Column="3"
+          <TextBox.InnerRightContent>
+            <Button Classes="icon_button"
+                    IsVisible="{Binding SearchChangeFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Command="{Binding ClearSearchChangeFilter}">
+              <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
+            </Button>
+          </TextBox.InnerRightContent>
+        </TextBox>
+
+        <v:ChangeViewModeSwitcher Grid.Column="1"
                                   Width="18" Height="18"
                                   HorizontalAlignment="Right"
                                   ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
