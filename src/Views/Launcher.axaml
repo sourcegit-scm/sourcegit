@@ -19,6 +19,10 @@
         WindowStartupLocation="CenterScreen"
         ExtendClientAreaToDecorationsHint="{OnPlatform True, Linux=False}"
         ExtendClientAreaChromeHints="{OnPlatform NoChrome, Linux=Default}">
+  <Window.Resources>
+    <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="Red"/>
+  </Window.Resources>
+  
   <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
     <Grid.RowDefinitions>
       <RowDefinition Height="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToTitleBarHeight}}"/>

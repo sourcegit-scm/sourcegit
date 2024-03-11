@@ -1,15 +1,11 @@
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ae="using:AvaloniaEdit"
+        xmlns:aes="using:AvaloniaEdit.Search">
   <Design.PreviewWith>
     <StackPanel Orientation="Vertical">
     </StackPanel>
   </Design.PreviewWith>
-
-  <Style Selector="Control">
-    <Style.Resources>
-      <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="Red"/>
-    </Style.Resources>
-  </Style>
 
   <Style Selector="ScrollBar">
     <Style.Resources>
@@ -288,6 +284,175 @@
   </Style>
   <Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
+  </Style>
+
+  <Style Selector="aes|SearchPanel">
+    <Setter Property="Template">
+      <ControlTemplate TargetType="aes:SearchPanel">
+        <Border Name="PART_Border"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                BorderBrush="{DynamicResource Brush.Border0}"
+                Background="{DynamicResource Brush.Popup}"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Padding="10">
+          <Grid ColumnDefinitions="Auto,Auto,Auto"
+                RowDefinitions="Auto,Auto,Auto">
+            <ToggleButton Name="Expander"
+                          Theme="{StaticResource SearchPanelExpanderToggle}"
+                          VerticalAlignment="Center"
+                          IsVisible="{Binding !TextEditor.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
+                          IsChecked="{Binding IsReplaceMode, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                          Grid.Column="0"
+                          Grid.Row="0"
+                          Width="16"
+                          Margin="0, 0, 5, 0">
+              <ToolTip.Tip>
+                <TextBlock Text="{x:Static ae:SR.SearchToggleReplace}" />
+              </ToolTip.Tip>
+            </ToggleButton>
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="2"
+                        Grid.Row="0">
+              <TextBox Watermark="{x:Static ae:SR.SearchLabel}"
+                       Name="PART_searchTextBox"
+                       Grid.Column="1"
+                       Grid.Row="0"
+                       Width="265" Height="28"
+                       Margin="0,0,0,0"
+                       CornerRadius="2"
+                       Text="{Binding SearchPattern, RelativeSource={RelativeSource TemplatedParent}}">
+                <TextBox.InnerRightContent>
+                  <StackPanel Orientation="Horizontal">
+                    <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
+                                  IsChecked="{Binding $parent[aes:SearchPanel].MatchCase, Mode=TwoWay}"
+                                  ToolTip.Tip="{x:Static ae:SR.SearchMatchCaseText}"
+                                  Width="24" Height="20"
+                                  VerticalAlignment="Center">
+                      <Path Data="{StaticResource CaseSensitiveIconPath}"
+                            Stretch="Uniform"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="12"
+                            Fill="{Binding $parent.Foreground}"/>
+                    </ToggleButton>
+                    <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
+                                  IsChecked="{Binding $parent[aes:SearchPanel].WholeWords, Mode=TwoWay}"
+                                  ToolTip.Tip="{x:Static ae:SR.SearchMatchWholeWordsText}"
+                                  Margin="3,0,0,0" Width="24" Height="20"
+                                  VerticalAlignment="Center">
+                      <Path Data="{StaticResource CompleteWordIconPath}"
+                            Stretch="Uniform"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="14"
+                            Fill="{Binding $parent.Foreground}"/>
+                    </ToggleButton>
+                    <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
+                                  IsChecked="{Binding $parent[aes:SearchPanel].UseRegex, Mode=TwoWay}"
+                                  ToolTip.Tip="{x:Static ae:SR.SearchUseRegexText}"
+                                  Margin="3,0,5,0" Width="24" Height="20"
+                                  VerticalAlignment="Center">
+                      <Path Data="{StaticResource RegularExpressionIconPath}"
+                            Stretch="Uniform"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="12"
+                            Fill="{Binding $parent.Foreground}"/>
+                    </ToggleButton>
+                  </StackPanel>
+                </TextBox.InnerRightContent>
+              </TextBox>
+              <Button Classes="icon_button"
+                      Margin="5,0,0,0"
+                      Width="28"
+                      VerticalAlignment="Stretch"
+                      Command="{x:Static aes:SearchCommands.FindPrevious}">
+                <ToolTip.Tip>
+                  <TextBlock Text="{x:Static ae:SR.SearchFindPreviousText}" />
+                </ToolTip.Tip>
+                <Path Data="{StaticResource Icons.Up}"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Width="14"
+                      Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+              <Button Classes="icon_button"
+                      Margin="3,0,0,0"
+                      VerticalAlignment="Stretch"
+                      Width="28"
+                      Command="{x:Static aes:SearchCommands.FindNext}">
+                <ToolTip.Tip>
+                  <TextBlock Text="{x:Static ae:SR.SearchFindNextText}" />
+                </ToolTip.Tip>
+                <Path Data="{StaticResource Icons.Down}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Stretch="Uniform"
+                      Width="14"
+                      Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+            </StackPanel>
+            <StackPanel Name="ReplaceButtons"
+                        IsVisible="{Binding #Expander.IsChecked}"
+                        Orientation="Horizontal"
+                        Margin="0 5 0 0 "
+                        Grid.Column="2"
+                        Grid.Row="1">
+              <TextBox Name="ReplaceBox" Watermark="{x:Static ae:SR.ReplaceLabel}"
+                       IsVisible="{Binding IsReplaceMode, RelativeSource={RelativeSource TemplatedParent}}"
+                       Grid.Column="1"
+                       Grid.Row="1"
+                       Width="265" Height="28"
+                       Margin="0 0 0 0"
+                       CornerRadius="2"
+                       Text="{Binding ReplacePattern, RelativeSource={RelativeSource TemplatedParent}}" />
+              <Button Classes="icon_button"
+                      Margin="5, 0, 0, 0"
+                      VerticalAlignment="Stretch"
+                      Width="28"
+                      Command="{x:Static aes:SearchCommands.ReplaceNext}">
+                <ToolTip.Tip>
+                  <TextBlock Text="{x:Static ae:SR.SearchReplaceNext}" />
+                </ToolTip.Tip>
+                <Path Data="{StaticResource ReplaceNextIconPath}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Stretch="Uniform"
+                      Width="12"
+                      Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+              <Button Classes="icon_button"
+                      Margin="3, 0, 0, 0"
+                      VerticalAlignment="Stretch"
+                      Width="28"
+                      Command="{x:Static aes:SearchCommands.ReplaceAll}">
+                <ToolTip.Tip>
+                  <TextBlock Text="{x:Static ae:SR.SearchReplaceAll}" />
+                </ToolTip.Tip>
+                <Path Data="{StaticResource ReplaceAllIconPath}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Stretch="Uniform"
+                      Width="18"
+                      Fill="{DynamicResource Brush.FG1}" />
+              </Button>
+            </StackPanel>
+            <StackPanel Name="PART_MessageView"
+                        IsVisible="False"
+                        Orientation="Horizontal"
+                        Margin="0 5 0 0 "
+                        Grid.Column="2"
+                        Grid.Row="2">
+              <TextBlock Name="PART_MessageContent"
+                         FontSize="11" />
+            </StackPanel>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
   </Style>
 
   <Style Selector="Border.launcher_pagetab">
