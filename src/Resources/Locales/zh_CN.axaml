@@ -480,6 +480,11 @@
   <sys:String x:Key="Text.Hotkeys.Repo.ViewStashes">显示贮藏列表</sys:String>
   <sys:String x:Key="Text.Hotkeys.Repo.ToggleSearch">打开/关闭历史搜索</sys:String>
   <sys:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected">将选中的变更暂存或从暂存列表中移除</sys:String>
+  <sys:String x:Key="Text.Hotkeys.TextEditor">文本编辑器</sys:String>
+  <sys:String x:Key="Text.Hotkeys.TextEditor.Search">打开搜索</sys:String>
+  <sys:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch">定位到上一个匹配搜索的位置</sys:String>
+  <sys:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch">定位到下一个匹配搜索的位置</sys:String>
+  <sys:String x:Key="Text.Hotkeys.TextEditor.CloseSearch">关闭搜索</sys:String>
   
   <sys:String x:Key="Text.NotConfigured">GIT尚未配置。请打开【偏好设置】配置GIT路径。</sys:String>
   <sys:String x:Key="Text.BinaryNotSupported">二进制文件不支持该操作!!!</sys:String>

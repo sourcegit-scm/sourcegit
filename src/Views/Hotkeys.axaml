@@ -92,6 +92,26 @@
         <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="SPACE"/>
         <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
       </Grid>
+
+      <TextBlock Text="{DynamicResource Text.Hotkeys.TextEditor}"
+                 Foreground="{DynamicResource Brush.FG2}"
+                 FontWeight="Bold"
+                 FontSize="13"
+                 Margin="0,8"/>
+
+      <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="Auto,*">
+        <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+F"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.Search}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="Shift+F3"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoPrevMatch}" />
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="F3"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoNextMatch}" />
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="Ctrl+3"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.CloseSearch}" />
+      </Grid>
     </StackPanel>
   </Grid>
 </Window>

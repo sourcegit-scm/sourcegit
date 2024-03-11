@@ -481,6 +481,11 @@
   <sys:String x:Key="Text.Hotkeys.Repo.ViewStashes">Switch to 'Stashes'</sys:String>
   <sys:String x:Key="Text.Hotkeys.Repo.ToggleSearch">Toggle commit search</sys:String>
   <sys:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected">Stage/Unstage selected changes</sys:String>
+  <sys:String x:Key="Text.Hotkeys.TextEditor">TEXT EDITOR</sys:String>
+  <sys:String x:Key="Text.Hotkeys.TextEditor.Search">Open search panel</sys:String>
+  <sys:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch">Find previous match</sys:String>
+  <sys:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch">Find next match</sys:String>
+  <sys:String x:Key="Text.Hotkeys.TextEditor.CloseSearch">Close search panel</sys:String>
   
   <sys:String x:Key="Text.NotConfigured">Git has NOT been configured. Please to go [Preference] and configure it first.</sys:String>
   <sys:String x:Key="Text.BinaryNotSupported">BINARY FILE NOT SUPPORTED!!!</sys:String>
