@@ -145,7 +145,7 @@ namespace SourceGit.Models {
                 name.StartsWith("worktrees/")) {
                 _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
             } else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal)) {
-                _updateWC = DateTime.Now.AddSeconds(.5).ToFileTime();
+                _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
             }
         }
 
@@ -154,7 +154,7 @@ namespace SourceGit.Models {
 
             var name = e.Name.Replace("\\", "/");
             if (name == ".git" || name.StartsWith(".git/", StringComparison.Ordinal)) return;
-            if (_updateWC == 0) _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
+            _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
         }
 
         private IRepository _repo = null;

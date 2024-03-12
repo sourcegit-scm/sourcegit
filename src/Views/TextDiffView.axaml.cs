@@ -490,7 +490,7 @@ namespace SourceGit.Views {
         }
 
         public static readonly StyledProperty<Vector> SyncScrollOffsetProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, Vector>(nameof(SyncScrollOffset));
+            AvaloniaProperty.Register<SingleSideTextDiffPresenter, Vector>(nameof(SyncScrollOffset), Vector.Zero);
 
         public Vector SyncScrollOffset {
             get => GetValue(SyncScrollOffsetProperty);
@@ -508,12 +508,17 @@ namespace SourceGit.Views {
         protected override void OnLoaded(RoutedEventArgs e) {
             base.OnLoaded(e);
 
+            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
+            if (_scrollViewer != null) {
+                _scrollViewer.Offset = SyncScrollOffset;
+                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
+            }
+
             TextArea.LeftMargins.Add(new LineNumberMargin(this) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            TextArea.TextView.ScrollOffsetChanged += OnTextViewScrollOffsetChanged;
 
             if (App.Current?.ActualThemeVariant == ThemeVariant.Dark) {
                 _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
@@ -531,19 +536,27 @@ namespace SourceGit.Views {
         protected override void OnUnloaded(RoutedEventArgs e) {
             base.OnUnloaded(e);
 
+            if (_scrollViewer != null) {
+                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
+                _scrollViewer = null;
+            } 
+
             TextArea.LeftMargins.Clear();
             TextArea.TextView.BackgroundRenderers.Clear();
             TextArea.TextView.LineTransformers.Clear();
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-            TextArea.TextView.ScrollOffsetChanged -= OnTextViewScrollOffsetChanged;
             _registryOptions = null;
             _textMate.Dispose();
             _textMate = null;
             GC.Collect();
         }
 
-        private void OnTextViewScrollOffsetChanged(object sender, EventArgs e) {
-            SyncScrollOffset = TextArea.TextView.ScrollOffset;
+        private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e) {
+            if (_syncScrollingByOthers) {
+                _syncScrollingByOthers = false;
+            } else {
+                SyncScrollOffset = _scrollViewer.Offset;
+            }
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e) {
@@ -591,9 +604,18 @@ namespace SourceGit.Views {
                     Text = string.Empty;
                 }
             } else if (change.Property == SyncScrollOffsetProperty) {
-                if (TextArea.TextView.ScrollOffset != SyncScrollOffset) {
-                    IScrollable scrollable = TextArea.TextView;
-                    scrollable.Offset = SyncScrollOffset;
+                if (_scrollViewer == null) return;
+
+                var curOffset = _scrollViewer.Offset;
+                if (!curOffset.Equals(SyncScrollOffset)) {
+                    _syncScrollingByOthers = true;
+                    
+                    if (curOffset.X != SyncScrollOffset.X) {
+                        var offset = new Vector(Math.Min(_scrollViewer.ScrollBarMaximum.X, SyncScrollOffset.X), SyncScrollOffset.Y);
+                        _scrollViewer.Offset = offset;
+                    } else {
+                        _scrollViewer.Offset = SyncScrollOffset;
+                    }
                 }
             } else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null && _textMate != null) {
                 if (App.Current?.ActualThemeVariant == ThemeVariant.Dark) {
@@ -617,6 +639,9 @@ namespace SourceGit.Views {
 
         private RegistryOptions _registryOptions;
         private TextMate.Installation _textMate;
+
+        private ScrollViewer _scrollViewer = null;
+        private bool _syncScrollingByOthers = false;
     }
 
     public partial class TextDiffView : UserControl {
