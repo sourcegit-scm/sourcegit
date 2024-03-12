@@ -47,17 +47,18 @@
 					       HorizontalAlignment="Right" VerticalAlignment="Center"
 					       Margin="0,0,8,0"
 					       Text="{DynamicResource Text.Archive.File}"/>
-      <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,Auto">
-        <TextBox Grid.Column="0"
-                 x:Name="txtSaveFile"
-                 Height="28"
-                 CornerRadius="3"
-                 Watermark="{DynamicResource Text.Archive.File.Placeholder}"
-                 Text="{Binding SaveFile, Mode=TwoWay}"/>
-        <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectOutputFile">
-          <Path Data="{StaticResource Icons.Folder.Open}"/>
-        </Button>
-      </Grid>
+      <TextBox Grid.Row="1" Grid.Column="1"
+               x:Name="txtSaveFile"
+               Height="28"
+               CornerRadius="3"
+               Watermark="{DynamicResource Text.Archive.File.Placeholder}"
+               Text="{Binding SaveFile, Mode=TwoWay}">
+        <TextBox.InnerRightContent>
+          <Button Classes="icon_button" Width="30" Height="30" Click="SelectOutputFile">
+            <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+          </Button>
+        </TextBox.InnerRightContent>
+      </TextBox>
     </Grid>
   </StackPanel>
 </UserControl>

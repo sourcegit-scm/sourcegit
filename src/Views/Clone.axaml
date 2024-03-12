@@ -17,30 +17,32 @@
     </Grid>
     <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*" IsVisible="{Binding UseSSH}">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.SSHKey}"/>
-      <Grid Grid.Column="1" ColumnDefinitions="*,Auto">
-        <TextBox Grid.Column="0"
-                 x:Name="txtSSHKey"
-                 Height="28"
-                 CornerRadius="3"
-                 Watermark="{DynamicResource Text.SSHKey.Placeholder}"
-                 Text="{Binding SSHKey, Mode=TwoWay}"/>
-        <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectSSHKey">
-          <Path Data="{StaticResource Icons.Folder.Open}"/>
-        </Button>
-      </Grid>
+      <TextBox Grid.Column="1"
+               x:Name="txtSSHKey"
+               Height="28"
+               CornerRadius="3"
+               Watermark="{DynamicResource Text.SSHKey.Placeholder}"
+               Text="{Binding SSHKey, Mode=TwoWay}">
+        <TextBox.InnerRightContent>
+          <Button Classes="icon_button" Width="30" Height="30" Click="SelectSSHKey">
+            <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+          </Button>
+        </TextBox.InnerRightContent>
+      </TextBox>
     </Grid>
     <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.ParentFolder}"/>
-      <Grid Grid.Column="1" ColumnDefinitions="*,Auto">
-        <TextBox Grid.Column="0"
-                 x:Name="txtParentFolder"
-                 Height="28"
-                 CornerRadius="3"
-                 Text="{Binding ParentFolder, Mode=TwoWay}"/>
-        <Button Grid.Column="1" Classes="icon_button" Width="32" Height="32" Margin="4,0,0,0" Click="SelectParentFolder">
-          <Path Data="{StaticResource Icons.Folder.Open}"/>
-        </Button>
-      </Grid>
+      <TextBox Grid.Column="1"
+               x:Name="txtParentFolder"
+               Height="28"
+               CornerRadius="3"
+               Text="{Binding ParentFolder, Mode=TwoWay}">
+        <TextBox.InnerRightContent>
+          <Button Classes="icon_button" Width="30" Height="30" Margin="4,0,0,0" Click="SelectParentFolder">
+            <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+          </Button>
+        </TextBox.InnerRightContent>
+      </TextBox>
     </Grid>
     <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.LocalName}"/>
