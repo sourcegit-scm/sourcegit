@@ -364,7 +364,6 @@
                  Margin="4,2"
                  FontSize="12"
                  Height="24"
-                 CornerRadius="12"
                  BorderThickness="1"
                  BorderBrush="{DynamicResource Brush.Border2}"
                  Background="{DynamicResource Brush.Contents}"

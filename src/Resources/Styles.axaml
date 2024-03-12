@@ -364,9 +364,9 @@
                   </StackPanel>
                 </TextBox.InnerRightContent>
               </TextBox>
-              <Button Classes="icon_button"
-                      Margin="5,0,0,0"
+              <Button Margin="5,0,0,0"
                       Width="28"
+                      Background="Transparent"
                       VerticalAlignment="Stretch"
                       Command="{x:Static aes:SearchCommands.FindPrevious}">
                 <ToolTip.Tip>
@@ -379,10 +379,10 @@
                       Width="14"
                       Fill="{DynamicResource Brush.FG1}"/>
               </Button>
-              <Button Classes="icon_button"
-                      Margin="3,0,0,0"
+              <Button Margin="3,0,0,0"
                       VerticalAlignment="Stretch"
                       Width="28"
+                      Background="Transparent"
                       Command="{x:Static aes:SearchCommands.FindNext}">
                 <ToolTip.Tip>
                   <TextBlock Text="{x:Static ae:SR.SearchFindNextText}" />
@@ -409,10 +409,10 @@
                        Margin="0 0 0 0"
                        CornerRadius="2"
                        Text="{Binding ReplacePattern, RelativeSource={RelativeSource TemplatedParent}}" />
-              <Button Classes="icon_button"
-                      Margin="5, 0, 0, 0"
+              <Button Margin="5, 0, 0, 0"
                       VerticalAlignment="Stretch"
                       Width="28"
+                      Background="Transparent"
                       Command="{x:Static aes:SearchCommands.ReplaceNext}">
                 <ToolTip.Tip>
                   <TextBlock Text="{x:Static ae:SR.SearchReplaceNext}" />
@@ -424,10 +424,10 @@
                       Width="12"
                       Fill="{DynamicResource Brush.FG1}"/>
               </Button>
-              <Button Classes="icon_button"
-                      Margin="3, 0, 0, 0"
+              <Button Margin="3, 0, 0, 0"
                       VerticalAlignment="Stretch"
                       Width="28"
+                      Background="Transparent"
                       Command="{x:Static aes:SearchCommands.ReplaceAll}">
                 <ToolTip.Tip>
                   <TextBlock Text="{x:Static ae:SR.SearchReplaceAll}" />
@@ -443,7 +443,7 @@
             <StackPanel Name="PART_MessageView"
                         IsVisible="False"
                         Orientation="Horizontal"
-                        Margin="0 5 0 0 "
+                        Margin="0 5 0 0"
                         Grid.Column="2"
                         Grid.Row="2">
               <TextBlock Name="PART_MessageContent"
