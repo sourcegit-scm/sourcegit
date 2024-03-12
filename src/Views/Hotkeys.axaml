@@ -109,7 +109,7 @@
         <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="F3"/>
         <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoNextMatch}" />
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="Ctrl+3"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
         <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.CloseSearch}" />
       </Grid>
     </StackPanel>
