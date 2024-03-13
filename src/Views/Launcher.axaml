@@ -133,8 +133,8 @@
                                   <DataTemplate>
                                     <Border Height="20" VerticalAlignment="Center">
                                       <Path Width="12" Height="12"
-                                            Fill="{Binding, Converter={x:Static c:BookmarkConverters.ToBrush}}"
-                                            StrokeThickness="{Binding, Converter={x:Static c:BookmarkConverters.ToStrokeThickness}}"
+                                            Fill="{Binding Converter={x:Static c:BookmarkConverters.ToBrush}}"
+                                            StrokeThickness="{Binding Converter={x:Static c:BookmarkConverters.ToStrokeThickness}}"
                                             Stroke="{DynamicResource Brush.FG1}"
                                             HorizontalAlignment="Center" VerticalAlignment="Center"
                                             Data="{StaticResource Icons.Bookmark}"/>
