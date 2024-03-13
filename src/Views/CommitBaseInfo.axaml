@@ -57,7 +57,7 @@
             <ItemsControl.ItemTemplate>
               <DataTemplate>
                 <TextBlock Classes="monospace"
-                           Text="{Binding, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                           Text="{Binding Converter={x:Static c:StringConverters.ToShortSHA}}"
                            FontSize="12"
                            Foreground="DarkOrange"
                            TextDecorations="Underline"

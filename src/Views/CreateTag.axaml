@@ -22,7 +22,7 @@
           <DataTemplate DataType="m:Branch">
             <StackPanel Orientation="Horizontal">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
-              <TextBlock VerticalAlignment="Center" Text="{Binding, Converter={x:Static c:BranchConverters.ToName}}" Margin="8,0,0,0"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Converter={x:Static c:BranchConverters.ToName}}" Margin="8,0,0,0"/>
             </StackPanel>
           </DataTemplate>
 
@@ -30,7 +30,7 @@
             <StackPanel Orientation="Horizontal">
               <Path Width="14" Height="14" Margin="0,8,0,0" Data="{StaticResource Icons.Commit}"/>
               <TextBlock Classes="monospace" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-              <TextBlock VerticalAlignment="Center" Text="{Binding Subject}}" Margin="4,0,0,0"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0"/>
             </StackPanel>
           </DataTemplate>
         </ContentControl.DataTemplates>

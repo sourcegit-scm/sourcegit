@@ -21,7 +21,7 @@
       <StackPanel Grid.Column="1" Orientation="Horizontal">
         <Path Width="14" Height="14" Margin="0,8,0,0" Data="{StaticResource Icons.Commit}"/>
         <TextBlock Classes="monospace" VerticalAlignment="Center" Text="{Binding Target.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-        <TextBlock VerticalAlignment="Center" Text="{Binding Target.Subject}}" Margin="4,0,0,0"/>
+        <TextBlock VerticalAlignment="Center" Text="{Binding Target.Subject}" Margin="4,0,0,0"/>
       </StackPanel>
 
       <CheckBox Grid.Row="1" Grid.Column="1"
