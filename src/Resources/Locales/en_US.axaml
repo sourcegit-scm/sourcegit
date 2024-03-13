@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <sys:String x:Key="Text.Start">START</sys:String>
-  <sys:String x:Key="Text.Sure">SURE</sys:String>
+  <sys:String x:Key="Text.Sure">OK</sys:String>
   <sys:String x:Key="Text.Save">SAVE</sys:String>
   <sys:String x:Key="Text.Close">CLOSE</sys:String>
   <sys:String x:Key="Text.Cancel">CANCEL</sys:String>
@@ -17,7 +17,7 @@
   <sys:String x:Key="Text.Notice">NOTICE</sys:String>
   <sys:String x:Key="Text.OpenWith">Open With ...</sys:String>
   <sys:String x:Key="Text.Running">Running. Please wait ...</sys:String>
-  <sys:String x:Key="Text.Warn">Warnning</sys:String>
+  <sys:String x:Key="Text.Warn">Warning</sys:String>
 
   <sys:String x:Key="Text.Copy">Copy</sys:String>
   <sys:String x:Key="Text.Paste">Paste</sys:String>
@@ -64,7 +64,7 @@
   <sys:String x:Key="Text.Submodule">SUBMODULES</sys:String>
   <sys:String x:Key="Text.Submodule.Add">Add Submodule</sys:String>
   <sys:String x:Key="Text.Submodule.RelativePath">Relative Path :</sys:String>
-  <sys:String x:Key="Text.Submodule.RelativePath.Placeholder">Relative foler to store this module.</sys:String>
+  <sys:String x:Key="Text.Submodule.RelativePath.Placeholder">Relative folder to store this module.</sys:String>
   <sys:String x:Key="Text.Submodule.FetchNested">Fetch nested submodules</sys:String>
   <sys:String x:Key="Text.Submodule.Open">Open Submodule Repository</sys:String>
   <sys:String x:Key="Text.Submodule.CopyPath">Copy Relative Path</sys:String>
@@ -123,7 +123,7 @@
   <sys:String x:Key="Text.CreateTag">Create Tag</sys:String>
   <sys:String x:Key="Text.CreateTag.BasedOn">New Tag At :</sys:String>
   <sys:String x:Key="Text.CreateTag.Name">Tag Name :</sys:String>
-  <sys:String x:Key="Text.CreateTag.Name.Placeholder">Recommanded format ：v1.0.0-alpha</sys:String>
+  <sys:String x:Key="Text.CreateTag.Name.Placeholder">Recommended format ：v1.0.0-alpha</sys:String>
   <sys:String x:Key="Text.CreateTag.Message">Tag Message :</sys:String>
   <sys:String x:Key="Text.CreateTag.Message.Placeholder">Optional.</sys:String>
 
@@ -227,7 +227,7 @@
   <sys:String x:Key="Text.FileCM.DiscardMulti">Discard {0} files...</sys:String>
   <sys:String x:Key="Text.FileCM.StashMulti">Stash {0} files...</sys:String>
   <sys:String x:Key="Text.FileCM.SaveAsPatch">Save As Patch...</sys:String>
-  <sys:String x:Key="Text.FileCM.AssumeUnchanged">Assume unchaged</sys:String>
+  <sys:String x:Key="Text.FileCM.AssumeUnchanged">Assume unchanged</sys:String>
   <sys:String x:Key="Text.FileCM.StageSelectedLines">Stage Changes in Selected Line(s)</sys:String>
   <sys:String x:Key="Text.FileCM.DiscardSelectedLines">Discard Changes in Selected Line(s)</sys:String>
   <sys:String x:Key="Text.FileCM.UnstageSelectedLines">Unstage Changes in Selected Line(s)</sys:String>
