@@ -55,12 +55,10 @@ For **Linux** users:
 
 ![Theme Light](./screenshots/theme_light.png)
 
-## Thanks
+## Contributing
 
-* [gigi81](https://github.com/gigi81) Github actions integration
-* [kekekeks](https://github.com/kekekeks) Way to stage/unstage/discard selected changes in a file.
-* [XiaoLinger](https://gitee.com/LingerNN) Hotkey: `CTRL + Enter` to commit
-* [carterl](https://gitee.com/carterl) Supports Windows Terminal; Rewrite way to find git executable
-* [PUMA](https://gitee.com/whgfu) Configure for default user
-* [Rwing](https://gitee.com/rwing) GitFlow: add an option to keep branch after finish
-* [XiaoLinger](https://gitee.com/LingerNN) Fix localizations in popup panel
+Thanks to all the people who contribute.
+
+<a href="https://github.com/sourcegit-scm/sourcegit/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=sourcegit-scm/sourcegit" />
+</a>
