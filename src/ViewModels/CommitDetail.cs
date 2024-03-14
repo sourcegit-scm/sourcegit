@@ -353,8 +353,9 @@ namespace SourceGit.ViewModels {
                 Task.Run(() => {
                     var isBinary = new Commands.IsBinary(_repo, _commit.SHA, file.Path).Result();
                     if (isBinary) {
+                        var size = new Commands.QueryFileSize(_repo, file.Path, _commit.SHA).Result();
                         Dispatcher.UIThread.Invoke(() => {
-                            ViewRevisionFileContent = new Models.RevisionBinaryFile();
+                            ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
                         });
                         return;
                     }

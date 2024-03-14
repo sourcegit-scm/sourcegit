@@ -1,5 +1,6 @@
 ﻿namespace SourceGit.Models {
     public class RevisionBinaryFile {
+        public long Size { get; set; } = 0;
     }
 
     public class RevisionTextFile {
