@@ -26,7 +26,7 @@ Opensouce Git GUI client.
   * Revision Diffs
 * GitFlow support
 
-> **Linux** only tested on `Ubuntu 22.04` on `X11`.
+> **Linux** only tested on **Ubuntu 22.04** on **X11**.
 
 ## How to use
 
@@ -45,6 +45,7 @@ For **macOS** users:
 For **Linux** users:
 
 * `xdg-open` must be installed to support open native file manager.
+* Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI. 
 
 ## Screen Shots
 
