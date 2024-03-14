@@ -191,6 +191,10 @@ namespace SourceGit.Views {
             InitializeComponent();
         }
 
+        private void BeginMoveWindow(object sender, PointerPressedEventArgs e) {
+            BeginMoveDrag(e);
+        }
+
         private void CloseWindow(object sender, RoutedEventArgs e) {
             Close();
         }

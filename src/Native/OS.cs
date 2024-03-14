@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace SourceGit.Native {
     public static class OS {
         public interface IBackend {
-            void SetupFonts(AppBuilder builder);
+            void SetupApp(AppBuilder builder);
 
             string FindGitExecutable();
             string FindVSCode();
@@ -41,8 +41,8 @@ namespace SourceGit.Native {
             }
         }
 
-        public static void SetupFonts(AppBuilder builder) {
-            _backend?.SetupFonts(builder);
+        public static void SetupApp(AppBuilder builder) {
+            _backend?.SetupApp(builder);
         }
 
         public static string FindGitExecutable() {

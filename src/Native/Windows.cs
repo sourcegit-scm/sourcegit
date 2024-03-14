@@ -13,7 +13,7 @@ namespace SourceGit.Native {
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
 
-        public void SetupFonts(AppBuilder builder) {
+        public void SetupApp(AppBuilder builder) {
             builder.With(new FontManagerOptions() {
                 DefaultFamilyName = "Microsoft YaHei UI",
                 FontFallbacks = [

@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using System;
@@ -56,6 +57,10 @@ namespace SourceGit.Views {
 
             InitializeComponent();
             txtVersion.Text = ver;
+        }
+
+        private void BeginMoveWindow(object sender, PointerPressedEventArgs e) {
+            BeginMoveDrag(e);
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e) {

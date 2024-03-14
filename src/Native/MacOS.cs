@@ -8,7 +8,7 @@ using System.Text;
 namespace SourceGit.Native {
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend {
-        public void SetupFonts(AppBuilder builder) {
+        public void SetupApp(AppBuilder builder) {
             builder.With(new FontManagerOptions() {
                 DefaultFamilyName = "PingFang SC",
                 FontFallbacks = [

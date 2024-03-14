@@ -2,13 +2,15 @@
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 using Avalonia;
-using System.Runtime.InteropServices;
+using System;
 
 namespace SourceGit.Converters {
     public static class WindowStateConverters {
         public static FuncValueConverter<WindowState, Thickness> ToContentMargin =
             new FuncValueConverter<WindowState, Thickness>(state => {
-                if (state == WindowState.Maximized && RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+                if (OperatingSystem.IsWindows() && state == WindowState.Maximized) {
+                    return new Thickness(6);
+                } else if (OperatingSystem.IsLinux() && state != WindowState.Maximized) {
                     return new Thickness(6);
                 } else {
                     return new Thickness(0);
@@ -17,7 +19,7 @@ namespace SourceGit.Converters {
 
         public static FuncValueConverter<WindowState, GridLength> ToTitleBarHeight =
             new FuncValueConverter<WindowState, GridLength>(state => {
-                if (state == WindowState.Maximized && RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+                if (state == WindowState.Maximized) {
                     return new GridLength(30);
                 } else {
                     return new GridLength(38);

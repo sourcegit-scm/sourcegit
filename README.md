@@ -26,6 +26,8 @@ Opensouce Git GUI client.
   * Revision Diffs
 * GitFlow support
 
+> **Linux** only tested on `Ubuntu 22.04` on `X11`.
+
 ## How to use
 
 **To use this tool, you need to install Git first.**
@@ -43,7 +45,6 @@ For **macOS** users:
 For **Linux** users:
 
 * `xdg-open` must be installed to support open native file manager.
-* Only tested on `Ubuntu 22.04`.
 
 ## Screen Shots
 

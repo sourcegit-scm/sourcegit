@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 namespace SourceGit.Native {
     [SupportedOSPlatform("linux")]
     internal class Linux : OS.IBackend {
-        public void SetupFonts(AppBuilder builder) {
+        public void SetupApp(AppBuilder builder) {
         #if USE_FONT_INTER
             builder.WithInterFont();
         #endif

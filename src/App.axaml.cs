@@ -50,7 +50,7 @@ namespace SourceGit {
                 manager.AddFontCollection(monospace);
             });
 
-            Native.OS.SetupFonts(builder);
+            Native.OS.SetupApp(builder);
             return builder;
         }
 

@@ -126,6 +126,14 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
+        private void CustomResizeWindow(object sender, PointerPressedEventArgs e) {
+            if (sender is Border border) {
+                if (border.Tag is WindowEdge edge) {
+                    BeginResizeDrag(edge, e);
+                }
+            }
+        }
+
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e) {
             BeginMoveDrag(e);
         }

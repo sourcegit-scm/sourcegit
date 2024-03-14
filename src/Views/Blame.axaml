@@ -12,25 +12,32 @@
         x:DataType="vm:Blame"
         Icon="/App.ico"
         Title="{DynamicResource Text.Blame}"
+        Background="Transparent"
         WindowStartupLocation="CenterOwner"
-        BorderThickness="1"
-        BorderBrush="{DynamicResource Brush.Border0}"
-        Background="{DynamicResource Brush.Window}"
         MinWidth="1280" MinHeight="720"
-        ExtendClientAreaToDecorationsHint="{OnPlatform True, Linux=False}"
-        ExtendClientAreaChromeHints="{OnPlatform NoChrome, Linux=Default}">
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        SystemDecorations="{OnPlatform Full, Linux=None}">
   <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
     <Grid.RowDefinitions>
       <RowDefinition Height="30"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
+    <!-- Custom window shadow for Linux -->
+    <Border Grid.Row="0" Grid.RowSpan="2"
+            Background="{DynamicResource Brush.Window}"
+            Effect="drop-shadow(0 0 6 #A0000000)"
+            IsVisible="{OnPlatform False, Linux=True}"/>
+
+    <!-- TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
       <!-- Bottom border -->
       <Border Grid.Column="0" Grid.ColumnSpan="5"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
-              IsHitTestVisible="False"/>
+              DoubleTapped="MaximizeOrRestoreWindow"
+              PointerPressed="BeginMoveWindow"/>
 
       <!-- Caption Buttons (macOS) -->
       <Border Grid.Column="0" IsVisible="{OnPlatform False, macOS=True}">
@@ -40,19 +47,20 @@
       <!-- Icon -->
       <Path Grid.Column="1" Margin="8,0,0,0" Width="12" Height="12" Data="{StaticResource Icons.Blame}"/>
 
-      <!-- Title (Hide on Linux) -->
-      <TextBlock Grid.Column="2" Margin="8,0,0,0" Text="{DynamicResource Text.Blame}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center" IsVisible="{OnPlatform True, Linux=False}"/>
+      <!-- Title -->
+      <TextBlock Grid.Column="2" Margin="8,0,0,0" Text="{DynamicResource Text.Blame}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"/>
 
       <!-- Blame information -->
       <TextBlock Grid.Column="3" Margin="8,0,0,0" Text="{Binding Title}" FontSize="11" FontStyle="Italic" IsHitTestVisible="False" VerticalAlignment="Center"/>
 
-      <!-- Caption Buttons (Windows) -->
-      <Border Grid.Column="4" IsVisible="{OnPlatform False, Windows=True}">
+      <!-- Caption Buttons (Windows/Linux) -->
+      <Border Grid.Column="4" IsVisible="{OnPlatform True, macOS=False}">
         <v:CaptionButtons/>
       </Border>
     </Grid>
 
-    <Grid Grid.Row="1">
+    <!-- Body -->
+    <Grid Grid.Row="1" Background="{DynamicResource Brush.Window}">
       <!-- Blame View -->
       <v:BlameTextEditor HorizontalScrollBarVisibility="Auto"
                          VerticalScrollBarVisibility="Auto" 
@@ -77,6 +85,65 @@
             Classes="rotating" 
             Data="{StaticResource Icons.Loading}" 
             IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}"/>
+    </Grid>
+
+    <!-- Custom window sizer for Linux -->
+    <Grid Grid.Row="0" Grid.RowSpan="2" IsVisible="{OnPlatform False, Linux=True}">
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Left" VerticalAlignment="Top"
+              Cursor="TopLeftCorner"
+              Tag="{x:Static WindowEdge.NorthWest}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Height="4" Margin="4,0"
+              Background="Transparent"
+              HorizontalAlignment="Stretch" VerticalAlignment="Top"
+              Cursor="TopSide"
+              Tag="{x:Static WindowEdge.North}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Right" VerticalAlignment="Top"
+              Cursor="TopRightCorner"
+              Tag="{x:Static WindowEdge.NorthEast}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Margin="0,4"
+              Background="Transparent"
+              HorizontalAlignment="Left" VerticalAlignment="Stretch"
+              Cursor="LeftSide"
+              Tag="{x:Static WindowEdge.West}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Margin="0,4"
+              Background="Transparent"
+              HorizontalAlignment="Right" VerticalAlignment="Stretch"
+              Cursor="RightSide"
+              Tag="{x:Static WindowEdge.East}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Left" VerticalAlignment="Bottom"
+              Cursor="BottomLeftCorner"
+              Tag="{x:Static WindowEdge.SouthWest}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Height="4" Margin="4,0"
+              Background="Transparent"
+              HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+              Cursor="BottomSide"
+              Tag="{x:Static WindowEdge.South}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Right" VerticalAlignment="Bottom"
+              Cursor="BottomRightCorner"
+              Tag="{x:Static WindowEdge.SouthEast}"
+              PointerPressed="CustomResizeWindow"/>
     </Grid>
   </Grid>
 </Window>
