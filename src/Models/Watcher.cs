@@ -142,7 +142,7 @@ namespace SourceGit.Models {
             } else if (name.Equals("HEAD", StringComparison.Ordinal) ||
                 name.StartsWith("refs/heads/", StringComparison.Ordinal) ||
                 name.StartsWith("refs/remotes/", StringComparison.Ordinal) ||
-                name.StartsWith("worktrees/")) {
+                name.StartsWith("worktrees/", StringComparison.Ordinal)) {
                 _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
             } else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal)) {
                 _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();

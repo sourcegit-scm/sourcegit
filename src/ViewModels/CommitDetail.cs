@@ -360,14 +360,14 @@ namespace SourceGit.ViewModels {
                     }
 
                     var content = new Commands.QueryFileContent(_repo, _commit.SHA, file.Path).Result();
-                    if (content.StartsWith("version https://git-lfs.github.com/spec/", StringComparison.OrdinalIgnoreCase)) {
+                    if (content.StartsWith("version https://git-lfs.github.com/spec/", StringComparison.Ordinal)) {
                         var obj = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
                         var lines = content.Split('\n', StringSplitOptions.RemoveEmptyEntries);
                         if (lines.Length == 3) {
                             foreach (var line in lines) {
-                                if (line.StartsWith("oid sha256:")) {
+                                if (line.StartsWith("oid sha256:", StringComparison.Ordinal)) {
                                     obj.Object.Oid = line.Substring(11);
-                                } else if (line.StartsWith("size ")) {
+                                } else if (line.StartsWith("size ", StringComparison.Ordinal)) {
                                     obj.Object.Size = long.Parse(line.Substring(5));
                                 }
                             }

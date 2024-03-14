@@ -38,7 +38,7 @@ namespace SourceGit.Commands {
             if (_result.IsBinary) return;
             if (string.IsNullOrEmpty(line)) return;
 
-            if (line.IndexOf('\0') >= 0) {
+            if (line.IndexOf('\0', StringComparison.Ordinal) >= 0) {
                 _result.IsBinary = true;
                 _result.LineInfos.Clear();
                 return;

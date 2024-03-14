@@ -2,6 +2,7 @@
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -72,7 +73,7 @@ namespace SourceGit.ViewModels {
         }
 
         public void NavigateTo(string commitSHA) {
-            var commit = _commits.Find(x => x.SHA.StartsWith(commitSHA));
+            var commit = _commits.Find(x => x.SHA.StartsWith(commitSHA, StringComparison.Ordinal));
             if (commit != null) {
                 AutoSelectedCommit = commit;
 

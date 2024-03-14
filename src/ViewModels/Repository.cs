@@ -446,7 +446,7 @@ namespace SourceGit.ViewModels {
             var limits = $"-{Preference.Instance.MaxHistoryCommits} ";
             var validFilters = new List<string>();
             foreach (var filter in Filters) {
-                if (filter.StartsWith("refs/")) {
+                if (filter.StartsWith("refs/", StringComparison.Ordinal)) {
                     if (_branches.FindIndex(x => x.FullName == filter) >= 0) validFilters.Add(filter);
                 } else {
                     if (_tags.FindIndex(t => t.Name == filter) >= 0) validFilters.Add(filter);

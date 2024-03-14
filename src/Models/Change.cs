@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Models {
+﻿using System;
+
+namespace SourceGit.Models {
     public enum ChangeViewMode {
         List,
         Grid,
@@ -36,12 +38,12 @@
             WorkTree = workTree;
 
             if (index == ChangeState.Renamed || workTree == ChangeState.Renamed) {
-                var idx = Path.IndexOf('\t');
+                var idx = Path.IndexOf('\t', StringComparison.Ordinal);
                 if (idx >= 0) {
                     OriginalPath = Path.Substring(0, idx);
                     Path = Path.Substring(idx + 1);
                 } else {
-                    idx = Path.IndexOf(" -> ");
+                    idx = Path.IndexOf(" -> ", StringComparison.Ordinal);
                     if (idx > 0) {
                         OriginalPath = Path.Substring(0, idx);
                         Path = Path.Substring(idx + 4);

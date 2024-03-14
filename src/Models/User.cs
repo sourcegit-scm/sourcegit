@@ -23,7 +23,7 @@ namespace SourceGit.Models {
             if (Caches.ContainsKey(data)) {
                 return Caches[data];
             } else {
-                var nameEndIdx = data.IndexOf('<');
+                var nameEndIdx = data.IndexOf('<', System.StringComparison.Ordinal);
                 var name = nameEndIdx >= 2 ? data.Substring(0, nameEndIdx - 1) : string.Empty;
                 var email = data.Substring(nameEndIdx + 1);
 

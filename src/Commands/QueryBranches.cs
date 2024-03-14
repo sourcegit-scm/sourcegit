@@ -36,14 +36,14 @@ namespace SourceGit.Commands {
 
             var branch = new Models.Branch();
             var refName = parts[0];
-            if (refName.EndsWith("/HEAD")) return;
+            if (refName.EndsWith("/HEAD", StringComparison.Ordinal)) return;
 
             if (refName.StartsWith(PREFIX_LOCAL, StringComparison.Ordinal)) {
                 branch.Name = refName.Substring(PREFIX_LOCAL.Length);
                 branch.IsLocal = true;
             } else if (refName.StartsWith(PREFIX_REMOTE, StringComparison.Ordinal)) {
                 var name = refName.Substring(PREFIX_REMOTE.Length);
-                var shortNameIdx = name.IndexOf('/');
+                var shortNameIdx = name.IndexOf('/', StringComparison.Ordinal);
                 if (shortNameIdx < 0) return;
 
                 branch.Remote = name.Substring(0, shortNameIdx);

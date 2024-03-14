@@ -17,7 +17,7 @@ namespace SourceGit.Commands {
             if (output.IsSuccess) {
                 var lines = output.StdOut.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines) {
-                    var idx = line.IndexOf('=');
+                    var idx = line.IndexOf('=', StringComparison.Ordinal);
                     if (idx != -1) {
                         var key = line.Substring(0, idx).Trim();
                         var val = line.Substring(idx+1).Trim();

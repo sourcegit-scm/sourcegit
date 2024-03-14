@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 
 namespace SourceGit.ViewModels {
@@ -19,7 +20,7 @@ namespace SourceGit.ViewModels {
             var expanded = changes.Count <= 50;
 
             foreach (var c in changes) {
-                var sepIdx = c.Path.IndexOf('/');
+                var sepIdx = c.Path.IndexOf('/', StringComparison.Ordinal);
                 if (sepIdx == -1) {
                     nodes.Add(new FileTreeNode() {
                         FullPath = c.Path,
@@ -80,7 +81,7 @@ namespace SourceGit.ViewModels {
             var expanded = files.Count <= 50;
 
             foreach (var f in files) {
-                var sepIdx = f.Path.IndexOf('/');
+                var sepIdx = f.Path.IndexOf('/', StringComparison.Ordinal);
                 if (sepIdx == -1) {
                     nodes.Add(new FileTreeNode() {
                         FullPath = f.Path,
@@ -139,7 +140,7 @@ namespace SourceGit.ViewModels {
             foreach (var node in nodes) {
                 if (node.FullPath == path) return node;
                 
-                if (node.IsFolder && path.StartsWith(node.FullPath + "/")) {
+                if (node.IsFolder && path.StartsWith(node.FullPath + "/", StringComparison.Ordinal)) {
                     var foundInChildren = SelectByPath(node.Children, path);
                     if (foundInChildren != null) {
                         node.IsExpanded = true;

@@ -31,7 +31,7 @@ namespace SourceGit.Models {
         }
 
         public static void ParseUserAndTime(string data, ref User user, ref ulong time) {
-            var userEndIdx = data.IndexOf('>');
+            var userEndIdx = data.IndexOf('>', StringComparison.Ordinal);
             if (userEndIdx < 0) return;
 
             var timeEndIdx = data.IndexOf(' ', userEndIdx + 2);

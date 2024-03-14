@@ -51,7 +51,7 @@ namespace SourceGit.Commands {
                 current = new Models.Commit();
                 line = line.Substring(7);
 
-                var decoratorStart = line.IndexOf('(');
+                var decoratorStart = line.IndexOf('(', StringComparison.Ordinal);
                 if (decoratorStart < 0) {
                     current.SHA = line.Trim();
                 } else {
