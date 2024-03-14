@@ -39,20 +39,18 @@ namespace SourceGit.Commands {
             if (_result.IsLFS) {
                 var ch = line[0];
                 if (ch == '-') {
-                    line = line.Substring(1);
-                    if (line.StartsWith("oid sha256:")) {
-                        _result.LFSDiff.Old.Oid = line.Substring(11);
-                    } else if (line.StartsWith("size ")) {
-                        _result.LFSDiff.Old.Size = long.Parse(line.Substring(5));
+                    if (line.StartsWith("-oid sha256:", StringComparison.Ordinal)) {
+                        _result.LFSDiff.Old.Oid = line.Substring(12);
+                    } else if (line.StartsWith("-size ", StringComparison.Ordinal)) {
+                        _result.LFSDiff.Old.Size = long.Parse(line.Substring(6));
                     }
                 } else if (ch == '+') {
-                    line = line.Substring(1);
-                    if (line.StartsWith("oid sha256:")) {
-                        _result.LFSDiff.New.Oid = line.Substring(11);
-                    } else if (line.StartsWith("size ")) {
-                        _result.LFSDiff.New.Size = long.Parse(line.Substring(5));
+                    if (line.StartsWith("+oid sha256:", StringComparison.Ordinal)) {
+                        _result.LFSDiff.New.Oid = line.Substring(12);
+                    } else if (line.StartsWith("+size ", StringComparison.Ordinal)) {
+                        _result.LFSDiff.New.Size = long.Parse(line.Substring(6));
                     }
-                } else if (line.StartsWith(" size ")) {
+                } else if (line.StartsWith(" size ", StringComparison.Ordinal)) {
                     _result.LFSDiff.New.Size = _result.LFSDiff.Old.Size = long.Parse(line.Substring(6));
                 }
                 return;
