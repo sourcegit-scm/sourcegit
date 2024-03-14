@@ -16,7 +16,7 @@
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="NoChrome"
         SystemDecorations="{OnPlatform Full, Linux=None}">
-  <Grid RowDefinitions="Auto,Auto,*">
+  <Grid RowDefinitions="Auto,Auto,*" Margin="{OnPlatform 0, Linux=6}">
     <!-- Custom window shadow for Linux -->
     <Border Grid.Row="0" Grid.RowSpan="3"
             Background="{DynamicResource Brush.Window}"
