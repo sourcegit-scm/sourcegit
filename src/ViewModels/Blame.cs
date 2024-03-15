@@ -26,7 +26,7 @@ namespace SourceGit.ViewModels {
         public Blame(string repo, string file, string revision) {
             _repo = repo;
 
-            Title = $"{file}@{revision.Substring(0, 10)}";
+            Title = $"{file} @ {revision.Substring(0, 10)}";
             Task.Run(() => {
                 var result = new Commands.Blame(repo, file, revision).Result();
                 Dispatcher.UIThread.Invoke(() => {

@@ -67,7 +67,7 @@
       </Grid.ColumnDefinitions>
 
       <DataGrid Grid.Column="0"
-                Background="{DynamicResource Brush.Contents}"
+                Background="Transparent"
                 ItemsSource="{Binding Commits}"
                 SelectedItem="{Binding SelectedCommit, Mode=TwoWay}"
                 SelectionMode="Single"
@@ -105,10 +105,10 @@
       <GridSplitter Grid.Column="1"
                     Width="1" MinWidth=".5"
                     HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                    Background="Transparent"/>
+                    Background="{DynamicResource Brush.Border0}"/>
 
       <Grid Grid.Column="2">
-        <ContentControl Content="{Binding DiffContext}">
+        <ContentControl Margin="4" Content="{Binding DiffContext}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:DiffContext">
               <v:DiffView/>

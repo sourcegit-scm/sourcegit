@@ -21,19 +21,20 @@
   <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
     <Grid.RowDefinitions>
       <RowDefinition Height="30"/>
+      <RowDefinition Height="24"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
     <!-- Custom window shadow for Linux -->
-    <Border Grid.Row="0" Grid.RowSpan="2"
+    <Border Grid.Row="0" Grid.RowSpan="3"
             Background="{DynamicResource Brush.Window}"
             Effect="drop-shadow(0 0 6 #A0000000)"
             IsVisible="{OnPlatform False, Linux=True}"/>
 
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto">
       <!-- Bottom border -->
-      <Border Grid.Column="0" Grid.ColumnSpan="5"
+      <Border Grid.Column="0" Grid.ColumnSpan="4"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
               DoubleTapped="MaximizeOrRestoreWindow"
@@ -50,22 +51,25 @@
       <!-- Title -->
       <TextBlock Grid.Column="2" Margin="8,0,0,0" Text="{DynamicResource Text.Blame}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"/>
 
-      <!-- Blame information -->
-      <TextBlock Grid.Column="3" Margin="8,0,0,0" Text="{Binding Title}" FontSize="11" FontStyle="Italic" IsHitTestVisible="False" VerticalAlignment="Center"/>
-
       <!-- Caption Buttons (Windows/Linux) -->
-      <Border Grid.Column="4" IsVisible="{OnPlatform True, macOS=False}">
+      <Border Grid.Column="3" IsVisible="{OnPlatform True, macOS=False}">
         <v:CaptionButtons/>
       </Border>
     </Grid>
 
+    <!-- File -->
+    <Border Grid.Row="1" Padding="8,0" Background="{DynamicResource Brush.Window}">
+      <TextBlock Text="{Binding Title}" FontSize="12" VerticalAlignment="Center"/>
+    </Border>
+
     <!-- Body -->
-    <Grid Grid.Row="1" Background="{DynamicResource Brush.Window}">
+    <Grid Grid.Row="2" Background="{DynamicResource Brush.Window}">
       <!-- Blame View -->
       <v:BlameTextEditor HorizontalScrollBarVisibility="Auto"
-                         VerticalScrollBarVisibility="Auto" 
+                         VerticalScrollBarVisibility="Auto"
+                         Margin="4,0,4,4"
                          BorderBrush="{DynamicResource Brush.Border2}"
-                         BorderThickness="0"
+                         BorderThickness="1"
                          Background="{DynamicResource Brush.Contents}"
                          Foreground="{DynamicResource Brush.FG1}"
                          FontFamily="fonts:SourceGit#JetBrains Mono"
@@ -88,7 +92,7 @@
     </Grid>
 
     <!-- Custom window sizer for Linux -->
-    <Grid Grid.Row="0" Grid.RowSpan="2" IsVisible="{OnPlatform False, Linux=True}">
+    <Grid Grid.Row="0" Grid.RowSpan="3" IsVisible="{OnPlatform False, Linux=True}">
       <Border Width="4" Height="4"
               Background="Transparent"
               HorizontalAlignment="Left" VerticalAlignment="Top"
