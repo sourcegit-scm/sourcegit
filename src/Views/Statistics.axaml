@@ -33,7 +33,7 @@
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
-              IsHitTestVisible="False"/>
+              PointerPressed="BeginMoveWindow"/>
       
       <Path Grid.Column="0"
             Width="14" Height="14"
