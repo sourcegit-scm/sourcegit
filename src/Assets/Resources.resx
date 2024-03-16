@@ -1,0 +1,509 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data xml:space="preserve" name="Text.Start"><value>START</value></data>
+    <data xml:space="preserve" name="Text.Sure"><value>OK</value></data>
+    <data xml:space="preserve" name="Text.Save"><value>SAVE</value></data>
+    <data xml:space="preserve" name="Text.Close"><value>CLOSE</value></data>
+    <data xml:space="preserve" name="Text.Cancel"><value>CANCEL</value></data>
+    <data xml:space="preserve" name="Text.RevealFile"><value>Reveal in File Explorer</value></data>
+    <data xml:space="preserve" name="Text.SaveAs"><value>Save As ...</value></data>
+    <data xml:space="preserve" name="Text.SaveFileTo"><value>Save File to ...</value></data>
+    <data xml:space="preserve" name="Text.CopyPath"><value>Copy Path</value></data>
+    <data xml:space="preserve" name="Text.Bytes"><value>Bytes</value></data>
+    <data xml:space="preserve" name="Text.Filter"><value>FILTER</value></data>
+    <data xml:space="preserve" name="Text.Optional"><value>Optional.</value></data>
+    <data xml:space="preserve" name="Text.OpenFolder"><value>SELECT FOLDER</value></data>
+    <data xml:space="preserve" name="Text.Notice"><value>NOTICE</value></data>
+    <data xml:space="preserve" name="Text.OpenWith"><value>Open With ...</value></data>
+    <data xml:space="preserve" name="Text.Running"><value>Running. Please wait ...</value></data>
+    <data xml:space="preserve" name="Text.Warn"><value>Warning</value></data>
+
+    <data xml:space="preserve" name="Text.Copy"><value>Copy</value></data>
+    <data xml:space="preserve" name="Text.Paste"><value>Paste</value></data>
+    <data xml:space="preserve" name="Text.RefetchAvatar"><value>Refresh</value></data>
+
+    <data xml:space="preserve" name="Text.Name"><value>Name :</value></data>
+    <data xml:space="preserve" name="Text.URL"><value>URL :</value></data>
+    <data xml:space="preserve" name="Text.RepositoryURL"><value>Git Repository URL</value></data>
+
+    <data xml:space="preserve" name="Text.SSHKey"><value>SSH Private Key :</value></data>
+    <data xml:space="preserve" name="Text.SSHKey.Placeholder"><value>Private SSH key store path</value></data>
+
+    <data xml:space="preserve" name="Text.About"><value>About</value></data>
+    <data xml:space="preserve" name="Text.About.Copyright"><value>Copyright © 2024 sourcegit-scm.</value></data>
+    <data xml:space="preserve" name="Text.About.BuildWith"><value>• Build with </value></data>
+    <data xml:space="preserve" name="Text.About.Editor"><value>• TextEditor from </value></data>
+    <data xml:space="preserve" name="Text.About.Fonts"><value>• Monospace fonts come from </value></data>
+
+    <data xml:space="preserve" name="Text.Apply"><value>Patch</value></data>
+    <data xml:space="preserve" name="Text.Apply.Title"><value>Apply Patch</value></data>
+    <data xml:space="preserve" name="Text.Apply.File"><value>Patch File :</value></data>
+    <data xml:space="preserve" name="Text.Apply.File.Placeholder"><value>Select .patch file to apply</value></data>
+    <data xml:space="preserve" name="Text.Apply.WS"><value>Whitespace :</value></data>
+    <data xml:space="preserve" name="Text.Apply.IgnoreWS"><value>Ignore whitespace changes</value></data>
+    <data xml:space="preserve" name="Text.Apply.NoWarn"><value>No Warn</value></data>
+    <data xml:space="preserve" name="Text.Apply.NoWarn.Desc"><value>Turns off the trailing whitespace warning</value></data>
+    <data xml:space="preserve" name="Text.Apply.Warn"><value>Warn</value></data>
+    <data xml:space="preserve" name="Text.Apply.Warn.Desc"><value>Outputs warnings for a few such errors, but applies</value></data>
+    <data xml:space="preserve" name="Text.Apply.Error"><value>Error</value></data>
+    <data xml:space="preserve" name="Text.Apply.Error.Desc"><value>Raise errors and refuses to apply the patch</value></data>
+    <data xml:space="preserve" name="Text.Apply.ErrorAll"><value>Error All</value></data>
+    <data xml:space="preserve" name="Text.Apply.ErrorAll.Desc"><value>Similar to 'error', but shows more</value></data>
+
+    <data xml:space="preserve" name="Text.Archive"><value>Archive ...</value></data>
+    <data xml:space="preserve" name="Text.Archive.Title"><value>Archive</value></data>
+    <data xml:space="preserve" name="Text.Archive.Revision"><value>Revision :</value></data>
+    <data xml:space="preserve" name="Text.Archive.File"><value>Save Archive To :</value></data>
+    <data xml:space="preserve" name="Text.Archive.File.Placeholder"><value>Select archive file path</value></data>
+
+    <data xml:space="preserve" name="Text.Blame"><value>Blame</value></data>
+
+    <data xml:space="preserve" name="Text.Submodule"><value>SUBMODULES</value></data>
+    <data xml:space="preserve" name="Text.Submodule.Add"><value>Add Submodule</value></data>
+    <data xml:space="preserve" name="Text.Submodule.RelativePath"><value>Relative Path :</value></data>
+    <data xml:space="preserve" name="Text.Submodule.RelativePath.Placeholder"><value>Relative folder to store this module.</value></data>
+    <data xml:space="preserve" name="Text.Submodule.FetchNested"><value>Fetch nested submodules</value></data>
+    <data xml:space="preserve" name="Text.Submodule.Open"><value>Open Submodule Repository</value></data>
+    <data xml:space="preserve" name="Text.Submodule.CopyPath"><value>Copy Relative Path</value></data>
+    <data xml:space="preserve" name="Text.Submodule.Remove"><value>Delete Submodule</value></data>
+
+    <data xml:space="preserve" name="Text.Checkout"><value>Checkout Branch</value></data>
+    <data xml:space="preserve" name="Text.Checkout.Target"><value>Target :</value></data>
+
+    <data xml:space="preserve" name="Text.CherryPick"><value>Cherry-Pick This Commit</value></data>
+    <data xml:space="preserve" name="Text.CherryPick.Title"><value>Cherry Pick</value></data>
+    <data xml:space="preserve" name="Text.CherryPick.Commit"><value>Commit :</value></data>
+    <data xml:space="preserve" name="Text.CherryPick.CommitChanges"><value>Commit all changes</value></data>
+
+    <data xml:space="preserve" name="Text.Clone"><value>Clone Remote Repository</value></data>
+    <data xml:space="preserve" name="Text.Clone.RemoteURL"><value>Repository URL :</value></data>
+    <data xml:space="preserve" name="Text.Clone.ParentFolder"><value>Parent Folder :</value></data>
+    <data xml:space="preserve" name="Text.Clone.LocalName"><value>Local Name :</value></data>
+    <data xml:space="preserve" name="Text.Clone.LocalName.Placeholder"><value>Repository name. Optional.</value></data>
+    <data xml:space="preserve" name="Text.Clone.AdditionalParam"><value>Extra Parameters :</value></data>
+    <data xml:space="preserve" name="Text.Clone.AdditionalParam.Placeholder"><value>Additional arguments to clone repository. Optional.</value></data>
+
+    <data xml:space="preserve" name="Text.CommitDetail.Info"><value>INFORMATION</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Info.Author"><value>AUTHOR</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Info.Committer"><value>COMMITTER</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Info.SHA"><value>SHA</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Info.Parents"><value>PARENTS</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Info.Refs"><value>REFS</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Info.Message"><value>MESSAGE</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Info.Changed"><value>CHANGED</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Changes"><value>CHANGES</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Changes.Search"><value>Search Files ...</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Files"><value>FILES</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Files.LFS"><value>LFS File</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Files.Submodule"><value>Submodule</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Files.Tag"><value>Tag</value></data>
+    <data xml:space="preserve" name="Text.CommitDetail.Files.Tree"><value>Tree</value></data>
+
+    <data xml:space="preserve" name="Text.Configure"><value>Configure</value></data>
+    <data xml:space="preserve" name="Text.Configure.User"><value>User Name</value></data>
+    <data xml:space="preserve" name="Text.Configure.User.Placeholder"><value>User name for this repository</value></data>
+    <data xml:space="preserve" name="Text.Configure.Email"><value>Email Address</value></data>
+    <data xml:space="preserve" name="Text.Configure.Email.Placeholder"><value>Email address</value></data>
+    <data xml:space="preserve" name="Text.Configure.Proxy"><value>HTTP Proxy</value></data>
+    <data xml:space="preserve" name="Text.Configure.Proxy.Placeholder"><value>HTTP proxy used by this repository</value></data>
+
+    <data xml:space="preserve" name="Text.CreateBranch"><value>Create Branch</value></data>
+    <data xml:space="preserve" name="Text.CreateBranch.Title"><value>Create Local Branch</value></data>
+    <data xml:space="preserve" name="Text.CreateBranch.BasedOn"><value>Based On :</value></data>
+    <data xml:space="preserve" name="Text.CreateBranch.Name"><value>New Branch Name :</value></data>
+    <data xml:space="preserve" name="Text.CreateBranch.Name.Placeholder"><value>Enter branch name.</value></data>
+    <data xml:space="preserve" name="Text.CreateBranch.LocalChanges"><value>Local Changes :</value></data>
+    <data xml:space="preserve" name="Text.CreateBranch.LocalChanges.StashAndReply"><value>Stash &amp; Reapply</value></data>
+    <data xml:space="preserve" name="Text.CreateBranch.LocalChanges.Discard"><value>Discard</value></data>
+    <data xml:space="preserve" name="Text.CreateBranch.Checkout"><value>Check out after created</value></data>
+
+    <data xml:space="preserve" name="Text.CreateTag"><value>Create Tag</value></data>
+    <data xml:space="preserve" name="Text.CreateTag.BasedOn"><value>New Tag At :</value></data>
+    <data xml:space="preserve" name="Text.CreateTag.Name"><value>Tag Name :</value></data>
+    <data xml:space="preserve" name="Text.CreateTag.Name.Placeholder"><value>Recommended format ：v1.0.0-alpha</value></data>
+    <data xml:space="preserve" name="Text.CreateTag.Message"><value>Tag Message :</value></data>
+    <data xml:space="preserve" name="Text.CreateTag.Message.Placeholder"><value>Optional.</value></data>
+
+    <data xml:space="preserve" name="Text.Repository.Explore"><value>Open In File Browser</value></data>
+    <data xml:space="preserve" name="Text.Repository.VSCode"><value>Open In Visual Studio Code</value></data>
+    <data xml:space="preserve" name="Text.Repository.Terminal"><value>Open In Git Bash</value></data>
+    <data xml:space="preserve" name="Text.Repository.Refresh"><value>Refresh</value></data>
+    <data xml:space="preserve" name="Text.Repository.Search"><value>Search Commit (Ctrl+F)</value></data>
+    <data xml:space="preserve" name="Text.Repository.SearchTip"><value>Search Author/Committer/Message/SHA</value></data>
+    <data xml:space="preserve" name="Text.Repository.Statistics"><value>Statistics</value></data>
+    <data xml:space="preserve" name="Text.Repository.Clean"><value>Cleanup(GC &amp; Prune)</value></data>
+    <data xml:space="preserve" name="Text.Repository.CleanTips"><value>Run `gc` command and do `lfs prune` if LFS is installed.</value></data>
+    <data xml:space="preserve" name="Text.Repository.Configure"><value>Configure this repository</value></data>
+    <data xml:space="preserve" name="Text.Repository.Workspace"><value>WORKSPACE</value></data>
+    <data xml:space="preserve" name="Text.Repository.LocalBranches"><value>LOCAL BRANCHES</value></data>
+    <data xml:space="preserve" name="Text.Repository.NewBranch"><value>NEW BRANCH</value></data>
+    <data xml:space="preserve" name="Text.Repository.Remotes"><value>REMOTES</value></data>
+    <data xml:space="preserve" name="Text.Repository.Remotes.Add"><value>ADD REMOTE</value></data>
+    <data xml:space="preserve" name="Text.Repository.Tags"><value>TAGS</value></data>
+    <data xml:space="preserve" name="Text.Repository.Tags.Add"><value>NEW TAG</value></data>
+    <data xml:space="preserve" name="Text.Repository.Submodules"><value>SUBMODULES</value></data>
+    <data xml:space="preserve" name="Text.Repository.Submodules.Add"><value>ADD SUBMODULE</value></data>
+    <data xml:space="preserve" name="Text.Repository.Submodules.Update"><value>UPDATE SUBMODULE</value></data>
+    <data xml:space="preserve" name="Text.Repository.Resolve"><value>RESOLVE</value></data>
+    <data xml:space="preserve" name="Text.Repository.Continue"><value>CONTINUE</value></data>
+    <data xml:space="preserve" name="Text.Repository.Abort"><value>ABORT</value></data>
+
+    <data xml:space="preserve" name="Text.GitFlow"><value>GIT FLOW</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.Init"><value>Initialize Git-Flow</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.ProductionBranch"><value>Production Branch :</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.DevelopBranch"><value>Development Branch :</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.Feature"><value>Feature :</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.Release"><value>Release :</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.Hotfix"><value>Hotfix :</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.FeaturePrefix"><value>Feature Prefix :</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.ReleasePrefix"><value>Release Prefix :</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.HotfixPrefix"><value>Hotfix Prefix :</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.TagPrefix"><value>Version Tag Prefix :</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.StartFeature"><value>Start Feature ...</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.StartRelease"><value>Start Release ...</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.StartHotfix"><value>Start Hotfix ...</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.StartFeatureTitle"><value>FLOW - Start Feature</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.StartReleaseTitle"><value>FLOW - Start Release</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.StartHotfixTitle"><value>FLOW - Start Hotfix</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.StartPlaceholder"><value>Enter name</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.FinishFeature"><value>FLOW - Finish Feature</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.FinishRelease"><value>FLOW - Finish Release</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.FinishHotfix"><value>FLOW - Finish Hotfix</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.FinishTarget"><value>Target :</value></data>
+    <data xml:space="preserve" name="Text.GitFlow.KeepBranchAfterFinish"><value>Keep branch</value></data>
+
+    <data xml:space="preserve" name="Text.RepoCM.Bookmark"><value>Bookmark</value></data>
+    <data xml:space="preserve" name="Text.RepoCM.Open"><value>Open</value></data>
+    <data xml:space="preserve" name="Text.RepoCM.Explore"><value>Explore in File Manager</value></data>
+
+    <data xml:space="preserve" name="Text.BranchCM.Push"><value>Push${0}$</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.DiscardAll"><value>Discard all changes</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.FastForward"><value>Fast-Forward to${0}$</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.Pull"><value>Pull${0}$</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.PullInto"><value>Pull${0}$into${1}$</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.Checkout"><value>Checkout${0}$</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.Merge"><value>Merge${0}$into${1}$</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.Rebase"><value>Rebase${0}$on${1}$</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.Finish"><value>Git Flow - Finish${0}$</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.Rename"><value>Rename${0}$</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.Delete"><value>Delete${0}$</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.Tracking"><value>Tracking ...</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.CopyName"><value>Copy Branch Name</value></data>
+    <data xml:space="preserve" name="Text.BranchCM.UnsetUpstream"><value>Unset Upstream</value></data>
+
+    <data xml:space="preserve" name="Text.RemoteCM.Fetch"><value>Fetch ...</value></data>
+    <data xml:space="preserve" name="Text.RemoteCM.Prune"><value>Prune</value></data>
+    <data xml:space="preserve" name="Text.RemoteCM.Prune.Target"><value>Target :</value></data>
+    <data xml:space="preserve" name="Text.RemoteCM.Edit"><value>Edit ...</value></data>
+    <data xml:space="preserve" name="Text.RemoteCM.Delete"><value>Delete ...</value></data>
+    <data xml:space="preserve" name="Text.RemoteCM.CopyURL"><value>Copy URL</value></data>
+
+    <data xml:space="preserve" name="Text.CommitCM.Reset"><value>Reset${0}$to Here</value></data>
+    <data xml:space="preserve" name="Text.CommitCM.Rebase"><value>Rebase${0}$to Here</value></data>
+    <data xml:space="preserve" name="Text.CommitCM.CherryPick"><value>Cherry-Pick This Commit</value></data>
+    <data xml:space="preserve" name="Text.CommitCM.Reword"><value>Reword</value></data>
+    <data xml:space="preserve" name="Text.CommitCM.Squash"><value>Squash Into Parent</value></data>
+    <data xml:space="preserve" name="Text.CommitCM.Revert"><value>Revert Commit</value></data>
+    <data xml:space="preserve" name="Text.CommitCM.SaveAsPatch"><value>Save as Patch ...</value></data>
+    <data xml:space="preserve" name="Text.CommitCM.CopySHA"><value>Copy SHA</value></data>
+
+    <data xml:space="preserve" name="Text.TagCM.Push"><value>Push${0}$</value></data>
+    <data xml:space="preserve" name="Text.TagCM.Delete"><value>Delete${0}$</value></data>
+    <data xml:space="preserve" name="Text.TagCM.Copy"><value>Copy Tag Name</value></data>
+
+    <data xml:space="preserve" name="Text.StashCM.Apply"><value>Apply</value></data>
+    <data xml:space="preserve" name="Text.StashCM.Pop"><value>Pop</value></data>
+    <data xml:space="preserve" name="Text.StashCM.Drop"><value>Drop</value></data>
+
+    <data xml:space="preserve" name="Text.FileCM.Unstage"><value>Unstage</value></data>
+    <data xml:space="preserve" name="Text.FileCM.Stage"><value>Stage...</value></data>
+    <data xml:space="preserve" name="Text.FileCM.Discard"><value>Discard...</value></data>
+    <data xml:space="preserve" name="Text.FileCM.Stash"><value>Stash...</value></data>
+    <data xml:space="preserve" name="Text.FileCM.UnstageMulti"><value>Unstage {0} files</value></data>
+    <data xml:space="preserve" name="Text.FileCM.StageMulti"><value>Stage {0} files...</value></data>
+    <data xml:space="preserve" name="Text.FileCM.DiscardMulti"><value>Discard {0} files...</value></data>
+    <data xml:space="preserve" name="Text.FileCM.StashMulti"><value>Stash {0} files...</value></data>
+    <data xml:space="preserve" name="Text.FileCM.SaveAsPatch"><value>Save As Patch...</value></data>
+    <data xml:space="preserve" name="Text.FileCM.AssumeUnchanged"><value>Assume unchanged</value></data>
+    <data xml:space="preserve" name="Text.FileCM.StageSelectedLines"><value>Stage Changes in Selected Line(s)</value></data>
+    <data xml:space="preserve" name="Text.FileCM.DiscardSelectedLines"><value>Discard Changes in Selected Line(s)</value></data>
+    <data xml:space="preserve" name="Text.FileCM.UnstageSelectedLines"><value>Unstage Changes in Selected Line(s)</value></data>
+
+    <data xml:space="preserve" name="Text.DeleteBranch"><value>Delete Branch</value></data>
+    <data xml:space="preserve" name="Text.DeleteBranch.Branch"><value>Branch :</value></data>
+
+    <data xml:space="preserve" name="Text.DeleteRemote"><value>Delete Remote</value></data>
+    <data xml:space="preserve" name="Text.DeleteRemote.Remote"><value>Remote :</value></data>
+
+    <data xml:space="preserve" name="Text.DeleteTag"><value>Delete Tag</value></data>
+    <data xml:space="preserve" name="Text.DeleteTag.Tag"><value>Tag :</value></data>
+    <data xml:space="preserve" name="Text.DeleteTag.WithRemote"><value>Delete from remote repositories</value></data>
+
+    <data xml:space="preserve" name="Text.DeleteSubmodule"><value>Delete Submodule</value></data>
+    <data xml:space="preserve" name="Text.DeleteSubmodule.Path"><value>Submodule Path ：</value></data>
+
+    <data xml:space="preserve" name="Text.Diff.Next"><value>Next Difference</value></data>
+    <data xml:space="preserve" name="Text.Diff.Prev"><value>Previous Difference</value></data>
+    <data xml:space="preserve" name="Text.Diff.Mode"><value>Toggle One-Side/Two-Sides</value></data>
+    <data xml:space="preserve" name="Text.Diff.UseMerger"><value>Open With Merge Tool</value></data>
+    <data xml:space="preserve" name="Text.Diff.Welcome"><value>SELECT FILE TO VIEW CHANGES</value></data>
+    <data xml:space="preserve" name="Text.Diff.NoChange"><value>NO CHANGES OR ONLY EOL CHANGES</value></data>
+    <data xml:space="preserve" name="Text.Diff.Binary"><value>BINARY DIFF</value></data>
+    <data xml:space="preserve" name="Text.Diff.Binary.Old"><value>OLD</value></data>
+    <data xml:space="preserve" name="Text.Diff.Binary.New"><value>NEW</value></data>
+    <data xml:space="preserve" name="Text.Diff.LFS"><value>LFS OBJECT CHANGE</value></data>
+    <data xml:space="preserve" name="Text.Diff.Copy"><value>Copy</value></data>
+
+    <data xml:space="preserve" name="Text.Discard"><value>Discard Changes</value></data>
+    <data xml:space="preserve" name="Text.Discard.Changes"><value>Changes :</value></data>
+    <data xml:space="preserve" name="Text.Discard.Warning"><value>You can't undo this action!!!</value></data>
+    <data xml:space="preserve" name="Text.Discard.All"><value>All local changes in working copy.</value></data>
+    <data xml:space="preserve" name="Text.Discard.Total"><value>Total {0} changes will be discard</value></data>
+
+    <data xml:space="preserve" name="Text.Fetch"><value>Fetch</value></data>
+    <data xml:space="preserve" name="Text.Fetch.Title"><value>Fetch Remote Changes</value></data>
+    <data xml:space="preserve" name="Text.Fetch.Remote"><value>Remote :</value></data>
+    <data xml:space="preserve" name="Text.Fetch.AllRemotes"><value>Fetch all remotes</value></data>
+    <data xml:space="preserve" name="Text.Fetch.Prune"><value>Prune remote dead branches</value></data>
+
+    <data xml:space="preserve" name="Text.FastForwardWithoutCheck"><value>Fast-Forward (without checkout)</value></data>
+
+    <data xml:space="preserve" name="Text.FileHistory"><value>File History</value></data>
+
+    <data xml:space="preserve" name="Text.ChangeDisplayMode"><value>CHANGE DISPLAY MODE</value></data>
+    <data xml:space="preserve" name="Text.ChangeDisplayMode.Grid"><value>Show as Grid</value></data>
+    <data xml:space="preserve" name="Text.ChangeDisplayMode.List"><value>Show as List</value></data>
+    <data xml:space="preserve" name="Text.ChangeDisplayMode.Tree"><value>Show as Tree</value></data>
+
+    <data xml:space="preserve" name="Text.Histories"><value>Histories</value></data>
+    <data xml:space="preserve" name="Text.Histories.Search"><value>SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT</value></data>
+    <data xml:space="preserve" name="Text.Histories.SearchClear"><value>CLEAR</value></data>
+    <data xml:space="preserve" name="Text.Histories.GraphMode"><value>Switch Curve/Polyline Graph Mode</value></data>
+    <data xml:space="preserve" name="Text.Histories.DisplayMode"><value>Switch Horizontal/Vertical Layout</value></data>
+    <data xml:space="preserve" name="Text.Histories.Selected"><value>SELECTED {0} COMMITS</value></data>
+
+    <data xml:space="preserve" name="Text.Init"><value>Initialize Repository</value></data>
+    <data xml:space="preserve" name="Text.Init.Path"><value>Path :</value></data>
+    <data xml:space="preserve" name="Text.Init.Tip"><value>Invalid repository detected. Run `git init` under this path?</value></data>
+
+    <data xml:space="preserve" name="Text.Launcher"><value>Source Git</value></data>
+    <data xml:space="preserve" name="Text.Launcher.Menu"><value>Open Main Menu</value></data>
+    <data xml:space="preserve" name="Text.Launcher.Error"><value>ERROR</value></data>
+    <data xml:space="preserve" name="Text.Launcher.Info"><value>NOTICE</value></data>
+
+    <data xml:space="preserve" name="Text.PageTabBar.New"><value>Create New Page (Ctrl+T)</value></data>
+    <data xml:space="preserve" name="Text.PageTabBar.Welcome.Title"><value>Repositories</value></data>
+    <data xml:space="preserve" name="Text.PageTabBar.Tab.Close"><value>Close Tab</value></data>
+    <data xml:space="preserve" name="Text.PageTabBar.Tab.CloseOther"><value>Close Other Tabs</value></data>
+    <data xml:space="preserve" name="Text.PageTabBar.Tab.CloseRight"><value>Close Tabs to the Right</value></data>
+    <data xml:space="preserve" name="Text.PageTabBar.Tab.Bookmark"><value>Bookmark</value></data>
+    <data xml:space="preserve" name="Text.PageTabBar.Tab.CopyPath"><value>Copy Repository Path</value></data>
+
+    <data xml:space="preserve" name="Text.Merge"><value>Merge Branch</value></data>
+    <data xml:space="preserve" name="Text.Merge.Source"><value>Source Branch :</value></data>
+    <data xml:space="preserve" name="Text.Merge.Into"><value>Into :</value></data>
+    <data xml:space="preserve" name="Text.Merge.Mode"><value>Merge Option :</value></data>
+
+    <data xml:space="preserve" name="Text.Welcome.OpenOrInit"><value>Open Repository</value></data>
+    <data xml:space="preserve" name="Text.Welcome.OpenTerminal"><value>Open In Git Bash</value></data>
+    <data xml:space="preserve" name="Text.Welcome.Clone"><value>Clone Repository</value></data>
+    <data xml:space="preserve" name="Text.Welcome.Edit"><value>Edit</value></data>
+    <data xml:space="preserve" name="Text.Welcome.AddRootFolder"><value>Create Group</value></data>
+    <data xml:space="preserve" name="Text.Welcome.AddSubFolder"><value>Create Sub-Group</value></data>
+    <data xml:space="preserve" name="Text.Welcome.Delete"><value>Delete</value></data>
+    <data xml:space="preserve" name="Text.Welcome.Search"><value>Search Repositories ...</value></data>
+    <data xml:space="preserve" name="Text.Welcome.Sort"><value>Sort</value></data>
+    <data xml:space="preserve" name="Text.Welcome.DragDropTip"><value>DRAG &amp; DROP FOLDER SUPPORTED</value></data>
+
+    <data xml:space="preserve" name="Text.EditRepositoryNode.TitleForGroup"><value>Edit Selected Group</value></data>
+    <data xml:space="preserve" name="Text.EditRepositoryNode.TitleForRepository"><value>Edit Selected Repository</value></data>
+    <data xml:space="preserve" name="Text.EditRepositoryNode.Target"><value>Target :</value></data>
+    <data xml:space="preserve" name="Text.EditRepositoryNode.Name"><value>New Name :</value></data>
+    <data xml:space="preserve" name="Text.EditRepositoryNode.Bookmark"><value>Bookmark :</value></data>
+
+    <data xml:space="preserve" name="Text.DeleteRepositoryNode.TitleForGroup"><value>Confirm Deleting Group</value></data>
+    <data xml:space="preserve" name="Text.DeleteRepositoryNode.TitleForRepository"><value>Confirm Deleting Repository</value></data>
+    <data xml:space="preserve" name="Text.DeleteRepositoryNode.Target"><value>Target :</value></data>
+
+    <data xml:space="preserve" name="Text.Pull"><value>Pull</value></data>
+    <data xml:space="preserve" name="Text.Pull.Title"><value>Pull (Fetch &amp; Merge)</value></data>
+    <data xml:space="preserve" name="Text.Pull.Remote"><value>Remote :</value></data>
+    <data xml:space="preserve" name="Text.Pull.Branch"><value>Branch :</value></data>
+    <data xml:space="preserve" name="Text.Pull.Into"><value>Into :</value></data>
+    <data xml:space="preserve" name="Text.Pull.UseRebase"><value>Use rebase instead of merge</value></data>
+    <data xml:space="preserve" name="Text.Pull.AutoStash"><value>Stash &amp; reapply local changes</value></data>
+
+    <data xml:space="preserve" name="Text.Push"><value>Push</value></data>
+    <data xml:space="preserve" name="Text.Push.Title"><value>Push Changes To Remote</value></data>
+    <data xml:space="preserve" name="Text.Push.Local"><value>Local Branch :</value></data>
+    <data xml:space="preserve" name="Text.Push.Remote"><value>Remote :</value></data>
+    <data xml:space="preserve" name="Text.Push.To"><value>Remote Branch :</value></data>
+    <data xml:space="preserve" name="Text.Push.WithAllTags"><value>Push all tags</value></data>
+    <data xml:space="preserve" name="Text.Push.Force"><value>Force push</value></data>
+
+    <data xml:space="preserve" name="Text.PushTag"><value>Push Tag To Remote</value></data>
+    <data xml:space="preserve" name="Text.PushTag.Tag"><value>Tag :</value></data>
+    <data xml:space="preserve" name="Text.PushTag.Remote"><value>Remote :</value></data>
+
+    <data xml:space="preserve" name="Text.Rebase"><value>Rebase Current Branch</value></data>
+    <data xml:space="preserve" name="Text.Rebase.Target"><value>Rebase :</value></data>
+    <data xml:space="preserve" name="Text.Rebase.On"><value>On :</value></data>
+    <data xml:space="preserve" name="Text.Rebase.AutoStash"><value>Stash &amp; reapply local changes</value></data>
+
+    <data xml:space="preserve" name="Text.Remote.AddTitle"><value>Add Remote</value></data>
+    <data xml:space="preserve" name="Text.Remote.EditTitle"><value>Edit Remote</value></data>
+    <data xml:space="preserve" name="Text.Remote.Name"><value>Name :</value></data>
+    <data xml:space="preserve" name="Text.Remote.Name.Placeholder"><value>Remote name</value></data>
+    <data xml:space="preserve" name="Text.Remote.URL"><value>Repository URL :</value></data>
+    <data xml:space="preserve" name="Text.Remote.URL.Placeholder"><value>Remote git repository URL</value></data>
+
+    <data xml:space="preserve" name="Text.RenameBranch"><value>Rename Branch</value></data>
+    <data xml:space="preserve" name="Text.RenameBranch.Target"><value>Branch :</value></data>
+    <data xml:space="preserve" name="Text.RenameBranch.Name"><value>New Name :</value></data>
+    <data xml:space="preserve" name="Text.RenameBranch.Name.Placeholder"><value>Unique name for this branch</value></data>
+
+    <data xml:space="preserve" name="Text.Reset"><value>Reset Current Branch To Revision</value></data>
+    <data xml:space="preserve" name="Text.Reset.Target"><value>Current Branch :</value></data>
+    <data xml:space="preserve" name="Text.Reset.MoveTo"><value>Move To :</value></data>
+    <data xml:space="preserve" name="Text.Reset.Mode"><value>Reset Mode :</value></data>
+
+    <data xml:space="preserve" name="Text.Revert"><value>Revert Commit</value></data>
+    <data xml:space="preserve" name="Text.Revert.Commit"><value>Commit :</value></data>
+    <data xml:space="preserve" name="Text.Revert.CommitChanges"><value>Commit revert changes</value></data>
+
+    <data xml:space="preserve" name="Text.Preference"><value>Preference</value></data>
+    <data xml:space="preserve" name="Text.Preference.General"><value>GENERAL</value></data>
+    <data xml:space="preserve" name="Text.Preference.General.Locale"><value>Language</value></data>
+    <data xml:space="preserve" name="Text.Preference.General.AvatarServer"><value>Avatar Server</value></data>
+    <data xml:space="preserve" name="Text.Preference.General.Theme"><value>Theme</value></data>
+    <data xml:space="preserve" name="Text.Preference.General.MaxHistoryCommits"><value>History Commits</value></data>
+    <data xml:space="preserve" name="Text.Preference.General.RestoreTabs"><value>Restore windows</value></data>
+    <data xml:space="preserve" name="Text.Preference.General.UseFixedTabWidth"><value>Use fixed tab width in titlebar</value></data>
+    <data xml:space="preserve" name="Text.Preference.Git"><value>GIT</value></data>
+    <data xml:space="preserve" name="Text.Preference.Git.Path"><value>Install Path</value></data>
+    <data xml:space="preserve" name="Text.Preference.Git.Version"><value>Git version</value></data>
+    <data xml:space="preserve" name="Text.Preference.Git.DefaultCloneDir"><value>Default Clone Dir</value></data>
+    <data xml:space="preserve" name="Text.Preference.Git.User"><value>User Name</value></data>
+    <data xml:space="preserve" name="Text.Preference.Git.User.Placeholder"><value>Global git user name</value></data>
+    <data xml:space="preserve" name="Text.Preference.Git.Email"><value>User Email</value></data>
+    <data xml:space="preserve" name="Text.Preference.Git.Email.Placeholder"><value>Global git user email</value></data>
+    <data xml:space="preserve" name="Text.Preference.Git.CRLF"><value>Enable Auto CRLF</value></data>
+    <data xml:space="preserve" name="Text.Preference.Git.AutoFetch"><value>Fetch remotes automatically</value></data>
+    <data xml:space="preserve" name="Text.Preference.GPG"><value>GPG SIGNING</value></data>
+    <data xml:space="preserve" name="Text.Preference.GPG.Enabled"><value>Commit GPG signing</value></data>
+    <data xml:space="preserve" name="Text.Preference.GPG.Path"><value>Install Path</value></data>
+    <data xml:space="preserve" name="Text.Preference.GPG.Path.Placeholder"><value>Input path for installed gpg program</value></data>
+    <data xml:space="preserve" name="Text.Preference.GPG.UserKey"><value>User Signing Key</value></data>
+    <data xml:space="preserve" name="Text.Preference.GPG.UserKey.Placeholder"><value>User's gpg signing key</value></data>
+    <data xml:space="preserve" name="Text.Preference.Merger"><value>MERGE</value></data>
+    <data xml:space="preserve" name="Text.Preference.Merger.Type"><value>Merger</value></data>
+    <data xml:space="preserve" name="Text.Preference.Merger.Path"><value>Install Path</value></data>
+    <data xml:space="preserve" name="Text.Preference.Merger.Path.Placeholder"><value>Input path for merge tool</value></data>
+    <data xml:space="preserve" name="Text.Preference.Merger.CustomMergeCmd"><value>Merge Command</value></data>
+    <data xml:space="preserve" name="Text.Preference.Merger.CustomDiffCmd"><value>Diff Command</value></data>
+
+    <data xml:space="preserve" name="Text.Stash"><value>Stash</value></data>
+    <data xml:space="preserve" name="Text.Stash.Title"><value>Stash Local Changes</value></data>
+    <data xml:space="preserve" name="Text.Stash.Message"><value>Message :</value></data>
+    <data xml:space="preserve" name="Text.Stash.Message.Placeholder"><value>Optional. Name of this stash</value></data>
+    <data xml:space="preserve" name="Text.Stash.IncludeUntracked"><value>Include untracked files</value></data>
+
+    <data xml:space="preserve" name="Text.Stashes"><value>Stashes</value></data>
+    <data xml:space="preserve" name="Text.Stashes.Stashes"><value>STASHES</value></data>
+    <data xml:space="preserve" name="Text.Stashes.Changes"><value>CHANGES</value></data>
+
+    <data xml:space="preserve" name="Text.StashDropConfirm"><value>Drop Stash</value></data>
+    <data xml:space="preserve" name="Text.StashDropConfirm.Label"><value>Drop :</value></data>
+
+    <data xml:space="preserve" name="Text.TwoCommitsDiff"><value>COMMIT : {0} -> {1}</value></data>
+
+    <data xml:space="preserve" name="Text.WorkingCopy"><value>Changes</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.Unstaged"><value>UNSTAGED</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged"><value>VIEW ASSUME UNCHANGED</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.Unstaged.Stage"><value>STAGE</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.Unstaged.StageAll"><value>STAGE ALL</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.Staged"><value>STAGED</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.Staged.Unstage"><value>UNSTAGE</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.Staged.UnstageAll"><value>UNSTAGE ALL</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.Conflicts"><value>CONFLICTS DETECTED</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.UseTheirs"><value>USE THEIRS</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.UseMine"><value>USE MINE</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.OpenMerger"><value>OPEN MERGE</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.CommitMessageTip"><value>Enter commit message</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.MessageHistories"><value>MESSAGE HISTORIES</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.Amend"><value>Amend</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.Commit"><value>COMMIT</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.CommitTip"><value>CTRL + Enter</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.CommitAndPush"><value>COMMIT &amp; PUSH</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.NoCommitHistories"><value>NO RECENT INPUT MESSAGES</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.HasCommitHistories"><value>RECENT INPUT MESSAGES</value></data>
+    <data xml:space="preserve" name="Text.WorkingCopy.IncludeUntracked"><value>INCLUDE UNTRACKED FILES</value></data>
+
+    <data xml:space="preserve" name="Text.Conflict.Tip"><value>Conflict detected! Press 'Abort' to restore original HEAD</value></data>
+
+    <data xml:space="preserve" name="Text.ClearStashes"><value>Clear Stashes</value></data>
+    <data xml:space="preserve" name="Text.ClearStashes.Message"><value>You are trying to clear all stashes. Are you sure to continue?</value></data>
+
+    <data xml:space="preserve" name="Text.Reword"><value>Reword Commit Message</value></data>
+    <data xml:space="preserve" name="Text.Reword.On"><value>On :</value></data>
+    <data xml:space="preserve" name="Text.Reword.Message"><value>Message :</value></data>
+
+    <data xml:space="preserve" name="Text.Squash"><value>Squash HEAD Into Parent</value></data>
+    <data xml:space="preserve" name="Text.Squash.Head"><value>HEAD :</value></data>
+    <data xml:space="preserve" name="Text.Squash.To"><value>To :</value></data>
+    <data xml:space="preserve" name="Text.Squash.Message"><value>Reword :</value></data>
+
+    <data xml:space="preserve" name="Text.AssumeUnchanged"><value>FILES ASSUME UNCHANGED</value></data>
+    <data xml:space="preserve" name="Text.AssumeUnchanged.Remove"><value>REMOVE</value></data>
+    <data xml:space="preserve" name="Text.AssumeUnchanged.Empty"><value>NO FILES ASSUMED AS UNCHANGED</value></data>
+
+    <data xml:space="preserve" name="Text.Statistics"><value>Statistics</value></data>
+    <data xml:space="preserve" name="Text.Statistics.ThisWeek"><value>WEEK</value></data>
+    <data xml:space="preserve" name="Text.Statistics.ThisMonth"><value>MONTH</value></data>
+    <data xml:space="preserve" name="Text.Statistics.ThisYear"><value>YEAR</value></data>
+    <data xml:space="preserve" name="Text.Statistics.TotalCommitters"><value>Total Committers</value></data>
+    <data xml:space="preserve" name="Text.Statistics.TotalCommits"><value>Total Commits</value></data>
+    <data xml:space="preserve" name="Text.Statistics.Committer"><value>COMMITTER</value></data>
+    <data xml:space="preserve" name="Text.Statistics.CommitAmount"><value>COMMITS</value></data>
+
+    <data xml:space="preserve" name="Text.Hotkeys"><value>HotKeys</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Global"><value>GLOBAL</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Global.NewTab"><value>Create new page</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Global.CloseTab"><value>Close current page</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Global.GotoNextTab"><value>Go to next page</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Global.CancelPopup"><value>Cancel current popup</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Repo"><value>REPOSITORY</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Repo.ViewHistories"><value>Switch to 'Histories'</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Repo.ViewChanges"><value>Switch to 'Changes'</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Repo.ViewStashes"><value>Switch to 'Stashes'</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Repo.ToggleSearch"><value>Toggle commit search</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.Repo.StageOrUnstageSelected"><value>Stage/Unstage selected changes</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.TextEditor"><value>TEXT EDITOR</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.TextEditor.Search"><value>Open search panel</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.TextEditor.GotoPrevMatch"><value>Find previous match</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.TextEditor.GotoNextMatch"><value>Find next match</value></data>
+    <data xml:space="preserve" name="Text.Hotkeys.TextEditor.CloseSearch"><value>Close search panel</value></data>
+
+    <data xml:space="preserve" name="Text.NotConfigured"><value>Git has NOT been configured. Please to go [Preference] and configure it first.</value></data>
+    <data xml:space="preserve" name="Text.BinaryNotSupported"><value>BINARY FILE NOT SUPPORTED!!!</value></data>
+    <data xml:space="preserve" name="Text.BlameTypeNotSupported"><value>BLAME ON THIS FILE IS NOT SUPPORTED!!!</value></data>
+    <data xml:space="preserve" name="Text.SaveAsPatchSuccess"><value>Patch has been saved successfully!</value></data>
+</root>

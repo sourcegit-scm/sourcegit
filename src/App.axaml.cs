@@ -7,9 +7,12 @@ using Avalonia.Media;
 using Avalonia.Media.Fonts;
 using Avalonia.Styling;
 using System;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 
 namespace SourceGit {
     public partial class App : Application {
@@ -70,7 +73,21 @@ namespace SourceGit {
 
         public static void SetLocale(string localeKey) {
             var app = Current as App;
-            var targetLocale = app.Resources[localeKey] as ResourceDictionary;
+            localeKey = localeKey.Replace("_", "-");
+
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(localeKey);
+            Thread.CurrentThread.CurrentCulture  = Thread.CurrentThread.CurrentUICulture ;
+            Assets.Resources.Culture = Thread.CurrentThread.CurrentUICulture;
+            
+            var locale = new ResourceDictionary();
+            var res = new Assets.Resources();
+            var props = typeof(Assets.Resources).GetProperties()
+                .Where(m=> m.PropertyType == typeof(string))
+                .ToDictionary(k=> k.Name.Replace("_", "."), v=> v.GetValue(res));
+            foreach (var prop in props)
+                locale.Add(prop.Key, prop.Value);
+
+            var targetLocale = locale;
             if (targetLocale == null || targetLocale == app._activeLocale) {
                 return;
             }

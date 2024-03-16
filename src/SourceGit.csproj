@@ -46,4 +46,12 @@
     <TrimmerRootAssembly Include="SourceGit" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Update="Assets\Resources.*.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  
 </Project>
