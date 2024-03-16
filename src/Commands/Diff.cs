@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class Diff : Command {
-        private static readonly Regex REG_INDICATOR = new Regex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@");
+    public partial class Diff : Command {
+        [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
+        private static partial Regex REG_INDICATOR();
         private static readonly string PREFIX_LFS_NEW = "+version https://git-lfs.github.com/spec/";
         private static readonly string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
         private static readonly string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
@@ -57,7 +58,7 @@ namespace SourceGit.Commands {
             }
 
             if (_result.TextDiff.Lines.Count == 0) {
-                var match = REG_INDICATOR.Match(line);
+                var match = REG_INDICATOR().Match(line);
                 if (!match.Success) {
                     if (line.StartsWith("Binary", StringComparison.Ordinal)) _result.IsBinary = true;
                     return;
@@ -96,7 +97,7 @@ namespace SourceGit.Commands {
                     _newLine++;
                 } else if (ch != '\\') {
                     ProcessInlineHighlights();
-                    var match = REG_INDICATOR.Match(line);
+                    var match = REG_INDICATOR().Match(line);
                     if (match.Success) {
                         _oldLine = int.Parse(match.Groups[1].Value);
                         _newLine = int.Parse(match.Groups[2].Value);

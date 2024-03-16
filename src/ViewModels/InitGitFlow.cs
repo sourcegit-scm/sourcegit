@@ -3,8 +3,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels {
-    public class InitGitFlow : Popup {
-        private static readonly Regex TAG_PREFIX = new Regex(@"^[\w\-/\.]+$");
+    public partial class InitGitFlow : Popup {
+        
+        [GeneratedRegex(@"^[\w\-/\.]+$")]
+        private static partial Regex TAG_PREFIX();
 
         [Required(ErrorMessage = "Master branch name is required!!!")]
         [RegularExpression(@"^[\w\-/\.]+$", ErrorMessage = "Bad branch name format!")]
@@ -63,7 +65,7 @@ namespace SourceGit.ViewModels {
         }
 
         public static ValidationResult ValidateTagPrefix(string tagPrefix, ValidationContext ctx) {
-            if (!string.IsNullOrWhiteSpace(tagPrefix) && !TAG_PREFIX.IsMatch(tagPrefix)) {
+            if (!string.IsNullOrWhiteSpace(tagPrefix) && !TAG_PREFIX().IsMatch(tagPrefix)) {
                 return new ValidationResult("Bad tag prefix format!");
             }
 

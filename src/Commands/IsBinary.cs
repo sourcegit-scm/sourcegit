@@ -1,8 +1,9 @@
 ﻿using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class IsBinary : Command {
-        private static readonly Regex REG_TEST = new Regex(@"^\-\s+\-\s+.*$");
+    public partial class IsBinary : Command {
+        [GeneratedRegex(@"^\-\s+\-\s+.*$")]
+        private static partial Regex REG_TEST();
 
         public IsBinary(string repo, string commit, string path) {
             WorkingDirectory = repo;
@@ -12,7 +13,7 @@ namespace SourceGit.Commands {
         }
 
         public bool Result() {
-            return REG_TEST.IsMatch(ReadToEnd().StdOut);
+            return REG_TEST().IsMatch(ReadToEnd().StdOut);
         }
     }
 }

@@ -2,8 +2,9 @@
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class CompareRevisions : Command {
-        private static readonly Regex REG_FORMAT = new Regex(@"^(\s?[\w\?]{1,4})\s+(.+)$");
+    public partial class CompareRevisions : Command {
+        [GeneratedRegex(@"^(\s?[\w\?]{1,4})\s+(.+)$")]
+        private static partial Regex REG_FORMAT();
 
         public CompareRevisions(string repo, string start, string end) {
             WorkingDirectory = repo;
@@ -18,7 +19,7 @@ namespace SourceGit.Commands {
         }
 
         protected override void OnReadline(string line) {
-            var match = REG_FORMAT.Match(line);
+            var match = REG_FORMAT().Match(line);
             if (!match.Success) return;
 
             var change = new Models.Change() { Path = match.Groups[2].Value };

@@ -1,8 +1,9 @@
 ﻿using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class QueryStagedFileBlobGuid : Command {
-        private static readonly Regex REG_FORMAT = new Regex(@"^\d+\s+([0-9a-f]+)\s+.*$");
+    public partial class QueryStagedFileBlobGuid : Command {
+        [GeneratedRegex(@"^\d+\s+([0-9a-f]+)\s+.*$")]
+        private static partial Regex REG_FORMAT();
 
         public QueryStagedFileBlobGuid(string repo, string file) {
             WorkingDirectory = repo;
@@ -12,7 +13,7 @@ namespace SourceGit.Commands {
 
         public string Result() {
             var rs = ReadToEnd();
-            var match = REG_FORMAT.Match(rs.StdOut.Trim());
+            var match = REG_FORMAT().Match(rs.StdOut.Trim());
             if (match.Success) {
                 return match.Groups[1].Value;
             }

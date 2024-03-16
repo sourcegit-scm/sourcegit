@@ -1,11 +1,20 @@
 ﻿using System.Text.RegularExpressions;
 
 namespace SourceGit.Models {
-    public class Remote {
+    public partial class Remote {
+        
+        [GeneratedRegex(@"^http[s]?://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-\.]+\.git$")]
+        private static partial Regex regex1();
+
+        [GeneratedRegex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-]+/[\w\-\.]+\.git$")]
+        private static partial Regex regex2();
+        [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-\.]+\.git$")]
+        private static partial Regex regex3();
+        
         private static readonly Regex[] URL_FORMATS = [
-            new Regex(@"^http[s]?://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-\.]+\.git$"),
-            new Regex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-]+/[\w\-\.]+\.git$"),
-            new Regex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-\.]+\.git$"),
+            regex1(),
+            regex2(),
+            regex3(),
         ];
 
         public string Name { get; set; }

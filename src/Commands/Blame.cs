@@ -3,8 +3,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class Blame : Command {
-        private static readonly Regex REG_FORMAT = new Regex(@"^\^?([0-9a-f]+)\s+.*\((.*)\s+(\d+)\s+[\-\+]?\d+\s+\d+\) (.*)");
+    public partial class Blame : Command {
+        
+        [GeneratedRegex(@"^\^?([0-9a-f]+)\s+.*\((.*)\s+(\d+)\s+[\-\+]?\d+\s+\d+\) (.*)")]
+        private static partial Regex REG_FORMAT();
         private static readonly DateTime UTC_START = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
 
         public Blame(string repo, string file, string revision) {
@@ -44,7 +46,7 @@ namespace SourceGit.Commands {
                 return;
             }
 
-            var match = REG_FORMAT.Match(line);
+            var match = REG_FORMAT().Match(line);
             if (!match.Success) return;
 
             _content.AppendLine(match.Groups[4].Value);

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class QueryStashes : Command {
-        private static readonly Regex REG_STASH = new Regex(@"^Reflog: refs/(stash@\{\d+\}).*$");
+    public partial class QueryStashes : Command {
+        
+        [GeneratedRegex(@"^Reflog: refs/(stash@\{\d+\}).*$")]
+        private static partial Regex REG_STASH();
         
         public QueryStashes(string repo) {
             WorkingDirectory = repo;
@@ -28,7 +30,7 @@ namespace SourceGit.Commands {
             if (_current == null) return;
 
             if (line.StartsWith("Reflog: refs/stash@", StringComparison.Ordinal)) {
-                var match = REG_STASH.Match(line);
+                var match = REG_STASH().Match(line);
                 if (match.Success) _current.Name = match.Groups[1].Value;
             } else if (line.StartsWith("Reflog message: ", StringComparison.Ordinal)) {
                 _current.Message = line.Substring(16);

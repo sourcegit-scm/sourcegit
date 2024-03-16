@@ -2,8 +2,10 @@
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class QueryRevisionObjects : Command {
-        private static readonly Regex REG_FORMAT = new Regex(@"^\d+\s+(\w+)\s+([0-9a-f]+)\s+(.*)$");
+    public partial class QueryRevisionObjects : Command {
+        
+        [GeneratedRegex(@"^\d+\s+(\w+)\s+([0-9a-f]+)\s+(.*)$")]
+        private static partial Regex REG_FORMAT();
         private List<Models.Object> objects = new List<Models.Object>();
 
         public QueryRevisionObjects(string repo, string sha) {
@@ -18,7 +20,7 @@ namespace SourceGit.Commands {
         }
 
         protected override void OnReadline(string line) {
-            var match = REG_FORMAT.Match(line);
+            var match = REG_FORMAT().Match(line);
             if (!match.Success) return;
 
             var obj = new Models.Object();

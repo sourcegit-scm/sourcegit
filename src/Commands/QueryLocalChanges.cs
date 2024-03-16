@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class QueryLocalChanges : Command {
-        private static readonly Regex REG_FORMAT = new Regex(@"^(\s?[\w\?]{1,4})\s+(.+)$");
+    public partial class QueryLocalChanges : Command {
+        [GeneratedRegex(@"^(\s?[\w\?]{1,4})\s+(.+)$")]
+        private static partial Regex REG_FORMAT();
         private static readonly string[] UNTRACKED = [ "no", "all" ];
 
         public QueryLocalChanges(string repo, bool includeUntracked = true) {
@@ -19,7 +20,7 @@ namespace SourceGit.Commands {
         }
 
         protected override void OnReadline(string line) {
-            var match = REG_FORMAT.Match(line);
+            var match = REG_FORMAT().Match(line);
             if (!match.Success) return;
             if (line.EndsWith("/", StringComparison.Ordinal)) return; // Ignore changes with git-worktree
 

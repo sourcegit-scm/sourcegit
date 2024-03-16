@@ -49,7 +49,7 @@ namespace SourceGit.Models {
         }
     }
 
-    public class TextDiff {
+    public partial class TextDiff {
         public string File { get; set; } = string.Empty;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
         public int MaxLineNumber = 0;
@@ -282,11 +282,14 @@ namespace SourceGit.Models {
             builder.Append("\n");
             System.IO.File.WriteAllText(output, builder.ToString());
         }
+        
+        [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
+        private static partial Regex indicatorRegex();
 
         private bool ProcessIndicatorForPatch(StringBuilder builder, TextDiffLine indicator, int idx, int start, int end, int ignoreRemoves, int ignoreAdds, bool revert, bool tailed) {
-            var indicatorRegex = new Regex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@");
+            
 
-            var match = indicatorRegex.Match(indicator.Content);
+            var match = indicatorRegex().Match(indicator.Content);
             var oldStart = int.Parse(match.Groups[1].Value);
             var newStart = int.Parse(match.Groups[2].Value) + ignoreRemoves - ignoreAdds;
             var oldCount = 0;
@@ -336,9 +339,8 @@ namespace SourceGit.Models {
         }
 
         private bool ProcessIndicatorForPatchSingleSide(StringBuilder builder, TextDiffLine indicator, int idx, int start, int end, int ignoreRemoves, int ignoreAdds, bool revert, bool isOldSide, bool tailed) {
-            var indicatorRegex = new Regex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@");
 
-            var match = indicatorRegex.Match(indicator.Content);
+            var match = indicatorRegex().Match(indicator.Content);
             var oldStart = int.Parse(match.Groups[1].Value);
             var newStart = int.Parse(match.Groups[2].Value) + ignoreRemoves - ignoreAdds;
             var oldCount = 0;
