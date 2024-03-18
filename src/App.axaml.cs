@@ -93,11 +93,11 @@ namespace SourceGit
 
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(localeKey);
             Thread.CurrentThread.CurrentCulture  = Thread.CurrentThread.CurrentUICulture ;
-            Assets.Resources.Culture = Thread.CurrentThread.CurrentUICulture;
+            SourceGit.Resources.Locales.Culture = Thread.CurrentThread.CurrentUICulture;
             
             var locale = new ResourceDictionary();
-            var res = new Assets.Resources();
-            var props = typeof(Assets.Resources).GetProperties()
+            var res = new Resources.Locales();
+            var props = typeof(Resources.Locales).GetProperties()
                 .Where(m=> m.PropertyType == typeof(string))
                 .ToDictionary(k=> k.Name.Replace("_", "."), v=> v.GetValue(res));
             foreach (var prop in props)

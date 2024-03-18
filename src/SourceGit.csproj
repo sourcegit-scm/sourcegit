@@ -48,9 +48,13 @@
   </ItemGroup>
   
   <ItemGroup>
-    <EmbeddedResource Update="Assets\Resources.*.resx">
+    <EmbeddedResource Update="Resources\Locales.*.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>Locales.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Locales.*.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <DependentUpon>Locales.resx</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   
