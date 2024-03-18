@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class QueryBranches : Command {
+    public partial class QueryBranches : Command {
         private static readonly string PREFIX_LOCAL = "refs/heads/";
         private static readonly string PREFIX_REMOTE = "refs/remotes/";
-        private static readonly Regex REG_AHEAD_BEHIND = new Regex(@"^(\d+)\s(\d+)$");
+        
+        [GeneratedRegex(@"^(\d+)\s(\d+)$")]
+        private static partial Regex REG_AHEAD_BEHIND();
 
         public QueryBranches(string repo) {
             WorkingDirectory = repo;
@@ -71,7 +73,7 @@ namespace SourceGit.Commands {
             var rs = cmd.ReadToEnd();
             if (!rs.IsSuccess) return string.Empty;
 
-            var match = REG_AHEAD_BEHIND.Match(rs.StdOut);
+            var match = REG_AHEAD_BEHIND().Match(rs.StdOut);
             if (!match.Success) return string.Empty;
 
             var ahead = int.Parse(match.Groups[1].Value);

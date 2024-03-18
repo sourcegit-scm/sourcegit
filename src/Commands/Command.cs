@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class Command {
+    public partial class Command {
         public class CancelToken {
             public bool Requested { get; set; } = false;
         }
@@ -70,7 +70,7 @@ namespace SourceGit.Commands {
                 if (e.Data.StartsWith("remote: Counting objects:", StringComparison.Ordinal)) return;
                 if (e.Data.StartsWith("remote: Compressing objects:", StringComparison.Ordinal)) return;
                 if (e.Data.StartsWith("Filtering content:", StringComparison.Ordinal)) return;
-                if (_progressRegex.IsMatch(e.Data)) return;
+                if (_progressRegex().IsMatch(e.Data)) return;
                 errs.Add(e.Data);
             };
 
@@ -142,6 +142,7 @@ namespace SourceGit.Commands {
 
         protected virtual void OnReadline(string line) { }
 
-        private static readonly Regex _progressRegex = new Regex(@"\d+%");
+        [GeneratedRegex(@"\d+%")]
+        private static partial Regex _progressRegex();
     }
 }

@@ -2,8 +2,9 @@
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class QueryRemotes : Command {
-        private static readonly Regex REG_REMOTE = new Regex(@"^([\w\.\-]+)\s*(\S+).*$");
+    public partial class QueryRemotes : Command {
+        [GeneratedRegex(@"^([\w\.\-]+)\s*(\S+).*$")]
+        private static partial Regex REG_REMOTE();
 
         public QueryRemotes(string repo) {
             WorkingDirectory = repo;
@@ -17,7 +18,7 @@ namespace SourceGit.Commands {
         }
 
         protected override void OnReadline(string line) {
-            var match = REG_REMOTE.Match(line);
+            var match = REG_REMOTE().Match(line);
             if (!match.Success) return;
 
             var remote = new Models.Remote() {

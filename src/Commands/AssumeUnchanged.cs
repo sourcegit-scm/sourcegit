@@ -2,9 +2,11 @@
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class AssumeUnchanged {
-        class ViewCommand : Command {
-            private static readonly Regex REG = new Regex(@"^(\w)\s+(.+)$");
+    public partial class AssumeUnchanged {
+        partial class ViewCommand : Command {
+            
+            [GeneratedRegex(@"^(\w)\s+(.+)$")]
+            private static partial Regex REG();
 
             public ViewCommand(string repo) {
                 WorkingDirectory = repo;
@@ -18,7 +20,7 @@ namespace SourceGit.Commands {
             }
 
             protected override void OnReadline(string line) {
-                var match = REG.Match(line);
+                var match = REG().Match(line);
                 if (!match.Success) return;
 
                 if (match.Groups[1].Value == "h") {

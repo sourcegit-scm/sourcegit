@@ -1,8 +1,10 @@
 ﻿using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands {
-    public class QueryFileSize : Command {
-        private static readonly Regex REG_FORMAT = new Regex(@"^\d+\s+\w+\s+[0-9a-f]+\s+(\d+)\s+.*$");
+    public partial class QueryFileSize : Command {
+        
+        [GeneratedRegex(@"^\d+\s+\w+\s+[0-9a-f]+\s+(\d+)\s+.*$")]
+        private static partial Regex REG_FORMAT();
 
         public QueryFileSize(string repo, string file, string revision) {
             WorkingDirectory = repo;
@@ -15,7 +17,7 @@ namespace SourceGit.Commands {
 
             var rs = ReadToEnd();
             if (rs.IsSuccess) {
-                var match = REG_FORMAT.Match(rs.StdOut);
+                var match = REG_FORMAT().Match(rs.StdOut);
                 if (match.Success) {
                     return long.Parse(match.Groups[1].Value);
                 }
