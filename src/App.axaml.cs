@@ -1,10 +1,9 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Globalization;
-using System.Linq;
-using System.Threading;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -87,24 +86,18 @@ namespace SourceGit
         public static void SetLocale(string localeKey)
         {
             var app = Current as App;
+            var rd = new ResourceDictionary();
 
-            localeKey = localeKey.Replace("_", "-");
+            var culture = CultureInfo.GetCultureInfo(localeKey.Replace("_", "-"));
+            SourceGit.Resources.Locales.Culture = culture;
 
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(localeKey);
-            Thread.CurrentThread.CurrentCulture  = Thread.CurrentThread.CurrentUICulture ;
-            SourceGit.Resources.Locales.Culture = Thread.CurrentThread.CurrentUICulture;
-            
-            var locale = new ResourceDictionary();
-            var res = new Resources.Locales();
-            var props = typeof(Resources.Locales).GetProperties()
-                .Where(m=> m.PropertyType == typeof(string))
-                .ToDictionary(k=> k.Name.Replace("_", "."), v=> v.GetValue(res));
-            foreach (var prop in props)
-                locale.Add(prop.Key, prop.Value);
-
-            var targetLocale = locale;
-            if (targetLocale == null || targetLocale == app._activeLocale) {
-                return;
+            var sets = SourceGit.Resources.Locales.ResourceManager.GetResourceSet(culture, true, true);
+            foreach (var obj in sets)
+            {
+                if (obj is DictionaryEntry entry)
+                {
+                    rd.Add(entry.Key, entry.Value);
+                }
             }
 
             if (app._activeLocale != null)
@@ -112,8 +105,8 @@ namespace SourceGit
                 app.Resources.MergedDictionaries.Remove(app._activeLocale);
             }
 
-            app.Resources.MergedDictionaries.Add(targetLocale);
-            app._activeLocale = targetLocale;
+            app.Resources.MergedDictionaries.Add(rd);
+            app._activeLocale = rd;
         }
 
         public static void SetTheme(string theme)

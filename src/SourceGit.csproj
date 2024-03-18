@@ -30,6 +30,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Resources/Locales.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Locales.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources/Locales.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Locales.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources/Locales.*.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <DependentUpon>Locales.resx</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.10" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.10" Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
@@ -46,12 +62,4 @@
     <TrimmerRootAssembly Include="SourceGit" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Locales.*.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <DependentUpon>Locales.resx</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  
 </Project>
