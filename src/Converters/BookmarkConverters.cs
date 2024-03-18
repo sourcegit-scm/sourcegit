@@ -1,8 +1,10 @@
 ﻿using Avalonia.Data.Converters;
 using Avalonia.Media;
 
-namespace SourceGit.Converters {
-    public static class BookmarkConverters {
+namespace SourceGit.Converters
+{
+    public static class BookmarkConverters
+    {
         public static FuncValueConverter<int, IBrush> ToBrush =
             new FuncValueConverter<int, IBrush>(bookmark => Models.Bookmarks.Brushes[bookmark]);
 

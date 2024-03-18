@@ -3,8 +3,10 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SourceGit.Models {
-    public interface IRepository {
+namespace SourceGit.Models
+{
+    public interface IRepository
+    {
         string FullPath { get; set; }
         string GitDir { get; set; }
 
@@ -16,8 +18,10 @@ namespace SourceGit.Models {
         void RefreshStashes();
     }
 
-    public class Watcher : IDisposable {
-        public Watcher(IRepository repo) {
+    public class Watcher : IDisposable
+    {
+        public Watcher(IRepository repo)
+        {
             _repo = repo;
 
             _wcWatcher = new FileSystemWatcher();
@@ -45,23 +49,30 @@ namespace SourceGit.Models {
             _timer = new Timer(Tick, null, 100, 100);
         }
 
-        public void SetEnabled(bool enabled) {
-            if (enabled) {
+        public void SetEnabled(bool enabled)
+        {
+            if (enabled)
+            {
                 if (_lockCount > 0) _lockCount--;
-            } else {
+            }
+            else
+            {
                 _lockCount++;
             }
         }
 
-        public void MarkBranchDirtyManually() {
+        public void MarkBranchDirtyManually()
+        {
             _updateBranch = DateTime.Now.ToFileTime() - 1;
         }
 
-        public void MarkWorkingCopyDirtyManually() {
+        public void MarkWorkingCopyDirtyManually()
+        {
             _updateWC = DateTime.Now.ToFileTime() - 1;
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             _repoWatcher.EnableRaisingEvents = false;
             _repoWatcher.Created -= OnRepositoryChanged;
             _repoWatcher.Renamed -= OnRepositoryChanged;
@@ -82,23 +93,30 @@ namespace SourceGit.Models {
             _timer = null;
         }
 
-        private void Tick(object sender) {
+        private void Tick(object sender)
+        {
             if (_lockCount > 0) return;
 
             var now = DateTime.Now.ToFileTime();
-            if (_updateBranch > 0 && now > _updateBranch) {
+            if (_updateBranch > 0 && now > _updateBranch)
+            {
                 _updateBranch = 0;
                 _updateWC = 0;
 
-                if (_updateTags > 0) {
+                if (_updateTags > 0)
+                {
                     _updateTags = 0;
-                    Task.Run(() => {
+                    Task.Run(() =>
+                    {
                         _repo.RefreshTags();
                         _repo.RefreshBranches();
                         _repo.RefreshCommits();
                     });
-                } else {
-                    Task.Run(() => {
+                }
+                else
+                {
+                    Task.Run(() =>
+                    {
                         _repo.RefreshBranches();
                         _repo.RefreshCommits();
                     });
@@ -107,49 +125,64 @@ namespace SourceGit.Models {
                 Task.Run(_repo.RefreshWorkingCopyChanges);
             }
 
-            if (_updateWC > 0 && now > _updateWC) {
+            if (_updateWC > 0 && now > _updateWC)
+            {
                 _updateWC = 0;
                 Task.Run(_repo.RefreshWorkingCopyChanges);
             }
 
-            if (_updateSubmodules > 0 && now > _updateSubmodules) {
+            if (_updateSubmodules > 0 && now > _updateSubmodules)
+            {
                 _updateSubmodules = 0;
                 _repo.RefreshSubmodules();
             }
 
-            if (_updateStashes > 0 && now > _updateStashes) {
+            if (_updateStashes > 0 && now > _updateStashes)
+            {
                 _updateStashes = 0;
                 _repo.RefreshStashes();
             }
 
-            if (_updateTags > 0 && now > _updateTags) {
+            if (_updateTags > 0 && now > _updateTags)
+            {
                 _updateTags = 0;
                 _repo.RefreshTags();
                 _repo.RefreshCommits();
             }
         }
 
-        private void OnRepositoryChanged(object o, FileSystemEventArgs e) {
+        private void OnRepositoryChanged(object o, FileSystemEventArgs e)
+        {
             if (string.IsNullOrEmpty(e.Name)) return;
 
             var name = e.Name.Replace("\\", "/");
-            if (name.StartsWith("modules", StringComparison.Ordinal)) {
+            if (name.StartsWith("modules", StringComparison.Ordinal))
+            {
                 _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
-            } else if (name.StartsWith("refs/tags", StringComparison.Ordinal)) {
+            }
+            else if (name.StartsWith("refs/tags", StringComparison.Ordinal))
+            {
                 _updateTags = DateTime.Now.AddSeconds(.5).ToFileTime();
-            } else if (name.StartsWith("refs/stash", StringComparison.Ordinal)) {
+            }
+            else if (name.StartsWith("refs/stash", StringComparison.Ordinal))
+            {
                 _updateStashes = DateTime.Now.AddSeconds(.5).ToFileTime();
-            } else if (name.Equals("HEAD", StringComparison.Ordinal) ||
+            }
+            else if (name.Equals("HEAD", StringComparison.Ordinal) ||
                 name.StartsWith("refs/heads/", StringComparison.Ordinal) ||
                 name.StartsWith("refs/remotes/", StringComparison.Ordinal) ||
-                name.StartsWith("worktrees/", StringComparison.Ordinal)) {
+                name.StartsWith("worktrees/", StringComparison.Ordinal))
+            {
                 _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
-            } else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal)) {
+            }
+            else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal))
+            {
                 _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
             }
         }
 
-        private void OnWorkingCopyChanged(object o, FileSystemEventArgs e) {
+        private void OnWorkingCopyChanged(object o, FileSystemEventArgs e)
+        {
             if (string.IsNullOrEmpty(e.Name)) return;
 
             var name = e.Name.Replace("\\", "/");
@@ -157,7 +190,7 @@ namespace SourceGit.Models {
             _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
         }
 
-        private IRepository _repo = null;
+        private readonly IRepository _repo = null;
         private FileSystemWatcher _repoWatcher = null;
         private FileSystemWatcher _wcWatcher = null;
         private Timer _timer = null;

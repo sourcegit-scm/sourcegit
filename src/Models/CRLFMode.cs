@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace SourceGit.Models {
-    public class CRLFMode {
+namespace SourceGit.Models
+{
+    public class CRLFMode
+    {
         public string Name { get; set; }
         public string Value { get; set; }
         public string Desc { get; set; }
@@ -12,7 +14,8 @@ namespace SourceGit.Models {
             new CRLFMode("FALSE", "false", "Do NOT convert"),
         };
 
-        public CRLFMode(string name, string value, string desc) {
+        public CRLFMode(string name, string value, string desc)
+        {
             Name = name;
             Value = value;
             Desc = desc;

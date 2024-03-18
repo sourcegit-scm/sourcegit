@@ -1,31 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SourceGit.Commands {
-    public class Config : Command {        
-        public Config(string repository) {
+namespace SourceGit.Commands
+{
+    public class Config : Command
+    {
+        public Config(string repository)
+        {
             WorkingDirectory = repository;
             Context = repository;
             RaiseError = false;
         }
 
-        public Dictionary<string, string> ListAll() {
+        public Dictionary<string, string> ListAll()
+        {
             Args = "config -l";
 
             var output = ReadToEnd();
             var rs = new Dictionary<string, string>();
-            if (output.IsSuccess) {
+            if (output.IsSuccess)
+            {
                 var lines = output.StdOut.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var line in lines) {
+                foreach (var line in lines)
+                {
                     var idx = line.IndexOf('=', StringComparison.Ordinal);
-                    if (idx != -1) {
+                    if (idx != -1)
+                    {
                         var key = line.Substring(0, idx).Trim();
-                        var val = line.Substring(idx+1).Trim();
-                        if (rs.ContainsKey(key)) {
+                        var val = line.Substring(idx + 1).Trim();
+                        if (rs.ContainsKey(key))
+                        {
                             rs[key] = val;
-                        } else {
+                        }
+                        else
+                        {
                             rs.Add(key, val);
-                        }                        
+                        }
                     }
                 }
             }
@@ -33,22 +43,33 @@ namespace SourceGit.Commands {
             return rs;
         }
 
-        public string Get(string key) {
+        public string Get(string key)
+        {
             Args = $"config {key}";
             return ReadToEnd().StdOut.Trim();
         }
 
-        public bool Set(string key, string value, bool allowEmpty = false) {
-            if (!allowEmpty && string.IsNullOrWhiteSpace(value)) {
-                if (string.IsNullOrEmpty(WorkingDirectory)) {
+        public bool Set(string key, string value, bool allowEmpty = false)
+        {
+            if (!allowEmpty && string.IsNullOrWhiteSpace(value))
+            {
+                if (string.IsNullOrEmpty(WorkingDirectory))
+                {
                     Args = $"config --global --unset {key}";
-                } else {
+                }
+                else
+                {
                     Args = $"config --unset {key}";
                 }
-            } else {
-                if (string.IsNullOrWhiteSpace(WorkingDirectory)) {
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(WorkingDirectory))
+                {
                     Args = $"config --global {key} \"{value}\"";
-                } else {
+                }
+                else
+                {
                     Args = $"config {key} \"{value}\"";
                 }
             }

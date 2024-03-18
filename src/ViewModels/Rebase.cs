@@ -1,23 +1,29 @@
 ﻿using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels {
-    public class Rebase : Popup {
-        public Models.Branch Current {
+namespace SourceGit.ViewModels
+{
+    public class Rebase : Popup
+    {
+        public Models.Branch Current
+        {
             get;
             private set;
         }
 
-        public object On {
+        public object On
+        {
             get;
             private set;
         }
 
-        public bool AutoStash {
+        public bool AutoStash
+        {
             get;
             set;
         }
 
-        public Rebase(Repository repo, Models.Branch current, Models.Branch on) {
+        public Rebase(Repository repo, Models.Branch current, Models.Branch on)
+        {
             _repo = repo;
             _revision = on.Head;
             Current = current;
@@ -26,7 +32,8 @@ namespace SourceGit.ViewModels {
             View = new Views.Rebase() { DataContext = this };
         }
 
-        public Rebase(Repository repo, Models.Branch current, Models.Commit on) {
+        public Rebase(Repository repo, Models.Branch current, Models.Commit on)
+        {
             _repo = repo;
             _revision = on.SHA;
             Current = current;
@@ -35,18 +42,20 @@ namespace SourceGit.ViewModels {
             View = new Views.Rebase() { DataContext = this };
         }
 
-        public override Task<bool> Sure() {
+        public override Task<bool> Sure()
+        {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Rebasing ...";
 
-            return Task.Run(() => {
+            return Task.Run(() =>
+            {
                 var succ = new Commands.Rebase(_repo.FullPath, _revision, AutoStash).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
         }
 
-        private Repository _repo = null;
-        private string _revision = string.Empty;
+        private readonly Repository _repo = null;
+        private readonly string _revision = string.Empty;
     }
 }

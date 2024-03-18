@@ -1,19 +1,23 @@
 ﻿using System.Collections.Generic;
 
-namespace SourceGit.Models {
-    public class TextInlineChange {
+namespace SourceGit.Models
+{
+    public class TextInlineChange
+    {
         public int DeletedStart { get; set; }
         public int DeletedCount { get; set; }
         public int AddedStart { get; set; }
         public int AddedCount { get; set; }
 
-        class Chunk {
+        class Chunk
+        {
             public int Hash;
             public bool Modified;
             public int Start;
             public int Size;
 
-            public Chunk(int hash, int start, int size) {
+            public Chunk(int hash, int start, int size)
+            {
                 Hash = hash;
                 Modified = false;
                 Start = start;
@@ -21,7 +25,8 @@ namespace SourceGit.Models {
             }
         }
 
-        enum Edit {
+        enum Edit
+        {
             None,
             DeletedRight,
             DeletedLeft,
@@ -29,7 +34,8 @@ namespace SourceGit.Models {
             AddedLeft,
         }
 
-        class EditResult {
+        class EditResult
+        {
             public Edit State;
             public int DeleteStart;
             public int DeleteEnd;
@@ -37,14 +43,16 @@ namespace SourceGit.Models {
             public int AddEnd;
         }
 
-        public TextInlineChange(int dp, int dc, int ap, int ac) {
+        public TextInlineChange(int dp, int dc, int ap, int ac)
+        {
             DeletedStart = dp;
             DeletedCount = dc;
             AddedStart = ap;
             AddedCount = ac;
         }
 
-        public static List<TextInlineChange> Compare(string oldValue, string newValue) {
+        public static List<TextInlineChange> Compare(string oldValue, string newValue)
+        {
             var hashes = new Dictionary<string, int>();
             var chunksOld = MakeChunks(hashes, oldValue);
             var chunksNew = MakeChunks(hashes, newValue);
@@ -59,8 +67,10 @@ namespace SourceGit.Models {
             var posOld = 0;
             var posNew = 0;
             var last = null as TextInlineChange;
-            do {
-                while (posOld < sizeOld && posNew < sizeNew && !chunksOld[posOld].Modified && !chunksNew[posNew].Modified) {
+            do
+            {
+                while (posOld < sizeOld && posNew < sizeNew && !chunksOld[posOld].Modified && !chunksNew[posNew].Modified)
+                {
                     posOld++;
                     posNew++;
                 }
@@ -79,10 +89,12 @@ namespace SourceGit.Models {
                     countOld,
                     countNew > 0 ? chunksNew[beginNew].Start : 0,
                     countNew);
-                if (last != null) {
+                if (last != null)
+                {
                     var midSizeOld = diff.DeletedStart - last.DeletedStart - last.DeletedCount;
                     var midSizeNew = diff.AddedStart - last.AddedStart - last.AddedCount;
-                    if (midSizeOld == 1 && midSizeNew == 1) {
+                    if (midSizeOld == 1 && midSizeNew == 1)
+                    {
                         last.DeletedCount += (1 + countOld);
                         last.AddedCount += (1 + countNew);
                         continue;
@@ -96,15 +108,18 @@ namespace SourceGit.Models {
             return ret;
         }
 
-        private static List<Chunk> MakeChunks(Dictionary<string, int> hashes, string text) {
+        private static List<Chunk> MakeChunks(Dictionary<string, int> hashes, string text)
+        {
             var start = 0;
             var size = text.Length;
             var chunks = new List<Chunk>();
             var delims = new HashSet<char>(" \t+-*/=!,:;.'\"/?|&#@%`<>()[]{}\\".ToCharArray());
 
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size; i++)
+            {
                 var ch = text[i];
-                if (delims.Contains(ch)) {
+                if (delims.Contains(ch))
+                {
                     if (start != i) AddChunk(chunks, hashes, text.Substring(start, i - start), start);
                     AddChunk(chunks, hashes, text.Substring(i, 1), i);
                     start = i + 1;
@@ -115,43 +130,59 @@ namespace SourceGit.Models {
             return chunks;
         }
 
-        private static void CheckModified(List<Chunk> chunksOld, int startOld, int endOld, List<Chunk> chunksNew, int startNew, int endNew, int[] forward, int[] reverse) {
-            while (startOld < endOld && startNew < endNew && chunksOld[startOld].Hash == chunksNew[startNew].Hash) {
+        private static void CheckModified(List<Chunk> chunksOld, int startOld, int endOld, List<Chunk> chunksNew, int startNew, int endNew, int[] forward, int[] reverse)
+        {
+            while (startOld < endOld && startNew < endNew && chunksOld[startOld].Hash == chunksNew[startNew].Hash)
+            {
                 startOld++;
                 startNew++;
             }
 
-            while (startOld < endOld && startNew < endNew && chunksOld[endOld - 1].Hash == chunksNew[endNew - 1].Hash) {
+            while (startOld < endOld && startNew < endNew && chunksOld[endOld - 1].Hash == chunksNew[endNew - 1].Hash)
+            {
                 endOld--;
                 endNew--;
             }
 
             var lenOld = endOld - startOld;
             var lenNew = endNew - startNew;
-            if (lenOld > 0 && lenNew > 0) {
+            if (lenOld > 0 && lenNew > 0)
+            {
                 var rs = CheckModifiedEdit(chunksOld, startOld, endOld, chunksNew, startNew, endNew, forward, reverse);
                 if (rs.State == Edit.None) return;
 
-                if (rs.State == Edit.DeletedRight && rs.DeleteStart - 1 > startOld) {
+                if (rs.State == Edit.DeletedRight && rs.DeleteStart - 1 > startOld)
+                {
                     chunksOld[--rs.DeleteStart].Modified = true;
-                } else if (rs.State == Edit.DeletedLeft && rs.DeleteEnd < endOld) {
+                }
+                else if (rs.State == Edit.DeletedLeft && rs.DeleteEnd < endOld)
+                {
                     chunksOld[rs.DeleteEnd++].Modified = true;
-                } else if (rs.State == Edit.AddedRight && rs.AddStart - 1 > startNew) {
+                }
+                else if (rs.State == Edit.AddedRight && rs.AddStart - 1 > startNew)
+                {
                     chunksNew[--rs.AddStart].Modified = true;
-                } else if (rs.State == Edit.AddedLeft && rs.AddEnd < endNew) {
+                }
+                else if (rs.State == Edit.AddedLeft && rs.AddEnd < endNew)
+                {
                     chunksNew[rs.AddEnd++].Modified = true;
                 }
 
                 CheckModified(chunksOld, startOld, rs.DeleteStart, chunksNew, startNew, rs.AddStart, forward, reverse);
                 CheckModified(chunksOld, rs.DeleteEnd, endOld, chunksNew, rs.AddEnd, endNew, forward, reverse);
-            } else if (lenOld > 0) {
+            }
+            else if (lenOld > 0)
+            {
                 for (int i = startOld; i < endOld; i++) chunksOld[i].Modified = true;
-            } else if (lenNew > 0) {
+            }
+            else if (lenNew > 0)
+            {
                 for (int i = startNew; i < endNew; i++) chunksNew[i].Modified = true;
             }
         }
 
-        private static EditResult CheckModifiedEdit(List<Chunk> chunksOld, int startOld, int endOld, List<Chunk> chunksNew, int startNew, int endNew, int[] forward, int[] reverse) {
+        private static EditResult CheckModifiedEdit(List<Chunk> chunksOld, int startOld, int endOld, List<Chunk> chunksNew, int startNew, int endNew, int[] forward, int[] reverse)
+        {
             var lenOld = endOld - startOld;
             var lenNew = endNew - startNew;
             var max = lenOld + lenNew + 1;
@@ -163,15 +194,20 @@ namespace SourceGit.Models {
             forward[1 + half] = 0;
             reverse[1 + half] = lenOld + 1;
 
-            for (int i = 0; i <= half; i++) {
+            for (int i = 0; i <= half; i++)
+            {
 
-                for (int j = -i; j <= i; j += 2) {
+                for (int j = -i; j <= i; j += 2)
+                {
                     var idx = j + half;
                     int o, n;
-                    if (j == -i || (j != i && forward[idx - 1] < forward[idx + 1])) {
+                    if (j == -i || (j != i && forward[idx - 1] < forward[idx + 1]))
+                    {
                         o = forward[idx + 1];
                         rs.State = Edit.AddedRight;
-                    } else {
+                    }
+                    else
+                    {
                         o = forward[idx - 1] + 1;
                         rs.State = Edit.DeletedRight;
                     }
@@ -180,21 +216,27 @@ namespace SourceGit.Models {
 
                     var startX = o;
                     var startY = n;
-                    while (o < lenOld && n < lenNew && chunksOld[o + startOld].Hash == chunksNew[n + startNew].Hash) {
+                    while (o < lenOld && n < lenNew && chunksOld[o + startOld].Hash == chunksNew[n + startNew].Hash)
+                    {
                         o++;
                         n++;
                     }
 
                     forward[idx] = o;
 
-                    if (!deltaEven && j - delta >= -i + 1 && j - delta <= i - 1) {
+                    if (!deltaEven && j - delta >= -i + 1 && j - delta <= i - 1)
+                    {
                         var revIdx = (j - delta) + half;
                         var revOld = reverse[revIdx];
                         int revNew = revOld - j;
-                        if (revOld <= o && revNew <= n) {
-                            if (i == 0) {
+                        if (revOld <= o && revNew <= n)
+                        {
+                            if (i == 0)
+                            {
                                 rs.State = Edit.None;
-                            } else {
+                            }
+                            else
+                            {
                                 rs.DeleteStart = startX + startOld;
                                 rs.DeleteEnd = o + startOld;
                                 rs.AddStart = startY + startNew;
@@ -205,13 +247,17 @@ namespace SourceGit.Models {
                     }
                 }
 
-                for (int j = -i; j <= i; j += 2) {
+                for (int j = -i; j <= i; j += 2)
+                {
                     var idx = j + half;
                     int o, n;
-                    if (j == -i || (j != i && reverse[idx + 1] <= reverse[idx - 1])) {
+                    if (j == -i || (j != i && reverse[idx + 1] <= reverse[idx - 1]))
+                    {
                         o = reverse[idx + 1] - 1;
                         rs.State = Edit.DeletedLeft;
-                    } else {
+                    }
+                    else
+                    {
                         o = reverse[idx - 1];
                         rs.State = Edit.AddedLeft;
                     }
@@ -220,21 +266,27 @@ namespace SourceGit.Models {
 
                     var endX = o;
                     var endY = n;
-                    while (o > 0 && n > 0 && chunksOld[startOld + o - 1].Hash == chunksNew[startNew + n - 1].Hash) {
+                    while (o > 0 && n > 0 && chunksOld[startOld + o - 1].Hash == chunksNew[startNew + n - 1].Hash)
+                    {
                         o--;
                         n--;
                     }
 
                     reverse[idx] = o;
 
-                    if (deltaEven && j + delta >= -i && j + delta <= i) {
+                    if (deltaEven && j + delta >= -i && j + delta <= i)
+                    {
                         var forIdx = (j + delta) + half;
                         var forOld = forward[forIdx];
                         int forNew = forOld - (j + delta);
-                        if (forOld >= o && forNew >= n) {
-                            if (i == 0) {
+                        if (forOld >= o && forNew >= n)
+                        {
+                            if (i == 0)
+                            {
                                 rs.State = Edit.None;
-                            } else {
+                            }
+                            else
+                            {
                                 rs.DeleteStart = o + startOld;
                                 rs.DeleteEnd = endX + startOld;
                                 rs.AddStart = n + startNew;
@@ -250,11 +302,15 @@ namespace SourceGit.Models {
             return rs;
         }
 
-        private static void AddChunk(List<Chunk> chunks, Dictionary<string, int> hashes, string data, int start) {
+        private static void AddChunk(List<Chunk> chunks, Dictionary<string, int> hashes, string data, int start)
+        {
             int hash;
-            if (hashes.TryGetValue(data, out hash)) {
+            if (hashes.TryGetValue(data, out hash))
+            {
                 chunks.Add(new Chunk(hash, start, data.Length));
-            } else {
+            }
+            else
+            {
                 hash = hashes.Count;
                 hashes.Add(data, hash);
                 chunks.Add(new Chunk(hash, start, data.Length));

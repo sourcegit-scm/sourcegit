@@ -1,44 +1,54 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Media;
-using System;
+﻿using System;
 using System.Globalization;
 
-namespace SourceGit.Views {
-    public class ChangeStatusIcon : Control {
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+
+namespace SourceGit.Views
+{
+    public class ChangeStatusIcon : Control
+    {
         private static readonly IBrush[] BACKGROUNDS = [
             Brushes.Transparent,
-            new LinearGradientBrush {
+            new LinearGradientBrush
+            {
                 GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
             },
-            new LinearGradientBrush {
+            new LinearGradientBrush
+            {
                 GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(47, 185, 47), 0), new GradientStop(Color.FromRgb(75, 189, 75), 1) },
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
             },
-            new LinearGradientBrush {
+            new LinearGradientBrush
+            {
                 GradientStops = new GradientStops() { new GradientStop(Colors.Tomato, 0), new GradientStop(Color.FromRgb(252, 165, 150), 1) },
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
             },
-            new LinearGradientBrush {
+            new LinearGradientBrush
+            {
                 GradientStops = new GradientStops() { new GradientStop(Colors.Orchid, 0), new GradientStop(Color.FromRgb(248, 161, 245), 1) },
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
             },
-            new LinearGradientBrush {
+            new LinearGradientBrush
+            {
                 GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
             },
-            new LinearGradientBrush {
+            new LinearGradientBrush
+            {
                 GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
             },
-            new LinearGradientBrush {
+            new LinearGradientBrush
+            {
                 GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(47, 185, 47), 0), new GradientStop(Color.FromRgb(75, 189, 75), 1) },
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
@@ -50,7 +60,8 @@ namespace SourceGit.Views {
         public static readonly StyledProperty<bool> IsWorkingCopyChangeProperty =
             AvaloniaProperty.Register<Avatar, bool>(nameof(IsWorkingCopyChange));
 
-        public bool IsWorkingCopyChange {
+        public bool IsWorkingCopyChange
+        {
             get => GetValue(IsWorkingCopyChangeProperty);
             set => SetValue(IsWorkingCopyChangeProperty, value);
         }
@@ -58,31 +69,40 @@ namespace SourceGit.Views {
         public static readonly StyledProperty<Models.Change> ChangeProperty =
             AvaloniaProperty.Register<Avatar, Models.Change>(nameof(Change));
 
-        public Models.Change Change {
+        public Models.Change Change
+        {
             get => GetValue(ChangeProperty);
             set => SetValue(ChangeProperty, value);
         }
 
-        static ChangeStatusIcon() {
+        static ChangeStatusIcon()
+        {
             AffectsRender<ChangeStatusIcon>(IsWorkingCopyChangeProperty, ChangeProperty);
         }
 
-        public override void Render(DrawingContext context) {
+        public override void Render(DrawingContext context)
+        {
             if (Change == null || Bounds.Width <= 0) return;
 
             var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
 
             IBrush background = null;
             string indicator;
-            if (IsWorkingCopyChange) {
-                if (Change.IsConflit) {
+            if (IsWorkingCopyChange)
+            {
+                if (Change.IsConflit)
+                {
                     background = Brushes.OrangeRed;
                     indicator = "!";
-                } else {
+                }
+                else
+                {
                     background = BACKGROUNDS[(int)Change.WorkTree];
                     indicator = INDICATOR[(int)Change.WorkTree];
                 }
-            } else {
+            }
+            else
+            {
                 background = BACKGROUNDS[(int)Change.Index];
                 indicator = INDICATOR[(int)Change.Index];
             }

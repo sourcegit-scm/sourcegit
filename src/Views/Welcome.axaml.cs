@@ -1,52 +1,67 @@
+using System.IO;
+using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using System.IO;
-using System.Threading.Tasks;
 
-namespace SourceGit.Views {
-    public partial class Welcome : UserControl {
-        public Welcome() {
+namespace SourceGit.Views
+{
+    public partial class Welcome : UserControl
+    {
+        public Welcome()
+        {
             InitializeComponent();
         }
 
-        private void SetupTreeViewDragAndDrop(object sender, RoutedEventArgs e) {
-            if (sender is TreeView view) {
+        private void SetupTreeViewDragAndDrop(object sender, RoutedEventArgs e)
+        {
+            if (sender is TreeView view)
+            {
                 DragDrop.SetAllowDrop(view, true);
                 view.AddHandler(DragDrop.DragOverEvent, DragOverTreeView);
                 view.AddHandler(DragDrop.DropEvent, DropOnTreeView);
             }
         }
 
-        private void SetupTreeNodeDragAndDrop(object sender, RoutedEventArgs e) {
-            if (sender is Grid grid) {
+        private void SetupTreeNodeDragAndDrop(object sender, RoutedEventArgs e)
+        {
+            if (sender is Grid grid)
+            {
                 DragDrop.SetAllowDrop(grid, true);
                 grid.AddHandler(DragDrop.DragOverEvent, DragOverTreeNode);
                 grid.AddHandler(DragDrop.DropEvent, DropOnTreeNode);
             }
         }
 
-        private void OnPointerPressedTreeNode(object sender, PointerPressedEventArgs e) {
-            if (e.GetCurrentPoint(sender as Visual).Properties.IsLeftButtonPressed) {
+        private void OnPointerPressedTreeNode(object sender, PointerPressedEventArgs e)
+        {
+            if (e.GetCurrentPoint(sender as Visual).Properties.IsLeftButtonPressed)
+            {
                 _pressedTreeNode = true;
                 _startDragTreeNode = false;
                 _pressedTreeNodePosition = e.GetPosition(sender as Grid);
-            } else {
+            }
+            else
+            {
                 _pressedTreeNode = false;
                 _startDragTreeNode = false;
-            }            
+            }
         }
 
-        private void OnPointerReleasedOnTreeNode(object sender, PointerReleasedEventArgs e) {
+        private void OnPointerReleasedOnTreeNode(object sender, PointerReleasedEventArgs e)
+        {
             _pressedTreeNode = false;
             _startDragTreeNode = false;
         }
 
-        private void OnPointerMovedOverTreeNode(object sender, PointerEventArgs e) {
-            if (_pressedTreeNode && !_startDragTreeNode && sender is Grid grid) {
+        private void OnPointerMovedOverTreeNode(object sender, PointerEventArgs e)
+        {
+            if (_pressedTreeNode && !_startDragTreeNode && sender is Grid grid)
+            {
                 var delta = e.GetPosition(grid) - _pressedTreeNodePosition;
                 var sizeSquired = delta.X * delta.X + delta.Y * delta.Y;
                 if (sizeSquired < 64) return;
@@ -59,34 +74,45 @@ namespace SourceGit.Views {
             }
         }
 
-        private void OnTreeViewLostFocus(object sender, RoutedEventArgs e) {
+        private void OnTreeViewLostFocus(object sender, RoutedEventArgs e)
+        {
             _pressedTreeNode = false;
             _startDragTreeNode = false;
         }
 
-        private void DragOverTreeView(object sender, DragEventArgs e) {
-            if (e.Data.Contains("MovedRepositoryTreeNode") || e.Data.Contains(DataFormats.Files)) {
+        private void DragOverTreeView(object sender, DragEventArgs e)
+        {
+            if (e.Data.Contains("MovedRepositoryTreeNode") || e.Data.Contains(DataFormats.Files))
+            {
                 e.DragEffects = DragDropEffects.Move;
                 e.Handled = true;
-            } else {
+            }
+            else
+            {
                 e.DragEffects = DragDropEffects.None;
                 e.Handled = true;
             }
         }
 
-        private async void DropOnTreeView(object sender, DragEventArgs e) {
-            if (e.Data.Contains("MovedRepositoryTreeNode")) {
+        private async void DropOnTreeView(object sender, DragEventArgs e)
+        {
+            if (e.Data.Contains("MovedRepositoryTreeNode"))
+            {
                 e.Handled = true;
 
                 var moved = e.Data.Get("MovedRepositoryTreeNode") as ViewModels.RepositoryNode;
-                if (moved != null && DataContext is ViewModels.Welcome vm) {
+                if (moved != null && DataContext is ViewModels.Welcome vm)
+                {
                     vm.MoveNode(moved, null);
                 }
-            } else if (e.Data.Contains(DataFormats.Files)) {
+            }
+            else if (e.Data.Contains(DataFormats.Files))
+            {
                 e.Handled = true;
 
                 var items = e.Data.GetFiles();
-                foreach (var item in items) {
+                foreach (var item in items)
+                {
                     await OpenOrInitRepository(item.Path.LocalPath);
                     break;
                 }
@@ -96,46 +122,58 @@ namespace SourceGit.Views {
             _startDragTreeNode = false;
         }
 
-        private void DragOverTreeNode(object sender, DragEventArgs e) {
-            if (e.Data.Contains("MovedRepositoryTreeNode") || e.Data.Contains(DataFormats.Files)) {
+        private void DragOverTreeNode(object sender, DragEventArgs e)
+        {
+            if (e.Data.Contains("MovedRepositoryTreeNode") || e.Data.Contains(DataFormats.Files))
+            {
                 var grid = sender as Grid;
                 if (grid == null) return;
 
                 var to = grid.DataContext as ViewModels.RepositoryNode;
                 if (to == null) return;
 
-                if (to.IsRepository) {
+                if (to.IsRepository)
+                {
                     e.DragEffects = DragDropEffects.None;
                     e.Handled = true;
-                } else {
+                }
+                else
+                {
                     e.DragEffects = DragDropEffects.Move;
                     e.Handled = true;
                 }
             }
         }
 
-        private async void DropOnTreeNode(object sender, DragEventArgs e) {
+        private async void DropOnTreeNode(object sender, DragEventArgs e)
+        {
             var grid = sender as Grid;
             if (grid == null) return;
 
             var to = grid.DataContext as ViewModels.RepositoryNode;
-            if (to == null || to.IsRepository) {
+            if (to == null || to.IsRepository)
+            {
                 e.Handled = true;
                 return;
             }
 
-            if (e.Data.Contains("MovedRepositoryTreeNode")) {
+            if (e.Data.Contains("MovedRepositoryTreeNode"))
+            {
                 e.Handled = true;
 
                 var moved = e.Data.Get("MovedRepositoryTreeNode") as ViewModels.RepositoryNode;
-                if (to != null && moved != null && to != moved && DataContext is ViewModels.Welcome vm) {
+                if (to != null && moved != null && to != moved && DataContext is ViewModels.Welcome vm)
+                {
                     vm.MoveNode(moved, to);
                 }
-            } else if (e.Data.Contains(DataFormats.Files)) {
+            }
+            else if (e.Data.Contains(DataFormats.Files))
+            {
                 e.Handled = true;
 
                 var items = e.Data.GetFiles();
-                foreach (var item in items) {
+                foreach (var item in items)
+                {
                     await OpenOrInitRepository(item.Path.LocalPath, to);
                     break;
                 }
@@ -145,12 +183,14 @@ namespace SourceGit.Views {
             _startDragTreeNode = false;
         }
 
-        private void OnDoubleTappedTreeNode(object sender, TappedEventArgs e) {
+        private void OnDoubleTappedTreeNode(object sender, TappedEventArgs e)
+        {
             var grid = sender as Grid;
             if (grid == null) return;
 
             var to = grid.DataContext as ViewModels.RepositoryNode;
-            if (to == null || !to.IsRepository) {
+            if (to == null || !to.IsRepository)
+            {
                 return;
             }
 
@@ -159,39 +199,48 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private async void OpenLocalRepository(object sender, RoutedEventArgs e) {
+        private async void OpenLocalRepository(object sender, RoutedEventArgs e)
+        {
             if (!ViewModels.PopupHost.CanCreatePopup()) return;
 
             var topLevel = TopLevel.GetTopLevel(this);
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
             var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
-            if (selected.Count == 1) {
+            if (selected.Count == 1)
+            {
                 await OpenOrInitRepository(selected[0].Path.LocalPath);
             }
         }
 
-        private Task OpenOrInitRepository(string path, ViewModels.RepositoryNode parent = null) {
+        private Task OpenOrInitRepository(string path, ViewModels.RepositoryNode parent = null)
+        {
             var launcher = TopLevel.GetTopLevel(this).DataContext as ViewModels.Launcher;
             var page = launcher.ActivePage;
 
-            if (!Directory.Exists(path)) {
+            if (!Directory.Exists(path))
+            {
                 if (File.Exists(path)) path = Path.GetDirectoryName(path);
                 else return null;
             }
 
-            return Task.Run(() => {
+            return Task.Run(() =>
+            {
                 var root = new Commands.QueryRepositoryRootPath(path).Result();
-                if (string.IsNullOrEmpty(root)) {
-                    Dispatcher.UIThread.Invoke(() => {
+                if (string.IsNullOrEmpty(root))
+                {
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
                         (DataContext as ViewModels.Welcome).InitRepository(path);
-                    });                    
+                    });
                     return;
                 }
 
                 var gitDir = new Commands.QueryGitDir(root).Result();
-                Dispatcher.UIThread.Invoke(() => {
+                Dispatcher.UIThread.Invoke(() =>
+                {
                     var repo = ViewModels.Preference.AddRepository(root, gitDir);
-                    var node = new ViewModels.RepositoryNode() {
+                    var node = new ViewModels.RepositoryNode()
+                    {
                         Id = repo.FullPath,
                         Name = Path.GetFileName(repo.FullPath),
                         Bookmark = 0,
@@ -199,7 +248,7 @@ namespace SourceGit.Views {
                     };
                     ViewModels.Preference.AddNode(node, parent);
                     launcher.OpenRepositoryInTab(node, page);
-                });                
+                });
             });
         }
 

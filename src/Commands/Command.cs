@@ -1,17 +1,22 @@
-using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SourceGit.Commands {
-    public partial class Command {
-        public class CancelToken {
+using Avalonia.Threading;
+
+namespace SourceGit.Commands
+{
+    public partial class Command
+    {
+        public class CancelToken
+        {
             public bool Requested { get; set; } = false;
         }
 
-        public class ReadToEndResult {
+        public class ReadToEndResult
+        {
             public bool IsSuccess { get; set; }
             public string StdOut { get; set; }
             public string StdErr { get; set; }
@@ -24,7 +29,8 @@ namespace SourceGit.Commands {
         public bool RaiseError { get; set; } = true;
         public bool TraitErrorAsOutput { get; set; } = false;
 
-        public bool Exec() {
+        public bool Exec()
+        {
             var start = new ProcessStartInfo();
             start.FileName = Native.OS.GitInstallPath;
             start.Arguments = "--no-pager -c core.quotepath=off " + Args;
@@ -41,8 +47,10 @@ namespace SourceGit.Commands {
             var proc = new Process() { StartInfo = start };
             var isCancelled = false;
 
-            proc.OutputDataReceived += (_, e) => {
-                if (Cancel != null && Cancel.Requested) {
+            proc.OutputDataReceived += (_, e) =>
+            {
+                if (Cancel != null && Cancel.Requested)
+                {
                     isCancelled = true;
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
@@ -53,8 +61,10 @@ namespace SourceGit.Commands {
                 if (e.Data != null) OnReadline(e.Data);
             };
 
-            proc.ErrorDataReceived += (_, e) => {
-                if (Cancel != null && Cancel.Requested) {
+            proc.ErrorDataReceived += (_, e) =>
+            {
+                if (Cancel != null && Cancel.Requested)
+                {
                     isCancelled = true;
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
@@ -74,11 +84,16 @@ namespace SourceGit.Commands {
                 errs.Add(e.Data);
             };
 
-            try {
+            try
+            {
                 proc.Start();
-            } catch (Exception e) {
-                if (RaiseError) {
-                    Dispatcher.UIThread.Invoke(() => {
+            }
+            catch (Exception e)
+            {
+                if (RaiseError)
+                {
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
                         App.RaiseException(Context, e.Message);
                     });
                 }
@@ -92,19 +107,25 @@ namespace SourceGit.Commands {
             int exitCode = proc.ExitCode;
             proc.Close();
 
-            if (!isCancelled && exitCode != 0 && errs.Count > 0) {
-                if (RaiseError) {
-                    Dispatcher.UIThread.Invoke(() => {
+            if (!isCancelled && exitCode != 0 && errs.Count > 0)
+            {
+                if (RaiseError)
+                {
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
                         App.RaiseException(Context, string.Join("\n", errs));
                     });
                 }
                 return false;
-            } else {
+            }
+            else
+            {
                 return true;
             }
         }
 
-        public ReadToEndResult ReadToEnd() {
+        public ReadToEndResult ReadToEnd()
+        {
             var start = new ProcessStartInfo();
             start.FileName = Native.OS.GitInstallPath;
             start.Arguments = "--no-pager -c core.quotepath=off " + Args;
@@ -118,17 +139,22 @@ namespace SourceGit.Commands {
             if (!string.IsNullOrEmpty(WorkingDirectory)) start.WorkingDirectory = WorkingDirectory;
 
             var proc = new Process() { StartInfo = start };
-            try {
+            try
+            {
                 proc.Start();
-            } catch (Exception e) {
-                return new ReadToEndResult() {
+            }
+            catch (Exception e)
+            {
+                return new ReadToEndResult()
+                {
                     IsSuccess = false,
                     StdOut = string.Empty,
                     StdErr = e.Message,
                 };
             }
 
-            var rs = new ReadToEndResult() {
+            var rs = new ReadToEndResult()
+            {
                 StdOut = proc.StandardOutput.ReadToEnd(),
                 StdErr = proc.StandardError.ReadToEnd(),
             };

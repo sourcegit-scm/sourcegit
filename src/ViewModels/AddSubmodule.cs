@@ -2,61 +2,73 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels {
-    public class AddSubmodule : Popup {
+namespace SourceGit.ViewModels
+{
+    public class AddSubmodule : Popup
+    {
         [Required(ErrorMessage = "Url is required!!!")]
         [CustomValidation(typeof(AddSubmodule), nameof(ValidateURL))]
-        public string Url {
+        public string Url
+        {
             get => _url;
             set => SetProperty(ref _url, value, true);
         }
 
         [Required(ErrorMessage = "Reletive path is required!!!")]
         [CustomValidation(typeof(AddSubmodule), nameof(ValidateRelativePath))]
-        public string RelativePath {
+        public string RelativePath
+        {
             get => _relativePath;
             set => SetProperty(ref _relativePath, value, true);
         }
 
-        public bool Recursive {
+        public bool Recursive
+        {
             get;
             set;
         }
 
-        public AddSubmodule(Repository repo) {
+        public AddSubmodule(Repository repo)
+        {
             _repo = repo;
             View = new Views.AddSubmodule() { DataContext = this };
         }
 
-        public static ValidationResult ValidateURL(string url, ValidationContext ctx) {
+        public static ValidationResult ValidateURL(string url, ValidationContext ctx)
+        {
             if (!Models.Remote.IsValidURL(url)) return new ValidationResult("Invalid repository URL format");
             return ValidationResult.Success;
         }
 
-        public static ValidationResult ValidateRelativePath(string path, ValidationContext ctx) {
-            if (Path.Exists(path)) {
+        public static ValidationResult ValidateRelativePath(string path, ValidationContext ctx)
+        {
+            if (Path.Exists(path))
+            {
                 return new ValidationResult("Give path is exists already!");
             }
 
-            if (Path.IsPathRooted(path)) {
+            if (Path.IsPathRooted(path))
+            {
                 return new ValidationResult("Path must be relative to this repository!");
             }
 
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure() {
+        public override Task<bool> Sure()
+        {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Adding submodule...";
 
-            return Task.Run(() => {
+            return Task.Run(() =>
+            {
                 var succ = new Commands.Submodule(_repo.FullPath).Add(_url, _relativePath, Recursive, SetProgressDescription);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo = null;
         private string _url = string.Empty;
         private string _relativePath = string.Empty;
     }

@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace SourceGit.Models {
-    public class Stash {
+namespace SourceGit.Models
+{
+    public class Stash
+    {
         private static readonly DateTime UTC_START = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
 
         public string Name { get; set; } = "";

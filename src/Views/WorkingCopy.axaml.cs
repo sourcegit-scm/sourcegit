@@ -1,18 +1,24 @@
+using System.Collections.Generic;
+
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
-using System.Collections.Generic;
 
-namespace SourceGit.Views {
-    public partial class WorkingCopy : UserControl {
-        public WorkingCopy() {
+namespace SourceGit.Views
+{
+    public partial class WorkingCopy : UserControl
+    {
+        public WorkingCopy()
+        {
             InitializeComponent();
         }
 
-        private void ViewAssumeUnchanged(object sender, RoutedEventArgs e) {
+        private void ViewAssumeUnchanged(object sender, RoutedEventArgs e)
+        {
             var repoPage = this.FindAncestorOfType<Repository>();
-            if (repoPage != null) {
+            if (repoPage != null)
+            {
                 var repo = (repoPage.DataContext as ViewModels.Repository).FullPath;
                 var window = new AssumeUnchangedManager();
                 window.DataContext = new ViewModels.AssumeUnchangedManager(repo);
@@ -22,34 +28,40 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void StageSelected(object sender, RoutedEventArgs e) {
+        private void StageSelected(object sender, RoutedEventArgs e)
+        {
             var vm = DataContext as ViewModels.WorkingCopy;
             if (vm == null) return;
 
             List<Models.Change> selected = new List<Models.Change>();
-            switch (ViewModels.Preference.Instance.UnstagedChangeViewMode) {
-            case Models.ChangeViewMode.List:
-                foreach (var item in unstagedList.SelectedItems) {
-                    if (item is Models.Change change) selected.Add(change);
-                }
-                break;
-            case Models.ChangeViewMode.Grid:
-                foreach (var item in unstagedGrid.SelectedItems) {
-                    if (item is Models.Change change) selected.Add(change);
-                }
-                break;
-            default:
-                foreach (var item in unstagedTree.SelectedItems) {
-                    if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
-                }
-                break;
+            switch (ViewModels.Preference.Instance.UnstagedChangeViewMode)
+            {
+                case Models.ChangeViewMode.List:
+                    foreach (var item in unstagedList.SelectedItems)
+                    {
+                        if (item is Models.Change change) selected.Add(change);
+                    }
+                    break;
+                case Models.ChangeViewMode.Grid:
+                    foreach (var item in unstagedGrid.SelectedItems)
+                    {
+                        if (item is Models.Change change) selected.Add(change);
+                    }
+                    break;
+                default:
+                    foreach (var item in unstagedTree.SelectedItems)
+                    {
+                        if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
+                    }
+                    break;
             }
 
             vm.StageChanges(selected);
             e.Handled = true;
         }
 
-        private void StageAll(object sender, RoutedEventArgs e) {
+        private void StageAll(object sender, RoutedEventArgs e)
+        {
             var vm = DataContext as ViewModels.WorkingCopy;
             if (vm == null) return;
 
@@ -57,34 +69,40 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void UnstageSelected(object sender, RoutedEventArgs e) {
+        private void UnstageSelected(object sender, RoutedEventArgs e)
+        {
             var vm = DataContext as ViewModels.WorkingCopy;
             if (vm == null) return;
 
             List<Models.Change> selected = new List<Models.Change>();
-            switch (ViewModels.Preference.Instance.StagedChangeViewMode) {
-            case Models.ChangeViewMode.List:
-                foreach (var item in stagedList.SelectedItems) {
-                    if (item is Models.Change change) selected.Add(change);
-                }
-                break;
-            case Models.ChangeViewMode.Grid:
-                foreach (var item in stagedGrid.SelectedItems) {
-                    if (item is Models.Change change) selected.Add(change);
-                }
-                break;
-            default:
-                foreach (var item in stagedTree.SelectedItems) {
-                    if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
-                }
-                break;
+            switch (ViewModels.Preference.Instance.StagedChangeViewMode)
+            {
+                case Models.ChangeViewMode.List:
+                    foreach (var item in stagedList.SelectedItems)
+                    {
+                        if (item is Models.Change change) selected.Add(change);
+                    }
+                    break;
+                case Models.ChangeViewMode.Grid:
+                    foreach (var item in stagedGrid.SelectedItems)
+                    {
+                        if (item is Models.Change change) selected.Add(change);
+                    }
+                    break;
+                default:
+                    foreach (var item in stagedTree.SelectedItems)
+                    {
+                        if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
+                    }
+                    break;
             }
 
             vm.UnstageChanges(selected);
             e.Handled = true;
         }
 
-        private void UnstageAll(object sender, RoutedEventArgs e) {
+        private void UnstageAll(object sender, RoutedEventArgs e)
+        {
             var vm = DataContext as ViewModels.WorkingCopy;
             if (vm == null) return;
 
@@ -92,11 +110,14 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void OnUnstagedListKeyDown(object sender, KeyEventArgs e) {
+        private void OnUnstagedListKeyDown(object sender, KeyEventArgs e)
+        {
             var datagrid = sender as DataGrid;
-            if (datagrid.SelectedItems.Count > 0 && e.Key == Key.Space && DataContext is ViewModels.WorkingCopy vm) {
+            if (datagrid.SelectedItems.Count > 0 && e.Key == Key.Space && DataContext is ViewModels.WorkingCopy vm)
+            {
                 List<Models.Change> selected = new List<Models.Change>();
-                foreach (var item in datagrid.SelectedItems) {
+                foreach (var item in datagrid.SelectedItems)
+                {
                     if (item is Models.Change change) selected.Add(change);
                 }
 
@@ -106,11 +127,14 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void OnUnstagedTreeViewKeyDown(object sender, KeyEventArgs e) {
+        private void OnUnstagedTreeViewKeyDown(object sender, KeyEventArgs e)
+        {
             var tree = sender as TreeView;
-            if (tree.SelectedItems.Count > 0 && e.Key == Key.Space && DataContext is ViewModels.WorkingCopy vm) {
+            if (tree.SelectedItems.Count > 0 && e.Key == Key.Space && DataContext is ViewModels.WorkingCopy vm)
+            {
                 List<Models.Change> selected = new List<Models.Change>();
-                foreach (var item in tree.SelectedItems) {
+                foreach (var item in tree.SelectedItems)
+                {
                     if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
                 }
 
@@ -120,11 +144,14 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void OnStagedListKeyDown(object sender, KeyEventArgs e) {
+        private void OnStagedListKeyDown(object sender, KeyEventArgs e)
+        {
             var datagrid = sender as DataGrid;
-            if (datagrid.SelectedItems.Count > 0 && e.Key == Key.Space && DataContext is ViewModels.WorkingCopy vm) {
+            if (datagrid.SelectedItems.Count > 0 && e.Key == Key.Space && DataContext is ViewModels.WorkingCopy vm)
+            {
                 List<Models.Change> selected = new List<Models.Change>();
-                foreach (var item in datagrid.SelectedItems) {
+                foreach (var item in datagrid.SelectedItems)
+                {
                     if (item is Models.Change change) selected.Add(change);
                 }
 
@@ -134,11 +161,14 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void OnStagedTreeViewKeyDown(object sender, KeyEventArgs e) {
+        private void OnStagedTreeViewKeyDown(object sender, KeyEventArgs e)
+        {
             var tree = sender as TreeView;
-            if (tree.SelectedItems.Count > 0 && e.Key == Key.Space && DataContext is ViewModels.WorkingCopy vm) {
+            if (tree.SelectedItems.Count > 0 && e.Key == Key.Space && DataContext is ViewModels.WorkingCopy vm)
+            {
                 List<Models.Change> selected = new List<Models.Change>();
-                foreach (var item in tree.SelectedItems) {
+                foreach (var item in tree.SelectedItems)
+                {
                     if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
                 }
 
@@ -148,11 +178,14 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void OnUnstagedListContextRequested(object sender, ContextRequestedEventArgs e) {
+        private void OnUnstagedListContextRequested(object sender, ContextRequestedEventArgs e)
+        {
             var datagrid = sender as DataGrid;
-            if (datagrid.SelectedItems.Count > 0 && DataContext is ViewModels.WorkingCopy vm) {
+            if (datagrid.SelectedItems.Count > 0 && DataContext is ViewModels.WorkingCopy vm)
+            {
                 List<Models.Change> selected = new List<Models.Change>();
-                foreach (var item in datagrid.SelectedItems) {
+                foreach (var item in datagrid.SelectedItems)
+                {
                     if (item is Models.Change change) selected.Add(change);
                 }
 
@@ -163,11 +196,14 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void OnUnstagedTreeViewContextRequested(object sender, ContextRequestedEventArgs e) {
+        private void OnUnstagedTreeViewContextRequested(object sender, ContextRequestedEventArgs e)
+        {
             var tree = sender as TreeView;
-            if (tree.SelectedItems.Count > 0 && DataContext is ViewModels.WorkingCopy vm) {
+            if (tree.SelectedItems.Count > 0 && DataContext is ViewModels.WorkingCopy vm)
+            {
                 List<Models.Change> selected = new List<Models.Change>();
-                foreach (var item in tree.SelectedItems) {
+                foreach (var item in tree.SelectedItems)
+                {
                     if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
                 }
 
@@ -178,11 +214,14 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void OnStagedListContextRequested(object sender, ContextRequestedEventArgs e) {
+        private void OnStagedListContextRequested(object sender, ContextRequestedEventArgs e)
+        {
             var datagrid = sender as DataGrid;
-            if (datagrid.SelectedItems.Count > 0 && DataContext is ViewModels.WorkingCopy vm) {
+            if (datagrid.SelectedItems.Count > 0 && DataContext is ViewModels.WorkingCopy vm)
+            {
                 List<Models.Change> selected = new List<Models.Change>();
-                foreach (var item in datagrid.SelectedItems) {
+                foreach (var item in datagrid.SelectedItems)
+                {
                     if (item is Models.Change change) selected.Add(change);
                 }
 
@@ -193,11 +232,14 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void OnStagedTreeViewContextRequested(object sender, ContextRequestedEventArgs e) {
+        private void OnStagedTreeViewContextRequested(object sender, ContextRequestedEventArgs e)
+        {
             var tree = sender as TreeView;
-            if (tree.SelectedItems.Count > 0 && DataContext is ViewModels.WorkingCopy vm) {
+            if (tree.SelectedItems.Count > 0 && DataContext is ViewModels.WorkingCopy vm)
+            {
                 List<Models.Change> selected = new List<Models.Change>();
-                foreach (var item in tree.SelectedItems) {
+                foreach (var item in tree.SelectedItems)
+                {
                     if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
                 }
 
@@ -208,12 +250,15 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void StartAmend(object sender, RoutedEventArgs e) {
+        private void StartAmend(object sender, RoutedEventArgs e)
+        {
             var repoPage = this.FindAncestorOfType<Repository>();
-            if (repoPage != null) {
+            if (repoPage != null)
+            {
                 var repo = (repoPage.DataContext as ViewModels.Repository).FullPath;
                 var commits = new Commands.QueryCommits(repo, "-n 1", false).Result();
-                if (commits.Count == 0) {
+                if (commits.Count == 0)
+                {
                     App.RaiseException(repo, "No commits to amend!!!");
 
                     var chkBox = sender as CheckBox;
@@ -229,29 +274,37 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void Commit(object sender, RoutedEventArgs e) {
+        private void Commit(object sender, RoutedEventArgs e)
+        {
             var vm = DataContext as ViewModels.WorkingCopy;
             vm.DoCommit(false);
             e.Handled = true;
         }
 
-        private void CommitWithPush(object sender, RoutedEventArgs e) {
+        private void CommitWithPush(object sender, RoutedEventArgs e)
+        {
             var vm = DataContext as ViewModels.WorkingCopy;
             vm.DoCommit(true);
             e.Handled = true;
         }
 
-        private void CollectChangesFromNode(List<Models.Change> outs, ViewModels.FileTreeNode node) {
-            if (node.IsFolder) {
+        private void CollectChangesFromNode(List<Models.Change> outs, ViewModels.FileTreeNode node)
+        {
+            if (node.IsFolder)
+            {
                 foreach (var child in node.Children) CollectChangesFromNode(outs, child);
-            } else {
+            }
+            else
+            {
                 var change = node.Backend as Models.Change;
                 if (change != null && !outs.Contains(change)) outs.Add(change);
             }
         }
 
-        private void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e) {
-            if (sender is Button button && DataContext is ViewModels.WorkingCopy vm) {
+        private void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && DataContext is ViewModels.WorkingCopy vm)
+            {
                 var menu = vm.CreateContextMenuForCommitMessages();
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
                 menu.Open(button);
