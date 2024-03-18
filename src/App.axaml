@@ -9,9 +9,6 @@
         <ResourceInclude Source="/Resources/Icons.axaml"/>
         <ResourceInclude Source="/Resources/Themes.axaml"/>
       </ResourceDictionary.MergedDictionaries>
-
-      <ResourceInclude x:Key="en_US" Source="/Resources/Locales/en_US.axaml"/>
-      <ResourceInclude x:Key="zh_CN" Source="/Resources/Locales/zh_CN.axaml"/>
     </ResourceDictionary>
   </Application.Resources>
 
