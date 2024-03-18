@@ -52,10 +52,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <DependentUpon>Locales.resx</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Locales.*.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <DependentUpon>Locales.resx</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   
 </Project>
