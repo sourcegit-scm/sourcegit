@@ -12,13 +12,12 @@
         x:Name="me"
         Icon="/App.ico"
         Title="SourceGit"
-        BorderThickness="1"
-        BorderBrush="{DynamicResource Brush.Border0}"
-        Background="{DynamicResource Brush.Window}"
+        Background="Transparent"
         MinWidth="1280" MinHeight="720"
         WindowStartupLocation="CenterScreen"
-        ExtendClientAreaToDecorationsHint="{OnPlatform True, Linux=False}"
-        ExtendClientAreaChromeHints="{OnPlatform NoChrome, Linux=Default}">
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        SystemDecorations="{OnPlatform Full, Linux=None}">
   <Window.Resources>
     <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="Red"/>
   </Window.Resources>
@@ -29,12 +28,20 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
+    <!-- Custom window shadow for Linux -->
+    <Border Grid.Row="0" Grid.RowSpan="2"
+            Background="{DynamicResource Brush.Window}"
+            Effect="drop-shadow(0 0 6 #A0000000)"
+            IsVisible="{OnPlatform False, Linux=True}"/>
+
+    <!-- Custom TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
       <!-- Bottom border -->
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
-              IsHitTestVisible="False"/>
+              DoubleTapped="MaximizeOrRestoreWindow"
+              PointerPressed="BeginMoveWindow"/>
 
       <!-- Caption Buttons (macOS) -->
       <Border Grid.Column="0" VerticalAlignment="Stretch" Margin="2,0,8,3" IsVisible="{OnPlatform False, macOS=True}">
@@ -233,8 +240,8 @@
         </Button>
       </StackPanel>
 
-      <!-- Caption Buttons (Windows)-->
-      <Border Grid.Column="2" Margin="32,0,0,0" IsVisible="{OnPlatform False, Windows=True}">
+      <!-- Caption Buttons (Windows/Linux)-->
+      <Border Grid.Column="2" Margin="32,0,0,0" IsVisible="{OnPlatform True, macOS=False}">
         <v:CaptionButtons Height="30" VerticalAlignment="Top"/>
       </Border>
     </Grid>
@@ -363,6 +370,65 @@
           </ItemsControl.ItemTemplate>
         </ItemsControl>
       </ScrollViewer>
+    </Grid>
+
+    <!-- Custom window sizer for Linux -->
+    <Grid Grid.Row="0" Grid.RowSpan="2" IsVisible="{OnPlatform False, Linux=True}">
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Left" VerticalAlignment="Top"
+              Cursor="TopLeftCorner"
+              Tag="{x:Static WindowEdge.NorthWest}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Height="4" Margin="4,0"
+              Background="Transparent"
+              HorizontalAlignment="Stretch" VerticalAlignment="Top"
+              Cursor="TopSide"
+              Tag="{x:Static WindowEdge.North}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Right" VerticalAlignment="Top"
+              Cursor="TopRightCorner"
+              Tag="{x:Static WindowEdge.NorthEast}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Margin="0,4"
+              Background="Transparent"
+              HorizontalAlignment="Left" VerticalAlignment="Stretch"
+              Cursor="LeftSide"
+              Tag="{x:Static WindowEdge.West}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Margin="0,4"
+              Background="Transparent"
+              HorizontalAlignment="Right" VerticalAlignment="Stretch"
+              Cursor="RightSide"
+              Tag="{x:Static WindowEdge.East}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Left" VerticalAlignment="Bottom"
+              Cursor="BottomLeftCorner"
+              Tag="{x:Static WindowEdge.SouthWest}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Height="4" Margin="4,0"
+              Background="Transparent"
+              HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+              Cursor="BottomSide"
+              Tag="{x:Static WindowEdge.South}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Right" VerticalAlignment="Bottom"
+              Cursor="BottomRightCorner"
+              Tag="{x:Static WindowEdge.SouthEast}"
+              PointerPressed="CustomResizeWindow"/>
     </Grid>
   </Grid>
 </Window>

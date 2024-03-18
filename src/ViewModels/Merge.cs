@@ -1,41 +1,50 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels {
-    public class MergeMode {
+namespace SourceGit.ViewModels
+{
+    public class MergeMode
+    {
         public string Name { get; set; }
         public string Desc { get; set; }
         public string Arg { get; set; }
 
-        public MergeMode(string n, string d, string a) {
+        public MergeMode(string n, string d, string a)
+        {
             Name = n;
             Desc = d;
             Arg = a;
         }
     }
 
-    public class Merge : Popup {
-        public string Source {
+    public class Merge : Popup
+    {
+        public string Source
+        {
             get;
             private set;
         }
 
-        public string Into {
+        public string Into
+        {
             get;
             private set;
         }
 
-        public List<MergeMode> Modes {
+        public List<MergeMode> Modes
+        {
             get;
             private set;
         }
 
-        public MergeMode SelectedMode {
+        public MergeMode SelectedMode
+        {
             get;
             set;
         }
 
-        public Merge(Repository repo, string source, string into) {
+        public Merge(Repository repo, string source, string into)
+        {
             _repo = repo;
             Source = source;
             Into = into;
@@ -49,17 +58,19 @@ namespace SourceGit.ViewModels {
             View = new Views.Merge() { DataContext = this };
         }
 
-        public override Task<bool> Sure() {
+        public override Task<bool> Sure()
+        {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Merging '{Source}' into '{Into}' ...";
 
-            return Task.Run(() => {
+            return Task.Run(() =>
+            {
                 var succ = new Commands.Merge(_repo.FullPath, Source, SelectedMode.Arg, SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo = null;
     }
 }

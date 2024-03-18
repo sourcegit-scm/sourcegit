@@ -1,25 +1,33 @@
-﻿using Avalonia.Collections;
-using System;
+﻿using System;
 
-namespace SourceGit.ViewModels {
-    public class LauncherPage : PopupHost {
-        public RepositoryNode Node {
+using Avalonia.Collections;
+
+namespace SourceGit.ViewModels
+{
+    public class LauncherPage : PopupHost
+    {
+        public RepositoryNode Node
+        {
             get => _node;
             set => SetProperty(ref _node, value);
         }
 
-        public object Data {
+        public object Data
+        {
             get => _data;
             set => SetProperty(ref _data, value);
         }
 
-        public AvaloniaList<Models.Notification> Notifications {
+        public AvaloniaList<Models.Notification> Notifications
+        {
             get;
             set;
         } = new AvaloniaList<Models.Notification>();
 
-        public LauncherPage() {
-            _node = new RepositoryNode() {
+        public LauncherPage()
+        {
+            _node = new RepositoryNode()
+            {
                 Id = Guid.NewGuid().ToString(),
                 Name = "WelcomePage",
                 Bookmark = 0,
@@ -28,21 +36,26 @@ namespace SourceGit.ViewModels {
             _data = new Welcome();
         }
 
-        public LauncherPage(RepositoryNode node, Repository repo) {
+        public LauncherPage(RepositoryNode node, Repository repo)
+        {
             _node = node;
             _data = repo;
         }
 
-        public override string GetId() {
+        public override string GetId()
+        {
             return _node.Id;
         }
 
-        public void CopyPath() {
+        public void CopyPath()
+        {
             if (_node.IsRepository) App.CopyText(_node.Id);
         }
 
-        public void DismissNotification(object param) {
-            if (param is Models.Notification notice) {
+        public void DismissNotification(object param)
+        {
+            if (param is Models.Notification notice)
+            {
                 Notifications.Remove(notice);
             }
         }

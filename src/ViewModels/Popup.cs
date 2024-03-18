@@ -1,47 +1,59 @@
-﻿using Avalonia.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels {
-    public class Popup : ObservableValidator {
-        public string HostPageId {
+using Avalonia.Threading;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace SourceGit.ViewModels
+{
+    public class Popup : ObservableValidator
+    {
+        public string HostPageId
+        {
             get;
             set;
         }
 
-        public object View {
+        public object View
+        {
             get;
             set;
         }
 
-        public bool InProgress {
+        public bool InProgress
+        {
             get => _inProgress;
             set => SetProperty(ref _inProgress, value);
         }
 
-        public string ProgressDescription {
+        public string ProgressDescription
+        {
             get => _progressDescription;
             set => SetProperty(ref _progressDescription, value);
         }
 
         [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode")]
-        public bool Check() {
+        public bool Check()
+        {
             if (HasErrors) return false;
             ValidateAllProperties();
             return !HasErrors;
         }
 
-        public virtual Task<bool> Sure() {
+        public virtual Task<bool> Sure()
+        {
             return null;
         }
 
-        protected void CallUIThread(Action action) {
+        protected void CallUIThread(Action action)
+        {
             Dispatcher.UIThread.Invoke(action);
         }
 
-        protected void SetProgressDescription(string description) {
+        protected void SetProgressDescription(string description)
+        {
             CallUIThread(() => ProgressDescription = description);
         }
 

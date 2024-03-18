@@ -1,8 +1,11 @@
 ﻿using System;
 
-namespace SourceGit.Commands {
-    public class Statistics : Command {
-        public Statistics(string repo) {
+namespace SourceGit.Commands
+{
+    public class Statistics : Command
+    {
+        public Statistics(string repo)
+        {
             _statistics = new Models.Statistics();
 
             WorkingDirectory = repo;
@@ -10,13 +13,15 @@ namespace SourceGit.Commands {
             Args = $"log --date-order --branches --remotes --since=\"{_statistics.Since()}\" --pretty=format:\"%ct$%cn\"";
         }
 
-        public Models.Statistics Result() {
+        public Models.Statistics Result()
+        {
             Exec();
             _statistics.Complete();
             return _statistics;
         }
 
-        protected override void OnReadline(string line) {
+        protected override void OnReadline(string line)
+        {
             var dateEndIdx = line.IndexOf('$', StringComparison.Ordinal);
             if (dateEndIdx == -1) return;
 
@@ -27,6 +32,6 @@ namespace SourceGit.Commands {
             _statistics.AddCommit(line.Substring(dateEndIdx + 1), date);
         }
 
-        private Models.Statistics _statistics = null;
+        private readonly Models.Statistics _statistics = null;
     }
 }

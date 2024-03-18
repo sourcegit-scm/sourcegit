@@ -81,6 +81,10 @@
               <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Path Width="64" Height="64" Data="{StaticResource Icons.Error}" Fill="{DynamicResource Brush.FG2}"/>
                 <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.BinaryNotSupported}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
+                <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+                  <TextBlock Classes="monospace" Text="{Binding Size}" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Text="{DynamicResource Text.Bytes}" Margin="8,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+                </StackPanel>
               </StackPanel>
             </DataTemplate>
 

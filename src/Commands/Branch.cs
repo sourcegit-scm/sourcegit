@@ -1,6 +1,9 @@
-﻿namespace SourceGit.Commands {
-    public static class Branch {
-        public static bool Create(string repo, string name, string basedOn) {
+﻿namespace SourceGit.Commands
+{
+    public static class Branch
+    {
+        public static bool Create(string repo, string name, string basedOn)
+        {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
@@ -8,7 +11,8 @@
             return cmd.Exec();
         }
 
-        public static bool Rename(string repo, string name, string to) {
+        public static bool Rename(string repo, string name, string to)
+        {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
@@ -16,19 +20,24 @@
             return cmd.Exec();
         }
 
-        public static bool SetUpstream(string repo, string name, string upstream) {
+        public static bool SetUpstream(string repo, string name, string upstream)
+        {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            if (string.IsNullOrEmpty(upstream)) {
+            if (string.IsNullOrEmpty(upstream))
+            {
                 cmd.Args = $"branch {name} --unset-upstream";
-            } else {
+            }
+            else
+            {
                 cmd.Args = $"branch {name} -u {upstream}";
             }
             return cmd.Exec();
         }
 
-        public static bool Delete(string repo, string name) {
+        public static bool Delete(string repo, string name)
+        {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;

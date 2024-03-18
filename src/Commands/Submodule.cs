@@ -1,32 +1,41 @@
 ﻿using System;
 
-namespace SourceGit.Commands {
-    public class Submodule : Command {
-        public Submodule(string repo) {
+namespace SourceGit.Commands
+{
+    public class Submodule : Command
+    {
+        public Submodule(string repo)
+        {
             WorkingDirectory = repo;
             Context = repo;
         }
 
-        public bool Add(string url, string relativePath, bool recursive, Action<string> outputHandler) {
+        public bool Add(string url, string relativePath, bool recursive, Action<string> outputHandler)
+        {
             _outputHandler = outputHandler;
             Args = $"submodule add {url} {relativePath}";
             if (!Exec()) return false;
 
-            if (recursive) {
+            if (recursive)
+            {
                 Args = $"submodule update --init --recursive -- {relativePath}";
                 return Exec();
-            } else {
+            }
+            else
+            {
                 Args = $"submodule update --init -- {relativePath}";
                 return true;
             }
         }
 
-        public bool Update() {
+        public bool Update()
+        {
             Args = $"submodule update --rebase --remote";
             return Exec();
         }
 
-        public bool Delete(string relativePath) {
+        public bool Delete(string relativePath)
+        {
             Args = $"submodule deinit -f {relativePath}";
             if (!Exec()) return false;
 
@@ -34,7 +43,8 @@ namespace SourceGit.Commands {
             return Exec();
         }
 
-        protected override void OnReadline(string line) {
+        protected override void OnReadline(string line)
+        {
             _outputHandler?.Invoke(line);
         }
 

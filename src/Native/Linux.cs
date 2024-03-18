@@ -1,29 +1,37 @@
-﻿using Avalonia;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Runtime.Versioning;
 
-namespace SourceGit.Native {
+using Avalonia;
+
+namespace SourceGit.Native
+{
     [SupportedOSPlatform("linux")]
-    internal class Linux : OS.IBackend {
-        public void SetupFonts(AppBuilder builder) {
-        #if USE_FONT_INTER
+    internal class Linux : OS.IBackend
+    {
+        public void SetupApp(AppBuilder builder)
+        {
+#if USE_FONT_INTER
             builder.WithInterFont();
-        #endif
+#endif
         }
 
-        public string FindGitExecutable() {
+        public string FindGitExecutable()
+        {
             if (File.Exists("/usr/bin/git")) return "/usr/bin/git";
             return string.Empty;
         }
 
-        public string FindVSCode() {
+        public string FindVSCode()
+        {
             if (File.Exists("/usr/share/code/code")) return "/usr/share/code/code";
             return string.Empty;
         }
 
-        public void OpenBrowser(string url) {
-            if (!File.Exists("/usr/bin/xdg-open")) {
+        public void OpenBrowser(string url)
+        {
+            if (!File.Exists("/usr/bin/xdg-open"))
+            {
                 App.RaiseException("", $"You should install xdg-open first!");
                 return;
             }
@@ -31,38 +39,54 @@ namespace SourceGit.Native {
             Process.Start("xdg-open", $"\"{url}\"");
         }
 
-        public void OpenInFileManager(string path, bool select) {
-            if (!File.Exists("/usr/bin/xdg-open")) {
+        public void OpenInFileManager(string path, bool select)
+        {
+            if (!File.Exists("/usr/bin/xdg-open"))
+            {
                 App.RaiseException("", $"You should install xdg-open first!");
                 return;
             }
 
-            if (Directory.Exists(path)) {
+            if (Directory.Exists(path))
+            {
                 Process.Start("xdg-open", $"\"{path}\"");
-            } else {
+            }
+            else
+            {
                 var dir = Path.GetDirectoryName(path);
-                if (Directory.Exists(dir)) {
+                if (Directory.Exists(dir))
+                {
                     Process.Start("xdg-open", $"\"{dir}\"");
                 }
             }
         }
 
-        public void OpenTerminal(string workdir) {
+        public void OpenTerminal(string workdir)
+        {
             var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
-            if (File.Exists("/usr/bin/gnome-terminal")) {
+            if (File.Exists("/usr/bin/gnome-terminal"))
+            {
                 Process.Start("/usr/bin/gnome-terminal", $"--working-directory=\"{dir}\"");
-            } else if (File.Exists("/usr/bin/konsole")) {
+            }
+            else if (File.Exists("/usr/bin/konsole"))
+            {
                 Process.Start("/usr/bin/konsole", $"--workdir \"{dir}\"");
-            } else if (File.Exists("/usr/bin/xfce4-terminal")) {
+            }
+            else if (File.Exists("/usr/bin/xfce4-terminal"))
+            {
                 Process.Start("/usr/bin/xfce4-terminal", $"--working-directory=\"{dir}\"");
-            } else {
+            }
+            else
+            {
                 App.RaiseException("", $"Only supports gnome-terminal/konsole/xfce4-terminal!");
                 return;
             }
         }
 
-        public void OpenWithDefaultEditor(string file) {
-            if (!File.Exists("/usr/bin/xdg-open")) {
+        public void OpenWithDefaultEditor(string file)
+        {
+            if (!File.Exists("/usr/bin/xdg-open"))
+            {
                 App.RaiseException("", $"You should install xdg-open first!");
                 return;
             }
@@ -70,7 +94,8 @@ namespace SourceGit.Native {
             var proc = Process.Start("xdg-open", $"\"{file}\"");
             proc.WaitForExit();
 
-            if (proc.ExitCode != 0) {
+            if (proc.ExitCode != 0)
+            {
                 App.RaiseException("", $"Failed to open \"{file}\"");
             }
 

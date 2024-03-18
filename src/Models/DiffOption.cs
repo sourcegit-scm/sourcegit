@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace SourceGit.Models {
-    public class DiffOption {
+namespace SourceGit.Models
+{
+    public class DiffOption
+    {
         public Change WorkingCopyChange => _workingCopyChange;
         public bool IsUnstaged => _isUnstaged;
         public List<string> Revisions => _revisions;
@@ -14,24 +16,29 @@ namespace SourceGit.Models {
         /// </summary>
         /// <param name="change"></param>
         /// <param name="isUnstaged"></param>
-        public DiffOption(Change change, bool isUnstaged) {
+        public DiffOption(Change change, bool isUnstaged)
+        {
             _workingCopyChange = change;
             _isUnstaged = isUnstaged;
 
-            if (isUnstaged) {
-                switch (change.WorkTree) {
-                case ChangeState.Added:
-                case ChangeState.Untracked:
-                    _extra = "--no-index";
-                    _path = change.Path;
-                    _orgPath = "/dev/null";
-                    break;
-                default:
-                    _path = change.Path;
-                    _orgPath = change.OriginalPath;
-                    break;
+            if (isUnstaged)
+            {
+                switch (change.WorkTree)
+                {
+                    case ChangeState.Added:
+                    case ChangeState.Untracked:
+                        _extra = "--no-index";
+                        _path = change.Path;
+                        _orgPath = "/dev/null";
+                        break;
+                    default:
+                        _path = change.Path;
+                        _orgPath = change.OriginalPath;
+                        break;
                 }
-            } else {
+            }
+            else
+            {
                 _extra = "--cached";
                 _path = change.Path;
                 _orgPath = change.OriginalPath;
@@ -43,7 +50,8 @@ namespace SourceGit.Models {
         /// </summary>
         /// <param name="commit"></param>
         /// <param name="change"></param>
-        public DiffOption(Commit commit, Change change) {
+        public DiffOption(Commit commit, Change change)
+        {
             var baseRevision = commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : $"{commit.SHA}^";
             _revisions.Add(baseRevision);
             _revisions.Add(commit.SHA);
@@ -56,7 +64,8 @@ namespace SourceGit.Models {
         /// </summary>
         /// <param name="commit"></param>
         /// <param name="file"></param>
-        public DiffOption(Commit commit, string file) {
+        public DiffOption(Commit commit, string file)
+        {
             var baseRevision = commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : $"{commit.SHA}^";
             _revisions.Add(baseRevision);
             _revisions.Add(commit.SHA);
@@ -69,7 +78,8 @@ namespace SourceGit.Models {
         /// <param name="baseRevision"></param>
         /// <param name="targetRevision"></param>
         /// <param name="change"></param>
-        public DiffOption(string baseRevision, string targetRevision, Change change) {
+        public DiffOption(string baseRevision, string targetRevision, Change change)
+        {
             _revisions.Add(baseRevision);
             _revisions.Add(targetRevision);
             _path = change.Path;
@@ -80,7 +90,8 @@ namespace SourceGit.Models {
         ///     Converts to diff command arguments.
         /// </summary>
         /// <returns></returns>
-        public override string ToString() {
+        public override string ToString()
+        {
             var builder = new StringBuilder();
             if (!string.IsNullOrEmpty(_extra)) builder.Append($"{_extra} ");
             foreach (var r in _revisions) builder.Append($"{r} ");
@@ -92,11 +103,11 @@ namespace SourceGit.Models {
             return builder.ToString();
         }
 
-        private Change _workingCopyChange = null;
-        private bool _isUnstaged = false;
-        private string _orgPath = string.Empty;
-        private string _path = string.Empty;
-        private string _extra = string.Empty;
-        private List<string> _revisions = new List<string>();
+        private readonly Change _workingCopyChange = null;
+        private readonly bool _isUnstaged = false;
+        private readonly string _orgPath = string.Empty;
+        private readonly string _path = string.Empty;
+        private readonly string _extra = string.Empty;
+        private readonly List<string> _revisions = new List<string>();
     }
 }

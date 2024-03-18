@@ -1,25 +1,32 @@
 ﻿using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels {
-    public class DeleteRemote : Popup {
-        public Models.Remote Remote {
+namespace SourceGit.ViewModels
+{
+    public class DeleteRemote : Popup
+    {
+        public Models.Remote Remote
+        {
             get;
             private set;
         }
 
-        public DeleteRemote(Repository repo, Models.Remote remote) {
+        public DeleteRemote(Repository repo, Models.Remote remote)
+        {
             _repo = repo;
             Remote = remote;
             View = new Views.DeleteRemote() { DataContext = this };
         }
 
-        public override Task<bool> Sure() {
+        public override Task<bool> Sure()
+        {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Deleting remote ...";
 
-            return Task.Run(() => {
+            return Task.Run(() =>
+            {
                 var succ = new Commands.Remote(_repo.FullPath).Delete(Remote.Name);
-                CallUIThread(() => {
+                CallUIThread(() =>
+                {
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });
@@ -27,6 +34,6 @@ namespace SourceGit.ViewModels {
             });
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo = null;
     }
 }

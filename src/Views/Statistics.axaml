@@ -9,25 +9,37 @@
         x:Class="SourceGit.Views.Statistics"
         x:DataType="vm:Statistics"
         Title="{DynamicResource Text.Statistics}"
-        Background="{DynamicResource Brush.Window}"
+        Background="Transparent"
         Width="800" Height="450"
         WindowStartupLocation="CenterOwner"
         CanResize="False"
-        ExtendClientAreaToDecorationsHint="{OnPlatform True, Linux=False}"
-        ExtendClientAreaChromeHints="{OnPlatform NoChrome, Linux=Default}">
-  <Grid RowDefinitions="Auto,Auto,*">
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        SystemDecorations="{OnPlatform Full, Linux=None}">
+  <Grid RowDefinitions="Auto,Auto,*" Margin="{OnPlatform 0, Linux=6}">
+    <!-- Custom window shadow for Linux -->
+    <Border Grid.Row="0" Grid.RowSpan="3"
+            Background="{DynamicResource Brush.Window}"
+            Effect="drop-shadow(0 0 6 #A0000000)"
+            IsVisible="{OnPlatform False, Linux=True}"/>
+
+    <!-- Window BG -->
+    <Border Grid.Row="1" Grid.RowSpan="2"
+            Background="{DynamicResource Brush.Window}"
+            IsVisible="{OnPlatform True, Linux=False}"/>
+    
     <!-- Title bar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{OnPlatform True, Linux=False}">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
-              IsHitTestVisible="False"/>
+              PointerPressed="BeginMoveWindow"/>
       
       <Path Grid.Column="0"
             Width="14" Height="14"
             Margin="10,0,0,0"
             Data="{StaticResource Icons.Statistics}"
-            IsVisible="{OnPlatform False, Windows=True}"/>
+            IsVisible="{OnPlatform True, macOS=False}"/>
 
       <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
         <Button Classes="caption_button_macos" Click="CloseWindow">
@@ -47,7 +59,7 @@
       <Button Grid.Column="2"
               Classes="caption_button"
               Click="CloseWindow"
-              IsVisible="{OnPlatform False, Windows=True}">
+              IsVisible="{OnPlatform True, macOS=False}">
         <Path Data="{StaticResource Icons.Window.Close}"/>
       </Button>
     </Grid>
@@ -82,7 +94,7 @@
         <Style Selector="ListBoxItem:selected Border.switcher_bg">
           <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
         </Style>
-        
+
         <Style Selector="TextBlock.view_mode_switcher">
           <Setter Property="FontWeight" Value="Bold"/>
           <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>

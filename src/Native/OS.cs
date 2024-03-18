@@ -1,11 +1,15 @@
-﻿using Avalonia;
-using System;
+﻿using System;
 using System.Diagnostics;
 
-namespace SourceGit.Native {
-    public static class OS {
-        public interface IBackend {
-            void SetupFonts(AppBuilder builder);
+using Avalonia;
+
+namespace SourceGit.Native
+{
+    public static class OS
+    {
+        public interface IBackend
+        {
+            void SetupApp(AppBuilder builder);
 
             string FindGitExecutable();
             string FindVSCode();
@@ -16,62 +20,81 @@ namespace SourceGit.Native {
             void OpenWithDefaultEditor(string file);
         }
 
-        public static string GitInstallPath {
+        public static string GitInstallPath
+        {
             get;
             set;
         }
 
-        public static string VSCodeExecutableFile {
+        public static string VSCodeExecutableFile
+        {
             get;
             set;
         }
 
-        static OS() {
-            if (OperatingSystem.IsMacOS()) {
+        static OS()
+        {
+            if (OperatingSystem.IsMacOS())
+            {
                 _backend = new MacOS();
                 VSCodeExecutableFile = _backend.FindVSCode();
-            } else if (OperatingSystem.IsWindows()) {
+            }
+            else if (OperatingSystem.IsWindows())
+            {
                 _backend = new Windows();
                 VSCodeExecutableFile = _backend.FindVSCode();
-            } else if (OperatingSystem.IsLinux()) {
+            }
+            else if (OperatingSystem.IsLinux())
+            {
                 _backend = new Linux();
                 VSCodeExecutableFile = _backend.FindVSCode();
-            } else {
+            }
+            else
+            {
                 throw new Exception("Platform unsupported!!!");
             }
         }
 
-        public static void SetupFonts(AppBuilder builder) {
-            _backend?.SetupFonts(builder);
+        public static void SetupApp(AppBuilder builder)
+        {
+            _backend?.SetupApp(builder);
         }
 
-        public static string FindGitExecutable() {
+        public static string FindGitExecutable()
+        {
             return _backend?.FindGitExecutable();
         }
 
-        public static void OpenInFileManager(string path, bool select = false) {
+        public static void OpenInFileManager(string path, bool select = false)
+        {
             _backend?.OpenInFileManager(path, select);
         }
 
-        public static void OpenBrowser(string url) {
+        public static void OpenBrowser(string url)
+        {
             _backend?.OpenBrowser(url);
         }
 
-        public static void OpenTerminal(string workdir) {
+        public static void OpenTerminal(string workdir)
+        {
             _backend?.OpenTerminal(workdir);
         }
 
-        public static void OpenWithDefaultEditor(string file) {
+        public static void OpenWithDefaultEditor(string file)
+        {
             _backend?.OpenWithDefaultEditor(file);
         }
 
-        public static void OpenInVSCode(string repo) {
-            if (string.IsNullOrEmpty(VSCodeExecutableFile)) {
+        public static void OpenInVSCode(string repo)
+        {
+            if (string.IsNullOrEmpty(VSCodeExecutableFile))
+            {
                 App.RaiseException(repo, "Visual Studio Code can NOT be found in your system!!!");
                 return;
             }
 
-            Process.Start(new ProcessStartInfo() {
+            Process.Start(new ProcessStartInfo()
+            {
                 WorkingDirectory = repo,
                 FileName = VSCodeExecutableFile,
                 Arguments = $"\"{repo}\"",
@@ -79,6 +102,6 @@ namespace SourceGit.Native {
             });
         }
 
-        private static IBackend _backend = null;
+        private static readonly IBackend _backend = null;
     }
 }

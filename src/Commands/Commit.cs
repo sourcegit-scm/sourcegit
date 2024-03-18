@@ -1,8 +1,11 @@
 ﻿using System.IO;
 
-namespace SourceGit.Commands {
-    public class Commit : Command {
-        public Commit(string repo, string message, bool amend, bool allowEmpty = false) {
+namespace SourceGit.Commands
+{
+    public class Commit : Command
+    {
+        public Commit(string repo, string message, bool amend, bool allowEmpty = false)
+        {
             var file = Path.GetTempFileName();
             File.WriteAllText(file, message);
 

@@ -1,41 +1,55 @@
-﻿using Avalonia.Controls;
-using Avalonia.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels {
-    public class RevisionCompare : ObservableObject {
-        public Models.Commit StartPoint {
+using Avalonia.Controls;
+using Avalonia.Threading;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace SourceGit.ViewModels
+{
+    public class RevisionCompare : ObservableObject
+    {
+        public Models.Commit StartPoint
+        {
             get;
             private set;
         }
 
-        public Models.Commit EndPoint {
+        public Models.Commit EndPoint
+        {
             get;
             private set;
         }
 
-        public List<Models.Change> VisibleChanges {
+        public List<Models.Change> VisibleChanges
+        {
             get => _visibleChanges;
             private set => SetProperty(ref _visibleChanges, value);
         }
 
-        public List<FileTreeNode> ChangeTree {
+        public List<FileTreeNode> ChangeTree
+        {
             get => _changeTree;
             private set => SetProperty(ref _changeTree, value);
         }
 
-        public Models.Change SelectedChange {
+        public Models.Change SelectedChange
+        {
             get => _selectedChange;
-            set {
-                if (SetProperty(ref _selectedChange, value)) {
-                    if (value == null) {
+            set
+            {
+                if (SetProperty(ref _selectedChange, value))
+                {
+                    if (value == null)
+                    {
                         SelectedNode = null;
                         DiffContext = null;
-                    } else {
+                    }
+                    else
+                    {
                         SelectedNode = FileTreeNode.SelectByPath(_changeTree, value.Path);
                         DiffContext = new DiffContext(_repo, new Models.DiffOption(StartPoint.SHA, EndPoint.SHA, value));
                     }
@@ -43,60 +57,77 @@ namespace SourceGit.ViewModels {
             }
         }
 
-        public FileTreeNode SelectedNode {
+        public FileTreeNode SelectedNode
+        {
             get => _selectedNode;
-            set {
-                if (SetProperty(ref _selectedNode, value)) {
-                    if (value == null) {
+            set
+            {
+                if (SetProperty(ref _selectedNode, value))
+                {
+                    if (value == null)
+                    {
                         SelectedChange = null;
-                    } else {
+                    }
+                    else
+                    {
                         SelectedChange = value.Backend as Models.Change;
                     }
                 }
             }
         }
 
-        public string SearchFilter {
+        public string SearchFilter
+        {
             get => _searchFilter;
-            set {
-                if (SetProperty(ref _searchFilter, value)) {
+            set
+            {
+                if (SetProperty(ref _searchFilter, value))
+                {
                     RefreshVisible();
                 }
             }
         }
 
-        public DiffContext DiffContext {
+        public DiffContext DiffContext
+        {
             get => _diffContext;
             private set => SetProperty(ref _diffContext, value);
         }
 
-        public RevisionCompare(string repo, Models.Commit startPoint, Models.Commit endPoint) {
+        public RevisionCompare(string repo, Models.Commit startPoint, Models.Commit endPoint)
+        {
             _repo = repo;
             StartPoint = startPoint;
             EndPoint = endPoint;
 
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 _changes = new Commands.CompareRevisions(_repo, startPoint.SHA, endPoint.SHA).Result();
 
                 var visible = _changes;
-                if (!string.IsNullOrWhiteSpace(_searchFilter)) {
+                if (!string.IsNullOrWhiteSpace(_searchFilter))
+                {
                     visible = new List<Models.Change>();
-                    foreach (var c in _changes) {
-                        if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase)) {
+                    foreach (var c in _changes)
+                    {
+                        if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                        {
                             visible.Add(c);
                         }
                     }
                 }
 
                 var tree = FileTreeNode.Build(visible);
-                Dispatcher.UIThread.Invoke(() => {
+                Dispatcher.UIThread.Invoke(() =>
+                {
                     VisibleChanges = visible;
                     ChangeTree = tree;
                 });
             });
         }
 
-        public void Cleanup() {
+        public void Cleanup()
+        {
             _repo = null;
             if (_changes != null) _changes.Clear();
             if (_visibleChanges != null) _visibleChanges.Clear();
@@ -107,22 +138,27 @@ namespace SourceGit.ViewModels {
             _diffContext = null;
         }
 
-        public void NavigateTo(string commitSHA) {
+        public void NavigateTo(string commitSHA)
+        {
             var repo = Preference.FindRepository(_repo);
             if (repo != null) repo.NavigateToCommit(commitSHA);
         }
 
-        public void ClearSearchFilter() {
+        public void ClearSearchFilter()
+        {
             SearchFilter = string.Empty;
         }
 
-        public ContextMenu CreateChangeContextMenu(Models.Change change) {
+        public ContextMenu CreateChangeContextMenu(Models.Change change)
+        {
             var menu = new ContextMenu();
 
-            if (change.Index != Models.ChangeState.Deleted) {
+            if (change.Index != Models.ChangeState.Deleted)
+            {
                 var history = new MenuItem();
                 history.Header = App.Text("FileHistory");
-                history.Click += (_, ev) => {
+                history.Click += (_, ev) =>
+                {
                     var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
                     window.Show();
                     ev.Handled = true;
@@ -132,7 +168,8 @@ namespace SourceGit.ViewModels {
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
                 explore.IsEnabled = File.Exists(full);
-                explore.Click += (_, ev) => {
+                explore.Click += (_, ev) =>
+                {
                     Native.OS.OpenInFileManager(full, true);
                     ev.Handled = true;
                 };
@@ -143,7 +180,8 @@ namespace SourceGit.ViewModels {
 
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
-            copyPath.Click += (_, ev) => {
+            copyPath.Click += (_, ev) =>
+            {
                 App.CopyText(change.Path);
                 ev.Handled = true;
             };
@@ -152,15 +190,21 @@ namespace SourceGit.ViewModels {
             return menu;
         }
 
-        private void RefreshVisible() {
+        private void RefreshVisible()
+        {
             if (_changes == null) return;
 
-            if (string.IsNullOrEmpty(_searchFilter)) {
+            if (string.IsNullOrEmpty(_searchFilter))
+            {
                 VisibleChanges = _changes;
-            } else {
+            }
+            else
+            {
                 var visible = new List<Models.Change>();
-                foreach (var c in _changes) {
-                    if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase)) {
+                foreach (var c in _changes)
+                {
+                    if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                    {
                         visible.Add(c);
                     }
                 }

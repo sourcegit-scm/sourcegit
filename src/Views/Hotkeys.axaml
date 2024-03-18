@@ -7,24 +7,32 @@
         x:Class="SourceGit.Views.Hotkeys"
         Icon="/App.ico"
         Title="{DynamicResource Text.Hotkeys}"
-        Background="{DynamicResource Brush.Window}"
+        Background="Transparent"
         SizeToContent="WidthAndHeight"
         CanResize="False"
         WindowStartupLocation="CenterOwner"
-        ExtendClientAreaToDecorationsHint="{OnPlatform True, Linux=False}"
-        ExtendClientAreaChromeHints="{OnPlatform NoChrome, Linux=Default}">
-  <Grid RowDefinitions="Auto,*">
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{OnPlatform True, Linux=False}">
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        SystemDecorations="{OnPlatform Full, Linux=None}">
+  <Grid RowDefinitions="Auto,*" Margin="{OnPlatform 0, Linux=6}">
+    <!-- Custom window shadow for Linux -->
+    <Border Grid.Row="0" Grid.RowSpan="2"
+            Background="{DynamicResource Brush.Window}"
+            Effect="drop-shadow(0 0 6 #A0000000)"
+            IsVisible="{OnPlatform False, Linux=True}"/>
+
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
-              IsHitTestVisible="False"/>
+              PointerPressed="BeginMoveWindow"/>
       
       <Path Grid.Column="0"
             Width="14" Height="14"
             Margin="10,0,0,0"
             Data="{StaticResource Icons.Hotkeys}"
-            IsVisible="{OnPlatform False, Windows=True}"/>
+            IsVisible="{OnPlatform True, macOS=False}"/>
 
       <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
         <Button Classes="caption_button_macos" Click="CloseWindow">
@@ -44,74 +52,77 @@
       <Button Grid.Column="2"
               Classes="caption_button"
               Click="CloseWindow"
-              IsVisible="{OnPlatform False, Windows=True}">
+              IsVisible="{OnPlatform True, macOS=False}">
         <Path Data="{StaticResource Icons.Window.Close}"/>
       </Button>
     </Grid>
 
-    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="16,8,16,16">
-      <TextBlock Text="{DynamicResource Text.Hotkeys.Global}"
-                 Foreground="{DynamicResource Brush.FG2}"
-                 FontWeight="Bold"
-                 FontSize="13"
-                 Margin="0,0,0,8"/>
+    <!-- Body -->
+    <Border Grid.Row="1" Background="{DynamicResource Brush.Window}">
+      <StackPanel Orientation="Vertical" Margin="16,8,16,16">
+        <TextBlock Text="{DynamicResource Text.Hotkeys.Global}"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   FontWeight="Bold"
+                   FontSize="13"
+                   Margin="0,0,0,8"/>
 
-      <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="Auto,*">
-        <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+T"/>
-        <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.NewTab}" />
-        
-        <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="Ctrl+W" />
-        <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CloseTab}" />
+        <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+T"/>
+          <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.NewTab}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="Ctrl+Tab"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoNextTab}" />
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="Ctrl+W" />
+          <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CloseTab}" />
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
-        <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CancelPopup}" />
-      </Grid>
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="Ctrl+Tab"/>
+          <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoNextTab}" />
 
-      <TextBlock Text="{DynamicResource Text.Hotkeys.Repo}"
-                 Foreground="{DynamicResource Brush.FG2}"
-                 FontWeight="Bold"
-                 FontSize="13"
-                 Margin="0,8"/>
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
+          <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CancelPopup}" />
+        </Grid>
 
-      <Grid RowDefinitions="20,20,20,20,20" ColumnDefinitions="Auto,*">
-        <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+F"/>
-        <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ToggleSearch}" />
+        <TextBlock Text="{DynamicResource Text.Hotkeys.Repo}"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   FontWeight="Bold"
+                   FontSize="13"
+                   Margin="0,8"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="Ctrl+1"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewHistories}" />
+        <Grid RowDefinitions="20,20,20,20,20" ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+F"/>
+          <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ToggleSearch}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="Ctrl+2"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewChanges}" />
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="Ctrl+1"/>
+          <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewHistories}" />
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="Ctrl+3"/>
-        <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewStashes}" />
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="Ctrl+2"/>
+          <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewChanges}" />
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="SPACE"/>
-        <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
-      </Grid>
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="Ctrl+3"/>
+          <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewStashes}" />
 
-      <TextBlock Text="{DynamicResource Text.Hotkeys.TextEditor}"
-                 Foreground="{DynamicResource Brush.FG2}"
-                 FontWeight="Bold"
-                 FontSize="13"
-                 Margin="0,8"/>
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="SPACE"/>
+          <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
+        </Grid>
 
-      <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="Auto,*">
-        <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+F"/>
-        <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.Search}" />
+        <TextBlock Text="{DynamicResource Text.Hotkeys.TextEditor}"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   FontWeight="Bold"
+                   FontSize="13"
+                   Margin="0,8"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="Shift+F3"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoPrevMatch}" />
+        <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+F"/>
+          <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.Search}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="F3"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoNextMatch}" />
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="Shift+F3"/>
+          <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoPrevMatch}" />
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
-        <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.CloseSearch}" />
-      </Grid>
-    </StackPanel>
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="F3"/>
+          <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoNextMatch}" />
+
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
+          <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.CloseSearch}" />
+        </Grid>
+      </StackPanel>
+    </Border>    
   </Grid>
 </Window>

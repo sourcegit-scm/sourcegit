@@ -9,24 +9,32 @@
         x:DataType="v:About"
         Icon="/App.ico"
         Title="{DynamicResource Text.About}"
-        Background="{DynamicResource Brush.Window}"
+        Background="Transparent"
         SizeToContent="WidthAndHeight"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
-        ExtendClientAreaToDecorationsHint="{OnPlatform True, Linux=False}"
-        ExtendClientAreaChromeHints="{OnPlatform NoChrome, Linux=Default}">
-  <Grid RowDefinitions="Auto,*">
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{OnPlatform True, Linux=False}">
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        SystemDecorations="{OnPlatform Full, Linux=None}">
+  <Grid RowDefinitions="Auto,*" Margin="{OnPlatform 0, Linux=6}">
+    <!-- Custom window shadow for Linux -->
+    <Border Grid.Row="0" Grid.RowSpan="2"
+            Background="{DynamicResource Brush.Window}"
+            Effect="drop-shadow(0 0 6 #A0000000)"
+            IsVisible="{OnPlatform False, Linux=True}"/>
+
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
-              IsHitTestVisible="False"/>
+              PointerPressed="BeginMoveWindow"/>
       
       <Path Grid.Column="0"
             Width="14" Height="14"
             Margin="10,0,0,0"
             Data="{StaticResource Icons.Info}"
-            IsVisible="{OnPlatform False, Windows=True}"/>
+            IsVisible="{OnPlatform True, macOS=False}"/>
 
       <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
         <Button Classes="caption_button_macos" Click="CloseWindow">
@@ -46,12 +54,12 @@
       <Button Grid.Column="2"
               Classes="caption_button"
               Click="CloseWindow"
-              IsVisible="{OnPlatform False, Windows=True}">
+              IsVisible="{OnPlatform True, macOS=False}">
         <Path Data="{StaticResource Icons.Window.Close}"/>
       </Button>
     </Grid>
 
-    <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+    <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Background="{DynamicResource Brush.Window}">
       <Image Grid.Column="0"
              Width="200" Height="200"
              Margin="8,0"

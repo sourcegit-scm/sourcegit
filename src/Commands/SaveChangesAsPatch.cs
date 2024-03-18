@@ -1,14 +1,20 @@
-﻿using Avalonia.Threading;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace SourceGit.Commands {
-    public static class SaveChangesAsPatch {
-        public static bool Exec(string repo, List<Models.Change> changes, bool isUnstaged, string saveTo) {
-            using (var sw = File.Create(saveTo)) {
-                foreach (var change in changes) {
+using Avalonia.Threading;
+
+namespace SourceGit.Commands
+{
+    public static class SaveChangesAsPatch
+    {
+        public static bool Exec(string repo, List<Models.Change> changes, bool isUnstaged, string saveTo)
+        {
+            using (var sw = File.Create(saveTo))
+            {
+                foreach (var change in changes)
+                {
                     if (!ProcessSingleChange(repo, new Models.DiffOption(change, isUnstaged), sw)) return false;
                 }
             }
@@ -16,7 +22,8 @@ namespace SourceGit.Commands {
             return true;
         }
 
-        private static bool ProcessSingleChange(string repo, Models.DiffOption opt, FileStream writer) {
+        private static bool ProcessSingleChange(string repo, Models.DiffOption opt, FileStream writer)
+        {
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = repo;
             starter.FileName = Native.OS.GitInstallPath;
@@ -26,7 +33,8 @@ namespace SourceGit.Commands {
             starter.WindowStyle = ProcessWindowStyle.Hidden;
             starter.RedirectStandardOutput = true;
 
-            try {
+            try
+            {
                 var proc = new Process() { StartInfo = starter };
                 proc.Start();
                 proc.StandardOutput.BaseStream.CopyTo(writer);
@@ -35,10 +43,13 @@ namespace SourceGit.Commands {
                 proc.Close();
 
                 return rs;
-            } catch (Exception e) {
-                Dispatcher.UIThread.Invoke(() => {
+            }
+            catch (Exception e)
+            {
+                Dispatcher.UIThread.Invoke(() =>
+                {
                     App.RaiseException(repo, "Save change to patch failed: " + e.Message);
-                });                
+                });
                 return false;
             }
         }

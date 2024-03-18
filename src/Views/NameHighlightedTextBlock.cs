@@ -1,16 +1,20 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Media;
-using System;
+﻿using System;
 using System.Globalization;
 
-namespace SourceGit.Views {
-    public class NameHighlightedTextBlock : Control {
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+
+namespace SourceGit.Views
+{
+    public class NameHighlightedTextBlock : Control
+    {
 
         public static readonly StyledProperty<string> TextProperty =
             AvaloniaProperty.Register<NameHighlightedTextBlock, string>(nameof(Text));
 
-        public string Text {
+        public string Text
+        {
             get => GetValue(TextProperty);
             set => SetValue(TextProperty, value);
         }
@@ -18,7 +22,8 @@ namespace SourceGit.Views {
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
             TextBlock.FontFamilyProperty.AddOwner<NameHighlightedTextBlock>();
 
-        public FontFamily FontFamily {
+        public FontFamily FontFamily
+        {
             get => GetValue(FontFamilyProperty);
             set => SetValue(FontFamilyProperty, value);
         }
@@ -26,7 +31,8 @@ namespace SourceGit.Views {
         public static readonly StyledProperty<double> FontSizeProperty =
            TextBlock.FontSizeProperty.AddOwner<NameHighlightedTextBlock>();
 
-        public double FontSize {
+        public double FontSize
+        {
             get => GetValue(FontSizeProperty);
             set => SetValue(FontSizeProperty, value);
         }
@@ -34,21 +40,25 @@ namespace SourceGit.Views {
         public static readonly StyledProperty<IBrush> ForegroundProperty =
             TextBlock.ForegroundProperty.AddOwner<NameHighlightedTextBlock>();
 
-        public IBrush Foreground {
+        public IBrush Foreground
+        {
             get => GetValue(ForegroundProperty);
             set => SetValue(ForegroundProperty, value);
         }
 
-        static NameHighlightedTextBlock() {
+        static NameHighlightedTextBlock()
+        {
             AffectsMeasure<NameHighlightedTextBlock>(TextProperty);
         }
 
-        public NameHighlightedTextBlock(string nameKey, params object[] args) {
+        public NameHighlightedTextBlock(string nameKey, params object[] args)
+        {
             Text = App.Text(nameKey, args);
             VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
         }
 
-        protected override Size MeasureOverride(Size availableSize) {
+        protected override Size MeasureOverride(Size availableSize)
+        {
             var text = Text;
             if (string.IsNullOrEmpty(text)) return base.MeasureOverride(availableSize);
 
@@ -64,7 +74,8 @@ namespace SourceGit.Views {
             return new Size(formatted.Width - 16, formatted.Height);
         }
 
-        public override void Render(DrawingContext context) {
+        public override void Render(DrawingContext context)
+        {
             var text = Text;
             if (string.IsNullOrEmpty(text)) return;
 
@@ -75,8 +86,10 @@ namespace SourceGit.Views {
 
             var parts = text.Split('$', StringSplitOptions.None);
             var isName = false;
-            foreach (var part in parts) {
-                if (string.IsNullOrEmpty(part)) {
+            foreach (var part in parts)
+            {
+                if (string.IsNullOrEmpty(part))
+                {
                     isName = !isName;
                     continue;
                 }
@@ -90,13 +103,16 @@ namespace SourceGit.Views {
                     FontSize,
                     Foreground);
 
-                if (isName) {
+                if (isName)
+                {
                     var lineY = formatted.Baseline + 2;
                     offsetX += 4;
                     context.DrawText(formatted, new Point(offsetX, 0));
                     context.DrawLine(underlinePen, new Point(offsetX, lineY), new Point(offsetX + formatted.Width, lineY));
                     offsetX += formatted.Width + 4;
-                } else {
+                }
+                else
+                {
                     context.DrawText(formatted, new Point(offsetX, 0));
                     offsetX += formatted.Width;
                 }

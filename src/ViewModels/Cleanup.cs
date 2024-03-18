@@ -1,21 +1,27 @@
 ﻿using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels {
-    public class Cleanup : Popup {
-        public Cleanup(Repository repo) {
+namespace SourceGit.ViewModels
+{
+    public class Cleanup : Popup
+    {
+        public Cleanup(Repository repo)
+        {
             _repo = repo;
             View = new Views.Cleanup() { DataContext = this };
         }
 
-        public override Task<bool> Sure() {
+        public override Task<bool> Sure()
+        {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Cleanup (GC & prune) ...";
 
-            return Task.Run(() => {
+            return Task.Run(() =>
+            {
                 new Commands.GC(_repo.FullPath, SetProgressDescription).Exec();
 
                 var lfs = new Commands.LFS(_repo.FullPath);
-                if (lfs.IsEnabled()) {
+                if (lfs.IsEnabled())
+                {
                     SetProgressDescription("Run LFS prune ...");
                     lfs.Prune(SetProgressDescription);
                 }
@@ -25,6 +31,6 @@ namespace SourceGit.ViewModels {
             });
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo = null;
     }
 }

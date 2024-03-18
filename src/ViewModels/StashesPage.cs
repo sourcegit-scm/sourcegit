@@ -1,33 +1,49 @@
-﻿using Avalonia.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels {
-    public class StashesPage : ObservableObject {
-        public int Count {
+using Avalonia.Threading;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace SourceGit.ViewModels
+{
+    public class StashesPage : ObservableObject
+    {
+        public int Count
+        {
             get => _stashes == null ? 0 : _stashes.Count;
         }
 
-        public List<Models.Stash> Stashes {
+        public List<Models.Stash> Stashes
+        {
             get => _stashes;
-            set {
-                if (SetProperty(ref _stashes, value)) {
+            set
+            {
+                if (SetProperty(ref _stashes, value))
+                {
                     SelectedStash = null;
                 }
             }
         }
 
-        public Models.Stash SelectedStash {
+        public Models.Stash SelectedStash
+        {
             get => _selectedStash;
-            set {
-                if (SetProperty(ref _selectedStash, value)) {
-                    if (value == null) {
+            set
+            {
+                if (SetProperty(ref _selectedStash, value))
+                {
+                    if (value == null)
+                    {
                         Changes = null;
-                    } else {
-                        Task.Run(() => {
+                    }
+                    else
+                    {
+                        Task.Run(() =>
+                        {
                             var changes = new Commands.QueryStashChanges(_repo.FullPath, value.SHA).Result();
-                            Dispatcher.UIThread.Invoke(() => {
+                            Dispatcher.UIThread.Invoke(() =>
+                            {
                                 Changes = changes;
                             });
                         });
@@ -36,38 +52,50 @@ namespace SourceGit.ViewModels {
             }
         }
 
-        public List<Models.Change> Changes {
+        public List<Models.Change> Changes
+        {
             get => _changes;
-            private set {
-                if (SetProperty(ref _changes, value)) {
+            private set
+            {
+                if (SetProperty(ref _changes, value))
+                {
                     SelectedChange = null;
                 }
             }
         }
 
-        public Models.Change SelectedChange {
+        public Models.Change SelectedChange
+        {
             get => _selectedChange;
-            set {
-                if (SetProperty(ref _selectedChange, value)) {
-                    if (value == null) {
+            set
+            {
+                if (SetProperty(ref _selectedChange, value))
+                {
+                    if (value == null)
+                    {
                         DiffContext = null;
-                    } else {
+                    }
+                    else
+                    {
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption($"{_selectedStash.SHA}^", _selectedStash.SHA, value));
                     }
                 }
             }
         }
 
-        public DiffContext DiffContext {
+        public DiffContext DiffContext
+        {
             get => _diffContext;
             private set => SetProperty(ref _diffContext, value);
         }
 
-        public StashesPage(Repository repo) {
+        public StashesPage(Repository repo)
+        {
             _repo = repo;
         }
 
-        public void Cleanup() {
+        public void Cleanup()
+        {
             _repo = null;
             if (_stashes != null) _stashes.Clear();
             _selectedStash = null;
@@ -76,30 +104,40 @@ namespace SourceGit.ViewModels {
             _diffContext = null;
         }
 
-        public void Apply(object param) {
-            if (param is Models.Stash stash) {
-                Task.Run(() => {
+        public void Apply(object param)
+        {
+            if (param is Models.Stash stash)
+            {
+                Task.Run(() =>
+                {
                     new Commands.Stash(_repo.FullPath).Apply(stash.Name);
                 });
             }
         }
 
-        public void Pop(object param) {
-            if (param is Models.Stash stash) {
-                Task.Run(() => {
+        public void Pop(object param)
+        {
+            if (param is Models.Stash stash)
+            {
+                Task.Run(() =>
+                {
                     new Commands.Stash(_repo.FullPath).Pop(stash.Name);
                 });
             }
         }
 
-        public void Drop(object param) {
-            if (param is Models.Stash stash && PopupHost.CanCreatePopup()) {
+        public void Drop(object param)
+        {
+            if (param is Models.Stash stash && PopupHost.CanCreatePopup())
+            {
                 PopupHost.ShowPopup(new DropStash(_repo.FullPath, stash));
-            }            
+            }
         }
 
-        public void Clear() {
-            if (PopupHost.CanCreatePopup()) {
+        public void Clear()
+        {
+            if (PopupHost.CanCreatePopup())
+            {
                 PopupHost.ShowPopup(new ClearStashes(_repo));
             }
         }

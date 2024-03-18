@@ -1,36 +1,47 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace SourceGit.Commands {
-    public class AssumeUnchanged {
-        class ViewCommand : Command {
-            private static readonly Regex REG = new Regex(@"^(\w)\s+(.+)$");
+namespace SourceGit.Commands
+{
+    public partial class AssumeUnchanged
+    {
+        partial class ViewCommand : Command
+        {
 
-            public ViewCommand(string repo) {
+            [GeneratedRegex(@"^(\w)\s+(.+)$")]
+            private static partial Regex REG();
+
+            public ViewCommand(string repo)
+            {
                 WorkingDirectory = repo;
                 Args = "ls-files -v";
                 RaiseError = false;
             }
 
-            public List<string> Result() {
+            public List<string> Result()
+            {
                 Exec();
                 return _outs;
             }
 
-            protected override void OnReadline(string line) {
-                var match = REG.Match(line);
+            protected override void OnReadline(string line)
+            {
+                var match = REG().Match(line);
                 if (!match.Success) return;
 
-                if (match.Groups[1].Value == "h") {
+                if (match.Groups[1].Value == "h")
+                {
                     _outs.Add(match.Groups[2].Value);
                 }
             }
 
-            private List<string> _outs = new List<string>();
+            private readonly List<string> _outs = new List<string>();
         }
 
-        class ModCommand : Command {
-            public ModCommand(string repo, string file, bool bAdd) {
+        class ModCommand : Command
+        {
+            public ModCommand(string repo, string file, bool bAdd)
+            {
                 var mode = bAdd ? "--assume-unchanged" : "--no-assume-unchanged";
 
                 WorkingDirectory = repo;
@@ -39,22 +50,26 @@ namespace SourceGit.Commands {
             }
         }
 
-        public AssumeUnchanged(string repo) {
+        public AssumeUnchanged(string repo)
+        {
             _repo = repo;
         }
 
-        public List<string> View() {
+        public List<string> View()
+        {
             return new ViewCommand(_repo).Result();
         }
 
-        public void Add(string file) {
+        public void Add(string file)
+        {
             new ModCommand(_repo, file, true).Exec();
         }
 
-        public void Remove(string file) {
+        public void Remove(string file)
+        {
             new ModCommand(_repo, file, false).Exec();
         }
 
-        private string _repo;
+        private readonly string _repo;
     }
 }

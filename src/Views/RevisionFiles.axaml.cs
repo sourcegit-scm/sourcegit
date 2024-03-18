@@ -1,23 +1,29 @@
+using System;
+using System.IO;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Styling;
+
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
 using AvaloniaEdit.TextMate;
-using System;
-using System.IO;
+
 using TextMateSharp.Grammars;
 
-namespace SourceGit.Views {
+namespace SourceGit.Views
+{
 
-    public class RevisionTextFileView : TextEditor {
+    public class RevisionTextFileView : TextEditor
+    {
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
-        public RevisionTextFileView() : base(new TextArea(), new TextDocument()) {
+        public RevisionTextFileView() : base(new TextArea(), new TextDocument())
+        {
             IsReadOnly = true;
             ShowLineNumbers = true;
             WordWrap = false;
@@ -28,13 +34,17 @@ namespace SourceGit.Views {
             TextArea.TextView.Margin = new Thickness(4, 0);
         }
 
-        protected override void OnLoaded(RoutedEventArgs e) {
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
             base.OnLoaded(e);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            if (App.Current?.ActualThemeVariant == ThemeVariant.Dark) {
+            if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
+            {
                 _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
-            } else {
+            }
+            else
+            {
                 _registryOptions = new RegistryOptions(ThemeName.LightPlus);
             }
 
@@ -42,7 +52,8 @@ namespace SourceGit.Views {
             UpdateGrammar();
         }
 
-        protected override void OnUnloaded(RoutedEventArgs e) {
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
             base.OnUnloaded(e);
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
@@ -52,29 +63,37 @@ namespace SourceGit.Views {
             GC.Collect();
         }
 
-        protected override void OnDataContextChanged(EventArgs e) {
+        protected override void OnDataContextChanged(EventArgs e)
+        {
             base.OnDataContextChanged(e);
 
             var source = DataContext as Models.RevisionTextFile;
-            if (source != null) {
+            if (source != null)
+            {
                 UpdateGrammar();
                 Text = source.Content;
             }
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
             base.OnPropertyChanged(change);
 
-            if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null && _textMate != null) {
-                if (App.Current?.ActualThemeVariant == ThemeVariant.Dark) {
+            if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null && _textMate != null)
+            {
+                if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
+                {
                     _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.DarkPlus));
-                } else {
+                }
+                else
+                {
                     _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.LightPlus));
                 }
             }
         }
 
-        private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e) {
+        private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
+        {
             var selected = SelectedText;
             if (string.IsNullOrEmpty(selected)) return;
 
@@ -87,7 +106,8 @@ namespace SourceGit.Views {
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = icon;
-            copy.Click += (o, ev) => {
+            copy.Click += (o, ev) =>
+            {
                 App.CopyText(selected);
                 ev.Handled = true;
             };
@@ -98,16 +118,20 @@ namespace SourceGit.Views {
             e.Handled = true;
         }
 
-        private void UpdateGrammar() {
+        private void UpdateGrammar()
+        {
             if (_textMate == null) return;
 
             var src = DataContext as Models.RevisionTextFile;
             if (src == null) return;
 
             var ext = Path.GetExtension(src.FileName);
-            if (ext == ".h") {
+            if (ext == ".h")
+            {
                 _textMate.SetGrammar(_registryOptions.GetScopeByLanguageId("cpp"));
-            } else {
+            }
+            else
+            {
                 _textMate.SetGrammar(_registryOptions.GetScopeByExtension(ext));
             }
         }
@@ -116,15 +140,19 @@ namespace SourceGit.Views {
         private TextMate.Installation _textMate = null;
     }
 
-    public partial class RevisionFiles : UserControl {
-        public RevisionFiles() {
+    public partial class RevisionFiles : UserControl
+    {
+        public RevisionFiles()
+        {
             InitializeComponent();
         }
 
-        private void OnTreeViewContextRequested(object sender, ContextRequestedEventArgs e) {
+        private void OnTreeViewContextRequested(object sender, ContextRequestedEventArgs e)
+        {
             var detail = DataContext as ViewModels.CommitDetail;
             var node = detail.SelectedRevisionFileNode;
-            if (!node.IsFolder) {
+            if (!node.IsFolder)
+            {
                 var menu = detail.CreateRevisionFileContextMenu(node.Backend as Models.Object);
                 menu.Open(sender as Control);
             }

@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels {
-    public class RenameBranch : Popup {
-        public Models.Branch Target {
+namespace SourceGit.ViewModels
+{
+    public class RenameBranch : Popup
+    {
+        public Models.Branch Target
+        {
             get;
             private set;
         }
@@ -11,22 +14,28 @@ namespace SourceGit.ViewModels {
         [Required(ErrorMessage = "Branch name is required!!!")]
         [RegularExpression(@"^[\w\-/\.]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(RenameBranch), nameof(ValidateBranchName))]
-        public string Name {
+        public string Name
+        {
             get => _name;
             set => SetProperty(ref _name, value, true);
         }
 
-        public RenameBranch(Repository repo, Models.Branch target) {
+        public RenameBranch(Repository repo, Models.Branch target)
+        {
             _repo = repo;
             _name = target.Name;
             Target = target;
             View = new Views.RenameBranch() { DataContext = this };
         }
 
-        public static ValidationResult ValidateBranchName(string name, ValidationContext ctx) {
-            if (ctx.ObjectInstance is RenameBranch rename) {
-                foreach (var b in rename._repo.Branches) {
-                    if (b != rename.Target && b.Name == name) {
+        public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
+        {
+            if (ctx.ObjectInstance is RenameBranch rename)
+            {
+                foreach (var b in rename._repo.Branches)
+                {
+                    if (b != rename.Target && b.Name == name)
+                    {
                         return new ValidationResult("A branch with same name already exists!!!");
                     }
                 }
@@ -35,20 +44,22 @@ namespace SourceGit.ViewModels {
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure() {
+        public override Task<bool> Sure()
+        {
             if (_name == Target.Name) return null;
 
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Rename '{Target.Name}'";
 
-            return Task.Run(() => {
+            return Task.Run(() =>
+            {
                 var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, _name);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo = null;
         private string _name = string.Empty;
     }
 }
