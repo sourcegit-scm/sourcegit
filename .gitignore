@@ -1,9 +1,18 @@
+# IDE / System
 .idea
 .vs
 .vscode
-bin
-build
-obj
-*.user
 .DS_Store
-publish
+
+# Output folders.
+bin/
+obj/
+build/SourceGit/
+build/SourceGit.app/
+
+# Files
+*.user
+SourceGit.win-x64.zip
+SourceGit.linux-x64.tar.gz
+SourceGit.osx-x64.zip
+SourceGit.osx-arm64.zip

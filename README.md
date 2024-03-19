@@ -37,8 +37,8 @@ You can download the latest stable from [Releases](https://github.com/sourcegit-
 
 For **macOS** users:
 
-* Download `SourceGit.macOS.zip` from Releases.
-* Choose the app that fits your system's CPU architecture and copy it to Applications. `x64` for Intel and `arm64` for Apple Silicon.
+* Download `SourceGit.osx-x64.zip` or `SourceGit.osx-arm64.zip` from Releases. `x64` for Intel and `arm64` for Apple Silicon.
+* Move `SourceGit.app` to `Applications` folder.
 * Make sure your mac trusts all software from anywhere. For more information, search `spctl --master-disable`.
 * You may need to run `sudo xattr -cr /Applications/SourceGit.app` to make sure the software works.
 
