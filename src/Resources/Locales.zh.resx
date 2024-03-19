@@ -1284,4 +1284,7 @@
   <data xml:space="preserve" name="Text.SaveAsPatchSuccess">
     <value>补丁已成功保存！</value>
   </data>
+  <data name="Text.Cut" xml:space="preserve">
+    <value>剪切</value>
+  </data>
 </root>

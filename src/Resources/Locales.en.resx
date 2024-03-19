@@ -1284,4 +1284,7 @@
   <data xml:space="preserve" name="Text.SaveAsPatchSuccess">
     <value>Patch has been saved successfully!</value>
   </data>
+  <data name="Text.Cut" xml:space="preserve">
+    <value>Cut</value>
+  </data>
 </root>

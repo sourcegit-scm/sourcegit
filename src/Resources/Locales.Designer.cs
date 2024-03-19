@@ -1087,6 +1087,15 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cut.
+        /// </summary>
+        public static string Text_Cut {
+            get {
+                return ResourceManager.GetString("Text.Cut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Branch.
         /// </summary>
         public static string Text_DeleteBranch {
