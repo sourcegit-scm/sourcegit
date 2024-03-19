@@ -1,14 +1,14 @@
 # SourceGit
 
-Opensouce Git GUI client.
+Opensource Git GUI client.
 
-## High-lights
+## Highlights
 
 * Supports Windows/macOS/Linux
 * Opensource/Free
 * Fast
 * English/简体中文
-* Build-in light/dark themes
+* Built-in light/dark themes
 * Visual commit graph
 * Supports SSH access with each remote
 * GIT commands with GUI
@@ -49,7 +49,7 @@ For **Linux** users:
 
 ## Screen Shots
 
-* Drak Theme
+* Dark Theme
 
 ![Theme Dark](./screenshots/theme_dark.png)
 
