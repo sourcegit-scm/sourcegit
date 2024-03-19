@@ -45,7 +45,7 @@ For **macOS** users:
 For **Linux** users:
 
 * `xdg-open` must be installed to support open native file manager.
-* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
+* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux, and it requires `ttf-mscorefonts-installer` installed.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI. 
 * Modify `SourceGit.desktop.template` (replace SOURCEGIT_LOCAL_FOLDER with real path) and move it into `~/.local/share/applications`.
 
