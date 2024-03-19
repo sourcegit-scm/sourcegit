@@ -41,6 +41,12 @@ namespace SourceGit.Commands
             start.StandardOutputEncoding = Encoding.UTF8;
             start.StandardErrorEncoding = Encoding.UTF8;
 
+            // Force using en_US.UTF-8 locale to avoid GCM crash
+            if (OperatingSystem.IsLinux())
+            {
+                start.Environment.Add("LANG", "en_US.UTF-8");
+            }
+
             if (!string.IsNullOrEmpty(WorkingDirectory)) start.WorkingDirectory = WorkingDirectory;
 
             var errs = new List<string>();
