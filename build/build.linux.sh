@@ -2,5 +2,7 @@
 
 rm -rf SourceGit
 dotnet publish ../src/SourceGit.csproj -c Release -r linux-x64 -o SourceGit -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
-tar -zcvf SourceGit.linux-x64.tar.gz SourceGit --exclude=en --exclude=zh --exclude="*.dbg"
+cp resources/SourceGit.desktop.template SourceGit/SourceGit.desktop.template
+cp resources/App.icns SourceGit/SourceGit.icns
+tar -zcvf SourceGit.linux-x64.tar.gz --exclude="*/en" --exclude="*/zh" --exclude="*/*.dbg" SourceGit
 rm -rf SourceGit
