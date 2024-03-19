@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Versioning;
 
 using Avalonia;
+using Avalonia.Dialogs;
 
 namespace SourceGit.Native
 {
@@ -14,6 +15,8 @@ namespace SourceGit.Native
 #if USE_FONT_INTER
             builder.WithInterFont();
 #endif
+            // Free-desktop file picker has an extra black background panel.
+            builder.UseManagedSystemDialogs();
         }
 
         public string FindGitExecutable()
