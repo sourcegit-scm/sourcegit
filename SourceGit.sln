@@ -5,6 +5,40 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGit", "src\SourceGit.csproj", "{CD98D9AA-079A-4A79-9212-850EB97CF2ED}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C2487DDC-93D3-485F-943D-5DDF23B92A57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{2850A14C-4E9A-42EF-9559-C83610D4FBDE}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+		.gitattributes = .gitattributes
+		Directory.Build.props = Directory.Build.props
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{39979501-8501-43A7-AD23-F0BCF02CADB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{B7D4C4BA-BD7E-4B36-A0E2-3B226F419B8F}"
+	ProjectSection(SolutionItems) = preProject
+		.config\dotnet-tools.json = .config\dotnet-tools.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{E6B9E250-EA2D-4665-831D-A547F707718D}"
+	ProjectSection(SolutionItems) = preProject
+		build\build.linux.sh = build\build.linux.sh
+		build\build.osx.command = build\build.osx.command
+		build\build.windows.bat = build\build.windows.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{EAB376FC-F69F-4EDB-8E04-D3F326A9F015}"
+	ProjectSection(SolutionItems) = preProject
+		build\resources\App.icns = build\resources\App.icns
+		build\resources\App.plist = build\resources\App.plist
+		build\resources\SourceGit.desktop.template = build\resources\SourceGit.desktop.template
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +52,9 @@ Global
 		{CD98D9AA-079A-4A79-9212-850EB97CF2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD98D9AA-079A-4A79-9212-850EB97CF2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD98D9AA-079A-4A79-9212-850EB97CF2ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CD98D9AA-079A-4A79-9212-850EB97CF2ED} = {C2487DDC-93D3-485F-943D-5DDF23B92A57}
+		{EAB376FC-F69F-4EDB-8E04-D3F326A9F015} = {E6B9E250-EA2D-4665-831D-A547F707718D}
 	EndGlobalSection
 EndGlobal
