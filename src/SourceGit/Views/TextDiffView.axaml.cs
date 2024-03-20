@@ -317,8 +317,8 @@ namespace SourceGit.Views
                         builder.AppendLine(line.Content);
                     }
 
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
                     Text = builder.ToString();
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
                 }
                 else
                 {
@@ -675,8 +675,8 @@ namespace SourceGit.Views
                         }
                     }
 
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
                     Text = builder.ToString();
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
                 }
                 else
                 {

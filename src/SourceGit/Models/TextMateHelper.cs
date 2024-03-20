@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 using Avalonia.Styling;
 
@@ -54,6 +55,7 @@ namespace SourceGit.Models
 
             var reg = installation.RegistryOptions as RegistryOptions;
             installation.SetGrammar(reg.GetScopeByExtension(ext));
+            GC.Collect();
         }
     }
 }

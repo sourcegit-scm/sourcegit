@@ -64,8 +64,8 @@ namespace SourceGit.Views
             var source = DataContext as Models.RevisionTextFile;
             if (source != null)
             {
-                Models.TextMateHelper.SetGrammarByFileName(_textMate, source.FileName);
                 Text = source.Content;
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, source.FileName);
             }
         }
 
