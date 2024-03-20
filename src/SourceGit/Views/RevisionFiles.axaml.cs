@@ -1,23 +1,18 @@
 using System;
-using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Styling;
 
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
 using AvaloniaEdit.TextMate;
 
-using TextMateSharp.Grammars;
-
 namespace SourceGit.Views
 {
-
     public class RevisionTextFileView : TextEditor
     {
         protected override Type StyleKeyOverride => typeof(TextEditor);
@@ -39,17 +34,12 @@ namespace SourceGit.Views
             base.OnLoaded(e);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
-            {
-                _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
-            }
-            else
-            {
-                _registryOptions = new RegistryOptions(ThemeName.LightPlus);
-            }
 
-            _textMate = this.InstallTextMate(_registryOptions);
-            UpdateGrammar();
+            _textMate = Models.TextMateHelper.CreateForEditor(this);
+            if (DataContext is Models.RevisionTextFile source)
+            {
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, source.FileName);
+            }
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -57,9 +47,13 @@ namespace SourceGit.Views
             base.OnUnloaded(e);
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-            _registryOptions = null;
-            _textMate.Dispose();
-            _textMate = null;
+
+            if (_textMate != null)
+            {
+                _textMate.Dispose();
+                _textMate = null;
+            }
+
             GC.Collect();
         }
 
@@ -70,7 +64,7 @@ namespace SourceGit.Views
             var source = DataContext as Models.RevisionTextFile;
             if (source != null)
             {
-                UpdateGrammar();
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, source.FileName);
                 Text = source.Content;
             }
         }
@@ -79,16 +73,9 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null && _textMate != null)
+            if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
             {
-                if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
-                {
-                    _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.DarkPlus));
-                }
-                else
-                {
-                    _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.LightPlus));
-                }
+                Models.TextMateHelper.SetThemeByApp(_textMate);
             }
         }
 
@@ -118,25 +105,6 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void UpdateGrammar()
-        {
-            if (_textMate == null) return;
-
-            var src = DataContext as Models.RevisionTextFile;
-            if (src == null) return;
-
-            var ext = Path.GetExtension(src.FileName);
-            if (ext == ".h")
-            {
-                _textMate.SetGrammar(_registryOptions.GetScopeByLanguageId("cpp"));
-            }
-            else
-            {
-                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(ext));
-            }
-        }
-
-        private RegistryOptions _registryOptions = null;
         private TextMate.Installation _textMate = null;
     }
 

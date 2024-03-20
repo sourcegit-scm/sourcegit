@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(value, _file));
+                        DiffContext = new DiffContext(_repo, new Models.DiffOption(value, _file), _diffContext);
                     }
                 }
             }

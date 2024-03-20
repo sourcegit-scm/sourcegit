@@ -77,7 +77,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption($"{_selectedStash.SHA}^", _selectedStash.SHA, value));
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption($"{_selectedStash.SHA}^", _selectedStash.SHA, value), _diffContext);
                     }
                 }
             }

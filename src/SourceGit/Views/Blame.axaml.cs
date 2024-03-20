@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -9,7 +8,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Styling;
 
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
@@ -17,8 +15,6 @@ using AvaloniaEdit.Editing;
 using AvaloniaEdit.Rendering;
 using AvaloniaEdit.TextMate;
 using AvaloniaEdit.Utils;
-
-using TextMateSharp.Grammars;
 
 namespace SourceGit.Views
 {
@@ -214,6 +210,16 @@ namespace SourceGit.Views
             IsReadOnly = true;
             ShowLineNumbers = false;
             WordWrap = false;
+
+            _textMate = Models.TextMateHelper.CreateForEditor(this);
+
+            TextArea.LeftMargins.Add(new LineNumberMargin() { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
+            TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
+            TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+            TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
+            TextArea.TextView.Margin = new Thickness(4, 0);
         }
 
         public void OnCommitSHAClicked(string sha)
@@ -224,31 +230,6 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
-
-            TextArea.LeftMargins.Add(new LineNumberMargin() { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
-            TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
-            TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
-            TextArea.TextView.Margin = new Thickness(4, 0);
-
-            if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
-            {
-                _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
-            }
-            else
-            {
-                _registryOptions = new RegistryOptions(ThemeName.LightPlus);
-            }
-
-            _textMate = this.InstallTextMate(_registryOptions);
-            UpdateGrammar();
-        }
-
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             base.OnUnloaded(e);
@@ -257,9 +238,11 @@ namespace SourceGit.Views
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
-            _registryOptions = null;
-            _textMate.Dispose();
-            _textMate = null;
+            if (_textMate != null)
+            {
+                _textMate.Dispose();
+                _textMate = null;
+            }
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -270,24 +253,17 @@ namespace SourceGit.Views
             {
                 if (BlameData != null)
                 {
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, BlameData.File);
                     Text = BlameData.Content;
-                    UpdateGrammar();
                 }
                 else
                 {
                     Text = string.Empty;
                 }
             }
-            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null && _textMate != null)
+            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
             {
-                if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
-                {
-                    _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.DarkPlus));
-                }
-                else
-                {
-                    _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.LightPlus));
-                }
+                Models.TextMateHelper.SetThemeByApp(_textMate);
             }
         }
 
@@ -329,22 +305,6 @@ namespace SourceGit.Views
             }
         }
 
-        private void UpdateGrammar()
-        {
-            if (_textMate == null || BlameData == null) return;
-
-            var ext = Path.GetExtension(BlameData.File);
-            if (ext == ".h")
-            {
-                _textMate.SetGrammar(_registryOptions.GetScopeByLanguageId("cpp"));
-            }
-            else
-            {
-                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(ext));
-            }
-        }
-
-        private RegistryOptions _registryOptions = null;
         private TextMate.Installation _textMate = null;
     }
 

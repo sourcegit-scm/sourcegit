@@ -9,7 +9,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Styling;
 using Avalonia.VisualTree;
 
 using AvaloniaEdit;
@@ -18,8 +17,6 @@ using AvaloniaEdit.Editing;
 using AvaloniaEdit.Rendering;
 using AvaloniaEdit.TextMate;
 using AvaloniaEdit.Utils;
-
-using TextMateSharp.Grammars;
 
 namespace SourceGit.Views
 {
@@ -160,10 +157,9 @@ namespace SourceGit.Views
             private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(90, 0, 255, 0));
             private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0));
 
-            public LineStyleTransformer(CombinedTextDiffPresenter editor, IBrush indicatorFG)
+            public LineStyleTransformer(CombinedTextDiffPresenter editor)
             {
                 _editor = editor;
-                _indicatorFG = indicatorFG;
                 _indicatorTypeface = new Typeface("fonts:SourceGit#JetBrains Mono", FontStyle.Italic);
             }
 
@@ -177,7 +173,7 @@ namespace SourceGit.Views
                 {
                     ChangeLinePart(line.Offset, line.EndOffset, v =>
                     {
-                        v.TextRunProperties.SetForegroundBrush(_indicatorFG);
+                        v.TextRunProperties.SetForegroundBrush(_editor.SecondaryFG);
                         v.TextRunProperties.SetTypeface(_indicatorTypeface);
                     });
 
@@ -198,7 +194,6 @@ namespace SourceGit.Views
             }
 
             private readonly CombinedTextDiffPresenter _editor;
-            private readonly IBrush _indicatorFG = Brushes.DarkGray;
             private readonly Typeface _indicatorTypeface = Typeface.Default;
         }
 
@@ -233,14 +228,11 @@ namespace SourceGit.Views
 
         public CombinedTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
+            _lineStyleTransformer = new LineStyleTransformer(this);
+
             IsReadOnly = true;
             ShowLineNumbers = false;
             WordWrap = false;
-        }
-
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
 
             TextArea.LeftMargins.Add(new LineNumberMargin(this, true) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
@@ -249,37 +241,34 @@ namespace SourceGit.Views
 
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            _textMate = Models.TextMateHelper.CreateForEditor(this);
+            if (DiffData != null) Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
+
+            TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.ScrollOffsetChanged += OnTextViewScrollOffsetChanged;
-
-            if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
-            {
-                _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
-            }
-            else
-            {
-                _registryOptions = new RegistryOptions(ThemeName.LightPlus);
-            }
-
-            _textMate = this.InstallTextMate(_registryOptions);
-            UpdateGrammar();
-
-            // This line must after InstallTextMate.
-            TextArea.TextView.LineTransformers.Add(new LineStyleTransformer(this, SecondaryFG));
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             base.OnUnloaded(e);
 
-            TextArea.LeftMargins.Clear();
-            TextArea.TextView.BackgroundRenderers.Clear();
-            TextArea.TextView.LineTransformers.Clear();
+            TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.ScrollOffsetChanged -= OnTextViewScrollOffsetChanged;
-            _registryOptions = null;
-            _textMate.Dispose();
-            _textMate = null;
+
+            if (_textMate != null)
+            {
+                _textMate.Dispose();
+                _textMate = null;
+            }
+
             GC.Collect();
         }
 
@@ -328,7 +317,7 @@ namespace SourceGit.Views
                         builder.AppendLine(line.Content);
                     }
 
-                    UpdateGrammar();
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
                     Text = builder.ToString();
                 }
                 else
@@ -344,36 +333,14 @@ namespace SourceGit.Views
                     scrollable.Offset = SyncScrollOffset;
                 }
             }
-            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null && _textMate != null)
+            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
             {
-                if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
-                {
-                    _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.DarkPlus));
-                }
-                else
-                {
-                    _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.LightPlus));
-                }
+                Models.TextMateHelper.SetThemeByApp(_textMate);
             }
         }
 
-        private void UpdateGrammar()
-        {
-            if (_textMate == null || DiffData == null) return;
-
-            var ext = Path.GetExtension(DiffData.File);
-            if (ext == ".h")
-            {
-                _textMate.SetGrammar(_registryOptions.GetScopeByLanguageId("cpp"));
-            }
-            else
-            {
-                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(ext));
-            }
-        }
-
-        private RegistryOptions _registryOptions;
         private TextMate.Installation _textMate;
+        private LineStyleTransformer _lineStyleTransformer = null;
     }
 
     public class SingleSideTextDiffPresenter : TextEditor
@@ -513,10 +480,9 @@ namespace SourceGit.Views
             private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(90, 0, 255, 0));
             private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0));
 
-            public LineStyleTransformer(SingleSideTextDiffPresenter editor, IBrush indicatorFG)
+            public LineStyleTransformer(SingleSideTextDiffPresenter editor)
             {
                 _editor = editor;
-                _indicatorFG = indicatorFG;
                 _indicatorTypeface = new Typeface("fonts:SourceGit#JetBrains Mono", FontStyle.Italic);
             }
 
@@ -531,7 +497,7 @@ namespace SourceGit.Views
                 {
                     ChangeLinePart(line.Offset, line.EndOffset, v =>
                     {
-                        v.TextRunProperties.SetForegroundBrush(_indicatorFG);
+                        v.TextRunProperties.SetForegroundBrush(_editor.SecondaryFG);
                         v.TextRunProperties.SetTypeface(_indicatorTypeface);
                     });
 
@@ -552,7 +518,6 @@ namespace SourceGit.Views
             }
 
             private readonly SingleSideTextDiffPresenter _editor;
-            private readonly IBrush _indicatorFG = Brushes.DarkGray;
             private readonly Typeface _indicatorTypeface = Typeface.Default;
         }
 
@@ -596,9 +561,16 @@ namespace SourceGit.Views
 
         public SingleSideTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
+            _lineStyleTransformer = new LineStyleTransformer(this);
+
             IsReadOnly = true;
             ShowLineNumbers = false;
             WordWrap = false;
+
+            TextArea.LeftMargins.Add(new LineNumberMargin(this) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
+            TextArea.TextView.Margin = new Thickness(4, 0);
+            TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -612,26 +584,11 @@ namespace SourceGit.Views
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
             }
 
-            TextArea.LeftMargins.Add(new LineNumberMargin(this) { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
-            TextArea.TextView.Margin = new Thickness(4, 0);
-            TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
+            _textMate = Models.TextMateHelper.CreateForEditor(this);
+            if (DiffData != null) Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
+
+            TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-
-            if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
-            {
-                _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
-            }
-            else
-            {
-                _registryOptions = new RegistryOptions(ThemeName.LightPlus);
-            }
-
-            _textMate = this.InstallTextMate(_registryOptions);
-            UpdateGrammar();
-
-            // This line must after InstallTextMate
-            TextArea.TextView.LineTransformers.Add(new LineStyleTransformer(this, SecondaryFG));
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -644,13 +601,15 @@ namespace SourceGit.Views
                 _scrollViewer = null;
             }
 
-            TextArea.LeftMargins.Clear();
-            TextArea.TextView.BackgroundRenderers.Clear();
-            TextArea.TextView.LineTransformers.Clear();
+            if (_textMate != null)
+            {
+                _textMate.Dispose();
+                _textMate = null;
+            }
+
+            TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-            _registryOptions = null;
-            _textMate.Dispose();
-            _textMate = null;
+
             GC.Collect();
         }
 
@@ -716,7 +675,7 @@ namespace SourceGit.Views
                         }
                     }
 
-                    UpdateGrammar();
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
                     Text = builder.ToString();
                 }
                 else
@@ -744,37 +703,14 @@ namespace SourceGit.Views
                     }
                 }
             }
-            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null && _textMate != null)
+            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
             {
-                if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
-                {
-                    _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.DarkPlus));
-                }
-                else
-                {
-                    _textMate.SetTheme(_registryOptions.LoadTheme(ThemeName.LightPlus));
-                }
+                Models.TextMateHelper.SetThemeByApp(_textMate);
             }
         }
 
-        private void UpdateGrammar()
-        {
-            if (_textMate == null || DiffData == null) return;
-
-            var ext = Path.GetExtension(DiffData.File);
-            if (ext == ".h")
-            {
-                _textMate.SetGrammar(_registryOptions.GetScopeByLanguageId("cpp"));
-            }
-            else
-            {
-                _textMate.SetGrammar(_registryOptions.GetScopeByExtension(ext));
-            }
-        }
-
-        private RegistryOptions _registryOptions;
         private TextMate.Installation _textMate;
-
+        private LineStyleTransformer _lineStyleTransformer = null;
         private ScrollViewer _scrollViewer = null;
         private bool _syncScrollingByOthers = false;
     }

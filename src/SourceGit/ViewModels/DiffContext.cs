@@ -70,10 +70,11 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _syncScrollOffset, value);
         }
 
-        public DiffContext(string repo, Models.DiffOption option)
+        public DiffContext(string repo, Models.DiffOption option, DiffContext previous = null)
         {
             _repo = repo;
             _option = option;
+            _content = previous != null ? previous._content : null;
 
             OnPropertyChanged(nameof(FilePath));
             OnPropertyChanged(nameof(IsOrgFilePathVisible));
@@ -101,7 +102,7 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                Dispatcher.UIThread.InvokeAsync(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
                     if (latest.IsBinary)
                     {

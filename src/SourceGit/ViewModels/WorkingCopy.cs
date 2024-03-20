@@ -287,7 +287,14 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged));
+                if (_detailContext is DiffContext previous)
+                {
+                    DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), previous);
+                }
+                else
+                {
+                    DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged));
+                }
             }
         }
 

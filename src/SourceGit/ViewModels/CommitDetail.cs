@@ -67,7 +67,7 @@ namespace SourceGit.ViewModels
                     else
                     {
                         SelectedChangeNode = FileTreeNode.SelectByPath(_changeTree, value.Path);
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(_commit, value));
+                        DiffContext = new DiffContext(_repo, new Models.DiffOption(_commit, value), _diffContext);
                     }
                 }
             }
