@@ -224,6 +224,15 @@ namespace SourceGit.Views
             set => SetValue(SyncScrollOffsetProperty, value);
         }
 
+        public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
+            AvaloniaProperty.Register<SingleSideTextDiffPresenter, bool>(nameof(UseSyntaxHighlighting), false);
+
+        public bool UseSyntaxHighlighting
+        {
+            get => GetValue(UseSyntaxHighlightingProperty);
+            set => SetValue(UseSyntaxHighlightingProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public CombinedTextDiffPresenter() : base(new TextArea(), new TextDocument())
@@ -241,16 +250,15 @@ namespace SourceGit.Views
 
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
+            TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
 
-            _textMate = Models.TextMateHelper.CreateForEditor(this);
-            if (DiffData != null) Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
+            UpdateTextMate();
 
-            TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.ScrollOffsetChanged += OnTextViewScrollOffsetChanged;
         }
@@ -259,7 +267,6 @@ namespace SourceGit.Views
         {
             base.OnUnloaded(e);
 
-            TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.ScrollOffsetChanged -= OnTextViewScrollOffsetChanged;
 
@@ -333,9 +340,39 @@ namespace SourceGit.Views
                     scrollable.Offset = SyncScrollOffset;
                 }
             }
+            else if (change.Property == UseSyntaxHighlightingProperty)
+            {
+                UpdateTextMate();
+            }
             else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
             {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
+            }
+        }
+
+        private void UpdateTextMate()
+        {
+            if (UseSyntaxHighlighting)
+            {
+                if (_textMate == null)
+                {
+                    TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
+                    _textMate = Models.TextMateHelper.CreateForEditor(this);
+                    TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
+
+                    if (DiffData != null) Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
+                }
+            }
+            else
+            {
+                if (_textMate != null)
+                {
+                    _textMate.Dispose();
+                    _textMate = null;
+                    GC.Collect();
+
+                    TextArea.TextView.Redraw();
+                }
             }
         }
 
@@ -557,6 +594,15 @@ namespace SourceGit.Views
             set => SetValue(SyncScrollOffsetProperty, value);
         }
 
+        public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
+            AvaloniaProperty.Register<SingleSideTextDiffPresenter, bool>(nameof(UseSyntaxHighlighting), false);
+
+        public bool UseSyntaxHighlighting
+        {
+            get => GetValue(UseSyntaxHighlightingProperty);
+            set => SetValue(UseSyntaxHighlightingProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public SingleSideTextDiffPresenter() : base(new TextArea(), new TextDocument())
@@ -571,6 +617,7 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
+            TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -584,10 +631,8 @@ namespace SourceGit.Views
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
             }
 
-            _textMate = Models.TextMateHelper.CreateForEditor(this);
-            if (DiffData != null) Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
+            UpdateTextMate();
 
-            TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
         }
 
@@ -607,7 +652,6 @@ namespace SourceGit.Views
                 _textMate = null;
             }
 
-            TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
 
             GC.Collect();
@@ -703,9 +747,39 @@ namespace SourceGit.Views
                     }
                 }
             }
+            else if (change.Property == UseSyntaxHighlightingProperty)
+            {
+                UpdateTextMate();
+            }
             else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
             {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
+            }
+        }
+
+        private void UpdateTextMate()
+        {
+            if (UseSyntaxHighlighting)
+            {
+                if (_textMate == null)
+                {
+                    TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
+                    _textMate = Models.TextMateHelper.CreateForEditor(this);
+                    TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
+
+                    if (DiffData != null) Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
+                }
+            }
+            else
+            {
+                if (_textMate != null)
+                {
+                    _textMate.Dispose();
+                    _textMate = null;
+                    GC.Collect();
+
+                    TextArea.TextView.Redraw();
+                }
             }
         }
 

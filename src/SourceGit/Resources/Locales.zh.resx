@@ -1287,4 +1287,7 @@
   <data name="Text.Cut" xml:space="preserve">
     <value>剪切</value>
   </data>
+  <data name="Text.Diff.SyntaxHighlight" xml:space="preserve">
+    <value>语法高亮</value>
+  </data>
 </root>

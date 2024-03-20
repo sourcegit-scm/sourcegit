@@ -114,6 +114,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useSideBySideDiff, value);
         }
 
+        public bool UseSyntaxHighlighting
+        {
+            get => _useSyntaxHighlighting;
+            set => SetProperty(ref _useSyntaxHighlighting, value);
+        }
+
         public Models.ChangeViewMode UnstagedChangeViewMode
         {
             get => _unstagedChangeViewMode;
@@ -351,6 +357,7 @@ namespace SourceGit.ViewModels
         private bool _useFixedTabWidth = true;
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _useSideBySideDiff = false;
+        private bool _useSyntaxHighlighting = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

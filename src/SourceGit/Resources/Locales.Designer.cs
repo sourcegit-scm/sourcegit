@@ -1285,6 +1285,15 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax Highlighting.
+        /// </summary>
+        public static string Text_Diff_SyntaxHighlight {
+            get {
+                return ResourceManager.GetString("Text.Diff.SyntaxHighlight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open With Merge Tool.
         /// </summary>
         public static string Text_Diff_UseMerger {
