@@ -74,7 +74,13 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _option = option;
-            _content = previous != null ? previous._content : null;
+
+            if (previous != null)
+            {
+                _isNoChange = previous._isNoChange;
+                _isTextDiff = previous._isTextDiff;
+                _content = previous._content;
+            }
 
             OnPropertyChanged(nameof(FilePath));
             OnPropertyChanged(nameof(IsOrgFilePathVisible));
@@ -107,16 +113,21 @@ namespace SourceGit.ViewModels
                     if (latest.IsBinary)
                     {
                         Content = binaryDiff;
+                        IsTextDiff = false;
+                        IsNoChange = false;
                     }
                     else if (latest.IsLFS)
                     {
                         Content = latest.LFSDiff;
+                        IsTextDiff = false;
+                        IsNoChange = false;
                     }
                     else if (latest.TextDiff != null)
                     {
                         latest.TextDiff.File = _option.Path;
                         Content = latest.TextDiff;
                         IsTextDiff = true;
+                        IsNoChange = false;
                     }
                     else
                     {
