@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -39,6 +39,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{
 		build\resources\SourceGit.desktop.template = build\resources\SourceGit.desktop.template
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{8E67D51A-1C97-4B57-A0C4-C7916A6E983D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{8F83FE02-B6BB-4F96-8532-ACC5B8E3C33F}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,5 +63,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CD98D9AA-079A-4A79-9212-850EB97CF2ED} = {C2487DDC-93D3-485F-943D-5DDF23B92A57}
 		{EAB376FC-F69F-4EDB-8E04-D3F326A9F015} = {E6B9E250-EA2D-4665-831D-A547F707718D}
+		{8F83FE02-B6BB-4F96-8532-ACC5B8E3C33F} = {8E67D51A-1C97-4B57-A0C4-C7916A6E983D}
 	EndGlobalSection
 EndGlobal
