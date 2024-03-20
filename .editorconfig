@@ -29,6 +29,10 @@ dotnet_separate_import_directive_groups = true
 dotnet_sort_system_directives_first = true
 file_header_template = unset
 
+# Namespaces
+dotnet_style_namespace_match_folder = true:suggestion
+csharp_style_namespace_declarations = block_scoped:error
+
 # this. and Me. preferences
 dotnet_style_qualification_for_event = false:silent
 dotnet_style_qualification_for_field = false:silent
