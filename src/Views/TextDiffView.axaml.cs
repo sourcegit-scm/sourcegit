@@ -790,13 +790,13 @@ namespace SourceGit.Views
             set => SetValue(TextDiffProperty, value);
         }
 
-        public static readonly StyledProperty<bool> UseCombinedProperty =
-            AvaloniaProperty.Register<TextDiffView, bool>(nameof(UseCombined), false);
+        public static readonly StyledProperty<bool> UseSideBySideDiffProperty =
+            AvaloniaProperty.Register<TextDiffView, bool>(nameof(UseSideBySideDiff), false);
 
-        public bool UseCombined
+        public bool UseSideBySideDiff
         {
-            get => GetValue(UseCombinedProperty);
-            set => SetValue(UseCombinedProperty, value);
+            get => GetValue(UseSideBySideDiffProperty);
+            set => SetValue(UseSideBySideDiffProperty, value);
         }
 
         public TextDiffView()
@@ -903,7 +903,7 @@ namespace SourceGit.Views
                         {
                             TextDiff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
                         }
-                        else if (UseCombined)
+                        else if (!UseSideBySideDiff)
                         {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
                             TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
@@ -935,7 +935,7 @@ namespace SourceGit.Views
                         {
                             TextDiff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
                         }
-                        else if (UseCombined)
+                        else if (!UseSideBySideDiff)
                         {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
                             TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
@@ -973,7 +973,7 @@ namespace SourceGit.Views
                         {
                             TextDiff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
                         }
-                        else if (UseCombined)
+                        else if (!UseSideBySideDiff)
                         {
                             TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
                         }
@@ -1003,7 +1003,7 @@ namespace SourceGit.Views
                         {
                             TextDiff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
                         }
-                        else if (UseCombined)
+                        else if (!UseSideBySideDiff)
                         {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
                             TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
@@ -1034,19 +1034,19 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == TextDiffProperty || change.Property == UseCombinedProperty)
+            if (change.Property == TextDiffProperty || change.Property == UseSideBySideDiffProperty)
             {
                 if (TextDiff == null)
                 {
                     Content = null;
                 }
-                else if (UseCombined)
+                else if (UseSideBySideDiff)
                 {
-                    Content = TextDiff;
+                    Content = new ViewModels.TwoSideTextDiff(TextDiff);
                 }
                 else
                 {
-                    Content = new ViewModels.TwoSideTextDiff(TextDiff);
+                    Content = TextDiff;
                 }
             }
         }
@@ -1115,7 +1115,7 @@ namespace SourceGit.Views
                 var line = diff.Lines[i];
                 if (line.Type == Models.TextDiffLineType.Added)
                 {
-                    if (UseCombined)
+                    if (!UseSideBySideDiff)
                     {
                         rs.HasChanges = true;
                         break;
@@ -1131,7 +1131,7 @@ namespace SourceGit.Views
                 }
                 else if (line.Type == Models.TextDiffLineType.Deleted)
                 {
-                    if (UseCombined)
+                    if (!UseSideBySideDiff)
                     {
                         rs.HasChanges = true;
                         break;

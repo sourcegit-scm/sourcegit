@@ -1249,15 +1249,6 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle One-Side/Two-Sides.
-        /// </summary>
-        public static string Text_Diff_Mode {
-            get {
-                return ResourceManager.GetString("Text.Diff.Mode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Next Difference.
         /// </summary>
         public static string Text_Diff_Next {
@@ -1281,6 +1272,15 @@ namespace SourceGit.Resources {
         public static string Text_Diff_Prev {
             get {
                 return ResourceManager.GetString("Text.Diff.Prev", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Side-By-Side Diff.
+        /// </summary>
+        public static string Text_Diff_SideBySide {
+            get {
+                return ResourceManager.GetString("Text.Diff.SideBySide", resourceCulture);
             }
         }
         

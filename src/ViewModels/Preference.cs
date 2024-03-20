@@ -108,10 +108,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useTwoColumnsLayoutInHistories, value);
         }
 
-        public bool UseCombinedTextDiff
+        public bool UseSideBySideDiff
         {
-            get => _useCombinedTextDiff;
-            set => SetProperty(ref _useCombinedTextDiff, value);
+            get => _useSideBySideDiff;
+            set => SetProperty(ref _useSideBySideDiff, value);
         }
 
         public Models.ChangeViewMode UnstagedChangeViewMode
@@ -350,7 +350,7 @@ namespace SourceGit.ViewModels
         private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
         private bool _useTwoColumnsLayoutInHistories = false;
-        private bool _useCombinedTextDiff = true;
+        private bool _useSideBySideDiff = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

@@ -26,15 +26,18 @@
             <Path Classes="rotating" Width="10" Height="10" Margin="8,0" Data="{DynamicResource Icons.Loading}" IsVisible="{Binding IsLoading}"/>
           </StackPanel>
 
-          <StackPanel Grid.Column="2" Margin="32,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsTextDiff}" VerticalAlignment="Center">
-            <ToggleButton x:Name="toggleDisplayMode"
-                          Classes="textdiffviewer_mode"
-                          Width="32" Height="26"
+          <StackPanel Grid.Column="2" Margin="32,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsTextDiff}" VerticalAlignment="Center">            
+            <ToggleButton Classes="line_path"
+                          Width="32" Height="18"
+                          Background="Transparent"
                           Padding="9,6"
-                          IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseCombinedTextDiff, Mode=TwoWay}"
-                          ToolTip.Tip="{DynamicResource Text.Diff.Mode}"/>
+                          IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=TwoWay}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.SideBySide}">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.SideBySide}"/>
+            </ToggleButton>
+            
             <Button Classes="icon_button" Width="32" Command="{Binding OpenExternalMergeTool}" ToolTip.Tip="{DynamicResource Text.Diff.UseMerger}">
-              <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.OpenWith}"/>
+              <Path Width="12" Height="12" Stretch="Uniform" Data="{StaticResource Icons.OpenWith}"/>
             </Button>
           </StackPanel>
         </Grid>
@@ -111,7 +114,7 @@
 
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
-            <v:TextDiffView TextDiff="{Binding}" UseCombined="{Binding #toggleDisplayMode.IsChecked}"/>
+            <v:TextDiffView TextDiff="{Binding}" UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>
           </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>

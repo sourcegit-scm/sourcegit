@@ -955,37 +955,21 @@
     <Setter Property="Opacity" Value="1"/>
   </Style>
   
-  <Style Selector="ToggleButton.textdiffviewer_mode">
+  <Style Selector="ToggleButton.line_path">
     <Setter Property="Margin" Value="0"/>
     <Setter Property="Padding" Value="0"/>
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="VerticalAlignment" Value="Stretch"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border Background="Transparent">
-          <Path Grid.Column="0"
-					      x:Name="PART_IndicatorIcon"
-                Margin="{TemplateBinding Padding}"
-                Stretch="Fill"
-					      Data="{StaticResource Icons.Orientation}"
-					      Fill="{DynamicResource Brush.FG1}"
-					      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                Opacity=".8"
-                RenderTransformOrigin="50%,50%"
-						    RenderTransform="rotate(90deg)"/>
-        </Border>
-      </ControlTemplate>
-    </Setter>
   </Style>
-  <Style Selector="ToggleButton.textdiffviewer_mode:pressed">
-    <Setter Property="RenderTransform" Value="scale(1)"/>
+  <Style Selector="ToggleButton.line_path:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
   </Style>
-  <Style Selector="ToggleButton.textdiffviewer_mode:checked /template/ Path#PART_IndicatorIcon">
-    <Setter Property="RenderTransform" Value="rotate(0deg)"/>
+  <Style Selector="ToggleButton.line_path:checked /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
   </Style>
-  <Style Selector="ToggleButton.textdiffviewer_mode:pointerover /template/ Path#PART_IndicatorIcon">
-    <Setter Property="Opacity" Value="1"/>
+  <Style Selector="ToggleButton.line_path:checked Path">
+    <Setter Property="Fill" Value="{DynamicResource Brush.Accent1}"/>
   </Style>
   
   <Style Selector="ToggleButton.toggle_untracked">

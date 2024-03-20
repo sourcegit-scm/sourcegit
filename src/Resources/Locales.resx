@@ -657,8 +657,8 @@
   <data xml:space="preserve" name="Text.Diff.Prev">
     <value>Previous Difference</value>
   </data>
-  <data xml:space="preserve" name="Text.Diff.Mode">
-    <value>Toggle One-Side/Two-Sides</value>
+  <data xml:space="preserve" name="Text.Diff.SideBySide">
+    <value>Toggle Side-By-Side Diff</value>
   </data>
   <data xml:space="preserve" name="Text.Diff.UseMerger">
     <value>Open With Merge Tool</value>

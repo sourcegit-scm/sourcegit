@@ -657,8 +657,8 @@
   <data xml:space="preserve" name="Text.Diff.Prev">
     <value>上一个差异</value>
   </data>
-  <data xml:space="preserve" name="Text.Diff.Mode">
-    <value>切换显示模式</value>
+  <data xml:space="preserve" name="Text.Diff.SideBySide">
+    <value>分列对比</value>
   </data>
   <data xml:space="preserve" name="Text.Diff.UseMerger">
     <value>使用外部合并工具查看</value>
