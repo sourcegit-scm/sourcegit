@@ -241,7 +241,7 @@
         </TreeView>
 
         <!-- Tags -->
-        <ToggleButton Grid.Row="6" x:Name="toggleTags" Classes="group_expander">
+        <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
           <Grid ColumnDefinitions="Auto,*,Auto">
             <TextBlock Grid.Column="0" Classes="group_header_label" Margin="4,0,0,0" Text="{DynamicResource Text.Repository.Tags}"/>
             <TextBlock Grid.Column="1" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
@@ -265,7 +265,7 @@
                   HorizontalScrollBarVisibility="Disabled"
                   VerticalScrollBarVisibility="Auto"
                   LostFocus="OnTagDataGridLostFocus"
-                  IsVisible="{Binding #toggleTags.IsChecked}"
+                  IsVisible="{Binding IsTagGroupExpanded, Mode=OneWay}"
                   SelectionChanged="OnTagDataGridSelectionChanged"
                   ContextRequested="OnTagContextRequested">
           <DataGrid.Columns>
@@ -301,7 +301,7 @@
         </DataGrid>
 
         <!-- Submodules -->
-        <ToggleButton Grid.Row="8" x:Name="toggleSubmodules" Classes="group_expander">
+        <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
           <Grid ColumnDefinitions="Auto,*,Auto,Auto">
             <TextBlock Grid.Column="0" Classes="group_header_label" Margin="4,0,0,0" Text="{DynamicResource Text.Repository.Submodules}"/>
             <TextBlock Grid.Column="1" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
@@ -334,7 +334,7 @@
                   HorizontalScrollBarVisibility="Disabled"
                   VerticalScrollBarVisibility="Auto"
                   ContextRequested="OnSubmoduleContextRequested"
-                  IsVisible="{Binding #toggleSubmodules.IsChecked}">
+                  IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}">
           <DataGrid.Columns>
             <DataGridTemplateColumn Header="ICON">
               <DataGridTemplateColumn.CellTemplate>

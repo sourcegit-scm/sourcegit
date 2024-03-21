@@ -210,6 +210,20 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _searchedCommits, value);
         }
 
+        [JsonIgnore]
+        public bool IsTagGroupExpanded
+        {
+            get => _isTagGroupExpanded;
+            set => SetProperty(ref _isTagGroupExpanded, value);
+        }
+
+        [JsonIgnore]
+        public bool IsSubmoduleGroupExpanded
+        {
+            get => _isSubmoduleGroupExpanded;
+            set => SetProperty(ref _isSubmoduleGroupExpanded, value);
+        }
+
         public void Open()
         {
             _watcher = new Models.Watcher(this);
@@ -249,6 +263,9 @@ namespace SourceGit.ViewModels
             _stashesPage = null;
             _isSearching = false;
             _searchCommitFilter = string.Empty;
+
+            _isTagGroupExpanded = false;
+            _isSubmoduleGroupExpanded = false;
 
             _remotes.Clear();
             _branches.Clear();
@@ -1264,6 +1281,9 @@ namespace SourceGit.ViewModels
         private bool _isSearching = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
+
+        private bool _isTagGroupExpanded = false;
+        private bool _isSubmoduleGroupExpanded = false;
 
         private List<Models.Remote> _remotes = new List<Models.Remote>();
         private List<Models.Branch> _branches = new List<Models.Branch>();
