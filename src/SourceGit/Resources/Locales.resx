@@ -271,7 +271,7 @@
     <value>Tree</value>
   </data>
   <data xml:space="preserve" name="Text.Configure">
-    <value>Configure</value>
+    <value>Repository Configure</value>
   </data>
   <data xml:space="preserve" name="Text.Configure.User">
     <value>User Name</value>

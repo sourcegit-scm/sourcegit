@@ -862,7 +862,7 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configure.
+        ///   Looks up a localized string similar to Repository Configure.
         /// </summary>
         public static string Text_Configure {
             get {

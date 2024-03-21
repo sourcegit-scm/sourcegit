@@ -72,7 +72,6 @@
         <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
           <ToggleButton Classes="layout_direction" 
                         Width="32" Height="26"
-                        Padding="9,6"
                         IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=TwoWay}"
                         IsVisible="{Binding SelectedViewIndex, Converter={x:Static c:IntConverters.IsZero}}"
                         ToolTip.Tip="{DynamicResource Text.Histories.DisplayMode}"/>

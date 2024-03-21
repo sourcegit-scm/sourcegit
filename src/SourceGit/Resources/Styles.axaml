@@ -933,23 +933,17 @@
         <Border Background="Transparent">
           <Path Grid.Column="0"
 					      x:Name="PART_IndicatorIcon"
-                Margin="{TemplateBinding Padding}"
-                Stretch="Fill"
-					      Data="{StaticResource Icons.Orientation}"
+                Width="14" Height="14"
+                Stretch="Uniform"
+					      Data="{StaticResource Icons.LayoutVertical}"
 					      Fill="{DynamicResource Brush.FG1}"
-					      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                Opacity=".8"
-                RenderTransformOrigin="50%,50%"
-						    RenderTransform="rotate(0deg)"/>
+                Opacity=".8"/>
         </Border>
       </ControlTemplate>
     </Setter>
   </Style>
-  <Style Selector="ToggleButton.layout_direction:pressed">
-    <Setter Property="RenderTransform" Value="scale(1)"/>
-  </Style>
   <Style Selector="ToggleButton.layout_direction:checked /template/ Path#PART_IndicatorIcon">
-    <Setter Property="RenderTransform" Value="rotate(90deg)"/>
+    <Setter Property="Data" Value="{StaticResource Icons.LayoutHorizontal}"/>
   </Style>
   <Style Selector="ToggleButton.layout_direction:pointerover /template/ Path#PART_IndicatorIcon">
     <Setter Property="Opacity" Value="1"/>
