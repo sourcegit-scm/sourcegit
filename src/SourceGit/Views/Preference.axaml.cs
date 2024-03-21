@@ -2,24 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
     public partial class Preference : Window
     {
-        public List<FontFamily> InstalledFonts
+        public AvaloniaList<FontFamily> InstalledFonts
         {
             get;
             private set;
         }
 
-        public List<FontFamily> InstalledMonospaceFonts
+        public AvaloniaList<FontFamily> InstalledMonospaceFonts
         {
             get;
             private set;
@@ -66,36 +69,51 @@ namespace SourceGit.Views
             var pref = ViewModels.Preference.Instance;
             DataContext = pref;
 
-            InstalledFonts = new List<FontFamily>();
+            InstalledFonts = new AvaloniaList<FontFamily>();
             InstalledFonts.Add(new FontFamily("fonts:SourceGit#JetBrains Mono"));
             InstalledFonts.AddRange(FontManager.Current.SystemFonts);
             InstalledFonts.Remove(FontManager.Current.DefaultFontFamily);
             InstalledFonts.Add(FontManager.Current.DefaultFontFamily);
 
-            InstalledMonospaceFonts = new List<FontFamily>();
+            InstalledMonospaceFonts = new AvaloniaList<FontFamily>();
             InstalledMonospaceFonts.Add(new FontFamily("fonts:SourceGit#JetBrains Mono"));
-            foreach (var font in FontManager.Current.SystemFonts)
+
+            var curMonoFont = pref.MonospaceFont;
+            if (!string.IsNullOrEmpty(curMonoFont) && curMonoFont != "fonts:SourceGit#JetBrains Mono")
             {
-                var typeface = new Typeface(font);
-                var testI = new FormattedText(
-                            "i",
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            typeface,
-                            12,
-                            Brushes.White);
-                var testW = new FormattedText(
-                            "W",
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            typeface,
-                            12,
-                            Brushes.White);
-                if (testI.Width == testW.Width)
-                {
-                    InstalledMonospaceFonts.Add(font);
-                }
+                InstalledMonospaceFonts.Add(new FontFamily(curMonoFont));
             }
+
+            Task.Run(() =>
+            {
+                var sysMonoFonts = new List<FontFamily>();
+                foreach (var font in FontManager.Current.SystemFonts)
+                {
+                    if (font.ToString() == curMonoFont) continue;
+
+                    var typeface = new Typeface(font);
+                    var testI = new FormattedText(
+                                "i",
+                                CultureInfo.CurrentCulture,
+                                FlowDirection.LeftToRight,
+                                typeface,
+                                12,
+                                Brushes.White);
+                    var testW = new FormattedText(
+                                "W",
+                                CultureInfo.CurrentCulture,
+                                FlowDirection.LeftToRight,
+                                typeface,
+                                12,
+                                Brushes.White);
+                    if (testI.Width == testW.Width)
+                    {
+                        sysMonoFonts.Add(font);
+                    }
+                }
+
+                Dispatcher.UIThread.Post(() => InstalledMonospaceFonts.AddRange(sysMonoFonts));
+            });
 
             var ver = string.Empty;
             if (pref.IsGitConfigured)
