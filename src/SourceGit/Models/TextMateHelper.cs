@@ -21,7 +21,7 @@ namespace SourceGit.Models
             else
             {
                 return editor.InstallTextMate(new RegistryOptions(ThemeName.LightPlus));
-            }            
+            }
         }
 
         public static void SetThemeByApp(TextMate.Installation installation)

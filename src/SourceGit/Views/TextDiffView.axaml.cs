@@ -375,7 +375,7 @@ namespace SourceGit.Views
         }
 
         private TextMate.Installation _textMate;
-        private LineStyleTransformer _lineStyleTransformer = null;
+        private readonly LineStyleTransformer _lineStyleTransformer = null;
     }
 
     public class SingleSideTextDiffPresenter : TextEditor
@@ -780,7 +780,7 @@ namespace SourceGit.Views
         }
 
         private TextMate.Installation _textMate;
-        private LineStyleTransformer _lineStyleTransformer = null;
+        private readonly LineStyleTransformer _lineStyleTransformer = null;
         private ScrollViewer _scrollViewer = null;
         private bool _syncScrollingByOthers = false;
     }
