@@ -380,8 +380,6 @@ namespace SourceGit.Models
 
         private bool ProcessIndicatorForPatch(StringBuilder builder, TextDiffLine indicator, int idx, int start, int end, int ignoreRemoves, int ignoreAdds, bool revert, bool tailed)
         {
-
-
             var match = indicatorRegex().Match(indicator.Content);
             var oldStart = int.Parse(match.Groups[1].Value);
             var newStart = int.Parse(match.Groups[2].Value) + ignoreRemoves - ignoreAdds;
@@ -449,7 +447,6 @@ namespace SourceGit.Models
 
         private bool ProcessIndicatorForPatchSingleSide(StringBuilder builder, TextDiffLine indicator, int idx, int start, int end, int ignoreRemoves, int ignoreAdds, bool revert, bool isOldSide, bool tailed)
         {
-
             var match = indicatorRegex().Match(indicator.Content);
             var oldStart = int.Parse(match.Groups[1].Value);
             var newStart = int.Parse(match.Groups[2].Value) + ignoreRemoves - ignoreAdds;
@@ -548,6 +545,10 @@ namespace SourceGit.Models
     {
         public long OldSize { get; set; } = 0;
         public long NewSize { get; set; } = 0;
+    }
+
+    public class NoOrEOLChange
+    {
     }
 
     public class DiffResult

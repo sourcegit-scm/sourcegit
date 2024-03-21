@@ -131,6 +131,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
+                        Content = new Models.NoOrEOLChange();
                         IsTextDiff = false;
                         IsNoChange = true;
                     }

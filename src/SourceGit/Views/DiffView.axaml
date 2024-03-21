@@ -52,18 +52,6 @@
         </Grid>
       </Border>
 
-      <!-- Same Page -->
-      <Border Grid.Row="1" Background="{DynamicResource Brush.Window}" IsVisible="{Binding IsNoChange}">
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-          <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="{DynamicResource Brush.FG2}"/>
-          <TextBlock Margin="0,16,0,0"
-                     Text="{DynamicResource Text.Diff.NoChange}"
-                     FontSize="18" FontWeight="Bold"
-                     Foreground="{DynamicResource Brush.FG2}"
-                     HorizontalAlignment="Center"/>
-        </StackPanel>
-      </Border>
-
       <!-- Diff Contents -->
       <ContentControl Grid.Row="1" Content="{Binding Content}">
         <ContentControl.DataTemplates>
@@ -124,6 +112,18 @@
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
             <v:TextDiffView TextDiff="{Binding}" UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>
+          </DataTemplate>
+
+          <!-- No or only EOL changes -->
+          <DataTemplate DataType="m:NoOrEOLChange">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+              <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="{DynamicResource Brush.FG2}"/>
+              <TextBlock Margin="0,16,0,0"
+                         Text="{DynamicResource Text.Diff.NoChange}"
+                         FontSize="18" FontWeight="Bold"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         HorizontalAlignment="Center"/>
+            </StackPanel>
           </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>
