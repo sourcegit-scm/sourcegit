@@ -69,17 +69,19 @@ namespace SourceGit.Views
             var pref = ViewModels.Preference.Instance;
             DataContext = pref;
 
+            var builtInMono = new FontFamily("fonts:SourceGit#JetBrains Mono");
+
             InstalledFonts = new AvaloniaList<FontFamily>();
-            InstalledFonts.Add(new FontFamily("fonts:SourceGit#JetBrains Mono"));
+            InstalledFonts.Add(builtInMono);
             InstalledFonts.AddRange(FontManager.Current.SystemFonts);
 
             InstalledMonospaceFonts = new AvaloniaList<FontFamily>();
-            InstalledMonospaceFonts.Add(new FontFamily("fonts:SourceGit#JetBrains Mono"));
+            InstalledMonospaceFonts.Add(builtInMono);
 
             var curMonoFont = pref.MonospaceFont;
-            if (!string.IsNullOrEmpty(curMonoFont) && curMonoFont != "fonts:SourceGit#JetBrains Mono")
+            if (curMonoFont != builtInMono)
             {
-                InstalledMonospaceFonts.Add(new FontFamily(curMonoFont));
+                InstalledMonospaceFonts.Add(curMonoFont);
             }
 
             Task.Run(() =>
@@ -87,7 +89,7 @@ namespace SourceGit.Views
                 var sysMonoFonts = new List<FontFamily>();
                 foreach (var font in FontManager.Current.SystemFonts)
                 {
-                    if (font.ToString() == curMonoFont) continue;
+                    if (font == curMonoFont) continue;
 
                     var typeface = new Typeface(font);
                     var testI = new FormattedText(

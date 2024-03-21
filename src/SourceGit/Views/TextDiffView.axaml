@@ -17,7 +17,7 @@
                                    BorderThickness="0"
                                    Foreground="{DynamicResource Brush.FG1}"
                                    SecondaryFG="{DynamicResource Brush.FG2}"
-                                   FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont, Converter={x:Static c:StringConverters.ToFontFamily}}"
+                                   FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                    FontSize="12"
                                    DiffData="{Binding}"
                                    SyncScrollOffset="{Binding $parent[v:DiffView].DataContext.(vm:DiffContext).SyncScrollOffset, Mode=TwoWay}"
@@ -36,7 +36,7 @@
                                        BorderThickness="0"
                                        Foreground="{DynamicResource Brush.FG1}"
                                        SecondaryFG="{DynamicResource Brush.FG2}"
-                                       FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont, Converter={x:Static c:StringConverters.ToFontFamily}}"
+                                       FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                        FontSize="12"
                                        DiffData="{Binding}"/>
 
@@ -52,7 +52,7 @@
                                        BorderThickness="0"
                                        Foreground="{DynamicResource Brush.FG1}"
                                        SecondaryFG="{DynamicResource Brush.FG2}"
-                                       FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont, Converter={x:Static c:StringConverters.ToFontFamily}}"
+                                       FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                        FontSize="12"
                                        DiffData="{Binding}"/>
       </Grid>

@@ -43,7 +43,7 @@
         <Grid RowDefinitions="24,Auto,Auto,Auto" ColumnDefinitions="96,*">
           <!-- SHA -->
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
-          <SelectableTextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SHA}" Margin="12,0,0,0" FontSize="12" VerticalAlignment="Center" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont, Converter={x:Static c:StringConverters.ToFontFamily}}"/>
+          <SelectableTextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SHA}" Margin="12,0,0,0" FontSize="12" VerticalAlignment="Center" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"/>
 
           <!-- PARENTS -->
           <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Parents}" IsVisible="{Binding Parents.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
@@ -95,7 +95,7 @@
           <!-- Messages -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
           <ScrollViewer Grid.Row="3" Grid.Column="1" Margin="12,5,0,0" MaxHeight="100" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <SelectableTextBlock Text="{Binding FullMessage}" FontSize="12" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont, Converter={x:Static c:StringConverters.ToFontFamily}}" TextWrapping="Wrap"/>
+            <SelectableTextBlock Text="{Binding FullMessage}" FontSize="12" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" TextWrapping="Wrap"/>
           </ScrollViewer>
         </Grid>
 

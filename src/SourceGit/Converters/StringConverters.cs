@@ -70,29 +70,5 @@ namespace SourceGit.Converters
 
         public static FuncValueConverter<string, string> ToShortSHA =
             new FuncValueConverter<string, string>(v => v.Length > 10 ? v.Substring(0, 10) : v);
-
-        public class ToFontFamilyConverter : IValueConverter
-        {
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                var name = value as string;
-                if (string.IsNullOrEmpty(name))
-                {
-                    return FontManager.Current.DefaultFontFamily;
-                }
-                else
-                {
-                    return new FontFamily(name);
-                }
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                var fontFamily = value as FontFamily;
-                return fontFamily == null ? string.Empty : fontFamily.ToString();
-            }
-        }
-
-        public static ToFontFamilyConverter ToFontFamily = new ToFontFamilyConverter();
     }
 }

@@ -121,7 +121,7 @@
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
                       ItemsSource="{Binding #me.InstalledFonts}"
-                      SelectedItem="{Binding DefaultFont, Converter={x:Static c:StringConverters.ToFontFamily}, Mode=TwoWay}">
+                      SelectedItem="{Binding DefaultFont, Mode=TwoWay}">
               <ComboBox.ItemTemplate>
                 <DataTemplate DataType="FontFamily">
                   <Border Height="24">
@@ -140,7 +140,7 @@
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
                       ItemsSource="{Binding #me.InstalledMonospaceFonts}"
-                      SelectedItem="{Binding MonospaceFont, Converter={x:Static c:StringConverters.ToFontFamily}, Mode=TwoWay}">
+                      SelectedItem="{Binding MonospaceFont, Mode=TwoWay}">
               <ComboBox.ItemTemplate>
                 <DataTemplate DataType="FontFamily">
                   <Border Height="24">

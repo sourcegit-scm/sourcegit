@@ -179,11 +179,6 @@ namespace SourceGit
 
             SetLocale(pref.Locale);
             SetTheme(pref.Theme);
-
-            if (string.IsNullOrEmpty(pref.DefaultFont))
-            {
-                pref.DefaultFont = FontManager.Current.DefaultFontFamily.ToString();
-            }
         }
 
         public override void OnFrameworkInitializationCompleted()

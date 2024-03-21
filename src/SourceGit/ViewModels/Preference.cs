@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 using Avalonia.Collections;
+using Avalonia.Media;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -37,6 +38,16 @@ namespace SourceGit.ViewModels
                 }
 
                 _instance.Repositories.RemoveAll(x => !Directory.Exists(x.FullPath));
+
+                if (_instance.DefaultFont == null)
+                {
+                    _instance.DefaultFont = FontManager.Current.DefaultFontFamily;
+                }
+
+                if (_instance.MonospaceFont == null)
+                {
+                    _instance.MonospaceFont = new FontFamily("fonts:SourceGit#JetBrains Mono");
+                }
 
                 if (!_instance.IsGitConfigured)
                 {
@@ -71,13 +82,15 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public string DefaultFont
+        [JsonConverter(typeof(FontFamilyConverter))]
+        public FontFamily DefaultFont
         {
             get => _defaultFont;
             set => SetProperty(ref _defaultFont, value);
         }
 
-        public string MonospaceFont
+        [JsonConverter(typeof(FontFamilyConverter))]
+        public FontFamily MonospaceFont
         {
             get => _monospaceFont;
             set => SetProperty(ref _monospaceFont, value);
@@ -364,8 +377,8 @@ namespace SourceGit.ViewModels
 
         private string _locale = "en_US";
         private string _theme = "Default";
-        private string _defaultFont = string.Empty;
-        private string _monospaceFont = "fonts:SourceGit#JetBrains Mono";
+        private FontFamily _defaultFont = null;
+        private FontFamily _monospaceFont = null;
 
         private int _maxHistoryCommits = 20000;
         private bool _restoreTabs = false;
@@ -386,6 +399,20 @@ namespace SourceGit.ViewModels
         private string _externalMergeToolDiffCmd = string.Empty;
 
         private AvaloniaList<RepositoryNode> _repositoryNodes = new AvaloniaList<RepositoryNode>();
+    }
+
+    public class FontFamilyConverter : JsonConverter<FontFamily>
+    {
+        public override FontFamily Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var name = reader.GetString();
+            return new FontFamily(name);
+        }
+
+        public override void Write(Utf8JsonWriter writer, FontFamily value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString());
+        }
     }
 
     [JsonSourceGenerationOptions(WriteIndented = true, IgnoreReadOnlyFields = true, IgnoreReadOnlyProperties = true)]

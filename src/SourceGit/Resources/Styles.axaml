@@ -16,7 +16,7 @@
   </Style>
 
   <Style Selector="ContentPresenter">
-    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFont, Converter={x:Static c:StringConverters.ToFontFamily}}"/>
+    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFont}"/>
   </Style>
 
   <Style Selector="Path">
@@ -70,7 +70,7 @@
     <Setter Property="FontStyle" Value="Italic"/>
   </Style>
   <Style Selector="TextBlock.monospace">
-    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont, Converter={x:Static c:StringConverters.ToFontFamily}}"/>
+    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"/>
   </Style>
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
