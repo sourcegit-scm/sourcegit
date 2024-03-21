@@ -72,8 +72,6 @@ namespace SourceGit.Views
             InstalledFonts = new AvaloniaList<FontFamily>();
             InstalledFonts.Add(new FontFamily("fonts:SourceGit#JetBrains Mono"));
             InstalledFonts.AddRange(FontManager.Current.SystemFonts);
-            InstalledFonts.Remove(FontManager.Current.DefaultFontFamily);
-            InstalledFonts.Add(FontManager.Current.DefaultFontFamily);
 
             InstalledMonospaceFonts = new AvaloniaList<FontFamily>();
             InstalledMonospaceFonts.Add(new FontFamily("fonts:SourceGit#JetBrains Mono"));

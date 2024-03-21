@@ -16,9 +16,6 @@ namespace SourceGit.Native
             builder.With(new FontManagerOptions()
             {
                 DefaultFamilyName = "PingFang SC",
-                FontFallbacks = [
-                    new FontFallback { FontFamily = new FontFamily("PingFang SC") }
-                ]
             });
         }
 

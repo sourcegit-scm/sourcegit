@@ -4,6 +4,7 @@ using System.Runtime.Versioning;
 
 using Avalonia;
 using Avalonia.Dialogs;
+using Avalonia.Media;
 
 namespace SourceGit.Native
 {
@@ -12,9 +13,11 @@ namespace SourceGit.Native
     {
         public void SetupApp(AppBuilder builder)
         {
-#if USE_FONT_INTER
-            builder.WithInterFont();
-#endif
+            builder.With(new FontManagerOptions()
+            {
+                DefaultFamilyName = "fonts:SourceGit#JetBrains Mono",
+            });
+
             // Free-desktop file picker has an extra black background panel.
             builder.UseManagedSystemDialogs();
         }

@@ -175,8 +175,15 @@ namespace SourceGit
         {
             AvaloniaXamlLoader.Load(this);
 
-            SetLocale(ViewModels.Preference.Instance.Locale);
-            SetTheme(ViewModels.Preference.Instance.Theme);
+            var pref = ViewModels.Preference.Instance;
+
+            SetLocale(pref.Locale);
+            SetTheme(pref.Theme);
+
+            if (string.IsNullOrEmpty(pref.DefaultFont))
+            {
+                pref.DefaultFont = FontManager.Current.DefaultFontFamily.ToString();
+            }
         }
 
         public override void OnFrameworkInitializationCompleted()
