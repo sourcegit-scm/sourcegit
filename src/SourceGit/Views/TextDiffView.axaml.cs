@@ -160,7 +160,6 @@ namespace SourceGit.Views
             public LineStyleTransformer(CombinedTextDiffPresenter editor)
             {
                 _editor = editor;
-                _indicatorTypeface = new Typeface(editor.FontFamily, FontStyle.Italic);
             }
 
             protected override void ColorizeLine(DocumentLine line)
@@ -174,7 +173,7 @@ namespace SourceGit.Views
                     ChangeLinePart(line.Offset, line.EndOffset, v =>
                     {
                         v.TextRunProperties.SetForegroundBrush(_editor.SecondaryFG);
-                        v.TextRunProperties.SetTypeface(_indicatorTypeface);
+                        v.TextRunProperties.SetTypeface(new Typeface(_editor.FontFamily, FontStyle.Italic));
                     });
 
                     return;
@@ -194,7 +193,6 @@ namespace SourceGit.Views
             }
 
             private readonly CombinedTextDiffPresenter _editor;
-            private readonly Typeface _indicatorTypeface = Typeface.Default;
         }
 
         public static readonly StyledProperty<Models.TextDiff> DiffDataProperty =
@@ -520,7 +518,6 @@ namespace SourceGit.Views
             public LineStyleTransformer(SingleSideTextDiffPresenter editor)
             {
                 _editor = editor;
-                _indicatorTypeface = new Typeface(editor.FontFamily, FontStyle.Italic);
             }
 
             protected override void ColorizeLine(DocumentLine line)
@@ -535,7 +532,7 @@ namespace SourceGit.Views
                     ChangeLinePart(line.Offset, line.EndOffset, v =>
                     {
                         v.TextRunProperties.SetForegroundBrush(_editor.SecondaryFG);
-                        v.TextRunProperties.SetTypeface(_indicatorTypeface);
+                        v.TextRunProperties.SetTypeface(new Typeface(_editor.FontFamily, FontStyle.Italic));
                     });
 
                     return;
@@ -555,7 +552,6 @@ namespace SourceGit.Views
             }
 
             private readonly SingleSideTextDiffPresenter _editor;
-            private readonly Typeface _indicatorTypeface = Typeface.Default;
         }
 
         public static readonly StyledProperty<bool> IsOldProperty =
