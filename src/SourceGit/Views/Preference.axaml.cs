@@ -1,15 +1,30 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 
 namespace SourceGit.Views
 {
     public partial class Preference : Window
     {
+        public List<FontFamily> InstalledFonts
+        {
+            get;
+            private set;
+        }
+
+        public List<FontFamily> InstalledMonospaceFonts
+        {
+            get;
+            private set;
+        }
+
         public string DefaultUser
         {
             get;
@@ -50,6 +65,37 @@ namespace SourceGit.Views
         {
             var pref = ViewModels.Preference.Instance;
             DataContext = pref;
+
+            InstalledFonts = new List<FontFamily>();
+            InstalledFonts.Add(new FontFamily("fonts:SourceGit#JetBrains Mono"));
+            InstalledFonts.AddRange(FontManager.Current.SystemFonts);
+            InstalledFonts.Remove(FontManager.Current.DefaultFontFamily);
+            InstalledFonts.Add(FontManager.Current.DefaultFontFamily);
+
+            InstalledMonospaceFonts = new List<FontFamily>();
+            InstalledMonospaceFonts.Add(new FontFamily("fonts:SourceGit#JetBrains Mono"));
+            foreach (var font in FontManager.Current.SystemFonts)
+            {
+                var typeface = new Typeface(font);
+                var testI = new FormattedText(
+                            "i",
+                            CultureInfo.CurrentCulture,
+                            FlowDirection.LeftToRight,
+                            typeface,
+                            12,
+                            Brushes.White);
+                var testW = new FormattedText(
+                            "W",
+                            CultureInfo.CurrentCulture,
+                            FlowDirection.LeftToRight,
+                            typeface,
+                            12,
+                            Brushes.White);
+                if (testI.Width == testW.Width)
+                {
+                    InstalledMonospaceFonts.Add(font);
+                }
+            }
 
             var ver = string.Empty;
             if (pref.IsGitConfigured)

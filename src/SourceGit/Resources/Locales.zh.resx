@@ -1290,4 +1290,10 @@
   <data name="Text.Diff.SyntaxHighlight" xml:space="preserve">
     <value>语法高亮</value>
   </data>
+  <data name="Text.Preference.General.DefaultFont" xml:space="preserve">
+    <value>缺省字体</value>
+  </data>
+  <data name="Text.Preference.General.MonospaceFont" xml:space="preserve">
+    <value>等宽字体</value>
+  </data>
 </root>

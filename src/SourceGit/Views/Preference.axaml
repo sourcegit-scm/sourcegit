@@ -67,7 +67,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.Locale}"
                        HorizontalAlignment="Right"
@@ -113,10 +113,48 @@
             </ComboBox>
 
             <TextBlock Grid.Row="3" Grid.Column="0"
+                       Text="{DynamicResource Text.Preference.General.DefaultFont}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <ComboBox Grid.Row="3" Grid.Column="1"
+                      MinHeight="28"
+                      Padding="8,0"
+                      HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding #me.InstalledFonts}"
+                      SelectedItem="{Binding DefaultFont, Converter={x:Static c:StringConverters.ToFontFamily}, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate DataType="FontFamily">
+                  <Border Height="24">
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" FontFamily="{Binding}"/>
+                  </Border>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="4" Grid.Column="0"
+                       Text="{DynamicResource Text.Preference.General.MonospaceFont}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <ComboBox Grid.Row="4" Grid.Column="1"
+                      MinHeight="28"
+                      Padding="8,0"
+                      HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding #me.InstalledMonospaceFonts}"
+                      SelectedItem="{Binding MonospaceFont, Converter={x:Static c:StringConverters.ToFontFamily}, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate DataType="FontFamily">
+                  <Border Height="24">
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" FontFamily="{Binding}"/>
+                  </Border>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="5" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.MaxHistoryCommits}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,64">
+            <Grid Grid.Row="5" Grid.Column="1" ColumnDefinitions="*,64">
               <Slider Grid.Column="0"
                       Minimum="20000" Maximum="100000"
                       TickPlacement="BottomRight" TickFrequency="5000"
@@ -140,11 +178,11 @@
                          Text="{Binding MaxHistoryCommits}"/>
             </Grid>
 
-            <CheckBox Grid.Row="4" Grid.Column="1"
+            <CheckBox Grid.Row="6" Grid.Column="1"
                       Content="{DynamicResource Text.Preference.General.RestoreTabs}"
                       IsChecked="{Binding RestoreTabs, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="5" Grid.Column="1"
+            <CheckBox Grid.Row="7" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preference.General.UseFixedTabWidth}"
                       IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Mode=TwoWay}"/>

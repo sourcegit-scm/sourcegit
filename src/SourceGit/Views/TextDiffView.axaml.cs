@@ -160,7 +160,7 @@ namespace SourceGit.Views
             public LineStyleTransformer(CombinedTextDiffPresenter editor)
             {
                 _editor = editor;
-                _indicatorTypeface = new Typeface("fonts:SourceGit#JetBrains Mono", FontStyle.Italic);
+                _indicatorTypeface = new Typeface(editor.FontFamily, FontStyle.Italic);
             }
 
             protected override void ColorizeLine(DocumentLine line)
@@ -520,7 +520,7 @@ namespace SourceGit.Views
             public LineStyleTransformer(SingleSideTextDiffPresenter editor)
             {
                 _editor = editor;
-                _indicatorTypeface = new Typeface("fonts:SourceGit#JetBrains Mono", FontStyle.Italic);
+                _indicatorTypeface = new Typeface(editor.FontFamily, FontStyle.Italic);
             }
 
             protected override void ColorizeLine(DocumentLine line)

@@ -2257,6 +2257,15 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default FontFamily.
+        /// </summary>
+        public static string Text_Preference_General_DefaultFont {
+            get {
+                return ResourceManager.GetString("Text.Preference.General.DefaultFont", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Text_Preference_General_Locale {
@@ -2271,6 +2280,15 @@ namespace SourceGit.Resources {
         public static string Text_Preference_General_MaxHistoryCommits {
             get {
                 return ResourceManager.GetString("Text.Preference.General.MaxHistoryCommits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monospace FontFamily.
+        /// </summary>
+        public static string Text_Preference_General_MonospaceFont {
+            get {
+                return ResourceManager.GetString("Text.Preference.General.MonospaceFont", resourceCulture);
             }
         }
         

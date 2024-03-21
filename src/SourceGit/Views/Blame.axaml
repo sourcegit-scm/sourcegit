@@ -72,7 +72,7 @@
                          BorderThickness="1"
                          Background="{DynamicResource Brush.Contents}"
                          Foreground="{DynamicResource Brush.FG1}"
-                         FontFamily="fonts:SourceGit#JetBrains Mono"
+                         FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont, Converter={x:Static c:StringConverters.ToFontFamily}}"
                          FontSize="12"
                          BlameData="{Binding Data}"/>
       

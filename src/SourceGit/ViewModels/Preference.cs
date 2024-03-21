@@ -71,6 +71,18 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public string DefaultFont
+        {
+            get => _defaultFont;
+            set => SetProperty(ref _defaultFont, value);
+        }
+
+        public string MonospaceFont
+        {
+            get => _monospaceFont;
+            set => SetProperty(ref _monospaceFont, value);
+        }
+
         public string AvatarServer
         {
             get => Models.AvatarManager.SelectedServer;
@@ -352,6 +364,9 @@ namespace SourceGit.ViewModels
 
         private string _locale = "en_US";
         private string _theme = "Default";
+        private string _defaultFont = string.Empty;
+        private string _monospaceFont = "fonts:SourceGit#JetBrains Mono";
+
         private int _maxHistoryCommits = 20000;
         private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;

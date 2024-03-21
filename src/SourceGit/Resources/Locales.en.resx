@@ -1290,4 +1290,10 @@
   <data name="Text.Diff.SyntaxHighlight" xml:space="preserve">
     <value>Syntax Highlighting</value>
   </data>
+  <data name="Text.Preference.General.DefaultFont" xml:space="preserve">
+    <value>Default FontFamily</value>
+  </data>
+  <data name="Text.Preference.General.MonospaceFont" xml:space="preserve">
+    <value>Monospace FontFamily</value>
+  </data>
 </root>
