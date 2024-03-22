@@ -48,12 +48,11 @@
         <v:CaptionButtonsMacOS VerticalAlignment="Bottom"/>
       </Border>
 
-      <!-- Menu (Windows) -->
-      <Button Grid.Column="0"
+      <!-- Menu -->
+      <Button Grid.Column="{OnPlatform 0, macOS=2}"
               Classes="icon_button"
               Margin="4,0,2,3"
-              VerticalAlignment="Bottom"
-              IsVisible="{OnPlatform True, macOS=False}">
+              VerticalAlignment="Bottom">
         <Button.Flyout>
           <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
             <MenuItem Header="{DynamicResource Text.Preference}" Click="OpenPreference">
@@ -224,21 +223,6 @@
           <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
         </Button>
       </Grid>
-
-      <!-- Extra Buttons (macOS) -->
-      <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="32,0,8,0" Height="30" VerticalAlignment="Bottom" IsVisible="{OnPlatform False, macOS=True}">
-        <Button Classes="icon_button" Width="32" Height="28" Click="OpenPreference" ToolTip.Tip="{DynamicResource Text.Preference}">
-          <Path Width="16" Height="16" Data="{StaticResource Icons.Settings2}"/>
-        </Button>
-
-        <Button Classes="icon_button" Width="32" Height="28" Click="OpenHotkeys" ToolTip.Tip="{DynamicResource Text.Hotkeys}">
-          <Path Width="16" Height="16" Data="{StaticResource Icons.Hotkeys}"/>
-        </Button>
-
-        <Button Classes="icon_button" Width="32" Height="28" Click="OpenAboutDialog" ToolTip.Tip="{DynamicResource Text.About}">
-          <Path Width="16" Height="16" Data="{StaticResource Icons.Info}"/>
-        </Button>
-      </StackPanel>
 
       <!-- Caption Buttons (Windows/Linux)-->
       <Border Grid.Column="2" Margin="32,0,0,0" IsVisible="{OnPlatform True, macOS=False}">
