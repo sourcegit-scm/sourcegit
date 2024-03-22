@@ -158,6 +158,7 @@
                            Minimum="10" Maximum="16" Increment="0.5"
                            Height="28"
                            Padding="4"
+                           BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                            CornerRadius="3"
                            Value="{Binding DefaultFontSize, Mode=TwoWay}">
               <NumericUpDown.Styles>
