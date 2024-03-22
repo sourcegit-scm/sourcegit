@@ -984,7 +984,7 @@
   <data xml:space="preserve" name="Text.Preference.General.AvatarServer">
     <value>头像服务</value>
   </data>
-  <data xml:space="preserve" name="Text.Preference.General.Theme">
+  <data xml:space="preserve" name="Text.Preference.Appearance.Theme">
     <value>主题</value>
   </data>
   <data xml:space="preserve" name="Text.Preference.General.MaxHistoryCommits">
@@ -1290,13 +1290,16 @@
   <data name="Text.Diff.SyntaxHighlight" xml:space="preserve">
     <value>语法高亮</value>
   </data>
-  <data name="Text.Preference.General.DefaultFont" xml:space="preserve">
+  <data name="Text.Preference.Appearance.DefaultFont" xml:space="preserve">
     <value>缺省字体</value>
   </data>
-  <data name="Text.Preference.General.MonospaceFont" xml:space="preserve">
+  <data name="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">
     <value>等宽字体</value>
   </data>
-  <data name="Text.Preference.General.DefaultFontSize" xml:space="preserve">
+  <data name="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">
     <value>默认字体大小</value>
+  </data>
+  <data name="Text.Preference.Appearance" xml:space="preserve">
+    <value>外观配置</value>
   </data>
 </root>

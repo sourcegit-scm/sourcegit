@@ -984,7 +984,7 @@
   <data xml:space="preserve" name="Text.Preference.General.AvatarServer">
     <value>Avatar Server</value>
   </data>
-  <data xml:space="preserve" name="Text.Preference.General.Theme">
+  <data xml:space="preserve" name="Text.Preference.Appearance.Theme">
     <value>Theme</value>
   </data>
   <data xml:space="preserve" name="Text.Preference.General.MaxHistoryCommits">
@@ -1290,13 +1290,16 @@
   <data name="Text.Diff.SyntaxHighlight" xml:space="preserve">
     <value>Syntax Highlighting</value>
   </data>
-  <data name="Text.Preference.General.DefaultFont" xml:space="preserve">
+  <data name="Text.Preference.Appearance.DefaultFont" xml:space="preserve">
     <value>Default FontFamily</value>
   </data>
-  <data name="Text.Preference.General.MonospaceFont" xml:space="preserve">
+  <data name="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">
     <value>Monospace FontFamily</value>
   </data>
-  <data name="Text.Preference.General.DefaultFontSize" xml:space="preserve">
+  <data name="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">
     <value>Default Font Size</value>
+  </data>
+  <data name="Text.Preference.Appearance" xml:space="preserve">
+    <value>APPEARANCE</value>
   </data>
 </root>

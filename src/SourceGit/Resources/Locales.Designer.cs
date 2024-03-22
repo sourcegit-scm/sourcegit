@@ -2239,6 +2239,51 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Appearance.
+        /// </summary>
+        public static string Text_Preference_Appearance {
+            get {
+                return ResourceManager.GetString("Text.Preference.Appearance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default FontFamily.
+        /// </summary>
+        public static string Text_Preference_Appearance_DefaultFont {
+            get {
+                return ResourceManager.GetString("Text.Preference.Appearance.DefaultFont", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default Font Size.
+        /// </summary>
+        public static string Text_Preference_Appearance_DefaultFontSize {
+            get {
+                return ResourceManager.GetString("Text.Preference.Appearance.DefaultFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monospace FontFamily.
+        /// </summary>
+        public static string Text_Preference_Appearance_MonospaceFont {
+            get {
+                return ResourceManager.GetString("Text.Preference.Appearance.MonospaceFont", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        public static string Text_Preference_Appearance_Theme {
+            get {
+                return ResourceManager.GetString("Text.Preference.Appearance.Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GENERAL.
         /// </summary>
         public static string Text_Preference_General {
@@ -2253,24 +2298,6 @@ namespace SourceGit.Resources {
         public static string Text_Preference_General_AvatarServer {
             get {
                 return ResourceManager.GetString("Text.Preference.General.AvatarServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Default FontFamily.
-        /// </summary>
-        public static string Text_Preference_General_DefaultFont {
-            get {
-                return ResourceManager.GetString("Text.Preference.General.DefaultFont", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Default Font Size.
-        /// </summary>
-        public static string Text_Preference_General_DefaultFontSize {
-            get {
-                return ResourceManager.GetString("Text.Preference.General.DefaultFontSize", resourceCulture);
             }
         }
         
@@ -2293,29 +2320,11 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Monospace FontFamily.
-        /// </summary>
-        public static string Text_Preference_General_MonospaceFont {
-            get {
-                return ResourceManager.GetString("Text.Preference.General.MonospaceFont", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Restore windows.
         /// </summary>
         public static string Text_Preference_General_RestoreTabs {
             get {
                 return ResourceManager.GetString("Text.Preference.General.RestoreTabs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Theme.
-        /// </summary>
-        public static string Text_Preference_General_Theme {
-            get {
-                return ResourceManager.GetString("Text.Preference.General.Theme", resourceCulture);
             }
         }
         
