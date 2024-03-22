@@ -67,7 +67,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.Locale}"
                        HorizontalAlignment="Right"
@@ -151,10 +151,34 @@
             </ComboBox>
 
             <TextBlock Grid.Row="5" Grid.Column="0"
+                       Text="{DynamicResource Text.Preference.General.DefaultFontSize}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <NumericUpDown Grid.Row="5" Grid.Column="1"
+                           Minimum="10" Maximum="16" Increment="0.5"
+                           Height="28"
+                           Padding="4"
+                           CornerRadius="3"
+                           Value="{Binding DefaultFontSize, Mode=TwoWay}">
+              <NumericUpDown.Styles>
+                <Style Selector="NumericUpDown /template/ ButtonSpinner#PART_Spinner">
+                  <Setter Property="MinHeight" Value="0"/>
+                  <Setter Property="Height" Value="28"/>
+                </Style>
+                <Style Selector="NumericUpDown /template/ TextBox#PART_TextBox">
+                  <Setter Property="MinHeight" Value="0"/>
+                  <Setter Property="Height" Value="28"/>
+                  <Setter Property="VerticalContentAlignment" Value="Center"/>
+                  <Setter Property="CornerRadius" Value="3,0,0,3"/>
+                </Style>
+              </NumericUpDown.Styles>
+            </NumericUpDown>
+
+            <TextBlock Grid.Row="6" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.MaxHistoryCommits}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <Grid Grid.Row="5" Grid.Column="1" ColumnDefinitions="*,64">
+            <Grid Grid.Row="6" Grid.Column="1" ColumnDefinitions="*,64">
               <Slider Grid.Column="0"
                       Minimum="20000" Maximum="100000"
                       TickPlacement="BottomRight" TickFrequency="5000"
@@ -178,11 +202,11 @@
                          Text="{Binding MaxHistoryCommits}"/>
             </Grid>
 
-            <CheckBox Grid.Row="6" Grid.Column="1"
+            <CheckBox Grid.Row="7" Grid.Column="1"
                       Content="{DynamicResource Text.Preference.General.RestoreTabs}"
                       IsChecked="{Binding RestoreTabs, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="7" Grid.Column="1"
+            <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preference.General.UseFixedTabWidth}"
                       IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Mode=TwoWay}"/>

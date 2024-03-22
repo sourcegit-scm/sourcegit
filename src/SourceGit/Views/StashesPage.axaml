@@ -65,11 +65,11 @@
 
                   <Grid RowDefinitions="Auto,*" >
                     <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
-                      <TextBlock Grid.Column="0" Classes="monospace" FontSize="12" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" TextDecorations="Underline" Cursor="Hand"/>
-                      <TextBlock Grid.Column="1" Classes="monospace" FontSize="12" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="0" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" TextDecorations="Underline" Cursor="Hand"/>
+                      <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                     </Grid>
 
-                    <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding Message}" FontSize="12" VerticalAlignment="Bottom"/>
+                    <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding Message}" VerticalAlignment="Bottom"/>
                   </Grid>
                 </Border>
               </DataTemplate>
@@ -113,7 +113,7 @@
           <DataGridTemplateColumn Width="*" Header="PATH">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0,0,0" FontSize="12"/>
+                <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0,0,0"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>

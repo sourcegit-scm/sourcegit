@@ -50,7 +50,7 @@
             <DataGridTemplateColumn Width="*" Header="PATH">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
-                  <TextBlock Classes="monospace" Text="{Binding Path}" Margin="8,0,0,0" FontSize="12"/>
+                  <TextBlock Classes="monospace" Text="{Binding Path}" Margin="8,0,0,0"/>
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

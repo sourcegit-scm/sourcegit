@@ -58,7 +58,7 @@
                       </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <TextBlock Classes="monospace" Text="{Binding Subject}" FontSize="12" Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
+                    <TextBlock Classes="monospace" Text="{Binding Subject}" Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
                   </StackPanel>
                 </Border>
               </DataTemplate>
@@ -83,7 +83,6 @@
               <DataTemplate x:DataType="{x:Type m:Commit}">
                 <TextBlock Classes="monospace"
                            Text="{Binding Author.Name}"
-                           FontSize="11"
                            Margin="0,0,8,0"
                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
               </DataTemplate>
@@ -95,7 +94,6 @@
               <DataTemplate x:DataType="{x:Type m:Commit}">
                 <TextBlock Classes="monospace" 
                            Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
-                           FontSize="11"
                            Margin="12,0"
                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
               </DataTemplate>
@@ -107,7 +105,6 @@
               <DataTemplate x:DataType="{x:Type m:Commit}">
                 <TextBlock Classes="monospace" 
                            Text="{Binding CommitterTimeStr}"
-                           FontSize="11"
                            Margin="8,0"
                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.ToCommitOpacity}}"/>
               </DataTemplate>

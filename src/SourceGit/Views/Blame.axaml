@@ -59,7 +59,7 @@
 
     <!-- File -->
     <Border Grid.Row="1" Padding="8,0" Background="{DynamicResource Brush.Window}">
-      <TextBlock Text="{Binding Title}" FontSize="12" VerticalAlignment="Center"/>
+      <TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
     </Border>
 
     <!-- Body -->
@@ -73,7 +73,6 @@
                          Background="{DynamicResource Brush.Contents}"
                          Foreground="{DynamicResource Brush.FG1}"
                          FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
-                         FontSize="12"
                          BlameData="{Binding Data}"/>
       
       <!-- Not supported mask (for binary files) -->

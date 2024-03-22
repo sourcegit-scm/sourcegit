@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:c="using:SourceGit.Converters"
         xmlns:vm="using:SourceGit.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="SourceGit.Views.Hotkeys"
@@ -63,7 +64,7 @@
         <TextBlock Text="{DynamicResource Text.Hotkeys.Global}"
                    Foreground="{DynamicResource Brush.FG2}"
                    FontWeight="Bold"
-                   FontSize="13"
+                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
                    Margin="0,0,0,8"/>
 
         <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="Auto,*">
@@ -83,7 +84,7 @@
         <TextBlock Text="{DynamicResource Text.Hotkeys.Repo}"
                    Foreground="{DynamicResource Brush.FG2}"
                    FontWeight="Bold"
-                   FontSize="13"
+                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
                    Margin="0,8"/>
 
         <Grid RowDefinitions="20,20,20,20,20" ColumnDefinitions="Auto,*">
@@ -106,7 +107,7 @@
         <TextBlock Text="{DynamicResource Text.Hotkeys.TextEditor}"
                    Foreground="{DynamicResource Brush.FG2}"
                    FontWeight="Bold"
-                   FontSize="13"
+                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
                    Margin="0,8"/>
 
         <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="Auto,*">

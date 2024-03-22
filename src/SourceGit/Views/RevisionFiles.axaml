@@ -20,7 +20,6 @@
     <Grid Grid.Column="0" RowDefinitions="26,*">
       <!-- Search -->
       <TextBox Grid.Row="0"
-               FontSize="12"
                Height="26"
                BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                Background="Transparent"
@@ -59,7 +58,7 @@
               <Grid Height="24" ColumnDefinitions="Auto,*">
                 <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
                 <Path Grid.Column="0" Width="14" Height="14" IsVisible="{Binding !IsFolder}" Data="{StaticResource Icons.File}" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" FontSize="12" Margin="6,0,0,0"/>
+                <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
               </Grid>
             </TreeDataTemplate>
           </TreeView.ItemTemplate>
@@ -89,7 +88,7 @@
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionTextFile">
-              <v:RevisionTextFileView FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" FontSize="12" Background="{DynamicResource Brush.Contents}"/>
+              <v:RevisionTextFileView FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" Background="{DynamicResource Brush.Contents}"/>
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionLFSObject">

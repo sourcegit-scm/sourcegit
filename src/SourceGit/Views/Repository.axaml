@@ -113,14 +113,14 @@
           <ListBoxItem Height="28" Padding="0">
             <StackPanel Margin="16,0,0,0" Orientation="Horizontal">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Histories}"/>
-              <TextBlock Margin="8,0,0,0" Classes="monospace" FontSize="12" Text="{DynamicResource Text.Histories}"/>
+              <TextBlock Margin="8,0,0,0" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
             </StackPanel>
           </ListBoxItem>
 
           <ListBoxItem Height="28" Padding="0">
             <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="Auto,*,Auto">
               <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Send}"/>
-              <TextBlock Grid.Column="1" Classes="monospace" FontSize="12" Margin="8,0,0,0" Text="{DynamicResource Text.WorkingCopy}"/>
+              <TextBlock Grid.Column="1" Classes="monospace" Margin="8,0,0,0" Text="{DynamicResource Text.WorkingCopy}"/>
               <Border Grid.Column="2"
                       Margin="6,0"
                       Height="18"
@@ -136,7 +136,7 @@
           <ListBoxItem Height="28" Padding="0">
             <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="Auto,*,Auto">
               <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Stashes}"/>
-              <TextBlock Grid.Column="1" Classes="monospace" FontSize="12" Margin="8,0,0,0" Text="{DynamicResource Text.Stashes}"/>
+              <TextBlock Grid.Column="1" Classes="monospace" Margin="8,0,0,0" Text="{DynamicResource Text.Stashes}"/>
               <Border Grid.Column="2"
                       Margin="6,0"
                       Height="18"
@@ -178,8 +178,8 @@
                     </MultiBinding>
                   </Path.IsVisible>
                 </Path>
-                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontSize="12" FontWeight="Bold" Margin="8,0,4,0" IsVisible="{Binding IsCurrent}"/>
-                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontSize="12" Margin="8,0,4,0" IsVisible="{Binding !IsCurrent}"/>
+                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontWeight="Bold" Margin="8,0,4,0" IsVisible="{Binding IsCurrent}"/>
+                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" Margin="8,0,4,0" IsVisible="{Binding !IsCurrent}"/>
 
                 <Border Grid.Column="2" Margin="8,0" Height="18" CornerRadius="9" VerticalAlignment="Center" Background="{DynamicResource Brush.Badge}" IsVisible="{Binding IsUpstreamTrackStatusVisible}">
                   <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}"/>
@@ -225,7 +225,7 @@
                 <Path Grid.Column="0" Width="10" Height="10" Margin="0,4,0,0" Data="{StaticResource Icons.Remote}" IsVisible="{Binding IsRemote}" VerticalAlignment="Center"/>
                 <Path Grid.Column="0" Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}" VerticalAlignment="Center"/>
                 
-                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontSize="12" Margin="8,0,4,0"/>
+                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" Margin="8,0,4,0"/>
                 
                 <ToggleButton Grid.Column="2" 
                               Classes="filter" 
@@ -280,7 +280,7 @@
             <DataGridTemplateColumn Width="*" Header="NAME">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate x:DataType="{x:Type m:Tag}">
-                  <TextBlock Text="{Binding Name}" Classes="monospace" FontSize="12" TextTrimming="CharacterEllipsis" />
+                  <TextBlock Text="{Binding Name}" Classes="monospace" TextTrimming="CharacterEllipsis" />
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
@@ -347,7 +347,7 @@
             <DataGridTemplateColumn Width="*" Header="NAME">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding}" Classes="monospace" FontSize="12"/>
+                  <TextBlock Text="{Binding}" Classes="monospace"/>
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
@@ -361,7 +361,6 @@
         <TextBox Grid.Row="0" 
                  x:Name="txtSearchCommitsBox"
                  Margin="4,2"
-                 FontSize="12"
                  Height="24"
                  BorderThickness="1"
                  BorderBrush="{DynamicResource Brush.Border2}"
@@ -420,12 +419,12 @@
                                   VerticalAlignment="Center"
                                   IsHitTestVisible="False"
                                   User="{Binding Author}"/>
-                        <TextBlock Grid.Column="1" FontSize="12" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                        <TextBlock Grid.Column="2" FontSize="12" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-                        <TextBlock Grid.Column="3" FontSize="12" Classes="monospace" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                       </Grid>
 
-                      <TextBlock Grid.Row="1" Text="{Binding Subject}" FontSize="12" VerticalAlignment="Bottom"/>
+                      <TextBlock Grid.Row="1" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
                     </Grid>
                   </Border>
                 </DataTemplate>

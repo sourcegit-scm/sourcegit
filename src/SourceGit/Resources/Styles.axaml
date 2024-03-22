@@ -17,6 +17,7 @@
 
   <Style Selector="ContentPresenter">
     <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFont}"/>
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
   </Style>
 
   <Style Selector="Path">
@@ -58,7 +59,6 @@
   </Style>
 
   <Style Selector="TextBlock">
-    <Setter Property="FontSize" Value="13"/>
     <Setter Property="HorizontalAlignment" Value="Left"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
@@ -74,13 +74,11 @@
   </Style>
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
-    <Setter Property="FontSize" Value="13"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="Margin" Value="8,0,0,0"/>
   </Style>
   <Style Selector="TextBlock.info_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
-    <Setter Property="FontSize" Value="13"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="HorizontalAlignment" Value="Right"/>
   </Style>
@@ -103,7 +101,6 @@
   </Style>
 
   <Style Selector="TextBox">
-    <Setter Property="FontSize" Value="13"/>
     <Setter Property="CornerRadius" Value="0"/>
     <Setter Property="Padding" Value="4,0"/>
     <Setter Property="MinHeight" Value="16"/>
@@ -452,8 +449,7 @@
                         Margin="0 5 0 0"
                         Grid.Column="2"
                         Grid.Row="2">
-              <TextBlock Name="PART_MessageContent"
-                         FontSize="11" />
+              <TextBlock Name="PART_MessageContent" FontSize="11" />
             </StackPanel>
           </Grid>
         </Border>
@@ -588,7 +584,6 @@
         <Setter Property="Height" Value="26"/>
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}" />
-        <Setter Property="TextElement.FontSize" Value="12"/>
         <Setter Property="Template">
           <ControlTemplate>
             <Panel>
@@ -729,7 +724,6 @@
       <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="{DynamicResource Color.Accent1}"/>
     </Style.Resources>
     
-    <Setter Property="TextElement.FontSize" Value="13"/>
     <Setter Property="MinHeight" Value="20"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border1}"/>

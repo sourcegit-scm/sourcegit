@@ -2266,6 +2266,15 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default Font Size.
+        /// </summary>
+        public static string Text_Preference_General_DefaultFontSize {
+            get {
+                return ResourceManager.GetString("Text.Preference.General.DefaultFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Text_Preference_General_Locale {

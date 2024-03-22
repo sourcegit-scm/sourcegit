@@ -18,7 +18,6 @@
                                    Foreground="{DynamicResource Brush.FG1}"
                                    SecondaryFG="{DynamicResource Brush.FG2}"
                                    FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
-                                   FontSize="12"
                                    DiffData="{Binding}"
                                    SyncScrollOffset="{Binding $parent[v:DiffView].DataContext.(vm:DiffContext).SyncScrollOffset, Mode=TwoWay}"
                                    UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"/>
@@ -37,7 +36,6 @@
                                        Foreground="{DynamicResource Brush.FG1}"
                                        SecondaryFG="{DynamicResource Brush.FG2}"
                                        FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
-                                       FontSize="12"
                                        DiffData="{Binding}"/>
 
         <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
@@ -53,7 +51,6 @@
                                        Foreground="{DynamicResource Brush.FG1}"
                                        SecondaryFG="{DynamicResource Brush.FG2}"
                                        FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
-                                       FontSize="12"
                                        DiffData="{Binding}"/>
       </Grid>
     </DataTemplate>

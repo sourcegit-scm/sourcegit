@@ -1296,4 +1296,7 @@
   <data name="Text.Preference.General.MonospaceFont" xml:space="preserve">
     <value>等宽字体</value>
   </data>
+  <data name="Text.Preference.General.DefaultFontSize" xml:space="preserve">
+    <value>默认字体大小</value>
+  </data>
 </root>

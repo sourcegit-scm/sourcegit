@@ -96,6 +96,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _monospaceFont, value);
         }
 
+        public double DefaultFontSize
+        {
+            get => _defaultFontSize;
+            set => SetProperty(ref _defaultFontSize, value);
+        }
+
         public string AvatarServer
         {
             get => Models.AvatarManager.SelectedServer;
@@ -379,6 +385,7 @@ namespace SourceGit.ViewModels
         private string _theme = "Default";
         private FontFamily _defaultFont = null;
         private FontFamily _monospaceFont = null;
+        private double _defaultFontSize = 13;
 
         private int _maxHistoryCommits = 20000;
         private bool _restoreTabs = false;

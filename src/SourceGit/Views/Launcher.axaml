@@ -292,7 +292,7 @@
                     </StackPanel>
                     <TextBlock HorizontalAlignment="Stretch"
                                TextWrapping="Wrap"
-                               FontSize="12"
+                               FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}"
                                FontStyle="Italic"
                                Text="{Binding ProgressDescription}"/>
                     <ProgressBar Margin="0,8,0,0"
@@ -344,7 +344,6 @@
                           Command="{Binding #me.DataContext.(vm:Launcher).ActivePage.DismissNotification}"
                           CommandParameter="{Binding}"
                           Content="{DynamicResource Text.Close}"
-                          TextElement.FontSize="12"
                           HorizontalAlignment="Right"
                           HorizontalContentAlignment="Center"
                           VerticalContentAlignment="Center"/>

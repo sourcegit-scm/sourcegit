@@ -19,12 +19,12 @@
                       VerticalAlignment="Center"
                       IsHitTestVisible="False"
                       User="{Binding StartPoint.Author}"/>
-            <TextBlock Grid.Column="1" Classes="monospace" FontSize="12" Text="{Binding StartPoint.Author.Name}" Margin="8,0,0,0"/>
-            <TextBlock Grid.Column="2" Classes="monospace" FontSize="12" Text="{Binding StartPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
-            <TextBlock Grid.Column="3" Classes="monospace" FontSize="12" Text="{Binding StartPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding StartPoint.Author.Name}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding StartPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
+            <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding StartPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
           </Grid>
 
-          <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding StartPoint.Subject}" FontSize="12" VerticalAlignment="Bottom"/>
+          <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding StartPoint.Subject}" VerticalAlignment="Bottom"/>
         </Grid>
       </Border>
 
@@ -37,12 +37,12 @@
                       VerticalAlignment="Center"
                       IsHitTestVisible="False"
                       User="{Binding EndPoint.Author}"/>
-            <TextBlock Grid.Column="1" Classes="monospace" FontSize="12" Text="{Binding EndPoint.Author.Name}" Margin="8,0,0,0"/>
-            <TextBlock Grid.Column="2" Classes="monospace" FontSize="12" Text="{Binding EndPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
-            <TextBlock Grid.Column="3" Classes="monospace" FontSize="12" Text="{Binding EndPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding EndPoint.Author.Name}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding EndPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
+            <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding EndPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
           </Grid>
 
-          <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding EndPoint.Subject}" FontSize="12" VerticalAlignment="Bottom"/>
+          <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding EndPoint.Subject}" VerticalAlignment="Bottom"/>
         </Grid>
       </Border>
     </Grid>
@@ -58,7 +58,6 @@
         <!-- Search & Display Mode -->
         <Grid Grid.Row="0" ColumnDefinitions="*,24">
           <TextBox Grid.Column="0"
-                   FontSize="12"
                    Height="26"
                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                    Background="Transparent"
@@ -114,7 +113,7 @@
                 <DataGridTemplateColumn Width="*" Header="PATH">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                      <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0,0,0" FontSize="12"/>
+                      <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0,0,0"/>
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -149,7 +148,7 @@
                 <DataGridTemplateColumn Header="FILE_NAME">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                      <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0,0,0" FontSize="12"/>
+                      <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0,0,0"/>
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -157,7 +156,7 @@
                 <DataGridTemplateColumn Header="FOLDER_PATH">
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                      <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Margin="4,0,0,0" FontSize="12" Foreground="{DynamicResource Brush.FG2}"/>
+                      <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Margin="4,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
                     </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -182,7 +181,7 @@
                   <Grid Height="24" ColumnDefinitions="Auto,*">
                     <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
                     <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding Backend}" IsVisible="{Binding !IsFolder}"/>
-                    <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" FontSize="12" Margin="6,0,0,0"/>
+                    <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
                   </Grid>
                 </TreeDataTemplate>
               </TreeView.ItemTemplate>
