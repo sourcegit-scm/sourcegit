@@ -21,6 +21,7 @@ namespace SourceGit.Native
             builder.With(new FontManagerOptions()
             {
                 DefaultFamilyName = "Microsoft YaHei UI",
+                FontFallbacks = [new FontFallback { FontFamily = "Microsoft YaHei" }],
             });
         }
 
