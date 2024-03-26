@@ -48,7 +48,7 @@ namespace SourceGit.Models
             {
                 ext = ".cpp";
             }
-            else if (ext == ".resx")
+            else if (ext == ".resx" || ext == ".plist")
             {
                 ext = ".xml";
             }
