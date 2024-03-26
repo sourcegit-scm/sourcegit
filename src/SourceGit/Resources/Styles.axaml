@@ -623,7 +623,8 @@
 											   Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
 											   HorizontalAlignment="Right"
 											   VerticalAlignment="Center"
-											   Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+											   Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                         FontSize="11"/>
                   <Path Name="PART_ChevronPath"
 										  Width="6"
 										  Data="M 0 0 L 0 7 L 4 3.5 Z"
