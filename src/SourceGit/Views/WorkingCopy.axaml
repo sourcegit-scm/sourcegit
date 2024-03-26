@@ -12,7 +12,7 @@
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="300" MinWidth="300"/>
-      <ColumnDefinition Width="1"/>
+      <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
@@ -292,12 +292,14 @@
     </Grid>
 
     <GridSplitter Grid.Column="1"
-                  Width="1" MinWidth=".5"
-                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                  Background="{DynamicResource Brush.Border0}"/>
+                  MinWidth="1"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  Background="Transparent"
+                  BorderThickness="1,0,0,0"
+                  BorderBrush="{DynamicResource Brush.Border0}"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="4" RowDefinitions="*,Auto,32">
+    <Grid Grid.Column="2" Margin="0,4,4,4" RowDefinitions="*,Auto,32">
       <!-- Select Change Detail -->
       <Grid Grid.Row="0">
         <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">

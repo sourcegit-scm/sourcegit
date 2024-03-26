@@ -95,7 +95,7 @@
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="250" MinWidth="200" MaxWidth="400"/>
-        <ColumnDefinition Width="1"/>
+        <ColumnDefinition Width="3"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
@@ -440,11 +440,14 @@
               Fill="{DynamicResource Brush.FG2}"
               IsVisible="{Binding SearchedCommits.Count, Converter={x:Static c:IntConverters.IsZero}}"/>
       </Grid>
-      
+
+      <!-- Splitter -->
       <GridSplitter Grid.Column="1"
-                    Width="1" MinWidth=".5"
-                    HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                    Background="{DynamicResource Brush.Border0}"/>
+                    MinWidth="1"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0,0,1,0"
+                    BorderBrush="{DynamicResource Brush.Border0}"/>
 
       <!-- Right -->
       <Grid Grid.Column="2" RowDefinitions="Auto,*">

@@ -13,7 +13,7 @@
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="256" MinWidth="200" MaxWidth="480"/>
-      <ColumnDefinition Width="1"/>
+      <ColumnDefinition Width="4"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
@@ -67,12 +67,12 @@
     </Grid>
 
     <GridSplitter Grid.Column="1"
-                  Width="1" MinWidth=".5"
-                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                  MinWidth="1"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"/>
 
     <!-- File Content Viewer -->
-    <Grid Grid.Column="2" Margin="4,0,0,0">
+    <Grid Grid.Column="2">
       <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
         <ContentControl Content="{Binding ViewRevisionFileContent}">
           <ContentControl.DataTemplates>

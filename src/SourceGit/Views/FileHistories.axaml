@@ -62,7 +62,7 @@
     <Grid Grid.Row="1" Background="{DynamicResource Brush.Window}">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="300" MinWidth="300" MaxWidth="600"/>
-        <ColumnDefinition Width="1"/>
+        <ColumnDefinition Width="4"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
@@ -103,12 +103,14 @@
       </DataGrid>
 
       <GridSplitter Grid.Column="1"
-                    Width="1" MinWidth=".5"
-                    HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                    Background="{DynamicResource Brush.Border0}"/>
+                    MinWidth="1"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="1,0,0,0"
+                    BorderBrush="{DynamicResource Brush.Border2}"/>
 
       <Grid Grid.Column="2">
-        <ContentControl Margin="4" Content="{Binding DiffContext}">
+        <ContentControl Margin="0,4,4,4" Content="{Binding DiffContext}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:DiffContext">
               <v:DiffView/>

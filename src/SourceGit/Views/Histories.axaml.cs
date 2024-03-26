@@ -44,6 +44,8 @@ namespace SourceGit.Views
                     child.SetValue(RowSpanProperty, rowSpan);
                     child.SetValue(ColumnProperty, i);
                     child.SetValue(ColumnSpanProperty, 1);
+
+                    if (child is GridSplitter splitter) splitter.BorderThickness = new Thickness(1, 0, 0, 0);
                 }
             }
             else
@@ -56,6 +58,8 @@ namespace SourceGit.Views
                     child.SetValue(RowSpanProperty, 1);
                     child.SetValue(ColumnProperty, 0);
                     child.SetValue(ColumnSpanProperty, colSpan);
+
+                    if (child is GridSplitter splitter) splitter.BorderThickness = new Thickness(0, 1, 0, 0);
                 }
             }
         }

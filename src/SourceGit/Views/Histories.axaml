@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Histories"
              x:DataType="vm:Histories">
-  <v:LayoutableGrid RowDefinitions="*,1,*" ColumnDefinitions="*,1,*"
+  <v:LayoutableGrid RowDefinitions="*,3,*" ColumnDefinitions="*,3,*"
                     UseHorizontal="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories}">
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
       <DataGrid x:Name="commitDataGrid"
@@ -134,7 +134,8 @@
     <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                   MinWidth="1" MinHeight="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Background="{DynamicResource Brush.Border0}"/>
+                  Background="{DynamicResource Brush.Window}"
+                  BorderBrush="{DynamicResource Brush.Border0}"/>
 
     <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
       <Border Background="{DynamicResource Brush.Window}">

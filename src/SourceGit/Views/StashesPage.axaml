@@ -12,7 +12,7 @@
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="300" MinWidth="300"/>
-      <ColumnDefinition Width="1"/>
+      <ColumnDefinition Width="4"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
@@ -122,12 +122,14 @@
     </Grid>
 
     <GridSplitter Grid.Column="1"
-                  Width="1" MinWidth=".5"
-                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                  Background="{DynamicResource Brush.Border0}"/>
+                  MinWidth=".5"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  Background="Transparent"
+                  BorderThickness="1,0,0,0"
+                  BorderBrush="{DynamicResource Brush.Border0}"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="4">
+    <Grid Grid.Column="2" Margin="0,4,4,4">
       <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
           <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
