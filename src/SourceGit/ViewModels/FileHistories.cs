@@ -36,10 +36,12 @@ namespace SourceGit.ViewModels
                     if (value == null)
                     {
                         DiffContext = null;
+                        DetailContext.Commit = null;
                     }
                     else
                     {
                         DiffContext = new DiffContext(_repo, new Models.DiffOption(value, _file), _diffContext);
+                        DetailContext.Commit = value;
                     }
                 }
             }
@@ -51,10 +53,17 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _diffContext, value);
         }
 
+        public CommitDetail DetailContext
+        {
+            get => _detailContext;
+            set => SetProperty(ref _detailContext, value);
+        }
+
         public FileHistories(string repo, string file)
         {
             _repo = repo;
             _file = file;
+            _detailContext = new CommitDetail(repo);
 
             Task.Run(() =>
             {
@@ -68,17 +77,12 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void NavigateToCommit(string commitSHA)
-        {
-            var repo = Preference.FindRepository(_repo);
-            if (repo != null) repo.NavigateToCommit(commitSHA);
-        }
-
         private readonly string _repo = string.Empty;
         private readonly string _file = string.Empty;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = null;
         private Models.Commit _selectedCommit = null;
         private DiffContext _diffContext = null;
+        private CommitDetail _detailContext = null;
     }
 }

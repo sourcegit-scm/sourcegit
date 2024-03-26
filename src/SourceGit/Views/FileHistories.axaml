@@ -89,7 +89,7 @@
                     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
                       <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                       <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                      <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
+                      <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand"/>
                       <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                     </Grid>
 
@@ -109,14 +109,36 @@
                     BorderThickness="1,0,0,0"
                     BorderBrush="{DynamicResource Brush.Border2}"/>
 
-      <Grid Grid.Column="2">
-        <ContentControl Margin="0,4,4,4" Content="{Binding DiffContext}">
+      <Grid Grid.Column="2" RowDefinitions="*,3,*" Margin="0,4,4,4">
+        <ContentControl Grid.Row="0" Content="{Binding DiffContext}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:DiffContext">
               <v:DiffView/>
             </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>
+
+        <GridSplitter Grid.Row="1"
+                      MinHeight="1"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      Background="Transparent"/>
+
+        <Grid Grid.Row="2">
+          <Border Background="{DynamicResource Brush.Window}">
+            <Path Width="128" Height="128"
+                  Data="{StaticResource Icons.Detail}"
+                  HorizontalAlignment="Center"
+                  Fill="{DynamicResource Brush.FG2}"/>
+          </Border>
+
+          <ContentControl Content="{Binding DetailContext}">
+            <ContentControl.DataTemplates>
+              <DataTemplate DataType="vm:CommitDetail">
+                <v:CommitDetail/>
+              </DataTemplate>
+            </ContentControl.DataTemplates>
+          </ContentControl>
+        </Grid>
       </Grid>
     </Grid>
 
