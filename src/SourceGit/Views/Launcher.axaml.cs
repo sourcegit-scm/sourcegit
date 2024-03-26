@@ -317,6 +317,12 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void Check4Update(object sender, RoutedEventArgs e)
+        {
+            App.Check4Update(true);
+            e.Handled = true;
+        }
+
         private async void OpenAboutDialog(object sender, RoutedEventArgs e)
         {
             var dialog = new About();

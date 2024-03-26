@@ -28,7 +28,7 @@ namespace SourceGit.ViewModels
                     {
                         try
                         {
-                            _instance = JsonSerializer.Deserialize(File.ReadAllText(_savePath), JsonSerializationCodeGen.Default.Preference);
+                            _instance = JsonSerializer.Deserialize(File.ReadAllText(_savePath), JsonCodeGen.Default.Preference);
                         }
                         catch
                         {
@@ -132,6 +132,18 @@ namespace SourceGit.ViewModels
             get => _useFixedTabWidth;
             set => SetProperty(ref _useFixedTabWidth, value);
         }
+
+        public bool Check4UpdatesOnStartup
+        {
+            get => _check4UpdatesOnStartup;
+            set => SetProperty(ref _check4UpdatesOnStartup, value);
+        }
+
+        public string IgnoreUpdateTag
+        {
+            get;
+            set;
+        } = string.Empty;
 
         public bool UseTwoColumnsLayoutInHistories
         {
@@ -342,7 +354,7 @@ namespace SourceGit.ViewModels
             var dir = Path.GetDirectoryName(_savePath);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            var data = JsonSerializer.Serialize(_instance, JsonSerializationCodeGen.Default.Preference);
+            var data = JsonSerializer.Serialize(_instance, JsonCodeGen.Default.Preference);
             File.WriteAllText(_savePath, data);
         }
 
@@ -390,6 +402,7 @@ namespace SourceGit.ViewModels
         private int _maxHistoryCommits = 20000;
         private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
+        private bool _check4UpdatesOnStartup = true;
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _useSideBySideDiff = false;
         private bool _useSyntaxHighlighting = false;
@@ -421,8 +434,4 @@ namespace SourceGit.ViewModels
             writer.WriteStringValue(value.ToString());
         }
     }
-
-    [JsonSourceGenerationOptions(WriteIndented = true, IgnoreReadOnlyFields = true, IgnoreReadOnlyProperties = true)]
-    [JsonSerializable(typeof(Preference))]
-    internal partial class JsonSerializationCodeGen : JsonSerializerContext { }
 }

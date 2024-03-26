@@ -2302,6 +2302,15 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check for updates on startup.
+        /// </summary>
+        public static string Text_Preference_General_Check4UpdatesOnStartup {
+            get {
+                return ResourceManager.GetString("Text.Preference.General.Check4UpdatesOnStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Text_Preference_General_Locale {
@@ -3252,6 +3261,69 @@ namespace SourceGit.Resources {
         public static string Text_SaveAsPatchSuccess {
             get {
                 return ResourceManager.GetString("Text.SaveAsPatchSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Updates ....
+        /// </summary>
+        public static string Text_SelfUpdate {
+            get {
+                return ResourceManager.GetString("Text.SelfUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New version of this software is available: .
+        /// </summary>
+        public static string Text_SelfUpdate_Available {
+            get {
+                return ResourceManager.GetString("Text.SelfUpdate.Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for updates failed!.
+        /// </summary>
+        public static string Text_SelfUpdate_Error {
+            get {
+                return ResourceManager.GetString("Text.SelfUpdate.Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string Text_SelfUpdate_GotoDownload {
+            get {
+                return ResourceManager.GetString("Text.SelfUpdate.GotoDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip This Version.
+        /// </summary>
+        public static string Text_SelfUpdate_IgnoreThisVersion {
+            get {
+                return ResourceManager.GetString("Text.SelfUpdate.IgnoreThisVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Software Update.
+        /// </summary>
+        public static string Text_SelfUpdate_Title {
+            get {
+                return ResourceManager.GetString("Text.SelfUpdate.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are currently no updates available..
+        /// </summary>
+        public static string Text_SelfUpdate_UpToDate {
+            get {
+                return ResourceManager.GetString("Text.SelfUpdate.UpToDate", resourceCulture);
             }
         }
         

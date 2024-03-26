@@ -2,8 +2,11 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -13,6 +16,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
 using Avalonia.Styling;
+using Avalonia.Threading;
 
 namespace SourceGit
 {
@@ -162,6 +166,43 @@ namespace SourceGit
             return null;
         }
 
+        public static void Check4Update(bool manually = false)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    // Fetch lastest release information.
+                    var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(2) };
+                    var data = await client.GetStringAsync("https://api.github.com/repos/sourcegit-scm/sourcegit/releases/latest");
+
+                    // Parse json into Models.Version.
+                    var ver = JsonSerializer.Deserialize(data, JsonCodeGen.Default.Version);
+                    if (ver == null) return;
+
+                    // Check if already up-to-date.
+                    if (!ver.IsNewVersion)
+                    {
+                        if (manually) ShowSelfUpdateResult(new Models.AlreadyUpToDate());
+                        return;
+                    }
+
+                    // Should not check ignored tag if this is called manually.
+                    if (!manually)
+                    {
+                        var pref = ViewModels.Preference.Instance;
+                        if (ver.TagName == pref.IgnoreUpdateTag) return;
+                    }
+
+                    ShowSelfUpdateResult(ver);
+                }
+                catch (Exception e)
+                {
+                    if (manually) ShowSelfUpdateResult(e);
+                }
+            });
+        }
+
         public static void Quit()
         {
             if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -190,9 +231,30 @@ namespace SourceGit
                 var launcher = new Views.Launcher();
                 _notificationReceiver = launcher;
                 desktop.MainWindow = launcher;
+
+                if (ViewModels.Preference.Instance.Check4UpdatesOnStartup) Check4Update();
             }
 
             base.OnFrameworkInitializationCompleted();
+        }
+
+        private static void ShowSelfUpdateResult(object data)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                {
+                    var dialog = new Views.SelfUpdate()
+                    {
+                        DataContext = new ViewModels.SelfUpdate
+                        {
+                            Data = data
+                        }
+                    };
+
+                    dialog.Show(desktop.MainWindow);
+                }                
+            });
         }
 
         private ResourceDictionary _activeLocale = null;

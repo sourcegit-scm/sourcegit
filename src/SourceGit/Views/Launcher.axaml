@@ -65,6 +65,13 @@
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Hotkeys}"/>
               </MenuItem.Icon>
             </MenuItem>
+            <MenuItem Header="-"/>
+            <MenuItem Header="{DynamicResource Text.SelfUpdate}" Click="Check4Update">
+              <MenuItem.Icon>
+                <Path Width="14" Height="14" Data="{StaticResource Icons.SoftwareUpdate}"/>
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="-"/>
             <MenuItem Header="{DynamicResource Text.About}" Click="OpenAboutDialog">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Info}"/>

@@ -1302,4 +1302,28 @@
   <data name="Text.Preference.Appearance" xml:space="preserve">
     <value>Appearance</value>
   </data>
+  <data name="Text.SelfUpdate.Title" xml:space="preserve">
+    <value>Software Update</value>
+  </data>
+  <data name="Text.SelfUpdate.Error" xml:space="preserve">
+    <value>Check for updates failed!</value>
+  </data>
+  <data name="Text.SelfUpdate.Available" xml:space="preserve">
+    <value>New version of this software is available: </value>
+  </data>
+  <data name="Text.SelfUpdate.GotoDownload" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">
+    <value>Skip This Version</value>
+  </data>
+  <data name="Text.SelfUpdate" xml:space="preserve">
+    <value>Check for Updates ...</value>
+  </data>
+  <data name="Text.SelfUpdate.UpToDate" xml:space="preserve">
+    <value>There are currently no updates available.</value>
+  </data>
+  <data name="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">
+    <value>Check for updates on startup</value>
+  </data>
 </root>
