@@ -30,7 +30,7 @@
             IsVisible="{OnPlatform False, Linux=True}"/>
 
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto">
       <!-- Bottom border -->
       <Border Grid.Column="0" Grid.ColumnSpan="5"
               Background="{DynamicResource Brush.TitleBar}"
@@ -49,11 +49,8 @@
       <!-- Title -->
       <TextBlock Grid.Column="2" Margin="4,0,0,0" Text="{DynamicResource Text.FileHistory}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"/>
 
-      <!-- Target File -->
-      <TextBlock Grid.Column="3" Margin="8,0,0,0" Text="{Binding File}" FontSize="11" FontStyle="Italic" IsHitTestVisible="False" VerticalAlignment="Center"/>
-
       <!-- Caption Buttons (Windows/Linux) -->
-      <Border Grid.Column="4" IsVisible="{OnPlatform True, macOS=False}">
+      <Border Grid.Column="3" IsVisible="{OnPlatform True, macOS=False}">
         <v:CaptionButtons/>
       </Border>
     </Grid>

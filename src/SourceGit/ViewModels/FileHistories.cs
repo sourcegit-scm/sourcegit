@@ -9,11 +9,6 @@ namespace SourceGit.ViewModels
 {
     public class FileHistories : ObservableObject
     {
-        public string File
-        {
-            get => _file;
-        }
-
         public bool IsLoading
         {
             get => _isLoading;
