@@ -106,7 +106,14 @@
                     BorderThickness="1,0,0,0"
                     BorderBrush="{DynamicResource Brush.Border2}"/>
 
-      <Grid Grid.Column="2" RowDefinitions="*,3,*" Margin="0,4,4,4">
+      <Path Grid.Column="2"
+            Classes="rotating"
+            Width="48" Height="48"
+            Data="{DynamicResource Icons.Loading}"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            IsVisible="{Binding IsLoading}"/>
+
+      <Grid Grid.Column="2" RowDefinitions="*,3,*" Margin="0,4,4,4" IsVisible="{Binding !IsLoading}">
         <ContentControl Grid.Row="0" Content="{Binding DiffContext}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:DiffContext">
