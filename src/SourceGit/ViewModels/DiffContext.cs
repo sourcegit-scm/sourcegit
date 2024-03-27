@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -46,12 +47,6 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isLoading, value);
         }
 
-        public bool IsNoChange
-        {
-            get => _isNoChange;
-            private set => SetProperty(ref _isNoChange, value);
-        }
-
         public bool IsTextDiff
         {
             get => _isTextDiff;
@@ -77,7 +72,6 @@ namespace SourceGit.ViewModels
 
             if (previous != null)
             {
-                _isNoChange = previous._isNoChange;
                 _isTextDiff = previous._isTextDiff;
                 _content = previous._content;
             }
@@ -89,53 +83,62 @@ namespace SourceGit.ViewModels
             Task.Run(() =>
             {
                 var latest = new Commands.Diff(repo, option).Result();
-                var binaryDiff = null as Models.BinaryDiff;
+                var rs = null as object;
 
-                if (latest.IsBinary)
+                if (latest.TextDiff != null)
                 {
-                    binaryDiff = new Models.BinaryDiff();
-
+                    latest.TextDiff.File = _option.Path;
+                    rs = latest.TextDiff;
+                }
+                else if (latest.IsBinary)
+                {
                     var oldPath = string.IsNullOrEmpty(_option.OrgPath) ? _option.Path : _option.OrgPath;
-                    if (option.Revisions.Count == 2)
+                    var ext = Path.GetExtension(oldPath);
+
+                    if (IMG_EXTS.Contains(ext))
                     {
-                        binaryDiff.OldSize = new Commands.QueryFileSize(repo, oldPath, option.Revisions[0]).Result();
-                        binaryDiff.NewSize = new Commands.QueryFileSize(repo, _option.Path, option.Revisions[1]).Result();
+                        var imgDiff = new Models.ImageDiff();
+                        if (option.Revisions.Count == 2)
+                        {
+                            imgDiff.Old = Commands.GetImageFileAsBitmap.Run(repo, option.Revisions[0], oldPath);
+                            imgDiff.New = Commands.GetImageFileAsBitmap.Run(repo, option.Revisions[1], oldPath);
+                        }
+                        else
+                        {
+                            imgDiff.Old = Commands.GetImageFileAsBitmap.Run(repo, "HEAD", oldPath);
+                            imgDiff.New = File.Exists(_option.Path) ? new Avalonia.Media.Imaging.Bitmap(_option.Path) : null;
+                        }
+                        rs = imgDiff;
                     }
                     else
                     {
-                        binaryDiff.OldSize = new Commands.QueryFileSize(repo, oldPath, "HEAD").Result();
-                        binaryDiff.NewSize = new FileInfo(Path.Combine(repo, _option.Path)).Length;
-                    }
+                        var binaryDiff = new Models.BinaryDiff();
+                        if (option.Revisions.Count == 2)
+                        {
+                            binaryDiff.OldSize = new Commands.QueryFileSize(repo, oldPath, option.Revisions[0]).Result();
+                            binaryDiff.NewSize = new Commands.QueryFileSize(repo, _option.Path, option.Revisions[1]).Result();
+                        }
+                        else
+                        {
+                            binaryDiff.OldSize = new Commands.QueryFileSize(repo, oldPath, "HEAD").Result();
+                            binaryDiff.NewSize = new FileInfo(Path.Combine(repo, _option.Path)).Length;
+                        }
+                        rs = binaryDiff;
+                    }                    
+                } 
+                else if (latest.IsLFS)
+                {
+                    rs = latest.LFSDiff;
+                }
+                else
+                {
+                    rs = new Models.NoOrEOLChange();
                 }
 
                 Dispatcher.UIThread.Post(() =>
                 {
-                    if (latest.IsBinary)
-                    {
-                        Content = binaryDiff;
-                        IsTextDiff = false;
-                        IsNoChange = false;
-                    }
-                    else if (latest.IsLFS)
-                    {
-                        Content = latest.LFSDiff;
-                        IsTextDiff = false;
-                        IsNoChange = false;
-                    }
-                    else if (latest.TextDiff != null)
-                    {
-                        latest.TextDiff.File = _option.Path;
-                        Content = latest.TextDiff;
-                        IsTextDiff = true;
-                        IsNoChange = false;
-                    }
-                    else
-                    {
-                        Content = new Models.NoOrEOLChange();
-                        IsTextDiff = false;
-                        IsNoChange = true;
-                    }
-
+                    Content = rs;
+                    IsTextDiff = latest.TextDiff != null;
                     IsLoading = false;
                 });
             });
@@ -157,10 +160,14 @@ namespace SourceGit.ViewModels
             await Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, exec, args, _option));
         }
 
+        private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
+        {
+            ".ico", ".bmp", ".jpg", ".png", ".jpeg"
+        };
+
         private readonly string _repo = string.Empty;
         private readonly Models.DiffOption _option = null;
         private bool _isLoading = true;
-        private bool _isNoChange = false;
         private bool _isTextDiff = false;
         private object _content = null;
         private Vector _syncScrollOffset = Vector.Zero;

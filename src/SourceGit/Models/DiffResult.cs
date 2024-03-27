@@ -2,6 +2,8 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Avalonia.Media.Imaging;
+
 namespace SourceGit.Models
 {
     public enum TextDiffLineType
@@ -545,6 +547,12 @@ namespace SourceGit.Models
     {
         public long OldSize { get; set; } = 0;
         public long NewSize { get; set; } = 0;
+    }
+
+    public class ImageDiff
+    {
+        public Bitmap Old { get; set; } = null;
+        public Bitmap New { get; set; } = null;
     }
 
     public class NoOrEOLChange

@@ -109,6 +109,36 @@
             </StackPanel>
           </DataTemplate>
 
+          <!-- Image Diff -->
+          <DataTemplate DataType="m:ImageDiff">
+            <Grid Margin="8,8,8,8" RowDefinitions="*,Auto" HorizontalAlignment="Center">
+              <Border Grid.Row="0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
+                <v:ImageDiffView Alpha="{Binding #ImageDiffSlider.Value}" 
+                                 OldImage="{Binding Old}" 
+                                 NewImage="{Binding New}"/>
+              </Border>
+
+              <Slider Grid.Row="1" 
+                      x:Name="ImageDiffSlider" 
+                      Minimum="0" Maximum="1"
+                      VerticalAlignment="Top"
+                      TickPlacement="BottomRight"
+                      TickFrequency="0.1"
+                      Margin="0,8,0,0"
+                      Foreground="{DynamicResource Brush.Border1}"
+                      Value="0.5">
+                <Slider.Resources>
+                  <Thickness x:Key="SliderTopHeaderMargin">0,0,0,4</Thickness>
+                  <GridLength x:Key="SliderPreContentMargin">0</GridLength>
+                  <GridLength x:Key="SliderPostContentMargin">0</GridLength>
+                  <CornerRadius x:Key="SliderThumbCornerRadius">8</CornerRadius>
+                  <x:Double x:Key="SliderHorizontalThumbWidth">16</x:Double>
+                  <x:Double x:Key="SliderHorizontalThumbHeight">16</x:Double>
+                </Slider.Resources>
+              </Slider>
+            </Grid>
+          </DataTemplate>
+
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
             <v:TextDiffView TextDiff="{Binding}" UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>

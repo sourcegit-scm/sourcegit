@@ -9,7 +9,6 @@ namespace SourceGit.Views
 {
     public class NameHighlightedTextBlock : Control
     {
-
         public static readonly StyledProperty<string> TextProperty =
             AvaloniaProperty.Register<NameHighlightedTextBlock, string>(nameof(Text));
 

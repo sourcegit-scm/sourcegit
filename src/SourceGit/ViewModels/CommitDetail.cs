@@ -432,11 +432,24 @@ namespace SourceGit.ViewModels
                         var isBinary = new Commands.IsBinary(_repo, _commit.SHA, file.Path).Result();
                         if (isBinary)
                         {
-                            var size = new Commands.QueryFileSize(_repo, file.Path, _commit.SHA).Result();
-                            Dispatcher.UIThread.Invoke(() =>
+                            var ext = Path.GetExtension(file.Path);
+                            if (IMG_EXTS.Contains(ext))
                             {
-                                ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
-                            });
+                                var bitmap = Commands.GetImageFileAsBitmap.Run(_repo, _commit.SHA, file.Path);
+                                Dispatcher.UIThread.Invoke(() =>
+                                {
+                                    ViewRevisionFileContent = new Models.RevisionImageFile() { Image = bitmap };
+                                });
+                            }
+                            else
+                            {
+                                var size = new Commands.QueryFileSize(_repo, file.Path, _commit.SHA).Result();
+                                Dispatcher.UIThread.Invoke(() =>
+                                {
+                                    ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
+                                });
+                            }
+                            
                             return;
                         }
 
@@ -484,6 +497,11 @@ namespace SourceGit.ViewModels
                     break;
             }
         }
+
+        private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
+        {
+            ".ico", ".bmp", ".jpg", ".png", ".jpeg"
+        };
 
         private string _repo = string.Empty;
         private int _activePageIndex = 0;

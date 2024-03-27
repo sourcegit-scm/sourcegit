@@ -91,6 +91,10 @@
               <v:RevisionTextFileView FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" Background="{DynamicResource Brush.Contents}"/>
             </DataTemplate>
 
+            <DataTemplate DataType="m:RevisionImageFile">
+              <Image Source="{Binding Image}" Margin="8"/>
+            </DataTemplate>
+
             <DataTemplate DataType="m:RevisionLFSObject">
               <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{DynamicResource Text.CommitDetail.Files.LFS}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
