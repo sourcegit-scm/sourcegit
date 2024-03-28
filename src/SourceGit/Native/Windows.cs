@@ -6,6 +6,7 @@ using System.Runtime.Versioning;
 using System.Text;
 
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
 
 namespace SourceGit.Native
@@ -13,8 +14,35 @@ namespace SourceGit.Native
     [SupportedOSPlatform("windows")]
     internal class Windows : OS.IBackend
     {
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct RTL_OSVERSIONINFOEX
+        {
+            internal uint dwOSVersionInfoSize;
+            internal uint dwMajorVersion;
+            internal uint dwMinorVersion;
+            internal uint dwBuildNumber;
+            internal uint dwPlatformId;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            internal string szCSDVersion;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct MARGINS
+        {
+            public int cxLeftWidth;
+            public int cxRightWidth;
+            public int cyTopHeight;
+            public int cyBottomHeight;
+        }
+
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
+
+        [DllImport("ntdll")]
+        private static extern int RtlGetVersion(ref RTL_OSVERSIONINFOEX lpVersionInformation);
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
 
         public void SetupApp(AppBuilder builder)
         {
@@ -23,6 +51,30 @@ namespace SourceGit.Native
                 DefaultFamilyName = "Microsoft YaHei UI",
                 FontFallbacks = [new FontFallback { FontFamily = "Microsoft YaHei" }],
             });
+
+            // Fix drop shadow issue on Windows 10
+            RTL_OSVERSIONINFOEX v = new RTL_OSVERSIONINFOEX();
+            v.dwOSVersionInfoSize = (uint)Marshal.SizeOf<RTL_OSVERSIONINFOEX>();
+            if (RtlGetVersion(ref v) == 0 && (v.dwMajorVersion < 10 || v.dwBuildNumber < 22000))
+            {
+                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, e) =>
+                {
+                    if (w.WindowState != WindowState.Maximized)
+                    {
+                        var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
+                        DwmExtendFrameIntoClientArea(w.TryGetPlatformHandle().Handle, ref margins);
+                    }
+                });
+
+                Window.LoadedEvent.AddClassHandler<Window>((w, e) =>
+                {
+                    if (w.WindowState != WindowState.Maximized)
+                    {
+                        var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
+                        DwmExtendFrameIntoClientArea(w.TryGetPlatformHandle().Handle, ref margins);
+                    }
+                });
+            }
         }
 
         public string FindGitExecutable()
