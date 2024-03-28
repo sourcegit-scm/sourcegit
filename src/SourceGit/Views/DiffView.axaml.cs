@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Styling;
 
 namespace SourceGit.Views
 {
@@ -45,13 +46,33 @@ namespace SourceGit.Views
         public override void Render(DrawingContext context)
         {
             var alpha = Alpha;
-            var x = Bounds.Width * Alpha;
+            var bgMaskBrush = new SolidColorBrush(ActualThemeVariant == ThemeVariant.Dark ? 0xFF404040 : 0xFFBBBBBB);
+
+            var bg = new DrawingGroup()
+            {
+                Children =
+                {
+                    new GeometryDrawing() { Brush = bgMaskBrush, Geometry = new RectangleGeometry(new Rect(0, 0, 12, 12)) },
+                    new GeometryDrawing() { Brush = bgMaskBrush, Geometry = new RectangleGeometry(new Rect(12, 12, 12, 12)) },
+                }
+            };
+
+            var brushBG = new DrawingBrush(bg)
+            {
+                AlignmentX = AlignmentX.Left,
+                AlignmentY = AlignmentY.Top,
+                DestinationRect = new RelativeRect(new Size(24, 24), RelativeUnit.Absolute),
+                Stretch = Stretch.None,
+                TileMode = TileMode.Tile,
+            };
+
+            context.FillRectangle(brushBG, new Rect(Bounds.Size));
 
             var left = OldImage;
             if (left != null && alpha > 0)
             {
                 var src = new Rect(0, 0, left.Size.Width * Alpha, left.Size.Height);
-                var dst = new Rect(0, 0, x, Bounds.Height);
+                var dst = new Rect(8, 8, (Bounds.Width - 16) * Alpha, Bounds.Height - 16);
                 context.DrawImage(left, src, dst);
             }
 
@@ -59,11 +80,18 @@ namespace SourceGit.Views
             if (right != null)
             {
                 var src = new Rect(right.Size.Width * Alpha, 0, right.Size.Width - right.Size.Width * Alpha, right.Size.Height);
-                var dst = new Rect(x, 0, Bounds.Width - x, Bounds.Height);
+                var dst = new Rect((Bounds.Width - 16) * Alpha + 8, 8, (Bounds.Width - 16) * (1 - Alpha), Bounds.Height - 16);
                 context.DrawImage(right, src, dst);
             }
-            
+
+            var x = (Bounds.Width - 16) * Alpha + 8;
             context.DrawLine(new Pen(Brushes.DarkGreen, 2), new Point(x, 0), new Point(x, Bounds.Height));
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+            if (change.Property.Name == "ActualThemeVariant") InvalidateVisual();
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -87,21 +115,24 @@ namespace SourceGit.Views
 
         private Size GetDesiredSize(Size img, Size available)
         {
-            if (img.Width <= available.Width)
+            var w = available.Width - 16;
+            var h = available.Height - 16;
+
+            if (img.Width <= w)
             {
-                if (img.Height <= available.Height)
+                if (img.Height <= h)
                 {
-                    return img;
+                    return new Size(img.Width + 16, img.Height + 16);
                 }
                 else
                 {
-                    return new Size(available.Height * img.Width / img.Height, available.Height);
+                    return new Size(h * img.Width / img.Height + 16, available.Height);
                 }
             }
             else
             {
-                var s = Math.Max(img.Width / available.Width, img.Height / available.Height);
-                return new Size(img.Width / s, img.Height / s);
+                var s = Math.Max(img.Width / w, img.Height / h);
+                return new Size(img.Width / s + 16, img.Height / s + 16);
             }
         }
     }

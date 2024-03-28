@@ -111,8 +111,8 @@
 
           <!-- Image Diff -->
           <DataTemplate DataType="m:ImageDiff">
-            <Grid Margin="8,8,8,0" RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center">
-              <Grid Grid.Row="0" Margin="0,0,0,8" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
+            <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,8,8,0">
+              <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
                 <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
                   <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
                 </Border>
@@ -126,19 +126,21 @@
                 <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding NewSize}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
               </Grid>
               
-              <Border Grid.Row="1" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
-                <v:ImageDiffView Alpha="{Binding #ImageDiffSlider.Value}" 
-                                 OldImage="{Binding Old}" 
-                                 NewImage="{Binding New}"/>
+              <Border Grid.Row="1" Background="{DynamicResource Brush.Window}" Effect="drop-shadow(0 0 8 #A0000000)" Margin="0,8,0,0">
+                <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
+                  <v:ImageDiffView Alpha="{Binding #ImageDiffSlider.Value}"
+                                   OldImage="{Binding Old}"
+                                   NewImage="{Binding New}"/>
+                </Border>                
               </Border>
 
               <Slider Grid.Row="2" 
                       x:Name="ImageDiffSlider" 
                       Minimum="0" Maximum="1"
                       VerticalAlignment="Top"
-                      TickPlacement="BottomRight"
-                      TickFrequency="0.1"
+                      TickPlacement="None"
                       Margin="0,4,0,0"
+                      MinHeight="0"
                       Foreground="{DynamicResource Brush.Border1}"
                       Value="0.5">
                 <Slider.Resources>
