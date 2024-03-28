@@ -126,7 +126,7 @@
                 <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding NewSize}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
               </Grid>
               
-              <Border Grid.Row="1" Background="{DynamicResource Brush.Window}" Effect="drop-shadow(0 0 8 #A0000000)" Margin="0,8,0,0">
+              <Border Grid.Row="1" Background="{DynamicResource Brush.Window}" Effect="drop-shadow(0 0 8 #A0000000)" Margin="0,8,0,0" HorizontalAlignment="Center">
                 <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
                   <v:ImageDiffView Alpha="{Binding #ImageDiffSlider.Value}"
                                    OldImage="{Binding Old}"
