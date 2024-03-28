@@ -44,6 +44,15 @@ namespace SourceGit.Native
         [DllImport("dwmapi.dll")]
         private static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
 
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
+        private static extern IntPtr ILCreateFromPathW(string pszPath);
+
+        [DllImport("shell32.dll", SetLastError = false)]
+        private static extern void ILFree(IntPtr pidl);
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
+        private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
+
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new FontManagerOptions()
@@ -163,6 +172,10 @@ namespace SourceGit.Native
             if (File.Exists(path))
             {
                 fullpath = new FileInfo(path).FullName;
+
+                // For security reason, we never execute a file.
+                // Instead, we open the folder and select it.
+                select = true;
             }
             else
             {
@@ -171,11 +184,31 @@ namespace SourceGit.Native
 
             if (select)
             {
-                Process.Start("explorer", $"/select,\"{fullpath}\"");
+                // The fullpath here may be a file or a folder.
+                OpenFolderAndSelectFile(fullpath);
             }
             else
             {
-                Process.Start("explorer", fullpath);
+                // The fullpath here is always a folder.
+                Process.Start(new ProcessStartInfo(fullpath)
+                {
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                });
+            }
+        }
+
+        private static void OpenFolderAndSelectFile(string folderPath)
+        {
+            var pidl = ILCreateFromPathW(folderPath);
+
+            try
+            {
+                SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+            }
+            finally
+            {
+                ILFree(pidl);
             }
         }
 
