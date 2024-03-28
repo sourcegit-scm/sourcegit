@@ -5,6 +5,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Styling;
 
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
@@ -13,6 +15,91 @@ using AvaloniaEdit.TextMate;
 
 namespace SourceGit.Views
 {
+    public class RevisionImageFileView : Control
+    {
+        public static readonly StyledProperty<Bitmap> SourceProperty =
+            AvaloniaProperty.Register<ImageDiffView, Bitmap>(nameof(Source), null);
+
+        public Bitmap Source
+        {
+            get => GetValue(SourceProperty);
+            set => SetValue(SourceProperty, value);
+        }
+
+        static RevisionImageFileView()
+        {
+            AffectsMeasure<RevisionImageFileView>(SourceProperty);
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+
+            var bgMaskBrush = new SolidColorBrush(ActualThemeVariant == ThemeVariant.Dark ? 0xFF404040 : 0xFFBBBBBB);
+
+            var bg = new DrawingGroup()
+            {
+                Children =
+                {
+                    new GeometryDrawing() { Brush = bgMaskBrush, Geometry = new RectangleGeometry(new Rect(0, 0, 12, 12)) },
+                    new GeometryDrawing() { Brush = bgMaskBrush, Geometry = new RectangleGeometry(new Rect(12, 12, 12, 12)) },
+                }
+            };
+
+            var brushBG = new DrawingBrush(bg)
+            {
+                AlignmentX = AlignmentX.Left,
+                AlignmentY = AlignmentY.Top,
+                DestinationRect = new RelativeRect(new Size(24, 24), RelativeUnit.Absolute),
+                Stretch = Stretch.None,
+                TileMode = TileMode.Tile,
+            };
+
+            context.FillRectangle(brushBG, new Rect(Bounds.Size));
+
+            var source = Source;
+            if (source != null)
+            {
+                context.DrawImage(source, new Rect(source.Size), new Rect(8, 8, Bounds.Width - 16, Bounds.Height - 16));
+            }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+            if (change.Property.Name == "ActualThemeVariant") InvalidateVisual();
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            var source = Source;
+            if (source == null)
+            {
+                return availableSize;
+            }
+
+            var w = availableSize.Width - 16;
+            var h = availableSize.Height - 16;
+            var size = source.Size;
+            if (size.Width <= w)
+            {
+                if (size.Height <= h)
+                {
+                    return new Size(size.Width + 16, size.Height + 16);
+                }
+                else
+                {
+                    return new Size(h * size.Width / size.Height + 16, availableSize.Height);
+                }
+            }
+            else
+            {
+                var scale = Math.Max(size.Width / w, size.Height / h);
+                return new Size(size.Width / scale + 16, size.Height / scale + 16);
+            }
+        }
+    }
+
     public class RevisionTextFileView : TextEditor
     {
         protected override Type StyleKeyOverride => typeof(TextEditor);

@@ -92,7 +92,11 @@
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionImageFile">
-              <Image Source="{Binding Image}" Margin="8"/>
+              <Border Background="{DynamicResource Brush.Window}" Effect="drop-shadow(0 0 8 #A0000000)" Margin="0,8" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
+                  <v:RevisionImageFileView Source="{Binding Image}"/>
+                </Border>
+              </Border>
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionLFSObject">
