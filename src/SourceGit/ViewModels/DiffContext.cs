@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -105,8 +106,9 @@ namespace SourceGit.ViewModels
                         }
                         else
                         {
+                            var fullPath = Path.Combine(repo, _option.Path);
                             imgDiff.Old = Commands.GetImageFileAsBitmap.Run(repo, "HEAD", oldPath);
-                            imgDiff.New = File.Exists(_option.Path) ? new Avalonia.Media.Imaging.Bitmap(_option.Path) : null;
+                            imgDiff.New = File.Exists(fullPath) ? new Bitmap(fullPath) : null;
                         }
                         rs = imgDiff;
                     }
@@ -120,8 +122,9 @@ namespace SourceGit.ViewModels
                         }
                         else
                         {
+                            var fullPath = Path.Combine(repo, _option.Path);
                             binaryDiff.OldSize = new Commands.QueryFileSize(repo, oldPath, "HEAD").Result();
-                            binaryDiff.NewSize = new FileInfo(Path.Combine(repo, _option.Path)).Length;
+                            binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
                         }
                         rs = binaryDiff;
                     }                    
