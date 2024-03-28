@@ -33,7 +33,7 @@ namespace SourceGit.Native
                 return toolPath;
             return string.Empty;
         }
-        
+
         public string FindFleet()
         {
             var toolPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Applications/Fleet.app/Contents/MacOS/Fleet";

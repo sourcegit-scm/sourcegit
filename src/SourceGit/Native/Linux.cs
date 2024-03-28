@@ -35,7 +35,7 @@ namespace SourceGit.Native
             if (File.Exists(toolPath)) return toolPath;
             return string.Empty;
         }
-        
+
         public string FindFleet()
         {
             var toolPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.local/share/JetBrains/Toolbox/apps/fleet/bin/Fleet";

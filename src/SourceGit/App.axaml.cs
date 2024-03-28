@@ -253,7 +253,7 @@ namespace SourceGit
                     };
 
                     dialog.Show(desktop.MainWindow);
-                }                
+                }
             });
         }
 

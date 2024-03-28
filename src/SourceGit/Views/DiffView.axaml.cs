@@ -102,7 +102,7 @@ namespace SourceGit.Views
             if (left != null)
             {
                 return GetDesiredSize(left.Size, availableSize);
-            } 
+            }
             else if (right != null)
             {
                 return GetDesiredSize(right.Size, availableSize);

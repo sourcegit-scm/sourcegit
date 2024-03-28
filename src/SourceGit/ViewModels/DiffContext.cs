@@ -127,8 +127,8 @@ namespace SourceGit.ViewModels
                             binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
                         }
                         rs = binaryDiff;
-                    }                    
-                } 
+                    }
+                }
                 else if (latest.IsLFS)
                 {
                     rs = latest.LFSDiff;

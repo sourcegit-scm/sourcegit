@@ -449,7 +449,7 @@ namespace SourceGit.ViewModels
                                     ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
                                 });
                             }
-                            
+
                             return;
                         }
 
