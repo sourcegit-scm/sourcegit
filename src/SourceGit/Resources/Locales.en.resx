@@ -342,6 +342,9 @@
   <data xml:space="preserve" name="Text.Repository.VSCode">
     <value>Open In Visual Studio Code</value>
   </data>
+  <data xml:space="preserve" name="Text.Repository.Fleet">
+    <value>Open In Fleet</value>
+  </data>  
   <data xml:space="preserve" name="Text.Repository.Terminal">
     <value>Open In Git Bash</value>
   </data>
@@ -1302,6 +1305,9 @@
   <data name="Text.Preference.Appearance" xml:space="preserve">
     <value>APPEARANCE</value>
   </data>
+    <data name="Text.Repository.OpenWith" xml:space="preserve">
+        <value>Open in</value>
+    </data>
   <data name="Text.SelfUpdate.Title" xml:space="preserve">
     <value>Software Update</value>
   </data>

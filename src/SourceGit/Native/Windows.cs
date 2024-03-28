@@ -116,30 +116,21 @@ namespace SourceGit.Native
                     Microsoft.Win32.RegistryHive.LocalMachine,
                     Environment.Is64BitOperatingSystem ? Microsoft.Win32.RegistryView.Registry64 : Microsoft.Win32.RegistryView.Registry32);
 
-            var vscode = root.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{C26E74D1-022E-4238-8B9D-1E7564A36CC9}_is1");
+            var vscode = root.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1");
             if (vscode != null)
             {
                 return vscode.GetValue("DisplayIcon") as string;
             }
 
-            vscode = root.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1287CAD5-7C8D-410D-88B9-0D1EE4A83FF2}_is1");
-            if (vscode != null)
-            {
-                return vscode.GetValue("DisplayIcon") as string;
-            }
+            var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe");
+            if (File.Exists(toolPath)) return toolPath;
+            return string.Empty;
+        }
 
-            vscode = root.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F8A2A208-72B3-4D61-95FC-8A65D340689B}_is1");
-            if (vscode != null)
-            {
-                return vscode.GetValue("DisplayIcon") as string;
-            }
-
-            vscode = root.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1");
-            if (vscode != null)
-            {
-                return vscode.GetValue("DisplayIcon") as string;
-            }
-
+        public string FindFleet()
+        {
+            var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Fleet\\Fleet.exe");
+            if (File.Exists(toolPath)) return toolPath;
             return string.Empty;
         }
 

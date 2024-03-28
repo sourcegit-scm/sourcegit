@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Text;
@@ -27,11 +28,17 @@ namespace SourceGit.Native
 
         public string FindVSCode()
         {
-            if (File.Exists("/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"))
-            {
-                return "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code";
-            }
-
+            var toolPath = "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code";
+            if (File.Exists(toolPath))
+                return toolPath;
+            return string.Empty;
+        }
+        
+        public string FindFleet()
+        {
+            var toolPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Applications/Fleet.app/Contents/MacOS/Fleet";
+            if (File.Exists(toolPath))
+                return toolPath;
             return string.Empty;
         }
 

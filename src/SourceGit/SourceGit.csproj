@@ -23,6 +23,7 @@
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
     <AvaloniaResource Include="Resources/Fonts/*" />
+    <AvaloniaResource Include="Resources/ExternalToolIcons/*" />
   </ItemGroup>
 
   <ItemGroup>

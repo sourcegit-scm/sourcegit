@@ -50,12 +50,6 @@ namespace SourceGit.ViewModels
         } = new AvaloniaList<string>();
 
         [JsonIgnore]
-        public bool IsVSCodeFound
-        {
-            get => !string.IsNullOrEmpty(Native.OS.VSCodeExecutableFile);
-        }
-
-        [JsonIgnore]
         public Models.GitFlow GitFlow
         {
             get => _gitflow;
@@ -284,6 +278,11 @@ namespace SourceGit.ViewModels
         public void OpenInVSCode()
         {
             Native.OS.OpenInVSCode(_fullpath);
+        }
+
+        public void OpenInFleet()
+        {
+            Native.OS.OpenInFleet(_fullpath);
         }
 
         public void OpenInTerminal()
