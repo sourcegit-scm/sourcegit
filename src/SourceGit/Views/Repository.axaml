@@ -21,6 +21,7 @@
           <Button Classes="icon_button" Width="32" Command="{Binding OpenInVSCode}" IsVisible="{Binding IsVSCodeFound}" ToolTip.Tip="{DynamicResource Text.Repository.VSCode}">
             <Path Width="13" Height="13" Data="{StaticResource Icons.VSCode}"/>
           </Button>
+          <Button Classes="icon_button" Width="32" Command="{Binding OpenInFleet}" IsVisible="{Binding IsFleetFound}" ToolTip.Tip="{DynamicResource Text.Repository.Fleet}" Content="{SvgImage /Resources/ExternalToolIcons/fleet_icon.svg}" />
 
           <Button Classes="icon_button" Width="32" Command="{Binding OpenInTerminal}" ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">
             <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>

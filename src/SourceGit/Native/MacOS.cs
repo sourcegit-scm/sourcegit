@@ -34,6 +34,16 @@ namespace SourceGit.Native
 
             return string.Empty;
         }
+        
+        public string FindFleet()
+        {
+            if (File.Exists("/Applications/Fleet.app/Contents/MacOS/Fleet"))
+            {
+                return "/Applications/Fleet.app/Contents/MacOS/Fleet";
+            }
+
+            return string.Empty;
+        }
 
         public void OpenBrowser(string url)
         {

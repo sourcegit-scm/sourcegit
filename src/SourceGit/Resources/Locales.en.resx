@@ -342,6 +342,9 @@
   <data xml:space="preserve" name="Text.Repository.VSCode">
     <value>Open In Visual Studio Code</value>
   </data>
+  <data xml:space="preserve" name="Text.Repository.Fleet">
+    <value>Open In Fleet</value>
+  </data>  
   <data xml:space="preserve" name="Text.Repository.Terminal">
     <value>Open In Git Bash</value>
   </data>

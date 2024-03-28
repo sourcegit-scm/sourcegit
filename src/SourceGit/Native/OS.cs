@@ -3,6 +3,8 @@ using System.Diagnostics;
 
 using Avalonia;
 
+// ReSharper disable InconsistentNaming
+
 namespace SourceGit.Native
 {
     public static class OS
@@ -13,6 +15,7 @@ namespace SourceGit.Native
 
             string FindGitExecutable();
             string FindVSCode();
+            string FindFleet();
 
             void OpenTerminal(string workdir);
             void OpenInFileManager(string path, bool select);
@@ -20,39 +23,36 @@ namespace SourceGit.Native
             void OpenWithDefaultEditor(string file);
         }
 
-        public static string GitInstallPath
+        public static string GitInstallPath { get; set; }
+
+        public static string VSCodeExecutableFile { get; set; }
+
+        public static string FleetExecutableFile { get; set; }
+
+        public enum Platforms
         {
-            get;
-            set;
+            Unknown = 0,
+            Windows = 1,
+            MacOS = 2,
+            Linux
         }
 
-        public static string VSCodeExecutableFile
-        {
-            get;
-            set;
-        }
+        public static Platforms Platform => OperatingSystem.IsWindows() ? Platforms.Windows : OperatingSystem.IsMacOS() ? Platforms.MacOS : OperatingSystem.IsLinux() ? Platforms.Linux : Platforms.Unknown;
 
         static OS()
         {
-            if (OperatingSystem.IsMacOS())
+            _backend = Platform switch
             {
-                _backend = new MacOS();
-                VSCodeExecutableFile = _backend.FindVSCode();
-            }
-            else if (OperatingSystem.IsWindows())
-            {
-                _backend = new Windows();
-                VSCodeExecutableFile = _backend.FindVSCode();
-            }
-            else if (OperatingSystem.IsLinux())
-            {
-                _backend = new Linux();
-                VSCodeExecutableFile = _backend.FindVSCode();
-            }
-            else
-            {
-                throw new Exception("Platform unsupported!!!");
-            }
+#pragma warning disable CA1416
+                Platforms.Windows => new Windows(),
+                Platforms.MacOS => new MacOS(),
+                Platforms.Linux => new Linux(),
+#pragma warning restore CA1416
+                _ => throw new Exception("Platform unsupported!!!")
+            };
+
+            VSCodeExecutableFile = _backend.FindVSCode();
+            FleetExecutableFile = _backend.FindFleet();
         }
 
         public static void SetupApp(AppBuilder builder)
@@ -95,13 +95,24 @@ namespace SourceGit.Native
 
             Process.Start(new ProcessStartInfo()
             {
-                WorkingDirectory = repo,
-                FileName = VSCodeExecutableFile,
-                Arguments = $"\"{repo}\"",
-                UseShellExecute = false,
+                WorkingDirectory = repo, FileName = VSCodeExecutableFile, Arguments = $"\"{repo}\"", UseShellExecute = false,
             });
         }
 
         private static readonly IBackend _backend = null;
+
+        public static void OpenInFleet(string repo)
+        {
+            if (string.IsNullOrEmpty(FleetExecutableFile))
+            {
+                App.RaiseException(repo, "Fleet can NOT be found in your system!!!");
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo()
+            {
+                WorkingDirectory = repo, FileName = FleetExecutableFile, Arguments = $"\"{repo}\"", UseShellExecute = false,
+            });
+        }
     }
 }

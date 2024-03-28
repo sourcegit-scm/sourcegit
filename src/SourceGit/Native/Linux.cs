@@ -33,6 +33,13 @@ namespace SourceGit.Native
             if (File.Exists("/usr/share/code/code")) return "/usr/share/code/code";
             return string.Empty;
         }
+        
+        public string FindFleet()
+        {
+            var path = "~/.local/share/JetBrains/Toolbox/apps/fleet/bin/Fleet";
+            if (File.Exists(path)) return path;
+            return string.Empty;
+        }
 
         public void OpenBrowser(string url)
         {

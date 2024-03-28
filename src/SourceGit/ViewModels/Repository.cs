@@ -54,6 +54,12 @@ namespace SourceGit.ViewModels
         {
             get => !string.IsNullOrEmpty(Native.OS.VSCodeExecutableFile);
         }
+        
+        [JsonIgnore]
+        public bool IsFleetFound
+        {
+            get => !string.IsNullOrEmpty(Native.OS.FleetExecutableFile);
+        }
 
         [JsonIgnore]
         public Models.GitFlow GitFlow
@@ -284,6 +290,11 @@ namespace SourceGit.ViewModels
         public void OpenInVSCode()
         {
             Native.OS.OpenInVSCode(_fullpath);
+        }
+        
+        public void OpenInFleet()
+        {
+            Native.OS.OpenInFleet(_fullpath);
         }
 
         public void OpenInTerminal()
