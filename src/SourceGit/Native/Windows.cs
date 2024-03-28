@@ -9,6 +9,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 
+using SourceGit.Native.WindowsNative;
+
 namespace SourceGit.Native
 {
     [SupportedOSPlatform("windows")]
@@ -57,8 +59,8 @@ namespace SourceGit.Native
         {
             builder.With(new FontManagerOptions()
             {
-                DefaultFamilyName = "Microsoft YaHei UI",
-                FontFallbacks = [new FontFallback { FontFamily = "Microsoft YaHei" }],
+                DefaultFamilyName = SystemParameters.GetSystemDefaultFontName() ?? "Segoe UI",
+                FontFallbacks = [new FontFallback { FontFamily = "Segoe UI" }],
             });
 
             // Fix drop shadow issue on Windows 10
