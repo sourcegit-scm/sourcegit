@@ -23,6 +23,7 @@
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
     <AvaloniaResource Include="Resources/Fonts/*" />
+    <AvaloniaResource Include="Resources/ExternalToolIcons/*" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,7 +45,6 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.10" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
-    <PackageReference Include="Avalonia.Svg" Version="11.0.0.16" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.10" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
@@ -57,9 +57,5 @@
   <ItemGroup>
     <TrimmerRootAssembly Include="SourceGit" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AvaloniaResource Include="Resources\ExternalToolIcons\*" />
   </ItemGroup>
 </Project>

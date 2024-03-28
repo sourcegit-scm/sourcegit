@@ -103,11 +103,21 @@ namespace SourceGit.Native
 
         public string FindVSCode()
         {
+            var root = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine,
+                    Environment.Is64BitOperatingSystem ? Microsoft.Win32.RegistryView.Registry64 : Microsoft.Win32.RegistryView.Registry32);
+
+            var vscode = root.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1");
+            if (vscode != null)
+            {
+                return vscode.GetValue("DisplayIcon") as string;
+            }
+
             var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe");
             if (File.Exists(toolPath)) return toolPath;
             return string.Empty;
         }
-        
+
         public string FindFleet()
         {
             var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Fleet\\Fleet.exe");

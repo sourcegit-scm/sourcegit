@@ -3,8 +3,6 @@ using System.Diagnostics;
 
 using Avalonia;
 
-// ReSharper disable InconsistentNaming
-
 namespace SourceGit.Native
 {
     public static class OS
@@ -29,27 +27,24 @@ namespace SourceGit.Native
 
         public static string FleetExecutableFile { get; set; }
 
-        public enum Platforms
-        {
-            Unknown = 0,
-            Windows = 1,
-            MacOS = 2,
-            Linux
-        }
-
-        public static Platforms Platform => OperatingSystem.IsWindows() ? Platforms.Windows : OperatingSystem.IsMacOS() ? Platforms.MacOS : OperatingSystem.IsLinux() ? Platforms.Linux : Platforms.Unknown;
-
         static OS()
         {
-            _backend = Platform switch
+            if (OperatingSystem.IsWindows())
             {
-#pragma warning disable CA1416
-                Platforms.Windows => new Windows(),
-                Platforms.MacOS => new MacOS(),
-                Platforms.Linux => new Linux(),
-#pragma warning restore CA1416
-                _ => throw new Exception("Platform unsupported!!!")
-            };
+                _backend = new Windows();
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                _backend = new MacOS();
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                _backend = new Linux();
+            }
+            else
+            {
+                throw new Exception("Platform unsupported!!!");
+            }
 
             VSCodeExecutableFile = _backend.FindVSCode();
             FleetExecutableFile = _backend.FindFleet();
@@ -95,7 +90,10 @@ namespace SourceGit.Native
 
             Process.Start(new ProcessStartInfo()
             {
-                WorkingDirectory = repo, FileName = VSCodeExecutableFile, Arguments = $"\"{repo}\"", UseShellExecute = false,
+                WorkingDirectory = repo,
+                FileName = VSCodeExecutableFile,
+                Arguments = $"\"{repo}\"",
+                UseShellExecute = false,
             });
         }
 
@@ -111,7 +109,10 @@ namespace SourceGit.Native
 
             Process.Start(new ProcessStartInfo()
             {
-                WorkingDirectory = repo, FileName = FleetExecutableFile, Arguments = $"\"{repo}\"", UseShellExecute = false,
+                WorkingDirectory = repo,
+                FileName = FleetExecutableFile,
+                Arguments = $"\"{repo}\"",
+                UseShellExecute = false,
             });
         }
     }
