@@ -33,29 +33,29 @@ namespace SourceGit.Views
 
         public override void Render(DrawingContext context)
         {
-            base.Render(context);
-
-            var bgMaskBrush = new SolidColorBrush(ActualThemeVariant == ThemeVariant.Dark ? 0xFF404040 : 0xFFBBBBBB);
-
-            var bg = new DrawingGroup()
+            if (_bgBrush == null)
             {
-                Children =
+                var maskBrush = new SolidColorBrush(ActualThemeVariant == ThemeVariant.Dark ? 0xFF404040 : 0xFFBBBBBB);
+                var bg = new DrawingGroup()
                 {
-                    new GeometryDrawing() { Brush = bgMaskBrush, Geometry = new RectangleGeometry(new Rect(0, 0, 12, 12)) },
-                    new GeometryDrawing() { Brush = bgMaskBrush, Geometry = new RectangleGeometry(new Rect(12, 12, 12, 12)) },
-                }
-            };
+                    Children =
+                    {
+                        new GeometryDrawing() { Brush = maskBrush, Geometry = new RectangleGeometry(new Rect(0, 0, 12, 12)) },
+                        new GeometryDrawing() { Brush = maskBrush, Geometry = new RectangleGeometry(new Rect(12, 12, 12, 12)) },
+                    }
+                };
 
-            var brushBG = new DrawingBrush(bg)
-            {
-                AlignmentX = AlignmentX.Left,
-                AlignmentY = AlignmentY.Top,
-                DestinationRect = new RelativeRect(new Size(24, 24), RelativeUnit.Absolute),
-                Stretch = Stretch.None,
-                TileMode = TileMode.Tile,
-            };
+                _bgBrush = new DrawingBrush(bg)
+                {
+                    AlignmentX = AlignmentX.Left,
+                    AlignmentY = AlignmentY.Top,
+                    DestinationRect = new RelativeRect(new Size(24, 24), RelativeUnit.Absolute),
+                    Stretch = Stretch.None,
+                    TileMode = TileMode.Tile,
+                };
+            }
 
-            context.FillRectangle(brushBG, new Rect(Bounds.Size));
+            context.FillRectangle(_bgBrush, new Rect(Bounds.Size));
 
             var source = Source;
             if (source != null)
@@ -67,7 +67,12 @@ namespace SourceGit.Views
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
-            if (change.Property.Name == "ActualThemeVariant") InvalidateVisual();
+
+            if (change.Property.Name == "ActualThemeVariant")
+            {
+                _bgBrush = null;
+                InvalidateVisual();
+            }
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -98,6 +103,8 @@ namespace SourceGit.Views
                 return new Size(size.Width / scale + 16, size.Height / scale + 16);
             }
         }
+
+        private DrawingBrush _bgBrush = null;
     }
 
     public class RevisionTextFileView : TextEditor
