@@ -17,22 +17,34 @@
           <Button Classes="icon_button" Width="32" Command="{Binding OpenInFileManager}" ToolTip.Tip="{DynamicResource Text.Repository.Explore}">
             <Path Width="15" Height="13" Data="{StaticResource Icons.Folder.Open}"/>
           </Button>
-
-          <Button Classes="icon_button" Width="32" Command="{Binding OpenInVSCode}" IsVisible="{Binding IsVSCodeFound}" ToolTip.Tip="{DynamicResource Text.Repository.VSCode}">
-            <Path Width="13" Height="13" Data="{StaticResource Icons.VSCode}"/>
-          </Button>
-          <Button Classes="icon_button" Width="32" Command="{Binding OpenInFleet}" IsVisible="{Binding IsFleetFound}" ToolTip.Tip="{DynamicResource Text.Repository.Fleet}" Content="{SvgImage /Resources/ExternalToolIcons/fleet_icon.svg}" />
-
           <Button Classes="icon_button" Width="32" Command="{Binding OpenInTerminal}" ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">
-            <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
+              <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
           </Button>
 
-          <ToggleButton Width="32"
-                        Background="Transparent"
-                        IsChecked="{Binding IsSearching, Mode=TwoWay}"
-                        ToolTip.Tip="{DynamicResource Text.Repository.Search}">
-            <Path Width="14" Height="14" Data="{StaticResource Icons.Search}"/>
-          </ToggleButton>
+          <Button Classes="icon_button" Width="32" ToolTip.Tip="{DynamicResource Text.Repository.OpenWith}">
+              <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>
+              <Button.Flyout>
+                  <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
+                  <MenuItem Header="{DynamicResource Text.Repository.Fleet}" Click="OpenInFleet">
+                      <MenuItem.Icon>
+                          <Svg Path="/Resources/ExternalToolIcons/fleet_icon.svg" Width="13" Height="13" />
+                      </MenuItem.Icon>
+                  </MenuItem>
+                  <MenuItem Header="{DynamicResource Text.Repository.VSCode}" Click="OpenInVSCode">
+                      <MenuItem.Icon>
+                          <Svg Path="/Resources/ExternalToolIcons/vscode_icon.svg" Width="13" Height="13" />
+                      </MenuItem.Icon>
+                  </MenuItem>
+              </MenuFlyout>
+              </Button.Flyout>
+            </Button>
+            <ToggleButton Width="32"
+                          Background="Transparent"
+                          IsChecked="{Binding IsSearching, Mode=TwoWay}"
+                          ToolTip.Tip="{DynamicResource Text.Repository.Search}">
+                <Path Width="14" Height="14" Data="{StaticResource Icons.Search}"/>
+            </ToggleButton>
+            
         </StackPanel>
 
         <StackPanel Grid.Column="1" Orientation="Horizontal">

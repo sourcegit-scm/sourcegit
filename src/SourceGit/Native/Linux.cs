@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Versioning;
 
@@ -30,14 +31,15 @@ namespace SourceGit.Native
 
         public string FindVSCode()
         {
-            if (File.Exists("/usr/share/code/code")) return "/usr/share/code/code";
+            var toolPath = "/usr/share/code/code";
+            if (File.Exists(toolPath)) return toolPath;
             return string.Empty;
         }
         
         public string FindFleet()
         {
-            var path = "~/.local/share/JetBrains/Toolbox/apps/fleet/bin/Fleet";
-            if (File.Exists(path)) return path;
+            var toolPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.local/share/JetBrains/Toolbox/apps/fleet/bin/Fleet";
+            if (File.Exists(toolPath)) return toolPath;
             return string.Empty;
         }
 

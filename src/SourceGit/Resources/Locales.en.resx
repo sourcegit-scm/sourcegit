@@ -1305,6 +1305,9 @@
   <data name="Text.Preference.Appearance" xml:space="preserve">
     <value>APPEARANCE</value>
   </data>
+    <data name="Text.Repository.OpenWith" xml:space="preserve">
+        <value>Open in</value>
+    </data>
   <data name="Text.SelfUpdate.Title" xml:space="preserve">
     <value>Software Update</value>
   </data>

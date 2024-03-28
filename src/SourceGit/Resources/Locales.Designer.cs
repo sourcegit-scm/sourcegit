@@ -2994,6 +2994,15 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open in.
+        /// </summary>
+        public static string Text_Repository_OpenWith {
+            get {
+                return ResourceManager.GetString("Text.Repository.OpenWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         public static string Text_Repository_Refresh {

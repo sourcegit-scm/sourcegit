@@ -103,15 +103,15 @@ namespace SourceGit.Native
 
         public string FindVSCode()
         {
-            var vscodePath = Environment.ExpandEnvironmentVariables("%USERPROFILE%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe");
-            if (File.Exists(vscodePath)) return vscodePath;
+            var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe");
+            if (File.Exists(toolPath)) return toolPath;
             return string.Empty;
         }
         
         public string FindFleet()
         {
-            var vscodePath = Environment.ExpandEnvironmentVariables("%USERPROFILE%\\AppData\\Local\\Programs\\Fleet\\Fleet.exe");
-            if (File.Exists(vscodePath)) return vscodePath;
+            var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Fleet\\Fleet.exe");
+            if (File.Exists(toolPath)) return toolPath;
             return string.Empty;
         }
 

@@ -291,5 +291,14 @@ namespace SourceGit.Views
                 e.Handled = true;
             }
         }
+
+        private void OpenInVSCode(object sender, RoutedEventArgs e)
+        {
+            (DataContext as ViewModels.Repository).OpenInVSCode();
+        }
+        private void OpenInFleet(object sender, RoutedEventArgs e)
+        {
+            (DataContext as ViewModels.Repository).OpenInFleet();
+        }
     }
 }
