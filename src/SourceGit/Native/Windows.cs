@@ -60,7 +60,11 @@ namespace SourceGit.Native
             builder.With(new FontManagerOptions()
             {
                 DefaultFamilyName = SystemParameters.GetSystemDefaultFontName() ?? "Segoe UI",
-                FontFallbacks = [new FontFallback { FontFamily = "Segoe UI" }],
+                FontFallbacks =
+                [
+                    new FontFallback { FontFamily = "Segoe UI" },
+                    new FontFallback { FontFamily = "Tahoma" },
+                ],
             });
 
             // Fix drop shadow issue on Windows 10
