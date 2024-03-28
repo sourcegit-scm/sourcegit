@@ -97,8 +97,6 @@ namespace SourceGit.Native
             });
         }
 
-        private static readonly IBackend _backend;
-
         public static void OpenInFleet(string repo)
         {
             if (string.IsNullOrEmpty(FleetExecutableFile))
@@ -115,5 +113,7 @@ namespace SourceGit.Native
                 UseShellExecute = false,
             });
         }
+
+        private static readonly IBackend _backend;
     }
 }

@@ -189,7 +189,15 @@ namespace SourceGit.Native
             }
         }
 
-        private static void OpenFolderAndSelectFile(string folderPath)
+        public void OpenWithDefaultEditor(string file)
+        {
+            var info = new FileInfo(file);
+            var start = new ProcessStartInfo("cmd", $"/c start {info.FullName}");
+            start.CreateNoWindow = true;
+            Process.Start(start);
+        }
+
+        private void OpenFolderAndSelectFile(string folderPath)
         {
             var pidl = ILCreateFromPathW(folderPath);
 
@@ -201,14 +209,6 @@ namespace SourceGit.Native
             {
                 ILFree(pidl);
             }
-        }
-
-        public void OpenWithDefaultEditor(string file)
-        {
-            var info = new FileInfo(file);
-            var start = new ProcessStartInfo("cmd", $"/c start {info.FullName}");
-            start.CreateNoWindow = true;
-            Process.Start(start);
         }
     }
 }
