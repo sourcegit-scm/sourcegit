@@ -111,7 +111,7 @@
 
           <!-- Image Diff -->
           <DataTemplate DataType="m:ImageDiff">
-            <Grid Margin="8,8,8,8" RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center">
+            <Grid Margin="8,8,8,0" RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center">
               <Grid Grid.Row="0" Margin="0,0,0,8" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
                 <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
                   <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
@@ -138,7 +138,7 @@
                       VerticalAlignment="Top"
                       TickPlacement="BottomRight"
                       TickFrequency="0.1"
-                      Margin="0,8,0,0"
+                      Margin="0,4,0,0"
                       Foreground="{DynamicResource Brush.Border1}"
                       Value="0.5">
                 <Slider.Resources>
