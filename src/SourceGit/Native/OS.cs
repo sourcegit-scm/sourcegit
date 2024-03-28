@@ -52,32 +52,32 @@ namespace SourceGit.Native
 
         public static void SetupApp(AppBuilder builder)
         {
-            _backend?.SetupApp(builder);
+            _backend.SetupApp(builder);
         }
 
         public static string FindGitExecutable()
         {
-            return _backend?.FindGitExecutable();
+            return _backend.FindGitExecutable();
         }
 
         public static void OpenInFileManager(string path, bool select = false)
         {
-            _backend?.OpenInFileManager(path, select);
+            _backend.OpenInFileManager(path, select);
         }
 
         public static void OpenBrowser(string url)
         {
-            _backend?.OpenBrowser(url);
+            _backend.OpenBrowser(url);
         }
 
         public static void OpenTerminal(string workdir)
         {
-            _backend?.OpenTerminal(workdir);
+            _backend.OpenTerminal(workdir);
         }
 
         public static void OpenWithDefaultEditor(string file)
         {
-            _backend?.OpenWithDefaultEditor(file);
+            _backend.OpenWithDefaultEditor(file);
         }
 
         public static void OpenInVSCode(string repo)
@@ -97,7 +97,7 @@ namespace SourceGit.Native
             });
         }
 
-        private static readonly IBackend _backend = null;
+        private static readonly IBackend _backend;
 
         public static void OpenInFleet(string repo)
         {
