@@ -91,7 +91,7 @@
     </Grid>
 
     <!-- Custom window sizer for Linux -->
-    <Grid Grid.Row="0" Grid.RowSpan="3" IsVisible="{OnPlatform False, Linux=True}">
+    <Grid Grid.Row="0" Grid.RowSpan="3" IsVisible="{OnPlatform False, Linux=True}" IsHitTestVisible="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.IsNormal}}">
       <Border Width="4" Height="4"
               Background="Transparent"
               HorizontalAlignment="Left" VerticalAlignment="Top"

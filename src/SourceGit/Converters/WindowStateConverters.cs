@@ -51,5 +51,8 @@ namespace SourceGit.Converters
                     return Application.Current?.FindResource("Icons.Window.Maximize") as StreamGeometry;
                 }
             });
+
+        public static FuncValueConverter<WindowState, bool> IsNormal =
+            new FuncValueConverter<WindowState, bool>(state => state == WindowState.Normal);
     }
 }
