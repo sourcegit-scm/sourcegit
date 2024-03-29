@@ -110,7 +110,17 @@ namespace SourceGit.Views
 
             if (left != null)
             {
-                return GetDesiredSize(left.Size, availableSize);
+                var lSize = GetDesiredSize(left.Size, availableSize);
+                if (right != null)
+                {
+                    var rSize = GetDesiredSize(right.Size, availableSize);
+                    if (rSize.Width > lSize.Width) return rSize;
+                    return lSize;
+                }
+                else
+                {
+                    return lSize;
+                }
             }
             else if (right != null)
             {
