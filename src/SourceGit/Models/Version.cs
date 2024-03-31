@@ -23,7 +23,8 @@ namespace SourceGit.Models
             get
             {
                 var match = REG_VERSION_TAG().Match(TagName);
-                if (!match.Success) return false;
+                if (!match.Success)
+                    return false;
 
                 var major = int.Parse(match.Groups[1].Value);
                 var minor = int.Parse(match.Groups[2].Value);

@@ -23,11 +23,13 @@ namespace SourceGit.Commands
         protected override void OnReadline(string line)
         {
             var dateEndIdx = line.IndexOf('$', StringComparison.Ordinal);
-            if (dateEndIdx == -1) return;
+            if (dateEndIdx == -1)
+                return;
 
             var dateStr = line.Substring(0, dateEndIdx);
             var date = 0.0;
-            if (!double.TryParse(dateStr, out date)) return;
+            if (!double.TryParse(dateStr, out date))
+                return;
 
             _statistics.AddCommit(line.Substring(dateEndIdx + 1), date);
         }

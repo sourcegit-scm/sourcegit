@@ -6,8 +6,8 @@ namespace SourceGit.Commands
 {
     public partial class QueryBranches : Command
     {
-        private static readonly string PREFIX_LOCAL = "refs/heads/";
-        private static readonly string PREFIX_REMOTE = "refs/remotes/";
+        private const string PREFIX_LOCAL = "refs/heads/";
+        private const string PREFIX_REMOTE = "refs/remotes/";
 
         [GeneratedRegex(@"^(\d+)\s(\d+)$")]
         private static partial Regex REG_AHEAD_BEHIND();
@@ -44,11 +44,13 @@ namespace SourceGit.Commands
         protected override void OnReadline(string line)
         {
             var parts = line.Split('$');
-            if (parts.Length != 5) return;
+            if (parts.Length != 5)
+                return;
 
             var branch = new Models.Branch();
             var refName = parts[0];
-            if (refName.EndsWith("/HEAD", StringComparison.Ordinal)) return;
+            if (refName.EndsWith("/HEAD", StringComparison.Ordinal))
+                return;
 
             if (refName.StartsWith(PREFIX_LOCAL, StringComparison.Ordinal))
             {
@@ -59,7 +61,8 @@ namespace SourceGit.Commands
             {
                 var name = refName.Substring(PREFIX_REMOTE.Length);
                 var shortNameIdx = name.IndexOf('/', StringComparison.Ordinal);
-                if (shortNameIdx < 0) return;
+                if (shortNameIdx < 0)
+                    return;
 
                 branch.Remote = name.Substring(0, shortNameIdx);
                 branch.Name = name.Substring(branch.Remote.Length + 1);
@@ -87,16 +90,20 @@ namespace SourceGit.Commands
             cmd.Args = $"rev-list --left-right --count {local}...{upstream}";
 
             var rs = cmd.ReadToEnd();
-            if (!rs.IsSuccess) return string.Empty;
+            if (!rs.IsSuccess)
+                return string.Empty;
 
             var match = REG_AHEAD_BEHIND().Match(rs.StdOut);
-            if (!match.Success) return string.Empty;
+            if (!match.Success)
+                return string.Empty;
 
             var ahead = int.Parse(match.Groups[1].Value);
             var behind = int.Parse(match.Groups[2].Value);
             var track = "";
-            if (ahead > 0) track += $"{ahead}↑";
-            if (behind > 0) track += $" {behind}↓";
+            if (ahead > 0)
+                track += $"{ahead}↑";
+            if (behind > 0)
+                track += $" {behind}↓";
             return track.Trim();
         }
 

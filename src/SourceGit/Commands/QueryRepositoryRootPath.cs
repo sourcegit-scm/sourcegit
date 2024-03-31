@@ -12,7 +12,8 @@
         public string Result()
         {
             var rs = ReadToEnd().StdOut;
-            if (string.IsNullOrEmpty(rs)) return null;
+            if (string.IsNullOrEmpty(rs))
+                return null;
             return rs.Trim();
         }
     }

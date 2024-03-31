@@ -97,9 +97,11 @@ namespace SourceGit.ViewModels
         public void Cleanup()
         {
             _repo = null;
-            if (_stashes != null) _stashes.Clear();
+            if (_stashes != null)
+                _stashes.Clear();
             _selectedStash = null;
-            if (_changes != null) _changes.Clear();
+            if (_changes != null)
+                _changes.Clear();
             _selectedChange = null;
             _diffContext = null;
         }

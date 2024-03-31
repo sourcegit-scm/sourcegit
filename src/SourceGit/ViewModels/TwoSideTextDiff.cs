@@ -42,12 +42,14 @@ namespace SourceGit.ViewModels
             if (Old.Count < New.Count)
             {
                 int diff = New.Count - Old.Count;
-                for (int i = 0; i < diff; i++) Old.Add(new Models.TextDiffLine());
+                for (int i = 0; i < diff; i++)
+                    Old.Add(new Models.TextDiffLine());
             }
             else if (Old.Count > New.Count)
             {
                 int diff = Old.Count - New.Count;
-                for (int i = 0; i < diff; i++) New.Add(new Models.TextDiffLine());
+                for (int i = 0; i < diff; i++)
+                    New.Add(new Models.TextDiffLine());
             }
         }
     }

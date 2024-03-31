@@ -31,7 +31,8 @@ namespace SourceGit.Views
         private void StageSelected(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.WorkingCopy;
-            if (vm == null) return;
+            if (vm == null)
+                return;
 
             List<Models.Change> selected = new List<Models.Change>();
             switch (ViewModels.Preference.Instance.UnstagedChangeViewMode)
@@ -39,19 +40,22 @@ namespace SourceGit.Views
                 case Models.ChangeViewMode.List:
                     foreach (var item in unstagedList.SelectedItems)
                     {
-                        if (item is Models.Change change) selected.Add(change);
+                        if (item is Models.Change change)
+                            selected.Add(change);
                     }
                     break;
                 case Models.ChangeViewMode.Grid:
                     foreach (var item in unstagedGrid.SelectedItems)
                     {
-                        if (item is Models.Change change) selected.Add(change);
+                        if (item is Models.Change change)
+                            selected.Add(change);
                     }
                     break;
                 default:
                     foreach (var item in unstagedTree.SelectedItems)
                     {
-                        if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
+                        if (item is ViewModels.FileTreeNode node)
+                            CollectChangesFromNode(selected, node);
                     }
                     break;
             }
@@ -63,7 +67,8 @@ namespace SourceGit.Views
         private void StageAll(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.WorkingCopy;
-            if (vm == null) return;
+            if (vm == null)
+                return;
 
             vm.StageChanges(vm.Unstaged);
             e.Handled = true;
@@ -72,7 +77,8 @@ namespace SourceGit.Views
         private void UnstageSelected(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.WorkingCopy;
-            if (vm == null) return;
+            if (vm == null)
+                return;
 
             List<Models.Change> selected = new List<Models.Change>();
             switch (ViewModels.Preference.Instance.StagedChangeViewMode)
@@ -80,19 +86,22 @@ namespace SourceGit.Views
                 case Models.ChangeViewMode.List:
                     foreach (var item in stagedList.SelectedItems)
                     {
-                        if (item is Models.Change change) selected.Add(change);
+                        if (item is Models.Change change)
+                            selected.Add(change);
                     }
                     break;
                 case Models.ChangeViewMode.Grid:
                     foreach (var item in stagedGrid.SelectedItems)
                     {
-                        if (item is Models.Change change) selected.Add(change);
+                        if (item is Models.Change change)
+                            selected.Add(change);
                     }
                     break;
                 default:
                     foreach (var item in stagedTree.SelectedItems)
                     {
-                        if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
+                        if (item is ViewModels.FileTreeNode node)
+                            CollectChangesFromNode(selected, node);
                     }
                     break;
             }
@@ -104,7 +113,8 @@ namespace SourceGit.Views
         private void UnstageAll(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.WorkingCopy;
-            if (vm == null) return;
+            if (vm == null)
+                return;
 
             vm.UnstageChanges(vm.Staged);
             e.Handled = true;
@@ -118,7 +128,8 @@ namespace SourceGit.Views
                 List<Models.Change> selected = new List<Models.Change>();
                 foreach (var item in datagrid.SelectedItems)
                 {
-                    if (item is Models.Change change) selected.Add(change);
+                    if (item is Models.Change change)
+                        selected.Add(change);
                 }
 
                 vm.StageChanges(selected);
@@ -135,7 +146,8 @@ namespace SourceGit.Views
                 List<Models.Change> selected = new List<Models.Change>();
                 foreach (var item in tree.SelectedItems)
                 {
-                    if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
+                    if (item is ViewModels.FileTreeNode node)
+                        CollectChangesFromNode(selected, node);
                 }
 
                 vm.StageChanges(selected);
@@ -152,7 +164,8 @@ namespace SourceGit.Views
                 List<Models.Change> selected = new List<Models.Change>();
                 foreach (var item in datagrid.SelectedItems)
                 {
-                    if (item is Models.Change change) selected.Add(change);
+                    if (item is Models.Change change)
+                        selected.Add(change);
                 }
 
                 vm.UnstageChanges(selected);
@@ -169,7 +182,8 @@ namespace SourceGit.Views
                 List<Models.Change> selected = new List<Models.Change>();
                 foreach (var item in tree.SelectedItems)
                 {
-                    if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
+                    if (item is ViewModels.FileTreeNode node)
+                        CollectChangesFromNode(selected, node);
                 }
 
                 vm.UnstageChanges(selected);
@@ -186,11 +200,13 @@ namespace SourceGit.Views
                 List<Models.Change> selected = new List<Models.Change>();
                 foreach (var item in datagrid.SelectedItems)
                 {
-                    if (item is Models.Change change) selected.Add(change);
+                    if (item is Models.Change change)
+                        selected.Add(change);
                 }
 
                 var menu = vm.CreateContextMenuForUnstagedChanges(selected);
-                if (menu != null) menu.Open(datagrid);
+                if (menu != null)
+                    menu.Open(datagrid);
             }
 
             e.Handled = true;
@@ -204,11 +220,13 @@ namespace SourceGit.Views
                 List<Models.Change> selected = new List<Models.Change>();
                 foreach (var item in tree.SelectedItems)
                 {
-                    if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
+                    if (item is ViewModels.FileTreeNode node)
+                        CollectChangesFromNode(selected, node);
                 }
 
                 var menu = vm.CreateContextMenuForUnstagedChanges(selected);
-                if (menu != null) menu.Open(tree);
+                if (menu != null)
+                    menu.Open(tree);
             }
 
             e.Handled = true;
@@ -222,11 +240,13 @@ namespace SourceGit.Views
                 List<Models.Change> selected = new List<Models.Change>();
                 foreach (var item in datagrid.SelectedItems)
                 {
-                    if (item is Models.Change change) selected.Add(change);
+                    if (item is Models.Change change)
+                        selected.Add(change);
                 }
 
                 var menu = vm.CreateContextMenuForStagedChanges(selected);
-                if (menu != null) menu.Open(datagrid);
+                if (menu != null)
+                    menu.Open(datagrid);
             }
 
             e.Handled = true;
@@ -240,11 +260,13 @@ namespace SourceGit.Views
                 List<Models.Change> selected = new List<Models.Change>();
                 foreach (var item in tree.SelectedItems)
                 {
-                    if (item is ViewModels.FileTreeNode node) CollectChangesFromNode(selected, node);
+                    if (item is ViewModels.FileTreeNode node)
+                        CollectChangesFromNode(selected, node);
                 }
 
                 var menu = vm.CreateContextMenuForStagedChanges(selected);
-                if (menu != null) menu.Open(tree);
+                if (menu != null)
+                    menu.Open(tree);
             }
 
             e.Handled = true;
@@ -292,12 +314,14 @@ namespace SourceGit.Views
         {
             if (node.IsFolder)
             {
-                foreach (var child in node.Children) CollectChangesFromNode(outs, child);
+                foreach (var child in node.Children)
+                    CollectChangesFromNode(outs, child);
             }
             else
             {
                 var change = node.Backend as Models.Change;
-                if (change != null && !outs.Contains(change)) outs.Add(change);
+                if (change != null && !outs.Contains(change))
+                    outs.Add(change);
             }
         }
 

@@ -53,7 +53,8 @@ namespace SourceGit.Models
         {
             if (enabled)
             {
-                if (_lockCount > 0) _lockCount--;
+                if (_lockCount > 0)
+                    _lockCount--;
             }
             else
             {
@@ -95,7 +96,8 @@ namespace SourceGit.Models
 
         private void Tick(object sender)
         {
-            if (_lockCount > 0) return;
+            if (_lockCount > 0)
+                return;
 
             var now = DateTime.Now.ToFileTime();
             if (_updateBranch > 0 && now > _updateBranch)
@@ -153,7 +155,8 @@ namespace SourceGit.Models
 
         private void OnRepositoryChanged(object o, FileSystemEventArgs e)
         {
-            if (string.IsNullOrEmpty(e.Name)) return;
+            if (string.IsNullOrEmpty(e.Name))
+                return;
 
             var name = e.Name.Replace("\\", "/");
             if (name.StartsWith("modules", StringComparison.Ordinal))
@@ -183,10 +186,12 @@ namespace SourceGit.Models
 
         private void OnWorkingCopyChanged(object o, FileSystemEventArgs e)
         {
-            if (string.IsNullOrEmpty(e.Name)) return;
+            if (string.IsNullOrEmpty(e.Name))
+                return;
 
             var name = e.Name.Replace("\\", "/");
-            if (name == ".git" || name.StartsWith(".git/", StringComparison.Ordinal)) return;
+            if (name == ".git" || name.StartsWith(".git/", StringComparison.Ordinal))
+                return;
             _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
         }
 

@@ -69,7 +69,8 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is InitGitFlow initializer)
             {
-                if (initializer._master == initializer._develop) return new ValidationResult("Develop branch has the same name with master branch!");
+                if (initializer._master == initializer._develop)
+                    return new ValidationResult("Develop branch has the same name with master branch!");
             }
 
             return ValidationResult.Success;

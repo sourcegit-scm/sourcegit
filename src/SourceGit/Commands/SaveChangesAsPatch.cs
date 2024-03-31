@@ -15,7 +15,8 @@ namespace SourceGit.Commands
             {
                 foreach (var change in changes)
                 {
-                    if (!ProcessSingleChange(repo, new Models.DiffOption(change, isUnstaged), sw)) return false;
+                    if (!ProcessSingleChange(repo, new Models.DiffOption(change, isUnstaged), sw))
+                        return false;
                 }
             }
 

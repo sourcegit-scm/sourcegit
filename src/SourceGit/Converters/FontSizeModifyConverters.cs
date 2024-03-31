@@ -4,10 +4,10 @@ namespace SourceGit.Converters
 {
     public static class FontSizeModifyConverters
     {
-        public static FuncValueConverter<double, double> Increase =
+        public static readonly FuncValueConverter<double, double> Increase =
             new FuncValueConverter<double, double>(v => v + 1.0);
 
-        public static FuncValueConverter<double, double> Decrease =
+        public static readonly FuncValueConverter<double, double> Decrease =
             new FuncValueConverter<double, double>(v => v - 1.0);
     }
 }

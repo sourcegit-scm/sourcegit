@@ -9,7 +9,7 @@ namespace SourceGit.Converters
 {
     public static class WindowStateConverters
     {
-        public static FuncValueConverter<WindowState, Thickness> ToContentMargin =
+        public static readonly FuncValueConverter<WindowState, Thickness> ToContentMargin =
             new FuncValueConverter<WindowState, Thickness>(state =>
             {
                 if (OperatingSystem.IsWindows() && state == WindowState.Maximized)
@@ -26,7 +26,7 @@ namespace SourceGit.Converters
                 }
             });
 
-        public static FuncValueConverter<WindowState, GridLength> ToTitleBarHeight =
+        public static readonly FuncValueConverter<WindowState, GridLength> ToTitleBarHeight =
             new FuncValueConverter<WindowState, GridLength>(state =>
             {
                 if (state == WindowState.Maximized)
@@ -39,7 +39,7 @@ namespace SourceGit.Converters
                 }
             });
 
-        public static FuncValueConverter<WindowState, StreamGeometry> ToMaxOrRestoreIcon =
+        public static readonly FuncValueConverter<WindowState, StreamGeometry> ToMaxOrRestoreIcon =
             new FuncValueConverter<WindowState, StreamGeometry>(state =>
             {
                 if (state == WindowState.Maximized)
@@ -52,7 +52,7 @@ namespace SourceGit.Converters
                 }
             });
 
-        public static FuncValueConverter<WindowState, bool> IsNormal =
+        public static readonly FuncValueConverter<WindowState, bool> IsNormal =
             new FuncValueConverter<WindowState, bool>(state => state == WindowState.Normal);
     }
 }

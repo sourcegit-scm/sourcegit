@@ -52,7 +52,8 @@ namespace SourceGit.ViewModels
                 foreach (var b in starter._repo.Branches)
                 {
                     var test = b.IsLocal ? b.Name : $"{b.Remote}/{b.Name}";
-                    if (test == check) return new ValidationResult("A branch with same name already exists!");
+                    if (test == check)
+                        return new ValidationResult("A branch with same name already exists!");
                 }
             }
 

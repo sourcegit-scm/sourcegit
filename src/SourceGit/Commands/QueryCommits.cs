@@ -5,8 +5,8 @@ namespace SourceGit.Commands
 {
     public class QueryCommits : Command
     {
-        private static readonly string GPGSIG_START = "gpgsig -----BEGIN PGP SIGNATURE-----";
-        private static readonly string GPGSIG_END = " -----END PGP SIGNATURE-----";
+        private const string GPGSIG_START = "gpgsig -----BEGIN PGP SIGNATURE-----";
+        private const string GPGSIG_END = " -----END PGP SIGNATURE-----";
 
         private readonly List<Models.Commit> commits = new List<Models.Commit>();
         private Models.Commit current = null;
@@ -43,7 +43,8 @@ namespace SourceGit.Commands
         {
             if (isSkipingGpgsig)
             {
-                if (line.StartsWith(GPGSIG_END, StringComparison.Ordinal)) isSkipingGpgsig = false;
+                if (line.StartsWith(GPGSIG_END, StringComparison.Ordinal))
+                    isSkipingGpgsig = false;
                 return;
             }
             else if (line.StartsWith(GPGSIG_START, StringComparison.Ordinal))
@@ -72,13 +73,15 @@ namespace SourceGit.Commands
                 {
                     current.SHA = line.Substring(0, decoratorStart).Trim();
                     current.IsMerged = ParseDecorators(current.Decorators, line.Substring(decoratorStart + 1));
-                    if (!isHeadFounded) isHeadFounded = current.IsMerged;
+                    if (!isHeadFounded)
+                        isHeadFounded = current.IsMerged;
                 }
 
                 return;
             }
 
-            if (current == null) return;
+            if (current == null)
+                return;
 
             if (line.StartsWith("tree ", StringComparison.Ordinal))
             {
@@ -182,10 +185,12 @@ namespace SourceGit.Commands
 
             var rs = ReadToEnd();
             var shas = rs.StdOut.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            if (shas.Length == 0) return;
+            if (shas.Length == 0)
+                return;
 
             var set = new HashSet<string>();
-            foreach (var sha in shas) set.Add(sha);
+            foreach (var sha in shas)
+                set.Add(sha);
 
             foreach (var c in commits)
             {

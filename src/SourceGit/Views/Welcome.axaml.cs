@@ -64,7 +64,8 @@ namespace SourceGit.Views
             {
                 var delta = e.GetPosition(grid) - _pressedTreeNodePosition;
                 var sizeSquired = delta.X * delta.X + delta.Y * delta.Y;
-                if (sizeSquired < 64) return;
+                if (sizeSquired < 64)
+                    return;
 
                 _startDragTreeNode = true;
 
@@ -127,10 +128,12 @@ namespace SourceGit.Views
             if (e.Data.Contains("MovedRepositoryTreeNode") || e.Data.Contains(DataFormats.Files))
             {
                 var grid = sender as Grid;
-                if (grid == null) return;
+                if (grid == null)
+                    return;
 
                 var to = grid.DataContext as ViewModels.RepositoryNode;
-                if (to == null) return;
+                if (to == null)
+                    return;
 
                 if (to.IsRepository)
                 {
@@ -148,7 +151,8 @@ namespace SourceGit.Views
         private async void DropOnTreeNode(object sender, DragEventArgs e)
         {
             var grid = sender as Grid;
-            if (grid == null) return;
+            if (grid == null)
+                return;
 
             var to = grid.DataContext as ViewModels.RepositoryNode;
             if (to == null || to.IsRepository)
@@ -186,7 +190,8 @@ namespace SourceGit.Views
         private void OnDoubleTappedTreeNode(object sender, TappedEventArgs e)
         {
             var grid = sender as Grid;
-            if (grid == null) return;
+            if (grid == null)
+                return;
 
             var to = grid.DataContext as ViewModels.RepositoryNode;
             if (to == null || !to.IsRepository)
@@ -201,7 +206,8 @@ namespace SourceGit.Views
 
         private async void OpenLocalRepository(object sender, RoutedEventArgs e)
         {
-            if (!ViewModels.PopupHost.CanCreatePopup()) return;
+            if (!ViewModels.PopupHost.CanCreatePopup())
+                return;
 
             var topLevel = TopLevel.GetTopLevel(this);
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
@@ -219,8 +225,10 @@ namespace SourceGit.Views
 
             if (!Directory.Exists(path))
             {
-                if (File.Exists(path)) path = Path.GetDirectoryName(path);
-                else return null;
+                if (File.Exists(path))
+                    path = Path.GetDirectoryName(path);
+                else
+                    return null;
             }
 
             return Task.Run(() =>

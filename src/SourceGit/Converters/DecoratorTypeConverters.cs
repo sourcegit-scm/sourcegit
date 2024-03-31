@@ -7,14 +7,15 @@ namespace SourceGit.Converters
 {
     public static class DecoratorTypeConverters
     {
-        public static FuncValueConverter<Models.DecoratorType, IBrush> ToBackground =
+        public static readonly FuncValueConverter<Models.DecoratorType, IBrush> ToBackground =
             new FuncValueConverter<Models.DecoratorType, IBrush>(v =>
             {
-                if (v == Models.DecoratorType.Tag) return Models.DecoratorResources.Backgrounds[0];
+                if (v == Models.DecoratorType.Tag)
+                    return Models.DecoratorResources.Backgrounds[0];
                 return Models.DecoratorResources.Backgrounds[1];
             });
 
-        public static FuncValueConverter<Models.DecoratorType, StreamGeometry> ToIcon =
+        public static readonly FuncValueConverter<Models.DecoratorType, StreamGeometry> ToIcon =
             new FuncValueConverter<Models.DecoratorType, StreamGeometry>(v =>
             {
                 var key = "Icons.Tag";

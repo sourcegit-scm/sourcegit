@@ -37,7 +37,8 @@ namespace SourceGit.ViewModels
                 foreach (var id in Preference.Instance.OpenedTabs)
                 {
                     var node = Preference.FindNode(id);
-                    if (node == null) continue;
+                    if (node == null)
+                        continue;
 
                     OpenRepositoryInTab(node, null);
                 }
@@ -58,7 +59,8 @@ namespace SourceGit.ViewModels
             {
                 foreach (var page in Pages)
                 {
-                    if (page.Node.IsRepository) Preference.Instance.OpenedTabs.Add(page.Node.Id);
+                    if (page.Node.IsRepository)
+                        Preference.Instance.OpenedTabs.Add(page.Node.Id);
                 }
             }
 
@@ -83,7 +85,8 @@ namespace SourceGit.ViewModels
 
         public void GotoNextTab()
         {
-            if (Pages.Count == 1) return;
+            if (Pages.Count == 1)
+                return;
 
             var activeIdx = Pages.IndexOf(_activePage);
             var nextIdx = (activeIdx + 1) % Pages.Count;
@@ -99,7 +102,8 @@ namespace SourceGit.ViewModels
             }
 
             LauncherPage page = param as LauncherPage;
-            if (page == null) page = _activePage;
+            if (page == null)
+                page = _activePage;
 
             var removeIdx = Pages.IndexOf(page);
             var activeIdx = Pages.IndexOf(_activePage);
@@ -135,16 +139,19 @@ namespace SourceGit.ViewModels
 
         public void CloseOtherTabs(object param)
         {
-            if (Pages.Count == 1) return;
+            if (Pages.Count == 1)
+                return;
 
             var page = param as LauncherPage;
-            if (page == null) page = _activePage;
+            if (page == null)
+                page = _activePage;
 
             ActivePage = page;
 
             foreach (var one in Pages)
             {
-                if (one.Node.Id != page.Node.Id) CloseRepositoryInTab(one);
+                if (one.Node.Id != page.Node.Id)
+                    CloseRepositoryInTab(one);
             }
 
             Pages = new AvaloniaList<LauncherPage> { page };
@@ -156,7 +163,8 @@ namespace SourceGit.ViewModels
         public void CloseRightTabs(object param)
         {
             LauncherPage page = param as LauncherPage;
-            if (page == null) page = _activePage;
+            if (page == null)
+                page = _activePage;
 
             var endIdx = Pages.IndexOf(page);
             var activeIdx = Pages.IndexOf(_activePage);

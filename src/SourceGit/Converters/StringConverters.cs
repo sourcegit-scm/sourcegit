@@ -2,7 +2,6 @@
 using System.Globalization;
 
 using Avalonia.Data.Converters;
-using Avalonia.Media;
 using Avalonia.Styling;
 
 namespace SourceGit.Converters
@@ -22,7 +21,7 @@ namespace SourceGit.Converters
             }
         }
 
-        public static ToLocaleConverter ToLocale = new ToLocaleConverter();
+        public static readonly ToLocaleConverter ToLocale = new ToLocaleConverter();
 
         public class ToThemeConverter : IValueConverter
         {
@@ -50,7 +49,7 @@ namespace SourceGit.Converters
             }
         }
 
-        public static ToThemeConverter ToTheme = new ToThemeConverter();
+        public static readonly ToThemeConverter ToTheme = new ToThemeConverter();
 
         public class FormatByResourceKeyConverter : IValueConverter
         {
@@ -66,9 +65,9 @@ namespace SourceGit.Converters
             }
         }
 
-        public static FormatByResourceKeyConverter FormatByResourceKey = new FormatByResourceKeyConverter();
+        public static readonly FormatByResourceKeyConverter FormatByResourceKey = new FormatByResourceKeyConverter();
 
-        public static FuncValueConverter<string, string> ToShortSHA =
+        public static readonly FuncValueConverter<string, string> ToShortSHA =
             new FuncValueConverter<string, string>(v => v.Length > 10 ? v.Substring(0, 10) : v);
     }
 }

@@ -46,8 +46,10 @@ namespace SourceGit.Commands
 
         protected override void OnReadline(string line)
         {
-            if (_result.IsBinary) return;
-            if (string.IsNullOrEmpty(line)) return;
+            if (_result.IsBinary)
+                return;
+            if (string.IsNullOrEmpty(line))
+                return;
 
             if (line.IndexOf('\0', StringComparison.Ordinal) >= 0)
             {
@@ -57,7 +59,8 @@ namespace SourceGit.Commands
             }
 
             var match = REG_FORMAT().Match(line);
-            if (!match.Success) return;
+            if (!match.Success)
+                return;
 
             _content.AppendLine(match.Groups[4].Value);
 

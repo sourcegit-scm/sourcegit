@@ -89,7 +89,8 @@ namespace SourceGit.Views
                 var sysMonoFonts = new List<FontFamily>();
                 foreach (var font in FontManager.Current.SystemFonts)
                 {
-                    if (font == curMonoFont) continue;
+                    if (font == curMonoFont)
+                        continue;
 
                     var typeface = new Typeface(font);
                     var testI = new FormattedText(
@@ -120,12 +121,18 @@ namespace SourceGit.Views
             {
                 var config = new Commands.Config(null).ListAll();
 
-                if (config.ContainsKey("user.name")) DefaultUser = config["user.name"];
-                if (config.ContainsKey("user.email")) DefaultEmail = config["user.email"];
-                if (config.ContainsKey("user.signingkey")) GPGUserKey = config["user.signingkey"];
-                if (config.ContainsKey("core.autocrlf")) CRLFMode = Models.CRLFMode.Supported.Find(x => x.Value == config["core.autocrlf"]);
-                if (config.ContainsKey("commit.gpgsign")) EnableGPGSigning = (config["commit.gpgsign"] == "true");
-                if (config.ContainsKey("gpg.program")) GPGExecutableFile = config["gpg.program"];
+                if (config.TryGetValue("user.name", out var name))
+                    DefaultUser = name;
+                if (config.TryGetValue("user.email", out var email))
+                    DefaultEmail = email;
+                if (config.TryGetValue("user.signingkey", out var signingKey))
+                    GPGUserKey = signingKey;
+                if (config.TryGetValue("core.autocrlf", out var crlf))
+                    CRLFMode = Models.CRLFMode.Supported.Find(x => x.Value == crlf);
+                if (config.TryGetValue("commit.gpgsign", out var gpgsign))
+                    EnableGPGSigning = (gpgsign == "true");
+                if (config.TryGetValue("gpg.program", out var gpgProgram))
+                    GPGExecutableFile = gpgProgram;
 
                 ver = new Commands.Version().Query();
             }
@@ -144,19 +151,25 @@ namespace SourceGit.Views
             var cmd = new Commands.Config(null);
 
             var config = cmd.ListAll();
-            var oldUser = config.ContainsKey("user.name") ? config["user.name"] : string.Empty;
-            var oldEmail = config.ContainsKey("user.email") ? config["user.email"] : string.Empty;
-            var oldGPGSignKey = config.ContainsKey("user.signingkey") ? config["user.signingkey"] : string.Empty;
-            var oldCRLF = config.ContainsKey("core.autocrlf") ? config["core.autocrlf"] : string.Empty;
-            var oldGPGSignEnable = config.ContainsKey("commit.gpgsign") ? config["commit.gpgsign"] : "false";
-            var oldGPGExec = config.ContainsKey("gpg.program") ? config["gpg.program"] : string.Empty;
+            var oldUser = config.TryGetValue("user.name", out var user) ? user : string.Empty;
+            var oldEmail = config.TryGetValue("user.email", out var email) ? email : string.Empty;
+            var oldGPGSignKey = config.TryGetValue("user.signingkey", out var signingKey) ? signingKey : string.Empty;
+            var oldCRLF = config.TryGetValue("core.autocrlf", out var crlf) ? crlf : string.Empty;
+            var oldGPGSignEnable = config.TryGetValue("commit.gpgsign", out var gpgsign) ? gpgsign : "false";
+            var oldGPGExec = config.TryGetValue("gpg.program", out var program) ? program : string.Empty;
 
-            if (DefaultUser != oldUser) cmd.Set("user.name", DefaultUser);
-            if (DefaultEmail != oldEmail) cmd.Set("user.email", DefaultEmail);
-            if (GPGUserKey != oldGPGSignKey) cmd.Set("user.signingkey", GPGUserKey);
-            if (CRLFMode != null && CRLFMode.Value != oldCRLF) cmd.Set("core.autocrlf", CRLFMode.Value);
-            if (EnableGPGSigning != (oldGPGSignEnable == "true")) cmd.Set("commit.gpgsign", EnableGPGSigning ? "true" : "false");
-            if (GPGExecutableFile != oldGPGExec) cmd.Set("gpg.program", GPGExecutableFile);
+            if (DefaultUser != oldUser)
+                cmd.Set("user.name", DefaultUser);
+            if (DefaultEmail != oldEmail)
+                cmd.Set("user.email", DefaultEmail);
+            if (GPGUserKey != oldGPGSignKey)
+                cmd.Set("user.signingkey", GPGUserKey);
+            if (CRLFMode != null && CRLFMode.Value != oldCRLF)
+                cmd.Set("core.autocrlf", CRLFMode.Value);
+            if (EnableGPGSigning != (oldGPGSignEnable == "true"))
+                cmd.Set("commit.gpgsign", EnableGPGSigning ? "true" : "false");
+            if (GPGExecutableFile != oldGPGExec)
+                cmd.Set("gpg.program", GPGExecutableFile);
 
             Close();
         }

@@ -58,7 +58,7 @@ namespace SourceGit.Views
         private static readonly string[] INDICATOR = ["?", "±", "+", "−", "➜", "❏", "U", "★"];
 
         public static readonly StyledProperty<bool> IsWorkingCopyChangeProperty =
-            AvaloniaProperty.Register<Avatar, bool>(nameof(IsWorkingCopyChange));
+            AvaloniaProperty.Register<ChangeStatusIcon, bool>(nameof(IsWorkingCopyChange));
 
         public bool IsWorkingCopyChange
         {
@@ -67,7 +67,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<Models.Change> ChangeProperty =
-            AvaloniaProperty.Register<Avatar, Models.Change>(nameof(Change));
+            AvaloniaProperty.Register<ChangeStatusIcon, Models.Change>(nameof(Change));
 
         public Models.Change Change
         {
@@ -82,7 +82,8 @@ namespace SourceGit.Views
 
         public override void Render(DrawingContext context)
         {
-            if (Change == null || Bounds.Width <= 0) return;
+            if (Change == null || Bounds.Width <= 0)
+                return;
 
             var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
 

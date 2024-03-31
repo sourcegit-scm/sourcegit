@@ -26,7 +26,8 @@ namespace SourceGit.Models
 
         public static void SetThemeByApp(TextMate.Installation installation)
         {
-            if (installation == null) return;
+            if (installation == null)
+                return;
 
             var reg = installation.RegistryOptions as RegistryOptions;
             if (App.Current?.ActualThemeVariant == ThemeVariant.Dark)
@@ -41,7 +42,8 @@ namespace SourceGit.Models
 
         public static void SetGrammarByFileName(TextMate.Installation installation, string filePath)
         {
-            if (installation == null) return;
+            if (installation == null)
+                return;
 
             var ext = Path.GetExtension(filePath);
             if (ext == ".h")

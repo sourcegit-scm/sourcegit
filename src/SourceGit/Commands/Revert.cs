@@ -7,7 +7,8 @@
             WorkingDirectory = repo;
             Context = repo;
             Args = $"revert {commit} --no-edit";
-            if (!autoCommit) Args += "  --no-commit";
+            if (!autoCommit)
+                Args += "  --no-commit";
         }
     }
 }

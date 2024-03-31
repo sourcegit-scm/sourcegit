@@ -14,7 +14,8 @@ namespace SourceGit.ViewModels
             get => _remote;
             set
             {
-                if (SetProperty(ref _remote, value, true)) UseSSH = Models.Remote.IsSSH(value);
+                if (SetProperty(ref _remote, value, true))
+                    UseSSH = Models.Remote.IsSSH(value);
             }
         }
 
@@ -60,13 +61,15 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateRemote(string remote, ValidationContext _)
         {
-            if (!Models.Remote.IsValidURL(remote)) return new ValidationResult("Invalid remote repository URL format");
+            if (!Models.Remote.IsValidURL(remote))
+                return new ValidationResult("Invalid remote repository URL format");
             return ValidationResult.Success;
         }
 
         public static ValidationResult ValidateParentFolder(string folder, ValidationContext _)
         {
-            if (!Directory.Exists(folder)) return new ValidationResult("Given path can NOT be found");
+            if (!Directory.Exists(folder))
+                return new ValidationResult("Given path can NOT be found");
             return ValidationResult.Success;
         }
 
@@ -77,7 +80,8 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 var cmd = new Commands.Clone(HostPageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs, SetProgressDescription);
-                if (!cmd.Exec()) return false;
+                if (!cmd.Exec())
+                    return false;
 
                 var path = _parentFolder;
                 if (!string.IsNullOrEmpty(_local))
@@ -87,7 +91,8 @@ namespace SourceGit.ViewModels
                 else
                 {
                     var name = Path.GetFileName(_remote);
-                    if (name.EndsWith(".git")) name = name.Substring(0, name.Length - 4);
+                    if (name.EndsWith(".git"))
+                        name = name.Substring(0, name.Length - 4);
                     path = Path.GetFullPath(Path.Combine(path, name));
                 }
 

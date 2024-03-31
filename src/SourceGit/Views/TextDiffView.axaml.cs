@@ -33,7 +33,8 @@ namespace SourceGit.Views
 
             public override void Render(DrawingContext context)
             {
-                if (_editor.DiffData == null) return;
+                if (_editor.DiffData == null)
+                    return;
 
                 var view = TextView;
                 if (view != null && view.VisualLinesValid)
@@ -42,11 +43,13 @@ namespace SourceGit.Views
                     foreach (var line in view.VisualLines)
                     {
                         var index = line.FirstDocumentLine.LineNumber;
-                        if (index > _editor.DiffData.Lines.Count) break;
+                        if (index > _editor.DiffData.Lines.Count)
+                            break;
 
                         var info = _editor.DiffData.Lines[index - 1];
                         var lineNumber = _isOldLine ? info.OldLine : info.NewLine;
-                        if (string.IsNullOrEmpty(lineNumber)) continue;
+                        if (string.IsNullOrEmpty(lineNumber))
+                            continue;
 
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
                         var txt = new FormattedText(
@@ -121,17 +124,20 @@ namespace SourceGit.Views
 
             public void Draw(TextView textView, DrawingContext drawingContext)
             {
-                if (_editor.Document == null || !textView.VisualLinesValid) return;
+                if (_editor.Document == null || !textView.VisualLinesValid)
+                    return;
 
                 var width = textView.Bounds.Width;
                 foreach (var line in textView.VisualLines)
                 {
                     var index = line.FirstDocumentLine.LineNumber;
-                    if (index > _editor.DiffData.Lines.Count) break;
+                    if (index > _editor.DiffData.Lines.Count)
+                        break;
 
                     var info = _editor.DiffData.Lines[index - 1];
                     var bg = GetBrushByLineType(info.Type);
-                    if (bg == null) continue;
+                    if (bg == null)
+                        continue;
 
                     var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset;
                     drawingContext.DrawRectangle(bg, null, new Rect(0, y, width, line.Height));
@@ -142,10 +148,14 @@ namespace SourceGit.Views
             {
                 switch (type)
                 {
-                    case Models.TextDiffLineType.None: return BG_EMPTY;
-                    case Models.TextDiffLineType.Added: return BG_ADDED;
-                    case Models.TextDiffLineType.Deleted: return BG_DELETED;
-                    default: return null;
+                    case Models.TextDiffLineType.None:
+                        return BG_EMPTY;
+                    case Models.TextDiffLineType.Added:
+                        return BG_ADDED;
+                    case Models.TextDiffLineType.Deleted:
+                        return BG_DELETED;
+                    default:
+                        return null;
                 }
             }
 
@@ -165,7 +175,8 @@ namespace SourceGit.Views
             protected override void ColorizeLine(DocumentLine line)
             {
                 var idx = line.LineNumber;
-                if (idx > _editor.DiffData.Lines.Count) return;
+                if (idx > _editor.DiffData.Lines.Count)
+                    return;
 
                 var info = _editor.DiffData.Lines[idx - 1];
                 if (info.Type == Models.TextDiffLineType.Indicator)
@@ -214,7 +225,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<Vector> SyncScrollOffsetProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, Vector>(nameof(SyncScrollOffset));
+            AvaloniaProperty.Register<CombinedTextDiffPresenter, Vector>(nameof(SyncScrollOffset));
 
         public Vector SyncScrollOffset
         {
@@ -223,7 +234,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, bool>(nameof(UseSyntaxHighlighting), false);
+            AvaloniaProperty.Register<CombinedTextDiffPresenter, bool>(nameof(UseSyntaxHighlighting), false);
 
         public bool UseSyntaxHighlighting
         {
@@ -280,7 +291,8 @@ namespace SourceGit.Views
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
         {
             var selection = TextArea.Selection;
-            if (selection.IsEmpty) return;
+            if (selection.IsEmpty)
+                return;
 
             var menu = new ContextMenu();
             var parentView = this.FindAncestorOfType<TextDiffView>();
@@ -305,7 +317,7 @@ namespace SourceGit.Views
 
         private void OnTextViewScrollOffsetChanged(object sender, EventArgs e)
         {
-            SyncScrollOffset = TextArea.TextView.ScrollOffset;
+            SetCurrentValue(SyncScrollOffsetProperty, TextArea.TextView.ScrollOffset);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -358,7 +370,8 @@ namespace SourceGit.Views
                     _textMate = Models.TextMateHelper.CreateForEditor(this);
                     TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
 
-                    if (DiffData != null) Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
+                    if (DiffData != null)
+                        Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
                 }
             }
             else
@@ -390,7 +403,8 @@ namespace SourceGit.Views
 
             public override void Render(DrawingContext context)
             {
-                if (_editor.DiffData == null) return;
+                if (_editor.DiffData == null)
+                    return;
 
                 var view = TextView;
                 if (view != null && view.VisualLinesValid)
@@ -400,11 +414,13 @@ namespace SourceGit.Views
                     foreach (var line in view.VisualLines)
                     {
                         var index = line.FirstDocumentLine.LineNumber;
-                        if (index > infos.Count) break;
+                        if (index > infos.Count)
+                            break;
 
                         var info = infos[index - 1];
                         var lineNumber = _editor.IsOld ? info.OldLine : info.NewLine;
-                        if (string.IsNullOrEmpty(lineNumber)) continue;
+                        if (string.IsNullOrEmpty(lineNumber))
+                            continue;
 
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
                         var txt = new FormattedText(
@@ -478,18 +494,21 @@ namespace SourceGit.Views
 
             public void Draw(TextView textView, DrawingContext drawingContext)
             {
-                if (_editor.Document == null || !textView.VisualLinesValid) return;
+                if (_editor.Document == null || !textView.VisualLinesValid)
+                    return;
 
                 var width = textView.Bounds.Width;
                 var infos = _editor.IsOld ? _editor.DiffData.Old : _editor.DiffData.New;
                 foreach (var line in textView.VisualLines)
                 {
                     var index = line.FirstDocumentLine.LineNumber;
-                    if (index > infos.Count) break;
+                    if (index > infos.Count)
+                        break;
 
                     var info = infos[index - 1];
                     var bg = GetBrushByLineType(info.Type);
-                    if (bg == null) continue;
+                    if (bg == null)
+                        continue;
 
                     var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset;
                     drawingContext.DrawRectangle(bg, null, new Rect(0, y, width, line.Height));
@@ -500,10 +519,14 @@ namespace SourceGit.Views
             {
                 switch (type)
                 {
-                    case Models.TextDiffLineType.None: return BG_EMPTY;
-                    case Models.TextDiffLineType.Added: return BG_ADDED;
-                    case Models.TextDiffLineType.Deleted: return BG_DELETED;
-                    default: return null;
+                    case Models.TextDiffLineType.None:
+                        return BG_EMPTY;
+                    case Models.TextDiffLineType.Added:
+                        return BG_ADDED;
+                    case Models.TextDiffLineType.Deleted:
+                        return BG_DELETED;
+                    default:
+                        return null;
                 }
             }
 
@@ -524,7 +547,8 @@ namespace SourceGit.Views
             {
                 var infos = _editor.IsOld ? _editor.DiffData.Old : _editor.DiffData.New;
                 var idx = line.LineNumber;
-                if (idx > infos.Count) return;
+                if (idx > infos.Count)
+                    return;
 
                 var info = infos[idx - 1];
                 if (info.Type == Models.TextDiffLineType.Indicator)
@@ -661,14 +685,15 @@ namespace SourceGit.Views
             }
             else
             {
-                SyncScrollOffset = _scrollViewer.Offset;
+                SetCurrentValue(SyncScrollOffsetProperty, _scrollViewer.Offset);
             }
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
         {
             var selection = TextArea.Selection;
-            if (selection.IsEmpty) return;
+            if (selection.IsEmpty)
+                return;
 
             var menu = new ContextMenu();
             var parentView = this.FindAncestorOfType<TextDiffView>();
@@ -725,7 +750,8 @@ namespace SourceGit.Views
             }
             else if (change.Property == SyncScrollOffsetProperty)
             {
-                if (_scrollViewer == null) return;
+                if (_scrollViewer == null)
+                    return;
 
                 var curOffset = _scrollViewer.Offset;
                 if (!curOffset.Equals(SyncScrollOffset))
@@ -763,7 +789,8 @@ namespace SourceGit.Views
                     _textMate = Models.TextMateHelper.CreateForEditor(this);
                     TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
 
-                    if (DiffData != null) Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
+                    if (DiffData != null)
+                        Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
                 }
             }
             else
@@ -813,13 +840,16 @@ namespace SourceGit.Views
         public void FillContextMenuForWorkingCopyChange(ContextMenu menu, int startLine, int endLine, bool isOldSide)
         {
             var parentView = this.FindAncestorOfType<DiffView>();
-            if (parentView == null) return;
+            if (parentView == null)
+                return;
 
             var ctx = parentView.DataContext as ViewModels.DiffContext;
-            if (ctx == null) return;
+            if (ctx == null)
+                return;
 
             var change = ctx.WorkingCopyChange;
-            if (change == null) return;
+            if (change == null)
+                return;
 
             if (startLine > endLine)
             {
@@ -829,14 +859,16 @@ namespace SourceGit.Views
             }
 
             var selection = GetUnifiedSelection(startLine, endLine, isOldSide);
-            if (!selection.HasChanges) return;
+            if (!selection.HasChanges)
+                return;
 
             // If all changes has been selected the use method provided by ViewModels.WorkingCopy.
             // Otherwise, use `git apply`
             if (!selection.HasLeftChanges)
             {
                 var workcopyView = this.FindAncestorOfType<WorkingCopy>();
-                if (workcopyView == null) return;
+                if (workcopyView == null)
+                    return;
 
                 if (ctx.IsUnstaged)
                 {
@@ -892,7 +924,8 @@ namespace SourceGit.Views
             else
             {
                 var repoView = this.FindAncestorOfType<Repository>();
-                if (repoView == null) return;
+                if (repoView == null)
+                    return;
 
                 if (ctx.IsUnstaged)
                 {
@@ -1077,7 +1110,8 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (firstContentLine < 0) return rs;
+                if (firstContentLine < 0)
+                    return rs;
 
                 var endContentLine = -1;
                 for (int i = Math.Min(endLine - 1, target.Count - 1); i >= startLine - 1; i--)
@@ -1090,7 +1124,8 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (endContentLine < 0) return rs;
+                if (endContentLine < 0)
+                    return rs;
 
                 var firstContent = target[firstContentLine];
                 var endContent = target[endContentLine];

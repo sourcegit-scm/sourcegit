@@ -65,17 +65,20 @@ namespace SourceGit.Views
 
         private void OnLocalBranchTreeLostFocus(object sender, RoutedEventArgs e)
         {
-            if (sender is TreeView tree) tree.UnselectAll();
+            if (sender is TreeView tree)
+                tree.UnselectAll();
         }
 
         private void OnRemoteBranchTreeLostFocus(object sender, RoutedEventArgs e)
         {
-            if (sender is TreeView tree) tree.UnselectAll();
+            if (sender is TreeView tree)
+                tree.UnselectAll();
         }
 
         private void OnTagDataGridLostFocus(object sender, RoutedEventArgs e)
         {
-            if (sender is DataGrid datagrid) datagrid.SelectedItem = null;
+            if (sender is DataGrid datagrid)
+                datagrid.SelectedItem = null;
         }
 
         private void OnLocalBranchTreeSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -187,7 +190,8 @@ namespace SourceGit.Views
                 if (node.IsBranch && DataContext is ViewModels.Repository repo)
                 {
                     var menu = repo.CreateContextMenuForLocalBranch(node.Backend as Models.Branch);
-                    if (menu != null) menu.Open(grid);
+                    if (menu != null)
+                        menu.Open(grid);
                 }
             }
 
@@ -203,12 +207,14 @@ namespace SourceGit.Views
                 if (node.IsRemote)
                 {
                     var menu = repo.CreateContextMenuForRemote(node.Backend as Models.Remote);
-                    if (menu != null) menu.Open(grid);
+                    if (menu != null)
+                        menu.Open(grid);
                 }
                 else if (node.IsBranch)
                 {
                     var menu = repo.CreateContextMenuForRemoteBranch(node.Backend as Models.Branch);
-                    if (menu != null) menu.Open(grid);
+                    if (menu != null)
+                        menu.Open(grid);
                 }
             }
 
@@ -221,7 +227,8 @@ namespace SourceGit.Views
             {
                 var tag = datagrid.SelectedItem as Models.Tag;
                 var menu = repo.CreateContextMenuForTag(tag);
-                if (menu != null) menu.Open(datagrid);
+                if (menu != null)
+                    menu.Open(datagrid);
             }
 
             e.Handled = true;
@@ -233,7 +240,8 @@ namespace SourceGit.Views
             {
                 var submodule = datagrid.SelectedItem as string;
                 var menu = repo.CreateContextMenuForSubmodule(submodule);
-                if (menu != null) menu.Open(datagrid);
+                if (menu != null)
+                    menu.Open(datagrid);
             }
 
             e.Handled = true;
@@ -244,7 +252,8 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Repository repo)
             {
                 var menu = repo.CreateContextMenuForGitFlow();
-                if (menu != null) menu.Open(sender as Button);
+                if (menu != null)
+                    menu.Open(sender as Button);
             }
 
             e.Handled = true;
@@ -266,7 +275,8 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedLocalBranchNode(object sender, TappedEventArgs e)
         {
-            if (!PopupHost.CanCreatePopup()) return;
+            if (!PopupHost.CanCreatePopup())
+                return;
 
             if (sender is Grid grid && DataContext is ViewModels.Repository repo)
             {
@@ -274,7 +284,8 @@ namespace SourceGit.Views
                 if (node != null && node.IsBranch)
                 {
                     var branch = node.Backend as Models.Branch;
-                    if (branch.IsCurrent) return;
+                    if (branch.IsCurrent)
+                        return;
 
                     PopupHost.ShowAndStartPopup(new ViewModels.Checkout(repo, branch.Name));
                     e.Handled = true;

@@ -18,7 +18,7 @@ namespace SourceGit.Views
     public class RevisionImageFileView : Control
     {
         public static readonly StyledProperty<Bitmap> SourceProperty =
-            AvaloniaProperty.Register<ImageDiffView, Bitmap>(nameof(Source), null);
+            AvaloniaProperty.Register<RevisionImageFileView, Bitmap>(nameof(Source), null);
 
         public Bitmap Source
         {
@@ -176,7 +176,8 @@ namespace SourceGit.Views
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
         {
             var selected = SelectedText;
-            if (string.IsNullOrEmpty(selected)) return;
+            if (string.IsNullOrEmpty(selected))
+                return;
 
             var icon = new Avalonia.Controls.Shapes.Path();
             icon.Width = 10;

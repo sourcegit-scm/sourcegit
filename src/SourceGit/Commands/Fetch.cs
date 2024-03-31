@@ -25,7 +25,8 @@ namespace SourceGit.Commands
             }
 
             Args += "fetch --progress --verbose ";
-            if (prune) Args += "--prune ";
+            if (prune)
+                Args += "--prune ";
             Args += remote;
 
             AutoFetch.MarkFetched(repo);
@@ -61,6 +62,8 @@ namespace SourceGit.Commands
 
     public class AutoFetch
     {
+        private const double INTERVAL = 10 * 60;
+
         public static bool IsEnabled
         {
             get;
@@ -101,7 +104,7 @@ namespace SourceGit.Commands
                     foreach (var job in uptodate)
                     {
                         job.Cmd.Exec();
-                        job.NextRunTimepoint = DateTime.Now.AddSeconds(_fetchInterval);
+                        job.NextRunTimepoint = DateTime.Now.AddSeconds(INTERVAL);
                     }
 
                     Thread.Sleep(2000);
@@ -114,7 +117,7 @@ namespace SourceGit.Commands
             var job = new Job
             {
                 Cmd = new Fetch(repo, "--all", true, null) { RaiseError = false },
-                NextRunTimepoint = DateTime.Now.AddSeconds(_fetchInterval),
+                NextRunTimepoint = DateTime.Now.AddSeconds(INTERVAL),
             };
 
             lock (_lock)
@@ -142,15 +145,14 @@ namespace SourceGit.Commands
         {
             lock (_lock)
             {
-                if (_jobs.ContainsKey(repo))
+                if (_jobs.TryGetValue(repo, out var value))
                 {
-                    _jobs[repo].NextRunTimepoint = DateTime.Now.AddSeconds(_fetchInterval);
+                    value.NextRunTimepoint = DateTime.Now.AddSeconds(INTERVAL);
                 }
             }
         }
 
         private static readonly Dictionary<string, Job> _jobs = new Dictionary<string, Job>();
         private static readonly object _lock = new object();
-        private static readonly double _fetchInterval = 10 * 60;
     }
 }

@@ -58,7 +58,8 @@ namespace SourceGit.ViewModels
             get => _selectedRemote;
             set
             {
-                if (SetProperty(ref _selectedRemote, value)) AutoSelectBranchByRemote();
+                if (SetProperty(ref _selectedRemote, value))
+                    AutoSelectBranchByRemote();
             }
         }
 
@@ -96,8 +97,10 @@ namespace SourceGit.ViewModels
             var current = null as Models.Branch;
             foreach (var branch in _repo.Branches)
             {
-                if (branch.IsLocal) LocalBranches.Add(branch);
-                if (branch.IsCurrent) current = branch;
+                if (branch.IsLocal)
+                    LocalBranches.Add(branch);
+                if (branch.IsCurrent)
+                    current = branch;
             }
 
             // Set default selected local branch.
@@ -126,7 +129,8 @@ namespace SourceGit.ViewModels
             }
 
             // Set default remote to the first if haven't been set.
-            if (_selectedRemote == null) _selectedRemote = repo.Remotes[0];
+            if (_selectedRemote == null)
+                _selectedRemote = repo.Remotes[0];
 
             // Auto select preferred remote branch.
             AutoSelectBranchByRemote();
@@ -163,7 +167,8 @@ namespace SourceGit.ViewModels
             var branches = new List<Models.Branch>();
             foreach (var branch in _repo.Branches)
             {
-                if (branch.Remote == _selectedRemote.Name) branches.Add(branch);
+                if (branch.Remote == _selectedRemote.Name)
+                    branches.Add(branch);
             }
 
             // If selected local branch has upstream branch. Try to find it in current remote branches.

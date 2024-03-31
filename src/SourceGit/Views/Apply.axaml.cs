@@ -14,7 +14,8 @@ namespace SourceGit.Views
         private async void SelectPatchFile(object sender, RoutedEventArgs e)
         {
             var topLevel = TopLevel.GetTopLevel(this);
-            if (topLevel == null) return;
+            if (topLevel == null)
+                return;
 
             var options = new FilePickerOpenOptions() { AllowMultiple = false, FileTypeFilter = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }] };
             var selected = await topLevel.StorageProvider.OpenFilePickerAsync(options);

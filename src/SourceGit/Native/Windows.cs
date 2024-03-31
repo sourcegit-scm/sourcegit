@@ -105,7 +105,8 @@ namespace SourceGit.Native
             }
 
             var exePath = builder.ToString();
-            if (string.IsNullOrEmpty(exePath)) return null;
+            if (string.IsNullOrEmpty(exePath))
+                return null;
 
             return exePath;
         }
@@ -123,14 +124,16 @@ namespace SourceGit.Native
             }
 
             var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe");
-            if (File.Exists(toolPath)) return toolPath;
+            if (File.Exists(toolPath))
+                return toolPath;
             return string.Empty;
         }
 
         public string FindFleet()
         {
             var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Fleet\\Fleet.exe");
-            if (File.Exists(toolPath)) return toolPath;
+            if (File.Exists(toolPath))
+                return toolPath;
             return string.Empty;
         }
 
@@ -153,7 +156,8 @@ namespace SourceGit.Native
             var startInfo = new ProcessStartInfo();
             startInfo.UseShellExecute = true;
             startInfo.FileName = bash;
-            if (!string.IsNullOrEmpty(workdir) && Path.Exists(workdir)) startInfo.WorkingDirectory = workdir;
+            if (!string.IsNullOrEmpty(workdir) && Path.Exists(workdir))
+                startInfo.WorkingDirectory = workdir;
             Process.Start(startInfo);
         }
 

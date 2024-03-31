@@ -81,7 +81,8 @@ namespace SourceGit.ViewModels
 
         public void AddFolder()
         {
-            if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new CreateGroup(null));
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowPopup(new CreateGroup(null));
         }
 
         public void MoveNode(RepositoryNode from, RepositoryNode to)
@@ -93,18 +94,21 @@ namespace SourceGit.ViewModels
         {
             if (string.IsNullOrWhiteSpace(_searchFilter))
             {
-                foreach (var node in RepositoryNodes) ResetVisibility(node);
+                foreach (var node in RepositoryNodes)
+                    ResetVisibility(node);
             }
             else
             {
-                foreach (var node in RepositoryNodes) SetVisibilityBySearch(node);
+                foreach (var node in RepositoryNodes)
+                    SetVisibilityBySearch(node);
             }
         }
 
         private void ResetVisibility(RepositoryNode node)
         {
             node.IsVisible = true;
-            foreach (var subNode in node.SubNodes) ResetVisibility(subNode);
+            foreach (var subNode in node.SubNodes)
+                ResetVisibility(subNode);
         }
 
         private void SetVisibilityBySearch(RepositoryNode node)
@@ -114,7 +118,8 @@ namespace SourceGit.ViewModels
                 if (node.Name.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
                 {
                     node.IsVisible = true;
-                    foreach (var subNode in node.SubNodes) ResetVisibility(subNode);
+                    foreach (var subNode in node.SubNodes)
+                        ResetVisibility(subNode);
                 }
                 else
                 {

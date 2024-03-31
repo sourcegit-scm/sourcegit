@@ -52,7 +52,8 @@ namespace SourceGit.Views
 
         public override void Render(DrawingContext context)
         {
-            if (User == null) return;
+            if (User == null)
+                return;
 
             var corner = (float)Math.Max(2, Bounds.Width / 16);
             var img = Models.AvatarManager.Request(_emailMD5, false);
@@ -101,13 +102,17 @@ namespace SourceGit.Views
             var placeholder = string.IsNullOrWhiteSpace(avatar.User.Name) ? "?" : avatar.User.Name.Substring(0, 1);
             var chars = placeholder.ToCharArray();
             var sum = 0;
-            foreach (var c in chars) sum += Math.Abs(c);
+            foreach (var c in chars)
+                sum += Math.Abs(c);
 
-            var hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(avatar.User.Email.ToLower().Trim()));
+            var lowered = avatar.User.Email.ToLower(CultureInfo.CurrentCulture).Trim();
+            var hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(lowered));
             var builder = new StringBuilder();
-            foreach (var c in hash) builder.Append(c.ToString("x2"));
+            foreach (var c in hash)
+                builder.Append(c.ToString("x2"));
             var md5 = builder.ToString();
-            if (avatar._emailMD5 != md5) avatar._emailMD5 = md5;
+            if (avatar._emailMD5 != md5)
+                avatar._emailMD5 = md5;
 
             avatar._fallbackBrush = new LinearGradientBrush
             {

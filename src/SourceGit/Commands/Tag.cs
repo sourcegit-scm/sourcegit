@@ -32,7 +32,8 @@ namespace SourceGit.Commands
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"tag --delete {name}";
-            if (!cmd.Exec()) return false;
+            if (!cmd.Exec())
+                return false;
 
             if (remotes != null)
             {

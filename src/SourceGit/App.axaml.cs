@@ -143,7 +143,8 @@ namespace SourceGit
         public static string Text(string key, params object[] args)
         {
             var fmt = Current.FindResource($"Text.{key}") as string;
-            if (string.IsNullOrWhiteSpace(fmt)) return $"Text.{key}";
+            if (string.IsNullOrWhiteSpace(fmt))
+                return $"Text.{key}";
             return string.Format(fmt, args);
         }
 
@@ -178,12 +179,14 @@ namespace SourceGit
 
                     // Parse json into Models.Version.
                     var ver = JsonSerializer.Deserialize(data, JsonCodeGen.Default.Version);
-                    if (ver == null) return;
+                    if (ver == null)
+                        return;
 
                     // Check if already up-to-date.
                     if (!ver.IsNewVersion)
                     {
-                        if (manually) ShowSelfUpdateResult(new Models.AlreadyUpToDate());
+                        if (manually)
+                            ShowSelfUpdateResult(new Models.AlreadyUpToDate());
                         return;
                     }
 
@@ -191,14 +194,16 @@ namespace SourceGit
                     if (!manually)
                     {
                         var pref = ViewModels.Preference.Instance;
-                        if (ver.TagName == pref.IgnoreUpdateTag) return;
+                        if (ver.TagName == pref.IgnoreUpdateTag)
+                            return;
                     }
 
                     ShowSelfUpdateResult(ver);
                 }
                 catch (Exception e)
                 {
-                    if (manually) ShowSelfUpdateResult(e);
+                    if (manually)
+                        ShowSelfUpdateResult(e);
                 }
             });
         }
@@ -232,7 +237,8 @@ namespace SourceGit
                 _notificationReceiver = launcher;
                 desktop.MainWindow = launcher;
 
-                if (ViewModels.Preference.Instance.Check4UpdatesOnStartup) Check4Update();
+                if (ViewModels.Preference.Instance.Check4UpdatesOnStartup)
+                    Check4Update();
             }
 
             base.OnFrameworkInitializationCompleted();

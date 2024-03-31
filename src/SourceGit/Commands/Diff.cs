@@ -8,9 +8,9 @@ namespace SourceGit.Commands
     {
         [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
         private static partial Regex REG_INDICATOR();
-        private static readonly string PREFIX_LFS_NEW = "+version https://git-lfs.github.com/spec/";
-        private static readonly string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
-        private static readonly string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
+        private const string PREFIX_LFS_NEW = "+version https://git-lfs.github.com/spec/";
+        private const string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
+        private const string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
 
         public Diff(string repo, Models.DiffOption opt)
         {
@@ -46,7 +46,8 @@ namespace SourceGit.Commands
 
         protected override void OnReadline(string line)
         {
-            if (_result.IsBinary) return;
+            if (_result.IsBinary)
+                return;
 
             if (_result.IsLFS)
             {
@@ -85,7 +86,8 @@ namespace SourceGit.Commands
                 var match = REG_INDICATOR().Match(line);
                 if (!match.Success)
                 {
-                    if (line.StartsWith("Binary", StringComparison.Ordinal)) _result.IsBinary = true;
+                    if (line.StartsWith("Binary", StringComparison.Ordinal))
+                        _result.IsBinary = true;
                     return;
                 }
 
@@ -167,10 +169,12 @@ namespace SourceGit.Commands
                         var left = _deleted[i];
                         var right = _added[i];
 
-                        if (left.Content.Length > 1024 || right.Content.Length > 1024) continue;
+                        if (left.Content.Length > 1024 || right.Content.Length > 1024)
+                            continue;
 
                         var chunks = Models.TextInlineChange.Compare(left.Content, right.Content);
-                        if (chunks.Count > 4) continue;
+                        if (chunks.Count > 4)
+                            continue;
 
                         foreach (var chunk in chunks)
                         {

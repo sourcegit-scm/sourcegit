@@ -4,15 +4,15 @@ namespace SourceGit.Models
 {
     public class User
     {
-        public static User Invalid = new User();
-        public static Dictionary<string, User> Caches = new Dictionary<string, User>();
+        public static readonly User Invalid = new User();
 
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is User)) return false;
+            if (obj == null || !(obj is User))
+                return false;
 
             var other = obj as User;
             return Name == other.Name && Email == other.Email;
@@ -25,9 +25,9 @@ namespace SourceGit.Models
 
         public static User FindOrAdd(string data)
         {
-            if (Caches.ContainsKey(data))
+            if (_caches.TryGetValue(data, out var value))
             {
-                return Caches[data];
+                return value;
             }
             else
             {
@@ -36,9 +36,11 @@ namespace SourceGit.Models
                 var email = data.Substring(nameEndIdx + 1);
 
                 User user = new User() { Name = name, Email = email };
-                Caches.Add(data, user);
+                _caches.Add(data, user);
                 return user;
             }
         }
+
+        private static Dictionary<string, User> _caches = new Dictionary<string, User>();
     }
 }

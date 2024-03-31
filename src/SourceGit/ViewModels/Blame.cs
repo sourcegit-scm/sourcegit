@@ -50,7 +50,8 @@ namespace SourceGit.ViewModels
         public void NavigateToCommit(string commitSHA)
         {
             var repo = Preference.FindRepository(_repo);
-            if (repo != null) repo.NavigateToCommit(commitSHA);
+            if (repo != null)
+                repo.NavigateToCommit(commitSHA);
         }
 
         private readonly string _repo = string.Empty;

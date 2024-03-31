@@ -12,8 +12,10 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             Args = $"commit --file=\"{file}\"";
-            if (amend) Args += " --amend --no-edit";
-            if (allowEmpty) Args += " --allow-empty";
+            if (amend)
+                Args += " --amend --no-edit";
+            if (allowEmpty)
+                Args += " --allow-empty";
         }
     }
 }

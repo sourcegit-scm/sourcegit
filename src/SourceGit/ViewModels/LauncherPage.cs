@@ -49,7 +49,8 @@ namespace SourceGit.ViewModels
 
         public void CopyPath()
         {
-            if (_node.IsRepository) App.CopyText(_node.Id);
+            if (_node.IsRepository)
+                App.CopyText(_node.Id);
         }
 
         public void DismissNotification(object param)

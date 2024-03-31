@@ -90,7 +90,8 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (vm.ActivePage != null) vm.ActivePage.Notifications.Add(notice);
+                if (vm.ActivePage != null)
+                    vm.ActivePage.Notifications.Add(notice);
             }
         }
 
@@ -190,8 +191,10 @@ namespace SourceGit.Views
         {
             if (!e.KeyModifiers.HasFlag(KeyModifiers.Shift))
             {
-                if (e.Delta.Y < 0) launcherTabsScroller.LineRight();
-                else launcherTabsScroller.LineLeft();
+                if (e.Delta.Y < 0)
+                    launcherTabsScroller.LineRight();
+                else
+                    launcherTabsScroller.LineLeft();
                 e.Handled = true;
             }
         }
@@ -252,7 +255,8 @@ namespace SourceGit.Views
             {
                 var delta = e.GetPosition(border) - _pressedTabPosition;
                 var sizeSquired = delta.X * delta.X + delta.Y * delta.Y;
-                if (sizeSquired < 64) return;
+                if (sizeSquired < 64)
+                    return;
 
                 _startDrag = true;
 

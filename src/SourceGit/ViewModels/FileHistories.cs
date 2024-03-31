@@ -67,7 +67,8 @@ namespace SourceGit.ViewModels
                 {
                     IsLoading = false;
                     Commits = commits;
-                    if (commits.Count > 0) SelectedCommit = commits[0];
+                    if (commits.Count > 0)
+                        SelectedCommit = commits[0];
                 });
             });
         }

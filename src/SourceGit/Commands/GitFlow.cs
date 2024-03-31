@@ -17,10 +17,12 @@ namespace SourceGit.Commands
             var current = branches.Find(x => x.IsCurrent);
 
             var masterBranch = branches.Find(x => x.Name == master);
-            if (masterBranch == null && current != null) Branch.Create(WorkingDirectory, master, current.Head);
+            if (masterBranch == null && current != null)
+                Branch.Create(WorkingDirectory, master, current.Head);
 
             var devBranch = branches.Find(x => x.Name == develop);
-            if (devBranch == null && current != null) Branch.Create(WorkingDirectory, develop, current.Head);
+            if (devBranch == null && current != null)
+                Branch.Create(WorkingDirectory, develop, current.Head);
 
             var cmd = new Config(WorkingDirectory);
             cmd.Set("gitflow.branch.master", master);

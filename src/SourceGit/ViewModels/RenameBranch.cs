@@ -46,7 +46,8 @@ namespace SourceGit.ViewModels
 
         public override Task<bool> Sure()
         {
-            if (_name == Target.Name) return null;
+            if (_name == Target.Name)
+                return null;
 
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Rename '{Target.Name}'";

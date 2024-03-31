@@ -57,29 +57,34 @@ namespace SourceGit.ViewModels
 
         public void Edit()
         {
-            if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new EditRepositoryNode(this));
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowPopup(new EditRepositoryNode(this));
         }
 
         public void AddSubFolder()
         {
-            if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new CreateGroup(this));
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowPopup(new CreateGroup(this));
         }
 
         public void OpenInFileManager()
         {
-            if (!IsRepository) return;
+            if (!IsRepository)
+                return;
             Native.OS.OpenInFileManager(_id);
         }
 
         public void OpenTerminal()
         {
-            if (!IsRepository) return;
+            if (!IsRepository)
+                return;
             Native.OS.OpenTerminal(_id);
         }
 
         public void Delete()
         {
-            if (PopupHost.CanCreatePopup()) PopupHost.ShowPopup(new DeleteRepositoryNode(this));
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowPopup(new DeleteRepositoryNode(this));
         }
 
         private string _id = string.Empty;

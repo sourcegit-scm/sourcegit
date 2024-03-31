@@ -26,7 +26,8 @@ namespace SourceGit.Models
         static AvatarManager()
         {
             _storePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SourceGit", "avatars");
-            if (!Directory.Exists(_storePath)) Directory.CreateDirectory(_storePath);
+            if (!Directory.Exists(_storePath))
+                Directory.CreateDirectory(_storePath);
 
             Task.Run(() =>
             {
@@ -83,8 +84,10 @@ namespace SourceGit.Models
 
                     Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        if (_resources.ContainsKey(md5)) _resources[md5] = img;
-                        else _resources.Add(md5, img);
+                        if (_resources.ContainsKey(md5))
+                            _resources[md5] = img;
+                        else
+                            _resources.Add(md5, img);
                         NotifyResourceChanged(md5);
                     });
                 }
@@ -105,16 +108,19 @@ namespace SourceGit.Models
         {
             if (forceRefetch)
             {
-                if (_resources.ContainsKey(md5)) _resources.Remove(md5);
+                if (_resources.ContainsKey(md5))
+                    _resources.Remove(md5);
 
                 var localFile = Path.Combine(_storePath, md5);
-                if (File.Exists(localFile)) File.Delete(localFile);
+                if (File.Exists(localFile))
+                    File.Delete(localFile);
 
                 NotifyResourceChanged(md5);
             }
             else
             {
-                if (_resources.ContainsKey(md5)) return _resources[md5];
+                if (_resources.TryGetValue(md5, out var value))
+                    return value;
 
                 var localFile = Path.Combine(_storePath, md5);
                 if (File.Exists(localFile))
@@ -134,7 +140,8 @@ namespace SourceGit.Models
 
             lock (_synclock)
             {
-                if (!_requesting.Contains(md5)) _requesting.Add(md5);
+                if (!_requesting.Contains(md5))
+                    _requesting.Add(md5);
             }
 
             return null;

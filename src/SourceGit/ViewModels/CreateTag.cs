@@ -52,7 +52,8 @@ namespace SourceGit.ViewModels
             if (creator != null)
             {
                 var found = creator._repo.Tags.Find(x => x.Name == name);
-                if (found != null) return new ValidationResult("A tag with same name already exists!");
+                if (found != null)
+                    return new ValidationResult("A tag with same name already exists!");
             }
             return ValidationResult.Success;
         }

@@ -24,7 +24,8 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 var succ = new Commands.Init(HostPageId, _targetPath).Exec();
-                if (!succ) return false;
+                if (!succ)
+                    return false;
 
                 var gitDir = Path.GetFullPath(Path.Combine(_targetPath, ".git"));
 

@@ -22,7 +22,8 @@ namespace SourceGit.Native
 
         public string FindGitExecutable()
         {
-            if (File.Exists("/usr/bin/git")) return "/usr/bin/git";
+            if (File.Exists("/usr/bin/git"))
+                return "/usr/bin/git";
             return string.Empty;
         }
 

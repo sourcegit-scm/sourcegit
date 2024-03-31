@@ -41,7 +41,8 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 var succ = new Commands.Reset(_repo.FullPath, Parent.SHA, "--soft").Exec();
-                if (succ) succ = new Commands.Commit(_repo.FullPath, _message, true).Exec();
+                if (succ)
+                    succ = new Commands.Commit(_repo.FullPath, _message, true).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

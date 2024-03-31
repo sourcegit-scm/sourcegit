@@ -53,7 +53,8 @@ namespace SourceGit.Commands
                             while (true)
                             {
                                 var line = sr.ReadLine();
-                                if (line == null) break;
+                                if (line == null)
+                                    break;
                                 proc.StandardInput.WriteLine(line);
                             }
                         }

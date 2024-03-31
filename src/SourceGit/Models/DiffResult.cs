@@ -71,13 +71,15 @@ namespace SourceGit.Models
 
             var builder = new StringBuilder();
             builder.Append("diff --git a/").Append(change.Path).Append(" b/").Append(change.Path).Append('\n');
-            if (!revert && !isTracked) builder.Append("new file mode 100644\n");
+            if (!revert && !isTracked)
+                builder.Append("new file mode 100644\n");
             builder.Append("index 00000000...").Append(fileGuid).Append('\n');
             builder.Append("--- ").Append((revert || isTracked) ? $"a/{change.Path}\n" : "/dev/null\n");
             builder.Append("+++ b/").Append(change.Path).Append('\n');
 
             var additions = selection.EndLine - selection.StartLine;
-            if (selection.StartLine != 1) additions++;
+            if (selection.StartLine != 1)
+                additions++;
 
             if (revert)
             {
@@ -86,7 +88,8 @@ namespace SourceGit.Models
                 for (int i = 1; i <= totalLines; i++)
                 {
                     var line = Lines[i];
-                    if (line.Type != TextDiffLineType.Added) continue;
+                    if (line.Type != TextDiffLineType.Added)
+                        continue;
                     builder.Append(selection.IsInRange(i) ? "\n+" : "\n ").Append(line.Content);
                 }
             }
@@ -96,7 +99,8 @@ namespace SourceGit.Models
                 for (int i = selection.StartLine - 1; i < selection.EndLine; i++)
                 {
                     var line = Lines[i];
-                    if (line.Type != TextDiffLineType.Added) continue;
+                    if (line.Type != TextDiffLineType.Added)
+                        continue;
                     builder.Append("\n+").Append(line.Content);
                 }
             }
@@ -125,7 +129,8 @@ namespace SourceGit.Models
                     for (int i = selection.EndLine; i < Lines.Count; i++)
                     {
                         var line = Lines[i];
-                        if (line.Type == TextDiffLineType.Indicator) break;
+                        if (line.Type == TextDiffLineType.Indicator)
+                            break;
                         if (revert)
                         {
                             if (line.Type == TextDiffLineType.Normal || line.Type == TextDiffLineType.Added)
@@ -184,11 +189,13 @@ namespace SourceGit.Models
                     }
                     else if (line.Type == TextDiffLineType.Added)
                     {
-                        if (revert) builder.Append("\n ").Append(line.Content);
+                        if (revert)
+                            builder.Append("\n ").Append(line.Content);
                     }
                     else if (line.Type == TextDiffLineType.Deleted)
                     {
-                        if (!revert) builder.Append("\n ").Append(line.Content);
+                        if (!revert)
+                            builder.Append("\n ").Append(line.Content);
                     }
                     else if (line.Type == TextDiffLineType.Normal)
                     {
@@ -247,7 +254,8 @@ namespace SourceGit.Models
                     for (int i = selection.EndLine; i < Lines.Count; i++)
                     {
                         var line = Lines[i];
-                        if (line.Type == TextDiffLineType.Indicator) break;
+                        if (line.Type == TextDiffLineType.Indicator)
+                            break;
                         if (revert)
                         {
                             if (line.Type == TextDiffLineType.Normal || line.Type == TextDiffLineType.Added)
@@ -306,11 +314,13 @@ namespace SourceGit.Models
                     }
                     else if (line.Type == TextDiffLineType.Added)
                     {
-                        if (revert) builder.Append("\n ").Append(line.Content);
+                        if (revert)
+                            builder.Append("\n ").Append(line.Content);
                     }
                     else if (line.Type == TextDiffLineType.Deleted)
                     {
-                        if (!revert) builder.Append("\n ").Append(line.Content);
+                        if (!revert)
+                            builder.Append("\n ").Append(line.Content);
                     }
                     else if (line.Type == TextDiffLineType.Normal)
                     {
@@ -390,7 +400,8 @@ namespace SourceGit.Models
             for (int i = idx + 1; i < end; i++)
             {
                 var test = Lines[i];
-                if (test.Type == TextDiffLineType.Indicator) break;
+                if (test.Type == TextDiffLineType.Indicator)
+                    break;
 
                 if (test.Type == TextDiffLineType.Normal)
                 {
@@ -441,7 +452,8 @@ namespace SourceGit.Models
                 }
             }
 
-            if (oldCount == 0 && newCount == 0) return false;
+            if (oldCount == 0 && newCount == 0)
+                return false;
 
             builder.Append($"\n@@ -{oldStart},{oldCount} +{newStart},{newCount} @@");
             return true;
@@ -457,7 +469,8 @@ namespace SourceGit.Models
             for (int i = idx + 1; i < end; i++)
             {
                 var test = Lines[i];
-                if (test.Type == TextDiffLineType.Indicator) break;
+                if (test.Type == TextDiffLineType.Indicator)
+                    break;
 
                 if (test.Type == TextDiffLineType.Normal)
                 {
@@ -530,7 +543,8 @@ namespace SourceGit.Models
                 }
             }
 
-            if (oldCount == 0 && newCount == 0) return false;
+            if (oldCount == 0 && newCount == 0)
+                return false;
 
             builder.Append($"\n@@ -{oldStart},{oldCount} +{newStart},{newCount} @@");
             return true;

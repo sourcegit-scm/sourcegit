@@ -30,7 +30,8 @@ namespace SourceGit.Views
 
             public override void Render(DrawingContext context)
             {
-                if (_editor.BlameData == null) return;
+                if (_editor.BlameData == null)
+                    return;
 
                 var view = TextView;
                 if (view != null && view.VisualLinesValid)
@@ -41,12 +42,14 @@ namespace SourceGit.Views
                     foreach (var line in view.VisualLines)
                     {
                         var lineNumber = line.FirstDocumentLine.LineNumber;
-                        if (lineNumber > _editor.BlameData.LineInfos.Count) break;
+                        if (lineNumber > _editor.BlameData.LineInfos.Count)
+                            break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
                         var x = 0.0;
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
-                        if (!info.IsFirstInGroup && y > view.DefaultLineHeight * 0.6) continue;
+                        if (!info.IsFirstInGroup && y > view.DefaultLineHeight * 0.6)
+                            continue;
 
                         var shaLink = new FormattedText(
                             info.CommitSHA,
@@ -92,11 +95,13 @@ namespace SourceGit.Views
                     foreach (var line in view.VisualLines)
                     {
                         var lineNumber = line.FirstDocumentLine.LineNumber;
-                        if (lineNumber > _editor.BlameData.LineInfos.Count) break;
+                        if (lineNumber > _editor.BlameData.LineInfos.Count)
+                            break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
 
-                        if (calculated.Contains(info.CommitSHA)) continue;
+                        if (calculated.Contains(info.CommitSHA))
+                            continue;
                         calculated.Add(info.CommitSHA);
 
                         var x = 0.0;
@@ -127,7 +132,8 @@ namespace SourceGit.Views
                             _editor.Foreground);
                         x += author.Width;
 
-                        if (maxWidth < x) maxWidth = x;
+                        if (maxWidth < x)
+                            maxWidth = x;
                     }
                 }
 
@@ -147,7 +153,8 @@ namespace SourceGit.Views
                     foreach (var line in view.VisualLines)
                     {
                         var lineNumber = line.FirstDocumentLine.LineNumber;
-                        if (lineNumber >= _editor.BlameData.LineInfos.Count) break;
+                        if (lineNumber >= _editor.BlameData.LineInfos.Count)
+                            break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
@@ -270,7 +277,8 @@ namespace SourceGit.Views
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
         {
             var selected = SelectedText;
-            if (string.IsNullOrEmpty(selected)) return;
+            if (string.IsNullOrEmpty(selected))
+                return;
 
             var icon = new Avalonia.Controls.Shapes.Path();
             icon.Width = 10;

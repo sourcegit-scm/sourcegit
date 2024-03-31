@@ -49,7 +49,8 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            if (jobs.Count == 0) return null;
+            if (jobs.Count == 0)
+                return null;
 
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Stash changes ...";

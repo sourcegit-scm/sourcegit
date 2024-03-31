@@ -30,7 +30,8 @@ namespace SourceGit.ViewModels
             get => _commit;
             set
             {
-                if (SetProperty(ref _commit, value)) Refresh();
+                if (SetProperty(ref _commit, value))
+                    Refresh();
             }
         }
 
@@ -153,15 +154,20 @@ namespace SourceGit.ViewModels
         {
             _repo = null;
             _commit = null;
-            if (_changes != null) _changes.Clear();
-            if (_visibleChanges != null) _visibleChanges.Clear();
-            if (_changeTree != null) _changeTree.Clear();
+            if (_changes != null)
+                _changes.Clear();
+            if (_visibleChanges != null)
+                _visibleChanges.Clear();
+            if (_changeTree != null)
+                _changeTree.Clear();
             _selectedChange = null;
             _selectedChangeNode = null;
             _searchChangeFilter = null;
             _diffContext = null;
-            if (_revisionFiles != null) _revisionFiles.Clear();
-            if (_revisionFilesTree != null) _revisionFilesTree.Clear();
+            if (_revisionFiles != null)
+                _revisionFiles.Clear();
+            if (_revisionFilesTree != null)
+                _revisionFilesTree.Clear();
             _selectedRevisionFileNode = null;
             _searchFileFilter = null;
             _viewRevisionFileContent = null;
@@ -171,7 +177,8 @@ namespace SourceGit.ViewModels
         public void NavigateTo(string commitSHA)
         {
             var repo = Preference.FindRepository(_repo);
-            if (repo != null) repo.NavigateToCommit(commitSHA);
+            if (repo != null)
+                repo.NavigateToCommit(commitSHA);
         }
 
         public void ClearSearchChangeFilter()
@@ -278,7 +285,8 @@ namespace SourceGit.ViewModels
             saveAs.Click += async (_, ev) =>
             {
                 var topLevel = App.GetTopLevel();
-                if (topLevel == null) return;
+                if (topLevel == null)
+                    return;
 
                 var options = new FolderPickerOpenOptions() { AllowMultiple = false };
                 var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
@@ -316,8 +324,10 @@ namespace SourceGit.ViewModels
             SelectedChange = null;
             RevisionFilesTree = null;
             SelectedRevisionFileNode = null;
-            if (_commit == null) return;
-            if (_cancelToken != null) _cancelToken.Requested = true;
+            if (_commit == null)
+                return;
+            if (_cancelToken != null)
+                _cancelToken.Requested = true;
 
             _cancelToken = new Commands.Command.CancelToken();
             var cmdChanges = new Commands.QueryCommitChanges(_repo, _commit.SHA) { Cancel = _cancelToken };
@@ -326,7 +336,8 @@ namespace SourceGit.ViewModels
             Task.Run(() =>
             {
                 var changes = cmdChanges.Result();
-                if (cmdChanges.Cancel.Requested) return;
+                if (cmdChanges.Cancel.Requested)
+                    return;
 
                 var visible = changes;
                 if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
@@ -353,7 +364,8 @@ namespace SourceGit.ViewModels
             Task.Run(() =>
             {
                 var files = cmdRevisionFiles.Result();
-                if (cmdRevisionFiles.Cancel.Requested) return;
+                if (cmdRevisionFiles.Cancel.Requested)
+                    return;
 
                 var visible = files;
                 if (!string.IsNullOrWhiteSpace(_searchFileFilter))
@@ -379,7 +391,8 @@ namespace SourceGit.ViewModels
 
         private void RefreshVisibleChanges()
         {
-            if (_changes == null) return;
+            if (_changes == null)
+                return;
 
             if (string.IsNullOrEmpty(_searchChangeFilter))
             {
@@ -404,7 +417,8 @@ namespace SourceGit.ViewModels
 
         private void RefreshVisibleFiles()
         {
-            if (_revisionFiles == null) return;
+            if (_revisionFiles == null)
+                return;
 
             var visible = _revisionFiles;
             if (!string.IsNullOrWhiteSpace(_searchFileFilter))

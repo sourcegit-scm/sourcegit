@@ -23,9 +23,11 @@ namespace SourceGit.Commands
 
             Args += "clone --progress --verbose --recurse-submodules ";
 
-            if (!string.IsNullOrEmpty(extraArgs)) Args += $"{extraArgs} ";
+            if (!string.IsNullOrEmpty(extraArgs))
+                Args += $"{extraArgs} ";
             Args += $"{url} ";
-            if (!string.IsNullOrEmpty(localName)) Args += localName;
+            if (!string.IsNullOrEmpty(localName))
+                Args += localName;
 
             _notifyProgress = ouputHandler;
         }

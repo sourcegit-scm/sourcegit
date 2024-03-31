@@ -51,13 +51,15 @@ namespace SourceGit.Views
 
         public override void Render(DrawingContext context)
         {
-            if (Samples == null) return;
+            if (Samples == null)
+                return;
 
             var samples = Samples;
             int maxV = 0;
             foreach (var s in samples)
             {
-                if (maxV < s.Count) maxV = s.Count;
+                if (maxV < s.Count)
+                    maxV = s.Count;
             }
 
             if (maxV < 5)
@@ -105,7 +107,8 @@ namespace SourceGit.Views
             context.DrawLine(pen, new Point(horizonStart, 0), new Point(horizonStart, height - labelHeight));
             context.DrawLine(pen, new Point(horizonStart, height - labelHeight), new Point(width, height - labelHeight));
 
-            if (samples.Count == 0) return;
+            if (samples.Count == 0)
+                return;
 
             // Draw horizontal lines
             var stepX = (width - horizonStart) / samples.Count;

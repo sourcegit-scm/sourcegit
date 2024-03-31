@@ -19,7 +19,8 @@ namespace SourceGit.Models
 
         static Bookmarks()
         {
-            for (int i = 0; i < Brushes.Length; i++) Supported.Add(i);
+            for (int i = 0; i < Brushes.Length; i++)
+                Supported.Add(i);
         }
     }
 }

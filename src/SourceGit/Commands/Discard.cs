@@ -47,7 +47,8 @@ namespace SourceGit.Commands
             {
                 var count = Math.Min(10, changes.Count - i);
                 var files = new List<string>();
-                for (int j = 0; j < count; j++) files.Add(changes[i + j].Path);
+                for (int j = 0; j < count; j++)
+                    files.Add(changes[i + j].Path);
                 new Restore(repo, files, "--staged --worktree").Exec();
             }
         }

@@ -45,9 +45,9 @@ namespace SourceGit.ViewModels
                     while (sepIdx != -1)
                     {
                         var folder = c.Path.Substring(0, sepIdx);
-                        if (folders.ContainsKey(folder))
+                        if (folders.TryGetValue(folder, out var value))
                         {
-                            lastFolder = folders[folder];
+                            lastFolder = value;
                         }
                         else if (lastFolder == null)
                         {
@@ -121,9 +121,9 @@ namespace SourceGit.ViewModels
                     while (sepIdx != -1)
                     {
                         var folder = f.Path.Substring(0, sepIdx);
-                        if (folders.ContainsKey(folder))
+                        if (folders.TryGetValue(folder, out var value))
                         {
-                            lastFolder = folders[folder];
+                            lastFolder = value;
                         }
                         else if (lastFolder == null)
                         {
@@ -174,7 +174,8 @@ namespace SourceGit.ViewModels
         {
             foreach (var node in nodes)
             {
-                if (node.FullPath == path) return node;
+                if (node.FullPath == path)
+                    return node;
 
                 if (node.IsFolder && path.StartsWith(node.FullPath + "/", StringComparison.Ordinal))
                 {
@@ -206,7 +207,8 @@ namespace SourceGit.ViewModels
 
             foreach (var node in nodes)
             {
-                if (node.Children.Count > 1) Sort(node.Children);
+                if (node.Children.Count > 1)
+                    Sort(node.Children);
             }
         }
 

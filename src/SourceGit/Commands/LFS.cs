@@ -32,7 +32,8 @@ namespace SourceGit.Commands
         public bool IsEnabled()
         {
             var path = Path.Combine(_repo, ".git", "hooks", "pre-push");
-            if (!File.Exists(path)) return false;
+            if (!File.Exists(path))
+                return false;
 
             var content = File.ReadAllText(path);
             return content.Contains("git lfs pre-push");

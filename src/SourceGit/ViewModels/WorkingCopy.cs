@@ -172,10 +172,14 @@ namespace SourceGit.ViewModels
         public void Cleanup()
         {
             _repo = null;
-            if (_unstaged != null) _unstaged.Clear();
-            if (_staged != null) _staged.Clear();
-            if (_unstagedTree != null) _unstagedTree.Clear();
-            if (_stagedTree != null) _stagedTree.Clear();
+            if (_unstaged != null)
+                _unstaged.Clear();
+            if (_staged != null)
+                _staged.Clear();
+            if (_unstagedTree != null)
+                _unstagedTree.Clear();
+            if (_stagedTree != null)
+                _stagedTree.Clear();
             _selectedUnstagedChange = null;
             _selectedStagedChange = null;
             _selectedUnstagedTreeNode = null;
@@ -245,7 +249,8 @@ namespace SourceGit.ViewModels
                 if (viewChange != null)
                 {
                     var scrollOffset = Vector.Zero;
-                    if (_detailContext is DiffContext old) scrollOffset = old.SyncScrollOffset;
+                    if (_detailContext is DiffContext old)
+                        scrollOffset = old.SyncScrollOffset;
 
                     if (lastSelectedIsUnstaged)
                     {
@@ -258,7 +263,8 @@ namespace SourceGit.ViewModels
                         SelectedStagedTreeNode = FileTreeNode.SelectByPath(_stagedTree, viewFile);
                     }
 
-                    if (_detailContext is DiffContext cur) cur.SyncScrollOffset = scrollOffset;
+                    if (_detailContext is DiffContext cur)
+                        cur.SyncScrollOffset = scrollOffset;
                 }
                 else
                 {
@@ -275,7 +281,8 @@ namespace SourceGit.ViewModels
 
         public void SetDetail(Models.Change change, bool isUnstaged)
         {
-            if (_isLoadingData) return;
+            if (_isLoadingData)
+                return;
 
             if (change == null)
             {
@@ -300,7 +307,8 @@ namespace SourceGit.ViewModels
 
         public async void StageChanges(List<Models.Change> changes)
         {
-            if (_unstaged.Count == 0 || changes.Count == 0) return;
+            if (_unstaged.Count == 0 || changes.Count == 0)
+                return;
 
             SetDetail(null, true);
             IsStaging = true;
@@ -325,7 +333,8 @@ namespace SourceGit.ViewModels
 
         public async void UnstageChanges(List<Models.Change> changes)
         {
-            if (_staged.Count == 0 || changes.Count == 0) return;
+            if (_staged.Count == 0 || changes.Count == 0)
+                return;
 
             SetDetail(null, false);
             IsUnstaging = true;
@@ -472,7 +481,8 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateContextMenuForUnstagedChanges(List<Models.Change> changes)
         {
-            if (changes.Count == 0) return null;
+            if (changes.Count == 0)
+                return null;
 
             var menu = new ContextMenu();
             if (changes.Count == 1)
@@ -536,7 +546,8 @@ namespace SourceGit.ViewModels
                 patch.Click += async (_, e) =>
                 {
                     var topLevel = App.GetTopLevel();
-                    if (topLevel == null) return;
+                    if (topLevel == null)
+                        return;
 
                     var options = new FilePickerSaveOptions();
                     options.Title = App.Text("FileCM.SaveAsPatch");
@@ -547,7 +558,8 @@ namespace SourceGit.ViewModels
                     if (storageFile != null)
                     {
                         var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, changes, true, storageFile.Path.LocalPath));
-                        if (succ) App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                        if (succ)
+                            App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
 
                     e.Handled = true;
@@ -633,7 +645,8 @@ namespace SourceGit.ViewModels
                 patch.Click += async (o, e) =>
                 {
                     var topLevel = App.GetTopLevel();
-                    if (topLevel == null) return;
+                    if (topLevel == null)
+                        return;
 
                     var options = new FilePickerSaveOptions();
                     options.Title = App.Text("FileCM.SaveAsPatch");
@@ -644,7 +657,8 @@ namespace SourceGit.ViewModels
                     if (storageFile != null)
                     {
                         var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, changes, true, storageFile.Path.LocalPath));
-                        if (succ) App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                        if (succ)
+                            App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
 
                     e.Handled = true;
@@ -661,7 +675,8 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateContextMenuForStagedChanges(List<Models.Change> changes)
         {
-            if (changes.Count == 0) return null;
+            if (changes.Count == 0)
+                return null;
 
             var menu = new ContextMenu();
             if (changes.Count == 1)
@@ -725,7 +740,8 @@ namespace SourceGit.ViewModels
                 patch.Click += async (o, e) =>
                 {
                     var topLevel = App.GetTopLevel();
-                    if (topLevel == null) return;
+                    if (topLevel == null)
+                        return;
 
                     var options = new FilePickerSaveOptions();
                     options.Title = App.Text("FileCM.SaveAsPatch");
@@ -736,7 +752,8 @@ namespace SourceGit.ViewModels
                     if (storageFile != null)
                     {
                         var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, changes, false, storageFile.Path.LocalPath));
-                        if (succ) App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                        if (succ)
+                            App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
 
                     e.Handled = true;
@@ -799,7 +816,8 @@ namespace SourceGit.ViewModels
                 patch.Click += async (_, e) =>
                 {
                     var topLevel = App.GetTopLevel();
-                    if (topLevel == null) return;
+                    if (topLevel == null)
+                        return;
 
                     var options = new FilePickerSaveOptions();
                     options.Title = App.Text("FileCM.SaveAsPatch");
@@ -810,7 +828,8 @@ namespace SourceGit.ViewModels
                     if (storageFile != null)
                     {
                         var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, changes, false, storageFile.Path.LocalPath));
-                        if (succ) App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                        if (succ)
+                            App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
 
                     e.Handled = true;

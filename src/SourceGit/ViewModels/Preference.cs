@@ -228,8 +228,10 @@ namespace SourceGit.ViewModels
                 if (changed && !OperatingSystem.IsWindows() && value > 0 && value < Models.ExternalMergeTools.Supported.Count)
                 {
                     var tool = Models.ExternalMergeTools.Supported[value];
-                    if (File.Exists(tool.Exec)) ExternalMergeToolPath = tool.Exec;
-                    else ExternalMergeToolPath = string.Empty;
+                    if (File.Exists(tool.Exec))
+                        ExternalMergeToolPath = tool.Exec;
+                    else
+                        ExternalMergeToolPath = string.Empty;
                 }
             }
         }
@@ -308,8 +310,10 @@ namespace SourceGit.ViewModels
 
         public static void MoveNode(RepositoryNode node, RepositoryNode to = null)
         {
-            if (to == null && _instance._repositoryNodes.Contains(node)) return;
-            if (to != null && to.SubNodes.Contains(node)) return;
+            if (to == null && _instance._repositoryNodes.Contains(node))
+                return;
+            if (to != null && to.SubNodes.Contains(node))
+                return;
 
             RemoveNode(node);
             AddNode(node, to);
@@ -324,7 +328,8 @@ namespace SourceGit.ViewModels
         {
             foreach (var repo in _instance.Repositories)
             {
-                if (repo.FullPath == path) return repo;
+                if (repo.FullPath == path)
+                    return repo;
             }
             return null;
         }
@@ -352,7 +357,8 @@ namespace SourceGit.ViewModels
         public static void Save()
         {
             var dir = Path.GetDirectoryName(_savePath);
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
 
             var data = JsonSerializer.Serialize(_instance, JsonCodeGen.Default.Preference);
             File.WriteAllText(_savePath, data);
@@ -362,10 +368,12 @@ namespace SourceGit.ViewModels
         {
             foreach (var node in collection)
             {
-                if (node.Id == id) return node;
+                if (node.Id == id)
+                    return node;
 
                 var sub = FindNodeRecursive(id, node.SubNodes);
-                if (sub != null) return sub;
+                if (sub != null)
+                    return sub;
             }
 
             return null;
@@ -381,7 +389,8 @@ namespace SourceGit.ViewModels
 
             foreach (RepositoryNode one in collection)
             {
-                if (RemoveNodeRecursive(node, one.SubNodes)) return true;
+                if (RemoveNodeRecursive(node, one.SubNodes))
+                    return true;
             }
 
             return false;

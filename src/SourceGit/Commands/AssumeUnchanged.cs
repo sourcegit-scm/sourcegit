@@ -7,7 +7,6 @@ namespace SourceGit.Commands
     {
         partial class ViewCommand : Command
         {
-
             [GeneratedRegex(@"^(\w)\s+(.+)$")]
             private static partial Regex REG();
 
@@ -27,7 +26,8 @@ namespace SourceGit.Commands
             protected override void OnReadline(string line)
             {
                 var match = REG().Match(line);
-                if (!match.Success) return;
+                if (!match.Success)
+                    return;
 
                 if (match.Groups[1].Value == "h")
                 {

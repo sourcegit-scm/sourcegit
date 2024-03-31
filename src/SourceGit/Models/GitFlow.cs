@@ -26,10 +26,14 @@
 
         public GitFlowBranchType GetBranchType(string name)
         {
-            if (!IsEnabled) return GitFlowBranchType.None;
-            if (name.StartsWith(Feature)) return GitFlowBranchType.Feature;
-            if (name.StartsWith(Release)) return GitFlowBranchType.Release;
-            if (name.StartsWith(Hotfix)) return GitFlowBranchType.Hotfix;
+            if (!IsEnabled)
+                return GitFlowBranchType.None;
+            if (name.StartsWith(Feature))
+                return GitFlowBranchType.Feature;
+            if (name.StartsWith(Release))
+                return GitFlowBranchType.Release;
+            if (name.StartsWith(Hotfix))
+                return GitFlowBranchType.Hotfix;
             return GitFlowBranchType.None;
         }
     }

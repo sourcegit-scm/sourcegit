@@ -32,9 +32,12 @@ namespace SourceGit.Models
         {
             get
             {
-                if (Index == ChangeState.Unmerged || WorkTree == ChangeState.Unmerged) return true;
-                if (Index == ChangeState.Added && WorkTree == ChangeState.Added) return true;
-                if (Index == ChangeState.Deleted && WorkTree == ChangeState.Deleted) return true;
+                if (Index == ChangeState.Unmerged || WorkTree == ChangeState.Unmerged)
+                    return true;
+                if (Index == ChangeState.Added && WorkTree == ChangeState.Added)
+                    return true;
+                if (Index == ChangeState.Deleted && WorkTree == ChangeState.Deleted)
+                    return true;
                 return false;
             }
         }
@@ -63,8 +66,10 @@ namespace SourceGit.Models
                 }
             }
 
-            if (Path[0] == '"') Path = Path.Substring(1, Path.Length - 2);
-            if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"') OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
+            if (Path[0] == '"')
+                Path = Path.Substring(1, Path.Length - 2);
+            if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"')
+                OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
         }
     }
 }

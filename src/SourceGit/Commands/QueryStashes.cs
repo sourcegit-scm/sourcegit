@@ -20,7 +20,8 @@ namespace SourceGit.Commands
         public List<Models.Stash> Result()
         {
             Exec();
-            if (_current != null) _stashes.Add(_current);
+            if (_current != null)
+                _stashes.Add(_current);
             return _stashes;
         }
 
@@ -28,17 +29,20 @@ namespace SourceGit.Commands
         {
             if (line.StartsWith("commit ", StringComparison.Ordinal))
             {
-                if (_current != null && !string.IsNullOrEmpty(_current.Name)) _stashes.Add(_current);
+                if (_current != null && !string.IsNullOrEmpty(_current.Name))
+                    _stashes.Add(_current);
                 _current = new Models.Stash() { SHA = line.Substring(7, 8) };
                 return;
             }
 
-            if (_current == null) return;
+            if (_current == null)
+                return;
 
             if (line.StartsWith("Reflog: refs/stash@", StringComparison.Ordinal))
             {
                 var match = REG_STASH().Match(line);
-                if (match.Success) _current.Name = match.Groups[1].Value;
+                if (match.Success)
+                    _current.Name = match.Groups[1].Value;
             }
             else if (line.StartsWith("Reflog message: ", StringComparison.Ordinal))
             {

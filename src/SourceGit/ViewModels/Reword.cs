@@ -28,7 +28,8 @@ namespace SourceGit.ViewModels
 
         public override Task<bool> Sure()
         {
-            if (_message == Head.FullMessage) return null;
+            if (_message == Head.FullMessage)
+                return null;
 
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Editing head commit message ...";

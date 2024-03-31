@@ -55,11 +55,13 @@ namespace SourceGit.Models
                 {
                     Add(new Point(LastX, LastY));
                     Add(new Point(x, y - halfHeight));
-                    if (isEnd) Add(new Point(x, y));
+                    if (isEnd)
+                        Add(new Point(x, y));
                 }
                 else if (x < LastX)
                 {
-                    if (y > LastY + halfHeight) Add(new Point(LastX, LastY + halfHeight));
+                    if (y > LastY + halfHeight)
+                        Add(new Point(LastX, LastY + halfHeight));
                     Add(new Point(x, y));
                 }
                 else if (isEnd)
@@ -136,7 +138,8 @@ namespace SourceGit.Models
                             if (commit.Parents.Count > 0)
                             {
                                 major.Next = commit.Parents[0];
-                                if (!mapUnsolved.ContainsKey(major.Next)) mapUnsolved.Add(major.Next, major);
+                                if (!mapUnsolved.ContainsKey(major.Next))
+                                    mapUnsolved.Add(major.Next, major);
                             }
                             else
                             {
@@ -155,7 +158,8 @@ namespace SourceGit.Models
                     }
                     else
                     {
-                        if (!mapUnsolved.ContainsKey(l.Next)) mapUnsolved.Add(l.Next, l);
+                        if (!mapUnsolved.ContainsKey(l.Next))
+                            mapUnsolved.Add(l.Next, l);
                         offsetX += UNIT_WIDTH;
                         l.Add(offsetX, offsetY, HALF_HEIGHT);
                     }
@@ -188,9 +192,9 @@ namespace SourceGit.Models
                 for (int j = 1; j < commit.Parents.Count; j++)
                 {
                     var parent = commit.Parents[j];
-                    if (mapUnsolved.ContainsKey(parent))
+                    if (mapUnsolved.TryGetValue(parent, out var value))
                     {
-                        var l = mapUnsolved[parent];
+                        var l = value;
                         var link = new Link();
 
                         link.Start = position;
@@ -233,7 +237,8 @@ namespace SourceGit.Models
                 var path = unsolved[i];
                 var endY = (commits.Count - 0.5) * UNIT_HEIGHT;
 
-                if (path.Path.Points.Count == 1 && path.Path.Points[0].Y == endY) continue;
+                if (path.Path.Points.Count == 1 && path.Path.Points[0].Y == endY)
+                    continue;
                 path.Add((i + 0.5) * UNIT_WIDTH, endY + HALF_HEIGHT, HALF_HEIGHT, true);
             }
             unsolved.Clear();

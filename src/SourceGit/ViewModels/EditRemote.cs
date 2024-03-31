@@ -21,7 +21,8 @@ namespace SourceGit.ViewModels
             get => _url;
             set
             {
-                if (SetProperty(ref _url, value, true)) UseSSH = Models.Remote.IsSSH(value);
+                if (SetProperty(ref _url, value, true))
+                    UseSSH = Models.Remote.IsSSH(value);
             }
         }
 
@@ -59,7 +60,8 @@ namespace SourceGit.ViewModels
             {
                 foreach (var remote in edit._repo.Remotes)
                 {
-                    if (remote != edit._remote && name == remote.Name) new ValidationResult("A remote with given name already exists!!!");
+                    if (remote != edit._remote && name == remote.Name)
+                        new ValidationResult("A remote with given name already exists!!!");
                 }
             }
 
@@ -70,11 +72,13 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is EditRemote edit)
             {
-                if (!Models.Remote.IsValidURL(url)) return new ValidationResult("Bad remote URL format!!!");
+                if (!Models.Remote.IsValidURL(url))
+                    return new ValidationResult("Bad remote URL format!!!");
 
                 foreach (var remote in edit._repo.Remotes)
                 {
-                    if (remote != edit._remote && url == remote.URL) new ValidationResult("A remote with the same url already exists!!!");
+                    if (remote != edit._remote && url == remote.URL)
+                        new ValidationResult("A remote with the same url already exists!!!");
                 }
             }
 
@@ -91,13 +95,15 @@ namespace SourceGit.ViewModels
                 if (_remote.Name != _name)
                 {
                     var succ = new Commands.Remote(_repo.FullPath).Rename(_remote.Name, _name);
-                    if (succ) _remote.Name = _name;
+                    if (succ)
+                        _remote.Name = _name;
                 }
 
                 if (_remote.URL != _url)
                 {
                     var succ = new Commands.Remote(_repo.FullPath).SetURL(_name, _url);
-                    if (succ) _remote.URL = _url;
+                    if (succ)
+                        _remote.URL = _url;
                 }
 
                 if (_useSSH)

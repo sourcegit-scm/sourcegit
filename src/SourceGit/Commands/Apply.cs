@@ -7,9 +7,12 @@
             WorkingDirectory = repo;
             Context = repo;
             Args = "apply ";
-            if (ignoreWhitespace) Args += "--ignore-whitespace ";
-            else Args += $"--whitespace={whitespaceMode} ";
-            if (!string.IsNullOrEmpty(extra)) Args += $"{extra} ";
+            if (ignoreWhitespace)
+                Args += "--ignore-whitespace ";
+            else
+                Args += $"--whitespace={whitespaceMode} ";
+            if (!string.IsNullOrEmpty(extra))
+                Args += $"{extra} ";
             Args += $"\"{file}\"";
         }
     }

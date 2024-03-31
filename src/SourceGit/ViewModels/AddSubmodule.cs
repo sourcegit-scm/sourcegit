@@ -36,7 +36,8 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateURL(string url, ValidationContext ctx)
         {
-            if (!Models.Remote.IsValidURL(url)) return new ValidationResult("Invalid repository URL format");
+            if (!Models.Remote.IsValidURL(url))
+                return new ValidationResult("Invalid repository URL format");
             return ValidationResult.Success;
         }
 

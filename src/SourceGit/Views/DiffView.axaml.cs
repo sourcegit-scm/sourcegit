@@ -114,7 +114,8 @@ namespace SourceGit.Views
                 if (right != null)
                 {
                     var rSize = GetDesiredSize(right.Size, availableSize);
-                    if (rSize.Width > lSize.Width) return rSize;
+                    if (rSize.Width > lSize.Width)
+                        return rSize;
                     return lSize;
                 }
                 else

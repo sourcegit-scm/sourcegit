@@ -23,9 +23,12 @@ namespace SourceGit.Commands
 
             Args += "push --progress --verbose ";
 
-            if (withTags) Args += "--tags ";
-            if (track) Args += "-u ";
-            if (force) Args += "--force-with-lease ";
+            if (withTags)
+                Args += "--tags ";
+            if (track)
+                Args += "-u ";
+            if (force)
+                Args += "--force-with-lease ";
 
             Args += $"{remote} {local}:{remoteBranch}";
         }
@@ -71,7 +74,8 @@ namespace SourceGit.Commands
             }
 
             Args += "push ";
-            if (isDelete) Args += "--delete ";
+            if (isDelete)
+                Args += "--delete ";
             Args += $"{remote} refs/tags/{tag}";
         }
 

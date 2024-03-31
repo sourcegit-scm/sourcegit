@@ -52,14 +52,15 @@ namespace SourceGit.Views
 
         public NameHighlightedTextBlock(string nameKey, params object[] args)
         {
-            Text = App.Text(nameKey, args);
+            SetCurrentValue(TextProperty, App.Text(nameKey, args));
             VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
             var text = Text;
-            if (string.IsNullOrEmpty(text)) return base.MeasureOverride(availableSize);
+            if (string.IsNullOrEmpty(text))
+                return base.MeasureOverride(availableSize);
 
             var typeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Normal, FontStretch.Normal);
             var formatted = new FormattedText(
@@ -76,7 +77,8 @@ namespace SourceGit.Views
         public override void Render(DrawingContext context)
         {
             var text = Text;
-            if (string.IsNullOrEmpty(text)) return;
+            if (string.IsNullOrEmpty(text))
+                return;
 
             var normalTypeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Normal, FontStretch.Normal);
             //var highlightTypeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold, FontStretch.Normal);

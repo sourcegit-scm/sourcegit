@@ -40,11 +40,16 @@ namespace SourceGit.ViewModels
             _repo = repo;
 
             _cached = new Commands.Config(repo.FullPath).ListAll();
-            if (_cached.ContainsKey("user.name")) UserName = _cached["user.name"];
-            if (_cached.ContainsKey("user.email")) UserEmail = _cached["user.email"];
-            if (_cached.ContainsKey("commit.gpgsign")) GPGSigningEnabled = _cached["commit.gpgsign"] == "true";
-            if (_cached.ContainsKey("user.signingkey")) GPGUserSigningKey = _cached["user.signingkey"];
-            if (_cached.ContainsKey("http.proxy")) HttpProxy = _cached["http.proxy"];
+            if (_cached.TryGetValue("user.name", out var name))
+                UserName = name;
+            if (_cached.TryGetValue("user.email", out var email))
+                UserEmail = email;
+            if (_cached.TryGetValue("commit.gpgsign", out var gpgsign))
+                GPGSigningEnabled = gpgsign == "true";
+            if (_cached.TryGetValue("user.signingkey", out var signingKey))
+                GPGUserSigningKey = signingKey;
+            if (_cached.TryGetValue("http.proxy", out var proxy))
+                HttpProxy = proxy;
 
             View = new Views.RepositoryConfigure() { DataContext = this };
         }
@@ -62,9 +67,9 @@ namespace SourceGit.ViewModels
         private void SetIfChanged(string key, string value)
         {
             bool changed = false;
-            if (_cached.ContainsKey(key))
+            if (_cached.TryGetValue(key, out var old))
             {
-                changed = value != _cached[key];
+                changed = old != value;
             }
             else if (!string.IsNullOrEmpty(value))
             {

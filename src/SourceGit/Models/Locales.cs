@@ -7,7 +7,7 @@ namespace SourceGit.Models
         public string Name { get; set; }
         public string Key { get; set; }
 
-        public static List<Locale> Supported = new List<Locale>() {
+        public static readonly List<Locale> Supported = new List<Locale>() {
             new Locale("English", "en_US"),
             new Locale("简体中文", "zh_CN"),
         };

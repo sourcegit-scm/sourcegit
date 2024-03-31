@@ -11,7 +11,7 @@ namespace SourceGit.Models
         public string Cmd { get; set; }
         public string DiffCmd { get; set; }
 
-        public static List<ExternalMergeTools> Supported;
+        public static readonly List<ExternalMergeTools> Supported;
 
         static ExternalMergeTools()
         {

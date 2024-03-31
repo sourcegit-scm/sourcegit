@@ -93,11 +93,14 @@ namespace SourceGit.Models
         public override string ToString()
         {
             var builder = new StringBuilder();
-            if (!string.IsNullOrEmpty(_extra)) builder.Append($"{_extra} ");
-            foreach (var r in _revisions) builder.Append($"{r} ");
+            if (!string.IsNullOrEmpty(_extra))
+                builder.Append($"{_extra} ");
+            foreach (var r in _revisions)
+                builder.Append($"{r} ");
 
             builder.Append("-- ");
-            if (!string.IsNullOrEmpty(_orgPath)) builder.Append($"\"{_orgPath}\" ");
+            if (!string.IsNullOrEmpty(_orgPath))
+                builder.Append($"\"{_orgPath}\" ");
             builder.Append($"\"{_path}\"");
 
             return builder.ToString();

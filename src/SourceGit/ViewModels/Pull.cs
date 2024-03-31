@@ -25,7 +25,8 @@ namespace SourceGit.ViewModels
                     var branches = new List<Models.Branch>();
                     foreach (var branch in _repo.Branches)
                     {
-                        if (branch.Remote == value.Name) branches.Add(branch);
+                        if (branch.Remote == value.Name)
+                            branches.Add(branch);
                     }
                     RemoteBranches = branches;
                     SelectedBranch = branches.Count > 0 ? branches[0] : null;
@@ -98,7 +99,8 @@ namespace SourceGit.ViewModels
             _remoteBranches = new List<Models.Branch>();
             foreach (var branch in _repo.Branches)
             {
-                if (branch.Remote == _selectedRemote.Name) _remoteBranches.Add(branch);
+                if (branch.Remote == _selectedRemote.Name)
+                    _remoteBranches.Add(branch);
             }
 
             if (_selectedBranch == null && _remoteBranches.Count > 0)

@@ -47,7 +47,8 @@ namespace SourceGit.Commands
                 start.Environment.Add("LANG", "en_US.UTF-8");
             }
 
-            if (!string.IsNullOrEmpty(WorkingDirectory)) start.WorkingDirectory = WorkingDirectory;
+            if (!string.IsNullOrEmpty(WorkingDirectory))
+                start.WorkingDirectory = WorkingDirectory;
 
             var errs = new List<string>();
             var proc = new Process() { StartInfo = start };
@@ -60,11 +61,13 @@ namespace SourceGit.Commands
                     isCancelled = true;
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
-                    if (!proc.HasExited) proc.Kill(true);
+                    if (!proc.HasExited)
+                        proc.Kill(true);
                     return;
                 }
 
-                if (e.Data != null) OnReadline(e.Data);
+                if (e.Data != null)
+                    OnReadline(e.Data);
             };
 
             proc.ErrorDataReceived += (_, e) =>
@@ -74,19 +77,27 @@ namespace SourceGit.Commands
                     isCancelled = true;
                     proc.CancelErrorRead();
                     proc.CancelOutputRead();
-                    if (!proc.HasExited) proc.Kill(true);
+                    if (!proc.HasExited)
+                        proc.Kill(true);
                     return;
                 }
 
-                if (string.IsNullOrEmpty(e.Data)) return;
-                if (TraitErrorAsOutput) OnReadline(e.Data);
+                if (string.IsNullOrEmpty(e.Data))
+                    return;
+                if (TraitErrorAsOutput)
+                    OnReadline(e.Data);
 
                 // Ignore progress messages
-                if (e.Data.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal)) return;
-                if (e.Data.StartsWith("remote: Counting objects:", StringComparison.Ordinal)) return;
-                if (e.Data.StartsWith("remote: Compressing objects:", StringComparison.Ordinal)) return;
-                if (e.Data.StartsWith("Filtering content:", StringComparison.Ordinal)) return;
-                if (_progressRegex().IsMatch(e.Data)) return;
+                if (e.Data.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal))
+                    return;
+                if (e.Data.StartsWith("remote: Counting objects:", StringComparison.Ordinal))
+                    return;
+                if (e.Data.StartsWith("remote: Compressing objects:", StringComparison.Ordinal))
+                    return;
+                if (e.Data.StartsWith("Filtering content:", StringComparison.Ordinal))
+                    return;
+                if (_progressRegex().IsMatch(e.Data))
+                    return;
                 errs.Add(e.Data);
             };
 
@@ -142,7 +153,8 @@ namespace SourceGit.Commands
             start.StandardOutputEncoding = Encoding.UTF8;
             start.StandardErrorEncoding = Encoding.UTF8;
 
-            if (!string.IsNullOrEmpty(WorkingDirectory)) start.WorkingDirectory = WorkingDirectory;
+            if (!string.IsNullOrEmpty(WorkingDirectory))
+                start.WorkingDirectory = WorkingDirectory;
 
             var proc = new Process() { StartInfo = start };
             try

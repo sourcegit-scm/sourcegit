@@ -19,7 +19,8 @@ namespace SourceGit.ViewModels
             get => _selectedIndex;
             set
             {
-                if (SetProperty(ref _selectedIndex, value)) RefreshReport();
+                if (SetProperty(ref _selectedIndex, value))
+                    RefreshReport();
             }
         }
 
@@ -47,13 +48,20 @@ namespace SourceGit.ViewModels
 
         private void RefreshReport()
         {
-            if (_data == null) return;
+            if (_data == null)
+                return;
 
             switch (_selectedIndex)
             {
-                case 0: SelectedReport = _data.Year; break;
-                case 1: SelectedReport = _data.Month; break;
-                default: SelectedReport = _data.Week; break;
+                case 0:
+                    SelectedReport = _data.Year;
+                    break;
+                case 1:
+                    SelectedReport = _data.Month;
+                    break;
+                default:
+                    SelectedReport = _data.Week;
+                    break;
             }
         }
 

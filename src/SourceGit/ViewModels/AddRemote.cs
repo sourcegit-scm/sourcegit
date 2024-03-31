@@ -21,7 +21,8 @@ namespace SourceGit.ViewModels
             get => _url;
             set
             {
-                if (SetProperty(ref _url, value, true)) UseSSH = Models.Remote.IsSSH(value);
+                if (SetProperty(ref _url, value, true))
+                    UseSSH = Models.Remote.IsSSH(value);
             }
         }
 
@@ -48,7 +49,8 @@ namespace SourceGit.ViewModels
             if (ctx.ObjectInstance is AddRemote add)
             {
                 var exists = add._repo.Remotes.Find(x => x.Name == name);
-                if (exists != null) return new ValidationResult("A remote with given name already exists!!!");
+                if (exists != null)
+                    return new ValidationResult("A remote with given name already exists!!!");
             }
 
             return ValidationResult.Success;
@@ -58,10 +60,12 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is AddRemote add)
             {
-                if (!Models.Remote.IsValidURL(url)) return new ValidationResult("Bad remote URL format!!!");
+                if (!Models.Remote.IsValidURL(url))
+                    return new ValidationResult("Bad remote URL format!!!");
 
                 var exists = add._repo.Remotes.Find(x => x.URL == url);
-                if (exists != null) return new ValidationResult("A remote with the same url already exists!!!");
+                if (exists != null)
+                    return new ValidationResult("A remote with the same url already exists!!!");
             }
 
             return ValidationResult.Success;

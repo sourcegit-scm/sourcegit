@@ -45,7 +45,8 @@ namespace SourceGit.Views
                     child.SetValue(ColumnProperty, i);
                     child.SetValue(ColumnSpanProperty, 1);
 
-                    if (child is GridSplitter splitter) splitter.BorderThickness = new Thickness(1, 0, 0, 0);
+                    if (child is GridSplitter splitter)
+                        splitter.BorderThickness = new Thickness(1, 0, 0, 0);
                 }
             }
             else
@@ -59,7 +60,8 @@ namespace SourceGit.Views
                     child.SetValue(ColumnProperty, 0);
                     child.SetValue(ColumnSpanProperty, colSpan);
 
-                    if (child is GridSplitter splitter) splitter.BorderThickness = new Thickness(0, 1, 0, 0);
+                    if (child is GridSplitter splitter)
+                        splitter.BorderThickness = new Thickness(0, 1, 0, 0);
                 }
             }
         }
@@ -117,10 +119,12 @@ namespace SourceGit.Views
 
             var graph = Graph;
             var grid = BindingDataGrid;
-            if (graph == null || grid == null) return;
+            if (graph == null || grid == null)
+                return;
 
             var rowsPresenter = grid.FindDescendantOfType<DataGridRowsPresenter>();
-            if (rowsPresenter == null) return;
+            if (rowsPresenter == null)
+                return;
 
             // Find the content display offset Y of binding DataGrid.
             double rowHeight = grid.RowHeight;
@@ -131,7 +135,8 @@ namespace SourceGit.Views
                 if (row.IsVisible && row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight)
                 {
                     var test = rowHeight * row.GetIndex() - row.Bounds.Top;
-                    if (startY < test) startY = test;
+                    if (startY < test)
+                        startY = test;
                 }
             }
 
@@ -154,8 +159,10 @@ namespace SourceGit.Views
             }
             foreach (var dot in graph.Dots)
             {
-                if (dot.Center.Y < top) continue;
-                if (dot.Center.Y > bottom) break;
+                if (dot.Center.Y < top)
+                    continue;
+                if (dot.Center.Y > bottom)
+                    break;
 
                 context.DrawEllipse(dotFill, Pens[dot.Color], dot.Center, 3, 3);
             }
@@ -168,8 +175,10 @@ namespace SourceGit.Views
                 var last = line.Points[0];
                 var size = line.Points.Count;
 
-                if (line.Points[size - 1].Y < top) continue;
-                if (last.Y > bottom) continue;
+                if (line.Points[size - 1].Y < top)
+                    continue;
+                if (last.Y > bottom)
+                    continue;
 
                 var geo = new StreamGeometry();
                 var pen = Pens[line.Color];
@@ -221,7 +230,8 @@ namespace SourceGit.Views
                             ctx.LineTo(cur);
                         }
 
-                        if (ended) break;
+                        if (ended)
+                            break;
                         last = cur;
                     }
                 }
@@ -231,8 +241,10 @@ namespace SourceGit.Views
 
             foreach (var link in Graph.Links)
             {
-                if (link.End.Y < top) continue;
-                if (link.Start.Y > bottom) break;
+                if (link.End.Y < top)
+                    continue;
+                if (link.Start.Y > bottom)
+                    break;
 
                 var geo = new StreamGeometry();
                 using (var ctx = geo.Open())

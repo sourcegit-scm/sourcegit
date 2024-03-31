@@ -129,9 +129,12 @@ namespace SourceGit.ViewModels
         public void Cleanup()
         {
             _repo = null;
-            if (_changes != null) _changes.Clear();
-            if (_visibleChanges != null) _visibleChanges.Clear();
-            if (_changeTree != null) _changeTree.Clear();
+            if (_changes != null)
+                _changes.Clear();
+            if (_visibleChanges != null)
+                _visibleChanges.Clear();
+            if (_changeTree != null)
+                _changeTree.Clear();
             _selectedChange = null;
             _selectedNode = null;
             _searchFilter = null;
@@ -141,7 +144,8 @@ namespace SourceGit.ViewModels
         public void NavigateTo(string commitSHA)
         {
             var repo = Preference.FindRepository(_repo);
-            if (repo != null) repo.NavigateToCommit(commitSHA);
+            if (repo != null)
+                repo.NavigateToCommit(commitSHA);
         }
 
         public void ClearSearchFilter()
@@ -192,7 +196,8 @@ namespace SourceGit.ViewModels
 
         private void RefreshVisible()
         {
-            if (_changes == null) return;
+            if (_changes == null)
+                return;
 
             if (string.IsNullOrEmpty(_searchFilter))
             {

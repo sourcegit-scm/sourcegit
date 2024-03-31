@@ -12,9 +12,11 @@ namespace SourceGit.Commands
 
             StringBuilder builder = new StringBuilder();
             builder.Append("restore ");
-            if (!string.IsNullOrEmpty(extra)) builder.Append(extra).Append(" ");
+            if (!string.IsNullOrEmpty(extra))
+                builder.Append(extra).Append(" ");
             builder.Append("--");
-            foreach (var f in files) builder.Append(' ').Append('"').Append(f).Append('"');
+            foreach (var f in files)
+                builder.Append(' ').Append('"').Append(f).Append('"');
             Args = builder.ToString();
         }
     }

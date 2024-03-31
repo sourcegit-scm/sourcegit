@@ -24,11 +24,13 @@ namespace SourceGit.Models
 
         public static bool IsSSH(string url)
         {
-            if (string.IsNullOrWhiteSpace(url)) return false;
+            if (string.IsNullOrWhiteSpace(url))
+                return false;
 
             for (int i = 1; i < URL_FORMATS.Length; i++)
             {
-                if (URL_FORMATS[i].IsMatch(url)) return true;
+                if (URL_FORMATS[i].IsMatch(url))
+                    return true;
             }
 
             return false;
@@ -38,7 +40,8 @@ namespace SourceGit.Models
         {
             foreach (var fmt in URL_FORMATS)
             {
-                if (fmt.IsMatch(url)) return true;
+                if (fmt.IsMatch(url))
+                    return true;
             }
             return false;
         }

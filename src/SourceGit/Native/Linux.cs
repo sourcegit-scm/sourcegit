@@ -25,21 +25,24 @@ namespace SourceGit.Native
 
         public string FindGitExecutable()
         {
-            if (File.Exists("/usr/bin/git")) return "/usr/bin/git";
+            if (File.Exists("/usr/bin/git"))
+                return "/usr/bin/git";
             return string.Empty;
         }
 
         public string FindVSCode()
         {
             var toolPath = "/usr/share/code/code";
-            if (File.Exists(toolPath)) return toolPath;
+            if (File.Exists(toolPath))
+                return toolPath;
             return string.Empty;
         }
 
         public string FindFleet()
         {
             var toolPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.local/share/JetBrains/Toolbox/apps/fleet/bin/Fleet";
-            if (File.Exists(toolPath)) return toolPath;
+            if (File.Exists(toolPath))
+                return toolPath;
             return string.Empty;
         }
 

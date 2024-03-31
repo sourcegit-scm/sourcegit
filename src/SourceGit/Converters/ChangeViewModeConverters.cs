@@ -6,7 +6,7 @@ namespace SourceGit.Converters
 {
     public static class ChangeViewModeConverters
     {
-        public static FuncValueConverter<Models.ChangeViewMode, StreamGeometry> ToIcon =
+        public static readonly FuncValueConverter<Models.ChangeViewMode, StreamGeometry> ToIcon =
             new FuncValueConverter<Models.ChangeViewMode, StreamGeometry>(v =>
             {
                 switch (v)
@@ -20,13 +20,13 @@ namespace SourceGit.Converters
                 }
             });
 
-        public static FuncValueConverter<Models.ChangeViewMode, bool> IsList =
+        public static readonly FuncValueConverter<Models.ChangeViewMode, bool> IsList =
             new FuncValueConverter<Models.ChangeViewMode, bool>(v => v == Models.ChangeViewMode.List);
 
-        public static FuncValueConverter<Models.ChangeViewMode, bool> IsGrid =
+        public static readonly FuncValueConverter<Models.ChangeViewMode, bool> IsGrid =
             new FuncValueConverter<Models.ChangeViewMode, bool>(v => v == Models.ChangeViewMode.Grid);
 
-        public static FuncValueConverter<Models.ChangeViewMode, bool> IsTree =
+        public static readonly FuncValueConverter<Models.ChangeViewMode, bool> IsTree =
             new FuncValueConverter<Models.ChangeViewMode, bool>(v => v == Models.ChangeViewMode.Tree);
     }
 }

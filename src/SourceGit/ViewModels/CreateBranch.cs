@@ -67,12 +67,14 @@ namespace SourceGit.ViewModels
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
         {
             var creator = ctx.ObjectInstance as CreateBranch;
-            if (creator == null) return new ValidationResult("Missing runtime context to create branch!");
+            if (creator == null)
+                return new ValidationResult("Missing runtime context to create branch!");
 
             foreach (var b in creator._repo.Branches)
             {
                 var test = b.IsLocal ? b.Name : $"{b.Remote}/{b.Name}";
-                if (test == name) return new ValidationResult("A branch with same name already exists!");
+                if (test == name)
+                    return new ValidationResult("A branch with same name already exists!");
             }
 
             return ValidationResult.Success;

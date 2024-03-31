@@ -14,7 +14,8 @@ namespace SourceGit.Commands
         {
             _outputHandler = outputHandler;
             Args = $"submodule add {url} {relativePath}";
-            if (!Exec()) return false;
+            if (!Exec())
+                return false;
 
             if (recursive)
             {
@@ -37,7 +38,8 @@ namespace SourceGit.Commands
         public bool Delete(string relativePath)
         {
             Args = $"submodule deinit -f {relativePath}";
-            if (!Exec()) return false;
+            if (!Exec())
+                return false;
 
             Args = $"rm -rf {relativePath}";
             return Exec();

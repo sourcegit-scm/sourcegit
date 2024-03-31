@@ -44,7 +44,8 @@ namespace SourceGit.ViewModels
         {
             if (_popup != null)
             {
-                if (!_popup.Check()) return;
+                if (!_popup.Check())
+                    return;
 
                 _popup.InProgress = true;
                 var task = _popup.Sure();
@@ -69,8 +70,10 @@ namespace SourceGit.ViewModels
 
         public void CancelPopup()
         {
-            if (_popup == null) return;
-            if (_popup.InProgress) return;
+            if (_popup == null)
+                return;
+            if (_popup.InProgress)
+                return;
             Popup = null;
         }
 

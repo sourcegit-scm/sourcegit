@@ -17,7 +17,8 @@ namespace SourceGit.Commands
 
         public long Result()
         {
-            if (_result != 0) return _result;
+            if (_result != 0)
+                return _result;
 
             var rs = ReadToEnd();
             if (rs.IsSuccess)

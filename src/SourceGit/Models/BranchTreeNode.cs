@@ -83,7 +83,8 @@ namespace SourceGit.Models
                     else
                     {
                         var remote = _remotes.Find(x => x.Name == branch.Remote);
-                        if (remote != null) MakeBranchNode(branch, remote.Children, $"remote/{remote.Name}", isFiltered);
+                        if (remote != null)
+                            MakeBranchNode(branch, remote.Children, $"remote/{remote.Name}", isFiltered);
                     }
                 }
 
@@ -106,7 +107,8 @@ namespace SourceGit.Models
                 foreach (var node in nodes)
                 {
                     var path = prefix + "/" + node.Name;
-                    if (node.Type != BranchTreeNodeType.Branch && node.IsExpanded) _expanded.Add(path);
+                    if (node.Type != BranchTreeNodeType.Branch && node.IsExpanded)
+                        _expanded.Add(path);
                     CollectExpandedNodes(node.Children, path);
                 }
             }
@@ -134,9 +136,9 @@ namespace SourceGit.Models
                 for (int i = 0; i < subs.Length - 1; i++)
                 {
                     path = string.Concat(path, "/", subs[i]);
-                    if (_maps.ContainsKey(path))
+                    if (_maps.TryGetValue(path, out var value))
                     {
-                        lastFolder = _maps[path];
+                        lastFolder = value;
                     }
                     else if (lastFolder == null)
                     {
@@ -188,7 +190,8 @@ namespace SourceGit.Models
                     }
                 });
 
-                foreach (var node in nodes) SortNodes(node.Children);
+                foreach (var node in nodes)
+                    SortNodes(node.Children);
             }
 
             private readonly List<BranchTreeNode> _locals = new List<BranchTreeNode>();

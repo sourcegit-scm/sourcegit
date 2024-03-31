@@ -8,7 +8,7 @@ namespace SourceGit.Models
         public string Value { get; set; }
         public string Desc { get; set; }
 
-        public static List<CRLFMode> Supported = new List<CRLFMode>() {
+        public static readonly List<CRLFMode> Supported = new List<CRLFMode>() {
             new CRLFMode("TRUE", "true", "Commit as LF, checkout as CRLF"),
             new CRLFMode("INPUT", "input", "Only convert for commit"),
             new CRLFMode("FALSE", "false", "Do NOT convert"),

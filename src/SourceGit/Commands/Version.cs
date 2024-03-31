@@ -11,7 +11,8 @@
         public string Query()
         {
             var rs = ReadToEnd();
-            if (!rs.IsSuccess || string.IsNullOrWhiteSpace(rs.StdOut)) return string.Empty;
+            if (!rs.IsSuccess || string.IsNullOrWhiteSpace(rs.StdOut))
+                return string.Empty;
             return rs.StdOut.Trim().Substring("git version ".Length);
         }
     }

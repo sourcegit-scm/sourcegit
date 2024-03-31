@@ -22,7 +22,8 @@ namespace SourceGit.Commands
             }
 
             Args += "pull --verbose --progress --tags ";
-            if (useRebase) Args += "--rebase ";
+            if (useRebase)
+                Args += "--rebase ";
             Args += $"{remote} {branch}";
         }
 

@@ -79,10 +79,13 @@ namespace SourceGit.Models
                 var beginNew = posNew;
                 var countOld = 0;
                 var countNew = 0;
-                for (; posOld < sizeOld && chunksOld[posOld].Modified; posOld++) countOld += chunksOld[posOld].Size;
-                for (; posNew < sizeNew && chunksNew[posNew].Modified; posNew++) countNew += chunksNew[posNew].Size;
+                for (; posOld < sizeOld && chunksOld[posOld].Modified; posOld++)
+                    countOld += chunksOld[posOld].Size;
+                for (; posNew < sizeNew && chunksNew[posNew].Modified; posNew++)
+                    countNew += chunksNew[posNew].Size;
 
-                if (countOld + countNew == 0) continue;
+                if (countOld + countNew == 0)
+                    continue;
 
                 var diff = new TextInlineChange(
                     countOld > 0 ? chunksOld[beginOld].Start : 0,
@@ -120,13 +123,15 @@ namespace SourceGit.Models
                 var ch = text[i];
                 if (delims.Contains(ch))
                 {
-                    if (start != i) AddChunk(chunks, hashes, text.Substring(start, i - start), start);
+                    if (start != i)
+                        AddChunk(chunks, hashes, text.Substring(start, i - start), start);
                     AddChunk(chunks, hashes, text.Substring(i, 1), i);
                     start = i + 1;
                 }
             }
 
-            if (start < size) AddChunk(chunks, hashes, text.Substring(start), start);
+            if (start < size)
+                AddChunk(chunks, hashes, text.Substring(start), start);
             return chunks;
         }
 
@@ -149,7 +154,8 @@ namespace SourceGit.Models
             if (lenOld > 0 && lenNew > 0)
             {
                 var rs = CheckModifiedEdit(chunksOld, startOld, endOld, chunksNew, startNew, endNew, forward, reverse);
-                if (rs.State == Edit.None) return;
+                if (rs.State == Edit.None)
+                    return;
 
                 if (rs.State == Edit.DeletedRight && rs.DeleteStart - 1 > startOld)
                 {
@@ -173,11 +179,13 @@ namespace SourceGit.Models
             }
             else if (lenOld > 0)
             {
-                for (int i = startOld; i < endOld; i++) chunksOld[i].Modified = true;
+                for (int i = startOld; i < endOld; i++)
+                    chunksOld[i].Modified = true;
             }
             else if (lenNew > 0)
             {
-                for (int i = startNew; i < endNew; i++) chunksNew[i].Modified = true;
+                for (int i = startNew; i < endNew; i++)
+                    chunksNew[i].Modified = true;
             }
         }
 

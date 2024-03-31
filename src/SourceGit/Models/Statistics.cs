@@ -20,9 +20,9 @@ namespace SourceGit.Models
             Total++;
             Samples[index].Count++;
 
-            if (_mapByCommitter.ContainsKey(committer))
+            if (_mapByCommitter.TryGetValue(committer, out var value))
             {
-                _mapByCommitter[committer].Count++;
+                value.Count++;
             }
             else
             {
