@@ -30,6 +30,11 @@ namespace SourceGit.Models
             get => Author != Committer || AuthorTime != CommitterTime;
         }
 
+        public bool IsCurrentHead
+        {
+            get => Decorators.Find(x => x.Type == DecoratorType.CurrentBranchHead) != null;
+        }
+
         public string FullMessage
         {
             get => string.IsNullOrWhiteSpace(Message) ? Subject : $"{Subject}\n\n{Message}";
