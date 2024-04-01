@@ -346,7 +346,7 @@
     <value>Open In Fleet</value>
   </data>
   <data xml:space="preserve" name="Text.Repository.Terminal">
-    <value>Open In Git Bash</value>
+    <value>Open In Terminal</value>
   </data>
   <data xml:space="preserve" name="Text.Repository.Refresh">
     <value>Refresh</value>
@@ -811,7 +811,7 @@
     <value>Open Repository</value>
   </data>
   <data xml:space="preserve" name="Text.Welcome.OpenTerminal">
-    <value>Open In Git Bash</value>
+    <value>Open In Terminal</value>
   </data>
   <data xml:space="preserve" name="Text.Welcome.Clone">
     <value>Clone Repository</value>
@@ -1305,8 +1305,8 @@
   <data name="Text.Preference.Appearance" xml:space="preserve">
     <value>Appearance</value>
   </data>
-    <data name="Text.Repository.OpenWith" xml:space="preserve">
-        <value>Open in</value>
+  <data name="Text.Repository.OpenWith" xml:space="preserve">
+        <value>Open In External Tools</value>
     </data>
   <data name="Text.SelfUpdate.Title" xml:space="preserve">
     <value>Software Update</value>
@@ -1331,5 +1331,11 @@
   </data>
   <data name="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">
     <value>Check for updates on startup</value>
+  </data>
+  <data name="Text.About.SubTitle" xml:space="preserve">
+    <value>Opensource &amp; Free Git GUI Client</value>
+  </data>
+  <data name="Text.About.SourceCode" xml:space="preserve">
+    <value>• Source code can be found at </value>
   </data>
 </root>

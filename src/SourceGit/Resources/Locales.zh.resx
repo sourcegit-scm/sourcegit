@@ -94,7 +94,7 @@
     <value>Copyright © 2024 sourcegit-scm.</value>
   </data>
   <data xml:space="preserve" name="Text.About.BuildWith">
-    <value>• 使用的框架为 </value>
+    <value>• 项目依赖于 </value>
   </data>
   <data xml:space="preserve" name="Text.About.Editor">
     <value>• 文本编辑器使用 </value>
@@ -340,10 +340,10 @@
     <value>在文件浏览器中打开</value>
   </data>
   <data xml:space="preserve" name="Text.Repository.VSCode">
-    <value>在Visual Studio Code中打开</value>
+    <value>在 Visual Studio Code 中打开</value>
   </data>
   <data xml:space="preserve" name="Text.Repository.Terminal">
-    <value>在GIT终端中打开</value>
+    <value>在终端中打开</value>
   </data>
   <data xml:space="preserve" name="Text.Repository.Refresh">
     <value>重新加载</value>
@@ -808,7 +808,7 @@
     <value>打开本地仓库</value>
   </data>
   <data xml:space="preserve" name="Text.Welcome.OpenTerminal">
-    <value>打开GIT终端</value>
+    <value>打开终端</value>
   </data>
   <data xml:space="preserve" name="Text.Welcome.Clone">
     <value>克隆远程仓库</value>
@@ -1325,5 +1325,17 @@
   </data>
   <data name="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">
     <value>启动时检测软件更新</value>
+  </data>
+  <data name="Text.About.SubTitle" xml:space="preserve">
+    <value>开源免费的Git客户端</value>
+  </data>
+  <data name="Text.Repository.OpenWith" xml:space="preserve">
+    <value>使用外部工具打开</value>
+  </data>
+  <data name="Text.About.SourceCode" xml:space="preserve">
+    <value>• 项目源代码地址 </value>
+  </data>
+  <data name="Text.Repository.Fleet" xml:space="preserve">
+    <value>在 Fleet 中打开</value>
   </data>
 </root>

@@ -49,5 +49,11 @@ namespace SourceGit.Views
             Native.OS.OpenBrowser("https://www.jetbrains.com/lp/mono/");
             e.Handled = true;
         }
+
+        private void OnVisitSourceCode(object sender, PointerPressedEventArgs e)
+        {
+            Native.OS.OpenBrowser("https://github.com/sourcegit-scm/sourcegit");
+            e.Handled = true;
+        }
     }
 }
