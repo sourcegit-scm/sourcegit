@@ -34,6 +34,10 @@ Opensource Git GUI client.
 
 You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [Github Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on each commits.
 
+For **Windows** users:
+
+**MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
+
 For **macOS** users:
 
 * Download `SourceGit.osx-x64.zip` or `SourceGit.osx-arm64.zip` from Releases. `x64` for Intel and `arm64` for Apple Silicon.
