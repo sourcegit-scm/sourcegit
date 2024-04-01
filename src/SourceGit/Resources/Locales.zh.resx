@@ -103,7 +103,7 @@
     <value>• 等宽字体来自于 </value>
   </data>
   <data xml:space="preserve" name="Text.Apply">
-    <value>补丁</value>
+    <value>应用补丁(apply)</value>
   </data>
   <data xml:space="preserve" name="Text.Apply.Title">
     <value>应用补丁</value>
@@ -145,7 +145,7 @@
     <value>与【错误】级别相似，但输出内容更多</value>
   </data>
   <data xml:space="preserve" name="Text.Archive">
-    <value>存档 ...</value>
+    <value>存档(archive) ...</value>
   </data>
   <data xml:space="preserve" name="Text.Archive.Title">
     <value>存档</value>
@@ -160,7 +160,7 @@
     <value>选择存档文件的存放路径</value>
   </data>
   <data xml:space="preserve" name="Text.Blame">
-    <value>逐行追溯</value>
+    <value>逐行追溯(blame)</value>
   </data>
   <data xml:space="preserve" name="Text.Submodule">
     <value>子模块</value>
@@ -187,13 +187,13 @@
     <value>删除子模块</value>
   </data>
   <data xml:space="preserve" name="Text.Checkout">
-    <value>检出分支</value>
+    <value>检出(checkout)分支</value>
   </data>
   <data xml:space="preserve" name="Text.Checkout.Target">
     <value>目标分支 ：</value>
   </data>
   <data xml:space="preserve" name="Text.CherryPick">
-    <value>挑选此提交</value>
+    <value>挑选(cherry-pick)此提交</value>
   </data>
   <data xml:space="preserve" name="Text.CherryPick.Title">
     <value>挑选提交</value>
@@ -310,7 +310,7 @@
     <value>未提交更改 ：</value>
   </data>
   <data xml:space="preserve" name="Text.CreateBranch.LocalChanges.StashAndReply">
-    <value>贮藏并自动恢复</value>
+    <value>贮藏(stash)并自动恢复</value>
   </data>
   <data xml:space="preserve" name="Text.CreateBranch.LocalChanges.Discard">
     <value>忽略</value>
@@ -484,28 +484,28 @@
     <value>在浏览器中查看</value>
   </data>
   <data xml:space="preserve" name="Text.BranchCM.Push">
-    <value>推送${0}$</value>
+    <value>推送(push)${0}$</value>
   </data>
   <data xml:space="preserve" name="Text.BranchCM.DiscardAll">
     <value>放弃所有更改</value>
   </data>
   <data xml:space="preserve" name="Text.BranchCM.FastForward">
-    <value>快进到${0}$</value>
+    <value>快进(fast-forward)到${0}$</value>
   </data>
   <data xml:space="preserve" name="Text.BranchCM.Pull">
-    <value>拉回${0}$</value>
+    <value>拉回(pull)${0}$</value>
   </data>
   <data xml:space="preserve" name="Text.BranchCM.PullInto">
-    <value>拉回${0}$内容至${1}$</value>
+    <value>拉回(pull)${0}$内容至${1}$</value>
   </data>
   <data xml:space="preserve" name="Text.BranchCM.Checkout">
-    <value>检出${0}$</value>
+    <value>检出(checkout)${0}$</value>
   </data>
   <data xml:space="preserve" name="Text.BranchCM.Merge">
     <value>合并${0}$到${1}$</value>
   </data>
   <data xml:space="preserve" name="Text.BranchCM.Rebase">
-    <value>变基${0}$分支至${1}$</value>
+    <value>变基(rebase)${0}$分支至${1}$</value>
   </data>
   <data xml:space="preserve" name="Text.BranchCM.Finish">
     <value>GIT工作流 - 完成${0}$</value>
@@ -526,7 +526,7 @@
     <value>取消追踪</value>
   </data>
   <data xml:space="preserve" name="Text.RemoteCM.Fetch">
-    <value>拉取更新 ...</value>
+    <value>拉取(fetch)更新 ...</value>
   </data>
   <data xml:space="preserve" name="Text.RemoteCM.Prune">
     <value>清理远程已删除分支</value>
@@ -544,13 +544,13 @@
     <value>复制远程地址</value>
   </data>
   <data xml:space="preserve" name="Text.CommitCM.Reset">
-    <value>重置${0}$到此处</value>
+    <value>重置(reset)${0}$到此处</value>
   </data>
   <data xml:space="preserve" name="Text.CommitCM.Rebase">
-    <value>变基${0}$到此处</value>
+    <value>变基(rebase)${0}$到此处</value>
   </data>
   <data xml:space="preserve" name="Text.CommitCM.CherryPick">
-    <value>挑选此提交</value>
+    <value>挑选(cherry-pick)此提交</value>
   </data>
   <data xml:space="preserve" name="Text.CommitCM.Reword">
     <value>编辑提交信息</value>
@@ -577,37 +577,37 @@
     <value>复制标签名</value>
   </data>
   <data xml:space="preserve" name="Text.StashCM.Apply">
-    <value>应用</value>
+    <value>应用(apply)</value>
   </data>
   <data xml:space="preserve" name="Text.StashCM.Pop">
-    <value>应用并删除</value>
+    <value>应用并删除(pop)</value>
   </data>
   <data xml:space="preserve" name="Text.StashCM.Drop">
-    <value>删除</value>
+    <value>删除(drop)</value>
   </data>
   <data xml:space="preserve" name="Text.FileCM.Unstage">
     <value>从暂存中移除</value>
   </data>
   <data xml:space="preserve" name="Text.FileCM.Stage">
-    <value>暂存...</value>
+    <value>暂存(add)...</value>
   </data>
   <data xml:space="preserve" name="Text.FileCM.Discard">
     <value>放弃更改...</value>
   </data>
   <data xml:space="preserve" name="Text.FileCM.Stash">
-    <value>贮藏...</value>
+    <value>贮藏(stash)...</value>
   </data>
   <data xml:space="preserve" name="Text.FileCM.UnstageMulti">
     <value>从暂存中移除 {0} 个文件</value>
   </data>
   <data xml:space="preserve" name="Text.FileCM.StageMulti">
-    <value>暂存 {0} 个文件...</value>
+    <value>暂存(add){0} 个文件...</value>
   </data>
   <data xml:space="preserve" name="Text.FileCM.DiscardMulti">
     <value>放弃 {0} 个文件的更改...</value>
   </data>
   <data xml:space="preserve" name="Text.FileCM.StashMulti">
-    <value>贮藏选中的 {0} 个文件...</value>
+    <value>贮藏(stash)选中的 {0} 个文件...</value>
   </data>
   <data xml:space="preserve" name="Text.FileCM.SaveAsPatch">
     <value>另存为补丁...</value>
@@ -700,7 +700,7 @@
     <value>总计{0}项选中更改</value>
   </data>
   <data xml:space="preserve" name="Text.Fetch">
-    <value>拉取</value>
+    <value>拉取(fetch)</value>
   </data>
   <data xml:space="preserve" name="Text.Fetch.Title">
     <value>拉取远程仓库内容</value>
@@ -715,7 +715,7 @@
     <value>自动清理远程已删除分支</value>
   </data>
   <data xml:space="preserve" name="Text.FastForwardWithoutCheck">
-    <value>快进（无需Checkout）</value>
+    <value>快进(fast-forward，无需checkout)</value>
   </data>
   <data xml:space="preserve" name="Text.FileHistory">
     <value>文件历史</value>
@@ -859,7 +859,7 @@
     <value>目标 ：</value>
   </data>
   <data xml:space="preserve" name="Text.Pull">
-    <value>拉回</value>
+    <value>拉回(pull)</value>
   </data>
   <data xml:space="preserve" name="Text.Pull.Title">
     <value>拉回（拉取并合并）</value>
@@ -880,7 +880,7 @@
     <value>自动贮藏并恢复本地变更</value>
   </data>
   <data xml:space="preserve" name="Text.Push">
-    <value>推送</value>
+    <value>推送(push)</value>
   </data>
   <data xml:space="preserve" name="Text.Push.Title">
     <value>推送到远程仓库</value>
@@ -910,7 +910,7 @@
     <value>远程仓库 ：</value>
   </data>
   <data xml:space="preserve" name="Text.Rebase">
-    <value>变基操作</value>
+    <value>变基(rebase)操作</value>
   </data>
   <data xml:space="preserve" name="Text.Rebase.Target">
     <value>分支 ：</value>
@@ -952,7 +952,7 @@
     <value>新的分支名不能与现有分支名相同</value>
   </data>
   <data xml:space="preserve" name="Text.Reset">
-    <value>重置当前分支到指定版本</value>
+    <value>重置(reset)当前分支到指定版本</value>
   </data>
   <data xml:space="preserve" name="Text.Reset.Target">
     <value>当前分支 ：</value>
@@ -1063,7 +1063,7 @@
     <value>对比模式启动参数</value>
   </data>
   <data xml:space="preserve" name="Text.Stash">
-    <value>贮藏</value>
+    <value>贮藏(stash)</value>
   </data>
   <data xml:space="preserve" name="Text.Stash.Title">
     <value>贮藏本地变更</value>
@@ -1138,7 +1138,7 @@
     <value>历史提交信息</value>
   </data>
   <data xml:space="preserve" name="Text.WorkingCopy.Amend">
-    <value>修补</value>
+    <value>修补(--amend)</value>
   </data>
   <data xml:space="preserve" name="Text.WorkingCopy.Commit">
     <value>提交</value>
