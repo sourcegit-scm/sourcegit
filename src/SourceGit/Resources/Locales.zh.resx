@@ -1158,9 +1158,6 @@
   <data xml:space="preserve" name="Text.WorkingCopy.IncludeUntracked">
     <value>显示未跟踪文件</value>
   </data>
-  <data xml:space="preserve" name="Text.Conflict.Tip">
-    <value>检测到本地冲突! 点击【终止合并】回滚到合并操作前的状态。</value>
-  </data>
   <data xml:space="preserve" name="Text.ClearStashes">
     <value>丢弃贮藏确认</value>
   </data>
@@ -1337,5 +1334,17 @@
   </data>
   <data name="Text.Repository.Fleet" xml:space="preserve">
     <value>在 Fleet 中打开</value>
+  </data>
+  <data name="Text.InProgress.CherryPick" xml:space="preserve">
+    <value>挑选（Cherry-Pick）操作进行中。点击【终止】回滚到操作前的状态。</value>
+  </data>
+  <data name="Text.InProgress.Rebase" xml:space="preserve">
+    <value>变基（Rebase）操作进行中。点击【终止】回滚到操作前的状态。</value>
+  </data>
+  <data name="Text.InProgress.Revert" xml:space="preserve">
+    <value>回滚提交操作进行中。点击【终止】回滚到操作前的状态。</value>
+  </data>
+  <data name="Text.InProgress.Merge" xml:space="preserve">
+    <value>合并操作进行中。点击【终止】回滚到操作前的状态。</value>
   </data>
 </root>

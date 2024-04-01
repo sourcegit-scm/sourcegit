@@ -943,15 +943,6 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Conflict detected! Press &apos;Abort&apos; to restore original HEAD..
-        /// </summary>
-        public static string Text_Conflict_Tip {
-            get {
-                return ResourceManager.GetString("Text.Conflict.Tip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Copy.
         /// </summary>
         public static string Text_Copy {
@@ -2046,6 +2037,42 @@ namespace SourceGit.Resources {
         public static string Text_Init_Tip {
             get {
                 return ResourceManager.GetString("Text.Init.Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cherry-Pick in progress. Press &apos;Abort&apos; to restore original HEAD..
+        /// </summary>
+        public static string Text_InProgress_CherryPick {
+            get {
+                return ResourceManager.GetString("Text.InProgress.CherryPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge request in progress. Press &apos;Abort&apos; to restore original HEAD..
+        /// </summary>
+        public static string Text_InProgress_Merge {
+            get {
+                return ResourceManager.GetString("Text.InProgress.Merge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rebase in progress. Press &apos;Abort&apos; to restore original HEAD..
+        /// </summary>
+        public static string Text_InProgress_Rebase {
+            get {
+                return ResourceManager.GetString("Text.InProgress.Rebase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Revert in progress. Press &apos;Abort&apos; to restore original HEAD..
+        /// </summary>
+        public static string Text_InProgress_Revert {
+            get {
+                return ResourceManager.GetString("Text.InProgress.Revert", resourceCulture);
             }
         }
         

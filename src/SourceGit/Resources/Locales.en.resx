@@ -1161,9 +1161,6 @@
   <data xml:space="preserve" name="Text.WorkingCopy.IncludeUntracked">
     <value>INCLUDE UNTRACKED FILES</value>
   </data>
-  <data xml:space="preserve" name="Text.Conflict.Tip">
-    <value>Conflict detected! Press 'Abort' to restore original HEAD.</value>
-  </data>
   <data xml:space="preserve" name="Text.ClearStashes">
     <value>Clear Stashes</value>
   </data>
@@ -1337,5 +1334,17 @@
   </data>
   <data name="Text.About.SourceCode" xml:space="preserve">
     <value>• Source code can be found at </value>
+  </data>
+  <data name="Text.InProgress.CherryPick" xml:space="preserve">
+    <value>Cherry-Pick in progress. Press 'Abort' to restore original HEAD.</value>
+  </data>
+  <data name="Text.InProgress.Rebase" xml:space="preserve">
+    <value>Rebase in progress. Press 'Abort' to restore original HEAD.</value>
+  </data>
+  <data name="Text.InProgress.Revert" xml:space="preserve">
+    <value>Revert in progress. Press 'Abort' to restore original HEAD.</value>
+  </data>
+  <data name="Text.InProgress.Merge" xml:space="preserve">
+    <value>Merge request in progress. Press 'Abort' to restore original HEAD.</value>
   </data>
 </root>

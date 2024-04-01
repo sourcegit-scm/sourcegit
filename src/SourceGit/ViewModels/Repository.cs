@@ -142,20 +142,6 @@ namespace SourceGit.ViewModels
         }
 
         [JsonIgnore]
-        public bool IsConflictBarVisible
-        {
-            get => _isConflictBarVisible;
-            private set => SetProperty(ref _isConflictBarVisible, value);
-        }
-
-        [JsonIgnore]
-        public bool HasUnsolvedConflict
-        {
-            get => _hasUnsolvedConflict;
-            private set => SetProperty(ref _hasUnsolvedConflict, value);
-        }
-
-        [JsonIgnore]
         public bool CanCommitWithPush
         {
             get => _canCommitWithPush;
@@ -219,6 +205,20 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isSubmoduleGroupExpanded, value);
         }
 
+        [JsonIgnore]
+        public InProgressContext InProgressContext
+        {
+            get => _inProgressContext;
+            private set => SetProperty(ref _inProgressContext, value);
+        }
+
+        [JsonIgnore]
+        public bool HasUnsolvedConflicts
+        {
+            get => _hasUnsolvedConflicts;
+            private set => SetProperty(ref _hasUnsolvedConflicts, value);
+        }
+
         public void Open()
         {
             _watcher = new Models.Watcher(this);
@@ -227,8 +227,8 @@ namespace SourceGit.ViewModels
             _stashesPage = new StashesPage(this);
             _selectedView = _histories;
             _selectedViewIndex = 0;
-            _isConflictBarVisible = false;
-            _hasUnsolvedConflict = false;
+            _inProgressContext = null;
+            _hasUnsolvedConflicts = false;
 
             Task.Run(() =>
             {
@@ -261,6 +261,9 @@ namespace SourceGit.ViewModels
 
             _isTagGroupExpanded = false;
             _isSubmoduleGroupExpanded = false;
+
+            _inProgressContext = null;
+            _hasUnsolvedConflicts = false;
 
             _remotes.Clear();
             _branches.Clear();
@@ -450,90 +453,34 @@ namespace SourceGit.ViewModels
 
         public async void ContinueMerge()
         {
-            var cherryPickMerge = Path.Combine(_gitDir, "CHERRY_PICK_HEAD");
-            var rebaseMerge = Path.Combine(_gitDir, "REBASE_HEAD");
-            var rebaseMergeFolder = Path.Combine(_gitDir, "rebase-merge");
-            var revertMerge = Path.Combine(_gitDir, "REVERT_HEAD");
-            var otherMerge = Path.Combine(_gitDir, "MERGE_HEAD");
-
-            var mode = "";
-            if (File.Exists(cherryPickMerge))
+            if (_inProgressContext != null)
             {
-                mode = "cherry-pick";
-            }
-            else if (File.Exists(rebaseMerge) && Directory.Exists(rebaseMergeFolder))
-            {
-                mode = "rebase";
-            }
-            else if (File.Exists(revertMerge))
-            {
-                mode = "revert";
-            }
-            else if (File.Exists(otherMerge))
-            {
-                mode = "merge";
+                SetWatcherEnabled(false);
+                var succ = await Task.Run(_inProgressContext.Continue);
+                if (succ && _workingCopy != null)
+                {
+                    _workingCopy.CommitMessage = string.Empty;
+                }
+                SetWatcherEnabled(true);
             }
             else
             {
                 MarkWorkingCopyDirtyManually();
-                return;
-            }
-
-            var cmd = new Commands.Command();
-            cmd.WorkingDirectory = _fullpath;
-            cmd.Context = _fullpath;
-            cmd.Args = $"-c core.editor=true {mode} --continue";
-
-            SetWatcherEnabled(false);
-            var succ = await Task.Run(cmd.Exec);
-            SetWatcherEnabled(true);
-
-            if (succ)
-            {
-                if (_workingCopy != null)
-                    _workingCopy.CommitMessage = string.Empty;
-
-                if (mode == "rebase")
-                {
-                    if (File.Exists(rebaseMerge))
-                        File.Delete(rebaseMerge);
-                    if (Directory.Exists(rebaseMergeFolder))
-                        Directory.Delete(rebaseMergeFolder);
-                }
             }
         }
 
         public async void AbortMerge()
         {
-            var cmd = new Commands.Command();
-            cmd.WorkingDirectory = _fullpath;
-            cmd.Context = _fullpath;
-
-            if (File.Exists(Path.Combine(_gitDir, "CHERRY_PICK_HEAD")))
+            if (_inProgressContext != null)
             {
-                cmd.Args = "cherry-pick --abort";
-            }
-            else if (File.Exists(Path.Combine(_gitDir, "REBASE_HEAD")))
-            {
-                cmd.Args = "rebase --abort";
-            }
-            else if (File.Exists(Path.Combine(_gitDir, "REVERT_HEAD")))
-            {
-                cmd.Args = "revert --abort";
-            }
-            else if (File.Exists(Path.Combine(_gitDir, "MERGE_HEAD")))
-            {
-                cmd.Args = "merge --abort";
+                SetWatcherEnabled(false);
+                await Task.Run(_inProgressContext.Abort);
+                SetWatcherEnabled(true);
             }
             else
             {
                 MarkWorkingCopyDirtyManually();
-                return;
             }
-
-            SetWatcherEnabled(false);
-            await Task.Run(cmd.Exec);
-            SetWatcherEnabled(true);
         }
 
         public void RefreshBranches()
@@ -622,30 +569,39 @@ namespace SourceGit.ViewModels
         {
             var changes = new Commands.QueryLocalChanges(FullPath, _includeUntracked).Result();
             var hasUnsolvedConflict = _workingCopy.SetData(changes);
+            var inProgress = null as InProgressContext;
 
-            var cherryPickMerge = Path.Combine(_gitDir, "CHERRY_PICK_HEAD");
-            var rebaseMerge = Path.Combine(_gitDir, "REBASE_HEAD");
             var rebaseMergeFolder = Path.Combine(_gitDir, "rebase-merge");
-            var revertMerge = Path.Combine(_gitDir, "REVERT_HEAD");
-            var otherMerge = Path.Combine(_gitDir, "MERGE_HEAD");
-            var runningMerge = (File.Exists(cherryPickMerge) ||
-                (File.Exists(rebaseMerge) && Directory.Exists(rebaseMergeFolder)) ||
-                File.Exists(revertMerge) ||
-                File.Exists(otherMerge));
-
-            if (!runningMerge)
+            var rebaseApplyFolder = Path.Combine(_gitDir, "rebase-apply");
+            if (File.Exists(Path.Combine(_gitDir, "CHERRY_PICK_HEAD")))
+            {
+                inProgress = new CherryPickInProgress(_fullpath);
+            }
+            else if (File.Exists(Path.Combine(_gitDir, "REBASE_HEAD")) && Directory.Exists(rebaseMergeFolder))
+            {
+                inProgress = new RebaseInProgress(this);
+            }
+            else if (File.Exists(Path.Combine(_gitDir, "REVERT_HEAD")))
+            {
+                inProgress = new RevertInProgress(_fullpath);
+            }
+            else if (File.Exists(Path.Combine(_gitDir, "MERGE_HEAD")))
+            {
+                inProgress = new MergeInProgress(_fullpath);
+            }
+            else
             {
                 if (Directory.Exists(rebaseMergeFolder))
                     Directory.Delete(rebaseMergeFolder, true);
-                var applyFolder = Path.Combine(_gitDir, "rebase-apply");
-                if (Directory.Exists(applyFolder))
-                    Directory.Delete(applyFolder, true);
+
+                if (Directory.Exists(rebaseApplyFolder))
+                    Directory.Delete(rebaseApplyFolder, true);
             }
 
             Dispatcher.UIThread.Invoke(() =>
             {
-                IsConflictBarVisible = runningMerge;
-                HasUnsolvedConflict = hasUnsolvedConflict;
+                InProgressContext = inProgress;
+                HasUnsolvedConflicts = hasUnsolvedConflict;
                 OnPropertyChanged(nameof(WorkingCopyChangesCount));
             });
         }
@@ -1359,9 +1315,10 @@ namespace SourceGit.ViewModels
         private List<Models.BranchTreeNode> _remoteBranchTrees = new List<Models.BranchTreeNode>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
         private List<string> _submodules = new List<string>();
-        private bool _isConflictBarVisible = false;
-        private bool _hasUnsolvedConflict = false;
         private bool _canCommitWithPush = false;
         private bool _includeUntracked = true;
+
+        private InProgressContext _inProgressContext = null;
+        private bool _hasUnsolvedConflicts = false;
     }
 }
