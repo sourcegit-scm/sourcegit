@@ -32,11 +32,11 @@ Opensource Git GUI client.
 
 **To use this tool, you need to install Git first.**
 
-You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [Github Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on each commits.
+You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [Github Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on latest commits.
 
 For **Windows** users:
 
-**MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
+* **MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
 
 For **macOS** users:
 
