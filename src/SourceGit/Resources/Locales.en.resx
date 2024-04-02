@@ -477,15 +477,6 @@
   <data xml:space="preserve" name="Text.GitFlow.KeepBranchAfterFinish">
     <value>Keep branch</value>
   </data>
-  <data xml:space="preserve" name="Text.RepoCM.Bookmark">
-    <value>Bookmark</value>
-  </data>
-  <data xml:space="preserve" name="Text.RepoCM.Open">
-    <value>Open</value>
-  </data>
-  <data xml:space="preserve" name="Text.RepoCM.Explore">
-    <value>Explore in File Manager</value>
-  </data>
   <data xml:space="preserve" name="Text.BranchCM.Push">
     <value>Push${0}$</value>
   </data>

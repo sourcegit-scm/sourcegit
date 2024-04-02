@@ -83,12 +83,12 @@
                         <Path Width="12" Height="12" Data="{DynamicResource Icons.Folder.Add}"/>
                       </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="{DynamicResource Text.RepoCM.Explore}" Command="{Binding OpenInFileManager}" IsVisible="{Binding IsRepository}">
+                    <MenuItem Header="{DynamicResource Text.Repository.Explore}" Command="{Binding OpenInFileManager}" IsVisible="{Binding IsRepository}">
                       <MenuItem.Icon>
-                        <Path Width="12" Height="12" Data="{DynamicResource Icons.OpenWith}"/>
+                        <Path Width="12" Height="12" Data="{DynamicResource Icons.Folder.Open}"/>
                       </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="{DynamicResource Text.Welcome.OpenTerminal}" Command="{Binding OpenTerminal}" IsVisible="{Binding IsRepository}">
+                    <MenuItem Header="{DynamicResource Text.Repository.Terminal}" Command="{Binding OpenTerminal}" IsVisible="{Binding IsRepository}">
                       <MenuItem.Icon>
                         <Path Width="12" Height="12" Data="{DynamicResource Icons.Terminal}"/>
                       </MenuItem.Icon>

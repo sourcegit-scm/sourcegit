@@ -474,15 +474,6 @@
   <data xml:space="preserve" name="Text.GitFlow.KeepBranchAfterFinish">
     <value>保留分支</value>
   </data>
-  <data xml:space="preserve" name="Text.RepoCM.Bookmark">
-    <value>书签</value>
-  </data>
-  <data xml:space="preserve" name="Text.RepoCM.Open">
-    <value>打开</value>
-  </data>
-  <data xml:space="preserve" name="Text.RepoCM.Explore">
-    <value>在浏览器中查看</value>
-  </data>
   <data xml:space="preserve" name="Text.BranchCM.Push">
     <value>推送(push)${0}$</value>
   </data>

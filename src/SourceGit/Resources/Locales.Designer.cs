@@ -2932,33 +2932,6 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bookmark.
-        /// </summary>
-        public static string Text_RepoCM_Bookmark {
-            get {
-                return ResourceManager.GetString("Text.RepoCM.Bookmark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Explore in File Manager.
-        /// </summary>
-        public static string Text_RepoCM_Explore {
-            get {
-                return ResourceManager.GetString("Text.RepoCM.Explore", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open.
-        /// </summary>
-        public static string Text_RepoCM_Open {
-            get {
-                return ResourceManager.GetString("Text.RepoCM.Open", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to ABORT.
         /// </summary>
         public static string Text_Repository_Abort {
