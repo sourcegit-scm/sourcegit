@@ -1338,4 +1338,7 @@
   <data name="Text.InProgress.Merge" xml:space="preserve">
     <value>合并操作进行中。点击【终止】回滚到操作前的状态。</value>
   </data>
+  <data name="Text.Repository.NavigateToCurrentHead" xml:space="preserve">
+    <value>定位HEAD</value>
+  </data>
 </root>

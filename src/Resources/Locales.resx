@@ -1338,4 +1338,7 @@
   <data name="Text.InProgress.Merge" xml:space="preserve">
     <value>Merge request in progress. Press 'Abort' to restore original HEAD.</value>
   </data>
+  <data name="Text.Repository.NavigateToCurrentHead" xml:space="preserve">
+    <value>Navigate To HEAD</value>
+  </data>
 </root>

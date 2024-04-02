@@ -414,6 +414,13 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void NavigateToCurrentHead()
+        {
+            var cur = Branches.Find(x => x.IsCurrent);
+            if (cur != null)
+                NavigateToCommit(cur.Head);
+        }
+
         public void UpdateFilter(string filter, bool toggle)
         {
             var changed = false;

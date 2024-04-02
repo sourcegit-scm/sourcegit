@@ -3004,6 +3004,15 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Navigate To HEAD.
+        /// </summary>
+        public static string Text_Repository_NavigateToCurrentHead {
+            get {
+                return ResourceManager.GetString("Text.Repository.NavigateToCurrentHead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NEW BRANCH.
         /// </summary>
         public static string Text_Repository_NewBranch {
