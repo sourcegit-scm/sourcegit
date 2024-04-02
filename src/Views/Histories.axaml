@@ -54,7 +54,12 @@
                                       VerticalAlignment="Center"/>
                               </Border>
                               <Border Background="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToBackground}}">
-                                <TextBlock Classes="monospace" Text="{Binding Name}" FontSize="10" Margin="4,0" Foreground="Black"/>
+                                <TextBlock Classes="monospace" 
+                                           Text="{Binding Name}" 
+                                           FontSize="10" 
+                                           Margin="4,0" 
+                                           Foreground="Black"
+                                           FontWeight="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToFontWeight}}"/>
                               </Border>
                             </StackPanel>
                           </Border>

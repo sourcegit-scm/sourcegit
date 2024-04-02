@@ -36,5 +36,8 @@ namespace SourceGit.Converters
 
                 return Application.Current?.FindResource(key) as StreamGeometry;
             });
+
+        public static readonly FuncValueConverter<Models.DecoratorType, FontWeight> ToFontWeight =
+            new FuncValueConverter<Models.DecoratorType, FontWeight>(v => v == Models.DecoratorType.CurrentBranchHead ? FontWeight.Bold : FontWeight.Regular);
     }
 }
