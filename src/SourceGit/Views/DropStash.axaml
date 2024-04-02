@@ -9,17 +9,17 @@
              x:DataType="vm:DropStash">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.StashDropConfirm}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.StashDropConfirm}"/>
     <Grid Margin="0,16,8,0" Height="28" ColumnDefinitions="120,*">
       <TextBlock Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.StashDropConfirm.Label}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.StashDropConfirm.Label}"/>
       <StackPanel Grid.Column="1" Orientation="Horizontal">
         <Path Width="12" Height="12" Margin="0,0,8,0"
-					    HorizontalAlignment="Left" VerticalAlignment="Center"
-					    Data="{StaticResource Icons.Stashes}"/>
+              HorizontalAlignment="Left" VerticalAlignment="Center"
+              Data="{StaticResource Icons.Stashes}"/>
 
         <TextBlock VerticalAlignment="Center" Text="{Binding Stash.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
         <TextBlock VerticalAlignment="Center" Text="{Binding Stash.Message}" Margin="8,0,0,0"/>

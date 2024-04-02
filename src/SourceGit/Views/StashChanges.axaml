@@ -11,11 +11,16 @@
              x:DataType="vm:StashChanges">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.Stash.Title}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.Stash.Title}"/>
     <Grid Margin="8,16,0,0" RowDefinitions="32,Auto" ColumnDefinitions="Auto,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="8,0" Text="{DynamicResource Text.Stash.Message}"/>
-      <TextBox Grid.Column="1" Height="26" CornerRadius="3" Text="{Binding Message, Mode=TwoWay}" Watermark="{DynamicResource Text.Stash.Message.Placeholder}"/>
+      <TextBox Grid.Column="1" 
+               Height="26" 
+               CornerRadius="3" 
+               Text="{Binding Message, Mode=TwoWay}"
+               Watermark="{DynamicResource Text.Stash.Message.Placeholder}"
+               v:AutoFocusBehaviour.IsEnabled="True"/>
 
       <CheckBox Grid.Row="1" Grid.Column="1"
                 Height="32"

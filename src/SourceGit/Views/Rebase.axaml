@@ -10,22 +10,22 @@
              x:DataType="vm:Rebase">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.Rebase}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.Rebase}"/>
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Reset.Target}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Reset.Target}"/>
       <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
         <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
         <TextBlock Text="{Binding Current.Name}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Rebase.On}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Rebase.On}"/>
       <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding On}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Branch">

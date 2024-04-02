@@ -568,6 +568,9 @@ namespace SourceGit.ViewModels
         public void RefreshWorkingCopyChanges()
         {
             var changes = new Commands.QueryLocalChanges(FullPath, _includeUntracked).Result();
+            if (_workingCopy == null)
+                return;
+
             var hasUnsolvedConflict = _workingCopy.SetData(changes);
             var inProgress = null as InProgressContext;
 

@@ -9,8 +9,8 @@
              x:DataType="vm:Discard">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.Discard}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.Discard}"/>
 
     <Grid Margin="0,16,0,8" RowDefinitions="32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,8,0" HorizontalAlignment="Right" Text="{DynamicResource Text.Discard.Changes}"/>

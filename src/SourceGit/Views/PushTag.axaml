@@ -10,13 +10,13 @@
              x:DataType="vm:PushTag">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.PushTag}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.PushTag}"/>
     <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.PushTag.Tag}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.PushTag.Tag}"/>
 
       <StackPanel Grid.Column="1" Orientation="Horizontal">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
@@ -24,9 +24,9 @@
       </StackPanel>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.PushTag.Remote}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.PushTag.Remote}"/>
       <ComboBox Grid.Row="1" Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"

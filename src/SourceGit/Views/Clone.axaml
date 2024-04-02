@@ -13,7 +13,7 @@
 
     <Grid Margin="8,16,0,0" Height="28" ColumnDefinitions="120,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.RemoteURL}"/>
-      <TextBox Grid.Column="1" CornerRadius="3" Text="{Binding Remote, Mode=TwoWay}"/>
+      <TextBox Grid.Column="1" CornerRadius="3" Text="{Binding Remote, Mode=TwoWay}" v:AutoFocusBehaviour.IsEnabled="True"/>
     </Grid>
     <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*" IsVisible="{Binding UseSSH}">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.SSHKey}"/>

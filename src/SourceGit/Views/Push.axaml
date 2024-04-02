@@ -10,14 +10,14 @@
              x:DataType="vm:Push">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.Push.Title}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.Push.Title}"/>
 
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Push.Local}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Push.Local}"/>
       <ComboBox Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
@@ -35,9 +35,9 @@
       </ComboBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Push.Remote}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Push.Remote}"/>
       <ComboBox Grid.Row="1" Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
@@ -54,9 +54,9 @@
       </ComboBox>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Push.To}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Push.To}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"

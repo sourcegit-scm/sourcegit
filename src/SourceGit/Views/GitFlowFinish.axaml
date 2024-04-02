@@ -10,22 +10,22 @@
              x:DataType="vm:GitFlowFinish">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.GitFlow.FinishFeature}"
+               Classes="bold"
+               Text="{DynamicResource Text.GitFlow.FinishFeature}"
                IsVisible="{Binding IsFeature}"/>
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.GitFlow.FinishRelease}"
+               Classes="bold"
+               Text="{DynamicResource Text.GitFlow.FinishRelease}"
                IsVisible="{Binding IsRelease}"/>
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.GitFlow.FinishHotfix}"
+               Classes="bold"
+               Text="{DynamicResource Text.GitFlow.FinishHotfix}"
                IsVisible="{Binding IsHotfix}"/>
     <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.GitFlow.FinishTarget}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.GitFlow.FinishTarget}"/>
       <StackPanel Grid.Column="1" Orientation="Horizontal">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
         <TextBlock Text="{Binding Branch.Name}" Margin="8,0,0,0"/>

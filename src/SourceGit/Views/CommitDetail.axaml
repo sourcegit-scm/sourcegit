@@ -23,21 +23,21 @@
 
         <!-- Change List -->
         <DataGrid Grid.Row="1"
-					        Background="Transparent"
-						      ItemsSource="{Binding Changes}"
-						      SelectionMode="Single"
-						      CanUserReorderColumns="False"
-						      CanUserResizeColumns="False"
-						      CanUserSortColumns="False"
-						      IsReadOnly="True"
-						      HeadersVisibility="None"
-						      Focusable="False"
-						      RowHeight="26"
-						      Margin="80,0,8,0"
-						      HorizontalScrollBarVisibility="Disabled"
-						      VerticalScrollBarVisibility="Auto"
-						      ContextRequested="OnChangeListContextRequested"
-						      DoubleTapped="OnChangeListDoubleTapped">
+                  Background="Transparent"
+                  ItemsSource="{Binding Changes}"
+                  SelectionMode="Single"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="False"
+                  IsReadOnly="True"
+                  HeadersVisibility="None"
+                  Focusable="False"
+                  RowHeight="26"
+                  Margin="80,0,8,0"
+                  HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto"
+                  ContextRequested="OnChangeListContextRequested"
+                  DoubleTapped="OnChangeListDoubleTapped">
           <DataGrid.Columns>
             <DataGridTemplateColumn Header="ICON">
               <DataGridTemplateColumn.CellTemplate>

@@ -8,8 +8,8 @@
              x:DataType="vm:ClearStashes">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.ClearStashes}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.ClearStashes}"/>
 
     <TextBlock Margin="0,16,0,8"
                Text="{DynamicResource Text.ClearStashes.Message}"

@@ -38,18 +38,18 @@
       <!-- Stash List -->
       <DataGrid Grid.Row="1"
                 Background="{DynamicResource Brush.Contents}"
-								ItemsSource="{Binding Stashes}"
+                ItemsSource="{Binding Stashes}"
                 SelectedItem="{Binding SelectedStash, Mode=TwoWay}"
-								SelectionMode="Single"
-								CanUserReorderColumns="False"
-								CanUserResizeColumns="False"
-								CanUserSortColumns="False"
-								IsReadOnly="True"
-								HeadersVisibility="None"
-								Focusable="False"
-								RowHeight="50"
-								HorizontalScrollBarVisibility="Disabled"
-								VerticalScrollBarVisibility="Auto">
+                SelectionMode="Single"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserSortColumns="False"
+                IsReadOnly="True"
+                HeadersVisibility="None"
+                Focusable="False"
+                RowHeight="50"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
         <DataGrid.Columns>
           <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.CellTemplate>

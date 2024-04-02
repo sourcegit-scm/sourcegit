@@ -10,13 +10,13 @@
              x:DataType="vm:Fetch">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.Fetch.Title}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.Fetch.Title}"/>
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Fetch.Remote}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Fetch.Remote}"/>
       <ComboBox Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"

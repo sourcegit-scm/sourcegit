@@ -4,19 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.Archive"
              x:DataType="vm:Archive">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.Archive.Title}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.Archive.Title}"/>
     <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Archive.Revision}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Archive.Revision}"/>
       <ContentControl Grid.Column="1" Content="{Binding BasedOn}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Branch">
@@ -44,15 +45,16 @@
       </ContentControl>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Archive.File}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Archive.File}"/>
       <TextBox Grid.Row="1" Grid.Column="1"
                x:Name="txtSaveFile"
                Height="28"
                CornerRadius="3"
                Watermark="{DynamicResource Text.Archive.File.Placeholder}"
-               Text="{Binding SaveFile, Mode=TwoWay}">
+               Text="{Binding SaveFile, Mode=TwoWay}"
+               v:AutoFocusBehaviour.IsEnabled="True">
         <TextBox.InnerRightContent>
           <Button Classes="icon_button" Width="30" Height="30" Click="SelectOutputFile">
             <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>

@@ -8,31 +8,31 @@
              x:DataType="vm:Merge">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.Merge}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.Merge}"/>
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Merge.Source}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Merge.Source}"/>
       <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
         <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
         <TextBlock Text="{Binding Source}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Merge.Into}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Merge.Into}"/>
       <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
         <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
         <TextBlock Text="{Binding Into}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Merge.Mode}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Merge.Mode}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"

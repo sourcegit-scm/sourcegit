@@ -4,30 +4,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RepositoryConfigure"
              x:DataType="vm:RepositoryConfigure">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.Configure}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.Configure}"/>
 
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Configure.User}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Configure.User}"/>
       <TextBox Grid.Column="1"
                Height="28"
                CornerRadius="3"
                Watermark="{DynamicResource Text.Configure.User.Placeholder}"
-               Text="{Binding UserName, Mode=TwoWay}"/>
+               Text="{Binding UserName, Mode=TwoWay}"
+               v:AutoFocusBehaviour.IsEnabled="True"/>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Configure.Email}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Configure.Email}"/>
       <TextBox Grid.Row="1" Grid.Column="1"
                Height="28"
                CornerRadius="3"
@@ -35,9 +37,9 @@
                Text="{Binding UserEmail, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Configure.Proxy}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Configure.Proxy}"/>
       <TextBox Grid.Row="2" Grid.Column="1"
                Height="28"
                CornerRadius="3"
@@ -45,17 +47,17 @@
                Text="{Binding HttpProxy, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="3" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Preference.GPG.Enabled}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Preference.GPG.Enabled}"/>
       <CheckBox Grid.Row="3" Grid.Column="1"
                 x:Name="chkGPGSigningEnabled"
                 IsChecked="{Binding GPGSigningEnabled, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="4" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.Preference.GPG.UserKey}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Preference.GPG.UserKey}"/>
       <TextBox Grid.Row="4" Grid.Column="1"
                Height="28"
                CornerRadius="3"

@@ -9,8 +9,8 @@
              x:DataType="vm:FastForwardWithoutCheckout">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.FastForwardWithoutCheck}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.FastForwardWithoutCheck}"/>
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
       <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
       <TextBlock Text="{Binding Local.Name}" Margin="8,0,0,0"/>

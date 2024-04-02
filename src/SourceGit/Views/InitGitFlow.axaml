@@ -4,29 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.InitGitFlow"
              x:DataType="vm:InitGitFlow">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
-				       Classes="bold"
-				       Text="{DynamicResource Text.GitFlow.Init}"/>
+               Classes="bold"
+               Text="{DynamicResource Text.GitFlow.Init}"/>
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,8,32,32,32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.GitFlow.ProductionBranch}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.GitFlow.ProductionBranch}"/>
       <TextBox Grid.Row="0" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
                CornerRadius="2"
-               Text="{Binding Master, Mode=TwoWay}"/>
+               Text="{Binding Master, Mode=TwoWay}"
+               v:AutoFocusBehaviour.IsEnabled="True"/>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.GitFlow.DevelopBranch}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.GitFlow.DevelopBranch}"/>
       <TextBox Grid.Row="1" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
@@ -39,9 +41,9 @@
                  VerticalAlignment="Center"/>
 
       <TextBlock Grid.Row="3" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.GitFlow.FeaturePrefix}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.GitFlow.FeaturePrefix}"/>
       <TextBox Grid.Row="3" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
@@ -49,9 +51,9 @@
                Text="{Binding FeturePrefix, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="4" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.GitFlow.ReleasePrefix}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.GitFlow.ReleasePrefix}"/>
       <TextBox Grid.Row="4" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
@@ -59,9 +61,9 @@
                Text="{Binding ReleasePrefix, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="5" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.GitFlow.HotfixPrefix}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.GitFlow.HotfixPrefix}"/>
       <TextBox Grid.Row="5" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
@@ -69,9 +71,9 @@
                Text="{Binding HotfixPrefix, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="6" Grid.Column="0"
-					       HorizontalAlignment="Right" VerticalAlignment="Center"
-					       Margin="0,0,8,0"
-					       Text="{DynamicResource Text.GitFlow.TagPrefix}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.GitFlow.TagPrefix}"/>
       <TextBox Grid.Row="6" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"

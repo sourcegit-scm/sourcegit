@@ -284,7 +284,8 @@
                     <Button Classes="flat primary"
                             Width="80"
                             Content="{DynamicResource Text.Sure}"
-                            Click="OnPopupSure"/>
+                            Click="OnPopupSure"
+                            HotKey="Enter"/>
                     <Button Classes="flat"
                             Width="80"
                             Margin="8,0,0,0"
