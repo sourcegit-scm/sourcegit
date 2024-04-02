@@ -1,49 +1,41 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGit", "src\SourceGit\SourceGit.csproj", "{CD98D9AA-079A-4A79-9212-850EB97CF2ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SourceGit", "src\SourceGit.csproj", "{2091C34D-4A17-4375-BEF3-4D60BE8113E4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C2487DDC-93D3-485F-943D-5DDF23B92A57}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{2850A14C-4E9A-42EF-9559-C83610D4FBDE}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-		.gitignore = .gitignore
-		LICENSE = LICENSE
-		README.md = README.md
-		.gitattributes = .gitattributes
-		Directory.Build.props = Directory.Build.props
-		global.json = global.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{39979501-8501-43A7-AD23-F0BCF02CADB3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{B7D4C4BA-BD7E-4B36-A0E2-3B226F419B8F}"
-	ProjectSection(SolutionItems) = preProject
-		.config\dotnet-tools.json = .config\dotnet-tools.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{E6B9E250-EA2D-4665-831D-A547F707718D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{773082AC-D9C8-4186-8521-4B6A7BEE6158}"
 	ProjectSection(SolutionItems) = preProject
 		build\build.linux.sh = build\build.linux.sh
 		build\build.osx.command = build\build.osx.command
-		build\build.windows.bat = build\build.windows.bat
+		build\build.windows.ps1 = build\build.windows.ps1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{EAB376FC-F69F-4EDB-8E04-D3F326A9F015}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{FD384607-ED99-47B7-AF31-FB245841BC92}"
 	ProjectSection(SolutionItems) = preProject
 		build\resources\App.icns = build\resources\App.icns
 		build\resources\App.plist = build\resources\App.plist
 		build\resources\SourceGit.desktop.template = build\resources\SourceGit.desktop.template
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{8E67D51A-1C97-4B57-A0C4-C7916A6E983D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{F45A9D95-AF25-42D8-BBAC-8259C9EEE820}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{8F83FE02-B6BB-4F96-8532-ACC5B8E3C33F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{67B6D05F-A000-40BA-ADB4-C9065F880D7B}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\ci.yml = .github\workflows\ci.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{49A7C2D6-558C-4FAA-8F5D-EEE81497AED7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{3AB707DB-A02C-4AFC-BF12-D7DF2B333BAC}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		global.json = global.json
+		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
@@ -51,18 +43,21 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2091C34D-4A17-4375-BEF3-4D60BE8113E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2091C34D-4A17-4375-BEF3-4D60BE8113E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2091C34D-4A17-4375-BEF3-4D60BE8113E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2091C34D-4A17-4375-BEF3-4D60BE8113E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CD98D9AA-079A-4A79-9212-850EB97CF2ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD98D9AA-079A-4A79-9212-850EB97CF2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD98D9AA-079A-4A79-9212-850EB97CF2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD98D9AA-079A-4A79-9212-850EB97CF2ED}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CD98D9AA-079A-4A79-9212-850EB97CF2ED} = {C2487DDC-93D3-485F-943D-5DDF23B92A57}
-		{EAB376FC-F69F-4EDB-8E04-D3F326A9F015} = {E6B9E250-EA2D-4665-831D-A547F707718D}
-		{8F83FE02-B6BB-4F96-8532-ACC5B8E3C33F} = {8E67D51A-1C97-4B57-A0C4-C7916A6E983D}
+		{2091C34D-4A17-4375-BEF3-4D60BE8113E4} = {49A7C2D6-558C-4FAA-8F5D-EEE81497AED7}
+		{FD384607-ED99-47B7-AF31-FB245841BC92} = {773082AC-D9C8-4186-8521-4B6A7BEE6158}
+		{67B6D05F-A000-40BA-ADB4-C9065F880D7B} = {F45A9D95-AF25-42D8-BBAC-8259C9EEE820}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7FF1B9C6-B5BF-4A50-949F-4B407A0E31C9}
 	EndGlobalSection
 EndGlobal
