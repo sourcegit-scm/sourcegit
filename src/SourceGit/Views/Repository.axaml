@@ -15,8 +15,9 @@
       <Grid ColumnDefinitions="*,Auto,*">
         <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
           <Button Classes="icon_button" Width="32" Command="{Binding OpenInFileManager}" ToolTip.Tip="{DynamicResource Text.Repository.Explore}">
-            <Path Width="15" Height="13" Data="{StaticResource Icons.Folder.Open}"/>
+            <Path Width="15" Height="13" Data="{StaticResource Icons.Folder.Open}" Margin="0,1,0,0"/>
           </Button>
+          
           <Button Classes="icon_button" Width="32" Command="{Binding OpenInTerminal}" ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">
             <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
           </Button>
@@ -38,13 +39,13 @@
               </MenuFlyout>
             </Button.Flyout>
           </Button>
+          
           <ToggleButton Width="32"
                         Background="Transparent"
                         IsChecked="{Binding IsSearching, Mode=TwoWay}"
                         ToolTip.Tip="{DynamicResource Text.Repository.Search}">
             <Path Width="14" Height="14" Data="{StaticResource Icons.Search}"/>
           </ToggleButton>
-
         </StackPanel>
 
         <StackPanel Grid.Column="1" Orientation="Horizontal">

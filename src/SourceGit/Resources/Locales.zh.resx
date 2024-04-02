@@ -832,7 +832,7 @@
     <value>排序</value>
   </data>
   <data xml:space="preserve" name="Text.Welcome.DragDropTip">
-    <value>支持拖放目录添加</value>
+    <value>支持拖放目录添加。支持自定义分组。</value>
   </data>
   <data xml:space="preserve" name="Text.EditRepositoryNode.TitleForGroup">
     <value>编辑分组</value>

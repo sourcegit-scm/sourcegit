@@ -3814,7 +3814,7 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DRAG &amp; DROP FOLDER SUPPORTED.
+        ///   Looks up a localized string similar to DRAG &amp; DROP FOLDER SUPPORTED. CUSTOM GROUPING SUPPORTED..
         /// </summary>
         public static string Text_Welcome_DragDropTip {
             get {

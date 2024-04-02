@@ -835,7 +835,7 @@
     <value>Sort</value>
   </data>
   <data xml:space="preserve" name="Text.Welcome.DragDropTip">
-    <value>DRAG &amp; DROP FOLDER SUPPORTED</value>
+    <value>DRAG &amp; DROP FOLDER SUPPORTED. CUSTOM GROUPING SUPPORTED.</value>
   </data>
   <data xml:space="preserve" name="Text.EditRepositoryNode.TitleForGroup">
     <value>Edit Selected Group</value>
