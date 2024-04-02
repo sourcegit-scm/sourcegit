@@ -10,19 +10,6 @@
              x:DataType="vm:Welcome">
   <Grid RowDefinitions="36,*,36" Background="{DynamicResource Brush.Window}">
     <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1" Background="{DynamicResource Brush.ToolBar}">
-      <StackPanel Orientation="Horizontal" Margin="4,0,0,0">
-        <Button Classes="icon_button" Width="32" Command="{Binding Clone}" CommandParameter="{Binding $parent[v:Launcher].DataContext}" ToolTip.Tip="{DynamicResource Text.Welcome.Clone}">
-          <Path Width="13" Height="13" Data="{StaticResource Icons.Pull}"/>
-        </Button>
-
-        <Button Classes="icon_button" Width="32" Click="OpenLocalRepository" ToolTip.Tip="{DynamicResource Text.Welcome.OpenOrInit}">
-          <Path Width="16" Height="16" Data="{StaticResource Icons.Folder.Add2}" Margin="0,4,0,0"/>
-        </Button>
-
-        <Button Classes="icon_button" Width="32" Command="{Binding OpenTerminal}" ToolTip.Tip="{DynamicResource Text.Welcome.OpenTerminal}">
-          <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
-        </Button>
-      </StackPanel>
     </Border>
 
     <Grid Grid.Row="1" Margin="0,8" ColumnDefinitions="*,600,*">
@@ -140,6 +127,21 @@
             </TreeDataTemplate>
           </TreeView.ItemTemplate>
         </TreeView>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+          <Button Classes="icon_button" Width="170" Click="OpenLocalRepository" ToolTip.Tip="{DynamicResource Text.Welcome.OpenOrInit}">
+            <Path Width="80" Height="65" Data="{StaticResource Icons.Folder.Open}"/>
+          </Button>
+
+          <Button Classes="icon_button" Width="170" Command="{Binding Clone}" CommandParameter="{Binding $parent[v:Launcher].DataContext}" ToolTip.Tip="{DynamicResource Text.Welcome.Clone}">
+            <Path Width="80" Height="80" Data="{StaticResource Icons.Pull}"/>
+          </Button>
+
+          <Button Classes="icon_button" Width="170" Command="{Binding OpenTerminal}" ToolTip.Tip="{DynamicResource Text.Welcome.OpenTerminal}">
+            <Path Width="80" Height="80" Data="{StaticResource Icons.Terminal}"/>
+          </Button>
+        </StackPanel>
+
       </Grid>
     </Grid>
 
