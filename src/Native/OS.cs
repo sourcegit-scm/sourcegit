@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 
 using Avalonia;
 
@@ -47,7 +48,12 @@ namespace SourceGit.Native
             }
 
             VSCodeExecutableFile = _backend.FindVSCode();
+            if (string.IsNullOrEmpty(VSCodeExecutableFile))
+                VSCodeExecutableFile = GetPathFromEnvironmentVar("VSCODE_PATH");
+
             FleetExecutableFile = _backend.FindFleet();
+            if (string.IsNullOrEmpty(FleetExecutableFile))
+                FleetExecutableFile = GetPathFromEnvironmentVar("FLEET_PATH");
         }
 
         public static void SetupApp(AppBuilder builder)
@@ -112,6 +118,17 @@ namespace SourceGit.Native
                 Arguments = $"\"{repo}\"",
                 UseShellExecute = false,
             });
+        }
+
+        private static string GetPathFromEnvironmentVar(string key)
+        {
+            var customPath = Environment.GetEnvironmentVariable(key);
+            if (!string.IsNullOrEmpty(customPath) && File.Exists(customPath))
+            {
+                return customPath;
+            }
+
+            return string.Empty;
         }
 
         private static readonly IBackend _backend;

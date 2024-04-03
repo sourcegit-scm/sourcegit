@@ -105,27 +105,52 @@ namespace SourceGit.Native
             }
 
             var exePath = builder.ToString();
-            if (string.IsNullOrEmpty(exePath))
-                return null;
+            if (!string.IsNullOrEmpty(exePath))
+            {
+                return exePath;
+            }
 
-            return exePath;
+            return null;
         }
 
         public string FindVSCode()
         {
-            var root = Microsoft.Win32.RegistryKey.OpenBaseKey(
+            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
                     Microsoft.Win32.RegistryHive.LocalMachine,
-                    Environment.Is64BitOperatingSystem ? Microsoft.Win32.RegistryView.Registry64 : Microsoft.Win32.RegistryView.Registry32);
+                    Microsoft.Win32.RegistryView.Registry64);
 
-            var vscode = root.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1");
+            // VSCode (system)
+            var systemVScode = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1");
+            if (systemVScode != null)
+            {
+                return systemVScode.GetValue("DisplayIcon") as string;
+            }
+
+            // VSCode - Insiders (system)
+            var systemVScodeInsiders = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1287CAD5-7C8D-410D-88B9-0D1EE4A83FF2}_is1");
+            if (systemVScodeInsiders != null)
+            {
+                return systemVScodeInsiders.GetValue("DisplayIcon") as string;
+            }
+
+            var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.CurrentUser,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            // VSCode (user)
+            var vscode = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{771FD6B0-FA20-440A-A002-3B3BAC16DC50}_is1");
             if (vscode != null)
             {
                 return vscode.GetValue("DisplayIcon") as string;
             }
 
-            var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe");
-            if (File.Exists(toolPath))
-                return toolPath;
+            // VSCode - Insiders (user)
+            var vscodeInsiders = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{217B4C08-948D-4276-BFBB-BEE930AE5A2C}_is1");
+            if (vscodeInsiders != null)
+            {
+                return vscodeInsiders.GetValue("DisplayIcon") as string;
+            }
+
             return string.Empty;
         }
 
@@ -134,6 +159,7 @@ namespace SourceGit.Native
             var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Fleet\\Fleet.exe");
             if (File.Exists(toolPath))
                 return toolPath;
+
             return string.Empty;
         }
 

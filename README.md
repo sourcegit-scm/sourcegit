@@ -37,6 +37,7 @@ You can download the latest stable from [Releases](https://github.com/sourcegit-
 For **Windows** users:
 
 * **MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
+* You can use `Visual Studio Code Insiders` as the same way as `Visual Studio Code` in this software.
 
 For **macOS** users:
 
@@ -52,6 +53,11 @@ For **Linux** users:
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux, and it requires `ttf-mscorefonts-installer` installed.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI. 
 * Modify `SourceGit.desktop.template` (replace SOURCEGIT_LOCAL_FOLDER with real path) and move it into `~/.local/share/applications`.
+
+Other tips:
+
+* You can set `VSCODE_PATH` environment variable if VSCode can NOT be found when you click `Open In Visual Studio Code`.
+* You can set `FLEET_PATH` environment variable if JetBrains Fleet can NOT be found when you click `Open In Fleet`.
 
 ## Screen Shots
 

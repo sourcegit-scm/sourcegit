@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SourceGit.Models
 {
@@ -19,7 +20,7 @@ namespace SourceGit.Models
             {
                 Supported = new List<ExternalMergeTools>() {
                     new ExternalMergeTools(0, "Custom", "", "", ""),
-                    new ExternalMergeTools(1, "Visual Studio Code", "Code.exe", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
+                    new ExternalMergeTools(1, "Visual Studio Code", "Code.exe;Code - Insiders.exe", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMergeTools(2, "Visual Studio 2017/2019", "vsDiffMerge.exe", "\"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\" /m", "\"$LOCAL\" \"$REMOTE\""),
                     new ExternalMergeTools(3, "Tortoise Merge", "TortoiseMerge.exe;TortoiseGitMerge.exe", "-base:\"$BASE\" -theirs:\"$REMOTE\" -mine:\"$LOCAL\" -merged:\"$MERGED\"", "-base:\"$LOCAL\" -theirs:\"$REMOTE\""),
                     new ExternalMergeTools(4, "KDiff3", "kdiff3.exe", "\"$REMOTE\" -b \"$BASE\" \"$LOCAL\" -o \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\""),
@@ -61,6 +62,24 @@ namespace SourceGit.Models
             Exec = exec;
             Cmd = cmd;
             DiffCmd = diffCmd;
+        }
+
+        public string[] GetPatterns()
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                return Exec.Split(';');
+            }
+            else
+            {
+                var patterns = new List<string>();
+                var choices = Exec.Split(';', StringSplitOptions.RemoveEmptyEntries);
+                foreach (var c in choices)
+                {
+                    patterns.Add(Path.GetFileName(c));
+                }
+                return patterns.ToArray();
+            }
         }
     }
 }

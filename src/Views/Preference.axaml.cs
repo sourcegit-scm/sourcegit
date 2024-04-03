@@ -229,10 +229,9 @@ namespace SourceGit.Views
             }
 
             var tool = Models.ExternalMergeTools.Supported[type];
-            var pattern = Path.GetFileName(tool.Exec);
             var options = new FilePickerOpenOptions()
             {
-                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = [pattern] }],
+                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],
                 AllowMultiple = false,
             };
 
