@@ -104,8 +104,7 @@ namespace SourceGit.Views
             var horizonStart = maxLabel.Width + 8;
             var labelHeight = maxLabel.Height;
             context.DrawText(maxLabel, new Point(0, -maxLabel.Height * 0.5));
-            context.DrawLine(pen, new Point(horizonStart, 0), new Point(horizonStart, height - labelHeight));
-            context.DrawLine(pen, new Point(horizonStart, height - labelHeight), new Point(width, height - labelHeight));
+            context.DrawRectangle(pen, new Rect(horizonStart, 0, width - horizonStart, height - labelHeight));
 
             if (samples.Count == 0)
                 return;
@@ -114,7 +113,7 @@ namespace SourceGit.Views
             var stepX = (width - horizonStart) / samples.Count;
             var stepV = (height - labelHeight) / 5;
             var labelStepV = maxV / 5;
-            var gridPen = new Pen(LineBrush, 1, new DashStyle());
+            var gridPen = new Pen(LineBrush, 1, new DashStyle() { Dashes = [2, 2, 0, 2], Offset = 1 });
             for (int i = 1; i < 5; i++)
             {
                 var vLabel = new FormattedText(

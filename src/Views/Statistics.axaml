@@ -128,47 +128,52 @@
     <ContentControl Grid.Row="2" Content="{Binding SelectedReport, Mode=OneWay}">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="m:StatisticsReport">
-          <Grid RowDefinitions="*,32" ColumnDefinitions="256,*" Margin="8">
-            <!-- Table By Committer -->
-            <DataGrid Grid.Row="0" Grid.Column="0"
-                      ItemsSource="{Binding ByCommitter}"
-                      SelectionMode="Single"
-                      CanUserReorderColumns="False"
-                      CanUserResizeColumns="False"
-                      CanUserSortColumns="False"
-                      HeadersVisibility="Column"
-                      GridLinesVisibility="All"
-                      BorderThickness="1"
-                      BorderBrush="{DynamicResource Brush.Border1}"
-                      Background="{DynamicResource Brush.Contents}"
-                      IsReadOnly="True"
-                      RowHeight="26"
-                      HorizontalScrollBarVisibility="Disabled"
-                      VerticalScrollBarVisibility="Auto">
-              <DataGrid.Columns>
-                <DataGridTextColumn Width="150" Header="{DynamicResource Text.Statistics.Committer}" Binding="{Binding Name}"/>
-                <DataGridTextColumn Width="*" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
-              </DataGrid.Columns>
-            </DataGrid>
+          <Grid ColumnDefinitions="256,*" Margin="8,8,8,16">
+            <Grid Grid.Column="0" RowDefinitions="*,16">
+              <!-- Table By Committer -->
+              <DataGrid Grid.Row="0"
+                        ItemsSource="{Binding ByCommitter}"
+                        SelectionMode="Single"
+                        CanUserReorderColumns="False"
+                        CanUserResizeColumns="False"
+                        CanUserSortColumns="False"
+                        HeadersVisibility="Column"
+                        GridLinesVisibility="All"
+                        BorderThickness="1"
+                        BorderBrush="{DynamicResource Brush.Border1}"
+                        Background="{DynamicResource Brush.Contents}"
+                        IsReadOnly="True"
+                        RowHeight="26"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+                <DataGrid.Columns>
+                  <DataGridTextColumn Width="150" Header="{DynamicResource Text.Statistics.Committer}" Binding="{Binding Name}"/>
+                  <DataGridTextColumn Width="*" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
+                </DataGrid.Columns>
+              </DataGrid>
 
-            <!-- Total Committers -->
-            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-              <TextBlock Text="{DynamicResource Text.Statistics.TotalCommitters}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-              <TextBlock Text="{Binding ByCommitter.Count}" Margin="4,0,0,0"/>
-            </StackPanel>
+              <!-- Summary -->
+              <Grid Grid.Row="1" ColumnDefinitions="*,*">
+                <!-- Total Committers -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
+                  <TextBlock Classes="monospace" Text="{DynamicResource Text.Statistics.TotalCommitters}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Classes="monospace" Text="{Binding ByCommitter.Count}" FontSize="11" Margin="4,0,0,0"/>
+                </StackPanel>
+
+                <!-- Total Commits -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                  <TextBlock Classes="monospace" Text="{DynamicResource Text.Statistics.TotalCommits}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Classes="monospace" Text="{Binding Total}" FontSize="11" Margin="4,0,0,0"/>
+                </StackPanel>
+              </Grid>
+            </Grid>            
 
             <!-- Graph -->
-            <v:Chart Grid.Row="0" Grid.Column="1"
-                     Margin="16,8,0,0"
-                     LineBrush="{DynamicResource Brush.FG1}"
+            <v:Chart Grid.Column="1"
+                     Margin="16,0,0,0"
+                     LineBrush="{DynamicResource Brush.Border1}"
                      ShapeBrush="{DynamicResource Brush.Accent1}"
-                     Samples="{Binding Samples}"/>
-
-            <!-- Total Commits -->
-            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-              <TextBlock Text="{DynamicResource Text.Statistics.TotalCommits}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-              <TextBlock Text="{Binding Total}" Margin="4,0,0,0"/>
-            </StackPanel>
+                     Samples="{Binding Samples}"/>            
           </Grid>
         </DataTemplate>
       </ContentControl.DataTemplates>

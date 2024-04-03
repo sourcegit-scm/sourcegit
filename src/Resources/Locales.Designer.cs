@@ -3607,7 +3607,7 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Commits.
+        ///   Looks up a localized string similar to COMMITS: .
         /// </summary>
         public static string Text_Statistics_TotalCommits {
             get {
@@ -3616,7 +3616,7 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Committers.
+        ///   Looks up a localized string similar to COMMITTERS: .
         /// </summary>
         public static string Text_Statistics_TotalCommitters {
             get {

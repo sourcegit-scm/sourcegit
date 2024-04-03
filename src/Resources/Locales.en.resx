@@ -1201,10 +1201,10 @@
     <value>YEAR</value>
   </data>
   <data xml:space="preserve" name="Text.Statistics.TotalCommitters">
-    <value>Total Committers</value>
+    <value>COMMITTERS: </value>
   </data>
   <data xml:space="preserve" name="Text.Statistics.TotalCommits">
-    <value>Total Commits</value>
+    <value>COMMITS: </value>
   </data>
   <data xml:space="preserve" name="Text.Statistics.Committer">
     <value>COMMITTER</value>

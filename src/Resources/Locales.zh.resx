@@ -1198,10 +1198,10 @@
     <value>本年</value>
   </data>
   <data xml:space="preserve" name="Text.Statistics.TotalCommitters">
-    <value>提交者人数</value>
+    <value>提交者: </value>
   </data>
   <data xml:space="preserve" name="Text.Statistics.TotalCommits">
-    <value>总计提交次数</value>
+    <value>提交次数: </value>
   </data>
   <data xml:space="preserve" name="Text.Statistics.Committer">
     <value>提交者</value>
