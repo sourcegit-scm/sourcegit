@@ -216,9 +216,7 @@ namespace SourceGit.Views
                             if (i < size - 1)
                             {
                                 var midY = (last.Y + cur.Y) / 2;
-                                var midX = (last.X + cur.X) / 2;
-                                ctx.QuadraticBezierTo(new Point(last.X, midY), new Point(midX, midY));
-                                ctx.QuadraticBezierTo(new Point(cur.X, midY), cur);
+                                ctx.CubicBezierTo(new Point(last.X, midY + 2), new Point(cur.X, midY - 2), cur);
                             }
                             else
                             {
