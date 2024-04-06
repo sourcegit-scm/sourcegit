@@ -38,7 +38,7 @@ namespace SourceGit.Native
                 editors.Add(new Models.ExternalEditor
                 {
                     Name = "Visual Studio Code",
-                    Icon = new Uri("avares://SourceGit/Resources/ExternalToolIcons/vscode.png", UriKind.Absolute),
+                    Icon = "vscode.png",
                     Executable = vscode,
                     OpenCmdArgs = "\"{0}\"",
                 });
@@ -50,7 +50,7 @@ namespace SourceGit.Native
                 editors.Add(new Models.ExternalEditor
                 {
                     Name = "Visual Studio Code - Insiders",
-                    Icon = new Uri("avares://SourceGit/Resources/ExternalToolIcons/vscode_insiders.png", UriKind.Absolute),
+                    Icon = "vscode_insiders.png",
                     Executable = vscodeInsiders,
                     OpenCmdArgs = "\"{0}\"",
                 });
@@ -62,7 +62,7 @@ namespace SourceGit.Native
                 editors.Add(new Models.ExternalEditor
                 {
                     Name = "JetBrains Fleet",
-                    Icon = new Uri("avares://SourceGit/Resources/ExternalToolIcons/fleet.png", UriKind.Absolute),
+                    Icon = "fleet.png",
                     Executable = fleet,
                     OpenCmdArgs = "\"{0}\"",
                 });

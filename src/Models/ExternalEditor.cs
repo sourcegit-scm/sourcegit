@@ -1,12 +1,11 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace SourceGit.Models
 {
     public class ExternalEditor
     {
         public string Name { get; set; } = string.Empty;
-        public Uri Icon { get; set; } = null;
+        public string Icon { get; set; } = string.Empty;
         public string Executable { get; set; } = string.Empty;
         public string OpenCmdArgs { get; set; } = string.Empty;
 

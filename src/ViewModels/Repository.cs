@@ -303,7 +303,7 @@ namespace SourceGit.ViewModels
             foreach (var editor in editors)
             {
                 var dupEditor = editor;
-                var icon = AssetLoader.Open(dupEditor.Icon);
+                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{dupEditor.Icon}", UriKind.RelativeOrAbsolute));
                 var item = new MenuItem();
                 item.Header = App.Text("Repository.OpenIn", dupEditor.Name);
                 item.Icon = new Image { Width = 16, Height = 16, Source = new Bitmap(icon) };
