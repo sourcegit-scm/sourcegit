@@ -154,6 +154,18 @@ namespace SourceGit.Native
                 });
             }
 
+            var sublime = FindSublimeText();
+            if (!string.IsNullOrEmpty(sublime) && File.Exists(sublime))
+            {
+                editors.Add(new Models.ExternalEditor
+                {
+                    Name = "Sublime Text",
+                    Icon = "sublime_text.png",
+                    Executable = sublime,
+                    OpenCmdArgs = "\"{0}\"",
+                });
+            }
+
             return editors;
         }
 
@@ -298,6 +310,33 @@ namespace SourceGit.Native
                 return toolPath;
 
             var customPath = Environment.GetEnvironmentVariable("FLEET_PATH");
+            if (!string.IsNullOrEmpty(customPath))
+                return customPath;
+
+            return string.Empty;
+        }
+
+        private string FindSublimeText()
+        {
+            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            var sublime = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Sublime Text_is1");
+            if (sublime != null)
+            {
+                var icon = sublime.GetValue("DisplayIcon") as string;
+                return Path.Combine(Path.GetDirectoryName(icon), "subl.exe");
+            }
+
+            var sublime3 = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Sublime Text 3_is1");
+            if (sublime3 != null)
+            {
+                var icon = sublime3.GetValue("DisplayIcon") as string;
+                return Path.Combine(Path.GetDirectoryName(icon), "subl.exe");
+            }
+
+            var customPath = Environment.GetEnvironmentVariable("SUBLIME_TEXT_PATH");
             if (!string.IsNullOrEmpty(customPath))
                 return customPath;
 

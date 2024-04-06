@@ -71,6 +71,18 @@ namespace SourceGit.Native
                 });
             }
 
+            var sublime = FindSublimeText();
+            if (!string.IsNullOrEmpty(sublime) && File.Exists(sublime))
+            {
+                editors.Add(new Models.ExternalEditor
+                {
+                    Name = "Sublime Text",
+                    Icon = "sublime_text.png",
+                    Executable = sublime,
+                    OpenCmdArgs = "\"{0}\"",
+                });
+            }
+
             return editors;
         }
 
@@ -182,6 +194,25 @@ namespace SourceGit.Native
                 return toolPath;
 
             var customPath = Environment.GetEnvironmentVariable("FLEET_PATH");
+            if (!string.IsNullOrEmpty(customPath))
+                return customPath;
+
+            return string.Empty;
+        }
+
+        private string FindSublimeText()
+        {
+            if (File.Exists("/usr/bin/subl"))
+            {
+                return "/usr/bin/subl";
+            }
+
+            if (File.Exists("/usr/local/bin/subl"))
+            {
+                return "/usr/local/bin/subl";
+            }
+
+            var customPath = Environment.GetEnvironmentVariable("SUBLIME_TEXT_PATH");
             if (!string.IsNullOrEmpty(customPath))
                 return customPath;
 

@@ -62,6 +62,7 @@ This app supports open repository in external editors listed in the table below.
 | Visual Studio Code | YES | YES | YES | VSCODE_PATH |
 | Visual Studio Code - Insiders | YES | YES | YES | VSCODE_INSIDERS_PATH |
 | JetBrains Fleet | YES | YES | YES | FLEET_PATH |
+| Sublime Text | YES | YES | YES | SUBLIME_TEXT_PATH |
 
 You can set the given environment variable for special editor if it can NOT be found by this app automatically. 
 
