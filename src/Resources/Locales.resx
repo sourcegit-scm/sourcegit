@@ -339,11 +339,8 @@
   <data xml:space="preserve" name="Text.Repository.Explore">
     <value>Open In File Browser</value>
   </data>
-  <data xml:space="preserve" name="Text.Repository.VSCode">
-    <value>Open In Visual Studio Code</value>
-  </data>
-  <data xml:space="preserve" name="Text.Repository.Fleet">
-    <value>Open In Fleet</value>
+  <data xml:space="preserve" name="Text.Repository.OpenIn">
+    <value>Open In {0}</value>
   </data>
   <data xml:space="preserve" name="Text.Repository.Terminal">
     <value>Open In Terminal</value>
@@ -376,7 +373,7 @@
     <value>LOCAL BRANCHES</value>
   </data>
   <data xml:space="preserve" name="Text.Repository.NewBranch">
-    <value>NEW BRANCH</value>
+    <value>Create Branch</value>
   </data>
   <data xml:space="preserve" name="Text.Repository.Remotes">
     <value>REMOTES</value>
@@ -409,7 +406,7 @@
     <value>ABORT</value>
   </data>
   <data xml:space="preserve" name="Text.GitFlow">
-    <value>GIT FLOW</value>
+    <value>Git-Flow</value>
   </data>
   <data xml:space="preserve" name="Text.GitFlow.Init">
     <value>Initialize Git-Flow</value>
@@ -1293,7 +1290,7 @@
   <data name="Text.Preference.Appearance" xml:space="preserve">
     <value>Appearance</value>
   </data>
-  <data name="Text.Repository.OpenWith" xml:space="preserve">
+  <data name="Text.Repository.OpenWithExternalTools" xml:space="preserve">
         <value>Open In External Tools</value>
     </data>
   <data name="Text.SelfUpdate.Title" xml:space="preserve">

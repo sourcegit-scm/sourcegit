@@ -37,7 +37,6 @@ You can download the latest stable from [Releases](https://github.com/sourcegit-
 For **Windows** users:
 
 * **MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
-* You can use `Visual Studio Code Insiders` as the same way as `Visual Studio Code` in this software.
 
 For **macOS** users:
 
@@ -54,10 +53,17 @@ For **Linux** users:
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI. 
 * Modify `SourceGit.desktop.template` (replace SOURCEGIT_LOCAL_FOLDER with real path) and move it into `~/.local/share/applications`.
 
-Other tips:
+## External Editors
 
-* You can set `VSCODE_PATH` environment variable if VSCode can NOT be found when you click `Open In Visual Studio Code`.
-* You can set `FLEET_PATH` environment variable if JetBrains Fleet can NOT be found when you click `Open In Fleet`.
+This app supports open repository in external editors listed in the table below.
+
+| Editor | Windows | macOS | Linux | Environment Variable |
+| --- | --- | --- | --- | --- |
+| Visual Studio Code | YES | YES | YES | VSCODE_PATH |
+| Visual Studio Code - Insiders | YES | YES | YES | VSCODE_INSIDERS_PATH |
+| JetBrains Fleet | YES | YES | YES | FLEET_PATH |
+
+You can set the given environment variable for special editor if it can NOT be found by this app automatically. 
 
 ## Screen Shots
 

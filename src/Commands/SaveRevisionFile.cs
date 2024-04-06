@@ -30,7 +30,7 @@ namespace SourceGit.Commands
         {
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = repo;
-            starter.FileName = Native.OS.GitInstallPath;
+            starter.FileName = Native.OS.GitExecutable;
             starter.Arguments = args;
             starter.UseShellExecute = false;
             starter.CreateNoWindow = true;

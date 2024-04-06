@@ -1600,7 +1600,7 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GIT FLOW.
+        ///   Looks up a localized string similar to Git-Flow.
         /// </summary>
         public static string Text_GitFlow {
             get {
@@ -2986,15 +2986,6 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open In Fleet.
-        /// </summary>
-        public static string Text_Repository_Fleet {
-            get {
-                return ResourceManager.GetString("Text.Repository.Fleet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to LOCAL BRANCHES.
         /// </summary>
         public static string Text_Repository_LocalBranches {
@@ -3013,7 +3004,7 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NEW BRANCH.
+        ///   Looks up a localized string similar to Create Branch.
         /// </summary>
         public static string Text_Repository_NewBranch {
             get {
@@ -3022,11 +3013,20 @@ namespace SourceGit.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open In {0}.
+        /// </summary>
+        public static string Text_Repository_OpenIn {
+            get {
+                return ResourceManager.GetString("Text.Repository.OpenIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open In External Tools.
         /// </summary>
-        public static string Text_Repository_OpenWith {
+        public static string Text_Repository_OpenWithExternalTools {
             get {
-                return ResourceManager.GetString("Text.Repository.OpenWith", resourceCulture);
+                return ResourceManager.GetString("Text.Repository.OpenWithExternalTools", resourceCulture);
             }
         }
         
@@ -3144,15 +3144,6 @@ namespace SourceGit.Resources {
         public static string Text_Repository_Terminal {
             get {
                 return ResourceManager.GetString("Text.Repository.Terminal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open In Visual Studio Code.
-        /// </summary>
-        public static string Text_Repository_VSCode {
-            get {
-                return ResourceManager.GetString("Text.Repository.VSCode", resourceCulture);
             }
         }
         

@@ -7,8 +7,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
-using SourceGit.ViewModels;
-
 namespace SourceGit.Views
 {
     public class RepositorySubView : Border
@@ -61,6 +59,19 @@ namespace SourceGit.Views
         public Repository()
         {
             InitializeComponent();
+        }
+
+        private void OnOpenWithExternalEditor(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && DataContext is ViewModels.Repository repo)
+            {
+                var menu = repo.CreateContextMenuForExternalEditors();
+                if (menu != null)
+                {
+                    menu.Open(button);
+                    e.Handled = true;
+                }
+            }
         }
 
         private void OnLocalBranchTreeLostFocus(object sender, RoutedEventArgs e)
@@ -275,7 +286,7 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedLocalBranchNode(object sender, TappedEventArgs e)
         {
-            if (!PopupHost.CanCreatePopup())
+            if (!ViewModels.PopupHost.CanCreatePopup())
                 return;
 
             if (sender is Grid grid && DataContext is ViewModels.Repository repo)
@@ -287,7 +298,7 @@ namespace SourceGit.Views
                     if (branch.IsCurrent)
                         return;
 
-                    PopupHost.ShowAndStartPopup(new ViewModels.Checkout(repo, branch.Name));
+                    ViewModels.PopupHost.ShowAndStartPopup(new ViewModels.Checkout(repo, branch.Name));
                     e.Handled = true;
                 }
             }

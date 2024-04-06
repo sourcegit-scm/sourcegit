@@ -339,8 +339,8 @@
   <data xml:space="preserve" name="Text.Repository.Explore">
     <value>在文件浏览器中打开</value>
   </data>
-  <data xml:space="preserve" name="Text.Repository.VSCode">
-    <value>在 Visual Studio Code 中打开</value>
+  <data xml:space="preserve" name="Text.Repository.OpenIn">
+    <value>在 {0} 中打开</value>
   </data>
   <data xml:space="preserve" name="Text.Repository.Terminal">
     <value>在终端中打开</value>
@@ -1317,14 +1317,11 @@
   <data name="Text.About.SubTitle" xml:space="preserve">
     <value>开源免费的Git客户端</value>
   </data>
-  <data name="Text.Repository.OpenWith" xml:space="preserve">
+  <data name="Text.Repository.OpenWithExternalTools" xml:space="preserve">
     <value>使用外部工具打开</value>
   </data>
   <data name="Text.About.SourceCode" xml:space="preserve">
     <value>• 项目源代码地址 </value>
-  </data>
-  <data name="Text.Repository.Fleet" xml:space="preserve">
-    <value>在 Fleet 中打开</value>
   </data>
   <data name="Text.InProgress.CherryPick" xml:space="preserve">
     <value>挑选（Cherry-Pick）操作进行中。点击【终止】回滚到操作前的状态。</value>

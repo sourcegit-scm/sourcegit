@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
+using System.Collections.Generic;
 
 using Avalonia;
 
@@ -13,8 +12,7 @@ namespace SourceGit.Native
             void SetupApp(AppBuilder builder);
 
             string FindGitExecutable();
-            string FindVSCode();
-            string FindFleet();
+            List<Models.ExternalEditor> FindExternalEditors();
 
             void OpenTerminal(string workdir);
             void OpenInFileManager(string path, bool select);
@@ -22,11 +20,8 @@ namespace SourceGit.Native
             void OpenWithDefaultEditor(string file);
         }
 
-        public static string GitInstallPath { get; set; }
-
-        public static string VSCodeExecutableFile { get; set; }
-
-        public static string FleetExecutableFile { get; set; }
+        public static string GitExecutable { get; set; } = string.Empty;
+        public static List<Models.ExternalEditor> ExternalEditors { get; set; } = new List<Models.ExternalEditor>();
 
         static OS()
         {
@@ -47,13 +42,7 @@ namespace SourceGit.Native
                 throw new Exception("Platform unsupported!!!");
             }
 
-            VSCodeExecutableFile = _backend.FindVSCode();
-            if (string.IsNullOrEmpty(VSCodeExecutableFile))
-                VSCodeExecutableFile = GetPathFromEnvironmentVar("VSCODE_PATH");
-
-            FleetExecutableFile = _backend.FindFleet();
-            if (string.IsNullOrEmpty(FleetExecutableFile))
-                FleetExecutableFile = GetPathFromEnvironmentVar("FLEET_PATH");
+            ExternalEditors = _backend.FindExternalEditors();
         }
 
         public static void SetupApp(AppBuilder builder)
@@ -86,51 +75,6 @@ namespace SourceGit.Native
             _backend.OpenWithDefaultEditor(file);
         }
 
-        public static void OpenInVSCode(string repo)
-        {
-            if (string.IsNullOrEmpty(VSCodeExecutableFile))
-            {
-                App.RaiseException(repo, "Visual Studio Code can NOT be found in your system!!!");
-                return;
-            }
-
-            Process.Start(new ProcessStartInfo()
-            {
-                WorkingDirectory = repo,
-                FileName = VSCodeExecutableFile,
-                Arguments = $"\"{repo}\"",
-                UseShellExecute = false,
-            });
-        }
-
-        public static void OpenInFleet(string repo)
-        {
-            if (string.IsNullOrEmpty(FleetExecutableFile))
-            {
-                App.RaiseException(repo, "Fleet can NOT be found in your system!!!");
-                return;
-            }
-
-            Process.Start(new ProcessStartInfo()
-            {
-                WorkingDirectory = repo,
-                FileName = FleetExecutableFile,
-                Arguments = $"\"{repo}\"",
-                UseShellExecute = false,
-            });
-        }
-
-        private static string GetPathFromEnvironmentVar(string key)
-        {
-            var customPath = Environment.GetEnvironmentVariable(key);
-            if (!string.IsNullOrEmpty(customPath) && File.Exists(customPath))
-            {
-                return customPath;
-            }
-
-            return string.Empty;
-        }
-
-        private static readonly IBackend _backend;
+        private static IBackend _backend = null;
     }
 }

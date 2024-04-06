@@ -27,7 +27,7 @@ namespace SourceGit.Commands
         {
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = repo;
-            starter.FileName = Native.OS.GitInstallPath;
+            starter.FileName = Native.OS.GitExecutable;
             starter.Arguments = $"diff --ignore-cr-at-eol --unified=4 {opt}";
             starter.UseShellExecute = false;
             starter.CreateNoWindow = true;

@@ -189,12 +189,12 @@ namespace SourceGit.ViewModels
 
         public string GitInstallPath
         {
-            get => Native.OS.GitInstallPath;
+            get => Native.OS.GitExecutable;
             set
             {
-                if (Native.OS.GitInstallPath != value)
+                if (Native.OS.GitExecutable != value)
                 {
-                    Native.OS.GitInstallPath = value;
+                    Native.OS.GitExecutable = value;
                     OnPropertyChanged(nameof(GitInstallPath));
                 }
             }

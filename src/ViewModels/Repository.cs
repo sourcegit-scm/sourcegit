@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -279,19 +282,41 @@ namespace SourceGit.ViewModels
             Native.OS.OpenInFileManager(_fullpath);
         }
 
-        public void OpenInVSCode()
-        {
-            Native.OS.OpenInVSCode(_fullpath);
-        }
-
-        public void OpenInFleet()
-        {
-            Native.OS.OpenInFleet(_fullpath);
-        }
-
         public void OpenInTerminal()
         {
             Native.OS.OpenTerminal(_fullpath);
+        }
+
+        public ContextMenu CreateContextMenuForExternalEditors()
+        {
+            var editors = Native.OS.ExternalEditors;
+            if (editors.Count == 0)
+            {
+                App.RaiseException(_fullpath, "No available external editors found!");
+                return null;
+            }
+
+            var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+            RenderOptions.SetBitmapInterpolationMode(menu, BitmapInterpolationMode.HighQuality);
+
+            foreach (var editor in editors)
+            {
+                var dupEditor = editor;
+                var icon = AssetLoader.Open(dupEditor.Icon);
+                var item = new MenuItem();
+                item.Header = App.Text("Repository.OpenIn", dupEditor.Name);
+                item.Icon = new Image { Width = 16, Height = 16, Source = new Bitmap(icon) };
+                item.Click += (o, e) =>
+                {
+                    dupEditor.Open(_fullpath);
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(item);
+            }
+
+            return menu;
         }
 
         public void Fetch()

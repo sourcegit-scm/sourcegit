@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Versioning;
@@ -27,20 +28,47 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
-        public string FindVSCode()
+        public List<Models.ExternalEditor> FindExternalEditors()
         {
-            var toolPath = "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code";
-            if (File.Exists(toolPath))
-                return toolPath;
-            return string.Empty;
-        }
+            var editors = new List<Models.ExternalEditor>();
 
-        public string FindFleet()
-        {
-            var toolPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Applications/Fleet.app/Contents/MacOS/Fleet";
-            if (File.Exists(toolPath))
-                return toolPath;
-            return string.Empty;
+            var vscode = FindVSCode();
+            if (!string.IsNullOrEmpty(vscode) && File.Exists(vscode))
+            {
+                editors.Add(new Models.ExternalEditor
+                {
+                    Name = "Visual Studio Code",
+                    Icon = new Uri("avares://SourceGit/Resources/ExternalToolIcons/vscode.png", UriKind.Absolute),
+                    Executable = vscode,
+                    OpenCmdArgs = "\"{0}\"",
+                });
+            }
+
+            var vscodeInsiders = FindVSCodeInsiders();
+            if (!string.IsNullOrEmpty(vscodeInsiders) && File.Exists(vscodeInsiders))
+            {
+                editors.Add(new Models.ExternalEditor
+                {
+                    Name = "Visual Studio Code - Insiders",
+                    Icon = new Uri("avares://SourceGit/Resources/ExternalToolIcons/vscode_insiders.png", UriKind.Absolute),
+                    Executable = vscodeInsiders,
+                    OpenCmdArgs = "\"{0}\"",
+                });
+            }
+
+            var fleet = FindFleet();
+            if (!string.IsNullOrEmpty(fleet) && File.Exists(fleet))
+            {
+                editors.Add(new Models.ExternalEditor
+                {
+                    Name = "JetBrains Fleet",
+                    Icon = new Uri("avares://SourceGit/Resources/ExternalToolIcons/fleet.png", UriKind.Absolute),
+                    Executable = fleet,
+                    OpenCmdArgs = "\"{0}\"",
+                });
+            }
+
+            return editors;
         }
 
         public void OpenBrowser(string url)
@@ -82,5 +110,46 @@ namespace SourceGit.Native
         {
             Process.Start("open", file);
         }
+
+        #region EXTERNAL_EDITORS_FINDER
+        private string FindVSCode()
+        {
+            var toolPath = "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code";
+            if (File.Exists(toolPath))
+                return toolPath;
+
+            var customPath = Environment.GetEnvironmentVariable("VSCODE_PATH");
+            if (!string.IsNullOrEmpty(customPath))
+                return customPath;
+
+            return string.Empty;
+        }
+
+        private string FindVSCodeInsiders()
+        {
+            var toolPath = "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code";
+            if (File.Exists(toolPath))
+                return toolPath;
+
+            var customPath = Environment.GetEnvironmentVariable("VSCODE_INSIDERS_PATH");
+            if (!string.IsNullOrEmpty(customPath))
+                return customPath;
+
+            return string.Empty;
+        }
+
+        private string FindFleet()
+        {
+            var toolPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Applications/Fleet.app/Contents/MacOS/Fleet";
+            if (File.Exists(toolPath))
+                return toolPath;
+
+            var customPath = Environment.GetEnvironmentVariable("FLEET_PATH");
+            if (!string.IsNullOrEmpty(customPath))
+                return customPath;
+
+            return string.Empty;
+        }
+        #endregion
     }
 }

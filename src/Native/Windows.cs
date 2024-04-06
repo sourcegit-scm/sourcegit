@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -113,54 +114,47 @@ namespace SourceGit.Native
             return null;
         }
 
-        public string FindVSCode()
+        public List<Models.ExternalEditor> FindExternalEditors()
         {
-            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
-                    Microsoft.Win32.RegistryHive.LocalMachine,
-                    Microsoft.Win32.RegistryView.Registry64);
+            var editors = new List<Models.ExternalEditor>();
 
-            // VSCode (system)
-            var systemVScode = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1");
-            if (systemVScode != null)
+            var vscode = FindVSCode();
+            if (!string.IsNullOrEmpty(vscode) && File.Exists(vscode))
             {
-                return systemVScode.GetValue("DisplayIcon") as string;
+                editors.Add(new Models.ExternalEditor
+                {
+                    Name = "Visual Studio Code",
+                    Icon = new Uri("avares://SourceGit/Resources/ExternalToolIcons/vscode.png", UriKind.Absolute),
+                    Executable = vscode,
+                    OpenCmdArgs = "\"{0}\"",
+                });
             }
 
-            // VSCode - Insiders (system)
-            var systemVScodeInsiders = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1287CAD5-7C8D-410D-88B9-0D1EE4A83FF2}_is1");
-            if (systemVScodeInsiders != null)
+            var vscodeInsiders = FindVSCodeInsiders();
+            if (!string.IsNullOrEmpty(vscodeInsiders) && File.Exists(vscodeInsiders))
             {
-                return systemVScodeInsiders.GetValue("DisplayIcon") as string;
+                editors.Add(new Models.ExternalEditor
+                {
+                    Name = "Visual Studio Code - Insiders",
+                    Icon = new Uri("avares://SourceGit/Resources/ExternalToolIcons/vscode_insiders.png", UriKind.Absolute),
+                    Executable = vscodeInsiders,
+                    OpenCmdArgs = "\"{0}\"",
+                });
             }
 
-            var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
-                    Microsoft.Win32.RegistryHive.CurrentUser,
-                    Microsoft.Win32.RegistryView.Registry64);
-
-            // VSCode (user)
-            var vscode = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{771FD6B0-FA20-440A-A002-3B3BAC16DC50}_is1");
-            if (vscode != null)
+            var fleet = FindFleet();
+            if (!string.IsNullOrEmpty(fleet) && File.Exists(fleet))
             {
-                return vscode.GetValue("DisplayIcon") as string;
+                editors.Add(new Models.ExternalEditor
+                {
+                    Name = "JetBrains Fleet",
+                    Icon = new Uri("avares://SourceGit/Resources/ExternalToolIcons/fleet.png", UriKind.Absolute),
+                    Executable = fleet,
+                    OpenCmdArgs = "\"{0}\"",
+                });
             }
 
-            // VSCode - Insiders (user)
-            var vscodeInsiders = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{217B4C08-948D-4276-BFBB-BEE930AE5A2C}_is1");
-            if (vscodeInsiders != null)
-            {
-                return vscodeInsiders.GetValue("DisplayIcon") as string;
-            }
-
-            return string.Empty;
-        }
-
-        public string FindFleet()
-        {
-            var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Fleet\\Fleet.exe");
-            if (File.Exists(toolPath))
-                return toolPath;
-
-            return string.Empty;
+            return editors;
         }
 
         public void OpenBrowser(string url)
@@ -172,10 +166,11 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            var bash = Path.Combine(Path.GetDirectoryName(OS.GitInstallPath), "bash.exe");
+            var binDir = Path.GetDirectoryName(OS.GitExecutable);
+            var bash = Path.Combine(binDir, "bash.exe");
             if (!File.Exists(bash))
             {
-                App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Can NOT found bash.exe under '{Path.GetDirectoryName(OS.GitInstallPath)}'");
+                App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Can NOT found bash.exe under '{binDir}'");
                 return;
             }
 
@@ -226,6 +221,89 @@ namespace SourceGit.Native
             start.CreateNoWindow = true;
             Process.Start(start);
         }
+
+        #region EXTERNAL_EDITOR_FINDER
+        private string FindVSCode()
+        {
+            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            // VSCode (system)
+            var systemVScode = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1");
+            if (systemVScode != null)
+            {
+                return systemVScode.GetValue("DisplayIcon") as string;
+            }
+
+            var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.CurrentUser,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            // VSCode (user)
+            var vscode = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{771FD6B0-FA20-440A-A002-3B3BAC16DC50}_is1");
+            if (vscode != null)
+            {
+                return vscode.GetValue("DisplayIcon") as string;
+            }
+
+            // ENV
+            var customPath = Environment.GetEnvironmentVariable("VSCODE_PATH");
+            if (!string.IsNullOrEmpty(customPath))
+            {
+                return customPath;
+            }
+
+            return string.Empty;
+        }
+
+        private string FindVSCodeInsiders()
+        {
+            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            // VSCode - Insiders (system)
+            var systemVScodeInsiders = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1287CAD5-7C8D-410D-88B9-0D1EE4A83FF2}_is1");
+            if (systemVScodeInsiders != null)
+            {
+                return systemVScodeInsiders.GetValue("DisplayIcon") as string;
+            }
+
+            var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.CurrentUser,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            // VSCode - Insiders (user)
+            var vscodeInsiders = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{217B4C08-948D-4276-BFBB-BEE930AE5A2C}_is1");
+            if (vscodeInsiders != null)
+            {
+                return vscodeInsiders.GetValue("DisplayIcon") as string;
+            }
+
+            // ENV
+            var customPath = Environment.GetEnvironmentVariable("VSCODE_INSIDERS_PATH");
+            if (!string.IsNullOrEmpty(customPath))
+            {
+                return customPath;
+            }
+
+            return string.Empty;
+        }
+
+        private string FindFleet()
+        {
+            var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Fleet\\Fleet.exe");
+            if (File.Exists(toolPath))
+                return toolPath;
+
+            var customPath = Environment.GetEnvironmentVariable("FLEET_PATH");
+            if (!string.IsNullOrEmpty(customPath))
+                return customPath;
+
+            return string.Empty;
+        }
+        #endregion
 
         private void OpenFolderAndSelectFile(string folderPath)
         {

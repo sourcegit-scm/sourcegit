@@ -32,7 +32,7 @@ namespace SourceGit.Commands
         public bool Exec()
         {
             var start = new ProcessStartInfo();
-            start.FileName = Native.OS.GitInstallPath;
+            start.FileName = Native.OS.GitExecutable;
             start.Arguments = "--no-pager -c core.quotepath=off " + Args;
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
@@ -144,7 +144,7 @@ namespace SourceGit.Commands
         public ReadToEndResult ReadToEnd()
         {
             var start = new ProcessStartInfo();
-            start.FileName = Native.OS.GitInstallPath;
+            start.FileName = Native.OS.GitExecutable;
             start.Arguments = "--no-pager -c core.quotepath=off " + Args;
             start.UseShellExecute = false;
             start.CreateNoWindow = true;

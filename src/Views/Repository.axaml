@@ -22,22 +22,8 @@
             <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
           </Button>
 
-          <Button Classes="icon_button" Width="32" ToolTip.Tip="{DynamicResource Text.Repository.OpenWith}">
+          <Button Classes="icon_button" Width="32" Click="OnOpenWithExternalEditor" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
             <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>
-            <Button.Flyout>
-              <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
-                <MenuItem Header="{DynamicResource Text.Repository.Fleet}" Command="{Binding OpenInFleet}">
-                  <MenuItem.Icon>
-                    <Image Source="/Resources/ExternalToolIcons/fleet.png" Width="16" Height="16" RenderOptions.BitmapInterpolationMode="HighQuality"/>
-                  </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="{DynamicResource Text.Repository.VSCode}" Command="{Binding OpenInVSCode}">
-                  <MenuItem.Icon>
-                    <Image Source="/Resources/ExternalToolIcons/vscode.png" Width="16" Height="16" RenderOptions.BitmapInterpolationMode="HighQuality"/>
-                  </MenuItem.Icon>
-                </MenuItem>
-              </MenuFlyout>
-            </Button.Flyout>
           </Button>
           
           <ToggleButton Width="32"
