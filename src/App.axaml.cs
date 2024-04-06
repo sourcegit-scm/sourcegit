@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -90,18 +88,10 @@ namespace SourceGit
         public static void SetLocale(string localeKey)
         {
             var app = Current as App;
-            var rd = new ResourceDictionary();
-
-            var culture = CultureInfo.GetCultureInfo(localeKey.Replace("_", "-"));
-            SourceGit.Resources.Locales.Culture = culture;
-
-            var sets = SourceGit.Resources.Locales.ResourceManager.GetResourceSet(culture, true, true);
-            foreach (var obj in sets)
+            var targetLocale = app.Resources[localeKey] as ResourceDictionary;
+            if (targetLocale == null || targetLocale == app._activeLocale)
             {
-                if (obj is DictionaryEntry entry)
-                {
-                    rd.Add(entry.Key, entry.Value);
-                }
+                return;
             }
 
             if (app._activeLocale != null)
@@ -109,8 +99,8 @@ namespace SourceGit
                 app.Resources.MergedDictionaries.Remove(app._activeLocale);
             }
 
-            app.Resources.MergedDictionaries.Add(rd);
-            app._activeLocale = rd;
+            app.Resources.MergedDictionaries.Add(targetLocale);
+            app._activeLocale = targetLocale;
         }
 
         public static void SetTheme(string theme)

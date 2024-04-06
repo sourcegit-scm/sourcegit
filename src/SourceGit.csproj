@@ -27,22 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources/Locales.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Locales.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Update="Resources/Locales.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Locales.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources/Locales.*.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <DependentUpon>Locales.resx</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.10" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
