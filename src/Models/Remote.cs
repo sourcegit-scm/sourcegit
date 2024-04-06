@@ -4,19 +4,17 @@ namespace SourceGit.Models
 {
     public partial class Remote
     {
-
-        [GeneratedRegex(@"^http[s]?://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-\.]+\.git$")]
-        private static partial Regex regex1();
-
+        [GeneratedRegex(@"^http[s]?://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-/]+/[\w\-\.]+\.git$")]
+        private static partial Regex REG_HTTPS();
         [GeneratedRegex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-]+/[\w\-\.]+\.git$")]
-        private static partial Regex regex2();
+        private static partial Regex REG_SSH1();
         [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-]+/[\w\-\.]+\.git$")]
-        private static partial Regex regex3();
+        private static partial Regex REG_SSH2();
 
         private static readonly Regex[] URL_FORMATS = [
-            regex1(),
-            regex2(),
-            regex3(),
+            REG_HTTPS(),
+            REG_SSH1(),
+            REG_SSH2(),
         ];
 
         public string Name { get; set; }
