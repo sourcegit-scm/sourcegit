@@ -147,7 +147,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public async void OpenExternalMergeTool()
+        public void OpenExternalMergeTool()
         {
             var type = Preference.Instance.ExternalMergeToolType;
             var exec = Preference.Instance.ExternalMergeToolPath;
@@ -160,7 +160,7 @@ namespace SourceGit.ViewModels
             }
 
             var args = tool.Type != 0 ? tool.DiffCmd : Preference.Instance.ExternalMergeToolDiffCmd;
-            await Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, exec, args, _option));
+            Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, exec, args, _option));
         }
 
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()

@@ -157,33 +157,46 @@ namespace SourceGit.ViewModels
         {
             var menu = new ContextMenu();
 
+            var diffWithMerger = new MenuItem();
+            diffWithMerger.Header = App.Text("DiffWithMerger");
+            diffWithMerger.Icon = App.CreateMenuIcon("Icons.Diff");
+            diffWithMerger.Click += (_, ev) =>
+            {
+                var opt = new Models.DiffOption(StartPoint.SHA, EndPoint.SHA, change);
+                var type = Preference.Instance.ExternalMergeToolType;
+                var exec = Preference.Instance.ExternalMergeToolPath;
+
+                var tool = Models.ExternalMergeTools.Supported.Find(x => x.Type == type);
+                if (tool == null || !File.Exists(exec))
+                {
+                    App.RaiseException(_repo, "Invalid merge tool in preference setting!");
+                    return;
+                }
+
+                var args = tool.Type != 0 ? tool.DiffCmd : Preference.Instance.ExternalMergeToolDiffCmd;
+                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, exec, args, opt));
+                ev.Handled = true;
+            };
+            menu.Items.Add(diffWithMerger);
+
             if (change.Index != Models.ChangeState.Deleted)
             {
-                var history = new MenuItem();
-                history.Header = App.Text("FileHistory");
-                history.Click += (_, ev) =>
-                {
-                    var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
-                    window.Show();
-                    ev.Handled = true;
-                };
-
                 var full = Path.GetFullPath(Path.Combine(_repo, change.Path));
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
+                explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
                 explore.IsEnabled = File.Exists(full);
                 explore.Click += (_, ev) =>
                 {
                     Native.OS.OpenInFileManager(full, true);
                     ev.Handled = true;
                 };
-
-                menu.Items.Add(history);
                 menu.Items.Add(explore);
             }
 
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
+            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
             copyPath.Click += (_, ev) =>
             {
                 App.CopyText(change.Path);

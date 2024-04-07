@@ -8,6 +8,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.VisualBasic.FileIO;
 
 namespace SourceGit.ViewModels
 {
@@ -195,6 +196,28 @@ namespace SourceGit.ViewModels
         {
             var menu = new ContextMenu();
 
+            var diffWithMerger = new MenuItem();
+            diffWithMerger.Header = App.Text("DiffWithMerger");
+            diffWithMerger.Icon = App.CreateMenuIcon("Icons.Diff");
+            diffWithMerger.Click += (_, ev) =>
+            {
+                var opt = new Models.DiffOption(_commit, change);
+                var type = Preference.Instance.ExternalMergeToolType;
+                var exec = Preference.Instance.ExternalMergeToolPath;
+
+                var tool = Models.ExternalMergeTools.Supported.Find(x => x.Type == type);
+                if (tool == null || !File.Exists(exec))
+                {
+                    App.RaiseException(_repo, "Invalid merge tool in preference setting!");
+                    return;
+                }
+
+                var args = tool.Type != 0 ? tool.DiffCmd : Preference.Instance.ExternalMergeToolDiffCmd;
+                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, exec, args, opt));
+                ev.Handled = true;
+            };
+            menu.Items.Add(diffWithMerger);
+
             if (change.Index != Models.ChangeState.Deleted)
             {
                 var history = new MenuItem();
@@ -228,10 +251,12 @@ namespace SourceGit.ViewModels
                     ev.Handled = true;
                 };
 
+                menu.Items.Add(new MenuItem { Header = "-" });
                 menu.Items.Add(history);
                 menu.Items.Add(blame);
                 menu.Items.Add(explore);
-            }
+                menu.Items.Add(new MenuItem { Header = "-" });
+            }            
 
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
@@ -241,8 +266,8 @@ namespace SourceGit.ViewModels
                 App.CopyText(change.Path);
                 ev.Handled = true;
             };
-
             menu.Items.Add(copyPath);
+
             return menu;
         }
 
