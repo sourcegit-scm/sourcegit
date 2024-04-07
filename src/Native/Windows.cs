@@ -116,57 +116,12 @@ namespace SourceGit.Native
 
         public List<Models.ExternalEditor> FindExternalEditors()
         {
-            var editors = new List<Models.ExternalEditor>();
-
-            var vscode = FindVSCode();
-            if (!string.IsNullOrEmpty(vscode) && File.Exists(vscode))
-            {
-                editors.Add(new Models.ExternalEditor
-                {
-                    Name = "Visual Studio Code",
-                    Icon = "vscode.png",
-                    Executable = vscode,
-                    OpenCmdArgs = "\"{0}\"",
-                });
-            }
-
-            var vscodeInsiders = FindVSCodeInsiders();
-            if (!string.IsNullOrEmpty(vscodeInsiders) && File.Exists(vscodeInsiders))
-            {
-                editors.Add(new Models.ExternalEditor
-                {
-                    Name = "Visual Studio Code - Insiders",
-                    Icon = "vscode_insiders.png",
-                    Executable = vscodeInsiders,
-                    OpenCmdArgs = "\"{0}\"",
-                });
-            }
-
-            var fleet = FindFleet();
-            if (!string.IsNullOrEmpty(fleet) && File.Exists(fleet))
-            {
-                editors.Add(new Models.ExternalEditor
-                {
-                    Name = "JetBrains Fleet",
-                    Icon = "fleet.png",
-                    Executable = fleet,
-                    OpenCmdArgs = "\"{0}\"",
-                });
-            }
-
-            var sublime = FindSublimeText();
-            if (!string.IsNullOrEmpty(sublime) && File.Exists(sublime))
-            {
-                editors.Add(new Models.ExternalEditor
-                {
-                    Name = "Sublime Text",
-                    Icon = "sublime_text.png",
-                    Executable = sublime,
-                    OpenCmdArgs = "\"{0}\"",
-                });
-            }
-
-            return editors;
+            var finder = new Models.ExternalEditorFinder();
+            finder.VSCode(FindVSCode);
+            finder.VSCodeInsiders(FindVSCodeInsiders);
+            finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Programs\\Fleet\\Fleet.exe");
+            finder.SublimeText(FindSublimeText);
+            return finder.Editors;
         }
 
         public void OpenBrowser(string url)
@@ -259,13 +214,6 @@ namespace SourceGit.Native
                 return vscode.GetValue("DisplayIcon") as string;
             }
 
-            // ENV
-            var customPath = Environment.GetEnvironmentVariable("VSCODE_PATH");
-            if (!string.IsNullOrEmpty(customPath))
-            {
-                return customPath;
-            }
-
             return string.Empty;
         }
 
@@ -293,26 +241,6 @@ namespace SourceGit.Native
                 return vscodeInsiders.GetValue("DisplayIcon") as string;
             }
 
-            // ENV
-            var customPath = Environment.GetEnvironmentVariable("VSCODE_INSIDERS_PATH");
-            if (!string.IsNullOrEmpty(customPath))
-            {
-                return customPath;
-            }
-
-            return string.Empty;
-        }
-
-        private string FindFleet()
-        {
-            var toolPath = Environment.ExpandEnvironmentVariables($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\AppData\\Local\\Programs\\Fleet\\Fleet.exe");
-            if (File.Exists(toolPath))
-                return toolPath;
-
-            var customPath = Environment.GetEnvironmentVariable("FLEET_PATH");
-            if (!string.IsNullOrEmpty(customPath))
-                return customPath;
-
             return string.Empty;
         }
 
@@ -335,10 +263,6 @@ namespace SourceGit.Native
                 var icon = sublime3.GetValue("DisplayIcon") as string;
                 return Path.Combine(Path.GetDirectoryName(icon), "subl.exe");
             }
-
-            var customPath = Environment.GetEnvironmentVariable("SUBLIME_TEXT_PATH");
-            if (!string.IsNullOrEmpty(customPath))
-                return customPath;
 
             return string.Empty;
         }

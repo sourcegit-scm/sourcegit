@@ -33,57 +33,12 @@ namespace SourceGit.Native
 
         public List<Models.ExternalEditor> FindExternalEditors()
         {
-            var editors = new List<Models.ExternalEditor>();
-
-            var vscode = FindVSCode();
-            if (!string.IsNullOrEmpty(vscode) && File.Exists(vscode))
-            {
-                editors.Add(new Models.ExternalEditor
-                {
-                    Name = "Visual Studio Code",
-                    Icon = "vscode.png",
-                    Executable = vscode,
-                    OpenCmdArgs = "\"{0}\"",
-                });
-            }
-
-            var vscodeInsiders = FindVSCodeInsiders();
-            if (!string.IsNullOrEmpty(vscodeInsiders) && File.Exists(vscodeInsiders))
-            {
-                editors.Add(new Models.ExternalEditor
-                {
-                    Name = "Visual Studio Code - Insiders",
-                    Icon = "vscode_insiders.png",
-                    Executable = vscodeInsiders,
-                    OpenCmdArgs = "\"{0}\"",
-                });
-            }
-
-            var fleet = FindFleet();
-            if (!string.IsNullOrEmpty(fleet) && File.Exists(fleet))
-            {
-                editors.Add(new Models.ExternalEditor
-                {
-                    Name = "JetBrains Fleet",
-                    Icon = "fleet.png",
-                    Executable = fleet,
-                    OpenCmdArgs = "\"{0}\"",
-                });
-            }
-
-            var sublime = FindSublimeText();
-            if (!string.IsNullOrEmpty(sublime) && File.Exists(sublime))
-            {
-                editors.Add(new Models.ExternalEditor
-                {
-                    Name = "Sublime Text",
-                    Icon = "sublime_text.png",
-                    Executable = sublime,
-                    OpenCmdArgs = "\"{0}\"",
-                });
-            }
-
-            return editors;
+            var finder = new Models.ExternalEditorFinder();
+            finder.VSCode(() => "/usr/share/code/code");
+            finder.VSCodeInsiders(() => "/usr/share/code-insiders/code-insiders");
+            finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox/apps/fleet/bin/Fleet");
+            finder.SublimeText(() => File.Exists("/usr/bin/subl") ? "/usr/bin/subl" : "/usr/local/bin/subl");
+            return finder.Editors;
         }
 
         public void OpenBrowser(string url)
@@ -159,65 +114,5 @@ namespace SourceGit.Native
 
             proc.Close();
         }
-
-        #region EXTERNAL_EDITORS_FINDER
-        private string FindVSCode()
-        {
-            var toolPath = "/usr/share/code/code";
-            if (File.Exists(toolPath))
-                return toolPath;
-
-            var customPath = Environment.GetEnvironmentVariable("VSCODE_PATH");
-            if (!string.IsNullOrEmpty(customPath))
-                return customPath;
-
-            return string.Empty;
-        }
-
-        private string FindVSCodeInsiders()
-        {
-            var toolPath = "/usr/share/code/code";
-            if (File.Exists(toolPath))
-                return toolPath;
-
-            var customPath = Environment.GetEnvironmentVariable("VSCODE_INSIDERS_PATH");
-            if (!string.IsNullOrEmpty(customPath))
-                return customPath;
-
-            return string.Empty;
-        }
-
-        private string FindFleet()
-        {
-            var toolPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.local/share/JetBrains/Toolbox/apps/fleet/bin/Fleet";
-            if (File.Exists(toolPath))
-                return toolPath;
-
-            var customPath = Environment.GetEnvironmentVariable("FLEET_PATH");
-            if (!string.IsNullOrEmpty(customPath))
-                return customPath;
-
-            return string.Empty;
-        }
-
-        private string FindSublimeText()
-        {
-            if (File.Exists("/usr/bin/subl"))
-            {
-                return "/usr/bin/subl";
-            }
-
-            if (File.Exists("/usr/local/bin/subl"))
-            {
-                return "/usr/local/bin/subl";
-            }
-
-            var customPath = Environment.GetEnvironmentVariable("SUBLIME_TEXT_PATH");
-            if (!string.IsNullOrEmpty(customPath))
-                return customPath;
-
-            return string.Empty;
-        }
-        #endregion
     }
 }
