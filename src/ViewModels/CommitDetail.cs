@@ -8,7 +8,6 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.VisualBasic.FileIO;
 
 namespace SourceGit.ViewModels
 {
