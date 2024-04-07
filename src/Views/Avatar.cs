@@ -7,6 +7,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 
 namespace SourceGit.Views
 {
@@ -48,6 +49,8 @@ namespace SourceGit.Views
 
             ContextMenu = new ContextMenu();
             ContextMenu.Items.Add(refetch);
+
+            RenderOptions.SetBitmapInterpolationMode(this, BitmapInterpolationMode.HighQuality);
         }
 
         public override void Render(DrawingContext context)
