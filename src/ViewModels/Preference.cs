@@ -278,6 +278,31 @@ namespace SourceGit.ViewModels
             set;
         } = 0;
 
+        public double LastCheckUpdateTime
+        {
+            get;
+            set;
+        } = 0;
+
+        [JsonIgnore]
+        public bool ShouldCheck4UpdateOnStartup
+        {
+            get
+            {
+                if (!_check4UpdatesOnStartup)
+                    return false;
+
+                var lastCheck = DateTime.UnixEpoch.AddSeconds(LastCheckUpdateTime).ToLocalTime();
+                var now = DateTime.Now;
+
+                if (lastCheck.Year == now.Year && lastCheck.Month == now.Month && lastCheck.Day == now.Day)
+                    return false;
+
+                LastCheckUpdateTime = now.Subtract(DateTime.UnixEpoch.ToLocalTime()).TotalSeconds;
+                return true;
+            }
+        }
+
         public static void AddNode(RepositoryNode node, RepositoryNode to = null)
         {
             var collection = to == null ? _instance._repositoryNodes : to.SubNodes;

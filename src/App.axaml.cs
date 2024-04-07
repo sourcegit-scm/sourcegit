@@ -227,8 +227,11 @@ namespace SourceGit
                 _notificationReceiver = launcher;
                 desktop.MainWindow = launcher;
 
-                if (ViewModels.Preference.Instance.Check4UpdatesOnStartup)
+                if (ViewModels.Preference.Instance.ShouldCheck4UpdateOnStartup)
+                {
+                    ViewModels.Preference.Save();
                     Check4Update();
+                }
             }
 
             base.OnFrameworkInitializationCompleted();
