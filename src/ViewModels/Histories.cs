@@ -61,6 +61,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _autoSelectedCommit, value);
         }
 
+        public long NavigationId
+        {
+            get => _navigationId;
+            private set => SetProperty(ref _navigationId, value);
+        }
+
         public object DetailContext
         {
             get => _detailContext;
@@ -98,6 +104,7 @@ namespace SourceGit.ViewModels
             if (commit != null)
             {
                 AutoSelectedCommit = commit;
+                NavigationId = _navigationId + 1;
 
                 if (_detailContext is CommitDetail detail)
                 {
@@ -597,6 +604,7 @@ namespace SourceGit.ViewModels
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.CommitGraph _graph = null;
         private Models.Commit _autoSelectedCommit = null;
+        private long _navigationId = 0;
         private object _detailContext = null;
     }
 }

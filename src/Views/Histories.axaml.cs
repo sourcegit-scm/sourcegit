@@ -3,6 +3,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 
@@ -258,9 +259,31 @@ namespace SourceGit.Views
 
     public partial class Histories : UserControl
     {
+        public static readonly StyledProperty<long> NavigationIdProperty =
+            AvaloniaProperty.Register<Histories, long>(nameof(NavigationId), 0);
+
+        public long NavigationId
+        {
+            get => GetValue(NavigationIdProperty);
+            set => SetValue(NavigationIdProperty, value);
+        }
+
+        static Histories()
+        {
+            NavigationIdProperty.Changed.AddClassHandler<Histories>((h, _) =>
+            {
+                // Force scroll selected item (current head) into view. see issue #58
+                var datagrid = h.commitDataGrid;
+                if (datagrid != null && datagrid.SelectedItems.Count == 1)
+                    datagrid.ScrollIntoView(datagrid.SelectedItems[0], null);
+            });
+        }
+
         public Histories()
         {
             InitializeComponent();
+
+            this.Bind(NavigationIdProperty, new Binding("NavigationId", BindingMode.OneWay));
         }
 
         private void OnCommitDataGridLayoutUpdated(object sender, EventArgs e)
