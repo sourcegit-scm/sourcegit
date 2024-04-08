@@ -255,6 +255,7 @@
   <x:String x:Key="Text.Preference.General" xml:space="preserve">通用配置</x:String>
   <x:String x:Key="Text.Preference.General.AvatarServer" xml:space="preserve">头像服务</x:String>
   <x:String x:Key="Text.Preference.General.DefaultTerminal" xml:space="preserve">默认终端</x:String>
+  <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell" xml:space="preserve">系统默认</x:String>
   <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.wt" xml:space="preserve">终端 (Windows Terminal)</x:String>
   <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.git-bash" xml:space="preserve">Git Bash</x:String>
   <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.pwsh" xml:space="preserve">PowerShell</x:String>

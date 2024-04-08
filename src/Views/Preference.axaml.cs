@@ -128,7 +128,7 @@ namespace SourceGit.Views
                 Dispatcher.UIThread.Post(() => InstalledMonospaceFonts.AddRange(sysMonoFonts));
             });
 
-            ExternalTerminals = [..OS.ExternalTerminals.Select(x => x.Name)];
+            ExternalTerminals = ["", ..OS.ExternalTerminals.Select(x => x.Name)];
 
             var ver = string.Empty;
             if (pref.IsGitConfigured)
@@ -261,18 +261,37 @@ namespace SourceGit.Views
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string terminalName && !string.IsNullOrWhiteSpace(terminalName))
-            {
-                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalTerminalIcons/{terminalName}.png", UriKind.RelativeOrAbsolute));
-                return  new Bitmap(icon);
-            }
+            var iconKey = value is string terminalName && !string.IsNullOrWhiteSpace(terminalName) ?
+                terminalName :
+                GetSystemDefaultTerminalIconKey();
 
-            return null;
+            var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalTerminalIcons/{iconKey}.png", UriKind.RelativeOrAbsolute));
+            return  new Bitmap(icon);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
+        }
+
+        private string GetSystemDefaultTerminalIconKey()
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                return "git-bash";
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                return "osascript";
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                return "gnome-terminal";
+            }
+            else
+            {
+                throw new PlatformNotSupportedException();
+            }
         }
     }
     
@@ -280,13 +299,9 @@ namespace SourceGit.Views
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string terminalName && !string.IsNullOrWhiteSpace(terminalName))
-            {
-                var name = App.Text($"Preference.General.DefaultTerminalOrShell.{terminalName}");
-                return name;
-            }
-
-            return null;
+            return value is string terminalName && !string.IsNullOrWhiteSpace(terminalName) ?
+                App.Text($"Preference.General.DefaultTerminalOrShell.{terminalName}") :
+                App.Text($"Preference.General.DefaultTerminalOrShell");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

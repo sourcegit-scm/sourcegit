@@ -117,9 +117,9 @@ namespace SourceGit.Native
         public IReadOnlyList<Models.ExternalTerminal> FindExternalTerminals()
         {
             var finder = new Models.ExternalTerminalFinder();
+            finder.WindowsTerminal(() => FindExternalTerminal("wt"));
             finder.WindowsGitBash(() => FindExternalTerminal("bash"));
             finder.PowerShell(() => FindExternalTerminal("pwsh"));
-            finder.WindowsTerminal(() => FindExternalTerminal("wt"));
             return finder.Terminals;
         }
 

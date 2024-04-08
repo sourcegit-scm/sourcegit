@@ -117,15 +117,8 @@ namespace SourceGit.ViewModels
 
         public string DefaultTerminal
         {
-            get => Models.AvatarManager.SelectedServer;
-            set
-            {
-                if (Models.AvatarManager.SelectedServer != value)
-                {
-                    Models.AvatarManager.SelectedServer = value;
-                    OnPropertyChanged(nameof(DefaultTerminal));
-                }
-            }
+            get => _defaultTerminal ??= "";
+            set => SetProperty(ref _defaultTerminal, value ?? "");
         }
 
         public int MaxHistoryCommits
@@ -442,6 +435,7 @@ namespace SourceGit.ViewModels
 
         private string _locale = "en_US";
         private string _theme = "Default";
+        private string _defaultTerminal;
         private FontFamily _defaultFont = null;
         private FontFamily _monospaceFont = null;
         private double _defaultFontSize = 13;

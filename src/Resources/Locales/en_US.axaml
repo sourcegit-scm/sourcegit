@@ -255,6 +255,7 @@
   <x:String x:Key="Text.Preference.General" xml:space="preserve">GENERAL</x:String>
   <x:String x:Key="Text.Preference.General.AvatarServer" xml:space="preserve">Avatar Server</x:String>
   <x:String x:Key="Text.Preference.General.DefaultTerminal" xml:space="preserve">Default Terminal/Shell</x:String>
+  <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell" xml:space="preserve">System Default</x:String>
   <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.wt" xml:space="preserve">Windows Terminal</x:String>
   <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.git-bash" xml:space="preserve">Git Bash</x:String>
   <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.pwsh" xml:space="preserve">PowerShell</x:String>
