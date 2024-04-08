@@ -34,7 +34,7 @@ namespace SourceGit.Models
 
         public void WindowsGitBash(Func<string> platform_finder)
         {
-            TryAdd("Git Bash", "git-bash.png", "bash", "", platform_finder);
+            TryAdd("git-bash", "git-bash.png", "bash", "", platform_finder);
         }
 
         public void Gnome(Func<string> platform_finder)
@@ -58,19 +58,19 @@ namespace SourceGit.Models
 
             Terminals.Add(terminal with
             {
-                Name = "AppleScript",
+                Name = "osascript",
                 Icon = "osascript.png",
             });
         }
 
         public void PowerShell(Func<string> platform_finder)
         {
-            TryAdd("PowerShell", "pwsh.png", "pwsh", "-WorkingDirectory \"{0}\"", platform_finder);
+            TryAdd("pwsh", "pwsh.png", "pwsh", "-WorkingDirectory \"{0}\"", platform_finder);
         }
 
         public void WindowsTerminal(Func<string> platform_finder)
         {
-            TryAdd("Windows Terminal", "wt.png", "wt", "-d \"{0}\"", platform_finder);
+            TryAdd("wt", "wt.png", "wt", "-d \"{0}\"", platform_finder);
         }
 
         public void Xfce4(Func<string> platform_finder)

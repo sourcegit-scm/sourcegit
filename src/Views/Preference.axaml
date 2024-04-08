@@ -109,11 +109,12 @@
                       MinHeight="28"
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding #me.ExternalTerminals}"
                       SelectedItem="{Binding DefaultTerminal, Mode=TwoWay}">
               <ComboBox.ItemTemplate>
                 <DataTemplate DataType="x:String">
                   <StackPanel Orientation="Horizontal">
-                    <Image Width="16" Height="16" Source="{Binding Converter={StaticResource TerminalOrShellNameToBitmapConverter}}" />
+                    <Image Width="16" Height="16" Margin="4,4,8,4" Source="{Binding Converter={StaticResource TerminalOrShellNameToBitmapConverter}}" />
                     <TextBlock Text="{Binding Converter={StaticResource TerminalOrShellNameToLocalizedNameConverter}}" />
                   </StackPanel>
                 </DataTemplate>

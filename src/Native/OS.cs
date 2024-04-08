@@ -13,7 +13,7 @@ namespace SourceGit.Native
 
             string FindGitExecutable();
             
-            List<Models.ExternalTerminal> FindExternalTerminals();
+            IReadOnlyList<Models.ExternalTerminal> FindExternalTerminals();
             List<Models.ExternalEditor> FindExternalEditors();
 
             void OpenTerminal(string workdir);
@@ -23,7 +23,7 @@ namespace SourceGit.Native
         }
 
         public static string GitExecutable { get; set; } = string.Empty;
-        public static List<Models.ExternalTerminal> ExternalTerminals { get; set; } = new List<Models.ExternalTerminal>();
+        public static IReadOnlyList<Models.ExternalTerminal> ExternalTerminals { get; private set; }
         public static List<Models.ExternalEditor> ExternalEditors { get; set; } = new List<Models.ExternalEditor>();
 
         static OS()

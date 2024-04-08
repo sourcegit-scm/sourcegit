@@ -31,7 +31,7 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
-        public List<Models.ExternalTerminal> FindExternalTerminals()
+        public IReadOnlyList<Models.ExternalTerminal> FindExternalTerminals()
         {
             var finder = new Models.ExternalTerminalFinder();
             finder.Gnome(() => "/usr/bin/gnome-terminal");

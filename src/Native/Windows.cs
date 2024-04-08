@@ -114,7 +114,7 @@ namespace SourceGit.Native
             return null;
         }
 
-        public List<Models.ExternalTerminal> FindExternalTerminals()
+        public IReadOnlyList<Models.ExternalTerminal> FindExternalTerminals()
         {
             var finder = new Models.ExternalTerminalFinder();
             finder.WindowsGitBash(() => FindExternalTerminal("bash"));

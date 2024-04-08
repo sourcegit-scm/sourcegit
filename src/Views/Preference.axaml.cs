@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -15,6 +16,8 @@ using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
+using SourceGit.Native;
+
 namespace SourceGit.Views
 {
     public partial class Preference : Window
@@ -26,6 +29,12 @@ namespace SourceGit.Views
         }
 
         public AvaloniaList<FontFamily> InstalledMonospaceFonts
+        {
+            get;
+            private set;
+        }
+
+        public AvaloniaList<string> ExternalTerminals
         {
             get;
             private set;
@@ -118,6 +127,8 @@ namespace SourceGit.Views
 
                 Dispatcher.UIThread.Post(() => InstalledMonospaceFonts.AddRange(sysMonoFonts));
             });
+
+            ExternalTerminals = [..OS.ExternalTerminals.Select(x => x.Name)];
 
             var ver = string.Empty;
             if (pref.IsGitConfigured)
@@ -271,7 +282,7 @@ namespace SourceGit.Views
         {
             if (value is string terminalName && !string.IsNullOrWhiteSpace(terminalName))
             {
-                var name = App.Text($"Text.Preference.General.DefaultTerminalOrShell.{terminalName}");
+                var name = App.Text($"Preference.General.DefaultTerminalOrShell.{terminalName}");
                 return name;
             }
 
