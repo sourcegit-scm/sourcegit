@@ -346,8 +346,10 @@ namespace SourceGit.ViewModels
             foreach (var terminal in terminals)
             {
                 var dupTerminal = terminal;
-                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalTerminalIcons/{dupTerminal.Icon}", UriKind.RelativeOrAbsolute));
-                var item = new ExternalMenuItem(App.Text("Repository.OpenIn", dupTerminal.Name), new Bitmap(icon), () => dupTerminal.Open(_fullpath));
+                var item = new ExternalMenuItem(
+                    App.Text("Repository.OpenIn", dupTerminal.Name),
+                    $"ExternalTerminalIcons/{dupTerminal.Icon}",
+                    () => dupTerminal.Open(_fullpath));
                 items.Add(item);
             }
 
@@ -370,8 +372,10 @@ namespace SourceGit.ViewModels
             foreach (var editor in editors)
             {
                 var dupEditor = editor;
-                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{dupEditor.Icon}", UriKind.RelativeOrAbsolute));
-                var item = new ExternalMenuItem(App.Text("Repository.OpenIn", dupEditor.Name), new Bitmap(icon), () => dupEditor.Open(_fullpath));
+                var item = new ExternalMenuItem(
+                    App.Text("Repository.OpenIn", dupEditor.Name),
+                    $"ExternalToolIcons/{dupEditor.Icon}",
+                    () => dupEditor.Open(_fullpath));
                 items.Add(item);
             }
 
@@ -1424,14 +1428,14 @@ namespace SourceGit.ViewModels
         public ExternalMenuItem(string header)
         {
             Header = header;
-            Icon = null;
+            IconKey = null;
             Command = null;
         }
         
-        public ExternalMenuItem(string header, Bitmap icon, Action click)
+        public ExternalMenuItem(string header, string iconKey, Action click)
         {
             Header = header;
-            Icon = icon;
+            IconKey = iconKey;
             Command = new RelayCommand(click);
         }
         
@@ -1443,7 +1447,7 @@ namespace SourceGit.ViewModels
         /// <summary>
         /// The resource key of the icon.
         /// </summary>
-        public Bitmap? Icon { get; init; }
+        public string? IconKey { get; init; }
         
         /// <summary>
         /// The command when the user click the menu item.
@@ -1453,6 +1457,6 @@ namespace SourceGit.ViewModels
         /// <summary>
         /// <see langword="true"/> if the menu item is enabled; otherwise, <see langword="false"/>.
         /// </summary>
-        public bool IsEnabled { get; init; }
+        public bool IsEnabled { get; init; } = true;
     }
 }

@@ -11,11 +11,22 @@
              x:DataType="vm:Repository">
   
   <UserControl.Resources>
-    <MenuFlyout x:Key="TerminalShellsMenuFlyout" Placement="Bottom">
-    </MenuFlyout>
-    <MenuFlyout x:Key="ExternalToolsMenuFlyout" Placement="Bottom">
-    </MenuFlyout>
+    <v:ExternalIconKeyToImageConverter x:Key="IconKeyToImageConverter" />
+    <MenuFlyout x:Key="TerminalShellsMenuFlyout" Placement="BottomEdgeAlignedLeft"
+                ItemsSource="{Binding ExternalTerminals, Mode=OneTime}" />
+    <MenuFlyout x:Key="ExternalToolsMenuFlyout" Placement="BottomEdgeAlignedLeft"
+                ItemsSource="{Binding ExternalEditors, Mode=OneTime}" />
   </UserControl.Resources>
+  
+  <UserControl.DataTemplates>
+    <DataTemplate x:DataType="vm:ExternalMenuItem">
+      <MenuItem Header="{Binding Header, Mode=OneTime}"
+                Icon="{Binding IconKey, Mode=OneTime, Converter={StaticResource IconKeyToImageConverter}}"
+                Command="{Binding Command, Mode=OneTime}"
+                IsEnabled="{Binding IsEnabled, Mode=OneTime}">
+      </MenuItem>
+    </DataTemplate>
+  </UserControl.DataTemplates>
   
   <Grid RowDefinitions="36,*" Background="{DynamicResource Brush.Window}">
     <!-- Toolbar -->

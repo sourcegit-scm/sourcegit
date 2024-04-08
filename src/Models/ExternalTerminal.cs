@@ -5,14 +5,14 @@ using System.IO;
 
 namespace SourceGit.Models
 {
-    public class ExternalTerminal
+    public record ExternalTerminal
     {
-        public string Name { get; set; } = string.Empty;
-        public string Icon { get; set; } = string.Empty;
-        public string Executable { get; set; } = string.Empty;
-        public string OpenCmdArgs { get; set; } = string.Empty;
+        public string Name { get; init; } = string.Empty;
+        public string Icon { get; init; } = string.Empty;
+        public string Executable { get; init; } = string.Empty;
+        public string OpenCmdArgs { get; init; } = string.Empty;
 
-        public void Open(string repo)
+        public virtual void Open(string repo)
         {
             Process.Start(new ProcessStartInfo()
             {
@@ -34,31 +34,33 @@ namespace SourceGit.Models
 
         public void WindowsGitBash(Func<string> platform_finder)
         {
-            TryAdd("Git Bash", "git-bash.png", "bash", "\"{0}\"", platform_finder);
+            TryAdd("Git Bash", "git-bash.png", "bash", "", platform_finder);
         }
 
         public void Gnome(Func<string> platform_finder)
         {
-            TryAdd("gnome-terminal", "gnome.png", "/usr/bin/gnome-terminal", "--working-directory=\"{0}\"", platform_finder);
+            TryAdd("gnome-terminal", "gnome.png", "gnome", "--working-directory=\"{0}\"", platform_finder);
         }
 
         public void Konsole(Func<string> platform_finder)
         {
-            TryAdd("gnome-terminal", "konsole.png", "/usr/bin/konsole", "--workdir \"{0}\"", platform_finder);
+            TryAdd("konsole", "konsole.png", "konsole", "--workdir \"{0}\"", platform_finder);
         }
 
-        public void osaScript(Func<string> platform_finder)
+        public void AppleScript(ExternalTerminal terminal)
         {
-            TryAdd("AppleScript", "osascript.png", "/usr/bin/osascript",
-                """
-                on run argv
-                   tell application "Terminal"
-                        do script "cd '{0}'"
-                        activate
-                    end tell
-                end run
-                """,
-                platform_finder);
+            var path = terminal.Executable;
+
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+            {
+                return;
+            }
+
+            Terminals.Add(terminal with
+            {
+                Name = "AppleScript",
+                Icon = "osascript.png",
+            });
         }
 
         public void PowerShell(Func<string> platform_finder)
@@ -73,7 +75,7 @@ namespace SourceGit.Models
 
         public void Xfce4(Func<string> platform_finder)
         {
-            TryAdd("gnome-terminal", "xfce4.png", "/usr/bin/xfce4-terminal", "--working-directory=\"{0}\"", platform_finder);
+            TryAdd("xfce4", "xfce4.png", "xfce4", "--working-directory=\"{0}\"", platform_finder);
         }
 
         private void TryAdd(string name, string icon, string cmd, string args, Func<string> finder)

@@ -31,7 +31,7 @@ namespace SourceGit.Native
         public List<Models.ExternalTerminal> FindExternalTerminals()
         {
             var finder = new Models.ExternalTerminalFinder();
-            finder.osaScript(() => "/usr/bin/osascript");
+            finder.AppleScript(new AppleScriptTerminal());
             return finder.Terminals;
         }
 
@@ -64,25 +64,39 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
-            var builder = new StringBuilder();
-            builder.AppendLine("on run argv");
-            builder.AppendLine("    tell application \"Terminal\"");
-            builder.AppendLine($"        do script \"cd '{dir}'\"");
-            builder.AppendLine("        activate");
-            builder.AppendLine("    end tell");
-            builder.AppendLine("end run");
-
-            var tmp = Path.GetTempFileName();
-            File.WriteAllText(tmp, builder.ToString());
-
-            var proc = Process.Start("/usr/bin/osascript", $"\"{tmp}\"");
-            proc.Exited += (o, e) => File.Delete(tmp);
+            new AppleScriptTerminal().Open(workdir);
         }
 
         public void OpenWithDefaultEditor(string file)
         {
             Process.Start("open", file);
+        }
+        
+        private sealed record AppleScriptTerminal : Models.ExternalTerminal
+        {
+            public AppleScriptTerminal()
+            {
+                Executable = "/usr/bin/osascript";
+                OpenCmdArgs = "";
+            }
+            
+            public override void Open(string repo)
+            {
+                var dir = string.IsNullOrEmpty(repo) ? "~" : repo;
+                var tmp = Path.GetTempFileName();
+                File.WriteAllText(tmp,
+                    $"""
+                    on run argv
+                       tell application "Terminal"
+                            do script "cd '{dir}'"
+                            activate
+                        end tell
+                    end run
+                    """);
+
+                var proc = Process.Start("/usr/bin/osascript", $"\"{tmp}\"");
+                proc.Exited += (o, e) => File.Delete(tmp);
+            }
         }
     }
 }
