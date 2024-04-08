@@ -166,7 +166,7 @@ namespace SourceGit.ViewModels
         private Bitmap BitmapFromRevisionFile(string repo, string revision, string file)
         {
             var stream = Commands.QueryFileContent.Run(repo, revision, file);
-            return stream != null ? new Bitmap(stream) : null;
+            return stream.Length > 0 ? new Bitmap(stream) : null;
         }
 
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()

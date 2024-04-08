@@ -17,9 +17,9 @@ namespace SourceGit.Commands
             starter.WindowStyle = ProcessWindowStyle.Hidden;
             starter.RedirectStandardOutput = true;
 
+            var stream = new MemoryStream();
             try
             {
-                var stream = new MemoryStream();
                 var proc = new Process() { StartInfo = starter };
                 proc.Start();
                 proc.StandardOutput.BaseStream.CopyTo(stream);
@@ -27,13 +27,13 @@ namespace SourceGit.Commands
                 proc.Close();
 
                 stream.Position = 0;
-                return stream;
             }
             catch (Exception e)
             {
                 App.RaiseException(repo, $"Failed to query file content: {e}");
-                return null;
             }
+
+            return stream;
         }
     }
 }

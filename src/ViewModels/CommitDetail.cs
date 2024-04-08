@@ -475,7 +475,7 @@ namespace SourceGit.ViewModels
                             if (IMG_EXTS.Contains(ext))
                             {
                                 var stream = Commands.QueryFileContent.Run(_repo, _commit.SHA, file.Path);
-                                var bitmap = stream != null ? new Bitmap(stream) : null as Bitmap;
+                                var bitmap = stream.Length > 0 ? new Bitmap(stream) : null;
                                 Dispatcher.UIThread.Invoke(() =>
                                 {
                                     ViewRevisionFileContent = new Models.RevisionImageFile() { Image = bitmap };
