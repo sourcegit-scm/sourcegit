@@ -101,13 +101,13 @@ namespace SourceGit.ViewModels
                         var imgDiff = new Models.ImageDiff();
                         if (option.Revisions.Count == 2)
                         {
-                            imgDiff.Old = Commands.GetImageFileAsBitmap.Run(repo, option.Revisions[0], oldPath);
-                            imgDiff.New = Commands.GetImageFileAsBitmap.Run(repo, option.Revisions[1], oldPath);
+                            imgDiff.Old = BitmapFromRevisionFile(repo, option.Revisions[0], oldPath);
+                            imgDiff.New = BitmapFromRevisionFile(repo, option.Revisions[1], oldPath);
                         }
                         else
                         {
                             var fullPath = Path.Combine(repo, _option.Path);
-                            imgDiff.Old = Commands.GetImageFileAsBitmap.Run(repo, "HEAD", oldPath);
+                            imgDiff.Old = BitmapFromRevisionFile(repo, "HEAD", oldPath);
                             imgDiff.New = File.Exists(fullPath) ? new Bitmap(fullPath) : null;
                         }
                         rs = imgDiff;
@@ -161,6 +161,12 @@ namespace SourceGit.ViewModels
 
             var args = tool.Type != 0 ? tool.DiffCmd : Preference.Instance.ExternalMergeToolDiffCmd;
             Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, exec, args, _option));
+        }
+
+        private Bitmap BitmapFromRevisionFile(string repo, string revision, string file)
+        {
+            var stream = Commands.QueryFileContent.Run(repo, revision, file);
+            return stream != null ? new Bitmap(stream) : null;
         }
 
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()

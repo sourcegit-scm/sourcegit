@@ -1,28 +1,39 @@
-﻿using System.Text;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace SourceGit.Commands
 {
-    public class QueryFileContent : Command
+    public static class QueryFileContent
     {
-        public QueryFileContent(string repo, string revision, string file)
+        public static Stream Run(string repo, string revision, string file)
         {
-            WorkingDirectory = repo;
-            Context = repo;
-            Args = $"show {revision}:\"{file}\"";
-        }
+            var starter = new ProcessStartInfo();
+            starter.WorkingDirectory = repo;
+            starter.FileName = Native.OS.GitExecutable;
+            starter.Arguments = $"show {revision}:\"{file}\"";
+            starter.UseShellExecute = false;
+            starter.CreateNoWindow = true;
+            starter.WindowStyle = ProcessWindowStyle.Hidden;
+            starter.RedirectStandardOutput = true;
 
-        public string Result()
-        {
-            Exec();
-            return _builder.ToString();
-        }
+            try
+            {
+                var stream = new MemoryStream();
+                var proc = new Process() { StartInfo = starter };
+                proc.Start();
+                proc.StandardOutput.BaseStream.CopyTo(stream);
+                proc.WaitForExit();
+                proc.Close();
 
-        protected override void OnReadline(string line)
-        {
-            _builder.Append(line);
-            _builder.Append('\n');
+                stream.Position = 0;
+                return stream;
+            }
+            catch (Exception e)
+            {
+                App.RaiseException(repo, $"Failed to query file content: {e}");
+                return null;
+            }
         }
-
-        private readonly StringBuilder _builder = new StringBuilder();
     }
 }

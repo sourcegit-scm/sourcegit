@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
@@ -255,7 +256,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(blame);
                 menu.Items.Add(explore);
                 menu.Items.Add(new MenuItem { Header = "-" });
-            }            
+            }
 
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
@@ -473,7 +474,8 @@ namespace SourceGit.ViewModels
                             var ext = Path.GetExtension(file.Path);
                             if (IMG_EXTS.Contains(ext))
                             {
-                                var bitmap = Commands.GetImageFileAsBitmap.Run(_repo, _commit.SHA, file.Path);
+                                var stream = Commands.QueryFileContent.Run(_repo, _commit.SHA, file.Path);
+                                var bitmap = stream != null ? new Bitmap(stream) : null as Bitmap;
                                 Dispatcher.UIThread.Invoke(() =>
                                 {
                                     ViewRevisionFileContent = new Models.RevisionImageFile() { Image = bitmap };
@@ -491,7 +493,8 @@ namespace SourceGit.ViewModels
                             return;
                         }
 
-                        var content = new Commands.QueryFileContent(_repo, _commit.SHA, file.Path).Result();
+                        var contentStream = Commands.QueryFileContent.Run(_repo, _commit.SHA, file.Path);
+                        var content = new StreamReader(contentStream).ReadToEnd();
                         if (content.StartsWith("version https://git-lfs.github.com/spec/", StringComparison.Ordinal))
                         {
                             var obj = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
