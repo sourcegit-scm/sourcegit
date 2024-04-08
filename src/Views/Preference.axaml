@@ -73,7 +73,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,Auto,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.Locale}"
                        HorizontalAlignment="Right"
@@ -100,15 +100,18 @@
                 <sys:String>https://cravatar.cn/avatar/</sys:String>
               </ComboBox.Items>
             </ComboBox>
-            
-            <TextBlock Grid.Row="2" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.General.DefaultTerminal}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
+
+            <Border Grid.Row="2" Grid.Column="0" Height="32"
+                    IsVisible="{OnPlatform False, Windows=True}">
+              <TextBlock Text="{DynamicResource Text.Preference.General.DefaultTerminal}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+            </Border>
             <ComboBox Grid.Row="2" Grid.Column="1"
                       MinHeight="28"
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
+                      IsVisible="{OnPlatform False, Windows=True}"
                       ItemsSource="{Binding #me.ExternalTerminals}"
                       SelectedItem="{Binding DefaultTerminal, Mode=TwoWay}">
               <ComboBox.ItemTemplate>
