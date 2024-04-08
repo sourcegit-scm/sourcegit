@@ -12,7 +12,7 @@ namespace SourceGit.Native
             void SetupApp(AppBuilder builder);
 
             string FindGitExecutable();
-            List<Models.ExternalEditor> FindExternalEditors();
+            List<Models.ExternalTool> FindExternalTools();
 
             void OpenTerminal(string workdir);
             void OpenInFileManager(string path, bool select);
@@ -21,7 +21,8 @@ namespace SourceGit.Native
         }
 
         public static string GitExecutable { get; set; } = string.Empty;
-        public static List<Models.ExternalEditor> ExternalEditors { get; set; } = new List<Models.ExternalEditor>();
+        public static bool UsePowershellOnWindows { get; set; } = false;
+        public static List<Models.ExternalTool> ExternalTools { get; set; } = new List<Models.ExternalTool>();
 
         static OS()
         {
@@ -42,7 +43,7 @@ namespace SourceGit.Native
                 throw new Exception("Platform unsupported!!!");
             }
 
-            ExternalEditors = _backend.FindExternalEditors();
+            ExternalTools = _backend.FindExternalTools();
         }
 
         public static void SetupApp(AppBuilder builder)

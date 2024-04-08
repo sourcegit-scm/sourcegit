@@ -219,6 +219,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool UsePowershellOnWindows
+        {
+            get => Native.OS.UsePowershellOnWindows;
+            set
+            {
+                if (Native.OS.UsePowershellOnWindows != value)
+                {
+                    Native.OS.UsePowershellOnWindows = value;
+                    OnPropertyChanged(nameof(UsePowershellOnWindows));
+                }
+            }
+        }
+
         public int ExternalMergeToolType
         {
             get => _externalMergeToolType;

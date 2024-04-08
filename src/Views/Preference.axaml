@@ -231,7 +231,7 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Git}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,Auto,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Git.Path}"
                        HorizontalAlignment="Right"
@@ -310,6 +310,12 @@
             </ComboBox>
 
             <CheckBox Grid.Row="6" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preference.Git.UsePowershellOnWindows}"
+                      IsChecked="{Binding UsePowershellOnWindows, Mode=TwoWay}"
+                      IsVisible="{OnPlatform False, Windows=True}"/>
+
+            <CheckBox Grid.Row="7" Grid.Column="1"
                       Content="{DynamicResource Text.Preference.Git.AutoFetch}"
                       IsChecked="{Binding GitAutoFetch, Mode=TwoWay}"/>
           </Grid>

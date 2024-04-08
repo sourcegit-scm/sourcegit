@@ -61,11 +61,11 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnOpenWithExternalEditor(object sender, RoutedEventArgs e)
+        private void OnOpenWithExternalTools(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForExternalEditors();
+                var menu = repo.CreateContextMenuForExternalTools();
                 if (menu != null)
                 {
                     menu.Open(button);

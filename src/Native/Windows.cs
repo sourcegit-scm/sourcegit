@@ -54,6 +54,16 @@ namespace SourceGit.Native
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
 
+        public Windows()
+        {
+            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            var pwsh = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\pwsh.exe");
+            _powershellPath = pwsh != null ? pwsh.GetValue(null) as string : "powershell";
+        }
+
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new FontManagerOptions()
@@ -114,14 +124,14 @@ namespace SourceGit.Native
             return null;
         }
 
-        public List<Models.ExternalEditor> FindExternalEditors()
+        public List<Models.ExternalTool> FindExternalTools()
         {
-            var finder = new Models.ExternalEditorFinder();
+            var finder = new Models.ExternalToolsFinder();
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Programs\\Fleet\\Fleet.exe");
             finder.SublimeText(FindSublimeText);
-            return finder.Editors;
+            return finder.Founded;
         }
 
         public void OpenBrowser(string url)
@@ -133,19 +143,27 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            var binDir = Path.GetDirectoryName(OS.GitExecutable);
-            var bash = Path.Combine(binDir, "bash.exe");
-            if (!File.Exists(bash))
-            {
-                App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Can NOT found bash.exe under '{binDir}'");
-                return;
-            }
-
-            var startInfo = new ProcessStartInfo();
-            startInfo.UseShellExecute = true;
-            startInfo.FileName = bash;
+            var startInfo = new ProcessStartInfo() { UseShellExecute = true };
             if (!string.IsNullOrEmpty(workdir) && Path.Exists(workdir))
                 startInfo.WorkingDirectory = workdir;
+
+            if (OS.UsePowershellOnWindows)
+            {
+                startInfo.FileName = _powershellPath;
+            }
+            else
+            {
+                var binDir = Path.GetDirectoryName(OS.GitExecutable);
+                var bash = Path.Combine(binDir, "bash.exe");
+                if (!File.Exists(bash))
+                {
+                    App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Can NOT found bash.exe under '{binDir}'");
+                    return;
+                }
+
+                startInfo.FileName = bash;
+            }
+            
             Process.Start(startInfo);
         }
 
@@ -281,5 +299,7 @@ namespace SourceGit.Native
                 ILFree(pidl);
             }
         }
+
+        private string _powershellPath = string.Empty;
     }
 }

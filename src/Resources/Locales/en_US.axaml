@@ -268,6 +268,7 @@
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Install Path</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Global git user name</x:String>
+  <x:String x:Key="Text.Preference.Git.UsePowershellOnWindows" xml:space="preserve">Use Powershell instead of Git bash</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git version</x:String>
   <x:String x:Key="Text.Preference.GPG" xml:space="preserve">GPG SIGNING</x:String>
   <x:String x:Key="Text.Preference.GPG.Enabled" xml:space="preserve">Commit GPG signing</x:String>

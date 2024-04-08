@@ -5,7 +5,7 @@ using System.IO;
 
 namespace SourceGit.Models
 {
-    public class ExternalEditor
+    public class ExternalTool
     {
         public string Name { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
@@ -24,13 +24,13 @@ namespace SourceGit.Models
         }
     }
 
-    public class ExternalEditorFinder
+    public class ExternalToolsFinder
     {
-        public List<ExternalEditor> Editors
+        public List<ExternalTool> Founded
         {
             get;
             private set;
-        } = new List<ExternalEditor>();
+        } = new List<ExternalTool>();
 
         public void VSCode(Func<string> platform_finder)
         {
@@ -52,7 +52,7 @@ namespace SourceGit.Models
             TryAdd("Sublime Text", "sublime_text.png", "\"{0}\"", "SUBLIME_TEXT_PATH", platform_finder);
         }
 
-        private void TryAdd(string name, string icon, string args, string env, Func<string> finder)
+        public void TryAdd(string name, string icon, string args, string env, Func<string> finder)
         {
             var path = Environment.GetEnvironmentVariable(env);
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
@@ -62,7 +62,7 @@ namespace SourceGit.Models
                     return;
             }
 
-            Editors.Add(new ExternalEditor
+            Founded.Add(new ExternalTool
             {
                 Name = name,
                 Icon = icon,
