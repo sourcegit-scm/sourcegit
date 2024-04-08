@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -296,7 +297,16 @@ namespace SourceGit.ViewModels
 
         public void OpenInTerminal()
         {
-            Native.OS.OpenTerminal(_fullpath);
+            var terminal = Native.OS.ExternalTerminals.FirstOrDefault(x => x.Name == Preference.Instance.DefaultTerminal)
+                ?? Native.OS.ExternalTerminals.FirstOrDefault();
+
+            if (terminal is not null)
+            {
+                terminal.Open(_fullpath);
+                return;
+            }
+
+            App.RaiseException(_fullpath, "No available external terminals found!");
         }
 
         public void OpenWithExternalTool()

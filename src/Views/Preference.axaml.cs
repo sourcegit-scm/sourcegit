@@ -263,7 +263,9 @@ namespace SourceGit.Views
         {
             var iconKey = value is string terminalName && !string.IsNullOrWhiteSpace(terminalName) ?
                 terminalName :
-                GetSystemDefaultTerminalIconKey();
+                OS.ExternalTerminals.FirstOrDefault()?.Name
+                // Impossible to be null, just a fallback.
+                ?? "git-bash";
 
             var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalTerminalIcons/{iconKey}.png", UriKind.RelativeOrAbsolute));
             return  new Bitmap(icon);
@@ -272,26 +274,6 @@ namespace SourceGit.Views
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
-        }
-
-        private string GetSystemDefaultTerminalIconKey()
-        {
-            if (OperatingSystem.IsWindows())
-            {
-                return "git-bash";
-            }
-            else if (OperatingSystem.IsMacOS())
-            {
-                return "osascript";
-            }
-            else if (OperatingSystem.IsLinux())
-            {
-                return "gnome-terminal";
-            }
-            else
-            {
-                throw new PlatformNotSupportedException();
-            }
         }
     }
     
