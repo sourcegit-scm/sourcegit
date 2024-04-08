@@ -23,6 +23,7 @@
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
     <AvaloniaResource Include="Resources/Fonts/*" />
+    <AvaloniaResource Include="Resources/ExternalTerminalIcons/*" />
     <AvaloniaResource Include="Resources/ExternalToolIcons/*" />
   </ItemGroup>
 
@@ -41,5 +42,9 @@
   <ItemGroup>
     <TrimmerRootAssembly Include="SourceGit" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\ExternalTerminalIcons\" />
   </ItemGroup>
 </Project>
