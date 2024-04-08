@@ -95,15 +95,15 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedView, value);
         }
         
-        public AvaloniaList<ExternalMenuItem> ExternalTerminals
+        public AvaloniaList<MenuItem> ExternalTerminals
         {
             get;
-        } = new AvaloniaList<ExternalMenuItem>();
+        } = [];
 
-        public AvaloniaList<ExternalMenuItem> ExternalEditors
+        public AvaloniaList<MenuItem> ExternalEditors
         {
             get;
-        } = new AvaloniaList<ExternalMenuItem>();
+        } = [];
 
         [JsonIgnore]
         public List<Models.Remote> Remotes
@@ -330,52 +330,66 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public ImmutableArray<ExternalMenuItem> CreateContextMenuForExternalTerminals()
+        public ImmutableArray<MenuItem> CreateContextMenuForExternalTerminals()
         {
             var terminals = Native.OS.ExternalTerminals;
             if (terminals.Count == 0)
             {
                 App.RaiseException(_fullpath, "No available external terminals found!");
-                return [new ExternalMenuItem("No terminal found")
+                return [new MenuItem
                 {
+                    Header = "No terminal found",
                     IsEnabled = false,
                 }];
             }
 
-            var items = new List<ExternalMenuItem>(terminals.Count);
+            var items = new List<MenuItem>(terminals.Count);
             foreach (var terminal in terminals)
             {
                 var dupTerminal = terminal;
-                var item = new ExternalMenuItem(
-                    App.Text("Repository.OpenIn", dupTerminal.Name),
-                    $"ExternalTerminalIcons/{dupTerminal.Icon}",
-                    () => dupTerminal.Open(_fullpath));
+                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalTerminalIcons/{dupTerminal.Icon}", UriKind.RelativeOrAbsolute));
+                var item = new MenuItem
+                {
+                    Header = App.Text("Repository.OpenIn", dupTerminal.Name),
+                    Icon = new Image
+                    {
+                        Width = 16, Height = 16, Source = new Bitmap(icon),
+                    },
+                    Command = new RelayCommand(() => dupTerminal.Open(_fullpath)),
+                };
                 items.Add(item);
             }
 
             return [..items];
         }
 
-        public ImmutableArray<ExternalMenuItem> CreateContextMenuForExternalEditors()
+        public ImmutableArray<MenuItem> CreateContextMenuForExternalEditors()
         {
             var editors = Native.OS.ExternalEditors;
             if (editors.Count == 0)
             {
                 App.RaiseException(_fullpath, "No available external editors found!");
-                return [new ExternalMenuItem("No editor found")
+                return [new MenuItem
                 {
+                    Header = "No editor found",
                     IsEnabled = false,
                 }];
             }
 
-            var items = new List<ExternalMenuItem>(editors.Count);
+            var items = new List<MenuItem>(editors.Count);
             foreach (var editor in editors)
             {
                 var dupEditor = editor;
-                var item = new ExternalMenuItem(
-                    App.Text("Repository.OpenIn", dupEditor.Name),
-                    $"ExternalToolIcons/{dupEditor.Icon}",
-                    () => dupEditor.Open(_fullpath));
+                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{dupEditor.Icon}", UriKind.RelativeOrAbsolute));
+                var item = new MenuItem
+                {
+                    Header = App.Text("Repository.OpenIn", dupEditor.Name),
+                    Icon = new Image
+                    {
+                        Width = 16, Height = 16, Source = new Bitmap(icon),
+                    },
+                    Command = new RelayCommand(() => dupEditor.Open(_fullpath)),
+                };
                 items.Add(item);
             }
 
@@ -1418,45 +1432,5 @@ namespace SourceGit.ViewModels
 
         private InProgressContext _inProgressContext = null;
         private bool _hasUnsolvedConflicts = false;
-    }
-
-    /// <summary>
-    /// A menu item for external tools.
-    /// </summary>
-    public readonly record struct ExternalMenuItem
-    {
-        public ExternalMenuItem(string header)
-        {
-            Header = header;
-            IconKey = null;
-            Command = null;
-        }
-        
-        public ExternalMenuItem(string header, string iconKey, Action click)
-        {
-            Header = header;
-            IconKey = iconKey;
-            Command = new RelayCommand(click);
-        }
-        
-        /// <summary>
-        /// The external tool name.
-        /// </summary>
-        public string Header { get; }
-        
-        /// <summary>
-        /// The resource key of the icon.
-        /// </summary>
-        public string? IconKey { get; init; }
-        
-        /// <summary>
-        /// The command when the user click the menu item.
-        /// </summary>
-        public ICommand Command { get; }
-
-        /// <summary>
-        /// <see langword="true"/> if the menu item is enabled; otherwise, <see langword="false"/>.
-        /// </summary>
-        public bool IsEnabled { get; init; } = true;
     }
 }

@@ -305,26 +305,4 @@ namespace SourceGit.Views
             }
         }
     }
-
-    public sealed class ExternalIconKeyToImageConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is string iconKey && !string.IsNullOrWhiteSpace(iconKey))
-            {
-                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/{iconKey}", UriKind.RelativeOrAbsolute));
-                return new Image
-                {
-                    Width = 16, Height = 16, Source = new Bitmap(icon),
-                };
-            }
-
-            return null;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-    }
 }
