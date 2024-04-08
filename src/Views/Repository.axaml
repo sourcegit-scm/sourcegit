@@ -10,13 +10,6 @@
              x:Class="SourceGit.Views.Repository"
              x:DataType="vm:Repository">
   
-  <UserControl.Resources>
-    <MenuFlyout x:Key="TerminalShellsMenuFlyout" Placement="BottomEdgeAlignedLeft"
-                ItemsSource="{Binding ExternalTerminals, Mode=OneTime}" />
-    <MenuFlyout x:Key="ExternalToolsMenuFlyout" Placement="BottomEdgeAlignedLeft"
-                ItemsSource="{Binding ExternalEditors, Mode=OneTime}" />
-  </UserControl.Resources>
-  
   <Grid RowDefinitions="36,*" Background="{DynamicResource Brush.Window}">
     <!-- Toolbar -->
     <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1" Background="{DynamicResource Brush.ToolBar}">
@@ -26,16 +19,17 @@
             <Path Width="15" Height="13" Data="{StaticResource Icons.Folder.Open}" Margin="0,1,0,0"/>
           </Button>
           
-          <SplitButton Classes="icon_button" Command="{Binding OpenInTerminal}"
-                       Flyout="{StaticResource TerminalShellsMenuFlyout}"
-                       ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">
+          <Button Classes="icon_button" Width="32" Command="{Binding OpenInTerminal}" ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">
             <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
-          </SplitButton>
+          </Button>
           
           <SplitButton Classes="icon_button" Command="{Binding OpenWithExternalTool}"
-                       Flyout="{StaticResource ExternalToolsMenuFlyout}"
                        ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
-            <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>
+            <SplitButton.Flyout>
+              <MenuFlyout Placement="BottomEdgeAlignedLeft"
+                          ItemsSource="{Binding ExternalEditors, Mode=OneTime}" />
+            </SplitButton.Flyout>
+            <Path Width="13" Height="13" Margin="0 0 0 1" Data="{StaticResource Icons.OpenWith}"/>
           </SplitButton>
           
           <ToggleButton Width="32"

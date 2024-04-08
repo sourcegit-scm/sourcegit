@@ -94,11 +94,6 @@ namespace SourceGit.ViewModels
             get => _selectedView;
             set => SetProperty(ref _selectedView, value);
         }
-        
-        public AvaloniaList<MenuItem> ExternalTerminals
-        {
-            get;
-        } = [];
 
         public AvaloniaList<MenuItem> ExternalEditors
         {
@@ -260,7 +255,6 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshStashes);
             Task.Run(RefreshGitFlow);
             
-            RefreshExternalTerminals();
             RefreshExternalEditors();
         }
 
@@ -310,16 +304,6 @@ namespace SourceGit.ViewModels
             Native.OS.OpenWithDefaultEditor(_fullpath);
         }
 
-        private void RefreshExternalTerminals()
-        {
-            ExternalTerminals.Clear();
-            var terminals = CreateContextMenuForExternalTerminals();
-            foreach (var terminal in terminals)
-            {
-                ExternalTerminals.Add(terminal);
-            }
-        }
-
         private void RefreshExternalEditors()
         {
             ExternalEditors.Clear();
@@ -328,39 +312,6 @@ namespace SourceGit.ViewModels
             {
                 ExternalEditors.Add(editor);
             }
-        }
-
-        public ImmutableArray<MenuItem> CreateContextMenuForExternalTerminals()
-        {
-            var terminals = Native.OS.ExternalTerminals;
-            if (terminals.Count == 0)
-            {
-                App.RaiseException(_fullpath, "No available external terminals found!");
-                return [new MenuItem
-                {
-                    Header = "No terminal found",
-                    IsEnabled = false,
-                }];
-            }
-
-            var items = new List<MenuItem>(terminals.Count);
-            foreach (var terminal in terminals)
-            {
-                var dupTerminal = terminal;
-                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalTerminalIcons/{dupTerminal.Icon}", UriKind.RelativeOrAbsolute));
-                var item = new MenuItem
-                {
-                    Header = App.Text("Repository.OpenIn", dupTerminal.Name),
-                    Icon = new Image
-                    {
-                        Width = 16, Height = 16, Source = new Bitmap(icon),
-                    },
-                    Command = new RelayCommand(() => dupTerminal.Open(_fullpath)),
-                };
-                items.Add(item);
-            }
-
-            return [..items];
         }
 
         public ImmutableArray<MenuItem> CreateContextMenuForExternalEditors()
@@ -390,6 +341,7 @@ namespace SourceGit.ViewModels
                     },
                     Command = new RelayCommand(() => dupEditor.Open(_fullpath)),
                 };
+                RenderOptions.SetBitmapInterpolationMode(item, BitmapInterpolationMode.HighQuality);
                 items.Add(item);
             }
 
