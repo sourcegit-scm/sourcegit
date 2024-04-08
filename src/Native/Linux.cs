@@ -31,6 +31,15 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
+        public List<Models.ExternalTerminal> FindExternalTerminals()
+        {
+            var finder = new Models.ExternalTerminalFinder();
+            finder.Gnome(() => "/usr/bin/gnome-terminal");
+            finder.Konsole(() => "/usr/bin/konsole");
+            finder.Xfce4(() => "/usr/bin/xfce4-terminal");
+            return finder.Terminals;
+        }
+
         public List<Models.ExternalEditor> FindExternalEditors()
         {
             var finder = new Models.ExternalEditorFinder();

@@ -61,19 +61,6 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnOpenWithExternalEditor(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && DataContext is ViewModels.Repository repo)
-            {
-                var menu = repo.CreateContextMenuForExternalEditors();
-                if (menu != null)
-                {
-                    menu.Open(button);
-                    e.Handled = true;
-                }
-            }
-        }
-
         private void OnLocalBranchTreeLostFocus(object sender, RoutedEventArgs e)
         {
             if (sender is TreeView tree)

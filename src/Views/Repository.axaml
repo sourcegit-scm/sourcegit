@@ -12,12 +12,8 @@
   
   <UserControl.Resources>
     <MenuFlyout x:Key="TerminalShellsMenuFlyout" Placement="Bottom">
-      <MenuItem Header="git bash" />
-      <MenuItem Header="PowerShell" />
     </MenuFlyout>
     <MenuFlyout x:Key="ExternalToolsMenuFlyout" Placement="Bottom">
-      <MenuItem Header="Visual Studio Code" />
-      <MenuItem Header="Sublime Text" />
     </MenuFlyout>
   </UserControl.Resources>
   
@@ -36,7 +32,7 @@
             <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
           </SplitButton>
           
-          <SplitButton Classes="icon_button" Click="OnOpenWithExternalEditor"
+          <SplitButton Classes="icon_button" Command="{Binding OpenWithExternalTool}"
                        Flyout="{StaticResource ExternalToolsMenuFlyout}"
                        ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
             <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>

@@ -114,6 +114,15 @@ namespace SourceGit.Native
             return null;
         }
 
+        public List<Models.ExternalTerminal> FindExternalTerminals()
+        {
+            var finder = new Models.ExternalTerminalFinder();
+            finder.WindowsGitBash(() => FindExternalTerminal("bash"));
+            finder.PowerShell(() => FindExternalTerminal("pwsh"));
+            finder.WindowsTerminal(() => FindExternalTerminal("wt"));
+            return finder.Terminals;
+        }
+
         public List<Models.ExternalEditor> FindExternalEditors()
         {
             var finder = new Models.ExternalEditorFinder();
@@ -129,6 +138,26 @@ namespace SourceGit.Native
             var info = new ProcessStartInfo("cmd", $"/c start {url}");
             info.CreateNoWindow = true;
             Process.Start(info);
+        }
+        
+        /// <summary>
+        /// Find the external terminal full path via the command name (e.g. "bash").
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns></returns>
+        public string FindExternalTerminal(string cmd)
+        {
+            using var process = Process.Start(new ProcessStartInfo(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "System32", "where.exe"),
+                cmd)
+            {
+                RedirectStandardOutput = true,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+            })!;
+            var fullPath = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            return fullPath;
         }
 
         public void OpenTerminal(string workdir)

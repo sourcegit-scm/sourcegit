@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -12,6 +14,9 @@ using Avalonia.Platform;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+using SourceGit.Commands;
 
 namespace SourceGit.ViewModels
 {
@@ -89,6 +94,16 @@ namespace SourceGit.ViewModels
             get => _selectedView;
             set => SetProperty(ref _selectedView, value);
         }
+        
+        public AvaloniaList<ExternalMenuItem> ExternalTerminals
+        {
+            get;
+        } = new AvaloniaList<ExternalMenuItem>();
+
+        public AvaloniaList<ExternalMenuItem> ExternalEditors
+        {
+            get;
+        } = new AvaloniaList<ExternalMenuItem>();
 
         [JsonIgnore]
         public List<Models.Remote> Remotes
@@ -244,6 +259,9 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshWorkingCopyChanges);
             Task.Run(RefreshStashes);
             Task.Run(RefreshGitFlow);
+            
+            RefreshExternalTerminals();
+            RefreshExternalEditors();
         }
 
         public void Close()
@@ -287,36 +305,77 @@ namespace SourceGit.ViewModels
             Native.OS.OpenTerminal(_fullpath);
         }
 
-        public ContextMenu CreateContextMenuForExternalEditors()
+        public void OpenWithExternalTool()
+        {
+            Native.OS.OpenWithDefaultEditor(_fullpath);
+        }
+
+        private void RefreshExternalTerminals()
+        {
+            ExternalTerminals.Clear();
+            var terminals = CreateContextMenuForExternalTerminals();
+            foreach (var terminal in terminals)
+            {
+                ExternalTerminals.Add(terminal);
+            }
+        }
+
+        private void RefreshExternalEditors()
+        {
+            ExternalEditors.Clear();
+            var editors = CreateContextMenuForExternalEditors();
+            foreach (var editor in editors)
+            {
+                ExternalEditors.Add(editor);
+            }
+        }
+
+        public ImmutableArray<ExternalMenuItem> CreateContextMenuForExternalTerminals()
+        {
+            var terminals = Native.OS.ExternalTerminals;
+            if (terminals.Count == 0)
+            {
+                App.RaiseException(_fullpath, "No available external terminals found!");
+                return [new ExternalMenuItem("No terminal found")
+                {
+                    IsEnabled = false,
+                }];
+            }
+
+            var items = new List<ExternalMenuItem>(terminals.Count);
+            foreach (var terminal in terminals)
+            {
+                var dupTerminal = terminal;
+                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalTerminalIcons/{dupTerminal.Icon}", UriKind.RelativeOrAbsolute));
+                var item = new ExternalMenuItem(App.Text("Repository.OpenIn", dupTerminal.Name), new Bitmap(icon), () => dupTerminal.Open(_fullpath));
+                items.Add(item);
+            }
+
+            return [..items];
+        }
+
+        public ImmutableArray<ExternalMenuItem> CreateContextMenuForExternalEditors()
         {
             var editors = Native.OS.ExternalEditors;
             if (editors.Count == 0)
             {
                 App.RaiseException(_fullpath, "No available external editors found!");
-                return null;
+                return [new ExternalMenuItem("No editor found")
+                {
+                    IsEnabled = false,
+                }];
             }
 
-            var menu = new ContextMenu();
-            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
-            RenderOptions.SetBitmapInterpolationMode(menu, BitmapInterpolationMode.HighQuality);
-
+            var items = new List<ExternalMenuItem>(editors.Count);
             foreach (var editor in editors)
             {
                 var dupEditor = editor;
                 var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{dupEditor.Icon}", UriKind.RelativeOrAbsolute));
-                var item = new MenuItem();
-                item.Header = App.Text("Repository.OpenIn", dupEditor.Name);
-                item.Icon = new Image { Width = 16, Height = 16, Source = new Bitmap(icon) };
-                item.Click += (o, e) =>
-                {
-                    dupEditor.Open(_fullpath);
-                    e.Handled = true;
-                };
-
-                menu.Items.Add(item);
+                var item = new ExternalMenuItem(App.Text("Repository.OpenIn", dupEditor.Name), new Bitmap(icon), () => dupEditor.Open(_fullpath));
+                items.Add(item);
             }
 
-            return menu;
+            return [..items];
         }
 
         public void Fetch()
@@ -1355,5 +1414,45 @@ namespace SourceGit.ViewModels
 
         private InProgressContext _inProgressContext = null;
         private bool _hasUnsolvedConflicts = false;
+    }
+
+    /// <summary>
+    /// A menu item for external tools.
+    /// </summary>
+    public readonly record struct ExternalMenuItem
+    {
+        public ExternalMenuItem(string header)
+        {
+            Header = header;
+            Icon = null;
+            Command = null;
+        }
+        
+        public ExternalMenuItem(string header, Bitmap icon, Action click)
+        {
+            Header = header;
+            Icon = icon;
+            Command = new RelayCommand(click);
+        }
+        
+        /// <summary>
+        /// The external tool name.
+        /// </summary>
+        public string Header { get; }
+        
+        /// <summary>
+        /// The resource key of the icon.
+        /// </summary>
+        public Bitmap? Icon { get; init; }
+        
+        /// <summary>
+        /// The command when the user click the menu item.
+        /// </summary>
+        public ICommand Command { get; }
+
+        /// <summary>
+        /// <see langword="true"/> if the menu item is enabled; otherwise, <see langword="false"/>.
+        /// </summary>
+        public bool IsEnabled { get; init; }
     }
 }

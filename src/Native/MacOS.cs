@@ -28,6 +28,13 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
+        public List<Models.ExternalTerminal> FindExternalTerminals()
+        {
+            var finder = new Models.ExternalTerminalFinder();
+            finder.osaScript(() => "/usr/bin/osascript");
+            return finder.Terminals;
+        }
+
         public List<Models.ExternalEditor> FindExternalEditors()
         {
             var finder = new Models.ExternalEditorFinder();

@@ -12,6 +12,8 @@ namespace SourceGit.Native
             void SetupApp(AppBuilder builder);
 
             string FindGitExecutable();
+            
+            List<Models.ExternalTerminal> FindExternalTerminals();
             List<Models.ExternalEditor> FindExternalEditors();
 
             void OpenTerminal(string workdir);
@@ -21,6 +23,7 @@ namespace SourceGit.Native
         }
 
         public static string GitExecutable { get; set; } = string.Empty;
+        public static List<Models.ExternalTerminal> ExternalTerminals { get; set; } = new List<Models.ExternalTerminal>();
         public static List<Models.ExternalEditor> ExternalEditors { get; set; } = new List<Models.ExternalEditor>();
 
         static OS()
@@ -42,6 +45,7 @@ namespace SourceGit.Native
                 throw new Exception("Platform unsupported!!!");
             }
 
+            ExternalTerminals = _backend.FindExternalTerminals();
             ExternalEditors = _backend.FindExternalEditors();
         }
 
