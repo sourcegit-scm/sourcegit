@@ -115,6 +115,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public string DefaultTerminal
+        {
+            get => Models.AvatarManager.SelectedServer;
+            set
+            {
+                if (Models.AvatarManager.SelectedServer != value)
+                {
+                    Models.AvatarManager.SelectedServer = value;
+                    OnPropertyChanged(nameof(DefaultTerminal));
+                }
+            }
+        }
+
         public int MaxHistoryCommits
         {
             get => _maxHistoryCommits;

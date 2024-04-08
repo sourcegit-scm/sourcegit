@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
@@ -240,6 +243,44 @@ namespace SourceGit.Views
             {
                 ViewModels.Preference.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
             }
+        }
+    }
+    
+    public sealed class TerminalOrShellNameToBitmapConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string terminalName && !string.IsNullOrWhiteSpace(terminalName))
+            {
+                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalTerminalIcons/{terminalName}.png", UriKind.RelativeOrAbsolute));
+                return  new Bitmap(icon);
+            }
+
+            return null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
+    
+    public sealed class TerminalOrShellNameToLocalizedNameConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string terminalName && !string.IsNullOrWhiteSpace(terminalName))
+            {
+                var name = App.Text($"Text.Preference.General.DefaultTerminalOrShell.{terminalName}");
+                return name;
+            }
+
+            return null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
         }
     }
 }

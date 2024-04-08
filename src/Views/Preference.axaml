@@ -20,6 +20,12 @@
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="NoChrome"
         SystemDecorations="{OnPlatform Full, Linux=None}">
+  
+  <Window.Resources>
+    <v:TerminalOrShellNameToBitmapConverter x:Key="TerminalOrShellNameToBitmapConverter" />
+    <v:TerminalOrShellNameToLocalizedNameConverter x:Key="TerminalOrShellNameToLocalizedNameConverter" />
+  </Window.Resources>
+  
   <Grid RowDefinitions="Auto,Auto" Margin="{OnPlatform 0, Linux=6}">
     <!-- Custom window shadow for Linux -->
     <Border Grid.Row="0" Grid.RowSpan="2"
@@ -67,7 +73,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.Locale}"
                        HorizontalAlignment="Right"
@@ -94,12 +100,31 @@
                 <sys:String>https://cravatar.cn/avatar/</sys:String>
               </ComboBox.Items>
             </ComboBox>
-
+            
             <TextBlock Grid.Row="2" Grid.Column="0"
+                       Text="{DynamicResource Text.Preference.General.DefaultTerminal}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <ComboBox Grid.Row="2" Grid.Column="1"
+                      MinHeight="28"
+                      Padding="8,0"
+                      HorizontalAlignment="Stretch"
+                      SelectedItem="{Binding DefaultTerminal, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate DataType="x:String">
+                  <StackPanel Orientation="Horizontal">
+                    <Image Width="16" Height="16" Source="{Binding Converter={StaticResource TerminalOrShellNameToBitmapConverter}}" />
+                    <TextBlock Text="{Binding Converter={StaticResource TerminalOrShellNameToLocalizedNameConverter}}" />
+                  </StackPanel>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="3" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.MaxHistoryCommits}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,64">
+            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,64">
               <Slider Grid.Column="0"
                       Minimum="20000" Maximum="100000"
                       TickPlacement="BottomRight" TickFrequency="5000"
@@ -123,16 +148,16 @@
                          Text="{Binding MaxHistoryCommits}"/>
             </Grid>
 
-            <CheckBox Grid.Row="3" Grid.Column="1"
+            <CheckBox Grid.Row="4" Grid.Column="1"
                       Content="{DynamicResource Text.Preference.General.RestoreTabs}"
                       IsChecked="{Binding RestoreTabs, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="4" Grid.Column="1"
+            <CheckBox Grid.Row="5" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preference.General.UseFixedTabWidth}"
                       IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="5" Grid.Column="1"
+            <CheckBox Grid.Row="6" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preference.General.Check4UpdatesOnStartup}"
                       IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=Check4UpdatesOnStartup, Mode=TwoWay}"/>

@@ -254,6 +254,14 @@
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Theme</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">GENERAL</x:String>
   <x:String x:Key="Text.Preference.General.AvatarServer" xml:space="preserve">Avatar Server</x:String>
+  <x:String x:Key="Text.Preference.General.DefaultTerminal" xml:space="preserve">Default Terminal/Shell</x:String>
+  <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.wt" xml:space="preserve">Windows Terminal</x:String>
+  <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.git-bash" xml:space="preserve">Git Bash (Shell)</x:String>
+  <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.pwsh" xml:space="preserve">PowerShell (Shell)</x:String>
+  <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.gnome" xml:space="preserve">Gnome</x:String>
+  <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.konsole" xml:space="preserve">Konsole</x:String>
+  <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.osascript" xml:space="preserve">AppleScript</x:String>
+  <x:String x:Key="Text.Preference.General.DefaultTerminalOrShell.xfce4" xml:space="preserve">xfce4</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Language</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
