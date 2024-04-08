@@ -44,7 +44,7 @@ namespace SourceGit.Models
 
         public void Konsole(Func<string> platform_finder)
         {
-            TryAdd("gnome-terminal", "gnome.png", "/usr/bin/konsole", "--workdir \"{0}\"", platform_finder);
+            TryAdd("gnome-terminal", "konsole.png", "/usr/bin/konsole", "--workdir \"{0}\"", platform_finder);
         }
 
         public void osaScript(Func<string> platform_finder)

@@ -157,7 +157,7 @@ namespace SourceGit.Native
             })!;
             var fullPath = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
-            return fullPath;
+            return fullPath.Trim();
         }
 
         public void OpenTerminal(string workdir)
