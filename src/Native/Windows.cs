@@ -149,16 +149,13 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            var startInfo = new ProcessStartInfo();
+            if (string.IsNullOrEmpty(workdir) || !Path.Exists(workdir))
+            {
+                workdir = ".";
+            }
 
-            if (!string.IsNullOrEmpty(workdir) && Path.Exists(workdir))
-            {
-                startInfo.WorkingDirectory = workdir;
-            }
-            else
-            {
-                startInfo.WorkingDirectory = ".";
-            }
+            var startInfo = new ProcessStartInfo();
+            startInfo.WorkingDirectory = workdir;
 
             switch (Shell)
             {
@@ -167,7 +164,7 @@ namespace SourceGit.Native
                     var bash = Path.Combine(binDir, "bash.exe");
                     if (!File.Exists(bash))
                     {
-                        App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Can NOT found bash.exe under '{binDir}'");
+                        App.RaiseException(workdir, $"Can NOT found bash.exe under '{binDir}'");
                         return;
                     }
 
@@ -175,6 +172,7 @@ namespace SourceGit.Native
                     break;
                 case Models.Shell.PowerShell:
                     startInfo.FileName = _powershellPath;
+                    startInfo.Arguments = $"-WorkingDirectory \"{workdir}\" -Nologo";
                     break;
                 case Models.Shell.CommandPrompt:
                     startInfo.FileName = "cmd";
@@ -183,7 +181,7 @@ namespace SourceGit.Native
                     startInfo.FileName = "wt";
                     break;
                 default:
-                    App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Bad shell configuration!");
+                    App.RaiseException(workdir, $"Bad shell configuration!");
                     return;
             }
 
