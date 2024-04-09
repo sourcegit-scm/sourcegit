@@ -303,10 +303,10 @@ namespace SourceGit.ViewModels
             foreach (var tool in tools)
             {
                 var dupTool = tool;
-                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{dupTool.Icon}", UriKind.RelativeOrAbsolute));
+
                 var item = new MenuItem();
                 item.Header = App.Text("Repository.OpenIn", dupTool.Name);
-                item.Icon = new Image { Width = 16, Height = 16, Source = new Bitmap(icon) };
+                item.Icon = new Image { Width = 16, Height = 16, Source = dupTool.IconImage };
                 item.Click += (o, e) =>
                 {
                     dupTool.Open(_fullpath);

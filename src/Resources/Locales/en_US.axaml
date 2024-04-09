@@ -276,7 +276,7 @@
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Input path for installed gpg program</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">User Signing Key</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">User's gpg signing key</x:String>
-  <x:String x:Key="Text.Preference.Merger" xml:space="preserve">MERGE</x:String>
+  <x:String x:Key="Text.Preference.Merger" xml:space="preserve">EXTERNAL MERGE TOOL</x:String>
   <x:String x:Key="Text.Preference.Merger.CustomDiffCmd" xml:space="preserve">Diff Command</x:String>
   <x:String x:Key="Text.Preference.Merger.CustomMergeCmd" xml:space="preserve">Merge Command</x:String>
   <x:String x:Key="Text.Preference.Merger.Path" xml:space="preserve">Install Path</x:String>

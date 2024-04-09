@@ -409,9 +409,20 @@
                       MinHeight="28"
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Left"
+                      RenderOptions.BitmapInterpolationMode="HighQuality"
+                      FontSize="{Binding DefaultFontSize}"
                       ItemsSource="{Binding Source={x:Static m:ExternalMerger.Supported}}"
-                      DisplayMemberBinding="{Binding Name, x:DataType=m:ExternalMerger}"
-                      SelectedIndex="{Binding ExternalMergeToolType, Mode=TwoWay}"/>
+                      SelectedIndex="{Binding ExternalMergeToolType, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type m:ExternalMerger}">
+                  <Grid ColumnDefinitions="Auto,*">
+                    <Image Grid.Column="0" Width="16" Height="16" Source="{Binding IconImage}" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="6,0,0,0"/>
+                  </Grid>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Merger.Path}"

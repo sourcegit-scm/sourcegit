@@ -228,7 +228,7 @@ namespace SourceGit.Native
         // There are two versions of PowerShell : pwsh.exe (preferred) and powershell.exe (system default)
         private string ChoosePowerShell()
         {
-            if (!string.IsNullOrEmpty(_powershellPath)) 
+            if (!string.IsNullOrEmpty(_powershellPath))
                 return _powershellPath;
 
             var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
