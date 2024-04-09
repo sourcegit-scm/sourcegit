@@ -168,7 +168,14 @@ namespace SourceGit.Native
                     startInfo.FileName = "cmd";
                     break;
                 case Models.Shell.DefaultShellOfWindowsTerminal:
-                    startInfo.FileName = "wt";
+                    var wt = FindWindowsTerminalApp();
+                    if (!File.Exists(wt))
+                    {
+                        App.RaiseException(workdir, $"Can NOT found wt.exe on your system!");
+                        return;
+                    }
+
+                    startInfo.FileName = FindWindowsTerminalApp();
                     break;
                 default:
                     App.RaiseException(workdir, $"Bad shell configuration!");
@@ -221,7 +228,8 @@ namespace SourceGit.Native
         // There's two version of PowerShell : pwsh.exe (preferred) and powershell.exe (system default)
         private string ChoosePowerShell()
         {
-            if (!string.IsNullOrEmpty(_powershellPath)) return _powershellPath;
+            if (!string.IsNullOrEmpty(_powershellPath)) 
+                return _powershellPath;
 
             var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
                     Microsoft.Win32.RegistryHive.LocalMachine,
@@ -243,6 +251,21 @@ namespace SourceGit.Native
             {
                 _powershellPath = finder.ToString();
                 return _powershellPath;
+            }
+
+            return string.Empty;
+        }
+
+        private string FindWindowsTerminalApp()
+        {
+            if (!string.IsNullOrEmpty(_wtPath))
+                return _wtPath;
+
+            var finder = new StringBuilder("wt.exe", 512);
+            if (PathFindOnPath(finder, null))
+            {
+                _wtPath = finder.ToString();
+                return _wtPath;
             }
 
             return string.Empty;
@@ -342,5 +365,6 @@ namespace SourceGit.Native
         }
 
         private string _powershellPath = string.Empty;
+        private string _wtPath = string.Empty;
     }
 }
