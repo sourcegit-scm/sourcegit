@@ -91,7 +91,7 @@ namespace SourceGit.Native
             }
             else if (File.Exists("/usr/bin/deepin-terminal"))
             {
-                Process.Start("/usr/bin/deepin-terminal", $"--work-directory=\"{dir}\"");
+                Process.Start("/usr/bin/deepin-terminal", $"--work-directory \"{dir}\"");
             }
             else
             {
