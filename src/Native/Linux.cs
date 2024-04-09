@@ -89,9 +89,13 @@ namespace SourceGit.Native
             {
                 Process.Start("/usr/bin/xfce4-terminal", $"--working-directory=\"{dir}\"");
             }
+            else if (File.Exists("/usr/bin/deepin-terminal"))
+            {
+                Process.Start("/usr/bin/deepin-terminal", $"--work-directory=\"{dir}\"");
+            }
             else
             {
-                App.RaiseException("", $"Only supports gnome-terminal/konsole/xfce4-terminal!");
+                App.RaiseException(dir, $"Only supports gnome-terminal/konsole/xfce4-terminal/deepin-terminal!");
                 return;
             }
         }
