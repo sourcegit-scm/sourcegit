@@ -266,6 +266,7 @@
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
                       HorizontalContentAlignment="Left"
+                      RenderOptions.BitmapInterpolationMode="HighQuality"
                       FontSize="{Binding DefaultFontSize, Mode=OneWay}"
                       SelectedIndex="{Binding GitShell, Mode=TwoWay}"
                       IsVisible="{OnPlatform False, Windows=True}">

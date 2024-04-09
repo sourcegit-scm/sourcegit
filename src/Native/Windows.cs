@@ -225,7 +225,7 @@ namespace SourceGit.Native
             Process.Start(start);
         }
 
-        // There's two version of PowerShell : pwsh.exe (preferred) and powershell.exe (system default)
+        // There are two versions of PowerShell : pwsh.exe (preferred) and powershell.exe (system default)
         private string ChoosePowerShell()
         {
             if (!string.IsNullOrEmpty(_powershellPath)) 
@@ -332,6 +332,7 @@ namespace SourceGit.Native
                     Microsoft.Win32.RegistryHive.LocalMachine,
                     Microsoft.Win32.RegistryView.Registry64);
 
+            // Sublime Text 4
             var sublime = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Sublime Text_is1");
             if (sublime != null)
             {
@@ -339,6 +340,7 @@ namespace SourceGit.Native
                 return Path.Combine(Path.GetDirectoryName(icon), "subl.exe");
             }
 
+            // Sublime Text 3
             var sublime3 = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Sublime Text 3_is1");
             if (sublime3 != null)
             {
