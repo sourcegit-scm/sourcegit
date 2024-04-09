@@ -21,7 +21,6 @@ namespace SourceGit.Native
         }
 
         public static string GitExecutable { get; set; } = string.Empty;
-        public static bool UsePowershellOnWindows { get; set; } = false;
         public static List<Models.ExternalTool> ExternalTools { get; set; } = new List<Models.ExternalTool>();
 
         static OS()
@@ -44,6 +43,33 @@ namespace SourceGit.Native
             }
 
             ExternalTools = _backend.FindExternalTools();
+        }
+
+        public static Models.Shell GetShell()
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                return (_backend as Windows).Shell;
+            }
+            else
+            {
+                return Models.Shell.Default;
+            }
+        }
+
+        public static bool SetShell(Models.Shell shell)
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                var windows = (_backend as Windows);
+                if (windows.Shell != shell)
+                {
+                    windows.Shell = shell;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static void SetupApp(AppBuilder builder)

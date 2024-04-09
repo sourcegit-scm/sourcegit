@@ -22,8 +22,9 @@
 
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
-    <AvaloniaResource Include="Resources/Fonts/*" />
     <AvaloniaResource Include="Resources/ExternalToolIcons/*" />
+    <AvaloniaResource Include="Resources/Fonts/*" />
+    <AvaloniaResource Include="Resources/ShellIcons/*" />
   </ItemGroup>
 
   <ItemGroup>

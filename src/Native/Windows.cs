@@ -54,6 +54,12 @@ namespace SourceGit.Native
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
 
+        public Models.Shell Shell
+        {
+            get;
+            set;
+        } = Models.Shell.Default;
+
         public Windows()
         {
             var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
@@ -143,27 +149,44 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            var startInfo = new ProcessStartInfo() { UseShellExecute = true };
-            if (!string.IsNullOrEmpty(workdir) && Path.Exists(workdir))
-                startInfo.WorkingDirectory = workdir;
+            var startInfo = new ProcessStartInfo();
 
-            if (OS.UsePowershellOnWindows)
+            if (!string.IsNullOrEmpty(workdir) && Path.Exists(workdir))
             {
-                startInfo.FileName = _powershellPath;
+                startInfo.WorkingDirectory = workdir;
             }
             else
             {
-                var binDir = Path.GetDirectoryName(OS.GitExecutable);
-                var bash = Path.Combine(binDir, "bash.exe");
-                if (!File.Exists(bash))
-                {
-                    App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Can NOT found bash.exe under '{binDir}'");
-                    return;
-                }
-
-                startInfo.FileName = bash;
+                startInfo.WorkingDirectory = ".";
             }
-            
+
+            switch (Shell)
+            {
+                case Models.Shell.Default:
+                    var binDir = Path.GetDirectoryName(OS.GitExecutable);
+                    var bash = Path.Combine(binDir, "bash.exe");
+                    if (!File.Exists(bash))
+                    {
+                        App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Can NOT found bash.exe under '{binDir}'");
+                        return;
+                    }
+
+                    startInfo.FileName = bash;
+                    break;
+                case Models.Shell.PowerShell:
+                    startInfo.FileName = _powershellPath;
+                    break;
+                case Models.Shell.CommandPrompt:
+                    startInfo.FileName = "cmd";
+                    break;
+                case Models.Shell.DefaultShellOfWindowsTerminal:
+                    startInfo.FileName = "wt";
+                    break;
+                default:
+                    App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Bad shell configuration!");
+                    return;
+            }
+
             Process.Start(startInfo);
         }
 
