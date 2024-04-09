@@ -60,16 +60,6 @@ namespace SourceGit.Native
             set;
         } = Models.Shell.Default;
 
-        public Windows()
-        {
-            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
-                    Microsoft.Win32.RegistryHive.LocalMachine,
-                    Microsoft.Win32.RegistryView.Registry64);
-
-            var pwsh = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\pwsh.exe");
-            _powershellPath = pwsh != null ? pwsh.GetValue(null) as string : "powershell";
-        }
-
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new FontManagerOptions()
@@ -171,8 +161,8 @@ namespace SourceGit.Native
                     startInfo.FileName = bash;
                     break;
                 case Models.Shell.PowerShell:
-                    startInfo.FileName = _powershellPath;
-                    startInfo.Arguments = $"-WorkingDirectory \"{workdir}\" -Nologo";
+                    startInfo.FileName = ChoosePowerShell();
+                    startInfo.Arguments = startInfo.FileName.EndsWith("pswd.exe") ? $"-WorkingDirectory \"{workdir}\" -Nologo" : "-Nologo";
                     break;
                 case Models.Shell.CommandPrompt:
                     startInfo.FileName = "cmd";
@@ -226,6 +216,36 @@ namespace SourceGit.Native
             var start = new ProcessStartInfo("cmd", $"/c start {info.FullName}");
             start.CreateNoWindow = true;
             Process.Start(start);
+        }
+
+        // There's two version of PowerShell : pwsh.exe (preferred) and powershell.exe (system default)
+        private string ChoosePowerShell()
+        {
+            if (!string.IsNullOrEmpty(_powershellPath)) return _powershellPath;
+
+            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            var pwsh = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\pwsh.exe");
+            if (pwsh != null)
+            {
+                var path = pwsh.GetValue(null) as string;
+                if (File.Exists(path))
+                {
+                    _powershellPath = path;
+                    return _powershellPath;
+                }
+            }
+
+            var finder = new StringBuilder("powershell.exe", 512);
+            if (PathFindOnPath(finder, null))
+            {
+                _powershellPath = finder.ToString();
+                return _powershellPath;
+            }
+
+            return string.Empty;
         }
 
         #region EXTERNAL_EDITOR_FINDER
