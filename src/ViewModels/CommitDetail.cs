@@ -355,7 +355,9 @@ namespace SourceGit.ViewModels
                 _cancelToken.Requested = true;
 
             _cancelToken = new Commands.Command.CancelToken();
-            var cmdChanges = new Commands.QueryCommitChanges(_repo, _commit.SHA) { Cancel = _cancelToken };
+
+            var parent = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];
+            var cmdChanges = new Commands.CompareRevisions(_repo, parent, _commit.SHA) { Cancel = _cancelToken };
             var cmdRevisionFiles = new Commands.QueryRevisionObjects(_repo, _commit.SHA) { Cancel = _cancelToken };
 
             Task.Run(() =>
