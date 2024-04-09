@@ -222,13 +222,13 @@ namespace SourceGit.Views
         private async void SelectExternalMergeTool(object sender, RoutedEventArgs e)
         {
             var type = ViewModels.Preference.Instance.ExternalMergeToolType;
-            if (type < 0 || type >= Models.ExternalMergeTools.Supported.Count)
+            if (type < 0 || type >= Models.ExternalMerger.Supported.Count)
             {
                 ViewModels.Preference.Instance.ExternalMergeToolType = 0;
                 type = 0;
             }
 
-            var tool = Models.ExternalMergeTools.Supported[type];
+            var tool = Models.ExternalMerger.Supported[type];
             var options = new FilePickerOpenOptions()
             {
                 FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],

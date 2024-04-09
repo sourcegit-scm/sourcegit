@@ -166,7 +166,7 @@ namespace SourceGit.ViewModels
                 var type = Preference.Instance.ExternalMergeToolType;
                 var exec = Preference.Instance.ExternalMergeToolPath;
 
-                var tool = Models.ExternalMergeTools.Supported.Find(x => x.Type == type);
+                var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
                 if (tool == null || !File.Exists(exec))
                 {
                     App.RaiseException(_repo, "Invalid merge tool in preference setting!");

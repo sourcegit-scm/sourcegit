@@ -28,14 +28,14 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
-        public List<Models.ExternalEditor> FindExternalEditors()
+        public List<Models.ExternalTool> FindExternalTools()
         {
-            var finder = new Models.ExternalEditorFinder();
+            var finder = new Models.ExternalToolsFinder();
             finder.VSCode(() => "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code");
             finder.VSCodeInsiders(() => "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code");
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Applications/Fleet.app/Contents/MacOS/Fleet");
             finder.SublimeText(() => "/Applications/Sublime Text.app/Contents/SharedSupport/bin");
-            return finder.Editors;
+            return finder.Founded;
         }
 
         public void OpenBrowser(string url)

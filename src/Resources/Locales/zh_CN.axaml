@@ -266,6 +266,7 @@
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">邮箱</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">默认GIT用户邮箱</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">安装路径</x:String>
+  <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">终端Shell</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">用户名</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">默认GIT用户名</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git 版本</x:String>
