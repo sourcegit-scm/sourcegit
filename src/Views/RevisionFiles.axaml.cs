@@ -121,6 +121,8 @@ namespace SourceGit.Views
 
             TextArea.LeftMargins[0].Margin = new Thickness(8, 0);
             TextArea.TextView.Margin = new Thickness(4, 0);
+            TextArea.TextView.Options.EnableHyperlinks = false;
+            TextArea.TextView.Options.EnableEmailHyperlinks = false;
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
