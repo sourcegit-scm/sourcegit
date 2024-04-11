@@ -184,21 +184,21 @@
       <Grid Grid.Row="3" Background="{DynamicResource Brush.Contents}">
         <DataGrid x:Name="stagedList"
                   Background="Transparent"
-									ItemsSource="{Binding Staged}"
+                  ItemsSource="{Binding Staged}"
                   SelectedItem="{Binding SelectedStagedChange, Mode=TwoWay}"
-									SelectionMode="Extended"
-									CanUserReorderColumns="False"
-									CanUserResizeColumns="False"
-									CanUserSortColumns="False"
-									IsReadOnly="True"
-									HeadersVisibility="None"
-									Focusable="False"
-									RowHeight="26"
-									HorizontalScrollBarVisibility="Auto"
-									VerticalScrollBarVisibility="Auto"
+                  SelectionMode="Extended"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="False"
+                  IsReadOnly="True"
+                  HeadersVisibility="None"
+                  Focusable="False"
+                  RowHeight="26"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto"
                   KeyDown="OnStagedListKeyDown"
                   ContextRequested="OnStagedListContextRequested"
-									IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsList}}">
+                  IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsList}}">
           <DataGrid.Columns>
             <DataGridTemplateColumn Header="ICON">
               <DataGridTemplateColumn.CellTemplate>
@@ -319,12 +319,8 @@
               <Border Background="{DynamicResource Brush.Window}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                   <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Margin="0,16,0,28" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
-                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Classes="flat" FontWeight="Regular" Content="{DynamicResource Text.WorkingCopy.UseTheirs}" Height="26" Padding="16,0" Command="{Binding $parent[v:WorkingCopy].DataContext.(vm:WorkingCopy).UseTheirs}"/>
-                    <Button Classes="flat" FontWeight="Regular" Content="{DynamicResource Text.WorkingCopy.UseMine}" Height="26" Padding="16,0" Margin="8,0" Command="{Binding $parent[v:WorkingCopy].DataContext.(vm:WorkingCopy).UseMine}"/>
-                    <Button Classes="flat" FontWeight="Regular" Content="{DynamicResource Text.WorkingCopy.OpenMerger}" Height="26" Padding="16,0" Command="{Binding $parent[v:WorkingCopy].DataContext.(vm:WorkingCopy).UseExternalMergeTool}"/>
-                  </StackPanel>
+                  <TextBlock Margin="0,16,0,8" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+                  <TextBlock Text="{DynamicResource Text.WorkingCopy.ResolveTip}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
                 </StackPanel>
               </Border>
             </DataTemplate>

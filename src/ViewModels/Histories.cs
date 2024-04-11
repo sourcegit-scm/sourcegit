@@ -129,6 +129,7 @@ namespace SourceGit.ViewModels
             {
                 var commit = commits[0] as Models.Commit;
                 AutoSelectedCommit = commit;
+                NavigationId = _navigationId + 1;
 
                 if (_detailContext is CommitDetail detail)
                 {

@@ -296,11 +296,6 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Histories histories)
             {
                 histories.Select(commitDataGrid.SelectedItems);
-
-                if (histories.DetailContext is ViewModels.CommitDetail detail)
-                {
-                    commitDataGrid.ScrollIntoView(detail.Commit, null);
-                }
             }
             e.Handled = true;
         }
