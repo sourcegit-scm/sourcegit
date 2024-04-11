@@ -73,24 +73,19 @@ namespace SourceGit.Native
             v.dwOSVersionInfoSize = (uint)Marshal.SizeOf<RTL_OSVERSIONINFOEX>();
             if (RtlGetVersion(ref v) == 0 && (v.dwMajorVersion < 10 || v.dwBuildNumber < 22000))
             {
-                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, e) =>
-                {
-                    if (w.WindowState != WindowState.Maximized)
-                    {
-                        var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
-                        DwmExtendFrameIntoClientArea(w.TryGetPlatformHandle().Handle, ref margins);
-                    }
-                });
-
-                Window.LoadedEvent.AddClassHandler<Window>((w, e) =>
-                {
-                    if (w.WindowState != WindowState.Maximized)
-                    {
-                        var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
-                        DwmExtendFrameIntoClientArea(w.TryGetPlatformHandle().Handle, ref margins);
-                    }
-                });
+                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, e) => ExtendWindowFrame(w));
+                Window.LoadedEvent.AddClassHandler<Window>((w, e) => ExtendWindowFrame(w));
             }
+        }
+
+        private void ExtendWindowFrame(Window w)
+        {
+            var platformHandle = w.TryGetPlatformHandle();
+            if (platformHandle == null)
+                return;
+
+            var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
+            DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
         }
 
         public string FindGitExecutable()
