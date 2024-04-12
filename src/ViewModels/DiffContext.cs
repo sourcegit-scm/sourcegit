@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
@@ -71,6 +72,11 @@ namespace SourceGit.ViewModels
         {
             get => _fileModeDiff;
             set => SetProperty(ref _fileModeDiff, value);
+        }
+
+        public TextTrimming PathTrimming
+        {
+            get => _pathTrimming;
         }
 
         public DiffContext(string repo, Models.DiffOption option, DiffContext previous = null)
@@ -193,5 +199,6 @@ namespace SourceGit.ViewModels
         private object _content = null;
         private Vector _syncScrollOffset = Vector.Zero;
         private Models.FileModeDiff _fileModeDiff = null;
+        private TextTrimming _pathTrimming = new TextLeadingPrefixTrimming("...", 20);
     }
 }

@@ -22,8 +22,8 @@
 
           <DockPanel Grid.Column="1" VerticalAlignment="Center">
             <Path DockPanel.Dock="Left" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
-            <TextBlock Classes="monospace" Margin="4,0,0,0" Text="{Binding FilePath, Converter={x:Static c:PathConverters.TruncateIfTooLong}}"
-                       TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" HorizontalAlignment="Stretch" ToolTip.Tip="{Binding FilePath}" FontSize="11"/>
+            <TextBlock Classes="monospace" Margin="4,0,0,0" Text="{Binding FilePath}"
+                       TextTrimming="{Binding PathTrimming}" TextWrapping="NoWrap" HorizontalAlignment="Stretch" ToolTip.Tip="{Binding FilePath}" FontSize="11"/>
             <Path DockPanel.Dock="Right" Classes="rotating" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Loading}" IsVisible="{Binding IsLoading}"/>
           </DockPanel>
 
