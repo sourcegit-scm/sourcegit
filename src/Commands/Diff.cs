@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using SourceGit.Models;
 
 namespace SourceGit.Commands
 {
@@ -46,6 +47,22 @@ namespace SourceGit.Commands
 
         protected override void OnReadline(string line)
         {
+            if (line.StartsWith("old mode ", StringComparison.Ordinal))
+            {
+                _result.FileModeDiff ??= new FileModeDiff();
+
+                _result.FileModeDiff.Old = line.Substring(9);
+                return;
+            }
+
+            if (line.StartsWith("new mode ", StringComparison.Ordinal))
+            {
+                _result.FileModeDiff ??= new FileModeDiff();
+
+                _result.FileModeDiff.New = line.Substring(9);
+                return;
+            }
+
             if (_result.IsBinary)
                 return;
 
