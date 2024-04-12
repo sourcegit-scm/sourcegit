@@ -78,16 +78,6 @@ namespace SourceGit.Native
             }
         }
 
-        private void ExtendWindowFrame(Window w)
-        {
-            var platformHandle = w.TryGetPlatformHandle();
-            if (platformHandle == null)
-                return;
-
-            var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
-            DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
-        }
-
         public string FindGitExecutable()
         {
             var reg = Microsoft.Win32.RegistryKey.OpenBaseKey(
@@ -218,6 +208,16 @@ namespace SourceGit.Native
             var start = new ProcessStartInfo("cmd", $"/c start {info.FullName}");
             start.CreateNoWindow = true;
             Process.Start(start);
+        }
+
+        private void ExtendWindowFrame(Window w)
+        {
+            var platformHandle = w.TryGetPlatformHandle();
+            if (platformHandle == null)
+                return;
+
+            var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
+            DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
         }
 
         // There are two versions of PowerShell : pwsh.exe (preferred) and powershell.exe (system default)
