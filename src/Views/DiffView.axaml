@@ -13,7 +13,7 @@
     <Grid RowDefinitions="26,*">
       <!-- Toolbar -->
       <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
-        <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
           <StackPanel Grid.Column="0" Orientation="Horizontal" IsVisible="{Binding IsOrgFilePathVisible}" VerticalAlignment="Center">
             <Path Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
             <TextBlock Classes="monospace" Margin="4,0,0,0" Text="{Binding OrgFilePath, Converter={x:Static c:PathConverters.TruncateIfTooLong}}" FontSize="11"/>
