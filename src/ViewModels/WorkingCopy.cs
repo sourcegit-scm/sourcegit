@@ -46,40 +46,18 @@ namespace SourceGit.ViewModels
         public List<Models.Change> Unstaged
         {
             get => _unstaged;
-            private set
-            {
-                if (SetProperty(ref _unstaged, value))
-                {
-                    OnPropertyChanged(nameof(UnstagedCount));
-                }
-            }
+            private set => SetProperty(ref _unstaged, value);
         }
 
         public List<Models.Change> Staged
         {
             get => _staged;
-            private set
-            {
-                if (SetProperty(ref _staged, value))
-                {
-                    OnPropertyChanged(nameof(StagedCount));
-                }
-            }
+            private set => SetProperty(ref _staged, value);
         }
 
         public int Count
         {
             get => _count;
-        }
-
-        public int UnstagedCount
-        {
-            get => _unstaged.Count;
-        }
-
-        public int StagedCount
-        {
-            get => _staged.Count;
         }
 
         public Models.Change SelectedUnstagedChange

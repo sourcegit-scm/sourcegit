@@ -20,20 +20,13 @@
     <Grid Grid.Column="0" RowDefinitions="28,*,28,*">
       <!-- Unstaged Toolbar -->
       <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-        <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
           <v:ChangeViewModeSwitcher Grid.Column="0" Width="14" Height="14" Margin="8,0,0,0" ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"/>
-          <TextBlock Grid.Column="1" 
-                     Foreground="{DynamicResource Brush.FG2}" 
-                     FontWeight="Bold" 
-                     Margin="8,0,0,0">
-            <Run Text="{DynamicResource Text.WorkingCopy.Unstaged}" />
-            <Run Text="(" />
-            <Run Text="{Binding UnstagedCount}" />
-            <Run Text=")" />
-          </TextBlock>
-          <Path Grid.Column="2" Classes="rotating" Width="14" Height="14" Data="{StaticResource Icons.Loading}" Margin="8,0,0,0" IsVisible="{Binding IsStaging}"/>
+          <TextBlock Grid.Column="1" Text="{DynamicResource Text.WorkingCopy.Unstaged}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="2" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Unstaged, Converter={x:Static c:ListConverters.ToCount}}"/>
+          <Path Grid.Column="3" Classes="rotating" Width="14" Height="14" Data="{StaticResource Icons.Loading}" Margin="8,0,0,0" IsVisible="{Binding IsStaging}"/>
 
-          <Button Grid.Column="4"
+          <Button Grid.Column="5"
                   Classes="icon_button"
                   Width="26" Height="14"
                   Padding="0"
@@ -41,19 +34,19 @@
                   Click="ViewAssumeUnchanged">
             <Path Width="14" Height="14" Data="{StaticResource Icons.File.Ignore}"/>
           </Button>
-          <ToggleButton Grid.Column="5"
+          <ToggleButton Grid.Column="6"
                         Classes="toggle_untracked"
                         Width="26" Height="14"
                         ToolTip.Tip="{DynamicResource Text.WorkingCopy.IncludeUntracked}"
                         IsChecked="{Binding $parent[v:Repository].DataContext.(vm:Repository).IncludeUntracked, Mode=TwoWay}"/>
-          <Button Grid.Column="6"
+          <Button Grid.Column="7"
                   Classes="icon_button"
                   Width="26" Height="14"
                   Padding="0"
                   ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.Stage}" Click="StageSelected">
             <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
           </Button>
-          <Button Grid.Column="7"
+          <Button Grid.Column="8"
                   Classes="icon_button"
                   Width="26" Height="14"
                   Padding="0"
@@ -175,22 +168,15 @@
 
       <!-- Staged Toolbar -->
       <Border Grid.Row="2" BorderThickness="0,1" BorderBrush="{DynamicResource Brush.Border0}">
-        <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto">
           <v:ChangeViewModeSwitcher Grid.Column="0" Width="14" Height="14" Margin="8,0,0,0" ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"/>
-          <TextBlock Grid.Column="1" 
-                     Foreground="{DynamicResource Brush.FG2}" 
-                     FontWeight="Bold" 
-                     Margin="8,0,0,0">
-            <Run Text="{DynamicResource Text.WorkingCopy.Staged}" />
-            <Run Text="(" />
-            <Run Text="{Binding StagedCount}" />
-            <Run Text=")" />
-          </TextBlock>
-          <Path Grid.Column="2" Classes="rotating" Width="14" Height="14" Data="{StaticResource Icons.Loading}" Margin="8,0,0,0" IsVisible="{Binding IsUnstaging}"/>
-          <Button Grid.Column="4" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.Unstage}" Click="UnstageSelected">
+          <TextBlock Grid.Column="1" Text="{DynamicResource Text.WorkingCopy.Staged}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="2" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Staged, Converter={x:Static c:ListConverters.ToCount}}"/>
+          <Path Grid.Column="3" Classes="rotating" Width="14" Height="14" Data="{StaticResource Icons.Loading}" Margin="8,0,0,0" IsVisible="{Binding IsUnstaging}"/>
+          <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.Unstage}" Click="UnstageSelected">
             <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
           </Button>
-          <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}" Click="UnstageAll">
+          <Button Grid.Column="6" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}" Click="UnstageAll">
             <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleUp}"/>
           </Button>
         </Grid>
