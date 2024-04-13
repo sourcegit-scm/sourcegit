@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using SourceGit.Models;
 
 namespace SourceGit.Commands
 {
@@ -49,16 +48,14 @@ namespace SourceGit.Commands
         {
             if (line.StartsWith("old mode ", StringComparison.Ordinal))
             {
-                _result.FileModeDiff ??= new FileModeDiff();
-
+                _result.FileModeDiff ??= new Models.FileModeDiff();
                 _result.FileModeDiff.Old = line.Substring(9);
                 return;
             }
 
             if (line.StartsWith("new mode ", StringComparison.Ordinal))
             {
-                _result.FileModeDiff ??= new FileModeDiff();
-
+                _result.FileModeDiff ??= new Models.FileModeDiff();
                 _result.FileModeDiff.New = line.Substring(9);
                 return;
             }

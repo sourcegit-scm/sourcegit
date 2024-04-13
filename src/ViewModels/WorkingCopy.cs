@@ -531,7 +531,7 @@ namespace SourceGit.ViewModels
                         UseTheirs(changes);
                         e.Handled = true;
                     };
-                    
+
                     var useMine = new MenuItem();
                     useMine.Icon = App.CreateMenuIcon("Icons.Local");
                     useMine.Header = App.Text("FileCM.UseMine");
@@ -641,7 +641,7 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(assumeUnchanged);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
-                
+
                 var copy = new MenuItem();
                 copy.Header = App.Text("CopyPath");
                 copy.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -649,7 +649,7 @@ namespace SourceGit.ViewModels
                 {
                     App.CopyText(change.Path);
                     e.Handled = true;
-                };                
+                };
                 menu.Items.Add(copy);
             }
             else
