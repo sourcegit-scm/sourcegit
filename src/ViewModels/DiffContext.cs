@@ -8,7 +8,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -74,10 +73,7 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _fileModeDiff, value);
         }
 
-        public TextTrimming PathTrimming
-        {
-            get => _pathTrimming;
-        }
+        public TextTrimming PathTrimming { get; } = new TextLeadingPrefixTrimming("...", 20);
 
         public DiffContext(string repo, Models.DiffOption option, DiffContext previous = null)
         {
@@ -199,6 +195,5 @@ namespace SourceGit.ViewModels
         private object _content = null;
         private Vector _syncScrollOffset = Vector.Zero;
         private Models.FileModeDiff _fileModeDiff = null;
-        private TextTrimming _pathTrimming = new TextLeadingPrefixTrimming("...", 20);
     }
 }

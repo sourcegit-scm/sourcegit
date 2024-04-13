@@ -27,7 +27,7 @@
             <Path DockPanel.Dock="Right" Classes="rotating" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Loading}" IsVisible="{Binding IsLoading}"/>
           </DockPanel>
 
-          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" IsVisible="{Binding FileModeDiff, Converter={x:Static c:ObjectConverters.IsNotNull}}">
+          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" IsVisible="{Binding FileModeDiff, Converter={x:Static ObjectConverters.IsNotNull}}">
             <TextBlock Classes="monospace" Margin="8,0,0,0" Text="{DynamicResource Text.Diff.FileModeChanged}" FontSize="11"/>
             <TextBlock Classes="monospace" Text="{Binding FileModeDiff.Old}" FontSize="11"/>
             <TextBlock Margin="4,0" Text="→"/>
