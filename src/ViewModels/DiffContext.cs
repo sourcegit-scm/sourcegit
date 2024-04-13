@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
@@ -66,6 +67,14 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _syncScrollOffset, value);
         }
 
+        public Models.FileModeDiff FileModeDiff
+        {
+            get => _fileModeDiff;
+            set => SetProperty(ref _fileModeDiff, value);
+        }
+
+        public TextTrimming PathTrimming { get; } = new TextLeadingPrefixTrimming("...", 20);
+
         public DiffContext(string repo, Models.DiffOption option, DiffContext previous = null)
         {
             _repo = repo;
@@ -85,6 +94,11 @@ namespace SourceGit.ViewModels
             {
                 var latest = new Commands.Diff(repo, option).Result();
                 var rs = null as object;
+
+                if (latest.FileModeDiff != null)
+                {
+                    FileModeDiff = latest.FileModeDiff;
+                }
 
                 if (latest.TextDiff != null)
                 {
@@ -180,5 +194,6 @@ namespace SourceGit.ViewModels
         private bool _isTextDiff = false;
         private object _content = null;
         private Vector _syncScrollOffset = Vector.Zero;
+        private Models.FileModeDiff _fileModeDiff = null;
     }
 }
