@@ -372,7 +372,6 @@
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="1" Grid.Column="1"
-                     x:Name="txtGPGExecutable"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #me.GPGExecutableFile, Mode=TwoWay}">
