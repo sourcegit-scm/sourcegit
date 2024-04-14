@@ -131,7 +131,7 @@
   <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">当前大小</x:String>
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">原始大小</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">复制</x:String>
-  <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">文件权限已变化 ：</x:String>
+  <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">文件权限已变化</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS对象变更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一个差异</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">没有变更或仅有换行符差异</x:String>

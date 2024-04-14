@@ -13,34 +13,33 @@
     <Grid RowDefinitions="26,*">
       <!-- Toolbar -->
       <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
-        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
-          <StackPanel Grid.Column="0" Orientation="Horizontal" IsVisible="{Binding IsOrgFilePathVisible}" VerticalAlignment="Center">
-            <Path Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
-            <TextBlock Classes="monospace" Margin="4,0,0,0" Text="{Binding OrgFilePath, Converter={x:Static c:PathConverters.TruncateIfTooLong}}" FontSize="11"/>
-            <TextBlock Margin="8,0,0,0" Text="→"/>
-          </StackPanel>
+        <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+          <!-- File Icon -->
+          <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
 
-          <DockPanel Grid.Column="1" VerticalAlignment="Center">
-            <Path DockPanel.Dock="Left" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
-            <TextBlock Classes="monospace" Margin="4,0,0,0" Text="{Binding FilePath}"
-                       TextTrimming="{Binding PathTrimming}" TextWrapping="NoWrap" HorizontalAlignment="Stretch" ToolTip.Tip="{Binding FilePath}" FontSize="11"/>
-            <Path DockPanel.Dock="Right" Classes="rotating" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Loading}" IsVisible="{Binding IsLoading}"/>
-          </DockPanel>
+          <!-- File Mode Change -->
+          <Border Grid.Column="1"
+                  Margin="4,0,0,0"
+                  Height="18"
+                  CornerRadius="4"
+                  VerticalAlignment="Center"
+                  Background="{DynamicResource Brush.Badge}"
+                  IsVisible="{Binding FileModeChange, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                  ToolTip.Tip="{DynamicResource Text.Diff.FileModeChanged}">
+            <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="4,0" Text="{Binding FileModeChange}"/>
+          </Border>
 
-          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" IsVisible="{Binding FileModeDiff, Converter={x:Static ObjectConverters.IsNotNull}}">
-            <TextBlock Classes="monospace" Margin="8,0,0,0" Text="{DynamicResource Text.Diff.FileModeChanged}" FontSize="11"/>
-            <TextBlock Classes="monospace" Text="{Binding FileModeDiff.Old}" FontSize="11"/>
-            <TextBlock Margin="4,0" Text="→"/>
-            <TextBlock Classes="monospace" Text="{Binding FileModeDiff.New}" FontSize="11"/>
-          </StackPanel>
+          <!-- Title -->
+          <TextBlock Grid.Column="2" Classes="monospace" Margin="4,0,0,0" Text="{Binding Title}" FontSize="11"/>
 
-          <StackPanel Grid.Column="3" Margin="32,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
+          <!-- Toolbar Buttons -->
+          <StackPanel Grid.Column="3" Margin="8,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
             <ToggleButton Classes="line_path"
                           Width="32" Height="18"
                           Background="Transparent"
                           Padding="9,6"
                           IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"
-                          IsVisible="{Binding IsTextDiff}" 
+                          IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.SyntaxHighlight}">
               <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,3,0,0"/>
             </ToggleButton>
@@ -50,11 +49,11 @@
                           Background="Transparent"
                           Padding="9,6"
                           IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=TwoWay}"
-                          IsVisible="{Binding IsTextDiff}" 
+                          IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.SideBySide}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.LayoutHorizontal}" Margin="0,2,0,0"/>
             </ToggleButton>
-            
+
             <Button Classes="icon_button" Width="32" Command="{Binding OpenExternalMergeTool}" ToolTip.Tip="{DynamicResource Text.Diff.UseMerger}">
               <Path Width="12" Height="12" Stretch="Uniform" Data="{StaticResource Icons.OpenWith}"/>
             </Button>
@@ -135,18 +134,18 @@
 
                 <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding NewSize}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
               </Grid>
-              
+
               <Border Grid.Row="1" Background="{DynamicResource Brush.Window}" Effect="drop-shadow(0 0 8 #A0000000)" Margin="0,8,0,0" HorizontalAlignment="Center">
                 <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
                   <v:ImageDiffView Alpha="{Binding #ImageDiffSlider.Value}"
                                    OldImage="{Binding Old}"
                                    NewImage="{Binding New}"
                                    RenderOptions.BitmapInterpolationMode="HighQuality"/>
-                </Border>                
+                </Border>
               </Border>
 
-              <Slider Grid.Row="2" 
-                      x:Name="ImageDiffSlider" 
+              <Slider Grid.Row="2"
+                      x:Name="ImageDiffSlider"
                       Minimum="0" Maximum="1"
                       VerticalAlignment="Top"
                       TickPlacement="None"

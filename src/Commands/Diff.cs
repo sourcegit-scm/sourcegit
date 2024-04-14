@@ -48,15 +48,13 @@ namespace SourceGit.Commands
         {
             if (line.StartsWith("old mode ", StringComparison.Ordinal))
             {
-                _result.FileModeDiff ??= new Models.FileModeDiff();
-                _result.FileModeDiff.Old = line.Substring(9);
+                _result.OldMode = line.Substring(9);
                 return;
             }
 
             if (line.StartsWith("new mode ", StringComparison.Ordinal))
             {
-                _result.FileModeDiff ??= new Models.FileModeDiff();
-                _result.FileModeDiff.New = line.Substring(9);
+                _result.NewMode = line.Substring(9);
                 return;
             }
 

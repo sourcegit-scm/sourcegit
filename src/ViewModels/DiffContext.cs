@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia;
-using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
@@ -28,19 +27,16 @@ namespace SourceGit.ViewModels
             get => _option.IsUnstaged;
         }
 
-        public string FilePath
+        public string Title
         {
-            get => _option.Path;
+            get => _title;
+            private set => SetProperty(ref _title, value);
         }
 
-        public bool IsOrgFilePathVisible
+        public string FileModeChange
         {
-            get => !string.IsNullOrWhiteSpace(_option.OrgPath) && _option.OrgPath != "/dev/null";
-        }
-
-        public string OrgFilePath
-        {
-            get => _option.OrgPath;
+            get => _fileModeChange;
+            private set => SetProperty(ref _fileModeChange, value);
         }
 
         public bool IsLoading
@@ -67,14 +63,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _syncScrollOffset, value);
         }
 
-        public Models.FileModeDiff FileModeDiff
-        {
-            get => _fileModeDiff;
-            set => SetProperty(ref _fileModeDiff, value);
-        }
-
-        public TextTrimming PathTrimming { get; } = new TextLeadingPrefixTrimming("...", 20);
-
         public DiffContext(string repo, Models.DiffOption option, DiffContext previous = null)
         {
             _repo = repo;
@@ -86,19 +74,10 @@ namespace SourceGit.ViewModels
                 _content = previous._content;
             }
 
-            OnPropertyChanged(nameof(FilePath));
-            OnPropertyChanged(nameof(IsOrgFilePathVisible));
-            OnPropertyChanged(nameof(OrgFilePath));
-
             Task.Run(() =>
             {
                 var latest = new Commands.Diff(repo, option).Result();
                 var rs = null as object;
-
-                if (latest.FileModeDiff != null)
-                {
-                    FileModeDiff = latest.FileModeDiff;
-                }
 
                 if (latest.TextDiff != null)
                 {
@@ -154,6 +133,12 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    if (string.IsNullOrEmpty(_option.OrgPath))
+                        Title = _option.Path;
+                    else
+                        Title = $"{_option.OrgPath} → {_option.Path}";
+
+                    FileModeChange = latest.FileModeChange;
                     Content = rs;
                     IsTextDiff = latest.TextDiff != null;
                     IsLoading = false;
@@ -190,10 +175,11 @@ namespace SourceGit.ViewModels
 
         private readonly string _repo = string.Empty;
         private readonly Models.DiffOption _option = null;
+        private string _title = string.Empty;
+        private string _fileModeChange = string.Empty;
         private bool _isLoading = true;
         private bool _isTextDiff = false;
         private object _content = null;
         private Vector _syncScrollOffset = Vector.Zero;
-        private Models.FileModeDiff _fileModeDiff = null;
     }
 }
