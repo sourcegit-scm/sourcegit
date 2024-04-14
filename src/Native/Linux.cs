@@ -13,6 +13,29 @@ namespace SourceGit.Native
     [SupportedOSPlatform("linux")]
     internal class Linux : OS.IBackend
     {
+        class Terminal
+        {
+            public string FilePath { get; set; } = string.Empty;
+            public string OpenArgFormat { get; set; } = string.Empty;
+
+            public Terminal(string exec, string fmt)
+            {
+                FilePath = exec;
+                OpenArgFormat = fmt;
+            }
+
+            public void Open(string dir)
+            {
+                Process.Start(FilePath, string.Format(OpenArgFormat, dir));
+            }
+        }
+
+        public Linux()
+        {
+            _xdgOpenPath = FindExecutable("xdg-open");
+            _terminal = FindTerminal();
+        }
+
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new FontManagerOptions()
@@ -26,50 +49,45 @@ namespace SourceGit.Native
 
         public string FindGitExecutable()
         {
-            if (File.Exists("/usr/bin/git"))
-                return "/usr/bin/git";
-            return string.Empty;
+            return FindExecutable("git");
         }
 
         public List<Models.ExternalTool> FindExternalTools()
         {
             var finder = new Models.ExternalToolsFinder();
-            finder.VSCode(() => "/usr/share/code/code");
-            finder.VSCodeInsiders(() => "/usr/share/code-insiders/code-insiders");
-            finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox/apps/fleet/bin/Fleet");
-            finder.SublimeText(() => File.Exists("/usr/bin/subl") ? "/usr/bin/subl" : "/usr/local/bin/subl");
+            finder.VSCode(() => FindExecutable("code"));
+            finder.VSCodeInsiders(() => FindExecutable("code-insiders"));
+            finder.Fleet(FindJetBrainFleet);
+            finder.SublimeText(() => FindExecutable("subl"));
             return finder.Founded;
         }
 
         public void OpenBrowser(string url)
         {
-            if (!File.Exists("/usr/bin/xdg-open"))
-            {
-                App.RaiseException("", $"You should install xdg-open first!");
-                return;
-            }
-
-            Process.Start("xdg-open", $"\"{url}\"");
+            if (string.IsNullOrEmpty(_xdgOpenPath))
+                App.RaiseException("", $"Can NOT find `xdg-open` command!!!");
+            else
+                Process.Start(_xdgOpenPath, $"\"{url}\"");
         }
 
         public void OpenInFileManager(string path, bool select)
         {
-            if (!File.Exists("/usr/bin/xdg-open"))
+            if (string.IsNullOrEmpty(_xdgOpenPath))
             {
-                App.RaiseException("", $"You should install xdg-open first!");
+                App.RaiseException("", $"Can NOT find `xdg-open` command!!!");
                 return;
             }
 
             if (Directory.Exists(path))
             {
-                Process.Start("xdg-open", $"\"{path}\"");
+                Process.Start(_xdgOpenPath, $"\"{path}\"");
             }
             else
             {
                 var dir = Path.GetDirectoryName(path);
                 if (Directory.Exists(dir))
                 {
-                    Process.Start("xdg-open", $"\"{dir}\"");
+                    Process.Start(_xdgOpenPath, $"\"{dir}\"");
                 }
             }
         }
@@ -77,46 +95,86 @@ namespace SourceGit.Native
         public void OpenTerminal(string workdir)
         {
             var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
-            if (File.Exists("/usr/bin/gnome-terminal"))
-            {
-                Process.Start("/usr/bin/gnome-terminal", $"--working-directory=\"{dir}\"");
-            }
-            else if (File.Exists("/usr/bin/konsole"))
-            {
-                Process.Start("/usr/bin/konsole", $"--workdir \"{dir}\"");
-            }
-            else if (File.Exists("/usr/bin/xfce4-terminal"))
-            {
-                Process.Start("/usr/bin/xfce4-terminal", $"--working-directory=\"{dir}\"");
-            }
-            else if (File.Exists("/usr/bin/deepin-terminal"))
-            {
-                Process.Start("/usr/bin/deepin-terminal", $"--work-directory \"{dir}\"");
-            }
-            else
-            {
+            if (_terminal == null)
                 App.RaiseException(dir, $"Only supports gnome-terminal/konsole/xfce4-terminal/deepin-terminal!");
-                return;
-            }
+            else
+                _terminal.Open(dir);
         }
 
         public void OpenWithDefaultEditor(string file)
         {
-            if (!File.Exists("/usr/bin/xdg-open"))
+            if (string.IsNullOrEmpty(_xdgOpenPath))
             {
-                App.RaiseException("", $"You should install xdg-open first!");
+                App.RaiseException("", $"Can NOT find `xdg-open` command!!!");
                 return;
             }
 
-            var proc = Process.Start("xdg-open", $"\"{file}\"");
+            var proc = Process.Start(_xdgOpenPath, $"\"{file}\"");
             proc.WaitForExit();
 
             if (proc.ExitCode != 0)
-            {
                 App.RaiseException("", $"Failed to open \"{file}\"");
-            }
 
             proc.Close();
         }
+
+        private string FindExecutable(string filename)
+        {
+            var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
+            var pathes = pathVariable.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var path in pathes)
+            {
+                var test = Path.Combine(path, filename);
+                if (File.Exists(test))
+                {
+                    return test;
+                }
+            }
+
+            return string.Empty;
+        }
+
+        private Terminal FindTerminal()
+        {
+            var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
+            var pathes = pathVariable.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var path in pathes)
+            {
+                var test = Path.Combine(path, "gnome-terminal");
+                if (File.Exists(test))
+                {
+                    return new Terminal(test, "--working-directory=\"{0}\"");
+                }
+
+                test = Path.Combine(path, "konsole");
+                if (File.Exists(test))
+                {
+                    return new Terminal(test, "--workdir \"{0}\"");
+                }
+
+                test = Path.Combine(path, "xfce4-terminal");
+                if (File.Exists(test))
+                {
+                    return new Terminal(test, "--working-directory=\"{0}\"");
+                }
+
+                test = Path.Combine(path, "deepin-terminal");
+                if (File.Exists(test))
+                {
+                    return new Terminal(test, "--work-directory \"{0}\"");
+                }
+            }
+
+            return null;
+        }
+
+        private string FindJetBrainFleet()
+        {
+            var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox/apps/fleet/bin/Fleet";
+            return File.Exists(path) ? path : FindExecutable("fleet");
+        }
+
+        private string _xdgOpenPath = string.Empty;
+        private Terminal _terminal = null;
     }
 }
