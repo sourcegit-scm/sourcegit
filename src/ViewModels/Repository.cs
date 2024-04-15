@@ -715,6 +715,7 @@ namespace SourceGit.ViewModels
             {
                 var startFeature = new MenuItem();
                 startFeature.Header = App.Text("GitFlow.StartFeature");
+                startFeature.Icon = App.CreateMenuIcon("Icons.GitFlow.Feature");
                 startFeature.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -724,6 +725,7 @@ namespace SourceGit.ViewModels
 
                 var startRelease = new MenuItem();
                 startRelease.Header = App.Text("GitFlow.StartRelease");
+                startRelease.Icon = App.CreateMenuIcon("Icons.GitFlow.Release");
                 startRelease.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -733,6 +735,7 @@ namespace SourceGit.ViewModels
 
                 var startHotfix = new MenuItem();
                 startHotfix.Header = App.Text("GitFlow.StartHotfix");
+                startHotfix.Icon = App.CreateMenuIcon("Icons.GitFlow.Hotfix");
                 startHotfix.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -748,6 +751,7 @@ namespace SourceGit.ViewModels
             {
                 var init = new MenuItem();
                 init.Header = App.Text("GitFlow.Init");
+                init.Icon = App.CreateMenuIcon("Icons.GitFlow.Init");
                 init.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
