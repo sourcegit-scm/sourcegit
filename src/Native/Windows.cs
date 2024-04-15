@@ -161,6 +161,7 @@ namespace SourceGit.Native
                     }
 
                     startInfo.FileName = FindWindowsTerminalApp();
+                    startInfo.Arguments = $"-d \"{workdir}\"";
                     break;
                 default:
                     App.RaiseException(workdir, $"Bad shell configuration!");
