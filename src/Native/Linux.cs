@@ -96,7 +96,7 @@ namespace SourceGit.Native
         {
             var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
             if (_terminal == null)
-                App.RaiseException(dir, $"Only supports gnome-terminal/konsole/xfce4-terminal/deepin-terminal!");
+                App.RaiseException(dir, $"Only supports gnome-terminal/konsole/xfce4-terminal/lxterminal/deepin-terminal!");
             else
                 _terminal.Open(dir);
         }
@@ -153,6 +153,12 @@ namespace SourceGit.Native
                 }
 
                 test = Path.Combine(path, "xfce4-terminal");
+                if (File.Exists(test))
+                {
+                    return new Terminal(test, "--working-directory=\"{0}\"");
+                }
+
+                test = Path.Combine(path, "lxterminal");
                 if (File.Exists(test))
                 {
                     return new Terminal(test, "--working-directory=\"{0}\"");
