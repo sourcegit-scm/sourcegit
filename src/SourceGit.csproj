@@ -5,7 +5,7 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>App.manifest</ApplicationManifest>
     <ApplicationIcon>App.ico</ApplicationIcon>
-    <Version>8.7</Version>
+    <Version>8.8</Version>
     <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
@@ -22,8 +22,9 @@
 
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
-    <AvaloniaResource Include="Resources/Fonts/*" />
     <AvaloniaResource Include="Resources/ExternalToolIcons/*" />
+    <AvaloniaResource Include="Resources/Fonts/*" />
+    <AvaloniaResource Include="Resources/ShellIcons/*" />
   </ItemGroup>
 
   <ItemGroup>

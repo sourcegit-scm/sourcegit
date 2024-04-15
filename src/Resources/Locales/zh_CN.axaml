@@ -131,6 +131,7 @@
   <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">当前大小</x:String>
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">原始大小</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">复制</x:String>
+  <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">文件权限已变化</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS对象变更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一个差异</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">没有变更或仅有换行符差异</x:String>
@@ -160,6 +161,7 @@
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">放弃更改...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">放弃 {0} 个文件的更改...</x:String>
   <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">放弃选中的更改</x:String>
+  <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">使用外部合并工具打开</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">另存为补丁...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">暂存(add)...</x:String>
   <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">暂存(add){0} 个文件...</x:String>
@@ -169,6 +171,8 @@
   <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">从暂存中移除</x:String>
   <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">从暂存中移除 {0} 个文件</x:String>
   <x:String x:Key="Text.FileCM.UnstageSelectedLines" xml:space="preserve">从暂存中移除选中的更改</x:String>
+  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">使用 THEIRS (checkout --theirs)</x:String>
+  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">使用 MINE (checkout --ours)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">文件历史</x:String>
   <x:String x:Key="Text.Filter" xml:space="preserve">过滤</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">GIT工作流</x:String>
@@ -266,6 +270,7 @@
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">邮箱</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">默认GIT用户邮箱</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">安装路径</x:String>
+  <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">终端Shell</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">用户名</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">默认GIT用户名</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git 版本</x:String>
@@ -430,7 +435,6 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">显示未跟踪文件</x:String>
   <x:String x:Key="Text.WorkingCopy.MessageHistories" xml:space="preserve">历史提交信息</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">没有提交信息记录</x:String>
-  <x:String x:Key="Text.WorkingCopy.OpenMerger" xml:space="preserve">打开合并工具</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">已暂存</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">从暂存区移除选中</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">从暂存区移除所有</x:String>
@@ -438,6 +442,5 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">暂存选中</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">暂存所有</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">查看忽略变更文件</x:String>
-  <x:String x:Key="Text.WorkingCopy.UseMine" xml:space="preserve">使用MINE</x:String>
-  <x:String x:Key="Text.WorkingCopy.UseTheirs" xml:space="preserve">使用THEIRS</x:String>
+  <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">请选中冲突文件，打开右键菜单，选择合适的解决方式</x:String>
 </ResourceDictionary>

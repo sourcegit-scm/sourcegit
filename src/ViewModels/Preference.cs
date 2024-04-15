@@ -200,6 +200,18 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public Models.Shell GitShell
+        {
+            get => Native.OS.GetShell();
+            set
+            {
+                if (Native.OS.SetShell(value))
+                {
+                    OnPropertyChanged(nameof(GitShell));
+                }
+            }
+        }
+
         public string GitDefaultCloneDir
         {
             get => _gitDefaultCloneDir;
@@ -225,9 +237,9 @@ namespace SourceGit.ViewModels
             set
             {
                 var changed = SetProperty(ref _externalMergeToolType, value);
-                if (changed && !OperatingSystem.IsWindows() && value > 0 && value < Models.ExternalMergeTools.Supported.Count)
+                if (changed && !OperatingSystem.IsWindows() && value > 0 && value < Models.ExternalMerger.Supported.Count)
                 {
-                    var tool = Models.ExternalMergeTools.Supported[value];
+                    var tool = Models.ExternalMerger.Supported[value];
                     if (File.Exists(tool.Exec))
                         ExternalMergeToolPath = tool.Exec;
                     else

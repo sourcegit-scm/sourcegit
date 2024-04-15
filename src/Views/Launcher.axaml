@@ -49,10 +49,11 @@
       </Border>
 
       <!-- Menu -->
-      <Button Grid.Column="{OnPlatform 0, macOS=2}"
-              Classes="icon_button"
-              Margin="4,0,2,3"
-              VerticalAlignment="Bottom">
+      <Button Grid.Column="{OnPlatform 0, macOS=2}" Classes="icon_button" VerticalAlignment="Bottom">
+        <Button.Margin>
+          <OnPlatform Default="4,0,2,3" macOS="4,0,6,3"/>
+        </Button.Margin>
+        
         <Button.Flyout>
           <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
             <MenuItem Header="{DynamicResource Text.Preference}" Click="OpenPreference">

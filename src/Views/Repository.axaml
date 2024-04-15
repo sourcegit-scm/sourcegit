@@ -22,7 +22,7 @@
             <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
           </Button>
 
-          <Button Classes="icon_button" Width="32" Click="OnOpenWithExternalEditor" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
+          <Button Classes="icon_button" Width="32" Click="OnOpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
             <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>
           </Button>
           

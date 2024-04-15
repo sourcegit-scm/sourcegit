@@ -24,7 +24,7 @@ namespace SourceGit.Commands
                 Args = "-c credential.helper=manager ";
             }
 
-            Args += "fetch --progress --verbose ";
+            Args += "fetch --force --progress --verbose ";
             if (prune)
                 Args += "--prune ";
             Args += remote;

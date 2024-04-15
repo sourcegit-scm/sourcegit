@@ -227,6 +227,8 @@ namespace SourceGit.Views
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.Margin = new Thickness(4, 0);
+            TextArea.TextView.Options.EnableHyperlinks = false;
+            TextArea.TextView.Options.EnableEmailHyperlinks = false;
         }
 
         public void OnCommitSHAClicked(string sha)

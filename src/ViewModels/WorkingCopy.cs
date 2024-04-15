@@ -386,34 +386,42 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public async void UseTheirs()
+        public async void UseTheirs(List<Models.Change> changes)
         {
-            if (_detailContext is ConflictContext ctx)
+            var files = new List<string>();
+            foreach (var change in changes)
             {
-                _repo.SetWatcherEnabled(false);
-                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).File(ctx.Change.Path, true));
-                if (succ)
-                {
-                    await Task.Run(() => new Commands.Add(_repo.FullPath, [ctx.Change]).Exec());
-                }
-                _repo.MarkWorkingCopyDirtyManually();
-                _repo.SetWatcherEnabled(true);
+                if (change.IsConflit)
+                    files.Add(change.Path);
             }
+
+            _repo.SetWatcherEnabled(false);
+            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseTheirs(files));
+            if (succ)
+            {
+                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
+            }
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
         }
 
-        public async void UseMine()
+        public async void UseMine(List<Models.Change> changes)
         {
-            if (_detailContext is ConflictContext ctx)
+            var files = new List<string>();
+            foreach (var change in changes)
             {
-                _repo.SetWatcherEnabled(false);
-                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).File(ctx.Change.Path, false));
-                if (succ)
-                {
-                    await Task.Run(() => new Commands.Add(_repo.FullPath, [ctx.Change]).Exec());
-                }
-                _repo.MarkWorkingCopyDirtyManually();
-                _repo.SetWatcherEnabled(true);
+                if (change.IsConflit)
+                    files.Add(change.Path);
             }
+
+            _repo.SetWatcherEnabled(false);
+            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseMine(files));
+            if (succ)
+            {
+                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
+            }
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
         }
 
         public async void UseExternalMergeTool()
@@ -423,7 +431,7 @@ namespace SourceGit.ViewModels
                 var type = Preference.Instance.ExternalMergeToolType;
                 var exec = Preference.Instance.ExternalMergeToolPath;
 
-                var tool = Models.ExternalMergeTools.Supported.Find(x => x.Type == type);
+                var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
                 if (tool == null)
                 {
                     App.RaiseException(_repo.FullPath, "Invalid merge tool in preference setting!");
@@ -499,6 +507,7 @@ namespace SourceGit.ViewModels
                     Native.OS.OpenInFileManager(path, true);
                     e.Handled = true;
                 };
+                menu.Items.Add(explore);
 
                 var openWith = new MenuItem();
                 openWith.Header = App.Text("OpenWith");
@@ -509,81 +518,129 @@ namespace SourceGit.ViewModels
                     Native.OS.OpenWithDefaultEditor(path);
                     e.Handled = true;
                 };
+                menu.Items.Add(openWith);
+                menu.Items.Add(new MenuItem() { Header = "-" });
 
-                var stage = new MenuItem();
-                stage.Header = App.Text("FileCM.Stage");
-                stage.Icon = App.CreateMenuIcon("Icons.File.Add");
-                stage.Click += (_, e) =>
+                if (change.IsConflit)
                 {
-                    StageChanges(changes);
-                    e.Handled = true;
-                };
-
-                var discard = new MenuItem();
-                discard.Header = App.Text("FileCM.Discard");
-                discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                discard.Click += (_, e) =>
-                {
-                    Discard(changes, true);
-                    e.Handled = true;
-                };
-
-                var stash = new MenuItem();
-                stash.Header = App.Text("FileCM.Stash");
-                stash.Icon = App.CreateMenuIcon("Icons.Stashes");
-                stash.Click += (_, e) =>
-                {
-                    if (PopupHost.CanCreatePopup())
+                    var useTheirs = new MenuItem();
+                    useTheirs.Icon = App.CreateMenuIcon("Icons.Incoming");
+                    useTheirs.Header = App.Text("FileCM.UseTheirs");
+                    useTheirs.Click += (_, e) =>
                     {
-                        PopupHost.ShowPopup(new StashChanges(_repo, changes, false));
-                    }
-                    e.Handled = true;
-                };
+                        UseTheirs(changes);
+                        e.Handled = true;
+                    };
 
-                var patch = new MenuItem();
-                patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Diff");
-                patch.Click += async (_, e) =>
-                {
-                    var topLevel = App.GetTopLevel();
-                    if (topLevel == null)
-                        return;
-
-                    var options = new FilePickerSaveOptions();
-                    options.Title = App.Text("FileCM.SaveAsPatch");
-                    options.DefaultExtension = ".patch";
-                    options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
-
-                    var storageFile = await topLevel.StorageProvider.SaveFilePickerAsync(options);
-                    if (storageFile != null)
+                    var useMine = new MenuItem();
+                    useMine.Icon = App.CreateMenuIcon("Icons.Local");
+                    useMine.Header = App.Text("FileCM.UseMine");
+                    useMine.Click += (_, e) =>
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, changes, true, storageFile.Path.LocalPath));
-                        if (succ)
-                            App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
-                    }
+                        UseMine(changes);
+                        e.Handled = true;
+                    };
 
-                    e.Handled = true;
-                };
+                    var openMerger = new MenuItem();
+                    openMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                    openMerger.Header = App.Text("FileCM.OpenWithExternalMerger");
+                    openMerger.Click += (_, e) =>
+                    {
+                        UseExternalMergeTool();
+                        e.Handled = true;
+                    };
 
-                var history = new MenuItem();
-                history.Header = App.Text("FileHistory");
-                history.Icon = App.CreateMenuIcon("Icons.Histories");
-                history.Click += (_, e) =>
+                    menu.Items.Add(useTheirs);
+                    menu.Items.Add(useMine);
+                    menu.Items.Add(openMerger);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+                else
                 {
-                    var window = new Views.FileHistories() { DataContext = new FileHistories(_repo.FullPath, change.Path) };
-                    window.Show();
-                    e.Handled = true;
-                };
+                    var stage = new MenuItem();
+                    stage.Header = App.Text("FileCM.Stage");
+                    stage.Icon = App.CreateMenuIcon("Icons.File.Add");
+                    stage.Click += (_, e) =>
+                    {
+                        StageChanges(changes);
+                        e.Handled = true;
+                    };
 
-                var assumeUnchanged = new MenuItem();
-                assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
-                assumeUnchanged.Icon = App.CreateMenuIcon("Icons.File.Ignore");
-                assumeUnchanged.IsEnabled = change.WorkTree != Models.ChangeState.Untracked;
-                assumeUnchanged.Click += (_, e) =>
-                {
-                    new Commands.AssumeUnchanged(_repo.FullPath).Add(change.Path);
-                    e.Handled = true;
-                };
+                    var discard = new MenuItem();
+                    discard.Header = App.Text("FileCM.Discard");
+                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
+                    discard.Click += (_, e) =>
+                    {
+                        Discard(changes, true);
+                        e.Handled = true;
+                    };
+
+                    var stash = new MenuItem();
+                    stash.Header = App.Text("FileCM.Stash");
+                    stash.Icon = App.CreateMenuIcon("Icons.Stashes");
+                    stash.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                        {
+                            PopupHost.ShowPopup(new StashChanges(_repo, changes, false));
+                        }
+                        e.Handled = true;
+                    };
+
+                    var patch = new MenuItem();
+                    patch.Header = App.Text("FileCM.SaveAsPatch");
+                    patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                    patch.Click += async (_, e) =>
+                    {
+                        var topLevel = App.GetTopLevel();
+                        if (topLevel == null)
+                            return;
+
+                        var options = new FilePickerSaveOptions();
+                        options.Title = App.Text("FileCM.SaveAsPatch");
+                        options.DefaultExtension = ".patch";
+                        options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
+
+                        var storageFile = await topLevel.StorageProvider.SaveFilePickerAsync(options);
+                        if (storageFile != null)
+                        {
+                            var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, changes, true, storageFile.Path.LocalPath));
+                            if (succ)
+                                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                        }
+
+                        e.Handled = true;
+                    };
+
+                    var history = new MenuItem();
+                    history.Header = App.Text("FileHistory");
+                    history.Icon = App.CreateMenuIcon("Icons.Histories");
+                    history.Click += (_, e) =>
+                    {
+                        var window = new Views.FileHistories() { DataContext = new FileHistories(_repo.FullPath, change.Path) };
+                        window.Show();
+                        e.Handled = true;
+                    };
+
+                    var assumeUnchanged = new MenuItem();
+                    assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
+                    assumeUnchanged.Icon = App.CreateMenuIcon("Icons.File.Ignore");
+                    assumeUnchanged.IsEnabled = change.WorkTree != Models.ChangeState.Untracked;
+                    assumeUnchanged.Click += (_, e) =>
+                    {
+                        new Commands.AssumeUnchanged(_repo.FullPath).Add(change.Path);
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(stage);
+                    menu.Items.Add(discard);
+                    menu.Items.Add(stash);
+                    menu.Items.Add(patch);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(history);
+                    menu.Items.Add(assumeUnchanged);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
 
                 var copy = new MenuItem();
                 copy.Header = App.Text("CopyPath");
@@ -593,22 +650,55 @@ namespace SourceGit.ViewModels
                     App.CopyText(change.Path);
                     e.Handled = true;
                 };
-
-                menu.Items.Add(explore);
-                menu.Items.Add(openWith);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(stage);
-                menu.Items.Add(discard);
-                menu.Items.Add(stash);
-                menu.Items.Add(patch);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(history);
-                menu.Items.Add(assumeUnchanged);
-                menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(copy);
             }
             else
             {
+                var hasConflicts = false;
+                var hasNoneConflicts = false;
+                foreach (var change in changes)
+                {
+                    if (change.IsConflit)
+                    {
+                        hasConflicts = true;
+                    }
+                    else
+                    {
+                        hasNoneConflicts = true;
+                    }
+                }
+
+                if (hasConflicts)
+                {
+                    if (hasNoneConflicts)
+                    {
+                        App.RaiseException(_repo.FullPath, "You have selected both non-conflict changes with conflicts!");
+                        return null;
+                    }
+
+                    var useTheirs = new MenuItem();
+                    useTheirs.Icon = App.CreateMenuIcon("Icons.Incoming");
+                    useTheirs.Header = App.Text("FileCM.UseTheirs");
+                    useTheirs.Click += (_, e) =>
+                    {
+                        UseTheirs(changes);
+                        e.Handled = true;
+                    };
+
+                    var useMine = new MenuItem();
+                    useMine.Icon = App.CreateMenuIcon("Icons.Local");
+                    useMine.Header = App.Text("FileCM.UseMine");
+                    useMine.Click += (_, e) =>
+                    {
+                        UseMine(changes);
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(useTheirs);
+                    menu.Items.Add(useMine);
+                    return menu;
+                }
+
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.StageMulti", changes.Count);
                 stage.Icon = App.CreateMenuIcon("Icons.File.Add");

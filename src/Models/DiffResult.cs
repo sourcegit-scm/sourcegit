@@ -576,11 +576,21 @@ namespace SourceGit.Models
     {
     }
 
+    public class FileModeDiff
+    {
+        public string Old { get; set; } = string.Empty;
+        public string New { get; set; } = string.Empty;
+    }
+
     public class DiffResult
     {
         public bool IsBinary { get; set; } = false;
         public bool IsLFS { get; set; } = false;
+        public string OldMode { get; set; } = string.Empty;
+        public string NewMode { get; set; } = string.Empty;
         public TextDiff TextDiff { get; set; } = null;
         public LFSDiff LFSDiff { get; set; } = null;
+
+        public string FileModeChange => string.IsNullOrEmpty(OldMode) ? string.Empty : $"{OldMode} → {NewMode}";
     }
 }

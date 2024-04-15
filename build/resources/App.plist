@@ -9,7 +9,7 @@
     <key>CFBundleName</key>
     <string>SourceGit</string>
     <key>CFBundleVersion</key>
-    <string>8.7.0</string>
+    <string>8.8.0</string>
     <key>LSMinimumSystemVersion</key>
     <string>10.12</string>
     <key>CFBundleExecutable</key>
@@ -19,7 +19,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>8.7</string>
+    <string>8.8</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

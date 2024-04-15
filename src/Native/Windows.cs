@@ -54,6 +54,12 @@ namespace SourceGit.Native
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
 
+        public Models.Shell Shell
+        {
+            get;
+            set;
+        } = Models.Shell.Default;
+
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new FontManagerOptions()
@@ -67,23 +73,8 @@ namespace SourceGit.Native
             v.dwOSVersionInfoSize = (uint)Marshal.SizeOf<RTL_OSVERSIONINFOEX>();
             if (RtlGetVersion(ref v) == 0 && (v.dwMajorVersion < 10 || v.dwBuildNumber < 22000))
             {
-                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, e) =>
-                {
-                    if (w.WindowState != WindowState.Maximized)
-                    {
-                        var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
-                        DwmExtendFrameIntoClientArea(w.TryGetPlatformHandle().Handle, ref margins);
-                    }
-                });
-
-                Window.LoadedEvent.AddClassHandler<Window>((w, e) =>
-                {
-                    if (w.WindowState != WindowState.Maximized)
-                    {
-                        var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
-                        DwmExtendFrameIntoClientArea(w.TryGetPlatformHandle().Handle, ref margins);
-                    }
-                });
+                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, e) => ExtendWindowFrame(w));
+                Window.LoadedEvent.AddClassHandler<Window>((w, e) => ExtendWindowFrame(w));
             }
         }
 
@@ -114,14 +105,14 @@ namespace SourceGit.Native
             return null;
         }
 
-        public List<Models.ExternalEditor> FindExternalEditors()
+        public List<Models.ExternalTool> FindExternalTools()
         {
-            var finder = new Models.ExternalEditorFinder();
+            var finder = new Models.ExternalToolsFinder();
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Programs\\Fleet\\Fleet.exe");
             finder.SublimeText(FindSublimeText);
-            return finder.Editors;
+            return finder.Founded;
         }
 
         public void OpenBrowser(string url)
@@ -133,19 +124,50 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            var binDir = Path.GetDirectoryName(OS.GitExecutable);
-            var bash = Path.Combine(binDir, "bash.exe");
-            if (!File.Exists(bash))
+            if (string.IsNullOrEmpty(workdir) || !Path.Exists(workdir))
             {
-                App.RaiseException(string.IsNullOrEmpty(workdir) ? "" : workdir, $"Can NOT found bash.exe under '{binDir}'");
-                return;
+                workdir = ".";
             }
 
             var startInfo = new ProcessStartInfo();
-            startInfo.UseShellExecute = true;
-            startInfo.FileName = bash;
-            if (!string.IsNullOrEmpty(workdir) && Path.Exists(workdir))
-                startInfo.WorkingDirectory = workdir;
+            startInfo.WorkingDirectory = workdir;
+
+            switch (Shell)
+            {
+                case Models.Shell.Default:
+                    var binDir = Path.GetDirectoryName(OS.GitExecutable);
+                    var bash = Path.Combine(binDir, "bash.exe");
+                    if (!File.Exists(bash))
+                    {
+                        App.RaiseException(workdir, $"Can NOT found bash.exe under '{binDir}'");
+                        return;
+                    }
+
+                    startInfo.FileName = bash;
+                    break;
+                case Models.Shell.PowerShell:
+                    startInfo.FileName = ChoosePowerShell();
+                    startInfo.Arguments = startInfo.FileName.EndsWith("pswd.exe") ? $"-WorkingDirectory \"{workdir}\" -Nologo" : "-Nologo";
+                    break;
+                case Models.Shell.CommandPrompt:
+                    startInfo.FileName = "cmd";
+                    break;
+                case Models.Shell.DefaultShellOfWindowsTerminal:
+                    var wt = FindWindowsTerminalApp();
+                    if (!File.Exists(wt))
+                    {
+                        App.RaiseException(workdir, $"Can NOT found wt.exe on your system!");
+                        return;
+                    }
+
+                    startInfo.FileName = FindWindowsTerminalApp();
+                    startInfo.Arguments = $"-d \"{workdir}\"";
+                    break;
+                default:
+                    App.RaiseException(workdir, $"Bad shell configuration!");
+                    return;
+            }
+
             Process.Start(startInfo);
         }
 
@@ -187,6 +209,62 @@ namespace SourceGit.Native
             var start = new ProcessStartInfo("cmd", $"/c start {info.FullName}");
             start.CreateNoWindow = true;
             Process.Start(start);
+        }
+
+        private void ExtendWindowFrame(Window w)
+        {
+            var platformHandle = w.TryGetPlatformHandle();
+            if (platformHandle == null)
+                return;
+
+            var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
+            DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
+        }
+
+        // There are two versions of PowerShell : pwsh.exe (preferred) and powershell.exe (system default)
+        private string ChoosePowerShell()
+        {
+            if (!string.IsNullOrEmpty(_powershellPath))
+                return _powershellPath;
+
+            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            var pwsh = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\pwsh.exe");
+            if (pwsh != null)
+            {
+                var path = pwsh.GetValue(null) as string;
+                if (File.Exists(path))
+                {
+                    _powershellPath = path;
+                    return _powershellPath;
+                }
+            }
+
+            var finder = new StringBuilder("powershell.exe", 512);
+            if (PathFindOnPath(finder, null))
+            {
+                _powershellPath = finder.ToString();
+                return _powershellPath;
+            }
+
+            return string.Empty;
+        }
+
+        private string FindWindowsTerminalApp()
+        {
+            if (!string.IsNullOrEmpty(_wtPath))
+                return _wtPath;
+
+            var finder = new StringBuilder("wt.exe", 512);
+            if (PathFindOnPath(finder, null))
+            {
+                _wtPath = finder.ToString();
+                return _wtPath;
+            }
+
+            return string.Empty;
         }
 
         #region EXTERNAL_EDITOR_FINDER
@@ -250,6 +328,7 @@ namespace SourceGit.Native
                     Microsoft.Win32.RegistryHive.LocalMachine,
                     Microsoft.Win32.RegistryView.Registry64);
 
+            // Sublime Text 4
             var sublime = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Sublime Text_is1");
             if (sublime != null)
             {
@@ -257,6 +336,7 @@ namespace SourceGit.Native
                 return Path.Combine(Path.GetDirectoryName(icon), "subl.exe");
             }
 
+            // Sublime Text 3
             var sublime3 = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Sublime Text 3_is1");
             if (sublime3 != null)
             {
@@ -281,5 +361,8 @@ namespace SourceGit.Native
                 ILFree(pidl);
             }
         }
+
+        private string _powershellPath = string.Empty;
+        private string _wtPath = string.Empty;
     }
 }

@@ -46,6 +46,18 @@ namespace SourceGit.Commands
 
         protected override void OnReadline(string line)
         {
+            if (line.StartsWith("old mode ", StringComparison.Ordinal))
+            {
+                _result.OldMode = line.Substring(9);
+                return;
+            }
+
+            if (line.StartsWith("new mode ", StringComparison.Ordinal))
+            {
+                _result.NewMode = line.Substring(9);
+                return;
+            }
+
             if (_result.IsBinary)
                 return;
 

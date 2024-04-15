@@ -3,14 +3,26 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+
 namespace SourceGit.Models
 {
-    public class ExternalEditor
+    public class ExternalTool
     {
         public string Name { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
         public string Executable { get; set; } = string.Empty;
         public string OpenCmdArgs { get; set; } = string.Empty;
+
+        public Bitmap IconImage
+        {
+            get
+            {
+                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{Icon}.png", UriKind.RelativeOrAbsolute));
+                return new Bitmap(icon);
+            }
+        }
 
         public void Open(string repo)
         {
@@ -24,35 +36,35 @@ namespace SourceGit.Models
         }
     }
 
-    public class ExternalEditorFinder
+    public class ExternalToolsFinder
     {
-        public List<ExternalEditor> Editors
+        public List<ExternalTool> Founded
         {
             get;
             private set;
-        } = new List<ExternalEditor>();
+        } = new List<ExternalTool>();
 
         public void VSCode(Func<string> platform_finder)
         {
-            TryAdd("Visual Studio Code", "vscode.png", "\"{0}\"", "VSCODE_PATH", platform_finder);
+            TryAdd("Visual Studio Code", "vscode", "\"{0}\"", "VSCODE_PATH", platform_finder);
         }
 
         public void VSCodeInsiders(Func<string> platform_finder)
         {
-            TryAdd("Visual Studio Code - Insiders", "vscode_insiders.png", "\"{0}\"", "VSCODE_INSIDERS_PATH", platform_finder);
+            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", "\"{0}\"", "VSCODE_INSIDERS_PATH", platform_finder);
         }
 
         public void Fleet(Func<string> platform_finder)
         {
-            TryAdd("JetBrains Fleet", "fleet.png", "\"{0}\"", "FLEET_PATH", platform_finder);
+            TryAdd("JetBrains Fleet", "fleet", "\"{0}\"", "FLEET_PATH", platform_finder);
         }
 
         public void SublimeText(Func<string> platform_finder)
         {
-            TryAdd("Sublime Text", "sublime_text.png", "\"{0}\"", "SUBLIME_TEXT_PATH", platform_finder);
+            TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT_PATH", platform_finder);
         }
 
-        private void TryAdd(string name, string icon, string args, string env, Func<string> finder)
+        public void TryAdd(string name, string icon, string args, string env, Func<string> finder)
         {
             var path = Environment.GetEnvironmentVariable(env);
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
@@ -62,7 +74,7 @@ namespace SourceGit.Models
                     return;
             }
 
-            Editors.Add(new ExternalEditor
+            Founded.Add(new ExternalTool
             {
                 Name = name,
                 Icon = icon,

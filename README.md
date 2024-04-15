@@ -37,6 +37,7 @@ You can download the latest stable from [Releases](https://github.com/sourcegit-
 For **Windows** users:
 
 * **MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
+* `Source.win-x64.zip` may be reported as virus by Windows Defender. I don't know why. I have manually tested the zip to be uploaded using Windows Defender before uploading and no virus was found. If you have installed .NET 8 SDK locally, I suggest you to compile it yourself. And if you have any idea about how to fix this, please open an issue.
 
 For **macOS** users:
 
@@ -53,20 +54,20 @@ For **Linux** users:
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI. 
 * Modify `SourceGit.desktop.template` (replace SOURCEGIT_LOCAL_FOLDER with real path) and move it into `~/.local/share/applications`.
 
-## External Editors
+## External Tools
 
-This app supports open repository in external editors listed in the table below.
+This app supports open repository in external tools listed in the table below.
 
-| Editor | Windows | macOS | Linux | Environment Variable |
+| Tool | Windows | macOS | Linux | Environment Variable |
 | --- | --- | --- | --- | --- |
 | Visual Studio Code | YES | YES | YES | VSCODE_PATH |
 | Visual Studio Code - Insiders | YES | YES | YES | VSCODE_INSIDERS_PATH |
 | JetBrains Fleet | YES | YES | YES | FLEET_PATH |
 | Sublime Text | YES | YES | YES | SUBLIME_TEXT_PATH |
 
-You can set the given environment variable for special editor if it can NOT be found by this app automatically. 
+You can set the given environment variable for special tool if it can NOT be found by this app automatically. 
 
-## Screen Shots
+## Screenshots
 
 * Dark Theme
 

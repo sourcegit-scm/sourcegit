@@ -131,6 +131,7 @@
   <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">NEW</x:String>
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">OLD</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copy</x:String>
+  <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">File Mode Changed</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS OBJECT CHANGE</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Next Difference</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">NO CHANGES OR ONLY EOL CHANGES</x:String>
@@ -160,6 +161,7 @@
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Discard...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Discard {0} files...</x:String>
   <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Discard Changes in Selected Line(s)</x:String>
+  <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">Open External Merge Tool</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Save As Patch...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Stage...</x:String>
   <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Stage {0} files...</x:String>
@@ -169,6 +171,8 @@
   <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">Unstage</x:String>
   <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">Unstage {0} files</x:String>
   <x:String x:Key="Text.FileCM.UnstageSelectedLines" xml:space="preserve">Unstage Changes in Selected Line(s)</x:String>
+  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">Use Theirs (checkout --theirs)</x:String>
+  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">Use Mine (checkout --ours)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">File History</x:String>
   <x:String x:Key="Text.Filter" xml:space="preserve">FILTER</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-Flow</x:String>
@@ -266,6 +270,7 @@
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">User Email</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Global git user email</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Install Path</x:String>
+  <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">Shell</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Global git user name</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git version</x:String>
@@ -275,7 +280,7 @@
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Input path for installed gpg program</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">User Signing Key</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">User's gpg signing key</x:String>
-  <x:String x:Key="Text.Preference.Merger" xml:space="preserve">MERGE</x:String>
+  <x:String x:Key="Text.Preference.Merger" xml:space="preserve">EXTERNAL MERGE TOOL</x:String>
   <x:String x:Key="Text.Preference.Merger.CustomDiffCmd" xml:space="preserve">Diff Command</x:String>
   <x:String x:Key="Text.Preference.Merger.CustomMergeCmd" xml:space="preserve">Merge Command</x:String>
   <x:String x:Key="Text.Preference.Merger.Path" xml:space="preserve">Install Path</x:String>
@@ -430,7 +435,6 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDE UNTRACKED FILES</x:String>
   <x:String x:Key="Text.WorkingCopy.MessageHistories" xml:space="preserve">MESSAGE HISTORIES</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NO RECENT INPUT MESSAGES</x:String>
-  <x:String x:Key="Text.WorkingCopy.OpenMerger" xml:space="preserve">OPEN MERGE</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">STAGED</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">UNSTAGE</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">UNSTAGE ALL</x:String>
@@ -438,6 +442,5 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">STAGE</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">STAGE ALL</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VIEW ASSUME UNCHANGED</x:String>
-  <x:String x:Key="Text.WorkingCopy.UseMine" xml:space="preserve">USE MINE</x:String>
-  <x:String x:Key="Text.WorkingCopy.UseTheirs" xml:space="preserve">USE THEIRS</x:String>
+  <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Right-click the selected file(s), and make your choice to resolve conflicts.</x:String>
 </ResourceDictionary>

@@ -12,7 +12,7 @@ namespace SourceGit.Native
             void SetupApp(AppBuilder builder);
 
             string FindGitExecutable();
-            List<Models.ExternalEditor> FindExternalEditors();
+            List<Models.ExternalTool> FindExternalTools();
 
             void OpenTerminal(string workdir);
             void OpenInFileManager(string path, bool select);
@@ -21,7 +21,7 @@ namespace SourceGit.Native
         }
 
         public static string GitExecutable { get; set; } = string.Empty;
-        public static List<Models.ExternalEditor> ExternalEditors { get; set; } = new List<Models.ExternalEditor>();
+        public static List<Models.ExternalTool> ExternalTools { get; set; } = new List<Models.ExternalTool>();
 
         static OS()
         {
@@ -42,7 +42,34 @@ namespace SourceGit.Native
                 throw new Exception("Platform unsupported!!!");
             }
 
-            ExternalEditors = _backend.FindExternalEditors();
+            ExternalTools = _backend.FindExternalTools();
+        }
+
+        public static Models.Shell GetShell()
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                return (_backend as Windows).Shell;
+            }
+            else
+            {
+                return Models.Shell.Default;
+            }
+        }
+
+        public static bool SetShell(Models.Shell shell)
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                var windows = (_backend as Windows);
+                if (windows.Shell != shell)
+                {
+                    windows.Shell = shell;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static void SetupApp(AppBuilder builder)

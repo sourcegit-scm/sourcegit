@@ -287,10 +287,10 @@ namespace SourceGit.ViewModels
             Native.OS.OpenTerminal(_fullpath);
         }
 
-        public ContextMenu CreateContextMenuForExternalEditors()
+        public ContextMenu CreateContextMenuForExternalTools()
         {
-            var editors = Native.OS.ExternalEditors;
-            if (editors.Count == 0)
+            var tools = Native.OS.ExternalTools;
+            if (tools.Count == 0)
             {
                 App.RaiseException(_fullpath, "No available external editors found!");
                 return null;
@@ -300,16 +300,16 @@ namespace SourceGit.ViewModels
             menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
             RenderOptions.SetBitmapInterpolationMode(menu, BitmapInterpolationMode.HighQuality);
 
-            foreach (var editor in editors)
+            foreach (var tool in tools)
             {
-                var dupEditor = editor;
-                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{dupEditor.Icon}", UriKind.RelativeOrAbsolute));
+                var dupTool = tool;
+
                 var item = new MenuItem();
-                item.Header = App.Text("Repository.OpenIn", dupEditor.Name);
-                item.Icon = new Image { Width = 16, Height = 16, Source = new Bitmap(icon) };
+                item.Header = App.Text("Repository.OpenIn", dupTool.Name);
+                item.Icon = new Image { Width = 16, Height = 16, Source = dupTool.IconImage };
                 item.Click += (o, e) =>
                 {
-                    dupEditor.Open(_fullpath);
+                    dupTool.Open(_fullpath);
                     e.Handled = true;
                 };
 

@@ -28,17 +28,31 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool File(string file, bool useTheirs)
+        public bool UseTheirs(List<string> files)
         {
-            if (useTheirs)
+            StringBuilder builder = new StringBuilder();
+            builder.Append("checkout --theirs --");
+            foreach (var f in files)
             {
-                Args = $"checkout --theirs -- \"{file}\"";
+                builder.Append(" \"");
+                builder.Append(f);
+                builder.Append("\"");
             }
-            else
-            {
-                Args = $"checkout --ours -- \"{file}\"";
-            }
+            Args = builder.ToString();
+            return Exec();
+        }
 
+        public bool UseMine(List<string> files)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("checkout --ours --");
+            foreach (var f in files)
+            {
+                builder.Append(" \"");
+                builder.Append(f);
+                builder.Append("\"");
+            }
+            Args = builder.ToString();
             return Exec();
         }
 

@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Threading.Tasks;
-
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -52,10 +51,13 @@ namespace SourceGit.Views
             set;
         }
 
+        public static readonly StyledProperty<string> GPGExecutableFileProperty =
+            AvaloniaProperty.Register<Preference, string>(nameof(GPGExecutableFile));
+
         public string GPGExecutableFile
         {
-            get;
-            set;
+            get => GetValue(GPGExecutableFileProperty);
+            set => SetValue(GPGExecutableFileProperty, value);
         }
 
         public string GPGUserKey
@@ -222,13 +224,13 @@ namespace SourceGit.Views
         private async void SelectExternalMergeTool(object sender, RoutedEventArgs e)
         {
             var type = ViewModels.Preference.Instance.ExternalMergeToolType;
-            if (type < 0 || type >= Models.ExternalMergeTools.Supported.Count)
+            if (type < 0 || type >= Models.ExternalMerger.Supported.Count)
             {
                 ViewModels.Preference.Instance.ExternalMergeToolType = 0;
                 type = 0;
             }
 
-            var tool = Models.ExternalMergeTools.Supported[type];
+            var tool = Models.ExternalMerger.Supported[type];
             var options = new FilePickerOpenOptions()
             {
                 FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],

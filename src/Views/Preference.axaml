@@ -231,7 +231,7 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Git}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,Auto,32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Git.Path}"
                        HorizontalAlignment="Right"
@@ -254,11 +254,50 @@
             <TextBlock Grid.Row="1" Grid.Column="1"
                        x:Name="txtVersion"/>
 
-            <TextBlock Grid.Row="2" Grid.Column="0"
+            <Border Grid.Row="2" Grid.Column="0"
+                    Height="32"
+                    IsVisible="{OnPlatform False, Windows=True}">
+              <TextBlock Text="{DynamicResource Text.Preference.Git.Shell}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+            </Border>
+            <ComboBox Grid.Row="2" Grid.Column="1"
+                      MinHeight="28"
+                      Padding="8,0"
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Left"
+                      RenderOptions.BitmapInterpolationMode="HighQuality"
+                      FontSize="{Binding DefaultFontSize, Mode=OneWay}"
+                      SelectedIndex="{Binding GitShell, Mode=TwoWay}"
+                      IsVisible="{OnPlatform False, Windows=True}">
+              <ComboBox.Items>
+                <Grid ColumnDefinitions="Auto,*">
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/git-bash.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <TextBlock Grid.Column="1" Text="Git Bash" Margin="6,0,0,0"/>
+                </Grid>
+                
+                <Grid ColumnDefinitions="Auto,*">
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/pwsh.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <TextBlock Grid.Column="1" Text="PowerShell" Margin="6,0,0,0"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="Auto,*">
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/cmd.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <TextBlock Grid.Column="1" Text="Command Prompt" Margin="6,0,0,0"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="Auto,*">
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/wt.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <TextBlock Grid.Column="1" Text="Default Shell in Windows Terminal" Margin="6,0,0,0"/>
+                </Grid>
+              </ComboBox.Items>
+            </ComboBox>
+
+            <TextBlock Grid.Row="3" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Git.DefaultCloneDir}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="2" Grid.Column="1"
+            <TextBox Grid.Row="3" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding GitDefaultCloneDir, Mode=TwoWay}">
@@ -269,31 +308,31 @@
               </TextBox.InnerRightContent>
             </TextBox>
 
-            <TextBlock Grid.Row="3" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Git.User}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
-            <TextBox Grid.Row="3" Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3"
-                     Text="{Binding #me.DefaultUser, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preference.Git.User.Placeholder}"/>
-
             <TextBlock Grid.Row="4" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Git.Email}"
+                       Text="{DynamicResource Text.Preference.Git.User}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="4" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
+                     Text="{Binding #me.DefaultUser, Mode=TwoWay}"
+                     Watermark="{DynamicResource Text.Preference.Git.User.Placeholder}"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0"
+                       Text="{DynamicResource Text.Preference.Git.Email}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <TextBox Grid.Row="5" Grid.Column="1"
+                     Height="28"
+                     CornerRadius="3"
                      Text="{Binding #me.DefaultEmail, Mode=TwoWay}"
                      Watermark="{DynamicResource Text.Preference.Git.Email.Placeholder}"/>
 
-            <TextBlock Grid.Row="5" Grid.Column="0"
+            <TextBlock Grid.Row="6" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Git.CRLF}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="5" Grid.Column="1"
+            <ComboBox Grid.Row="6" Grid.Column="1"
                       MinHeight="28"
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
@@ -309,7 +348,7 @@
               </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <CheckBox Grid.Row="6" Grid.Column="1"
+            <CheckBox Grid.Row="7" Grid.Column="1"
                       Content="{DynamicResource Text.Preference.Git.AutoFetch}"
                       IsChecked="{Binding GitAutoFetch, Mode=TwoWay}"/>
           </Grid>
@@ -333,7 +372,6 @@
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="1" Grid.Column="1"
-                     x:Name="txtGPGExecutable"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #me.GPGExecutableFile, Mode=TwoWay}">
@@ -370,9 +408,20 @@
                       MinHeight="28"
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding Source={x:Static m:ExternalMergeTools.Supported}}"
-                      DisplayMemberBinding="{Binding Name, x:DataType=m:ExternalMergeTools}"
-                      SelectedIndex="{Binding ExternalMergeToolType, Mode=TwoWay}"/>
+                      HorizontalContentAlignment="Left"
+                      RenderOptions.BitmapInterpolationMode="HighQuality"
+                      FontSize="{Binding DefaultFontSize}"
+                      ItemsSource="{Binding Source={x:Static m:ExternalMerger.Supported}}"
+                      SelectedIndex="{Binding ExternalMergeToolType, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type m:ExternalMerger}">
+                  <Grid ColumnDefinitions="Auto,*">
+                    <Image Grid.Column="0" Width="16" Height="16" Source="{Binding IconImage}" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="6,0,0,0"/>
+                  </Grid>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Merger.Path}"

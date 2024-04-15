@@ -27,19 +27,16 @@ namespace SourceGit.ViewModels
             get => _option.IsUnstaged;
         }
 
-        public string FilePath
+        public string Title
         {
-            get => _option.Path;
+            get => _title;
+            private set => SetProperty(ref _title, value);
         }
 
-        public bool IsOrgFilePathVisible
+        public string FileModeChange
         {
-            get => !string.IsNullOrWhiteSpace(_option.OrgPath) && _option.OrgPath != "/dev/null";
-        }
-
-        public string OrgFilePath
-        {
-            get => _option.OrgPath;
+            get => _fileModeChange;
+            private set => SetProperty(ref _fileModeChange, value);
         }
 
         public bool IsLoading
@@ -76,10 +73,6 @@ namespace SourceGit.ViewModels
                 _isTextDiff = previous._isTextDiff;
                 _content = previous._content;
             }
-
-            OnPropertyChanged(nameof(FilePath));
-            OnPropertyChanged(nameof(IsOrgFilePathVisible));
-            OnPropertyChanged(nameof(OrgFilePath));
 
             Task.Run(() =>
             {
@@ -140,6 +133,12 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    if (string.IsNullOrEmpty(_option.OrgPath))
+                        Title = _option.Path;
+                    else
+                        Title = $"{_option.OrgPath} → {_option.Path}";
+
+                    FileModeChange = latest.FileModeChange;
                     Content = rs;
                     IsTextDiff = latest.TextDiff != null;
                     IsLoading = false;
@@ -152,7 +151,7 @@ namespace SourceGit.ViewModels
             var type = Preference.Instance.ExternalMergeToolType;
             var exec = Preference.Instance.ExternalMergeToolPath;
 
-            var tool = Models.ExternalMergeTools.Supported.Find(x => x.Type == type);
+            var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
             if (tool == null || !File.Exists(exec))
             {
                 App.RaiseException(_repo, "Invalid merge tool in preference setting!");
@@ -176,6 +175,8 @@ namespace SourceGit.ViewModels
 
         private readonly string _repo = string.Empty;
         private readonly Models.DiffOption _option = null;
+        private string _title = string.Empty;
+        private string _fileModeChange = string.Empty;
         private bool _isLoading = true;
         private bool _isTextDiff = false;
         private object _content = null;
