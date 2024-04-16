@@ -82,5 +82,5 @@ You can set the given environment variable for special tool if it can NOT be fou
 Thanks to all the people who contribute.
 
 <a href="https://github.com/sourcegit-scm/sourcegit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&t=1" />
+  <img src="https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&t=2" />
 </a>
