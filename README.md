@@ -37,11 +37,11 @@ You can download the latest stable from [Releases](https://github.com/sourcegit-
 For **Windows** users:
 
 * **MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
-* `Source.win-x64.zip` may be reported as virus by Windows Defender. I don't know why. I have manually tested the zip to be uploaded using Windows Defender before uploading and no virus was found. If you have installed .NET 8 SDK locally, I suggest you to compile it yourself. And if you have any idea about how to fix this, please open an issue.
+* `sourcegit_x.y.win-x64.zip` may be reported as virus by Windows Defender. I don't know why. I have manually tested the zip to be uploaded using Windows Defender before uploading and no virus was found. If you have installed .NET 8 SDK locally, I suggest you to compile it yourself. And if you have any idea about how to fix this, please open an issue.
 
 For **macOS** users:
 
-* Download `SourceGit.osx-x64.zip` or `SourceGit.osx-arm64.zip` from Releases. `x64` for Intel and `arm64` for Apple Silicon.
+* Download `sourcegit_x.y.osx-x64.zip` or `sourcegit_x.y.osx-arm64.zip` from Releases. `x64` for Intel and `arm64` for Apple Silicon.
 * Move `SourceGit.app` to `Applications` folder.
 * Make sure your mac trusts all software from anywhere. For more information, search `spctl --master-disable`.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your mac.
