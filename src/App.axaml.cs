@@ -165,7 +165,7 @@ namespace SourceGit
                 {
                     // Fetch lastest release information.
                     var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(2) };
-                    var data = await client.GetStringAsync("https://api.github.com/repos/sourcegit-scm/sourcegit/releases/latest");
+                    var data = await client.GetStringAsync("https://sourcegit-scm.github.io/data/version.json");
 
                     // Parse json into Models.Version.
                     var ver = JsonSerializer.Deserialize(data, JsonCodeGen.Default.Version);
