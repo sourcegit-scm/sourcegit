@@ -99,19 +99,18 @@ namespace SourceGit.Views
             set => SetValue(BindingDataGridProperty, value);
         }
 
-        static CommitGraph()
+        public static readonly StyledProperty<IBrush> DotBrushProperty =
+            AvaloniaProperty.Register<CommitGraph, IBrush>(nameof(DotBrush), Brushes.Transparent);
+
+        public IBrush DotBrush
         {
-            AffectsRender<CommitGraph>(BindingDataGridProperty, GraphProperty);
+            get => GetValue(DotBrushProperty);
+            set => SetValue(DotBrushProperty, value);
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        static CommitGraph()
         {
-            base.OnPropertyChanged(change);
-
-            if (change.Property.Name == "ActualThemeVariant")
-            {
-                InvalidateVisual();
-            }
+            AffectsRender<CommitGraph>(BindingDataGridProperty, GraphProperty, DotBrushProperty);
         }
 
         public override void Render(DrawingContext context)
@@ -153,11 +152,7 @@ namespace SourceGit.Views
             DrawCurves(context, top, bottom);
 
             // Draw connect dots
-            Brush dotFill = null;
-            if (App.Current.TryGetResource("Brush.Contents", App.Current.ActualThemeVariant, out object res) && res is SolidColorBrush)
-            {
-                dotFill = res as SolidColorBrush;
-            }
+            IBrush dotFill = DotBrush;
             foreach (var dot in graph.Dots)
             {
                 if (dot.Center.Y < top)

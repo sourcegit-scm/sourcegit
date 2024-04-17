@@ -131,6 +131,7 @@
       <v:CommitGraph x:Name="commitGraph"
                      BindingDataGrid="{Binding #commitDataGrid}"
                      Graph="{Binding Graph}"
+                     DotBrush="{DynamicResource Brush.Contents}"
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
                      ClipToBounds="True"/>
