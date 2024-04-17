@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version=`cat ./VERSION`
+version=`cat ../VERSION`
 
 rm -rf SourceGit.app *.zip
 

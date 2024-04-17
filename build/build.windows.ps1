@@ -1,4 +1,4 @@
-$version = Get-Content .\VERSION
+$version = Get-Content ..\VERSION
 
 if (Test-Path SourceGit) {
     Remove-Item SourceGit -Recurse -Force

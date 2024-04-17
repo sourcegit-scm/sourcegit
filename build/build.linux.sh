@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version=`cat ./VERSION`
+version=`cat ../VERSION`
 
 # Cleanup
 rm -rf SourceGit *.tar.gz resources/deb/opt *.deb *.rpm
