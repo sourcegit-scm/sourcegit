@@ -30,7 +30,7 @@ Opensource Git GUI client.
 
 ## How to use
 
-**To use this tool, you need to install Git first.**
+**To use this tool, you need to install Git(>=2.23.0) first.**
 
 You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [Github Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on latest commits.
 
@@ -50,7 +50,7 @@ For **macOS** users:
 For **Linux** users:
 
 * `xdg-open` must be installed to support open native file manager.
-* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux, and it requires `ttf-mscorefonts-installer` installed.
+* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI. 
 
 ## External Tools
