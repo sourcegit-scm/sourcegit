@@ -596,14 +596,11 @@ package-lock.json
 *.db-shm
 *.db-wal
 
-## SourceGit ###
-
-# Output folders.
-[Bb]uild/[Ss]ource[Gg]it/
-[Bb]uild/[Ss]ource[Gg]it.app/
-
-# Files
-SourceGit.win-x64.zip
-SourceGit.linux-x64.tar.gz
-SourceGit.osx-x64.zip
-SourceGit.osx-arm64.zip
+# SourceGit output files
+build/resources/
+build/SourceGit/
+build/SourceGit.app/
+build/*.zip
+build/*.tar.gz
+build/*.deb
+build/*.rpm

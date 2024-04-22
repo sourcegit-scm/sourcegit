@@ -160,7 +160,7 @@ namespace SourceGit.Native
                         return;
                     }
 
-                    startInfo.FileName = FindWindowsTerminalApp();
+                    startInfo.FileName = wt;
                     startInfo.Arguments = $"-d \"{workdir}\"";
                     break;
                 default:

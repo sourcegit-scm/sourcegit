@@ -1,0 +1,7 @@
+Package: sourcegit
+Version: 8.8
+Priority: optional
+Depends: libx11-6, libice6, libsm6
+Architecture: amd64
+Maintainer: longshuang@msn.cn
+Description: Open-source & Free Git GUI Client

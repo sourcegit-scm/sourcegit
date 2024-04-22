@@ -30,18 +30,18 @@ Opensource Git GUI client.
 
 ## How to use
 
-**To use this tool, you need to install Git first.**
+**To use this tool, you need to install Git(>=2.23.0) first.**
 
 You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [Github Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on latest commits.
 
 For **Windows** users:
 
 * **MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
-* `Source.win-x64.zip` may be reported as virus by Windows Defender. I don't know why. I have manually tested the zip to be uploaded using Windows Defender before uploading and no virus was found. If you have installed .NET 8 SDK locally, I suggest you to compile it yourself. And if you have any idea about how to fix this, please open an issue.
+* `sourcegit_x.y.win-x64.zip` may be reported as virus by Windows Defender. I don't know why. I have manually tested the zip to be uploaded using Windows Defender before uploading and no virus was found. If you have installed .NET 8 SDK locally, I suggest you to compile it yourself. And if you have any idea about how to fix this, please open an issue.
 
 For **macOS** users:
 
-* Download `SourceGit.osx-x64.zip` or `SourceGit.osx-arm64.zip` from Releases. `x64` for Intel and `arm64` for Apple Silicon.
+* Download `sourcegit_x.y.osx-x64.zip` or `sourcegit_x.y.osx-arm64.zip` from Releases. `x64` for Intel and `arm64` for Apple Silicon.
 * Move `SourceGit.app` to `Applications` folder.
 * Make sure your mac trusts all software from anywhere. For more information, search `spctl --master-disable`.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your mac.
@@ -50,9 +50,8 @@ For **macOS** users:
 For **Linux** users:
 
 * `xdg-open` must be installed to support open native file manager.
-* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux, and it requires `ttf-mscorefonts-installer` installed.
+* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI. 
-* Modify `SourceGit.desktop.template` (replace SOURCEGIT_LOCAL_FOLDER with real path) and move it into `~/.local/share/applications`.
 
 ## External Tools
 
@@ -82,5 +81,5 @@ You can set the given environment variable for special tool if it can NOT be fou
 Thanks to all the people who contribute.
 
 <a href="https://github.com/sourcegit-scm/sourcegit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&t=1" />
+  <img src="https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&t=2" />
 </a>

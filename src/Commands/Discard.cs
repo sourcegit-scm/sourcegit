@@ -7,7 +7,7 @@ namespace SourceGit.Commands
     {
         public static void All(string repo)
         {
-            new Reset(repo, "HEAD", "--hard").Exec();
+            new Restore(repo).Exec();
             new Clean(repo).Exec();
         }
 
@@ -37,7 +37,7 @@ namespace SourceGit.Commands
             for (int i = 0; i < needCheckout.Count; i += 10)
             {
                 var count = Math.Min(10, needCheckout.Count - i);
-                new Checkout(repo).Files(needCheckout.GetRange(i, count));
+                new Restore(repo, needCheckout.GetRange(i, count), "--worktree --recurse-submodules").Exec();
             }
         }
 
@@ -49,7 +49,7 @@ namespace SourceGit.Commands
                 var files = new List<string>();
                 for (int j = 0; j < count; j++)
                     files.Add(changes[i + j].Path);
-                new Restore(repo, files, "--staged --worktree").Exec();
+                new Restore(repo, files, "--staged --worktree --recurse-submodules").Exec();
             }
         }
     }

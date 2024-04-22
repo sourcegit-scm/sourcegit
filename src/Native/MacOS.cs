@@ -23,9 +23,8 @@ namespace SourceGit.Native
 
         public string FindGitExecutable()
         {
-            if (File.Exists("/usr/bin/git"))
-                return "/usr/bin/git";
-            return string.Empty;
+            // XCode built-in git
+            return File.Exists("/usr/bin/git") ? "/usr/bin/git" : string.Empty;
         }
 
         public List<Models.ExternalTool> FindExternalTools()
@@ -34,7 +33,7 @@ namespace SourceGit.Native
             finder.VSCode(() => "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code");
             finder.VSCodeInsiders(() => "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code");
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Applications/Fleet.app/Contents/MacOS/Fleet");
-            finder.SublimeText(() => "/Applications/Sublime Text.app/Contents/SharedSupport/bin");
+            finder.SublimeText(() => "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl");
             return finder.Founded;
         }
 
@@ -69,7 +68,7 @@ namespace SourceGit.Native
             var tmp = Path.GetTempFileName();
             File.WriteAllText(tmp, builder.ToString());
 
-            var proc = Process.Start("/usr/bin/osascript", $"\"{tmp}\"");
+            var proc = Process.Start("osascript", $"\"{tmp}\"");
             proc.Exited += (o, e) => File.Delete(tmp);
         }
 

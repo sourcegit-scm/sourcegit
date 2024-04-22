@@ -61,7 +61,7 @@ namespace SourceGit.Native
         {
             if (OperatingSystem.IsWindows())
             {
-                var windows = (_backend as Windows);
+                var windows = _backend as Windows;
                 if (windows.Shell != shell)
                 {
                     windows.Shell = shell;

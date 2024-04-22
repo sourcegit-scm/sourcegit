@@ -69,12 +69,16 @@
           </Button>
         </StackPanel>
 
-        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
+        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">          
           <ToggleButton Classes="layout_direction"
                         Width="32" Height="26"
                         IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=TwoWay}"
                         IsVisible="{Binding SelectedViewIndex, Converter={x:Static c:IntConverters.IsZero}}"
                         ToolTip.Tip="{DynamicResource Text.Histories.DisplayMode}"/>
+
+          <Button Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Target}"/>
+          </Button>
 
           <Button Classes="icon_button" Width="32" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
             <Path Width="14" Height="14" Data="{StaticResource Icons.Clean}"/>
@@ -111,19 +115,16 @@
           </ListBox.ItemsPanel>
 
           <ListBoxItem Height="28" Padding="0">
-            <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="Auto,*,Auto">
-              <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Histories}"/>
-              <TextBlock Grid.Column="1" Margin="8,0,0,0" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
-              <Button Grid.Column="2" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
-                <Path Width="14" Height="14" Data="{StaticResource Icons.Target}"/>
-              </Button>
+            <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="20,*">
+              <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Histories}"/>
+              <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
             </Grid>
           </ListBoxItem>
 
           <ListBoxItem Height="28" Padding="0">
-            <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="Auto,*,Auto">
-              <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Send}"/>
-              <TextBlock Grid.Column="1" Classes="monospace" Margin="8,0,0,0" Text="{DynamicResource Text.WorkingCopy}"/>
+            <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="20,*,Auto">
+              <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Send}"/>
+              <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.WorkingCopy}"/>
               <Border Grid.Column="2"
                       Margin="6,0"
                       Height="18"
@@ -137,9 +138,9 @@
           </ListBoxItem>
 
           <ListBoxItem Height="28" Padding="0">
-            <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="Auto,*,Auto">
-              <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Stashes}"/>
-              <TextBlock Grid.Column="1" Classes="monospace" Margin="8,0,0,0" Text="{DynamicResource Text.Stashes}"/>
+            <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="20,*,Auto">
+              <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Stashes}"/>
+              <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Stashes}"/>
               <Border Grid.Column="2"
                       Margin="6,0"
                       Height="18"
@@ -170,10 +171,10 @@
           </TreeView.Styles>
           <TreeView.ItemTemplate>
             <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type m:BranchTreeNode}">
-              <Grid Height="24" ColumnDefinitions="Auto,*,Auto,Auto" Background="Transparent" ContextRequested="OnLocalBranchContextMenuRequested" DoubleTapped="OnDoubleTappedLocalBranchNode">
-                <Path Grid.Column="0" Classes="folder_icon" Width="10" Height="10" Margin="0,1,0,0" IsVisible="{Binding IsFolder}"/>
-                <Path Grid.Column="0" Width="10" Height="10" Margin="0,2,0,0" Data="{StaticResource Icons.Check}" IsVisible="{Binding IsCurrent}" VerticalAlignment="Center"/>
-                <Path Grid.Column="0" Width="10" Height="10" Data="{StaticResource Icons.Branch}" VerticalAlignment="Center">
+              <Grid Height="24" ColumnDefinitions="20,*,Auto,Auto" Background="Transparent" ContextRequested="OnLocalBranchContextMenuRequested" DoubleTapped="OnDoubleTappedLocalBranchNode">
+                <Path Grid.Column="0" Classes="folder_icon" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,1,0,0" IsVisible="{Binding IsFolder}"/>
+                <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,2,0,0" Data="{StaticResource Icons.Check}" IsVisible="{Binding IsCurrent}" VerticalAlignment="Center"/>
+                <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}" VerticalAlignment="Center">
                   <Path.IsVisible>
                     <MultiBinding Converter="{x:Static BoolConverters.And}">
                       <Binding Path="!IsFolder"/>
@@ -181,8 +182,8 @@
                     </MultiBinding>
                   </Path.IsVisible>
                 </Path>
-                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontWeight="Bold" Margin="8,0,4,0" IsVisible="{Binding IsCurrent}"/>
-                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" Margin="8,0,4,0" IsVisible="{Binding !IsCurrent}"/>
+                
+                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
 
                 <Border Grid.Column="2" Margin="8,0" Height="18" CornerRadius="9" VerticalAlignment="Center" Background="{DynamicResource Brush.Badge}" IsVisible="{Binding IsUpstreamTrackStatusVisible}">
                   <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}"/>
@@ -223,12 +224,12 @@
 
           <TreeView.ItemTemplate>
             <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type m:BranchTreeNode}">
-              <Grid Height="24" ColumnDefinitions="Auto,*,Auto" Background="Transparent" ContextRequested="OnRemoteBranchContextMenuRequested">
-                <Path Grid.Column="0" Classes="folder_icon" Width="10" Height="10" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" VerticalAlignment="Center"/>
-                <Path Grid.Column="0" Width="10" Height="10" Margin="0,4,0,0" Data="{StaticResource Icons.Remote}" IsVisible="{Binding IsRemote}" VerticalAlignment="Center"/>
-                <Path Grid.Column="0" Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}" VerticalAlignment="Center"/>
+              <Grid Height="24" ColumnDefinitions="20,*,Auto" Background="Transparent" ContextRequested="OnRemoteBranchContextMenuRequested">
+                <Path Grid.Column="0" Classes="folder_icon" Width="10" Height="10" HorizontalAlignment="Left" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" VerticalAlignment="Center"/>
+                <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,2,0,0" Data="{StaticResource Icons.Remote}" IsVisible="{Binding IsRemote}" VerticalAlignment="Center"/>
+                <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}" VerticalAlignment="Center"/>
 
-                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" Margin="8,0,4,0"/>
+                <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace"/>
 
                 <ToggleButton Grid.Column="2"
                               Classes="filter"
@@ -318,7 +319,7 @@
               <Path x:Name="iconSubmoduleUpdate" Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
             </Button>
             <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="0,0,8,0" Command="{Binding AddSubmodule}" ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Add}">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.Submodule}"/>
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Submodule.Add}"/>
             </Button>
           </Grid>
         </ToggleButton>
