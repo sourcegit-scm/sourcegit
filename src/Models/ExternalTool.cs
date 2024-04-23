@@ -59,6 +59,11 @@ namespace SourceGit.Models
             TryAdd("JetBrains Fleet", "fleet", "\"{0}\"", "FLEET_PATH", platform_finder);
         }
 
+        public void Rider(Func<string> platform_finder)
+        {
+            TryAdd("JetBrains Rider", "rider", "\"{0}\"", "RIDER_PATH", platform_finder);
+        }
+
         public void SublimeText(Func<string> platform_finder)
         {
             TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT_PATH", platform_finder);

@@ -33,6 +33,7 @@ namespace SourceGit.Native
             finder.VSCode(() => "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code");
             finder.VSCodeInsiders(() => "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code");
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Applications/Fleet.app/Contents/MacOS/Fleet");
+            finder.Rider(() => string.Empty);
             finder.SublimeText(() => "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl");
             return finder.Founded;
         }
