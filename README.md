@@ -28,11 +28,19 @@ Opensource Git GUI client.
 
 > **Linux** only tested on **Ubuntu 22.04** on **X11**.
 
-## How to use
+## How to Use
 
 **To use this tool, you need to install Git(>=2.23.0) first.**
 
 You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [Github Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on latest commits.
+
+This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationData}/SourceGit"`, which is platform-dependent, to store user settings, downloaded avatars and crash logs. 
+
+| OS | PATH |
+| --- | --- |
+| Windows | `C:\Users\USER_NAME\AppData\Roaming\SourceGit` |
+| Linux | `/home/USER_NAME/.config/SourceGit` |
+| macOS | `/Users/USER_NAME/.config/SourceGit` |
 
 For **Windows** users:
 
