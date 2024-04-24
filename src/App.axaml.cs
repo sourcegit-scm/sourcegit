@@ -43,8 +43,8 @@ namespace SourceGit
                 builder.Append(ex.StackTrace);
 
                 var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-                var file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "SourceGit",
+                var file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    ".source-git",
                     $"crash_{time}.log");
                 File.WriteAllText(file, builder.ToString());
             }

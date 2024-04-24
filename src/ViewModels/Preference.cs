@@ -435,8 +435,8 @@ namespace SourceGit.ViewModels
 
         private static Preference _instance = null;
         private static readonly string _savePath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "SourceGit",
+            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            ".source-git",
             "preference.json");
 
         private string _locale = "en_US";
