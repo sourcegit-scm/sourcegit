@@ -627,8 +627,8 @@
                              FontSize="11"/>
                   <Path Name="PART_ChevronPath"
                         Width="6"
-                        Data="M 0 0 L 0 7 L 4 3.5 Z"
-                        Fill="{DynamicResource MenuFlyoutSubItemChevron}"
+                        Data="M573 512 215 881c-20 20-20 51 0 61l61 61c20 20 51 20 61 0l461-461c10-10 10-20 10-31s0-20-10-31L338 20C317 0 287 0 276 20L215 82c-20 20-20 51 0 61L573 512z"
+                        Fill="{DynamicResource Brush.FG2}"
                         Margin="8,0,0,0"
                         VerticalAlignment="Center"
                         Grid.Column="3" />
