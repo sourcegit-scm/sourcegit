@@ -34,6 +34,8 @@ namespace SourceGit.ViewModels
                 }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
+                _repo.RefreshBranches();
+                _repo.RefreshCommits();
                 return true;
             });
         }

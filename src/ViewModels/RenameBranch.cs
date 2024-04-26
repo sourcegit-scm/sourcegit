@@ -56,6 +56,8 @@ namespace SourceGit.ViewModels
             {
                 var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, _name);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
+                _repo.RefreshBranches();
+                _repo.RefreshCommits();
                 return succ;
             });
         }
