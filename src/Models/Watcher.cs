@@ -177,7 +177,10 @@ namespace SourceGit.Models
                      name.StartsWith("worktrees/", StringComparison.Ordinal) ||
                      name.StartsWith("logs/HEAD", StringComparison.Ordinal))
             {
-                _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
+                if (!name.EndsWith("FETCH_HEAD", StringComparison.Ordinal))
+                {
+                    _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
+                }
             }
             else if (name.StartsWith("objects/", StringComparison.Ordinal) ||
                      name.Equals("index", StringComparison.Ordinal))
