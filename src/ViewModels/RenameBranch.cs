@@ -34,7 +34,7 @@ namespace SourceGit.ViewModels
             {
                 foreach (var b in rename._repo.Branches)
                 {
-                    if (b != rename.Target && b.Name == name)
+                    if (b.IsLocal && b != rename.Target && b.Name == name)
                     {
                         return new ValidationResult("A branch with same name already exists!!!");
                     }
