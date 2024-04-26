@@ -172,13 +172,15 @@ namespace SourceGit.Models
                 _updateStashes = DateTime.Now.AddSeconds(.5).ToFileTime();
             }
             else if (name.Equals("HEAD", StringComparison.Ordinal) ||
-                name.StartsWith("refs/heads/", StringComparison.Ordinal) ||
-                name.StartsWith("refs/remotes/", StringComparison.Ordinal) ||
-                name.StartsWith("worktrees/", StringComparison.Ordinal))
+                     name.StartsWith("refs/heads/", StringComparison.Ordinal) ||
+                     name.StartsWith("refs/remotes/", StringComparison.Ordinal) ||
+                     name.StartsWith("worktrees/", StringComparison.Ordinal) ||
+                     name.StartsWith("logs/HEAD", StringComparison.Ordinal))
             {
                 _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
             }
-            else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal))
+            else if (name.StartsWith("objects/", StringComparison.Ordinal) ||
+                     name.Equals("index", StringComparison.Ordinal))
             {
                 _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
             }
