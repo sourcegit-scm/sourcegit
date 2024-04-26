@@ -274,6 +274,14 @@ namespace SourceGit.ViewModels
                     SelectedStagedTreeNode = null;
                     SetDetail(null, false);
                 }
+
+                // Try to load merge message from MERGE_MSG
+                if (string.IsNullOrEmpty(_commitMessage))
+                {
+                    var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
+                    if (File.Exists(mergeMsgFile))
+                        CommitMessage = File.ReadAllText(mergeMsgFile);
+                }
             });
 
             return hasConflict;
