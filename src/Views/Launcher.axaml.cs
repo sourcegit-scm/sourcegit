@@ -238,13 +238,36 @@ namespace SourceGit.Views
 
         private void OnPointerPressedTab(object sender, PointerPressedEventArgs e)
         {
-            _pressedTab = true;
-            _startDrag = false;
-            _pressedTabPosition = e.GetPosition(sender as Border);
+            var point = e.GetCurrentPoint(this);
+            if (point.Properties.IsMiddleButtonPressed)
+            {
+                _middleButtonPressed = true;
+            }
+            else
+            {
+                _pressedTab = true;
+                _startDrag = false;
+                _pressedTabPosition = e.GetPosition(sender as Border);
+            }
         }
 
         private void OnPointerReleasedTab(object sender, PointerReleasedEventArgs e)
         {
+            if (_middleButtonPressed)
+            {
+                if (sender is Border border)
+                {
+                    var point = e.GetPosition(border);
+                    if (border.Bounds.Contains(point))
+                    {
+                        if (DataContext is ViewModels.Launcher vm)
+                        {
+                            vm.CloseTab(border.DataContext as ViewModels.LauncherPage);
+                        }
+                    }
+                }
+                _middleButtonPressed = false;
+            }
             _pressedTab = false;
             _startDrag = false;
         }
@@ -337,5 +360,6 @@ namespace SourceGit.Views
         private bool _pressedTab = false;
         private Point _pressedTabPosition = new Point();
         private bool _startDrag = false;
+        private bool _middleButtonPressed = false;
     }
 }
