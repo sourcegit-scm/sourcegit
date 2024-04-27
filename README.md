@@ -72,7 +72,8 @@ This app supports open repository in external tools listed in the table below.
 | JetBrains Fleet | YES | YES | YES | FLEET_PATH |
 | Sublime Text | YES | YES | YES | SUBLIME_TEXT_PATH |
 
-> You can set the given environment variable for special tool if it can NOT be found by this app automatically. 
+> * You can set the given environment variable for special tool if it can NOT be found by this app automatically. 
+> * Installing `JetBrains Toolbox` will help this app to find other JetBrains tools installed on your device.
 
 ## Screenshots
 
