@@ -21,20 +21,24 @@ namespace SourceGit.Models
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(Icon))
+                if (_isFirstTimeGetIcon)
                 {
-                    return null;
+                    _isFirstTimeGetIcon = false;
+
+                    if (!string.IsNullOrWhiteSpace(Icon))
+                    {
+                        try
+                        {
+                            var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{Icon}.png", UriKind.RelativeOrAbsolute));
+                            _iconImage = new Bitmap(icon);
+                        }
+                        catch
+                        {
+                        }
+                    }
                 }
 
-                try
-                {
-                    var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{Icon}.png", UriKind.RelativeOrAbsolute));
-                    return new Bitmap(icon);
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
+                return _iconImage;
             }
         }
 
@@ -48,6 +52,9 @@ namespace SourceGit.Models
                 UseShellExecute = false,
             });
         }
+
+        private bool _isFirstTimeGetIcon = true;
+        private Bitmap _iconImage = null;
     }
 
     public class JetBrainsState
