@@ -12,6 +12,7 @@ namespace SourceGit.Models
     {
         public string Name { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
+        public string FallbackIcon { get; set; } = string.Empty;
         public string Executable { get; set; } = string.Empty;
         public string OpenCmdArgs { get; set; } = string.Empty;
 
@@ -19,8 +20,31 @@ namespace SourceGit.Models
         {
             get
             {
-                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{Icon}.png", UriKind.RelativeOrAbsolute));
-                return new Bitmap(icon);
+                if (string.IsNullOrWhiteSpace(Icon))
+                {
+                    return null;
+                }
+
+                if (File.Exists(Icon))
+                {
+                    return new Bitmap(Icon);
+                }
+
+                try
+                {
+                    var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{Icon}.png", UriKind.RelativeOrAbsolute));
+                    return new Bitmap(icon);
+                }
+                catch (Exception)
+                {
+                    if (!string.IsNullOrWhiteSpace(FallbackIcon))
+                    {
+                        var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{FallbackIcon}.png", UriKind.RelativeOrAbsolute));
+                        return new Bitmap(icon);
+                    }
+
+                    return null;
+                }
             }
         }
 
@@ -64,7 +88,7 @@ namespace SourceGit.Models
             TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT_PATH", platform_finder);
         }
 
-        public void TryAdd(string name, string icon, string args, string env, Func<string> finder)
+        public void TryAdd(string name, string icon, string args, string env, Func<string> finder, string fallbackIcon = "")
         {
             var path = Environment.GetEnvironmentVariable(env);
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
@@ -76,10 +100,7 @@ namespace SourceGit.Models
 
             Founded.Add(new ExternalTool
             {
-                Name = name,
-                Icon = icon,
-                OpenCmdArgs = args,
-                Executable = path,
+                Name = name, Icon = icon, OpenCmdArgs = args, Executable = path, FallbackIcon = fallbackIcon
             });
         }
     }
