@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
@@ -51,21 +52,33 @@ namespace SourceGit.Models
 
     public class JetBrainsState
     {
-        public int Version { get; set; }
-        public string AppVersion { get; set; }
-        public List<JetBrainsTool> Tools { get; set; }
+        [JsonPropertyName("version")]
+        public int Version { get; set; } = 0;
+        [JsonPropertyName("appVersion")]
+        public string AppVersion { get; set; } = string.Empty;
+        [JsonPropertyName("tools")]
+        public List<JetBrainsTool> Tools { get; set; } = new List<JetBrainsTool>();
     }
 
     public class JetBrainsTool
     {
+        [JsonPropertyName("channelId")]
         public string ChannelId { get; set; }
+        [JsonPropertyName("toolId")]
         public string ToolId { get; set; }
+        [JsonPropertyName("productCode")]
         public string ProductCode { get; set; }
+        [JsonPropertyName("tag")]
         public string Tag { get; set; }
+        [JsonPropertyName("displayName")]
         public string DisplayName { get; set; }
+        [JsonPropertyName("displayVersion")]
         public string DisplayVersion { get; set; }
+        [JsonPropertyName("buildNumber")]
         public string BuildNumber { get; set; }
+        [JsonPropertyName("installLocation")]
         public string InstallLocation { get; set; }
+        [JsonPropertyName("launchCommand")]
         public string LaunchCommand { get; set; }
     }
 
