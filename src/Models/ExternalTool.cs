@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-
+using System.Linq;
+using System.Text.Json;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using SourceGit.Native;
 
 namespace SourceGit.Models
 {
@@ -60,6 +62,29 @@ namespace SourceGit.Models
         }
     }
 
+    public class JetBrainsTool
+    {
+        public string Name { get; set; }
+        public string Instance { get; set; }
+        public string Path { get; set; }
+        public string Version { get; set; }
+        public string BuildNumber { get; set; }
+        public string ProductCode { get; set; }
+        public string DataDirectoryName { get; set; }
+        public string SvgIconPath { get; set; }
+        public string PngIconPath => System.IO.Path.ChangeExtension(SvgIconPath, "png");
+        public string IcoIconPath => System.IO.Path.ChangeExtension(SvgIconPath, "ico");
+        public string ProductVendor { get; set; }
+        public string Executable { get; set; }
+        public string Icon { get; set; }
+        public string FallbackIcon { get; set; }
+
+        public override string ToString()
+        {
+            return $"{ProductVendor} {Name} {Version}";
+        }
+    }
+
     public class ExternalToolsFinder
     {
         public List<ExternalTool> Founded
@@ -102,6 +127,68 @@ namespace SourceGit.Models
             {
                 Name = name, Icon = icon, OpenCmdArgs = args, Executable = path, FallbackIcon = fallbackIcon
             });
+        }
+
+        public void FindJetBrainsFromToolbox(Func<string> platform_finder)
+        {
+            var exclude = new[] { "fleet", "dotmemory", "dottrace", "resharper-u", "androidstudio" };
+            var state = Path.Combine(platform_finder.Invoke(), "state.json");
+            var models = Array.Empty<JetBrainsTool>();
+            if (File.Exists(state))
+            {
+                var stateData = JsonSerializer.Deserialize<JetBrainsState>(File.ReadAllText(state), new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, });
+
+                var tools = stateData.Tools
+                    .Where(p => !exclude.Contains(p.ToolId.ToLowerInvariant()))
+                    .ToArray();
+
+                models = tools.Select(s =>
+                {
+                   return new JetBrainsTool()
+                    {
+                        Name = s.DisplayName,
+                        Executable = s.LaunchCommand,
+                        Icon =$"JetBrains/{s.ProductCode}",
+                        FallbackIcon = $"JetBrains/JB",
+                        Path = s.InstallLocation,
+                        Version = s.DisplayVersion,
+                        BuildNumber = s.BuildNumber,
+                        ProductCode = s.ProductCode,
+                        ProductVendor = "JetBrains",
+                    };
+                }).ToArray();
+            }
+
+            foreach (var model in models)
+            {
+                var item = new Func<string>(() =>
+                {
+                    return Path.Combine(model.Path, model.Executable);
+                });
+                var name = model.ProductVendor + "_" + model.ProductCode + (model.Instance != null ? $"_{model.Instance}" : string.Empty);
+                TryAdd($"{model}", model.Icon, "\"{0}\"", $"{name.ToUpperInvariant()}_PATH", item, model.FallbackIcon);
+            }
+        }
+        
+        
+        internal class JetBrainsState
+        {
+            public int Version { get; set; }
+            public string AppVersion { get; set; }
+            public List<Tool> Tools { get; set; }
+        }
+
+        internal class Tool
+        {
+            public string ChannelId { get; set; }
+            public string ToolId { get; set; }
+            public string ProductCode { get; set; }
+            public string Tag { get; set; }
+            public string DisplayName { get; set; }
+            public string DisplayVersion { get; set; }
+            public string BuildNumber { get; set; }
+            public string InstallLocation { get; set; }
+            public string LaunchCommand { get; set; }
         }
     }
 }
