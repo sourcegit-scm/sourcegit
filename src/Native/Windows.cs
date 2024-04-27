@@ -111,7 +111,7 @@ namespace SourceGit.Native
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Programs\\Fleet\\Fleet.exe");
-            finder.Rider(FindRider);
+            finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\JetBrains\\Toolbox");
             finder.SublimeText(FindSublimeText);
             return finder.Founded;
         }

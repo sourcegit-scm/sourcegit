@@ -57,8 +57,8 @@ namespace SourceGit.Native
             var finder = new Models.ExternalToolsFinder();
             finder.VSCode(() => FindExecutable("code"));
             finder.VSCodeInsiders(() => FindExecutable("code-insiders"));
-            finder.Fleet(FindJetBrainFleet);
-            finder.Rider(() => string.Empty);
+            finder.Fleet(FindJetBrainsFleet);
+            finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox");
             finder.SublimeText(() => FindExecutable("subl"));
             return finder.Founded;
         }
@@ -175,7 +175,7 @@ namespace SourceGit.Native
             return null;
         }
 
-        private string FindJetBrainFleet()
+        private string FindJetBrainsFleet()
         {
             var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox/apps/fleet/bin/Fleet";
             return File.Exists(path) ? path : FindExecutable("fleet");
