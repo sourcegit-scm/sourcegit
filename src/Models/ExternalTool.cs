@@ -128,7 +128,7 @@ namespace SourceGit.Models
 
         public void Fleet(Func<string> platform_finder)
         {
-            TryAdd("JetBrains Fleet", "fleet", "\"{0}\"", "FLEET_PATH", platform_finder);
+            TryAdd("Fleet", "fleet", "\"{0}\"", "FLEET_PATH", platform_finder);
         }
 
         public void SublimeText(Func<string> platform_finder)
@@ -151,7 +151,7 @@ namespace SourceGit.Models
 
                     Founded.Add(new ExternalTool
                     {
-                        Name = $"JetBrains {tool.DisplayName} {tool.DisplayVersion}",
+                        Name = $"{tool.DisplayName} {tool.DisplayVersion}",
                         Icon = supported_icons.Contains(tool.ProductCode) ? $"JetBrains/{tool.ProductCode}" : $"JetBrains/JB",
                         OpenCmdArgs = "\"{0}\"",
                         Executable = Path.Combine(tool.InstallLocation, tool.LaunchCommand),
