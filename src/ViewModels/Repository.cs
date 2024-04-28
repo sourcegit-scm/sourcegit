@@ -843,7 +843,10 @@ namespace SourceGit.ViewModels
                 checkout.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowAndStartPopup(new Checkout(this, branch.Name));
+                    {
+                        Checkout.ShowPopup(this, branch.Name);
+                    }
+                    
                     e.Handled = true;
                 };
                 menu.Items.Add(checkout);

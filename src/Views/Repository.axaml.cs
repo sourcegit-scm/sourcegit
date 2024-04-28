@@ -298,7 +298,7 @@ namespace SourceGit.Views
                     if (branch.IsCurrent)
                         return;
 
-                    ViewModels.PopupHost.ShowAndStartPopup(new ViewModels.Checkout(repo, branch.Name));
+                    ViewModels.Checkout.ShowPopup(repo, branch.Name);
                     e.Handled = true;
                 }
             }
