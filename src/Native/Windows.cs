@@ -323,22 +323,6 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
-        private string FindRider()
-        {
-            var rider = Environment.GetEnvironmentVariable("JetBrains Rider");
-            if (!string.IsNullOrEmpty(rider))
-            {
-                rider = rider.TrimEnd(';', ' ');
-                var path = Path.Combine(rider, "rider64.exe");
-                if (File.Exists(path))
-                {
-                    return path;
-                }
-            }
-
-            return string.Empty;
-        }
-
         private string FindSublimeText()
         {
             var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
