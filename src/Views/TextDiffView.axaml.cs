@@ -755,7 +755,7 @@ namespace SourceGit.Views
             }
             else if (change.Property == SyncScrollOffsetProperty)
             {
-                if (_scrollViewer != null)
+                if (!TextArea.IsFocused && _scrollViewer != null)
                     _scrollViewer.Offset = SyncScrollOffset;
             }
             else if (change.Property == UseSyntaxHighlightingProperty)
