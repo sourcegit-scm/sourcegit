@@ -448,7 +448,9 @@ namespace SourceGit.ViewModels
             checkout.Click += (o, e) =>
             {
                 if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowAndStartPopup(new Checkout(_repo, branch.Name));
+                {
+                    Checkout.ShowPopup(_repo, branch.Name);
+                }
                 e.Handled = true;
             };
             submenu.Items.Add(checkout);
@@ -527,7 +529,7 @@ namespace SourceGit.ViewModels
                         if (b.IsCurrent)
                             return;
                         if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowAndStartPopup(new Checkout(_repo, b.Name));
+                            Checkout.ShowPopup(_repo, b.Name);
                         return;
                     }
                 }
