@@ -9,28 +9,11 @@ namespace SourceGit.ViewModels
             get;
             private set;
         }
-        
-        public bool HasLocalChanges
-        {
-            get => _repo.WorkingCopyChangesCount > 0;
-        }
 
-        public bool LeaveLocalChanges
+        public bool AutoStash
         {
-            get => _leaveLocalChanges;
-            set => SetProperty(ref _leaveLocalChanges, value);
-        }
-
-        public bool DiscardLocalChanges
-        {
-            get => _discardLocalChanges;
-            set => SetProperty(ref _discardLocalChanges, value);
-        }
-
-        public bool StashLocalChanges
-        {
-            get => _stashLocalChanges;
-            set => SetProperty(ref _stashLocalChanges, value);
+            get => _autoStash;
+            set => SetProperty(ref _autoStash, value);
         }
 
         public Checkout(Repository repo, string branch)
@@ -38,69 +21,63 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Branch = branch;
             View = new Views.Checkout() { DataContext = this };
-
-            StashLocalChanges = true;
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Checkout '{Branch}' ...";
-            var hasLocalChanges = HasLocalChanges;
 
+            var hasLocalChanges = _repo.WorkingCopyChangesCount > 0;
             return Task.Run(() =>
             {
-                var succ = false;
+                var needPopStash = false;
                 if (hasLocalChanges)
                 {
-                    if (DiscardLocalChanges)
+                    if (AutoStash)
                     {
-                        SetProgressDescription("Discard local changes...");
-                        Commands.Discard.All(_repo.FullPath);
-                    }
+                        SetProgressDescription("Adding untracked changes ...");
+                        var succ = new Commands.Add(_repo.FullPath).Exec();
+                        if (succ)
+                        {
+                            SetProgressDescription("Stash local changes ...");
+                            succ = new Commands.Stash(_repo.FullPath).Push("CHECKOUT_AUTO_STASH");
+                        }
 
-                    if (StashLocalChanges)
+                        if (!succ)
+                        {
+                            CallUIThread(() => _repo.SetWatcherEnabled(true));
+                            return false;
+                        }
+
+                        needPopStash = true;
+                    }
+                    else
                     {
-                        SetProgressDescription("Stash local changes...");
-                        succ = new Commands.Add(_repo.FullPath).Exec();
-                        succ = new Commands.Stash(_repo.FullPath).Push("CHECKOUT_AUTO_STASH");
+                        SetProgressDescription("Discard local changes ...");
+                        Commands.Discard.All(_repo.FullPath);
                     }
                 }
                 
                 SetProgressDescription("Checkout branch ...");
-                succ = new Commands.Checkout(_repo.FullPath).Branch(Branch, SetProgressDescription);
+                var rs = new Commands.Checkout(_repo.FullPath).Branch(Branch, SetProgressDescription);
                 
-                if(hasLocalChanges && StashLocalChanges)
+                if(needPopStash)
                 {
                     SetProgressDescription("Re-apply local changes...");
-                    succ = new Commands.Stash(_repo.FullPath).Apply("stash@{0}");
-                    if (succ)
+                    rs = new Commands.Stash(_repo.FullPath).Apply("stash@{0}");
+                    if (rs)
                     {
-                        succ = new Commands.Stash(_repo.FullPath).Drop("stash@{0}");
+                        rs = new Commands.Stash(_repo.FullPath).Drop("stash@{0}");
                     }
                 }
                 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
+                return rs;
             });
         }
-        
-        public static void ShowPopup(Repository repo, string branch)
-        {
-            var checkout = new Checkout(repo, branch);
-            if (repo.WorkingCopyChangesCount > 0)
-            {
-                PopupHost.ShowPopup(checkout);   
-            }
-            else
-            {
-                PopupHost.ShowAndStartPopup(checkout);
-            }
-        }
 
-        private readonly Repository _repo;
-        private bool _leaveLocalChanges;
-        private bool _discardLocalChanges;
-        private bool _stashLocalChanges;
+        private readonly Repository _repo = null;
+        private bool _autoStash = true;
     }
 }
