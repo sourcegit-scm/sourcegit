@@ -58,11 +58,11 @@ namespace SourceGit.ViewModels
                         Commands.Discard.All(_repo.FullPath);
                     }
                 }
-                
+
                 SetProgressDescription("Checkout branch ...");
                 var rs = new Commands.Checkout(_repo.FullPath).Branch(Branch, SetProgressDescription);
-                
-                if(needPopStash)
+
+                if (needPopStash)
                 {
                     SetProgressDescription("Re-apply local changes...");
                     rs = new Commands.Stash(_repo.FullPath).Apply("stash@{0}");
@@ -71,7 +71,7 @@ namespace SourceGit.ViewModels
                         rs = new Commands.Stash(_repo.FullPath).Drop("stash@{0}");
                     }
                 }
-                
+
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return rs;
             });

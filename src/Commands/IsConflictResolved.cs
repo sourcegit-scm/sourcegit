@@ -2,7 +2,7 @@
 {
     public class IsConflictResolved : Command
     {
-        public IsConflictResolved(string repo, Models.Change change) 
+        public IsConflictResolved(string repo, Models.Change change)
         {
             var opt = new Models.DiffOption(change, true);
 

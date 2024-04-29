@@ -853,7 +853,7 @@ namespace SourceGit.ViewModels
                 checkout.Icon = App.CreateMenuIcon("Icons.Check");
                 checkout.Click += (o, e) =>
                 {
-                    CheckoutLocalBranch(branch.Name);                    
+                    CheckoutLocalBranch(branch.Name);
                     e.Handled = true;
                 };
                 menu.Items.Add(checkout);
