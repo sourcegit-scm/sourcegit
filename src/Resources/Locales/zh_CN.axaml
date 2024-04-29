@@ -53,6 +53,9 @@
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">树形模式</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">检出(checkout)分支</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目标分支 ：</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">贮藏(stash)并自动恢复</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">忽略</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">挑选(cherry-pick)此提交</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交ID ：</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">提交变化</x:String>

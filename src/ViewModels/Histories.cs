@@ -447,8 +447,7 @@ namespace SourceGit.ViewModels
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
             checkout.Click += (o, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowAndStartPopup(new Checkout(_repo, branch.Name));
+                _repo.CheckoutLocalBranch(branch.Name);
                 e.Handled = true;
             };
             submenu.Items.Add(checkout);
@@ -524,16 +523,16 @@ namespace SourceGit.ViewModels
                 {
                     if (b.IsLocal && b.Upstream == branch.FullName)
                     {
-                        if (b.IsCurrent)
-                            return;
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowAndStartPopup(new Checkout(_repo, b.Name));
+                        if (!b.IsCurrent)
+                            _repo.CheckoutLocalBranch(b.Name);
+
                         return;
                     }
                 }
 
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new CreateBranch(_repo, branch));
+
                 e.Handled = true;
             };
             submenu.Items.Add(checkout);

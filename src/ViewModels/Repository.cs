@@ -690,6 +690,17 @@ namespace SourceGit.ViewModels
                 PopupHost.ShowPopup(new CreateBranch(this, current));
         }
 
+        public void CheckoutLocalBranch(string branch)
+        {
+            if (!PopupHost.CanCreatePopup())
+                return;
+
+            if (WorkingCopyChangesCount > 0)
+                PopupHost.ShowPopup(new Checkout(this, branch));
+            else
+                PopupHost.ShowAndStartPopup(new Checkout(this, branch));
+        }
+
         public void CreateNewTag()
         {
             var current = Branches.Find(x => x.IsCurrent);
@@ -842,8 +853,7 @@ namespace SourceGit.ViewModels
                 checkout.Icon = App.CreateMenuIcon("Icons.Check");
                 checkout.Click += (o, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowAndStartPopup(new Checkout(this, branch.Name));
+                    CheckoutLocalBranch(branch.Name);                    
                     e.Handled = true;
                 };
                 menu.Items.Add(checkout);

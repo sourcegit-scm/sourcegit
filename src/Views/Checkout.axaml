@@ -10,10 +10,29 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Checkout}"/>
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
-      <TextBlock Text="{DynamicResource Text.Checkout.Target}"/>
-      <Path Width="14" Height="14" Margin="8,0" Data="{StaticResource Icons.Branch}"/>
-      <TextBlock Text="{Binding Branch}"/>
-    </StackPanel>
+
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="150,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Checkout.Target}"/>
+      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+        <Path Width="14" Height="14" Margin="8,0" Data="{StaticResource Icons.Branch}"/>
+        <TextBlock Text="{Binding Branch}"/>
+      </StackPanel>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Checkout.LocalChanges}"/>
+      <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReply}"
+                     GroupName="LocalChanges"
+                     IsChecked="{Binding AutoStash, Mode=TwoWay}"/>
+        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.Discard}"
+                     GroupName="LocalChanges"
+                     Margin="8,0,0,0"/>
+      </StackPanel>
+    </Grid>
   </StackPanel>
 </UserControl>
