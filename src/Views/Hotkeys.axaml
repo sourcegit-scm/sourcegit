@@ -87,7 +87,7 @@
                    FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
                    Margin="0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20,20" ColumnDefinitions="80,*">
+        <Grid RowDefinitions="20,20,20,20,20,20" ColumnDefinitions="80,*">
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+F"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ToggleSearch}" />
 
@@ -102,6 +102,9 @@
 
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="SPACE"/>
           <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
+
+          <TextBlock Grid.Row="5" Grid.Column="0" Classes="monospace bold" Text="F5"/>
+          <TextBlock Grid.Row="5" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
         </Grid>
 
         <TextBlock Text="{DynamicResource Text.Hotkeys.TextEditor}"

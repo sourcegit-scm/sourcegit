@@ -233,17 +233,7 @@ namespace SourceGit.ViewModels
             _inProgressContext = null;
             _hasUnsolvedConflicts = false;
 
-            Task.Run(() =>
-            {
-                RefreshBranches();
-                RefreshTags();
-                RefreshCommits();
-            });
-
-            Task.Run(RefreshSubmodules);
-            Task.Run(RefreshWorkingCopyChanges);
-            Task.Run(RefreshStashes);
-            Task.Run(RefreshGitFlow);
+            RefreshAll();
         }
 
         public void Close()
@@ -275,6 +265,21 @@ namespace SourceGit.ViewModels
             _tags.Clear();
             _submodules.Clear();
             _searchedCommits.Clear();
+        }
+
+        public void RefreshAll()
+        {
+            Task.Run(() =>
+            {
+                RefreshBranches();
+                RefreshTags();
+                RefreshCommits();
+            });
+
+            Task.Run(RefreshSubmodules);
+            Task.Run(RefreshWorkingCopyChanges);
+            Task.Run(RefreshStashes);
+            Task.Run(RefreshGitFlow);
         }
 
         public void OpenInFileManager()
@@ -506,7 +511,11 @@ namespace SourceGit.ViewModels
             if (_inProgressContext != null)
             {
                 SetWatcherEnabled(false);
-                await Task.Run(_inProgressContext.Abort);
+                var succ = await Task.Run(_inProgressContext.Abort);
+                if (succ && _workingCopy != null)
+                {
+                    _workingCopy.CommitMessage = string.Empty;
+                }
                 SetWatcherEnabled(true);
             }
             else

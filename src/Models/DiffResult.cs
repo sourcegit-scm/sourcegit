@@ -388,11 +388,11 @@ namespace SourceGit.Models
         }
 
         [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
-        private static partial Regex indicatorRegex();
+        private static partial Regex REG_INDICATOR();
 
         private bool ProcessIndicatorForPatch(StringBuilder builder, TextDiffLine indicator, int idx, int start, int end, int ignoreRemoves, int ignoreAdds, bool revert, bool tailed)
         {
-            var match = indicatorRegex().Match(indicator.Content);
+            var match = REG_INDICATOR().Match(indicator.Content);
             var oldStart = int.Parse(match.Groups[1].Value);
             var newStart = int.Parse(match.Groups[2].Value) + ignoreRemoves - ignoreAdds;
             var oldCount = 0;
@@ -461,7 +461,7 @@ namespace SourceGit.Models
 
         private bool ProcessIndicatorForPatchSingleSide(StringBuilder builder, TextDiffLine indicator, int idx, int start, int end, int ignoreRemoves, int ignoreAdds, bool revert, bool isOldSide, bool tailed)
         {
-            var match = indicatorRegex().Match(indicator.Content);
+            var match = REG_INDICATOR().Match(indicator.Content);
             var oldStart = int.Parse(match.Groups[1].Value);
             var newStart = int.Parse(match.Groups[2].Value) + ignoreRemoves - ignoreAdds;
             var oldCount = 0;

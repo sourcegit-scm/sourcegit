@@ -88,9 +88,9 @@
       <Setter.Value>
         <MenuFlyout Placement="Bottom">
           <MenuItem Header="{DynamicResource Text.Copy}"
-							  Command="{Binding $parent[SelectableTextBlock].Copy}"
-							  IsEnabled="{Binding $parent[SelectableTextBlock].CanCopy}"
-							  InputGesture="{x:Static TextBox.CopyGesture}">
+                    Command="{Binding $parent[SelectableTextBlock].Copy}"
+                    IsEnabled="{Binding $parent[SelectableTextBlock].CanCopy}"
+                    InputGesture="{x:Static TextBox.CopyGesture}">
             <MenuItem.Icon>
               <Path Width="11" Height="11" Data="{StaticResource Icons.Copy}" VerticalAlignment="Center"/>
             </MenuItem.Icon>
@@ -254,7 +254,7 @@
       <ControlTemplate>
         <Grid>
           <Border x:Name="PART_Border"
-                  Margin="2" 
+                  Margin="2"
                   Background="{TemplateBinding Background}"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}"
@@ -487,21 +487,21 @@
       <ControlTemplate>
         <Grid>
           <ContentPresenter Name="PART_ContentPresenter"
-									  Background="{TemplateBinding Background}"
-									  BorderBrush="{TemplateBinding BorderBrush}"
-									  BorderThickness="{TemplateBinding BorderThickness}"
-									  CornerRadius="{TemplateBinding CornerRadius}"
-									  ContentTemplate="{TemplateBinding ContentTemplate}"
-									  Content="{TemplateBinding Content}"
-									  Padding="{TemplateBinding Padding}"
-									  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-									  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Content="{TemplateBinding Content}"
+                            Padding="{TemplateBinding Padding}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
 
           <Border Background="{DynamicResource Brush.FG2}"
-							Width="4"
-							HorizontalAlignment="Left" VerticalAlignment="Stretch"
-							IsHitTestVisible="False"
-							IsVisible="{TemplateBinding IsSelected}"/>
+                  Width="4"
+                  HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                  IsHitTestVisible="False"
+                  IsVisible="{TemplateBinding IsSelected}"/>
         </Grid>
       </ControlTemplate>
     </Setter>
@@ -529,16 +529,16 @@
           </Border>
 
           <Border BorderThickness="0"
-							Margin="8,4"
-							MaxWidth="{TemplateBinding MaxWidth}"
-							MinHeight="{TemplateBinding MinHeight}"
-							HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                  Margin="8,4"
+                  MaxWidth="{TemplateBinding MaxWidth}"
+                  MinHeight="{TemplateBinding MinHeight}"
+                  HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
             <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
               <ItemsPresenter Name="PART_ItemsPresenter"
-											ItemsPanel="{TemplateBinding ItemsPanel}"
-											Margin="{DynamicResource MenuFlyoutScrollerMargin}"
-											KeyboardNavigation.TabNavigation="Continue"
-											Grid.IsSharedSizeScope="True" />
+                              ItemsPanel="{TemplateBinding ItemsPanel}"
+                              Margin="{DynamicResource MenuFlyoutScrollerMargin}"
+                              KeyboardNavigation.TabNavigation="Continue"
+                              Grid.IsSharedSizeScope="True" />
             </ScrollViewer>
           </Border>
         </Grid>
@@ -557,20 +557,20 @@
           </Border>
 
           <Border Name="LayoutRoot"
-						Margin="4"
-						Background="{TemplateBinding Background}"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						BorderThickness="0"
-						Padding="4,2"
-						CornerRadius="{TemplateBinding CornerRadius}">
+                  Margin="4"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="0"
+                  Padding="4,2"
+                  CornerRadius="{TemplateBinding CornerRadius}">
             <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-										Theme="{StaticResource FluentMenuScrollViewer}"
-										VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                          Theme="{StaticResource FluentMenuScrollViewer}"
+                          VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
               <ItemsPresenter Name="PART_ItemsPresenter"
-											ItemsPanel="{TemplateBinding ItemsPanel}"
-											Margin="{DynamicResource MenuFlyoutScrollerMargin}"
-											KeyboardNavigation.TabNavigation="Continue"
-											Grid.IsSharedSizeScope="True" />
+                              ItemsPanel="{TemplateBinding ItemsPanel}"
+                              Margin="{DynamicResource MenuFlyoutScrollerMargin}"
+                              KeyboardNavigation.TabNavigation="Continue"
+                              Grid.IsSharedSizeScope="True" />
             </ScrollViewer>
           </Border>
         </Grid>
@@ -581,18 +581,18 @@
   <Style Selector="MenuItem">
     <Style.Resources>
       <ControlTheme x:Key="{x:Type MenuItem}" TargetType="MenuItem">
-        <Setter Property="Height" Value="26"/>
+        <Setter Property="Height" Value="28"/>
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}" />
         <Setter Property="Template">
           <ControlTemplate>
             <Panel>
               <Border Name="PART_LayoutRoot"
-									Padding="0,0,4,0"
-									Background="{TemplateBinding Background}"
-									BorderBrush="{TemplateBinding BorderBrush}"
-									BorderThickness="{TemplateBinding BorderThickness}"
-									CornerRadius="3">
+                      Padding="0,0,4,0"
+                      Background="{TemplateBinding Background}"
+                      BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      CornerRadius="3">
                 <Grid>
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIcon" />
@@ -603,44 +603,44 @@
 
                   <Border Grid.Column="0" Width="28">
                     <ContentControl x:Name="PART_IconPresenter"
-														Content="{TemplateBinding Icon}"
-														IsVisible="False"
-														HorizontalAlignment="Center"
-														VerticalAlignment="Center"/>
+                                    Content="{TemplateBinding Icon}"
+                                    IsVisible="False"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
                   </Border>
 
                   <ContentPresenter Grid.Column="1"
-													  Name="PART_HeaderPresenter"
-													  Content="{TemplateBinding Header}"
-													  ContentTemplate="{TemplateBinding HeaderTemplate}"
-													  VerticalAlignment="Center"
-													  HorizontalAlignment="Stretch"
-													  RecognizesAccessKey="True"/>
+                                    Name="PART_HeaderPresenter"
+                                    Content="{TemplateBinding Header}"
+                                    ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Stretch"
+                                    RecognizesAccessKey="True"/>
                   <TextBlock x:Name="PART_InputGestureText"
-											   Grid.Column="2"
-											   Classes="CaptionTextBlockStyle"
-											   Margin="{DynamicResource MenuInputGestureTextMargin}"
-											   Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
-											   HorizontalAlignment="Right"
-											   VerticalAlignment="Center"
-											   Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
-                         FontSize="11"/>
+                             Grid.Column="2"
+                             Classes="CaptionTextBlockStyle"
+                             Margin="{DynamicResource MenuInputGestureTextMargin}"
+                             Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Center"
+                             Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                             FontSize="11"/>
                   <Path Name="PART_ChevronPath"
-										  Width="6"
-										  Data="M 0 0 L 0 7 L 4 3.5 Z"
-										  Fill="{DynamicResource MenuFlyoutSubItemChevron}"
-										  Margin="8,0,0,0"
-										  VerticalAlignment="Center"
-										  Grid.Column="3" />
+                        Width="6"
+                        Data="M573 512 215 881c-20 20-20 51 0 61l61 61c20 20 51 20 61 0l461-461c10-10 10-20 10-31s0-20-10-31L338 20C317 0 287 0 276 20L215 82c-20 20-20 51 0 61L573 512z"
+                        Fill="{DynamicResource Brush.FG2}"
+                        Margin="8,0,0,0"
+                        VerticalAlignment="Center"
+                        Grid.Column="3" />
                 </Grid>
               </Border>
               <Popup Name="PART_Popup"
-								   WindowManagerAddShadowHint="False"
-								   Placement="RightEdgeAlignedTop"
-								   IsLightDismissEnabled="False"
-								   HorizontalOffset="-4"
-								   VerticalOffset="-4"
-								   IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
+                     WindowManagerAddShadowHint="False"
+                     Placement="RightEdgeAlignedTop"
+                     IsLightDismissEnabled="False"
+                     HorizontalOffset="-4"
+                     VerticalOffset="-4"
+                     IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
                 <Grid>
                   <Border Background="{DynamicResource Brush.Popup}" Margin="4" CornerRadius="{DynamicResource OverlayCornerRadius}">
                     <Border.Effect>
@@ -649,16 +649,16 @@
                   </Border>
 
                   <Border BorderThickness="0"
-											Margin="8,4"
-											MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
-											MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
-											HorizontalAlignment="Stretch"
-											CornerRadius="{DynamicResource OverlayCornerRadius}">
+                          Margin="8,4"
+                          MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
+                          MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
+                          HorizontalAlignment="Stretch"
+                          CornerRadius="{DynamicResource OverlayCornerRadius}">
                     <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
                       <ItemsPresenter Name="PART_ItemsPresenter"
-															ItemsPanel="{TemplateBinding ItemsPanel}"
-															Margin="{DynamicResource MenuFlyoutScrollerMargin}"
-															Grid.IsSharedSizeScope="True" />
+                                      ItemsPanel="{TemplateBinding ItemsPanel}"
+                                      Margin="{DynamicResource MenuFlyoutScrollerMargin}"
+                                      Grid.IsSharedSizeScope="True" />
                     </ScrollViewer>
                   </Border>
                 </Grid>
@@ -724,7 +724,7 @@
       <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="{DynamicResource Color.Contents}"/>
       <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="{DynamicResource Color.Accent1}"/>
     </Style.Resources>
-    
+
     <Setter Property="MinHeight" Value="20"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border1}"/>
@@ -761,12 +761,12 @@
             <Path x:Name="Icon" Height="12" Width="12" Data="{DynamicResource Icons.Check}" Fill="{DynamicResource Brush.Accent1}" IsVisible="False" Margin="0,2,0,0"/>
           </Border>
 
-          <ContentPresenter x:Name="ContentPresenter" 
+          <ContentPresenter x:Name="ContentPresenter"
                             ContentTemplate="{TemplateBinding ContentTemplate}"
                             Content="{TemplateBinding Content}"
-                            Grid.Column="1" 
-                            VerticalAlignment="Center" 
-                            Margin="8,0,0,0" 
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Margin="8,0,0,0"
                             TextWrapping="Wrap"/>
         </Grid>
       </ControlTemplate>
@@ -834,26 +834,26 @@
       <ControlTemplate>
         <Grid ColumnDefinitions="Auto,*">
           <Path Grid.Column="0"
-						  x:Name="PART_IndicatorIcon"
-						  Margin="4,0,0,0"
-						  Width="10"
-						  Data="{StaticResource Icons.Down}"
-						  Fill="{DynamicResource Brush.FG2}"
-						  VerticalAlignment="Center"
-						  RenderTransformOrigin="50%,50%"
-						  RenderTransform="rotate(270deg)"/>
+                x:Name="PART_IndicatorIcon"
+                Margin="4,0,0,0"
+                Width="10"
+                Data="{StaticResource Icons.Down}"
+                Fill="{DynamicResource Brush.FG2}"
+                VerticalAlignment="Center"
+                RenderTransformOrigin="50%,50%"
+                RenderTransform="rotate(270deg)"/>
           <ContentPresenter Grid.Column="1"
-									  x:Name="PART_ContentPresenter"
-									  Background="{TemplateBinding Background}"
-									  BorderBrush="{TemplateBinding BorderBrush}"
-									  BorderThickness="{TemplateBinding BorderThickness}"
-									  CornerRadius="{TemplateBinding CornerRadius}"
-									  Content="{TemplateBinding Content}"
-									  ContentTemplate="{TemplateBinding ContentTemplate}"
-									  Padding="0"
-									  RecognizesAccessKey="True"
-									  HorizontalContentAlignment="Stretch"
-									  VerticalContentAlignment="Stretch" />
+                            x:Name="PART_ContentPresenter"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Padding="0"
+                            RecognizesAccessKey="True"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch" />
         </Grid>
       </ControlTemplate>
     </Setter>
@@ -880,13 +880,13 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Path Grid.Column="0"
-					  x:Name="PART_IndicatorIcon"
-					  Width="12"
-					  Data="{StaticResource Icons.Filter}"
-					  Fill="Transparent"
-					  StrokeThickness="1"
-					  Stroke="{DynamicResource Brush.FG2}"
-					  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              x:Name="PART_IndicatorIcon"
+              Width="12"
+              Data="{StaticResource Icons.Filter}"
+              Fill="Transparent"
+              StrokeThickness="1"
+              Stroke="{DynamicResource Brush.FG2}"
+              HorizontalAlignment="Center" VerticalAlignment="Center"/>
       </ControlTemplate>
     </Setter>
   </Style>
@@ -906,15 +906,15 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Border Background="Transparent"
-						Width="{TemplateBinding Width}"
-						Height="{TemplateBinding Height}"
-						HorizontalAlignment="Center"
-						VerticalAlignment="Center">
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
           <Path x:Name="ChevronPath"
-						  Data="M 4 0 L 8 4 L 4 8 Z"
-						  Fill="{DynamicResource TreeViewItemForeground}"
-						  HorizontalAlignment="Center"
-						  VerticalAlignment="Center"/>
+                Data="M 4 0 L 8 4 L 4 8 Z"
+                Fill="{DynamicResource TreeViewItemForeground}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
         </Border>
       </ControlTemplate>
     </Setter>
@@ -933,11 +933,11 @@
       <ControlTemplate>
         <Border Background="Transparent">
           <Path Grid.Column="0"
-					      x:Name="PART_IndicatorIcon"
+                x:Name="PART_IndicatorIcon"
                 Width="14" Height="14"
                 Stretch="Uniform"
-					      Data="{StaticResource Icons.LayoutVertical}"
-					      Fill="{DynamicResource Brush.FG1}"
+                Data="{StaticResource Icons.LayoutVertical}"
+                Fill="{DynamicResource Brush.FG1}"
                 Opacity=".8"/>
         </Border>
       </ControlTemplate>
@@ -949,7 +949,7 @@
   <Style Selector="ToggleButton.layout_direction:pointerover /template/ Path#PART_IndicatorIcon">
     <Setter Property="Opacity" Value="1"/>
   </Style>
-  
+
   <Style Selector="ToggleButton.line_path">
     <Setter Property="Margin" Value="0"/>
     <Setter Property="Padding" Value="0"/>
@@ -966,7 +966,7 @@
   <Style Selector="ToggleButton.line_path:checked Path">
     <Setter Property="Fill" Value="{DynamicResource Brush.Accent1}"/>
   </Style>
-  
+
   <Style Selector="ToggleButton.toggle_untracked">
     <Setter Property="Margin" Value="0"/>
     <Setter Property="Padding" Value="0"/>
@@ -977,12 +977,12 @@
       <ControlTemplate>
         <Border Background="Transparent">
           <Path Grid.Column="0"
-					      x:Name="PART_IndicatorIcon"
+                x:Name="PART_IndicatorIcon"
                 Margin="{TemplateBinding Padding}"
                 Stretch="Fill"
                 Width="14" Height="10"
-					      Data="{StaticResource Icons.EyeClose}"
-					      Fill="{DynamicResource Brush.FG1}"
+                Data="{StaticResource Icons.EyeClose}"
+                Fill="{DynamicResource Brush.FG1}"
                 Opacity=".8"/>
         </Border>
       </ControlTemplate>
@@ -1040,36 +1040,36 @@
       <ControlTemplate>
         <StackPanel>
           <Border Name="PART_LayoutRoot"
-							Classes="TreeViewItemLayoutRoot"
-							Focusable="True"
-							Background="{TemplateBinding Background}"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="{TemplateBinding CornerRadius}"
-							MinHeight="{TemplateBinding MinHeight}"
-							TemplatedControl.IsTemplateFocusTarget="True">
+                  Classes="TreeViewItemLayoutRoot"
+                  Focusable="True"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  MinHeight="{TemplateBinding MinHeight}"
+                  TemplatedControl.IsTemplateFocusTarget="True">
             <Grid Name="PART_Header" ColumnDefinitions="16,*" Margin="{TemplateBinding Level, Mode=OneWay, Converter={StaticResource TreeViewItemLeftMarginConverter}}">
               <Panel Name="PART_ExpandCollapseChevronContainer">
                 <ToggleButton Name="PART_ExpandCollapseChevron"
-											  Classes="tree_expander"
-											  Focusable="False"
-											  HorizontalAlignment="Center"
-											  IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}" />
+                              Classes="tree_expander"
+                              Focusable="False"
+                              HorizontalAlignment="Center"
+                              IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}" />
               </Panel>
               <ContentPresenter Name="PART_HeaderPresenter"
-											  Grid.Column="1"
-											  Focusable="False"
-											  Background="Transparent"
-											  Content="{TemplateBinding Header}"
-											  ContentTemplate="{TemplateBinding HeaderTemplate}"
-											  HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-											  VerticalAlignment="{TemplateBinding VerticalAlignment}"
-											  Margin="{TemplateBinding Padding}" />
+                                Grid.Column="1"
+                                Focusable="False"
+                                Background="Transparent"
+                                Content="{TemplateBinding Header}"
+                                ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                Margin="{TemplateBinding Padding}" />
             </Grid>
           </Border>
           <ItemsPresenter Name="PART_ItemsPresenter"
-									IsVisible="{TemplateBinding IsExpanded}"
-									ItemsPanel="{TemplateBinding ItemsPanel}" />
+                          IsVisible="{TemplateBinding IsExpanded}"
+                          ItemsPanel="{TemplateBinding ItemsPanel}" />
         </StackPanel>
       </ControlTemplate>
     </Setter>

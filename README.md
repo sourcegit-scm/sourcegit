@@ -28,11 +28,19 @@ Opensource Git GUI client.
 
 > **Linux** only tested on **Ubuntu 22.04** on **X11**.
 
-## How to use
+## How to Use
 
 **To use this tool, you need to install Git(>=2.23.0) first.**
 
 You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [Github Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on latest commits.
+
+This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationData}/SourceGit"`, which is platform-dependent, to store user settings, downloaded avatars and crash logs. 
+
+| OS | PATH |
+| --- | --- |
+| Windows | `C:\Users\USER_NAME\AppData\Roaming\SourceGit` |
+| Linux | `/home/USER_NAME/.config/SourceGit` |
+| macOS | `/Users/USER_NAME/.config/SourceGit` |
 
 For **Windows** users:
 
@@ -64,7 +72,8 @@ This app supports open repository in external tools listed in the table below.
 | JetBrains Fleet | YES | YES | YES | FLEET_PATH |
 | Sublime Text | YES | YES | YES | SUBLIME_TEXT_PATH |
 
-You can set the given environment variable for special tool if it can NOT be found by this app automatically. 
+> * You can set the given environment variable for special tool if it can NOT be found by this app automatically. 
+> * Installing `JetBrains Toolbox` will help this app to find other JetBrains tools installed on your device.
 
 ## Screenshots
 

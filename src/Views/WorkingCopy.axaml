@@ -319,11 +319,19 @@
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:ConflictContext">
               <Border Background="{DynamicResource Brush.Window}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                  <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Margin="0,16,0,8" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
-                  <TextBlock Text="{DynamicResource Text.WorkingCopy.ResolveTip}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
-                </StackPanel>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <StackPanel Orientation="Vertical" IsVisible="{Binding !IsResolved}">
+                    <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}"/>
+                    <TextBlock Margin="0,16,0,8" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{DynamicResource Text.WorkingCopy.ResolveTip}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+                  </StackPanel>
+
+                  <StackPanel Orientation="Vertical" IsVisible="{Binding IsResolved}">
+                    <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="Green"/>
+                    <TextBlock Margin="0,16,0,8" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts.Resolved}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{DynamicResource Text.WorkingCopy.CanStageTip}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+                  </StackPanel>
+                </Grid>                
               </Border>
             </DataTemplate>
 

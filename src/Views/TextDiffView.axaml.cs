@@ -7,6 +7,7 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
@@ -657,6 +658,7 @@ namespace SourceGit.Views
 
             UpdateTextMate();
 
+            TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
         }
 
@@ -676,21 +678,20 @@ namespace SourceGit.Views
                 _textMate = null;
             }
 
+            TextArea.PointerWheelChanged -= OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
 
             GC.Collect();
         }
 
+        private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
+        {
+            if (!TextArea.IsFocused) Focus();
+        }
+
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (_syncScrollingByOthers)
-            {
-                _syncScrollingByOthers = false;
-            }
-            else
-            {
-                SetCurrentValue(SyncScrollOffsetProperty, _scrollViewer.Offset);
-            }
+            if (TextArea.IsFocused) SetCurrentValue(SyncScrollOffsetProperty, _scrollViewer.Offset);
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -754,24 +755,8 @@ namespace SourceGit.Views
             }
             else if (change.Property == SyncScrollOffsetProperty)
             {
-                if (_scrollViewer == null)
-                    return;
-
-                var curOffset = _scrollViewer.Offset;
-                if (!curOffset.Equals(SyncScrollOffset))
-                {
-                    _syncScrollingByOthers = true;
-
-                    if (curOffset.X != SyncScrollOffset.X)
-                    {
-                        var offset = new Vector(Math.Min(_scrollViewer.ScrollBarMaximum.X, SyncScrollOffset.X), SyncScrollOffset.Y);
-                        _scrollViewer.Offset = offset;
-                    }
-                    else
-                    {
-                        _scrollViewer.Offset = SyncScrollOffset;
-                    }
-                }
+                if (!TextArea.IsFocused && _scrollViewer != null)
+                    _scrollViewer.Offset = SyncScrollOffset;
             }
             else if (change.Property == UseSyntaxHighlightingProperty)
             {
@@ -813,7 +798,6 @@ namespace SourceGit.Views
         private TextMate.Installation _textMate;
         private readonly LineStyleTransformer _lineStyleTransformer = null;
         private ScrollViewer _scrollViewer = null;
-        private bool _syncScrollingByOthers = false;
     }
 
     public partial class TextDiffView : UserControl

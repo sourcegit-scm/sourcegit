@@ -12,9 +12,27 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class ConflictContext
+    public class ConflictContext : ObservableObject
     {
-        public Models.Change Change { get; set; }
+        public bool IsResolved
+        {
+            get => _isResolved;
+            set => SetProperty(ref _isResolved, value);
+        }
+
+        public ConflictContext(string repo, Models.Change change)
+        {
+            Task.Run(() =>
+            {
+                var result = new Commands.IsConflictResolved(repo, change).Result();
+                Dispatcher.UIThread.Post(() =>
+                {
+                    IsResolved = result;
+                });
+            });
+        }
+
+        private bool _isResolved = false;
     }
 
     public class WorkingCopy : ObservableObject
@@ -274,6 +292,14 @@ namespace SourceGit.ViewModels
                     SelectedStagedTreeNode = null;
                     SetDetail(null, false);
                 }
+
+                // Try to load merge message from MERGE_MSG
+                if (string.IsNullOrEmpty(_commitMessage))
+                {
+                    var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
+                    if (File.Exists(mergeMsgFile))
+                        CommitMessage = File.ReadAllText(mergeMsgFile);
+                }
             });
 
             return hasConflict;
@@ -288,9 +314,9 @@ namespace SourceGit.ViewModels
             {
                 DetailContext = null;
             }
-            else if (change.IsConflit)
+            else if (change.IsConflit && isUnstaged)
             {
-                DetailContext = new ConflictContext() { Change = change };
+                DetailContext = new ConflictContext(_repo.FullPath, change);
             }
             else
             {
@@ -424,26 +450,23 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(true);
         }
 
-        public async void UseExternalMergeTool()
+        public async void UseExternalMergeTool(Models.Change change)
         {
-            if (_detailContext is ConflictContext ctx)
+            var type = Preference.Instance.ExternalMergeToolType;
+            var exec = Preference.Instance.ExternalMergeToolPath;
+
+            var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
+            if (tool == null)
             {
-                var type = Preference.Instance.ExternalMergeToolType;
-                var exec = Preference.Instance.ExternalMergeToolPath;
-
-                var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
-                if (tool == null)
-                {
-                    App.RaiseException(_repo.FullPath, "Invalid merge tool in preference setting!");
-                    return;
-                }
-
-                var args = tool.Type != 0 ? tool.Cmd : Preference.Instance.ExternalMergeToolCmd;
-
-                _repo.SetWatcherEnabled(false);
-                await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, exec, args, ctx.Change.Path));
-                _repo.SetWatcherEnabled(true);
+                App.RaiseException(_repo.FullPath, "Invalid merge tool in preference setting!");
+                return;
             }
+
+            var args = tool.Type != 0 ? tool.Cmd : Preference.Instance.ExternalMergeToolCmd;
+
+            _repo.SetWatcherEnabled(false);
+            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, exec, args, change.Path));
+            _repo.SetWatcherEnabled(true);
         }
 
         public async void DoCommit(bool autoPush)
@@ -546,7 +569,7 @@ namespace SourceGit.ViewModels
                     openMerger.Header = App.Text("FileCM.OpenWithExternalMerger");
                     openMerger.Click += (_, e) =>
                     {
-                        UseExternalMergeTool();
+                        UseExternalMergeTool(change);
                         e.Handled = true;
                     };
 

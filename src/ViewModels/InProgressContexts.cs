@@ -22,9 +22,9 @@ namespace SourceGit.ViewModels
             Cmd = cmd;
         }
 
-        public void Abort()
+        public bool Abort()
         {
-            new Commands.Command()
+            return new Commands.Command()
             {
                 WorkingDirectory = Repository,
                 Context = Repository,
