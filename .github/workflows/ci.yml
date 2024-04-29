@@ -85,7 +85,7 @@ jobs:
       - name: Build
         run: dotnet build -c Release
       - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-arm64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
+        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r linux-x64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
       - name: Rename Executable File
         run: mv publish/SourceGit publish/sourcegit
       - name: Upload Artifact
