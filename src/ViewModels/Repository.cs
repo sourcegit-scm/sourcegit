@@ -511,7 +511,11 @@ namespace SourceGit.ViewModels
             if (_inProgressContext != null)
             {
                 SetWatcherEnabled(false);
-                await Task.Run(_inProgressContext.Abort);
+                var succ = await Task.Run(_inProgressContext.Abort);
+                if (succ && _workingCopy != null)
+                {
+                    _workingCopy.CommitMessage = string.Empty;
+                }
                 SetWatcherEnabled(true);
             }
             else
