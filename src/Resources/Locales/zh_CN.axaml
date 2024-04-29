@@ -243,9 +243,9 @@
   <x:String x:Key="Text.OpenFolder" xml:space="preserve">选择文件夹</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">打开文件...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">选填。</x:String>
-  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新建空白页 (Ctrl+T)</x:String>
+  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新建空白页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">设置书签</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">关闭标签页 (Ctrl+W)</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">关闭标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">关闭其他标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">关闭右侧标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">复制仓库路径</x:String>
@@ -340,7 +340,7 @@
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">远程列表</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">添加远程</x:String>
   <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">解决冲突</x:String>
-  <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交(Ctrl+F)</x:String>
+  <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交</x:String>
   <x:String x:Key="Text.Repository.SearchTip" xml:space="preserve">支持搜索作者/提交者/主题/指纹</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交统计</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模块列表</x:String>

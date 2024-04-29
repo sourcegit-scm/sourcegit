@@ -199,8 +199,13 @@
                               Classes="icon_button"
                               Width="16" Height="16" Margin="12,0"
                               Command="{Binding #me.DataContext.(vm:Launcher).CloseTab}"
-                              CommandParameter="{Binding}"
-                              ToolTip.Tip="{DynamicResource Text.PageTabBar.Tab.Close}">
+                              CommandParameter="{Binding}">
+                        <ToolTip.Tip>
+                          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="{DynamicResource Text.PageTabBar.Tab.Close}" VerticalAlignment="Center"/>
+                            <TextBlock Margin="16,0,0,0" Text="Ctrl+W" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+                          </StackPanel>
+                        </ToolTip.Tip>
                         <Path Width="8" Height="8" Data="{StaticResource Icons.Window.Close}"/>
                       </Button>
                       <Rectangle Grid.Column="2" Width=".5" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{DynamicResource Brush.FG2}">
@@ -222,8 +227,14 @@
                     Width="16" Height="16"
                     Margin="8,0"
                     Command="{Binding AddNewTab}"
-                    HotKey="Ctrl+T"
-                    ToolTip.Tip="{DynamicResource Text.PageTabBar.New}">
+                    HotKey="Ctrl+T">
+              <ToolTip.Tip>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                  <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
+                  <TextBlock Margin="16,0,0,0" Text="Ctrl+T" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+                </StackPanel>
+              </ToolTip.Tip>
+              
               <Path Width="12" Height="12" Data="{StaticResource Icons.Plus}"/>
             </Button>
           </StackPanel>
