@@ -235,8 +235,7 @@
                               Margin="0,0,8,0"
                               Background="Transparent"
                               IsVisible="{Binding IsBranch}"
-                              Checked="OnToggleFilter"
-                              Unchecked="OnToggleFilter"
+                              IsCheckedChanged="OnToggleFilter"
                               IsChecked="{Binding IsFiltered}"/>
               </Grid>
             </TreeDataTemplate>
@@ -324,8 +323,7 @@
                               Classes="filter"
                               Margin="0,0,8,0"
                               Background="Transparent"
-                              Checked="OnToggleFilter"
-                              Unchecked="OnToggleFilter"
+                              IsCheckedChanged="OnToggleFilter"
                               IsVisible="{Binding IsTag}"
                               IsChecked="{Binding IsFiltered}"/>
               </Grid>
