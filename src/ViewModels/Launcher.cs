@@ -20,10 +20,16 @@ namespace SourceGit.ViewModels
             get => _activePage;
             set
             {
-                if (SetProperty(ref _activePage, value))
+                if (!SetProperty(ref _activePage, value))
                 {
-                    PopupHost.Active = value;
+                    return;
                 }
+
+                if (value.Data is Repository repo)
+                {
+                    repo.MarkBranchesDirtyManually();
+                }
+                PopupHost.Active = value;
             }
         }
 
