@@ -33,9 +33,11 @@ namespace SourceGit.ViewModels
                     new Commands.Push(_repo.FullPath, Target.Remote, Target.Name).Exec();
                 }
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                _repo.RefreshBranches();
-                _repo.RefreshCommits();
+                CallUIThread(() =>
+                {
+                    _repo.SetWatcherEnabled(true);
+                    _repo.MarkBranchesDirtyManually();
+                });
                 return true;
             });
         }

@@ -129,12 +129,11 @@ namespace SourceGit.ViewModels
                     Commands.Branch.Create(_repo.FullPath, _name, _baseOnRevision);
                 }
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                if (!CheckoutAfterCreated)
+                CallUIThread(() =>
                 {
-                    _repo.RefreshBranches();
-                    _repo.RefreshCommits();
-                }
+                    _repo.SetWatcherEnabled(true);
+                    _repo.MarkBranchesDirtyManually();
+                });
                 return true;
             });
         }
