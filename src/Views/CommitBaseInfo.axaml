@@ -12,34 +12,42 @@
     <DataTemplate DataType="m:Commit">
       <StackPanel Orientation="Vertical">
         <!-- Author & Committer -->
-        <Grid ColumnDefinitions="96,*,96,*" Margin="0,8">
+        <Grid Margin="0,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding IsCommitterVisible, Converter={x:Static c:BoolConverters.BoolToStarOrAutoGridLength}}"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
           <!-- Author -->
-          <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Author}"/>
-          <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
-            <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.CommitDetail.Info.Author}"/>
-            <StackPanel Orientation="Horizontal" Margin="0,10,0,8">
-              <SelectableTextBlock Text="{Binding Author.Name}" Margin="2,0,8,0"/>
-              <SelectableTextBlock Text="{Binding Author.Email}" Foreground="{DynamicResource Brush.FG2}"/>
+          <Grid Grid.Column="0" ColumnDefinitions="96,*">
+            <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Author}"/>
+            <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
+              <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.CommitDetail.Info.Author}"/>
+              <DockPanel Margin="0,10,0,8" ClipToBounds="True">
+                <SelectableTextBlock Text="{Binding Author.Name}" Margin="2,0,8,0"/>
+                <SelectableTextBlock Text="{Binding Author.Email}" ToolTip.Tip="{Binding Author.Email}" Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis"/>
+              </DockPanel>
+              <SelectableTextBlock Text="{Binding AuthorTimeStr}" 
+                                   Margin="2,0,0,0"
+                                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}" 
+                                   Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
-            <SelectableTextBlock Text="{Binding AuthorTimeStr}" 
-                                 Margin="2,0,0,0"
-                                 FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}" 
-                                 Foreground="{DynamicResource Brush.FG2}"/>
-          </StackPanel>
+          </Grid>
 
           <!-- Committer -->
-          <v:Avatar Grid.Column="2" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Committer}" IsVisible="{Binding IsCommitterVisible}"/>
-          <StackPanel Grid.Column="3" Margin="16,0,8,0" Orientation="Vertical" IsVisible="{Binding IsCommitterVisible}">
-            <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.CommitDetail.Info.Committer}"/>
-            <StackPanel Orientation="Horizontal" Margin="0,10,0,8">
-              <SelectableTextBlock Text="{Binding Committer.Name}" Margin="2,0,8,0"/>
-              <SelectableTextBlock Text="{Binding Committer.Email}" Foreground="{DynamicResource Brush.FG2}"/>
+          <Grid Grid.Column="1" ColumnDefinitions="96,*" IsVisible="{Binding IsCommitterVisible}">
+            <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Committer}"/>
+            <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
+              <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.CommitDetail.Info.Committer}"/>
+              <DockPanel Margin="0,10,0,8" ClipToBounds="True">
+                <SelectableTextBlock Text="{Binding Committer.Name}" Margin="2,0,8,0"/>
+                <SelectableTextBlock Text="{Binding Committer.Email}" ToolTip.Tip="{Binding Committer.Email}" Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis"/>
+              </DockPanel>
+              <SelectableTextBlock Text="{Binding CommitterTimeStr}" 
+                                   Margin="2,0,0,0" 
+                                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}"
+                                   Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
-            <SelectableTextBlock Text="{Binding CommitterTimeStr}" 
-                                 Margin="2,0,0,0" 
-                                 FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}"
-                                 Foreground="{DynamicResource Brush.FG2}"/>
-          </StackPanel>
+          </Grid>
         </Grid>
 
         <!-- Line -->
