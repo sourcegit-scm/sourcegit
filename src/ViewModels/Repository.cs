@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -102,6 +103,13 @@ namespace SourceGit.ViewModels
             get => _branches;
             private set => SetProperty(ref _branches, value);
         }
+        
+        [JsonIgnore]
+        public List<Models.Tag> Tags
+        {
+            get => _tags;
+            private set => SetProperty(ref _tags, value);
+        }
 
         [JsonIgnore]
         public List<Models.BranchTreeNode> LocalBranchTrees
@@ -109,19 +117,40 @@ namespace SourceGit.ViewModels
             get => _localBranchTrees;
             private set => SetProperty(ref _localBranchTrees, value);
         }
-
+        
+        [JsonIgnore]
+        public List<Models.BranchTreeNode> LocalBranchTreesVisible
+        {
+            get => _localBranchTreesVisible;
+            private set => SetProperty(ref _localBranchTreesVisible, value);
+        }
+        
         [JsonIgnore]
         public List<Models.BranchTreeNode> RemoteBranchTrees
         {
             get => _remoteBranchTrees;
             private set => SetProperty(ref _remoteBranchTrees, value);
         }
-
+        
         [JsonIgnore]
-        public List<Models.Tag> Tags
+        public List<Models.BranchTreeNode> RemoteBranchTreesVisible
         {
-            get => _tags;
-            private set => SetProperty(ref _tags, value);
+            get => _remoteBranchTreesVisible;
+            private set => SetProperty(ref _remoteBranchTreesVisible, value);
+        }
+        
+        [JsonIgnore]
+        public List<Models.BranchTreeNode> TagTrees
+        {
+            get => _tagTrees;
+            set => SetProperty(ref _tagTrees, value);
+        }
+        
+        [JsonIgnore]
+        public List<Models.BranchTreeNode> TagTreesVisible
+        {
+            get => _tagTreesVisible;
+            set => SetProperty(ref _tagTreesVisible, value);
         }
 
         [JsonIgnore]
@@ -164,12 +193,12 @@ namespace SourceGit.ViewModels
         }
 
         [JsonIgnore]
-        public bool IsSearching
+        public bool IsSearchingCommits
         {
-            get => _isSearching;
+            get => _isSearchingCommits;
             set
             {
-                if (SetProperty(ref _isSearching, value))
+                if (SetProperty(ref _isSearchingCommits, value))
                 {
                     SearchedCommits = new List<Models.Commit>();
                     SearchCommitFilter = string.Empty;
@@ -191,6 +220,23 @@ namespace SourceGit.ViewModels
         {
             get => _searchedCommits;
             set => SetProperty(ref _searchedCommits, value);
+        }
+        
+        [JsonIgnore]
+        public string SearchBranchOrTagFilter
+        {
+            get => _searchBranchOrTagFilter;
+            set
+            {
+                SetProperty(ref _searchBranchOrTagFilter, value);
+
+                if (_searchBranchOrTagTimer != null)
+                {
+                    _searchBranchOrTagTimer.Dispose();
+                }
+
+                _searchBranchOrTagTimer = new Timer(_ => Dispatcher.UIThread.Invoke(ApplySearchBranchOrTagFilter), null, 300, Timeout.Infinite);
+            }
         }
 
         [JsonIgnore]
@@ -254,7 +300,7 @@ namespace SourceGit.ViewModels
             _histories = null;
             _workingCopy = null;
             _stashesPage = null;
-            _isSearching = false;
+            _isSearchingCommits = false;
             _searchCommitFilter = string.Empty;
 
             _isTagGroupExpanded = false;
@@ -399,6 +445,20 @@ namespace SourceGit.ViewModels
             SearchCommitFilter = string.Empty;
         }
 
+        public void ApplySearchBranchOrTagFilter()
+        {
+            var filter = Models.BranchTreeNode.Filter.Create(_searchBranchOrTagFilter);
+            LocalBranchTreesVisible = filter.Apply(_localBranchTrees);;
+            RemoteBranchTreesVisible = filter.Apply(_remoteBranchTrees);
+            TagTreesVisible = filter.Apply(_tagTrees);
+        }
+        
+        public void ClearSearchBranchOrTagFilter()
+        {
+            SearchBranchOrTagFilter = string.Empty;
+            ApplySearchBranchOrTagFilter();
+        }
+
         public void StartSearchCommits()
         {
             if (_histories == null)
@@ -420,6 +480,11 @@ namespace SourceGit.ViewModels
             }
 
             SearchedCommits = visible;
+        }
+        
+        public void CancelSearchCommits()
+        {
+            IsSearchingCommits = false;
         }
 
         public void SetWatcherEnabled(bool enabled)
@@ -536,8 +601,9 @@ namespace SourceGit.ViewModels
 
             var builder = new Models.BranchTreeNode.Builder();
             builder.SetFilters(Filters);
-            builder.CollectExpandedNodes(_localBranchTrees, true);
-            builder.CollectExpandedNodes(_remoteBranchTrees, false);
+            builder.SetSearchQuery(_searchBranchOrTagFilter);
+            builder.CollectBranchExpandedNodes(_localBranchTrees, true);
+            builder.CollectBranchExpandedNodes(_remoteBranchTrees, false);
             builder.Run(branches, remotes);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -546,6 +612,8 @@ namespace SourceGit.ViewModels
                 Branches = branches;
                 LocalBranchTrees = builder.Locals;
                 RemoteBranchTrees = builder.Remotes;
+                LocalBranchTreesVisible = builder.LocalsVisible;
+                RemoteBranchTreesVisible = builder.RemotesVisible;
 
                 var cur = Branches.Find(x => x.IsCurrent);
                 CanCommitWithPush = cur != null && !string.IsNullOrEmpty(cur.Upstream);
@@ -555,11 +623,18 @@ namespace SourceGit.ViewModels
         public void RefreshTags()
         {
             var tags = new Commands.QueryTags(FullPath).Result();
-            foreach (var tag in tags)
-                tag.IsFiltered = Filters.Contains(tag.Name);
+            
+            var builder = new Models.BranchTreeNode.Builder();
+            builder.SetFilters(Filters);
+            builder.SetSearchQuery(_searchBranchOrTagFilter);
+            builder.CollectTagExpandedNodes(_tagTrees);
+            builder.Run(tags);
+            
             Dispatcher.UIThread.Invoke(() =>
             {
                 Tags = tags;
+                TagTrees = builder.Tags;
+                TagTreesVisible = builder.TagsVisible;
             });
         }
 
@@ -1365,7 +1440,7 @@ namespace SourceGit.ViewModels
         private int _selectedViewIndex = 0;
         private object _selectedView = null;
 
-        private bool _isSearching = false;
+        private bool _isSearchingCommits = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
 
@@ -1376,6 +1451,7 @@ namespace SourceGit.ViewModels
         private List<Models.Branch> _branches = new List<Models.Branch>();
         private List<Models.BranchTreeNode> _localBranchTrees = new List<Models.BranchTreeNode>();
         private List<Models.BranchTreeNode> _remoteBranchTrees = new List<Models.BranchTreeNode>();
+        private List<Models.BranchTreeNode> _tagTrees = new List<Models.BranchTreeNode>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
         private List<string> _submodules = new List<string>();
         private bool _canCommitWithPush = false;
@@ -1384,5 +1460,11 @@ namespace SourceGit.ViewModels
         private InProgressContext _inProgressContext = null;
         private bool _hasUnsolvedConflicts = false;
         private Models.Commit _searchResultSelectedCommit = null;
+        
+        private string _searchBranchOrTagFilter;
+        private Timer _searchBranchOrTagTimer;
+        private List<Models.BranchTreeNode> _localBranchTreesVisible;
+        private List<Models.BranchTreeNode> _remoteBranchTreesVisible;
+        private List<Models.BranchTreeNode> _tagTreesVisible;
     }
 }

@@ -348,6 +348,7 @@
   <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">解决冲突</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交</x:String>
   <x:String x:Key="Text.Repository.SearchTip" xml:space="preserve">支持搜索作者/提交者/主题/指纹</x:String>
+  <x:String x:Key="Text.Repository.SearchBranchesOrTagsTip" xml:space="preserve">搜索分支或标签</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交统计</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模块列表</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">添加子模块</x:String>

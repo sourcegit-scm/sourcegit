@@ -149,7 +149,7 @@ namespace SourceGit.Views
                     }
                     else if (e.Key == Key.F)
                     {
-                        repo.IsSearching = true;
+                        repo.IsSearchingCommits = true;
                         e.Handled = true;
                         return;
                     }
