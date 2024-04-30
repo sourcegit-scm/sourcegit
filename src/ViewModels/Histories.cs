@@ -34,8 +34,19 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
+                var oldAutoSelectedCommitSHA = AutoSelectedCommit?.SHA;
                 if (SetProperty(ref _commits, value))
                 {
+                    Models.Commit newSelectedCommit = null;
+                    if (value.Count > 0 && oldAutoSelectedCommitSHA != null)
+                    {
+                        newSelectedCommit = value.Find(x => x.SHA == oldAutoSelectedCommitSHA);
+                    }
+                    if (newSelectedCommit != AutoSelectedCommit)
+                    {
+                        AutoSelectedCommit = newSelectedCommit;
+                    }
+
                     Graph = null;
                     Task.Run(() =>
                     {
