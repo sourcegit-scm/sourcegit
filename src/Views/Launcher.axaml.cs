@@ -146,6 +146,15 @@ namespace SourceGit.Views
                 e.Handled = true;
                 return;
             }
+            else if (e.Key == Key.F5)
+            {
+                if (vm.ActivePage.Data is ViewModels.Repository repo)
+                {
+                    repo.RefreshAll();
+                    e.Handled = true;
+                    return;
+                }
+            }
 
             base.OnKeyDown(e);
         }

@@ -111,7 +111,7 @@ namespace SourceGit.Native
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Programs\\Fleet\\Fleet.exe");
-            finder.Rider(FindRider);
+            finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\JetBrains\\Toolbox");
             finder.SublimeText(FindSublimeText);
             return finder.Founded;
         }
@@ -318,22 +318,6 @@ namespace SourceGit.Native
             if (vscodeInsiders != null)
             {
                 return vscodeInsiders.GetValue("DisplayIcon") as string;
-            }
-
-            return string.Empty;
-        }
-
-        private string FindRider()
-        {
-            var rider = Environment.GetEnvironmentVariable("JetBrains Rider");
-            if (!string.IsNullOrEmpty(rider))
-            {
-                rider = rider.TrimEnd(';', ' ');
-                var path = Path.Combine(rider, "rider64.exe");
-                if (File.Exists(path))
-                {
-                    return path;
-                }
             }
 
             return string.Empty;

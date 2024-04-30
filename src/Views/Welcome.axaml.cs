@@ -37,6 +37,16 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (sender is Grid grid && DataContext is ViewModels.Welcome vm)
+            {
+                var menu = vm.CreateContextMenu(grid.DataContext as ViewModels.RepositoryNode);
+                menu?.Open(grid);
+                e.Handled = true;
+            }
+        }
+
         private void OnPointerPressedTreeNode(object sender, PointerPressedEventArgs e)
         {
             if (e.GetCurrentPoint(sender as Visual).Properties.IsLeftButtonPressed)

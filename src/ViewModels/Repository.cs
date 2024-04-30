@@ -233,17 +233,7 @@ namespace SourceGit.ViewModels
             _inProgressContext = null;
             _hasUnsolvedConflicts = false;
 
-            Task.Run(() =>
-            {
-                RefreshBranches();
-                RefreshTags();
-                RefreshCommits();
-            });
-
-            Task.Run(RefreshSubmodules);
-            Task.Run(RefreshWorkingCopyChanges);
-            Task.Run(RefreshStashes);
-            Task.Run(RefreshGitFlow);
+            RefreshAll();
         }
 
         public void Close()
@@ -275,6 +265,21 @@ namespace SourceGit.ViewModels
             _tags.Clear();
             _submodules.Clear();
             _searchedCommits.Clear();
+        }
+
+        public void RefreshAll()
+        {
+            Task.Run(() =>
+            {
+                RefreshBranches();
+                RefreshTags();
+                RefreshCommits();
+            });
+
+            Task.Run(RefreshSubmodules);
+            Task.Run(RefreshWorkingCopyChanges);
+            Task.Run(RefreshStashes);
+            Task.Run(RefreshGitFlow);
         }
 
         public void OpenInFileManager()
@@ -506,7 +511,11 @@ namespace SourceGit.ViewModels
             if (_inProgressContext != null)
             {
                 SetWatcherEnabled(false);
-                await Task.Run(_inProgressContext.Abort);
+                var succ = await Task.Run(_inProgressContext.Abort);
+                if (succ && _workingCopy != null)
+                {
+                    _workingCopy.CommitMessage = string.Empty;
+                }
                 SetWatcherEnabled(true);
             }
             else
@@ -681,6 +690,17 @@ namespace SourceGit.ViewModels
                 PopupHost.ShowPopup(new CreateBranch(this, current));
         }
 
+        public void CheckoutLocalBranch(string branch)
+        {
+            if (!PopupHost.CanCreatePopup())
+                return;
+
+            if (WorkingCopyChangesCount > 0)
+                PopupHost.ShowPopup(new Checkout(this, branch));
+            else
+                PopupHost.ShowAndStartPopup(new Checkout(this, branch));
+        }
+
         public void CreateNewTag()
         {
             var current = Branches.Find(x => x.IsCurrent);
@@ -833,8 +853,7 @@ namespace SourceGit.ViewModels
                 checkout.Icon = App.CreateMenuIcon("Icons.Check");
                 checkout.Click += (o, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowAndStartPopup(new Checkout(this, branch.Name));
+                    CheckoutLocalBranch(branch.Name);
                     e.Handled = true;
                 };
                 menu.Items.Add(checkout);

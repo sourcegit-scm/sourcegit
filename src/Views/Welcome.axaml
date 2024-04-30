@@ -57,7 +57,7 @@
                   LostFocus="OnTreeViewLostFocus">
           <TreeView.ContextMenu>
             <ContextMenu>
-              <MenuItem Header="{DynamicResource Text.Welcome.AddRootFolder}" Command="{Binding AddFolder}">
+              <MenuItem Header="{DynamicResource Text.Welcome.AddRootFolder}" Command="{Binding AddRootNode}">
                 <MenuItem.Icon>
                   <Path Width="12" Height="12" Data="{DynamicResource Icons.Folder.Add}"/>
                 </MenuItem.Icon>
@@ -70,37 +70,6 @@
               <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
               <Setter Property="IsVisible" Value="{Binding IsVisible}"/>
               <Setter Property="CornerRadius" Value="4"/>
-              <Setter Property="ContextMenu">
-                <Setter.Value>
-                  <ContextMenu>
-                    <MenuItem Header="{DynamicResource Text.Welcome.Edit}" Command="{Binding Edit}">
-                      <MenuItem.Icon>
-                        <Path Width="12" Height="12" Data="{DynamicResource Icons.Edit}"/>
-                      </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="{DynamicResource Text.Welcome.AddSubFolder}" Command="{Binding AddSubFolder}" IsVisible="{Binding !IsRepository}">
-                      <MenuItem.Icon>
-                        <Path Width="12" Height="12" Data="{DynamicResource Icons.Folder.Add}"/>
-                      </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="{DynamicResource Text.Repository.Explore}" Command="{Binding OpenInFileManager}" IsVisible="{Binding IsRepository}">
-                      <MenuItem.Icon>
-                        <Path Width="12" Height="12" Data="{DynamicResource Icons.Folder.Open}"/>
-                      </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="{DynamicResource Text.Repository.Terminal}" Command="{Binding OpenTerminal}" IsVisible="{Binding IsRepository}">
-                      <MenuItem.Icon>
-                        <Path Width="12" Height="12" Data="{DynamicResource Icons.Terminal}"/>
-                      </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="{DynamicResource Text.Welcome.Delete}" Command="{Binding Delete}">
-                      <MenuItem.Icon>
-                        <Path Width="12" Height="12" Data="{DynamicResource Icons.Clear}"/>
-                      </MenuItem.Icon>
-                    </MenuItem>
-                  </ContextMenu>
-                </Setter.Value>
-              </Setter>
             </Style>
           </TreeView.Styles>
 
@@ -109,11 +78,12 @@
               <Grid Height="30"
                     ColumnDefinitions="Auto,Auto,*"
                     Background="Transparent"
+                    Loaded="SetupTreeNodeDragAndDrop"
+                    ContextRequested="OnTreeNodeContextRequested"
                     PointerPressed="OnPointerPressedTreeNode"
                     PointerMoved="OnPointerMovedOverTreeNode"
                     PointerReleased="OnPointerReleasedOnTreeNode"
                     DoubleTapped="OnDoubleTappedTreeNode"
-                    Loaded="SetupTreeNodeDragAndDrop"
                     ClipToBounds="True">
                 <Path Grid.Column="0" Width="12" Height="12" Margin="0,0,8,0"
                       Fill="{Binding Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
