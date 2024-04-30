@@ -8,10 +8,12 @@ rm -rf SourceGit *.tar.gz resources/deb/opt *.deb *.rpm
 # Compile
 dotnet publish ../src/SourceGit.csproj -c Release -r linux-x64 -o SourceGit -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
 mv SourceGit/SourceGit SourceGit/sourcegit
+cp resources/app/App.icns SourceGit/sourcegit.icns
 rm -f SourceGit/*.dbg
 
 # General Linux archive
 tar -zcvf sourcegit_${version}.linux-x64.tar.gz SourceGit
+rm -f SourceGit/sourcegit.icns
 
 # Debain/Ubuntu package
 mkdir -p resources/deb/opt/sourcegit/
