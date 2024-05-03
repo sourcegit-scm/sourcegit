@@ -126,6 +126,11 @@ namespace SourceGit.Models
             TryAdd("Visual Studio Code - Insiders", "vscode_insiders", "\"{0}\"", "VSCODE_INSIDERS_PATH", platformFinder);
         }
 
+        public void VSCodium(Func<string> platformFinder)
+        {
+            TryAdd("VSCodium", "codium", "\"{0}\"", "VSCODIUM_PATH", platformFinder);
+        }
+
         public void Fleet(Func<string> platformFinder)
         {
             TryAdd("Fleet", "fleet", "\"{0}\"", "FLEET_PATH", platformFinder);
