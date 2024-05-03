@@ -14,7 +14,7 @@
         <!-- Author & Committer -->
         <Grid Margin="0,8">
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding IsCommitterVisible, Converter={x:Static c:BoolConverters.BoolToStarOrAutoGridLength}}"/>
+            <ColumnDefinition Width="{Binding IsCommitterVisible, Converter={x:Static c:BoolConverters.ToStarOrAutoGridLength}}"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
           <!-- Author -->
