@@ -1,4 +1,5 @@
-﻿using Avalonia.Data.Converters;
+﻿using Avalonia.Controls;
+using Avalonia.Data.Converters;
 using Avalonia.Media;
 
 namespace SourceGit.Converters
@@ -10,5 +11,8 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<bool, FontWeight> BoldIfTrue =
             new FuncValueConverter<bool, FontWeight>(x => x ? FontWeight.Bold : FontWeight.Regular);
+
+        public static readonly FuncValueConverter<bool, GridLength> BoolToStarOrAutoGridLength =
+            new(value => value ? new GridLength(1, GridUnitType.Star) : new GridLength(1, GridUnitType.Auto));
     }
 }
