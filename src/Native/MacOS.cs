@@ -19,6 +19,12 @@ namespace SourceGit.Native
             {
                 DefaultFamilyName = "PingFang SC",
             });
+
+            builder.With(new MacOSPlatformOptions()
+            {
+                DisableNativeMenus = true,
+                DisableDefaultApplicationMenuItems = true,
+            });
         }
 
         public string FindGitExecutable()
