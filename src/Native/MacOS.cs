@@ -65,10 +65,12 @@ namespace SourceGit.Native
         public void OpenTerminal(string workdir)
         {
             var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
+            dir = dir.Replace(" ", "\\ ");
+
             var builder = new StringBuilder();
             builder.AppendLine("on run argv");
             builder.AppendLine("    tell application \"Terminal\"");
-            builder.AppendLine($"        do script \"cd '{dir}'\"");
+            builder.AppendLine($"        do script \"cd {dir}\"");
             builder.AppendLine("        activate");
             builder.AppendLine("    end tell");
             builder.AppendLine("end run");
