@@ -120,6 +120,7 @@
   <x:String x:Key="Text.Cut" xml:space="preserve">剪切</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">删除分支确认</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
+  <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">删除远程确认</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">远程名 ：</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>
