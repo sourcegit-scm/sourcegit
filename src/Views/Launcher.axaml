@@ -121,7 +121,7 @@
                         <MenuItem Header="{DynamicResource Text.PageTabBar.Tab.Close}"
                                   Command="{Binding #me.DataContext.(vm:Launcher).CloseTab}"
                                   CommandParameter="{Binding}"
-                                  InputGesture="Ctrl+W"/>
+                                  InputGesture="{OnPlatform Ctrl+W, macOS=⌘+W}"/>
                         <MenuItem Header="{DynamicResource Text.PageTabBar.Tab.CloseOther}"
                                   Command="{Binding #me.DataContext.(vm:Launcher).CloseOtherTabs}"
                                   CommandParameter="{Binding}"/>
