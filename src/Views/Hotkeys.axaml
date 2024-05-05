@@ -74,7 +74,7 @@
           <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+W, macOS=⌘+W}" />
           <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CloseTab}" />
 
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Tab, macOS=⌘+⌥+>}"/>
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Tab, macOS=⌘+⌥+→}"/>
           <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoNextTab}" />
 
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
@@ -100,7 +100,7 @@
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+3, macOS=⌘+3}"/>
           <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewStashes}" />
 
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="Space"/>
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Space, macOS=␣}"/>
           <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
 
           <TextBlock Grid.Row="5" Grid.Column="0" Classes="monospace bold" Text="F5"/>
