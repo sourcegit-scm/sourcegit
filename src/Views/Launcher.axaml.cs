@@ -98,7 +98,8 @@ namespace SourceGit.Views
         protected override void OnKeyDown(KeyEventArgs e)
         {
             var vm = DataContext as ViewModels.Launcher;
-            if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
+            if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Meta)) ||
+                (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Control)))
             {
                 if (e.Key == Key.W)
                 {
@@ -106,7 +107,14 @@ namespace SourceGit.Views
                     e.Handled = true;
                     return;
                 }
-                else if (e.Key == Key.Tab)
+                else if (e.Key == Key.T)
+                {
+                    vm.AddNewTab();
+                    e.Handled = true;
+                    return;
+                }
+                else if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) || 
+                    (!OperatingSystem.IsMacOS() && e.Key == Key.Tab))
                 {
                     vm.GotoNextTab();
                     e.Handled = true;

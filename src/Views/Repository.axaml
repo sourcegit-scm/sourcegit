@@ -32,7 +32,7 @@
             <ToolTip.Tip>
               <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="{DynamicResource Text.Repository.Search}" VerticalAlignment="Center"/>
-                <TextBlock Margin="16,0,0,0" Text="Ctrl+F" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Margin="16,0,0,0" Text="{OnPlatform Ctrl+F, macOS=⌘+F}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
               </StackPanel>
             </ToolTip.Tip>
             <Path Width="14" Height="14" Data="{StaticResource Icons.Search}"/>
