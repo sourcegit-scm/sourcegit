@@ -121,6 +121,7 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Delete Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch :</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">You are about to delete a remote branch!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Also delete remote branch${0}$</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Delete Remote</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Remote :</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">Target :</x:String>

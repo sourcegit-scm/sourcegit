@@ -113,7 +113,7 @@ namespace SourceGit.Views
                     e.Handled = true;
                     return;
                 }
-                else if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) || 
+                else if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) ||
                     (!OperatingSystem.IsMacOS() && e.Key == Key.Tab))
                 {
                     vm.GotoNextTab();

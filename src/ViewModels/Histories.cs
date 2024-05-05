@@ -383,7 +383,6 @@ namespace SourceGit.ViewModels
                 fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream);
                 fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
                 fastForward.IsEnabled = !string.IsNullOrEmpty(current.UpstreamTrackStatus) && current.UpstreamTrackStatus.IndexOf('↑') < 0;
-                ;
                 fastForward.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
