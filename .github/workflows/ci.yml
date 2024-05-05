@@ -44,6 +44,8 @@ jobs:
         run: dotnet build -c Release
       - name: Publish
         run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-x64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
+      - name: Allow Executing File as Program
+        run: chmod +x publish/Sourcegit
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -65,6 +67,8 @@ jobs:
         run: dotnet build -c Release
       - name: Publish
         run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-arm64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
+      - name: Allow Executing File as Program
+        run: chmod +x publish/Sourcegit
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -88,6 +92,8 @@ jobs:
         run: dotnet publish src/SourceGit.csproj -c Release -o publish -r linux-x64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
       - name: Rename Executable File
         run: mv publish/SourceGit publish/sourcegit
+      - name: Allow Executing File as Program
+        run: chmod +x publish/sourcegit
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
