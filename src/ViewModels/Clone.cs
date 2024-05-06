@@ -113,11 +113,12 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
-                    var repo = Preference.AddRepository(path, Path.Combine(path, ".git"));
                     var node = new RepositoryNode()
                     {
-                        Id = repo.FullPath,
-                        Name = Path.GetFileName(repo.FullPath),
+                        Id = path,
+                        FullPath = path,
+                        Name = Path.GetFileName(path),
+                        GitDir = Path.Combine(path, ".git"),
                         Bookmark = 0,
                         IsRepository = true,
                     };

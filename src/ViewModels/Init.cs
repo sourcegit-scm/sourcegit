@@ -31,11 +31,12 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
-                    var repo = Preference.AddRepository(_targetPath, gitDir);
                     var node = new RepositoryNode()
                     {
-                        Id = repo.FullPath,
-                        Name = Path.GetFileName(repo.FullPath),
+                        Id = _targetPath,
+                        FullPath = _targetPath,
+                        Name = Path.GetFileName(_targetPath),
+                        GitDir = gitDir,
                         Bookmark = 0,
                         IsRepository = true,
                     };

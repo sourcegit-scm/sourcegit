@@ -17,6 +17,29 @@ namespace SourceGit.ViewModels
                 SetProperty(ref _id, normalized);
             }
         }
+        
+        public string FullPath
+        {
+            get => _fullpath;
+            set
+            {
+                if (value != null)
+                {
+                    var normalized = value.Replace('\\', '/');
+                    SetProperty(ref _fullpath, normalized);
+                }
+                else
+                {
+                    SetProperty(ref _fullpath, null);
+                }
+            }
+        }
+        
+        public string GitDir
+        {
+            get => _gitDir;
+            set => SetProperty(ref _gitDir, value);
+        }
 
         public string Name
         {
@@ -55,6 +78,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _subNodes, value);
         }
 
+        public AvaloniaList<string> Filters
+        {
+            get;
+            set;
+        } = new AvaloniaList<string>();
+
+        public AvaloniaList<string> CommitMessages
+        {
+            get;
+            set;
+        } = new AvaloniaList<string>();
+
         public void Edit()
         {
             if (PopupHost.CanCreatePopup())
@@ -89,6 +124,8 @@ namespace SourceGit.ViewModels
 
         private string _id = string.Empty;
         private string _name = string.Empty;
+        private string _gitDir = string.Empty;
+        private string _fullpath = string.Empty;
         private bool _isRepository = false;
         private int _bookmark = 0;
         private bool _isExpanded = false;

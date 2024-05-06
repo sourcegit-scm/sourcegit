@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -267,11 +268,15 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _externalMergeToolDiffCmd, value);
         }
 
-        public List<Repository> Repositories
-        {
-            get;
-            set;
-        } = new List<Repository>();
+        [JsonIgnore]
+        public IEnumerable<Repository> Repositories => RepositoryNodes
+            .Select(m => new Repository()
+            {
+                FullPath = m.Id,
+                GitDir = Path.GetFullPath(Path.Combine(m.Id, ".git")),
+                Filters = m.Filters,
+                CommitMessages = m.CommitMessages
+            });
 
         public AvaloniaList<RepositoryNode> RepositoryNodes
         {
@@ -376,19 +381,22 @@ namespace SourceGit.ViewModels
         {
             var normalized = rootDir.Replace('\\', '/');
             var repo = FindRepository(normalized);
+            if (repo == null)
+            {
+                var node = new RepositoryNode()
+                {
+                    Id = normalized,
+                    Name = Path.GetFileName(normalized), 
+                    IsRepository = true
+                };
+                _instance.RepositoryNodes.Add(node);
+            }
+            
+            repo = FindRepository(normalized);
             if (repo != null)
             {
                 repo.GitDir = gitDir;
-                return repo;
             }
-
-            repo = new Repository()
-            {
-                FullPath = normalized,
-                GitDir = gitDir
-            };
-
-            _instance.Repositories.Add(repo);
             return repo;
         }
 

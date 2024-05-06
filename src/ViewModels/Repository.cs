@@ -1305,11 +1305,12 @@ namespace SourceGit.ViewModels
             {
                 var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
                 var gitDir = new Commands.QueryGitDir(root).Result();
-                var repo = Preference.AddRepository(root, gitDir);
                 var node = new RepositoryNode()
                 {
-                    Id = repo.FullPath,
-                    Name = Path.GetFileName(repo.FullPath),
+                    Id = root,
+                    FullPath = root,
+                    Name = Path.GetFileName(root),
+                    GitDir = gitDir,
                     Bookmark = 0,
                     IsRepository = true,
                 };

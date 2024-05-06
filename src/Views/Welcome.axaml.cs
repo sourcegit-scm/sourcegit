@@ -256,11 +256,12 @@ namespace SourceGit.Views
                 var gitDir = new Commands.QueryGitDir(root).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    var repo = ViewModels.Preference.AddRepository(root, gitDir);
                     var node = new ViewModels.RepositoryNode()
                     {
-                        Id = repo.FullPath,
-                        Name = Path.GetFileName(repo.FullPath),
+                        Id = root,
+                        FullPath = root,
+                        Name = Path.GetFileName(root),
+                        GitDir = gitDir,
                         Bookmark = 0,
                         IsRepository = true,
                     };
