@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -269,14 +269,24 @@ namespace SourceGit.ViewModels
         }
 
         [JsonIgnore]
-        public IEnumerable<Repository> Repositories => RepositoryNodes
-            .Select(m => new Repository()
+        public IEnumerable<Repository> Repositories
+        {
+            get
             {
-                FullPath = m.Id,
-                GitDir = Path.GetFullPath(Path.Combine(m.Id, ".git")),
-                Filters = m.Filters,
-                CommitMessages = m.CommitMessages
-            });
+                var result = new Collection<Repository>();
+                foreach (var m in RepositoryNodes)
+                {
+                    result.Add(new Repository()
+                    {
+                        FullPath = m.Id,
+                        GitDir = Path.GetFullPath(Path.Combine(m.Id, ".git")),
+                        Filters = m.Filters,
+                        CommitMessages = m.CommitMessages
+                    });
+                }
+                return result;
+            }
+        } 
 
         public AvaloniaList<RepositoryNode> RepositoryNodes
         {
