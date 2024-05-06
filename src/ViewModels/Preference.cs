@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -363,6 +364,20 @@ namespace SourceGit.ViewModels
 
         public static Repository FindRepository(string path)
         {
+
+            if (!_instance.Repositories.Any(i => i.FullPath == path))
+            {
+                var node = _instance.RepositoryNodes.FirstOrDefault(m => m.Id == path);
+                if (node != null)
+                {
+                    _instance.Repositories.Add(new Repository()
+                    {
+                        FullPath = node.Id,
+                        GitDir = Path.GetFullPath(Path.Combine(node.Id, ".git"))
+                    });
+                }
+            }
+            
             foreach (var repo in _instance.Repositories)
             {
                 if (repo.FullPath == path)
