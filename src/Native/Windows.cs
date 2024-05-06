@@ -110,6 +110,7 @@ namespace SourceGit.Native
             var finder = new Models.ExternalToolsFinder();
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
+            finder.VSCodium(FindVSCodium);
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Programs\\Fleet\\Fleet.exe");
             finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\JetBrains\\Toolbox");
             finder.SublimeText(FindSublimeText);
@@ -318,6 +319,33 @@ namespace SourceGit.Native
             if (vscodeInsiders != null)
             {
                 return vscodeInsiders.GetValue("DisplayIcon") as string;
+            }
+
+            return string.Empty;
+        }
+
+        private string FindVSCodium()
+        {
+            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            // VSCodium (system)
+            var systemVScodium = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{88DA3577-054F-4CA1-8122-7D820494CFFB}_is1");
+            if (systemVScodium != null)
+            {
+                return systemVScodium.GetValue("DisplayIcon") as string;
+            }
+
+            var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.CurrentUser,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            // VSCodium (user)
+            var vscodium = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{2E1F05D1-C245-4562-81EE-28188DB6FD17}_is1");
+            if (vscodium != null)
+            {
+                return vscodium.GetValue("DisplayIcon") as string;
             }
 
             return string.Empty;

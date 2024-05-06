@@ -34,8 +34,19 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
+                var oldAutoSelectedCommitSHA = AutoSelectedCommit?.SHA;
                 if (SetProperty(ref _commits, value))
                 {
+                    Models.Commit newSelectedCommit = null;
+                    if (value.Count > 0 && oldAutoSelectedCommitSHA != null)
+                    {
+                        newSelectedCommit = value.Find(x => x.SHA == oldAutoSelectedCommitSHA);
+                    }
+                    if (newSelectedCommit != AutoSelectedCommit)
+                    {
+                        AutoSelectedCommit = newSelectedCommit;
+                    }
+
                     Graph = null;
                     Task.Run(() =>
                     {
@@ -372,7 +383,6 @@ namespace SourceGit.ViewModels
                 fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream);
                 fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
                 fastForward.IsEnabled = !string.IsNullOrEmpty(current.UpstreamTrackStatus) && current.UpstreamTrackStatus.IndexOf('↑') < 0;
-                ;
                 fastForward.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -447,8 +457,7 @@ namespace SourceGit.ViewModels
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
             checkout.Click += (o, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowAndStartPopup(new Checkout(_repo, branch.Name));
+                _repo.CheckoutLocalBranch(branch.Name);
                 e.Handled = true;
             };
             submenu.Items.Add(checkout);
@@ -524,16 +533,16 @@ namespace SourceGit.ViewModels
                 {
                     if (b.IsLocal && b.Upstream == branch.FullName)
                     {
-                        if (b.IsCurrent)
-                            return;
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowAndStartPopup(new Checkout(_repo, b.Name));
+                        if (!b.IsCurrent)
+                            _repo.CheckoutLocalBranch(b.Name);
+
                         return;
                     }
                 }
 
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new CreateBranch(_repo, branch));
+
                 e.Handled = true;
             };
             submenu.Items.Add(checkout);

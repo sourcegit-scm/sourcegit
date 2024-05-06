@@ -116,31 +116,36 @@ namespace SourceGit.Models
             });
         }
 
-        public void VSCode(Func<string> platform_finder)
+        public void VSCode(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code", "vscode", "\"{0}\"", "VSCODE_PATH", platform_finder);
+            TryAdd("Visual Studio Code", "vscode", "\"{0}\"", "VSCODE_PATH", platformFinder);
         }
 
-        public void VSCodeInsiders(Func<string> platform_finder)
+        public void VSCodeInsiders(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", "\"{0}\"", "VSCODE_INSIDERS_PATH", platform_finder);
+            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", "\"{0}\"", "VSCODE_INSIDERS_PATH", platformFinder);
         }
 
-        public void Fleet(Func<string> platform_finder)
+        public void VSCodium(Func<string> platformFinder)
         {
-            TryAdd("Fleet", "fleet", "\"{0}\"", "FLEET_PATH", platform_finder);
+            TryAdd("VSCodium", "codium", "\"{0}\"", "VSCODIUM_PATH", platformFinder);
         }
 
-        public void SublimeText(Func<string> platform_finder)
+        public void Fleet(Func<string> platformFinder)
         {
-            TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT_PATH", platform_finder);
+            TryAdd("Fleet", "fleet", "\"{0}\"", "FLEET_PATH", platformFinder);
         }
 
-        public void FindJetBrainsFromToolbox(Func<string> platform_finder)
+        public void SublimeText(Func<string> platformFinder)
+        {
+            TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT_PATH", platformFinder);
+        }
+
+        public void FindJetBrainsFromToolbox(Func<string> platformFinder)
         {
             var exclude = new List<string> { "fleet", "dotmemory", "dottrace", "resharper-u", "androidstudio" };
             var supported_icons = new List<string> { "CL", "DB", "DL", "DS", "GO", "IC", "IU", "JB", "PC", "PS", "PY", "QA", "QD", "RD", "RM", "RR", "WRS", "WS" };
-            var state = Path.Combine(platform_finder(), "state.json");
+            var state = Path.Combine(platformFinder(), "state.json");
             if (File.Exists(state))
             {
                 var stateData = JsonSerializer.Deserialize(File.ReadAllText(state), JsonCodeGen.Default.JetBrainsState);

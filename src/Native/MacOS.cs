@@ -19,6 +19,12 @@ namespace SourceGit.Native
             {
                 DefaultFamilyName = "PingFang SC",
             });
+
+            builder.With(new MacOSPlatformOptions()
+            {
+                DisableNativeMenus = true,
+                DisableDefaultApplicationMenuItems = true,
+            });
         }
 
         public string FindGitExecutable()
@@ -32,6 +38,7 @@ namespace SourceGit.Native
             var finder = new Models.ExternalToolsFinder();
             finder.VSCode(() => "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code");
             finder.VSCodeInsiders(() => "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code");
+            finder.VSCodium(() => "/Applications/VSCodium.app/Contents/Resources/app/bin/codium");
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Applications/Fleet.app/Contents/MacOS/Fleet");
             finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Library/Application Support/JetBrains/Toolbox");
             finder.SublimeText(() => "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl");
@@ -58,10 +65,12 @@ namespace SourceGit.Native
         public void OpenTerminal(string workdir)
         {
             var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
+            dir = dir.Replace(" ", "\\ ");
+
             var builder = new StringBuilder();
             builder.AppendLine("on run argv");
             builder.AppendLine("    tell application \"Terminal\"");
-            builder.AppendLine($"        do script \"cd '{dir}'\"");
+            builder.AppendLine($"        do script \"cd {dir}\"");
             builder.AppendLine("        activate");
             builder.AppendLine("    end tell");
             builder.AppendLine("end run");

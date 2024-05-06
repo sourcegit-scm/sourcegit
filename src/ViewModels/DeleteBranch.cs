@@ -10,10 +10,36 @@ namespace SourceGit.ViewModels
             private set;
         }
 
+        public Models.Branch TrackingRemoteBranch
+        {
+            get;
+            private set;
+        }
+
+        public object DeleteTrackingRemoteTip
+        {
+            get;
+            private set;
+        }
+
+        public bool AlsoDeleteTrackingRemote
+        {
+            get => _alsoDeleteTrackingRemote;
+            set => SetProperty(ref _alsoDeleteTrackingRemote, value);
+        }
+
         public DeleteBranch(Repository repo, Models.Branch branch)
         {
             _repo = repo;
             Target = branch;
+
+            if (branch.IsLocal && !string.IsNullOrEmpty(branch.Upstream))
+            {
+                var upstream = branch.Upstream.Substring(13);
+                TrackingRemoteBranch = repo.Branches.Find(x => !x.IsLocal && $"{x.Remote}/{x.Name}" == upstream);
+                DeleteTrackingRemoteTip = new Views.NameHighlightedTextBlock("DeleteBranch.WithTrackingRemote", upstream);
+            }
+
             View = new Views.DeleteBranch() { DataContext = this };
         }
 
@@ -27,6 +53,9 @@ namespace SourceGit.ViewModels
                 if (Target.IsLocal)
                 {
                     Commands.Branch.Delete(_repo.FullPath, Target.Name);
+
+                    if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
+                        new Commands.Push(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name).Exec();
                 }
                 else
                 {
@@ -39,5 +68,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
+        private bool _alsoDeleteTrackingRemote = false;
     }
 }

@@ -98,7 +98,8 @@ namespace SourceGit.Views
         protected override void OnKeyDown(KeyEventArgs e)
         {
             var vm = DataContext as ViewModels.Launcher;
-            if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
+            if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Meta)) ||
+                (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Control)))
             {
                 if (e.Key == Key.W)
                 {
@@ -106,9 +107,23 @@ namespace SourceGit.Views
                     e.Handled = true;
                     return;
                 }
-                else if (e.Key == Key.Tab)
+                else if (e.Key == Key.T)
+                {
+                    vm.AddNewTab();
+                    e.Handled = true;
+                    return;
+                }
+                else if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) ||
+                    (!OperatingSystem.IsMacOS() && !e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
                 {
                     vm.GotoNextTab();
+                    e.Handled = true;
+                    return;
+                }
+                else if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Left) ||
+                    (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
+                {
+                    vm.GotoPrevTab();
                     e.Handled = true;
                     return;
                 }
@@ -134,7 +149,7 @@ namespace SourceGit.Views
                     }
                     else if (e.Key == Key.F)
                     {
-                        repo.IsSearching = !repo.IsSearching;
+                        repo.IsSearching = true;
                         e.Handled = true;
                         return;
                     }
@@ -143,6 +158,12 @@ namespace SourceGit.Views
             else if (e.Key == Key.Escape)
             {
                 vm.ActivePage.CancelPopup();
+
+                if (vm.ActivePage.Data is ViewModels.Repository repo)
+                {
+                    repo.IsSearching = false;
+                }
+
                 e.Handled = true;
                 return;
             }

@@ -686,12 +686,14 @@ namespace SourceGit.Views
 
         private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (!TextArea.IsFocused) Focus();
+            if (!TextArea.IsFocused)
+                Focus();
         }
 
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (TextArea.IsFocused) SetCurrentValue(SyncScrollOffsetProperty, _scrollViewer.Offset);
+            if (TextArea.IsFocused)
+                SetCurrentValue(SyncScrollOffsetProperty, _scrollViewer.Offset);
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)

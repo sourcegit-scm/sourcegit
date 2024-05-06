@@ -35,8 +35,15 @@ namespace SourceGit.Models
             _wcWatcher.Deleted += OnWorkingCopyChanged;
             _wcWatcher.EnableRaisingEvents = true;
 
+            // If this repository is a worktree repository, just watch the main repository's gitdir.
+            var gitDirNormalized = _repo.GitDir.Replace("\\", "/");
+            var worktreeIdx = gitDirNormalized.IndexOf(".git/worktrees/");
+            var repoWatchDir = _repo.GitDir;
+            if (worktreeIdx > 0)
+                repoWatchDir = _repo.GitDir.Substring(0, worktreeIdx + 4);
+
             _repoWatcher = new FileSystemWatcher();
-            _repoWatcher.Path = _repo.GitDir;
+            _repoWatcher.Path = repoWatchDir;
             _repoWatcher.Filter = "*";
             _repoWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
             _repoWatcher.IncludeSubdirectories = true;
@@ -173,8 +180,7 @@ namespace SourceGit.Models
             }
             else if (name.Equals("HEAD", StringComparison.Ordinal) ||
                 name.StartsWith("refs/heads/", StringComparison.Ordinal) ||
-                name.StartsWith("refs/remotes/", StringComparison.Ordinal) ||
-                name.StartsWith("worktrees/", StringComparison.Ordinal))
+                name.StartsWith("refs/remotes/", StringComparison.Ordinal))
             {
                 _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
             }

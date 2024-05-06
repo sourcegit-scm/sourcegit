@@ -69,6 +69,7 @@ This app supports open repository in external tools listed in the table below.
 | --- | --- | --- | --- | --- |
 | Visual Studio Code | YES | YES | YES | VSCODE_PATH |
 | Visual Studio Code - Insiders | YES | YES | YES | VSCODE_INSIDERS_PATH |
+| VSCodium | YES | YES | YES | VSCODIUM_PATH |
 | JetBrains Fleet | YES | YES | YES | FLEET_PATH |
 | Sublime Text | YES | YES | YES | SUBLIME_TEXT_PATH |
 

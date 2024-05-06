@@ -24,7 +24,8 @@
                BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                Background="Transparent"
                Watermark="{DynamicResource Text.CommitDetail.Changes.Search}"
-               Text="{Binding SearchFileFilter, Mode=TwoWay}">
+               Text="{Binding SearchFileFilter, Mode=TwoWay}"
+               v:AutoFocusBehaviour.IsEnabled="True">
         <TextBox.InnerLeftContent>
           <Path Width="14" Height="14" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
         </TextBox.InnerLeftContent>

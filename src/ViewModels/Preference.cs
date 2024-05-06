@@ -37,7 +37,8 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                _instance.Repositories.RemoveAll(x => !Directory.Exists(x.FullPath));
+                // It will cause some issue on Linux. See https://github.com/sourcegit-scm/sourcegit/issues/99
+                // _instance.Repositories.RemoveAll(x => !Directory.Exists(x.FullPath));
 
                 if (_instance.DefaultFont == null)
                 {

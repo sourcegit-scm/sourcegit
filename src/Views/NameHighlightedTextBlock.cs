@@ -71,7 +71,7 @@ namespace SourceGit.Views
                     FontSize,
                     Foreground);
 
-            return new Size(formatted.Width - 16, formatted.Height);
+            return new Size(formatted.Width, formatted.Height);
         }
 
         public override void Render(DrawingContext context)

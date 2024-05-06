@@ -53,6 +53,9 @@
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">树形模式</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">检出(checkout)分支</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目标分支 ：</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">贮藏(stash)并自动恢复</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">忽略</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">挑选(cherry-pick)此提交</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交ID ：</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">提交变化</x:String>
@@ -117,6 +120,8 @@
   <x:String x:Key="Text.Cut" xml:space="preserve">剪切</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">删除分支确认</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
+  <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支${0}$</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">删除远程确认</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">远程名 ：</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>
@@ -208,12 +213,13 @@
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">全局快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">取消弹出面板</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">关闭当前页面</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">切换到上一个页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">切换到下一个页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新建页面</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">仓库页面快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">重新加载仓库状态</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">将选中的变更暂存或从暂存列表中移除</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleSearch" xml:space="preserve">打开/关闭历史搜索</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">打开历史搜索</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">显示本地更改</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">显示历史记录</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">显示贮藏列表</x:String>
@@ -243,9 +249,9 @@
   <x:String x:Key="Text.OpenFolder" xml:space="preserve">选择文件夹</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">打开文件...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">选填。</x:String>
-  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新建空白页 (Ctrl+T)</x:String>
+  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新建空白页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">设置书签</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">关闭标签页 (Ctrl+W)</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">关闭标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">关闭其他标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">关闭右侧标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">复制仓库路径</x:String>
@@ -340,7 +346,7 @@
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">远程列表</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">添加远程</x:String>
   <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">解决冲突</x:String>
-  <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交(Ctrl+F)</x:String>
+  <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交</x:String>
   <x:String x:Key="Text.Repository.SearchTip" xml:space="preserve">支持搜索作者/提交者/主题/指纹</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交统计</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模块列表</x:String>

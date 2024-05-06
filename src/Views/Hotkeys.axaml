@@ -67,18 +67,21 @@
                    FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
                    Margin="0,0,0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="80,*">
-          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+T"/>
+        <Grid RowDefinitions="20,20,20,20,20" ColumnDefinitions="150,*">
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+T, macOS=⌘+T}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.NewTab}" />
 
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="Ctrl+W" />
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+W, macOS=⌘+W}" />
           <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CloseTab}" />
 
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="Ctrl+Tab"/>
-          <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoNextTab}" />
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Shift+Ctrl+Tab, macOS=⌘+⌥+←}"/>
+          <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoPrevTab}" />
 
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
-          <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CancelPopup}" />
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Tab, macOS=⌘+⌥+→}"/>
+          <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoNextTab}" />
+
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
+          <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CancelPopup}" />
         </Grid>
 
         <TextBlock Text="{DynamicResource Text.Hotkeys.Repo}"
@@ -87,20 +90,20 @@
                    FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
                    Margin="0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20,20,20" ColumnDefinitions="80,*">
-          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+F"/>
-          <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ToggleSearch}" />
+        <Grid RowDefinitions="20,20,20,20,20,20" ColumnDefinitions="150,*">
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
+          <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.OpenSearchCommits}" />
 
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="Ctrl+1"/>
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+1, macOS=⌘+1}"/>
           <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewHistories}" />
 
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="Ctrl+2"/>
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+2, macOS=⌘+2}"/>
           <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewChanges}" />
 
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="Ctrl+3"/>
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+3, macOS=⌘+3}"/>
           <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewStashes}" />
 
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="SPACE"/>
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Space, macOS=␣}"/>
           <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
 
           <TextBlock Grid.Row="5" Grid.Column="0" Classes="monospace bold" Text="F5"/>
@@ -113,14 +116,14 @@
                    FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
                    Margin="0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="80,*">
-          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="Ctrl+F"/>
+        <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="150,*">
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.Search}" />
 
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="Shift+F3"/>
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Shift+F3/Shift+Enter, macOS=⇧+F3/⇧+Enter}"/>
           <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoPrevMatch}" />
 
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="F3"/>
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="F3/Enter"/>
           <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoNextMatch}" />
 
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
