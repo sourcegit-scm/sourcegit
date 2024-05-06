@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-
+using System.Linq;
 using Avalonia.Collections;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -105,27 +105,36 @@ namespace SourceGit.ViewModels
 
         public void CloseTab(object param)
         {
-            if (Pages.Count == 1)
-            {
-                App.Quit();
-                return;
-            }
 
             LauncherPage page = param as LauncherPage;
             if (page == null)
+            {
                 page = _activePage;
+            }
 
             var removeIdx = Pages.IndexOf(page);
-            var activeIdx = Pages.IndexOf(_activePage);
+            var activeIdx = -1;
+            if (_activePage != null)
+            {
+                activeIdx = Pages.IndexOf(_activePage);
+            }
             if (removeIdx == activeIdx)
             {
                 if (removeIdx == Pages.Count - 1)
                 {
-                    ActivePage = Pages[removeIdx - 1];
+                    var index = removeIdx - 1;
+                    if (index >= 0)
+                    {
+                        ActivePage = Pages[index];
+                    }
                 }
                 else
                 {
-                    ActivePage = Pages[removeIdx + 1];
+                    var index = removeIdx + 1;
+                    if (index <= Pages.Count - 1)
+                    {
+                        ActivePage = Pages[index];
+                    }
                 }
 
                 CloseRepositoryInTab(page);
@@ -142,6 +151,13 @@ namespace SourceGit.ViewModels
             {
                 CloseRepositoryInTab(page);
                 Pages.RemoveAt(removeIdx);
+            }
+
+            if (!Pages.Any())
+            {
+                var defaultPage = new LauncherPage();
+                Pages.Add(defaultPage);
+                ActivePage = defaultPage;
             }
 
             GC.Collect();
