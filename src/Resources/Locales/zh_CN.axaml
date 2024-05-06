@@ -213,12 +213,13 @@
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">全局快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">取消弹出面板</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">关闭当前页面</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">切换到上一个页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">切换到下一个页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新建页面</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">仓库页面快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">重新加载仓库状态</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">将选中的变更暂存或从暂存列表中移除</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleSearch" xml:space="preserve">打开/关闭历史搜索</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">打开历史搜索</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">显示本地更改</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">显示历史记录</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">显示贮藏列表</x:String>

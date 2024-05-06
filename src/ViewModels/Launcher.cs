@@ -93,6 +93,16 @@ namespace SourceGit.ViewModels
             ActivePage = Pages[nextIdx];
         }
 
+        public void GotoPrevTab()
+        {
+            if (Pages.Count == 1)
+                return;
+
+            var activeIdx = Pages.IndexOf(_activePage);
+            var prevIdx = activeIdx == 0 ? Pages.Count - 1 : activeIdx - 1;
+            ActivePage = Pages[prevIdx];
+        }
+
         public void CloseTab(object param)
         {
             if (Pages.Count == 1)

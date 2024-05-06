@@ -114,9 +114,16 @@ namespace SourceGit.Views
                     return;
                 }
                 else if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) ||
-                    (!OperatingSystem.IsMacOS() && e.Key == Key.Tab))
+                    (!OperatingSystem.IsMacOS() && !e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
                 {
                     vm.GotoNextTab();
+                    e.Handled = true;
+                    return;
+                }
+                else if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Left) ||
+                    (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
+                {
+                    vm.GotoPrevTab();
                     e.Handled = true;
                     return;
                 }
@@ -142,7 +149,7 @@ namespace SourceGit.Views
                     }
                     else if (e.Key == Key.F)
                     {
-                        repo.IsSearching = !repo.IsSearching;
+                        repo.IsSearching = true;
                         e.Handled = true;
                         return;
                     }
@@ -151,6 +158,12 @@ namespace SourceGit.Views
             else if (e.Key == Key.Escape)
             {
                 vm.ActivePage.CancelPopup();
+
+                if (vm.ActivePage.Data is ViewModels.Repository repo)
+                {
+                    repo.IsSearching = false;
+                }
+
                 e.Handled = true;
                 return;
             }
