@@ -2,9 +2,9 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - develop
+      - executable
   pull_request:
-    branches: [develop]
+    branches: [executable]
   workflow_dispatch:
 jobs:
   build-windows:
@@ -44,13 +44,13 @@ jobs:
         run: dotnet build -c Release
       - name: Publish
         run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-x64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
-      - name: Allow Executing File as Program
-        run: chmod +x publish/Sourcegit
+      - name: Packing Program
+        run:  tar -cvf sourcegit.osx-x64.tar publish/
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: sourcegit.osx-x64
-          path: publish
+          path: sourcegit.osx-x64.tar
   build-macos-arm64:
     name: Build macOS (Apple Silicon)
     runs-on: macos-latest
@@ -67,13 +67,13 @@ jobs:
         run: dotnet build -c Release
       - name: Publish
         run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-arm64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
-      - name: Allow Executing File as Program
-        run: chmod +x publish/Sourcegit
+      - name: Packing Program
+        run: tar -cvf sourcegit.osx-arm64.tar publish/
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: sourcegit.osx-arm64
-          path: publish
+          path: sourcegit.osx-arm64.tar
   build-linux:
     name: Build Linux
     runs-on: ubuntu-latest
@@ -92,10 +92,10 @@ jobs:
         run: dotnet publish src/SourceGit.csproj -c Release -o publish -r linux-x64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
       - name: Rename Executable File
         run: mv publish/SourceGit publish/sourcegit
-      - name: Allow Executing File as Program
-        run: chmod +x publish/sourcegit
+      - name: Packing Program
+        run: tar -cvf sourcegit.linux-x64.tar publish/
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: sourcegit.linux-x64
-          path: publish
+          path: sourcegit.linux-x64.tar
