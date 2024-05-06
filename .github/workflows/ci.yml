@@ -2,9 +2,9 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - executable
+      - develop
   pull_request:
-    branches: [executable]
+    branches: [develop]
   workflow_dispatch:
 jobs:
   build-windows:
