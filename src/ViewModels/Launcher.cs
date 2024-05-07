@@ -114,7 +114,7 @@ namespace SourceGit.ViewModels
                     repo.Close();
 
                     last.Node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
-                    last.Data = new Welcome();
+                    last.Data = Welcome.Instance;
 
                     GC.Collect();
                 }

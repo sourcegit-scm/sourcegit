@@ -27,7 +27,7 @@ namespace SourceGit.ViewModels
         public LauncherPage()
         {
             _node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
-            _data = new Welcome();
+            _data = Welcome.Instance;
         }
 
         public LauncherPage(RepositoryNode node, Repository repo)

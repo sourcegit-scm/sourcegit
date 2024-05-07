@@ -9,10 +9,7 @@ namespace SourceGit.ViewModels
 {
     public class Welcome : ObservableObject
     {
-        public bool IsClearSearchVisible
-        {
-            get => !string.IsNullOrEmpty(_searchFilter);
-        }
+        public static Welcome Instance => _instance;
 
         public AvaloniaList<RepositoryNode> RepositoryNodes
         {
@@ -25,10 +22,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchFilter, value))
-                {
                     Referesh();
-                    OnPropertyChanged(nameof(IsClearSearchVisible));
-                }
             }
         }
 
@@ -205,6 +199,7 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private static Welcome _instance = new Welcome();
         private string _searchFilter = string.Empty;
     }
 }
