@@ -353,7 +353,7 @@ namespace SourceGit.ViewModels
             {
                 node = new RepositoryNode()
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = repo,
                     Name = Path.GetFileName(repo),
                     Bookmark = 0,
                     IsRepository = true,
