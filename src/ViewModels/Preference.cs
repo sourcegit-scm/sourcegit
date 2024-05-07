@@ -346,6 +346,29 @@ namespace SourceGit.ViewModels
             return FindNodeRecursive(id, _instance.RepositoryNodes);
         }
 
+        public static RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent)
+        {
+            var node = FindNodeRecursive(repo, _instance.RepositoryNodes);
+            if (node == null)
+            {
+                node = new RepositoryNode()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = Path.GetFileName(repo),
+                    Bookmark = 0,
+                    IsRepository = true,
+                };
+
+                AddNode(node, parent);
+            }
+            else
+            {
+                MoveNode(node, parent);
+            }
+
+            return node;
+        }
+
         public static void MoveNode(RepositoryNode node, RepositoryNode to = null)
         {
             if (to == null && _instance._repositoryNodes.Contains(node))

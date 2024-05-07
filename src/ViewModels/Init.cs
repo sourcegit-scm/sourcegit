@@ -28,18 +28,10 @@ namespace SourceGit.ViewModels
                     return false;
 
                 var gitDir = Path.GetFullPath(Path.Combine(_targetPath, ".git"));
-
                 CallUIThread(() =>
                 {
                     var repo = Preference.AddRepository(_targetPath, gitDir);
-                    var node = new RepositoryNode()
-                    {
-                        Id = repo.FullPath,
-                        Name = Path.GetFileName(repo.FullPath),
-                        Bookmark = 0,
-                        IsRepository = true,
-                    };
-                    Preference.AddNode(node);
+                    Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, null);
                 });
 
                 return true;

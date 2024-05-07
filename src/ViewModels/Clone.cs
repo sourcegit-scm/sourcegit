@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -114,15 +113,7 @@ namespace SourceGit.ViewModels
                 CallUIThread(() =>
                 {
                     var repo = Preference.AddRepository(path, Path.Combine(path, ".git"));
-                    var node = new RepositoryNode()
-                    {
-                        Id = repo.FullPath,
-                        Name = Path.GetFileName(repo.FullPath),
-                        Bookmark = 0,
-                        IsRepository = true,
-                    };
-                    Preference.AddNode(node);
-
+                    var node = Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, null);
                     _launcher.OpenRepositoryInTab(node, _page);
                 });
 
