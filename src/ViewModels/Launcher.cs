@@ -107,7 +107,22 @@ namespace SourceGit.ViewModels
         {
             if (Pages.Count == 1)
             {
-                App.Quit();
+                var last = Pages[0];
+                if (last.Data is Repository repo)
+                {
+                    Commands.AutoFetch.RemoveRepository(repo.FullPath);
+                    repo.Close();
+
+                    last.Node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
+                    last.Data = new Welcome();
+
+                    GC.Collect();
+                }
+                else
+                {
+                    App.Quit();
+                }
+
                 return;
             }
 
