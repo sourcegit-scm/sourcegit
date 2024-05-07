@@ -180,7 +180,8 @@ namespace SourceGit.Models
             }
             else if (name.Equals("HEAD", StringComparison.Ordinal) ||
                 name.StartsWith("refs/heads/", StringComparison.Ordinal) ||
-                name.StartsWith("refs/remotes/", StringComparison.Ordinal))
+                name.StartsWith("refs/remotes/", StringComparison.Ordinal) ||
+                (name.StartsWith("worktrees/", StringComparison.Ordinal) && name.EndsWith("/HEAD", StringComparison.Ordinal)))
             {
                 _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
             }
