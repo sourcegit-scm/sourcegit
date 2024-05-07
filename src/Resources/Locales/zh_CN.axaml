@@ -1,7 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:String x:Key="Text.About" xml:space="preserve">关于软件</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• 项目依赖于 </x:String>
-  <x:String x:Key="Text.About.Copyright" xml:space="preserve">Copyright © 2024 sourcegit-scm.</x:String>
+  <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• 文本编辑器使用 </x:String>
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• 等宽字体来自于 </x:String>
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• 项目源代码地址 </x:String>
