@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -50,8 +49,13 @@ namespace SourceGit.ViewModels
 
         public override Task<bool> Sure()
         {
+            bool needSort = _node.Name != _name;
             _node.Name = _name;
             _node.Bookmark = _bookmark;
+
+            if (needSort)
+                Preference.SortByRenamedNode(_node);
+
             return null;
         }
 

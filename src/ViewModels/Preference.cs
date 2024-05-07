@@ -362,6 +362,30 @@ namespace SourceGit.ViewModels
             RemoveNodeRecursive(node, _instance._repositoryNodes);
         }
 
+        public static void SortByRenamedNode(RepositoryNode node)
+        {
+            var container = FindNodeContainer(node, _instance._repositoryNodes);
+            if (container == null)
+                return;
+
+            var list = new List<RepositoryNode>();
+            list.AddRange(container);
+            list.Sort((l, r) =>
+            {
+                if (l.IsRepository != r.IsRepository)
+                {
+                    return l.IsRepository ? 1 : -1;
+                }
+                else
+                {
+                    return l.Name.CompareTo(r.Name);
+                }
+            });
+
+            container.Clear();
+            foreach (var one in list) container.Add(one);
+        }
+
         public static Repository FindRepository(string path)
         {
             foreach (var repo in _instance.Repositories)
@@ -412,6 +436,21 @@ namespace SourceGit.ViewModels
                 var sub = FindNodeRecursive(id, node.SubNodes);
                 if (sub != null)
                     return sub;
+            }
+
+            return null;
+        }
+
+        private static AvaloniaList<RepositoryNode> FindNodeContainer(RepositoryNode node, AvaloniaList<RepositoryNode> collection)
+        {
+            foreach (var sub in collection)
+            {
+                if (node == sub)
+                    return collection;
+
+                var subCollection = FindNodeContainer(node, sub.SubNodes);
+                if (subCollection != null)
+                    return subCollection;
             }
 
             return null;
