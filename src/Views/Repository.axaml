@@ -162,7 +162,7 @@
         <!-- Search branches or tags -->
         <TextBox Grid.Row="2"
                  x:Name="txtSearchBranchesAndTagsBox"
-                 Margin="6,4,4,4"
+                 Margin="9,4,4,4"
                  Height="24"
                  BorderThickness="1"
                  BorderBrush="{DynamicResource Brush.Border2}"
