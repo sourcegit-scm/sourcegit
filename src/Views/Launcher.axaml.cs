@@ -161,7 +161,7 @@ namespace SourceGit.Views
 
                 if (vm.ActivePage.Data is ViewModels.Repository repo)
                 {
-                    repo.IsSearching = false;
+                    repo.IsSearchingCommits = false;
                 }
 
                 e.Handled = true;
