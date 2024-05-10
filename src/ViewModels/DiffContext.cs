@@ -133,7 +133,7 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
-                    if (string.IsNullOrEmpty(_option.OrgPath))
+                    if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
                         Title = _option.Path;
                     else
                         Title = $"{_option.OrgPath} → {_option.Path}";
