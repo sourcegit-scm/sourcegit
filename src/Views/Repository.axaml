@@ -403,6 +403,7 @@
         <DataGrid Grid.Row="1"
                   ItemsSource="{Binding SearchedCommits}"
                   SelectionMode="Single"
+                  SelectedItem="{Binding SearchResultSelectedCommit, Mode=OneWay}"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserSortColumns="False"
