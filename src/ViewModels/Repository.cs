@@ -1354,14 +1354,6 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public void HandleSelectedCommitChanged(Models.Commit commit)
-        {
-            if (SearchedCommits.Count > 0)
-            {
-                SearchResultSelectedCommit = commit;
-            }
-        }
-
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.GitFlow _gitflow = new Models.GitFlow();

@@ -134,11 +134,14 @@ namespace SourceGit.ViewModels
         {
             if (commits.Count == 0)
             {
+                _repo.SearchResultSelectedCommit = null;
                 DetailContext = null;
             }
             else if (commits.Count == 1)
             {
                 var commit = commits[0] as Models.Commit;
+                _repo.SearchResultSelectedCommit = commit;
+
                 AutoSelectedCommit = commit;
                 NavigationId = _navigationId + 1;
 
@@ -155,12 +158,15 @@ namespace SourceGit.ViewModels
             }
             else if (commits.Count == 2)
             {
+                _repo.SearchResultSelectedCommit = null;
+
                 var end = commits[0] as Models.Commit;
                 var start = commits[1] as Models.Commit;
                 DetailContext = new RevisionCompare(_repo.FullPath, start, end);
             }
             else
             {
+                _repo.SearchResultSelectedCommit = null;
                 DetailContext = new CountSelectedCommits() { Count = commits.Count };
             }
         }
@@ -367,18 +373,6 @@ namespace SourceGit.ViewModels
             };
             menu.Items.Add(copySHA);
             return menu;
-        }
-
-        public void NotifyAutoSelectedCommitChanged()
-        {
-            if (DetailContext is CommitDetail detail)
-            {
-                _repo.HandleSelectedCommitChanged(detail.Commit);
-            }
-            else
-            {
-                _repo.HandleSelectedCommitChanged(null);
-            }
         }
 
         private void FillCurrentBranchMenu(ContextMenu menu, Models.Branch current)

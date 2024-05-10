@@ -291,7 +291,6 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Histories histories)
             {
                 histories.Select(commitDataGrid.SelectedItems);
-                histories.NotifyAutoSelectedCommitChanged();
             }
             e.Handled = true;
         }
