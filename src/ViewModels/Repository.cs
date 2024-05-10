@@ -221,6 +221,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _hasUnsolvedConflicts, value);
         }
 
+        public Models.Commit SearchResultSelectedCommit
+        {
+            get => _searchResultSelectedCommit;
+            set => SetProperty(ref _searchResultSelectedCommit, value);
+        }
+
         public void Open()
         {
             _watcher = new Models.Watcher(this);
@@ -1348,6 +1354,14 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public void HandleSelectedCommitChanged(Models.Commit commit)
+        {
+            if (SearchedCommits.Count > 0)
+            {
+                SearchResultSelectedCommit = commit;
+            }
+        }
+
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.GitFlow _gitflow = new Models.GitFlow();
@@ -1377,5 +1391,6 @@ namespace SourceGit.ViewModels
 
         private InProgressContext _inProgressContext = null;
         private bool _hasUnsolvedConflicts = false;
+        private Models.Commit _searchResultSelectedCommit = null;
     }
 }

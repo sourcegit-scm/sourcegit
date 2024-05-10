@@ -369,6 +369,18 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public void NotifyAutoSelectedCommitChanged()
+        {
+            if (DetailContext is CommitDetail detail)
+            {
+                _repo.HandleSelectedCommitChanged(detail.Commit);
+            }
+            else
+            {
+                _repo.HandleSelectedCommitChanged(null);
+            }
+        }
+
         private void FillCurrentBranchMenu(ContextMenu menu, Models.Branch current)
         {
             var submenu = new MenuItem();
