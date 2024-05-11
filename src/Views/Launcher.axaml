@@ -96,7 +96,8 @@
                       VerticalScrollBarVisibility="Disabled"
                       DoubleTapped="MaximizeOrRestoreWindow"
                       PointerPressed="BeginMoveWindow"
-                      PointerWheelChanged="ScrollTabs">
+                      PointerWheelChanged="ScrollTabs"
+                      ScrollChanged="OnTabsScrollChanged">
           <StackPanel x:Name="launcherTabsBar" Orientation="Horizontal" SizeChanged="UpdateScrollIndicator">
             <ListBox Classes="launcher_page_tabbar"
                      ItemsSource="{Binding Pages}"

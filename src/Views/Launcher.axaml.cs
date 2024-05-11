@@ -265,6 +265,15 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnTabsScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (sender is ScrollViewer scrollViewer)
+            {
+                leftScrollIndicator.IsEnabled = scrollViewer.Offset.X > 0;
+                rightScrollIndicator.IsEnabled = scrollViewer.Offset.X < scrollViewer.Extent.Width - scrollViewer.Viewport.Width;
+            }
+        }
+
         private void SetupDragAndDrop(object sender, RoutedEventArgs e)
         {
             if (sender is Border border)
