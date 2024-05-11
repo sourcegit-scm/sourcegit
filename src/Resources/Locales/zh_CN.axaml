@@ -274,6 +274,7 @@
   <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">使用固定宽度的标题栏标签</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">启用定时自动拉取远程更新</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">自动拉取间隔</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">自动换行转换</x:String>
   <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">默认克隆路径</x:String>
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">邮箱</x:String>
