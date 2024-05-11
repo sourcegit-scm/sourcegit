@@ -232,7 +232,7 @@ namespace SourceGit.Views
             {
                 if (e.Delta.Y < 0)
                     launcherTabsScroller.LineRight();
-                else
+                else if (e.Delta.Y > 0)
                     launcherTabsScroller.LineLeft();
                 e.Handled = true;
             }
