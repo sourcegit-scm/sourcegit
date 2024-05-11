@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -18,9 +19,27 @@ using Avalonia.Threading;
 
 namespace SourceGit
 {
+    public class SimpleCommand : ICommand
+    {
+        public event EventHandler CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
+
+        public SimpleCommand(Action action)
+        {
+            _action = action;
+        }
+
+        public bool CanExecute(object parameter) => _action != null;
+        public void Execute(object parameter) => _action?.Invoke();
+
+        private Action _action = null;
+    }
+
     public partial class App : Application
     {
-
         [STAThread]
         public static void Main(string[] args)
         {
@@ -66,6 +85,31 @@ namespace SourceGit
             Native.OS.SetupApp(builder);
             return builder;
         }
+
+        public static readonly SimpleCommand OpenPreferenceCommand = new SimpleCommand(() =>
+        {
+            var dialog = new Views.Preference();
+            dialog.ShowDialog(GetTopLevel() as Window);
+        });
+
+        public static readonly SimpleCommand OpenHotkeysCommand = new SimpleCommand(() =>
+        {
+            var dialog = new Views.Hotkeys();
+            dialog.ShowDialog(GetTopLevel() as Window);
+        });
+
+        public static readonly SimpleCommand OpenAboutCommand = new SimpleCommand(() =>
+        {
+            var dialog = new Views.About();
+            dialog.ShowDialog(GetTopLevel() as Window);
+        });
+
+        public static readonly SimpleCommand CheckForUpdateCommand = new SimpleCommand(() =>
+        {
+            Check4Update(true);
+        });
+
+        public static readonly SimpleCommand QuitCommand = new SimpleCommand(Quit);
 
         public static void RaiseException(string context, string message)
         {

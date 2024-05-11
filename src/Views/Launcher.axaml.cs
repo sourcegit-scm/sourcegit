@@ -337,33 +337,6 @@ namespace SourceGit.Views
             OnPopupCancel(sender, e);
         }
 
-        private async void OpenPreference(object sender, RoutedEventArgs e)
-        {
-            var dialog = new Preference();
-            await dialog.ShowDialog(this);
-            e.Handled = true;
-        }
-
-        private async void OpenHotkeys(object sender, RoutedEventArgs e)
-        {
-            var dialog = new Hotkeys();
-            await dialog.ShowDialog(this);
-            e.Handled = true;
-        }
-
-        private void Check4Update(object sender, RoutedEventArgs e)
-        {
-            App.Check4Update(true);
-            e.Handled = true;
-        }
-
-        private async void OpenAboutDialog(object sender, RoutedEventArgs e)
-        {
-            var dialog = new About();
-            await dialog.ShowDialog(this);
-            e.Handled = true;
-        }
-
         private bool _pressedTab = false;
         private Point _pressedTabPosition = new Point();
         private bool _startDrag = false;

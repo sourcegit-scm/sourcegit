@@ -1,5 +1,6 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:s="using:SourceGit"
              x:Class="SourceGit.App"
              Name="SourceGit"
              RequestedThemeVariant="Dark">
@@ -21,4 +22,16 @@
     <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     <StyleInclude Source="/Resources/Styles.axaml"/>
   </Application.Styles>
+
+  <NativeMenu.Menu>
+    <NativeMenu>
+      <NativeMenuItem Header="{DynamicResource Text.About}" Command="{x:Static s:App.OpenAboutCommand}"/>
+      <NativeMenuItem Header="{DynamicResource Text.Hotkeys}" Command="{x:Static s:App.OpenHotkeysCommand}"/>
+      <NativeMenuItem Header="{DynamicResource Text.SelfUpdate}" Command="{x:Static s:App.CheckForUpdateCommand}"/>
+      <NativeMenuItem Header="-"/>
+      <NativeMenuItem Header="{DynamicResource Text.Preference}" Command="{x:Static s:App.OpenPreferenceCommand}"/>
+      <NativeMenuItem Header="-"/>
+      <NativeMenuItem Header="{DynamicResource Text.Quit}" Command="{x:Static s:App.QuitCommand}"/>
+    </NativeMenu>
+  </NativeMenu.Menu>
 </Application>

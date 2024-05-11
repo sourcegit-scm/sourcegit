@@ -310,6 +310,7 @@
   <x:String x:Key="Text.PushTag" xml:space="preserve">Push Tag To Remote</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Remote :</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Tag :</x:String>
+  <x:String x:Key="Text.Quit" xml:space="preserve">Quit</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">Rebase Current Branch</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; reapply local changes</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">On :</x:String>
