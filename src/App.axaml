@@ -25,8 +25,8 @@
 
   <NativeMenu.Menu>
     <NativeMenu>
-      <NativeMenuItem Header="{DynamicResource Text.About}" Command="{x:Static s:App.OpenAboutCommand}"/>
-      <NativeMenuItem Header="{DynamicResource Text.Hotkeys}" Command="{x:Static s:App.OpenHotkeysCommand}"/>
+      <NativeMenuItem Header="{DynamicResource Text.About.Menu}" Command="{x:Static s:App.OpenAboutCommand}"/>
+      <NativeMenuItem Header="{DynamicResource Text.Hotkeys.Menu}" Command="{x:Static s:App.OpenHotkeysCommand}"/>
       <NativeMenuItem Header="{DynamicResource Text.SelfUpdate}" Command="{x:Static s:App.CheckForUpdateCommand}"/>
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.Preference}" Command="{x:Static s:App.OpenPreferenceCommand}" Gesture="⌘+,"/>
