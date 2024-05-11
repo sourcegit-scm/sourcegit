@@ -232,6 +232,23 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public int? GitAutoFetchInterval
+        {
+            get => Commands.AutoFetch.Interval;
+            set
+            {
+                if (value is null or < 1)
+                {
+                    return;
+                }
+                if (Commands.AutoFetch.Interval != value)
+                {
+                    Commands.AutoFetch.Interval = (int)value;
+                    OnPropertyChanged(nameof(GitAutoFetchInterval));
+                }
+            }
+        }
+
         public int ExternalMergeToolType
         {
             get => _externalMergeToolType;
@@ -406,7 +423,8 @@ namespace SourceGit.ViewModels
             });
 
             container.Clear();
-            foreach (var one in list) container.Add(one);
+            foreach (var one in list)
+                container.Add(one);
         }
 
         public static Repository FindRepository(string path)
