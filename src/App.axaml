@@ -28,9 +28,9 @@
       <NativeMenuItem Header="{DynamicResource Text.About}" Command="{x:Static s:App.OpenAboutCommand}"/>
       <NativeMenuItem Header="{DynamicResource Text.Hotkeys}" Command="{x:Static s:App.OpenHotkeysCommand}"/>
       <NativeMenuItem Header="{DynamicResource Text.SelfUpdate}" Command="{x:Static s:App.CheckForUpdateCommand}"/>
-      <NativeMenuItem Header="-"/>
-      <NativeMenuItem Header="{DynamicResource Text.Preference}" Command="{x:Static s:App.OpenPreferenceCommand}"/>
-      <NativeMenuItem Header="-"/>
+      <NativeMenuItemSeparator/>
+      <NativeMenuItem Header="{DynamicResource Text.Preference}" Command="{x:Static s:App.OpenPreferenceCommand}" Gesture="⌘+,"/>
+      <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.Quit}" Command="{x:Static s:App.QuitCommand}"/>
     </NativeMenu>
   </NativeMenu.Menu>
