@@ -67,21 +67,24 @@
                    FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
                    Margin="0,0,0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20,20" ColumnDefinitions="150,*">
-          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+T, macOS=⌘+T}"/>
-          <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.NewTab}" />
+        <Grid RowDefinitions="20,20,20,20,20,20" ColumnDefinitions="150,*">
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Shift+T, macOS=⌘+,}"/>
+          <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.OpenPreference}"/>
+          
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+T, macOS=⌘+T}"/>
+          <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.NewTab}" />
 
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+W, macOS=⌘+W}" />
-          <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CloseTab}" />
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+W, macOS=⌘+W}" />
+          <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CloseTab}" />
 
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Shift+Ctrl+Tab, macOS=⌘+⌥+←}"/>
-          <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoPrevTab}" />
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Shift+Ctrl+Tab, macOS=⌘+⌥+←}"/>
+          <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoPrevTab}" />
 
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Tab, macOS=⌘+⌥+→}"/>
-          <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoNextTab}" />
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Tab, macOS=⌘+⌥+→}"/>
+          <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoNextTab}" />
 
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
-          <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CancelPopup}" />
+          <TextBlock Grid.Row="5" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
+          <TextBlock Grid.Row="5" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CancelPopup}" />
         </Grid>
 
         <TextBlock Text="{DynamicResource Text.Hotkeys.Repo}"
