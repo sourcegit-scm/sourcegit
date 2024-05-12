@@ -232,7 +232,7 @@ namespace SourceGit.Views
             {
                 if (e.Delta.Y < 0)
                     launcherTabsScroller.LineRight();
-                else
+                else if (e.Delta.Y > 0)
                     launcherTabsScroller.LineLeft();
                 e.Handled = true;
             }
@@ -263,6 +263,15 @@ namespace SourceGit.Views
                 rightScrollIndicator.IsVisible = false;
             }
             e.Handled = true;
+        }
+
+        private void OnTabsScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (sender is ScrollViewer scrollViewer)
+            {
+                leftScrollIndicator.IsEnabled = scrollViewer.Offset.X > 0;
+                rightScrollIndicator.IsEnabled = scrollViewer.Offset.X < scrollViewer.Extent.Width - scrollViewer.Viewport.Width;
+            }
         }
 
         private void SetupDragAndDrop(object sender, RoutedEventArgs e)

@@ -86,9 +86,9 @@
 
       <!-- Pages Tabs-->
       <Grid x:Name="launcherTabsContainer" Grid.Column="1" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Bottom" SizeChanged="UpdateScrollIndicator">
-        <Button x:Name="leftScrollIndicator" Grid.Column="0" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsLeft">
+        <RepeatButton x:Name="leftScrollIndicator" Grid.Column="0" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsLeft">
           <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleLeft}"/>
-        </Button>
+        </RepeatButton>
 
         <ScrollViewer Grid.Column="1"
                       x:Name="launcherTabsScroller"
@@ -96,7 +96,8 @@
                       VerticalScrollBarVisibility="Disabled"
                       DoubleTapped="MaximizeOrRestoreWindow"
                       PointerPressed="BeginMoveWindow"
-                      PointerWheelChanged="ScrollTabs">
+                      PointerWheelChanged="ScrollTabs"
+                      ScrollChanged="OnTabsScrollChanged">
           <StackPanel x:Name="launcherTabsBar" Orientation="Horizontal" SizeChanged="UpdateScrollIndicator">
             <ListBox Classes="launcher_page_tabbar"
                      ItemsSource="{Binding Pages}"
@@ -240,9 +241,9 @@
           </StackPanel>
         </ScrollViewer>
 
-        <Button x:Name="rightScrollIndicator" Grid.Column="2" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsRight">
+        <RepeatButton x:Name="rightScrollIndicator" Grid.Column="2" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsRight">
           <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
-        </Button>
+        </RepeatButton>
       </Grid>
 
       <!-- Caption Buttons (Windows/Linux)-->
