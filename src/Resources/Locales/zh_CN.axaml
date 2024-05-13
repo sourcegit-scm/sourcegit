@@ -210,8 +210,7 @@
   <x:String x:Key="Text.Histories.Search" xml:space="preserve">查询提交指纹、信息、作者。回车键开始，ESC键取消</x:String>
   <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">清空</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已选中 {0} 项提交</x:String>
-  <x:String x:Key="Text.Hotkeys" xml:space="preserve">快捷键</x:String>
-  <x:String x:Key="Text.Hotkeys.Menu" xml:space="preserve">显示快捷键</x:String>
+  <x:String x:Key="Text.Hotkeys" xml:space="preserve">快捷键参考</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">全局快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">取消弹出面板</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">关闭当前页面</x:String>

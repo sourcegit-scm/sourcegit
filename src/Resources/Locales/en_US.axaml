@@ -210,8 +210,7 @@
   <x:String x:Key="Text.Histories.Search" xml:space="preserve">SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT</x:String>
   <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">CLEAR</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
-  <x:String x:Key="Text.Hotkeys" xml:space="preserve">HotKeys</x:String>
-  <x:String x:Key="Text.Hotkeys.Menu" xml:space="preserve">About HotKeys</x:String>
+  <x:String x:Key="Text.Hotkeys" xml:space="preserve">Keyboard Shortcuts Reference</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Cancel current popup</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Close current page</x:String>
