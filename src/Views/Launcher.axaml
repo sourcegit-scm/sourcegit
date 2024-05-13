@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="using:SourceGit"
         xmlns:vm="using:SourceGit.ViewModels"
         xmlns:m="using:SourceGit.Models"
         xmlns:c="using:SourceGit.Converters"
@@ -49,31 +50,31 @@
       </Border>
 
       <!-- Menu -->
-      <Button Grid.Column="{OnPlatform 0, macOS=2}" Classes="icon_button" VerticalAlignment="Bottom">
+      <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" IsVisible="{OnPlatform True, macOS=False}">
         <Button.Margin>
           <OnPlatform Default="4,0,2,3" macOS="4,0,6,3"/>
         </Button.Margin>
         
         <Button.Flyout>
           <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
-            <MenuItem Header="{DynamicResource Text.Preference}" Click="OpenPreference">
+            <MenuItem Header="{DynamicResource Text.Preference}" Command="{x:Static s:App.OpenPreferenceCommand}" InputGesture="Ctrl+Shift+P">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Settings2}"/>
               </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="{DynamicResource Text.Hotkeys}" Click="OpenHotkeys">
+            <MenuItem Header="{DynamicResource Text.Hotkeys}" Command="{x:Static s:App.OpenHotkeysCommand}">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Hotkeys}"/>
               </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="-"/>
-            <MenuItem Header="{DynamicResource Text.SelfUpdate}" Click="Check4Update">
+            <MenuItem Header="{DynamicResource Text.SelfUpdate}" Command="{x:Static s:App.CheckForUpdateCommand}">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.SoftwareUpdate}"/>
               </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="-"/>
-            <MenuItem Header="{DynamicResource Text.About}" Click="OpenAboutDialog">
+            <MenuItem Header="{DynamicResource Text.About}" Command="{x:Static s:App.OpenAboutCommand}">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Info}"/>
               </MenuItem.Icon>
@@ -85,9 +86,9 @@
 
       <!-- Pages Tabs-->
       <Grid x:Name="launcherTabsContainer" Grid.Column="1" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Bottom" SizeChanged="UpdateScrollIndicator">
-        <Button x:Name="leftScrollIndicator" Grid.Column="0" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsLeft">
+        <RepeatButton x:Name="leftScrollIndicator" Grid.Column="0" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsLeft">
           <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleLeft}"/>
-        </Button>
+        </RepeatButton>
 
         <ScrollViewer Grid.Column="1"
                       x:Name="launcherTabsScroller"
@@ -95,7 +96,8 @@
                       VerticalScrollBarVisibility="Disabled"
                       DoubleTapped="MaximizeOrRestoreWindow"
                       PointerPressed="BeginMoveWindow"
-                      PointerWheelChanged="ScrollTabs">
+                      PointerWheelChanged="ScrollTabs"
+                      ScrollChanged="OnTabsScrollChanged">
           <StackPanel x:Name="launcherTabsBar" Orientation="Horizontal" SizeChanged="UpdateScrollIndicator">
             <ListBox Classes="launcher_page_tabbar"
                      ItemsSource="{Binding Pages}"
@@ -239,9 +241,9 @@
           </StackPanel>
         </ScrollViewer>
 
-        <Button x:Name="rightScrollIndicator" Grid.Column="2" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsRight">
+        <RepeatButton x:Name="rightScrollIndicator" Grid.Column="2" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsRight">
           <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
-        </Button>
+        </RepeatButton>
       </Grid>
 
       <!-- Caption Buttons (Windows/Linux)-->

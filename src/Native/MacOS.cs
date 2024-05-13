@@ -22,7 +22,6 @@ namespace SourceGit.Native
 
             builder.With(new MacOSPlatformOptions()
             {
-                DisableNativeMenus = true,
                 DisableDefaultApplicationMenuItems = true,
             });
         }

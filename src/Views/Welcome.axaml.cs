@@ -257,14 +257,7 @@ namespace SourceGit.Views
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     var repo = ViewModels.Preference.AddRepository(root, gitDir);
-                    var node = new ViewModels.RepositoryNode()
-                    {
-                        Id = repo.FullPath,
-                        Name = Path.GetFileName(repo.FullPath),
-                        Bookmark = 0,
-                        IsRepository = true,
-                    };
-                    ViewModels.Preference.AddNode(node, parent);
+                    var node = ViewModels.Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, parent);
                     launcher.OpenRepositoryInTab(node, page);
                 });
             });

@@ -8,7 +8,6 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -220,6 +219,12 @@ namespace SourceGit.ViewModels
         {
             get => _hasUnsolvedConflicts;
             private set => SetProperty(ref _hasUnsolvedConflicts, value);
+        }
+
+        public Models.Commit SearchResultSelectedCommit
+        {
+            get => _searchResultSelectedCommit;
+            set => SetProperty(ref _searchResultSelectedCommit, value);
         }
 
         public void Open()
@@ -1378,5 +1383,6 @@ namespace SourceGit.ViewModels
 
         private InProgressContext _inProgressContext = null;
         private bool _hasUnsolvedConflicts = false;
+        private Models.Commit _searchResultSelectedCommit = null;
     }
 }

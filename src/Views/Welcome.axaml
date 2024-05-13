@@ -42,7 +42,7 @@
           </TextBox.InnerLeftContent>
 
           <TextBox.InnerRightContent>
-            <Button Classes="icon_button" IsVisible="{Binding IsClearSearchVisible}" Command="{Binding ClearSearchFilter}">
+            <Button Classes="icon_button" IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Command="{Binding ClearSearchFilter}">
               <Path Width="16" Height="16" Margin="0,0,0,0" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
             </Button>
           </TextBox.InnerRightContent>

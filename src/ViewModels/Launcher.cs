@@ -107,7 +107,22 @@ namespace SourceGit.ViewModels
         {
             if (Pages.Count == 1)
             {
-                App.Quit();
+                var last = Pages[0];
+                if (last.Data is Repository repo)
+                {
+                    Commands.AutoFetch.RemoveRepository(repo.FullPath);
+                    repo.Close();
+
+                    last.Node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
+                    last.Data = Welcome.Instance;
+
+                    GC.Collect();
+                }
+                else
+                {
+                    App.Quit();
+                }
+
                 return;
             }
 
@@ -119,15 +134,7 @@ namespace SourceGit.ViewModels
             var activeIdx = Pages.IndexOf(_activePage);
             if (removeIdx == activeIdx)
             {
-                if (removeIdx == Pages.Count - 1)
-                {
-                    ActivePage = Pages[removeIdx - 1];
-                }
-                else
-                {
-                    ActivePage = Pages[removeIdx + 1];
-                }
-
+                ActivePage = Pages[removeIdx == Pages.Count - 1 ? removeIdx - 1 : removeIdx + 1];
                 CloseRepositoryInTab(page);
                 Pages.RemoveAt(removeIdx);
                 OnPropertyChanged(nameof(Pages));

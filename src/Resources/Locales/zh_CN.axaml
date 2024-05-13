@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:String x:Key="Text.About" xml:space="preserve">关于软件</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">关于本软件</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• 项目依赖于 </x:String>
-  <x:String x:Key="Text.About.Copyright" xml:space="preserve">Copyright © 2024 sourcegit-scm.</x:String>
+  <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• 文本编辑器使用 </x:String>
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• 等宽字体来自于 </x:String>
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• 项目源代码地址 </x:String>
@@ -210,12 +211,14 @@
   <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">清空</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已选中 {0} 项提交</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">快捷键</x:String>
+  <x:String x:Key="Text.Hotkeys.Menu" xml:space="preserve">显示快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">全局快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">取消弹出面板</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">关闭当前页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">切换到上一个页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">切换到下一个页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新建页面</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">打开偏好设置面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">仓库页面快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">重新加载仓库状态</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">将选中的变更暂存或从暂存列表中移除</x:String>
@@ -272,6 +275,8 @@
   <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">使用固定宽度的标题栏标签</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">启用定时自动拉取远程更新</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">自动拉取间隔</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetchIntervalSuffix" xml:space="preserve">分钟</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">自动换行转换</x:String>
   <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">默认克隆路径</x:String>
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">邮箱</x:String>
@@ -310,6 +315,7 @@
   <x:String x:Key="Text.PushTag" xml:space="preserve">推送标签到远程仓库</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">标签 ：</x:String>
+  <x:String x:Key="Text.Quit" xml:space="preserve">退出</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">变基(rebase)操作</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自动贮藏并恢复本地变更</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">目标提交 ：</x:String>

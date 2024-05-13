@@ -230,16 +230,16 @@
     <Setter Property="Background" Value="Red"/>
   </Style>
 
-  <Style Selector="Button.icon_button">
+  <Style Selector="Button.icon_button, RepeatButton.icon_button">
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
   </Style>
-  <Style Selector="Button.icon_button /template/ ContentPresenter#PART_ContentPresenter">
+  <Style Selector="Button.icon_button /template/ ContentPresenter#PART_ContentPresenter, RepeatButton.icon_button /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Opacity" Value="0.8"/>
   </Style>
-  <Style Selector="Button.icon_button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+  <Style Selector="Button.icon_button:pointerover /template/ ContentPresenter#PART_ContentPresenter, RepeatButton.icon_button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Opacity" Value="1"/>
   </Style>
 

@@ -232,6 +232,23 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public int? GitAutoFetchInterval
+        {
+            get => Commands.AutoFetch.Interval;
+            set
+            {
+                if (value is null or < 1)
+                {
+                    return;
+                }
+                if (Commands.AutoFetch.Interval != value)
+                {
+                    Commands.AutoFetch.Interval = (int)value;
+                    OnPropertyChanged(nameof(GitAutoFetchInterval));
+                }
+            }
+        }
+
         public int ExternalMergeToolType
         {
             get => _externalMergeToolType;
@@ -346,6 +363,29 @@ namespace SourceGit.ViewModels
             return FindNodeRecursive(id, _instance.RepositoryNodes);
         }
 
+        public static RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent)
+        {
+            var node = FindNodeRecursive(repo, _instance.RepositoryNodes);
+            if (node == null)
+            {
+                node = new RepositoryNode()
+                {
+                    Id = repo,
+                    Name = Path.GetFileName(repo),
+                    Bookmark = 0,
+                    IsRepository = true,
+                };
+
+                AddNode(node, parent);
+            }
+            else
+            {
+                MoveNode(node, parent);
+            }
+
+            return node;
+        }
+
         public static void MoveNode(RepositoryNode node, RepositoryNode to = null)
         {
             if (to == null && _instance._repositoryNodes.Contains(node))
@@ -360,6 +400,31 @@ namespace SourceGit.ViewModels
         public static void RemoveNode(RepositoryNode node)
         {
             RemoveNodeRecursive(node, _instance._repositoryNodes);
+        }
+
+        public static void SortByRenamedNode(RepositoryNode node)
+        {
+            var container = FindNodeContainer(node, _instance._repositoryNodes);
+            if (container == null)
+                return;
+
+            var list = new List<RepositoryNode>();
+            list.AddRange(container);
+            list.Sort((l, r) =>
+            {
+                if (l.IsRepository != r.IsRepository)
+                {
+                    return l.IsRepository ? 1 : -1;
+                }
+                else
+                {
+                    return l.Name.CompareTo(r.Name);
+                }
+            });
+
+            container.Clear();
+            foreach (var one in list)
+                container.Add(one);
         }
 
         public static Repository FindRepository(string path)
@@ -412,6 +477,21 @@ namespace SourceGit.ViewModels
                 var sub = FindNodeRecursive(id, node.SubNodes);
                 if (sub != null)
                     return sub;
+            }
+
+            return null;
+        }
+
+        private static AvaloniaList<RepositoryNode> FindNodeContainer(RepositoryNode node, AvaloniaList<RepositoryNode> collection)
+        {
+            foreach (var sub in collection)
+            {
+                if (node == sub)
+                    return collection;
+
+                var subCollection = FindNodeContainer(node, sub.SubNodes);
+                if (subCollection != null)
+                    return subCollection;
             }
 
             return null;

@@ -98,6 +98,15 @@ namespace SourceGit.Views
         protected override void OnKeyDown(KeyEventArgs e)
         {
             var vm = DataContext as ViewModels.Launcher;
+
+            // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
+            if (!OperatingSystem.IsMacOS() && e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift) && e.Key == Key.P)
+            {
+                App.OpenPreferenceCommand.Execute(null);
+                e.Handled = true;
+                return;
+            }
+
             if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Meta)) ||
                 (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Control)))
             {
@@ -223,7 +232,7 @@ namespace SourceGit.Views
             {
                 if (e.Delta.Y < 0)
                     launcherTabsScroller.LineRight();
-                else
+                else if (e.Delta.Y > 0)
                     launcherTabsScroller.LineLeft();
                 e.Handled = true;
             }
@@ -254,6 +263,15 @@ namespace SourceGit.Views
                 rightScrollIndicator.IsVisible = false;
             }
             e.Handled = true;
+        }
+
+        private void OnTabsScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (sender is ScrollViewer scrollViewer)
+            {
+                leftScrollIndicator.IsEnabled = scrollViewer.Offset.X > 0;
+                rightScrollIndicator.IsEnabled = scrollViewer.Offset.X < scrollViewer.Extent.Width - scrollViewer.Viewport.Width;
+            }
         }
 
         private void SetupDragAndDrop(object sender, RoutedEventArgs e)
@@ -335,33 +353,6 @@ namespace SourceGit.Views
         private void OnPopupCancelByClickMask(object sender, PointerPressedEventArgs e)
         {
             OnPopupCancel(sender, e);
-        }
-
-        private async void OpenPreference(object sender, RoutedEventArgs e)
-        {
-            var dialog = new Preference();
-            await dialog.ShowDialog(this);
-            e.Handled = true;
-        }
-
-        private async void OpenHotkeys(object sender, RoutedEventArgs e)
-        {
-            var dialog = new Hotkeys();
-            await dialog.ShowDialog(this);
-            e.Handled = true;
-        }
-
-        private void Check4Update(object sender, RoutedEventArgs e)
-        {
-            App.Check4Update(true);
-            e.Handled = true;
-        }
-
-        private async void OpenAboutDialog(object sender, RoutedEventArgs e)
-        {
-            var dialog = new About();
-            await dialog.ShowDialog(this);
-            e.Handled = true;
         }
 
         private bool _pressedTab = false;

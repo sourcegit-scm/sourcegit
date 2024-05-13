@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 
 namespace SourceGit.Models
 {
@@ -36,11 +36,11 @@ namespace SourceGit.Models
                 var email = data.Substring(nameEndIdx + 1);
 
                 User user = new User() { Name = name, Email = email };
-                _caches.Add(data, user);
+                _caches.TryAdd(data, user);
                 return user;
             }
         }
 
-        private static Dictionary<string, User> _caches = new Dictionary<string, User>();
+        private static ConcurrentDictionary<string, User> _caches = new ConcurrentDictionary<string, User>();
     }
 }

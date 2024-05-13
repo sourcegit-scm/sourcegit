@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:String x:Key="Text.About" xml:space="preserve">About</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">About SourceGit</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Build with </x:String>
-  <x:String x:Key="Text.About.Copyright" xml:space="preserve">Copyright © 2024 sourcegit-scm.</x:String>
+  <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• TextEditor from </x:String>
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace fonts come from </x:String>
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Source code can be found at </x:String>
@@ -210,12 +211,14 @@
   <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">CLEAR</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">HotKeys</x:String>
+  <x:String x:Key="Text.Hotkeys.Menu" xml:space="preserve">About HotKeys</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Cancel current popup</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Close current page</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Go to previous page</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Go to next page</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Create new page</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">Open preference dialog</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Force to reload this repository</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Stage/Unstage selected changes</x:String>
@@ -272,6 +275,8 @@
   <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">Auto Fetch Interval</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(s)</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Enable Auto CRLF</x:String>
   <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Default Clone Dir</x:String>
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">User Email</x:String>
@@ -310,6 +315,7 @@
   <x:String x:Key="Text.PushTag" xml:space="preserve">Push Tag To Remote</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Remote :</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Tag :</x:String>
+  <x:String x:Key="Text.Quit" xml:space="preserve">Quit</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">Rebase Current Branch</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; reapply local changes</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">On :</x:String>

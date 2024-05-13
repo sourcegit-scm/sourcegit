@@ -62,13 +62,29 @@ namespace SourceGit.Commands
 
     public class AutoFetch
     {
-        private const double INTERVAL = 10 * 60;
-
         public static bool IsEnabled
         {
             get;
             set;
         } = false;
+
+        public static int Interval
+        {
+            get => _interval;
+            set
+            {
+                if (value < 1)
+                    return;
+                _interval = value;
+                lock (_lock)
+                {
+                    foreach (var job in _jobs)
+                    {
+                        job.Value.NextRunTimepoint = DateTime.Now.AddMinutes(Convert.ToDouble(_interval));
+                    }
+                }
+            }
+        }
 
         class Job
         {
@@ -104,7 +120,7 @@ namespace SourceGit.Commands
                     foreach (var job in uptodate)
                     {
                         job.Cmd.Exec();
-                        job.NextRunTimepoint = DateTime.Now.AddSeconds(INTERVAL);
+                        job.NextRunTimepoint = DateTime.Now.AddMinutes(Convert.ToDouble(Interval));
                     }
 
                     Thread.Sleep(2000);
@@ -117,7 +133,7 @@ namespace SourceGit.Commands
             var job = new Job
             {
                 Cmd = new Fetch(repo, "--all", true, null) { RaiseError = false },
-                NextRunTimepoint = DateTime.Now.AddSeconds(INTERVAL),
+                NextRunTimepoint = DateTime.Now.AddMinutes(Convert.ToDouble(Interval)),
             };
 
             lock (_lock)
@@ -147,12 +163,13 @@ namespace SourceGit.Commands
             {
                 if (_jobs.TryGetValue(repo, out var value))
                 {
-                    value.NextRunTimepoint = DateTime.Now.AddSeconds(INTERVAL);
+                    value.NextRunTimepoint = DateTime.Now.AddMinutes(Convert.ToDouble(Interval));
                 }
             }
         }
 
         private static readonly Dictionary<string, Job> _jobs = new Dictionary<string, Job>();
         private static readonly object _lock = new object();
+        private static int _interval = 10;
     }
 }
