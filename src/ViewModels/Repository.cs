@@ -1389,7 +1389,7 @@ namespace SourceGit.ViewModels
                         visibles.Add(b);
                 }
 
-                builder.Run(visibles, remotes, true);
+                builder.Run(visibles, remotes, visibles.Count <= 20);
             }
 
             return builder;
