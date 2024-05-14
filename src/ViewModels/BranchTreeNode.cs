@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Avalonia.Collections;
 
-namespace SourceGit.Models
+namespace SourceGit.ViewModels
 {
     public enum BranchTreeNodeType
     {
@@ -23,12 +23,12 @@ namespace SourceGit.Models
 
         public bool IsUpstreamTrackStatusVisible
         {
-            get => IsBranch && !string.IsNullOrEmpty((Backend as Branch).UpstreamTrackStatus);
+            get => IsBranch && !string.IsNullOrEmpty((Backend as Models.Branch).UpstreamTrackStatus);
         }
 
         public string UpstreamTrackStatus
         {
-            get => Type == BranchTreeNodeType.Branch ? (Backend as Branch).UpstreamTrackStatus : "";
+            get => Type == BranchTreeNodeType.Branch ? (Backend as Models.Branch).UpstreamTrackStatus : "";
         }
 
         public bool IsRemote
@@ -48,7 +48,7 @@ namespace SourceGit.Models
 
         public bool IsCurrent
         {
-            get => IsBranch && (Backend as Branch).IsCurrent;
+            get => IsBranch && (Backend as Models.Branch).IsCurrent;
         }
 
         public class Builder
@@ -56,7 +56,7 @@ namespace SourceGit.Models
             public List<BranchTreeNode> Locals => _locals;
             public List<BranchTreeNode> Remotes => _remotes;
 
-            public void Run(List<Branch> branches, List<Remote> remotes)
+            public void Run(List<Models.Branch> branches, List<Models.Remote> remotes, bool bForceExpanded)
             {
                 foreach (var remote in remotes)
                 {
@@ -66,7 +66,7 @@ namespace SourceGit.Models
                         Name = remote.Name,
                         Type = BranchTreeNodeType.Remote,
                         Backend = remote,
-                        IsExpanded = _expanded.Contains(path),
+                        IsExpanded = bForceExpanded || _expanded.Contains(path),
                     };
 
                     _maps.Add(path, node);
@@ -78,13 +78,13 @@ namespace SourceGit.Models
                     var isFiltered = _filters.Contains(branch.FullName);
                     if (branch.IsLocal)
                     {
-                        MakeBranchNode(branch, _locals, "local", isFiltered);
+                        MakeBranchNode(branch, _locals, "local", isFiltered, bForceExpanded);
                     }
                     else
                     {
                         var remote = _remotes.Find(x => x.Name == branch.Remote);
                         if (remote != null)
-                            MakeBranchNode(branch, remote.Children, $"remote/{remote.Name}", isFiltered);
+                            MakeBranchNode(branch, remote.Children, $"remote/{remote.Name}", isFiltered, bForceExpanded);
                     }
                 }
 
@@ -113,7 +113,7 @@ namespace SourceGit.Models
                 }
             }
 
-            private void MakeBranchNode(Branch branch, List<BranchTreeNode> roots, string prefix, bool isFiltered)
+            private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, string prefix, bool isFiltered, bool bForceExpanded)
             {
                 var subs = branch.Name.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -132,8 +132,8 @@ namespace SourceGit.Models
                 }
 
                 BranchTreeNode lastFolder = null;
-                string path = prefix;
-                for (int i = 0; i < subs.Length - 1; i++)
+                var path = prefix;
+                for (var i = 0; i < subs.Length - 1; i++)
                 {
                     path = string.Concat(path, "/", subs[i]);
                     if (_maps.TryGetValue(path, out var value))
@@ -146,7 +146,7 @@ namespace SourceGit.Models
                         {
                             Name = subs[i],
                             Type = BranchTreeNodeType.Folder,
-                            IsExpanded = branch.IsCurrent || _expanded.Contains(path),
+                            IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(path),
                         };
                         roots.Add(lastFolder);
                         _maps.Add(path, lastFolder);
@@ -157,7 +157,7 @@ namespace SourceGit.Models
                         {
                             Name = subs[i],
                             Type = BranchTreeNodeType.Folder,
-                            IsExpanded = branch.IsCurrent || _expanded.Contains(path),
+                            IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(path),
                         };
                         _maps.Add(path, folder);
                         lastFolder.Children.Add(folder);
@@ -186,7 +186,7 @@ namespace SourceGit.Models
                     }
                     else
                     {
-                        return (int)(l.Type) - (int)(r.Type);
+                        return (int)l.Type - (int)r.Type;
                     }
                 });
 
