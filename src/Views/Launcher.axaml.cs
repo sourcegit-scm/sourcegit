@@ -223,7 +223,10 @@ namespace SourceGit.Views
 
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
         {
-            BeginMoveDrag(e);
+            if (e.ClickCount != 2)
+            {
+                BeginMoveDrag(e);
+            }
         }
 
         private void ScrollTabs(object sender, PointerWheelEventArgs e)
