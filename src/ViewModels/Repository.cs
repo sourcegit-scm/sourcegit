@@ -236,6 +236,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _hasUnsolvedConflicts, value);
         }
 
+        [JsonIgnore]
         public Models.Commit SearchResultSelectedCommit
         {
             get => _searchResultSelectedCommit;
