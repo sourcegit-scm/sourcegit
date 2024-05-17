@@ -31,7 +31,7 @@
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.Preference}" Command="{x:Static s:App.OpenPreferenceCommand}" Gesture="⌘+,"/>
       <NativeMenuItemSeparator/>
-      <NativeMenuItem Header="{DynamicResource Text.Quit}" Command="{x:Static s:App.QuitCommand}"/>
+      <NativeMenuItem Header="{DynamicResource Text.Quit}" Command="{x:Static s:App.QuitCommand}" Gesture="⌘+Q"/>
     </NativeMenu>
   </NativeMenu.Menu>
 </Application>
