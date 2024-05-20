@@ -35,14 +35,14 @@ namespace SourceGit.ViewModels
             var commandlines = Environment.GetCommandLineArgs();
             if (commandlines.Length == 2)
             {
-                var path = commandlines[1].Replace('\\', '/');
+                var path = commandlines[1];
                 var root = new Commands.QueryRepositoryRootPath(path).Result();
                 if (string.IsNullOrEmpty(root))
                 {
                     Pages[0].Notifications.Add(new Models.Notification
                     {
                         IsError = true,
-                        Message = $"Given path: '{commandlines[1]}' is NOT a valid repository!"
+                        Message = $"Given path: '{path}' is NOT a valid repository!"
                     });
                     return;
                 }
