@@ -8,7 +8,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SourceGit.Views
 {
