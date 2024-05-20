@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -7,14 +8,33 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SourceGit.Views
 {
     public partial class Welcome : UserControl
     {
+        bool _initialized = false;
+
         public Welcome()
         {
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (_initialized) return;
+            _initialized = true;
+
+            var args = Environment.GetCommandLineArgs();
+            //var args = new string[] { string.Empty, "D:\\code\\tmp\\sourcegit" };
+            if (!Directory.Exists(args[1])) return;
+            if (!Directory.Exists(Path.Combine(args[1], ".git"))) return;
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                OpenOrInitRepository(args[1]);
+            });
         }
 
         private void SetupTreeViewDragAndDrop(object sender, RoutedEventArgs e)
