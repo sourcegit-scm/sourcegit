@@ -25,20 +25,14 @@ namespace SourceGit.Models
 
         public static User FindOrAdd(string data)
         {
-            if (_caches.TryGetValue(data, out var value))
+            return _caches.GetOrAdd(data, key =>
             {
-                return value;
-            }
-            else
-            {
-                var nameEndIdx = data.IndexOf('<', System.StringComparison.Ordinal);
-                var name = nameEndIdx >= 2 ? data.Substring(0, nameEndIdx - 1) : string.Empty;
-                var email = data.Substring(nameEndIdx + 1);
+                var nameEndIdx = key.IndexOf('<', System.StringComparison.Ordinal);
+                var name = nameEndIdx >= 2 ? key.Substring(0, nameEndIdx - 1) : string.Empty;
+                var email = key.Substring(nameEndIdx + 1);
 
-                User user = new User() { Name = name, Email = email };
-                _caches.TryAdd(data, user);
-                return user;
-            }
+                return new User() { Name = name, Email = email };
+            });
         }
 
         private static ConcurrentDictionary<string, User> _caches = new ConcurrentDictionary<string, User>();

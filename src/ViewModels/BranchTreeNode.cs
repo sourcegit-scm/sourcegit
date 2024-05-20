@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.IO;
 using Avalonia.Collections;
 
-namespace SourceGit.Models
+namespace SourceGit.ViewModels
 {
     public enum BranchTreeNodeType
     {
@@ -23,12 +23,12 @@ namespace SourceGit.Models
 
         public bool IsUpstreamTrackStatusVisible
         {
-            get => IsBranch && !string.IsNullOrEmpty((Backend as Branch).UpstreamTrackStatus);
+            get => IsBranch && !string.IsNullOrEmpty((Backend as Models.Branch).UpstreamTrackStatus);
         }
 
         public string UpstreamTrackStatus
         {
-            get => Type == BranchTreeNodeType.Branch ? (Backend as Branch).UpstreamTrackStatus : "";
+            get => Type == BranchTreeNodeType.Branch ? (Backend as Models.Branch).UpstreamTrackStatus : "";
         }
 
         public bool IsRemote
@@ -48,7 +48,7 @@ namespace SourceGit.Models
 
         public bool IsCurrent
         {
-            get => IsBranch && (Backend as Branch).IsCurrent;
+            get => IsBranch && (Backend as Models.Branch).IsCurrent;
         }
 
         public class Builder
@@ -56,8 +56,10 @@ namespace SourceGit.Models
             public List<BranchTreeNode> Locals => _locals;
             public List<BranchTreeNode> Remotes => _remotes;
 
-            public void Run(List<Branch> branches, List<Remote> remotes)
+            public void Run(List<Models.Branch> branches, List<Models.Remote> remotes, bool bForceExpanded)
             {
+                var folders = new Dictionary<string, BranchTreeNode>();
+
                 foreach (var remote in remotes)
                 {
                     var path = $"remote/{remote.Name}";
@@ -66,10 +68,10 @@ namespace SourceGit.Models
                         Name = remote.Name,
                         Type = BranchTreeNodeType.Remote,
                         Backend = remote,
-                        IsExpanded = _expanded.Contains(path),
+                        IsExpanded = bForceExpanded || _expanded.Contains(path),
                     };
 
-                    _maps.Add(path, node);
+                    folders.Add(path, node);
                     _remotes.Add(node);
                 }
 
@@ -78,16 +80,17 @@ namespace SourceGit.Models
                     var isFiltered = _filters.Contains(branch.FullName);
                     if (branch.IsLocal)
                     {
-                        MakeBranchNode(branch, _locals, "local", isFiltered);
+                        MakeBranchNode(branch, _locals, folders, "local", isFiltered, bForceExpanded);
                     }
                     else
                     {
                         var remote = _remotes.Find(x => x.Name == branch.Remote);
                         if (remote != null)
-                            MakeBranchNode(branch, remote.Children, $"remote/{remote.Name}", isFiltered);
+                            MakeBranchNode(branch, remote.Children, folders, $"remote/{remote.Name}", isFiltered, bForceExpanded);
                     }
                 }
 
+                folders.Clear();
                 SortNodes(_locals);
                 SortNodes(_remotes);
             }
@@ -113,67 +116,69 @@ namespace SourceGit.Models
                 }
             }
 
-            private void MakeBranchNode(Branch branch, List<BranchTreeNode> roots, string prefix, bool isFiltered)
+            private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, Dictionary<string, BranchTreeNode> folders, string prefix, bool isFiltered, bool bForceExpanded)
             {
-                var subs = branch.Name.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-
-                if (subs.Length == 1)
+                var sepIdx = branch.Name.IndexOf('/', StringComparison.Ordinal);
+                if (sepIdx == -1)
                 {
-                    var node = new BranchTreeNode()
+                    roots.Add(new BranchTreeNode()
                     {
-                        Name = subs[0],
+                        Name = branch.Name,
                         Type = BranchTreeNodeType.Branch,
                         Backend = branch,
                         IsExpanded = false,
                         IsFiltered = isFiltered,
-                    };
-                    roots.Add(node);
+                    });
                     return;
                 }
 
-                BranchTreeNode lastFolder = null;
-                string path = prefix;
-                for (int i = 0; i < subs.Length - 1; i++)
+                var lastFolder = null as BranchTreeNode;
+                var start = 0;
+
+                while (sepIdx != -1)
                 {
-                    path = string.Concat(path, "/", subs[i]);
-                    if (_maps.TryGetValue(path, out var value))
+                    var folder = string.Concat(prefix, "/", branch.Name.Substring(0, sepIdx));
+                    var name = branch.Name.Substring(start, sepIdx - start);
+                    if (folders.TryGetValue(folder, out var val))
                     {
-                        lastFolder = value;
+                        lastFolder = val;
                     }
                     else if (lastFolder == null)
                     {
                         lastFolder = new BranchTreeNode()
                         {
-                            Name = subs[i],
+                            Name = name,
                             Type = BranchTreeNodeType.Folder,
-                            IsExpanded = branch.IsCurrent || _expanded.Contains(path),
+                            IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
                         };
                         roots.Add(lastFolder);
-                        _maps.Add(path, lastFolder);
+                        folders.Add(folder, lastFolder);
                     }
                     else
                     {
-                        var folder = new BranchTreeNode()
+                        var cur = new BranchTreeNode()
                         {
-                            Name = subs[i],
+                            Name = name,
                             Type = BranchTreeNodeType.Folder,
-                            IsExpanded = branch.IsCurrent || _expanded.Contains(path),
+                            IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
                         };
-                        _maps.Add(path, folder);
-                        lastFolder.Children.Add(folder);
-                        lastFolder = folder;
+                        lastFolder.Children.Add(cur);
+                        folders.Add(folder, cur);
+                        lastFolder = cur;
                     }
+
+                    start = sepIdx + 1;
+                    sepIdx = branch.Name.IndexOf('/', start);
                 }
 
-                var last = new BranchTreeNode()
+                lastFolder.Children.Add(new BranchTreeNode()
                 {
-                    Name = subs[subs.Length - 1],
+                    Name = Path.GetFileName(branch.Name),
                     Type = BranchTreeNodeType.Branch,
                     Backend = branch,
                     IsExpanded = false,
                     IsFiltered = isFiltered,
-                };
-                lastFolder.Children.Add(last);
+                });
             }
 
             private void SortNodes(List<BranchTreeNode> nodes)
@@ -186,7 +191,7 @@ namespace SourceGit.Models
                     }
                     else
                     {
-                        return (int)(l.Type) - (int)(r.Type);
+                        return (int)l.Type - (int)r.Type;
                     }
                 });
 
@@ -198,7 +203,6 @@ namespace SourceGit.Models
             private readonly List<BranchTreeNode> _remotes = new List<BranchTreeNode>();
             private readonly HashSet<string> _expanded = new HashSet<string>();
             private readonly List<string> _filters = new List<string>();
-            private readonly Dictionary<string, BranchTreeNode> _maps = new Dictionary<string, BranchTreeNode>();
         }
     }
 }

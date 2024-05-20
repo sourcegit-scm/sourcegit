@@ -41,8 +41,6 @@ namespace SourceGit.Native
             {
                 throw new Exception("Platform unsupported!!!");
             }
-
-            ExternalTools = _backend.FindExternalTools();
         }
 
         public static Models.Shell GetShell()
@@ -75,6 +73,11 @@ namespace SourceGit.Native
         public static void SetupApp(AppBuilder builder)
         {
             _backend.SetupApp(builder);
+        }
+
+        public static void SetupEnternalTools()
+        {
+            ExternalTools = _backend.FindExternalTools();
         }
 
         public static string FindGitExecutable()

@@ -45,13 +45,13 @@ namespace SourceGit.Views
             {
                 c._hitBoxes.Clear();
                 c._lastHitIdx = -1;
-                c.InvalidateVisual();
+                c.InvalidateMeasure();
             });
         }
 
         public override void Render(DrawingContext context)
         {
-            if (Samples == null)
+            if (Samples == null || Bounds.Width == 0)
                 return;
 
             var samples = Samples;
@@ -97,7 +97,7 @@ namespace SourceGit.Views
             var height = Bounds.Height;
 
             // Transparent background to block mouse move events.
-            context.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, Bounds.Width, Bounds.Height));
+            context.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, width, height));
 
             // Draw coordinate
             var maxLabel = new FormattedText($"{maxV}", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 12.0, LineBrush);

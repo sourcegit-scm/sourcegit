@@ -266,6 +266,7 @@ namespace SourceGit
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 BindingPlugins.DataValidators.RemoveAt(0);
+                Native.OS.SetupEnternalTools();
 
                 var launcher = new Views.Launcher();
                 _notificationReceiver = launcher;

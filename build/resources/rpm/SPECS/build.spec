@@ -24,7 +24,7 @@ chmod 755 -R $RPM_BUILD_ROOT
 
 %files
 /opt
-/usr/bin
+%attr(555,root,root)/usr/bin
 /usr/share
 
 %changelog

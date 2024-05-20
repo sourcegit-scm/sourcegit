@@ -85,6 +85,12 @@ namespace SourceGit.Views
                 }
             }
 
+            protected override void OnDataContextChanged(EventArgs e)
+            {
+                base.OnDataContextChanged(e);
+                InvalidateMeasure();
+            }
+
             private readonly CombinedTextDiffPresenter _editor;
             private readonly bool _isOldLine;
         }
@@ -456,6 +462,12 @@ namespace SourceGit.Views
                             Brushes.White);
                     return new Size(test.Width, 0);
                 }
+            }
+
+            protected override void OnDataContextChanged(EventArgs e)
+            {
+                base.OnDataContextChanged(e);
+                InvalidateMeasure();
             }
 
             private readonly SingleSideTextDiffPresenter _editor;

@@ -43,6 +43,11 @@ namespace SourceGit.Native
                 DefaultFamilyName = "fonts:SourceGit#JetBrains Mono",
             });
 
+            builder.With(new X11PlatformOptions()
+            {
+                EnableIme = true,
+            });
+
             // Free-desktop file picker has an extra black background panel.
             builder.UseManagedSystemDialogs();
         }

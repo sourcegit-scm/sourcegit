@@ -39,8 +39,8 @@ This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationD
 | OS | PATH |
 | --- | --- |
 | Windows | `C:\Users\USER_NAME\AppData\Roaming\SourceGit` |
-| Linux | `/home/USER_NAME/.config/SourceGit` |
-| macOS | `/Users/USER_NAME/.config/SourceGit` |
+| Linux | `${HOME}/.config/SourceGit` |
+| macOS | `${HOME}/Library/Application Support/SourceGit` |
 
 For **Windows** users:
 

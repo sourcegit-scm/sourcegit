@@ -90,6 +90,21 @@ namespace SourceGit.ViewModels
         }
 
         [JsonIgnore]
+        public string SearchBranchFilter
+        {
+            get => _searchBranchFilter;
+            set
+            {
+                if (SetProperty(ref _searchBranchFilter, value))
+                {
+                    var builder = BuildBranchTree(_branches, _remotes);
+                    LocalBranchTrees = builder.Locals;
+                    RemoteBranchTrees = builder.Remotes;
+                }
+            }
+        }
+
+        [JsonIgnore]
         public List<Models.Remote> Remotes
         {
             get => _remotes;
@@ -104,14 +119,14 @@ namespace SourceGit.ViewModels
         }
 
         [JsonIgnore]
-        public List<Models.BranchTreeNode> LocalBranchTrees
+        public List<BranchTreeNode> LocalBranchTrees
         {
             get => _localBranchTrees;
             private set => SetProperty(ref _localBranchTrees, value);
         }
 
         [JsonIgnore]
-        public List<Models.BranchTreeNode> RemoteBranchTrees
+        public List<BranchTreeNode> RemoteBranchTrees
         {
             get => _remoteBranchTrees;
             private set => SetProperty(ref _remoteBranchTrees, value);
@@ -221,6 +236,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _hasUnsolvedConflicts, value);
         }
 
+        [JsonIgnore]
         public Models.Commit SearchResultSelectedCommit
         {
             get => _searchResultSelectedCommit;
@@ -422,6 +438,11 @@ namespace SourceGit.ViewModels
             SearchedCommits = visible;
         }
 
+        public void ClearSearchBranchFilter()
+        {
+            SearchBranchFilter = string.Empty;
+        }
+
         public void SetWatcherEnabled(bool enabled)
         {
             if (_watcher != null)
@@ -533,12 +554,7 @@ namespace SourceGit.ViewModels
         {
             var branches = new Commands.QueryBranches(FullPath).Result();
             var remotes = new Commands.QueryRemotes(FullPath).Result();
-
-            var builder = new Models.BranchTreeNode.Builder();
-            builder.SetFilters(Filters);
-            builder.CollectExpandedNodes(_localBranchTrees, true);
-            builder.CollectExpandedNodes(_remoteBranchTrees, false);
-            builder.Run(branches, remotes);
+            var builder = BuildBranchTree(branches, remotes);
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -1354,6 +1370,32 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
+        {
+            var builder = new BranchTreeNode.Builder();
+            builder.SetFilters(Filters);
+
+            if (string.IsNullOrEmpty(_searchBranchFilter))
+            {
+                builder.CollectExpandedNodes(_localBranchTrees, true);
+                builder.CollectExpandedNodes(_remoteBranchTrees, false);
+                builder.Run(branches, remotes, false);
+            }
+            else
+            {
+                var visibles = new List<Models.Branch>();
+                foreach (var b in branches)
+                {
+                    if (b.FullName.Contains(_searchBranchFilter, StringComparison.OrdinalIgnoreCase))
+                        visibles.Add(b);
+                }
+
+                builder.Run(visibles, remotes, visibles.Count <= 20);
+            }
+
+            return builder;
+        }
+
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.GitFlow _gitflow = new Models.GitFlow();
@@ -1372,10 +1414,12 @@ namespace SourceGit.ViewModels
         private bool _isTagGroupExpanded = false;
         private bool _isSubmoduleGroupExpanded = false;
 
+        private string _searchBranchFilter = string.Empty;
+
         private List<Models.Remote> _remotes = new List<Models.Remote>();
         private List<Models.Branch> _branches = new List<Models.Branch>();
-        private List<Models.BranchTreeNode> _localBranchTrees = new List<Models.BranchTreeNode>();
-        private List<Models.BranchTreeNode> _remoteBranchTrees = new List<Models.BranchTreeNode>();
+        private List<BranchTreeNode> _localBranchTrees = new List<BranchTreeNode>();
+        private List<BranchTreeNode> _remoteBranchTrees = new List<BranchTreeNode>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
         private List<string> _submodules = new List<string>();
         private bool _canCommitWithPush = false;

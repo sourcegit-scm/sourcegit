@@ -12,34 +12,23 @@ namespace SourceGit.Models
 {
     public class ExternalTool
     {
-        public string Name { get; set; } = string.Empty;
-        public string Icon { get; set; } = string.Empty;
-        public string Executable { get; set; } = string.Empty;
-        public string OpenCmdArgs { get; set; } = string.Empty;
+        public string Name { get; private set; } = string.Empty;
+        public string Executable { get; private set; } = string.Empty;
+        public string OpenCmdArgs { get; private set; } = string.Empty;
+        public Bitmap IconImage { get; private set; } = null;
 
-        public Bitmap IconImage
+        public ExternalTool(string name, string icon, string executable, string openCmdArgs)
         {
-            get
+            Name = name;
+            Executable = executable;
+            OpenCmdArgs = openCmdArgs;
+
+            try
             {
-                if (_isFirstTimeGetIcon)
-                {
-                    _isFirstTimeGetIcon = false;
-
-                    if (!string.IsNullOrWhiteSpace(Icon))
-                    {
-                        try
-                        {
-                            var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{Icon}.png", UriKind.RelativeOrAbsolute));
-                            _iconImage = new Bitmap(icon);
-                        }
-                        catch
-                        {
-                        }
-                    }
-                }
-
-                return _iconImage;
+                var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{icon}.png", UriKind.RelativeOrAbsolute));
+                IconImage = new Bitmap(asset);
             }
+            catch { }
         }
 
         public void Open(string repo)
@@ -52,9 +41,6 @@ namespace SourceGit.Models
                 UseShellExecute = false,
             });
         }
-
-        private bool _isFirstTimeGetIcon = true;
-        private Bitmap _iconImage = null;
     }
 
     public class JetBrainsState
@@ -107,13 +93,7 @@ namespace SourceGit.Models
                     return;
             }
 
-            Founded.Add(new ExternalTool
-            {
-                Name = name,
-                Icon = icon,
-                OpenCmdArgs = args,
-                Executable = path
-            });
+            Founded.Add(new ExternalTool(name, icon, path, args));
         }
 
         public void VSCode(Func<string> platformFinder)
@@ -154,13 +134,11 @@ namespace SourceGit.Models
                     if (exclude.Contains(tool.ToolId.ToLowerInvariant()))
                         continue;
 
-                    Founded.Add(new ExternalTool
-                    {
-                        Name = $"{tool.DisplayName} {tool.DisplayVersion}",
-                        Icon = supported_icons.Contains(tool.ProductCode) ? $"JetBrains/{tool.ProductCode}" : $"JetBrains/JB",
-                        OpenCmdArgs = "\"{0}\"",
-                        Executable = Path.Combine(tool.InstallLocation, tool.LaunchCommand),
-                    });
+                    Founded.Add(new ExternalTool(
+                        $"{tool.DisplayName} {tool.DisplayVersion}",
+                        supported_icons.Contains(tool.ProductCode) ? $"JetBrains/{tool.ProductCode}" : "JetBrains/JB",
+                        Path.Combine(tool.InstallLocation, tool.LaunchCommand),
+                        "\"{0}\""));
                 }
             }
         }

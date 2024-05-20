@@ -98,7 +98,7 @@ namespace SourceGit.Views
             {
                 remoteBranchTree.UnselectAll();
 
-                var node = tree.SelectedItem as Models.BranchTreeNode;
+                var node = tree.SelectedItem as ViewModels.BranchTreeNode;
                 if (node.IsBranch && DataContext is ViewModels.Repository repo)
                 {
                     repo.NavigateToCommit((node.Backend as Models.Branch).Head);
@@ -112,7 +112,7 @@ namespace SourceGit.Views
             {
                 localBranchTree.UnselectAll();
 
-                var node = tree.SelectedItem as Models.BranchTreeNode;
+                var node = tree.SelectedItem as ViewModels.BranchTreeNode;
                 if (node.IsBranch && DataContext is ViewModels.Repository repo)
                 {
                     repo.NavigateToCommit((node.Backend as Models.Branch).Head);
@@ -171,7 +171,7 @@ namespace SourceGit.Views
             if (sender is ToggleButton toggle)
             {
                 var filter = string.Empty;
-                if (toggle.DataContext is Models.BranchTreeNode node)
+                if (toggle.DataContext is ViewModels.BranchTreeNode node)
                 {
                     if (node.IsBranch)
                     {
@@ -196,7 +196,7 @@ namespace SourceGit.Views
         {
             remoteBranchTree.UnselectAll();
 
-            if (sender is Grid grid && grid.DataContext is Models.BranchTreeNode node)
+            if (sender is Grid grid && grid.DataContext is ViewModels.BranchTreeNode node)
             {
                 if (node.IsBranch && DataContext is ViewModels.Repository repo)
                 {
@@ -213,7 +213,7 @@ namespace SourceGit.Views
         {
             localBranchTree.UnselectAll();
 
-            if (sender is Grid grid && grid.DataContext is Models.BranchTreeNode node && DataContext is ViewModels.Repository repo)
+            if (sender is Grid grid && grid.DataContext is ViewModels.BranchTreeNode node && DataContext is ViewModels.Repository repo)
             {
                 if (node.IsRemote)
                 {
@@ -291,7 +291,7 @@ namespace SourceGit.Views
 
             if (sender is Grid grid && DataContext is ViewModels.Repository repo)
             {
-                var node = grid.DataContext as Models.BranchTreeNode;
+                var node = grid.DataContext as ViewModels.BranchTreeNode;
                 if (node != null && node.IsBranch)
                 {
                     var branch = node.Backend as Models.Branch;
