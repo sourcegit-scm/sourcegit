@@ -49,7 +49,7 @@ namespace SourceGit.ViewModels
 
                 var gitDir = new Commands.QueryGitDir(root).Result();
                 var repo = Preference.AddRepository(root, gitDir);
-                var node = Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, null);
+                var node = Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, null, false);
                 OpenRepositoryInTab(node, null);
             }
             else if (Preference.Instance.RestoreTabs)

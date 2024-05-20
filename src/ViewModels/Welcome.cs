@@ -26,7 +26,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void InitRepository(string path)
+        public void InitRepository(string path, RepositoryNode parent)
         {
             if (!Preference.Instance.IsGitConfigured)
             {
@@ -36,7 +36,7 @@ namespace SourceGit.ViewModels
 
             if (PopupHost.CanCreatePopup())
             {
-                PopupHost.ShowPopup(new Init(path));
+                PopupHost.ShowPopup(new Init(path, parent));
             }
         }
 
