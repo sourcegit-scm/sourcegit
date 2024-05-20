@@ -28,6 +28,7 @@ namespace SourceGit.Views
 
             var args = Environment.GetCommandLineArgs();
             //var args = new string[] { string.Empty, "D:\\code\\tmp\\sourcegit" };
+            if (args.Length < 2) return;
             if (!Directory.Exists(args[1])) return;
             if (!Directory.Exists(Path.Combine(args[1], ".git"))) return;
             Dispatcher.UIThread.InvokeAsync(() =>
