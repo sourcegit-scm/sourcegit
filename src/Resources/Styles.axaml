@@ -1002,6 +1002,7 @@
     <Setter Property="FontSize" Value="14"/>
     <Setter Property="Padding" Value="10,0"/>
     <Setter Property="MinHeight" Value="24"/>
+    <Setter Property="Opacity" Value="1"/>
 
     <Style.Resources>
       <x:Double x:Key="TabItemPipeThickness">1</x:Double>
@@ -1009,10 +1010,12 @@
   </Style>
 
   <Style Selector="TabItem:pointerover TextBlock.tab_header">
-    <Setter Property="Opacity" Value=".8"/>
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+    <Setter Property="Opacity" Value="1"/>
   </Style>
 
   <Style Selector="TabItem:selected TextBlock.tab_header">
+    <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}"/>
     <Setter Property="Opacity" Value="1"/>
   </Style>
 
