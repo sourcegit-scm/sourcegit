@@ -70,7 +70,7 @@
       <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,8,32,8">        
         <StackPanel Height="48" Orientation="Horizontal">
           <TextBlock Classes="bold" Text="SourceGit" FontSize="32" />
-          <Border Margin="12,0,0,0" Height="20" CornerRadius="10" Background="{DynamicResource Brush.Accent1}" Effect="drop-shadow(0 0 6 #40000000)">
+          <Border Margin="12,0,0,0" Height="20" CornerRadius="10" Background="{DynamicResource Brush.Accent}" Effect="drop-shadow(0 0 6 #40000000)">
             <TextBlock Classes="monospace" Margin="8,0" Text="{Binding Version}" FontSize="12" Foreground="White"/>
           </Border>
         </StackPanel>
@@ -82,19 +82,19 @@
         <StackPanel Orientation="Vertical" Margin="0,24,0,0">
           <StackPanel Orientation="Horizontal" Height="18">
             <TextBlock Text="{DynamicResource Text.About.BuildWith}" />
-            <TextBlock Text="Avalonia UI" Cursor="Hand" Foreground="{DynamicResource Brush.Accent1}" TextDecorations="Underline" PointerPressed="OnVisitAvaloniaUI"/>
+            <TextBlock Text="Avalonia UI" Cursor="Hand" Foreground="{DynamicResource Brush.Accent}" TextDecorations="Underline" PointerPressed="OnVisitAvaloniaUI"/>
             <TextBlock Text=" &amp; " />
-            <TextBlock Text="AvaloniaEdit" Cursor="Hand" Foreground="{DynamicResource Brush.Accent1}" TextDecorations="Underline" PointerPressed="OnVisitAvaloniaEdit"/>
+            <TextBlock Text="AvaloniaEdit" Cursor="Hand" Foreground="{DynamicResource Brush.Accent}" TextDecorations="Underline" PointerPressed="OnVisitAvaloniaEdit"/>
           </StackPanel>
 
           <StackPanel Orientation="Horizontal" Height="18" Margin="0,2,0,0">
             <TextBlock Text="{DynamicResource Text.About.Fonts}" />
-            <TextBlock Text="JetBrains Mono" Cursor="Hand" Foreground="{DynamicResource Brush.Accent1}" TextDecorations="Underline" PointerPressed="OnVisitJetBrainsMonoFont"/>
+            <TextBlock Text="JetBrains Mono" Cursor="Hand" Foreground="{DynamicResource Brush.Accent}" TextDecorations="Underline" PointerPressed="OnVisitJetBrainsMonoFont"/>
           </StackPanel>
           
           <StackPanel Orientation="Horizontal" Height="18" Margin="0,2,0,0">
             <TextBlock Text="{DynamicResource Text.About.SourceCode}" />
-            <TextBlock Text="Github" Cursor="Hand" Foreground="{DynamicResource Brush.Accent1}" TextDecorations="Underline" PointerPressed="OnVisitSourceCode"/>
+            <TextBlock Text="Github" Cursor="Hand" Foreground="{DynamicResource Brush.Accent}" TextDecorations="Underline" PointerPressed="OnVisitSourceCode"/>
           </StackPanel>
         </StackPanel>
       </StackPanel>

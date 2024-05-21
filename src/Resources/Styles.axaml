@@ -133,12 +133,12 @@
     </Setter>
   </Style>
   <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
-    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent1}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
   </Style>
   <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
     <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent1}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
   </Style>
   <Style Selector="TextBox:disabled /template/ Border#PART_BorderElement">
@@ -734,7 +734,7 @@
       <Setter Property="VerticalOffset" Value="2"/>
     </Style>
     <Style Selector="^:pointerover /template/ Border#Background">
-      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent1}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}" />
     </Style>
     <Style Selector="^:disabled">
       <Setter Property="Opacity" Value=".6"/>
@@ -758,7 +758,7 @@
           </Grid.ColumnDefinitions>
 
           <Border x:Name="Border" Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" BorderBrush="{DynamicResource Brush.Border1}" BorderThickness="1" Background="Transparent" CornerRadius="2">
-            <Path x:Name="Icon" Height="12" Width="12" Data="{DynamicResource Icons.Check}" Fill="{DynamicResource Brush.Accent1}" IsVisible="False" Margin="0,2,0,0"/>
+            <Path x:Name="Icon" Height="12" Width="12" Data="{DynamicResource Icons.Check}" Fill="{DynamicResource Brush.Accent}" IsVisible="False" Margin="0,2,0,0"/>
           </Border>
 
           <ContentPresenter x:Name="ContentPresenter"
@@ -773,7 +773,7 @@
     </Setter>
 
     <Style Selector="^:pointerover /template/ Border#Border">
-      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent1}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     </Style>
     <Style Selector="^:checked /template/ Path#Icon">
       <Setter Property="IsVisible" Value="True"/>
@@ -817,10 +817,10 @@
     </Setter>
 
     <Style Selector="^:pointerover /template/ Ellipse#Border">
-      <Setter Property="Stroke" Value="{DynamicResource Brush.Accent1}"/>
+      <Setter Property="Stroke" Value="{DynamicResource Brush.Accent}"/>
     </Style>
     <Style Selector="^:checked /template/ Ellipse#Dot">
-      <Setter Property="Fill" Value="{DynamicResource Brush.Accent1}"/>
+      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
     </Style>
   </Style>
 
@@ -897,7 +897,7 @@
     <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
   </Style>
   <Style Selector="ToggleButton.filter:pointerover /template/ Path#PART_IndicatorIcon">
-    <Setter Property="Stroke" Value="{DynamicResource Brush.Accent2}"/>
+    <Setter Property="Stroke" Value="{DynamicResource Brush.AccentHovered}"/>
   </Style>
   <Style Selector="ToggleButton.tree_expander">
     <Setter Property="Margin" Value="0" />
@@ -964,7 +964,7 @@
     <Setter Property="Background" Value="Transparent"/>
   </Style>
   <Style Selector="ToggleButton.line_path:checked Path">
-    <Setter Property="Fill" Value="{DynamicResource Brush.Accent1}"/>
+    <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
   </Style>
 
   <Style Selector="ToggleButton.toggle_untracked">
@@ -1075,11 +1075,11 @@
     </Setter>
 
     <Style Selector="^ /template/ Border#PART_LayoutRoot:pointerover">
-      <Setter Property="Background" Value="{DynamicResource Brush.Accent2}" />
+      <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
     </Style>
 
     <Style Selector="^:selected /template/ Border#PART_LayoutRoot">
-      <Setter Property="Background" Value="{DynamicResource Brush.Accent1}" />
+      <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
     </Style>
   </Style>
   <Style Selector="TreeViewItem[IsExpanded=True] Path.folder_icon">
