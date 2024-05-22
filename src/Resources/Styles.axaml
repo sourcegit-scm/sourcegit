@@ -13,6 +13,9 @@
     <Style.Resources>
       <x:Double x:Key="ScrollBarSize">12</x:Double>
     </Style.Resources>
+  
+    <Setter Property="ShowDelay" Value="0:0:0.1"/>
+    <Setter Property="HideDelay" Value="0:0:0.2"/>
   </Style>
 
   <Style Selector="ContentPresenter">
