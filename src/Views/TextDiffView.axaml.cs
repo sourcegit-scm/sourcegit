@@ -320,7 +320,8 @@ namespace SourceGit.Views
             };
 
             menu.Items.Add(copy);
-            menu.Open(TextArea.TextView);
+
+            TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
         }
 
@@ -731,7 +732,8 @@ namespace SourceGit.Views
             };
 
             menu.Items.Add(copy);
-            menu.Open(TextArea.TextView);
+            
+            TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
         }
 

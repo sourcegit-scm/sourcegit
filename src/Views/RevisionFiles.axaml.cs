@@ -198,7 +198,8 @@ namespace SourceGit.Views
 
             var menu = new ContextMenu();
             menu.Items.Add(copy);
-            menu.Open(TextArea.TextView);
+
+            TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
         }
 
@@ -219,7 +220,7 @@ namespace SourceGit.Views
             if (!node.IsFolder)
             {
                 var menu = detail.CreateRevisionFileContextMenu(node.Backend as Models.Object);
-                menu.Open(sender as Control);
+                (sender as Control)?.OpenContextMenu(menu);
             }
 
             e.Handled = true;

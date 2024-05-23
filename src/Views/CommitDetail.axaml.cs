@@ -33,7 +33,7 @@ namespace SourceGit.Views
                 }
 
                 var menu = detail.CreateChangeContextMenu(datagrid.SelectedItem as Models.Change);
-                menu.Open(datagrid);
+                datagrid.OpenContextMenu(menu);
             }
             e.Handled = true;
         }

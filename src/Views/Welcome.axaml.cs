@@ -42,7 +42,7 @@ namespace SourceGit.Views
             if (sender is Grid grid && DataContext is ViewModels.Welcome vm)
             {
                 var menu = vm.CreateContextMenu(grid.DataContext as ViewModels.RepositoryNode);
-                menu?.Open(grid);
+                grid.OpenContextMenu(menu);
                 e.Handled = true;
             }
         }

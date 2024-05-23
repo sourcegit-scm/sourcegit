@@ -66,11 +66,8 @@ namespace SourceGit.Views
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
                 var menu = repo.CreateContextMenuForExternalTools();
-                if (menu != null)
-                {
-                    menu.Open(button);
-                    e.Handled = true;
-                }
+                button.OpenContextMenu(menu);
+                e.Handled = true;
             }
         }
 
@@ -201,8 +198,7 @@ namespace SourceGit.Views
                 if (node.IsBranch && DataContext is ViewModels.Repository repo)
                 {
                     var menu = repo.CreateContextMenuForLocalBranch(node.Backend as Models.Branch);
-                    if (menu != null)
-                        menu.Open(grid);
+                    grid.OpenContextMenu(menu);
                 }
             }
 
@@ -218,14 +214,12 @@ namespace SourceGit.Views
                 if (node.IsRemote)
                 {
                     var menu = repo.CreateContextMenuForRemote(node.Backend as Models.Remote);
-                    if (menu != null)
-                        menu.Open(grid);
+                    grid.OpenContextMenu(menu);
                 }
                 else if (node.IsBranch)
                 {
                     var menu = repo.CreateContextMenuForRemoteBranch(node.Backend as Models.Branch);
-                    if (menu != null)
-                        menu.Open(grid);
+                    grid.OpenContextMenu(menu);
                 }
             }
 
@@ -238,8 +232,7 @@ namespace SourceGit.Views
             {
                 var tag = datagrid.SelectedItem as Models.Tag;
                 var menu = repo.CreateContextMenuForTag(tag);
-                if (menu != null)
-                    menu.Open(datagrid);
+                datagrid.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -251,8 +244,7 @@ namespace SourceGit.Views
             {
                 var submodule = datagrid.SelectedItem as string;
                 var menu = repo.CreateContextMenuForSubmodule(submodule);
-                if (menu != null)
-                    menu.Open(datagrid);
+                datagrid.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -263,8 +255,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Repository repo)
             {
                 var menu = repo.CreateContextMenuForGitFlow();
-                if (menu != null)
-                    menu.Open(sender as Button);
+                (sender as Control)?.OpenContextMenu(menu);
             }
 
             e.Handled = true;

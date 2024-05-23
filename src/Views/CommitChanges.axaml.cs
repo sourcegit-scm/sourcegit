@@ -24,7 +24,7 @@ namespace SourceGit.Views
             {
                 var detail = DataContext as ViewModels.CommitDetail;
                 var menu = detail.CreateChangeContextMenu(datagrid.SelectedItem as Models.Change);
-                menu.Open(datagrid);
+                datagrid.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -39,7 +39,7 @@ namespace SourceGit.Views
                 if (node != null && !node.IsFolder)
                 {
                     var menu = detail.CreateChangeContextMenu(node.Backend as Models.Change);
-                    menu.Open(view);
+                    view.OpenContextMenu(menu);
                 }
             }
 
