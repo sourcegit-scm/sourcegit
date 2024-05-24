@@ -114,10 +114,14 @@
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Create Local Branch</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Create Tag</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">New Tag At :</x:String>
+  <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">Enable GPG signing</x:String>
   <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Tag Message :</x:String>
   <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Optional.</x:String>
   <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Tag Name :</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Recommended format ：v1.0.0-alpha</x:String>
+  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Kind ：</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">annotated</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">lightweight</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Cut</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Delete Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch :</x:String>
@@ -312,6 +316,7 @@
   <x:String x:Key="Text.Push.To" xml:space="preserve">Remote Branch :</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Push all tags</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">Push Tag To Remote</x:String>
+  <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push to all remotes</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Remote :</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Tag :</x:String>
   <x:String x:Key="Text.Quit" xml:space="preserve">Quit</x:String>

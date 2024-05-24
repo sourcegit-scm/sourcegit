@@ -22,6 +22,12 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool PushAllRemotes
+        {
+            get => _pushAllRemotes;
+            set => SetProperty(ref _pushAllRemotes, value);
+        }
+
         public PushTag(Repository repo, Models.Tag target)
         {
             _repo = repo;
@@ -37,12 +43,27 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Push(_repo.FullPath, SelectedRemote.Name, Target.Name, false).Exec();
+                bool succ = true;
+                if (_pushAllRemotes)
+                {
+                    foreach (var remote in _repo.Remotes)
+                    {
+                        succ = new Commands.Push(_repo.FullPath, remote.Name, Target.Name, false).Exec();
+                        if (!succ)
+                            break;
+                    }
+                }
+                else
+                {
+                    succ = new Commands.Push(_repo.FullPath, SelectedRemote.Name, Target.Name, false).Exec();
+                }
+
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
         }
 
         private readonly Repository _repo = null;
+        private bool _pushAllRemotes = false;
     }
 }

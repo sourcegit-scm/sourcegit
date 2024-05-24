@@ -5,12 +5,22 @@ namespace SourceGit.Commands
 {
     public static class Tag
     {
-        public static bool Add(string repo, string name, string basedOn, string message)
+        public static bool Add(string repo, string name, string basedOn)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"tag -a {name} {basedOn} ";
+            cmd.Args = $"tag {name} {basedOn}";
+            return cmd.Exec();
+        }
+
+        public static bool Add(string repo, string name, string basedOn, string message, bool sign)
+        {
+            var param = sign ? "-s -a" : "-a";
+            var cmd = new Command();
+            cmd.WorkingDirectory = repo;
+            cmd.Context = repo;
+            cmd.Args = $"tag {param} {name} {basedOn} ";
 
             if (!string.IsNullOrEmpty(message))
             {

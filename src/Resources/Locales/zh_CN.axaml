@@ -114,10 +114,14 @@
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">创建本地分支</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">新建标签</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">标签位于 ：</x:String>
+  <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">使用GPG签名</x:String>
   <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">标签描述 ：</x:String>
   <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">选填。</x:String>
   <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">标签名 ：</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">推荐格式 ：v1.0.0-alpha</x:String>
+  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">类型 ：</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">附注标签</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">轻量标签</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪切</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">删除分支确认</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
@@ -312,6 +316,7 @@
   <x:String x:Key="Text.Push.To" xml:space="preserve">远程分支 ：</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">同时推送标签</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">推送标签到远程仓库</x:String>
+  <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">推送到所有远程仓库</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">标签 ：</x:String>
   <x:String x:Key="Text.Quit" xml:space="preserve">退出</x:String>
