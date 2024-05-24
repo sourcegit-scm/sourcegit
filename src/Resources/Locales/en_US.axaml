@@ -119,6 +119,7 @@
   <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Optional.</x:String>
   <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Tag Name :</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Recommended format ：v1.0.0-alpha</x:String>
+  <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Push to all remotes after created</x:String>
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Kind ：</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">annotated</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">lightweight</x:String>

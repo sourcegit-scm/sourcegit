@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Pushing tag '{Target.Name}' to remote '{SelectedRemote.Name}' ...";
+            ProgressDescription = $"Pushing tag ...";
 
             return Task.Run(() =>
             {
@@ -48,6 +48,7 @@ namespace SourceGit.ViewModels
                 {
                     foreach (var remote in _repo.Remotes)
                     {
+                        SetProgressDescription($"Pushing tag to remote {remote.Name} ...");
                         succ = new Commands.Push(_repo.FullPath, remote.Name, Target.Name, false).Exec();
                         if (!succ)
                             break;
@@ -55,6 +56,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
+                    SetProgressDescription($"Pushing tag to remote {SelectedRemote.Name} ...");
                     succ = new Commands.Push(_repo.FullPath, SelectedRemote.Name, Target.Name, false).Exec();
                 }
 

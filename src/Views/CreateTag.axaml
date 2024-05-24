@@ -13,7 +13,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.CreateTag}"/>
-    <Grid Margin="0,16,8,0" RowDefinitions="32,32,32,Auto,Auto" ColumnDefinitions="150,*">
+    <Grid Margin="0,16,8,0" RowDefinitions="32,32,32,Auto,Auto,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -76,10 +76,14 @@
                IsVisible="{Binding Annotated}"/>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
-                Height="32"
+                Height="32" Margin="0,4,0,0"
                 Content="{DynamicResource Text.CreateTag.GPGSign}"
                 IsChecked="{Binding SignTag, Mode=TwoWay}"
                 IsVisible="{Binding Annotated}"/>
+
+      <CheckBox Grid.Row="5" Grid.Column="1"
+                Content="{DynamicResource Text.CreateTag.PushToAllRemotes}"
+                IsChecked="{Binding PushToAllRemotes, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

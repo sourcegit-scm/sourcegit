@@ -38,6 +38,12 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
+        public bool PushToAllRemotes
+        {
+            get;
+            set;
+        } = true;
+
         public CreateTag(Repository repo, Models.Branch branch)
         {
             _repo = repo;
@@ -75,13 +81,23 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
+                var succ = false;
                 if (_annotated)
-                    Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, Message, SignTag);
+                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, Message, SignTag);
                 else
-                    Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn);
+                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn);
+
+                if (succ && PushToAllRemotes)
+                {
+                    foreach (var remote in _repo.Remotes)
+                    {
+                        SetProgressDescription($"Pushing tag to remote {remote.Name} ...");
+                        new Commands.Push(_repo.FullPath, remote.Name, _tagName, false).Exec();
+                    }
+                }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return true;
+                return succ;
             });
         }
 

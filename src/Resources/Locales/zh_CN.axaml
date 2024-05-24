@@ -119,6 +119,7 @@
   <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">选填。</x:String>
   <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">标签名 ：</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">推荐格式 ：v1.0.0-alpha</x:String>
+  <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">推送到所有远程仓库</x:String>
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">类型 ：</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">附注标签</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">轻量标签</x:String>
