@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -6,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -56,6 +58,24 @@ namespace SourceGit.Views
 
     public partial class Repository : UserControl
     {
+        public static readonly StyledProperty<ulong> RefereshLocalBranchSelectionTokenProperty =
+            AvaloniaProperty.Register<Repository, ulong>(nameof(RefereshLocalBranchSelectionToken), 0);
+
+        public ulong RefereshLocalBranchSelectionToken
+        {
+            get => GetValue(RefereshLocalBranchSelectionTokenProperty);
+            set => SetValue(RefereshLocalBranchSelectionTokenProperty, value);
+        }
+
+        public static readonly StyledProperty<ulong> RefereshRemoteBranchSelectionTokenProperty =
+            AvaloniaProperty.Register<Repository, ulong>(nameof(RefereshRemoteBranchSelectionToken), 0);
+
+        public ulong RefereshRemoteBranchSelectionToken
+        {
+            get => GetValue(RefereshRemoteBranchSelectionTokenProperty);
+            set => SetValue(RefereshRemoteBranchSelectionTokenProperty, value);
+        }
+
         public Repository()
         {
             InitializeComponent();
@@ -71,34 +91,21 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnLocalBranchTreeLostFocus(object sender, RoutedEventArgs e)
-        {
-            if (sender is TreeView tree)
-                tree.UnselectAll();
-        }
-
-        private void OnRemoteBranchTreeLostFocus(object sender, RoutedEventArgs e)
-        {
-            if (sender is TreeView tree)
-                tree.UnselectAll();
-        }
-
-        private void OnTagDataGridLostFocus(object sender, RoutedEventArgs e)
-        {
-            if (sender is DataGrid datagrid)
-                datagrid.SelectedItem = null;
-        }
-
         private void OnLocalBranchTreeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is TreeView tree && tree.SelectedItem != null)
             {
                 remoteBranchTree.UnselectAll();
+                tagsList.SelectedItem = null;
 
-                var node = tree.SelectedItem as ViewModels.BranchTreeNode;
-                if (node.IsBranch && DataContext is ViewModels.Repository repo)
+                var next = RefereshLocalBranchSelectionToken + 1;
+                SetCurrentValue(RefereshLocalBranchSelectionTokenProperty, next);
+
+                if (tree.SelectedItems.Count == 1)
                 {
-                    repo.NavigateToCommit((node.Backend as Models.Branch).Head);
+                    var node = tree.SelectedItem as ViewModels.BranchTreeNode;
+                    if (node.IsBranch && DataContext is ViewModels.Repository repo)
+                        repo.NavigateToCommit((node.Backend as Models.Branch).Head);
                 }
             }
         }
@@ -108,11 +115,16 @@ namespace SourceGit.Views
             if (sender is TreeView tree && tree.SelectedItem != null)
             {
                 localBranchTree.UnselectAll();
+                tagsList.SelectedItem = null;
 
-                var node = tree.SelectedItem as ViewModels.BranchTreeNode;
-                if (node.IsBranch && DataContext is ViewModels.Repository repo)
+                var next = RefereshRemoteBranchSelectionToken + 1;
+                SetCurrentValue(RefereshRemoteBranchSelectionTokenProperty, next);
+
+                if (tree.SelectedItems.Count == 1)
                 {
-                    repo.NavigateToCommit((node.Backend as Models.Branch).Head);
+                    var node = tree.SelectedItem as ViewModels.BranchTreeNode;
+                    if (node.IsBranch && DataContext is ViewModels.Repository repo)
+                        repo.NavigateToCommit((node.Backend as Models.Branch).Head);
                 }
             }
         }
@@ -121,11 +133,12 @@ namespace SourceGit.Views
         {
             if (sender is DataGrid datagrid && datagrid.SelectedItem != null)
             {
+                localBranchTree.UnselectAll();
+                remoteBranchTree.UnselectAll();
+
                 var tag = datagrid.SelectedItem as Models.Tag;
                 if (DataContext is ViewModels.Repository repo)
-                {
                     repo.NavigateToCommit(tag.SHA);
-                }
             }
         }
 
@@ -133,9 +146,7 @@ namespace SourceGit.Views
         {
             var grid = sender as Grid;
             if (e.Property == IsVisibleProperty && grid.IsVisible)
-            {
                 txtSearchCommitsBox.Focus();
-            }
         }
 
         private void OnSearchKeyDown(object sender, KeyEventArgs e)
@@ -143,9 +154,8 @@ namespace SourceGit.Views
             if (e.Key == Key.Enter)
             {
                 if (DataContext is ViewModels.Repository repo)
-                {
                     repo.StartSearchCommits();
-                }
+
                 e.Handled = true;
             }
         }
@@ -171,9 +181,7 @@ namespace SourceGit.Views
                 if (toggle.DataContext is ViewModels.BranchTreeNode node)
                 {
                     if (node.IsBranch)
-                    {
                         filter = (node.Backend as Models.Branch).FullName;
-                    }
                 }
                 else if (toggle.DataContext is Models.Tag tag)
                 {
@@ -192,14 +200,37 @@ namespace SourceGit.Views
         private void OnLocalBranchContextMenuRequested(object sender, ContextRequestedEventArgs e)
         {
             remoteBranchTree.UnselectAll();
+            tagsList.SelectedItem = null;
 
-            if (sender is Grid grid && grid.DataContext is ViewModels.BranchTreeNode node)
+            var repo = DataContext as ViewModels.Repository;
+            var tree = sender as TreeView;
+            
+            var branches = new List<Models.Branch>();
+            foreach (var item in tree.SelectedItems)
+                CollectBranchesFromNode(branches, item as ViewModels.BranchTreeNode);
+            
+            if (branches.Count == 1)
             {
-                if (node.IsBranch && DataContext is ViewModels.Repository repo)
+                var item = (e.Source as Control)?.FindAncestorOfType<TreeViewItem>(true);
+                if (item != null)
                 {
-                    var menu = repo.CreateContextMenuForLocalBranch(node.Backend as Models.Branch);
-                    grid.OpenContextMenu(menu);
+                    var menu = repo.CreateContextMenuForLocalBranch(branches[0]);
+                    item.OpenContextMenu(menu);
                 }
+            }
+            else if (branches.Count > 1 && branches.Find(x => x.IsCurrent) == null)
+            {
+                var menu = new ContextMenu();
+                var deleteMulti = new MenuItem();
+                deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
+                deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
+                deleteMulti.Click += (_, ev) =>
+                {
+                    repo.DeleteMultipleBranches(branches, true);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(deleteMulti);
+                tree.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -208,19 +239,54 @@ namespace SourceGit.Views
         private void OnRemoteBranchContextMenuRequested(object sender, ContextRequestedEventArgs e)
         {
             localBranchTree.UnselectAll();
+            tagsList.SelectedItem = null;
+            
+            var repo = DataContext as ViewModels.Repository;
+            var tree = sender as TreeView;
 
-            if (sender is Grid grid && grid.DataContext is ViewModels.BranchTreeNode node && DataContext is ViewModels.Repository repo)
+            if (tree.SelectedItems.Count == 1)
             {
-                if (node.IsRemote)
+                var node = tree.SelectedItem as ViewModels.BranchTreeNode;
+                if (node != null && node.IsRemote)
                 {
-                    var menu = repo.CreateContextMenuForRemote(node.Backend as Models.Remote);
-                    grid.OpenContextMenu(menu);
+                    var item = (e.Source as Control)?.FindAncestorOfType<TreeViewItem>(true);
+                    if (item != null && item.DataContext == node)
+                    {
+                        var menu = repo.CreateContextMenuForRemote(node.Backend as Models.Remote);
+                        item.OpenContextMenu(menu);
+                    }
+                    
+                    e.Handled = true;
+                    return;
                 }
-                else if (node.IsBranch)
+            }
+            
+            var branches = new List<Models.Branch>();
+            foreach (var item in tree.SelectedItems)
+                CollectBranchesFromNode(branches, item as ViewModels.BranchTreeNode);
+
+            if (branches.Count == 1)
+            {
+                var item = (e.Source as Control)?.FindAncestorOfType<TreeViewItem>(true);
+                if (item != null)
                 {
-                    var menu = repo.CreateContextMenuForRemoteBranch(node.Backend as Models.Branch);
-                    grid.OpenContextMenu(menu);
+                    var menu = repo.CreateContextMenuForRemoteBranch(branches[0]);
+                    item.OpenContextMenu(menu);
                 }
+            }
+            else
+            {
+                var menu = new ContextMenu();
+                var deleteMulti = new MenuItem();
+                deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
+                deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
+                deleteMulti.Click += (_, ev) =>
+                {
+                    repo.DeleteMultipleBranches(branches, false);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(deleteMulti);
+                tree.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -302,6 +368,24 @@ namespace SourceGit.Views
                 var dialog = new Statistics() { DataContext = new ViewModels.Statistics(repo.FullPath) };
                 await dialog.ShowDialog(TopLevel.GetTopLevel(this) as Window);
                 e.Handled = true;
+            }
+        }
+        
+        private void CollectBranchesFromNode(List<Models.Branch> outs, ViewModels.BranchTreeNode node)
+        {
+            if (node == null || node.IsRemote)
+                return;
+            
+            if (node.IsFolder)
+            {
+                foreach (var child in node.Children)
+                    CollectBranchesFromNode(outs, child);
+            }
+            else
+            {
+                var b = node.Backend as Models.Branch;
+                if (b != null && !outs.Contains(b))
+                    outs.Add(b);
             }
         }
     }

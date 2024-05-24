@@ -14,8 +14,6 @@
       <Color x:Key="Color.Decorator">#FF6F6F6F</Color>
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
       <Color x:Key="Color.Conflict">#FF836C2E</Color>
-      <Color x:Key="Color.SwitcherHover">#FFDFDFDF</Color>
-      <Color x:Key="Color.SwitcherBG">#FFCFCFCF</Color>
       <Color x:Key="Color.Border0">#FFCFCFCF</Color>
       <Color x:Key="Color.Border1">#FF898989</Color>
       <Color x:Key="Color.Border2">#FFCFCFCF</Color>
@@ -42,8 +40,6 @@
       <Color x:Key="Color.Decorator">#FF505050</Color>
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
       <Color x:Key="Color.Conflict">#FFFAFAD2</Color>
-      <Color x:Key="Color.SwitcherHover">#FF323232</Color>
-      <Color x:Key="Color.SwitcherBG">#FF3F3F3F</Color>
       <Color x:Key="Color.Border0">#FF181818</Color>
       <Color x:Key="Color.Border1">#FF7C7C7C</Color>
       <Color x:Key="Color.Border2">#FF404040</Color>
@@ -70,8 +66,6 @@
   <SolidColorBrush x:Key="Brush.Decorator" Color="{DynamicResource Color.Decorator}"/>
   <SolidColorBrush x:Key="Brush.DecoratorIcon" Color="{DynamicResource Color.DecoratorIcon}"/>
   <SolidColorBrush x:Key="Brush.Conflict" Color="{DynamicResource Color.Conflict}"/>
-  <SolidColorBrush x:Key="Brush.SwitcherHover" Color="{DynamicResource Color.SwitcherHover}"/>
-  <SolidColorBrush x:Key="Brush.SwitcherBG" Color="{DynamicResource Color.SwitcherBG}"/>
   <SolidColorBrush x:Key="Brush.Border0" Color="{DynamicResource Color.Border0}"/>
   <SolidColorBrush x:Key="Brush.Border1" Color="{DynamicResource Color.Border1}"/>
   <SolidColorBrush x:Key="Brush.Border2" Color="{DynamicResource Color.Border2}"/>

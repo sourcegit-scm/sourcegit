@@ -35,6 +35,7 @@
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout)${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">复制分支名</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">删除${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">删除选中的 {0} 个分支</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">放弃所有更改</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快进(fast-forward)到${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">GIT工作流 - 完成${0}$</x:String>
@@ -128,6 +129,9 @@
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支${0}$</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">删除多个分支</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch.Targets" xml:space="preserve">分支列表 ：</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">您正在尝试一次性删除多个分支，请务必仔细检查后再执行操作！</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">删除远程确认</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">远程名 ：</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>

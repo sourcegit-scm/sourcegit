@@ -486,37 +486,15 @@
   </Style>
 
   <Style Selector="ListBox.page_switcher ListBoxItem">
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Grid>
-          <ContentPresenter Name="PART_ContentPresenter"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding CornerRadius}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            Content="{TemplateBinding Content}"
-                            Padding="{TemplateBinding Padding}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
-
-          <Border Background="{DynamicResource Brush.FG2}"
-                  Width="4"
-                  HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                  IsHitTestVisible="False"
-                  IsVisible="{TemplateBinding IsSelected}"/>
-        </Grid>
-      </ControlTemplate>
-    </Setter>
-  </Style>
-  <Style Selector="ListBox.page_switcher ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource Brush.SwitcherBG}"/>
+    <Setter Property="Margin" Value="4,0,2,0"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="CornerRadius" Value="4"/>
   </Style>
   <Style Selector="ListBox.page_switcher ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource Brush.SwitcherHover}"/>
+    <Setter Property="Background" Value="Transparent"/>
   </Style>
-  <Style Selector="ListBox.page_switcher ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource Brush.SwitcherBG}"/>
+  <Style Selector="ListBox.page_switcher ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
   </Style>
 
   <Style Selector="ContextMenu">

@@ -8,6 +8,8 @@ namespace SourceGit.Views
     {
         public static void OpenContextMenu(this Control control, ContextMenu menu)
         {
+            if (menu == null) return;
+            
             menu.PlacementTarget = control;
             menu.Closing += OnContextMenuClosing; // Clear context menu because it is dynamic.
 
