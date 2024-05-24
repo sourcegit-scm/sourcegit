@@ -274,7 +274,7 @@ namespace SourceGit.Views
                     item.OpenContextMenu(menu);
                 }
             }
-            else
+            else if (branches.Count > 1)
             {
                 var menu = new ContextMenu();
                 var deleteMulti = new MenuItem();
