@@ -722,6 +722,14 @@ namespace SourceGit.ViewModels
                 PopupHost.ShowAndStartPopup(new Checkout(this, branch));
         }
 
+        public void CheckoutCommit(string commit)
+        {
+            if (!PopupHost.CanCreatePopup())
+                return;
+            
+            PopupHost.ShowPopup(new CheckoutCommit(this, commit));
+        }
+        
         public void CreateNewTag()
         {
             var current = Branches.Find(x => x.IsCurrent);
