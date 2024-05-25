@@ -146,6 +146,15 @@ namespace SourceGit.Commands
                         Name = d.Substring(19).Trim(),
                     });
                 }
+                else if (d.Equals("HEAD"))
+                {
+                    isHeadOfCurrent = true;
+                    decorators.Add(new Models.Decorator()
+                    {
+                        Type = Models.DecoratorType.CurrentCommitHead,
+                        Name = d.Trim(),
+                    });
+                }
                 else if (d.StartsWith("refs/heads/", StringComparison.Ordinal))
                 {
                     decorators.Add(new Models.Decorator()

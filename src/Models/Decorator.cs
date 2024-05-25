@@ -7,6 +7,7 @@ namespace SourceGit.Models
         None,
         CurrentBranchHead,
         LocalBranchHead,
+        CurrentCommitHead,
         RemoteBranchHead,
         Tag,
     }
