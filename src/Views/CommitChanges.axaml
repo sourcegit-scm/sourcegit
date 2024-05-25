@@ -22,9 +22,9 @@
                  Height="26"
                  BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
                  Background="Transparent"
+                 CornerRadius="4"
                  Watermark="{DynamicResource Text.CommitDetail.Changes.Search}"
-                 Text="{Binding SearchChangeFilter, Mode=TwoWay}"
-                 v:AutoFocusBehaviour.IsEnabled="True">
+                 Text="{Binding SearchChangeFilter, Mode=TwoWay}">
           <TextBox.InnerLeftContent>
             <Path Width="14" Height="14" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
           </TextBox.InnerLeftContent>

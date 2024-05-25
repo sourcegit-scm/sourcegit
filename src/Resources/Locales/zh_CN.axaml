@@ -81,9 +81,10 @@
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存为补丁 ...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合并此提交到上一个提交</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">变更对比</x:String>
-  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查找文件...</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查找变更...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">文件列表</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS文件</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">查找文件...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">子模块</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Tag" xml:space="preserve">标签文件</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Tree" xml:space="preserve">子树</x:String>
