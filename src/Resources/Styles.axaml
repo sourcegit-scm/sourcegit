@@ -703,7 +703,7 @@
       <Thickness x:Key="ComboBoxDropdownBorderPadding">4,0</Thickness>
       <Thickness x:Key="ComboBoxItemThemePadding">6,4</Thickness>
       <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="{DynamicResource Color.Contents}"/>
-      <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="{DynamicResource Color.Accent1}"/>
+      <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="{DynamicResource SystemAccentColor}"/>
     </Style.Resources>
 
     <Setter Property="MinHeight" Value="20"/>
