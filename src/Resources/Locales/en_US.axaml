@@ -130,7 +130,6 @@
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">You are about to delete a remote branch!!!</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Also delete remote branch${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Delete Multiple Branches</x:String>
-  <x:String x:Key="Text.DeleteMultiBranch.Targets" xml:space="preserve">Targets : </x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">You are trying to delete multiple branches at one time. Be sure to double-check before taking action!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Delete Remote</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Remote :</x:String>
@@ -319,6 +318,7 @@
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote :</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Push Changes To Remote</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Remote Branch :</x:String>
+  <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Tracking remote branch（--set-upstream）</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Push all tags</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">Push Tag To Remote</x:String>
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push to all remotes</x:String>

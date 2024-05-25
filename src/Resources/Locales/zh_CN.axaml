@@ -130,7 +130,6 @@
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">删除多个分支</x:String>
-  <x:String x:Key="Text.DeleteMultiBranch.Targets" xml:space="preserve">分支列表 ：</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">您正在尝试一次性删除多个分支，请务必仔细检查后再执行操作！</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">删除远程确认</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">远程名 ：</x:String>
@@ -319,6 +318,7 @@
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">推送到远程仓库</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">远程分支 ：</x:String>
+  <x:String x:Key="Text.Push.Tracking" xml:space="preserve">跟踪远程分支（--set-upstream）</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">同时推送标签</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">推送标签到远程仓库</x:String>
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">推送到所有远程仓库</x:String>
