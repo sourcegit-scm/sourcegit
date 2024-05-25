@@ -3,22 +3,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="clr-namespace:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Checkout"
              x:DataType="vm:Checkout">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
                Classes="bold"
-               Text="{DynamicResource Text.Checkout}"/>
+               Text="{Binding TargetType, Converter={x:Static c:CheckoutTargetTypeConverters.ToTitle}}"/>
 
     <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Checkout.Target}"/>
+                 Text="{Binding TargetType, Converter={x:Static c:CheckoutTargetTypeConverters.ToTarget}}"/>
       <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-        <Path Width="14" Height="14" Margin="4,0" Data="{StaticResource Icons.Branch}"/>
-        <TextBlock Text="{Binding Branch}"/>
+        <Path Width="14" Height="14" Margin="4,0" Data="{Binding TargetType, Converter={x:Static c:CheckoutTargetTypeConverters.ToIcon}}"/>
+        <TextBlock Text="{Binding Target}" IsVisible="{Binding TargetType, Converter={x:Static c:CheckoutTargetTypeConverters.IsBranch}}"/>
+        <TextBlock Text="{Binding Target, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" IsVisible="{Binding TargetType, Converter={x:Static c:CheckoutTargetTypeConverters.IsCommit}}"/>
+        <TextBlock VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" IsVisible="{Binding TargetType, Converter={x:Static c:CheckoutTargetTypeConverters.IsCommit}}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="1" Grid.Column="0"

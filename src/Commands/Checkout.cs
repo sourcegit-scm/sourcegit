@@ -12,9 +12,9 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Branch(string branch, Action<string> onProgress)
+        public bool Target(string target, Action<string> onProgress)
         {
-            Args = $"checkout --progress {branch}";
+            Args = $"checkout --progress {target}";
             TraitErrorAsOutput = true;
             _outputHandler = onProgress;
             return Exec();

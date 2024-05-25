@@ -53,8 +53,10 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">网格模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">树形模式</x:String>
-  <x:String x:Key="Text.Checkout" xml:space="preserve">检出(checkout)分支</x:String>
-  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目标分支 ：</x:String>
+  <x:String x:Key="Text.CheckoutBranch" xml:space="preserve">检出(checkout)分支</x:String>
+  <x:String x:Key="Text.CheckoutCommit" xml:space="preserve">检出(checkout)提交</x:String>
+  <x:String x:Key="Text.Checkout.TargetBranch" xml:space="preserve">目标分支 ：</x:String>
+  <x:String x:Key="Text.Checkout.TargetCommit" xml:space="preserve">目标提交 ：</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">贮藏(stash)并自动恢复</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">忽略</x:String>
@@ -75,6 +77,7 @@
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">挑选(cherry-pick)此提交</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">复制提交指纹</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">变基(rebase)${0}$到此处</x:String>
+  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">检出(checkout)此提交</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset)${0}$到此处</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">回滚此提交</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">编辑提交信息</x:String>

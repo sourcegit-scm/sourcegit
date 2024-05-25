@@ -53,8 +53,10 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Show as Grid</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Show as List</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Show as Tree</x:String>
-  <x:String x:Key="Text.Checkout" xml:space="preserve">Checkout Branch</x:String>
-  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch :</x:String>
+  <x:String x:Key="Text.CheckoutBranch" xml:space="preserve">Checkout Branch</x:String>
+  <x:String x:Key="Text.CheckoutCommit" xml:space="preserve">Checkout Commit</x:String>
+  <x:String x:Key="Text.Checkout.TargetBranch" xml:space="preserve">Branch :</x:String>
+  <x:String x:Key="Text.Checkout.TargetCommit" xml:space="preserve">Commit :</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Local Changes :</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
@@ -75,6 +77,7 @@
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick This Commit</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copy SHA</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase${0}$to Here</x:String>
+  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout This Commit</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset${0}$to Here</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revert Commit</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Reword</x:String>

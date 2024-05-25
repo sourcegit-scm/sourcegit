@@ -2,9 +2,15 @@
 
 namespace SourceGit.ViewModels
 {
+    public enum CheckoutTargetType
+    {
+        Branch,
+        Commit,
+    }
+
     public class Checkout : Popup
     {
-        public string Branch
+        public string Target
         {
             get;
             private set;
@@ -16,17 +22,47 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _autoStash, value);
         }
 
-        public Checkout(Repository repo, string branch)
+        public string Subject
+        {
+            get;
+            private set;
+        }
+
+        public CheckoutTargetType TargetType
+        {
+            get;
+            private set;
+        }
+
+        public Checkout(Repository repo, string target)
         {
             _repo = repo;
-            Branch = branch;
+            Target = target;
+            TargetType = CheckoutTargetType.Branch;
+            View = new Views.Checkout() { DataContext = this };
+        }
+
+        public Checkout(Repository repo, Models.Commit commit)
+        {
+            _repo = repo;
+            Target = commit.SHA;
+            Subject = commit.Subject;
+            TargetType = CheckoutTargetType.Commit;
+            View = new Views.Checkout() { DataContext = this };
+        }
+
+        public Checkout(Repository repo, string target, CheckoutTargetType type)
+        {
+            _repo = repo;
+            Target = target;
+            TargetType = type;
             View = new Views.Checkout() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Checkout '{Branch}' ...";
+            ProgressDescription = $"Checkout '{Target}' ...";
 
             var hasLocalChanges = _repo.WorkingCopyChangesCount > 0;
             return Task.Run(() =>
@@ -59,8 +95,8 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                SetProgressDescription("Checkout branch ...");
-                var rs = new Commands.Checkout(_repo.FullPath).Branch(Branch, SetProgressDescription);
+                SetProgressDescription($"Checkout '{Target}' ...");
+                var rs = new Commands.Checkout(_repo.FullPath).Target(Target, SetProgressDescription);
 
                 if (needPopStash)
                 {

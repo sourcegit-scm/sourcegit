@@ -224,6 +224,17 @@ namespace SourceGit.ViewModels
 
             if (current.Head != commit.SHA)
             {
+                var checkout = new MenuItem();
+                checkout.Header = App.Text("CommitCM.Checkout");
+                checkout.Icon = App.CreateMenuIcon("Icons.Commit");
+                checkout.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowPopup(new Checkout(_repo, commit));
+                    e.Handled = true;
+                };
+                menu.Items.Add(checkout);
+
                 var reset = new MenuItem();
                 reset.Header = new Views.NameHighlightedTextBlock("CommitCM.Reset", current.Name);
                 reset.Icon = App.CreateMenuIcon("Icons.Reset");
