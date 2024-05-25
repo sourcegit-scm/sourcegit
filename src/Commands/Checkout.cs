@@ -62,6 +62,14 @@ namespace SourceGit.Commands
             return Exec();
         }
 
+        public bool Commit(string commitId, Action<string> onProgress)
+        {
+            Args = $"checkout --detach --progress {commitId}";
+            TraitErrorAsOutput = true;
+            _outputHandler = onProgress;
+            return Exec();
+        }
+
         public bool Files(List<string> files)
         {
             StringBuilder builder = new StringBuilder();
