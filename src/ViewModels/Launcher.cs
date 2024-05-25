@@ -32,7 +32,27 @@ namespace SourceGit.ViewModels
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
 
-            if (Preference.Instance.RestoreTabs)
+            var commandlines = Environment.GetCommandLineArgs();
+            if (commandlines.Length == 2)
+            {
+                var path = commandlines[1];
+                var root = new Commands.QueryRepositoryRootPath(path).Result();
+                if (string.IsNullOrEmpty(root))
+                {
+                    Pages[0].Notifications.Add(new Models.Notification
+                    {
+                        IsError = true,
+                        Message = $"Given path: '{path}' is NOT a valid repository!"
+                    });
+                    return;
+                }
+
+                var gitDir = new Commands.QueryGitDir(root).Result();
+                var repo = Preference.AddRepository(root, gitDir);
+                var node = Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, null, false);
+                OpenRepositoryInTab(node, null);
+            }
+            else if (Preference.Instance.RestoreTabs)
             {
                 foreach (var id in Preference.Instance.OpenedTabs)
                 {

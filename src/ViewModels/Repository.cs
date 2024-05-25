@@ -730,6 +730,12 @@ namespace SourceGit.ViewModels
             PopupHost.ShowPopup(new CheckoutCommit(this, commit));
         }
         
+        public void DeleteMultipleBranches(List<Models.Branch> branches, bool isLocal)
+        {
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowPopup(new DeleteMultipleBranches(this, branches, isLocal));
+        }
+
         public void CreateNewTag()
         {
             var current = Branches.Find(x => x.IsCurrent);

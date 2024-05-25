@@ -82,6 +82,12 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool Tracking
+        {
+            get;
+            set;
+        } = true;
+
         public bool ForcePush
         {
             get;
@@ -154,7 +160,7 @@ namespace SourceGit.ViewModels
                     remoteBranchName,
                     PushAllTags,
                     ForcePush,
-                    string.IsNullOrEmpty(_selectedLocalBranch.Upstream),
+                    Tracking,
                     SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

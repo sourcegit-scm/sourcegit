@@ -13,7 +13,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.CreateTag}"/>
-    <Grid Margin="0,16,8,0" RowDefinitions="32,32,64" ColumnDefinitions="150,*">
+    <Grid Margin="0,16,8,0" RowDefinitions="32,32,32,Auto,Auto,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -49,16 +49,41 @@
                v:AutoFocusBehaviour.IsEnabled="True"/>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.CreateTag.Type}"/>
+      <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+        <RadioButton Content="{DynamicResource Text.CreateTag.Type.Annotated}"
+                     GroupName="TagKind"
+                     IsChecked="{Binding Annotated, Mode=TwoWay}"/>
+        <RadioButton Content="{DynamicResource Text.CreateTag.Type.Lightweight}"
+                     GroupName="TagKind"
+                     Margin="8,0,0,0"/>
+      </StackPanel>
+
+      <TextBlock Grid.Row="3" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Top"
                  Margin="0,6,8,0"
-                 Text="{DynamicResource Text.CreateTag.Message}"/>
-      <TextBox Grid.Row="2" Grid.Column="1"
-               Height="56"
+                 Text="{DynamicResource Text.CreateTag.Message}"
+                 IsVisible="{Binding Annotated}"/>
+      <TextBox Grid.Row="3" Grid.Column="1"
+               Height="64"
                AcceptsReturn="True" AcceptsTab="False"
                VerticalAlignment="Center" VerticalContentAlignment="Top"
                CornerRadius="2"
                Watermark="{DynamicResource Text.CreateTag.Message.Placeholder}"
-               Text="{Binding Message, Mode=TwoWay}"/>
+               Text="{Binding Message, Mode=TwoWay}"
+               IsVisible="{Binding Annotated}"/>
+
+      <CheckBox Grid.Row="4" Grid.Column="1"
+                Height="32" Margin="0,4,0,0"
+                Content="{DynamicResource Text.CreateTag.GPGSign}"
+                IsChecked="{Binding SignTag, Mode=TwoWay}"
+                IsVisible="{Binding Annotated}"/>
+
+      <CheckBox Grid.Row="5" Grid.Column="1"
+                Content="{DynamicResource Text.CreateTag.PushToAllRemotes}"
+                IsChecked="{Binding PushToAllRemotes, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

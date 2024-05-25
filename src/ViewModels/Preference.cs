@@ -363,7 +363,7 @@ namespace SourceGit.ViewModels
             return FindNodeRecursive(id, _instance.RepositoryNodes);
         }
 
-        public static RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent)
+        public static RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent, bool shouldMoveNode)
         {
             var node = FindNodeRecursive(repo, _instance.RepositoryNodes);
             if (node == null)
@@ -378,7 +378,7 @@ namespace SourceGit.ViewModels
 
                 AddNode(node, parent);
             }
-            else
+            else if (shouldMoveNode)
             {
                 MoveNode(node, parent);
             }

@@ -396,17 +396,10 @@
 
           <Grid Margin="8" RowDefinitions="32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.GPG.Enabled}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
-            <CheckBox Grid.Row="0" Grid.Column="1"
-                      IsChecked="{Binding #me.EnableGPGSigning, Mode=TwoWay}"/>
-
-            <TextBlock Grid.Row="1" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.GPG.Path}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="1" Grid.Column="1"
+            <TextBox Grid.Row="0" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #me.GPGExecutableFile, Mode=TwoWay}">
@@ -417,15 +410,19 @@
               </TextBox.InnerRightContent>
             </TextBox>
 
-            <TextBlock Grid.Row="2" Grid.Column="0"
+            <TextBlock Grid.Row="1" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.GPG.UserKey}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="2" Grid.Column="1"
+            <TextBox Grid.Row="1" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #me.GPGUserKey, Mode=TwoWay}"
                      Watermark="{DynamicResource Text.Preference.GPG.UserKey.Placeholder}"/>
+
+            <CheckBox Grid.Row="2" Grid.Column="1"
+                      Content="{DynamicResource Text.Preference.GPG.Enabled}"
+                      IsChecked="{Binding #me.EnableGPGSigning, Mode=TwoWay}"/>
           </Grid>
         </TabItem>
 

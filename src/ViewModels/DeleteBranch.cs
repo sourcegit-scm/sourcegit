@@ -52,14 +52,17 @@ namespace SourceGit.ViewModels
             {
                 if (Target.IsLocal)
                 {
-                    Commands.Branch.Delete(_repo.FullPath, Target.Name);
+                    Commands.Branch.DeleteLocal(_repo.FullPath, Target.Name);
 
                     if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
-                        new Commands.Push(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name).Exec();
+                    {
+                        SetProgressDescription("Deleting tracking remote branch...");
+                        Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name);
+                    }   
                 }
                 else
                 {
-                    new Commands.Push(_repo.FullPath, Target.Remote, Target.Name).Exec();
+                    Commands.Branch.DeleteRemote(_repo.FullPath, Target.Remote, Target.Name);
                 }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

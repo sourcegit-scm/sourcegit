@@ -11,9 +11,11 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _targetPath, value);
         }
 
-        public Init(string path)
+        public Init(string path, RepositoryNode parent)
         {
-            TargetPath = path;
+            _targetPath = path;
+            _parentNode = parent;
+
             View = new Views.Init() { DataContext = this };
         }
 
@@ -31,13 +33,14 @@ namespace SourceGit.ViewModels
                 CallUIThread(() =>
                 {
                     var repo = Preference.AddRepository(_targetPath, gitDir);
-                    Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, null);
+                    Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, _parentNode, true);
                 });
 
                 return true;
             });
         }
 
-        private string _targetPath;
+        private string _targetPath = string.Empty;
+        private RepositoryNode _parentNode = null;
     }
 }

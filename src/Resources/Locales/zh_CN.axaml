@@ -35,6 +35,7 @@
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout)${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">复制分支名</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">删除${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">删除选中的 {0} 个分支</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">放弃所有更改</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快进(fast-forward)到${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">GIT工作流 - 完成${0}$</x:String>
@@ -80,9 +81,10 @@
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存为补丁 ...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合并此提交到上一个提交</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">变更对比</x:String>
-  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查找文件...</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查找变更...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">文件列表</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS文件</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">查找文件...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">子模块</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Tag" xml:space="preserve">标签文件</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Tree" xml:space="preserve">子树</x:String>
@@ -107,22 +109,30 @@
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">新分支基于 ：</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">完成后切换到新分支</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">忽略</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">贮藏(stash)并自动恢复</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">放弃所有</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">贮藏并自动恢复</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">GIT默认</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名 ：</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">填写分支名称。</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">创建本地分支</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">新建标签</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">标签位于 ：</x:String>
+  <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">使用GPG签名</x:String>
   <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">标签描述 ：</x:String>
   <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">选填。</x:String>
   <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">标签名 ：</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">推荐格式 ：v1.0.0-alpha</x:String>
+  <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">推送到所有远程仓库</x:String>
+  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">类型 ：</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">附注标签</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">轻量标签</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪切</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">删除分支确认</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支${0}$</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">删除多个分支</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">您正在尝试一次性删除多个分支，请务必仔细检查后再执行操作！</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">删除远程确认</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">远程名 ：</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>
@@ -310,8 +320,10 @@
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">推送到远程仓库</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">远程分支 ：</x:String>
+  <x:String x:Key="Text.Push.Tracking" xml:space="preserve">跟踪远程分支（--set-upstream）</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">同时推送标签</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">推送标签到远程仓库</x:String>
+  <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">推送到所有远程仓库</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">标签 ：</x:String>
   <x:String x:Key="Text.Quit" xml:space="preserve">退出</x:String>

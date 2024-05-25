@@ -1,12 +1,16 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
     public class CreateTag : Popup
     {
+        public object BasedOn
+        {
+            get;
+            private set;
+        }
+
         [Required(ErrorMessage = "Tag name is required!")]
         [RegularExpression(@"^[\w\-\.]+$", ErrorMessage = "Bad tag name format!")]
         [CustomValidation(typeof(CreateTag), nameof(ValidateTagName))]
@@ -22,11 +26,23 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public object BasedOn
+        public bool Annotated
+        {
+            get => _annotated;
+            set => SetProperty(ref _annotated, value);
+        }
+
+        public bool SignTag
         {
             get;
-            private set;
-        }
+            set;
+        } = false;
+
+        public bool PushToAllRemotes
+        {
+            get;
+            set;
+        } = true;
 
         public CreateTag(Repository repo, Models.Branch branch)
         {
@@ -65,14 +81,29 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                Commands.Tag.Add(_repo.FullPath, TagName, _basedOn, Message);
+                var succ = false;
+                if (_annotated)
+                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, Message, SignTag);
+                else
+                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn);
+
+                if (succ && PushToAllRemotes)
+                {
+                    foreach (var remote in _repo.Remotes)
+                    {
+                        SetProgressDescription($"Pushing tag to remote {remote.Name} ...");
+                        new Commands.Push(_repo.FullPath, remote.Name, _tagName, false).Exec();
+                    }
+                }
+
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return true;
+                return succ;
             });
         }
 
         private readonly Repository _repo = null;
         private string _tagName = string.Empty;
+        private bool _annotated = true;
         private readonly string _basedOn = string.Empty;
     }
 }

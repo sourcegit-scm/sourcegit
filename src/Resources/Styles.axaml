@@ -13,6 +13,9 @@
     <Style.Resources>
       <x:Double x:Key="ScrollBarSize">12</x:Double>
     </Style.Resources>
+  
+    <Setter Property="ShowDelay" Value="0:0:0.1"/>
+    <Setter Property="HideDelay" Value="0:0:0.2"/>
   </Style>
 
   <Style Selector="ContentPresenter">
@@ -133,12 +136,12 @@
     </Setter>
   </Style>
   <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
-    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent1}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
   </Style>
   <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
     <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent1}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
   </Style>
   <Style Selector="TextBox:disabled /template/ Border#PART_BorderElement">
@@ -483,37 +486,15 @@
   </Style>
 
   <Style Selector="ListBox.page_switcher ListBoxItem">
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Grid>
-          <ContentPresenter Name="PART_ContentPresenter"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding CornerRadius}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            Content="{TemplateBinding Content}"
-                            Padding="{TemplateBinding Padding}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
-
-          <Border Background="{DynamicResource Brush.FG2}"
-                  Width="4"
-                  HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                  IsHitTestVisible="False"
-                  IsVisible="{TemplateBinding IsSelected}"/>
-        </Grid>
-      </ControlTemplate>
-    </Setter>
-  </Style>
-  <Style Selector="ListBox.page_switcher ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource Brush.SwitcherBG}"/>
+    <Setter Property="Margin" Value="4,0,2,0"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="CornerRadius" Value="4"/>
   </Style>
   <Style Selector="ListBox.page_switcher ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource Brush.SwitcherHover}"/>
+    <Setter Property="Background" Value="Transparent"/>
   </Style>
-  <Style Selector="ListBox.page_switcher ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource Brush.SwitcherBG}"/>
+  <Style Selector="ListBox.page_switcher ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
   </Style>
 
   <Style Selector="ContextMenu">
@@ -722,7 +703,7 @@
       <Thickness x:Key="ComboBoxDropdownBorderPadding">4,0</Thickness>
       <Thickness x:Key="ComboBoxItemThemePadding">6,4</Thickness>
       <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="{DynamicResource Color.Contents}"/>
-      <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="{DynamicResource Color.Accent1}"/>
+      <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="{DynamicResource SystemAccentColor}"/>
     </Style.Resources>
 
     <Setter Property="MinHeight" Value="20"/>
@@ -734,7 +715,7 @@
       <Setter Property="VerticalOffset" Value="2"/>
     </Style>
     <Style Selector="^:pointerover /template/ Border#Background">
-      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent1}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}" />
     </Style>
     <Style Selector="^:disabled">
       <Setter Property="Opacity" Value=".6"/>
@@ -758,7 +739,7 @@
           </Grid.ColumnDefinitions>
 
           <Border x:Name="Border" Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" BorderBrush="{DynamicResource Brush.Border1}" BorderThickness="1" Background="Transparent" CornerRadius="2">
-            <Path x:Name="Icon" Height="12" Width="12" Data="{DynamicResource Icons.Check}" Fill="{DynamicResource Brush.Accent1}" IsVisible="False" Margin="0,2,0,0"/>
+            <Path x:Name="Icon" Height="12" Width="12" Data="{DynamicResource Icons.Check}" Fill="{DynamicResource Brush.Accent}" IsVisible="False" Margin="0,2,0,0"/>
           </Border>
 
           <ContentPresenter x:Name="ContentPresenter"
@@ -773,7 +754,7 @@
     </Setter>
 
     <Style Selector="^:pointerover /template/ Border#Border">
-      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent1}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     </Style>
     <Style Selector="^:checked /template/ Path#Icon">
       <Setter Property="IsVisible" Value="True"/>
@@ -817,10 +798,10 @@
     </Setter>
 
     <Style Selector="^:pointerover /template/ Ellipse#Border">
-      <Setter Property="Stroke" Value="{DynamicResource Brush.Accent1}"/>
+      <Setter Property="Stroke" Value="{DynamicResource Brush.Accent}"/>
     </Style>
     <Style Selector="^:checked /template/ Ellipse#Dot">
-      <Setter Property="Fill" Value="{DynamicResource Brush.Accent1}"/>
+      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
     </Style>
   </Style>
 
@@ -897,7 +878,7 @@
     <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
   </Style>
   <Style Selector="ToggleButton.filter:pointerover /template/ Path#PART_IndicatorIcon">
-    <Setter Property="Stroke" Value="{DynamicResource Brush.Accent2}"/>
+    <Setter Property="Stroke" Value="{DynamicResource Brush.AccentHovered}"/>
   </Style>
   <Style Selector="ToggleButton.tree_expander">
     <Setter Property="Margin" Value="0" />
@@ -964,7 +945,7 @@
     <Setter Property="Background" Value="Transparent"/>
   </Style>
   <Style Selector="ToggleButton.line_path:checked Path">
-    <Setter Property="Fill" Value="{DynamicResource Brush.Accent1}"/>
+    <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
   </Style>
 
   <Style Selector="ToggleButton.toggle_untracked">
@@ -1002,6 +983,7 @@
     <Setter Property="FontSize" Value="14"/>
     <Setter Property="Padding" Value="10,0"/>
     <Setter Property="MinHeight" Value="24"/>
+    <Setter Property="Opacity" Value="1"/>
 
     <Style.Resources>
       <x:Double x:Key="TabItemPipeThickness">1</x:Double>
@@ -1009,10 +991,12 @@
   </Style>
 
   <Style Selector="TabItem:pointerover TextBlock.tab_header">
-    <Setter Property="Opacity" Value=".8"/>
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+    <Setter Property="Opacity" Value="1"/>
   </Style>
 
   <Style Selector="TabItem:selected TextBlock.tab_header">
+    <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}"/>
     <Setter Property="Opacity" Value="1"/>
   </Style>
 
@@ -1075,11 +1059,11 @@
     </Setter>
 
     <Style Selector="^ /template/ Border#PART_LayoutRoot:pointerover">
-      <Setter Property="Background" Value="{DynamicResource Brush.Accent2}" />
+      <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
     </Style>
 
     <Style Selector="^:selected /template/ Border#PART_LayoutRoot">
-      <Setter Property="Background" Value="{DynamicResource Brush.Accent1}" />
+      <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
     </Style>
   </Style>
   <Style Selector="TreeViewItem[IsExpanded=True] Path.folder_icon">

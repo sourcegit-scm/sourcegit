@@ -137,6 +137,9 @@ namespace SourceGit.Views
                 var width = textView.Bounds.Width;
                 foreach (var line in textView.VisualLines)
                 {
+                    if (line.FirstDocumentLine == null)
+                        continue;
+                    
                     var index = line.FirstDocumentLine.LineNumber;
                     if (index > _editor.DiffData.Lines.Count)
                         break;
@@ -320,7 +323,8 @@ namespace SourceGit.Views
             };
 
             menu.Items.Add(copy);
-            menu.Open(TextArea.TextView);
+
+            TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
         }
 
@@ -516,6 +520,9 @@ namespace SourceGit.Views
                 var infos = _editor.IsOld ? _editor.DiffData.Old : _editor.DiffData.New;
                 foreach (var line in textView.VisualLines)
                 {
+                    if (line.FirstDocumentLine == null)
+                        continue;
+                    
                     var index = line.FirstDocumentLine.LineNumber;
                     if (index > infos.Count)
                         break;
@@ -731,7 +738,8 @@ namespace SourceGit.Views
             };
 
             menu.Items.Add(copy);
-            menu.Open(TextArea.TextView);
+            
+            TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
         }
 

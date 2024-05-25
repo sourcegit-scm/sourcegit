@@ -31,7 +31,7 @@ namespace SourceGit.Converters
             {
                 if (state == WindowState.Maximized)
                 {
-                    return new GridLength(30);
+                    return new GridLength(OperatingSystem.IsMacOS() ? 34 : 30);
                 }
                 else
                 {

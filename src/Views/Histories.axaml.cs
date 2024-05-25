@@ -300,7 +300,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Histories histories)
             {
                 var menu = histories.MakeContextMenu();
-                menu?.Open(sender as Control);
+                (sender as Control)?.OpenContextMenu(menu);
             }
             e.Handled = true;
         }

@@ -12,7 +12,7 @@
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
                Classes="bold"
-               Text="{DynamicResource Text.Remote.AddTitle}"/>
+               Text="{DynamicResource Text.Remote.EditTitle}"/>
 
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto" ColumnDefinitions="150,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
