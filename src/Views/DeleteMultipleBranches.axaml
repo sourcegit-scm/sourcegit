@@ -14,75 +14,69 @@
                Classes="bold"
                Text="{DynamicResource Text.DeleteMultiBranch}" />
 
-    <Grid Margin="0,16,8,0" RowDefinitions="Auto,Auto" ColumnDefinitions="120,*">
-      <TextBlock Grid.Row="0" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Text="{DynamicResource Text.DeleteMultiBranch.Targets}" />
-      <Border Grid.Row="0" Grid.Column="1"
-              Background="{DynamicResource Brush.Contents}"
-              BorderThickness="1"
-              BorderBrush="{DynamicResource Brush.Border1}"
-              CornerRadius="4"
-              Padding="4">
-        <DataGrid MaxHeight="200"
-                  Background="Transparent"
-                  BorderThickness="0"
-                  ItemsSource="{Binding Targets}"
-                  SelectionMode="Single"
-                  CanUserReorderColumns="False"
-                  CanUserResizeColumns="False"
-                  CanUserSortColumns="False"
-                  IsReadOnly="True"
-                  HeadersVisibility="None"
-                  Focusable="False"
-                  RowHeight="26"
-                  HorizontalScrollBarVisibility="Auto"
-                  VerticalScrollBarVisibility="Auto">
-          <DataGrid.Styles>
-            <Style Selector="DataGridRow">
-              <Setter Property="CornerRadius" Value="4" />
-            </Style>
+    <Border Margin="4,16,0,0"
+            Background="{DynamicResource Brush.Contents}"
+            BorderThickness="1"
+            BorderBrush="{DynamicResource Brush.Border1}"
+            CornerRadius="4"
+            Padding="4">
+      <DataGrid MaxHeight="200"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemsSource="{Binding Targets}"
+                SelectionMode="Single"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserSortColumns="False"
+                IsReadOnly="True"
+                HeadersVisibility="None"
+                Focusable="False"
+                RowHeight="26"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Auto">
+        <DataGrid.Styles>
+          <Style Selector="DataGridRow">
+            <Setter Property="CornerRadius" Value="4" />
+          </Style>
 
-            <Style Selector="DataGridRow /template/ Border#RowBorder">
-              <Setter Property="ClipToBounds" Value="True" />
-            </Style>
+          <Style Selector="DataGridRow /template/ Border#RowBorder">
+            <Setter Property="ClipToBounds" Value="True" />
+          </Style>
 
-            <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
-              <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
-            </Style>
+          <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
+            <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
+          </Style>
 
-            <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
-              <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-            </Style>
-          </DataGrid.Styles>
+          <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+            <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+          </Style>
+        </DataGrid.Styles>
 
-          <DataGrid.Columns>
-            <DataGridTemplateColumn Header="ICON">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate>
-                  <Path Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Branch}" />
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+        <DataGrid.Columns>
+          <DataGridTemplateColumn Header="ICON">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <Path Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Branch}" />
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width="*" Header="NAME">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate>
-                  <TextBlock Text="{Binding Converter={x:Static c:BranchConverters.ToName}}" ClipToBounds="True"
-                             Classes="monospace" />
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-          </DataGrid.Columns>
-        </DataGrid>
-      </Border>
-      
-      <TextBlock Grid.Row="1" Grid.Column="1"
-                 Margin="0,8,0,0"
-                 Text="{DynamicResource Text.DeleteMultiBranch.Tip}"
-                 TextWrapping="Wrap"
-                 Foreground="{DynamicResource Brush.FG2}"
-                 FontStyle="Italic" />
-    </Grid>
+          <DataGridTemplateColumn Width="*" Header="NAME">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Converter={x:Static c:BranchConverters.ToName}}" ClipToBounds="True"
+                           Classes="monospace" />
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+    </Border>
+
+    <TextBlock Margin="4,8,0,0"
+               Text="{DynamicResource Text.DeleteMultiBranch.Tip}"
+               TextWrapping="Wrap"
+               Foreground="{DynamicResource Brush.FG2}"
+               FontStyle="Italic" />
   </StackPanel>
 </UserControl>

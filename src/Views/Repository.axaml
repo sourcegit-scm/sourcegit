@@ -208,14 +208,8 @@
           <TreeView.Styles>
             <Style Selector="TreeViewItem" x:DataType="vm:BranchTreeNode">
               <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
-              <Setter Property="CornerRadius">
-                <Setter.Value>
-                  <MultiBinding Converter="{x:Static c:BranchTreeNodeConverters.ToCornerRadius}">
-                    <Binding Path="$parent[v:Repository].RefereshLocalBranchSelectionToken"/>
-                    <Binding Path="$self"/>
-                  </MultiBinding>
-                </Setter.Value>
-              </Setter>
+              <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+              <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
             </Style>
 
             <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot">
@@ -278,14 +272,8 @@
           <TreeView.Styles>
             <Style Selector="TreeViewItem" x:DataType="vm:BranchTreeNode">
               <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
-              <Setter Property="CornerRadius">
-                <Setter.Value>
-                  <MultiBinding Converter="{x:Static c:BranchTreeNodeConverters.ToCornerRadius}">
-                    <Binding Path="$parent[v:Repository].RefereshRemoteBranchSelectionToken"/>
-                    <Binding Path="$self"/>
-                  </MultiBinding>
-                </Setter.Value>
-              </Setter>
+              <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+              <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
             </Style>
 
             <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot">

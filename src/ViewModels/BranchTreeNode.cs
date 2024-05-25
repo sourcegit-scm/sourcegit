@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+
+using Avalonia;
 using Avalonia.Collections;
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
@@ -12,8 +16,10 @@ namespace SourceGit.ViewModels
         Branch,
     }
 
-    public class BranchTreeNode
+    public class BranchTreeNode : ObservableObject
     {
+        public const double DEFAULT_CORNER = 4.0;
+
         public string Name { get; set; }
         public BranchTreeNodeType Type { get; set; }
         public object Backend { get; set; }
@@ -50,6 +56,43 @@ namespace SourceGit.ViewModels
         {
             get => IsBranch && (Backend as Models.Branch).IsCurrent;
         }
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
+        }
+
+        public CornerRadius CornerRadius
+        {
+            get => _cornerRadius;
+            set => SetProperty(ref _cornerRadius, value);
+        }
+
+        public void UpdateCornerRadius(ref BranchTreeNode prev)
+        {
+            if (_isSelected && prev != null && prev.IsSelected)
+            {
+                var prevTop = prev.CornerRadius.TopLeft;
+                prev.CornerRadius = new CornerRadius(prevTop, 0);
+                CornerRadius = new CornerRadius(0, DEFAULT_CORNER);
+            }
+            else if (CornerRadius.TopLeft != DEFAULT_CORNER ||
+                CornerRadius.BottomLeft != DEFAULT_CORNER)
+            {
+                CornerRadius = new CornerRadius(DEFAULT_CORNER);
+            }
+
+            prev = this;
+
+            if (!IsBranch && IsExpanded)
+            {
+                foreach (var child in Children)
+                    child.UpdateCornerRadius(ref prev);
+            }
+        }
+        private bool _isSelected = false;
+        private CornerRadius _cornerRadius = new CornerRadius(DEFAULT_CORNER);
 
         public class Builder
         {

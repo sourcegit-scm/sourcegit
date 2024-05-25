@@ -58,24 +58,6 @@ namespace SourceGit.Views
 
     public partial class Repository : UserControl
     {
-        public static readonly StyledProperty<ulong> RefereshLocalBranchSelectionTokenProperty =
-            AvaloniaProperty.Register<Repository, ulong>(nameof(RefereshLocalBranchSelectionToken), 0);
-
-        public ulong RefereshLocalBranchSelectionToken
-        {
-            get => GetValue(RefereshLocalBranchSelectionTokenProperty);
-            set => SetValue(RefereshLocalBranchSelectionTokenProperty, value);
-        }
-
-        public static readonly StyledProperty<ulong> RefereshRemoteBranchSelectionTokenProperty =
-            AvaloniaProperty.Register<Repository, ulong>(nameof(RefereshRemoteBranchSelectionToken), 0);
-
-        public ulong RefereshRemoteBranchSelectionToken
-        {
-            get => GetValue(RefereshRemoteBranchSelectionTokenProperty);
-            set => SetValue(RefereshRemoteBranchSelectionTokenProperty, value);
-        }
-
         public Repository()
         {
             InitializeComponent();
@@ -93,18 +75,19 @@ namespace SourceGit.Views
 
         private void OnLocalBranchTreeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is TreeView tree && tree.SelectedItem != null)
+            if (sender is TreeView tree && tree.SelectedItem != null && DataContext is ViewModels.Repository repo)
             {
                 remoteBranchTree.UnselectAll();
                 tagsList.SelectedItem = null;
 
-                var next = RefereshLocalBranchSelectionToken + 1;
-                SetCurrentValue(RefereshLocalBranchSelectionTokenProperty, next);
-
+                ViewModels.BranchTreeNode prev = null;
+                foreach (var node in repo.LocalBranchTrees)
+                    node.UpdateCornerRadius(ref prev);
+                
                 if (tree.SelectedItems.Count == 1)
                 {
                     var node = tree.SelectedItem as ViewModels.BranchTreeNode;
-                    if (node.IsBranch && DataContext is ViewModels.Repository repo)
+                    if (node.IsBranch)
                         repo.NavigateToCommit((node.Backend as Models.Branch).Head);
                 }
             }
@@ -112,18 +95,19 @@ namespace SourceGit.Views
 
         private void OnRemoteBranchTreeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is TreeView tree && tree.SelectedItem != null)
+            if (sender is TreeView tree && tree.SelectedItem != null && DataContext is ViewModels.Repository repo)
             {
                 localBranchTree.UnselectAll();
                 tagsList.SelectedItem = null;
 
-                var next = RefereshRemoteBranchSelectionToken + 1;
-                SetCurrentValue(RefereshRemoteBranchSelectionTokenProperty, next);
+                ViewModels.BranchTreeNode prev = null;
+                foreach (var node in repo.RemoteBranchTrees)
+                    node.UpdateCornerRadius(ref prev);
 
                 if (tree.SelectedItems.Count == 1)
                 {
                     var node = tree.SelectedItem as ViewModels.BranchTreeNode;
-                    if (node.IsBranch && DataContext is ViewModels.Repository repo)
+                    if (node.IsBranch)
                         repo.NavigateToCommit((node.Backend as Models.Branch).Head);
                 }
             }
@@ -204,6 +188,11 @@ namespace SourceGit.Views
 
             var repo = DataContext as ViewModels.Repository;
             var tree = sender as TreeView;
+            if (tree.SelectedItems.Count == 0)
+            {
+                e.Handled = true;
+                return;
+            }
             
             var branches = new List<Models.Branch>();
             foreach (var item in tree.SelectedItems)
@@ -243,6 +232,11 @@ namespace SourceGit.Views
             
             var repo = DataContext as ViewModels.Repository;
             var tree = sender as TreeView;
+            if (tree.SelectedItems.Count == 0)
+            {
+                e.Handled = true;
+                return;
+            }
 
             if (tree.SelectedItems.Count == 1)
             {
