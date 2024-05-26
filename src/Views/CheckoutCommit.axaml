@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="clr-namespace:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.CheckoutCommit"
+             x:DataType="vm:CheckoutCommit">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+               Classes="bold"
+               Text="{DynamicResource Text.Checkout.Commit}"/>
+    
+      <TextBlock FontSize="14"
+         TextWrapping="Wrap"
+         Classes="italic"
+         Text="{DynamicResource Text.Checkout.Commit.Warning}"/>
+    
+    <TextBlock TextWrapping="Wrap" Margin="0,16,0,0">
+      <TextBlock Classes="bold"  Grid.Row="0" Grid.Column="0"
+           Text="{DynamicResource Text.Checkout.CommitTarget.Sha}"/>
+        <TextBlock TextWrapping="Wrap" Text="{Binding Commit}"/>
+        (<TextBlock Classes="italic" TextWrapping="Wrap" Text="{Binding Commit, Converter={x:Static c:StringConverters.ToShortSHA}}"/>)
+    </TextBlock>
+    
+    <StackPanel Margin="0, 26, 0, 0" Grid.Row="1" Grid.Column="1" Orientation="Vertical" IsVisible="{Binding HasLocalChanges}">
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Left" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Checkout.LocalChanges}"/>
+    
+      <StackPanel Margin="0, 13, 0, 0" Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReply}"
+                     GroupName="LocalChanges"
+                     IsChecked="{Binding AutoStash, Mode=TwoWay}"/>
+        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.Discard}"
+                     GroupName="LocalChanges"
+                     Margin="8,0,0,0"/>
+      </StackPanel>
+    </StackPanel>
+    
+    
+  </StackPanel>
+</UserControl>

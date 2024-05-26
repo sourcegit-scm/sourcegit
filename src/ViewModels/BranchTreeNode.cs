@@ -11,6 +11,7 @@ namespace SourceGit.ViewModels
 {
     public enum BranchTreeNodeType
     {
+        DetachedHead,
         Remote,
         Folder,
         Branch,
@@ -50,6 +51,11 @@ namespace SourceGit.ViewModels
         public bool IsBranch
         {
             get => Type == BranchTreeNodeType.Branch;
+        }
+        
+        public bool IsDetachedHead
+        {
+            get => Type == BranchTreeNodeType.DetachedHead;
         }
 
         public bool IsCurrent
@@ -213,11 +219,11 @@ namespace SourceGit.ViewModels
                     start = sepIdx + 1;
                     sepIdx = branch.Name.IndexOf('/', start);
                 }
-
+                
                 lastFolder.Children.Add(new BranchTreeNode()
                 {
                     Name = Path.GetFileName(branch.Name),
-                    Type = BranchTreeNodeType.Branch,
+                    Type = branch.isHead ? BranchTreeNodeType.DetachedHead : BranchTreeNodeType.Branch,
                     Backend = branch,
                     IsExpanded = false,
                     IsFiltered = isFiltered,
@@ -228,14 +234,16 @@ namespace SourceGit.ViewModels
             {
                 nodes.Sort((l, r) =>
                 {
+                    if (l.Type == BranchTreeNodeType.DetachedHead)
+                    {
+                        return -1;
+                    }
                     if (l.Type == r.Type)
                     {
                         return l.Name.CompareTo(r.Name);
                     }
-                    else
-                    {
-                        return (int)l.Type - (int)r.Type;
-                    }
+                   
+                    return (int)l.Type - (int)r.Type;
                 });
 
                 foreach (var node in nodes)

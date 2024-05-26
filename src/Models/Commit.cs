@@ -32,7 +32,7 @@ namespace SourceGit.Models
 
         public bool IsCurrentHead
         {
-            get => Decorators.Find(x => x.Type == DecoratorType.CurrentBranchHead) != null;
+            get => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
         }
 
         public string FullMessage
