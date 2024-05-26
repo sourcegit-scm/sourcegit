@@ -4,7 +4,7 @@ namespace SourceGit.ViewModels
 {
     public class CheckoutCommit: Popup
     {
-        public string Commit
+        public Models.Commit Commit
         {
             get;
             private set;
@@ -21,7 +21,7 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _autoStash, value);
         }
 
-        public CheckoutCommit(Repository repo, string commit)
+        public CheckoutCommit(Repository repo, Models.Commit commit)
         {
             _repo = repo;
             Commit = commit;
@@ -31,7 +31,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Checkout Commit '{Commit}' ...";
+            ProgressDescription = $"Checkout Commit '{Commit.SHA}' ...";
             
             return Task.Run(() =>
             {
@@ -64,7 +64,7 @@ namespace SourceGit.ViewModels
                 }
 
                 SetProgressDescription("Checkout commit ...");
-                var rs = new Commands.Checkout(_repo.FullPath).Commit(Commit, SetProgressDescription);
+                var rs = new Commands.Checkout(_repo.FullPath).Commit(Commit.SHA, SetProgressDescription);
 
                 if (needPopStash)
                 {

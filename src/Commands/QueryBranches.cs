@@ -8,6 +8,7 @@ namespace SourceGit.Commands
     {
         private const string PREFIX_LOCAL = "refs/heads/";
         private const string PREFIX_REMOTE = "refs/remotes/";
+        private const string PREFIX_DETACHED = "(HEAD detached at";
 
         [GeneratedRegex(@"^(\d+)\s(\d+)$")]
         private static partial Regex REG_AHEAD_BEHIND();
@@ -52,9 +53,9 @@ namespace SourceGit.Commands
             if (refName.EndsWith("/HEAD", StringComparison.Ordinal))
                 return;
             
-            if (refName.StartsWith("(HEAD detached at"))
+            if (refName.StartsWith(PREFIX_DETACHED, StringComparison.Ordinal))
             {
-                branch.isHead = true;
+                branch.IsHead = true;
             }
             
             if (refName.StartsWith(PREFIX_LOCAL, StringComparison.Ordinal))

@@ -44,11 +44,4 @@
     <TrimmerRootAssembly Include="SourceGit" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Views\CheckoutCommit.axaml.cs">
-      <DependentUpon>CheckoutCommit.axaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
 </Project>

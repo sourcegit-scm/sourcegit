@@ -10,6 +10,6 @@
         public string Upstream { get; set; }
         public string UpstreamTrackStatus { get; set; }
         public string Remote { get; set; }
-        public bool isHead { get; set; }
+        public bool IsHead { get; set; }
     }
 }

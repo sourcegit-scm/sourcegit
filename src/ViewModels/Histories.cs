@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
-using Avalonia.Data.Converters;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
@@ -238,15 +236,11 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(reset);
 
                 var checkoutCommit = new MenuItem();
-
-                var shortSha = Converters.StringConverters.ToShortSHA
-                    .Convert(commit.SHA, typeof(string), null, CultureInfo.CurrentCulture);
-                
-                checkoutCommit.Header = new Views.NameHighlightedTextBlock("CommitCM.Checkout", shortSha);
+                checkoutCommit.Header = new Views.NameHighlightedTextBlock("CommitCM.Checkout", commit.SHA.Substring(0, 10));
                 checkoutCommit.Icon = App.CreateMenuIcon("Icons.Check");
                 checkoutCommit.Click += (o, e) =>
                 {
-                    _repo.CheckoutCommit(commit.SHA);
+                    _repo.CheckoutCommit(commit);
                     e.Handled = true;
                 };
                 menu.Items.Add(checkoutCommit);

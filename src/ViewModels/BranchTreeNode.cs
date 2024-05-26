@@ -223,7 +223,7 @@ namespace SourceGit.ViewModels
                 lastFolder.Children.Add(new BranchTreeNode()
                 {
                     Name = Path.GetFileName(branch.Name),
-                    Type = branch.isHead ? BranchTreeNodeType.DetachedHead : BranchTreeNodeType.Branch,
+                    Type = branch.IsHead ? BranchTreeNodeType.DetachedHead : BranchTreeNodeType.Branch,
                     Backend = branch,
                     IsExpanded = false,
                     IsFiltered = isFiltered,

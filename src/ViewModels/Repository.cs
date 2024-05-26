@@ -722,7 +722,7 @@ namespace SourceGit.ViewModels
                 PopupHost.ShowAndStartPopup(new Checkout(this, branch));
         }
 
-        public void CheckoutCommit(string commit)
+        public void CheckoutCommit(Models.Commit commit)
         {
             if (!PopupHost.CanCreatePopup())
                 return;
