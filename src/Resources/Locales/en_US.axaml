@@ -77,7 +77,7 @@
   <x:String x:Key="Text.Close" xml:space="preserve">CLOSE</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick This Commit</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copy SHA</x:String>
-  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout commit${0}</x:String>
+  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase${0}$to Here</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset${0}$to Here</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revert Commit</x:String>

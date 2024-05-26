@@ -721,14 +721,6 @@ namespace SourceGit.ViewModels
             else
                 PopupHost.ShowAndStartPopup(new Checkout(this, branch));
         }
-
-        public void CheckoutCommit(Models.Commit commit)
-        {
-            if (!PopupHost.CanCreatePopup())
-                return;
-            
-            PopupHost.ShowPopup(new CheckoutCommit(this, commit));
-        }
         
         public void DeleteMultipleBranches(List<Models.Branch> branches, bool isLocal)
         {

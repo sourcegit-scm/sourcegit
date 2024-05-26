@@ -236,11 +236,12 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(reset);
 
                 var checkoutCommit = new MenuItem();
-                checkoutCommit.Header = new Views.NameHighlightedTextBlock("CommitCM.Checkout", commit.SHA.Substring(0, 10));
+                checkoutCommit.Header = App.Text("CommitCM.Checkout");
                 checkoutCommit.Icon = App.CreateMenuIcon("Icons.Check");
                 checkoutCommit.Click += (o, e) =>
                 {
-                    _repo.CheckoutCommit(commit);
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowPopup(new CheckoutCommit(_repo, commit));
                     e.Handled = true;
                 };
                 menu.Items.Add(checkoutCommit);
