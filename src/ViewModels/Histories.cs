@@ -69,7 +69,7 @@ namespace SourceGit.ViewModels
         public Models.Commit AutoSelectedCommit
         {
             get => _autoSelectedCommit;
-            private set => SetProperty(ref _autoSelectedCommit, value);
+            set => SetProperty(ref _autoSelectedCommit, value);
         }
 
         public long NavigationId
@@ -81,7 +81,7 @@ namespace SourceGit.ViewModels
         public object DetailContext
         {
             get => _detailContext;
-            private set => SetProperty(ref _detailContext, value);
+            set => SetProperty(ref _detailContext, value);
         }
 
         public Histories(Repository repo)
@@ -171,17 +171,16 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public ContextMenu MakeContextMenu()
+        public ContextMenu MakeContextMenu(DataGrid datagrid)
         {
-            var detail = _detailContext as CommitDetail;
-            if (detail == null)
+            if (datagrid.SelectedItems.Count != 1)
                 return null;
 
             var current = _repo.Branches.Find(x => x.IsCurrent);
             if (current == null)
                 return null;
 
-            var commit = detail.Commit;
+            var commit = datagrid.SelectedItem as Models.Commit;
             var menu = new ContextMenu();
             var tags = new List<Models.Tag>();
 
@@ -316,6 +315,33 @@ namespace SourceGit.ViewModels
             }
 
             menu.Items.Add(new MenuItem() { Header = "-" });
+
+            if (current.Head != commit.SHA)
+            {
+                var compare = new MenuItem();
+                compare.Header = App.Text("CommitCM.CompareWithHead");
+                compare.Icon = App.CreateMenuIcon("Icons.Compare");
+                compare.Click += (o, e) =>
+                {
+                    var head = _commits.Find(x => x.SHA == current.Head);
+                    if (head == null)
+                    {
+                        _repo.SearchResultSelectedCommit = null;
+                        head = new Commands.QuerySingleCommit(_repo.FullPath, current.Head).Result();
+                        if (head != null)
+                            DetailContext = new RevisionCompare(_repo.FullPath, commit, head);
+                    }
+                    else
+                    {
+                        datagrid.SelectedItems.Add(head);
+                    }
+
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(compare);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
 
             var createBranch = new MenuItem();
             createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");

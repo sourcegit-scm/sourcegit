@@ -33,6 +33,7 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行追溯(blame)</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">选中文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout)${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">与当前HEAD比较</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">复制分支名</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">删除${0}$</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">删除选中的 {0} 个分支</x:String>
@@ -77,6 +78,7 @@
   <x:String x:Key="Text.Close" xml:space="preserve">关闭</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">挑选(cherry-pick)此提交</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">检出此提交</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">与当前HEAD比较</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">复制提交指纹</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">变基(rebase)${0}$到此处</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset)${0}$到此处</x:String>

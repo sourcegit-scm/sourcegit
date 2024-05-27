@@ -297,10 +297,10 @@ namespace SourceGit.Views
 
         private void OnCommitDataGridContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories)
+            if (DataContext is ViewModels.Histories histories && sender is DataGrid datagrid)
             {
-                var menu = histories.MakeContextMenu();
-                (sender as Control)?.OpenContextMenu(menu);
+                var menu = histories.MakeContextMenu(datagrid);
+                datagrid.OpenContextMenu(menu);
             }
             e.Handled = true;
         }

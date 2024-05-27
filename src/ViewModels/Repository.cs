@@ -928,6 +928,27 @@ namespace SourceGit.ViewModels
 
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
+
+                var compare = new MenuItem();
+                compare.Header = App.Text("BranchCM.CompareWithHead");
+                compare.Icon = App.CreateMenuIcon("Icons.Compare");
+                compare.Click += (o, e) =>
+                {
+                    SearchResultSelectedCommit = null;
+
+                    if (_histories != null)
+                    {
+                        var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
+                        var head = new Commands.QuerySingleCommit(FullPath, current.Head).Result();
+                        _histories.AutoSelectedCommit = null;
+                        _histories.DetailContext = new RevisionCompare(FullPath, target, head);
+                    }
+
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(compare);
             }
 
             var type = GitFlow.GetBranchType(branch.Name);
@@ -1197,6 +1218,30 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
                 menu.Items.Add(new MenuItem() { Header = "-" });
+
+                if (current.Head != branch.Head)
+                {
+                    var compare = new MenuItem();
+                    compare.Header = App.Text("BranchCM.CompareWithHead");
+                    compare.Icon = App.CreateMenuIcon("Icons.Compare");
+                    compare.Click += (o, e) =>
+                    {
+                        SearchResultSelectedCommit = null;
+
+                        if (_histories != null)
+                        {
+                            var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
+                            var head = new Commands.QuerySingleCommit(FullPath, current.Head).Result();
+                            _histories.AutoSelectedCommit = null;
+                            _histories.DetailContext = new RevisionCompare(FullPath, target, head);
+                        }
+
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(compare);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
             }
 
             var delete = new MenuItem();
