@@ -947,6 +947,25 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
 
+                if (WorkingCopyChangesCount > 0)
+                {
+                    var compareWithWorktree = new MenuItem();
+                    compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
+                    compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
+                    compareWithWorktree.Click += (o, e) =>
+                    {
+                        SearchResultSelectedCommit = null;
+
+                        if (_histories != null)
+                        {
+                            var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
+                            _histories.AutoSelectedCommit = null;
+                            _histories.DetailContext = new RevisionCompare(FullPath, target, null);
+                        }
+                    };
+                    menu.Items.Add(compareWithWorktree);
+                }
+
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compare);
             }
@@ -1238,8 +1257,27 @@ namespace SourceGit.ViewModels
 
                         e.Handled = true;
                     };
-
                     menu.Items.Add(compare);
+
+                    if (WorkingCopyChangesCount > 0)
+                    {
+                        var compareWithWorktree = new MenuItem();
+                        compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
+                        compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
+                        compareWithWorktree.Click += (o, e) =>
+                        {
+                            SearchResultSelectedCommit = null;
+
+                            if (_histories != null)
+                            {
+                                var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
+                                _histories.AutoSelectedCommit = null;
+                                _histories.DetailContext = new RevisionCompare(FullPath, target, null);
+                            }
+                        };
+                        menu.Items.Add(compareWithWorktree);
+                    }
+
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
             }

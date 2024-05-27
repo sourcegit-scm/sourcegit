@@ -11,39 +11,55 @@
              x:DataType="vm:RevisionCompare"
              Background="{DynamicResource Brush.Window}">
   <Grid RowDefinitions="50,*" Margin="4">
-    <Grid Grid.Row="0" ColumnDefinitions="48,*,48,*,48" Margin="0,0,0,4">
-      <Border Grid.Column="1" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+    <Grid Grid.Row="0" Margin="48,0,48,4" ColumnDefinitions="*,48,*">
+      <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <Grid RowDefinitions="Auto,*">
-          <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
+          <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
             <v:Avatar Width="16" Height="16"
                       VerticalAlignment="Center"
                       IsHitTestVisible="False"
                       User="{Binding StartPoint.Author}"/>
             <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding StartPoint.Author.Name}" Margin="8,0,0,0"/>
-            <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding StartPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
-            <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding StartPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+            <Border Grid.Column="2" Background="DarkGreen" CornerRadius="4" IsVisible="{Binding StartPoint.IsCurrentHead}">
+              <TextBlock Text="HEAD" Classes="monospace" Margin="4,0"/>
+            </Border> 
+            <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding StartPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
+            <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding StartPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
           </Grid>
 
           <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding StartPoint.Subject}" VerticalAlignment="Bottom"/>
         </Grid>
       </Border>
 
-      <Path Grid.Column="2" Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Down}" RenderTransformOrigin="50%,50%" RenderTransform="rotate(270deg)"/>
+      <Path Grid.Column="1" Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Down}" RenderTransformOrigin="50%,50%" RenderTransform="rotate(270deg)"/>
 
-      <Border Grid.Column="3" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
-        <Grid RowDefinitions="Auto,*">
-          <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
-            <v:Avatar Width="16" Height="16"
-                      VerticalAlignment="Center"
-                      IsHitTestVisible="False"
-                      User="{Binding EndPoint.Author}"/>
-            <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding EndPoint.Author.Name}" Margin="8,0,0,0"/>
-            <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding EndPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
-            <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding EndPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
-          </Grid>
+      <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+        <ContentControl Grid.Column="2" Content="{Binding EndPoint}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="m:Commit">
+              <Grid RowDefinitions="Auto,*">
+                <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                  <v:Avatar Width="16" Height="16"
+                            VerticalAlignment="Center"
+                            IsHitTestVisible="False"
+                            User="{Binding Author}"/>
+                  <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                  <Border Grid.Column="2" Background="DarkGreen" CornerRadius="4" IsVisible="{Binding IsCurrentHead}">
+                    <TextBlock Text="HEAD" Classes="monospace" Margin="4,0"/>
+                  </Border>
+                  <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
+                  <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                </Grid>
 
-          <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding EndPoint.Subject}" VerticalAlignment="Bottom"/>
-        </Grid>
+                <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+              </Grid>
+            </DataTemplate>
+
+            <DataTemplate DataType="vm:CompareTargetWorktree">
+              <TextBlock Text="{DynamicResource Text.CurrentWorktree}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
       </Border>
     </Grid>
 

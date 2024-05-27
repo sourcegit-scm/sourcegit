@@ -10,6 +10,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public class CompareTargetWorktree
+    {
+        public string SHA => string.Empty;
+    }
+
     public class RevisionCompare : ObservableObject
     {
         public Models.Commit StartPoint
@@ -18,7 +23,7 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public Models.Commit EndPoint
+        public object EndPoint
         {
             get;
             private set;
@@ -51,7 +56,7 @@ namespace SourceGit.ViewModels
                     else
                     {
                         SelectedNode = FileTreeNode.SelectByPath(_changeTree, value.Path);
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(StartPoint.SHA, EndPoint.SHA, value), _diffContext);
+                        DiffContext = new DiffContext(_repo, new Models.DiffOption(StartPoint.SHA, _endPoint, value), _diffContext);
                     }
                 }
             }
@@ -98,11 +103,21 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             StartPoint = startPoint;
-            EndPoint = endPoint;
+
+            if (endPoint == null)
+            {
+                EndPoint = new CompareTargetWorktree();
+                _endPoint = string.Empty;
+            }
+            else
+            {
+                EndPoint = endPoint;
+                _endPoint = endPoint.SHA;
+            }
 
             Task.Run(() =>
             {
-                _changes = new Commands.CompareRevisions(_repo, startPoint.SHA, endPoint.SHA).Result();
+                _changes = new Commands.CompareRevisions(_repo, startPoint.SHA, _endPoint).Result();
 
                 var visible = _changes;
                 if (!string.IsNullOrWhiteSpace(_searchFilter))
@@ -162,7 +177,7 @@ namespace SourceGit.ViewModels
             diffWithMerger.Icon = App.CreateMenuIcon("Icons.Diff");
             diffWithMerger.Click += (_, ev) =>
             {
-                var opt = new Models.DiffOption(StartPoint.SHA, EndPoint.SHA, change);
+                var opt = new Models.DiffOption(StartPoint.SHA, _endPoint, change);
                 var type = Preference.Instance.ExternalMergeToolType;
                 var exec = Preference.Instance.ExternalMergeToolPath;
 
@@ -234,6 +249,7 @@ namespace SourceGit.ViewModels
         }
 
         private string _repo = string.Empty;
+        private string _endPoint = string.Empty;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<FileTreeNode> _changeTree = null;

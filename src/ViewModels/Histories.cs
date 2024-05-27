@@ -318,10 +318,10 @@ namespace SourceGit.ViewModels
 
             if (current.Head != commit.SHA)
             {
-                var compare = new MenuItem();
-                compare.Header = App.Text("CommitCM.CompareWithHead");
-                compare.Icon = App.CreateMenuIcon("Icons.Compare");
-                compare.Click += (o, e) =>
+                var compareWithHead = new MenuItem();
+                compareWithHead.Header = App.Text("CommitCM.CompareWithHead");
+                compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithHead.Click += (o, e) =>
                 {
                     var head = _commits.Find(x => x.SHA == current.Head);
                     if (head == null)
@@ -338,8 +338,21 @@ namespace SourceGit.ViewModels
 
                     e.Handled = true;
                 };
+                menu.Items.Add(compareWithHead);
 
-                menu.Items.Add(compare);
+                if (_repo.WorkingCopyChangesCount > 0)
+                {
+                    var compareWithWorktree = new MenuItem();
+                    compareWithWorktree.Header = App.Text("CommitCM.CompareWithWorktree");
+                    compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
+                    compareWithWorktree.Click += (o, e) =>
+                    {
+                        DetailContext = new RevisionCompare(_repo.FullPath, commit, null);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(compareWithWorktree);
+                }
+
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
