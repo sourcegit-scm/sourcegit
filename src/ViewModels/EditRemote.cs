@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -29,13 +30,18 @@ namespace SourceGit.ViewModels
         public bool UseSSH
         {
             get => _useSSH;
-            set => SetProperty(ref _useSSH, value);
+            set
+            {
+                if (SetProperty(ref _useSSH, value))
+                    ValidateProperty(_sshkey, nameof(SSHKey));
+            }
         }
 
+        [CustomValidation(typeof(EditRemote), nameof(ValidateSSHKey))]
         public string SSHKey
         {
-            get;
-            set;
+            get => _sshkey;
+            set => SetProperty(ref _sshkey, value, true);
         }
 
         public EditRemote(Repository repo, Models.Remote remote)
@@ -85,6 +91,20 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
+        public static ValidationResult ValidateSSHKey(string sshkey, ValidationContext ctx)
+        {
+            if (ctx.ObjectInstance is EditRemote edit && edit.UseSSH)
+            {
+                if (string.IsNullOrEmpty(sshkey))
+                    return new ValidationResult("SSH private key is required");
+
+                if (!File.Exists(sshkey))
+                    return new ValidationResult("Given SSH private key can NOT be found!");
+            }
+
+            return ValidationResult.Success;
+        }
+
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
@@ -106,11 +126,8 @@ namespace SourceGit.ViewModels
                         _remote.URL = _url;
                 }
 
-                if (_useSSH)
-                {
-                    SetProgressDescription("Post processing ...");
-                    new Commands.Config(_repo.FullPath).Set($"remote.{_name}.sshkey", SSHKey);
-                }
+                SetProgressDescription("Post processing ...");
+                new Commands.Config(_repo.FullPath).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
@@ -122,5 +139,6 @@ namespace SourceGit.ViewModels
         private string _name = string.Empty;
         private string _url = string.Empty;
         private bool _useSSH = false;
+        private string _sshkey = string.Empty;
     }
 }

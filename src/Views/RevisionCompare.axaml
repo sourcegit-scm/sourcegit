@@ -61,6 +61,7 @@
                    Height="26"
                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                    Background="Transparent"
+                   CornerRadius="4"
                    Watermark="{DynamicResource Text.CommitDetail.Changes.Search}"
                    Text="{Binding SearchFilter, Mode=TwoWay}">
             <TextBox.InnerLeftContent>

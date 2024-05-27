@@ -49,21 +49,16 @@
       <TextBlock Grid.Row="3" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Preference.GPG.Enabled}"/>
-      <CheckBox Grid.Row="3" Grid.Column="1"
-                x:Name="chkGPGSigningEnabled"
-                IsChecked="{Binding GPGSigningEnabled, Mode=TwoWay}"/>
-
-      <TextBlock Grid.Row="4" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
                  Text="{DynamicResource Text.Preference.GPG.UserKey}"/>
-      <TextBox Grid.Row="4" Grid.Column="1"
+      <TextBox Grid.Row="3" Grid.Column="1"
                Height="28"
                CornerRadius="3"
                Watermark="{DynamicResource Text.Preference.GPG.UserKey.Placeholder}"
-               Text="{Binding GPGUserSigningKey, Mode=TwoWay}"
-               IsEnabled="{Binding #chkGPGSigningEnabled.IsChecked}"/>
+               Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
+
+      <CheckBox Grid.Row="4" Grid.Column="1"
+                Content="{DynamicResource Text.Preference.GPG.Enabled}"
+                IsChecked="{Binding GPGSigningEnabled, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

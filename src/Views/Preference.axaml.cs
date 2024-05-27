@@ -207,10 +207,17 @@ namespace SourceGit.Views
 
         private async void SelectGPGExecutable(object sender, RoutedEventArgs e)
         {
-            var pattern = OperatingSystem.IsWindows() ? "gpg.exe" : "gpg";
+            var patterns = new List<string>();
+            if (OperatingSystem.IsWindows())
+                patterns.Add("gpg.exe");
+            else if (OperatingSystem.IsLinux())
+                patterns.AddRange(new string[] { "gpg", "gpg2" });
+            else
+                patterns.Add("gpg");
+
             var options = new FilePickerOpenOptions()
             {
-                FileTypeFilter = [new FilePickerFileType("GPG Executable") { Patterns = [pattern] }],
+                FileTypeFilter = [new FilePickerFileType("GPG Executable") { Patterns = patterns }],
                 AllowMultiple = false,
             };
 

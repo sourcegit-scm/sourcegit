@@ -321,7 +321,7 @@
                     <ProgressBar Margin="0,8,0,0"
                                  HorizontalAlignment="Stretch"
                                  IsIndeterminate="True"
-                                 Background="{DynamicResource Brush.FG2}" Foreground="{DynamicResource Brush.Accent1}"
+                                 Background="{DynamicResource Brush.FG2}" Foreground="{DynamicResource Brush.Accent}"
                                  Minimum="0" Maximum="100"/>
                   </StackPanel>
                 </StackPanel>

@@ -42,7 +42,7 @@ namespace SourceGit.Views
             if (sender is Grid grid && DataContext is ViewModels.Welcome vm)
             {
                 var menu = vm.CreateContextMenu(grid.DataContext as ViewModels.RepositoryNode);
-                menu?.Open(grid);
+                grid.OpenContextMenu(menu);
                 e.Handled = true;
             }
         }
@@ -248,7 +248,7 @@ namespace SourceGit.Views
                 {
                     Dispatcher.UIThread.Invoke(() =>
                     {
-                        (DataContext as ViewModels.Welcome).InitRepository(path);
+                        (DataContext as ViewModels.Welcome).InitRepository(path, parent);
                     });
                     return;
                 }
@@ -257,7 +257,7 @@ namespace SourceGit.Views
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     var repo = ViewModels.Preference.AddRepository(root, gitDir);
-                    var node = ViewModels.Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, parent);
+                    var node = ViewModels.Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, parent, true);
                     launcher.OpenRepositoryInTab(node, page);
                 });
             });

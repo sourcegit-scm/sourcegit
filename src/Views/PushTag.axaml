@@ -12,7 +12,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.PushTag}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="150,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -31,7 +31,8 @@
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Remotes}"
-                SelectedItem="{Binding SelectedRemote, Mode=TwoWay}">
+                SelectedItem="{Binding SelectedRemote, Mode=TwoWay}"
+                IsEnabled="{Binding !PushAllRemotes}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Remote}">
             <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
@@ -41,6 +42,10 @@
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
+
+      <CheckBox Grid.Row="2" Grid.Column="1"
+                Content="{DynamicResource Text.PushTag.PushAllRemotes}"
+                IsChecked="{Binding PushAllRemotes, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

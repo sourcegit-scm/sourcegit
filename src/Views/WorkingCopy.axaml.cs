@@ -205,8 +205,7 @@ namespace SourceGit.Views
                 }
 
                 var menu = vm.CreateContextMenuForUnstagedChanges(selected);
-                if (menu != null)
-                    menu.Open(datagrid);
+                datagrid.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -225,8 +224,7 @@ namespace SourceGit.Views
                 }
 
                 var menu = vm.CreateContextMenuForUnstagedChanges(selected);
-                if (menu != null)
-                    menu.Open(tree);
+                tree.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -245,8 +243,7 @@ namespace SourceGit.Views
                 }
 
                 var menu = vm.CreateContextMenuForStagedChanges(selected);
-                if (menu != null)
-                    menu.Open(datagrid);
+                datagrid.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -265,8 +262,7 @@ namespace SourceGit.Views
                 }
 
                 var menu = vm.CreateContextMenuForStagedChanges(selected);
-                if (menu != null)
-                    menu.Open(tree);
+                tree.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -331,7 +327,7 @@ namespace SourceGit.Views
             {
                 var menu = vm.CreateContextMenuForCommitMessages();
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
-                menu.Open(button);
+                button.OpenContextMenu(menu);
                 e.Handled = true;
             }
         }

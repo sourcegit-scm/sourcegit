@@ -33,31 +33,6 @@ namespace SourceGit.Commands
             Args += $"{remote} {local}:{remoteBranch}";
         }
 
-        /// <summary>
-        ///     Only used to delete a remote branch!!!!!!
-        /// </summary>
-        /// <param name="repo"></param>
-        /// <param name="remote"></param>
-        /// <param name="branch"></param>
-        public Push(string repo, string remote, string branch)
-        {
-            WorkingDirectory = repo;
-            Context = repo;
-            TraitErrorAsOutput = true;
-
-            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
-                Args = "-c credential.helper=manager ";
-            }
-
-            Args += $"push {remote} --delete {branch}";
-        }
-
         public Push(string repo, string remote, string tag, bool isDelete)
         {
             WorkingDirectory = repo;

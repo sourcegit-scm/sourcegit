@@ -172,7 +172,7 @@
             <v:Chart Grid.Column="1"
                      Margin="16,0,0,0"
                      LineBrush="{DynamicResource Brush.Border1}"
-                     ShapeBrush="{DynamicResource Brush.Accent1}"
+                     ShapeBrush="{DynamicResource Brush.Accent}"
                      Samples="{Binding Samples}"/>            
           </Grid>
         </DataTemplate>

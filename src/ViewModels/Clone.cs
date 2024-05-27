@@ -113,7 +113,7 @@ namespace SourceGit.ViewModels
                 CallUIThread(() =>
                 {
                     var repo = Preference.AddRepository(path, Path.Combine(path, ".git"));
-                    var node = Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, null);
+                    var node = Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, null, true);
                     _launcher.OpenRepositoryInTab(node, _page);
                 });
 

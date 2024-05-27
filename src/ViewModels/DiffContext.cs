@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -63,6 +64,16 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _syncScrollOffset, value);
         }
 
+        public int Unified
+        {
+            get => _unified;
+            set
+            {
+                if (SetProperty(ref _unified, value))
+                    LoadDiffContent();
+            }
+        }
+
         public DiffContext(string repo, Models.DiffOption option, DiffContext previous = null)
         {
             _repo = repo;
@@ -74,9 +85,40 @@ namespace SourceGit.ViewModels
                 _content = previous._content;
             }
 
+            LoadDiffContent();
+        }
+
+        public void IncrUnified()
+        {
+            Unified = _unified + 1;
+        }
+
+        public void DecrUnified()
+        {
+            Unified = Math.Max(4, _unified - 1);
+        }
+
+        public void OpenExternalMergeTool()
+        {
+            var type = Preference.Instance.ExternalMergeToolType;
+            var exec = Preference.Instance.ExternalMergeToolPath;
+
+            var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
+            if (tool == null || !File.Exists(exec))
+            {
+                App.RaiseException(_repo, "Invalid merge tool in preference setting!");
+                return;
+            }
+
+            var args = tool.Type != 0 ? tool.DiffCmd : Preference.Instance.ExternalMergeToolDiffCmd;
+            Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, exec, args, _option));
+        }
+
+        private void LoadDiffContent()
+        {
             Task.Run(() =>
             {
-                var latest = new Commands.Diff(repo, option).Result();
+                var latest = new Commands.Diff(_repo, _option, _unified).Result();
                 var rs = null as object;
 
                 if (latest.TextDiff != null)
@@ -92,15 +134,15 @@ namespace SourceGit.ViewModels
                     if (IMG_EXTS.Contains(ext))
                     {
                         var imgDiff = new Models.ImageDiff();
-                        if (option.Revisions.Count == 2)
+                        if (_option.Revisions.Count == 2)
                         {
-                            imgDiff.Old = BitmapFromRevisionFile(repo, option.Revisions[0], oldPath);
-                            imgDiff.New = BitmapFromRevisionFile(repo, option.Revisions[1], oldPath);
+                            imgDiff.Old = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
+                            imgDiff.New = BitmapFromRevisionFile(_repo, _option.Revisions[1], oldPath);
                         }
                         else
                         {
-                            var fullPath = Path.Combine(repo, _option.Path);
-                            imgDiff.Old = BitmapFromRevisionFile(repo, "HEAD", oldPath);
+                            var fullPath = Path.Combine(_repo, _option.Path);
+                            imgDiff.Old = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
                             imgDiff.New = File.Exists(fullPath) ? new Bitmap(fullPath) : null;
                         }
                         rs = imgDiff;
@@ -108,15 +150,15 @@ namespace SourceGit.ViewModels
                     else
                     {
                         var binaryDiff = new Models.BinaryDiff();
-                        if (option.Revisions.Count == 2)
+                        if (_option.Revisions.Count == 2)
                         {
-                            binaryDiff.OldSize = new Commands.QueryFileSize(repo, oldPath, option.Revisions[0]).Result();
-                            binaryDiff.NewSize = new Commands.QueryFileSize(repo, _option.Path, option.Revisions[1]).Result();
+                            binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).Result();
+                            binaryDiff.NewSize = new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).Result();
                         }
                         else
                         {
-                            var fullPath = Path.Combine(repo, _option.Path);
-                            binaryDiff.OldSize = new Commands.QueryFileSize(repo, oldPath, "HEAD").Result();
+                            var fullPath = Path.Combine(_repo, _option.Path);
+                            binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, "HEAD").Result();
                             binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
                         }
                         rs = binaryDiff;
@@ -146,22 +188,6 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void OpenExternalMergeTool()
-        {
-            var type = Preference.Instance.ExternalMergeToolType;
-            var exec = Preference.Instance.ExternalMergeToolPath;
-
-            var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
-            if (tool == null || !File.Exists(exec))
-            {
-                App.RaiseException(_repo, "Invalid merge tool in preference setting!");
-                return;
-            }
-
-            var args = tool.Type != 0 ? tool.DiffCmd : Preference.Instance.ExternalMergeToolDiffCmd;
-            Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, exec, args, _option));
-        }
-
         private Bitmap BitmapFromRevisionFile(string repo, string revision, string file)
         {
             var stream = Commands.QueryFileContent.Run(repo, revision, file);
@@ -181,5 +207,6 @@ namespace SourceGit.ViewModels
         private bool _isTextDiff = false;
         private object _content = null;
         private Vector _syncScrollOffset = Vector.Zero;
+        private int _unified = 4;
     }
 }

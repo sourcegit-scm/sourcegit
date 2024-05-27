@@ -12,11 +12,11 @@ namespace SourceGit.Commands
         private const string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
 
-        public Diff(string repo, Models.DiffOption opt)
+        public Diff(string repo, Models.DiffOption opt, int unified)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff --ignore-cr-at-eol --unified=4 {opt}";
+            Args = $"diff --ignore-cr-at-eol --unified={unified} {opt}";
         }
 
         public Models.DiffResult Result()

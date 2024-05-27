@@ -36,12 +36,32 @@
             return cmd.Exec();
         }
 
-        public static bool Delete(string repo, string name)
+        public static bool DeleteLocal(string repo, string name)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"branch -D {name}";
+            return cmd.Exec();
+        }
+
+        public static bool DeleteRemote(string repo, string remote, string name)
+        {
+            var cmd = new Command();
+            cmd.WorkingDirectory = repo;
+            cmd.Context = repo;
+
+            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            if (!string.IsNullOrEmpty(sshKey))
+            {
+                cmd.Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
+            }
+            else
+            {
+                cmd.Args = "-c credential.helper=manager ";
+            }
+
+            cmd.Args += $"push {remote} --delete {name}";
             return cmd.Exec();
         }
     }

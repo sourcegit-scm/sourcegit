@@ -6,6 +6,7 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:ac="using:Avalonia.Controls.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.CreateBranch"
              x:DataType="vm:CreateBranch">
@@ -60,12 +61,21 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.CreateBranch.LocalChanges}"/>
       <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+        <StackPanel.Resources>
+          <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+        </StackPanel.Resources>
+        
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
                      GroupName="LocalChanges"
-                     IsChecked="{Binding AutoStash, Mode=TwoWay}"/>
+                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:BeforeCreateBranchAction.StashAndReaply}}"/>
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"
                      GroupName="LocalChanges"
-                     Margin="8,0,0,0"/>
+                     Margin="8,0,0,0"
+                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:BeforeCreateBranchAction.Discard}}"/>
+        <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.DoNothing}"
+                     GroupName="LocalChanges"
+                     Margin="8,0,0,0"
+                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:BeforeCreateBranchAction.DoNothing}}"/>
       </StackPanel>
       
       <CheckBox Grid.Row="3" Grid.Column="1"

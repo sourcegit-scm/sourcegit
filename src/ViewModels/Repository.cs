@@ -721,6 +721,12 @@ namespace SourceGit.ViewModels
             else
                 PopupHost.ShowAndStartPopup(new Checkout(this, branch));
         }
+        
+        public void DeleteMultipleBranches(List<Models.Branch> branches, bool isLocal)
+        {
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowPopup(new DeleteMultipleBranches(this, branches, isLocal));
+        }
 
         public void CreateNewTag()
         {
