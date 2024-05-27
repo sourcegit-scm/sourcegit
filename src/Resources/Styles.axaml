@@ -245,6 +245,9 @@
   <Style Selector="Button.icon_button:pointerover /template/ ContentPresenter#PART_ContentPresenter, RepeatButton.icon_button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Opacity" Value="1"/>
   </Style>
+  <Style Selector="Button.icon_button:disabled Path">
+    <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+  </Style>
 
   <Style Selector="Button.flat">
     <Setter Property="BorderThickness" Value="0"/>

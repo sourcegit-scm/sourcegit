@@ -159,6 +159,8 @@
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">分列对比</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">语法高亮</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">使用外部合并工具查看</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">减少可见的行数</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可见的行数</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">请选择需要对比的文件</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">使用外部比对工具查看</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">放弃更改确认</x:String>
