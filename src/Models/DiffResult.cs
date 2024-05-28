@@ -572,24 +572,28 @@ namespace SourceGit.Models
         public string NewSize => New != null ? $"{New.PixelSize.Width} x {New.PixelSize.Height}" : "0 x 0";
     }
 
-    public class NoOrEOLChange
+    public class SubmoduleDiff
     {
+        public string OldSha { get; set; } = string.Empty;
+        public Commit OldCommit { get; set; } = null;
+        public string NewSha { get; set; } = string.Empty;
+        public Commit NewCommit { get; set; } = null;
     }
 
-    public class FileModeDiff
+    public class NoOrEOLChange
     {
-        public string Old { get; set; } = string.Empty;
-        public string New { get; set; } = string.Empty;
     }
 
     public class DiffResult
     {
         public bool IsBinary { get; set; } = false;
         public bool IsLFS { get; set; } = false;
+        public bool IsSubmodule { get; set; } = false;
         public string OldMode { get; set; } = string.Empty;
         public string NewMode { get; set; } = string.Empty;
         public TextDiff TextDiff { get; set; } = null;
         public LFSDiff LFSDiff { get; set; } = null;
+        public SubmoduleDiff SubmoduleDiff { get; set; } = null;
 
         public string FileModeChange => string.IsNullOrEmpty(OldMode) ? string.Empty : $"{OldMode} → {NewMode}";
     }

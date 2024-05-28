@@ -123,8 +123,33 @@ namespace SourceGit.ViewModels
 
                 if (latest.TextDiff != null)
                 {
-                    latest.TextDiff.File = _option.Path;
-                    rs = latest.TextDiff;
+                    // handle submodule diff
+                    var repoObj = Preference.Instance.Repositories.Find(x => x.FullPath == _repo);
+                    var submoduleList = repoObj?.Submodules;
+                    if (submoduleList != null && submoduleList.Contains(_option.Path))
+                    {
+                        var submoduleDiff = new Models.SubmoduleDiff();
+                        var fullPath = Path.Combine(_repo, _option.Path);
+                        foreach (var diffLine in latest.TextDiff.Lines)
+                        {
+                            if (diffLine.Type == Models.TextDiffLineType.Deleted)
+                            {
+                                submoduleDiff.OldSha = diffLine.Content.Substring("Subproject commit ".Length);
+                                submoduleDiff.OldCommit = new Commands.QuerySingleCommit(fullPath, submoduleDiff.OldSha).Result();
+                            }
+                            else if (diffLine.Type == Models.TextDiffLineType.Added)
+                            {
+                                submoduleDiff.NewSha = diffLine.Content.Substring("Subproject commit ".Length);
+                                submoduleDiff.NewCommit = new Commands.QuerySingleCommit(fullPath, submoduleDiff.NewSha).Result();
+                            }
+                        }
+                        rs = submoduleDiff;
+                    }
+                    else
+                    {
+                        latest.TextDiff.File = _option.Path;
+                        rs = latest.TextDiff;
+                    }
                 }
                 else if (latest.IsBinary)
                 {
@@ -182,7 +207,7 @@ namespace SourceGit.ViewModels
 
                     FileModeChange = latest.FileModeChange;
                     Content = rs;
-                    IsTextDiff = latest.TextDiff != null;
+                    IsTextDiff = rs is Models.TextDiff;
                     IsLoading = false;
                 });
             });

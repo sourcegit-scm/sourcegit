@@ -191,6 +191,11 @@ namespace SourceGit
             icon.Data = Current.FindResource(key) as StreamGeometry;
             return icon;
         }
+        
+        public static Avalonia.Media.Brush Brush(string key)
+        {
+            return Current.FindResource($"Brush.{key}") as Avalonia.Media.Brush;
+        }
 
         public static TopLevel GetTopLevel()
         {

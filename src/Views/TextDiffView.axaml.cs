@@ -118,9 +118,9 @@ namespace SourceGit.Views
 
         public class LineBackgroundRenderer : IBackgroundRenderer
         {
-            private static readonly Brush BG_EMPTY = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
-            private static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
-            private static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
+            private static readonly Brush BG_EMPTY = App.Brush("Background.Diff.Empty");
+            private static readonly Brush BG_ADDED = App.Brush("Background.Diff.Added");
+            private static readonly Brush BG_DELETED = App.Brush("Background.Diff.Deleted");
 
             public KnownLayer Layer => KnownLayer.Background;
 
@@ -500,9 +500,9 @@ namespace SourceGit.Views
 
         public class LineBackgroundRenderer : IBackgroundRenderer
         {
-            private static readonly Brush BG_EMPTY = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
-            private static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
-            private static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
+            private static readonly Brush BG_EMPTY = App.Brush("Background.Diff.Empty");
+            private static readonly Brush BG_ADDED = App.Brush("Background.Diff.Added");
+            private static readonly Brush BG_DELETED = App.Brush("Background.Diff.Deleted");
 
             public KnownLayer Layer => KnownLayer.Background;
 

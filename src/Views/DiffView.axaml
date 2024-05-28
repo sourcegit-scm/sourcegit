@@ -173,6 +173,39 @@
             </Grid>
           </DataTemplate>
 
+          <!-- Submodule Diff -->
+          <DataTemplate DataType="m:SubmoduleDiff">
+            <StackPanel>
+              <Grid Margin="0,16,0,0" RowDefinitions="Auto,Auto">
+                <Border Grid.Row="0" IsVisible="{Binding OldSha, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Background="{DynamicResource Brush.Background.Diff.Deleted}">
+                  <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="0,4" VerticalAlignment="Top">
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Classes="bold" Text="{DynamicResource Text.Diff.Submodule.Old}" Margin="8,4" FontSize="16"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Classes="bold" Text="{DynamicResource Text.CommitDetail.Info.SHA}" FontSize="12" Margin="8,4"/>
+                    <SelectableTextBlock Grid.Row="1" Grid.Column="1" Classes="monospace" Text="{Binding OldSha}" FontSize="12" Margin="8,4"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Classes="bold" Text="{DynamicResource Text.CommitDetail.Info.Message}" FontSize="12" Margin="8,4"/>
+                    <SelectableTextBlock Grid.Row="2" Grid.Column="1" Classes="monospace" Text="{Binding OldCommit.FullMessage}" FontSize="12" Margin="8,4"
+                                         VerticalAlignment="Top" IsVisible="{Binding OldCommit, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                  </Grid>
+                </Border>
+
+                <Border Grid.Row="1" IsVisible="{Binding NewSha, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Background="{DynamicResource Brush.Background.Diff.Added}">
+                  <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="0,4">
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Classes="bold" Text="{DynamicResource Text.Diff.Submodule.New}" Margin="8,4" FontSize="16"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Classes="bold" Text="{DynamicResource Text.CommitDetail.Info.SHA}" FontSize="12" Margin="8,4"/>
+                    <SelectableTextBlock Grid.Row="1" Grid.Column="1" Classes="monospace" Text="{Binding NewSha}" FontSize="12" Margin="8,4"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Classes="bold" Text="{DynamicResource Text.CommitDetail.Info.Message}" FontSize="12" Margin="8,4"/>
+                    <SelectableTextBlock Grid.Row="2" Grid.Column="1" Classes="monospace" Text="{Binding NewCommit.FullMessage}" FontSize="12" Margin="8,4"
+                                         VerticalAlignment="Top" IsVisible="{Binding NewCommit, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                  </Grid>
+                </Border>
+              </Grid>
+            </StackPanel>
+          </DataTemplate>
+
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
             <v:TextDiffView TextDiff="{Binding}" UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>

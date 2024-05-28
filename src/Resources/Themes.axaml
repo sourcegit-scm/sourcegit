@@ -79,4 +79,7 @@
   <SolidColorBrush x:Key="Brush.FG3" Color="{DynamicResource Color.FG3}"/>
   <SolidColorBrush x:Key="Brush.Accent" Color="{DynamicResource SystemAccentColor}"/>
   <SolidColorBrush x:Key="Brush.AccentHovered" Color="{DynamicResource SystemListLowColor}"/>
+  <SolidColorBrush x:Key="Brush.Background.Diff.Empty" Color="#3C000000"/>
+  <SolidColorBrush x:Key="Brush.Background.Diff.Added" Color="#3C00FF00"/>
+  <SolidColorBrush x:Key="Brush.Background.Diff.Deleted" Color="#3CFF0000"/>
 </ResourceDictionary>
