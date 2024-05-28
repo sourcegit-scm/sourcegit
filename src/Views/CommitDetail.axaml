@@ -22,40 +22,20 @@
         <v:CommitBaseInfo Grid.Row="0" Content="{Binding Commit}"/>
 
         <!-- Change List -->
-        <DataGrid Grid.Row="1"
-                  Background="Transparent"
-                  ItemsSource="{Binding Changes}"
-                  SelectionMode="Single"
-                  CanUserReorderColumns="False"
-                  CanUserResizeColumns="False"
-                  CanUserSortColumns="False"
-                  IsReadOnly="True"
-                  HeadersVisibility="None"
-                  Focusable="False"
-                  RowHeight="26"
-                  Margin="80,0,8,0"
-                  HorizontalScrollBarVisibility="Disabled"
-                  VerticalScrollBarVisibility="Auto"
-                  ContextRequested="OnChangeListContextRequested"
-                  DoubleTapped="OnChangeListDoubleTapped">
-          <DataGrid.Columns>
-            <DataGridTemplateColumn Header="ICON">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate>
-                  <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-
-            <DataGridTemplateColumn Width="*" Header="PATH">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate>
-                  <TextBlock Classes="monospace" Text="{Binding Path}" Margin="8,0,0,0"/>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-          </DataGrid.Columns>
-        </DataGrid>
+        <v:ChangeCollectionView Grid.Row="1"
+                                Margin="72,0,8,0"
+                                IsWorkingCopy="False"
+                                ViewMode="List"
+                                Changes="{Binding Changes}"
+                                SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
+                                ContextRequested="OnChangeListContextRequested"
+                                ChangeDoubleTapped="OnChangeDoubleTapped">
+          <v:ChangeCollectionView.Styles>
+            <Style Selector="TreeDataGrid">
+              <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            </Style>
+          </v:ChangeCollectionView.Styles>
+        </v:ChangeCollectionView>
       </Grid>
     </TabItem>
 

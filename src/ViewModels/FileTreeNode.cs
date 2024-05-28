@@ -18,11 +18,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isExpanded, value);
         }
 
-        public static List<FileTreeNode> Build(List<Models.Change> changes)
+        public static List<FileTreeNode> Build(List<Models.Change> changes, bool expanded)
         {
             var nodes = new List<FileTreeNode>();
             var folders = new Dictionary<string, FileTreeNode>();
-            var expanded = changes.Count <= 50;
 
             foreach (var c in changes)
             {
@@ -94,11 +93,10 @@ namespace SourceGit.ViewModels
             return nodes;
         }
 
-        public static List<FileTreeNode> Build(List<Models.Object> files)
+        public static List<FileTreeNode> Build(List<Models.Object> files, bool expanded)
         {
             var nodes = new List<FileTreeNode>();
             var folders = new Dictionary<string, FileTreeNode>();
-            var expanded = files.Count <= 50;
 
             foreach (var f in files)
             {

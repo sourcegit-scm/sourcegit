@@ -85,6 +85,11 @@ namespace SourceGit.ViewModels
                 _content = previous._content;
             }
 
+            if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
+                _title = _option.Path;
+            else
+                _title = $"{_option.OrgPath} → {_option.Path}";
+
             LoadDiffContent();
         }
 
@@ -175,11 +180,6 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
-                    if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
-                        Title = _option.Path;
-                    else
-                        Title = $"{_option.OrgPath} → {_option.Path}";
-
                     FileModeChange = latest.FileModeChange;
                     Content = rs;
                     IsTextDiff = latest.TextDiff != null;

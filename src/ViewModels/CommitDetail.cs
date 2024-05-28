@@ -4,6 +4,8 @@ using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
+using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -48,48 +50,17 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _visibleChanges, value);
         }
 
-        public List<FileTreeNode> ChangeTree
+        public List<Models.Change> SelectedChanges
         {
-            get => _changeTree;
-            set => SetProperty(ref _changeTree, value);
-        }
-
-        public Models.Change SelectedChange
-        {
-            get => _selectedChange;
+            get => _selectedChanges;
             set
             {
-                if (SetProperty(ref _selectedChange, value))
+                if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value == null)
-                    {
-                        SelectedChangeNode = null;
+                    if (value == null || value.Count != 1)
                         DiffContext = null;
-                    }
                     else
-                    {
-                        SelectedChangeNode = FileTreeNode.SelectByPath(_changeTree, value.Path);
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(_commit, value), _diffContext);
-                    }
-                }
-            }
-        }
-
-        public FileTreeNode SelectedChangeNode
-        {
-            get => _selectedChangeNode;
-            set
-            {
-                if (SetProperty(ref _selectedChangeNode, value))
-                {
-                    if (value == null)
-                    {
-                        SelectedChange = null;
-                    }
-                    else
-                    {
-                        SelectedChange = value.Backend as Models.Change;
-                    }
+                        DiffContext = new DiffContext(_repo, new Models.DiffOption(_commit, value[0]), _diffContext);
                 }
             }
         }
@@ -106,26 +77,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public List<FileTreeNode> RevisionFilesTree
+        public HierarchicalTreeDataGridSource<FileTreeNode> RevisionFiles
         {
-            get => _revisionFilesTree;
-            set => SetProperty(ref _revisionFilesTree, value);
-        }
-
-        public FileTreeNode SelectedRevisionFileNode
-        {
-            get => _selectedRevisionFileNode;
-            set
-            {
-                if (SetProperty(ref _selectedRevisionFileNode, value) && value != null && !value.IsFolder)
-                {
-                    RefreshViewRevisionFile(value.Backend as Models.Object);
-                }
-                else
-                {
-                    ViewRevisionFileContent = null;
-                }
-            }
+            get => _revisionFiles;
+            private set => SetProperty(ref _revisionFiles, value);
         }
 
         public string SearchFileFilter
@@ -159,17 +114,14 @@ namespace SourceGit.ViewModels
                 _changes.Clear();
             if (_visibleChanges != null)
                 _visibleChanges.Clear();
-            if (_changeTree != null)
-                _changeTree.Clear();
-            _selectedChange = null;
-            _selectedChangeNode = null;
+            if (_selectedChanges != null)
+                _selectedChanges.Clear();
             _searchChangeFilter = null;
             _diffContext = null;
+            if (_revisionFilesBackup != null)
+                _revisionFilesBackup.Clear();
             if (_revisionFiles != null)
-                _revisionFiles.Clear();
-            if (_revisionFilesTree != null)
-                _revisionFilesTree.Clear();
-            _selectedRevisionFileNode = null;
+                _revisionFiles.Dispose();
             _searchFileFilter = null;
             _viewRevisionFileContent = null;
             _cancelToken = null;
@@ -346,9 +298,14 @@ namespace SourceGit.ViewModels
         {
             _changes = null;
             VisibleChanges = null;
-            SelectedChange = null;
-            RevisionFilesTree = null;
-            SelectedRevisionFileNode = null;
+            SelectedChanges = null;
+
+            if (_revisionFiles != null)
+            {
+                _revisionFiles.Dispose();
+                _revisionFiles = null;
+            }
+
             if (_commit == null)
                 return;
             if (_cancelToken != null)
@@ -379,40 +336,34 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                var tree = FileTreeNode.Build(visible);
+                var tree = FileTreeNode.Build(visible, true);
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     Changes = changes;
                     VisibleChanges = visible;
-                    ChangeTree = tree;
                 });
             });
 
             Task.Run(() =>
             {
-                var files = cmdRevisionFiles.Result();
+                _revisionFilesBackup = cmdRevisionFiles.Result();
                 if (cmdRevisionFiles.Cancel.Requested)
                     return;
 
-                var visible = files;
-                if (!string.IsNullOrWhiteSpace(_searchFileFilter))
+                var visible = _revisionFilesBackup;
+                var isSearching = !string.IsNullOrWhiteSpace(_searchFileFilter);
+                if (isSearching)
                 {
                     visible = new List<Models.Object>();
-                    foreach (var f in files)
+                    foreach (var f in _revisionFilesBackup)
                     {
                         if (f.Path.Contains(_searchFileFilter, StringComparison.OrdinalIgnoreCase))
-                        {
                             visible.Add(f);
-                        }
                     }
                 }
 
-                var tree = FileTreeNode.Build(visible);
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    _revisionFiles = files;
-                    RevisionFilesTree = tree;
-                });
+                var tree = FileTreeNode.Build(visible, isSearching || visible.Count <= 100);
+                Dispatcher.UIThread.Invoke(() => BuildRevisionFilesSource(tree));
             });
         }
 
@@ -431,15 +382,11 @@ namespace SourceGit.ViewModels
                 foreach (var c in _changes)
                 {
                     if (c.Path.Contains(_searchChangeFilter, StringComparison.OrdinalIgnoreCase))
-                    {
                         visible.Add(c);
-                    }
                 }
 
                 VisibleChanges = visible;
             }
-
-            ChangeTree = FileTreeNode.Build(_visibleChanges);
         }
 
         private void RefreshVisibleFiles()
@@ -447,24 +394,29 @@ namespace SourceGit.ViewModels
             if (_revisionFiles == null)
                 return;
 
-            var visible = _revisionFiles;
-            if (!string.IsNullOrWhiteSpace(_searchFileFilter))
+            var visible = _revisionFilesBackup;
+            var isSearching = !string.IsNullOrWhiteSpace(_searchFileFilter);
+            if (isSearching)
             {
                 visible = new List<Models.Object>();
-                foreach (var f in _revisionFiles)
+                foreach (var f in _revisionFilesBackup)
                 {
                     if (f.Path.Contains(_searchFileFilter, StringComparison.OrdinalIgnoreCase))
-                    {
                         visible.Add(f);
-                    }
                 }
             }
 
-            RevisionFilesTree = FileTreeNode.Build(visible);
+            BuildRevisionFilesSource(FileTreeNode.Build(visible, isSearching || visible.Count < 100));
         }
 
         private void RefreshViewRevisionFile(Models.Object file)
         {
+            if (file == null)
+            {
+                ViewRevisionFileContent = null;
+                return;
+            }
+
             switch (file.Type)
             {
                 case Models.ObjectType.Blob:
@@ -541,6 +493,35 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private void BuildRevisionFilesSource(List<FileTreeNode> tree)
+        {
+            var source = new HierarchicalTreeDataGridSource<FileTreeNode>(tree)
+            {
+                Columns =
+                {
+                    new HierarchicalExpanderColumn<FileTreeNode>(
+                        new TemplateColumn<FileTreeNode>("Icon", "FileTreeNodeExpanderTemplate", null, GridLength.Auto),
+                        x => x.Children,
+                        x => x.Children.Count > 0,
+                        x => x.IsExpanded),
+                    new TextColumn<FileTreeNode, string>(
+                        null,
+                        x => string.Empty,
+                        GridLength.Star)
+                }
+            };
+
+            source.Selection = new Models.TreeDataGridSelectionModel<FileTreeNode>(source, x => x.Children);
+            source.RowSelection.SingleSelect = true;
+            source.RowSelection.SelectionChanged += (s, _) =>
+            {
+                if (s is Models.TreeDataGridSelectionModel<FileTreeNode> selection)
+                    RefreshViewRevisionFile(selection.SelectedItem?.Backend as Models.Object);
+            };
+
+            RevisionFiles = source;
+        }
+
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
         {
             ".ico", ".bmp", ".jpg", ".png", ".jpeg"
@@ -551,14 +532,11 @@ namespace SourceGit.ViewModels
         private Models.Commit _commit = null;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
-        private List<FileTreeNode> _changeTree = null;
-        private Models.Change _selectedChange = null;
-        private FileTreeNode _selectedChangeNode = null;
+        private List<Models.Change> _selectedChanges = null;
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
-        private List<Models.Object> _revisionFiles = null;
-        private List<FileTreeNode> _revisionFilesTree = null;
-        private FileTreeNode _selectedRevisionFileNode = null;
+        private List<Models.Object> _revisionFilesBackup = null;
+        private HierarchicalTreeDataGridSource<FileTreeNode> _revisionFiles = null;
         private string _searchFileFilter = string.Empty;
         private object _viewRevisionFileContent = null;
         private Commands.Command.CancelToken _cancelToken = null;

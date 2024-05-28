@@ -58,7 +58,23 @@ namespace SourceGit.ViewModels
         public bool UseAmend
         {
             get => _useAmend;
-            set => SetProperty(ref _useAmend, value);
+            set
+            {
+                if (SetProperty(ref _useAmend, value) && value)
+                {
+                    var commits = new Commands.QueryCommits(_repo.FullPath, "-n 1", false).Result();
+                    if (commits.Count == 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "No commits to amend!!!");
+                        _useAmend = false;
+                        OnPropertyChanged();
+                    }
+                    else
+                    {
+                        CommitMessage = commits[0].FullMessage;
+                    }
+                }
+            }
         }
 
         public List<Models.Change> Unstaged
@@ -73,102 +89,57 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _staged, value);
         }
 
-        public int Count
+        public List<Models.Change> SelectedUnstaged
         {
-            get => _count;
-        }
-
-        public Models.Change SelectedUnstagedChange
-        {
-            get => _selectedUnstagedChange;
+            get => _selectedUnstaged;
             set
             {
-                if (SetProperty(ref _selectedUnstagedChange, value) && value != null)
+                if (SetProperty(ref _selectedUnstaged, value))
                 {
-                    SelectedStagedChange = null;
-                    SelectedStagedTreeNode = null;
-                    SetDetail(value, true);
-                }
-            }
-        }
-
-        public Models.Change SelectedStagedChange
-        {
-            get => _selectedStagedChange;
-            set
-            {
-                if (SetProperty(ref _selectedStagedChange, value) && value != null)
-                {
-                    SelectedUnstagedChange = null;
-                    SelectedUnstagedTreeNode = null;
-                    SetDetail(value, false);
-                }
-            }
-        }
-
-        public List<FileTreeNode> UnstagedTree
-        {
-            get => _unstagedTree;
-            private set => SetProperty(ref _unstagedTree, value);
-        }
-
-        public List<FileTreeNode> StagedTree
-        {
-            get => _stagedTree;
-            private set => SetProperty(ref _stagedTree, value);
-        }
-
-        public FileTreeNode SelectedUnstagedTreeNode
-        {
-            get => _selectedUnstagedTreeNode;
-            set
-            {
-                if (SetProperty(ref _selectedUnstagedTreeNode, value))
-                {
-                    if (value == null)
+                    if (value == null || value.Count == 0)
                     {
-                        SelectedUnstagedChange = null;
+                        if (_selectedStaged == null || _selectedStaged.Count == 0)
+                            SetDetail(null);
                     }
                     else
                     {
-                        SelectedUnstagedChange = value.Backend as Models.Change;
-                        SelectedStagedTreeNode = null;
-                        SelectedStagedChange = null;
+                        SelectedStaged = null;
 
-                        if (value.IsFolder)
-                        {
-                            SetDetail(null, true);
-                        }
+                        if (value.Count == 1)
+                            SetDetail(value[0]);
+                        else
+                            SetDetail(null);
                     }
                 }
             }
         }
 
-        public FileTreeNode SelectedStagedTreeNode
+        public List<Models.Change> SelectedStaged
         {
-            get => _selectedStagedTreeNode;
+            get => _selectedStaged;
             set
             {
-                if (SetProperty(ref _selectedStagedTreeNode, value))
+                if (SetProperty(ref _selectedStaged, value))
                 {
-                    if (value == null)
+                    if (value == null || value.Count == 0)
                     {
-                        SelectedStagedChange = null;
+                        if (_selectedUnstaged == null || _selectedUnstaged.Count == 0)
+                            SetDetail(null);
                     }
                     else
                     {
-                        SelectedStagedChange = value.Backend as Models.Change;
-                        SelectedUnstagedTreeNode = null;
-                        SelectedUnstagedChange = null;
+                        SelectedUnstaged = null;
 
-                        if (value.IsFolder)
-                        {
-                            SetDetail(null, false);
-                        }
+                        if (value.Count == 1)
+                            SetDetail(value[0]);
+                        else
+                            SetDetail(null);
                     }
                 }
             }
         }
+
+        public int Count => _count;
 
         public object DetailContext
         {
@@ -194,14 +165,10 @@ namespace SourceGit.ViewModels
                 _unstaged.Clear();
             if (_staged != null)
                 _staged.Clear();
-            if (_unstagedTree != null)
-                _unstagedTree.Clear();
-            if (_stagedTree != null)
-                _stagedTree.Clear();
-            _selectedUnstagedChange = null;
-            _selectedStagedChange = null;
-            _selectedUnstagedTreeNode = null;
-            _selectedStagedTreeNode = null;
+            if (_selectedUnstaged != null)
+                _selectedUnstaged.Clear();
+            if (_selectedStaged != null)
+                _selectedStaged.Clear();
             _detailContext = null;
             _commitMessage = string.Empty;
         }
@@ -210,20 +177,22 @@ namespace SourceGit.ViewModels
         {
             var unstaged = new List<Models.Change>();
             var staged = new List<Models.Change>();
+            var selectedUnstaged = new List<Models.Change>();
+            var selectedStaged = new List<Models.Change>();
 
-            var viewFile = string.Empty;
-            var lastSelectedIsUnstaged = false;
-            if (_selectedUnstagedChange != null)
+            var lastSelectedUnstaged = new HashSet<string>();
+            var lastSelectedStaged = new HashSet<string>();
+            if (_selectedUnstaged != null)
             {
-                viewFile = _selectedUnstagedChange.Path;
-                lastSelectedIsUnstaged = true;
+                foreach (var c in _selectedUnstaged)
+                    lastSelectedUnstaged.Add(c.Path);
             }
-            else if (_selectedStagedChange != null)
+            else if (_selectedStaged != null)
             {
-                viewFile = _selectedStagedChange.Path;
+                foreach (var c in _selectedStaged)
+                    lastSelectedStaged.Add(c.Path);
             }
 
-            var viewChange = null as Models.Change;
             var hasConflict = false;
             foreach (var c in changes)
             {
@@ -233,65 +202,43 @@ namespace SourceGit.ViewModels
                     || c.Index == Models.ChangeState.Renamed)
                 {
                     staged.Add(c);
-                    if (!lastSelectedIsUnstaged && c.Path == viewFile)
-                    {
-                        viewChange = c;
-                    }
+
+                    if (lastSelectedStaged.Contains(c.Path))
+                        selectedStaged.Add(c);
                 }
 
                 if (c.WorkTree != Models.ChangeState.None)
                 {
                     unstaged.Add(c);
                     hasConflict |= c.IsConflit;
-                    if (lastSelectedIsUnstaged && c.Path == viewFile)
-                    {
-                        viewChange = c;
-                    }
+
+                    if (lastSelectedUnstaged.Contains(c.Path))
+                        selectedUnstaged.Add(c);
                 }
             }
 
             _count = changes.Count;
 
-            var unstagedTree = FileTreeNode.Build(unstaged);
-            var stagedTree = FileTreeNode.Build(staged);
             Dispatcher.UIThread.Invoke(() =>
             {
                 _isLoadingData = true;
                 Unstaged = unstaged;
                 Staged = staged;
-                UnstagedTree = unstagedTree;
-                StagedTree = stagedTree;
                 _isLoadingData = false;
 
-                // Restore last selection states.
-                if (viewChange != null)
-                {
-                    var scrollOffset = Vector.Zero;
-                    if (_detailContext is DiffContext old)
-                        scrollOffset = old.SyncScrollOffset;
+                var scrollOffset = Vector.Zero;
+                if (_detailContext is DiffContext old)
+                    scrollOffset = old.SyncScrollOffset;
 
-                    if (lastSelectedIsUnstaged)
-                    {
-                        SelectedUnstagedChange = viewChange;
-                        SelectedUnstagedTreeNode = FileTreeNode.SelectByPath(_unstagedTree, viewFile);
-                    }
-                    else
-                    {
-                        SelectedStagedChange = viewChange;
-                        SelectedStagedTreeNode = FileTreeNode.SelectByPath(_stagedTree, viewFile);
-                    }
-
-                    if (_detailContext is DiffContext cur)
-                        cur.SyncScrollOffset = scrollOffset;
-                }
+                if (selectedUnstaged.Count > 0)
+                    SelectedUnstaged = selectedUnstaged;
+                else if (selectedStaged.Count > 0)
+                    SelectedStaged = selectedStaged;
                 else
-                {
-                    SelectedUnstagedChange = null;
-                    SelectedUnstagedTreeNode = null;
-                    SelectedStagedChange = null;
-                    SelectedStagedTreeNode = null;
-                    SetDetail(null, false);
-                }
+                    SetDetail(null);
+
+                if (_detailContext is DiffContext cur)
+                    cur.SyncScrollOffset = scrollOffset;
 
                 // Try to load merge message from MERGE_MSG
                 if (string.IsNullOrEmpty(_commitMessage))
@@ -305,30 +252,24 @@ namespace SourceGit.ViewModels
             return hasConflict;
         }
 
-        public void SetDetail(Models.Change change, bool isUnstaged)
+        public void OpenAssumeUnchanged()
         {
-            if (_isLoadingData)
-                return;
+            var dialog = new Views.AssumeUnchangedManager()
+            {
+                DataContext = new AssumeUnchangedManager(_repo.FullPath)
+            };
 
-            if (change == null)
-            {
-                DetailContext = null;
-            }
-            else if (change.IsConflit && isUnstaged)
-            {
-                DetailContext = new ConflictContext(_repo.FullPath, change);
-            }
-            else
-            {
-                if (_detailContext is DiffContext previous)
-                {
-                    DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), previous);
-                }
-                else
-                {
-                    DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged));
-                }
-            }
+            dialog.ShowDialog(App.GetTopLevel() as Window);
+        }
+
+        public void StageSelected()
+        {
+            StageChanges(_selectedUnstaged);
+        }
+
+        public void StageAll()
+        {
+            StageChanges(_unstaged);
         }
 
         public async void StageChanges(List<Models.Change> changes)
@@ -336,7 +277,7 @@ namespace SourceGit.ViewModels
             if (_unstaged.Count == 0 || changes.Count == 0)
                 return;
 
-            SetDetail(null, true);
+            SetDetail(null);
             IsStaging = true;
             _repo.SetWatcherEnabled(false);
             if (changes.Count == _unstaged.Count)
@@ -357,12 +298,22 @@ namespace SourceGit.ViewModels
             IsStaging = false;
         }
 
+        public void UnstageSelected()
+        {
+            UnstageChanges(_selectedStaged);
+        }
+
+        public void UnstageAll()
+        {
+            UnstageChanges(_staged);
+        }
+
         public async void UnstageChanges(List<Models.Change> changes)
         {
             if (_staged.Count == 0 || changes.Count == 0)
                 return;
 
-            SetDetail(null, false);
+            SetDetail(null);
             IsUnstaging = true;
             _repo.SetWatcherEnabled(false);
             if (changes.Count == _staged.Count)
@@ -412,113 +363,25 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public async void UseTheirs(List<Models.Change> changes)
+        public void Commit()
         {
-            var files = new List<string>();
-            foreach (var change in changes)
-            {
-                if (change.IsConflit)
-                    files.Add(change.Path);
-            }
-
-            _repo.SetWatcherEnabled(false);
-            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseTheirs(files));
-            if (succ)
-            {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
-            }
-            _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
+            DoCommit(false);
         }
 
-        public async void UseMine(List<Models.Change> changes)
+        public void CommitWithPush()
         {
-            var files = new List<string>();
-            foreach (var change in changes)
-            {
-                if (change.IsConflit)
-                    files.Add(change.Path);
-            }
-
-            _repo.SetWatcherEnabled(false);
-            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseMine(files));
-            if (succ)
-            {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
-            }
-            _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
+            DoCommit(true);
         }
 
-        public async void UseExternalMergeTool(Models.Change change)
+        public ContextMenu CreateContextMenuForUnstagedChanges()
         {
-            var type = Preference.Instance.ExternalMergeToolType;
-            var exec = Preference.Instance.ExternalMergeToolPath;
-
-            var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
-            if (tool == null)
-            {
-                App.RaiseException(_repo.FullPath, "Invalid merge tool in preference setting!");
-                return;
-            }
-
-            var args = tool.Type != 0 ? tool.Cmd : Preference.Instance.ExternalMergeToolCmd;
-
-            _repo.SetWatcherEnabled(false);
-            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, exec, args, change.Path));
-            _repo.SetWatcherEnabled(true);
-        }
-
-        public async void DoCommit(bool autoPush)
-        {
-            if (!PopupHost.CanCreatePopup())
-            {
-                App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
-                return;
-            }
-
-            if (_staged.Count == 0)
-            {
-                App.RaiseException(_repo.FullPath, "No files added to commit!");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(_commitMessage))
-            {
-                App.RaiseException(_repo.FullPath, "Commit without message is NOT allowed!");
-                return;
-            }
-
-            PushCommitMessage();
-
-            SetDetail(null, false);
-            IsCommitting = true;
-            _repo.SetWatcherEnabled(false);
-            var succ = await Task.Run(() => new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend).Exec());
-            if (succ)
-            {
-                CommitMessage = string.Empty;
-                UseAmend = false;
-
-                if (autoPush)
-                {
-                    PopupHost.ShowAndStartPopup(new Push(_repo, null));
-                }
-            }
-            _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
-            IsCommitting = false;
-        }
-
-        public ContextMenu CreateContextMenuForUnstagedChanges(List<Models.Change> changes)
-        {
-            if (changes.Count == 0)
+            if (_selectedUnstaged.Count == 0)
                 return null;
 
             var menu = new ContextMenu();
-            if (changes.Count == 1)
+            if (_selectedUnstaged.Count == 1)
             {
-                var change = changes[0];
+                var change = _selectedUnstaged[0];
                 var path = Path.GetFullPath(Path.Combine(_repo.FullPath, change.Path));
 
                 var explore = new MenuItem();
@@ -551,7 +414,7 @@ namespace SourceGit.ViewModels
                     useTheirs.Header = App.Text("FileCM.UseTheirs");
                     useTheirs.Click += (_, e) =>
                     {
-                        UseTheirs(changes);
+                        UseTheirs(_selectedUnstaged);
                         e.Handled = true;
                     };
 
@@ -560,7 +423,7 @@ namespace SourceGit.ViewModels
                     useMine.Header = App.Text("FileCM.UseMine");
                     useMine.Click += (_, e) =>
                     {
-                        UseMine(changes);
+                        UseMine(_selectedUnstaged);
                         e.Handled = true;
                     };
 
@@ -585,7 +448,7 @@ namespace SourceGit.ViewModels
                     stage.Icon = App.CreateMenuIcon("Icons.File.Add");
                     stage.Click += (_, e) =>
                     {
-                        StageChanges(changes);
+                        StageChanges(_selectedUnstaged);
                         e.Handled = true;
                     };
 
@@ -594,7 +457,7 @@ namespace SourceGit.ViewModels
                     discard.Icon = App.CreateMenuIcon("Icons.Undo");
                     discard.Click += (_, e) =>
                     {
-                        Discard(changes, true);
+                        Discard(_selectedUnstaged, true);
                         e.Handled = true;
                     };
 
@@ -605,7 +468,7 @@ namespace SourceGit.ViewModels
                     {
                         if (PopupHost.CanCreatePopup())
                         {
-                            PopupHost.ShowPopup(new StashChanges(_repo, changes, false));
+                            PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, false));
                         }
                         e.Handled = true;
                     };
@@ -627,7 +490,7 @@ namespace SourceGit.ViewModels
                         var storageFile = await topLevel.StorageProvider.SaveFilePickerAsync(options);
                         if (storageFile != null)
                         {
-                            var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, changes, true, storageFile.Path.LocalPath));
+                            var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
                             if (succ)
                                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                         }
@@ -679,7 +542,7 @@ namespace SourceGit.ViewModels
             {
                 var hasConflicts = false;
                 var hasNoneConflicts = false;
-                foreach (var change in changes)
+                foreach (var change in _selectedUnstaged)
                 {
                     if (change.IsConflit)
                     {
@@ -704,7 +567,7 @@ namespace SourceGit.ViewModels
                     useTheirs.Header = App.Text("FileCM.UseTheirs");
                     useTheirs.Click += (_, e) =>
                     {
-                        UseTheirs(changes);
+                        UseTheirs(_selectedUnstaged);
                         e.Handled = true;
                     };
 
@@ -713,7 +576,7 @@ namespace SourceGit.ViewModels
                     useMine.Header = App.Text("FileCM.UseMine");
                     useMine.Click += (_, e) =>
                     {
-                        UseMine(changes);
+                        UseMine(_selectedUnstaged);
                         e.Handled = true;
                     };
 
@@ -723,31 +586,31 @@ namespace SourceGit.ViewModels
                 }
 
                 var stage = new MenuItem();
-                stage.Header = App.Text("FileCM.StageMulti", changes.Count);
+                stage.Header = App.Text("FileCM.StageMulti", _selectedUnstaged.Count);
                 stage.Icon = App.CreateMenuIcon("Icons.File.Add");
                 stage.Click += (_, e) =>
                 {
-                    StageChanges(changes);
+                    StageChanges(_selectedUnstaged);
                     e.Handled = true;
                 };
 
                 var discard = new MenuItem();
-                discard.Header = App.Text("FileCM.DiscardMulti", changes.Count);
+                discard.Header = App.Text("FileCM.DiscardMulti", _selectedUnstaged.Count);
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
                 discard.Click += (_, e) =>
                 {
-                    Discard(changes, true);
+                    Discard(_selectedUnstaged, true);
                     e.Handled = true;
                 };
 
                 var stash = new MenuItem();
-                stash.Header = App.Text("FileCM.StashMulti", changes.Count);
+                stash.Header = App.Text("FileCM.StashMulti", _selectedUnstaged.Count);
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes");
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                     {
-                        PopupHost.ShowPopup(new StashChanges(_repo, changes, false));
+                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, false));
                     }
                     e.Handled = true;
                 };
@@ -769,7 +632,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await topLevel.StorageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, changes, true, storageFile.Path.LocalPath));
+                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -786,15 +649,15 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public ContextMenu CreateContextMenuForStagedChanges(List<Models.Change> changes)
+        public ContextMenu CreateContextMenuForStagedChanges()
         {
-            if (changes.Count == 0)
+            if (_selectedStaged.Count == 0)
                 return null;
 
             var menu = new ContextMenu();
-            if (changes.Count == 1)
+            if (_selectedStaged.Count == 1)
             {
-                var change = changes[0];
+                var change = _selectedStaged[0];
                 var path = Path.GetFullPath(Path.Combine(_repo.FullPath, change.Path));
 
                 var explore = new MenuItem();
@@ -822,7 +685,7 @@ namespace SourceGit.ViewModels
                 unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
                 unstage.Click += (o, e) =>
                 {
-                    UnstageChanges(changes);
+                    UnstageChanges(_selectedStaged);
                     e.Handled = true;
                 };
 
@@ -831,7 +694,7 @@ namespace SourceGit.ViewModels
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
                 discard.Click += (_, e) =>
                 {
-                    Discard(changes, false);
+                    Discard(_selectedStaged, false);
                     e.Handled = true;
                 };
 
@@ -842,7 +705,7 @@ namespace SourceGit.ViewModels
                 {
                     if (PopupHost.CanCreatePopup())
                     {
-                        PopupHost.ShowPopup(new StashChanges(_repo, changes, false));
+                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, false));
                     }
                     e.Handled = true;
                 };
@@ -864,7 +727,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await topLevel.StorageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, changes, false, storageFile.Path.LocalPath));
+                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -894,31 +757,31 @@ namespace SourceGit.ViewModels
             else
             {
                 var unstage = new MenuItem();
-                unstage.Header = App.Text("FileCM.UnstageMulti", changes.Count);
+                unstage.Header = App.Text("FileCM.UnstageMulti", _selectedStaged.Count);
                 unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
                 unstage.Click += (o, e) =>
                 {
-                    UnstageChanges(changes);
+                    UnstageChanges(_selectedStaged);
                     e.Handled = true;
                 };
 
                 var discard = new MenuItem();
-                discard.Header = App.Text("FileCM.DiscardMulti", changes.Count);
+                discard.Header = App.Text("FileCM.DiscardMulti", _selectedStaged.Count);
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
                 discard.Click += (_, e) =>
                 {
-                    Discard(changes, false);
+                    Discard(_selectedStaged, false);
                     e.Handled = true;
                 };
 
                 var stash = new MenuItem();
-                stash.Header = App.Text("FileCM.StashMulti", changes.Count);
+                stash.Header = App.Text("FileCM.StashMulti", _selectedStaged.Count);
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes");
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                     {
-                        PopupHost.ShowPopup(new StashChanges(_repo, changes, false));
+                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, false));
                     }
                     e.Handled = true;
                 };
@@ -940,7 +803,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await topLevel.StorageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, changes, false, storageFile.Path.LocalPath));
+                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -993,6 +856,139 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        private void SetDetail(Models.Change change)
+        {
+            if (_isLoadingData)
+                return;
+
+            var isUnstaged = _selectedUnstaged != null && _selectedUnstaged.Count > 0;
+            if (change == null)
+            {
+                DetailContext = null;
+            }
+            else if (change.IsConflit && isUnstaged)
+            {
+                DetailContext = new ConflictContext(_repo.FullPath, change);
+            }
+            else
+            {
+                if (_detailContext is DiffContext previous)
+                {
+                    DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), previous);
+                }
+                else
+                {
+                    DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged));
+                }
+            }
+        }
+
+        private async void UseTheirs(List<Models.Change> changes)
+        {
+            var files = new List<string>();
+            foreach (var change in changes)
+            {
+                if (change.IsConflit)
+                    files.Add(change.Path);
+            }
+
+            _repo.SetWatcherEnabled(false);
+            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseTheirs(files));
+            if (succ)
+            {
+                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
+            }
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
+        }
+
+        private async void UseMine(List<Models.Change> changes)
+        {
+            var files = new List<string>();
+            foreach (var change in changes)
+            {
+                if (change.IsConflit)
+                    files.Add(change.Path);
+            }
+
+            _repo.SetWatcherEnabled(false);
+            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseMine(files));
+            if (succ)
+            {
+                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
+            }
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
+        }
+
+        private async void UseExternalMergeTool(Models.Change change)
+        {
+            var type = Preference.Instance.ExternalMergeToolType;
+            var exec = Preference.Instance.ExternalMergeToolPath;
+
+            var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
+            if (tool == null)
+            {
+                App.RaiseException(_repo.FullPath, "Invalid merge tool in preference setting!");
+                return;
+            }
+
+            var args = tool.Type != 0 ? tool.Cmd : Preference.Instance.ExternalMergeToolCmd;
+
+            _repo.SetWatcherEnabled(false);
+            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, exec, args, change.Path));
+            _repo.SetWatcherEnabled(true);
+        }
+
+        private void DoCommit(bool autoPush)
+        {
+            if (!PopupHost.CanCreatePopup())
+            {
+                App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
+                return;
+            }
+
+            if (_staged.Count == 0)
+            {
+                App.RaiseException(_repo.FullPath, "No files added to commit!");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(_commitMessage))
+            {
+                App.RaiseException(_repo.FullPath, "Commit without message is NOT allowed!");
+                return;
+            }
+
+            PushCommitMessage();
+
+            SetDetail(null);
+            IsCommitting = true;
+            _repo.SetWatcherEnabled(false);
+
+            Task.Run(() =>
+            {
+                var succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend).Exec();
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (succ)
+                    {
+                        CommitMessage = string.Empty;
+                        UseAmend = false;
+
+                        if (autoPush)
+                        {
+                            PopupHost.ShowAndStartPopup(new Push(_repo, null));
+                        }
+                    }
+                    _repo.MarkWorkingCopyDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+
+                    IsCommitting = false;
+                });
+            });
+        }
+
         private void PushCommitMessage()
         {
             var existIdx = _repo.CommitMessages.IndexOf(CommitMessage);
@@ -1022,13 +1018,9 @@ namespace SourceGit.ViewModels
         private bool _useAmend = false;
         private List<Models.Change> _unstaged = null;
         private List<Models.Change> _staged = null;
-        private Models.Change _selectedUnstagedChange = null;
-        private Models.Change _selectedStagedChange = null;
+        private List<Models.Change> _selectedUnstaged = null;
+        private List<Models.Change> _selectedStaged = null;
         private int _count = 0;
-        private List<FileTreeNode> _unstagedTree = null;
-        private List<FileTreeNode> _stagedTree = null;
-        private FileTreeNode _selectedUnstagedTreeNode = null;
-        private FileTreeNode _selectedStagedTreeNode = null;
         private object _detailContext = null;
         private string _commitMessage = string.Empty;
     }

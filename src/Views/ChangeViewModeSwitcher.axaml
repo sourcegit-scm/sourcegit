@@ -14,17 +14,17 @@
       <MenuFlyout Placement="BottomEdgeAlignedLeft">
         <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.List}" Command="{Binding SwitchMode}" CommandParameter="{x:Static m:ChangeViewMode.List}">
           <MenuItem.Icon>
-            <Path Width="12" Height="12" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.List}"/>
+            <Path Width="12" Height="12" Data="{StaticResource Icons.List}"/>
           </MenuItem.Icon>
         </MenuItem>
         <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Grid}" Command="{Binding SwitchMode}" CommandParameter="{x:Static m:ChangeViewMode.Grid}">
           <MenuItem.Icon>
-            <Path Width="12" Height="12" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Grid}"/>
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Grid}"/>
           </MenuItem.Icon>
         </MenuItem>
         <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Tree}" Command="{Binding SwitchMode}" CommandParameter="{x:Static m:ChangeViewMode.Tree}">
           <MenuItem.Icon>
-            <Path Width="12" Height="12" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Tree}"/>
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Tree}"/>
           </MenuItem.Icon>
         </MenuItem>
       </MenuFlyout>

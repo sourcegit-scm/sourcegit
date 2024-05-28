@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 
 namespace SourceGit.Views
@@ -9,38 +10,16 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid datagrid && datagrid.IsVisible && datagrid.SelectedItem != null)
+            if (DataContext is ViewModels.CommitDetail vm)
             {
-                datagrid.ScrollIntoView(datagrid.SelectedItem, null);
-            }
-            e.Handled = true;
-        }
-
-        private void OnDataGridContextRequested(object sender, ContextRequestedEventArgs e)
-        {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null)
-            {
-                var detail = DataContext as ViewModels.CommitDetail;
-                var menu = detail.CreateChangeContextMenu(datagrid.SelectedItem as Models.Change);
-                datagrid.OpenContextMenu(menu);
-            }
-
-            e.Handled = true;
-        }
-
-        private void OnTreeViewContextRequested(object sender, ContextRequestedEventArgs e)
-        {
-            if (sender is TreeView view && view.SelectedItem != null)
-            {
-                var detail = DataContext as ViewModels.CommitDetail;
-                var node = view.SelectedItem as ViewModels.FileTreeNode;
-                if (node != null && !node.IsFolder)
+                var selected = (sender as ChangeCollectionView)?.SelectedChanges;
+                if (selected != null && selected.Count == 1)
                 {
-                    var menu = detail.CreateChangeContextMenu(node.Backend as Models.Change);
-                    view.OpenContextMenu(menu);
-                }
+                    var menu = vm.CreateChangeContextMenu(selected[0]);
+                    (sender as Control)?.OpenContextMenu(menu);
+                }                
             }
 
             e.Handled = true;

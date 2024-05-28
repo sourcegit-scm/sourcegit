@@ -10,38 +10,12 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid datagrid && datagrid.IsVisible)
+            if (DataContext is ViewModels.RevisionCompare vm && sender is ChangeCollectionView view)
             {
-                datagrid.ScrollIntoView(datagrid.SelectedItem, null);
-            }
-            e.Handled = true;
-        }
-
-        private void OnDataGridContextRequested(object sender, ContextRequestedEventArgs e)
-        {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null)
-            {
-                var compare = DataContext as ViewModels.RevisionCompare;
-                var menu = compare.CreateChangeContextMenu(datagrid.SelectedItem as Models.Change);
-                datagrid.OpenContextMenu(menu);
-            }
-
-            e.Handled = true;
-        }
-
-        private void OnTreeViewContextRequested(object sender, ContextRequestedEventArgs e)
-        {
-            if (sender is TreeView view && view.SelectedItem != null)
-            {
-                var compare = DataContext as ViewModels.RevisionCompare;
-                var node = view.SelectedItem as ViewModels.FileTreeNode;
-                if (node != null && !node.IsFolder)
-                {
-                    var menu = compare.CreateChangeContextMenu(node.Backend as Models.Change);
-                    view.OpenContextMenu(menu);
-                }
+                var menu = vm.CreateChangeContextMenu();
+                view.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -49,11 +23,8 @@ namespace SourceGit.Views
 
         private void OnPressedSHA(object sender, PointerPressedEventArgs e)
         {
-            if (sender is TextBlock block)
-            {
-                var compare = DataContext as ViewModels.RevisionCompare;
-                compare.NavigateTo(block.Text);
-            }
+            if (DataContext is ViewModels.RevisionCompare vm && sender is TextBlock block)
+                vm.NavigateTo(block.Text);
 
             e.Handled = true;
         }

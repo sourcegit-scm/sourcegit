@@ -1075,4 +1075,58 @@
   <Style Selector="TreeViewItem[IsExpanded=False] Path.folder_icon">
     <Setter Property="Data" Value="{StaticResource Icons.Folder.Fill}"/>
   </Style>
+
+  <Style Selector="TreeDataGrid">
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="RootBorder"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}">
+          <DockPanel>
+            <ScrollViewer Name="PART_HeaderScrollViewer"
+                          DockPanel.Dock="Top"
+                          IsVisible="{TemplateBinding ShowColumnHeaders}"
+                          HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Disabled"
+                          BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}">
+              <Border x:Name="ColumnHeadersPresenterBorder">
+                <TreeDataGridColumnHeadersPresenter Name="PART_ColumnHeadersPresenter"
+                                                    ElementFactory="{TemplateBinding ElementFactory}"
+                                                    Items="{TemplateBinding Columns}" />
+              </Border>
+            </ScrollViewer>
+            <ScrollViewer Name="PART_ScrollViewer"
+                          HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                          BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}">
+              <TreeDataGridRowsPresenter Name="PART_RowsPresenter"
+                                         Columns="{TemplateBinding Columns}"
+                                         ElementFactory="{TemplateBinding ElementFactory}"
+                                         Items="{TemplateBinding Rows}" />
+            </ScrollViewer>
+          </DockPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^/template/ Border#ColumnHeadersPresenterBorder">
+      <Setter Property="BorderThickness" Value="0 0 0 1" />
+      <Setter Property="BorderBrush" Value="{DynamicResource TreeDataGridGridLinesBrush}" />
+    </Style>
+  </Style>
+
+  <Style Selector="TreeDataGridColumnHeader">
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="TreeDataGridTextCell TextBlock">
+    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"/>
+  </Style>
+  <Style Selector="TreeDataGridExpanderCell[IsExpanded=True] Path.folder_icon">
+    <Setter Property="Data" Value="{StaticResource Icons.Folder.Open}"/>
+  </Style>
+  <Style Selector="TreeDataGridExpanderCell[IsExpanded=False] Path.folder_icon">
+    <Setter Property="Data" Value="{StaticResource Icons.Folder.Fill}"/>
+  </Style>
 </Styles>
