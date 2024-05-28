@@ -75,6 +75,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SPECS", "SPECS", "{7802CD7A
 		build\resources\rpm\SPECS\build.spec = build\resources\rpm\SPECS\build.spec
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{47ADA48B-96C5-493B-8B9F-F7F41FD52779}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGit.UnitTests", "tests\SourceGit.UnitTests\SourceGit.UnitTests.csproj", "{69B7CE82-849E-4972-B295-9725BBDD9065}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +89,10 @@ Global
 		{2091C34D-4A17-4375-BEF3-4D60BE8113E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2091C34D-4A17-4375-BEF3-4D60BE8113E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2091C34D-4A17-4375-BEF3-4D60BE8113E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69B7CE82-849E-4972-B295-9725BBDD9065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69B7CE82-849E-4972-B295-9725BBDD9065}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69B7CE82-849E-4972-B295-9725BBDD9065}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69B7CE82-849E-4972-B295-9725BBDD9065}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +112,7 @@ Global
 		{F101849D-BDB7-40D4-A516-751150C3CCFC} = {9C2F0CDA-B56E-44A5-94B6-F3EA7AC20CDC}
 		{9BA0B044-0CC9-46F8-B551-204F149BF45D} = {FD384607-ED99-47B7-AF31-FB245841BC92}
 		{7802CD7A-591B-4EDD-96F8-9BF3F61692E4} = {9BA0B044-0CC9-46F8-B551-204F149BF45D}
+		{69B7CE82-849E-4972-B295-9725BBDD9065} = {47ADA48B-96C5-493B-8B9F-F7F41FD52779}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7FF1B9C6-B5BF-4A50-949F-4B407A0E31C9}
