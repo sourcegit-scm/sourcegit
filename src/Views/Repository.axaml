@@ -22,7 +22,7 @@
             <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
           </Button>
 
-          <Button Classes="icon_button" Width="32" Click="OnOpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
+          <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
             <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>
           </Button>
           
@@ -222,7 +222,7 @@
           </TreeView.Styles>
           <TreeView.ItemTemplate>
             <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:BranchTreeNode}">
-              <Grid Height="24" ColumnDefinitions="20,*,Auto,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedLocalBranchNode">
+              <Grid Height="24" ColumnDefinitions="20,*,Auto,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedBranchNode">
                 <Path Grid.Column="0" Classes="folder_icon" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,1,0,0" IsVisible="{Binding IsFolder}"/>
                 <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,2,0,0" Data="{StaticResource Icons.Check}" IsVisible="{Binding IsCurrent}" VerticalAlignment="Center"/>
                 <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}" VerticalAlignment="Center">
@@ -287,7 +287,7 @@
 
           <TreeView.ItemTemplate>
             <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:BranchTreeNode}">
-              <Grid Height="24" ColumnDefinitions="20,*,Auto" Background="Transparent">
+              <Grid Height="24" ColumnDefinitions="20,*,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedBranchNode">
                 <Path Grid.Column="0" Classes="folder_icon" Width="10" Height="10" HorizontalAlignment="Left" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" VerticalAlignment="Center"/>
                 <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,2,0,0" Data="{StaticResource Icons.Remote}" IsVisible="{Binding IsRemote}" VerticalAlignment="Center"/>
                 <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}" VerticalAlignment="Center"/>

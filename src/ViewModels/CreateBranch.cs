@@ -2,14 +2,7 @@
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
-{
-    public enum BeforeCreateBranchAction
-    {
-        StashAndReaply,
-        Discard,
-        DoNothing,
-    }
-    
+{    
     public class CreateBranch : Popup
     {
         [Required(ErrorMessage = "Branch name is required!")]
@@ -27,7 +20,7 @@ namespace SourceGit.ViewModels
             private set;
         }
         
-        public BeforeCreateBranchAction PreAction
+        public Models.DealWithLocalChanges PreAction
         {
             get => _preAction;
             set => SetProperty(ref _preAction, value);
@@ -97,7 +90,7 @@ namespace SourceGit.ViewModels
                     bool needPopStash = false;
                     if (_repo.WorkingCopyChangesCount > 0)
                     {
-                        if (_preAction == BeforeCreateBranchAction.StashAndReaply)
+                        if (_preAction == Models.DealWithLocalChanges.StashAndReaply)
                         {
                             SetProgressDescription("Adding untracked changes...");
                             var succ = new Commands.Add(_repo.FullPath).Exec();
@@ -115,7 +108,7 @@ namespace SourceGit.ViewModels
 
                             needPopStash = true;
                         }
-                        else if (_preAction == BeforeCreateBranchAction.Discard)
+                        else if (_preAction == Models.DealWithLocalChanges.Discard)
                         {
                             SetProgressDescription("Discard local changes...");
                             Commands.Discard.All(_repo.FullPath);
@@ -144,6 +137,6 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private string _name = null;
         private readonly string _baseOnRevision = null;
-        private BeforeCreateBranchAction _preAction = BeforeCreateBranchAction.StashAndReaply;
+        private Models.DealWithLocalChanges _preAction = Models.DealWithLocalChanges.StashAndReaply;
     }
 }

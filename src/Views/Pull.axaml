@@ -5,6 +5,7 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:ac="using:Avalonia.Controls.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.Pull"
              x:DataType="vm:Pull">
@@ -12,7 +13,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Pull.Title}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32" ColumnDefinitions="150,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32" ColumnDefinitions="140,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -58,17 +59,35 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Pull.Into}"/>
       <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-        <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+        <Path Margin="2,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
         <TextBlock Text="{Binding Current.Name}"/>
       </StackPanel>
 
-      <CheckBox Grid.Row="3" Grid.Column="1"
-                Content="{DynamicResource Text.Pull.UseRebase}"
-                IsChecked="{Binding UseRebase, Mode=TwoWay}"/>
+      <TextBlock Grid.Row="3" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Pull.LocalChanges}"/>
+      <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+        <StackPanel.Resources>
+          <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+        </StackPanel.Resources>
+
+        <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.StashAndReply}"
+                     GroupName="LocalChanges"
+                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.StashAndReaply}}"/>
+        <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.Discard}"
+                     GroupName="LocalChanges"
+                     Margin="8,0,0,0"
+                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.Discard}}"/>
+        <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.DoNothing}"
+                     GroupName="LocalChanges"
+                     Margin="8,0,0,0"
+                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.DoNothing}}"/>
+      </StackPanel>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
-                Content="{DynamicResource Text.Pull.AutoStash}"
-                IsChecked="{Binding AutoStash, Mode=TwoWay}"/>
+                Content="{DynamicResource Text.Pull.UseRebase}"
+                IsChecked="{Binding UseRebase, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>
