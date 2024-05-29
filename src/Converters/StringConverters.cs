@@ -87,7 +87,7 @@ namespace SourceGit.Converters
                 return true;
             });
 
-        [GeneratedRegex(@"^[\s\w]*(\d+)\.(\d+)\.(\d+).*$")]
+        [GeneratedRegex(@"^[\s\w]*(\d+)\.(\d+)[\.\-](\d+).*$")]
         private static partial Regex REG_GIT_VERSION();
 
         private static readonly Version MINIMAL_GIT_VERSION = new Version(2, 23, 0);
