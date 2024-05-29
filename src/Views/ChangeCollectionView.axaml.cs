@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -110,11 +109,9 @@ namespace SourceGit.Views
                 };
 
                 var selection = new Models.TreeDataGridSelectionModel<ViewModels.FileTreeNode>(source, x => x.Children);
+                selection.SingleSelect = SingleSelect;
                 selection.RowDoubleTapped += (_, e) => RaiseEvent(new RoutedEventArgs(ChangeDoubleTappedEvent));
-
-                source.Selection = selection;
-                source.RowSelection.SingleSelect = SingleSelect;
-                source.RowSelection.SelectionChanged += (s, _) =>
+                selection.SelectionChanged += (s, _) =>
                 {
                     if (!_isSelecting && s is Models.TreeDataGridSelectionModel<ViewModels.FileTreeNode> model)
                     {
@@ -128,6 +125,7 @@ namespace SourceGit.Views
                     }
                 };
 
+                source.Selection = selection;
                 tree.Source = source;
             }
             else if (viewMode == Models.ChangeViewMode.List)
@@ -138,11 +136,9 @@ namespace SourceGit.Views
                 };
 
                 var selection = new Models.TreeDataGridSelectionModel<Models.Change>(source, null);
+                selection.SingleSelect = SingleSelect;
                 selection.RowDoubleTapped += (_, e) => RaiseEvent(new RoutedEventArgs(ChangeDoubleTappedEvent));
-
-                source.Selection = selection;
-                source.RowSelection.SingleSelect = SingleSelect;
-                source.RowSelection.SelectionChanged += (s, _) =>
+                selection.SelectionChanged += (s, _) =>
                 {
                     if (!_isSelecting && s is Models.TreeDataGridSelectionModel<Models.Change> model)
                     {
@@ -156,6 +152,7 @@ namespace SourceGit.Views
                     }
                 };
 
+                source.Selection = selection;
                 tree.Source = source;
             }
             else
@@ -170,11 +167,9 @@ namespace SourceGit.Views
                 };
 
                 var selection = new Models.TreeDataGridSelectionModel<Models.Change>(source, null);
+                selection.SingleSelect = SingleSelect;
                 selection.RowDoubleTapped += (_, e) => RaiseEvent(new RoutedEventArgs(ChangeDoubleTappedEvent));
-
-                source.Selection = selection;
-                source.RowSelection.SingleSelect = SingleSelect;                    
-                source.RowSelection.SelectionChanged += (s, _) =>
+                selection.SelectionChanged += (s, _) =>
                 {
                     if (!_isSelecting && s is Models.TreeDataGridSelectionModel<Models.Change> model)
                     {
@@ -188,6 +183,7 @@ namespace SourceGit.Views
                     }
                 };
 
+                source.Selection = selection;
                 tree.Source = source;
             }
         }
