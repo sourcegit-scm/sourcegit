@@ -513,13 +513,6 @@ namespace SourceGit.ViewModels
 
             var selection = new Models.TreeDataGridSelectionModel<FileTreeNode>(source, x => x.Children);
             selection.SingleSelect = true;
-            selection.RowDoubleTapped += (s, e) =>
-            {
-                var model = s as Models.TreeDataGridSelectionModel<FileTreeNode>;
-                var node = model.SelectedItem;
-                if (node != null && node.IsFolder)
-                    node.IsExpanded = !node.IsExpanded;
-            };
             selection.SelectionChanged += (s, _) =>
             {
                 if (s is Models.TreeDataGridSelectionModel<FileTreeNode> selection)
