@@ -17,12 +17,15 @@
         <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Info}"/>
       </TabItem.Header>
 
-      <Grid RowDefinitions="Auto,*">
+      <Grid RowDefinitions="Auto,1,*">
         <!-- Base Information -->
         <v:CommitBaseInfo Grid.Row="0" Content="{Binding Commit}"/>
 
+        <!-- Line -->
+        <Rectangle Grid.Row="1" Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
+
         <!-- Change List -->
-        <v:ChangeCollectionView Grid.Row="1"
+        <v:ChangeCollectionView Grid.Row="2"
                                 Margin="72,0,8,0"
                                 IsWorkingCopy="False"
                                 ViewMode="List"

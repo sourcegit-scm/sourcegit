@@ -582,6 +582,12 @@ namespace SourceGit.Models
         public string New { get; set; } = string.Empty;
     }
 
+    public class SubmoduleDiff
+    {
+        public Commit Old { get; set; } = null;
+        public Commit New { get; set; } = null;
+    }
+
     public class DiffResult
     {
         public bool IsBinary { get; set; } = false;

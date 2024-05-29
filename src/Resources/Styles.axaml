@@ -72,7 +72,7 @@
   <Style Selector="TextBlock.italic">
     <Setter Property="FontStyle" Value="Italic"/>
   </Style>
-  <Style Selector="TextBlock.monospace">
+  <Style Selector="TextBlock.monospace, SelectableTextBlock.monospace">
     <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"/>
   </Style>
   <Style Selector="TextBlock.group_header_label">
