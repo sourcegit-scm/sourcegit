@@ -308,6 +308,7 @@
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">用户名</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">默认GIT用户名</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git 版本</x:String>
+  <x:String x:Key="Text.Preference.Git.VersionUnderRecommend" xml:space="preserve">Git 版本为空或低于推荐的2.23.0，可能出现异常</x:String>
   <x:String x:Key="Text.Preference.GPG" xml:space="preserve">GPG签名</x:String>
   <x:String x:Key="Text.Preference.GPG.Enabled" xml:space="preserve">启用提交签名</x:String>
   <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">可执行文件位置</x:String>

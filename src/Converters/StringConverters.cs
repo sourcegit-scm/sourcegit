@@ -69,5 +69,22 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<string, string> ToShortSHA =
             new FuncValueConverter<string, string>(v => v.Length > 10 ? v.Substring(0, 10) : v);
+        
+        public static readonly FuncValueConverter<string, bool> UnderRecommendGitVersion =
+            new(v =>
+            {
+                if (string.IsNullOrEmpty(v))
+                    return true;
+                var versionParts = v.Split(new[] { '.', '-' }, StringSplitOptions.RemoveEmptyEntries);
+                if (versionParts.Length < 3)
+                    return true;
+                if (!int.TryParse(versionParts[0], out var major) ||
+                    !int.TryParse(versionParts[1], out var minor) ||
+                    !int.TryParse(versionParts[2], out var build))
+                    return true;
+                var gitVersion = new Version(major, minor, build);
+                var targetVersion = new Version(2, 23, 0);
+                return gitVersion < targetVersion;
+            });
     }
 }

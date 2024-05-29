@@ -45,6 +45,15 @@ namespace SourceGit.Views
             set;
         }
 
+        public static readonly StyledProperty<string> GitVersionProperty =
+            AvaloniaProperty.Register<Preference, string>(nameof(GitVersion));
+
+        public string GitVersion
+        {
+            get => GetValue(GitVersionProperty);
+            set => SetValue(GitVersionProperty, value);
+        }
+
         public bool EnableGPGSigning
         {
             get;
@@ -140,7 +149,7 @@ namespace SourceGit.Views
             }
 
             InitializeComponent();
-            txtVersion.Text = ver;
+            GitVersion = ver;
         }
 
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
@@ -189,7 +198,7 @@ namespace SourceGit.Views
             if (selected.Count == 1)
             {
                 ViewModels.Preference.Instance.GitInstallPath = selected[0].Path.LocalPath;
-                txtVersion.Text = new Commands.Version().Query();
+                GitVersion = new Commands.Version().Query();
             }
 
             e.Handled = true;
