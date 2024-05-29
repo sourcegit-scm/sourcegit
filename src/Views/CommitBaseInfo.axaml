@@ -111,9 +111,6 @@
             <SelectableTextBlock Text="{Binding FullMessage}" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" TextWrapping="Wrap"/>
           </ScrollViewer>
         </Grid>
-
-        <!-- Line -->
-        <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
       </StackPanel>
     </DataTemplate>
   </UserControl.DataTemplates>
