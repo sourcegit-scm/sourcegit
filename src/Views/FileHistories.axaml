@@ -86,7 +86,7 @@
                     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
                       <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                       <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                      <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand"/>
+                      <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
                       <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                     </Grid>
 
