@@ -60,6 +60,12 @@
       </Animation>
     </Style.Animations>
   </Style>
+  <Style Selector="Path.change_mode_switcher_icon">
+    <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+  </Style>
+  <Style Selector="Button:pointerover Path.change_mode_switcher_icon">
+    <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+  </Style>
 
   <Style Selector="TextBlock">
     <Setter Property="HorizontalAlignment" Value="Left"/>
