@@ -63,7 +63,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnOpenWithExternalTools(object sender, RoutedEventArgs e)
+        private void OpenWithExternalTools(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
@@ -71,6 +71,58 @@ namespace SourceGit.Views
                 button.OpenContextMenu(menu);
                 e.Handled = true;
             }
+        }
+
+        private void OpenGitFlowMenu(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                var menu = repo.CreateContextMenuForGitFlow();
+                (sender as Control)?.OpenContextMenu(menu);
+            }
+
+            e.Handled = true;
+        }
+
+        private async void OpenStatistics(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                var dialog = new Statistics() { DataContext = new ViewModels.Statistics(repo.FullPath) };
+                await dialog.ShowDialog(TopLevel.GetTopLevel(this) as Window);
+                e.Handled = true;
+            }
+        }
+
+        private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            var grid = sender as Grid;
+            if (e.Property == IsVisibleProperty && grid.IsVisible)
+                txtSearchCommitsBox.Focus();
+        }
+
+        private void OnSearchKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (DataContext is ViewModels.Repository repo)
+                    repo.StartSearchCommits();
+
+                e.Handled = true;
+            }
+        }
+
+        private void OnSearchResultDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is DataGrid datagrid && datagrid.SelectedItem != null)
+            {
+                if (DataContext is ViewModels.Repository repo)
+                {
+                    var commit = datagrid.SelectedItem as Models.Commit;
+                    repo.NavigateToCommit(commit.SHA);
+                }
+            }
+            e.Handled = true;
         }
 
         private void OnLocalBranchTreeSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -113,74 +165,6 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTagDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null)
-            {
-                localBranchTree.UnselectAll();
-                remoteBranchTree.UnselectAll();
-
-                var tag = datagrid.SelectedItem as Models.Tag;
-                if (DataContext is ViewModels.Repository repo)
-                    repo.NavigateToCommit(tag.SHA);
-            }
-        }
-
-        private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            var grid = sender as Grid;
-            if (e.Property == IsVisibleProperty && grid.IsVisible)
-                txtSearchCommitsBox.Focus();
-        }
-
-        private void OnSearchKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                if (DataContext is ViewModels.Repository repo)
-                    repo.StartSearchCommits();
-
-                e.Handled = true;
-            }
-        }
-
-        private void OnSearchResultDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null)
-            {
-                if (DataContext is ViewModels.Repository repo)
-                {
-                    var commit = datagrid.SelectedItem as Models.Commit;
-                    repo.NavigateToCommit(commit.SHA);
-                }
-            }
-            e.Handled = true;
-        }
-
-        private void OnToggleFilter(object sender, RoutedEventArgs e)
-        {
-            if (sender is ToggleButton toggle)
-            {
-                var filter = string.Empty;
-                if (toggle.DataContext is ViewModels.BranchTreeNode node)
-                {
-                    if (node.IsBranch)
-                        filter = (node.Backend as Models.Branch).FullName;
-                }
-                else if (toggle.DataContext is Models.Tag tag)
-                {
-                    filter = tag.Name;
-                }
-
-                if (!string.IsNullOrEmpty(filter) && DataContext is ViewModels.Repository repo)
-                {
-                    repo.UpdateFilter(filter, toggle.IsChecked == true);
-                }
-            }
-
-            e.Handled = true;
-        }
-
         private void OnLocalBranchContextMenuRequested(object sender, ContextRequestedEventArgs e)
         {
             remoteBranchTree.UnselectAll();
@@ -193,11 +177,11 @@ namespace SourceGit.Views
                 e.Handled = true;
                 return;
             }
-            
+
             var branches = new List<Models.Branch>();
             foreach (var item in tree.SelectedItems)
                 CollectBranchesFromNode(branches, item as ViewModels.BranchTreeNode);
-            
+
             if (branches.Count == 1)
             {
                 var item = (e.Source as Control)?.FindAncestorOfType<TreeViewItem>(true);
@@ -229,7 +213,7 @@ namespace SourceGit.Views
         {
             localBranchTree.UnselectAll();
             tagsList.SelectedItem = null;
-            
+
             var repo = DataContext as ViewModels.Repository;
             var tree = sender as TreeView;
             if (tree.SelectedItems.Count == 0)
@@ -249,12 +233,12 @@ namespace SourceGit.Views
                         var menu = repo.CreateContextMenuForRemote(node.Backend as Models.Remote);
                         item.OpenContextMenu(menu);
                     }
-                    
+
                     e.Handled = true;
                     return;
                 }
             }
-            
+
             var branches = new List<Models.Branch>();
             foreach (var item in tree.SelectedItems)
                 CollectBranchesFromNode(branches, item as ViewModels.BranchTreeNode);
@@ -286,6 +270,39 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnDoubleTappedBranchNode(object sender, TappedEventArgs e)
+        {
+            if (!ViewModels.PopupHost.CanCreatePopup())
+                return;
+
+            if (sender is Grid grid && DataContext is ViewModels.Repository repo)
+            {
+                var node = grid.DataContext as ViewModels.BranchTreeNode;
+                if (node != null && node.IsBranch)
+                {
+                    var branch = node.Backend as Models.Branch;
+                    if (branch.IsCurrent)
+                        return;
+
+                    repo.CheckoutBranch(branch);
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void OnTagDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is DataGrid datagrid && datagrid.SelectedItem != null)
+            {
+                localBranchTree.UnselectAll();
+                remoteBranchTree.UnselectAll();
+
+                var tag = datagrid.SelectedItem as Models.Tag;
+                if (DataContext is ViewModels.Repository repo)
+                    repo.NavigateToCommit(tag.SHA);
+            }
+        }
+
         private void OnTagContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
@@ -293,6 +310,30 @@ namespace SourceGit.Views
                 var tag = datagrid.SelectedItem as Models.Tag;
                 var menu = repo.CreateContextMenuForTag(tag);
                 datagrid.OpenContextMenu(menu);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnToggleFilter(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton toggle)
+            {
+                var filter = string.Empty;
+                if (toggle.DataContext is ViewModels.BranchTreeNode node)
+                {
+                    if (node.IsBranch)
+                        filter = (node.Backend as Models.Branch).FullName;
+                }
+                else if (toggle.DataContext is Models.Tag tag)
+                {
+                    filter = tag.Name;
+                }
+
+                if (!string.IsNullOrEmpty(filter) && DataContext is ViewModels.Repository repo)
+                {
+                    repo.UpdateFilter(filter, toggle.IsChecked == true);
+                }
             }
 
             e.Handled = true;
@@ -310,17 +351,6 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OpenGitFlowMenu(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-            {
-                var menu = repo.CreateContextMenuForGitFlow();
-                (sender as Control)?.OpenContextMenu(menu);
-            }
-
-            e.Handled = true;
-        }
-
         private async void UpdateSubmodules(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
@@ -333,36 +363,6 @@ namespace SourceGit.Views
             }
 
             e.Handled = true;
-        }
-
-        private void OnDoubleTappedLocalBranchNode(object sender, TappedEventArgs e)
-        {
-            if (!ViewModels.PopupHost.CanCreatePopup())
-                return;
-
-            if (sender is Grid grid && DataContext is ViewModels.Repository repo)
-            {
-                var node = grid.DataContext as ViewModels.BranchTreeNode;
-                if (node != null && node.IsBranch)
-                {
-                    var branch = node.Backend as Models.Branch;
-                    if (branch.IsCurrent)
-                        return;
-
-                    repo.CheckoutLocalBranch(branch.Name);
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private async void OpenStatistics(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-            {
-                var dialog = new Statistics() { DataContext = new ViewModels.Statistics(repo.FullPath) };
-                await dialog.ShowDialog(TopLevel.GetTopLevel(this) as Window);
-                e.Handled = true;
-            }
         }
         
         private void CollectBranchesFromNode(List<Models.Branch> outs, ViewModels.BranchTreeNode node)

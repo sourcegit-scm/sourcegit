@@ -711,17 +711,35 @@ namespace SourceGit.ViewModels
                 PopupHost.ShowPopup(new CreateBranch(this, current));
         }
 
-        public void CheckoutLocalBranch(string branch)
+        public void CheckoutBranch(Models.Branch branch)
         {
             if (!PopupHost.CanCreatePopup())
                 return;
 
-            if (WorkingCopyChangesCount > 0)
-                PopupHost.ShowPopup(new Checkout(this, branch));
+            if (branch.IsLocal)
+            {
+                if (WorkingCopyChangesCount > 0)
+                    PopupHost.ShowPopup(new Checkout(this, branch.Name));
+                else
+                    PopupHost.ShowAndStartPopup(new Checkout(this, branch.Name));
+            }
             else
-                PopupHost.ShowAndStartPopup(new Checkout(this, branch));
+            {
+                foreach (var b in Branches)
+                {
+                    if (b.IsLocal && b.Upstream == branch.FullName)
+                    {
+                        if (!b.IsCurrent)
+                            CheckoutBranch(b);
+
+                        return;
+                    }
+                }
+
+                PopupHost.ShowPopup(new CreateBranch(this, branch));
+            }
         }
-        
+
         public void DeleteMultipleBranches(List<Models.Branch> branches, bool isLocal)
         {
             if (PopupHost.CanCreatePopup())
@@ -880,7 +898,7 @@ namespace SourceGit.ViewModels
                 checkout.Icon = App.CreateMenuIcon("Icons.Check");
                 checkout.Click += (o, e) =>
                 {
-                    CheckoutLocalBranch(branch.Name);
+                    CheckoutBranch(branch);
                     e.Handled = true;
                 };
                 menu.Items.Add(checkout);
@@ -1182,20 +1200,7 @@ namespace SourceGit.ViewModels
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
             checkout.Click += (o, e) =>
             {
-                foreach (var b in Branches)
-                {
-                    if (b.IsLocal && b.Upstream == branch.FullName)
-                    {
-                        if (b.IsCurrent)
-                            return;
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowAndStartPopup(new Checkout(this, b.Name));
-                        return;
-                    }
-                }
-
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new CreateBranch(this, branch));
+                CheckoutBranch(branch);
                 e.Handled = true;
             };
             menu.Items.Add(checkout);

@@ -2,7 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:ac="using:Avalonia.Controls.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Checkout"
              x:DataType="vm:Checkout">
@@ -11,7 +13,7 @@
                Classes="bold"
                Text="{DynamicResource Text.Checkout}"/>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="150,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="140,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -26,12 +28,21 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Checkout.LocalChanges}"/>
       <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReply}"
+        <StackPanel.Resources>
+          <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+        </StackPanel.Resources>
+
+        <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
                      GroupName="LocalChanges"
-                     IsChecked="{Binding AutoStash, Mode=TwoWay}"/>
-        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.Discard}"
+                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.StashAndReaply}}"/>
+        <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"
                      GroupName="LocalChanges"
-                     Margin="8,0,0,0"/>
+                     Margin="8,0,0,0"
+                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.Discard}}"/>
+        <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.DoNothing}"
+                     GroupName="LocalChanges"
+                     Margin="8,0,0,0"
+                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.DoNothing}}"/>
       </StackPanel>
     </Grid>
   </StackPanel>
