@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 using Avalonia.Data.Converters;
 using Avalonia.Styling;
 
 namespace SourceGit.Converters
 {
-    public static class StringConverters
+    public static partial class StringConverters
     {
         public class ToLocaleConverter : IValueConverter
         {
@@ -73,18 +74,22 @@ namespace SourceGit.Converters
         public static readonly FuncValueConverter<string, bool> UnderRecommendGitVersion =
             new(v =>
             {
-                if (string.IsNullOrEmpty(v))
-                    return true;
-                var versionParts = v.Split(new[] { '.', '-' }, StringSplitOptions.RemoveEmptyEntries);
-                if (versionParts.Length < 3)
-                    return true;
-                if (!int.TryParse(versionParts[0], out var major) ||
-                    !int.TryParse(versionParts[1], out var minor) ||
-                    !int.TryParse(versionParts[2], out var build))
-                    return true;
-                var gitVersion = new Version(major, minor, build);
-                var targetVersion = new Version(2, 23, 0);
-                return gitVersion < targetVersion;
+                var match = REG_GIT_VERSION().Match(v ?? "");
+                if (match.Success)
+                {
+                    var major = int.Parse(match.Groups[1].Value);
+                    var minor = int.Parse(match.Groups[2].Value);
+                    var build = int.Parse(match.Groups[3].Value);
+
+                    return new Version(major, minor, build) < MINIMAL_GIT_VERSION;
+                }
+
+                return true;
             });
+
+        [GeneratedRegex(@"^[\s\w]*(\d+)\.(\d+)\.(\d+).*$")]
+        private static partial Regex REG_GIT_VERSION();
+
+        private static readonly Version MINIMAL_GIT_VERSION = new Version(2, 23, 0);
     }
 }
