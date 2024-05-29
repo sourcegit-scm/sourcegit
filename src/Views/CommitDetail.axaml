@@ -25,20 +25,29 @@
         <Rectangle Grid.Row="1" Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
 
         <!-- Change List -->
-        <v:ChangeCollectionView Grid.Row="2"
-                                Margin="72,0,8,0"
-                                IsWorkingCopy="False"
-                                ViewMode="List"
-                                Changes="{Binding Changes}"
-                                SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
-                                ContextRequested="OnChangeListContextRequested"
-                                ChangeDoubleTapped="OnChangeDoubleTapped">
-          <v:ChangeCollectionView.Styles>
-            <Style Selector="TreeDataGrid">
-              <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-            </Style>
-          </v:ChangeCollectionView.Styles>
-        </v:ChangeCollectionView>
+        <Grid Grid.Row="2" ColumnDefinitions="96,*" Margin="0,0,8,0">
+          <TextBlock Grid.Column="0"
+                     Classes="group_header_label" 
+                     Margin="0"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Top"
+                     Text="{DynamicResource Text.CommitDetail.Changes}"/>
+          
+          <v:ChangeCollectionView Grid.Column="1" 
+                                  IsWorkingCopy="False"
+                                  Margin="8,0,0,0"
+                                  ViewMode="List"
+                                  Changes="{Binding Changes}"
+                                  SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
+                                  ContextRequested="OnChangeListContextRequested"
+                                  ChangeDoubleTapped="OnChangeDoubleTapped">
+            <v:ChangeCollectionView.Styles>
+              <Style Selector="TreeDataGrid">
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+              </Style>
+            </v:ChangeCollectionView.Styles>
+          </v:ChangeCollectionView>
+        </Grid>
       </Grid>
     </TabItem>
 
