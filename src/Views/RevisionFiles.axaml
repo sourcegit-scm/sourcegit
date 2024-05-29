@@ -56,6 +56,12 @@
               </Grid>
             </DataTemplate>
           </TreeDataGrid.Resources>
+
+          <TreeDataGrid.Styles>
+            <Style Selector="TreeDataGridExpanderCell" x:DataType="vm:FileTreeNode">
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </TreeDataGrid.Styles>
         </TreeDataGrid>
       </Border>
     </Grid>

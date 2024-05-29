@@ -171,22 +171,27 @@ namespace SourceGit.Models
                 if (!IsSelected(modelIndex))
                 {
                     PointerSelect(sender, row, e);
+                    _pressedPoint = s_InvalidPoint;
                 }
                 else
                 {
                     var point = e.GetCurrentPoint(sender);
                     if (point.Properties.IsRightButtonPressed)
+                    {
+                        _pressedPoint = s_InvalidPoint;
                         return;
+                    }
 
                     if (e.KeyModifiers == KeyModifiers.Control)
                     {
                         Deselect(modelIndex);
                     }
-                    else if (e.ClickCount == 2)
+                    else if (e.ClickCount % 2 == 0)
                     {
                         _rowDoubleTapped?.Invoke(this, e);
+                        e.Handled = true;
                     }
-                    else
+                    else if (sender.RowSelection.Count > 1)
                     {
                         using (BatchUpdate())
                         {
@@ -194,9 +199,9 @@ namespace SourceGit.Models
                             Select(modelIndex);
                         }
                     }
+
+                    _pressedPoint = s_InvalidPoint;
                 }
-                
-                _pressedPoint = s_InvalidPoint;
             }
             else
             {

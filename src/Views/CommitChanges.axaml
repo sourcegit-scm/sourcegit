@@ -50,7 +50,14 @@
                                 ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode}"
                                 Changes="{Binding VisibleChanges}"
                                 SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
-                                ContextRequested="OnChangeContextRequested"/>
+                                ContextRequested="OnChangeContextRequested"
+                                ChangeDoubleTapped="OnChangeDoubleTapped">
+          <v:ChangeCollectionView.Styles>
+            <Style Selector="TreeDataGridExpanderCell" x:DataType="vm:FileTreeNode">
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>
+          </v:ChangeCollectionView.Styles>
+        </v:ChangeCollectionView>
       </Border>
     </Grid>
 
