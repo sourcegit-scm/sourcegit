@@ -251,8 +251,18 @@
                        Text="{DynamicResource Text.Preference.Git.Version}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBlock Grid.Row="1" Grid.Column="1"
-                       x:Name="txtVersion"/>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+              <TextBlock Classes="monospace" 
+                         Margin="0,0,8,0"
+                         Text="{Binding #me.GitVersion}" 
+                         IsVisible="{Binding #me.GitVersion, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+              <Border Background="Transparent"
+                      ToolTip.Tip="{DynamicResource Text.Preference.Git.Invalid}"
+                      IsVisible="{Binding #me.GitVersion, Converter={x:Static c:StringConverters.UnderRecommendGitVersion}}">
+                <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
+              </Border>
+            </StackPanel>
 
             <Border Grid.Row="2" Grid.Column="0"
                     Height="32"

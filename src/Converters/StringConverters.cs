@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 using Avalonia.Data.Converters;
 using Avalonia.Styling;
 
 namespace SourceGit.Converters
 {
-    public static class StringConverters
+    public static partial class StringConverters
     {
         public class ToLocaleConverter : IValueConverter
         {
@@ -69,5 +70,26 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<string, string> ToShortSHA =
             new FuncValueConverter<string, string>(v => v.Length > 10 ? v.Substring(0, 10) : v);
+        
+        public static readonly FuncValueConverter<string, bool> UnderRecommendGitVersion =
+            new(v =>
+            {
+                var match = REG_GIT_VERSION().Match(v ?? "");
+                if (match.Success)
+                {
+                    var major = int.Parse(match.Groups[1].Value);
+                    var minor = int.Parse(match.Groups[2].Value);
+                    var build = int.Parse(match.Groups[3].Value);
+
+                    return new Version(major, minor, build) < MINIMAL_GIT_VERSION;
+                }
+
+                return true;
+            });
+
+        [GeneratedRegex(@"^[\s\w]*(\d+)\.(\d+)[\.\-](\d+).*$")]
+        private static partial Regex REG_GIT_VERSION();
+
+        private static readonly Version MINIMAL_GIT_VERSION = new Version(2, 23, 0);
     }
 }

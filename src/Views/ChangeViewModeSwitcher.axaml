@@ -30,6 +30,6 @@
       </MenuFlyout>
     </Button.Flyout>
 
-    <Path Stretch="Uniform" Fill="{DynamicResource Brush.FG2}" Data="{Binding ViewMode, Converter={x:Static c:ChangeViewModeConverters.ToIcon}}"/>
+    <Path Classes="change_mode_switcher_icon" Stretch="Uniform" Data="{Binding ViewMode, Converter={x:Static c:ChangeViewModeConverters.ToIcon}}"/>
   </Button>
 </UserControl>

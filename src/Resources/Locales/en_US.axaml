@@ -308,6 +308,7 @@
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Global git user name</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git version</x:String>
+  <x:String x:Key="Text.Preference.Git.Invalid" xml:space="preserve">Git (>= 2.23.0) is required by this app</x:String>
   <x:String x:Key="Text.Preference.GPG" xml:space="preserve">GPG SIGNING</x:String>
   <x:String x:Key="Text.Preference.GPG.Enabled" xml:space="preserve">Commit GPG signing</x:String>
   <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">Install Path</x:String>
