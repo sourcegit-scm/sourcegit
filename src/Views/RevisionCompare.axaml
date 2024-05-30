@@ -56,7 +56,9 @@
             </DataTemplate>
 
             <DataTemplate DataType="vm:CompareTargetWorktree">
-              <TextBlock Text="{DynamicResource Text.CurrentWorktree}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="DarkGreen" CornerRadius="4">
+                <TextBlock Text="{DynamicResource Text.Worktree}" Classes="monospace" Margin="4,2"/>
+              </Border>
             </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>

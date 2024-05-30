@@ -487,5 +487,5 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">STAGE ALL</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VIEW ASSUME UNCHANGED</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Right-click the selected file(s), and make your choice to resolve conflicts.</x:String>
-  <x:String x:Key="Text.CurrentWorktree" xml:space="preserve">Current Worktree</x:String>
+  <x:String x:Key="Text.Worktree" xml:space="preserve">WORKTREE</x:String>
 </ResourceDictionary>

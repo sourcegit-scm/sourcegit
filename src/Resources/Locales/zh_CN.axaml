@@ -487,5 +487,5 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">暂存所有</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">查看忽略变更文件</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">请选中冲突文件，打开右键菜单，选择合适的解决方式</x:String>
-  <x:String x:Key="Text.CurrentWorktree" xml:space="preserve">本地工作树</x:String>
+  <x:String x:Key="Text.Worktree" xml:space="preserve">本地工作树</x:String>
 </ResourceDictionary>
