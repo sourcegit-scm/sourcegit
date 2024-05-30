@@ -135,11 +135,8 @@
                      IsHitTestVisible="False"
                      ClipToBounds="True"/>
 
-      <Path Classes="rotating"
-            Width="48" Height="48"
-            Data="{DynamicResource Icons.Loading}"
-            HorizontalAlignment="Center" VerticalAlignment="Center"
-            IsVisible="{Binding IsLoading}"/>
+      <!-- Fix memory leak -->
+      <v:LoadingIcon Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
     </Grid>
 
     <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
