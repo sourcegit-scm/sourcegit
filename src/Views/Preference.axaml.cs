@@ -54,7 +54,19 @@ namespace SourceGit.Views
             set => SetValue(GitVersionProperty, value);
         }
 
-        public bool EnableGPGSigning
+        public bool EnableGPGCommitSigning
+        {
+            get;
+            set;
+        }
+
+        public bool EnableGPGTagSigning
+        {
+            get;
+            set;
+        }
+
+        public Models.GPGFormat GPGFormat
         {
             get;
             set;
@@ -140,8 +152,14 @@ namespace SourceGit.Views
                     GPGUserKey = signingKey;
                 if (config.TryGetValue("core.autocrlf", out var crlf))
                     CRLFMode = Models.CRLFMode.Supported.Find(x => x.Value == crlf);
-                if (config.TryGetValue("commit.gpgsign", out var gpgsign))
-                    EnableGPGSigning = (gpgsign == "true");
+                if (config.TryGetValue("commit.gpgsign", out var gpgCommitSign))
+                    EnableGPGCommitSigning = (gpgCommitSign == "true");
+                if (config.TryGetValue("tag.gpgSign", out var gpgTagSign))
+                    EnableGPGTagSigning = (gpgTagSign == "true");
+                if (config.TryGetValue("gpg.format", out var gpgFormat))
+                    GPGFormat = Models.GPGFormat.Supported.Find(x => x.Value == gpgFormat);
+                else
+                    GPGFormat = Models.GPGFormat.OPENPGP;
                 if (config.TryGetValue("gpg.program", out var gpgProgram))
                     GPGExecutableFile = gpgProgram;
 
@@ -166,7 +184,9 @@ namespace SourceGit.Views
             var oldEmail = config.TryGetValue("user.email", out var email) ? email : string.Empty;
             var oldGPGSignKey = config.TryGetValue("user.signingkey", out var signingKey) ? signingKey : string.Empty;
             var oldCRLF = config.TryGetValue("core.autocrlf", out var crlf) ? crlf : string.Empty;
-            var oldGPGSignEnable = config.TryGetValue("commit.gpgsign", out var gpgsign) ? gpgsign : "false";
+            var oldGPGFormat = config.TryGetValue("gpg.format", out var gpgFormat) ? gpgFormat : Models.GPGFormat.OPENPGP.Value;
+            var oldGPGCommitSignEnable = config.TryGetValue("commit.gpgsign", out var gpgCommitSign) ? gpgCommitSign : "false";
+            var oldGPGTagSignEnable = config.TryGetValue("tag.gpgSign", out var gpgTagSign) ? gpgTagSign : "false";
             var oldGPGExec = config.TryGetValue("gpg.program", out var program) ? program : string.Empty;
 
             if (DefaultUser != oldUser)
@@ -177,8 +197,12 @@ namespace SourceGit.Views
                 cmd.Set("user.signingkey", GPGUserKey);
             if (CRLFMode != null && CRLFMode.Value != oldCRLF)
                 cmd.Set("core.autocrlf", CRLFMode.Value);
-            if (EnableGPGSigning != (oldGPGSignEnable == "true"))
-                cmd.Set("commit.gpgsign", EnableGPGSigning ? "true" : "false");
+            if (EnableGPGCommitSigning != (oldGPGCommitSignEnable == "true"))
+                cmd.Set("commit.gpgsign", EnableGPGCommitSigning ? "true" : "false");
+            if (EnableGPGTagSigning != (oldGPGTagSignEnable == "true"))
+                cmd.Set("tag.gpgSign", EnableGPGTagSigning ? "true" : "false");
+            if (GPGFormat != null && GPGFormat.Value != oldGPGFormat)
+                cmd.Set("gpg.format", GPGFormat.Value);
             if (GPGExecutableFile != oldGPGExec)
                 cmd.Set("gpg.program", GPGExecutableFile);
 
