@@ -5,5 +5,4 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:m="using:SourceGit.Models"
              x:Class="SourceGit.Views.LoadingIcon">
-  <Path x:Name="target" Data="{DynamicResource Icons.Loading}"/>
 </UserControl>
