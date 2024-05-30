@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.PopupRunningStatus"
+             x:Name="me">
+  <StackPanel Orientation="Vertical">
+    <Rectangle Height="1" Margin="-8,0" HorizontalAlignment="Stretch" Fill="{DynamicResource Brush.Border1}" />
+    
+    <StackPanel Orientation="Horizontal" Margin="0,8">
+      <ContentPresenter x:Name="icon" Width="12" Height="12"/>
+      <TextBlock Margin="6,0,0,0" FontSize="14" FontWeight="Bold" Text="{DynamicResource Text.Running}"/>
+    </StackPanel>
+    
+    <TextBlock x:Name="txtDesc"
+               HorizontalAlignment="Stretch"
+               TextWrapping="Wrap"
+               FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}"
+               FontStyle="Italic"
+               Text="{Binding #me.Description}"/>
+    
+    <ProgressBar x:Name="progressBar"
+                 Margin="0,8,0,0"
+                 HorizontalAlignment="Stretch"
+                 Background="{DynamicResource Brush.FG2}" Foreground="{DynamicResource Brush.Accent}"
+                 Minimum="0" Maximum="100"/>
+  </StackPanel>
+</UserControl>

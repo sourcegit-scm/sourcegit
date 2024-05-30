@@ -6,11 +6,19 @@ using Avalonia.Media;
 
 namespace SourceGit.Views
 {
-    public partial class LoadingIcon : UserControl
+    public partial class PopupRunningStatus : UserControl
     {
-        public LoadingIcon()
+        public static readonly StyledProperty<string> DescriptionProperty =
+            AvaloniaProperty.Register<PopupRunningStatus, string>(nameof(Description));
+
+        public string Description
         {
-            IsHitTestVisible = false;
+            get => GetValue(DescriptionProperty);
+            set => SetValue(DescriptionProperty, value);
+        }
+
+        public PopupRunningStatus()
+        {
             InitializeComponent();
         }
 
@@ -18,7 +26,7 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
 
-            if (IsVisible) 
+            if (IsVisible)
                 StartAnim();
         }
 
@@ -37,25 +45,26 @@ namespace SourceGit.Views
                 if (IsVisible)
                     StartAnim();
                 else
-                    StopAnim();                
+                    StopAnim();
             }
         }
 
         private void StartAnim()
         {
-            Content = new Path()
+            icon.Content = new Path()
             {
                 Data = this.FindResource("Icons.Loading") as StreamGeometry,
                 Classes = { "rotating" },
             };
+            progressBar.IsIndeterminate = true;
         }
 
         private void StopAnim()
         {
-            if (Content is Path path)
+            if (icon.Content is Path path)
                 path.Classes.Clear();
-
-            Content = null;
+            icon.Content = null;
+            progressBar.IsIndeterminate = false;
         }
     }
 }

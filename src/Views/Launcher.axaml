@@ -317,23 +317,9 @@
                   </StackPanel>
 
                   <!-- Running -->
-                  <StackPanel Orientation="Vertical" Margin="8" IsVisible="{Binding InProgress}">
-                    <Rectangle Height="1" Margin="-8,0" HorizontalAlignment="Stretch" Fill="{DynamicResource Brush.Border1}" />
-                    <StackPanel Orientation="Horizontal" Margin="0,8">
-                      <Path Width="12" Height="12" Classes="waiting" Data="{StaticResource Icons.Waiting}" IsVisible="{Binding InProgress}"/>
-                      <TextBlock Margin="6,0,0,0" FontSize="14" FontWeight="Bold" Text="{DynamicResource Text.Running}"/>
-                    </StackPanel>
-                    <TextBlock HorizontalAlignment="Stretch"
-                               TextWrapping="Wrap"
-                               FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}"
-                               FontStyle="Italic"
-                               Text="{Binding ProgressDescription}"/>
-                    <ProgressBar Margin="0,8,0,0"
-                                 HorizontalAlignment="Stretch"
-                                 IsIndeterminate="True"
-                                 Background="{DynamicResource Brush.FG2}" Foreground="{DynamicResource Brush.Accent}"
-                                 Minimum="0" Maximum="100"/>
-                  </StackPanel>
+                  <v:PopupRunningStatus Margin="8"
+                                        Description="{Binding ProgressDescription}"
+                                        IsVisible="{Binding InProgress}"/>
                 </StackPanel>
               </Border>
             </DataTemplate>
