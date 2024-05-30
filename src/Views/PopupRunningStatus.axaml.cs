@@ -53,8 +53,8 @@ namespace SourceGit.Views
         {
             icon.Content = new Path()
             {
-                Data = this.FindResource("Icons.Loading") as StreamGeometry,
-                Classes = { "rotating" },
+                Data = this.FindResource("Icons.Waiting") as StreamGeometry,
+                Classes = { "waiting" },
             };
             progressBar.IsIndeterminate = true;
         }
