@@ -24,9 +24,9 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void Remove(object param)
+        public void Remove(string file)
         {
-            if (param is string file)
+            if (!string.IsNullOrEmpty(file))
             {
                 new Commands.AssumeUnchanged(_repo).Remove(file);
                 Files.Remove(file);

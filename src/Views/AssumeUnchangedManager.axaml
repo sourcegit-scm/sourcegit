@@ -92,9 +92,7 @@
           <DataGridTemplateColumn>
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <Button Classes="icon_button"
-                        Command="{Binding $parent[v:AssumeUnchangedManager].DataContext.(vm:AssumeUnchangedManager).Remove}"
-                        CommandParameter="{Binding}">
+                <Button Classes="icon_button" Click="OnRemoveButtonClicked">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Clear}"/>
                 </Button>
               </DataTemplate>

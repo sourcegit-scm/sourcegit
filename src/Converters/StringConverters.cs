@@ -69,7 +69,7 @@ namespace SourceGit.Converters
         public static readonly FormatByResourceKeyConverter FormatByResourceKey = new FormatByResourceKeyConverter();
 
         public static readonly FuncValueConverter<string, string> ToShortSHA =
-            new FuncValueConverter<string, string>(v => v.Length > 10 ? v.Substring(0, 10) : v);
+            new FuncValueConverter<string, string>(v => v == null ? string.Empty : (v.Length > 10 ? v.Substring(0, 10) : v));
         
         public static readonly FuncValueConverter<string, bool> UnderRecommendGitVersion =
             new(v =>

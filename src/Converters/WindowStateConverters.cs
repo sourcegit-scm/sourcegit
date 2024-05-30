@@ -3,7 +3,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
-using Avalonia.Media;
 
 namespace SourceGit.Converters
 {
@@ -36,19 +35,6 @@ namespace SourceGit.Converters
                 else
                 {
                     return new GridLength(38);
-                }
-            });
-
-        public static readonly FuncValueConverter<WindowState, StreamGeometry> ToMaxOrRestoreIcon =
-            new FuncValueConverter<WindowState, StreamGeometry>(state =>
-            {
-                if (state == WindowState.Maximized)
-                {
-                    return Application.Current?.FindResource("Icons.Window.Restore") as StreamGeometry;
-                }
-                else
-                {
-                    return Application.Current?.FindResource("Icons.Window.Maximize") as StreamGeometry;
                 }
             });
 

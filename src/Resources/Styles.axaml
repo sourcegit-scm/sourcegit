@@ -66,6 +66,12 @@
   <Style Selector="Button:pointerover Path.change_mode_switcher_icon">
     <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
   </Style>
+  <Style Selector="Button.max_or_restore_btn Path">
+    <Setter Property="Data" Value="{StaticResource Icons.Window.Maximize}"/>
+  </Style>
+  <Style Selector="Window[WindowState=Maximized] Button.max_or_restore_btn Path">
+    <Setter Property="Data" Value="{StaticResource Icons.Window.Restore}"/>
+  </Style>
 
   <Style Selector="TextBlock">
     <Setter Property="HorizontalAlignment" Value="Left"/>

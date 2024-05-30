@@ -2,6 +2,7 @@
 
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -40,20 +41,21 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void Clone(object param)
+        public void Clone()
         {
-            var launcher = param as Launcher;
-            var page = launcher.ActivePage;
-
             if (!Preference.Instance.IsGitConfigured)
             {
-                App.RaiseException(page.GetId(), App.Text("NotConfigured"));
+                App.RaiseException(string.Empty, App.Text("NotConfigured"));
                 return;
             }
 
             if (PopupHost.CanCreatePopup())
             {
-                PopupHost.ShowPopup(new Clone(launcher, page));
+                if (App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                {
+                    var launcher = desktop.MainWindow.DataContext as Launcher;
+                    PopupHost.ShowPopup(new Clone(launcher));
+                }
             }
         }
 

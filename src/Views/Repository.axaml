@@ -589,7 +589,21 @@
           <Button Grid.Column="3" Classes="flat" FontWeight="Regular" Content="{DynamicResource Text.Repository.Abort}" Height="20" Padding="8,0" Margin="4,0" Command="{Binding AbortMerge}"/>
         </Grid>
 
-        <v:RepositorySubView Grid.Row="1" Data="{Binding SelectedView}"/>
+        <ContentControl Grid.Row="1" Content="{Binding SelectedView}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:Histories">
+              <v:Histories NavigationId="{Binding NavigationId}"/>
+            </DataTemplate>
+
+            <DataTemplate DataType="vm:WorkingCopy">
+              <v:WorkingCopy/>
+            </DataTemplate>
+
+            <DataTemplate DataType="vm:StashesPage">
+              <v:StashesPage/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
       </Grid>
     </Grid>
   </Grid>

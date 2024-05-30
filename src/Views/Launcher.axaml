@@ -166,7 +166,7 @@
                       </ContextMenu>
                     </Border.ContextMenu>
 
-                    <v:LauncherTab UseFixedTabWidth="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+                    <Grid Width="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
                       <Path Grid.Column="0"
                             Width="12" Height="12" Margin="12,0"
                             Fill="{Binding Node.Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
@@ -219,7 +219,7 @@
                           </MultiBinding>
                         </Rectangle.IsVisible>
                       </Rectangle>
-                    </v:LauncherTab>
+                    </Grid>
                   </Border>
                 </DataTemplate>
               </ListBox.ItemTemplate>
@@ -253,7 +253,17 @@
     </Grid>
 
     <!-- Page body -->
-    <v:LauncherBody Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" Data="{Binding ActivePage.Data}"/>
+    <ContentControl Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" Content="{Binding ActivePage.Data}">
+      <ContentControl.DataTemplates>
+        <DataTemplate DataType="vm:Welcome">
+          <v:Welcome/>
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:Repository">
+          <v:Repository/>
+        </DataTemplate>
+      </ContentControl.DataTemplates>
+    </ContentControl>
 
     <!-- Popup container -->
     <Grid Grid.Row="1" Margin="0,36,0,0" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}">

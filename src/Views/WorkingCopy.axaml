@@ -211,14 +211,8 @@
                 Height="28"
                 Margin="8,0,0,0"
                 Padding="8,0"
-                Command="{Binding CommitWithPush}">
-          <Button.IsVisible>
-            <MultiBinding Converter="{x:Static BoolConverters.And}">
-              <Binding Path="$parent[v:Repository].DataContext.(vm:Repository).CanCommitWithPush"/>
-              <Binding Path="!UseAmend"/>
-            </MultiBinding>
-          </Button.IsVisible>
-        </Button>
+                Command="{Binding CommitWithPush}"
+                IsVisible="{Binding IsCommitWithPushVisible}"/>
       </Grid>
     </Grid>
   </Grid>

@@ -7,67 +7,6 @@ using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
-    public class LauncherTab : Grid
-    {
-        public static readonly StyledProperty<bool> UseFixedTabWidthProperty =
-            AvaloniaProperty.Register<LauncherTab, bool>(nameof(UseFixedTabWidth), false);
-
-        public bool UseFixedTabWidth
-        {
-            get => GetValue(UseFixedTabWidthProperty);
-            set => SetValue(UseFixedTabWidthProperty, value);
-        }
-
-        protected override Type StyleKeyOverride => typeof(Grid);
-
-        static LauncherTab()
-        {
-            UseFixedTabWidthProperty.Changed.AddClassHandler<LauncherTab>((tab, ev) =>
-            {
-                tab.Width = tab.UseFixedTabWidth ? 200.0 : double.NaN;
-            });
-        }
-    }
-
-    public class LauncherBody : Border
-    {
-        public static readonly StyledProperty<object> DataProperty =
-            AvaloniaProperty.Register<LauncherBody, object>(nameof(Data), false);
-
-        public object Data
-        {
-            get => GetValue(DataProperty);
-            set => SetValue(DataProperty, value);
-        }
-
-        protected override Type StyleKeyOverride => typeof(Border);
-
-        static LauncherBody()
-        {
-            DataProperty.Changed.AddClassHandler<LauncherBody>((body, ev) =>
-            {
-                var data = body.Data;
-
-                if (data == null)
-                {
-                    body.Child = null;
-                }
-                else if (data is ViewModels.Welcome)
-                {
-                    body.Child = new Welcome { DataContext = data };
-                }
-                else if (data is ViewModels.Repository)
-                {
-                    body.Child = new Repository { DataContext = data };
-                }
-                else
-                {
-                    body.Child = null;
-                }
-            });
-        }
-    }
-
     public partial class Launcher : Window, Models.INotificationReceiver
     {
         public Launcher()

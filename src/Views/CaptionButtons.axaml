@@ -11,8 +11,8 @@
     <Button Classes="caption_button" Click="MinimizeWindow">
       <Path Data="{StaticResource Icons.Window.Minimize}"/>
     </Button>
-    <Button Classes="caption_button" Click="MaximizeOrRestoreWindow">
-      <Path Data="{Binding $parent[Window].WindowState, Converter={x:Static c:WindowStateConverters.ToMaxOrRestoreIcon}}"/>
+    <Button Classes="caption_button max_or_restore_btn" Click="MaximizeOrRestoreWindow">
+      <Path/>
     </Button>
     <Button Classes="caption_button" Click="CloseWindow">
       <Path Data="{StaticResource Icons.Window.Close}" Width="9" Height="9"/>

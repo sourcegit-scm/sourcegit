@@ -159,22 +159,13 @@ namespace SourceGit.ViewModels
         }
 
         [JsonIgnore]
-        public bool CanCommitWithPush
-        {
-            get => _canCommitWithPush;
-            private set => SetProperty(ref _canCommitWithPush, value);
-        }
-
-        [JsonIgnore]
         public bool IncludeUntracked
         {
             get => _includeUntracked;
             set
             {
                 if (SetProperty(ref _includeUntracked, value))
-                {
                     Task.Run(RefreshWorkingCopyChanges);
-                }
             }
         }
 
@@ -567,8 +558,11 @@ namespace SourceGit.ViewModels
                 LocalBranchTrees = builder.Locals;
                 RemoteBranchTrees = builder.Remotes;
 
-                var cur = Branches.Find(x => x.IsCurrent);
-                CanCommitWithPush = cur != null && !string.IsNullOrEmpty(cur.Upstream);
+                if (_workingCopy != null)
+                {
+                    var cur = Branches.Find(x => x.IsCurrent);
+                    _workingCopy.CanCommitWithPush = cur != null && !string.IsNullOrEmpty(cur.Upstream);
+                }
             });
         }
 
@@ -1520,7 +1514,6 @@ namespace SourceGit.ViewModels
         private List<BranchTreeNode> _remoteBranchTrees = new List<BranchTreeNode>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
         private List<string> _submodules = new List<string>();
-        private bool _canCommitWithPush = false;
         private bool _includeUntracked = true;
 
         private InProgressContext _inProgressContext = null;

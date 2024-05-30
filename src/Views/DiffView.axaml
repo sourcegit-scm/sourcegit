@@ -213,7 +213,8 @@
 
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
-            <v:TextDiffView TextDiff="{Binding}" UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>
+            <v:TextDiffView TextDiff="{Binding}"
+                            UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>
           </DataTemplate>
 
           <!-- No or only EOL changes -->

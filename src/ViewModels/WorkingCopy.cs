@@ -37,6 +37,29 @@ namespace SourceGit.ViewModels
 
     public class WorkingCopy : ObservableObject
     {
+        public bool IncludeUntracked
+        {
+            get => _repo.IncludeUntracked;
+            set
+            {
+                if (_repo.IncludeUntracked != value)
+                {
+                    _repo.IncludeUntracked = value;
+                    OnPropertyChanged(nameof(IncludeUntracked));
+                }
+            }
+        }
+
+        public bool CanCommitWithPush
+        {
+            get => _canCommitWithPush;
+            set
+            {
+                if (SetProperty(ref _canCommitWithPush, value))
+                    OnPropertyChanged(nameof(IsCommitWithPushVisible));
+            }
+        }
+
         public bool IsStaging
         {
             get => _isStaging;
@@ -74,7 +97,14 @@ namespace SourceGit.ViewModels
                         CommitMessage = commits[0].FullMessage;
                     }
                 }
+
+                OnPropertyChanged(nameof(IsCommitWithPushVisible));
             }
+        }
+
+        public bool IsCommitWithPushVisible
+        {
+            get => !UseAmend && CanCommitWithPush;
         }
 
         public List<Models.Change> Unstaged
@@ -161,14 +191,31 @@ namespace SourceGit.ViewModels
         public void Cleanup()
         {
             _repo = null;
-            if (_unstaged != null)
-                _unstaged.Clear();
-            if (_staged != null)
-                _staged.Clear();
+
             if (_selectedUnstaged != null)
+            {
                 _selectedUnstaged.Clear();
+                OnPropertyChanged(nameof(SelectedUnstaged));
+            }
+
             if (_selectedStaged != null)
+            {
                 _selectedStaged.Clear();
+                OnPropertyChanged(nameof(SelectedStaged));
+            }
+
+            if (_unstaged != null)
+            {
+                _unstaged.Clear();
+                OnPropertyChanged(nameof(Unstaged));
+            }
+                
+            if (_staged != null)
+            {
+                _staged.Clear();
+                OnPropertyChanged(nameof(Staged));
+            }
+
             _detailContext = null;
             _commitMessage = string.Empty;
         }
@@ -1016,6 +1063,7 @@ namespace SourceGit.ViewModels
         private bool _isUnstaging = false;
         private bool _isCommitting = false;
         private bool _useAmend = false;
+        private bool _canCommitWithPush = false;
         private List<Models.Change> _unstaged = null;
         private List<Models.Change> _staged = null;
         private List<Models.Change> _selectedUnstaged = null;
