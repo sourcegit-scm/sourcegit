@@ -38,7 +38,6 @@
                                   Margin="8,0,0,0"
                                   ViewMode="List"
                                   Changes="{Binding Changes}"
-                                  SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
                                   ContextRequested="OnChangeListContextRequested"
                                   ChangeDoubleTapped="OnChangeDoubleTapped">
             <v:ChangeCollectionView.Styles>
