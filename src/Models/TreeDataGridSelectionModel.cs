@@ -188,7 +188,12 @@ namespace SourceGit.Models
                     }
                     else if (e.ClickCount % 2 == 0)
                     {
-                        _rowDoubleTapped?.Invoke(this, e);
+                        var focus = _source.Rows[row.RowIndex];
+                        if (focus is IExpander expander && HasChildren(focus))
+                            expander.IsExpanded = !expander.IsExpanded;                            
+                        else
+                            _rowDoubleTapped?.Invoke(this, e);
+
                         e.Handled = true;
                     }
                     else if (sender.RowSelection.Count > 1)
@@ -420,7 +425,22 @@ namespace SourceGit.Models
 
         protected override IEnumerable<TModel> GetChildren(TModel node)
         {
+            if (node == null)
+                return null;
+
             return _childrenGetter?.Invoke(node);
+        }
+
+        private bool HasChildren(IRow row)
+        {
+            var children = GetChildren(row.Model as TModel);
+            if (children != null)
+            {
+                foreach (var c in children)
+                    return true;
+            }
+            
+            return false;
         }
     }
 }

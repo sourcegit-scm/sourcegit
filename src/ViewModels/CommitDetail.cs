@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
-using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -77,7 +76,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public HierarchicalTreeDataGridSource<FileTreeNode> RevisionFiles
+        public HierarchicalTreeDataGridSource<Models.FileTreeNode> RevisionFiles
         {
             get => _revisionFiles;
             private set => SetProperty(ref _revisionFiles, value);
@@ -336,7 +335,6 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                var tree = FileTreeNode.Build(visible, true);
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     Changes = changes;
@@ -362,7 +360,7 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                var tree = FileTreeNode.Build(visible, isSearching || visible.Count <= 100);
+                var tree = Models.FileTreeNode.Build(visible, isSearching || visible.Count <= 100);
                 Dispatcher.UIThread.Invoke(() => BuildRevisionFilesSource(tree));
             });
         }
@@ -406,7 +404,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            BuildRevisionFilesSource(FileTreeNode.Build(visible, isSearching || visible.Count < 100));
+            BuildRevisionFilesSource(Models.FileTreeNode.Build(visible, isSearching || visible.Count < 100));
         }
 
         private void RefreshViewRevisionFile(Models.Object file)
@@ -493,29 +491,29 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void BuildRevisionFilesSource(List<FileTreeNode> tree)
+        private void BuildRevisionFilesSource(List<Models.FileTreeNode> tree)
         {
-            var source = new HierarchicalTreeDataGridSource<FileTreeNode>(tree)
+            var source = new HierarchicalTreeDataGridSource<Models.FileTreeNode>(tree)
             {
                 Columns =
                 {
-                    new HierarchicalExpanderColumn<FileTreeNode>(
-                        new TemplateColumn<FileTreeNode>("Icon", "FileTreeNodeExpanderTemplate", null, GridLength.Auto),
+                    new HierarchicalExpanderColumn<Models.FileTreeNode>(
+                        new TemplateColumn<Models.FileTreeNode>("Icon", "FileTreeNodeExpanderTemplate", null, GridLength.Auto),
                         x => x.Children,
                         x => x.Children.Count > 0,
                         x => x.IsExpanded),
-                    new TextColumn<FileTreeNode, string>(
+                    new TextColumn<Models.FileTreeNode, string>(
                         null,
                         x => string.Empty,
                         GridLength.Star)
                 }
             };
 
-            var selection = new Models.TreeDataGridSelectionModel<FileTreeNode>(source, x => x.Children);
+            var selection = new Models.TreeDataGridSelectionModel<Models.FileTreeNode>(source, x => x.Children);
             selection.SingleSelect = true;
             selection.SelectionChanged += (s, _) =>
             {
-                if (s is Models.TreeDataGridSelectionModel<FileTreeNode> selection)
+                if (s is Models.TreeDataGridSelectionModel<Models.FileTreeNode> selection)
                     RefreshViewRevisionFile(selection.SelectedItem?.Backend as Models.Object);
             };
 
@@ -537,7 +535,7 @@ namespace SourceGit.ViewModels
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
         private List<Models.Object> _revisionFilesBackup = null;
-        private HierarchicalTreeDataGridSource<FileTreeNode> _revisionFiles = null;
+        private HierarchicalTreeDataGridSource<Models.FileTreeNode> _revisionFiles = null;
         private string _searchFileFilter = string.Empty;
         private object _viewRevisionFileContent = null;
         private Commands.Command.CancelToken _cancelToken = null;

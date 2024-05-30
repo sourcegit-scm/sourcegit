@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace SourceGit.ViewModels
+namespace SourceGit.Models
 {
-    public class FileTreeNode : ObservableObject
+    public class FileTreeNode
     {
         public string FullPath { get; set; } = string.Empty;
         public bool IsFolder { get; set; } = false;
+        public bool IsExpanded { get; set; } = false;
         public object Backend { get; set; } = null;
         public List<FileTreeNode> Children { get; set; } = new List<FileTreeNode>();
 
-        public bool IsExpanded
-        {
-            get => _isExpanded;
-            set => SetProperty(ref _isExpanded, value);
-        }
-
-        public static List<FileTreeNode> Build(List<Models.Change> changes, bool expanded)
+        public static List<FileTreeNode> Build(List<Change> changes, bool expanded)
         {
             var nodes = new List<FileTreeNode>();
             var folders = new Dictionary<string, FileTreeNode>();
@@ -93,7 +86,7 @@ namespace SourceGit.ViewModels
             return nodes;
         }
 
-        public static List<FileTreeNode> Build(List<Models.Object> files, bool expanded)
+        public static List<FileTreeNode> Build(List<Object> files, bool expanded)
         {
             var nodes = new List<FileTreeNode>();
             var folders = new Dictionary<string, FileTreeNode>();
@@ -168,27 +161,6 @@ namespace SourceGit.ViewModels
             return nodes;
         }
 
-        public static FileTreeNode SelectByPath(List<FileTreeNode> nodes, string path)
-        {
-            foreach (var node in nodes)
-            {
-                if (node.FullPath == path)
-                    return node;
-
-                if (node.IsFolder && path.StartsWith(node.FullPath + "/", StringComparison.Ordinal))
-                {
-                    var foundInChildren = SelectByPath(node.Children, path);
-                    if (foundInChildren != null)
-                    {
-                        node.IsExpanded = true;
-                    }
-                    return foundInChildren;
-                }
-            }
-
-            return null;
-        }
-
         private static void Sort(List<FileTreeNode> nodes)
         {
             nodes.Sort((l, r) =>
@@ -209,7 +181,5 @@ namespace SourceGit.ViewModels
                     Sort(node.Children);
             }
         }
-
-        private bool _isExpanded = true;
     }
 }

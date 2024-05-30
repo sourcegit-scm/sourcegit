@@ -217,7 +217,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.CommitDetail vm && sender is TreeDataGrid tree)
             {
-                var selected = tree.RowSelection.SelectedItem as ViewModels.FileTreeNode;
+                var selected = tree.RowSelection.SelectedItem as Models.FileTreeNode;
                 if (selected != null && !selected.IsFolder && selected.Backend is Models.Object obj)
                 {
                     var menu = vm.CreateRevisionFileContextMenu(obj);

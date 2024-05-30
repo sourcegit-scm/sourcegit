@@ -1123,6 +1123,10 @@
     </Style>
   </Style>
 
+  <Style Selector="TreeDataGridRow">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  
   <Style Selector="TreeDataGridColumnHeader">
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
   </Style>

@@ -99,11 +99,7 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                var tree = FileTreeNode.Build(visible, true);
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    VisibleChanges = visible;
-                });
+                Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
             });
         }
 

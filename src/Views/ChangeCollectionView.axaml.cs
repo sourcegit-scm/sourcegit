@@ -91,29 +91,25 @@ namespace SourceGit.Views
             var viewMode = ViewMode;
             if (viewMode == Models.ChangeViewMode.Tree)
             {
-                var filetree = ViewModels.FileTreeNode.Build(changes, true);
-                var source = new HierarchicalTreeDataGridSource<ViewModels.FileTreeNode>(filetree)
+                var filetree = Models.FileTreeNode.Build(changes, true);
+                var source = new HierarchicalTreeDataGridSource<Models.FileTreeNode>(filetree)
                 {
                     Columns =
                     {
-                        new HierarchicalExpanderColumn<ViewModels.FileTreeNode>(
-                            new TemplateColumn<ViewModels.FileTreeNode>(null, "TreeModeTemplate", null, GridLength.Auto),
+                        new HierarchicalExpanderColumn<Models.FileTreeNode>(
+                            new TemplateColumn<Models.FileTreeNode>(null, "TreeModeTemplate", null, GridLength.Auto),
                             x => x.Children,
                             x => x.Children.Count > 0,
-                            x => x.IsExpanded),
-                        new TextColumn<ViewModels.FileTreeNode, string>(
-                            null,
-                            x => string.Empty,
-                            GridLength.Star)
+                            x => x.IsExpanded)
                     }
                 };
 
-                var selection = new Models.TreeDataGridSelectionModel<ViewModels.FileTreeNode>(source, x => x.Children);
+                var selection = new Models.TreeDataGridSelectionModel<Models.FileTreeNode>(source, x => x.Children);
                 selection.SingleSelect = SingleSelect;
                 selection.RowDoubleTapped += (_, e) => RaiseEvent(new RoutedEventArgs(ChangeDoubleTappedEvent));
                 selection.SelectionChanged += (s, _) =>
                 {
-                    if (!_isSelecting && s is Models.TreeDataGridSelectionModel<ViewModels.FileTreeNode> model)
+                    if (!_isSelecting && s is Models.TreeDataGridSelectionModel<Models.FileTreeNode> model)
                     {
                         var selection = new List<Models.Change>();
                         foreach (var c in model.SelectedItems)
@@ -202,7 +198,7 @@ namespace SourceGit.Views
                 else
                     changeSelection.Select(selected);
             }
-            else if (tree.Source.Selection is Models.TreeDataGridSelectionModel<ViewModels.FileTreeNode> treeSelection)
+            else if (tree.Source.Selection is Models.TreeDataGridSelectionModel<Models.FileTreeNode> treeSelection)
             {
                 if (selected == null || selected.Count == 0)
                 {
@@ -215,9 +211,9 @@ namespace SourceGit.Views
                 foreach (var c in selected)
                     set.Add(c);
 
-                var nodes = new List<ViewModels.FileTreeNode>();
+                var nodes = new List<Models.FileTreeNode>();
                 foreach (var node in tree.Source.Items)
-                    CollectSelectedNodeByChange(nodes, node as ViewModels.FileTreeNode, set);
+                    CollectSelectedNodeByChange(nodes, node as Models.FileTreeNode, set);
 
                 if (nodes.Count == 0)
                 {
@@ -231,7 +227,7 @@ namespace SourceGit.Views
             _isSelecting = false;
         }
 
-        private void CollectChangesInNode(List<Models.Change> outs, ViewModels.FileTreeNode node)
+        private void CollectChangesInNode(List<Models.Change> outs, Models.FileTreeNode node)
         {
             if (node.IsFolder)
             {
@@ -246,7 +242,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void CollectSelectedNodeByChange(List<ViewModels.FileTreeNode> outs, ViewModels.FileTreeNode node, HashSet<object> selected)
+        private void CollectSelectedNodeByChange(List<Models.FileTreeNode> outs, Models.FileTreeNode node, HashSet<object> selected)
         {
             if (node == null)
                 return;

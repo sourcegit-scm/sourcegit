@@ -389,6 +389,7 @@ namespace SourceGit.ViewModels
                 App.RaiseException(_fullpath, "Can NOT found current branch!!!");
                 return;
             }
+
             PopupHost.ShowPopup(new Push(this, null));
         }
 
