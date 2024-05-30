@@ -5,8 +5,8 @@ namespace SourceGit.Commands
 {
     public class QueryCommits : Command
     {
-        private const string GPGSIG_START = "gpgsig -----BEGIN PGP SIGNATURE-----";
-        private const string GPGSIG_END = " -----END PGP SIGNATURE-----";
+        private const string GPGSIG_START = "gpgsig -----BEGIN ";
+        private const string GPGSIG_END = " -----END ";
 
         private readonly List<Models.Commit> commits = new List<Models.Commit>();
         private Models.Commit current = null;
