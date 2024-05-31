@@ -98,6 +98,11 @@ namespace SourceGit.Views
             set => SetValue(DotBrushProperty, value);
         }
 
+        static CommitGraph()
+        {
+            AffectsRender<CommitGraph>(GraphProperty, DotBrushProperty);
+        }
+
         public override void Render(DrawingContext context)
         {
             base.Render(context);
