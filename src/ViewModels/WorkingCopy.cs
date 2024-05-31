@@ -420,6 +420,11 @@ namespace SourceGit.ViewModels
             DoCommit(true);
         }
 
+        public void ClearAllChanges()
+        {
+            Discard(_unstaged, true);
+        }
+
         public ContextMenu CreateContextMenuForUnstagedChanges()
         {
             if (_selectedUnstaged.Count == 0)
