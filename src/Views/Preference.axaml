@@ -438,7 +438,7 @@
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #me.GPGExecutableFile, Mode=TwoWay}"
-                     IsEnabled="{Binding #me.GPGFormat, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:GPGFormat.OPENPGP}}">
+                     IsEnabled="{Binding #me.GPGFormat, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:GPGFormat.OPENPGP}}">
               <TextBox.InnerRightContent>
                 <Button Classes="icon_button" Width="30" Height="30" Click="SelectGPGExecutable">
                   <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>

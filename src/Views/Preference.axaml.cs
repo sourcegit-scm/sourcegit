@@ -66,10 +66,13 @@ namespace SourceGit.Views
             set;
         }
 
+        public static readonly StyledProperty<Models.GPGFormat> GPGFormatProperty =
+            AvaloniaProperty.Register<Preference, Models.GPGFormat>(nameof(GPGFormat));
+
         public Models.GPGFormat GPGFormat
         {
-            get;
-            set;
+            get => GetValue(GPGFormatProperty);
+            set => SetValue(GPGFormatProperty, value);
         }
 
         public static readonly StyledProperty<string> GPGExecutableFileProperty =
