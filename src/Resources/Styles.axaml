@@ -97,7 +97,12 @@
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="HorizontalAlignment" Value="Right"/>
   </Style>
-
+  
+  <Style Selector="SelectableTextBlock">
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+  </Style>
   <Style Selector="SelectableTextBlock[IsEnabled=True]">
     <Setter Property="ContextFlyout">
       <Setter.Value>
@@ -123,6 +128,7 @@
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border1}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="ContextFlyout">
       <Setter.Value>
         <MenuFlyout>

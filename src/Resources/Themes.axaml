@@ -48,7 +48,7 @@
       <Color x:Key="Color.FlatButton.BackgroundHovered">#FF333333</Color>
       <Color x:Key="Color.FlatButton.PrimaryBackground">#FF3A3A3A</Color>
       <Color x:Key="Color.FlatButton.PrimaryBackgroundHovered">#FF404040</Color>
-      <Color x:Key="Color.FG1">#FFF1F1F1</Color>
+      <Color x:Key="Color.FG1">#FFDDDDDD</Color>
       <Color x:Key="Color.FG2">#40F1F1F1</Color>
       <Color x:Key="Color.FG3">#FF252525</Color>
     </ResourceDictionary>
