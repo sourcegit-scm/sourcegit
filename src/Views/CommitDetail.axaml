@@ -34,7 +34,7 @@
                      Text="{DynamicResource Text.CommitDetail.Changes}"/>
           
           <v:ChangeCollectionView Grid.Column="1" 
-                                  IsWorkingCopy="False"
+                                  IsWorkingCopyChange="False"
                                   Margin="8,0,0,0"
                                   ViewMode="List"
                                   Changes="{Binding Changes}"

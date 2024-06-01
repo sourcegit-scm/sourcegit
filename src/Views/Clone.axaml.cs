@@ -15,11 +15,12 @@ namespace SourceGit.Views
         {
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
             var toplevel = TopLevel.GetTopLevel(this);
+            if (toplevel == null)
+                return;
+            
             var selected = await toplevel.StorageProvider.OpenFolderPickerAsync(options);
             if (selected.Count == 1)
-            {
-                txtParentFolder.Text = selected[0].Path.LocalPath;
-            }
+                TxtParentFolder.Text = selected[0].Path.LocalPath;
 
             e.Handled = true;
         }
@@ -28,11 +29,12 @@ namespace SourceGit.Views
         {
             var options = new FilePickerOpenOptions() { AllowMultiple = false, FileTypeFilter = [new FilePickerFileType("SSHKey") { Patterns = ["*.*"] }] };
             var toplevel = TopLevel.GetTopLevel(this);
+            if (toplevel == null)
+                return;
+            
             var selected = await toplevel.StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
-            {
-                txtSSHKey.Text = selected[0].Path.LocalPath;
-            }
+                TxtSshKey.Text = selected[0].Path.LocalPath;
 
             e.Handled = true;
         }

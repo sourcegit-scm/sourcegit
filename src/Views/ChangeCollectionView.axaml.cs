@@ -11,9 +11,9 @@ namespace SourceGit.Views
     public partial class ChangeCollectionView : UserControl
     {
         public static readonly StyledProperty<bool> IsWorkingCopyChangeProperty =
-            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(IsWorkingCopy), false);
+            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(IsWorkingCopyChange), false);
 
-        public bool IsWorkingCopy
+        public bool IsWorkingCopyChange
         {
             get => GetValue(IsWorkingCopyChangeProperty);
             set => SetValue(IsWorkingCopyChangeProperty, value);

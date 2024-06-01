@@ -121,14 +121,14 @@
                     <Border.ContextMenu>
                       <ContextMenu>
                         <MenuItem Header="{DynamicResource Text.PageTabBar.Tab.Close}"
-                                  Command="{Binding #me.DataContext.(vm:Launcher).CloseTab}"
+                                  Command="{Binding #me.((vm:Launcher)DataContext).CloseTab}"
                                   CommandParameter="{Binding}"
                                   InputGesture="{OnPlatform Ctrl+W, macOS=⌘+W}"/>
                         <MenuItem Header="{DynamicResource Text.PageTabBar.Tab.CloseOther}"
-                                  Command="{Binding #me.DataContext.(vm:Launcher).CloseOtherTabs}"
+                                  Command="{Binding #me.((vm:Launcher)DataContext).CloseOtherTabs}"
                                   CommandParameter="{Binding}"/>
                         <MenuItem Header="{DynamicResource Text.PageTabBar.Tab.CloseRight}"
-                                  Command="{Binding #me.DataContext.(vm:Launcher).CloseRightTabs}"
+                                  Command="{Binding #me.((vm:Launcher)DataContext).CloseRightTabs}"
                                   CommandParameter="{Binding}"/>
                         <MenuItem Header="-" IsVisible="{Binding Node.IsRepository}"/>
                         <MenuItem IsVisible="{Binding Node.IsRepository}">
@@ -200,7 +200,7 @@
                       <Button Grid.Column="2"
                               Classes="icon_button"
                               Width="16" Height="16" Margin="12,0"
-                              Command="{Binding #me.DataContext.(vm:Launcher).CloseTab}"
+                              Command="{Binding #me.((vm:Launcher)DataContext).CloseTab}"
                               CommandParameter="{Binding}">
                         <ToolTip.Tip>
                           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -215,7 +215,7 @@
                           <MultiBinding Converter="{x:Static c:LauncherPageConverters.ToTabSeperatorVisible}">
                             <Binding/>
                             <Binding Path="$parent[ListBox].SelectedItem"/>
-                            <Binding Path="#me.DataContext.(vm:Launcher).Pages"/>
+                            <Binding Path="#me.((vm:Launcher)DataContext).Pages"/>
                           </MultiBinding>
                         </Rectangle.IsVisible>
                       </Rectangle>
@@ -285,8 +285,8 @@
                 </Border.BorderThickness>
 
                 <Border.Effect>
-                  <OnPlatform>
-                    <On Options="Windows, macOS">
+                  <OnPlatform Default="{x:Null}">
+                    <On Options="macOS, Windows">
                       <DropShadowEffect BlurRadius="8" OffsetX="0" OffsetY="0" Color="Black" Opacity=".5"/>
                     </On>
                   </OnPlatform>
@@ -356,11 +356,11 @@
                            Margin="8" Padding="0"
                            VerticalContentAlignment="Top"
                            Text="{Binding Message}"/>
-                  <Button Grid.Row="3"
+                  <Button Grid.Row="2"
                           Classes="flat primary"
                           Height="30"
                           Margin="4,0"
-                          Command="{Binding #me.DataContext.(vm:Launcher).ActivePage.DismissNotification}"
+                          Command="{Binding #me.((vm:Launcher)DataContext).ActivePage.DismissNotification}"
                           CommandParameter="{Binding}"
                           Content="{DynamicResource Text.Close}"
                           HorizontalAlignment="Right"

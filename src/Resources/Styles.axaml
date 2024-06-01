@@ -362,7 +362,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Width="12"
-                            Fill="{Binding $parent.Foreground}"/>
+                            Fill="{DynamicResource Brush.FG1}"/>
                     </ToggleButton>
                     <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
                                   IsChecked="{Binding $parent[aes:SearchPanel].WholeWords, Mode=TwoWay}"
@@ -374,7 +374,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Width="14"
-                            Fill="{Binding $parent.Foreground}"/>
+                            Fill="{DynamicResource Brush.FG1}"/>
                     </ToggleButton>
                     <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
                                   IsChecked="{Binding $parent[aes:SearchPanel].UseRegex, Mode=TwoWay}"
@@ -386,7 +386,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Width="12"
-                            Fill="{Binding $parent.Foreground}"/>
+                            Fill="{DynamicResource Brush.FG1}"/>
                     </ToggleButton>
                   </StackPanel>
                 </TextBox.InnerRightContent>
