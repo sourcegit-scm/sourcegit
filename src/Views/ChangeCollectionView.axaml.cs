@@ -155,11 +155,7 @@ namespace SourceGit.Views
             {
                 var source = new FlatTreeDataGridSource<Models.Change>(changes)
                 {
-                    Columns =
-                    {
-                        new TemplateColumn<Models.Change>(null, "GridModeFileTemplate", null, GridLength.Auto),
-                        new TemplateColumn<Models.Change>(null, "GridModeDirTemplate", null, GridLength.Auto)
-                    },
+                    Columns = { new TemplateColumn<Models.Change>(null, "GridModeTemplate", null, GridLength.Auto) },
                 };
 
                 var selection = new Models.TreeDataGridSelectionModel<Models.Change>(source, null);

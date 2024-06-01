@@ -31,15 +31,12 @@
         </StackPanel>
       </DataTemplate>
 
-      <DataTemplate x:Key="GridModeFileTemplate" DataType="m:Change">
+      <DataTemplate x:Key="GridModeTemplate" DataType="m:Change">
         <StackPanel Orientation="Horizontal">
           <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="{Binding #me.IsWorkingCopyChange}" Change="{Binding}" Margin="4,0,0,0"/>
           <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0"/>
+          <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Foreground="{DynamicResource Brush.FG2}"/>
         </StackPanel>
-      </DataTemplate>
-
-      <DataTemplate x:Key="GridModeDirTemplate" DataType="m:Change">
-        <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Foreground="{DynamicResource Brush.FG2}"/>
       </DataTemplate>
     </TreeDataGrid.Resources>
   </TreeDataGrid>
