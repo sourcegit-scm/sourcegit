@@ -209,7 +209,7 @@ namespace SourceGit.ViewModels
                 _unstaged.Clear();
                 OnPropertyChanged(nameof(Unstaged));
             }
-                
+
             if (_staged != null)
             {
                 _staged.Clear();
@@ -584,6 +584,17 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(copy);
+                var copyFileName = new MenuItem()
+                {
+                    Header = App.Text("CopyFileName"),
+                    Icon = App.CreateMenuIcon("Icon.Copy"),
+                };
+                copyFileName.Click += (_, e) =>
+                {
+                    App.CopyText(Path.GetFileName(change.Path));
+                    e.Handled = true;
+                };
+                menu.Items.Add(copyFileName);
             }
             else
             {
