@@ -10,7 +10,6 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -219,17 +218,17 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
             menu.Items.Add(copyPath);
-            var copyFileName = new MenuItem()
-            {
-                Header = App.Text("CopyFileName"),
-                Icon = App.CreateMenuIcon("Icon.Copy"),
-            };
+
+            var copyFileName = new MenuItem();
+            copyFileName.Header = App.Text("CopyFileName");
+            copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
             copyFileName.Click += (_, e) =>
             {
                 App.CopyText(Path.GetFileName(change.Path));
                 e.Handled = true;
             };
             menu.Items.Add(copyFileName);
+            
             return menu;
         }
 
@@ -295,11 +294,9 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var copyFileName = new MenuItem()
-            {
-                Header = App.Text("CopyFileName"),
-                Icon = App.CreateMenuIcon("Icon.Copy"),
-            };
+            var copyFileName = new MenuItem();
+            copyFileName.Header = App.Text("CopyFileName");
+            copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
             copyFileName.Click += (_, e) =>
             {
                 App.CopyText(Path.GetFileName(file.Path));

@@ -584,11 +584,10 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(copy);
-                var copyFileName = new MenuItem()
-                {
-                    Header = App.Text("CopyFileName"),
-                    Icon = App.CreateMenuIcon("Icon.Copy"),
-                };
+
+                var copyFileName = new MenuItem();
+                copyFileName.Header = App.Text("CopyFileName");
+                copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyFileName.Click += (_, e) =>
                 {
                     App.CopyText(Path.GetFileName(change.Path));
@@ -801,6 +800,15 @@ namespace SourceGit.ViewModels
                     App.CopyText(change.Path);
                     e.Handled = true;
                 };
+                
+                var copyFileName = new MenuItem();
+                copyFileName.Header = App.Text("CopyFileName");
+                copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFileName.Click += (_, e) =>
+                {
+                    App.CopyText(Path.GetFileName(change.Path));
+                    e.Handled = true;
+                };
 
                 menu.Items.Add(explore);
                 menu.Items.Add(openWith);
@@ -811,6 +819,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(patch);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(copyPath);
+                menu.Items.Add(copyFileName);
             }
             else
             {

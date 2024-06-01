@@ -181,19 +181,18 @@ namespace SourceGit.ViewModels
                 App.CopyText(change.Path);
                 ev.Handled = true;
             };
-
             menu.Items.Add(copyPath);
-            var copyFileName = new MenuItem()
-            {
-                Header = App.Text("CopyFileName"),
-                Icon = App.CreateMenuIcon("Icon.Copy"),
-            };
+
+            var copyFileName = new MenuItem();
+            copyFileName.Header = App.Text("CopyFileName");
+            copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
             copyFileName.Click += (_, e) =>
             {
                 App.CopyText(Path.GetFileName(change.Path));
                 e.Handled = true;
             };
             menu.Items.Add(copyFileName);
+            
             return menu;
         }
 
