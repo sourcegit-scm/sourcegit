@@ -285,11 +285,7 @@
                 </Border.BorderThickness>
 
                 <Border.Effect>
-                  <OnPlatform Default="{x:Null}">
-                    <On Options="macOS, Windows">
-                      <DropShadowEffect BlurRadius="8" OffsetX="0" OffsetY="0" Color="Black" Opacity=".5"/>
-                    </On>
-                  </OnPlatform>
+                  <OnPlatform Default="drop-shadow(0 0 8 #8F000000)" Linux="{x:Null}"/>
                 </Border.Effect>
                 
                 <StackPanel Margin="8" Orientation="Vertical">
