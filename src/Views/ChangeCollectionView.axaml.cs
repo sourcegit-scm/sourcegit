@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
+using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -78,11 +79,10 @@ namespace SourceGit.Views
 
         private void UpdateSource()
         {
-            if (tree.Source is IDisposable disposable)
-            {
+            if (Content is TreeDataGrid tree && tree.Source is IDisposable disposable)
                 disposable.Dispose();
-                tree.Source = null;
-            }
+            
+            Content = null;
 
             var changes = Changes;
             if (changes == null)
@@ -92,12 +92,13 @@ namespace SourceGit.Views
             if (viewMode == Models.ChangeViewMode.Tree)
             {
                 var filetree = Models.FileTreeNode.Build(changes, true);
+                var template = this.FindResource("TreeModeTemplate") as IDataTemplate;
                 var source = new HierarchicalTreeDataGridSource<Models.FileTreeNode>(filetree)
                 {
                     Columns =
                     {
                         new HierarchicalExpanderColumn<Models.FileTreeNode>(
-                            new TemplateColumn<Models.FileTreeNode>(null, "TreeModeTemplate", null, GridLength.Auto),
+                            new TemplateColumn<Models.FileTreeNode>(null, template, null, GridLength.Auto),
                             x => x.Children,
                             x => x.Children.Count > 0,
                             x => x.IsExpanded)
@@ -111,24 +112,25 @@ namespace SourceGit.Views
                 {
                     if (!_isSelecting && s is Models.TreeDataGridSelectionModel<Models.FileTreeNode> model)
                     {
-                        var selection = new List<Models.Change>();
+                        var selected = new List<Models.Change>();
                         foreach (var c in model.SelectedItems)
-                            CollectChangesInNode(selection, c);
+                            CollectChangesInNode(selected, c);
 
                         _isSelecting = true;
-                        SetCurrentValue(SelectedChangesProperty, selection);
+                        SetCurrentValue(SelectedChangesProperty, selected);
                         _isSelecting = false;
                     }
                 };
 
                 source.Selection = selection;
-                tree.Source = source;
+                CreateTreeDataGrid(source);
             }
             else if (viewMode == Models.ChangeViewMode.List)
             {
+                var template = this.FindResource("ListModeTemplate") as IDataTemplate;
                 var source = new FlatTreeDataGridSource<Models.Change>(changes)
                 {
-                    Columns = { new TemplateColumn<Models.Change>(null, "ListModeTemplate", null, GridLength.Auto) }
+                    Columns = { new TemplateColumn<Models.Change>(null, template, null, GridLength.Auto) }
                 };
 
                 var selection = new Models.TreeDataGridSelectionModel<Models.Change>(source, null);
@@ -138,24 +140,25 @@ namespace SourceGit.Views
                 {
                     if (!_isSelecting && s is Models.TreeDataGridSelectionModel<Models.Change> model)
                     {
-                        var selection = new List<Models.Change>();
+                        var selected = new List<Models.Change>();
                         foreach (var c in model.SelectedItems)
-                            selection.Add(c);
+                            selected.Add(c);
 
                         _isSelecting = true;
-                        SetCurrentValue(SelectedChangesProperty, selection);
+                        SetCurrentValue(SelectedChangesProperty, selected);
                         _isSelecting = false;
                     }
                 };
 
                 source.Selection = selection;
-                tree.Source = source;
+                CreateTreeDataGrid(source);
             }
             else
             {
+                var template = this.FindResource("GridModeTemplate") as IDataTemplate;
                 var source = new FlatTreeDataGridSource<Models.Change>(changes)
                 {
-                    Columns = { new TemplateColumn<Models.Change>(null, "GridModeTemplate", null, GridLength.Auto) },
+                    Columns = { new TemplateColumn<Models.Change>(null, template, null, GridLength.Auto) },
                 };
 
                 var selection = new Models.TreeDataGridSelectionModel<Models.Change>(source, null);
@@ -165,24 +168,28 @@ namespace SourceGit.Views
                 {
                     if (!_isSelecting && s is Models.TreeDataGridSelectionModel<Models.Change> model)
                     {
-                        var selection = new List<Models.Change>();
+                        var selected = new List<Models.Change>();
                         foreach (var c in model.SelectedItems)
-                            selection.Add(c);
+                            selected.Add(c);
 
                         _isSelecting = true;
-                        SetCurrentValue(SelectedChangesProperty, selection);
+                        SetCurrentValue(SelectedChangesProperty, selected);
                         _isSelecting = false;
                     }
                 };
 
                 source.Selection = selection;
-                tree.Source = source;
+                CreateTreeDataGrid(source);
             }
         }
 
         private void UpdateSelected()
         {
-            if (_isSelecting || tree.Source == null)
+            if (_isSelecting || Content == null)
+                return;
+
+            var tree = Content as TreeDataGrid;
+            if (tree == null)
                 return;
 
             _isSelecting = true;
@@ -212,15 +219,23 @@ namespace SourceGit.Views
                     CollectSelectedNodeByChange(nodes, node as Models.FileTreeNode, set);
 
                 if (nodes.Count == 0)
-                {
                     treeSelection.Clear();
-                }
                 else
-                {
                     treeSelection.Select(nodes);
-                }
             }
             _isSelecting = false;
+        }
+
+        private void CreateTreeDataGrid(ITreeDataGridSource source)
+        {
+            Content = new TreeDataGrid()
+            {
+                AutoDragDropRows = false,
+                ShowColumnHeaders = false,
+                CanUserResizeColumns = false,
+                CanUserSortColumns = false,
+                Source = source,
+            };
         }
 
         private void CollectChangesInNode(List<Models.Change> outs, Models.FileTreeNode node)

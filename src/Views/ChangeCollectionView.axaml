@@ -3,41 +3,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
-             xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ChangeCollectionView"
-             x:Name="me">
-  <TreeDataGrid x:Name="tree"
-                AutoDragDropRows="False"
-                ShowColumnHeaders="False"
-                CanUserResizeColumns="False"
-                CanUserSortColumns="False"
-                ScrollViewer.BringIntoViewOnFocusChange="True">
-    <TreeDataGrid.Resources>
-      <DataTemplate x:Key="TreeModeTemplate" DataType="m:FileTreeNode">
-        <Grid HorizontalAlignment="Stretch" Height="24" ColumnDefinitions="Auto,*">
-          <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
-          <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" IsWorkingCopyChange="{Binding #me.IsWorkingCopyChange}" Change="{Binding Backend}" IsVisible="{Binding !IsFolder}"/>
-          <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
-        </Grid>
-      </DataTemplate>
+             x:Name="ThisControl">
+  <UserControl.Resources>
+    <DataTemplate x:Key="TreeModeTemplate" DataType="m:FileTreeNode">
+      <Grid HorizontalAlignment="Stretch" Height="24" ColumnDefinitions="Auto,*">
+        <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
+        <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" IsWorkingCopyChange="{Binding #ThisControl.IsWorkingCopyChange}" Change="{Binding Backend}" IsVisible="{Binding !IsFolder}"/>
+        <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
+      </Grid>
+    </DataTemplate>
 
-      <DataTemplate x:Key="ListModeTemplate" DataType="m:Change">
-        <StackPanel Orientation="Horizontal">
-          <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="{Binding #me.IsWorkingCopyChange}" Change="{Binding}" Margin="4,0,0,0"/>
-          <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0"/>
-        </StackPanel>
-      </DataTemplate>
+    <DataTemplate x:Key="ListModeTemplate" DataType="m:Change">
+      <StackPanel Orientation="Horizontal">
+        <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="{Binding #ThisControl.IsWorkingCopyChange}" Change="{Binding}" Margin="4,0,0,0"/>
+        <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0"/>
+      </StackPanel>
+    </DataTemplate>
 
-      <DataTemplate x:Key="GridModeTemplate" DataType="m:Change">
-        <StackPanel Orientation="Horizontal">
-          <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="{Binding #me.IsWorkingCopyChange}" Change="{Binding}" Margin="4,0,0,0"/>
-          <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0"/>
-          <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Foreground="{DynamicResource Brush.FG2}"/>
-        </StackPanel>
-      </DataTemplate>
-    </TreeDataGrid.Resources>
-  </TreeDataGrid>
+    <DataTemplate x:Key="GridModeTemplate" DataType="m:Change">
+      <StackPanel Orientation="Horizontal">
+        <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="{Binding #ThisControl.IsWorkingCopyChange}" Change="{Binding}" Margin="4,0,0,0"/>
+        <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0"/>
+        <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Foreground="{DynamicResource Brush.FG2}"/>
+      </StackPanel>
+    </DataTemplate>
+  </UserControl.Resources>
 </UserControl>
