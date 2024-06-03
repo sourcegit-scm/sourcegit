@@ -90,6 +90,4 @@ This app supports open repository in external tools listed in the table below.
 
 Thanks to all the people who contribute.
 
-<a href="https://github.com/sourcegit-scm/sourcegit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=10&t=4" />
-</a>
+[![Contributors](https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=10)](https://github.com/sourcegit-scm/sourcegit/graphs/contributors)
