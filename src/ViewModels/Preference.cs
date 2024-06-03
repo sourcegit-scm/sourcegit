@@ -459,10 +459,6 @@ namespace SourceGit.ViewModels
 
         public static void Save()
         {
-            var dir = Path.GetDirectoryName(_savePath);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
             var data = JsonSerializer.Serialize(_instance, JsonCodeGen.Default.Preference);
             File.WriteAllText(_savePath, data);
         }
@@ -515,10 +511,7 @@ namespace SourceGit.ViewModels
         }
 
         private static Preference _instance = null;
-        private static readonly string _savePath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "SourceGit",
-            "preference.json");
+        private static readonly string _savePath = Path.Combine(Native.OS.DataDir, "preference.json");
 
         private string _locale = "en_US";
         private string _theme = "Default";
