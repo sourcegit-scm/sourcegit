@@ -121,14 +121,14 @@
                     <Border.ContextMenu>
                       <ContextMenu>
                         <MenuItem Header="{DynamicResource Text.PageTabBar.Tab.Close}"
-                                  Command="{Binding #me.DataContext.(vm:Launcher).CloseTab}"
+                                  Command="{Binding #me.((vm:Launcher)DataContext).CloseTab}"
                                   CommandParameter="{Binding}"
                                   InputGesture="{OnPlatform Ctrl+W, macOS=⌘+W}"/>
                         <MenuItem Header="{DynamicResource Text.PageTabBar.Tab.CloseOther}"
-                                  Command="{Binding #me.DataContext.(vm:Launcher).CloseOtherTabs}"
+                                  Command="{Binding #me.((vm:Launcher)DataContext).CloseOtherTabs}"
                                   CommandParameter="{Binding}"/>
                         <MenuItem Header="{DynamicResource Text.PageTabBar.Tab.CloseRight}"
-                                  Command="{Binding #me.DataContext.(vm:Launcher).CloseRightTabs}"
+                                  Command="{Binding #me.((vm:Launcher)DataContext).CloseRightTabs}"
                                   CommandParameter="{Binding}"/>
                         <MenuItem Header="-" IsVisible="{Binding Node.IsRepository}"/>
                         <MenuItem IsVisible="{Binding Node.IsRepository}">
@@ -166,7 +166,7 @@
                       </ContextMenu>
                     </Border.ContextMenu>
 
-                    <v:LauncherTab UseFixedTabWidth="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+                    <Grid Width="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
                       <Path Grid.Column="0"
                             Width="12" Height="12" Margin="12,0"
                             Fill="{Binding Node.Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
@@ -200,7 +200,7 @@
                       <Button Grid.Column="2"
                               Classes="icon_button"
                               Width="16" Height="16" Margin="12,0"
-                              Command="{Binding #me.DataContext.(vm:Launcher).CloseTab}"
+                              Command="{Binding #me.((vm:Launcher)DataContext).CloseTab}"
                               CommandParameter="{Binding}">
                         <ToolTip.Tip>
                           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -215,11 +215,11 @@
                           <MultiBinding Converter="{x:Static c:LauncherPageConverters.ToTabSeperatorVisible}">
                             <Binding/>
                             <Binding Path="$parent[ListBox].SelectedItem"/>
-                            <Binding Path="#me.DataContext.(vm:Launcher).Pages"/>
+                            <Binding Path="#me.((vm:Launcher)DataContext).Pages"/>
                           </MultiBinding>
                         </Rectangle.IsVisible>
                       </Rectangle>
-                    </v:LauncherTab>
+                    </Grid>
                   </Border>
                 </DataTemplate>
               </ListBox.ItemTemplate>
@@ -253,7 +253,17 @@
     </Grid>
 
     <!-- Page body -->
-    <v:LauncherBody Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" Data="{Binding ActivePage.Data}"/>
+    <ContentControl Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" Content="{Binding ActivePage.Data}">
+      <ContentControl.DataTemplates>
+        <DataTemplate DataType="vm:Welcome">
+          <v:Welcome/>
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:Repository">
+          <v:Repository/>
+        </DataTemplate>
+      </ContentControl.DataTemplates>
+    </ContentControl>
 
     <!-- Popup container -->
     <Grid Grid.Row="1" Margin="0,36,0,0" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
@@ -275,11 +285,7 @@
                 </Border.BorderThickness>
 
                 <Border.Effect>
-                  <OnPlatform>
-                    <On Options="Windows, macOS">
-                      <DropShadowEffect BlurRadius="8" OffsetX="0" OffsetY="0" Color="Black" Opacity=".5"/>
-                    </On>
-                  </OnPlatform>
+                  <OnPlatform Default="drop-shadow(0 0 8 #8F000000)" Linux="{x:Null}"/>
                 </Border.Effect>
                 
                 <StackPanel Margin="8" Orientation="Vertical">
@@ -307,23 +313,9 @@
                   </StackPanel>
 
                   <!-- Running -->
-                  <StackPanel Orientation="Vertical" Margin="8" IsVisible="{Binding InProgress}">
-                    <Rectangle Height="1" Margin="-8,0" HorizontalAlignment="Stretch" Fill="{DynamicResource Brush.Border1}" />
-                    <StackPanel Orientation="Horizontal" Margin="0,8">
-                      <Path Width="12" Height="12" Classes="waiting" Data="{StaticResource Icons.Waiting}" IsVisible="{Binding InProgress}"/>
-                      <TextBlock Margin="6,0,0,0" FontSize="14" FontWeight="Bold" Text="{DynamicResource Text.Running}"/>
-                    </StackPanel>
-                    <TextBlock HorizontalAlignment="Stretch"
-                               TextWrapping="Wrap"
-                               FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}"
-                               FontStyle="Italic"
-                               Text="{Binding ProgressDescription}"/>
-                    <ProgressBar Margin="0,8,0,0"
-                                 HorizontalAlignment="Stretch"
-                                 IsIndeterminate="True"
-                                 Background="{DynamicResource Brush.FG2}" Foreground="{DynamicResource Brush.Accent}"
-                                 Minimum="0" Maximum="100"/>
-                  </StackPanel>
+                  <v:PopupRunningStatus Margin="8"
+                                        Description="{Binding ProgressDescription}"
+                                        IsVisible="{Binding InProgress}"/>
                 </StackPanel>
               </Border>
             </DataTemplate>
@@ -360,11 +352,11 @@
                            Margin="8" Padding="0"
                            VerticalContentAlignment="Top"
                            Text="{Binding Message}"/>
-                  <Button Grid.Row="3"
+                  <Button Grid.Row="2"
                           Classes="flat primary"
                           Height="30"
                           Margin="4,0"
-                          Command="{Binding #me.DataContext.(vm:Launcher).ActivePage.DismissNotification}"
+                          Command="{Binding #me.((vm:Launcher)DataContext).ActivePage.DismissNotification}"
                           CommandParameter="{Binding}"
                           Content="{DynamicResource Text.Close}"
                           HorizontalAlignment="Right"

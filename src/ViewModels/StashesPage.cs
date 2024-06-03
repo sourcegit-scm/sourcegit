@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Avalonia.Controls;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -106,34 +106,42 @@ namespace SourceGit.ViewModels
             _diffContext = null;
         }
 
-        public void Apply(object param)
+        public ContextMenu MakeContextMenu(Models.Stash stash)
         {
-            if (param is Models.Stash stash)
-            {
-                Task.Run(() =>
-                {
-                    new Commands.Stash(_repo.FullPath).Apply(stash.Name);
-                });
-            }
-        }
+            if (stash == null)
+                return null;
 
-        public void Pop(object param)
-        {
-            if (param is Models.Stash stash)
+            var apply = new MenuItem();
+            apply.Header = App.Text("StashCM.Apply");
+            apply.Click += (o, ev) =>
             {
-                Task.Run(() =>
-                {
-                    new Commands.Stash(_repo.FullPath).Pop(stash.Name);
-                });
-            }
-        }
+                Task.Run(() => new Commands.Stash(_repo.FullPath).Apply(stash.Name));
+                ev.Handled = true;
+            };
 
-        public void Drop(object param)
-        {
-            if (param is Models.Stash stash && PopupHost.CanCreatePopup())
+            var pop = new MenuItem();
+            pop.Header = App.Text("StashCM.Pop");
+            pop.Click += (o, ev) =>
             {
-                PopupHost.ShowPopup(new DropStash(_repo.FullPath, stash));
-            }
+                Task.Run(() => new Commands.Stash(_repo.FullPath).Pop(stash.Name));
+                ev.Handled = true;
+            };
+
+            var drop = new MenuItem();
+            drop.Header = App.Text("StashCM.Drop");
+            drop.Click += (o, ev) =>
+            {
+                if (PopupHost.CanCreatePopup())
+                    PopupHost.ShowPopup(new DropStash(_repo.FullPath, stash));
+
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(apply);
+            menu.Items.Add(pop);
+            menu.Items.Add(drop);
+            return menu;
         }
 
         public void Clear()

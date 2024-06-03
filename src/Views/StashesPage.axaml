@@ -54,15 +54,7 @@
           <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Stash">
-                <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4" Background="Transparent">
-                  <Border.ContextMenu>
-                    <ContextMenu>
-                      <MenuItem Header="{DynamicResource Text.StashCM.Apply}" Command="{Binding $parent[v:StashesPage].DataContext.(vm:StashesPage).Apply}" CommandParameter="{Binding}"/>
-                      <MenuItem Header="{DynamicResource Text.StashCM.Pop}" Command="{Binding $parent[v:StashesPage].DataContext.(vm:StashesPage).Pop}" CommandParameter="{Binding}"/>
-                      <MenuItem Header="{DynamicResource Text.StashCM.Drop}" Command="{Binding $parent[v:StashesPage].DataContext.(vm:StashesPage).Drop}" CommandParameter="{Binding}"/>
-                    </ContextMenu>
-                  </Border.ContextMenu>
-
+                <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4" Background="Transparent" ContextRequested="OnStashContextRequested">
                   <Grid RowDefinitions="Auto,*" >
                     <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
                       <TextBlock Grid.Column="0" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" TextDecorations="Underline" Cursor="Hand"/>

@@ -25,7 +25,7 @@ namespace SourceGit.Models
 
         static AvatarManager()
         {
-            _storePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SourceGit", "avatars");
+            _storePath = Path.Combine(Native.OS.DataDir, "avatars");
             if (!Directory.Exists(_storePath))
                 Directory.CreateDirectory(_storePath);
 

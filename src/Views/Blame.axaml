@@ -84,10 +84,7 @@
       </StackPanel>
 
       <!-- Loading -->
-      <Path Width="48" Height="48" 
-            Classes="rotating" 
-            Data="{StaticResource Icons.Loading}" 
-            IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}"/>
+      <v:LoadingIcon Width="48" Height="48" IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}"/>
     </Grid>
 
     <!-- Custom window sizer for Linux -->

@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -11,14 +10,14 @@
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
     <TextBlock Classes="bold" FontSize="18" Text="{DynamicResource Text.Clone}"/>
 
-    <Grid Margin="8,16,0,0" Height="28" ColumnDefinitions="120,*">
+    <Grid Margin="8,16,0,0" Height="28" ColumnDefinitions="140,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.RemoteURL}"/>
       <TextBox Grid.Column="1" CornerRadius="3" Text="{Binding Remote, Mode=TwoWay}" v:AutoFocusBehaviour.IsEnabled="True"/>
     </Grid>
-    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*" IsVisible="{Binding UseSSH}">
+    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="140,*" IsVisible="{Binding UseSSH}">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.SSHKey}"/>
       <TextBox Grid.Column="1"
-               x:Name="txtSSHKey"
+               x:Name="TxtSshKey"
                Height="28"
                CornerRadius="3"
                Watermark="{DynamicResource Text.SSHKey.Placeholder}"
@@ -30,10 +29,10 @@
         </TextBox.InnerRightContent>
       </TextBox>
     </Grid>
-    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*">
+    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="140,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.ParentFolder}"/>
       <TextBox Grid.Column="1"
-               x:Name="txtParentFolder"
+               x:Name="TxtParentFolder"
                Height="28"
                CornerRadius="3"
                Text="{Binding ParentFolder, Mode=TwoWay}">
@@ -44,11 +43,11 @@
         </TextBox.InnerRightContent>
       </TextBox>
     </Grid>
-    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*">
+    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="140,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.LocalName}"/>
       <TextBox Grid.Column="1" CornerRadius="3" Watermark="{DynamicResource Text.Clone.LocalName.Placeholder}" Text="{Binding Local, Mode=TwoWay}"/>
     </Grid>
-    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="120,*">
+    <Grid Margin="8,4,0,0" Height="28" ColumnDefinitions="140,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.Clone.AdditionalParam}"/>
       <TextBox Grid.Column="1" CornerRadius="3" Watermark="{DynamicResource Text.Clone.AdditionalParam.Placeholder}" Text="{Binding ExtraArgs, Mode=TwoWay}"/>
     </Grid>

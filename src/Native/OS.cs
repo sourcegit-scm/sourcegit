@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 using Avalonia;
 
@@ -20,6 +21,7 @@ namespace SourceGit.Native
             void OpenWithDefaultEditor(string file);
         }
 
+        public static readonly string DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SourceGit");
         public static string GitExecutable { get; set; } = string.Empty;
         public static List<Models.ExternalTool> ExternalTools { get; set; } = new List<Models.ExternalTool>();
 
@@ -72,6 +74,9 @@ namespace SourceGit.Native
 
         public static void SetupApp(AppBuilder builder)
         {
+            if (!Directory.Exists(DataDir))
+                Directory.CreateDirectory(DataDir);
+
             _backend.SetupApp(builder);
         }
 

@@ -60,6 +60,18 @@
       </Animation>
     </Style.Animations>
   </Style>
+  <Style Selector="Path.change_mode_switcher_icon">
+    <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+  </Style>
+  <Style Selector="Button:pointerover Path.change_mode_switcher_icon">
+    <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+  </Style>
+  <Style Selector="Button.max_or_restore_btn Path">
+    <Setter Property="Data" Value="{StaticResource Icons.Window.Maximize}"/>
+  </Style>
+  <Style Selector="Window[WindowState=Maximized] Button.max_or_restore_btn Path">
+    <Setter Property="Data" Value="{StaticResource Icons.Window.Restore}"/>
+  </Style>
 
   <Style Selector="TextBlock">
     <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -72,7 +84,7 @@
   <Style Selector="TextBlock.italic">
     <Setter Property="FontStyle" Value="Italic"/>
   </Style>
-  <Style Selector="TextBlock.monospace">
+  <Style Selector="TextBlock.monospace, SelectableTextBlock.monospace">
     <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"/>
   </Style>
   <Style Selector="TextBlock.group_header_label">
@@ -85,7 +97,12 @@
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="HorizontalAlignment" Value="Right"/>
   </Style>
-
+  
+  <Style Selector="SelectableTextBlock">
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+  </Style>
   <Style Selector="SelectableTextBlock[IsEnabled=True]">
     <Setter Property="ContextFlyout">
       <Setter.Value>
@@ -111,6 +128,7 @@
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border1}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="ContextFlyout">
       <Setter.Value>
         <MenuFlyout>
@@ -344,7 +362,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Width="12"
-                            Fill="{Binding $parent.Foreground}"/>
+                            Fill="{DynamicResource Brush.FG1}"/>
                     </ToggleButton>
                     <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
                                   IsChecked="{Binding $parent[aes:SearchPanel].WholeWords, Mode=TwoWay}"
@@ -356,7 +374,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Width="14"
-                            Fill="{Binding $parent.Foreground}"/>
+                            Fill="{DynamicResource Brush.FG1}"/>
                     </ToggleButton>
                     <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
                                   IsChecked="{Binding $parent[aes:SearchPanel].UseRegex, Mode=TwoWay}"
@@ -368,7 +386,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Width="12"
-                            Fill="{Binding $parent.Foreground}"/>
+                            Fill="{DynamicResource Brush.FG1}"/>
                     </ToggleButton>
                   </StackPanel>
                 </TextBox.InnerRightContent>
@@ -1073,6 +1091,64 @@
     <Setter Property="Data" Value="{StaticResource Icons.Folder.Open}"/>
   </Style>
   <Style Selector="TreeViewItem[IsExpanded=False] Path.folder_icon">
+    <Setter Property="Data" Value="{StaticResource Icons.Folder.Fill}"/>
+  </Style>
+
+  <Style Selector="TreeDataGrid">
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="RootBorder"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}">
+          <DockPanel>
+            <ScrollViewer Name="PART_HeaderScrollViewer"
+                          DockPanel.Dock="Top"
+                          IsVisible="{TemplateBinding ShowColumnHeaders}"
+                          HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Disabled"
+                          BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}">
+              <Border x:Name="ColumnHeadersPresenterBorder">
+                <TreeDataGridColumnHeadersPresenter Name="PART_ColumnHeadersPresenter"
+                                                    ElementFactory="{TemplateBinding ElementFactory}"
+                                                    Items="{TemplateBinding Columns}" />
+              </Border>
+            </ScrollViewer>
+            <ScrollViewer Name="PART_ScrollViewer"
+                          HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                          BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}">
+              <TreeDataGridRowsPresenter Name="PART_RowsPresenter"
+                                         Columns="{TemplateBinding Columns}"
+                                         ElementFactory="{TemplateBinding ElementFactory}"
+                                         Items="{TemplateBinding Rows}" />
+            </ScrollViewer>
+          </DockPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^/template/ Border#ColumnHeadersPresenterBorder">
+      <Setter Property="BorderThickness" Value="0 0 0 1" />
+      <Setter Property="BorderBrush" Value="{DynamicResource TreeDataGridGridLinesBrush}" />
+    </Style>
+  </Style>
+
+  <Style Selector="TreeDataGridRow">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  
+  <Style Selector="TreeDataGridColumnHeader">
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="TreeDataGridTextCell TextBlock">
+    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"/>
+  </Style>
+  <Style Selector="TreeDataGridExpanderCell[IsExpanded=True] Path.folder_icon">
+    <Setter Property="Data" Value="{StaticResource Icons.Folder.Open}"/>
+  </Style>
+  <Style Selector="TreeDataGridExpanderCell[IsExpanded=False] Path.folder_icon">
     <Setter Property="Data" Value="{StaticResource Icons.Folder.Fill}"/>
   </Style>
 </Styles>

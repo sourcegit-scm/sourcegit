@@ -5,7 +5,6 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
-             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.TextDiffView"
              Background="{DynamicResource Brush.Contents}">
@@ -19,14 +18,14 @@
                                    SecondaryFG="{DynamicResource Brush.FG2}"
                                    FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                    DiffData="{Binding}"
-                                   SyncScrollOffset="{Binding $parent[v:DiffView].DataContext.(vm:DiffContext).SyncScrollOffset, Mode=TwoWay}"
+                                   SyncScrollOffset="{Binding $parent[v:DiffView].((vm:DiffContext)DataContext).SyncScrollOffset, Mode=TwoWay}"
                                    UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"/>
     </DataTemplate>
 
     <DataTemplate DataType="vm:TwoSideTextDiff">
       <Grid ColumnDefinitions="*,1,*">
         <v:SingleSideTextDiffPresenter Grid.Column="0"
-                                       SyncScrollOffset="{Binding $parent[v:DiffView].DataContext.(vm:DiffContext).SyncScrollOffset, Mode=TwoWay}"
+                                       SyncScrollOffset="{Binding $parent[v:DiffView].((vm:DiffContext)DataContext).SyncScrollOffset, Mode=TwoWay}"
                                        UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"
                                        IsOld="True"
                                        HorizontalScrollBarVisibility="Auto"
@@ -41,7 +40,7 @@
         <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
         <v:SingleSideTextDiffPresenter Grid.Column="2"
-                                       SyncScrollOffset="{Binding $parent[v:DiffView].DataContext.(vm:DiffContext).SyncScrollOffset, Mode=TwoWay}"
+                                       SyncScrollOffset="{Binding $parent[v:DiffView].((vm:DiffContext)DataContext).SyncScrollOffset, Mode=TwoWay}"
                                        UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"
                                        IsOld="False"
                                        HorizontalScrollBarVisibility="Auto"

@@ -3,7 +3,6 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 
@@ -90,15 +89,6 @@ namespace SourceGit.Views
             set => SetValue(GraphProperty, value);
         }
 
-        public static readonly StyledProperty<DataGrid> BindingDataGridProperty =
-            AvaloniaProperty.Register<CommitGraph, DataGrid>(nameof(BindingDataGrid));
-
-        public DataGrid BindingDataGrid
-        {
-            get => GetValue(BindingDataGridProperty);
-            set => SetValue(BindingDataGridProperty, value);
-        }
-
         public static readonly StyledProperty<IBrush> DotBrushProperty =
             AvaloniaProperty.Register<CommitGraph, IBrush>(nameof(DotBrush), Brushes.Transparent);
 
@@ -110,15 +100,16 @@ namespace SourceGit.Views
 
         static CommitGraph()
         {
-            AffectsRender<CommitGraph>(BindingDataGridProperty, GraphProperty, DotBrushProperty);
+            AffectsRender<CommitGraph>(GraphProperty, DotBrushProperty);
         }
 
         public override void Render(DrawingContext context)
         {
             base.Render(context);
 
+            var parent = this.FindAncestorOfType<Histories>();
             var graph = Graph;
-            var grid = BindingDataGrid;
+            var grid = parent.commitDataGrid;
             if (graph == null || grid == null)
                 return;
 
@@ -277,8 +268,6 @@ namespace SourceGit.Views
         public Histories()
         {
             InitializeComponent();
-
-            this.Bind(NavigationIdProperty, new Binding("NavigationId", BindingMode.OneWay));
         }
 
         private void OnCommitDataGridLayoutUpdated(object sender, EventArgs e)
@@ -297,10 +286,10 @@ namespace SourceGit.Views
 
         private void OnCommitDataGridContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories)
+            if (DataContext is ViewModels.Histories histories && sender is DataGrid datagrid)
             {
-                var menu = histories.MakeContextMenu();
-                (sender as Control)?.OpenContextMenu(menu);
+                var menu = histories.MakeContextMenu(datagrid);
+                datagrid.OpenContextMenu(menu);
             }
             e.Handled = true;
         }

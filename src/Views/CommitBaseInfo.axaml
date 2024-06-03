@@ -12,11 +12,7 @@
     <DataTemplate DataType="m:Commit">
       <StackPanel Orientation="Vertical">
         <!-- Author & Committer -->
-        <Grid Margin="0,8">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding IsCommitterVisible, Converter={x:Static c:BoolConverters.ToStarOrAutoGridLength}}"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
+        <UniformGrid Rows="1" Margin="0,8">
           <!-- Author -->
           <Grid Grid.Column="0" ColumnDefinitions="96,*">
             <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Author}"/>
@@ -26,9 +22,9 @@
                 <SelectableTextBlock Text="{Binding Author.Name}" Margin="2,0,8,0"/>
                 <SelectableTextBlock Text="{Binding Author.Email}" ToolTip.Tip="{Binding Author.Email}" Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis"/>
               </DockPanel>
-              <SelectableTextBlock Text="{Binding AuthorTimeStr}" 
+              <SelectableTextBlock Text="{Binding AuthorTimeStr}"
                                    Margin="2,0,0,0"
-                                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}" 
+                                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}"
                                    Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
           </Grid>
@@ -42,13 +38,13 @@
                 <SelectableTextBlock Text="{Binding Committer.Name}" Margin="2,0,8,0"/>
                 <SelectableTextBlock Text="{Binding Committer.Email}" ToolTip.Tip="{Binding Committer.Email}" Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis"/>
               </DockPanel>
-              <SelectableTextBlock Text="{Binding CommitterTimeStr}" 
-                                   Margin="2,0,0,0" 
+              <SelectableTextBlock Text="{Binding CommitterTimeStr}"
+                                   Margin="2,0,0,0"
                                    FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}"
                                    Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
           </Grid>
-        </Grid>
+        </UniformGrid>
 
         <!-- Line -->
         <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
@@ -111,9 +107,6 @@
             <SelectableTextBlock Text="{Binding FullMessage}" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" TextWrapping="Wrap"/>
           </ScrollViewer>
         </Grid>
-
-        <!-- Line -->
-        <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
       </StackPanel>
     </DataTemplate>
   </UserControl.DataTemplates>

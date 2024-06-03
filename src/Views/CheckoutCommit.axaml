@@ -18,7 +18,7 @@
                Foreground="{DynamicResource Brush.FG2}"
                FontStyle="Italic"/>
 
-    <Grid RowDefinitions="32,Auto" ColumnDefinitions="120,*">
+    <Grid RowDefinitions="32,Auto" ColumnDefinitions="Auto,*" ClipToBounds="True">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"

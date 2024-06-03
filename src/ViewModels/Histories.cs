@@ -69,7 +69,7 @@ namespace SourceGit.ViewModels
         public Models.Commit AutoSelectedCommit
         {
             get => _autoSelectedCommit;
-            private set => SetProperty(ref _autoSelectedCommit, value);
+            set => SetProperty(ref _autoSelectedCommit, value);
         }
 
         public long NavigationId
@@ -81,7 +81,7 @@ namespace SourceGit.ViewModels
         public object DetailContext
         {
             get => _detailContext;
-            private set => SetProperty(ref _detailContext, value);
+            set => SetProperty(ref _detailContext, value);
         }
 
         public Histories(Repository repo)
@@ -171,17 +171,16 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public ContextMenu MakeContextMenu()
+        public ContextMenu MakeContextMenu(DataGrid datagrid)
         {
-            var detail = _detailContext as CommitDetail;
-            if (detail == null)
+            if (datagrid.SelectedItems.Count != 1)
                 return null;
 
             var current = _repo.Branches.Find(x => x.IsCurrent);
             if (current == null)
                 return null;
 
-            var commit = detail.Commit;
+            var commit = datagrid.SelectedItem as Models.Commit;
             var menu = new ContextMenu();
             var tags = new List<Models.Tag>();
 
@@ -316,6 +315,46 @@ namespace SourceGit.ViewModels
             }
 
             menu.Items.Add(new MenuItem() { Header = "-" });
+
+            if (current.Head != commit.SHA)
+            {
+                var compareWithHead = new MenuItem();
+                compareWithHead.Header = App.Text("CommitCM.CompareWithHead");
+                compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithHead.Click += (o, e) =>
+                {
+                    var head = _commits.Find(x => x.SHA == current.Head);
+                    if (head == null)
+                    {
+                        _repo.SearchResultSelectedCommit = null;
+                        head = new Commands.QuerySingleCommit(_repo.FullPath, current.Head).Result();
+                        if (head != null)
+                            DetailContext = new RevisionCompare(_repo.FullPath, commit, head);
+                    }
+                    else
+                    {
+                        datagrid.SelectedItems.Add(head);
+                    }
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(compareWithHead);
+
+                if (_repo.WorkingCopyChangesCount > 0)
+                {
+                    var compareWithWorktree = new MenuItem();
+                    compareWithWorktree.Header = App.Text("CommitCM.CompareWithWorktree");
+                    compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
+                    compareWithWorktree.Click += (o, e) =>
+                    {
+                        DetailContext = new RevisionCompare(_repo.FullPath, commit, null);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(compareWithWorktree);
+                }
+
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
 
             var createBranch = new MenuItem();
             createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
@@ -474,7 +513,7 @@ namespace SourceGit.ViewModels
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
             checkout.Click += (o, e) =>
             {
-                _repo.CheckoutLocalBranch(branch.Name);
+                _repo.CheckoutBranch(branch);
                 e.Handled = true;
             };
             submenu.Items.Add(checkout);
@@ -546,20 +585,7 @@ namespace SourceGit.ViewModels
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
             checkout.Click += (o, e) =>
             {
-                foreach (var b in _repo.Branches)
-                {
-                    if (b.IsLocal && b.Upstream == branch.FullName)
-                    {
-                        if (!b.IsCurrent)
-                            _repo.CheckoutLocalBranch(b.Name);
-
-                        return;
-                    }
-                }
-
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new CreateBranch(_repo, branch));
-
+                _repo.CheckoutBranch(branch);
                 e.Handled = true;
             };
             submenu.Items.Add(checkout);

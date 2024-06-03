@@ -213,14 +213,16 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnTreeViewContextRequested(object sender, ContextRequestedEventArgs e)
+        private void OnFileContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            var detail = DataContext as ViewModels.CommitDetail;
-            var node = detail.SelectedRevisionFileNode;
-            if (!node.IsFolder)
+            if (DataContext is ViewModels.CommitDetail vm && sender is TreeDataGrid tree)
             {
-                var menu = detail.CreateRevisionFileContextMenu(node.Backend as Models.Object);
-                (sender as Control)?.OpenContextMenu(menu);
+                var selected = tree.RowSelection.SelectedItem as Models.FileTreeNode;
+                if (selected != null && !selected.IsFolder && selected.Backend is Models.Object obj)
+                {
+                    var menu = vm.CreateRevisionFileContextMenu(obj);
+                    tree.OpenContextMenu(menu);
+                }
             }
 
             e.Handled = true;

@@ -3,41 +3,25 @@ using System.Collections.Generic;
 
 namespace SourceGit.Commands
 {
-    public class QueryCommits : Command
+    public class QuerySingleCommit : Command
     {
-        private const string GPGSIG_START = "gpgsig -----BEGIN ";
-        private const string GPGSIG_END = " -----END ";
+        private const string GPGSIG_START = "gpgsig -----BEGIN PGP SIGNATURE-----";
+        private const string GPGSIG_END = " -----END PGP SIGNATURE-----";
 
-        private readonly List<Models.Commit> commits = new List<Models.Commit>();
-        private Models.Commit current = null;
-        private bool isSkipingGpgsig = false;
-        private bool isHeadFounded = false;
-        private readonly bool findFirstMerged = true;
-
-        public QueryCommits(string repo, string limits, bool needFindHead = true)
-        {
+        public QuerySingleCommit(string repo, string sha) {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "log --date-order --decorate=full --pretty=raw " + limits;
-            findFirstMerged = needFindHead;
+            Args = $"show --pretty=raw --decorate=full -s {sha}";
         }
 
-        public List<Models.Commit> Result()
+        public Models.Commit Result()
         {
-            Exec();
+            var succ = Exec();
+            if (!succ)
+                return null;
 
-            if (current != null)
-            {
-                current.Message = current.Message.Trim();
-                commits.Add(current);
-            }
-
-            if (findFirstMerged && !isHeadFounded && commits.Count > 0)
-            {
-                MarkFirstMerged();
-            }
-
-            return commits;
+            _commit.Message.Trim();
+            return _commit;
         }
 
         protected override void OnReadline(string line)
@@ -56,33 +40,21 @@ namespace SourceGit.Commands
 
             if (line.StartsWith("commit ", StringComparison.Ordinal))
             {
-                if (current != null)
-                {
-                    current.Message = current.Message.Trim();
-                    commits.Add(current);
-                }
-
-                current = new Models.Commit();
                 line = line.Substring(7);
 
                 var decoratorStart = line.IndexOf('(', StringComparison.Ordinal);
                 if (decoratorStart < 0)
                 {
-                    current.SHA = line.Trim();
+                    _commit.SHA = line.Trim();
                 }
                 else
                 {
-                    current.SHA = line.Substring(0, decoratorStart).Trim();
-                    current.IsMerged = ParseDecorators(current.Decorators, line.Substring(decoratorStart + 1));
-                    if (!isHeadFounded)
-                        isHeadFounded = current.IsMerged;
+                    _commit.SHA = line.Substring(0, decoratorStart).Trim();
+                    ParseDecorators(_commit.Decorators, line.Substring(decoratorStart + 1));
                 }
 
                 return;
             }
-
-            if (current == null)
-                return;
 
             if (line.StartsWith("tree ", StringComparison.Ordinal))
             {
@@ -90,31 +62,31 @@ namespace SourceGit.Commands
             }
             else if (line.StartsWith("parent ", StringComparison.Ordinal))
             {
-                current.Parents.Add(line.Substring("parent ".Length));
+                _commit.Parents.Add(line.Substring("parent ".Length));
             }
             else if (line.StartsWith("author ", StringComparison.Ordinal))
             {
                 Models.User user = Models.User.Invalid;
                 ulong time = 0;
                 Models.Commit.ParseUserAndTime(line.Substring(7), ref user, ref time);
-                current.Author = user;
-                current.AuthorTime = time;
+                _commit.Author = user;
+                _commit.AuthorTime = time;
             }
             else if (line.StartsWith("committer ", StringComparison.Ordinal))
             {
                 Models.User user = Models.User.Invalid;
                 ulong time = 0;
                 Models.Commit.ParseUserAndTime(line.Substring(10), ref user, ref time);
-                current.Committer = user;
-                current.CommitterTime = time;
+                _commit.Committer = user;
+                _commit.CommitterTime = time;
             }
-            else if (string.IsNullOrEmpty(current.Subject))
+            else if (string.IsNullOrEmpty(_commit.Subject))
             {
-                current.Subject = line.Trim();
+                _commit.Subject = line.Trim();
             }
             else
             {
-                current.Message += (line.Trim() + "\n");
+                _commit.Message += (line.Trim() + "\n");
             }
         }
 
@@ -189,27 +161,7 @@ namespace SourceGit.Commands
             return isHeadOfCurrent;
         }
 
-        private void MarkFirstMerged()
-        {
-            Args = $"log --since=\"{commits[commits.Count - 1].CommitterTimeStr}\" --format=\"%H\"";
-
-            var rs = ReadToEnd();
-            var shas = rs.StdOut.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            if (shas.Length == 0)
-                return;
-
-            var set = new HashSet<string>();
-            foreach (var sha in shas)
-                set.Add(sha);
-
-            foreach (var c in commits)
-            {
-                if (set.Contains(c.SHA))
-                {
-                    c.IsMerged = true;
-                    break;
-                }
-            }
-        }
+        private Models.Commit _commit = new Models.Commit();
+        private bool isSkipingGpgsig = false;
     }
 }

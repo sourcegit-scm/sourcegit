@@ -17,7 +17,7 @@
 
     <Grid Grid.Column="0" RowDefinitions="26,*">
       <!-- Search & Display Mode -->
-      <Grid Grid.Row="0" ColumnDefinitions="*,24">
+      <Grid Grid.Row="0" ColumnDefinitions="*,18">
         <TextBox Grid.Column="0"
                  Height="26"
                  BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
@@ -39,116 +39,18 @@
         </TextBox>
 
         <v:ChangeViewModeSwitcher Grid.Column="1"
-                                  Width="18" Height="18"
+                                  Width="14" Height="14"
                                   HorizontalAlignment="Right"
                                   ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
       </Grid>
 
       <!-- Changes -->
       <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
-        <Grid>
-          <DataGrid Background="Transparent"
-                    ItemsSource="{Binding VisibleChanges}"
-                    SelectedItem="{Binding SelectedChange, Mode=TwoWay}"
-                    SelectionMode="Single"
-                    CanUserReorderColumns="False"
-                    CanUserResizeColumns="False"
-                    CanUserSortColumns="False"
-                    IsReadOnly="True"
-                    HeadersVisibility="None"
-                    Focusable="False"
-                    RowHeight="26"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Auto"
-                    SelectionChanged="OnDataGridSelectionChanged"
-                    ContextRequested="OnDataGridContextRequested"
-                    IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsList}}">
-            <DataGrid.Columns>
-              <DataGridTemplateColumn Header="ICON">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Width="*" Header="PATH">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0,0,0"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-            </DataGrid.Columns>
-          </DataGrid>
-
-          <DataGrid Background="Transparent"
-                    ItemsSource="{Binding VisibleChanges}"
-                    SelectedItem="{Binding SelectedChange, Mode=TwoWay}"
-                    SelectionMode="Single"
-                    CanUserReorderColumns="False"
-                    CanUserResizeColumns="False"
-                    CanUserSortColumns="False"
-                    IsReadOnly="True"
-                    HeadersVisibility="None"
-                    Focusable="False"
-                    RowHeight="26"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Auto"
-                    SelectionChanged="OnDataGridSelectionChanged"
-                    ContextRequested="OnDataGridContextRequested"
-                    IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsGrid}}">
-            <DataGrid.Columns>
-              <DataGridTemplateColumn Header="ICON">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Header="FILE_NAME">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0,0,0"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Header="FOLDER_PATH">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Margin="4,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-            </DataGrid.Columns>
-          </DataGrid>
-
-          <TreeView ItemsSource="{Binding ChangeTree}"
-                    SelectedItem="{Binding SelectedChangeNode, Mode=TwoWay}"
-                    AutoScrollToSelectedItem="True"
-                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    ContextRequested="OnTreeViewContextRequested"
-                    IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsTree}}">
-            <TreeView.Styles>
-              <Style Selector="TreeViewItem" x:DataType="vm:FileTreeNode">
-                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
-              </Style>
-            </TreeView.Styles>
-
-            <TreeView.ItemTemplate>
-              <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:FileTreeNode}">
-                <Grid Height="24" ColumnDefinitions="Auto,*">
-                  <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
-                  <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding Backend}" IsVisible="{Binding !IsFolder}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
-                </Grid>
-              </TreeDataTemplate>
-            </TreeView.ItemTemplate>
-          </TreeView>
-        </Grid>
+        <v:ChangeCollectionView IsWorkingCopyChange="False"
+                                ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode}"
+                                Changes="{Binding VisibleChanges}"
+                                SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
+                                ContextRequested="OnChangeContextRequested"/>
       </Border>
     </Grid>
 

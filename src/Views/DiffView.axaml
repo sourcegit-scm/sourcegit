@@ -126,6 +126,44 @@
             </StackPanel>
           </DataTemplate>
 
+          <!-- Submodule Diff -->
+          <DataTemplate DataType="m:SubmoduleDiff">
+            <Grid Background="{DynamicResource Brush.Contents}" RowDefinitions="Auto,*">
+              <TextBlock Grid.Row="0"
+                         Text="{DynamicResource Text.Diff.Submodule}"
+                         Margin="8,8,8,8"
+                         FontSize="18" FontWeight="Bold"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         HorizontalAlignment="Center"/>
+
+              <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical" Margin="8,0">
+                  <Border IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <ContentControl Content="{Binding Old}">
+                      <ContentControl.DataTemplates>
+                        <DataTemplate DataType="m:Commit">
+                          <Border Margin="0,0,0,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Background="{DynamicResource Brush.Window}">
+                            <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding}"/>
+                          </Border>
+                        </DataTemplate>
+                      </ContentControl.DataTemplates>
+                    </ContentControl>
+                  </Border>
+
+                  <Border Height="16" HorizontalAlignment="Center" Background="Green" CornerRadius="8" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNull}}">
+                    <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Submodule.New}" Margin="8,0" FontSize="10"/>
+                  </Border>
+
+                  <Path Width="16" Height="16" Data="{StaticResource Icons.DoubleDown}" HorizontalAlignment="Center" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+
+                  <Border Margin="0,8,0,0" BorderThickness="1" BorderBrush="Green" Background="{DynamicResource Brush.Window}">
+                    <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding New}"/>
+                  </Border>
+                </StackPanel>
+              </ScrollViewer>
+            </Grid>
+          </DataTemplate>
+
           <!-- Image Diff -->
           <DataTemplate DataType="m:ImageDiff">
             <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,8,8,0">
@@ -175,7 +213,8 @@
 
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
-            <v:TextDiffView TextDiff="{Binding}" UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>
+            <v:TextDiffView TextDiff="{Binding}"
+                            UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>
           </DataTemplate>
 
           <!-- No or only EOL changes -->

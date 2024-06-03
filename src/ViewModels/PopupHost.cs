@@ -52,17 +52,13 @@ namespace SourceGit.ViewModels
                 if (task != null)
                 {
                     var finished = await task;
+                    _popup.InProgress = false;
                     if (finished)
-                    {
                         Popup = null;
-                    }
-                    else
-                    {
-                        _popup.InProgress = false;
-                    }
                 }
                 else
                 {
+                    _popup.InProgress = false;
                     Popup = null;
                 }
             }

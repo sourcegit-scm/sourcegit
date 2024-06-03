@@ -11,7 +11,7 @@
   <Grid RowDefinitions="36,*,36" Background="{DynamicResource Brush.Window}">
     <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1" Background="{DynamicResource Brush.ToolBar}">
       <StackPanel Orientation="Horizontal" Margin="4,0,0,0">
-        <Button Classes="icon_button" Width="32" Command="{Binding Clone}" CommandParameter="{Binding $parent[v:Launcher].DataContext}" ToolTip.Tip="{DynamicResource Text.Welcome.Clone}">
+        <Button Classes="icon_button" Width="32" Command="{Binding Clone}" ToolTip.Tip="{DynamicResource Text.Welcome.Clone}">
           <Path Width="13" Height="13" Data="{StaticResource Icons.Pull}"/>
         </Button>
 

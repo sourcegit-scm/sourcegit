@@ -85,6 +85,11 @@ namespace SourceGit.ViewModels
                 _content = previous._content;
             }
 
+            if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
+                _title = _option.Path;
+            else
+                _title = $"{_option.OrgPath} → {_option.Path}";
+
             LoadDiffContent();
         }
 
@@ -123,8 +128,31 @@ namespace SourceGit.ViewModels
 
                 if (latest.TextDiff != null)
                 {
-                    latest.TextDiff.File = _option.Path;
-                    rs = latest.TextDiff;
+                    var repo = Preference.FindRepository(_repo);
+                    if (repo != null && repo.Submodules.Contains(_option.Path)) 
+                    {
+                        var submoduleDiff = new Models.SubmoduleDiff();
+                        var submoduleRoot = $"{_repo}/{_option.Path}".Replace("\\", "/");
+                        foreach (var line in latest.TextDiff.Lines)
+                        {
+                            if (line.Type == Models.TextDiffLineType.Added)
+                            {
+                                var sha = line.Content.Substring("Subproject commit ".Length);
+                                submoduleDiff.New = new Commands.QuerySingleCommit(submoduleRoot, sha).Result();
+                            }
+                            else if (line.Type == Models.TextDiffLineType.Deleted)
+                            {
+                                var sha = line.Content.Substring("Subproject commit ".Length);
+                                submoduleDiff.Old = new Commands.QuerySingleCommit(submoduleRoot, sha).Result();
+                            }
+                        }
+                        rs = submoduleDiff;
+                    }
+                    else
+                    {
+                        latest.TextDiff.File = _option.Path;
+                        rs = latest.TextDiff;
+                    }
                 }
                 else if (latest.IsBinary)
                 {
@@ -175,14 +203,9 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
-                    if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
-                        Title = _option.Path;
-                    else
-                        Title = $"{_option.OrgPath} → {_option.Path}";
-
                     FileModeChange = latest.FileModeChange;
                     Content = rs;
-                    IsTextDiff = latest.TextDiff != null;
+                    IsTextDiff = rs is Models.TextDiff;
                     IsLoading = false;
                 });
             });

@@ -42,6 +42,7 @@ namespace SourceGit.ViewModels
                         break;
                 }
 
+                SetProgressDescription($"Git Flow - finishing {_branch.Name} ...");
                 var succ = new Commands.GitFlow(_repo.FullPath).Finish(_type, branch, KeepBranch);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

@@ -11,39 +11,57 @@
              x:DataType="vm:RevisionCompare"
              Background="{DynamicResource Brush.Window}">
   <Grid RowDefinitions="50,*" Margin="4">
-    <Grid Grid.Row="0" ColumnDefinitions="48,*,48,*,48" Margin="0,0,0,4">
-      <Border Grid.Column="1" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+    <Grid Grid.Row="0" Margin="48,0,48,4" ColumnDefinitions="*,48,*">
+      <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <Grid RowDefinitions="Auto,*">
-          <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
+          <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
             <v:Avatar Width="16" Height="16"
                       VerticalAlignment="Center"
                       IsHitTestVisible="False"
                       User="{Binding StartPoint.Author}"/>
             <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding StartPoint.Author.Name}" Margin="8,0,0,0"/>
-            <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding StartPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
-            <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding StartPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+            <Border Grid.Column="2" Background="DarkGreen" CornerRadius="4" IsVisible="{Binding StartPoint.IsCurrentHead}">
+              <TextBlock Text="HEAD" Classes="monospace" Margin="4,0"/>
+            </Border> 
+            <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding StartPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
+            <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding StartPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
           </Grid>
 
           <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding StartPoint.Subject}" VerticalAlignment="Bottom"/>
         </Grid>
       </Border>
 
-      <Path Grid.Column="2" Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Down}" RenderTransformOrigin="50%,50%" RenderTransform="rotate(270deg)"/>
+      <Path Grid.Column="1" Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Down}" RenderTransformOrigin="50%,50%" RenderTransform="rotate(270deg)"/>
 
-      <Border Grid.Column="3" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
-        <Grid RowDefinitions="Auto,*">
-          <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
-            <v:Avatar Width="16" Height="16"
-                      VerticalAlignment="Center"
-                      IsHitTestVisible="False"
-                      User="{Binding EndPoint.Author}"/>
-            <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding EndPoint.Author.Name}" Margin="8,0,0,0"/>
-            <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding EndPoint.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
-            <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding EndPoint.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
-          </Grid>
+      <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+        <ContentControl Grid.Column="2" Content="{Binding EndPoint}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="m:Commit">
+              <Grid RowDefinitions="Auto,*">
+                <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                  <v:Avatar Width="16" Height="16"
+                            VerticalAlignment="Center"
+                            IsHitTestVisible="False"
+                            User="{Binding Author}"/>
+                  <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                  <Border Grid.Column="2" Background="DarkGreen" CornerRadius="4" IsVisible="{Binding IsCurrentHead}">
+                    <TextBlock Text="HEAD" Classes="monospace" Margin="4,0"/>
+                  </Border>
+                  <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
+                  <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                </Grid>
 
-          <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding EndPoint.Subject}" VerticalAlignment="Bottom"/>
-        </Grid>
+                <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+              </Grid>
+            </DataTemplate>
+
+            <DataTemplate DataType="vm:CompareTargetWorktree">
+              <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="DarkGreen" CornerRadius="4">
+                <TextBlock Text="{DynamicResource Text.Worktree}" Classes="monospace" Margin="4,2"/>
+              </Border>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
       </Border>
     </Grid>
 
@@ -56,7 +74,7 @@
 
       <Grid Grid.Column="0" RowDefinitions="26,*">
         <!-- Search & Display Mode -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,24">
+        <Grid Grid.Row="0" ColumnDefinitions="*,18">
           <TextBox Grid.Column="0"
                    Height="26"
                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
@@ -78,116 +96,18 @@
           </TextBox>
 
           <v:ChangeViewModeSwitcher Grid.Column="1"
-                                    Width="18" Height="18"
+                                    Width="14" Height="14"
                                     HorizontalAlignment="Right"
                                     ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
         </Grid>
 
         <!-- Changes -->
         <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
-          <Grid>
-            <DataGrid Background="Transparent"
-                      ItemsSource="{Binding VisibleChanges}"
-                      SelectedItem="{Binding SelectedChange, Mode=TwoWay}"
-                      SelectionMode="Single"
-                      CanUserReorderColumns="False"
-                      CanUserResizeColumns="False"
-                      CanUserSortColumns="False"
-                      IsReadOnly="True"
-                      HeadersVisibility="None"
-                      Focusable="False"
-                      RowHeight="26"
-                      HorizontalScrollBarVisibility="Auto"
-                      VerticalScrollBarVisibility="Auto"
-                      SelectionChanged="OnDataGridSelectionChanged"
-                      ContextRequested="OnDataGridContextRequested"
-                      IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsList}}">
-              <DataGrid.Columns>
-                <DataGridTemplateColumn Header="ICON">
-                  <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                      <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
-                    </DataTemplate>
-                  </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Width="*" Header="PATH">
-                  <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                      <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0,0,0"/>
-                    </DataTemplate>
-                  </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-              </DataGrid.Columns>
-            </DataGrid>
-
-            <DataGrid Background="Transparent"
-                      ItemsSource="{Binding VisibleChanges}"
-                      SelectedItem="{Binding SelectedChange, Mode=TwoWay}"
-                      SelectionMode="Single"
-                      CanUserReorderColumns="False"
-                      CanUserResizeColumns="False"
-                      CanUserSortColumns="False"
-                      IsReadOnly="True"
-                      HeadersVisibility="None"
-                      Focusable="False"
-                      RowHeight="26"
-                      HorizontalScrollBarVisibility="Auto"
-                      VerticalScrollBarVisibility="Auto"
-                      SelectionChanged="OnDataGridSelectionChanged"
-                      ContextRequested="OnDataGridContextRequested"
-                      IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsGrid}}">
-              <DataGrid.Columns>
-                <DataGridTemplateColumn Header="ICON">
-                  <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                      <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
-                    </DataTemplate>
-                  </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Header="FILE_NAME">
-                  <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                      <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}" Margin="4,0,0,0"/>
-                    </DataTemplate>
-                  </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Header="FOLDER_PATH">
-                  <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                      <TextBlock Classes="monospace" Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}" Margin="4,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
-                    </DataTemplate>
-                  </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-              </DataGrid.Columns>
-            </DataGrid>
-
-            <TreeView ItemsSource="{Binding ChangeTree}"
-                      SelectedItem="{Binding SelectedNode, Mode=TwoWay}"
-                      AutoScrollToSelectedItem="True"
-                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      ContextRequested="OnTreeViewContextRequested"
-                      IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Converter={x:Static c:ChangeViewModeConverters.IsTree}}">
-              <TreeView.Styles>
-                <Style Selector="TreeViewItem" x:DataType="vm:FileTreeNode">
-                  <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
-                </Style>
-              </TreeView.Styles>
-
-              <TreeView.ItemTemplate>
-                <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:FileTreeNode}">
-                  <Grid Height="24" ColumnDefinitions="Auto,*">
-                    <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
-                    <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding Backend}" IsVisible="{Binding !IsFolder}"/>
-                    <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
-                  </Grid>
-                </TreeDataTemplate>
-              </TreeView.ItemTemplate>
-            </TreeView>
-          </Grid>
+          <v:ChangeCollectionView IsWorkingCopyChange="False"
+                                  ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode}"
+                                  Changes="{Binding VisibleChanges}"
+                                  SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
+                                  ContextRequested="OnChangeContextRequested"/>
         </Border>
       </Grid>
 

@@ -50,10 +50,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _extraArgs, value);
         }
 
-        public Clone(Launcher launcher, LauncherPage page)
+        public Clone(Launcher launcher)
         {
             _launcher = launcher;
-            _page = page;
+            _page = launcher.ActivePage;
 
             View = new Views.Clone() { DataContext = this };
         }

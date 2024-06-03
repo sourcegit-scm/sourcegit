@@ -47,13 +47,13 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedBranch, value);
         }
 
-        public bool UseRebase
+        public Models.DealWithLocalChanges PreAction
         {
-            get;
-            set;
-        } = true;
+            get => _preAction;
+            set => SetProperty(ref _preAction, value);
+        }
 
-        public bool AutoStash
+        public bool UseRebase
         {
             get;
             set;
@@ -117,23 +117,31 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 var needPopStash = false;
-                if (AutoStash && _repo.WorkingCopyChangesCount > 0)
+                if (_repo.WorkingCopyChangesCount > 0)
                 {
-                    SetProgressDescription("Adding untracked changes...");
-                    var succ = new Commands.Add(_repo.FullPath).Exec();
-                    if (succ)
+                    if (_preAction == Models.DealWithLocalChanges.StashAndReaply)
                     {
-                        SetProgressDescription("Stash local changes...");
-                        succ = new Commands.Stash(_repo.FullPath).Push("PULL_AUTO_STASH");
-                    }
+                        SetProgressDescription("Adding untracked changes...");
+                        var succ = new Commands.Add(_repo.FullPath).Exec();
+                        if (succ)
+                        {
+                            SetProgressDescription("Stash local changes...");
+                            succ = new Commands.Stash(_repo.FullPath).Push("PULL_AUTO_STASH");
+                        }
 
-                    if (!succ)
+                        if (!succ)
+                        {
+                            CallUIThread(() => _repo.SetWatcherEnabled(true));
+                            return false;
+                        }
+
+                        needPopStash = true;
+                    } 
+                    else if (_preAction == Models.DealWithLocalChanges.Discard)
                     {
-                        CallUIThread(() => _repo.SetWatcherEnabled(true));
-                        return false;
+                        SetProgressDescription("Discard local changes ...");
+                        Commands.Discard.All(_repo.FullPath);
                     }
-
-                    needPopStash = true;
                 }
 
                 SetProgressDescription($"Pull {_selectedRemote.Name}/{_selectedBranch.Name}...");
@@ -154,5 +162,6 @@ namespace SourceGit.ViewModels
         private Models.Remote _selectedRemote = null;
         private List<Models.Branch> _remoteBranches = null;
         private Models.Branch _selectedBranch = null;
+        private Models.DealWithLocalChanges _preAction = Models.DealWithLocalChanges.StashAndReaply;
     }
 }

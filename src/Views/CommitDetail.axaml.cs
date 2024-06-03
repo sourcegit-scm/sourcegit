@@ -16,8 +16,9 @@ namespace SourceGit.Views
             {
                 var datagrid = sender as DataGrid;
                 detail.ActivePageIndex = 1;
-                detail.SelectedChange = datagrid.SelectedItem as Models.Change;
+                detail.SelectedChanges = new () { datagrid.SelectedItem as Models.Change };
             }
+
             e.Handled = true;
         }
 
@@ -35,6 +36,7 @@ namespace SourceGit.Views
                 var menu = detail.CreateChangeContextMenu(datagrid.SelectedItem as Models.Change);
                 datagrid.OpenContextMenu(menu);
             }
+
             e.Handled = true;
         }
     }

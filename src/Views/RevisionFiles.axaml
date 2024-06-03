@@ -41,29 +41,22 @@
       
       <!-- File Tree -->
       <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
-        <TreeView Grid.Row="5"
-                  ItemsSource="{Binding RevisionFilesTree}"
-                  SelectedItem="{Binding SelectedRevisionFileNode, Mode=TwoWay}"
-                  AutoScrollToSelectedItem="True"
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ContextRequested="OnTreeViewContextRequested">
-          <TreeView.Styles>
-            <Style Selector="TreeViewItem" x:DataType="vm:FileTreeNode">
-              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
-            </Style>
-          </TreeView.Styles>
-
-          <TreeView.ItemTemplate>
-            <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:FileTreeNode}">
-              <Grid Height="24" ColumnDefinitions="Auto,*">
+        <TreeDataGrid AutoDragDropRows="False" 
+                      ShowColumnHeaders="False" 
+                      CanUserResizeColumns="False" 
+                      CanUserSortColumns="False"
+                      Source="{Binding RevisionFiles}"
+                      ContextRequested="OnFileContextRequested">
+          <TreeDataGrid.Resources>
+            <DataTemplate x:Key="FileTreeNodeExpanderTemplate" DataType="m:FileTreeNode">
+              <Grid HorizontalAlignment="Stretch" Height="24" ColumnDefinitions="Auto,*">
                 <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
                 <Path Grid.Column="0" Width="14" Height="14" IsVisible="{Binding !IsFolder}" Data="{StaticResource Icons.File}" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
               </Grid>
-            </TreeDataTemplate>
-          </TreeView.ItemTemplate>
-        </TreeView>
+            </DataTemplate>
+          </TreeDataGrid.Resources>
+        </TreeDataGrid>
       </Border>
     </Grid>
 
