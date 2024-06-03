@@ -1,5 +1,5 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
+using Avalonia.Input;
 
 namespace SourceGit.Views
 {
@@ -10,31 +10,33 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnChangeListContextRequested(object sender, ContextRequestedEventArgs e)
+        private void OnChangeListDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail vm && sender is ChangeCollectionView view)
+            if (DataContext is ViewModels.CommitDetail detail)
             {
-                var selected = view.SelectedChanges;
-                if (selected != null && selected.Count == 1)
-                {
-                    var menu = vm.CreateChangeContextMenu(selected[0]);
-                    view.OpenContextMenu(menu);
-                }
+                var datagrid = sender as DataGrid;
+                detail.ActivePageIndex = 1;
+                detail.SelectedChanges = new () { datagrid.SelectedItem as Models.Change };
             }
+
             e.Handled = true;
         }
 
-        private void OnChangeDoubleTapped(object sender, RoutedEventArgs e)
+        private void OnChangeListContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail vm && sender is ChangeCollectionView view)
+            if (DataContext is ViewModels.CommitDetail detail)
             {
-                var selected = view.SelectedChanges;
-                if (selected != null && selected.Count == 1)
+                var datagrid = sender as DataGrid;
+                if (datagrid.SelectedItem == null)
                 {
-                    vm.ActivePageIndex = 1;
-                    vm.SelectedChanges = new() { selected[0] };
+                    e.Handled = true;
+                    return;
                 }
+
+                var menu = detail.CreateChangeContextMenu(datagrid.SelectedItem as Models.Change);
+                datagrid.OpenContextMenu(menu);
             }
+
             e.Handled = true;
         }
     }
