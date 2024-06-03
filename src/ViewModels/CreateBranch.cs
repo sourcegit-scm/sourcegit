@@ -126,6 +126,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
+                    SetProgressDescription($"Create new branch '{_name}'");
                     Commands.Branch.Create(_repo.FullPath, _name, _baseOnRevision);
                 }
 

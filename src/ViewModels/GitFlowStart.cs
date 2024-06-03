@@ -65,6 +65,7 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             return Task.Run(() =>
             {
+                SetProgressDescription($"Git Flow - starting {_prefix}{_name} ...");
                 var succ = new Commands.GitFlow(_repo.FullPath).Start(_type, _name);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
