@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -302,14 +300,6 @@ namespace SourceGit.Views
                 var menu = repo.CreateContextMenuForSubmodule(submodule);
                 datagrid.OpenContextMenu(menu);
             }
-
-            e.Handled = true;
-        }
-
-        private void UpdateSubmodules(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-                repo.UpdateSubmodules();
 
             e.Handled = true;
         }
