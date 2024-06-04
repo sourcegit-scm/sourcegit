@@ -30,7 +30,7 @@
           </Border>
 
           <!-- Title -->
-          <TextBlock Grid.Column="2" Classes="monospace" Margin="4,0,0,0" Text="{Binding Title}" FontSize="11"/>
+          <TextBlock Grid.Column="2" Classes="monospace" Margin="4,0,0,0" Text="{Binding Title}" FontSize="11" TextTrimming="CharacterEllipsis"/>
 
           <!-- Toolbar Buttons -->
           <StackPanel Grid.Column="3" Margin="8,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
