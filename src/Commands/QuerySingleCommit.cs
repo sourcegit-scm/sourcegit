@@ -5,8 +5,8 @@ namespace SourceGit.Commands
 {
     public class QuerySingleCommit : Command
     {
-        private const string GPGSIG_START = "gpgsig -----BEGIN PGP SIGNATURE-----";
-        private const string GPGSIG_END = " -----END PGP SIGNATURE-----";
+        private const string GPGSIG_START = "gpgsig -----BEGIN ";
+        private const string GPGSIG_END = " -----END ";
 
         public QuerySingleCommit(string repo, string sha) {
             WorkingDirectory = repo;
