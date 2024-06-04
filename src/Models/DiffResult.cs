@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Avalonia;
 using Avalonia.Media.Imaging;
 
 namespace SourceGit.Models
@@ -63,6 +64,7 @@ namespace SourceGit.Models
         public string File { get; set; } = string.Empty;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
         public int MaxLineNumber = 0;
+        public Vector SyncScrollOffset { get; set; } = Vector.Zero;
 
         public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
         {

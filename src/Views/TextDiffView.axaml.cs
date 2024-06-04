@@ -260,7 +260,6 @@ namespace SourceGit.Views
 
             IsReadOnly = true;
             ShowLineNumbers = false;
-            WordWrap = false;
 
             TextArea.LeftMargins.Add(new LineNumberMargin(this, true) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
@@ -653,7 +652,6 @@ namespace SourceGit.Views
 
             IsReadOnly = true;
             ShowLineNumbers = false;
-            WordWrap = false;
 
             TextArea.LeftMargins.Add(new LineNumberMargin(this) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));

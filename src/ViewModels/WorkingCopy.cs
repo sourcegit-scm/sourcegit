@@ -273,19 +273,12 @@ namespace SourceGit.ViewModels
                 Staged = staged;
                 _isLoadingData = false;
 
-                var scrollOffset = Vector.Zero;
-                if (_detailContext is DiffContext old)
-                    scrollOffset = old.SyncScrollOffset;
-
                 if (selectedUnstaged.Count > 0)
                     SelectedUnstaged = selectedUnstaged;
                 else if (selectedStaged.Count > 0)
                     SelectedStaged = selectedStaged;
                 else
                     SetDetail(null);
-
-                if (_detailContext is DiffContext cur)
-                    cur.SyncScrollOffset = scrollOffset;
 
                 // Try to load merge message from MERGE_MSG
                 if (string.IsNullOrEmpty(_commitMessage))

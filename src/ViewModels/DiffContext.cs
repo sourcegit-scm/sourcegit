@@ -58,12 +58,6 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _content, value);
         }
 
-        public Vector SyncScrollOffset
-        {
-            get => _syncScrollOffset;
-            set => SetProperty(ref _syncScrollOffset, value);
-        }
-
         public int Unified
         {
             get => _unified;
@@ -203,6 +197,9 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    if (_content is Models.TextDiff old && rs is Models.TextDiff cur && old.File == cur.File)
+                        cur.SyncScrollOffset = old.SyncScrollOffset;
+
                     FileModeChange = latest.FileModeChange;
                     Content = rs;
                     IsTextDiff = rs is Models.TextDiff;
@@ -229,7 +226,6 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private bool _isTextDiff = false;
         private object _content = null;
-        private Vector _syncScrollOffset = Vector.Zero;
         private int _unified = 4;
     }
 }

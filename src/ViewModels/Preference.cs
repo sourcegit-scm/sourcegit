@@ -164,6 +164,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useSyntaxHighlighting, value);
         }
 
+        public bool EnableDiffViewWordWrap
+        {
+            get => _enableDiffViewWordWrap;
+            set => SetProperty(ref _enableDiffViewWordWrap, value);
+        }
+
         public Models.ChangeViewMode UnstagedChangeViewMode
         {
             get => _unstagedChangeViewMode;
@@ -526,6 +532,7 @@ namespace SourceGit.ViewModels
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _useSideBySideDiff = false;
         private bool _useSyntaxHighlighting = false;
+        private bool _enableDiffViewWordWrap = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
