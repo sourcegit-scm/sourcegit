@@ -212,12 +212,21 @@
               <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
             </Style>
 
-            <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
               <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value=".65"/>
             </Style>
-            
-            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+              <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value="1"/>
+            </Style>
+            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
               <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".65"/>
+            </Style>
+            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+              <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".8"/>
             </Style>
           </TreeView.Styles>
           <TreeView.ItemTemplate>
@@ -276,12 +285,21 @@
               <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
             </Style>
 
-            <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
               <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value=".65"/>
             </Style>
-
-            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+              <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value="1"/>
+            </Style>
+            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
               <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".65"/>
+            </Style>
+            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+              <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".8"/>
             </Style>
           </TreeView.Styles>
 
@@ -344,13 +362,22 @@
             <Style Selector="DataGridRow /template/ Border#RowBorder">
               <Setter Property="ClipToBounds" Value="True" />
             </Style>
-            
+
+            <Style Selector="Grid.repository_leftpanel DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
+              <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value=".5"/>
+            </Style>
             <Style Selector="Grid.repository_leftpanel DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
               <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value="1"/>
             </Style>
-
             <Style Selector="Grid.repository_leftpanel:focus-within DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
               <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".65"/>
+            </Style>
+            <Style Selector="Grid.repository_leftpanel:focus-within DataGridRow:selected:pointerover /template/ Rectangle#BackgroundRectangle">
+              <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".8"/>
             </Style>
           </DataGrid.Styles>
           
