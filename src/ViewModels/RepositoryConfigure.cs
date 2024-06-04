@@ -17,12 +17,6 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public Models.GPGFormat GPGFormat
-        {
-            get;
-            set;
-        }
-
         public bool GPGCommitSigningEnabled
         {
             get;
@@ -60,10 +54,6 @@ namespace SourceGit.ViewModels
                 GPGCommitSigningEnabled = gpgCommitSign == "true";
             if (_cached.TryGetValue("tag.gpgSign", out var gpgTagSign))
                 GPGTagSigningEnabled = gpgTagSign == "true";
-            if (_cached.TryGetValue("gpg.format", out var gpgFormat))
-                GPGFormat = Models.GPGFormat.Supported.Find(x => x.Value == gpgFormat);
-            else
-                GPGFormat = Models.GPGFormat.OPENPGP;
             if (_cached.TryGetValue("user.signingkey", out var signingKey))
                 GPGUserSigningKey = signingKey;
             if (_cached.TryGetValue("http.proxy", out var proxy))
@@ -78,20 +68,19 @@ namespace SourceGit.ViewModels
             SetIfChanged("user.email", UserEmail);
             SetIfChanged("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false");
             SetIfChanged("tag.gpgSign", GPGTagSigningEnabled ? "true" : "false");
-            SetIfChanged("gpg.format", GPGFormat?.Value, Models.GPGFormat.OPENPGP.Value);
             SetIfChanged("user.signingkey", GPGUserSigningKey);
             SetIfChanged("http.proxy", HttpProxy);
             return null;
         }
 
-        private void SetIfChanged(string key, string value, string defaultValue = null)
+        private void SetIfChanged(string key, string value)
         {
             bool changed = false;
             if (_cached.TryGetValue(key, out var old))
             {
                 changed = old != value;
             }
-            else if (!string.IsNullOrEmpty(value) && value != defaultValue)
+            else if (!string.IsNullOrEmpty(value))
             {
                 changed = true;
             }

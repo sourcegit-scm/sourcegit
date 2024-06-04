@@ -316,9 +316,9 @@
   <x:String x:Key="Text.Preference.GPG" xml:space="preserve">GPG签名</x:String>
   <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">启用提交签名</x:String>
   <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">启用标签签名</x:String>
-  <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">GPG签名格式</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">可执行文件位置</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">gpg.exe所在路径</x:String>
+  <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">签名格式</x:String>
+  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">签名程序位置</x:String>
+  <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">签名程序所在路径</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">用户签名KEY</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">输入签名提交所使用的KEY</x:String>
   <x:String x:Key="Text.Preference.Merger" xml:space="preserve">外部合并工具</x:String>

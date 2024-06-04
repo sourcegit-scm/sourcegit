@@ -409,7 +409,7 @@
             <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
           </TabItem.Resources>
 
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,Auto,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.GPG.Format}"
                        HorizontalAlignment="Right"
@@ -419,7 +419,7 @@
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
                       ItemsSource="{Binding Source={x:Static m:GPGFormat.Supported}}"
-                      SelectedItem="{Binding #me.GPGFormat, Mode=TwoWay, FallbackValue={x:Static m:GPGFormat.OPENPGP}}">
+                      SelectedItem="{Binding #me.GPGFormat, Mode=TwoWay}">
               <ComboBox.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type m:GPGFormat}">
                   <Grid ColumnDefinitions="Auto,*">
@@ -433,12 +433,14 @@
             <TextBlock Grid.Row="1" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.GPG.Path}"
                        HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
+                       Margin="0,0,16,0"
+                       IsVisible="{Binding #me.GPGFormat.NeedFindProgram}"/>
             <TextBox Grid.Row="1" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #me.GPGExecutableFile, Mode=TwoWay}"
-                     IsEnabled="{Binding #me.GPGFormat, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:GPGFormat.OPENPGP}}">
+                     Watermark="{DynamicResource Text.Preference.GPG.Path.Placeholder}"
+                     IsVisible="{Binding #me.GPGFormat.NeedFindProgram}">
               <TextBox.InnerRightContent>
                 <Button Classes="icon_button" Width="30" Height="30" Click="SelectGPGExecutable">
                   <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>

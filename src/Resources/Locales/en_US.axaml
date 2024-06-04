@@ -314,7 +314,7 @@
   <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">Commit GPG signing</x:String>
   <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">Tag GPG signing</x:String>
   <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">GPG Format</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">Install Path</x:String>
+  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">Program Install Path</x:String>
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Input path for installed gpg program</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">User Signing Key</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">User's gpg signing key</x:String>

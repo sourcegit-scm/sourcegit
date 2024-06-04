@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -67,7 +68,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<Models.GPGFormat> GPGFormatProperty =
-            AvaloniaProperty.Register<Preference, Models.GPGFormat>(nameof(GPGFormat));
+            AvaloniaProperty.Register<Preference, Models.GPGFormat>(nameof(GPGFormat), Models.GPGFormat.Supported[0]);
 
         public Models.GPGFormat GPGFormat
         {
@@ -160,10 +161,11 @@ namespace SourceGit.Views
                 if (config.TryGetValue("tag.gpgSign", out var gpgTagSign))
                     EnableGPGTagSigning = (gpgTagSign == "true");
                 if (config.TryGetValue("gpg.format", out var gpgFormat))
-                    GPGFormat = Models.GPGFormat.Supported.Find(x => x.Value == gpgFormat);
-                else
-                    GPGFormat = Models.GPGFormat.OPENPGP;
-                if (config.TryGetValue("gpg.program", out var gpgProgram))
+                    GPGFormat = Models.GPGFormat.Supported.Find(x => x.Value == gpgFormat) ?? Models.GPGFormat.Supported[0];
+
+                if (GPGFormat.Value == "opengpg" && config.TryGetValue("gpg.program", out var opengpg))
+                    GPGExecutableFile = opengpg;
+                else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
                     GPGExecutableFile = gpgProgram;
 
                 ver = new Commands.Version().Query();
@@ -187,7 +189,7 @@ namespace SourceGit.Views
             var oldEmail = config.TryGetValue("user.email", out var email) ? email : string.Empty;
             var oldGPGSignKey = config.TryGetValue("user.signingkey", out var signingKey) ? signingKey : string.Empty;
             var oldCRLF = config.TryGetValue("core.autocrlf", out var crlf) ? crlf : string.Empty;
-            var oldGPGFormat = config.TryGetValue("gpg.format", out var gpgFormat) ? gpgFormat : Models.GPGFormat.OPENPGP.Value;
+            var oldGPGFormat = config.TryGetValue("gpg.format", out var gpgFormat) ? gpgFormat : "opengpg";
             var oldGPGCommitSignEnable = config.TryGetValue("commit.gpgsign", out var gpgCommitSign) ? gpgCommitSign : "false";
             var oldGPGTagSignEnable = config.TryGetValue("tag.gpgSign", out var gpgTagSign) ? gpgTagSign : "false";
             var oldGPGExec = config.TryGetValue("gpg.program", out var program) ? program : string.Empty;
@@ -204,10 +206,10 @@ namespace SourceGit.Views
                 cmd.Set("commit.gpgsign", EnableGPGCommitSigning ? "true" : "false");
             if (EnableGPGTagSigning != (oldGPGTagSignEnable == "true"))
                 cmd.Set("tag.gpgSign", EnableGPGTagSigning ? "true" : "false");
-            if (GPGFormat != null && GPGFormat.Value != oldGPGFormat)
+            if (GPGFormat.Value != oldGPGFormat)
                 cmd.Set("gpg.format", GPGFormat.Value);
             if (GPGExecutableFile != oldGPGExec)
-                cmd.Set("gpg.program", GPGExecutableFile);
+                cmd.Set($"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
 
             Close();
         }
@@ -245,15 +247,13 @@ namespace SourceGit.Views
         {
             var patterns = new List<string>();
             if (OperatingSystem.IsWindows())
-                patterns.Add("gpg.exe");
-            else if (OperatingSystem.IsLinux())
-                patterns.AddRange(new string[] { "gpg", "gpg2" });
+                patterns.Add($"{GPGFormat.Program}.exe");
             else
-                patterns.Add("gpg");
+                patterns.Add(GPGFormat.Program);
 
             var options = new FilePickerOpenOptions()
             {
-                FileTypeFilter = [new FilePickerFileType("GPG Executable") { Patterns = patterns }],
+                FileTypeFilter = [new FilePickerFileType("GPG Program") { Patterns = patterns }],
                 AllowMultiple = false,
             };
 
