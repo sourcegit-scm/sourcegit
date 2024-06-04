@@ -75,6 +75,7 @@ This app supports open repository in external tools listed in the table below.
 
 > * You can set the given environment variable for special tool if it can NOT be found by this app automatically. 
 > * Installing `JetBrains Toolbox` will help this app to find other JetBrains tools installed on your device.
+> * On macOS, you may need to use `launchctl setenv` to make sure the app can read these environment variables.
 
 ## Screenshots
 
