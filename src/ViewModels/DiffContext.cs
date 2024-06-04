@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
