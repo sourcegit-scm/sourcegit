@@ -29,9 +29,10 @@ namespace SourceGit.Commands
             }
         }
 
-        public bool Update()
+        public bool Update(Action<string> outputHandler)
         {
             Args = $"submodule update --rebase --remote";
+            _outputHandler = outputHandler;
             return Exec();
         }
 

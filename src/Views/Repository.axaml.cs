@@ -306,16 +306,10 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void UpdateSubmodules(object sender, RoutedEventArgs e)
+        private void UpdateSubmodules(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
-            {
-                repo.SetWatcherEnabled(false);
-                iconSubmoduleUpdate.Classes.Add("rotating");
-                await Task.Run(() => new Commands.Submodule(repo.FullPath).Update());
-                iconSubmoduleUpdate.Classes.Remove("rotating");
-                repo.SetWatcherEnabled(true);
-            }
+                repo.UpdateSubmodules();
 
             e.Handled = true;
         }

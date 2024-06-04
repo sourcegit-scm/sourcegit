@@ -769,6 +769,12 @@ namespace SourceGit.ViewModels
                 PopupHost.ShowPopup(new AddSubmodule(this));
         }
 
+        public void UpdateSubmodules()
+        {
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowAndStartPopup(new UpdateSubmodules(this));
+        }
+
         public ContextMenu CreateContextMenuForGitFlow()
         {
             var menu = new ContextMenu();

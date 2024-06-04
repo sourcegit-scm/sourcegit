@@ -461,6 +461,8 @@
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">删除${0}$</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送${0}$</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">仓库地址 ：</x:String>
+  <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模块</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Tip" xml:space="preserve">为此仓库执行`submodule update`命令，更新所有的子模块。</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">新建分组</x:String>
   <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">新建子分组</x:String>
