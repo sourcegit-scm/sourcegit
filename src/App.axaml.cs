@@ -132,14 +132,10 @@ namespace SourceGit
             var app = Current as App;
             var targetLocale = app.Resources[localeKey] as ResourceDictionary;
             if (targetLocale == null || targetLocale == app._activeLocale)
-            {
                 return;
-            }
 
             if (app._activeLocale != null)
-            {
                 app.Resources.MergedDictionaries.Remove(app._activeLocale);
-            }
 
             app.Resources.MergedDictionaries.Add(targetLocale);
             app._activeLocale = targetLocale;
@@ -150,17 +146,11 @@ namespace SourceGit
             var app = Current as App;
 
             if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase))
-            {
                 app.RequestedThemeVariant = ThemeVariant.Light;
-            }
             else if (theme.Equals("Dark", StringComparison.OrdinalIgnoreCase))
-            {
                 app.RequestedThemeVariant = ThemeVariant.Dark;
-            }
             else
-            {
                 app.RequestedThemeVariant = ThemeVariant.Default;
-            }
 
             if (app._colorOverrides != null)
             {
@@ -173,6 +163,7 @@ namespace SourceGit
                 try
                 {
                     var resDic = new ResourceDictionary();
+                    
                     var schema = JsonSerializer.Deserialize(File.ReadAllText(colorsFile), JsonCodeGen.Default.DictionaryStringString);
                     foreach (var kv in schema)
                         resDic[kv.Key] = Color.Parse(kv.Value);
@@ -191,9 +182,7 @@ namespace SourceGit
             if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 if (desktop.MainWindow.Clipboard is { } clipbord)
-                {
                     await clipbord.SetTextAsync(data);
-                }
             }
         }
 

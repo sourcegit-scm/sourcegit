@@ -100,7 +100,6 @@ namespace SourceGit.ViewModels
                 {
                     SetProgressDescription("Fetching from added remote ...");
                     new Commands.Config(_repo.FullPath).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
-
                     new Commands.Fetch(_repo.FullPath, _name, true, SetProgressDescription).Exec();
                 }
                 CallUIThread(() =>
