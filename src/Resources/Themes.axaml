@@ -56,11 +56,11 @@
       <Color x:Key="Color.FG1">#FFDDDDDD</Color>
       <Color x:Key="Color.FG2">#40F1F1F1</Color>
       <Color x:Key="Color.FG3">#FF252525</Color>
-      <Color x:Key="Color.TextDiffView.LineBG1.EMPTY">#FF424242</Color>
-      <Color x:Key="Color.TextDiffView.LineBG1.ADD">#FF38573C</Color>
-      <Color x:Key="Color.TextDiffView.LineBG1.DELETED">#FF633F3E</Color>
-      <Color x:Key="Color.TextDiffView.LineBG2.ADD">#FF388442</Color>
-      <Color x:Key="Color.TextDiffView.LineBG2.DELETED">#FF9F4247</Color>
+      <Color x:Key="Color.TextDiffView.LineBG1.EMPTY">#3C000000</Color>
+      <Color x:Key="Color.TextDiffView.LineBG1.ADD">#3C00FF00</Color>
+      <Color x:Key="Color.TextDiffView.LineBG1.DELETED">#3CFF0000</Color>
+      <Color x:Key="Color.TextDiffView.LineBG2.ADD">#5A00FF00</Color>
+      <Color x:Key="Color.TextDiffView.LineBG2.DELETED">#50FF0000</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 
