@@ -131,12 +131,12 @@ namespace SourceGit.ViewModels
                             if (line.Type == Models.TextDiffLineType.Added)
                             {
                                 var sha = line.Content.Substring("Subproject commit ".Length);
-                                submoduleDiff.New = new Commands.QuerySingleCommit(submoduleRoot, sha).Result();
+                                submoduleDiff.New = new Commands.QuerySingleCommit(submoduleRoot, sha).Result() ?? new Models.Commit() { SHA = sha };
                             }
                             else if (line.Type == Models.TextDiffLineType.Deleted)
                             {
                                 var sha = line.Content.Substring("Subproject commit ".Length);
-                                submoduleDiff.Old = new Commands.QuerySingleCommit(submoduleRoot, sha).Result();
+                                submoduleDiff.Old = new Commands.QuerySingleCommit(submoduleRoot, sha).Result() ?? new Models.Commit() { SHA = sha };
                             }
                         }
                         rs = submoduleDiff;
