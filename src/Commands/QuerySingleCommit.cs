@@ -1,100 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SourceGit.Commands
 {
     public class QuerySingleCommit : Command
     {
-        private const string GPGSIG_START = "gpgsig -----BEGIN ";
-        private const string GPGSIG_END = " -----END ";
-
         public QuerySingleCommit(string repo, string sha) {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"show --pretty=raw --decorate=full -s {sha}";
+            Args = $"show --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B -s {sha}";
         }
 
         public Models.Commit Result()
         {
-            var succ = Exec();
-            if (!succ)
-                return null;
-
-            _commit.Message.Trim();
-            return _commit;
-        }
-
-        protected override void OnReadline(string line)
-        {
-            if (isSkipingGpgsig)
+            var rs = ReadToEnd();
+            if (rs.IsSuccess && !string.IsNullOrEmpty(rs.StdOut))
             {
-                if (line.StartsWith(GPGSIG_END, StringComparison.Ordinal))
-                    isSkipingGpgsig = false;
-                return;
-            }
-            else if (line.StartsWith(GPGSIG_START, StringComparison.Ordinal))
-            {
-                isSkipingGpgsig = true;
-                return;
-            }
+                var commit = new Models.Commit();
+                var lines = rs.StdOut.Split('\n');
+                if (lines.Length < 8) 
+                    return null;
 
-            if (line.StartsWith("commit ", StringComparison.Ordinal))
-            {
-                line = line.Substring(7);
+                commit.SHA = lines[0];
+                if (!string.IsNullOrEmpty(lines[1]))
+                    commit.Parents.AddRange(lines[1].Split(' ', StringSplitOptions.RemoveEmptyEntries));
+                if (!string.IsNullOrEmpty(lines[2]))
+                    commit.IsMerged = ParseDecorators(commit.Decorators, lines[2]);
+                commit.Author = Models.User.FindOrAdd(lines[3]);
+                commit.AuthorTime = ulong.Parse(lines[4]);
+                commit.Committer = Models.User.FindOrAdd(lines[5]);
+                commit.CommitterTime = ulong.Parse(lines[6]);
+                commit.Subject = lines[7];
 
-                var decoratorStart = line.IndexOf('(', StringComparison.Ordinal);
-                if (decoratorStart < 0)
+                if (lines.Length > 8)
                 {
-                    _commit.SHA = line.Trim();
-                }
-                else
-                {
-                    _commit.SHA = line.Substring(0, decoratorStart).Trim();
-                    ParseDecorators(_commit.Decorators, line.Substring(decoratorStart + 1));
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 8; i < lines.Length; i++)
+                        builder.Append(lines[i]);
+                    commit.Message = builder.ToString();
                 }
 
-                return;
+                return commit;
             }
 
-            if (line.StartsWith("tree ", StringComparison.Ordinal))
-            {
-                return;
-            }
-            else if (line.StartsWith("parent ", StringComparison.Ordinal))
-            {
-                _commit.Parents.Add(line.Substring("parent ".Length));
-            }
-            else if (line.StartsWith("author ", StringComparison.Ordinal))
-            {
-                Models.User user = Models.User.Invalid;
-                ulong time = 0;
-                Models.Commit.ParseUserAndTime(line.Substring(7), ref user, ref time);
-                _commit.Author = user;
-                _commit.AuthorTime = time;
-            }
-            else if (line.StartsWith("committer ", StringComparison.Ordinal))
-            {
-                Models.User user = Models.User.Invalid;
-                ulong time = 0;
-                Models.Commit.ParseUserAndTime(line.Substring(10), ref user, ref time);
-                _commit.Committer = user;
-                _commit.CommitterTime = time;
-            }
-            else if (string.IsNullOrEmpty(_commit.Subject))
-            {
-                _commit.Subject = line.Trim();
-            }
-            else
-            {
-                _commit.Message += (line.Trim() + "\n");
-            }
+            return null;
         }
 
         private bool ParseDecorators(List<Models.Decorator> decorators, string data)
         {
             bool isHeadOfCurrent = false;
 
-            var subs = data.Split(new char[] { ',', ')', '(' }, StringSplitOptions.RemoveEmptyEntries);
+            var subs = data.Split(',', StringSplitOptions.RemoveEmptyEntries);
             foreach (var sub in subs)
             {
                 var d = sub.Trim();
@@ -160,8 +117,5 @@ namespace SourceGit.Commands
 
             return isHeadOfCurrent;
         }
-
-        private Models.Commit _commit = new Models.Commit();
-        private bool isSkipingGpgsig = false;
     }
 }

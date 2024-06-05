@@ -8,7 +8,6 @@ namespace SourceGit.Models
 
         public string Name { get; set; } = "";
         public string SHA { get; set; } = "";
-        public User Author { get; set; } = User.Invalid;
         public ulong Time { get; set; } = 0;
         public string Message { get; set; } = "";
 

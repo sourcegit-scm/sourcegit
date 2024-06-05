@@ -40,17 +40,6 @@ namespace SourceGit.Models
             get => string.IsNullOrWhiteSpace(Message) ? Subject : $"{Subject}\n\n{Message}";
         }
 
-        public static void ParseUserAndTime(string data, ref User user, ref ulong time)
-        {
-            var userEndIdx = data.IndexOf('>', StringComparison.Ordinal);
-            if (userEndIdx < 0)
-                return;
-
-            var timeEndIdx = data.IndexOf(' ', userEndIdx + 2);
-            user = User.FindOrAdd(data.Substring(0, userEndIdx));
-            time = timeEndIdx < 0 ? 0 : ulong.Parse(data.Substring(userEndIdx + 2, timeEndIdx - userEndIdx - 2));
-        }
-
         private static readonly DateTime _utcStart = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
     }
 }

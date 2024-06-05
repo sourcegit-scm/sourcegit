@@ -5,130 +5,82 @@ namespace SourceGit.Commands
 {
     public class QueryCommits : Command
     {
-        private const string GPGSIG_START = "gpgsig -----BEGIN ";
-        private const string GPGSIG_END = " -----END ";
-
-        private readonly List<Models.Commit> commits = new List<Models.Commit>();
-        private Models.Commit current = null;
-        private bool isSkipingGpgsig = false;
-        private bool isHeadFounded = false;
-        private readonly bool findFirstMerged = true;
-
         public QueryCommits(string repo, string limits, bool needFindHead = true)
         {
+            _endOfBodyToken = $"----- END OF BODY {Guid.NewGuid()} -----";
+
             WorkingDirectory = repo;
             Context = repo;
-            Args = "log --date-order --decorate=full --pretty=raw " + limits;
-            findFirstMerged = needFindHead;
+            Args = $"log --date-order --no-show-signature --decorate=full --pretty=format:\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_endOfBodyToken}\" " + limits;
+            _findFirstMerged = needFindHead;
         }
 
         public List<Models.Commit> Result()
         {
             Exec();
 
-            if (current != null)
-            {
-                current.Message = current.Message.Trim();
-                commits.Add(current);
-            }
-
-            if (findFirstMerged && !isHeadFounded && commits.Count > 0)
-            {
+            if (_findFirstMerged && !_isHeadFounded && _commits.Count > 0)
                 MarkFirstMerged();
-            }
 
-            return commits;
+            return _commits;
         }
 
         protected override void OnReadline(string line)
         {
-            if (isSkipingGpgsig)
+            switch (_nextPartIdx)
             {
-                if (line.StartsWith(GPGSIG_END, StringComparison.Ordinal))
-                    isSkipingGpgsig = false;
-                return;
-            }
-            else if (line.StartsWith(GPGSIG_START, StringComparison.Ordinal))
-            {
-                isSkipingGpgsig = true;
-                return;
+                case 0:
+                    _current = new Models.Commit() { SHA = line };
+                    _commits.Add(_current);
+                    break;
+                case 1:
+                    if (!string.IsNullOrEmpty(line))
+                        _current.Parents.AddRange(line.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+                    break;
+                case 2:
+                    if (!string.IsNullOrEmpty(line))
+                        ParseDecorators(line);
+                    break;
+                case 3:
+                    _current.Author = Models.User.FindOrAdd(line);
+                    break;
+                case 4:
+                    _current.AuthorTime = ulong.Parse(line);
+                    break;
+                case 5:
+                    _current.Committer = Models.User.FindOrAdd(line);
+                    break;
+                case 6:
+                    _current.CommitterTime = ulong.Parse(line);
+                    break;
+                default:
+                    if (line.Equals(_endOfBodyToken, StringComparison.Ordinal))
+                    {
+                        _nextPartIdx = 0;
+                        if (!string.IsNullOrEmpty(_current.Message)) _current.Message = _current.Message.Trim();
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(_current.Subject))
+                            _current.Subject = line;
+                        else
+                            _current.Message += (line + "\n");
+                    }
+                    return;
             }
 
-            if (line.StartsWith("commit ", StringComparison.Ordinal))
-            {
-                if (current != null)
-                {
-                    current.Message = current.Message.Trim();
-                    commits.Add(current);
-                }
-
-                current = new Models.Commit();
-                line = line.Substring(7);
-
-                var decoratorStart = line.IndexOf('(', StringComparison.Ordinal);
-                if (decoratorStart < 0)
-                {
-                    current.SHA = line.Trim();
-                }
-                else
-                {
-                    current.SHA = line.Substring(0, decoratorStart).Trim();
-                    current.IsMerged = ParseDecorators(current.Decorators, line.Substring(decoratorStart + 1));
-                    if (!isHeadFounded)
-                        isHeadFounded = current.IsMerged;
-                }
-
-                return;
-            }
-
-            if (current == null)
-                return;
-
-            if (line.StartsWith("tree ", StringComparison.Ordinal))
-            {
-                return;
-            }
-            else if (line.StartsWith("parent ", StringComparison.Ordinal))
-            {
-                current.Parents.Add(line.Substring("parent ".Length));
-            }
-            else if (line.StartsWith("author ", StringComparison.Ordinal))
-            {
-                Models.User user = Models.User.Invalid;
-                ulong time = 0;
-                Models.Commit.ParseUserAndTime(line.Substring(7), ref user, ref time);
-                current.Author = user;
-                current.AuthorTime = time;
-            }
-            else if (line.StartsWith("committer ", StringComparison.Ordinal))
-            {
-                Models.User user = Models.User.Invalid;
-                ulong time = 0;
-                Models.Commit.ParseUserAndTime(line.Substring(10), ref user, ref time);
-                current.Committer = user;
-                current.CommitterTime = time;
-            }
-            else if (string.IsNullOrEmpty(current.Subject))
-            {
-                current.Subject = line.Trim();
-            }
-            else
-            {
-                current.Message += (line.Trim() + "\n");
-            }
+            _nextPartIdx++;
         }
 
-        private bool ParseDecorators(List<Models.Decorator> decorators, string data)
+        private void ParseDecorators(string data)
         {
-            bool isHeadOfCurrent = false;
-
-            var subs = data.Split(new char[] { ',', ')', '(' }, StringSplitOptions.RemoveEmptyEntries);
+            var subs = data.Split(',', StringSplitOptions.RemoveEmptyEntries);
             foreach (var sub in subs)
             {
                 var d = sub.Trim();
                 if (d.StartsWith("tag: refs/tags/", StringComparison.Ordinal))
                 {
-                    decorators.Add(new Models.Decorator()
+                    _current.Decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.Tag,
                         Name = d.Substring(15).Trim(),
@@ -140,8 +92,8 @@ namespace SourceGit.Commands
                 }
                 else if (d.StartsWith("HEAD -> refs/heads/", StringComparison.Ordinal))
                 {
-                    isHeadOfCurrent = true;
-                    decorators.Add(new Models.Decorator()
+                    _current.IsMerged = true;
+                    _current.Decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.CurrentBranchHead,
                         Name = d.Substring(19).Trim(),
@@ -149,8 +101,8 @@ namespace SourceGit.Commands
                 }
                 else if (d.Equals("HEAD"))
                 {
-                    isHeadOfCurrent = true;
-                    decorators.Add(new Models.Decorator()
+                    _current.IsMerged = true;
+                    _current.Decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.CurrentCommitHead,
                         Name = d.Trim(),
@@ -158,7 +110,7 @@ namespace SourceGit.Commands
                 }
                 else if (d.StartsWith("refs/heads/", StringComparison.Ordinal))
                 {
-                    decorators.Add(new Models.Decorator()
+                    _current.Decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.LocalBranchHead,
                         Name = d.Substring(11).Trim(),
@@ -166,7 +118,7 @@ namespace SourceGit.Commands
                 }
                 else if (d.StartsWith("refs/remotes/", StringComparison.Ordinal))
                 {
-                    decorators.Add(new Models.Decorator()
+                    _current.Decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.RemoteBranchHead,
                         Name = d.Substring(13).Trim(),
@@ -174,7 +126,7 @@ namespace SourceGit.Commands
                 }
             }
 
-            decorators.Sort((l, r) =>
+            _current.Decorators.Sort((l, r) =>
             {
                 if (l.Type != r.Type)
                 {
@@ -186,12 +138,13 @@ namespace SourceGit.Commands
                 }
             });
 
-            return isHeadOfCurrent;
+            if (_current.IsMerged && !_isHeadFounded)
+                _isHeadFounded = true;
         }
 
         private void MarkFirstMerged()
         {
-            Args = $"log --since=\"{commits[commits.Count - 1].CommitterTimeStr}\" --format=\"%H\"";
+            Args = $"log --since=\"{_commits[_commits.Count - 1].CommitterTimeStr}\" --format=\"%H\"";
 
             var rs = ReadToEnd();
             var shas = rs.StdOut.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -202,7 +155,7 @@ namespace SourceGit.Commands
             foreach (var sha in shas)
                 set.Add(sha);
 
-            foreach (var c in commits)
+            foreach (var c in _commits)
             {
                 if (set.Contains(c.SHA))
                 {
@@ -211,5 +164,12 @@ namespace SourceGit.Commands
                 }
             }
         }
+
+        private string _endOfBodyToken = string.Empty;
+        private List<Models.Commit> _commits = new List<Models.Commit>();
+        private Models.Commit _current = null;
+        private bool _isHeadFounded = false;
+        private readonly bool _findFirstMerged = true;
+        private int _nextPartIdx = 0;
     }
 }
