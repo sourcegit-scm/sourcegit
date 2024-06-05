@@ -85,7 +85,7 @@ namespace SourceGit.Views
             Content = null;
 
             var changes = Changes;
-            if (changes == null)
+            if (changes == null || changes.Count == 0)
                 return;
 
             var viewMode = ViewMode;
