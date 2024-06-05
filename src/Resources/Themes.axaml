@@ -25,6 +25,11 @@
       <Color x:Key="Color.FG1">#FF1F1F1F</Color>
       <Color x:Key="Color.FG2">#FF6F6F6F</Color>
       <Color x:Key="Color.FG3">#FFFFFFFF</Color>
+      <Color x:Key="Color.TextDiffView.LineBG1.EMPTY">#3C000000</Color>
+      <Color x:Key="Color.TextDiffView.LineBG1.ADD">#3C00FF00</Color>
+      <Color x:Key="Color.TextDiffView.LineBG1.DELETED">#3CFF0000</Color>
+      <Color x:Key="Color.TextDiffView.LineBG2.ADD">#5A00FF00</Color>
+      <Color x:Key="Color.TextDiffView.LineBG2.DELETED">#50FF0000</Color>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -51,6 +56,11 @@
       <Color x:Key="Color.FG1">#FFDDDDDD</Color>
       <Color x:Key="Color.FG2">#40F1F1F1</Color>
       <Color x:Key="Color.FG3">#FF252525</Color>
+      <Color x:Key="Color.TextDiffView.LineBG1.EMPTY">#FF424242</Color>
+      <Color x:Key="Color.TextDiffView.LineBG1.ADD">#FF38573C</Color>
+      <Color x:Key="Color.TextDiffView.LineBG1.DELETED">#FF633F3E</Color>
+      <Color x:Key="Color.TextDiffView.LineBG2.ADD">#FF388442</Color>
+      <Color x:Key="Color.TextDiffView.LineBG2.DELETED">#FF9F4247</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 
@@ -79,4 +89,9 @@
   <SolidColorBrush x:Key="Brush.FG3" Color="{DynamicResource Color.FG3}"/>
   <SolidColorBrush x:Key="Brush.Accent" Color="{DynamicResource SystemAccentColor}"/>
   <SolidColorBrush x:Key="Brush.AccentHovered" Color="{DynamicResource SystemListLowColor}"/>
+  <SolidColorBrush x:Key="Brush.TextDiffView.LineBG1.EMPTY" Color="{DynamicResource Color.TextDiffView.LineBG1.EMPTY}"/>
+  <SolidColorBrush x:Key="Brush.TextDiffView.LineBG1.ADD" Color="{DynamicResource Color.TextDiffView.LineBG1.ADD}"/>
+  <SolidColorBrush x:Key="Brush.TextDiffView.LineBG1.DELETED" Color="{DynamicResource Color.TextDiffView.LineBG1.DELETED}"/>
+  <SolidColorBrush x:Key="Brush.TextDiffView.LineBG2.ADD" Color="{DynamicResource Color.TextDiffView.LineBG2.ADD}"/>
+  <SolidColorBrush x:Key="Brush.TextDiffView.LineBG2.DELETED" Color="{DynamicResource Color.TextDiffView.LineBG2.DELETED}"/>
 </ResourceDictionary>
