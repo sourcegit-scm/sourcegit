@@ -118,10 +118,6 @@ namespace SourceGit.Views
 
         public class LineBackgroundRenderer : IBackgroundRenderer
         {
-            private static readonly Brush BG_EMPTY = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
-            private static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(50, 0, 255, 0));
-            private static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
-
             public KnownLayer Layer => KnownLayer.Background;
 
             public LineBackgroundRenderer(CombinedTextDiffPresenter editor)
@@ -139,7 +135,7 @@ namespace SourceGit.Views
                 {
                     if (line.FirstDocumentLine == null)
                         continue;
-                    
+
                     var index = line.FirstDocumentLine.LineNumber;
                     if (index > _editor.DiffData.Lines.Count)
                         break;
@@ -159,11 +155,11 @@ namespace SourceGit.Views
                 switch (type)
                 {
                     case Models.TextDiffLineType.None:
-                        return BG_EMPTY;
+                        return _editor.LineBGEmpty;
                     case Models.TextDiffLineType.Added:
-                        return BG_ADDED;
+                        return _editor.LineBGAdd;
                     case Models.TextDiffLineType.Deleted:
-                        return BG_DELETED;
+                        return _editor.LineBGDeleted;
                     default:
                         return null;
                 }
@@ -174,9 +170,6 @@ namespace SourceGit.Views
 
         public class LineStyleTransformer : DocumentColorizingTransformer
         {
-            private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(128, 0, 190, 0));
-            private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0));
-
             public LineStyleTransformer(CombinedTextDiffPresenter editor)
             {
                 _editor = editor;
@@ -202,7 +195,7 @@ namespace SourceGit.Views
 
                 if (info.Highlights.Count > 0)
                 {
-                    var bg = info.Type == Models.TextDiffLineType.Added ? HL_ADDED : HL_DELETED;
+                    var bg = info.Type == Models.TextDiffLineType.Added ? _editor.SecondaryLineBGAdd : _editor.SecondaryLineBGDeleted;
                     foreach (var highlight in info.Highlights)
                     {
                         ChangeLinePart(line.Offset + highlight.Start, line.Offset + highlight.Start + highlight.Count, v =>
@@ -223,6 +216,51 @@ namespace SourceGit.Views
         {
             get => GetValue(DiffDataProperty);
             set => SetValue(DiffDataProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> LineBGEmptyProperty =
+            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(LineBGEmpty), new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)));
+
+        public IBrush LineBGEmpty
+        {
+            get => GetValue(LineBGEmptyProperty);
+            set => SetValue(LineBGEmptyProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> LineBGAddProperty =
+            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(LineBGAdd), new SolidColorBrush(Color.FromArgb(60, 0, 255, 0)));
+
+        public IBrush LineBGAdd
+        {
+            get => GetValue(LineBGAddProperty);
+            set => SetValue(LineBGAddProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> LineBGDeletedProperty =
+            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(LineBGDeleted), new SolidColorBrush(Color.FromArgb(60, 255, 0, 0)));
+
+        public IBrush LineBGDeleted
+        {
+            get => GetValue(LineBGDeletedProperty);
+            set => SetValue(LineBGDeletedProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> SecondaryLineBGAddProperty =
+            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(SecondaryLineBGAdd), new SolidColorBrush(Color.FromArgb(90, 0, 255, 0)));
+
+        public IBrush SecondaryLineBGAdd
+        {
+            get => GetValue(SecondaryLineBGAddProperty);
+            set => SetValue(SecondaryLineBGAddProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> SecondaryLineBGDeletedProperty =
+            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(SecondaryLineBGDeleted), new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)));
+
+        public IBrush SecondaryLineBGDeleted
+        {
+            get => GetValue(SecondaryLineBGDeletedProperty);
+            set => SetValue(SecondaryLineBGDeletedProperty, value);
         }
 
         public static readonly StyledProperty<IBrush> SecondaryFGProperty =
@@ -499,10 +537,6 @@ namespace SourceGit.Views
 
         public class LineBackgroundRenderer : IBackgroundRenderer
         {
-            private static readonly Brush BG_EMPTY = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
-            private static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
-            private static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
-
             public KnownLayer Layer => KnownLayer.Background;
 
             public LineBackgroundRenderer(SingleSideTextDiffPresenter editor)
@@ -521,7 +555,7 @@ namespace SourceGit.Views
                 {
                     if (line.FirstDocumentLine == null)
                         continue;
-                    
+
                     var index = line.FirstDocumentLine.LineNumber;
                     if (index > infos.Count)
                         break;
@@ -541,11 +575,11 @@ namespace SourceGit.Views
                 switch (type)
                 {
                     case Models.TextDiffLineType.None:
-                        return BG_EMPTY;
+                        return _editor.LineBGEmpty;
                     case Models.TextDiffLineType.Added:
-                        return BG_ADDED;
+                        return _editor.LineBGAdd;
                     case Models.TextDiffLineType.Deleted:
-                        return BG_DELETED;
+                        return _editor.LineBGDeleted;
                     default:
                         return null;
                 }
@@ -556,9 +590,6 @@ namespace SourceGit.Views
 
         public class LineStyleTransformer : DocumentColorizingTransformer
         {
-            private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(90, 0, 255, 0));
-            private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0));
-
             public LineStyleTransformer(SingleSideTextDiffPresenter editor)
             {
                 _editor = editor;
@@ -585,7 +616,7 @@ namespace SourceGit.Views
 
                 if (info.Highlights.Count > 0)
                 {
-                    var bg = info.Type == Models.TextDiffLineType.Added ? HL_ADDED : HL_DELETED;
+                    var bg = info.Type == Models.TextDiffLineType.Added ? _editor.LineBGAdd : _editor.LineBGDeleted;
                     foreach (var highlight in info.Highlights)
                     {
                         ChangeLinePart(line.Offset + highlight.Start, line.Offset + highlight.Start + highlight.Count, v =>
@@ -615,6 +646,51 @@ namespace SourceGit.Views
         {
             get => GetValue(DiffDataProperty);
             set => SetValue(DiffDataProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> LineBGEmptyProperty =
+            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(LineBGEmpty), new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)));
+
+        public IBrush LineBGEmpty
+        {
+            get => GetValue(LineBGEmptyProperty);
+            set => SetValue(LineBGEmptyProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> LineBGAddProperty =
+            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(LineBGAdd), new SolidColorBrush(Color.FromArgb(60, 0, 255, 0)));
+
+        public IBrush LineBGAdd
+        {
+            get => GetValue(LineBGAddProperty);
+            set => SetValue(LineBGAddProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> LineBGDeletedProperty =
+            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(LineBGDeleted), new SolidColorBrush(Color.FromArgb(60, 255, 0, 0)));
+
+        public IBrush LineBGDeleted
+        {
+            get => GetValue(LineBGDeletedProperty);
+            set => SetValue(LineBGDeletedProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> SecondaryLineBGAddProperty =
+            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(SecondaryLineBGAdd), new SolidColorBrush(Color.FromArgb(90, 0, 255, 0)));
+
+        public IBrush SecondaryLineBGAdd
+        {
+            get => GetValue(SecondaryLineBGAddProperty);
+            set => SetValue(SecondaryLineBGAddProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> SecondaryLineBGDeletedProperty =
+            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(SecondaryLineBGDeleted), new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)));
+
+        public IBrush SecondaryLineBGDeleted
+        {
+            get => GetValue(SecondaryLineBGDeletedProperty);
+            set => SetValue(SecondaryLineBGDeletedProperty, value);
         }
 
         public static readonly StyledProperty<IBrush> SecondaryFGProperty =
@@ -736,7 +812,7 @@ namespace SourceGit.Views
             };
 
             menu.Items.Add(copy);
-            
+
             TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
         }
