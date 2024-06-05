@@ -119,8 +119,8 @@ namespace SourceGit.Views
         public class LineBackgroundRenderer : IBackgroundRenderer
         {
             private static readonly Brush BG_EMPTY = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
-            private static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0));
-            private static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
+            private static readonly Brush BG_ADDED = new SolidColorBrush(Color.FromArgb(50, 0, 255, 0));
+            private static readonly Brush BG_DELETED = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
 
             public KnownLayer Layer => KnownLayer.Background;
 
@@ -174,7 +174,7 @@ namespace SourceGit.Views
 
         public class LineStyleTransformer : DocumentColorizingTransformer
         {
-            private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(90, 0, 255, 0));
+            private static readonly Brush HL_ADDED = new SolidColorBrush(Color.FromArgb(128, 0, 190, 0));
             private static readonly Brush HL_DELETED = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0));
 
             public LineStyleTransformer(CombinedTextDiffPresenter editor)

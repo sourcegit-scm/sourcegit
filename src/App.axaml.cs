@@ -145,19 +145,44 @@ namespace SourceGit
             app._activeLocale = targetLocale;
         }
 
-        public static void SetTheme(string theme)
+        public static void SetTheme(string theme, string colorsFile)
         {
+            var app = Current as App;
+
             if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase))
             {
-                Current.RequestedThemeVariant = ThemeVariant.Light;
+                app.RequestedThemeVariant = ThemeVariant.Light;
             }
             else if (theme.Equals("Dark", StringComparison.OrdinalIgnoreCase))
             {
-                Current.RequestedThemeVariant = ThemeVariant.Dark;
+                app.RequestedThemeVariant = ThemeVariant.Dark;
             }
             else
             {
-                Current.RequestedThemeVariant = ThemeVariant.Default;
+                app.RequestedThemeVariant = ThemeVariant.Default;
+            }
+
+            if (app._colorOverrides != null)
+            {
+                app.Resources.MergedDictionaries.Remove(app._colorOverrides);
+                app._colorOverrides = null;
+            }
+
+            if (!string.IsNullOrEmpty(colorsFile) && File.Exists(colorsFile))
+            {
+                try
+                {
+                    var resDic = new ResourceDictionary();
+                    var schema = JsonSerializer.Deserialize(File.ReadAllText(colorsFile), JsonCodeGen.Default.DictionaryStringString);
+                    foreach (var kv in schema)
+                        resDic[kv.Key] = Color.Parse(kv.Value);
+
+                    app.Resources.MergedDictionaries.Add(resDic);
+                    app._colorOverrides = resDic;
+                } 
+                catch
+                {
+                }
             }
         }
 
@@ -256,7 +281,7 @@ namespace SourceGit
             var pref = ViewModels.Preference.Instance;
 
             SetLocale(pref.Locale);
-            SetTheme(pref.Theme);
+            SetTheme(pref.Theme, pref.ColorOverrides);
         }
 
         public override void OnFrameworkInitializationCompleted()
@@ -300,6 +325,7 @@ namespace SourceGit
         }
 
         private ResourceDictionary _activeLocale = null;
+        private ResourceDictionary _colorOverrides = null;
         private Models.INotificationReceiver _notificationReceiver = null;
     }
 }

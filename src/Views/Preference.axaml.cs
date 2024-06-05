@@ -214,6 +214,23 @@ namespace SourceGit.Views
             Close();
         }
 
+        private async void SelectColorSchemaFile(object sender, RoutedEventArgs e)
+        {
+            var options = new FilePickerOpenOptions()
+            {
+                FileTypeFilter = [new FilePickerFileType("Theme Color Schema File") { Patterns = ["*.json"] }],
+                AllowMultiple = false,
+            };
+
+            var selected = await StorageProvider.OpenFilePickerAsync(options);
+            if (selected.Count == 1)
+            {
+                ViewModels.Preference.Instance.ColorOverrides = selected[0].Path.LocalPath;
+            }
+
+            e.Handled = true;
+        }
+
         private async void SelectGitExecutable(object sender, RoutedEventArgs e)
         {
             var pattern = OperatingSystem.IsWindows() ? "git.exe" : "git";

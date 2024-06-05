@@ -144,7 +144,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.Theme}"
                        HorizontalAlignment="Right"
@@ -161,12 +161,27 @@
                 <ThemeVariant>Light</ThemeVariant>
               </ComboBox.Items>
             </ComboBox>
-
+            
             <TextBlock Grid.Row="1" Grid.Column="0"
+                       Text="{DynamicResource Text.Preference.Appearance.ColorOverrides}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     Height="28"
+                     CornerRadius="3"
+                     Text="{Binding ColorOverrides, Mode=TwoWay}">
+              <TextBox.InnerRightContent>
+                <Button Classes="icon_button" Width="30" Height="30" Click="SelectColorSchemaFile">
+                  <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                </Button>
+              </TextBox.InnerRightContent>
+            </TextBox>
+
+            <TextBlock Grid.Row="2" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.DefaultFont}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="1" Grid.Column="1"
+            <ComboBox Grid.Row="2" Grid.Column="1"
                       MinHeight="28"
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
@@ -181,11 +196,11 @@
               </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="2" Grid.Column="0"
+            <TextBlock Grid.Row="3" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.MonospaceFont}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="2" Grid.Column="1"
+            <ComboBox Grid.Row="3" Grid.Column="1"
                       MinHeight="28"
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
@@ -200,11 +215,11 @@
               </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="3" Grid.Column="0"
+            <TextBlock Grid.Row="4" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.DefaultFontSize}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <NumericUpDown Grid.Row="3" Grid.Column="1"
+            <NumericUpDown Grid.Row="4" Grid.Column="1"
                            Minimum="10" Maximum="16" Increment="0.5"
                            Height="28"
                            Padding="4"

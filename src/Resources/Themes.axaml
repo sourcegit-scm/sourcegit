@@ -35,7 +35,7 @@
       <Color x:Key="Color.TitleBar">#FF1F1F1F</Color>
       <Color x:Key="Color.ToolBar">#FF2C2C2C</Color>
       <Color x:Key="Color.Popup">#FF2B2B2B</Color>
-      <Color x:Key="Color.Contents">#FF181818</Color>
+      <Color x:Key="Color.Contents">#FF1B1B1B</Color>
       <Color x:Key="Color.Badge">#FF8F8F8F</Color>
       <Color x:Key="Color.Decorator">#FF505050</Color>
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
