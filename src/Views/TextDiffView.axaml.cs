@@ -840,6 +840,15 @@ namespace SourceGit.Views
             set => SetValue(UseSideBySideDiffProperty, value);
         }
 
+        public static readonly StyledProperty<Vector> SyncScrollOffsetProperty =
+            AvaloniaProperty.Register<TextDiffView, Vector>(nameof(SyncScrollOffset));
+
+        public Vector SyncScrollOffset
+        {
+            get => GetValue(SyncScrollOffsetProperty);
+            set => SetValue(SyncScrollOffsetProperty, value);
+        }
+
         public TextDiffView()
         {
             InitializeComponent();
@@ -1081,7 +1090,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == TextDiffProperty || change.Property == UseSideBySideDiffProperty)
+            if (change.Property == TextDiffProperty)
             {
                 if (TextDiff == null)
                 {
@@ -1090,11 +1099,29 @@ namespace SourceGit.Views
                 else if (UseSideBySideDiff)
                 {
                     Content = new ViewModels.TwoSideTextDiff(TextDiff);
+                    SyncScrollOffset = TextDiff.SyncScrollOffset;
                 }
                 else
                 {
                     Content = TextDiff;
+                    SyncScrollOffset = TextDiff.SyncScrollOffset;
                 }
+            }
+            else if (change.Property == UseSideBySideDiffProperty)
+            {
+                SyncScrollOffset = Vector.Zero;
+
+                if (TextDiff == null)
+                    Content = null;
+                else if (UseSideBySideDiff)
+                    Content = new ViewModels.TwoSideTextDiff(TextDiff);
+                else
+                    Content = TextDiff;
+            }
+            else if (change.Property == SyncScrollOffsetProperty)
+            {
+                if (TextDiff != null)
+                    TextDiff.SyncScrollOffset = SyncScrollOffset;
             }
         }
 

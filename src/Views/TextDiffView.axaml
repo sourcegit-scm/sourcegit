@@ -17,7 +17,7 @@
                                    SecondaryFG="{DynamicResource Brush.FG2}"
                                    FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                    DiffData="{Binding}"
-                                   SyncScrollOffset="{Binding #ThisControl.TextDiff.SyncScrollOffset, Mode=TwoWay}"
+                                   SyncScrollOffset="{Binding #ThisControl.SyncScrollOffset, Mode=TwoWay}"
                                    UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                    WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"/>
     </DataTemplate>
@@ -25,7 +25,7 @@
     <DataTemplate DataType="vm:TwoSideTextDiff">
       <Grid ColumnDefinitions="*,1,*">
         <v:SingleSideTextDiffPresenter Grid.Column="0"
-                                       SyncScrollOffset="{Binding #ThisControl.TextDiff.SyncScrollOffset, Mode=TwoWay}"
+                                       SyncScrollOffset="{Binding #ThisControl.SyncScrollOffset, Mode=TwoWay}"
                                        UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                        WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
                                        IsOld="True"
@@ -39,7 +39,7 @@
         <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
         <v:SingleSideTextDiffPresenter Grid.Column="2"
-                                       SyncScrollOffset="{Binding #ThisControl.TextDiff.SyncScrollOffset, Mode=TwoWay}"
+                                       SyncScrollOffset="{Binding #ThisControl.SyncScrollOffset, Mode=TwoWay}"
                                        UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                        WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
                                        IsOld="False"

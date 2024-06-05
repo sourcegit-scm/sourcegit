@@ -5,8 +5,6 @@ using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Media.Imaging;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-
 namespace SourceGit.Models
 {
     public enum TextDiffLineType
@@ -61,17 +59,12 @@ namespace SourceGit.Models
         }
     }
 
-    public partial class TextDiff : ObservableObject
+    public partial class TextDiff
     {
         public string File { get; set; } = string.Empty;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
         public int MaxLineNumber = 0;
-
-        private Vector _syncScrollOffset = Vector.Zero;
-        public Vector SyncScrollOffset {
-            get => _syncScrollOffset;
-            set => SetProperty(ref _syncScrollOffset, value);
-        }
+        public Vector SyncScrollOffset = Vector.Zero;
 
         public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
         {
