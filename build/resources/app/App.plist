@@ -12,6 +12,11 @@
     <string>SOURCE_GIT_VERSION.0</string>
     <key>LSMinimumSystemVersion</key>
     <string>10.12</string>
+    <key>LSEnvironment</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
     <key>CFBundleExecutable</key>
     <string>SourceGit</string>
     <key>CFBundleInfoDictionaryVersion</key>
