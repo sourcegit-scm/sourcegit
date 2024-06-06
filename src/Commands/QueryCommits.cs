@@ -57,17 +57,18 @@ namespace SourceGit.Commands
                     if (line.Equals(_endOfBodyToken, StringComparison.Ordinal))
                     {
                         _nextPartIdx = 0;
-                        _current.Message = _messageReader.ToString().Trim();
-                        _messageReader.Clear();
-                    }
-                    else if (!_isSubjectSet)
-                    {
-                        _isSubjectSet = true;
-                        _current.Subject = line;
+                        _current.Body = _bodyReader.ToString().TrimEnd();
+                        _bodyReader.Clear();
                     }
                     else
                     {
-                        _messageReader.AppendLine(line);
+                        if (!_isSubjectSet)
+                        {
+                            _isSubjectSet = true;
+                            _current.SubjectLen = line.Length;
+                        }
+
+                        _bodyReader.AppendLine(line);
                     }
                     return;
             }
@@ -191,9 +192,9 @@ namespace SourceGit.Commands
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.Commit _current = null;
         private bool _isHeadFounded = false;
-        private readonly bool _findFirstMerged = true;
+        private bool _findFirstMerged = true;
         private int _nextPartIdx = 0;
         private bool _isSubjectSet = false;
-        private StringBuilder _messageReader = new StringBuilder();
+        private StringBuilder _bodyReader = new StringBuilder();
     }
 }

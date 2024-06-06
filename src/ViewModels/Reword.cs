@@ -22,13 +22,13 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Head = head;
-            Message = head.FullMessage;
+            Message = head.Body;
             View = new Views.Reword() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
-            if (_message == Head.FullMessage)
+            if (_message == Head.Body)
                 return null;
 
             _repo.SetWatcherEnabled(false);

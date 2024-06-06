@@ -93,7 +93,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        CommitMessage = commits[0].FullMessage;
+                        CommitMessage = commits[0].Body;
                     }
                 }
 

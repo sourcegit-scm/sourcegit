@@ -419,8 +419,7 @@ namespace SourceGit.ViewModels
             foreach (var c in _histories.Commits)
             {
                 if (c.SHA.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                    || c.Subject.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                    || c.Message.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                    || c.Body.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
                     || c.Author.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
                     || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
                     || c.Author.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)

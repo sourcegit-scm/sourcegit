@@ -32,15 +32,12 @@ namespace SourceGit.Commands
                 commit.AuthorTime = ulong.Parse(lines[4]);
                 commit.Committer = Models.User.FindOrAdd(lines[5]);
                 commit.CommitterTime = ulong.Parse(lines[6]);
-                commit.Subject = lines[7];
+                commit.SubjectLen = lines[7].Length;
 
-                if (lines.Length > 8)
-                {
-                    StringBuilder builder = new StringBuilder();
-                    for (int i = 8; i < lines.Length; i++)
-                        builder.Append(lines[i]);
-                    commit.Message = builder.ToString();
-                }
+                StringBuilder builder = new StringBuilder();
+                for (int i = 7; i < lines.Length; i++)
+                    builder.AppendLine(lines[i]);
+                commit.Body = builder.ToString().TrimEnd();
 
                 return commit;
             }

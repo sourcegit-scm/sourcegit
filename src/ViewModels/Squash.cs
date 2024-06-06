@@ -27,7 +27,7 @@ namespace SourceGit.ViewModels
         public Squash(Repository repo, Models.Commit head, Models.Commit parent)
         {
             _repo = repo;
-            _message = parent.FullMessage;
+            _message = parent.Body;
             Head = head;
             Parent = parent;
             View = new Views.Squash() { DataContext = this };
