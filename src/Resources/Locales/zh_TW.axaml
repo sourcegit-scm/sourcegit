@@ -169,6 +169,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">子模組</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">新增</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">語法高亮</x:String>
+  <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">自動換行</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">使用外部合併工具檢視</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">減少可見的行數</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可見的行數</x:String>
@@ -288,6 +289,7 @@
   <x:String x:Key="Text.Paste" xml:space="preserve">貼上</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好設定</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外觀配置</x:String>
+  <x:String x:Key="Text.Preference.Appearance.ColorOverrides" xml:space="preserve">自訂配色檔</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">預設字型大小</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">等寬字型</x:String>
@@ -461,6 +463,8 @@
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">刪除${0}$</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送${0}$</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">倉庫地址 ：</x:String>
+  <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模組</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Tip" xml:space="preserve">本操作將執行 `submodule update` 。</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">新建分組</x:String>
   <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">新建子分組</x:String>
