@@ -116,9 +116,7 @@ namespace SourceGit.Views
                         foreach (var c in model.SelectedItems)
                             CollectChangesInNode(selected, c);
 
-                        _isSelecting = true;
-                        SetCurrentValue(SelectedChangesProperty, selected);
-                        _isSelecting = false;
+                        TrySetSelected(selected);
                     }
                 };
 
@@ -144,9 +142,7 @@ namespace SourceGit.Views
                         foreach (var c in model.SelectedItems)
                             selected.Add(c);
 
-                        _isSelecting = true;
-                        SetCurrentValue(SelectedChangesProperty, selected);
-                        _isSelecting = false;
+                        TrySetSelected(selected);
                     }
                 };
 
@@ -172,9 +168,7 @@ namespace SourceGit.Views
                         foreach (var c in model.SelectedItems)
                             selected.Add(c);
 
-                        _isSelecting = true;
-                        SetCurrentValue(SelectedChangesProperty, selected);
-                        _isSelecting = false;
+                        TrySetSelected(selected);
                     }
                 };
 
@@ -267,6 +261,34 @@ namespace SourceGit.Views
             {
                 outs.Add(node);
             }
+        }
+
+        private void TrySetSelected(List<Models.Change> changes)
+        {
+            var old = SelectedChanges;
+
+            if (old == null && changes.Count == 0)
+                return;
+
+            if (old != null && old.Count == changes.Count)
+            {
+                bool allEquals = true;
+                foreach (var c in old)
+                {
+                    if (!changes.Contains(c))
+                    {
+                        allEquals = false;
+                        break;
+                    }
+                }
+
+                if (allEquals)
+                    return;
+            }
+
+            _isSelecting = true;
+            SetCurrentValue(SelectedChangesProperty, changes);
+            _isSelecting = false;
         }
 
         private bool _isSelecting = false;
