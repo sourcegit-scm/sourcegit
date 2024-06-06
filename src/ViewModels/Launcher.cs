@@ -158,6 +158,7 @@ namespace SourceGit.ViewModels
                 ActivePage = Pages[removeIdx == Pages.Count - 1 ? removeIdx - 1 : removeIdx + 1];
                 CloseRepositoryInTab(page);
                 Pages.RemoveAt(removeIdx);
+                UpdateTabSplitterVisible();
             }
             else if (removeIdx + 1 == activeIdx)
             {
