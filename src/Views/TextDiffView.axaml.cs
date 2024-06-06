@@ -1166,25 +1166,31 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
+            var data = TextDiff;
+            if (data == null)
+            {
+                Content = null;
+                SyncScrollOffset = Vector.Zero;
+                return;
+            }    
+
             if (change.Property == TextDiffProperty)
             {
-                if (TextDiff == null)
-                    Content = null;
-                else if (UseSideBySideDiff)
+                if (UseSideBySideDiff)
                     Content = new ViewModels.TwoSideTextDiff(TextDiff);
                 else
                     Content = TextDiff;
+
+                SetCurrentValue(SyncScrollOffsetProperty, TextDiff.SyncScrollOffset);
             }
             else if (change.Property == UseSideBySideDiffProperty)
             {
-                SyncScrollOffset = Vector.Zero;
-
-                if (TextDiff == null)
-                    Content = null;
-                else if (UseSideBySideDiff)
+                if (UseSideBySideDiff)
                     Content = new ViewModels.TwoSideTextDiff(TextDiff);
                 else
                     Content = TextDiff;
+
+                SetCurrentValue(SyncScrollOffsetProperty, Vector.Zero);
             }
         }
 

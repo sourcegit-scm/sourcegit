@@ -69,17 +69,6 @@ namespace SourceGit.Views
 
     public class CommitGraph : Control
     {
-        public static readonly Pen[] Pens = [
-            new Pen(Brushes.Orange, 2),
-            new Pen(Brushes.ForestGreen, 2),
-            new Pen(Brushes.Gold, 2),
-            new Pen(Brushes.Magenta, 2),
-            new Pen(Brushes.Red, 2),
-            new Pen(Brushes.Gray, 2),
-            new Pen(Brushes.Turquoise, 2),
-            new Pen(Brushes.Olive, 2),
-        ];
-
         public static readonly StyledProperty<Models.CommitGraph> GraphProperty =
             AvaloniaProperty.Register<CommitGraph, Models.CommitGraph>(nameof(Graph));
 
@@ -151,7 +140,7 @@ namespace SourceGit.Views
                 if (dot.Center.Y > bottom)
                     break;
 
-                context.DrawEllipse(dotFill, Pens[dot.Color], dot.Center, 3, 3);
+                context.DrawEllipse(dotFill, Models.CommitGraph.Pens[dot.Color], dot.Center, 3, 3);
             }
         }
 
@@ -168,7 +157,7 @@ namespace SourceGit.Views
                     continue;
 
                 var geo = new StreamGeometry();
-                var pen = Pens[line.Color];
+                var pen = Models.CommitGraph.Pens[line.Color];
                 using (var ctx = geo.Open())
                 {
                     var started = false;
@@ -238,7 +227,7 @@ namespace SourceGit.Views
                     ctx.QuadraticBezierTo(link.Control, link.End);
                 }
 
-                context.DrawGeometry(null, Pens[link.Color], geo);
+                context.DrawGeometry(null, Models.CommitGraph.Pens[link.Color], geo);
             }
         }
     }

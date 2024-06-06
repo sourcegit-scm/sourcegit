@@ -606,12 +606,15 @@ namespace SourceGit.ViewModels
             }
 
             var commits = new Commands.QueryCommits(FullPath, limits).Result();
+            var graph = Models.CommitGraph.Parse(commits, 8);
+
             Dispatcher.UIThread.Invoke(() =>
             {
                 if (_histories != null)
                 {
                     _histories.IsLoading = false;
                     _histories.Commits = commits;
+                    _histories.Graph = graph;
                 }
             });
         }

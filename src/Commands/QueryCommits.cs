@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SourceGit.Commands
 {
@@ -31,15 +32,14 @@ namespace SourceGit.Commands
             {
                 case 0:
                     _current = new Models.Commit() { SHA = line };
+                    _isSubjectSet = false;
                     _commits.Add(_current);
                     break;
                 case 1:
-                    if (!string.IsNullOrEmpty(line))
-                        _current.Parents.AddRange(line.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+                    ParseParent(line);
                     break;
                 case 2:
-                    if (!string.IsNullOrEmpty(line))
-                        ParseDecorators(line);
+                    ParseDecorators(line);
                     break;
                 case 3:
                     _current.Author = Models.User.FindOrAdd(line);
@@ -57,15 +57,17 @@ namespace SourceGit.Commands
                     if (line.Equals(_endOfBodyToken, StringComparison.Ordinal))
                     {
                         _nextPartIdx = 0;
-                        if (!string.IsNullOrEmpty(_current.Message))
-                            _current.Message = _current.Message.Trim();
+                        _current.Message = _messageReader.ToString().Trim();
+                        _messageReader.Clear();
+                    }
+                    else if (!_isSubjectSet)
+                    {
+                        _isSubjectSet = true;
+                        _current.Subject = line;
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(_current.Subject))
-                            _current.Subject = line;
-                        else
-                            _current.Message += (line + "\n");
+                        _messageReader.AppendLine(line);
                     }
                     return;
             }
@@ -73,8 +75,27 @@ namespace SourceGit.Commands
             _nextPartIdx++;
         }
 
+        private void ParseParent(string data)
+        {
+            if (data.Length < 8)
+                return;
+
+            var idx = data.IndexOf(' ', StringComparison.Ordinal);
+            if (idx == -1)
+            {
+                _current.Parents.Add(data);
+                return;
+            }
+
+            _current.Parents.Add(data.Substring(0, idx));
+            _current.Parents.Add(data.Substring(idx + 1));
+        }
+
         private void ParseDecorators(string data)
         {
+            if (data.Length < 3)
+                return;
+
             var subs = data.Split(',', StringSplitOptions.RemoveEmptyEntries);
             foreach (var sub in subs)
             {
@@ -172,5 +193,7 @@ namespace SourceGit.Commands
         private bool _isHeadFounded = false;
         private readonly bool _findFirstMerged = true;
         private int _nextPartIdx = 0;
+        private bool _isSubjectSet = false;
+        private StringBuilder _messageReader = new StringBuilder();
     }
 }

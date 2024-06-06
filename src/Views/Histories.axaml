@@ -23,7 +23,7 @@
                 IsReadOnly="True"
                 HeadersVisibility="None"
                 Focusable="False"
-                RowHeight="{Binding DataGridRowHeight}"
+                RowHeight="28"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto"
                 LayoutUpdated="OnCommitDataGridLayoutUpdated"

@@ -2,11 +2,23 @@
 using System.Collections.Generic;
 
 using Avalonia;
+using Avalonia.Media;
 
 namespace SourceGit.Models
 {
     public class CommitGraph
     {
+        public static readonly Pen[] Pens = [
+            new Pen(Brushes.Orange, 2),
+            new Pen(Brushes.ForestGreen, 2),
+            new Pen(Brushes.Gold, 2),
+            new Pen(Brushes.Magenta, 2),
+            new Pen(Brushes.Red, 2),
+            new Pen(Brushes.Gray, 2),
+            new Pen(Brushes.Turquoise, 2),
+            new Pen(Brushes.Olive, 2),
+        ];
+
         public class Path
         {
             public List<Point> Points = new List<Point>();
@@ -101,12 +113,12 @@ namespace SourceGit.Models
         public List<Link> Links { get; set; } = new List<Link>();
         public List<Dot> Dots { get; set; } = new List<Dot>();
 
-        public static CommitGraph Parse(List<Commit> commits, double rowHeight, int colorCount)
+        public static CommitGraph Parse(List<Commit> commits, int colorCount)
         {
             double UNIT_WIDTH = 12;
             double HALF_WIDTH = 6;
-            double UNIT_HEIGHT = rowHeight;
-            double HALF_HEIGHT = rowHeight / 2;
+            double UNIT_HEIGHT = 28;
+            double HALF_HEIGHT = 14;
 
             var temp = new CommitGraph();
             var unsolved = new List<PathHelper>();
