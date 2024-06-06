@@ -23,6 +23,7 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _activePage, value))
                 {
                     PopupHost.Active = value;
+                    UpdateTabSplitterVisible();
                 }
             }
         }
@@ -157,13 +158,12 @@ namespace SourceGit.ViewModels
                 ActivePage = Pages[removeIdx == Pages.Count - 1 ? removeIdx - 1 : removeIdx + 1];
                 CloseRepositoryInTab(page);
                 Pages.RemoveAt(removeIdx);
-                OnPropertyChanged(nameof(Pages));
             }
             else if (removeIdx + 1 == activeIdx)
             {
                 CloseRepositoryInTab(page);
                 Pages.RemoveAt(removeIdx);
-                OnPropertyChanged(nameof(Pages));
+                UpdateTabSplitterVisible();
             }
             else
             {
@@ -174,42 +174,25 @@ namespace SourceGit.ViewModels
             GC.Collect();
         }
 
-        public void CloseOtherTabs(object param)
+        public void CloseOtherTabs()
         {
             if (Pages.Count == 1)
                 return;
 
-            var page = param as LauncherPage;
-            if (page == null)
-                page = _activePage;
-
-            ActivePage = page;
-
+            var id = ActivePage.Node.Id;
             foreach (var one in Pages)
             {
-                if (one.Node.Id != page.Node.Id)
+                if (one.Node.Id != id)
                     CloseRepositoryInTab(one);
             }
 
-            Pages = new AvaloniaList<LauncherPage> { page };
-            OnPropertyChanged(nameof(Pages));
-
+            Pages = new AvaloniaList<LauncherPage> { ActivePage };
             GC.Collect();
         }
 
-        public void CloseRightTabs(object param)
+        public void CloseRightTabs()
         {
-            LauncherPage page = param as LauncherPage;
-            if (page == null)
-                page = _activePage;
-
-            var endIdx = Pages.IndexOf(page);
-            var activeIdx = Pages.IndexOf(_activePage);
-            if (endIdx < activeIdx)
-            {
-                ActivePage = page;
-            }
-
+            var endIdx = Pages.IndexOf(ActivePage);
             for (var i = Pages.Count - 1; i > endIdx; i--)
             {
                 CloseRepositoryInTab(Pages[i]);
@@ -273,6 +256,13 @@ namespace SourceGit.ViewModels
             }
 
             page.Data = null;
+        }
+
+        private void UpdateTabSplitterVisible()
+        {
+            var activePageIdx = ActivePage == null ? -1 : Pages.IndexOf(ActivePage);
+            for (int i = 0; i < Pages.Count; i++)
+                Pages[i].IsTabSplitterVisible = (activePageIdx != i && activePageIdx != i + 1);
         }
 
         private LauncherPage _activePage = null;

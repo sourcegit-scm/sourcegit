@@ -125,11 +125,9 @@
                                   CommandParameter="{Binding}"
                                   InputGesture="{OnPlatform Ctrl+W, macOS=⌘+W}"/>
                         <MenuItem Header="{DynamicResource Text.PageTabBar.Tab.CloseOther}"
-                                  Command="{Binding #me.((vm:Launcher)DataContext).CloseOtherTabs}"
-                                  CommandParameter="{Binding}"/>
+                                  Command="{Binding #me.((vm:Launcher)DataContext).CloseOtherTabs}"/>
                         <MenuItem Header="{DynamicResource Text.PageTabBar.Tab.CloseRight}"
-                                  Command="{Binding #me.((vm:Launcher)DataContext).CloseRightTabs}"
-                                  CommandParameter="{Binding}"/>
+                                  Command="{Binding #me.((vm:Launcher)DataContext).CloseRightTabs}"/>
                         <MenuItem Header="-" IsVisible="{Binding Node.IsRepository}"/>
                         <MenuItem IsVisible="{Binding Node.IsRepository}">
                           <MenuItem.Header>
@@ -210,15 +208,11 @@
                         </ToolTip.Tip>
                         <Path Width="8" Height="8" Data="{StaticResource Icons.Window.Close}"/>
                       </Button>
-                      <Rectangle Grid.Column="2" Width=".5" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{DynamicResource Brush.FG2}">
-                        <Rectangle.IsVisible>
-                          <MultiBinding Converter="{x:Static c:LauncherPageConverters.ToTabSeperatorVisible}">
-                            <Binding/>
-                            <Binding Path="$parent[ListBox].SelectedItem"/>
-                            <Binding Path="#me.((vm:Launcher)DataContext).Pages"/>
-                          </MultiBinding>
-                        </Rectangle.IsVisible>
-                      </Rectangle>
+                      <Rectangle Grid.Column="2" 
+                                 Width=".5" Height="20" 
+                                 HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                 Fill="{DynamicResource Brush.FG2}"
+                                 IsVisible="{Binding IsTabSplitterVisible}"/>
                     </Grid>
                   </Border>
                 </DataTemplate>
