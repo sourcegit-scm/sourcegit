@@ -63,8 +63,8 @@ namespace SourceGit.Models
     {
         public string File { get; set; } = string.Empty;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
+        public Vector SyncScrollOffset { get; set; } = Vector.Zero;
         public int MaxLineNumber = 0;
-        public Vector SyncScrollOffset = Vector.Zero;
 
         public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
         {

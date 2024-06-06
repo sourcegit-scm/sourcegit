@@ -224,6 +224,7 @@
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
             <v:TextDiffView TextDiff="{Binding}"
+                            SyncScrollOffset="{Binding SyncScrollOffset, Mode=TwoWay}"
                             UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>
           </DataTemplate>
 

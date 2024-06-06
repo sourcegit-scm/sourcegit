@@ -1169,19 +1169,11 @@ namespace SourceGit.Views
             if (change.Property == TextDiffProperty)
             {
                 if (TextDiff == null)
-                {
                     Content = null;
-                }
                 else if (UseSideBySideDiff)
-                {
                     Content = new ViewModels.TwoSideTextDiff(TextDiff);
-                    SyncScrollOffset = TextDiff.SyncScrollOffset;
-                }
                 else
-                {
                     Content = TextDiff;
-                    SyncScrollOffset = TextDiff.SyncScrollOffset;
-                }
             }
             else if (change.Property == UseSideBySideDiffProperty)
             {
@@ -1193,11 +1185,6 @@ namespace SourceGit.Views
                     Content = new ViewModels.TwoSideTextDiff(TextDiff);
                 else
                     Content = TextDiff;
-            }
-            else if (change.Property == SyncScrollOffsetProperty)
-            {
-                if (TextDiff != null)
-                    TextDiff.SyncScrollOffset = SyncScrollOffset;
             }
         }
 
