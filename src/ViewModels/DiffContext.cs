@@ -157,14 +157,19 @@ namespace SourceGit.ViewModels
                         var imgDiff = new Models.ImageDiff();
                         if (_option.Revisions.Count == 2)
                         {
-                            imgDiff.Old = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
-                            imgDiff.New = BitmapFromRevisionFile(_repo, _option.Revisions[1], oldPath);
+                            (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
+                            (imgDiff.New, imgDiff.NewFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[1], oldPath);
                         }
                         else
                         {
                             var fullPath = Path.Combine(_repo, _option.Path);
-                            imgDiff.Old = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
-                            imgDiff.New = File.Exists(fullPath) ? new Bitmap(fullPath) : null;
+                            (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
+                            
+                            if (File.Exists(fullPath))
+                            {
+                                imgDiff.New = new Bitmap(fullPath);
+                                imgDiff.NewFileSize = new FileInfo(fullPath).Length;
+                            }
                         }
                         rs = imgDiff;
                     }
@@ -207,10 +212,11 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private Bitmap BitmapFromRevisionFile(string repo, string revision, string file)
+        private (Bitmap, long) BitmapFromRevisionFile(string repo, string revision, string file)
         {
             var stream = Commands.QueryFileContent.Run(repo, revision, file);
-            return stream.Length > 0 ? new Bitmap(stream) : null;
+            var size = stream.Length;
+            return size > 0 ? (new Bitmap(stream), size) : (null, size);
         }
 
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
