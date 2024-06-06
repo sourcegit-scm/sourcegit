@@ -18,7 +18,7 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
 
-            if (IsVisible) 
+            if (IsVisible)
                 StartAnim();
         }
 
@@ -37,7 +37,7 @@ namespace SourceGit.Views
                 if (IsVisible)
                     StartAnim();
                 else
-                    StopAnim();                
+                    StopAnim();
             }
         }
 

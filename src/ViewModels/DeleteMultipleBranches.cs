@@ -17,7 +17,7 @@ namespace SourceGit.ViewModels
             Targets = branches;
             View = new Views.DeleteMultipleBranches() { DataContext = this };
         }
-        
+
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);

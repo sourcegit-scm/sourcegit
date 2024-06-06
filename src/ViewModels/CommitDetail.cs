@@ -228,7 +228,7 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             menu.Items.Add(copyFileName);
-            
+
             return menu;
         }
 

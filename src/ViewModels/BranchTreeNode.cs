@@ -52,7 +52,7 @@ namespace SourceGit.ViewModels
         {
             get => Type == BranchTreeNodeType.Branch;
         }
-        
+
         public bool IsDetachedHead
         {
             get => Type == BranchTreeNodeType.DetachedHead;
@@ -219,7 +219,7 @@ namespace SourceGit.ViewModels
                     start = sepIdx + 1;
                     sepIdx = branch.Name.IndexOf('/', start);
                 }
-                
+
                 lastFolder.Children.Add(new BranchTreeNode()
                 {
                     Name = Path.GetFileName(branch.Name),
@@ -242,7 +242,7 @@ namespace SourceGit.ViewModels
                     {
                         return l.Name.CompareTo(r.Name);
                     }
-                   
+
                     return (int)l.Type - (int)r.Type;
                 });
 

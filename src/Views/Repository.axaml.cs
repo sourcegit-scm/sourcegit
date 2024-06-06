@@ -88,7 +88,7 @@ namespace SourceGit.Views
                 ViewModels.BranchTreeNode prev = null;
                 foreach (var node in repo.LocalBranchTrees)
                     node.UpdateCornerRadius(ref prev);
-                
+
                 if (tree.SelectedItems.Count == 1)
                 {
                     var node = tree.SelectedItem as ViewModels.BranchTreeNode;
@@ -303,12 +303,12 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
-        
+
         private void CollectBranchesFromNode(List<Models.Branch> outs, ViewModels.BranchTreeNode node)
         {
             if (node == null || node.IsRemote)
                 return;
-            
+
             if (node.IsFolder)
             {
                 foreach (var child in node.Children)

@@ -163,14 +163,14 @@ namespace SourceGit
                 try
                 {
                     var resDic = new ResourceDictionary();
-                    
+
                     var schema = JsonSerializer.Deserialize(File.ReadAllText(colorsFile), JsonCodeGen.Default.DictionaryStringString);
                     foreach (var kv in schema)
                         resDic[kv.Key] = Color.Parse(kv.Value);
 
                     app.Resources.MergedDictionaries.Add(resDic);
                     app._colorOverrides = resDic;
-                } 
+                }
                 catch
                 {
                 }

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
-{    
+{
     public class CreateBranch : Popup
     {
         [Required(ErrorMessage = "Branch name is required!")]
@@ -19,13 +19,13 @@ namespace SourceGit.ViewModels
             get;
             private set;
         }
-        
+
         public Models.DealWithLocalChanges PreAction
         {
             get => _preAction;
             set => SetProperty(ref _preAction, value);
         }
-        
+
         public bool CheckoutAfterCreated
         {
             get;

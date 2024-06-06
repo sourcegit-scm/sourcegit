@@ -17,7 +17,7 @@ namespace SourceGit.Views
             var toplevel = TopLevel.GetTopLevel(this);
             if (toplevel == null)
                 return;
-            
+
             var selected = await toplevel.StorageProvider.OpenFolderPickerAsync(options);
             if (selected.Count == 1)
                 TxtParentFolder.Text = selected[0].Path.LocalPath;
@@ -31,7 +31,7 @@ namespace SourceGit.Views
             var toplevel = TopLevel.GetTopLevel(this);
             if (toplevel == null)
                 return;
-            
+
             var selected = await toplevel.StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
                 TxtSshKey.Text = selected[0].Path.LocalPath;

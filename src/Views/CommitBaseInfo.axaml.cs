@@ -24,7 +24,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.CommitDetail detail && CanNavigate)
                 detail.NavigateTo((sender as Control).DataContext as string);
-            
+
             e.Handled = true;
         }
     }

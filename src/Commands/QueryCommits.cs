@@ -57,7 +57,8 @@ namespace SourceGit.Commands
                     if (line.Equals(_endOfBodyToken, StringComparison.Ordinal))
                     {
                         _nextPartIdx = 0;
-                        if (!string.IsNullOrEmpty(_current.Message)) _current.Message = _current.Message.Trim();
+                        if (!string.IsNullOrEmpty(_current.Message))
+                            _current.Message = _current.Message.Trim();
                     }
                     else
                     {

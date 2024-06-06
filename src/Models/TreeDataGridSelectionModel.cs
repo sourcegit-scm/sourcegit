@@ -182,7 +182,7 @@ namespace SourceGit.Models
                     {
                         var focus = _source.Rows[row.RowIndex];
                         if (focus is IExpander expander && HasChildren(focus))
-                            expander.IsExpanded = !expander.IsExpanded;                            
+                            expander.IsExpanded = !expander.IsExpanded;
                         else
                             _rowDoubleTapped?.Invoke(this, e);
 
@@ -455,7 +455,7 @@ namespace SourceGit.Models
                 foreach (var c in children)
                     return true;
             }
-            
+
             return false;
         }
     }

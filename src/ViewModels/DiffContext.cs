@@ -122,7 +122,7 @@ namespace SourceGit.ViewModels
                 if (latest.TextDiff != null)
                 {
                     var repo = Preference.FindRepository(_repo);
-                    if (repo != null && repo.Submodules.Contains(_option.Path)) 
+                    if (repo != null && repo.Submodules.Contains(_option.Path))
                     {
                         var submoduleDiff = new Models.SubmoduleDiff();
                         var submoduleRoot = $"{_repo}/{_option.Path}".Replace("\\", "/");
@@ -164,7 +164,7 @@ namespace SourceGit.ViewModels
                         {
                             var fullPath = Path.Combine(_repo, _option.Path);
                             (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
-                            
+
                             if (File.Exists(fullPath))
                             {
                                 imgDiff.New = new Bitmap(fullPath);

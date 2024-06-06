@@ -25,14 +25,7 @@ namespace SourceGit.Converters
                 var selected = array[1] as ViewModels.LauncherPage;
                 var collections = array[2] as AvaloniaList<ViewModels.LauncherPage>;
 
-                if (selected != null && collections != null && (self == selected || collections.IndexOf(self) + 1 == collections.IndexOf(selected)))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+                return selected != null && collections != null && (self == selected || collections.IndexOf(self) + 1 == collections.IndexOf(selected));
             });
     }
 }

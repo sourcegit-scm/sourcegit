@@ -6,7 +6,8 @@ namespace SourceGit.Commands
 {
     public class QuerySingleCommit : Command
     {
-        public QuerySingleCommit(string repo, string sha) {
+        public QuerySingleCommit(string repo, string sha)
+        {
             WorkingDirectory = repo;
             Context = repo;
             Args = $"show --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B -s {sha}";
@@ -19,7 +20,7 @@ namespace SourceGit.Commands
             {
                 var commit = new Models.Commit();
                 var lines = rs.StdOut.Split('\n');
-                if (lines.Length < 8) 
+                if (lines.Length < 8)
                     return null;
 
                 commit.SHA = lines[0];

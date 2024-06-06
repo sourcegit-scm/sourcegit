@@ -81,7 +81,7 @@ namespace SourceGit.Views
         {
             if (Content is TreeDataGrid tree && tree.Source is IDisposable disposable)
                 disposable.Dispose();
-            
+
             Content = null;
 
             var changes = Changes;

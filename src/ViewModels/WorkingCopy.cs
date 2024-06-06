@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -793,7 +792,7 @@ namespace SourceGit.ViewModels
                     App.CopyText(change.Path);
                     e.Handled = true;
                 };
-                
+
                 var copyFileName = new MenuItem();
                 copyFileName.Header = App.Text("CopyFileName");
                 copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
