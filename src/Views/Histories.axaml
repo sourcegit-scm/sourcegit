@@ -68,7 +68,7 @@
                     </ItemsControl>
 
                     <TextBlock Classes="monospace" 
-                               Text="{Binding Subject}" 
+                               Text="{Binding Subject}"
                                Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"
                                FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
                   </StackPanel>

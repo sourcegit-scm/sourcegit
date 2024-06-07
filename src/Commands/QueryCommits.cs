@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SourceGit.Commands
 {
@@ -18,62 +17,66 @@ namespace SourceGit.Commands
 
         public List<Models.Commit> Result()
         {
-            Exec();
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return _commits;
+
+            var nextPartIdx = 0;
+            var start = 0;
+            var end = rs.StdOut.IndexOf('\n', start);
+            var max = rs.StdOut.Length;
+            while (end > 0)
+            {
+                var line = rs.StdOut.Substring(start, end - start);
+                switch (nextPartIdx)
+                {
+                    case 0:
+                        _current = new Models.Commit() { SHA = line };
+                        _commits.Add(_current);
+                        break;
+                    case 1:
+                        ParseParent(line);
+                        break;
+                    case 2:
+                        ParseDecorators(line);
+                        break;
+                    case 3:
+                        _current.Author = Models.User.FindOrAdd(line);
+                        break;
+                    case 4:
+                        _current.AuthorTime = ulong.Parse(line);
+                        break;
+                    case 5:
+                        _current.Committer = Models.User.FindOrAdd(line);
+                        break;
+                    case 6:
+                        _current.CommitterTime = ulong.Parse(line);
+                        start = end + 1;
+                        end = rs.StdOut.IndexOf(_endOfBodyToken, start, StringComparison.Ordinal);
+                        if (end > 0)
+                        {
+                            if (end > start)
+                                _current.Body = rs.StdOut.Substring(start, end - start).TrimEnd();
+
+                            start = end + _endOfBodyToken.Length + 1;
+                            end = start >= max ? -1 : rs.StdOut.IndexOf('\n', start);
+                        }
+
+                        nextPartIdx = 0;
+                        continue;
+                    default:
+                        break;
+                }
+
+                nextPartIdx++;
+                start = end + 1;
+                end = rs.StdOut.IndexOf('\n', start);
+            }
 
             if (_findFirstMerged && !_isHeadFounded && _commits.Count > 0)
                 MarkFirstMerged();
 
             return _commits;
-        }
-
-        protected override void OnReadline(string line)
-        {
-            switch (_nextPartIdx)
-            {
-                case 0:
-                    _current = new Models.Commit() { SHA = line };
-                    _isSubjectSet = false;
-                    _commits.Add(_current);
-                    break;
-                case 1:
-                    ParseParent(line);
-                    break;
-                case 2:
-                    ParseDecorators(line);
-                    break;
-                case 3:
-                    _current.Author = Models.User.FindOrAdd(line);
-                    break;
-                case 4:
-                    _current.AuthorTime = ulong.Parse(line);
-                    break;
-                case 5:
-                    _current.Committer = Models.User.FindOrAdd(line);
-                    break;
-                case 6:
-                    _current.CommitterTime = ulong.Parse(line);
-                    break;
-                default:
-                    if (line.Equals(_endOfBodyToken, StringComparison.Ordinal))
-                    {
-                        _nextPartIdx = 0;
-                        _current.Body = _bodyReader.ToString().TrimEnd();
-                        _bodyReader.Clear();
-                    }
-                    else
-                    {
-                        if (!_isSubjectSet)
-                        {
-                            _isSubjectSet = true;
-                            _current.SubjectLen = line.Length;
-                        }
-
-                        _bodyReader.AppendLine(line);
-                    }
-                    return;
-            }
-
-            _nextPartIdx++;
         }
 
         private void ParseParent(string data)
@@ -106,7 +109,7 @@ namespace SourceGit.Commands
                     _current.Decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.Tag,
-                        Name = d.Substring(15).Trim(),
+                        Name = d.Substring(15),
                     });
                 }
                 else if (d.EndsWith("/HEAD", StringComparison.Ordinal))
@@ -119,7 +122,7 @@ namespace SourceGit.Commands
                     _current.Decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.CurrentBranchHead,
-                        Name = d.Substring(19).Trim(),
+                        Name = d.Substring(19),
                     });
                 }
                 else if (d.Equals("HEAD"))
@@ -128,7 +131,7 @@ namespace SourceGit.Commands
                     _current.Decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.CurrentCommitHead,
-                        Name = d.Trim(),
+                        Name = d,
                     });
                 }
                 else if (d.StartsWith("refs/heads/", StringComparison.Ordinal))
@@ -136,7 +139,7 @@ namespace SourceGit.Commands
                     _current.Decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.LocalBranchHead,
-                        Name = d.Substring(11).Trim(),
+                        Name = d.Substring(11),
                     });
                 }
                 else if (d.StartsWith("refs/remotes/", StringComparison.Ordinal))
@@ -144,7 +147,7 @@ namespace SourceGit.Commands
                     _current.Decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.RemoteBranchHead,
-                        Name = d.Substring(13).Trim(),
+                        Name = d.Substring(13),
                     });
                 }
             }
@@ -152,13 +155,9 @@ namespace SourceGit.Commands
             _current.Decorators.Sort((l, r) =>
             {
                 if (l.Type != r.Type)
-                {
                     return (int)l.Type - (int)r.Type;
-                }
                 else
-                {
                     return l.Name.CompareTo(r.Name);
-                }
             });
 
             if (_current.IsMerged && !_isHeadFounded)
@@ -191,10 +190,7 @@ namespace SourceGit.Commands
         private string _endOfBodyToken = string.Empty;
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.Commit _current = null;
+        private bool _findFirstMerged = false;
         private bool _isHeadFounded = false;
-        private bool _findFirstMerged = true;
-        private int _nextPartIdx = 0;
-        private bool _isSubjectSet = false;
-        private StringBuilder _bodyReader = new StringBuilder();
     }
 }

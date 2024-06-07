@@ -62,7 +62,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var commits = new Commands.QueryCommits(_repo, $"-n 10000 -- \"{file}\"").Result();
+                var commits = new Commands.QueryCommits(_repo, $"-n 10000 -- \"{file}\"", false).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     IsLoading = false;

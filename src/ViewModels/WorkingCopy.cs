@@ -84,17 +84,25 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _useAmend, value) && value)
                 {
-                    var commits = new Commands.QueryCommits(_repo.FullPath, "-n 1", false).Result();
-                    if (commits.Count == 0)
+                    var currentBranch = _repo.Branches.Find(x => x.IsCurrent);
+                    if (currentBranch == null)
                     {
                         App.RaiseException(_repo.FullPath, "No commits to amend!!!");
                         _useAmend = false;
                         OnPropertyChanged();
+                        return;
                     }
-                    else
+
+                    var head = new Commands.QuerySingleCommit(_repo.FullPath, currentBranch.Head).Result();
+                    if (head == null)
                     {
-                        CommitMessage = commits[0].Body;
+                        App.RaiseException(_repo.FullPath, "No commits to amend!!!");
+                        _useAmend = false;
+                        OnPropertyChanged();
+                        return;
                     }
+
+                    CommitMessage = head.Body;
                 }
 
                 OnPropertyChanged(nameof(IsCommitWithPushVisible));

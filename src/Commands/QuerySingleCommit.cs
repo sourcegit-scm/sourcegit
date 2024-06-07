@@ -32,7 +32,6 @@ namespace SourceGit.Commands
                 commit.AuthorTime = ulong.Parse(lines[4]);
                 commit.Committer = Models.User.FindOrAdd(lines[5]);
                 commit.CommitterTime = ulong.Parse(lines[6]);
-                commit.SubjectLen = lines[7].Length;
 
                 StringBuilder builder = new StringBuilder();
                 for (int i = 7; i < lines.Length; i++)
@@ -58,7 +57,7 @@ namespace SourceGit.Commands
                     decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.Tag,
-                        Name = d.Substring(15).Trim(),
+                        Name = d.Substring(15),
                     });
                 }
                 else if (d.EndsWith("/HEAD", StringComparison.Ordinal))
@@ -71,7 +70,7 @@ namespace SourceGit.Commands
                     decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.CurrentBranchHead,
-                        Name = d.Substring(19).Trim(),
+                        Name = d.Substring(19),
                     });
                 }
                 else if (d.Equals("HEAD"))
@@ -80,7 +79,7 @@ namespace SourceGit.Commands
                     decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.CurrentCommitHead,
-                        Name = d.Trim(),
+                        Name = d,
                     });
                 }
                 else if (d.StartsWith("refs/heads/", StringComparison.Ordinal))
@@ -88,7 +87,7 @@ namespace SourceGit.Commands
                     decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.LocalBranchHead,
-                        Name = d.Substring(11).Trim(),
+                        Name = d.Substring(11),
                     });
                 }
                 else if (d.StartsWith("refs/remotes/", StringComparison.Ordinal))
@@ -96,7 +95,7 @@ namespace SourceGit.Commands
                     decorators.Add(new Models.Decorator()
                     {
                         Type = Models.DecoratorType.RemoteBranchHead,
-                        Name = d.Substring(13).Trim(),
+                        Name = d.Substring(13),
                     });
                 }
             }
@@ -104,13 +103,9 @@ namespace SourceGit.Commands
             decorators.Sort((l, r) =>
             {
                 if (l.Type != r.Type)
-                {
                     return (int)l.Type - (int)r.Type;
-                }
                 else
-                {
                     return l.Name.CompareTo(r.Name);
-                }
             });
 
             return isHeadOfCurrent;
