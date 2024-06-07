@@ -186,6 +186,13 @@ namespace SourceGit.ViewModels
         }
 
         [JsonIgnore]
+        public int SearchCommitFilterType
+        {
+            get => _searchCommitFilterType;
+            set => SetProperty(ref _searchCommitFilterType, value);
+        }
+
+        [JsonIgnore]
         public string SearchCommitFilter
         {
             get => _searchCommitFilter;
@@ -416,18 +423,26 @@ namespace SourceGit.ViewModels
                 return;
 
             var visible = new List<Models.Commit>();
-            foreach (var c in _histories.Commits)
+
+            if (_searchCommitFilterType == 0)
             {
-                if (c.SHA.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                    || c.Body.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                    || c.Author.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                    || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                    || c.Author.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                    || c.Committer.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
+                foreach (var c in _histories.Commits)
                 {
-                    visible.Add(c);
+                    if (c.SHA.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                        || c.Body.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                        || c.Author.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                        || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                        || c.Author.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                        || c.Committer.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
+                    {
+                        visible.Add(c);
+                    }
                 }
             }
+            else
+            {
+                visible = new Commands.QueryCommits(FullPath, $"-1000 -- \"{_searchCommitFilter}\"", false).Result();
+            }            
 
             SearchedCommits = visible;
         }
@@ -1508,6 +1523,7 @@ namespace SourceGit.ViewModels
         private object _selectedView = null;
 
         private bool _isSearching = false;
+        private int _searchCommitFilterType = 0;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
 

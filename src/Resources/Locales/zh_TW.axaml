@@ -387,7 +387,9 @@
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">新增遠端</x:String>
   <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">解決衝突</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">查詢提交</x:String>
-  <x:String x:Key="Text.Repository.SearchTip" xml:space="preserve">支援搜尋作者/提交者/主題/指紋</x:String>
+  <x:String x:Key="Text.Repository.Search.By" xml:space="preserve">查詢方式</x:String>
+  <x:String x:Key="Text.Repository.Search.ByBaseInfo" xml:space="preserve">摘要</x:String>
+  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">檔案</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交統計</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模組列表</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">新增子模組</x:String>
