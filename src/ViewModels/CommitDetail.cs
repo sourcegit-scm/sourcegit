@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
-using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -76,24 +75,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public HierarchicalTreeDataGridSource<Models.FileTreeNode> RevisionFiles
-        {
-            get => _revisionFiles;
-            private set => SetProperty(ref _revisionFiles, value);
-        }
-
-        public string SearchFileFilter
-        {
-            get => _searchFileFilter;
-            set
-            {
-                if (SetProperty(ref _searchFileFilter, value))
-                {
-                    RefreshVisibleFiles();
-                }
-            }
-        }
-
         public object ViewRevisionFileContent
         {
             get => _viewRevisionFileContent;
@@ -117,11 +98,6 @@ namespace SourceGit.ViewModels
                 _selectedChanges.Clear();
             _searchChangeFilter = null;
             _diffContext = null;
-            if (_revisionFilesBackup != null)
-                _revisionFilesBackup.Clear();
-            if (_revisionFiles != null)
-                _revisionFiles.Dispose();
-            _searchFileFilter = null;
             _viewRevisionFileContent = null;
             _cancelToken = null;
         }
@@ -138,9 +114,93 @@ namespace SourceGit.ViewModels
             SearchChangeFilter = string.Empty;
         }
 
-        public void ClearSearchFileFilter()
+        public List<Models.Object> GetRevisionFilesUnderFolder(string parentFolder)
         {
-            SearchFileFilter = string.Empty;
+            return new Commands.QueryRevisionObjects(_repo, _commit.SHA, parentFolder).Result();
+        }
+
+        public void ViewRevisionFile(Models.Object file)
+        {
+            if (file == null)
+            {
+                ViewRevisionFileContent = null;
+                return;
+            }
+
+            switch (file.Type)
+            {
+                case Models.ObjectType.Blob:
+                    Task.Run(() =>
+                    {
+                        var isBinary = new Commands.IsBinary(_repo, _commit.SHA, file.Path).Result();
+                        if (isBinary)
+                        {
+                            var ext = Path.GetExtension(file.Path);
+                            if (IMG_EXTS.Contains(ext))
+                            {
+                                var stream = Commands.QueryFileContent.Run(_repo, _commit.SHA, file.Path);
+                                var bitmap = stream.Length > 0 ? new Bitmap(stream) : null;
+                                Dispatcher.UIThread.Invoke(() =>
+                                {
+                                    ViewRevisionFileContent = new Models.RevisionImageFile() { Image = bitmap };
+                                });
+                            }
+                            else
+                            {
+                                var size = new Commands.QueryFileSize(_repo, file.Path, _commit.SHA).Result();
+                                Dispatcher.UIThread.Invoke(() =>
+                                {
+                                    ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
+                                });
+                            }
+
+                            return;
+                        }
+
+                        var contentStream = Commands.QueryFileContent.Run(_repo, _commit.SHA, file.Path);
+                        var content = new StreamReader(contentStream).ReadToEnd();
+                        if (content.StartsWith("version https://git-lfs.github.com/spec/", StringComparison.Ordinal))
+                        {
+                            var obj = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
+                            var lines = content.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+                            if (lines.Length == 3)
+                            {
+                                foreach (var line in lines)
+                                {
+                                    if (line.StartsWith("oid sha256:", StringComparison.Ordinal))
+                                    {
+                                        obj.Object.Oid = line.Substring(11);
+                                    }
+                                    else if (line.StartsWith("size ", StringComparison.Ordinal))
+                                    {
+                                        obj.Object.Size = long.Parse(line.Substring(5));
+                                    }
+                                }
+                                Dispatcher.UIThread.Invoke(() =>
+                                {
+                                    ViewRevisionFileContent = obj;
+                                });
+                                return;
+                            }
+                        }
+
+                        Dispatcher.UIThread.Invoke(() =>
+                        {
+                            ViewRevisionFileContent = new Models.RevisionTextFile()
+                            {
+                                FileName = file.Path,
+                                Content = content
+                            };
+                        });
+                    });
+                    break;
+                case Models.ObjectType.Commit:
+                    ViewRevisionFileContent = new Models.RevisionSubmodule() { SHA = file.SHA };
+                    break;
+                default:
+                    ViewRevisionFileContent = null;
+                    break;
+            }
         }
 
         public ContextMenu CreateChangeContextMenu(Models.Change change)
@@ -319,29 +379,19 @@ namespace SourceGit.ViewModels
             VisibleChanges = null;
             SelectedChanges = null;
 
-            if (_revisionFiles != null)
-            {
-                _revisionFiles.Dispose();
-                _revisionFiles = null;
-            }
-
             if (_commit == null)
                 return;
+
             if (_cancelToken != null)
                 _cancelToken.Requested = true;
 
             _cancelToken = new Commands.Command.CancelToken();
 
-            var parent = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];
-            var cmdChanges = new Commands.CompareRevisions(_repo, parent, _commit.SHA) { Cancel = _cancelToken };
-            var cmdRevisionFiles = new Commands.QueryRevisionObjects(_repo, _commit.SHA) { Cancel = _cancelToken };
-
             Task.Run(() =>
             {
+                var parent = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];
+                var cmdChanges = new Commands.CompareRevisions(_repo, parent, _commit.SHA) { Cancel = _cancelToken };
                 var changes = cmdChanges.Result();
-                if (cmdChanges.Cancel.Requested)
-                    return;
-
                 var visible = changes;
                 if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
                 {
@@ -349,39 +399,18 @@ namespace SourceGit.ViewModels
                     foreach (var c in changes)
                     {
                         if (c.Path.Contains(_searchChangeFilter, StringComparison.OrdinalIgnoreCase))
-                        {
                             visible.Add(c);
-                        }
                     }
                 }
 
-                Dispatcher.UIThread.Invoke(() =>
+                if (!cmdChanges.Cancel.Requested)
                 {
-                    Changes = changes;
-                    VisibleChanges = visible;
-                });
-            });
-
-            Task.Run(() =>
-            {
-                _revisionFilesBackup = cmdRevisionFiles.Result();
-                if (cmdRevisionFiles.Cancel.Requested)
-                    return;
-
-                var visible = _revisionFilesBackup;
-                var isSearching = !string.IsNullOrWhiteSpace(_searchFileFilter);
-                if (isSearching)
-                {
-                    visible = new List<Models.Object>();
-                    foreach (var f in _revisionFilesBackup)
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        if (f.Path.Contains(_searchFileFilter, StringComparison.OrdinalIgnoreCase))
-                            visible.Add(f);
-                    }
+                        Changes = changes;
+                        VisibleChanges = visible;
+                    });
                 }
-
-                var tree = Models.FileTreeNode.Build(visible, isSearching || visible.Count <= 100);
-                Dispatcher.UIThread.Invoke(() => BuildRevisionFilesSource(tree));
             });
         }
 
@@ -407,140 +436,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void RefreshVisibleFiles()
-        {
-            if (_revisionFiles == null)
-                return;
-
-            var visible = _revisionFilesBackup;
-            var isSearching = !string.IsNullOrWhiteSpace(_searchFileFilter);
-            if (isSearching)
-            {
-                visible = new List<Models.Object>();
-                foreach (var f in _revisionFilesBackup)
-                {
-                    if (f.Path.Contains(_searchFileFilter, StringComparison.OrdinalIgnoreCase))
-                        visible.Add(f);
-                }
-            }
-
-            BuildRevisionFilesSource(Models.FileTreeNode.Build(visible, isSearching || visible.Count < 100));
-        }
-
-        private void RefreshViewRevisionFile(Models.Object file)
-        {
-            if (file == null)
-            {
-                ViewRevisionFileContent = null;
-                return;
-            }
-
-            switch (file.Type)
-            {
-                case Models.ObjectType.Blob:
-                    Task.Run(() =>
-                    {
-                        var isBinary = new Commands.IsBinary(_repo, _commit.SHA, file.Path).Result();
-                        if (isBinary)
-                        {
-                            var ext = Path.GetExtension(file.Path);
-                            if (IMG_EXTS.Contains(ext))
-                            {
-                                var stream = Commands.QueryFileContent.Run(_repo, _commit.SHA, file.Path);
-                                var bitmap = stream.Length > 0 ? new Bitmap(stream) : null;
-                                Dispatcher.UIThread.Invoke(() =>
-                                {
-                                    ViewRevisionFileContent = new Models.RevisionImageFile() { Image = bitmap };
-                                });
-                            }
-                            else
-                            {
-                                var size = new Commands.QueryFileSize(_repo, file.Path, _commit.SHA).Result();
-                                Dispatcher.UIThread.Invoke(() =>
-                                {
-                                    ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
-                                });
-                            }
-
-                            return;
-                        }
-
-                        var contentStream = Commands.QueryFileContent.Run(_repo, _commit.SHA, file.Path);
-                        var content = new StreamReader(contentStream).ReadToEnd();
-                        if (content.StartsWith("version https://git-lfs.github.com/spec/", StringComparison.Ordinal))
-                        {
-                            var obj = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
-                            var lines = content.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-                            if (lines.Length == 3)
-                            {
-                                foreach (var line in lines)
-                                {
-                                    if (line.StartsWith("oid sha256:", StringComparison.Ordinal))
-                                    {
-                                        obj.Object.Oid = line.Substring(11);
-                                    }
-                                    else if (line.StartsWith("size ", StringComparison.Ordinal))
-                                    {
-                                        obj.Object.Size = long.Parse(line.Substring(5));
-                                    }
-                                }
-                                Dispatcher.UIThread.Invoke(() =>
-                                {
-                                    ViewRevisionFileContent = obj;
-                                });
-                                return;
-                            }
-                        }
-
-                        Dispatcher.UIThread.Invoke(() =>
-                        {
-                            ViewRevisionFileContent = new Models.RevisionTextFile()
-                            {
-                                FileName = file.Path,
-                                Content = content
-                            };
-                        });
-                    });
-                    break;
-                case Models.ObjectType.Commit:
-                    ViewRevisionFileContent = new Models.RevisionSubmodule() { SHA = file.SHA };
-                    break;
-                default:
-                    ViewRevisionFileContent = null;
-                    break;
-            }
-        }
-
-        private void BuildRevisionFilesSource(List<Models.FileTreeNode> tree)
-        {
-            var source = new HierarchicalTreeDataGridSource<Models.FileTreeNode>(tree)
-            {
-                Columns =
-                {
-                    new HierarchicalExpanderColumn<Models.FileTreeNode>(
-                        new TemplateColumn<Models.FileTreeNode>("Icon", "FileTreeNodeExpanderTemplate", null, GridLength.Auto),
-                        x => x.Children,
-                        x => x.Children.Count > 0,
-                        x => x.IsExpanded),
-                    new TextColumn<Models.FileTreeNode, string>(
-                        null,
-                        x => string.Empty,
-                        GridLength.Star)
-                }
-            };
-
-            var selection = new Models.TreeDataGridSelectionModel<Models.FileTreeNode>(source, x => x.Children);
-            selection.SingleSelect = true;
-            selection.SelectionChanged += (s, _) =>
-            {
-                if (s is Models.TreeDataGridSelectionModel<Models.FileTreeNode> selection)
-                    RefreshViewRevisionFile(selection.SelectedItem?.Backend as Models.Object);
-            };
-
-            source.Selection = selection;
-            RevisionFiles = source;
-        }
-
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
         {
             ".ico", ".bmp", ".jpg", ".png", ".jpeg"
@@ -554,9 +449,6 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _selectedChanges = null;
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
-        private List<Models.Object> _revisionFilesBackup = null;
-        private HierarchicalTreeDataGridSource<Models.FileTreeNode> _revisionFiles = null;
-        private string _searchFileFilter = string.Empty;
         private object _viewRevisionFileContent = null;
         private Commands.Command.CancelToken _cancelToken = null;
     }
