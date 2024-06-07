@@ -96,10 +96,7 @@
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查詢變更...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">檔案列表</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS檔案</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">查詢檔案...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">子模組</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Tag" xml:space="preserve">標籤檔案</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Tree" xml:space="preserve">子樹</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">基本資訊</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">修改者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">變更列表</x:String>
