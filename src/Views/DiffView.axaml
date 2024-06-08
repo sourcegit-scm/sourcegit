@@ -151,9 +151,9 @@
                   <Border IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <ContentControl Content="{Binding Old}">
                       <ContentControl.DataTemplates>
-                        <DataTemplate DataType="m:Commit">
+                        <DataTemplate DataType="m:SubmoduleRevision">
                           <Border Margin="0,0,0,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Background="{DynamicResource Brush.Window}">
-                            <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding}"/>
+                            <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding Commit}" Message="{Binding FullMessage}"/>
                           </Border>
                         </DataTemplate>
                       </ContentControl.DataTemplates>
@@ -167,7 +167,7 @@
                   <Path Width="16" Height="16" Data="{StaticResource Icons.DoubleDown}" HorizontalAlignment="Center" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
                   <Border Margin="0,8,0,0" BorderThickness="1" BorderBrush="Green" Background="{DynamicResource Brush.Window}">
-                    <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding New}"/>
+                    <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding New.Commit}" Message="{Binding New.FullMessage}"/>
                   </Border>
                 </StackPanel>
               </ScrollViewer>
@@ -239,7 +239,7 @@
                             UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>
           </DataTemplate>
 
-          <!-- No or only EOL changes -->
+          <!-- Empty or only EOL changes -->
           <DataTemplate DataType="m:NoOrEOLChange">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
               <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="{DynamicResource Brush.FG2}"/>

@@ -587,10 +587,16 @@ namespace SourceGit.Models
         public string New { get; set; } = string.Empty;
     }
 
+    public class SubmoduleRevision
+    {
+        public Commit Commit { get; set; } = null;
+        public string FullMessage { get; set; } = string.Empty;
+    }
+
     public class SubmoduleDiff
     {
-        public Commit Old { get; set; } = null;
-        public Commit New { get; set; } = null;
+        public SubmoduleRevision Old { get; set; } = null;
+        public SubmoduleRevision New { get; set; } = null;
     }
 
     public class DiffResult

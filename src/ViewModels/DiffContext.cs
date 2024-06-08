@@ -131,12 +131,12 @@ namespace SourceGit.ViewModels
                             if (line.Type == Models.TextDiffLineType.Added)
                             {
                                 var sha = line.Content.Substring("Subproject commit ".Length);
-                                submoduleDiff.New = new Commands.QuerySingleCommit(submoduleRoot, sha).Result() ?? new Models.Commit() { SHA = sha };
+                                submoduleDiff.New = QuerySubmoduleRevision(submoduleRoot, sha);
                             }
                             else if (line.Type == Models.TextDiffLineType.Deleted)
                             {
                                 var sha = line.Content.Substring("Subproject commit ".Length);
-                                submoduleDiff.Old = new Commands.QuerySingleCommit(submoduleRoot, sha).Result() ?? new Models.Commit() { SHA = sha };
+                                submoduleDiff.Old = QuerySubmoduleRevision(submoduleRoot, sha);
                             }
                         }
                         rs = submoduleDiff;
@@ -217,6 +217,22 @@ namespace SourceGit.ViewModels
             var stream = Commands.QueryFileContent.Run(repo, revision, file);
             var size = stream.Length;
             return size > 0 ? (new Bitmap(stream), size) : (null, size);
+        }
+
+        private Models.SubmoduleRevision QuerySubmoduleRevision(string repo, string sha)
+        {
+            var commit = new Commands.QuerySingleCommit(repo, sha).Result();
+            if (commit != null)
+            {
+                var body = new Commands.QueryCommitFullMessage(repo, sha).Result();
+                return new Models.SubmoduleRevision() { Commit = commit, FullMessage = body };
+            }
+
+            return new Models.SubmoduleRevision()
+            {
+                Commit = new Models.Commit() { SHA = sha },
+                FullMessage = string.Empty,
+            };
         }
 
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
