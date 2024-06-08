@@ -51,13 +51,13 @@ namespace SourceGit.Commands
                         break;
                     case 7:
                         _current.Subject = line;
+                        nextPartIdx = -1;
                         break;
                     default:
                         break;
                 }
 
                 nextPartIdx++;
-                if (nextPartIdx == 8) nextPartIdx = 0;
                 
                 start = end + 1;
                 end = rs.StdOut.IndexOf('\n', start);
