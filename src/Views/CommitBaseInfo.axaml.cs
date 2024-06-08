@@ -14,6 +14,15 @@ namespace SourceGit.Views
             get => GetValue(CanNavigateProperty);
             set => SetValue(CanNavigateProperty, value);
         }
+        
+        public static readonly StyledProperty<string> MessageProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, string>(nameof(Message), string.Empty);
+
+        public string Message
+        {
+            get => GetValue(MessageProperty);
+            set => SetValue(MessageProperty, value);
+        }
 
         public CommitBaseInfo()
         {

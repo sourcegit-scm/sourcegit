@@ -12,30 +12,12 @@ namespace SourceGit.Models
         public ulong AuthorTime { get; set; } = 0;
         public User Committer { get; set; } = User.Invalid;
         public ulong CommitterTime { get; set; } = 0;
-        public string Body { get; set; } = string.Empty;
+        public string Subject { get; set; } = string.Empty;
         public List<string> Parents { get; set; } = new List<string>();
         public List<Decorator> Decorators { get; set; } = new List<Decorator>();
         public bool HasDecorators => Decorators.Count > 0;
         public bool IsMerged { get; set; } = false;
         public Thickness Margin { get; set; } = new Thickness(0);
-
-        public string Subject
-        {
-            get
-            {
-                var end = Body.IndexOf("\r\n\r\n", StringComparison.Ordinal);
-                if (end == -1)
-                {
-                    end = Body.IndexOf("\n\n", StringComparison.Ordinal);
-                    if (end > 0)
-                        return Body.Substring(0, end).Replace("\n", "", StringComparison.Ordinal);
-
-                    return Body.Replace("\n", " ", StringComparison.Ordinal);
-                }
-
-                return Body.Substring(0, end).Replace("\r\n", " ", StringComparison.Ordinal);
-            }
-        }
 
         public string AuthorTimeStr => _utcStart.AddSeconds(AuthorTime).ToString("yyyy/MM/dd HH:mm:ss");
         public string CommitterTimeStr => _utcStart.AddSeconds(CommitterTime).ToString("yyyy/MM/dd HH:mm:ss");

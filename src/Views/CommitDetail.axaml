@@ -19,7 +19,7 @@
 
       <Grid RowDefinitions="Auto,1,*">
         <!-- Base Information -->
-        <v:CommitBaseInfo Grid.Row="0" Content="{Binding Commit}"/>
+        <v:CommitBaseInfo Grid.Row="0" Content="{Binding Commit}" Message="{Binding FullMessage}"/>
 
         <!-- Line -->
         <Rectangle Grid.Row="1" Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>

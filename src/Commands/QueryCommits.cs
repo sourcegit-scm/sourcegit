@@ -7,11 +7,9 @@ namespace SourceGit.Commands
     {
         public QueryCommits(string repo, string limits, bool needFindHead = true)
         {
-            _endOfBodyToken = $"----- END OF BODY {Guid.NewGuid()} -----";
-
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --no-show-signature --decorate=full --pretty=format:\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_endOfBodyToken}\" " + limits;
+            Args = $"log --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s " + limits;
             _findFirstMerged = needFindHead;
         }
 
@@ -24,7 +22,6 @@ namespace SourceGit.Commands
             var nextPartIdx = 0;
             var start = 0;
             var end = rs.StdOut.IndexOf('\n', start);
-            var max = rs.StdOut.Length;
             while (end > 0)
             {
                 var line = rs.StdOut.Substring(start, end - start);
@@ -51,24 +48,17 @@ namespace SourceGit.Commands
                         break;
                     case 6:
                         _current.CommitterTime = ulong.Parse(line);
-                        start = end + 1;
-                        end = rs.StdOut.IndexOf(_endOfBodyToken, start, StringComparison.Ordinal);
-                        if (end > 0)
-                        {
-                            if (end > start)
-                                _current.Body = rs.StdOut.Substring(start, end - start).TrimEnd();
-
-                            start = end + _endOfBodyToken.Length + 1;
-                            end = start >= max ? -1 : rs.StdOut.IndexOf('\n', start);
-                        }
-
-                        nextPartIdx = 0;
-                        continue;
+                        break;
+                    case 7:
+                        _current.Subject = line;
+                        break;
                     default:
                         break;
                 }
 
                 nextPartIdx++;
+                if (nextPartIdx == 8) nextPartIdx = 0;
+                
                 start = end + 1;
                 end = rs.StdOut.IndexOf('\n', start);
             }
@@ -157,7 +147,7 @@ namespace SourceGit.Commands
                 if (l.Type != r.Type)
                     return (int)l.Type - (int)r.Type;
                 else
-                    return l.Name.CompareTo(r.Name);
+                    return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
 
             if (_current.IsMerged && !_isHeadFounded)
@@ -187,7 +177,6 @@ namespace SourceGit.Commands
             }
         }
 
-        private string _endOfBodyToken = string.Empty;
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.Commit _current = null;
         private bool _findFirstMerged = false;

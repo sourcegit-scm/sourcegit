@@ -36,6 +36,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public string FullMessage
+        {
+            get => _fullMessage;
+            private set => SetProperty(ref _fullMessage, value);
+        }
+
         public List<Models.Change> Changes
         {
             get => _changes;
@@ -376,6 +382,7 @@ namespace SourceGit.ViewModels
         private void Refresh()
         {
             _changes = null;
+            FullMessage = string.Empty;
             VisibleChanges = null;
             SelectedChanges = null;
 
@@ -389,6 +396,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
+                var fullMessage = new Commands.QueryCommitFullMessage(_repo, _commit.SHA).Result();
                 var parent = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];
                 var cmdChanges = new Commands.CompareRevisions(_repo, parent, _commit.SHA) { Cancel = _cancelToken };
                 var changes = cmdChanges.Result();
@@ -407,6 +415,7 @@ namespace SourceGit.ViewModels
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
+                        FullMessage = fullMessage;
                         Changes = changes;
                         VisibleChanges = visible;
                     });
@@ -444,6 +453,7 @@ namespace SourceGit.ViewModels
         private string _repo = string.Empty;
         private int _activePageIndex = 0;
         private Models.Commit _commit = null;
+        private string _fullMessage = string.Empty;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;

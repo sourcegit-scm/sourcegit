@@ -93,16 +93,7 @@ namespace SourceGit.ViewModels
                         return;
                     }
 
-                    var head = new Commands.QuerySingleCommit(_repo.FullPath, currentBranch.Head).Result();
-                    if (head == null)
-                    {
-                        App.RaiseException(_repo.FullPath, "No commits to amend!!!");
-                        _useAmend = false;
-                        OnPropertyChanged();
-                        return;
-                    }
-
-                    CommitMessage = head.Body;
+                    CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, currentBranch.Head).Result();
                 }
 
                 OnPropertyChanged(nameof(IsCommitWithPushVisible));

@@ -10,7 +10,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"show --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B -s {sha}";
+            Args = $"show --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s -s {sha}";
         }
 
         public Models.Commit Result()
@@ -32,11 +32,7 @@ namespace SourceGit.Commands
                 commit.AuthorTime = ulong.Parse(lines[4]);
                 commit.Committer = Models.User.FindOrAdd(lines[5]);
                 commit.CommitterTime = ulong.Parse(lines[6]);
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 7; i < lines.Length; i++)
-                    builder.AppendLine(lines[i]);
-                commit.Body = builder.ToString().TrimEnd();
+                commit.Subject = lines[7];
 
                 return commit;
             }
@@ -105,7 +101,7 @@ namespace SourceGit.Commands
                 if (l.Type != r.Type)
                     return (int)l.Type - (int)r.Type;
                 else
-                    return l.Name.CompareTo(r.Name);
+                    return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
 
             return isHeadOfCurrent;
