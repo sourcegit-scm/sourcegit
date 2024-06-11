@@ -63,6 +63,9 @@ namespace SourceGit.Commands
                 end = rs.StdOut.IndexOf('\n', start);
             }
 
+            if (start < rs.StdOut.Length)
+                _current.Subject = rs.StdOut.Substring(start);
+
             if (_findFirstMerged && !_isHeadFounded && _commits.Count > 0)
                 MarkFirstMerged();
 
