@@ -188,6 +188,7 @@ namespace SourceGit.ViewModels
             }
 
             Pages = new AvaloniaList<LauncherPage> { ActivePage };
+            OnPropertyChanged(nameof(Pages));
             GC.Collect();
         }
 
