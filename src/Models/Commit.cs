@@ -13,7 +13,6 @@ namespace SourceGit.Models
         public User Committer { get; set; } = User.Invalid;
         public ulong CommitterTime { get; set; } = 0;
         public string Subject { get; set; } = string.Empty;
-        public string Message { get; set; } = string.Empty;
         public List<string> Parents { get; set; } = new List<string>();
         public List<Decorator> Decorators { get; set; } = new List<Decorator>();
         public bool HasDecorators => Decorators.Count > 0;
@@ -25,31 +24,8 @@ namespace SourceGit.Models
         public string AuthorTimeShortStr => _utcStart.AddSeconds(AuthorTime).ToString("yyyy/MM/dd");
         public string CommitterTimeShortStr => _utcStart.AddSeconds(CommitterTime).ToString("yyyy/MM/dd");
 
-        public bool IsCommitterVisible
-        {
-            get => Author != Committer || AuthorTime != CommitterTime;
-        }
-
-        public bool IsCurrentHead
-        {
-            get => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
-        }
-
-        public string FullMessage
-        {
-            get => string.IsNullOrWhiteSpace(Message) ? Subject : $"{Subject}\n\n{Message}";
-        }
-
-        public static void ParseUserAndTime(string data, ref User user, ref ulong time)
-        {
-            var userEndIdx = data.IndexOf('>', StringComparison.Ordinal);
-            if (userEndIdx < 0)
-                return;
-
-            var timeEndIdx = data.IndexOf(' ', userEndIdx + 2);
-            user = User.FindOrAdd(data.Substring(0, userEndIdx));
-            time = timeEndIdx < 0 ? 0 : ulong.Parse(data.Substring(userEndIdx + 2, timeEndIdx - userEndIdx - 2));
-        }
+        public bool IsCommitterVisible => Author != Committer || AuthorTime != CommitterTime;
+        public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
 
         private static readonly DateTime _utcStart = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
     }

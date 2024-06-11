@@ -42,23 +42,15 @@ namespace SourceGit.Models
 
         public void Select(IEnumerable<TModel> items)
         {
-            var sets = new HashSet<TModel>();
-            foreach (var item in items)
-                sets.Add(item);
-
             using (BatchUpdate())
             {
                 Clear();
 
-                int num = _source.Rows.Count;
-                for (int i = 0; i < num; ++i)
+                foreach (var selected in items)
                 {
-                    var m = _source.Rows[i].Model as TModel;
-                    if (m != null && sets.Contains(m))
-                    {
-                        var idx = _source.Rows.RowIndexToModelIndex(i);
+                    var idx = GetModelIndex(_source.Items, selected, IndexPath.Unselected);
+                    if (!idx.Equals(IndexPath.Unselected))
                         Select(idx);
-                    }
                 }
             }
         }
@@ -190,7 +182,7 @@ namespace SourceGit.Models
                     {
                         var focus = _source.Rows[row.RowIndex];
                         if (focus is IExpander expander && HasChildren(focus))
-                            expander.IsExpanded = !expander.IsExpanded;                            
+                            expander.IsExpanded = !expander.IsExpanded;
                         else
                             _rowDoubleTapped?.Invoke(this, e);
 
@@ -431,6 +423,30 @@ namespace SourceGit.Models
             return _childrenGetter?.Invoke(node);
         }
 
+        private IndexPath GetModelIndex(IEnumerable<TModel> collection, TModel model, IndexPath parent)
+        {
+            int i = 0;
+
+            foreach (var item in collection)
+            {
+                var index = parent.Append(i);
+                if (item != null && item == model)
+                    return index;
+
+                var children = GetChildren(item);
+                if (children != null)
+                {
+                    var findInChildren = GetModelIndex(children, model, index);
+                    if (!findInChildren.Equals(IndexPath.Unselected))
+                        return findInChildren;
+                }
+
+                i++;
+            }
+
+            return IndexPath.Unselected;
+        }
+
         private bool HasChildren(IRow row)
         {
             var children = GetChildren(row.Model as TModel);
@@ -439,7 +455,7 @@ namespace SourceGit.Models
                 foreach (var c in children)
                     return true;
             }
-            
+
             return false;
         }
     }

@@ -52,12 +52,12 @@ namespace SourceGit.Commands
             var refName = parts[0];
             if (refName.EndsWith("/HEAD", StringComparison.Ordinal))
                 return;
-            
+
             if (refName.StartsWith(PREFIX_DETACHED, StringComparison.Ordinal))
             {
                 branch.IsHead = true;
             }
-            
+
             if (refName.StartsWith(PREFIX_LOCAL, StringComparison.Ordinal))
             {
                 branch.Name = refName.Substring(PREFIX_LOCAL.Length);

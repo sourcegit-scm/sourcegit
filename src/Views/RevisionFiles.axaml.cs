@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -11,10 +15,155 @@ using Avalonia.Styling;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
-using AvaloniaEdit.TextMate;
 
 namespace SourceGit.Views
 {
+    public class RevisionFileTreeNode
+    {
+        public Models.Object Backend { get; set; } = null;
+        public bool IsExpanded { get; set; } = false;
+        public List<RevisionFileTreeNode> Children { get; set; } = new List<RevisionFileTreeNode>();
+
+        public bool IsFolder => Backend != null && Backend.Type == Models.ObjectType.Tree;
+        public string Name => Backend != null ? Path.GetFileName(Backend.Path) : string.Empty;
+    }
+
+    public class RevisionFileTreeView : UserControl
+    {
+        public static readonly StyledProperty<string> RevisionProperty =
+            AvaloniaProperty.Register<RevisionFileTreeView, string>(nameof(Revision), null);
+
+        public string Revision
+        {
+            get => GetValue(RevisionProperty);
+            set => SetValue(RevisionProperty, value);
+        }
+
+        public Models.Object SelectedObject
+        {
+            get;
+            private set;
+        } = null;
+
+        protected override Type StyleKeyOverride => typeof(UserControl);
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == RevisionProperty)
+            {
+                SelectedObject = null;
+
+                if (Content is TreeDataGrid tree && tree.Source is IDisposable disposable)
+                    disposable.Dispose();
+
+                var vm = DataContext as ViewModels.CommitDetail;
+                if (vm == null)
+                {
+                    Content = null;
+                    GC.Collect();
+                    return;
+                }
+
+                var objects = vm.GetRevisionFilesUnderFolder(null);
+                if (objects == null || objects.Count == 0)
+                {
+                    Content = null;
+                    GC.Collect();
+                    return;
+                }
+
+                var toplevelObjects = new List<RevisionFileTreeNode>();
+                foreach (var obj in objects)
+                    toplevelObjects.Add(new RevisionFileTreeNode() { Backend = obj });
+
+                toplevelObjects.Sort((l, r) =>
+                {
+                    if (l.IsFolder == r.IsFolder)
+                        return l.Name.CompareTo(r.Name);
+                    return l.IsFolder ? -1 : 1;
+                });
+
+                var template = this.FindResource("RevisionFileTreeNodeTemplate") as IDataTemplate;
+                var source = new HierarchicalTreeDataGridSource<RevisionFileTreeNode>(toplevelObjects)
+                {
+                    Columns =
+                    {
+                        new HierarchicalExpanderColumn<RevisionFileTreeNode>(
+                            new TemplateColumn<RevisionFileTreeNode>(null, template, null, GridLength.Auto),
+                            GetChildrenOfTreeNode,
+                            x => x.IsFolder,
+                            x => x.IsExpanded)
+                    }
+                };
+
+                var selection = new Models.TreeDataGridSelectionModel<RevisionFileTreeNode>(source, GetChildrenOfTreeNode);
+                selection.SingleSelect = true;
+                selection.SelectionChanged += (s, _) =>
+                {
+                    if (s is Models.TreeDataGridSelectionModel<RevisionFileTreeNode> model)
+                    {
+                        var node = model.SelectedItem;
+                        var detail = DataContext as ViewModels.CommitDetail;
+
+                        if (node != null && !node.IsFolder)
+                        {
+                            SelectedObject = node.Backend;
+                            detail.ViewRevisionFile(node.Backend);
+                        }
+                        else
+                        {
+                            SelectedObject = null;
+                            detail.ViewRevisionFile(null);
+                        }                            
+                    }
+                };
+
+                source.Selection = selection;
+                Content = new TreeDataGrid()
+                {
+                    AutoDragDropRows = false,
+                    ShowColumnHeaders = false,
+                    CanUserResizeColumns = false,
+                    CanUserSortColumns = false,
+                    Source = source,
+                };
+
+                GC.Collect();
+            }
+        }
+
+        private List<RevisionFileTreeNode> GetChildrenOfTreeNode(RevisionFileTreeNode node)
+        {
+            if (!node.IsFolder)
+                return null;
+
+            if (node.Children.Count > 0)
+                return node.Children;
+
+            var vm = DataContext as ViewModels.CommitDetail;
+            if (vm == null)
+                return null;
+
+            var objects = vm.GetRevisionFilesUnderFolder(node.Backend.Path + "/");
+            if (objects == null || objects.Count == 0)
+                return null;
+
+            foreach (var obj in objects)
+                node.Children.Add(new RevisionFileTreeNode() { Backend = obj });
+
+            node.Children.Sort((l, r) =>
+            {
+                if (l.IsFolder == r.IsFolder)
+                    return l.Name.CompareTo(r.Name);
+                return l.IsFolder ? -1 : 1;
+            });
+
+            return node.Children;
+        }
+    }
+
     public class RevisionImageFileView : Control
     {
         public static readonly StyledProperty<Bitmap> SourceProperty =
@@ -59,9 +208,7 @@ namespace SourceGit.Views
 
             var source = Source;
             if (source != null)
-            {
                 context.DrawImage(source, new Rect(source.Size), new Rect(8, 8, Bounds.Width - 16, Bounds.Height - 16));
-            }
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -79,9 +226,7 @@ namespace SourceGit.Views
         {
             var source = Source;
             if (source == null)
-            {
                 return availableSize;
-            }
 
             var w = availableSize.Width - 16;
             var h = availableSize.Height - 16;
@@ -89,13 +234,9 @@ namespace SourceGit.Views
             if (size.Width <= w)
             {
                 if (size.Height <= h)
-                {
                     return new Size(size.Width + 16, size.Height + 16);
-                }
                 else
-                {
                     return new Size(h * size.Width / size.Height + 16, availableSize.Height);
-                }
             }
             else
             {
@@ -130,12 +271,6 @@ namespace SourceGit.Views
             base.OnLoaded(e);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-
-            _textMate = Models.TextMateHelper.CreateForEditor(this);
-            if (DataContext is Models.RevisionTextFile source)
-            {
-                Models.TextMateHelper.SetGrammarByFileName(_textMate, source.FileName);
-            }
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -143,13 +278,6 @@ namespace SourceGit.Views
             base.OnUnloaded(e);
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-
-            if (_textMate != null)
-            {
-                _textMate.Dispose();
-                _textMate = null;
-            }
-
             GC.Collect();
         }
 
@@ -159,20 +287,9 @@ namespace SourceGit.Views
 
             var source = DataContext as Models.RevisionTextFile;
             if (source != null)
-            {
                 Text = source.Content;
-                Models.TextMateHelper.SetGrammarByFileName(_textMate, source.FileName);
-            }
-        }
-
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
-            {
-                Models.TextMateHelper.SetThemeByApp(_textMate);
-            }
+            else
+                Text = string.Empty;
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -202,8 +319,6 @@ namespace SourceGit.Views
             TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
         }
-
-        private TextMate.Installation _textMate = null;
     }
 
     public partial class RevisionFiles : UserControl
@@ -213,15 +328,14 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnFileContextRequested(object sender, ContextRequestedEventArgs e)
+        private void OnRevisionFileTreeViewContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail vm && sender is TreeDataGrid tree)
+            if (DataContext is ViewModels.CommitDetail vm && sender is RevisionFileTreeView view)
             {
-                var selected = tree.RowSelection.SelectedItem as Models.FileTreeNode;
-                if (selected != null && !selected.IsFolder && selected.Backend is Models.Object obj)
+                if (view.SelectedObject != null && view.SelectedObject.Type != Models.ObjectType.Tree)
                 {
-                    var menu = vm.CreateRevisionFileContextMenu(obj);
-                    tree.OpenContextMenu(menu);
+                    var menu = vm.CreateRevisionFileContextMenu(view.SelectedObject);
+                    view.OpenContextMenu(menu);
                 }
             }
 

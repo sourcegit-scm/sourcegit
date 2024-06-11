@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 
 namespace SourceGit.Models
 {
@@ -27,8 +28,8 @@ namespace SourceGit.Models
         {
             return _caches.GetOrAdd(data, key =>
             {
-                var nameEndIdx = key.IndexOf('<', System.StringComparison.Ordinal);
-                var name = nameEndIdx >= 2 ? key.Substring(0, nameEndIdx - 1) : string.Empty;
+                var nameEndIdx = key.IndexOf('±', StringComparison.Ordinal);
+                var name = nameEndIdx > 0 ? key.Substring(0, nameEndIdx) : string.Empty;
                 var email = key.Substring(nameEndIdx + 1);
 
                 return new User() { Name = name, Email = email };

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -90,7 +88,7 @@ namespace SourceGit.Views
                 ViewModels.BranchTreeNode prev = null;
                 foreach (var node in repo.LocalBranchTrees)
                     node.UpdateCornerRadius(ref prev);
-                
+
                 if (tree.SelectedItems.Count == 1)
                 {
                     var node = tree.SelectedItem as ViewModels.BranchTreeNode;
@@ -306,25 +304,11 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void UpdateSubmodules(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-            {
-                repo.SetWatcherEnabled(false);
-                iconSubmoduleUpdate.Classes.Add("rotating");
-                await Task.Run(() => new Commands.Submodule(repo.FullPath).Update());
-                iconSubmoduleUpdate.Classes.Remove("rotating");
-                repo.SetWatcherEnabled(true);
-            }
-
-            e.Handled = true;
-        }
-        
         private void CollectBranchesFromNode(List<Models.Branch> outs, ViewModels.BranchTreeNode node)
         {
             if (node == null || node.IsRemote)
                 return;
-            
+
             if (node.IsFolder)
             {
                 foreach (var child in node.Children)

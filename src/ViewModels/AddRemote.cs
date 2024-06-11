@@ -79,11 +79,8 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateSSHKey(string sshkey, ValidationContext ctx)
         {
-            if (ctx.ObjectInstance is AddRemote add && add._useSSH)
+            if (ctx.ObjectInstance is AddRemote { _useSSH: true } && !string.IsNullOrEmpty(sshkey))
             {
-                if (string.IsNullOrEmpty(sshkey))
-                    return new ValidationResult("SSH private key is required");
-
                 if (!File.Exists(sshkey))
                     return new ValidationResult("Given SSH private key can NOT be found!");
             }
@@ -102,10 +99,8 @@ namespace SourceGit.ViewModels
                 if (succ)
                 {
                     SetProgressDescription("Fetching from added remote ...");
-                    new Commands.Fetch(_repo.FullPath, _name, true, SetProgressDescription).Exec();
-
-                    SetProgressDescription("Post processing ...");
                     new Commands.Config(_repo.FullPath).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+                    new Commands.Fetch(_repo.FullPath, _name, true, SetProgressDescription).Exec();
                 }
                 CallUIThread(() =>
                 {

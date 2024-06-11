@@ -9,6 +9,101 @@ using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
+    public class ChangeTreeNode
+    {
+        public string FullPath { get; set; } = string.Empty;
+        public bool IsFolder { get; set; } = false;
+        public bool IsExpanded { get; set; } = false;
+        public Models.Change Change { get; set; } = null;
+        public List<ChangeTreeNode> Children { get; set; } = new List<ChangeTreeNode>();
+
+        public static List<ChangeTreeNode> Build(IList<Models.Change> changes, bool expanded)
+        {
+            var nodes = new List<ChangeTreeNode>();
+            var folders = new Dictionary<string, ChangeTreeNode>();
+
+            foreach (var c in changes)
+            {
+                var sepIdx = c.Path.IndexOf('/', StringComparison.Ordinal);
+                if (sepIdx == -1)
+                {
+                    nodes.Add(new ChangeTreeNode()
+                    {
+                        FullPath = c.Path,
+                        Change = c,
+                        IsFolder = false,
+                        IsExpanded = false
+                    });
+                }
+                else
+                {
+                    ChangeTreeNode lastFolder = null;
+                    var start = 0;
+
+                    while (sepIdx != -1)
+                    {
+                        var folder = c.Path.Substring(0, sepIdx);
+                        if (folders.TryGetValue(folder, out var value))
+                        {
+                            lastFolder = value;
+                        }
+                        else if (lastFolder == null)
+                        {
+                            lastFolder = new ChangeTreeNode()
+                            {
+                                FullPath = folder,
+                                IsFolder = true,
+                                IsExpanded = expanded
+                            };
+                            folders.Add(folder, lastFolder);
+                            InsertFolder(nodes, lastFolder);
+                        }
+                        else
+                        {
+                            var cur = new ChangeTreeNode()
+                            {
+                                FullPath = folder,
+                                IsFolder = true,
+                                IsExpanded = expanded
+                            };
+                            folders.Add(folder, cur);
+                            InsertFolder(lastFolder.Children, cur);
+                            lastFolder = cur;
+                        }
+
+                        start = sepIdx + 1;
+                        sepIdx = c.Path.IndexOf('/', start);
+                    }
+
+                    lastFolder.Children.Add(new ChangeTreeNode()
+                    {
+                        FullPath = c.Path,
+                        Change = c,
+                        IsFolder = false,
+                        IsExpanded = false
+                    });
+                }
+            }
+
+            folders.Clear();
+            return nodes;
+        }
+
+        private static void InsertFolder(List<ChangeTreeNode> collection, ChangeTreeNode subFolder)
+        {
+            for (int i = 0; i < collection.Count; i++)
+            {
+                if (!collection[i].IsFolder)
+                {
+                    collection.Insert(i, subFolder);
+                    return;
+                }
+            }
+
+            collection.Add(subFolder);
+        }
+    }
+
     public partial class ChangeCollectionView : UserControl
     {
         public static readonly StyledProperty<bool> IsWorkingCopyChangeProperty =
@@ -81,44 +176,42 @@ namespace SourceGit.Views
         {
             if (Content is TreeDataGrid tree && tree.Source is IDisposable disposable)
                 disposable.Dispose();
-            
+
             Content = null;
 
             var changes = Changes;
-            if (changes == null)
+            if (changes == null || changes.Count == 0)
                 return;
 
             var viewMode = ViewMode;
             if (viewMode == Models.ChangeViewMode.Tree)
             {
-                var filetree = Models.FileTreeNode.Build(changes, true);
+                var filetree = ChangeTreeNode.Build(changes, true);
                 var template = this.FindResource("TreeModeTemplate") as IDataTemplate;
-                var source = new HierarchicalTreeDataGridSource<Models.FileTreeNode>(filetree)
+                var source = new HierarchicalTreeDataGridSource<ChangeTreeNode>(filetree)
                 {
                     Columns =
                     {
-                        new HierarchicalExpanderColumn<Models.FileTreeNode>(
-                            new TemplateColumn<Models.FileTreeNode>(null, template, null, GridLength.Auto),
+                        new HierarchicalExpanderColumn<ChangeTreeNode>(
+                            new TemplateColumn<ChangeTreeNode>(null, template, null, GridLength.Auto),
                             x => x.Children,
                             x => x.Children.Count > 0,
                             x => x.IsExpanded)
                     }
                 };
 
-                var selection = new Models.TreeDataGridSelectionModel<Models.FileTreeNode>(source, x => x.Children);
+                var selection = new Models.TreeDataGridSelectionModel<ChangeTreeNode>(source, x => x.Children);
                 selection.SingleSelect = SingleSelect;
                 selection.RowDoubleTapped += (_, e) => RaiseEvent(new RoutedEventArgs(ChangeDoubleTappedEvent));
                 selection.SelectionChanged += (s, _) =>
                 {
-                    if (!_isSelecting && s is Models.TreeDataGridSelectionModel<Models.FileTreeNode> model)
+                    if (!_isSelecting && s is Models.TreeDataGridSelectionModel<ChangeTreeNode> model)
                     {
                         var selected = new List<Models.Change>();
                         foreach (var c in model.SelectedItems)
                             CollectChangesInNode(selected, c);
 
-                        _isSelecting = true;
-                        SetCurrentValue(SelectedChangesProperty, selected);
-                        _isSelecting = false;
+                        TrySetSelected(selected);
                     }
                 };
 
@@ -144,9 +237,7 @@ namespace SourceGit.Views
                         foreach (var c in model.SelectedItems)
                             selected.Add(c);
 
-                        _isSelecting = true;
-                        SetCurrentValue(SelectedChangesProperty, selected);
-                        _isSelecting = false;
+                        TrySetSelected(selected);
                     }
                 };
 
@@ -172,9 +263,7 @@ namespace SourceGit.Views
                         foreach (var c in model.SelectedItems)
                             selected.Add(c);
 
-                        _isSelecting = true;
-                        SetCurrentValue(SelectedChangesProperty, selected);
-                        _isSelecting = false;
+                        TrySetSelected(selected);
                     }
                 };
 
@@ -201,7 +290,7 @@ namespace SourceGit.Views
                 else
                     changeSelection.Select(selected);
             }
-            else if (tree.Source.Selection is Models.TreeDataGridSelectionModel<Models.FileTreeNode> treeSelection)
+            else if (tree.Source.Selection is Models.TreeDataGridSelectionModel<ChangeTreeNode> treeSelection)
             {
                 if (selected == null || selected.Count == 0)
                 {
@@ -214,9 +303,9 @@ namespace SourceGit.Views
                 foreach (var c in selected)
                     set.Add(c);
 
-                var nodes = new List<Models.FileTreeNode>();
+                var nodes = new List<ChangeTreeNode>();
                 foreach (var node in tree.Source.Items)
-                    CollectSelectedNodeByChange(nodes, node as Models.FileTreeNode, set);
+                    CollectSelectedNodeByChange(nodes, node as ChangeTreeNode, set);
 
                 if (nodes.Count == 0)
                     treeSelection.Clear();
@@ -238,22 +327,20 @@ namespace SourceGit.Views
             };
         }
 
-        private void CollectChangesInNode(List<Models.Change> outs, Models.FileTreeNode node)
+        private void CollectChangesInNode(List<Models.Change> outs, ChangeTreeNode node)
         {
             if (node.IsFolder)
             {
                 foreach (var child in node.Children)
                     CollectChangesInNode(outs, child);
             }
-            else
+            else if (!outs.Contains(node.Change))
             {
-                var change = node.Backend as Models.Change;
-                if (change != null && !outs.Contains(change))
-                    outs.Add(change);
+                outs.Add(node.Change);
             }
         }
 
-        private void CollectSelectedNodeByChange(List<Models.FileTreeNode> outs, Models.FileTreeNode node, HashSet<object> selected)
+        private void CollectSelectedNodeByChange(List<ChangeTreeNode> outs, ChangeTreeNode node, HashSet<object> selected)
         {
             if (node == null)
                 return;
@@ -263,10 +350,38 @@ namespace SourceGit.Views
                 foreach (var child in node.Children)
                     CollectSelectedNodeByChange(outs, child, selected);
             }
-            else if (node.Backend != null && selected.Contains(node.Backend))
+            else if (node.Change != null && selected.Contains(node.Change))
             {
                 outs.Add(node);
             }
+        }
+
+        private void TrySetSelected(List<Models.Change> changes)
+        {
+            var old = SelectedChanges;
+
+            if (old == null && changes.Count == 0)
+                return;
+
+            if (old != null && old.Count == changes.Count)
+            {
+                bool allEquals = true;
+                foreach (var c in old)
+                {
+                    if (!changes.Contains(c))
+                    {
+                        allEquals = false;
+                        break;
+                    }
+                }
+
+                if (allEquals)
+                    return;
+            }
+
+            _isSelecting = true;
+            SetCurrentValue(SelectedChangesProperty, changes);
+            _isSelecting = false;
         }
 
         private bool _isSelecting = false;

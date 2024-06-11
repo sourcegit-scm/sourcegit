@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Avalonia;
 using Avalonia.Media.Imaging;
 
 namespace SourceGit.Models
@@ -62,6 +63,7 @@ namespace SourceGit.Models
     {
         public string File { get; set; } = string.Empty;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
+        public Vector SyncScrollOffset { get; set; } = Vector.Zero;
         public int MaxLineNumber = 0;
 
         public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
@@ -568,8 +570,11 @@ namespace SourceGit.Models
         public Bitmap Old { get; set; } = null;
         public Bitmap New { get; set; } = null;
 
-        public string OldSize => Old != null ? $"{Old.PixelSize.Width} x {Old.PixelSize.Height}" : "0 x 0";
-        public string NewSize => New != null ? $"{New.PixelSize.Width} x {New.PixelSize.Height}" : "0 x 0";
+        public long OldFileSize { get; set; } = 0;
+        public long NewFileSize { get; set; } = 0;
+
+        public string OldImageSize => Old != null ? $"{Old.PixelSize.Width} x {Old.PixelSize.Height}" : "0 x 0";
+        public string NewImageSize => New != null ? $"{New.PixelSize.Width} x {New.PixelSize.Height}" : "0 x 0";
     }
 
     public class NoOrEOLChange
@@ -582,10 +587,16 @@ namespace SourceGit.Models
         public string New { get; set; } = string.Empty;
     }
 
+    public class SubmoduleRevision
+    {
+        public Commit Commit { get; set; } = null;
+        public string FullMessage { get; set; } = string.Empty;
+    }
+
     public class SubmoduleDiff
     {
-        public Commit Old { get; set; } = null;
-        public Commit New { get; set; } = null;
+        public SubmoduleRevision Old { get; set; } = null;
+        public SubmoduleRevision New { get; set; } = null;
     }
 
     public class DiffResult

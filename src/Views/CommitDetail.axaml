@@ -19,7 +19,7 @@
 
       <Grid RowDefinitions="Auto,1,*">
         <!-- Base Information -->
-        <v:CommitBaseInfo Grid.Row="0" Content="{Binding Commit}"/>
+        <v:CommitBaseInfo Grid.Row="0" Content="{Binding Commit}" Message="{Binding FullMessage}"/>
 
         <!-- Line -->
         <Rectangle Grid.Row="1" Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
@@ -36,16 +36,25 @@
                   HeadersVisibility="None"
                   Focusable="False"
                   RowHeight="26"
-                  Margin="80,0,8,16"
+                  Margin="64,0,8,16"
                   HorizontalScrollBarVisibility="Disabled"
                   VerticalScrollBarVisibility="Auto"
                   ContextRequested="OnChangeListContextRequested"
                   DoubleTapped="OnChangeListDoubleTapped">
+          <DataGrid.Styles>
+            <Style Selector="DataGridRow">
+              <Setter Property="CornerRadius" Value="4"/>
+            </Style>
+            <Style Selector="DataGridRow /template/ Border#RowBorder">
+              <Setter Property="ClipToBounds" Value="True"/>
+            </Style>
+          </DataGrid.Styles>
+          
           <DataGrid.Columns>
-            <DataGridTemplateColumn Header="ICON">
+            <DataGridTemplateColumn Width="36" Header="ICON">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
-                  <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
+                  <v:ChangeStatusIcon Width="14" Height="14" HorizontalAlignment="Left" Margin="16,0,0,0" IsWorkingCopyChange="False" Change="{Binding}"/>
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
@@ -56,12 +55,6 @@ namespace SourceGit.ViewModels
         {
             get => _content;
             private set => SetProperty(ref _content, value);
-        }
-
-        public Vector SyncScrollOffset
-        {
-            get => _syncScrollOffset;
-            set => SetProperty(ref _syncScrollOffset, value);
         }
 
         public int Unified
@@ -129,7 +122,7 @@ namespace SourceGit.ViewModels
                 if (latest.TextDiff != null)
                 {
                     var repo = Preference.FindRepository(_repo);
-                    if (repo != null && repo.Submodules.Contains(_option.Path)) 
+                    if (repo != null && repo.Submodules.Contains(_option.Path))
                     {
                         var submoduleDiff = new Models.SubmoduleDiff();
                         var submoduleRoot = $"{_repo}/{_option.Path}".Replace("\\", "/");
@@ -138,12 +131,12 @@ namespace SourceGit.ViewModels
                             if (line.Type == Models.TextDiffLineType.Added)
                             {
                                 var sha = line.Content.Substring("Subproject commit ".Length);
-                                submoduleDiff.New = new Commands.QuerySingleCommit(submoduleRoot, sha).Result();
+                                submoduleDiff.New = QuerySubmoduleRevision(submoduleRoot, sha);
                             }
                             else if (line.Type == Models.TextDiffLineType.Deleted)
                             {
                                 var sha = line.Content.Substring("Subproject commit ".Length);
-                                submoduleDiff.Old = new Commands.QuerySingleCommit(submoduleRoot, sha).Result();
+                                submoduleDiff.Old = QuerySubmoduleRevision(submoduleRoot, sha);
                             }
                         }
                         rs = submoduleDiff;
@@ -164,14 +157,19 @@ namespace SourceGit.ViewModels
                         var imgDiff = new Models.ImageDiff();
                         if (_option.Revisions.Count == 2)
                         {
-                            imgDiff.Old = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
-                            imgDiff.New = BitmapFromRevisionFile(_repo, _option.Revisions[1], oldPath);
+                            (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
+                            (imgDiff.New, imgDiff.NewFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[1], oldPath);
                         }
                         else
                         {
                             var fullPath = Path.Combine(_repo, _option.Path);
-                            imgDiff.Old = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
-                            imgDiff.New = File.Exists(fullPath) ? new Bitmap(fullPath) : null;
+                            (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
+
+                            if (File.Exists(fullPath))
+                            {
+                                imgDiff.New = new Bitmap(fullPath);
+                                imgDiff.NewFileSize = new FileInfo(fullPath).Length;
+                            }
                         }
                         rs = imgDiff;
                     }
@@ -203,6 +201,9 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    if (_content is Models.TextDiff old && rs is Models.TextDiff cur && old.File == cur.File)
+                        cur.SyncScrollOffset = old.SyncScrollOffset;
+
                     FileModeChange = latest.FileModeChange;
                     Content = rs;
                     IsTextDiff = rs is Models.TextDiff;
@@ -211,10 +212,27 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private Bitmap BitmapFromRevisionFile(string repo, string revision, string file)
+        private (Bitmap, long) BitmapFromRevisionFile(string repo, string revision, string file)
         {
             var stream = Commands.QueryFileContent.Run(repo, revision, file);
-            return stream.Length > 0 ? new Bitmap(stream) : null;
+            var size = stream.Length;
+            return size > 0 ? (new Bitmap(stream), size) : (null, size);
+        }
+
+        private Models.SubmoduleRevision QuerySubmoduleRevision(string repo, string sha)
+        {
+            var commit = new Commands.QuerySingleCommit(repo, sha).Result();
+            if (commit != null)
+            {
+                var body = new Commands.QueryCommitFullMessage(repo, sha).Result();
+                return new Models.SubmoduleRevision() { Commit = commit, FullMessage = body };
+            }
+
+            return new Models.SubmoduleRevision()
+            {
+                Commit = new Models.Commit() { SHA = sha },
+                FullMessage = string.Empty,
+            };
         }
 
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
@@ -229,7 +247,6 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private bool _isTextDiff = false;
         private object _content = null;
-        private Vector _syncScrollOffset = Vector.Zero;
         private int _unified = 4;
     }
 }

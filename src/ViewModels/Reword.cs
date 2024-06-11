@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -21,14 +22,16 @@ namespace SourceGit.ViewModels
         public Reword(Repository repo, Models.Commit head)
         {
             _repo = repo;
+            _oldMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).Result();
+            _message = _oldMessage;
+            
             Head = head;
-            Message = head.FullMessage;
             View = new Views.Reword() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
-            if (_message == Head.FullMessage)
+            if (string.Compare(_message, _oldMessage, StringComparison.Ordinal) == 0)
                 return null;
 
             _repo.SetWatcherEnabled(false);
@@ -44,5 +47,6 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private string _message = string.Empty;
+        private string _oldMessage = string.Empty;
     }
 }

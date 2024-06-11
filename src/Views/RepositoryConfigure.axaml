@@ -14,7 +14,7 @@
                Classes="bold"
                Text="{DynamicResource Text.Configure}"/>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="150,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -47,40 +47,20 @@
                Text="{Binding HttpProxy, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="3" Grid.Column="0"
-                 Text="{DynamicResource Text.Preference.GPG.Format}"
-                 HorizontalAlignment="Right"
-                 Margin="0,0,16,0"/>
-      <ComboBox Grid.Row="3" Grid.Column="1"
-                MinHeight="28"
-                Padding="8,0"
-                HorizontalAlignment="Stretch"
-                ItemsSource="{Binding Source={x:Static m:GPGFormat.Supported}}"
-                SelectedItem="{Binding GPGFormat, Mode=TwoWay, FallbackValue={x:Static m:GPGFormat.OPENPGP}}">
-        <ComboBox.ItemTemplate>
-          <DataTemplate x:DataType="{x:Type m:GPGFormat}">
-            <Grid ColumnDefinitions="Auto,*">
-              <TextBlock Grid.Column="0" Text="{Binding Name}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Desc}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
-            </Grid>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
-
-      <TextBlock Grid.Row="4" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Preference.GPG.UserKey}"/>
-      <TextBox Grid.Row="4" Grid.Column="1"
+      <TextBox Grid.Row="3" Grid.Column="1"
                Height="28"
                CornerRadius="3"
                Watermark="{DynamicResource Text.Preference.GPG.UserKey.Placeholder}"
                Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
 
-      <CheckBox Grid.Row="5" Grid.Column="1"
+      <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.Preference.GPG.CommitEnabled}"
                 IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
 
-      <CheckBox Grid.Row="6" Grid.Column="1"
+      <CheckBox Grid.Row="5" Grid.Column="1"
                 Content="{DynamicResource Text.Preference.GPG.TagEnabled}"
                 IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
     </Grid>

@@ -16,7 +16,7 @@ namespace SourceGit.Views
             {
                 var datagrid = sender as DataGrid;
                 detail.ActivePageIndex = 1;
-                detail.SelectedChanges = new () { datagrid.SelectedItem as Models.Change };
+                detail.SelectedChanges = new() { datagrid.SelectedItem as Models.Change };
             }
 
             e.Handled = true;

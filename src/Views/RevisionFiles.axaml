@@ -17,48 +17,20 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <Grid Grid.Column="0" RowDefinitions="26,*">
-      <!-- Search -->
-      <TextBox Grid.Row="0"
-               Height="26"
-               BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
-               Background="Transparent"
-               CornerRadius="4"
-               Watermark="{DynamicResource Text.CommitDetail.Files.Search}"
-               Text="{Binding SearchFileFilter, Mode=TwoWay}">
-        <TextBox.InnerLeftContent>
-          <Path Width="14" Height="14" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
-        </TextBox.InnerLeftContent>
-
-        <TextBox.InnerRightContent>
-          <Button Classes="icon_button"
-                  IsVisible="{Binding SearchFileFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                  Command="{Binding ClearSearchFileFilter}">
-            <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
-          </Button>
-        </TextBox.InnerRightContent>
-      </TextBox>
-      
-      <!-- File Tree -->
-      <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
-        <TreeDataGrid AutoDragDropRows="False" 
-                      ShowColumnHeaders="False" 
-                      CanUserResizeColumns="False" 
-                      CanUserSortColumns="False"
-                      Source="{Binding RevisionFiles}"
-                      ContextRequested="OnFileContextRequested">
-          <TreeDataGrid.Resources>
-            <DataTemplate x:Key="FileTreeNodeExpanderTemplate" DataType="m:FileTreeNode">
-              <Grid HorizontalAlignment="Stretch" Height="24" ColumnDefinitions="Auto,*">
-                <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
-                <Path Grid.Column="0" Width="14" Height="14" IsVisible="{Binding !IsFolder}" Data="{StaticResource Icons.File}" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
-              </Grid>
-            </DataTemplate>
-          </TreeDataGrid.Resources>
-        </TreeDataGrid>
-      </Border>
-    </Grid>
+    <!-- File Tree -->
+    <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
+      <v:RevisionFileTreeView Revision="{Binding Commit.SHA}" ContextRequested="OnRevisionFileTreeViewContextRequested">
+        <v:RevisionFileTreeView.Resources>
+          <DataTemplate x:Key="RevisionFileTreeNodeTemplate" DataType="v:RevisionFileTreeNode">
+            <Grid HorizontalAlignment="Stretch" Height="24" ColumnDefinitions="Auto,*">
+              <Path Grid.Column="0" Classes="folder_icon" Width="14" Height="14" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" Fill="Goldenrod" VerticalAlignment="Center"/>
+              <Path Grid.Column="0" Width="14" Height="14" IsVisible="{Binding !IsFolder}" Data="{StaticResource Icons.File}" VerticalAlignment="Center"/>
+              <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Name}" Margin="6,0,0,0"/>
+            </Grid>
+          </DataTemplate>
+        </v:RevisionFileTreeView.Resources>
+      </v:RevisionFileTreeView>
+    </Border>
 
     <GridSplitter Grid.Column="1"
                   MinWidth="1"

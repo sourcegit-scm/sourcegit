@@ -1,0 +1,500 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="en_US.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+  <x:String x:Key="Text.About" xml:space="preserve">關於軟體</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">關於本軟體</x:String>
+  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• 專案依賴於 </x:String>
+  <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
+  <x:String x:Key="Text.About.Editor" xml:space="preserve">• 文字編輯器使用 </x:String>
+  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• 等寬字型來自於 </x:String>
+  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• 專案原始碼地址 </x:String>
+  <x:String x:Key="Text.About.SubTitle" xml:space="preserve">開源免費的Git客戶端</x:String>
+  <x:String x:Key="Text.Apply" xml:space="preserve">應用補丁(apply)</x:String>
+  <x:String x:Key="Text.Apply.Error" xml:space="preserve">錯誤</x:String>
+  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">輸出錯誤，並終止應用補丁</x:String>
+  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">更多錯誤</x:String>
+  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">與【錯誤】級別相似，但輸出內容更多</x:String>
+  <x:String x:Key="Text.Apply.File" xml:space="preserve">補丁檔案 ：</x:String>
+  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">選擇補丁檔案</x:String>
+  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符號</x:String>
+  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">忽略</x:String>
+  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">關閉所有警告</x:String>
+  <x:String x:Key="Text.Apply.Title" xml:space="preserve">應用補丁</x:String>
+  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">警告</x:String>
+  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">應用補丁，輸出關於空白符的警告</x:String>
+  <x:String x:Key="Text.Apply.WS" xml:space="preserve">空白符號處理 ：</x:String>
+  <x:String x:Key="Text.Archive" xml:space="preserve">存檔(archive) ...</x:String>
+  <x:String x:Key="Text.Archive.File" xml:space="preserve">存檔檔案路徑：</x:String>
+  <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">選擇存檔檔案的存放路徑</x:String>
+  <x:String x:Key="Text.Archive.Revision" xml:space="preserve">指定的提交：</x:String>
+  <x:String x:Key="Text.Archive.Title" xml:space="preserve">存檔</x:String>
+  <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">不跟蹤更改的檔案</x:String>
+  <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">沒有不跟蹤更改的檔案</x:String>
+  <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">移除</x:String>
+  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">二進位制檔案不支援該操作!!!</x:String>
+  <x:String x:Key="Text.Blame" xml:space="preserve">逐行追溯(blame)</x:String>
+  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">選中檔案不支援該操作!!!</x:String>
+  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">檢出(checkout)${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">與當前HEAD比較</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">與本地工作樹比較</x:String>
+  <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">複製分支名</x:String>
+  <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">刪除${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">刪除選中的 {0} 個分支</x:String>
+  <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">放棄所有更改</x:String>
+  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快進(fast-forward)到${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">GIT工作流 - 完成${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">合併${0}$到${1}$</x:String>
+  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">拉回(pull)${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">拉回(pull)${0}$內容至${1}$</x:String>
+  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">推送(push)${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">變基(rebase)${0}$分支至${1}$</x:String>
+  <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重新命名${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切換上游分支...</x:String>
+  <x:String x:Key="Text.BranchCM.UnsetUpstream" xml:space="preserve">取消追蹤</x:String>
+  <x:String x:Key="Text.Bytes" xml:space="preserve">位元組</x:String>
+  <x:String x:Key="Text.Cancel" xml:space="preserve">取    消</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">切換變更顯示模式</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">檔名+路徑列表模式</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">全路徑列表模式</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">檔案目錄樹形結構模式</x:String>
+  <x:String x:Key="Text.Checkout" xml:space="preserve">檢出(checkout)分支</x:String>
+  <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">檢出(checkout)提交</x:String>
+  <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">注意：執行該操作後，當前HEAD會變為遊離(detached)狀態!</x:String>
+  <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">提交 ：</x:String>
+  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目標分支 ：</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">丟棄更改</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">不做處理</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">儲藏並自動恢復</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">挑選(cherry-pick)此提交</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交ID ：</x:String>
+  <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">提交變化</x:String>
+  <x:String x:Key="Text.CherryPick.Title" xml:space="preserve">挑選提交</x:String>
+  <x:String x:Key="Text.ClearStashes" xml:space="preserve">丟棄儲藏確認</x:String>
+  <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">您正在丟棄所有的儲藏，一經操作，無法回退，是否繼續？</x:String>
+  <x:String x:Key="Text.Clone" xml:space="preserve">克隆遠端倉庫</x:String>
+  <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">額外引數 ：</x:String>
+  <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">其他克隆引數，選填。</x:String>
+  <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">本地倉庫名 ：</x:String>
+  <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">本地倉庫目錄的名字，選填。</x:String>
+  <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">父級目錄 ：</x:String>
+  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">遠端倉庫 ：</x:String>
+  <x:String x:Key="Text.Close" xml:space="preserve">關閉</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">挑選(cherry-pick)此提交</x:String>
+  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">檢出此提交</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">與當前HEAD比較</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">與本地工作樹比較</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">複製提交指紋</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">變基(rebase)${0}$到此處</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset)${0}$到此處</x:String>
+  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">回滾此提交</x:String>
+  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">編輯提交資訊</x:String>
+  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存為補丁 ...</x:String>
+  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合併此提交到上一個提交</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">變更對比</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查詢變更...</x:String>
+  <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">檔案列表</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS檔案</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">子模組</x:String>
+  <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">基本資訊</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">修改者</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">變更列表</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">提交者</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">提交資訊</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">父提交</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">相關引用</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交指紋</x:String>
+  <x:String x:Key="Text.Configure" xml:space="preserve">倉庫配置</x:String>
+  <x:String x:Key="Text.Configure.Email" xml:space="preserve">電子郵箱</x:String>
+  <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">郵箱地址</x:String>
+  <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP代理</x:String>
+  <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP網路代理</x:String>
+  <x:String x:Key="Text.Configure.User" xml:space="preserve">使用者名稱</x:String>
+  <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">應用於本倉庫的使用者名稱</x:String>
+  <x:String x:Key="Text.Copy" xml:space="preserve">複製</x:String>
+  <x:String x:Key="Text.CopyPath" xml:space="preserve">複製路徑</x:String>
+  <x:String x:Key="Text.CopyFileName" xml:space="preserve">複製檔名</x:String>
+  <x:String x:Key="Text.CreateBranch" xml:space="preserve">新建分支</x:String>
+  <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">新分支基於 ：</x:String>
+  <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">完成後切換到新分支</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">丟棄更改</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">不做處理</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">儲藏並自動恢復</x:String>
+  <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名 ：</x:String>
+  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">填寫分支名稱。</x:String>
+  <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">建立本地分支</x:String>
+  <x:String x:Key="Text.CreateTag" xml:space="preserve">新建標籤</x:String>
+  <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">標籤位於 ：</x:String>
+  <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">使用GPG簽名</x:String>
+  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">標籤描述 ：</x:String>
+  <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">選填。</x:String>
+  <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">標籤名 ：</x:String>
+  <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">推薦格式 ：v1.0.0-alpha</x:String>
+  <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">推送到所有遠端倉庫</x:String>
+  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">型別 ：</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">附註標籤</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">輕量標籤</x:String>
+  <x:String x:Key="Text.Cut" xml:space="preserve">剪下</x:String>
+  <x:String x:Key="Text.DeleteBranch" xml:space="preserve">刪除分支確認</x:String>
+  <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
+  <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在刪除遠端上的分支，請務必小心！！！</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同時刪除遠端分支${0}$</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">刪除多個分支</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">您正在嘗試一次性刪除多個分支，請務必仔細檢查後再執行操作！</x:String>
+  <x:String x:Key="Text.DeleteRemote" xml:space="preserve">刪除遠端確認</x:String>
+  <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">遠端名 ：</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">目標 ：</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">刪除分組確認</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">刪除倉庫確認</x:String>
+  <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">刪除子模組確認</x:String>
+  <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">子模組路徑 ：</x:String>
+  <x:String x:Key="Text.DeleteTag" xml:space="preserve">刪除標籤確認</x:String>
+  <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">標籤名 ：</x:String>
+  <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">同時刪除遠端倉庫中的此標籤</x:String>
+  <x:String x:Key="Text.Diff.Binary" xml:space="preserve">二進位制檔案</x:String>
+  <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">當前大小</x:String>
+  <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">原始大小</x:String>
+  <x:String x:Key="Text.Diff.Copy" xml:space="preserve">複製</x:String>
+  <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">檔案許可權已變化</x:String>
+  <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS物件變更</x:String>
+  <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一個差異</x:String>
+  <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">沒有變更或僅有換行符差異</x:String>
+  <x:String x:Key="Text.Diff.Prev" xml:space="preserve">上一個差異</x:String>
+  <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">分列對比</x:String>
+  <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">子模組</x:String>
+  <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">新增</x:String>
+  <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">語法高亮</x:String>
+  <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">自動換行</x:String>
+  <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">使用外部合併工具檢視</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">減少可見的行數</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可見的行數</x:String>
+  <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">請選擇需要對比的檔案</x:String>
+  <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">使用外部比對工具檢視</x:String>
+  <x:String x:Key="Text.Discard" xml:space="preserve">放棄更改確認</x:String>
+  <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本地址未提交的修改。</x:String>
+  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">需要放棄的變更 ：</x:String>
+  <x:String x:Key="Text.Discard.Total" xml:space="preserve">總計{0}項選中更改</x:String>
+  <x:String x:Key="Text.Discard.Warning" xml:space="preserve">本操作不支援回退，請確認後繼續！！！</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">書籤 ：</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">名稱 ：</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目標 ：</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">編輯分組</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">編輯倉庫</x:String>
+  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">快進(fast-forward，無需checkout)</x:String>
+  <x:String x:Key="Text.Fetch" xml:space="preserve">拉取(fetch)</x:String>
+  <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">拉取所有的遠端倉庫</x:String>
+  <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">自動清理遠端已刪除分支</x:String>
+  <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">遠端倉庫 ：</x:String>
+  <x:String x:Key="Text.Fetch.Title" xml:space="preserve">拉取遠端倉庫內容</x:String>
+  <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">不跟蹤此檔案的更改</x:String>
+  <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">放棄更改...</x:String>
+  <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">放棄 {0} 個檔案的更改...</x:String>
+  <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">放棄選中的更改</x:String>
+  <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">使用外部合併工具開啟</x:String>
+  <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">另存為補丁...</x:String>
+  <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">暫存(add)...</x:String>
+  <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">暫存(add){0} 個檔案...</x:String>
+  <x:String x:Key="Text.FileCM.StageSelectedLines" xml:space="preserve">暫存選中的更改</x:String>
+  <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">儲藏(stash)...</x:String>
+  <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">儲藏(stash)選中的 {0} 個檔案...</x:String>
+  <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">從暫存中移除</x:String>
+  <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">從暫存中移除 {0} 個檔案</x:String>
+  <x:String x:Key="Text.FileCM.UnstageSelectedLines" xml:space="preserve">從暫存中移除選中的更改</x:String>
+  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">使用 THEIRS (checkout --theirs)</x:String>
+  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">使用 MINE (checkout --ours)</x:String>
+  <x:String x:Key="Text.FileHistory" xml:space="preserve">檔案歷史</x:String>
+  <x:String x:Key="Text.Filter" xml:space="preserve">過濾</x:String>
+  <x:String x:Key="Text.GitFlow" xml:space="preserve">GIT工作流</x:String>
+  <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">開發分支 ：</x:String>
+  <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">特性分支 ：</x:String>
+  <x:String x:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">特性分支名字首 ：</x:String>
+  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">結束特性分支</x:String>
+  <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">結束脩復分支</x:String>
+  <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">結束版本分支</x:String>
+  <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">目標分支 ：</x:String>
+  <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">修復分支 ：</x:String>
+  <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">修復分支名字首 ：</x:String>
+  <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">初始化GIT工作流</x:String>
+  <x:String x:Key="Text.GitFlow.KeepBranchAfterFinish" xml:space="preserve">保留分支</x:String>
+  <x:String x:Key="Text.GitFlow.ProductionBranch" xml:space="preserve">釋出分支 ：</x:String>
+  <x:String x:Key="Text.GitFlow.Release" xml:space="preserve">版本分支 ：</x:String>
+  <x:String x:Key="Text.GitFlow.ReleasePrefix" xml:space="preserve">版本分支名字首 ：</x:String>
+  <x:String x:Key="Text.GitFlow.StartFeature" xml:space="preserve">開始特性分支...</x:String>
+  <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">開始特性分支</x:String>
+  <x:String x:Key="Text.GitFlow.StartHotfix" xml:space="preserve">開始修復分支...</x:String>
+  <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">開始修復分支</x:String>
+  <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">輸入分支名</x:String>
+  <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">開始版本分支...</x:String>
+  <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">開始版本分支</x:String>
+  <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">版本標籤字首 ：</x:String>
+  <x:String x:Key="Text.Histories" xml:space="preserve">歷史記錄</x:String>
+  <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">切換橫向/縱向顯示</x:String>
+  <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">切換曲線/折線顯示</x:String>
+  <x:String x:Key="Text.Histories.Search" xml:space="preserve">查詢提交指紋、資訊、作者。回車鍵開始，ESC鍵取消</x:String>
+  <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">清空</x:String>
+  <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已選中 {0} 項提交</x:String>
+  <x:String x:Key="Text.Hotkeys" xml:space="preserve">快捷鍵參考</x:String>
+  <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">全域性快捷鍵</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">取消彈出面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">關閉當前頁面</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">切換到上一個頁面</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">切換到下一個頁面</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新建頁面</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">開啟偏好設定面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">倉庫頁面快捷鍵</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">重新載入倉庫狀態</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">將選中的變更暫存或從暫存列表中移除</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">開啟歷史搜尋</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">顯示本地更改</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">顯示歷史記錄</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">顯示儲藏列表</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">文字編輯器</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">關閉搜尋</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">定位到下一個匹配搜尋的位置</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">定位到上一個匹配搜尋的位置</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">開啟搜尋</x:String>
+  <x:String x:Key="Text.Init" xml:space="preserve">初始化新倉庫</x:String>
+  <x:String x:Key="Text.Init.Path" xml:space="preserve">路徑 ：</x:String>
+  <x:String x:Key="Text.Init.Tip" xml:space="preserve">選擇目錄不是有效的Git倉庫。是否需要在此目錄執行`git init`操作？</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">挑選（Cherry-Pick）操作進行中。點選【終止】回滾到操作前的狀態。</x:String>
+  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">合併操作進行中。點選【終止】回滾到操作前的狀態。</x:String>
+  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">變基（Rebase）操作進行中。點選【終止】回滾到操作前的狀態。</x:String>
+  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">回滾提交操作進行中。點選【終止】回滾到操作前的狀態。</x:String>
+  <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
+  <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出錯了</x:String>
+  <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系統提示</x:String>
+  <x:String x:Key="Text.Launcher.Menu" xml:space="preserve">主選單</x:String>
+  <x:String x:Key="Text.Merge" xml:space="preserve">合併分支</x:String>
+  <x:String x:Key="Text.Merge.Into" xml:space="preserve">目標分支 ：</x:String>
+  <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合併方式 ：</x:String>
+  <x:String x:Key="Text.Merge.Source" xml:space="preserve">合併分支 ：</x:String>
+  <x:String x:Key="Text.Name" xml:space="preserve">名稱 ：</x:String>
+  <x:String x:Key="Text.NotConfigured" xml:space="preserve">GIT尚未配置。請開啟【偏好設定】配置GIT路徑。</x:String>
+  <x:String x:Key="Text.Notice" xml:space="preserve">系統提示</x:String>
+  <x:String x:Key="Text.OpenFolder" xml:space="preserve">選擇資料夾</x:String>
+  <x:String x:Key="Text.OpenWith" xml:space="preserve">開啟檔案...</x:String>
+  <x:String x:Key="Text.Optional" xml:space="preserve">選填。</x:String>
+  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新建空白頁</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">設定書籤</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">關閉標籤頁</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">關閉其他標籤頁</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">關閉右側標籤頁</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">複製倉庫路徑</x:String>
+  <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">新標籤頁</x:String>
+  <x:String x:Key="Text.Paste" xml:space="preserve">貼上</x:String>
+  <x:String x:Key="Text.Preference" xml:space="preserve">偏好設定</x:String>
+  <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外觀配置</x:String>
+  <x:String x:Key="Text.Preference.Appearance.ColorOverrides" xml:space="preserve">自訂配色檔</x:String>
+  <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
+  <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">預設字型大小</x:String>
+  <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">等寬字型</x:String>
+  <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">主題</x:String>
+  <x:String x:Key="Text.Preference.General" xml:space="preserve">通用配置</x:String>
+  <x:String x:Key="Text.Preference.General.AvatarServer" xml:space="preserve">頭像服務</x:String>
+  <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">啟動時檢測軟體更新</x:String>
+  <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">顯示語言</x:String>
+  <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">最大歷史提交數</x:String>
+  <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">啟動時恢復上次開啟的倉庫</x:String>
+  <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">使用固定寬度的標題欄標籤</x:String>
+  <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT配置</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">啟用定時自動拉取遠端更新</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">自動拉取間隔</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
+  <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">自動換行轉換</x:String>
+  <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">預設克隆路徑</x:String>
+  <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">郵箱</x:String>
+  <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">預設GIT使用者郵箱</x:String>
+  <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">安裝路徑</x:String>
+  <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">終端Shell</x:String>
+  <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">使用者名稱</x:String>
+  <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">預設GIT使用者名稱</x:String>
+  <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git 版本</x:String>
+  <x:String x:Key="Text.Preference.Git.Invalid" xml:space="preserve">本軟體要求GIT最低版本為2.23.0</x:String>
+  <x:String x:Key="Text.Preference.GPG" xml:space="preserve">GPG簽名</x:String>
+  <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">啟用提交簽名</x:String>
+  <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">啟用標籤簽名</x:String>
+  <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">GPG簽名格式</x:String>
+  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">可執行檔案位置</x:String>
+  <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">gpg.exe所在路徑</x:String>
+  <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">使用者簽名KEY</x:String>
+  <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">輸入簽名提交所使用的KEY</x:String>
+  <x:String x:Key="Text.Preference.Merger" xml:space="preserve">外部合併工具</x:String>
+  <x:String x:Key="Text.Preference.Merger.CustomDiffCmd" xml:space="preserve">對比模式啟動引數</x:String>
+  <x:String x:Key="Text.Preference.Merger.CustomMergeCmd" xml:space="preserve">合併模式啟動引數</x:String>
+  <x:String x:Key="Text.Preference.Merger.Path" xml:space="preserve">安裝路徑</x:String>
+  <x:String x:Key="Text.Preference.Merger.Path.Placeholder" xml:space="preserve">填寫工具可執行檔案所在位置</x:String>
+  <x:String x:Key="Text.Preference.Merger.Type" xml:space="preserve">工具</x:String>
+  <x:String x:Key="Text.Pull" xml:space="preserve">拉回(pull)</x:String>
+  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">拉取分支 ：</x:String>
+  <x:String x:Key="Text.Pull.Into" xml:space="preserve">本地分支 ：</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">丟棄更改</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">不做處理</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">儲藏並自動恢復</x:String>
+  <x:String x:Key="Text.Pull.Remote" xml:space="preserve">遠端 ：</x:String>
+  <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉回（拉取併合並）</x:String>
+  <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">使用變基方式合併分支</x:String>
+  <x:String x:Key="Text.Push" xml:space="preserve">推送(push)</x:String>
+  <x:String x:Key="Text.Push.Force" xml:space="preserve">啟用強制推送</x:String>
+  <x:String x:Key="Text.Push.Local" xml:space="preserve">本地分支 ：</x:String>
+  <x:String x:Key="Text.Push.Remote" xml:space="preserve">遠端倉庫 ：</x:String>
+  <x:String x:Key="Text.Push.Title" xml:space="preserve">推送到遠端倉庫</x:String>
+  <x:String x:Key="Text.Push.To" xml:space="preserve">遠端分支 ：</x:String>
+  <x:String x:Key="Text.Push.Tracking" xml:space="preserve">跟蹤遠端分支</x:String>
+  <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">同時推送標籤</x:String>
+  <x:String x:Key="Text.PushTag" xml:space="preserve">推送標籤到遠端倉庫</x:String>
+  <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">推送到所有遠端倉庫</x:String>
+  <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">遠端倉庫 ：</x:String>
+  <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">標籤 ：</x:String>
+  <x:String x:Key="Text.Quit" xml:space="preserve">退出</x:String>
+  <x:String x:Key="Text.Rebase" xml:space="preserve">變基(rebase)操作</x:String>
+  <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自動儲藏並恢復本地變更</x:String>
+  <x:String x:Key="Text.Rebase.On" xml:space="preserve">目標提交 ：</x:String>
+  <x:String x:Key="Text.Rebase.Target" xml:space="preserve">分支 ：</x:String>
+  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">重新載入</x:String>
+  <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">新增遠端倉庫</x:String>
+  <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">編輯遠端倉庫</x:String>
+  <x:String x:Key="Text.Remote.Name" xml:space="preserve">遠端名 ：</x:String>
+  <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">唯一遠端名</x:String>
+  <x:String x:Key="Text.Remote.URL" xml:space="preserve">倉庫地址 ：</x:String>
+  <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">遠端倉庫的地址</x:String>
+  <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">複製遠端地址</x:String>
+  <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">刪除 ...</x:String>
+  <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">編輯 ...</x:String>
+  <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">拉取(fetch)更新 ...</x:String>
+  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">清理遠端已刪除分支</x:String>
+  <x:String x:Key="Text.RemoteCM.Prune.Target" xml:space="preserve">目標 ：</x:String>
+  <x:String x:Key="Text.RenameBranch" xml:space="preserve">分支重新命名</x:String>
+  <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">新的名稱 ：</x:String>
+  <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">新的分支名不能與現有分支名相同</x:String>
+  <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">分支 ：</x:String>
+  <x:String x:Key="Text.Repository.Abort" xml:space="preserve">終止合併</x:String>
+  <x:String x:Key="Text.Repository.Clean" xml:space="preserve">清理本倉庫(GC)</x:String>
+  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">本操作將執行`gc`，對於啟用LFS的倉庫也會執行`lfs prune`。</x:String>
+  <x:String x:Key="Text.Repository.Configure" xml:space="preserve">配置本倉庫</x:String>
+  <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
+  <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在檔案瀏覽器中開啟</x:String>
+  <x:String x:Key="Text.Repository.FilterBranchTip" xml:space="preserve">過濾顯示分支</x:String>
+  <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本地分支</x:String>
+  <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">定位HEAD</x:String>
+  <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">新建分支</x:String>
+  <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">在 {0} 中開啟</x:String>
+  <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">使用外部工具開啟</x:String>
+  <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">重新載入</x:String>
+  <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">遠端列表</x:String>
+  <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">新增遠端</x:String>
+  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">解決衝突</x:String>
+  <x:String x:Key="Text.Repository.Search" xml:space="preserve">查詢提交</x:String>
+  <x:String x:Key="Text.Repository.Search.By" xml:space="preserve">查詢方式</x:String>
+  <x:String x:Key="Text.Repository.Search.ByBaseInfo" xml:space="preserve">摘要</x:String>
+  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">檔案</x:String>
+  <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交統計</x:String>
+  <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模組列表</x:String>
+  <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">新增子模組</x:String>
+  <x:String x:Key="Text.Repository.Submodules.Update" xml:space="preserve">更新子模組</x:String>
+  <x:String x:Key="Text.Repository.Tags" xml:space="preserve">標籤列表</x:String>
+  <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">新建標籤</x:String>
+  <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在終端中開啟</x:String>
+  <x:String x:Key="Text.Repository.Workspace" xml:space="preserve">工作區</x:String>
+  <x:String x:Key="Text.RepositoryURL" xml:space="preserve">遠端倉庫地址</x:String>
+  <x:String x:Key="Text.Reset" xml:space="preserve">重置(reset)當前分支到指定版本</x:String>
+  <x:String x:Key="Text.Reset.Mode" xml:space="preserve">重置模式 ：</x:String>
+  <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">提交 ：</x:String>
+  <x:String x:Key="Text.Reset.Target" xml:space="preserve">當前分支 ：</x:String>
+  <x:String x:Key="Text.RevealFile" xml:space="preserve">在檔案瀏覽器中檢視</x:String>
+  <x:String x:Key="Text.Revert" xml:space="preserve">回滾操作確認</x:String>
+  <x:String x:Key="Text.Revert.Commit" xml:space="preserve">目標提交 ：</x:String>
+  <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">回滾後提交更改</x:String>
+  <x:String x:Key="Text.Reword" xml:space="preserve">編輯提交資訊</x:String>
+  <x:String x:Key="Text.Reword.Message" xml:space="preserve">提交資訊：</x:String>
+  <x:String x:Key="Text.Reword.On" xml:space="preserve">提交：</x:String>
+  <x:String x:Key="Text.Running" xml:space="preserve">執行操作中，請耐心等待...</x:String>
+  <x:String x:Key="Text.Save" xml:space="preserve">保    存</x:String>
+  <x:String x:Key="Text.SaveAs" xml:space="preserve">另存為...</x:String>
+  <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">補丁已成功儲存！</x:String>
+  <x:String x:Key="Text.SelfUpdate" xml:space="preserve">檢測更新...</x:String>
+  <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">檢測到軟體有版本更新: </x:String>
+  <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">獲取最新版本資訊失敗！</x:String>
+  <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">下    載</x:String>
+  <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">忽略此版本</x:String>
+  <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">軟體更新</x:String>
+  <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">當前已是最新版本。</x:String>
+  <x:String x:Key="Text.Squash" xml:space="preserve">合併HEAD到上一個提交</x:String>
+  <x:String x:Key="Text.Squash.Head" xml:space="preserve">當前提交 :</x:String>
+  <x:String x:Key="Text.Squash.Message" xml:space="preserve">修改提交資訊：</x:String>
+  <x:String x:Key="Text.Squash.To" xml:space="preserve">合併到 :</x:String>
+  <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH金鑰 ：</x:String>
+  <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH金鑰檔案</x:String>
+  <x:String x:Key="Text.Start" xml:space="preserve">開    始</x:String>
+  <x:String x:Key="Text.Stash" xml:space="preserve">儲藏(stash)</x:String>
+  <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">包含未跟蹤的檔案</x:String>
+  <x:String x:Key="Text.Stash.Message" xml:space="preserve">資訊 ：</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">選填，用於命名此儲藏</x:String>
+  <x:String x:Key="Text.Stash.Title" xml:space="preserve">儲藏本地變更</x:String>
+  <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">應用(apply)</x:String>
+  <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">刪除(drop)</x:String>
+  <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">應用並刪除(pop)</x:String>
+  <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">丟棄儲藏確認</x:String>
+  <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">丟棄儲藏 ：</x:String>
+  <x:String x:Key="Text.Stashes" xml:space="preserve">儲藏列表</x:String>
+  <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">檢視變更</x:String>
+  <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">儲藏列表</x:String>
+  <x:String x:Key="Text.Statistics" xml:space="preserve">提交統計</x:String>
+  <x:String x:Key="Text.Statistics.CommitAmount" xml:space="preserve">提交次數</x:String>
+  <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">提交者</x:String>
+  <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">本月</x:String>
+  <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">本週</x:String>
+  <x:String x:Key="Text.Statistics.ThisYear" xml:space="preserve">本年</x:String>
+  <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">提交次數: </x:String>
+  <x:String x:Key="Text.Statistics.TotalCommitters" xml:space="preserve">提交者: </x:String>
+  <x:String x:Key="Text.Submodule" xml:space="preserve">子模組</x:String>
+  <x:String x:Key="Text.Submodule.Add" xml:space="preserve">新增子模組</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">複製路徑</x:String>
+  <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">拉取子孫模組</x:String>
+  <x:String x:Key="Text.Submodule.Open" xml:space="preserve">開啟倉庫</x:String>
+  <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相對倉庫路徑 ：</x:String>
+  <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">本地存放的相對路徑。</x:String>
+  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">刪除子模組</x:String>
+  <x:String x:Key="Text.Sure" xml:space="preserve">確    定</x:String>
+  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">複製標籤名</x:String>
+  <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">刪除${0}$</x:String>
+  <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送${0}$</x:String>
+  <x:String x:Key="Text.URL" xml:space="preserve">倉庫地址 ：</x:String>
+  <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模組</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Tip" xml:space="preserve">本操作將執行 `submodule update` 。</x:String>
+  <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
+  <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">新建分組</x:String>
+  <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">新建子分組</x:String>
+  <x:String x:Key="Text.Welcome.Clone" xml:space="preserve">克隆遠端倉庫</x:String>
+  <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">刪除</x:String>
+  <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">支援拖放目錄新增。支援自定義分組。</x:String>
+  <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">編輯</x:String>
+  <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">開啟本地倉庫</x:String>
+  <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">開啟終端</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">快速查詢倉庫...</x:String>
+  <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">排序</x:String>
+  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">本地更改</x:String>
+  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">修補(--amend)</x:String>
+  <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">現在您已可將其加入暫存區中</x:String>
+  <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提交</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交併推送</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitMessageTip" xml:space="preserve">填寫提交資訊</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">CTRL + Enter</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">檢測到衝突</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">檔案衝突已解決</x:String>
+  <x:String x:Key="Text.WorkingCopy.HasCommitHistories" xml:space="preserve">最近輸入的提交資訊</x:String>
+  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未跟蹤檔案</x:String>
+  <x:String x:Key="Text.WorkingCopy.MessageHistories" xml:space="preserve">歷史提交資訊</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">沒有提交資訊記錄</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">已暫存</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">從暫存區移除選中</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">從暫存區移除所有</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">未暫存</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">暫存選中</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">暫存所有</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">檢視忽略變更檔案</x:String>
+  <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">請選中衝突檔案，開啟右鍵選單，選擇合適的解決方式</x:String>
+  <x:String x:Key="Text.Worktree" xml:space="preserve">本地工作樹</x:String>
+</ResourceDictionary>

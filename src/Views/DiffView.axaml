@@ -30,7 +30,7 @@
           </Border>
 
           <!-- Title -->
-          <TextBlock Grid.Column="2" Classes="monospace" Margin="4,0,0,0" Text="{Binding Title}" FontSize="11"/>
+          <TextBlock Grid.Column="2" Classes="monospace" Margin="4,0,0,0" Text="{Binding Title}" FontSize="11" TextTrimming="CharacterEllipsis"/>
 
           <!-- Toolbar Buttons -->
           <StackPanel Grid.Column="3" Margin="8,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
@@ -41,7 +41,7 @@
             <Button Classes="icon_button" Width="32" Command="{Binding DecrUnified}" IsVisible="{Binding IsTextDiff}" ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Decr}" IsEnabled="{Binding Unified, Converter={x:Static c:IntConverters.IsGreaterThanFour}}">
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Decr}"/>
             </Button>
-            
+
             <ToggleButton Classes="line_path"
                           Width="32" Height="18"
                           Background="Transparent"
@@ -50,6 +50,16 @@
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.SyntaxHighlight}">
               <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,3,0,0"/>
+            </ToggleButton>
+
+            <ToggleButton Classes="line_path"
+                          Width="32" Height="18"
+                          Background="Transparent"
+                          Padding="9,6"
+                          IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap, Mode=TwoWay}"
+                          IsVisible="{Binding IsTextDiff}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.ToggleWordWrap}">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.WordWrap}" Margin="0,2,0,0"/>
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
@@ -141,9 +151,9 @@
                   <Border IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <ContentControl Content="{Binding Old}">
                       <ContentControl.DataTemplates>
-                        <DataTemplate DataType="m:Commit">
+                        <DataTemplate DataType="m:SubmoduleRevision">
                           <Border Margin="0,0,0,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Background="{DynamicResource Brush.Window}">
-                            <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding}"/>
+                            <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding Commit}" Message="{Binding FullMessage}"/>
                           </Border>
                         </DataTemplate>
                       </ContentControl.DataTemplates>
@@ -157,7 +167,7 @@
                   <Path Width="16" Height="16" Data="{StaticResource Icons.DoubleDown}" HorizontalAlignment="Center" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
                   <Border Margin="0,8,0,0" BorderThickness="1" BorderBrush="Green" Background="{DynamicResource Brush.Window}">
-                    <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding New}"/>
+                    <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding New.Commit}" Message="{Binding New.FullMessage}"/>
                   </Border>
                 </StackPanel>
               </ScrollViewer>
@@ -166,58 +176,70 @@
 
           <!-- Image Diff -->
           <DataTemplate DataType="m:ImageDiff">
-            <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,8,8,0">
-              <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
+            <Grid RowDefinitions="Auto,*" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16,8,0">
+              <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
                 <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
                   <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
                 </Border>
 
-                <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding OldSize}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
+                <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding OldFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Column="3" Classes="monospace" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
 
-                <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
+                <Border Grid.Column="4" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
                   <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10"/>
                 </Border>
 
-                <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding NewSize}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                <TextBlock Grid.Column="5" Classes="monospace" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
+                <TextBlock Grid.Column="6" Classes="monospace" Text="{Binding NewFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Column="7" Classes="monospace" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
               </Grid>
 
-              <Border Grid.Row="1" Background="{DynamicResource Brush.Window}" Effect="drop-shadow(0 0 8 #A0000000)" Margin="0,8,0,0" HorizontalAlignment="Center">
-                <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
-                  <v:ImageDiffView Alpha="{Binding #ImageDiffSlider.Value}"
-                                   OldImage="{Binding Old}"
-                                   NewImage="{Binding New}"
-                                   RenderOptions.BitmapInterpolationMode="HighQuality"/>
+              <Grid Grid.Row="1" RowDefinitions="*,Auto,Auto" Margin="0,16,0,0" HorizontalAlignment="Center">
+                <Border Grid.Row="0" Background="{DynamicResource Brush.Window}" Effect="drop-shadow(0 0 8 #A0000000)">
+                  <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
+                    <v:ImageDiffView Alpha="{Binding #ImageDiffSlider.Value}"
+                                     OldImage="{Binding Old}"
+                                     NewImage="{Binding New}"
+                                     RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  </Border>
                 </Border>
-              </Border>
 
-              <Slider Grid.Row="2"
-                      x:Name="ImageDiffSlider"
-                      Minimum="0" Maximum="1"
-                      VerticalAlignment="Top"
-                      TickPlacement="None"
-                      Margin="0,4,0,0"
-                      MinHeight="0"
-                      Foreground="{DynamicResource Brush.Border1}"
-                      Value="0.5">
-                <Slider.Resources>
-                  <Thickness x:Key="SliderTopHeaderMargin">0,0,0,4</Thickness>
-                  <GridLength x:Key="SliderPreContentMargin">0</GridLength>
-                  <GridLength x:Key="SliderPostContentMargin">0</GridLength>
-                  <CornerRadius x:Key="SliderThumbCornerRadius">8</CornerRadius>
-                  <x:Double x:Key="SliderHorizontalThumbWidth">16</x:Double>
-                  <x:Double x:Key="SliderHorizontalThumbHeight">16</x:Double>
-                </Slider.Resources>
-              </Slider>
+                <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,8,0,0">
+                  <TextBlock Grid.Column="0" Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Foreground="{DynamicResource Brush.FG2}" FontSize="10"/>
+                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Diff.Binary.New}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="10"/>
+                </Grid>
+
+                <Slider Grid.Row="2"
+                        x:Name="ImageDiffSlider"
+                        Minimum="0" Maximum="1"
+                        VerticalAlignment="Top"
+                        TickPlacement="None"
+                        Margin="8,4,8,0"
+                        MinHeight="0"
+                        Foreground="{DynamicResource Brush.Border1}"
+                        Value="0.5">
+                  <Slider.Resources>
+                    <Thickness x:Key="SliderTopHeaderMargin">0,0,0,4</Thickness>
+                    <GridLength x:Key="SliderPreContentMargin">0</GridLength>
+                    <GridLength x:Key="SliderPostContentMargin">0</GridLength>
+                    <CornerRadius x:Key="SliderThumbCornerRadius">8</CornerRadius>
+                    <x:Double x:Key="SliderHorizontalThumbWidth">16</x:Double>
+                    <x:Double x:Key="SliderHorizontalThumbHeight">16</x:Double>
+                  </Slider.Resources>
+                </Slider>
+              </Grid>
             </Grid>
           </DataTemplate>
 
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
             <v:TextDiffView TextDiff="{Binding}"
+                            SyncScrollOffset="{Binding SyncScrollOffset, Mode=TwoWay}"
                             UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"/>
           </DataTemplate>
 
-          <!-- No or only EOL changes -->
+          <!-- Empty or only EOL changes -->
           <DataTemplate DataType="m:NoOrEOLChange">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
               <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="{DynamicResource Brush.FG2}"/>

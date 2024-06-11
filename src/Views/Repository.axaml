@@ -212,12 +212,21 @@
               <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
             </Style>
 
-            <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
               <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value=".65"/>
             </Style>
-            
-            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+              <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value="1"/>
+            </Style>
+            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
               <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".65"/>
+            </Style>
+            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+              <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".8"/>
             </Style>
           </TreeView.Styles>
           <TreeView.ItemTemplate>
@@ -276,12 +285,21 @@
               <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
             </Style>
 
-            <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
               <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value=".65"/>
             </Style>
-
-            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+              <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value="1"/>
+            </Style>
+            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
               <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".65"/>
+            </Style>
+            <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+              <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".8"/>
             </Style>
           </TreeView.Styles>
 
@@ -344,13 +362,22 @@
             <Style Selector="DataGridRow /template/ Border#RowBorder">
               <Setter Property="ClipToBounds" Value="True" />
             </Style>
-            
+
+            <Style Selector="Grid.repository_leftpanel DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
+              <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value=".5"/>
+            </Style>
             <Style Selector="Grid.repository_leftpanel DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
               <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
+              <Setter Property="Opacity" Value="1"/>
             </Style>
-
             <Style Selector="Grid.repository_leftpanel:focus-within DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
               <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".65"/>
+            </Style>
+            <Style Selector="Grid.repository_leftpanel:focus-within DataGridRow:selected:pointerover /template/ Rectangle#BackgroundRectangle">
+              <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+              <Setter Property="Opacity" Value=".8"/>
             </Style>
           </DataGrid.Styles>
           
@@ -395,12 +422,17 @@
                     Classes="icon_button"
                     Width="14"
                     Margin="8,0"
-                    Click="UpdateSubmodules"
+                    Command="{Binding UpdateSubmodules}"
                     IsVisible="{Binding Submodules, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
                     ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Update}">
               <Path x:Name="iconSubmoduleUpdate" Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
             </Button>
-            <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="0,0,8,0" Command="{Binding AddSubmodule}" ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Add}">
+            <Button Grid.Column="3" 
+                    Classes="icon_button" 
+                    Width="14" 
+                    Margin="0,0,8,0" 
+                    Command="{Binding AddSubmodule}" 
+                    ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Add}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Submodule.Add}"/>
             </Button>
           </Grid>
@@ -461,17 +493,17 @@
       </Grid>
 
       <!-- Left Search Mode -->
-      <Grid Grid.Column="0" RowDefinitions="32,*" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
+      <Grid Grid.Column="0" RowDefinitions="32,32,*" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
         <!-- Search -->
         <TextBox Grid.Row="0"
                  x:Name="txtSearchCommitsBox"
-                 Margin="4,2"
+                 Margin="4,2,4,0"
                  Height="24"
                  BorderThickness="1"
                  BorderBrush="{DynamicResource Brush.Border2}"
                  Background="{DynamicResource Brush.Contents}"
                  CornerRadius="4"
-                 Watermark="{DynamicResource Text.Repository.SearchTip}"
+                 Watermark="{DynamicResource Text.Repository.Search}"
                  Text="{Binding SearchCommitFilter, Mode=TwoWay}"
                  VerticalContentAlignment="Center"
                  KeyDown="OnSearchKeyDown">
@@ -497,7 +529,27 @@
           </TextBox.InnerRightContent>
         </TextBox>
 
-        <DataGrid Grid.Row="1"
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="4,0">
+          <TextBlock Grid.Column="0"
+                     Text="{DynamicResource Text.Repository.Search.By}"
+                     Foreground="{DynamicResource Brush.FG2}"
+                     Margin="2,0,0,0"/>
+          
+          <ComboBox Grid.Column="1"
+                    MinHeight="24" Height="24"
+                    Padding="8,0"
+                    Background="{DynamicResource Brush.Contents}"
+                    BorderBrush="{DynamicResource Brush.Border2}"
+                    HorizontalAlignment="Right"
+                    SelectedIndex="{Binding SearchCommitFilterType, Mode=TwoWay}">
+            <ComboBox.Items>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByBaseInfo}" FontSize="12"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByFile}" FontSize="12"/>
+            </ComboBox.Items>
+          </ComboBox>
+        </Grid>
+
+        <DataGrid Grid.Row="2"
                   ItemsSource="{Binding SearchedCommits}"
                   SelectionMode="Single"
                   SelectedItem="{Binding SearchResultSelectedCommit, Mode=OneWay}"
@@ -512,6 +564,7 @@
                   BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}"
                   Margin="4,0,4,4"
+                  CornerRadius="4"
                   HorizontalScrollBarVisibility="Disabled"
                   VerticalScrollBarVisibility="Auto"
                   SelectionChanged="OnSearchResultDataGridSelectionChanged">
@@ -540,7 +593,7 @@
           </DataGrid.Columns>
         </DataGrid>
 
-        <Path Grid.Row="1"
+        <Path Grid.Row="2"
               HorizontalAlignment="Center" VerticalAlignment="Center"
               Width="48" Height="48"
               Data="{StaticResource Icons.Empty}"

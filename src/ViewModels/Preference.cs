@@ -65,9 +65,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _locale, value))
-                {
                     App.SetLocale(value);
-                }
             }
         }
 
@@ -77,9 +75,17 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _theme, value))
-                {
-                    App.SetTheme(value);
-                }
+                    App.SetTheme(_theme, _colorOverrides);
+            }
+        }
+
+        public string ColorOverrides
+        {
+            get => _colorOverrides;
+            set
+            {
+                if (SetProperty(ref _colorOverrides, value))
+                    App.SetTheme(_theme, value);
             }
         }
 
@@ -162,6 +168,12 @@ namespace SourceGit.ViewModels
         {
             get => _useSyntaxHighlighting;
             set => SetProperty(ref _useSyntaxHighlighting, value);
+        }
+
+        public bool EnableDiffViewWordWrap
+        {
+            get => _enableDiffViewWordWrap;
+            set => SetProperty(ref _enableDiffViewWordWrap, value);
         }
 
         public Models.ChangeViewMode UnstagedChangeViewMode
@@ -515,6 +527,7 @@ namespace SourceGit.ViewModels
 
         private string _locale = "en_US";
         private string _theme = "Default";
+        private string _colorOverrides = string.Empty;
         private FontFamily _defaultFont = null;
         private FontFamily _monospaceFont = null;
         private double _defaultFontSize = 13;
@@ -526,6 +539,7 @@ namespace SourceGit.ViewModels
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _useSideBySideDiff = false;
         private bool _useSyntaxHighlighting = false;
+        private bool _enableDiffViewWordWrap = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

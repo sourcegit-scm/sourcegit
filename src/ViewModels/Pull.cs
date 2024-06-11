@@ -136,7 +136,7 @@ namespace SourceGit.ViewModels
                         }
 
                         needPopStash = true;
-                    } 
+                    }
                     else if (_preAction == Models.DealWithLocalChanges.Discard)
                     {
                         SetProgressDescription("Discard local changes ...");

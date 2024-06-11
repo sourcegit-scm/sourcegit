@@ -58,7 +58,7 @@ namespace SourceGit.ViewModels
                     {
                         SetProgressDescription("Deleting tracking remote branch...");
                         Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name);
-                    }   
+                    }
                 }
                 else
                 {

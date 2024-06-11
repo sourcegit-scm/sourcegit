@@ -30,17 +30,11 @@ namespace SourceGit.Converters
             {
                 var theme = (string)value;
                 if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase))
-                {
                     return ThemeVariant.Light;
-                }
                 else if (theme.Equals("Dark", StringComparison.OrdinalIgnoreCase))
-                {
                     return ThemeVariant.Dark;
-                }
                 else
-                {
                     return ThemeVariant.Default;
-                }
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -70,7 +64,7 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<string, string> ToShortSHA =
             new FuncValueConverter<string, string>(v => v == null ? string.Empty : (v.Length > 10 ? v.Substring(0, 10) : v));
-        
+
         public static readonly FuncValueConverter<string, bool> UnderRecommendGitVersion =
             new(v =>
             {

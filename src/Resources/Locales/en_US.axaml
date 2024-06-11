@@ -93,10 +93,7 @@
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Search Changes ...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">FILES</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS File</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Search Files ...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submodule</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Tag" xml:space="preserve">Tag</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Tree" xml:space="preserve">Tree</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMATION</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">CHANGED</x:String>
@@ -166,6 +163,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMODULE</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NEW</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Highlighting</x:String>
+  <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Line Word Wrap</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Open In Merge Tool</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Decrease Number of Visible Lines</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Increase Number of Visible Lines</x:String>
@@ -285,6 +283,7 @@
   <x:String x:Key="Text.Paste" xml:space="preserve">Paste</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">Preference</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APPEARANCE</x:String>
+  <x:String x:Key="Text.Preference.Appearance.ColorOverrides" xml:space="preserve">Custom Color Schema</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Default Font</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Default Font Size</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Monospace Font</x:String>
@@ -314,7 +313,7 @@
   <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">Commit GPG signing</x:String>
   <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">Tag GPG signing</x:String>
   <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">GPG Format</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">Install Path</x:String>
+  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">Program Install Path</x:String>
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Input path for installed gpg program</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">User Signing Key</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">User's gpg signing key</x:String>
@@ -385,7 +384,9 @@
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">ADD REMOTE</x:String>
   <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">RESOLVE</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Search Commit</x:String>
-  <x:String x:Key="Text.Repository.SearchTip" xml:space="preserve">Search Author/Committer/Message/SHA</x:String>
+  <x:String x:Key="Text.Repository.Search.By" xml:space="preserve">Search By</x:String>
+  <x:String x:Key="Text.Repository.Search.ByBaseInfo" xml:space="preserve">Information</x:String>
+  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">File</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistics</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMODULES</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">ADD SUBMODULE</x:String>
@@ -458,6 +459,8 @@
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Delete${0}$</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push${0}$</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL :</x:String>
+  <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Tip" xml:space="preserve">Run `submodule update` command for this repository.</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Warning</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Create Group</x:String>
   <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">Create Sub-Group</x:String>

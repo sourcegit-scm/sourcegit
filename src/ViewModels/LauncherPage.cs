@@ -18,6 +18,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _data, value);
         }
 
+        public bool IsTabSplitterVisible
+        {
+            get => _isTabSplitterVisible;
+            set => SetProperty(ref _isTabSplitterVisible, value);
+        }
+
         public AvaloniaList<Models.Notification> Notifications
         {
             get;
@@ -50,12 +56,11 @@ namespace SourceGit.ViewModels
         public void DismissNotification(object param)
         {
             if (param is Models.Notification notice)
-            {
                 Notifications.Remove(notice);
-            }
         }
 
         private RepositoryNode _node = null;
         private object _data = null;
+        private bool _isTabSplitterVisible = true;
     }
 }

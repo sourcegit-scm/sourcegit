@@ -5,22 +5,23 @@ namespace SourceGit.Commands
 {
     public partial class QueryRevisionObjects : Command
     {
-
         [GeneratedRegex(@"^\d+\s+(\w+)\s+([0-9a-f]+)\s+(.*)$")]
         private static partial Regex REG_FORMAT();
-        private readonly List<Models.Object> objects = new List<Models.Object>();
 
-        public QueryRevisionObjects(string repo, string sha)
+        public QueryRevisionObjects(string repo, string sha, string parentFolder)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree -r {sha}";
+            Args = $"ls-tree {sha}";
+
+            if (!string.IsNullOrEmpty(parentFolder))
+                Args += $" -- \"{parentFolder}\"";
         }
 
         public List<Models.Object> Result()
         {
             Exec();
-            return objects;
+            return _objects;
         }
 
         protected override void OnReadline(string line)
@@ -50,7 +51,9 @@ namespace SourceGit.Commands
                     break;
             }
 
-            objects.Add(obj);
+            _objects.Add(obj);
         }
+
+        private List<Models.Object> _objects = new List<Models.Object>();
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -85,17 +84,16 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _useAmend, value) && value)
                 {
-                    var commits = new Commands.QueryCommits(_repo.FullPath, "-n 1", false).Result();
-                    if (commits.Count == 0)
+                    var currentBranch = _repo.Branches.Find(x => x.IsCurrent);
+                    if (currentBranch == null)
                     {
                         App.RaiseException(_repo.FullPath, "No commits to amend!!!");
                         _useAmend = false;
                         OnPropertyChanged();
+                        return;
                     }
-                    else
-                    {
-                        CommitMessage = commits[0].FullMessage;
-                    }
+
+                    CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, currentBranch.Head).Result();
                 }
 
                 OnPropertyChanged(nameof(IsCommitWithPushVisible));
@@ -273,19 +271,12 @@ namespace SourceGit.ViewModels
                 Staged = staged;
                 _isLoadingData = false;
 
-                var scrollOffset = Vector.Zero;
-                if (_detailContext is DiffContext old)
-                    scrollOffset = old.SyncScrollOffset;
-
                 if (selectedUnstaged.Count > 0)
                     SelectedUnstaged = selectedUnstaged;
                 else if (selectedStaged.Count > 0)
                     SelectedStaged = selectedStaged;
                 else
                     SetDetail(null);
-
-                if (_detailContext is DiffContext cur)
-                    cur.SyncScrollOffset = scrollOffset;
 
                 // Try to load merge message from MERGE_MSG
                 if (string.IsNullOrEmpty(_commitMessage))
@@ -800,7 +791,7 @@ namespace SourceGit.ViewModels
                     App.CopyText(change.Path);
                     e.Handled = true;
                 };
-                
+
                 var copyFileName = new MenuItem();
                 copyFileName.Header = App.Text("CopyFileName");
                 copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");

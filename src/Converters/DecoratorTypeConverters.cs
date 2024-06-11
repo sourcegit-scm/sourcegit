@@ -38,8 +38,8 @@ namespace SourceGit.Converters
             });
 
         public static readonly FuncValueConverter<Models.DecoratorType, FontWeight> ToFontWeight =
-            new FuncValueConverter<Models.DecoratorType, FontWeight>(v => 
-                v is Models.DecoratorType.CurrentBranchHead or Models.DecoratorType.CurrentCommitHead 
+            new FuncValueConverter<Models.DecoratorType, FontWeight>(v =>
+                v is Models.DecoratorType.CurrentBranchHead or Models.DecoratorType.CurrentCommitHead
                     ? FontWeight.Bold : FontWeight.Regular
             );
     }

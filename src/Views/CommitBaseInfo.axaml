@@ -7,14 +7,15 @@
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.CommitBaseInfo">
+             x:Class="SourceGit.Views.CommitBaseInfo"
+             x:Name="ThisControl">
   <UserControl.DataTemplates>
     <DataTemplate DataType="m:Commit">
       <StackPanel Orientation="Vertical">
         <!-- Author & Committer -->
         <UniformGrid Rows="1" Margin="0,8">
           <!-- Author -->
-          <Grid Grid.Column="0" ColumnDefinitions="96,*">
+          <Grid ColumnDefinitions="96,*">
             <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Author}"/>
             <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
               <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.CommitDetail.Info.Author}"/>
@@ -30,7 +31,7 @@
           </Grid>
 
           <!-- Committer -->
-          <Grid Grid.Column="1" ColumnDefinitions="96,*" IsVisible="{Binding IsCommitterVisible}">
+          <Grid ColumnDefinitions="96,*" IsVisible="{Binding IsCommitterVisible}">
             <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Committer}"/>
             <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
               <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.CommitDetail.Info.Committer}"/>
@@ -104,7 +105,7 @@
           <!-- Messages -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
           <ScrollViewer Grid.Row="3" Grid.Column="1" Margin="12,5,8,0" MaxHeight="64" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <SelectableTextBlock Text="{Binding FullMessage}" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" TextWrapping="Wrap"/>
+            <SelectableTextBlock Text="{Binding #ThisControl.Message}" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" TextWrapping="Wrap"/>
           </ScrollViewer>
         </Grid>
       </StackPanel>

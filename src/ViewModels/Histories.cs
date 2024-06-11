@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -24,38 +22,16 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
-        public double DataGridRowHeight
-        {
-            get => _dataGridRowHeight;
-        }
-
         public List<Models.Commit> Commits
         {
             get => _commits;
             set
             {
-                var oldAutoSelectedCommitSHA = AutoSelectedCommit?.SHA;
+                var lastSelected = AutoSelectedCommit;
                 if (SetProperty(ref _commits, value))
                 {
-                    Models.Commit newSelectedCommit = null;
-                    if (value.Count > 0 && oldAutoSelectedCommitSHA != null)
-                    {
-                        newSelectedCommit = value.Find(x => x.SHA == oldAutoSelectedCommitSHA);
-                    }
-                    if (newSelectedCommit != AutoSelectedCommit)
-                    {
-                        AutoSelectedCommit = newSelectedCommit;
-                    }
-
-                    Graph = null;
-                    Task.Run(() =>
-                    {
-                        var graph = Models.CommitGraph.Parse(value, DataGridRowHeight, 8);
-                        Dispatcher.UIThread.Invoke(() =>
-                        {
-                            Graph = graph;
-                        });
-                    });
+                    if (value.Count > 0 && lastSelected != null)
+                        AutoSelectedCommit = value.Find(x => x.SHA == lastSelected.SHA);
                 }
             }
         }
@@ -652,7 +628,6 @@ namespace SourceGit.ViewModels
         }
 
         private Repository _repo = null;
-        private readonly double _dataGridRowHeight = 28;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.CommitGraph _graph = null;

@@ -2,14 +2,14 @@
 
 namespace SourceGit.ViewModels
 {
-    public class CheckoutCommit: Popup
+    public class CheckoutCommit : Popup
     {
         public Models.Commit Commit
         {
             get;
             private set;
         }
-        
+
         public bool HasLocalChanges
         {
             get => _repo.WorkingCopyChangesCount > 0;
@@ -32,7 +32,7 @@ namespace SourceGit.ViewModels
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Checkout Commit '{Commit.SHA}' ...";
-            
+
             return Task.Run(() =>
             {
                 var needPopStash = false;

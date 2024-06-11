@@ -19,14 +19,5 @@ namespace SourceGit.Converters
                         return App.Current?.FindResource("Icons.Tree") as StreamGeometry;
                 }
             });
-
-        public static readonly FuncValueConverter<Models.ChangeViewMode, bool> IsList =
-            new FuncValueConverter<Models.ChangeViewMode, bool>(v => v == Models.ChangeViewMode.List);
-
-        public static readonly FuncValueConverter<Models.ChangeViewMode, bool> IsGrid =
-            new FuncValueConverter<Models.ChangeViewMode, bool>(v => v == Models.ChangeViewMode.Grid);
-
-        public static readonly FuncValueConverter<Models.ChangeViewMode, bool> IsTree =
-            new FuncValueConverter<Models.ChangeViewMode, bool>(v => v == Models.ChangeViewMode.Tree);
     }
 }

@@ -96,10 +96,7 @@
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查找变更...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">文件列表</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS文件</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">查找文件...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">子模块</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Tag" xml:space="preserve">标签文件</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Tree" xml:space="preserve">子树</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">基本信息</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">修改者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">变更列表</x:String>
@@ -169,6 +166,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">子模块</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">新增</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">语法高亮</x:String>
+  <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">自动换行</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">使用外部合并工具查看</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">减少可见的行数</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可见的行数</x:String>
@@ -288,6 +286,7 @@
   <x:String x:Key="Text.Paste" xml:space="preserve">粘贴</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好设置</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外观配置</x:String>
+  <x:String x:Key="Text.Preference.Appearance.ColorOverrides" xml:space="preserve">自定义配色文件</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">默认字体大小</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">等宽字体</x:String>
@@ -316,9 +315,9 @@
   <x:String x:Key="Text.Preference.GPG" xml:space="preserve">GPG签名</x:String>
   <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">启用提交签名</x:String>
   <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">启用标签签名</x:String>
-  <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">GPG签名格式</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">可执行文件位置</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">gpg.exe所在路径</x:String>
+  <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">签名格式</x:String>
+  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">签名程序位置</x:String>
+  <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">签名程序所在路径</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">用户签名KEY</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">输入签名提交所使用的KEY</x:String>
   <x:String x:Key="Text.Preference.Merger" xml:space="preserve">外部合并工具</x:String>
@@ -388,7 +387,9 @@
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">添加远程</x:String>
   <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">解决冲突</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交</x:String>
-  <x:String x:Key="Text.Repository.SearchTip" xml:space="preserve">支持搜索作者/提交者/主题/指纹</x:String>
+  <x:String x:Key="Text.Repository.Search.By" xml:space="preserve">搜索途径</x:String>
+  <x:String x:Key="Text.Repository.Search.ByBaseInfo" xml:space="preserve">摘要</x:String>
+  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">文件</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交统计</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模块列表</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">添加子模块</x:String>
@@ -461,6 +462,8 @@
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">删除${0}$</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送${0}$</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">仓库地址 ：</x:String>
+  <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模块</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Tip" xml:space="preserve">为此仓库执行`submodule update`命令，更新所有的子模块。</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">新建分组</x:String>
   <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">新建子分组</x:String>

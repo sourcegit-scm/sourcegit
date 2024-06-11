@@ -1045,32 +1045,33 @@
       <ControlTemplate>
         <StackPanel>
           <Border Name="PART_LayoutRoot"
-                  Classes="TreeViewItemLayoutRoot"
-                  Focusable="True"
-                  Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Background="Transparent"
+                  BorderThickness="0"
+                  CornerRadius="0"
                   MinHeight="{TemplateBinding MinHeight}"
                   TemplatedControl.IsTemplateFocusTarget="True">
-            <Grid Name="PART_Header" ColumnDefinitions="16,*" Margin="{TemplateBinding Level, Mode=OneWay, Converter={StaticResource TreeViewItemLeftMarginConverter}}">
-              <Panel Name="PART_ExpandCollapseChevronContainer">
-                <ToggleButton Name="PART_ExpandCollapseChevron"
-                              Classes="tree_expander"
-                              Focusable="False"
-                              HorizontalAlignment="Center"
-                              IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}" />
-              </Panel>
-              <ContentPresenter Name="PART_HeaderPresenter"
-                                Grid.Column="1"
+            <Grid>
+              <Border Name="PART_Background" CornerRadius="{TemplateBinding CornerRadius}" Background="Transparent"/>
+              
+              <Grid Name="PART_Header" ColumnDefinitions="16,*" Margin="{TemplateBinding Level, Mode=OneWay, Converter={StaticResource TreeViewItemLeftMarginConverter}}">
+                <Panel Name="PART_ExpandCollapseChevronContainer">
+                  <ToggleButton Name="PART_ExpandCollapseChevron"
+                                Classes="tree_expander"
                                 Focusable="False"
-                                Background="Transparent"
-                                Content="{TemplateBinding Header}"
-                                ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                                Margin="{TemplateBinding Padding}" />
-            </Grid>
+                                HorizontalAlignment="Center"
+                                IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}" />
+                </Panel>
+                <ContentPresenter Name="PART_HeaderPresenter"
+                                  Grid.Column="1"
+                                  Focusable="False"
+                                  Background="Transparent"
+                                  Content="{TemplateBinding Header}"
+                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                  Margin="{TemplateBinding Padding}" />
+              </Grid>
+            </Grid>            
           </Border>
           <ItemsPresenter Name="PART_ItemsPresenter"
                           IsVisible="{TemplateBinding IsExpanded}"
@@ -1080,11 +1081,22 @@
     </Setter>
 
     <Style Selector="^ /template/ Border#PART_LayoutRoot:pointerover">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="^ /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
       <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
     </Style>
 
     <Style Selector="^:selected /template/ Border#PART_LayoutRoot">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="^:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
       <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+      <Setter Property="Opacity" Value=".4"/>
+    </Style>
+    <Style Selector="^:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+      <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+      <Setter Property="Opacity" Value=".65"/>
     </Style>
   </Style>
   <Style Selector="TreeViewItem[IsExpanded=True] Path.folder_icon">
