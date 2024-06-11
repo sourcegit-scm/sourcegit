@@ -10,7 +10,7 @@
              x:DataType="vm:WorkingCopy">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="300" MinWidth="300"/>
+      <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="300"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>

@@ -103,7 +103,7 @@
     <!-- Body -->
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="250" MinWidth="200" MaxWidth="400"/>
+        <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.RepositorySidebarWidth, Mode=TwoWay}" MinWidth="200" MaxWidth="400"/>
         <ColumnDefinition Width="3"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
