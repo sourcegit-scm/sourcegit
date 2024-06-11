@@ -1,0 +1,240 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="using:SourceGit.Models"
+        xmlns:vm="using:SourceGit.ViewModels"
+        xmlns:v="using:SourceGit.Views"
+        xmlns:c="using:SourceGit.Converters"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SourceGit.Views.BranchCompare"
+        x:DataType="vm:BranchCompare"
+        x:Name="me"
+        Icon="/App.ico"
+        Title="{DynamicResource Text.BranchCompare}"
+        Background="Transparent"
+        WindowStartupLocation="CenterOwner"
+        MinWidth="1280" MinHeight="720"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        SystemDecorations="{OnPlatform Full, Linux=None}">
+  <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="30"/>
+      <RowDefinition Height="64"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <!-- Custom window shadow for Linux -->
+    <Border Grid.Row="0" Grid.RowSpan="3"
+            Background="{DynamicResource Brush.Window}"
+            Effect="drop-shadow(0 0 6 #A0000000)"
+            IsVisible="{OnPlatform False, Linux=True}"/>
+
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto">
+      <!-- Bottom border -->
+      <Border Grid.Column="0" Grid.ColumnSpan="4"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+              DoubleTapped="MaximizeOrRestoreWindow"
+              PointerPressed="BeginMoveWindow"/>
+
+      <!-- Caption Buttons (macOS) -->
+      <Border Grid.Column="0" IsVisible="{OnPlatform False, macOS=True}">
+        <v:CaptionButtonsMacOS/>
+      </Border>
+
+      <!-- Icon -->
+      <Path Grid.Column="1" Margin="8,0,0,0" Width="12" Height="12" Data="{StaticResource Icons.Compare}"/>
+
+      <!-- Title -->
+      <TextBlock Grid.Column="2" Margin="8,0,0,0" Text="{DynamicResource Text.BranchCompare}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"/>
+
+      <!-- Caption Buttons (Windows/Linux) -->
+      <Border Grid.Column="3" IsVisible="{OnPlatform True, macOS=False}">
+        <v:CaptionButtons/>
+      </Border>
+    </Grid>
+
+    <!-- Compare Targets -->
+    <Border Grid.Row="1" Background="{DynamicResource Brush.Window}">
+      <Grid Margin="48,8,48,8" ColumnDefinitions="*,48,*">
+        <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+          <Grid RowDefinitions="Auto,*">
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+              <v:Avatar Width="16" Height="16"
+                        VerticalAlignment="Center"
+                        IsHitTestVisible="False"
+                        User="{Binding BaseHead.Author}"/>
+              <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding BaseHead.Author.Name}" Margin="8,0,0,0"/>
+              <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
+                <TextBlock Text="{Binding Base, Converter={x:Static c:BranchConverters.ToName}}" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
+              </Border>
+              <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding BaseHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
+              <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding BaseHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+            </Grid>
+
+            <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding BaseHead.Subject}" VerticalAlignment="Bottom"/>
+          </Grid>
+        </Border>
+
+        <Path Grid.Column="1" Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Down}" RenderTransformOrigin="50%,50%" RenderTransform="rotate(270deg)"/>
+
+        <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+          <Grid RowDefinitions="Auto,*">
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+              <v:Avatar Width="16" Height="16"
+                        VerticalAlignment="Center"
+                        IsHitTestVisible="False"
+                        User="{Binding ToHead.Author}"/>
+              <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding ToHead.Author.Name}" Margin="8,0,0,0"/>
+              <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
+                <TextBlock Text="{Binding To, Converter={x:Static c:BranchConverters.ToName}}" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
+              </Border>
+              <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding ToHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
+              <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding ToHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+            </Grid>
+
+            <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding ToHead.Subject}" VerticalAlignment="Bottom"/>
+          </Grid>
+        </Border>
+      </Grid>
+    </Border>    
+
+    <!-- Changes -->
+    <Border Grid.Row="2" Background="{DynamicResource Brush.Window}">
+      <Grid Margin="8,0,8,8">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="256" MinWidth="200" MaxWidth="480"/>
+          <ColumnDefinition Width="4"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" RowDefinitions="26,*">
+          <!-- Search & Display Mode -->
+          <Grid Grid.Row="0" ColumnDefinitions="*,18">
+            <TextBox Grid.Column="0"
+                     Height="26"
+                     BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+                     Background="Transparent"
+                     CornerRadius="4"
+                     Watermark="{DynamicResource Text.CommitDetail.Changes.Search}"
+                     Text="{Binding SearchFilter, Mode=TwoWay}">
+              <TextBox.InnerLeftContent>
+                <Path Width="14" Height="14" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
+              </TextBox.InnerLeftContent>
+
+              <TextBox.InnerRightContent>
+                <Button Classes="icon_button"
+                        IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Command="{Binding ClearSearchFilter}">
+                  <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
+                </Button>
+              </TextBox.InnerRightContent>
+            </TextBox>
+
+            <v:ChangeViewModeSwitcher Grid.Column="1"
+                                      Width="14" Height="14"
+                                      HorizontalAlignment="Right"
+                                      ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
+          </Grid>
+
+          <!-- Changes -->
+          <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
+            <v:ChangeCollectionView IsWorkingCopyChange="False"
+                                    ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode}"
+                                    Changes="{Binding VisibleChanges}"
+                                    SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
+                                    ContextRequested="OnChangeContextRequested"/>
+          </Border>
+        </Grid>
+
+        <GridSplitter Grid.Column="1"
+                      MinWidth="1"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      Background="Transparent"/>
+
+        <Grid Grid.Column="2">
+          <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+              <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
+              <TextBlock Margin="0,16,0,0"
+                         Text="{DynamicResource Text.Diff.Welcome}"
+                         FontSize="18" FontWeight="Bold"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         HorizontalAlignment="Center"/>
+            </StackPanel>
+          </Border>
+
+          <ContentControl Content="{Binding DiffContext}">
+            <ContentControl.DataTemplates>
+              <DataTemplate DataType="vm:DiffContext">
+                <v:DiffView/>
+              </DataTemplate>
+            </ContentControl.DataTemplates>
+          </ContentControl>
+        </Grid>
+      </Grid>
+    </Border>
+
+    <!-- Custom window sizer for Linux -->
+    <Grid Grid.Row="0" Grid.RowSpan="3" IsVisible="{OnPlatform False, Linux=True}" IsHitTestVisible="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.IsNormal}}">
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Left" VerticalAlignment="Top"
+              Cursor="TopLeftCorner"
+              Tag="{x:Static WindowEdge.NorthWest}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Height="4" Margin="4,0"
+              Background="Transparent"
+              HorizontalAlignment="Stretch" VerticalAlignment="Top"
+              Cursor="TopSide"
+              Tag="{x:Static WindowEdge.North}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Right" VerticalAlignment="Top"
+              Cursor="TopRightCorner"
+              Tag="{x:Static WindowEdge.NorthEast}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Margin="0,4"
+              Background="Transparent"
+              HorizontalAlignment="Left" VerticalAlignment="Stretch"
+              Cursor="LeftSide"
+              Tag="{x:Static WindowEdge.West}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Margin="0,4"
+              Background="Transparent"
+              HorizontalAlignment="Right" VerticalAlignment="Stretch"
+              Cursor="RightSide"
+              Tag="{x:Static WindowEdge.East}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Left" VerticalAlignment="Bottom"
+              Cursor="BottomLeftCorner"
+              Tag="{x:Static WindowEdge.SouthWest}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Height="4" Margin="4,0"
+              Background="Transparent"
+              HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+              Cursor="BottomSide"
+              Tag="{x:Static WindowEdge.South}"
+              PointerPressed="CustomResizeWindow"/>
+
+      <Border Width="4" Height="4"
+              Background="Transparent"
+              HorizontalAlignment="Right" VerticalAlignment="Bottom"
+              Cursor="BottomRightCorner"
+              Tag="{x:Static WindowEdge.SouthEast}"
+              PointerPressed="CustomResizeWindow"/>
+    </Grid>
+  </Grid>
+</Window>

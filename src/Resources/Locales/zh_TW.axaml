@@ -36,6 +36,7 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行追溯(blame)</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">選中檔案不支援該操作!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">檢出(checkout)${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithBranch" xml:space="preserve">與其他分支比較</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">與當前HEAD比較</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">與本地工作樹比較</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">複製分支名</x:String>
@@ -52,6 +53,7 @@
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重新命名${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切換上游分支...</x:String>
   <x:String x:Key="Text.BranchCM.UnsetUpstream" xml:space="preserve">取消追蹤</x:String>
+  <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比較</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">位元組</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">取    消</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">切換變更顯示模式</x:String>

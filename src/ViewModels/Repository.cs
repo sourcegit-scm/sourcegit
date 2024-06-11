@@ -909,6 +909,13 @@ namespace SourceGit.ViewModels
                 }
 
                 menu.Items.Add(push);
+
+                var compareWithBranch = CreateMenuItemToCompareBranches(branch);
+                if (compareWithBranch != null)
+                {
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(compareWithBranch);
+                }
             }
             else
             {
@@ -968,24 +975,6 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
 
-                var compare = new MenuItem();
-                compare.Header = App.Text("BranchCM.CompareWithHead");
-                compare.Icon = App.CreateMenuIcon("Icons.Compare");
-                compare.Click += (o, e) =>
-                {
-                    SearchResultSelectedCommit = null;
-
-                    if (_histories != null)
-                    {
-                        var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
-                        var head = new Commands.QuerySingleCommit(FullPath, current.Head).Result();
-                        _histories.AutoSelectedCommit = null;
-                        _histories.DetailContext = new RevisionCompare(FullPath, target, head);
-                    }
-
-                    e.Handled = true;
-                };
-
                 if (WorkingCopyChangesCount > 0)
                 {
                     var compareWithWorktree = new MenuItem();
@@ -1002,11 +991,18 @@ namespace SourceGit.ViewModels
                             _histories.DetailContext = new RevisionCompare(FullPath, target, null);
                         }
                     };
+                    menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(compareWithWorktree);
                 }
 
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(compare);
+                var compareWithBranch = CreateMenuItemToCompareBranches(branch);
+                if (compareWithBranch != null)
+                {
+                    if (WorkingCopyChangesCount == 0)
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+
+                    menu.Items.Add(compareWithBranch);
+                }                    
             }
 
             var type = GitFlow.GetBranchType(branch.Name);
@@ -1263,50 +1259,38 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
                 menu.Items.Add(new MenuItem() { Header = "-" });
-
-                if (current.Head != branch.Head)
-                {
-                    var compare = new MenuItem();
-                    compare.Header = App.Text("BranchCM.CompareWithHead");
-                    compare.Icon = App.CreateMenuIcon("Icons.Compare");
-                    compare.Click += (o, e) =>
-                    {
-                        SearchResultSelectedCommit = null;
-
-                        if (_histories != null)
-                        {
-                            var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
-                            var head = new Commands.QuerySingleCommit(FullPath, current.Head).Result();
-                            _histories.AutoSelectedCommit = null;
-                            _histories.DetailContext = new RevisionCompare(FullPath, target, head);
-                        }
-
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(compare);
-
-                    if (WorkingCopyChangesCount > 0)
-                    {
-                        var compareWithWorktree = new MenuItem();
-                        compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
-                        compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
-                        compareWithWorktree.Click += (o, e) =>
-                        {
-                            SearchResultSelectedCommit = null;
-
-                            if (_histories != null)
-                            {
-                                var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
-                                _histories.AutoSelectedCommit = null;
-                                _histories.DetailContext = new RevisionCompare(FullPath, target, null);
-                            }
-                        };
-                        menu.Items.Add(compareWithWorktree);
-                    }
-
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                }
             }
+
+            var hasCompare = false;
+            if (WorkingCopyChangesCount > 0)
+            {
+                var compareWithWorktree = new MenuItem();
+                compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
+                compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithWorktree.Click += (o, e) =>
+                {
+                    SearchResultSelectedCommit = null;
+
+                    if (_histories != null)
+                    {
+                        var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
+                        _histories.AutoSelectedCommit = null;
+                        _histories.DetailContext = new RevisionCompare(FullPath, target, null);
+                    }
+                };
+                menu.Items.Add(compareWithWorktree);
+                hasCompare = true;
+            }
+
+            var compareWithBranch = CreateMenuItemToCompareBranches(branch);
+            if (compareWithBranch != null)
+            {
+                menu.Items.Add(compareWithBranch);
+                hasCompare = true;
+            }
+
+            if (hasCompare)
+                menu.Items.Add(new MenuItem() { Header = "-" });
 
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", $"{branch.Remote}/{branch.Name}");
@@ -1483,6 +1467,41 @@ namespace SourceGit.ViewModels
             menu.Items.Add(copy);
             menu.Items.Add(rm);
             return menu;
+        }
+
+        private MenuItem CreateMenuItemToCompareBranches(Models.Branch branch)
+        {
+            if (Branches.Count == 1)
+                return null;
+
+            var compare = new MenuItem();
+            compare.Header = App.Text("BranchCM.CompareWithBranch");
+            compare.Icon = App.CreateMenuIcon("Icons.Compare");
+
+            foreach (var b in Branches)
+            {
+                if (b.FullName != branch.FullName)
+                {
+                    var dup = b;
+                    var target = new MenuItem();
+                    target.Header = b.IsLocal ? b.Name : $"{b.Remote}/{b.Name}";
+                    target.Icon = App.CreateMenuIcon(b.IsCurrent ? "Icons.Check" : "Icons.Branch");
+                    target.Click += (_, e) =>
+                    {
+                        var wnd = new Views.BranchCompare()
+                        {
+                            DataContext = new BranchCompare(FullPath, branch, dup)
+                        };
+
+                        wnd.Show(App.GetTopLevel() as Window);
+                        e.Handled = true;
+                    };
+
+                    compare.Items.Add(target);
+                }
+            }
+
+            return compare;
         }
 
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
