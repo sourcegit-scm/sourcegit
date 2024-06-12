@@ -17,6 +17,7 @@
         MinWidth="1280" MinHeight="720"
         Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.LauncherWidth, Mode=TwoWay}"
         Height="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.LauncherHeight, Mode=TwoWay}"
+        WindowState="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.LauncherWindowState, Mode=TwoWay}"
         WindowStartupLocation="CenterScreen"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="NoChrome"

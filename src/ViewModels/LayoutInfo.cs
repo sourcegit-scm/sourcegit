@@ -22,6 +22,12 @@ namespace SourceGit.ViewModels
             set;
         } = 720;
 
+        public WindowState LauncherWindowState
+        {
+            get;
+            set;
+        } = WindowState.Normal;
+
         [JsonConverter(typeof(GridLengthConverter))]
         public GridLength RepositorySidebarWidth
         {
