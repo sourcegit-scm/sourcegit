@@ -209,17 +209,6 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(reset);
-
-                var checkoutCommit = new MenuItem();
-                checkoutCommit.Header = App.Text("CommitCM.Checkout");
-                checkoutCommit.Icon = App.CreateMenuIcon("Icons.Check");
-                checkoutCommit.Click += (o, e) =>
-                {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new CheckoutCommit(_repo, commit));
-                    e.Handled = true;
-                };
-                menu.Items.Add(checkoutCommit);
             }
             else
             {
@@ -288,6 +277,20 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(revert);
+            }
+
+            if (current.Head != commit.SHA)
+            {
+                var checkoutCommit = new MenuItem();
+                checkoutCommit.Header = App.Text("CommitCM.Checkout");
+                checkoutCommit.Icon = App.CreateMenuIcon("Icons.Detached");
+                checkoutCommit.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowPopup(new CheckoutCommit(_repo, commit));
+                    e.Handled = true;
+                };
+                menu.Items.Add(checkoutCommit);
             }
 
             menu.Items.Add(new MenuItem() { Header = "-" });
