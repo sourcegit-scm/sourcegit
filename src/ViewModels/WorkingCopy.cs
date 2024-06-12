@@ -379,24 +379,16 @@ namespace SourceGit.ViewModels
                 if (isUnstaged)
                 {
                     if (changes.Count == _unstaged.Count && _staged.Count == 0)
-                    {
                         PopupHost.ShowPopup(new Discard(_repo));
-                    }
                     else
-                    {
                         PopupHost.ShowPopup(new Discard(_repo, changes, true));
-                    }
                 }
                 else
                 {
                     if (changes.Count == _staged.Count && _unstaged.Count == 0)
-                    {
                         PopupHost.ShowPopup(new Discard(_repo));
-                    }
                     else
-                    {
                         PopupHost.ShowPopup(new Discard(_repo, changes, false));
-                    }
                 }
             }
         }
@@ -921,24 +913,11 @@ namespace SourceGit.ViewModels
 
             var isUnstaged = _selectedUnstaged != null && _selectedUnstaged.Count > 0;
             if (change == null)
-            {
                 DetailContext = null;
-            }
             else if (change.IsConflit && isUnstaged)
-            {
                 DetailContext = new ConflictContext(_repo.FullPath, change);
-            }
             else
-            {
-                if (_detailContext is DiffContext previous)
-                {
-                    DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), previous);
-                }
-                else
-                {
-                    DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged));
-                }
-            }
+                DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), _detailContext as DiffContext);
         }
 
         private async void UseTheirs(List<Models.Change> changes)

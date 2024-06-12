@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -11,7 +11,13 @@ namespace SourceGit.ViewModels
         public List<Models.TextDiffLine> New { get; set; } = new List<Models.TextDiffLine>();
         public int MaxLineNumber = 0;
 
-        public TwoSideTextDiff(Models.TextDiff diff)
+        public Vector SyncScrollOffset
+        {
+            get => _syncScrollOffset;
+            set => SetProperty(ref _syncScrollOffset, value);
+        }
+
+        public TwoSideTextDiff(Models.TextDiff diff, TwoSideTextDiff previous = null)
         {
             File = diff.File;
             MaxLineNumber = diff.MaxLineNumber;
@@ -35,6 +41,9 @@ namespace SourceGit.ViewModels
             }
 
             FillEmptyLines();
+
+            if (previous != null && previous.File == File)
+                _syncScrollOffset = previous._syncScrollOffset;
         }
 
         private void FillEmptyLines()
@@ -52,5 +61,7 @@ namespace SourceGit.ViewModels
                     New.Add(new Models.TextDiffLine());
             }
         }
+
+        private Vector _syncScrollOffset = Vector.Zero;
     }
 }
