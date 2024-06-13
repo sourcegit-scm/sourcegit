@@ -1,40 +1,25 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:m="using:SourceGit.Models"
-        xmlns:vm="using:SourceGit.ViewModels"
-        xmlns:v="using:SourceGit.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="SourceGit.Views.Statistics"
-        x:DataType="vm:Statistics"
-        Title="{DynamicResource Text.Statistics}"
-        Background="Transparent"
-        Width="800" Height="450"
-        WindowStartupLocation="CenterOwner"
-        CanResize="False"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome"
-        SystemDecorations="{OnPlatform Full, Linux=None}">
-  <Grid RowDefinitions="Auto,Auto,*" Margin="{OnPlatform 0, Linux=6}">
-    <!-- Custom window shadow for Linux -->
-    <Border Grid.Row="0" Grid.RowSpan="3"
-            Background="{DynamicResource Brush.Window}"
-            Effect="drop-shadow(0 0 6 #A0000000)"
-            IsVisible="{OnPlatform False, Linux=True}"/>
-
-    <!-- Window BG -->
-    <Border Grid.Row="1" Grid.RowSpan="2"
-            Background="{DynamicResource Brush.Window}"
-            IsVisible="{OnPlatform True, Linux=False}"/>
-    
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.Statistics"
+                    x:DataType="vm:Statistics"
+                    Title="{DynamicResource Text.Statistics}"
+                    Width="800" Height="450"
+                    WindowStartupLocation="CenterOwner"
+                    CanResize="False">
+  <Grid RowDefinitions="Auto,Auto,*">
     <!-- Title bar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
-      
+
       <Path Grid.Column="0"
             Width="14" Height="14"
             Margin="10,0,0,0"
@@ -166,23 +151,23 @@
                   <TextBlock Classes="monospace" Text="{Binding Total}" FontSize="11" Margin="4,0,0,0"/>
                 </StackPanel>
               </Grid>
-            </Grid>            
+            </Grid>
 
             <!-- Graph -->
             <v:Chart Grid.Column="1"
                      Margin="16,0,0,0"
                      LineBrush="{DynamicResource Brush.Border1}"
                      ShapeBrush="{DynamicResource Brush.Accent}"
-                     Samples="{Binding Samples}"/>            
+                     Samples="{Binding Samples}"/>
           </Grid>
         </DataTemplate>
       </ContentControl.DataTemplates>
     </ContentControl>
 
     <!-- Loading Mask -->
-    <v:LoadingIcon Grid.Row="2" 
-                   Width="48" Height="48" 
+    <v:LoadingIcon Grid.Row="2"
+                   Width="48" Height="48"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    IsVisible="{Binding IsLoading}"/>
   </Grid>
-</Window>
+</v:ChromelessWindow>

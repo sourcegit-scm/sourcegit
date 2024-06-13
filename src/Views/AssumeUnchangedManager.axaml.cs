@@ -4,7 +4,7 @@ using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
-    public partial class AssumeUnchangedManager : Window
+    public partial class AssumeUnchangedManager : ChromelessWindow
     {
         public AssumeUnchangedManager()
         {

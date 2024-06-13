@@ -3,7 +3,7 @@ using Avalonia.Input;
 
 namespace SourceGit.Views
 {
-    public partial class FileHistories : Window
+    public partial class FileHistories : ChromelessWindow
     {
         public FileHistories()
         {
@@ -13,25 +13,11 @@ namespace SourceGit.Views
         private void MaximizeOrRestoreWindow(object sender, TappedEventArgs e)
         {
             if (WindowState == WindowState.Maximized)
-            {
                 WindowState = WindowState.Normal;
-            }
             else
-            {
                 WindowState = WindowState.Maximized;
-            }
-            e.Handled = true;
-        }
 
-        private void CustomResizeWindow(object sender, PointerPressedEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                if (border.Tag is WindowEdge edge)
-                {
-                    BeginResizeDrag(edge, e);
-                }
-            }
+            e.Handled = true;
         }
 
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)

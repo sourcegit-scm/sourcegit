@@ -1,12 +1,11 @@
 using System.Reflection;
 
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
-    public partial class About : Window
+    public partial class About : ChromelessWindow
     {
         public string Version
         {

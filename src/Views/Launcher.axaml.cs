@@ -7,8 +7,17 @@ using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
-    public partial class Launcher : Window, Models.INotificationReceiver
+    public partial class Launcher : ChromelessWindow, Models.INotificationReceiver
     {
+        public static readonly StyledProperty<GridLength> TitleBarHeightProperty =
+            AvaloniaProperty.Register<Launcher, GridLength>(nameof(TitleBarHeight), new GridLength(38, GridUnitType.Pixel));
+
+        public GridLength TitleBarHeight
+        {
+            get => GetValue(TitleBarHeightProperty);
+            set => SetValue(TitleBarHeightProperty, value);
+        }
+
         public Launcher()
         {
             DataContext = new ViewModels.Launcher();
@@ -31,6 +40,20 @@ namespace SourceGit.Views
 
                 if (vm.ActivePage != null)
                     vm.ActivePage.Notifications.Add(notice);
+            }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == WindowStateProperty)
+            {
+                var state = (WindowState)change.NewValue;
+                if (state == WindowState.Maximized)
+                    SetCurrentValue(TitleBarHeightProperty, new GridLength(OperatingSystem.IsMacOS() ? 34 : 30));
+                else
+                    SetCurrentValue(TitleBarHeightProperty, new GridLength(38, GridUnitType.Pixel));
             }
         }
 
@@ -136,36 +159,20 @@ namespace SourceGit.Views
             base.OnClosing(e);
         }
 
-        private void MaximizeOrRestoreWindow(object sender, TappedEventArgs e)
+        private void OnTitleBarDoubleTapped(object sender, TappedEventArgs e)
         {
             if (WindowState == WindowState.Maximized)
-            {
                 WindowState = WindowState.Normal;
-            }
             else
-            {
                 WindowState = WindowState.Maximized;
-            }
-            e.Handled = true;
-        }
 
-        private void CustomResizeWindow(object sender, PointerPressedEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                if (border.Tag is WindowEdge edge)
-                {
-                    BeginResizeDrag(edge, e);
-                }
-            }
+            e.Handled = true;
         }
 
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
         {
             if (e.ClickCount != 2)
-            {
                 BeginMoveDrag(e);
-            }
         }
 
         private void ScrollTabs(object sender, PointerWheelEventArgs e)

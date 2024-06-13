@@ -319,7 +319,7 @@ namespace SourceGit.Views
         private TextMate.Installation _textMate = null;
     }
 
-    public partial class Blame : Window
+    public partial class Blame : ChromelessWindow
     {
         public Blame()
         {
@@ -334,25 +334,11 @@ namespace SourceGit.Views
         private void MaximizeOrRestoreWindow(object sender, TappedEventArgs e)
         {
             if (WindowState == WindowState.Maximized)
-            {
                 WindowState = WindowState.Normal;
-            }
             else
-            {
                 WindowState = WindowState.Maximized;
-            }
-            e.Handled = true;
-        }
 
-        private void CustomResizeWindow(object sender, PointerPressedEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                if (border.Tag is WindowEdge edge)
-                {
-                    BeginResizeDrag(edge, e);
-                }
-            }
+            e.Handled = true;
         }
 
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)

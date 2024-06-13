@@ -3,7 +3,7 @@ using Avalonia.Input;
 
 namespace SourceGit.Views
 {
-    public partial class BranchCompare : Window
+    public partial class BranchCompare : ChromelessWindow
     {
         public BranchCompare()
         {
@@ -18,17 +18,6 @@ namespace SourceGit.Views
                 WindowState = WindowState.Maximized;
 
             e.Handled = true;
-        }
-
-        private void CustomResizeWindow(object sender, PointerPressedEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                if (border.Tag is WindowEdge edge)
-                {
-                    BeginResizeDrag(edge, e);
-                }
-            }
         }
 
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)

@@ -226,7 +226,7 @@ namespace SourceGit.Views
         private int _lastHitIdx = -1;
     }
 
-    public partial class Statistics : Window
+    public partial class Statistics : ChromelessWindow
     {
         public Statistics()
         {
