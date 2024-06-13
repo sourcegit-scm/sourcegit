@@ -258,19 +258,9 @@
             <DataTemplate DataType="vm:Popup">
               <Border Margin="8,0,8,8"
                       Background="{DynamicResource Brush.Popup}"
-                      BorderBrush="{DynamicResource Brush.Border0}">
-                <Border.CornerRadius>
-                  <OnPlatform Default="0,0,4,4" Linux="0"/>
-                </Border.CornerRadius>
-
-                <Border.BorderThickness>
-                  <OnPlatform Default="0" Linux="1,0,1,1"/>
-                </Border.BorderThickness>
-
-                <Border.Effect>
-                  <OnPlatform Default="drop-shadow(0 0 8 #8F000000)" Linux="{x:Null}"/>
-                </Border.Effect>
-                
+                      CornerRadius="0,0,4,4"
+                      BorderThickness="0"
+                      Effect="drop-shadow(0 0 8 #8F000000)">                
                 <StackPanel Margin="8" Orientation="Vertical">
                   <!-- Popup Widget -->
                   <ContentPresenter Margin="0,8"
