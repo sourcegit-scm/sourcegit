@@ -343,7 +343,29 @@ namespace SourceGit.Views
 
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
         {
-            BeginMoveDrag(e);
+            if (e.ClickCount != 2)
+                _pressedTitleBar = true;
+        }
+
+        private void MoveWindow(object sender, PointerEventArgs e)
+        {
+            if (!_pressedTitleBar)
+                return;
+
+            var visual = (Visual)e.Source;
+            BeginMoveDrag(new PointerPressedEventArgs(
+                e.Source,
+                e.Pointer,
+                visual,
+                e.GetPosition(visual),
+                e.Timestamp,
+                new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonPressed),
+                e.KeyModifiers));
+        }
+
+        private void EndMoveWindow(object sender, PointerReleasedEventArgs e)
+        {
+            _pressedTitleBar = false;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -361,5 +383,7 @@ namespace SourceGit.Views
             }
             e.Handled = true;
         }
+
+        private bool _pressedTitleBar = false;
     }
 }

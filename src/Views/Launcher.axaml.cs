@@ -172,7 +172,28 @@ namespace SourceGit.Views
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
         {
             if (e.ClickCount != 2)
-                BeginMoveDrag(e);
+                _pressedTitleBar = true;
+        }
+
+        private void MoveWindow(object sender, PointerEventArgs e)
+        {
+            if (!_pressedTitleBar)
+                return;
+
+            var visual = (Visual)e.Source;
+            BeginMoveDrag(new PointerPressedEventArgs(
+                e.Source, 
+                e.Pointer,
+                visual, 
+                e.GetPosition(visual), 
+                e.Timestamp, 
+                new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonPressed), 
+                e.KeyModifiers));
+        }
+
+        private void EndMoveWindow(object sender, PointerReleasedEventArgs e)
+        {
+            _pressedTitleBar = false;
         }
 
         private void ScrollTabs(object sender, PointerWheelEventArgs e)
@@ -236,26 +257,26 @@ namespace SourceGit.Views
         private void OnPointerPressedTab(object sender, PointerPressedEventArgs e)
         {
             _pressedTab = true;
-            _startDrag = false;
+            _startDragTab = false;
             _pressedTabPosition = e.GetPosition(sender as Border);
         }
 
         private void OnPointerReleasedTab(object sender, PointerReleasedEventArgs e)
         {
             _pressedTab = false;
-            _startDrag = false;
+            _startDragTab = false;
         }
 
         private void OnPointerMovedOverTab(object sender, PointerEventArgs e)
         {
-            if (_pressedTab && !_startDrag && sender is Border border)
+            if (_pressedTab && !_startDragTab && sender is Border border)
             {
                 var delta = e.GetPosition(border) - _pressedTabPosition;
                 var sizeSquired = delta.X * delta.X + delta.Y * delta.Y;
                 if (sizeSquired < 64)
                     return;
 
-                _startDrag = true;
+                _startDragTab = true;
 
                 var data = new DataObject();
                 data.Set("MovedTab", border.DataContext);
@@ -277,7 +298,7 @@ namespace SourceGit.Views
             }
 
             _pressedTab = false;
-            _startDrag = false;
+            _startDragTab = false;
             e.Handled = true;
         }
 
@@ -304,8 +325,9 @@ namespace SourceGit.Views
             OnPopupCancel(sender, e);
         }
 
+        private bool _pressedTitleBar = false;
         private bool _pressedTab = false;
         private Point _pressedTabPosition = new Point();
-        private bool _startDrag = false;
+        private bool _startDragTab = false;
     }
 }

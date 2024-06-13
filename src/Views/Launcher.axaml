@@ -31,7 +31,9 @@
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               DoubleTapped="OnTitleBarDoubleTapped"
-              PointerPressed="BeginMoveWindow"/>
+              PointerPressed="BeginMoveWindow"
+              PointerMoved="MoveWindow"
+              PointerReleased="EndMoveWindow"/>
 
       <!-- Caption Buttons (macOS) -->
       <Border Grid.Column="0" VerticalAlignment="Stretch" Margin="2,0,8,3" IsVisible="{OnPlatform False, macOS=True}">
@@ -81,10 +83,9 @@
 
         <ScrollViewer Grid.Column="1"
                       x:Name="launcherTabsScroller"
+                      HorizontalAlignment="Left"
                       HorizontalScrollBarVisibility="Hidden"
                       VerticalScrollBarVisibility="Disabled"
-                      DoubleTapped="OnTitleBarDoubleTapped"
-                      PointerPressed="BeginMoveWindow"
                       PointerWheelChanged="ScrollTabs"
                       ScrollChanged="OnTabsScrollChanged">
           <StackPanel x:Name="launcherTabsBar" Orientation="Horizontal" SizeChanged="UpdateScrollIndicator">
