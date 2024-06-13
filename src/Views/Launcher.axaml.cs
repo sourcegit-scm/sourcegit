@@ -161,6 +161,8 @@ namespace SourceGit.Views
 
         private void OnTitleBarDoubleTapped(object sender, TappedEventArgs e)
         {
+            _pressedTitleBar = false;
+
             if (WindowState == WindowState.Maximized)
                 WindowState = WindowState.Normal;
             else

@@ -13,6 +13,8 @@ namespace SourceGit.Views
 
         private void MaximizeOrRestoreWindow(object sender, TappedEventArgs e)
         {
+            _pressedTitleBar = false;
+
             if (WindowState == WindowState.Maximized)
                 WindowState = WindowState.Normal;
             else
