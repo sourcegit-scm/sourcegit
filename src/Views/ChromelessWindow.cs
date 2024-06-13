@@ -49,7 +49,7 @@ namespace SourceGit.Views
 
         private void OnWindowBorderPointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (sender is Border border && border.Tag is WindowEdge edge)
+            if (sender is Border border && border.Tag is WindowEdge edge && CanResize)
                 BeginResizeDrag(edge, e);
         }
     }

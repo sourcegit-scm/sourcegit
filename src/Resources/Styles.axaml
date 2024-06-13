@@ -40,21 +40,83 @@
   <Style Selector="Window.custom_window_frame">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="ExtendClientAreaChromeHints" Value="Default"/>
-    <Setter Property="ExtendClientAreaToDecorationsHint" Value="False"/>
     <Setter Property="SystemDecorations" Value="None"/>
     <Setter Property="Padding" Value="12"/>
 
     <Setter Property="Template">
       <ControlTemplate>
         <Grid>
+          <Border x:Name="PART_BorderTopLeft"
+                  Classes="resize_border"
+                  Width="12" Height="12"
+                  Background="Transparent"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Cursor="TopLeftCorner"
+                  Tag="{x:Static WindowEdge.NorthWest}"/>
+
+          <Border x:Name="PART_BorderTop"
+                  Classes="resize_border"
+                  Height="12" Margin="12,0"
+                  Background="Transparent"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                  Cursor="TopSide"
+                  Tag="{x:Static WindowEdge.North}"/>
+
+          <Border x:Name="PART_BorderTopRight"
+                  Classes="resize_border"
+                  Width="12" Height="12"
+                  Background="Transparent"
+                  HorizontalAlignment="Right" VerticalAlignment="Top"
+                  Cursor="TopRightCorner"
+                  Tag="{x:Static WindowEdge.NorthEast}"/>
+
+          <Border x:Name="PART_BorderLeft"
+                  Classes="resize_border"
+                  Width="12" Margin="0,12"
+                  Background="Transparent"
+                  HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                  Cursor="LeftSide"
+                  Tag="{x:Static WindowEdge.West}"/>
+
+          <Border x:Name="PART_BorderRight"
+                  Classes="resize_border"
+                  Width="12" Margin="0,12"
+                  Background="Transparent"
+                  HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                  Cursor="RightSide"
+                  Tag="{x:Static WindowEdge.East}"/>
+
+          <Border x:Name="PART_BorderBottomLeft"
+                  Classes="resize_border"
+                  Width="12" Height="12"
+                  Background="Transparent"
+                  HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                  Cursor="BottomLeftCorner"
+                  Tag="{x:Static WindowEdge.SouthWest}"/>
+
+          <Border x:Name="PART_BorderBottom"
+                  Classes="resize_border"
+                  Height="12" Margin="12,0"
+                  Background="Transparent"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                  Cursor="BottomSide"
+                  Tag="{x:Static WindowEdge.South}"/>
+
+          <Border x:Name="PART_BorderBottomRight"
+                  Classes="resize_border"
+                  Width="12" Height="12"
+                  Background="Transparent"
+                  HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                  Cursor="BottomRightCorner"
+                  Tag="{x:Static WindowEdge.SouthEast}"/>
+          
           <Border x:Name="PART_ContentRoot"
                   Background="{DynamicResource Brush.Window}"
                   BorderBrush="{DynamicResource Brush.Border0}"
                   BorderThickness="1"
                   Margin="{TemplateBinding Padding}"
                   CornerRadius="8"
-                  Effect="drop-shadow(0 0 12 #90000000)"
+                  Effect="drop-shadow(0 0 12 #A0000000)"
                   ClipToBounds="True">
             <VisualLayerManager>
               <ContentPresenter Name="PART_ContentPresenter"
@@ -64,64 +126,6 @@
                                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
             </VisualLayerManager>
           </Border>
-
-          <Grid x:Name="PART_ResizeBorderContainer" Margin="{TemplateBinding Padding}" IsHitTestVisible="True">
-            <Border x:Name="PART_BorderTopLeft"
-                    Width="4" Height="4"
-                    Background="Transparent"
-                    HorizontalAlignment="Left" VerticalAlignment="Top"
-                    Cursor="TopLeftCorner"
-                    Tag="{x:Static WindowEdge.NorthWest}"/>
-
-            <Border x:Name="PART_BorderTop"
-                    Height="4" Margin="4,0"
-                    Background="Transparent"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                    Cursor="TopSide"
-                    Tag="{x:Static WindowEdge.North}"/>
-
-            <Border x:Name="PART_BorderTopRight"
-                    Width="4" Height="4"
-                    Background="Transparent"
-                    HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Cursor="TopRightCorner"
-                    Tag="{x:Static WindowEdge.NorthEast}"/>
-
-            <Border x:Name="PART_BorderLeft"
-                    Width="4" Margin="0,4"
-                    Background="Transparent"
-                    HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                    Cursor="LeftSide"
-                    Tag="{x:Static WindowEdge.West}"/>
-
-            <Border x:Name="PART_BorderRight"
-                    Width="4" Margin="0,4"
-                    Background="Transparent"
-                    HorizontalAlignment="Right" VerticalAlignment="Stretch"
-                    Cursor="RightSide"
-                    Tag="{x:Static WindowEdge.East}"/>
-
-            <Border x:Name="PART_BorderBottomLeft"
-                    Width="4" Height="4"
-                    Background="Transparent"
-                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                    Cursor="BottomLeftCorner"
-                    Tag="{x:Static WindowEdge.SouthWest}"/>
-
-            <Border x:Name="PART_BorderBottom"
-                    Height="4" Margin="4,0"
-                    Background="Transparent"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
-                    Cursor="BottomSide"
-                    Tag="{x:Static WindowEdge.South}"/>
-
-            <Border x:Name="PART_BorderBottomRight"
-                    Width="4" Height="4"
-                    Background="Transparent"
-                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                    Cursor="BottomRightCorner"
-                    Tag="{x:Static WindowEdge.SouthEast}"/>
-          </Grid>
         </Grid>
       </ControlTemplate>
     </Setter>
@@ -135,12 +139,12 @@
     <Setter Property="BorderThickness" Value="0"/>
   </Style>
 
-  <Style Selector="Window.custom_window_frame[WindowState=Maximized] /template/ Grid#PART_ResizeBorderContainer">
+  <Style Selector="Window.custom_window_frame[WindowState=Maximized] /template/ Border.resize_border">
     <Setter Property="IsVisible" Value="False"/>
     <Setter Property="IsHitTestVisible" Value="False"/>
   </Style>
 
-  <Style Selector="Window.custom_window_frame[CanResize=False] /template/ Grid#PART_ResizeBorderContainer">
+  <Style Selector="Window.custom_window_frame[CanResize=False] /template/ Border.resize_border">
     <Setter Property="IsVisible" Value="False"/>
     <Setter Property="IsHitTestVisible" Value="False"/>
   </Style>
