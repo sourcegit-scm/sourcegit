@@ -14,6 +14,8 @@ namespace SourceGit.Views
         {
             if (OperatingSystem.IsLinux())
                 Classes.Add("custom_window_frame");
+            else if (OperatingSystem.IsWindows())
+                Classes.Add("fix_maximized_padding");
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
