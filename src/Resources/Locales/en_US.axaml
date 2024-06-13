@@ -243,6 +243,8 @@
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Create new page</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">Open preference dialog</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit staged changes</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit and push staged changes</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Force to reload this repository</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Stage/Unstage selected changes</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Open commit search</x:String>

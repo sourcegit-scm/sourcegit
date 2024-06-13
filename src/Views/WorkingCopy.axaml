@@ -198,7 +198,9 @@
                 Height="28"
                 Margin="8,0,0,0"
                 Padding="8,0"
-                Command="{Binding Commit}"/>
+                Command="{Binding Commit}"
+                HotKey="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
+                ToolTip.Tip="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
 
         <Button Grid.Column="5"
                 Classes="flat"
@@ -207,6 +209,8 @@
                 Margin="8,0,0,0"
                 Padding="8,0"
                 Command="{Binding CommitWithPush}"
+                HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"
+                ToolTip.Tip="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"
                 IsVisible="{Binding IsCommitWithPushVisible}"/>
       </Grid>
     </Grid>
