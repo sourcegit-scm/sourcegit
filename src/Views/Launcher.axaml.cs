@@ -184,12 +184,12 @@ namespace SourceGit.Views
 
             var visual = (Visual)e.Source;
             BeginMoveDrag(new PointerPressedEventArgs(
-                e.Source, 
+                e.Source,
                 e.Pointer,
-                visual, 
-                e.GetPosition(visual), 
-                e.Timestamp, 
-                new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonPressed), 
+                visual,
+                e.GetPosition(visual),
+                e.Timestamp,
+                new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonPressed),
                 e.KeyModifiers));
         }
 

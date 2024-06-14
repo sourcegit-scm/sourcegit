@@ -58,7 +58,7 @@ namespace SourceGit.Commands
                 }
 
                 nextPartIdx++;
-                
+
                 start = end + 1;
                 end = rs.StdOut.IndexOf('\n', start);
             }

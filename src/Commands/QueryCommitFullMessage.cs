@@ -12,7 +12,8 @@ namespace SourceGit.Commands
         public string Result()
         {
             var rs = ReadToEnd();
-            if (rs.IsSuccess) return rs.StdOut.TrimEnd();
+            if (rs.IsSuccess)
+                return rs.StdOut.TrimEnd();
             return string.Empty;
         }
     }

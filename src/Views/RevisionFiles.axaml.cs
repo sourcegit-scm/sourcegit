@@ -116,7 +116,7 @@ namespace SourceGit.Views
                         {
                             SelectedObject = null;
                             detail.ViewRevisionFile(null);
-                        }                            
+                        }
                     }
                 };
 

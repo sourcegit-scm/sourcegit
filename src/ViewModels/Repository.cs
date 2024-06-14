@@ -442,7 +442,7 @@ namespace SourceGit.ViewModels
             else
             {
                 visible = new Commands.QueryCommits(FullPath, $"-1000 -- \"{_searchCommitFilter}\"", false).Result();
-            }            
+            }
 
             SearchedCommits = visible;
         }
@@ -1002,7 +1002,7 @@ namespace SourceGit.ViewModels
                         menu.Items.Add(new MenuItem() { Header = "-" });
 
                     menu.Items.Add(compareWithBranch);
-                }                    
+                }
             }
 
             var type = GitFlow.GetBranchType(branch.Name);

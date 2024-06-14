@@ -107,7 +107,7 @@ namespace SourceGit.Views
 
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
-        public IThemedTextDiffPresenter(TextArea area, TextDocument doc): base(area, doc)
+        public IThemedTextDiffPresenter(TextArea area, TextDocument doc) : base(area, doc)
         {
             IsReadOnly = true;
             ShowLineNumbers = false;
@@ -156,7 +156,7 @@ namespace SourceGit.Views
                     TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
                     _textMate = Models.TextMateHelper.CreateForEditor(this);
                     TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);                        
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
                 }
             }
             else
