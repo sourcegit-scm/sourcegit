@@ -250,59 +250,46 @@
     </ContentControl>
 
     <!-- Popup container -->
-    <Grid Grid.Row="1" Margin="0,36,0,0" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
+    <Grid Grid.Row="1" Margin="0,36,0,0" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}" ClipToBounds="True">
       <Border Background="Transparent" PointerPressed="OnPopupCancelByClickMask"/>
 
-      <Grid Width="500" HorizontalAlignment="Center" VerticalAlignment="Top">                
-        <ContentControl Content="{Binding ActivePage.Popup}" ClipToBounds="True">
+      <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)" CornerRadius="0,0,4,4" ClipToBounds="True">                
+        <ContentControl Content="{Binding ActivePage.Popup}" Background="{DynamicResource Brush.Popup}">
           <ContentControl.DataTemplates>
-            <DataTemplate DataType="vm:Popup">
-              <Border Margin="8,0,8,8"
-                      Background="{DynamicResource Brush.Popup}"
-                      BorderBrush="{DynamicResource Brush.Border0}"
-                      CornerRadius="0,0,4,4">
-                <Border.BorderThickness>
-                  <OnPlatform Default="0" Linux="1,0,1,1"/>
-                </Border.BorderThickness>
+            <DataTemplate DataType="vm:Popup">  
+              <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">
+                <!-- Popup Widget -->
+                <ContentPresenter Margin="8,16,8,8"
+                                  Content="{Binding View}"
+                                  IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
 
-                <Border.Effect>
-                  <OnPlatform Default="drop-shadow(0 0 8 #8F000000)" Linux="{x:Null}"/>
-                </Border.Effect>
-                
-                <StackPanel Margin="8" Orientation="Vertical">
-                  <!-- Popup Widget -->
-                  <ContentPresenter Margin="0,8"
-                                    Content="{Binding View}"
-                                    IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
-
-                  <!-- Options -->
-                  <StackPanel Margin="0,8,0,0"
-                              Height="32"
-                              Orientation="Horizontal"
-                              HorizontalAlignment="Right"
-                              IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                    <Button Classes="flat primary"
-                            Width="80"
-                            Content="{DynamicResource Text.Sure}"
-                            Click="OnPopupSure"
-                            HotKey="Enter"/>
-                    <Button Classes="flat"
-                            Width="80"
-                            Margin="8,0,0,0"
-                            Content="{DynamicResource Text.Cancel}"
-                            Click="OnPopupCancel"/>
-                  </StackPanel>
-
-                  <!-- Running -->
-                  <v:PopupRunningStatus Margin="8"
-                                        Description="{Binding ProgressDescription}"
-                                        IsVisible="{Binding InProgress}"/>
+                <!-- Options -->
+                <StackPanel Margin="8,4,8,8"
+                            Height="32"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                  <Button Classes="flat primary"
+                          Width="80"
+                          Content="{DynamicResource Text.Sure}"
+                          Click="OnPopupSure"
+                          HotKey="Enter"/>
+                  <Button Classes="flat"
+                          Width="80"
+                          Margin="8,0,0,0"
+                          Content="{DynamicResource Text.Cancel}"
+                          Click="OnPopupCancel"/>
                 </StackPanel>
-              </Border>
+
+                <!-- Running -->
+                <v:PopupRunningStatus Margin="12,8"
+                                      Description="{Binding ProgressDescription}"
+                                      IsVisible="{Binding InProgress}"/>
+              </StackPanel>
             </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>
-      </Grid>
+      </Border>
     </Grid>
 
     <!-- Notification container -->

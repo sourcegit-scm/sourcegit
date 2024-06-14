@@ -109,23 +109,23 @@
                   HorizontalAlignment="Right" VerticalAlignment="Bottom"
                   Cursor="BottomRightCorner"
                   Tag="{x:Static WindowEdge.SouthEast}"/>
-          
-          <Border x:Name="PART_ContentRoot"
-                  Background="{DynamicResource Brush.Window}"
-                  BorderBrush="{DynamicResource Brush.Border0}"
-                  BorderThickness="1"
-                  Margin="{TemplateBinding Padding}"
-                  CornerRadius="8"
-                  Effect="drop-shadow(0 0 12 #A0000000)"
-                  ClipToBounds="True">
-            <VisualLayerManager>
-              <ContentPresenter Name="PART_ContentPresenter"
-                                ContentTemplate="{TemplateBinding ContentTemplate}"
-                                Content="{TemplateBinding Content}"
-                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-            </VisualLayerManager>
-          </Border>
+
+          <Grid Margin="{TemplateBinding Padding}" Effect="drop-shadow(0 0 12 #A0000000)">
+            <Border x:Name="PART_ContentRoot"
+                    Background="{DynamicResource Brush.Window}"
+                    BorderBrush="{DynamicResource Brush.Border0}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    ClipToBounds="True">
+              <VisualLayerManager>
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Content="{TemplateBinding Content}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+              </VisualLayerManager>
+            </Border>
+          </Grid>
         </Grid>
       </ControlTemplate>
     </Setter>
