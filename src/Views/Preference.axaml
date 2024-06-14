@@ -200,20 +200,7 @@
                            Padding="4"
                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                            CornerRadius="3"
-                           Value="{Binding DefaultFontSize, Mode=TwoWay}">
-              <NumericUpDown.Styles>
-                <Style Selector="NumericUpDown /template/ ButtonSpinner#PART_Spinner">
-                  <Setter Property="MinHeight" Value="0"/>
-                  <Setter Property="Height" Value="28"/>
-                </Style>
-                <Style Selector="NumericUpDown /template/ TextBox#PART_TextBox">
-                  <Setter Property="MinHeight" Value="0"/>
-                  <Setter Property="Height" Value="28"/>
-                  <Setter Property="VerticalContentAlignment" Value="Center"/>
-                  <Setter Property="CornerRadius" Value="3,0,0,3"/>
-                </Style>
-              </NumericUpDown.Styles>
-            </NumericUpDown>
+                           Value="{Binding DefaultFontSize, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="4" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.ColorOverrides}"
@@ -382,20 +369,7 @@
                              CornerRadius="3"
                              ParsingNumberStyle="Integer"
                              FormatString="0"
-                             Value="{Binding GitAutoFetchInterval, Mode=TwoWay, FallbackValue=10}">
-                <NumericUpDown.Styles>
-                  <Style Selector="NumericUpDown /template/ ButtonSpinner#PART_Spinner">
-                    <Setter Property="MinHeight" Value="0"/>
-                    <Setter Property="Height" Value="28"/>
-                  </Style>
-                  <Style Selector="NumericUpDown /template/ TextBox#PART_TextBox">
-                    <Setter Property="MinHeight" Value="0"/>
-                    <Setter Property="Height" Value="28"/>
-                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                    <Setter Property="CornerRadius" Value="3,0,0,3"/>
-                  </Style>
-                </NumericUpDown.Styles>
-              </NumericUpDown>
+                             Value="{Binding GitAutoFetchInterval, Mode=TwoWay, FallbackValue=10}"/>
               
               <TextBlock Grid.Column="1"
                          VerticalAlignment="Center"
