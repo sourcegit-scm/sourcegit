@@ -120,14 +120,15 @@
                     Background="{DynamicResource Brush.Window}"
                     BorderBrush="{DynamicResource Brush.Border0}"
                     BorderThickness="1"
-                    CornerRadius="8"
-                    ClipToBounds="True">
+                    CornerRadius="8">
               <VisualLayerManager>
-                <ContentPresenter Name="PART_ContentPresenter"
-                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  Content="{TemplateBinding Content}"
-                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                <Border CornerRadius="8" ClipToBounds="True">
+                  <ContentPresenter Name="PART_ContentPresenter"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </Border>
               </VisualLayerManager>
             </Border>
           </Grid>
