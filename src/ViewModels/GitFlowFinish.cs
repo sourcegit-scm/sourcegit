@@ -4,10 +4,15 @@ namespace SourceGit.ViewModels
 {
     public class GitFlowFinish : Popup
     {
-        public Models.Branch Branch => _branch;
-        public bool IsFeature => _type == Models.GitFlowBranchType.Feature;
-        public bool IsRelease => _type == Models.GitFlowBranchType.Release;
-        public bool IsHotfix => _type == Models.GitFlowBranchType.Hotfix;
+        public Models.Branch Branch
+        {
+            get;
+            set;
+        } = null;
+
+        public bool IsFeature => _type == "feature";
+        public bool IsRelease => _type == "release";
+        public bool IsHotfix => _type == "hotfix";
 
         public bool KeepBranch
         {
@@ -15,11 +20,13 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
-        public GitFlowFinish(Repository repo, Models.Branch branch, Models.GitFlowBranchType type)
+        public GitFlowFinish(Repository repo, Models.Branch branch, string type, string prefix)
         {
             _repo = repo;
-            _branch = branch;
             _type = type;
+            _prefix = prefix;
+
+            Branch = branch;
             View = new Views.GitFlowFinish() { DataContext = this };
         }
 
@@ -28,29 +35,16 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             return Task.Run(() =>
             {
-                var branch = _branch.Name;
-                switch (_type)
-                {
-                    case Models.GitFlowBranchType.Feature:
-                        branch = branch.Substring(_repo.GitFlow.Feature.Length);
-                        break;
-                    case Models.GitFlowBranchType.Release:
-                        branch = branch.Substring(_repo.GitFlow.Release.Length);
-                        break;
-                    default:
-                        branch = branch.Substring(_repo.GitFlow.Hotfix.Length);
-                        break;
-                }
-
-                SetProgressDescription($"Git Flow - finishing {_branch.Name} ...");
-                var succ = new Commands.GitFlow(_repo.FullPath).Finish(_type, branch, KeepBranch);
+                var name = Branch.Name.StartsWith(_prefix) ? Branch.Name.Substring(_prefix.Length) : Branch.Name;
+                SetProgressDescription($"Git Flow - finishing {_type} {name} ...");
+                var succ = Commands.GitFlow.Finish(_repo.FullPath, _type, name, KeepBranch);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
         }
 
         private readonly Repository _repo = null;
-        private readonly Models.Branch _branch = null;
-        private readonly Models.GitFlowBranchType _type = Models.GitFlowBranchType.None;
+        private readonly string _type = "feature";
+        private readonly string _prefix = string.Empty;
     }
 }

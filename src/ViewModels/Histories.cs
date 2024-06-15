@@ -451,8 +451,8 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(push);
             submenu.Items.Add(new MenuItem() { Header = "-" });
 
-            var type = _repo.GitFlow.GetBranchType(current.Name);
-            if (type != Models.GitFlowBranchType.None)
+            var detect = Commands.GitFlow.DetectType(_repo.FullPath, _repo.Branches, current.Name);
+            if (detect.IsGitFlowBranch)
             {
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", current.Name);
@@ -460,7 +460,7 @@ namespace SourceGit.ViewModels
                 finish.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowFinish(_repo, current, type));
+                        PopupHost.ShowPopup(new GitFlowFinish(_repo, current, detect.Type, detect.Prefix));
                     e.Handled = true;
                 };
                 submenu.Items.Add(finish);
@@ -510,8 +510,8 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(merge);
             submenu.Items.Add(new MenuItem() { Header = "-" });
 
-            var type = _repo.GitFlow.GetBranchType(branch.Name);
-            if (type != Models.GitFlowBranchType.None)
+            var detect = Commands.GitFlow.DetectType(_repo.FullPath, _repo.Branches, branch.Name);
+            if (detect.IsGitFlowBranch)
             {
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
@@ -519,7 +519,7 @@ namespace SourceGit.ViewModels
                 finish.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowFinish(_repo, branch, type));
+                        PopupHost.ShowPopup(new GitFlowFinish(_repo, branch, detect.Type, detect.Prefix));
                     e.Handled = true;
                 };
                 submenu.Items.Add(finish);

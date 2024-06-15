@@ -52,13 +52,6 @@ namespace SourceGit.ViewModels
         } = new AvaloniaList<string>();
 
         [JsonIgnore]
-        public Models.GitFlow GitFlow
-        {
-            get => _gitflow;
-            set => SetProperty(ref _gitflow, value);
-        }
-
-        [JsonIgnore]
         public int SelectedViewIndex
         {
             get => _selectedViewIndex;
@@ -298,7 +291,6 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshSubmodules);
             Task.Run(RefreshWorkingCopyChanges);
             Task.Run(RefreshStashes);
-            Task.Run(RefreshGitFlow);
         }
 
         public void OpenInFileManager()
@@ -697,22 +689,6 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void RefreshGitFlow()
-        {
-            var config = new Commands.Config(_fullpath).ListAll();
-            var gitFlow = new Models.GitFlow();
-            if (config.TryGetValue("gitflow.prefix.feature", out var feature))
-                gitFlow.Feature = feature;
-            if (config.TryGetValue("gitflow.prefix.release", out var release))
-                gitFlow.Release = release;
-            if (config.TryGetValue("gitflow.prefix.hotfix", out var hotfix))
-                gitFlow.Hotfix = hotfix;
-            Dispatcher.UIThread.Invoke(() =>
-            {
-                GitFlow = gitFlow;
-            });
-        }
-
         public void CreateNewBranch()
         {
             var current = Branches.Find(x => x.IsCurrent);
@@ -797,7 +773,8 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
             menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
 
-            if (GitFlow.IsEnabled)
+            var isGitFlowEnabled = Commands.GitFlow.IsEnabled(_fullpath, _branches);
+            if (isGitFlowEnabled)
             {
                 var startFeature = new MenuItem();
                 startFeature.Header = App.Text("GitFlow.StartFeature");
@@ -805,7 +782,7 @@ namespace SourceGit.ViewModels
                 startFeature.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowStart(this, Models.GitFlowBranchType.Feature));
+                        PopupHost.ShowPopup(new GitFlowStart(this, "feature"));
                     e.Handled = true;
                 };
 
@@ -815,7 +792,7 @@ namespace SourceGit.ViewModels
                 startRelease.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowStart(this, Models.GitFlowBranchType.Release));
+                        PopupHost.ShowPopup(new GitFlowStart(this, "release"));
                     e.Handled = true;
                 };
 
@@ -825,7 +802,7 @@ namespace SourceGit.ViewModels
                 startHotfix.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowStart(this, Models.GitFlowBranchType.Hotfix));
+                        PopupHost.ShowPopup(new GitFlowStart(this, "hotfix"));
                     e.Handled = true;
                 };
 
@@ -1005,8 +982,8 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            var type = GitFlow.GetBranchType(branch.Name);
-            if (type != Models.GitFlowBranchType.None)
+            var detect = Commands.GitFlow.DetectType(_fullpath, _branches, branch.Name);
+            if (detect.IsGitFlowBranch)
             {
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
@@ -1014,7 +991,7 @@ namespace SourceGit.ViewModels
                 finish.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowFinish(this, branch, type));
+                        PopupHost.ShowPopup(new GitFlowFinish(this, branch, detect.Type, detect.Prefix));
                     e.Handled = true;
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
@@ -1532,7 +1509,6 @@ namespace SourceGit.ViewModels
 
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
-        private Models.GitFlow _gitflow = new Models.GitFlow();
 
         private Models.Watcher _watcher = null;
         private Histories _histories = null;
