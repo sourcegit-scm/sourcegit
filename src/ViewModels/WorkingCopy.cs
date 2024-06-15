@@ -405,7 +405,7 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateContextMenuForUnstagedChanges()
         {
-            if (_selectedUnstaged.Count == 0)
+            if (_selectedUnstaged == null || _selectedUnstaged.Count == 0)
                 return null;
 
             var menu = new ContextMenu();
@@ -691,7 +691,7 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateContextMenuForStagedChanges()
         {
-            if (_selectedStaged.Count == 0)
+            if (_selectedStaged == null || _selectedStaged.Count == 0)
                 return null;
 
             var menu = new ContextMenu();
