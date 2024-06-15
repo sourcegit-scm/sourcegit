@@ -97,6 +97,7 @@ This app supports open repository in external tools listed in the table below.
 | Key | Description |
 | --- | --- |
 | Color.Window | Window background color |
+| Color.WindowBorder | Window border color. Only used on Linux. |
 | Color.TitleBar | Title bar background color |
 | Color.ToolBar | Tool bar background color |
 | Color.Popup | Popup panel background color |

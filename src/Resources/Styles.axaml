@@ -118,7 +118,7 @@
           <Grid Margin="{TemplateBinding Padding}" Effect="drop-shadow(0 0 12 #A0000000)">
             <Border x:Name="PART_ContentRoot"
                     Background="{DynamicResource Brush.Window}"
-                    BorderBrush="{DynamicResource Brush.Border0}"
+                    BorderBrush="{DynamicResource Brush.WindowBorder}"
                     BorderThickness="1"
                     CornerRadius="8">
               <VisualLayerManager>
