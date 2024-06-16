@@ -527,6 +527,16 @@ namespace SourceGit.ViewModels
 
                         e.Handled = true;
                     };
+                    
+                    var assumeUnchanged = new MenuItem();
+                    assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
+                    assumeUnchanged.Icon = App.CreateMenuIcon("Icons.File.Ignore");
+                    assumeUnchanged.IsVisible = change.WorkTree != Models.ChangeState.Untracked;
+                    assumeUnchanged.Click += (_, e) =>
+                    {
+                        new Commands.AssumeUnchanged(_repo.FullPath).Add(change.Path);
+                        e.Handled = true;
+                    };
 
                     var history = new MenuItem();
                     history.Header = App.Text("FileHistory");
@@ -538,24 +548,67 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
 
-                    var assumeUnchanged = new MenuItem();
-                    assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
-                    assumeUnchanged.Icon = App.CreateMenuIcon("Icons.File.Ignore");
-                    assumeUnchanged.IsEnabled = change.WorkTree != Models.ChangeState.Untracked;
-                    assumeUnchanged.Click += (_, e) =>
-                    {
-                        new Commands.AssumeUnchanged(_repo.FullPath).Add(change.Path);
-                        e.Handled = true;
-                    };
-
                     menu.Items.Add(stage);
                     menu.Items.Add(discard);
                     menu.Items.Add(stash);
                     menu.Items.Add(patch);
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                    menu.Items.Add(history);
                     menu.Items.Add(assumeUnchanged);
                     menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(history);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    
+                    if (change.WorkTree == Models.ChangeState.Untracked)
+                    {
+                        var isRooted = change.Path.IndexOf('/', StringComparison.Ordinal) <= 0;
+                        var addToIgnore = new MenuItem();
+                        addToIgnore.Header = App.Text("WorkingCopy.AddToGitIgnore");
+                        addToIgnore.Icon = App.CreateMenuIcon("Icons.GitIgnore");
+
+                        var singleFile = new MenuItem();
+                        singleFile.Header = App.Text("WorkingCopy.AddToGitIgnore.SingleFile");
+                        singleFile.Click += (_, e) =>
+                        {
+                            Commands.GitIgnore.Add(_repo.FullPath, change.Path);
+                            e.Handled = true;
+                        };
+                        addToIgnore.Items.Add(singleFile);
+
+                        var byParentFolder = new MenuItem();
+                        byParentFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InSameFolder");
+                        byParentFolder.IsVisible = !isRooted;
+                        byParentFolder.Click += (_, e) =>
+                        {
+                            Commands.GitIgnore.Add(_repo.FullPath, Path.GetDirectoryName(change.Path) + "/");
+                            e.Handled = true;
+                        };
+                        addToIgnore.Items.Add(byParentFolder);
+
+                        var extension = Path.GetExtension(change.Path);
+                        if (!string.IsNullOrEmpty(extension)) 
+                        {
+                            var byExtension = new MenuItem();
+                            byExtension.Header = App.Text("WorkingCopy.AddToGitIgnore.Extension", extension);
+                            byExtension.Click += (_, e) =>
+                            {
+                                Commands.GitIgnore.Add(_repo.FullPath, "*" + extension);
+                                e.Handled = true;
+                            };
+                            addToIgnore.Items.Add(byExtension);
+                            
+                            var byExtensionInSameFolder = new MenuItem();
+                            byExtensionInSameFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.ExtensionInSameFolder", extension);
+                            byExtensionInSameFolder.IsVisible = !isRooted;
+                            byExtensionInSameFolder.Click += (_, e) =>
+                            {
+                                Commands.GitIgnore.Add(_repo.FullPath, Path.GetDirectoryName(change.Path) + "/*" + extension);
+                                e.Handled = true;
+                            };
+                            addToIgnore.Items.Add(byExtensionInSameFolder);
+                        }
+
+                        menu.Items.Add(addToIgnore);
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+                    }
                 }
 
                 var copy = new MenuItem();
