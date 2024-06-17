@@ -28,6 +28,7 @@ Opensource Git GUI client.
   * Branch Diff
   * Image Diff
 * GitFlow support
+* Git LFS support
 
 > **Linux** only tested on **Ubuntu 22.04** on **X11**.
 

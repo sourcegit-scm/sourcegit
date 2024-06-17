@@ -676,7 +676,7 @@ namespace SourceGit.ViewModels
                         menu.Items.Add(lfs);
                         hasExtra = true;
                     }
-                    
+
                     if (hasExtra)
                         menu.Items.Add(new MenuItem() { Header = "-" });
                 }
