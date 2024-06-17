@@ -77,7 +77,7 @@
         </Style>
 
         <Style Selector="ListBoxItem:selected Border.switcher_bg">
-          <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+          <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
         </Style>
 
         <Style Selector="TextBlock.view_mode_switcher">
@@ -86,7 +86,7 @@
         </Style>
 
         <Style Selector="ListBoxItem:selected TextBlock.view_mode_switcher">
-          <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+          <Setter Property="Foreground" Value="White"/>
         </Style>
       </ListBox.Styles>
 
@@ -127,10 +127,30 @@
                         BorderThickness="1"
                         BorderBrush="{DynamicResource Brush.Border1}"
                         Background="{DynamicResource Brush.Contents}"
+                        HorizontalGridLinesBrush="{DynamicResource Brush.Border1}"
+                        VerticalGridLinesBrush="{DynamicResource Brush.Border1}"
                         IsReadOnly="True"
                         RowHeight="26"
                         HorizontalScrollBarVisibility="Disabled"
                         VerticalScrollBarVisibility="Auto">
+                <DataGrid.Styles>
+                  <Style Selector="DataGridColumnHeader">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
+                    <Setter Property="Padding" Value="8,0,0,0"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border1}"/>
+                    <Setter Property="SeparatorBrush" Value="{DynamicResource Brush.Border1}" />
+
+                    <Style Selector="^:pointerover /template/ Grid#PART_ColumnHeaderRoot">
+                      <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
+                    </Style>
+
+                    <Style Selector="^:pressed /template/ Grid#PART_ColumnHeaderRoot">
+                      <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
+                    </Style>
+                  </Style>
+                </DataGrid.Styles>
+                
                 <DataGrid.Columns>
                   <DataGridTextColumn Width="150" Header="{DynamicResource Text.Statistics.Committer}" Binding="{Binding Name}"/>
                   <DataGridTextColumn Width="*" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
