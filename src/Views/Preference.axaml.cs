@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Collections;
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -14,7 +13,7 @@ using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
-    public partial class Preference : Window
+    public partial class Preference : ChromelessWindow
     {
         public AvaloniaList<FontFamily> InstalledFonts
         {

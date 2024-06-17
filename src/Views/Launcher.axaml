@@ -1,39 +1,28 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:s="using:SourceGit"
-        xmlns:vm="using:SourceGit.ViewModels"
-        xmlns:m="using:SourceGit.Models"
-        xmlns:c="using:SourceGit.Converters"
-        xmlns:v="using:SourceGit.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="SourceGit.Views.Launcher"
-        x:DataType="vm:Launcher"
-        x:Name="me"
-        Icon="/App.ico"
-        Title="SourceGit"
-        Background="Transparent"
-        MinWidth="1280" MinHeight="720"
-        WindowStartupLocation="CenterScreen"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome"
-        SystemDecorations="{OnPlatform Full, Linux=None}">
-  <Window.Resources>
-    <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="Red"/>
-  </Window.Resources>
-  
-  <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:s="using:SourceGit"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:m="using:SourceGit.Models"
+                    xmlns:c="using:SourceGit.Converters"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.Launcher"
+                    x:DataType="vm:Launcher"
+                    x:Name="me"
+                    Icon="/App.ico"
+                    Title="SourceGit"
+                    MinWidth="1280" MinHeight="720"
+                    Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.LauncherWidth, Mode=TwoWay}"
+                    Height="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.LauncherHeight, Mode=TwoWay}"
+                    WindowState="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.LauncherWindowState, Mode=TwoWay}"
+                    WindowStartupLocation="CenterScreen"> 
+  <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToTitleBarHeight}}"/>
+      <RowDefinition Height="{Binding #me.TitleBarHeight}"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
-
-    <!-- Custom window shadow for Linux -->
-    <Border Grid.Row="0" Grid.RowSpan="2"
-            Background="{DynamicResource Brush.Window}"
-            Effect="drop-shadow(0 0 6 #A0000000)"
-            IsVisible="{OnPlatform False, Linux=True}"/>
 
     <!-- Custom TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
@@ -41,8 +30,10 @@
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
-              DoubleTapped="MaximizeOrRestoreWindow"
-              PointerPressed="BeginMoveWindow"/>
+              DoubleTapped="OnTitleBarDoubleTapped"
+              PointerPressed="BeginMoveWindow"
+              PointerMoved="MoveWindow"
+              PointerReleased="EndMoveWindow"/>
 
       <!-- Caption Buttons (macOS) -->
       <Border Grid.Column="0" VerticalAlignment="Stretch" Margin="2,0,8,3" IsVisible="{OnPlatform False, macOS=True}">
@@ -92,10 +83,9 @@
 
         <ScrollViewer Grid.Column="1"
                       x:Name="launcherTabsScroller"
+                      HorizontalAlignment="Left"
                       HorizontalScrollBarVisibility="Hidden"
                       VerticalScrollBarVisibility="Disabled"
-                      DoubleTapped="MaximizeOrRestoreWindow"
-                      PointerPressed="BeginMoveWindow"
                       PointerWheelChanged="ScrollTabs"
                       ScrollChanged="OnTabsScrollChanged">
           <StackPanel x:Name="launcherTabsBar" Orientation="Horizontal" SizeChanged="UpdateScrollIndicator">
@@ -260,62 +250,46 @@
     </ContentControl>
 
     <!-- Popup container -->
-    <Grid Grid.Row="1" Margin="0,36,0,0" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
+    <Grid Grid.Row="1" Margin="0,36,0,0" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}" ClipToBounds="True">
       <Border Background="Transparent" PointerPressed="OnPopupCancelByClickMask"/>
 
-      <Grid Width="500" HorizontalAlignment="Center" VerticalAlignment="Top">                
-        <ContentControl Content="{Binding ActivePage.Popup}" ClipToBounds="True">
+      <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)" CornerRadius="0,0,4,4" ClipToBounds="True">                
+        <ContentControl Content="{Binding ActivePage.Popup}" Background="{DynamicResource Brush.Popup}">
           <ContentControl.DataTemplates>
-            <DataTemplate DataType="vm:Popup">
-              <Border Margin="8,0,8,8"
-                      Background="{DynamicResource Brush.Popup}"
-                      BorderBrush="{DynamicResource Brush.Border0}">
-                <Border.CornerRadius>
-                  <OnPlatform Default="0,0,4,4" Linux="0"/>
-                </Border.CornerRadius>
+            <DataTemplate DataType="vm:Popup">  
+              <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">
+                <!-- Popup Widget -->
+                <ContentPresenter Margin="8,16,8,8"
+                                  Content="{Binding View}"
+                                  IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
 
-                <Border.BorderThickness>
-                  <OnPlatform Default="0" Linux="1,0,1,1"/>
-                </Border.BorderThickness>
-
-                <Border.Effect>
-                  <OnPlatform Default="drop-shadow(0 0 8 #8F000000)" Linux="{x:Null}"/>
-                </Border.Effect>
-                
-                <StackPanel Margin="8" Orientation="Vertical">
-                  <!-- Popup Widget -->
-                  <ContentPresenter Margin="0,8"
-                                    Content="{Binding View}"
-                                    IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
-
-                  <!-- Options -->
-                  <StackPanel Margin="0,8,0,0"
-                              Height="32"
-                              Orientation="Horizontal"
-                              HorizontalAlignment="Right"
-                              IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                    <Button Classes="flat primary"
-                            Width="80"
-                            Content="{DynamicResource Text.Sure}"
-                            Click="OnPopupSure"
-                            HotKey="Enter"/>
-                    <Button Classes="flat"
-                            Width="80"
-                            Margin="8,0,0,0"
-                            Content="{DynamicResource Text.Cancel}"
-                            Click="OnPopupCancel"/>
-                  </StackPanel>
-
-                  <!-- Running -->
-                  <v:PopupRunningStatus Margin="8"
-                                        Description="{Binding ProgressDescription}"
-                                        IsVisible="{Binding InProgress}"/>
+                <!-- Options -->
+                <StackPanel Margin="8,4,8,8"
+                            Height="32"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                  <Button Classes="flat primary"
+                          Width="80"
+                          Content="{DynamicResource Text.Sure}"
+                          Click="OnPopupSure"
+                          HotKey="Enter"/>
+                  <Button Classes="flat"
+                          Width="80"
+                          Margin="8,0,0,0"
+                          Content="{DynamicResource Text.Cancel}"
+                          Click="OnPopupCancel"/>
                 </StackPanel>
-              </Border>
+
+                <!-- Running -->
+                <v:PopupRunningStatus Margin="12,8"
+                                      Description="{Binding ProgressDescription}"
+                                      IsVisible="{Binding InProgress}"/>
+              </StackPanel>
             </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>
-      </Grid>
+      </Border>
     </Grid>
 
     <!-- Notification container -->
@@ -363,64 +337,5 @@
         </ItemsControl>
       </ScrollViewer>
     </Grid>
-
-    <!-- Custom window sizer for Linux -->
-    <Grid Grid.Row="0" Grid.RowSpan="2" IsVisible="{OnPlatform False, Linux=True}" IsHitTestVisible="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.IsNormal}}">
-      <Border Width="4" Height="4"
-              Background="Transparent"
-              HorizontalAlignment="Left" VerticalAlignment="Top"
-              Cursor="TopLeftCorner"
-              Tag="{x:Static WindowEdge.NorthWest}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Height="4" Margin="4,0"
-              Background="Transparent"
-              HorizontalAlignment="Stretch" VerticalAlignment="Top"
-              Cursor="TopSide"
-              Tag="{x:Static WindowEdge.North}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Width="4" Height="4"
-              Background="Transparent"
-              HorizontalAlignment="Right" VerticalAlignment="Top"
-              Cursor="TopRightCorner"
-              Tag="{x:Static WindowEdge.NorthEast}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Width="4" Margin="0,4"
-              Background="Transparent"
-              HorizontalAlignment="Left" VerticalAlignment="Stretch"
-              Cursor="LeftSide"
-              Tag="{x:Static WindowEdge.West}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Width="4" Margin="0,4"
-              Background="Transparent"
-              HorizontalAlignment="Right" VerticalAlignment="Stretch"
-              Cursor="RightSide"
-              Tag="{x:Static WindowEdge.East}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Width="4" Height="4"
-              Background="Transparent"
-              HorizontalAlignment="Left" VerticalAlignment="Bottom"
-              Cursor="BottomLeftCorner"
-              Tag="{x:Static WindowEdge.SouthWest}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Height="4" Margin="4,0"
-              Background="Transparent"
-              HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
-              Cursor="BottomSide"
-              Tag="{x:Static WindowEdge.South}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Width="4" Height="4"
-              Background="Transparent"
-              HorizontalAlignment="Right" VerticalAlignment="Bottom"
-              Cursor="BottomRightCorner"
-              Tag="{x:Static WindowEdge.SouthEast}"
-              PointerPressed="CustomResizeWindow"/>
-    </Grid>
   </Grid>
-</Window>
+</v:ChromelessWindow>

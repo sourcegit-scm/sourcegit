@@ -24,7 +24,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _oldMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).Result();
             _message = _oldMessage;
-            
+
             Head = head;
             View = new Views.Reword() { DataContext = this };
         }

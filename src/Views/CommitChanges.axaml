@@ -10,7 +10,7 @@
              x:DataType="vm:CommitDetail">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="256" MinWidth="200" MaxWidth="480"/>
+      <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.CommitDetailChangesLeftWidth, Mode=TwoWay}" MinWidth="200" MaxWidth="480"/>
       <ColumnDefinition Width="4"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>

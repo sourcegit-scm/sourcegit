@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -6,7 +7,6 @@ namespace SourceGit.ViewModels
 {
     public partial class InitGitFlow : Popup
     {
-
         [GeneratedRegex(@"^[\w\-/\.]+$")]
         private static partial Regex TAG_PREFIX();
 
@@ -62,6 +62,23 @@ namespace SourceGit.ViewModels
         public InitGitFlow(Repository repo)
         {
             _repo = repo;
+
+            var localBranches = new List<string>();
+            foreach (var branch in repo.Branches)
+            {
+                if (branch.IsLocal)
+                    localBranches.Add(branch.Name);
+            }
+
+            if (localBranches.Contains("master"))
+                _master = "master";
+            else if (localBranches.Contains("main"))
+                _master = "main";
+            else if (localBranches.Count > 0)
+                _master = localBranches[0];
+            else
+                _master = "master";
+
             View = new Views.InitGitFlow() { DataContext = this };
         }
 
@@ -79,9 +96,7 @@ namespace SourceGit.ViewModels
         public static ValidationResult ValidateTagPrefix(string tagPrefix, ValidationContext ctx)
         {
             if (!string.IsNullOrWhiteSpace(tagPrefix) && !TAG_PREFIX().IsMatch(tagPrefix))
-            {
                 return new ValidationResult("Bad tag prefix format!");
-            }
 
             return ValidationResult.Success;
         }
@@ -93,14 +108,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.GitFlow(_repo.FullPath).Init(_repo.Branches, _master, _develop, _featurePrefix, _releasePrefix, _hotfixPrefix, _tagPrefix);
-                if (succ)
-                {
-                    _repo.GitFlow.Feature = _featurePrefix;
-                    _repo.GitFlow.Release = _releasePrefix;
-                    _repo.GitFlow.Hotfix = _hotfixPrefix;
-                }
-
+                var succ = Commands.GitFlow.Init(_repo.FullPath, _repo.Branches, _master, _develop, _featurePrefix, _releasePrefix, _hotfixPrefix, _tagPrefix);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

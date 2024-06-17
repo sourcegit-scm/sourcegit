@@ -103,7 +103,7 @@
     <!-- Body -->
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="250" MinWidth="200" MaxWidth="400"/>
+        <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.RepositorySidebarWidth, Mode=TwoWay}" MinWidth="200" MaxWidth="400"/>
         <ColumnDefinition Width="3"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
@@ -615,19 +615,19 @@
           <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
             <ContentControl.DataTemplates>
               <DataTemplate DataType="vm:CherryPickInProgress">
-                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.FG3}" Text="{DynamicResource Text.InProgress.CherryPick}"/>
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick}"/>
               </DataTemplate>
 
               <DataTemplate DataType="vm:RebaseInProgress">
-                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.FG3}" Text="{DynamicResource Text.InProgress.Rebase}"/>
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase}"/>
               </DataTemplate>
 
               <DataTemplate DataType="vm:RevertInProgress">
-                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.FG3}" Text="{DynamicResource Text.InProgress.Revert}"/>
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert}"/>
               </DataTemplate>
 
               <DataTemplate DataType="vm:MergeInProgress">
-                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.FG3}" Text="{DynamicResource Text.InProgress.Merge}"/>
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge}"/>
               </DataTemplate>
             </ContentControl.DataTemplates>
           </ContentControl>

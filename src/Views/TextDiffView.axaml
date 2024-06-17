@@ -11,18 +11,16 @@
              Background="{DynamicResource Brush.Contents}">
   <UserControl.DataTemplates>
     <DataTemplate DataType="m:TextDiff">
-      <v:CombinedTextDiffPresenter BorderBrush="{DynamicResource Brush.Border2}"
-                                   BorderThickness="0"
-                                   LineBGEmpty = "{DynamicResource Brush.TextDiffView.LineBG1.EMPTY}"
-                                   LineBGAdd = "{DynamicResource Brush.TextDiffView.LineBG1.ADD}"
-                                   LineBGDeleted = "{DynamicResource Brush.TextDiffView.LineBG1.DELETED}"
-                                   SecondaryLineBGAdd = "{DynamicResource Brush.TextDiffView.LineBG2.ADD}"
-                                   SecondaryLineBGDeleted = "{DynamicResource Brush.TextDiffView.LineBG2.DELETED}"
+      <v:CombinedTextDiffPresenter FileName="{Binding File}"
                                    Foreground="{DynamicResource Brush.FG1}"
-                                   SecondaryFG="{DynamicResource Brush.FG2}"
+                                   LineBrush="{DynamicResource Brush.Border2}"
+                                   EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                   AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                   DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                   AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                   DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                   IndicatorForeground="{DynamicResource Brush.FG2}"
                                    FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
-                                   DiffData="{Binding}"
-                                   SyncScrollOffset="{Binding #ThisControl.SyncScrollOffset, Mode=TwoWay}"
                                    UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                    WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"/>
     </DataTemplate>
@@ -30,40 +28,36 @@
     <DataTemplate DataType="vm:TwoSideTextDiff">
       <Grid ColumnDefinitions="*,1,*">
         <v:SingleSideTextDiffPresenter Grid.Column="0"
-                                       SyncScrollOffset="{Binding #ThisControl.SyncScrollOffset, Mode=TwoWay}"
-                                       UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
                                        IsOld="True"
-                                       BorderBrush="{DynamicResource Brush.Border2}"
-                                       BorderThickness="0"
-                                       LineBGEmpty = "{DynamicResource Brush.TextDiffView.LineBG1.EMPTY}"
-                                       LineBGAdd = "{DynamicResource Brush.TextDiffView.LineBG1.ADD}"
-                                       LineBGDeleted = "{DynamicResource Brush.TextDiffView.LineBG1.DELETED}"
-                                       SecondaryLineBGAdd = "{DynamicResource Brush.TextDiffView.LineBG2.ADD}"
-                                       SecondaryLineBGDeleted = "{DynamicResource Brush.TextDiffView.LineBG2.DELETED}"
+                                       FileName="{Binding File}"
                                        Foreground="{DynamicResource Brush.FG1}"
-                                       SecondaryFG="{DynamicResource Brush.FG2}"
+                                       LineBrush="{DynamicResource Brush.Border2}"
+                                       EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                       AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                       DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                       AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                       DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                       IndicatorForeground="{DynamicResource Brush.FG2}"
                                        FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
-                                       DiffData="{Binding}"/>
+                                       UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
+                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"/>
 
         <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
         <v:SingleSideTextDiffPresenter Grid.Column="2"
-                                       SyncScrollOffset="{Binding #ThisControl.SyncScrollOffset, Mode=TwoWay}"
-                                       UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
                                        IsOld="False"
-                                       BorderBrush="{DynamicResource Brush.Border2}"
-                                       BorderThickness="0"
-                                       LineBGEmpty = "{DynamicResource Brush.TextDiffView.LineBG1.EMPTY}"
-                                       LineBGAdd = "{DynamicResource Brush.TextDiffView.LineBG1.ADD}"
-                                       LineBGDeleted = "{DynamicResource Brush.TextDiffView.LineBG1.DELETED}"
-                                       SecondaryLineBGAdd = "{DynamicResource Brush.TextDiffView.LineBG2.ADD}"
-                                       SecondaryLineBGDeleted = "{DynamicResource Brush.TextDiffView.LineBG2.DELETED}"
+                                       FileName="{Binding File}"
                                        Foreground="{DynamicResource Brush.FG1}"
-                                       SecondaryFG="{DynamicResource Brush.FG2}"
+                                       LineBrush="{DynamicResource Brush.Border2}"
+                                       EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                       AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                       DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                       AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                       DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                       IndicatorForeground="{DynamicResource Brush.FG2}"
                                        FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
-                                       DiffData="{Binding}"/>
+                                       UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
+                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"/>
       </Grid>
     </DataTemplate>
   </UserControl.DataTemplates>

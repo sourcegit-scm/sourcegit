@@ -136,6 +136,7 @@ namespace SourceGit.ViewModels
 
                     last.Node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
                     last.Data = Welcome.Instance;
+                    last.Popup = null;
 
                     GC.Collect();
                 }
@@ -188,6 +189,7 @@ namespace SourceGit.ViewModels
             }
 
             Pages = new AvaloniaList<LauncherPage> { ActivePage };
+            OnPropertyChanged(nameof(Pages));
             GC.Collect();
         }
 

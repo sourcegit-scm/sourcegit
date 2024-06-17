@@ -7,6 +7,7 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -21,7 +22,161 @@ using AvaloniaEdit.Utils;
 
 namespace SourceGit.Views
 {
-    public class CombinedTextDiffPresenter : TextEditor
+    public class IThemedTextDiffPresenter : TextEditor
+    {
+        public static readonly StyledProperty<string> FileNameProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, string>(nameof(FileName), string.Empty);
+
+        public string FileName
+        {
+            get => GetValue(FileNameProperty);
+            set => SetValue(FileNameProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> LineBrushProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(LineBrush), new SolidColorBrush(Colors.DarkGray));
+
+        public IBrush LineBrush
+        {
+            get => GetValue(LineBrushProperty);
+            set => SetValue(LineBrushProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> EmptyContentBackgroundProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(EmptyContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)));
+
+        public IBrush EmptyContentBackground
+        {
+            get => GetValue(EmptyContentBackgroundProperty);
+            set => SetValue(EmptyContentBackgroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> AddedContentBackgroundProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(AddedContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 255, 0)));
+
+        public IBrush AddedContentBackground
+        {
+            get => GetValue(AddedContentBackgroundProperty);
+            set => SetValue(AddedContentBackgroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> DeletedContentBackgroundProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(DeletedContentBackground), new SolidColorBrush(Color.FromArgb(60, 255, 0, 0)));
+
+        public IBrush DeletedContentBackground
+        {
+            get => GetValue(DeletedContentBackgroundProperty);
+            set => SetValue(DeletedContentBackgroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> AddedHighlightBrushProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(AddedHighlightBrush), new SolidColorBrush(Color.FromArgb(90, 0, 255, 0)));
+
+        public IBrush AddedHighlightBrush
+        {
+            get => GetValue(AddedHighlightBrushProperty);
+            set => SetValue(AddedHighlightBrushProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> DeletedHighlightBrushProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(DeletedHighlightBrush), new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)));
+
+        public IBrush DeletedHighlightBrush
+        {
+            get => GetValue(DeletedHighlightBrushProperty);
+            set => SetValue(DeletedHighlightBrushProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> IndicatorForegroundProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(IndicatorForeground), Brushes.Gray);
+
+        public IBrush IndicatorForeground
+        {
+            get => GetValue(IndicatorForegroundProperty);
+            set => SetValue(IndicatorForegroundProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, bool>(nameof(UseSyntaxHighlighting), false);
+
+        public bool UseSyntaxHighlighting
+        {
+            get => GetValue(UseSyntaxHighlightingProperty);
+            set => SetValue(UseSyntaxHighlightingProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(TextEditor);
+
+        public IThemedTextDiffPresenter(TextArea area, TextDocument doc) : base(area, doc)
+        {
+            IsReadOnly = true;
+            ShowLineNumbers = false;
+            BorderThickness = new Thickness(0);
+
+            TextArea.TextView.Margin = new Thickness(4, 0);
+            TextArea.TextView.Options.EnableHyperlinks = false;
+            TextArea.TextView.Options.EnableEmailHyperlinks = false;
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            UpdateTextMate();
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+
+            if (_textMate != null)
+            {
+                _textMate.Dispose();
+                _textMate = null;
+            }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == UseSyntaxHighlightingProperty)
+                UpdateTextMate();
+            else if (change.Property == FileNameProperty)
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
+            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
+                Models.TextMateHelper.SetThemeByApp(_textMate);
+        }
+
+        protected void UpdateTextMate()
+        {
+            if (UseSyntaxHighlighting)
+            {
+                if (_textMate == null)
+                {
+                    TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
+                    _textMate = Models.TextMateHelper.CreateForEditor(this);
+                    TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
+                }
+            }
+            else
+            {
+                if (_textMate != null)
+                {
+                    _textMate.Dispose();
+                    _textMate = null;
+                    GC.Collect();
+
+                    TextArea.TextView.Redraw();
+                }
+            }
+        }
+
+        private TextMate.Installation _textMate = null;
+        protected IVisualLineTransformer _lineStyleTransformer = null;
+    }
+
+    public class CombinedTextDiffPresenter : IThemedTextDiffPresenter
     {
         public class LineNumberMargin : AbstractMargin
         {
@@ -104,7 +259,7 @@ namespace SourceGit.Views
 
             public override void Render(DrawingContext context)
             {
-                var pen = new Pen(_editor.BorderBrush, 1);
+                var pen = new Pen(_editor.LineBrush, 1);
                 context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
             }
 
@@ -155,11 +310,11 @@ namespace SourceGit.Views
                 switch (type)
                 {
                     case Models.TextDiffLineType.None:
-                        return _editor.LineBGEmpty;
+                        return _editor.EmptyContentBackground;
                     case Models.TextDiffLineType.Added:
-                        return _editor.LineBGAdd;
+                        return _editor.AddedContentBackground;
                     case Models.TextDiffLineType.Deleted:
-                        return _editor.LineBGDeleted;
+                        return _editor.DeletedContentBackground;
                     default:
                         return null;
                 }
@@ -186,7 +341,7 @@ namespace SourceGit.Views
                 {
                     ChangeLinePart(line.Offset, line.EndOffset, v =>
                     {
-                        v.TextRunProperties.SetForegroundBrush(_editor.SecondaryFG);
+                        v.TextRunProperties.SetForegroundBrush(_editor.IndicatorForeground);
                         v.TextRunProperties.SetTypeface(new Typeface(_editor.FontFamily, FontStyle.Italic));
                     });
 
@@ -195,7 +350,7 @@ namespace SourceGit.Views
 
                 if (info.Highlights.Count > 0)
                 {
-                    var bg = info.Type == Models.TextDiffLineType.Added ? _editor.SecondaryLineBGAdd : _editor.SecondaryLineBGDeleted;
+                    var bg = info.Type == Models.TextDiffLineType.Added ? _editor.AddedHighlightBrush : _editor.DeletedHighlightBrush;
                     foreach (var highlight in info.Highlights)
                     {
                         ChangeLinePart(line.Offset + highlight.Start, line.Offset + highlight.Start + highlight.Count, v =>
@@ -209,129 +364,57 @@ namespace SourceGit.Views
             private readonly CombinedTextDiffPresenter _editor;
         }
 
-        public static readonly StyledProperty<Models.TextDiff> DiffDataProperty =
-            AvaloniaProperty.Register<CombinedTextDiffPresenter, Models.TextDiff>(nameof(DiffData));
-
-        public Models.TextDiff DiffData
-        {
-            get => GetValue(DiffDataProperty);
-            set => SetValue(DiffDataProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> LineBGEmptyProperty =
-            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(LineBGEmpty), new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)));
-
-        public IBrush LineBGEmpty
-        {
-            get => GetValue(LineBGEmptyProperty);
-            set => SetValue(LineBGEmptyProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> LineBGAddProperty =
-            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(LineBGAdd), new SolidColorBrush(Color.FromArgb(60, 0, 255, 0)));
-
-        public IBrush LineBGAdd
-        {
-            get => GetValue(LineBGAddProperty);
-            set => SetValue(LineBGAddProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> LineBGDeletedProperty =
-            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(LineBGDeleted), new SolidColorBrush(Color.FromArgb(60, 255, 0, 0)));
-
-        public IBrush LineBGDeleted
-        {
-            get => GetValue(LineBGDeletedProperty);
-            set => SetValue(LineBGDeletedProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> SecondaryLineBGAddProperty =
-            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(SecondaryLineBGAdd), new SolidColorBrush(Color.FromArgb(90, 0, 255, 0)));
-
-        public IBrush SecondaryLineBGAdd
-        {
-            get => GetValue(SecondaryLineBGAddProperty);
-            set => SetValue(SecondaryLineBGAddProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> SecondaryLineBGDeletedProperty =
-            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(SecondaryLineBGDeleted), new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)));
-
-        public IBrush SecondaryLineBGDeleted
-        {
-            get => GetValue(SecondaryLineBGDeletedProperty);
-            set => SetValue(SecondaryLineBGDeletedProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> SecondaryFGProperty =
-            AvaloniaProperty.Register<CombinedTextDiffPresenter, IBrush>(nameof(SecondaryFG), Brushes.Gray);
-
-        public IBrush SecondaryFG
-        {
-            get => GetValue(SecondaryFGProperty);
-            set => SetValue(SecondaryFGProperty, value);
-        }
-
-        public static readonly StyledProperty<Vector> SyncScrollOffsetProperty =
-            AvaloniaProperty.Register<CombinedTextDiffPresenter, Vector>(nameof(SyncScrollOffset));
-
-        public Vector SyncScrollOffset
-        {
-            get => GetValue(SyncScrollOffsetProperty);
-            set => SetValue(SyncScrollOffsetProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
-            AvaloniaProperty.Register<CombinedTextDiffPresenter, bool>(nameof(UseSyntaxHighlighting), false);
-
-        public bool UseSyntaxHighlighting
-        {
-            get => GetValue(UseSyntaxHighlightingProperty);
-            set => SetValue(UseSyntaxHighlightingProperty, value);
-        }
-
-        protected override Type StyleKeyOverride => typeof(TextEditor);
+        public Models.TextDiff DiffData => DataContext as Models.TextDiff;
 
         public CombinedTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
             _lineStyleTransformer = new LineStyleTransformer(this);
-
-            IsReadOnly = true;
-            ShowLineNumbers = false;
 
             TextArea.LeftMargins.Add(new LineNumberMargin(this, true) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
             TextArea.LeftMargins.Add(new LineNumberMargin(this, false) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
 
-            TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
             TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
-            TextArea.TextView.Options.EnableHyperlinks = false;
-            TextArea.TextView.Options.EnableEmailHyperlinks = false;
+        }
+
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+
+            var scroller = (ScrollViewer)e.NameScope.Find("PART_ScrollViewer");
+            scroller.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.TwoWay));
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
-
-            UpdateTextMate();
-
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            TextArea.TextView.ScrollOffsetChanged += OnTextViewScrollOffsetChanged;
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             base.OnUnloaded(e);
-
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-            TextArea.TextView.ScrollOffsetChanged -= OnTextViewScrollOffsetChanged;
+        }
 
-            if (_textMate != null)
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            var textDiff = DataContext as Models.TextDiff;
+            if (textDiff != null)
             {
-                _textMate.Dispose();
-                _textMate = null;
+                var builder = new StringBuilder();
+                foreach (var line in textDiff.Lines)
+                    builder.AppendLine(line.Content);
+
+                Text = builder.ToString();
+            }
+            else
+            {
+                Text = string.Empty;
             }
 
             GC.Collect();
@@ -346,9 +429,7 @@ namespace SourceGit.Views
             var menu = new ContextMenu();
             var parentView = this.FindAncestorOfType<TextDiffView>();
             if (parentView != null)
-            {
                 parentView.FillContextMenuForWorkingCopyChange(menu, selection.StartPosition.Line, selection.EndPosition.Line, false);
-            }
 
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
@@ -364,84 +445,9 @@ namespace SourceGit.Views
             TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
         }
-
-        private void OnTextViewScrollOffsetChanged(object sender, EventArgs e)
-        {
-            SetCurrentValue(SyncScrollOffsetProperty, TextArea.TextView.ScrollOffset);
-        }
-
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == DiffDataProperty)
-            {
-                if (DiffData != null)
-                {
-                    var builder = new StringBuilder();
-                    foreach (var line in DiffData.Lines)
-                    {
-                        builder.AppendLine(line.Content);
-                    }
-
-                    Text = builder.ToString();
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
-                }
-                else
-                {
-                    Text = string.Empty;
-                }
-            }
-            else if (change.Property == SyncScrollOffsetProperty)
-            {
-                if (TextArea.TextView.ScrollOffset != SyncScrollOffset)
-                {
-                    IScrollable scrollable = TextArea.TextView;
-                    scrollable.Offset = SyncScrollOffset;
-                }
-            }
-            else if (change.Property == UseSyntaxHighlightingProperty)
-            {
-                UpdateTextMate();
-            }
-            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
-            {
-                Models.TextMateHelper.SetThemeByApp(_textMate);
-            }
-        }
-
-        private void UpdateTextMate()
-        {
-            if (UseSyntaxHighlighting)
-            {
-                if (_textMate == null)
-                {
-                    TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
-                    _textMate = Models.TextMateHelper.CreateForEditor(this);
-                    TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
-
-                    if (DiffData != null)
-                        Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
-                }
-            }
-            else
-            {
-                if (_textMate != null)
-                {
-                    _textMate.Dispose();
-                    _textMate = null;
-                    GC.Collect();
-
-                    TextArea.TextView.Redraw();
-                }
-            }
-        }
-
-        private TextMate.Installation _textMate;
-        private readonly LineStyleTransformer _lineStyleTransformer = null;
     }
 
-    public class SingleSideTextDiffPresenter : TextEditor
+    public class SingleSideTextDiffPresenter : IThemedTextDiffPresenter
     {
         public class LineNumberMargin : AbstractMargin
         {
@@ -523,7 +529,7 @@ namespace SourceGit.Views
 
             public override void Render(DrawingContext context)
             {
-                var pen = new Pen(_editor.BorderBrush, 1);
+                var pen = new Pen(_editor.LineBrush, 1);
                 context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
             }
 
@@ -575,11 +581,11 @@ namespace SourceGit.Views
                 switch (type)
                 {
                     case Models.TextDiffLineType.None:
-                        return _editor.LineBGEmpty;
+                        return _editor.EmptyContentBackground;
                     case Models.TextDiffLineType.Added:
-                        return _editor.LineBGAdd;
+                        return _editor.AddedContentBackground;
                     case Models.TextDiffLineType.Deleted:
-                        return _editor.LineBGDeleted;
+                        return _editor.DeletedContentBackground;
                     default:
                         return null;
                 }
@@ -607,7 +613,7 @@ namespace SourceGit.Views
                 {
                     ChangeLinePart(line.Offset, line.EndOffset, v =>
                     {
-                        v.TextRunProperties.SetForegroundBrush(_editor.SecondaryFG);
+                        v.TextRunProperties.SetForegroundBrush(_editor.IndicatorForeground);
                         v.TextRunProperties.SetTypeface(new Typeface(_editor.FontFamily, FontStyle.Italic));
                     });
 
@@ -616,7 +622,7 @@ namespace SourceGit.Views
 
                 if (info.Highlights.Count > 0)
                 {
-                    var bg = info.Type == Models.TextDiffLineType.Added ? _editor.LineBGAdd : _editor.LineBGDeleted;
+                    var bg = info.Type == Models.TextDiffLineType.Added ? _editor.AddedHighlightBrush : _editor.DeletedHighlightBrush;
                     foreach (var highlight in info.Highlights)
                     {
                         ChangeLinePart(line.Offset + highlight.Start, line.Offset + highlight.Start + highlight.Count, v =>
@@ -639,103 +645,16 @@ namespace SourceGit.Views
             set => SetValue(IsOldProperty, value);
         }
 
-        public static readonly StyledProperty<ViewModels.TwoSideTextDiff> DiffDataProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, ViewModels.TwoSideTextDiff>(nameof(DiffData));
-
-        public ViewModels.TwoSideTextDiff DiffData
-        {
-            get => GetValue(DiffDataProperty);
-            set => SetValue(DiffDataProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> LineBGEmptyProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(LineBGEmpty), new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)));
-
-        public IBrush LineBGEmpty
-        {
-            get => GetValue(LineBGEmptyProperty);
-            set => SetValue(LineBGEmptyProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> LineBGAddProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(LineBGAdd), new SolidColorBrush(Color.FromArgb(60, 0, 255, 0)));
-
-        public IBrush LineBGAdd
-        {
-            get => GetValue(LineBGAddProperty);
-            set => SetValue(LineBGAddProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> LineBGDeletedProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(LineBGDeleted), new SolidColorBrush(Color.FromArgb(60, 255, 0, 0)));
-
-        public IBrush LineBGDeleted
-        {
-            get => GetValue(LineBGDeletedProperty);
-            set => SetValue(LineBGDeletedProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> SecondaryLineBGAddProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(SecondaryLineBGAdd), new SolidColorBrush(Color.FromArgb(90, 0, 255, 0)));
-
-        public IBrush SecondaryLineBGAdd
-        {
-            get => GetValue(SecondaryLineBGAddProperty);
-            set => SetValue(SecondaryLineBGAddProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> SecondaryLineBGDeletedProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(SecondaryLineBGDeleted), new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)));
-
-        public IBrush SecondaryLineBGDeleted
-        {
-            get => GetValue(SecondaryLineBGDeletedProperty);
-            set => SetValue(SecondaryLineBGDeletedProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> SecondaryFGProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, IBrush>(nameof(SecondaryFG), Brushes.Gray);
-
-        public IBrush SecondaryFG
-        {
-            get => GetValue(SecondaryFGProperty);
-            set => SetValue(SecondaryFGProperty, value);
-        }
-
-        public static readonly StyledProperty<Vector> SyncScrollOffsetProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, Vector>(nameof(SyncScrollOffset), Vector.Zero);
-
-        public Vector SyncScrollOffset
-        {
-            get => GetValue(SyncScrollOffsetProperty);
-            set => SetValue(SyncScrollOffsetProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, bool>(nameof(UseSyntaxHighlighting), false);
-
-        public bool UseSyntaxHighlighting
-        {
-            get => GetValue(UseSyntaxHighlightingProperty);
-            set => SetValue(UseSyntaxHighlightingProperty, value);
-        }
-
-        protected override Type StyleKeyOverride => typeof(TextEditor);
+        public ViewModels.TwoSideTextDiff DiffData => DataContext as ViewModels.TwoSideTextDiff;
 
         public SingleSideTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
             _lineStyleTransformer = new LineStyleTransformer(this);
 
-            IsReadOnly = true;
-            ShowLineNumbers = false;
-
             TextArea.LeftMargins.Add(new LineNumberMargin(this) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
-            TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
             TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
-            TextArea.TextView.Options.EnableHyperlinks = false;
-            TextArea.TextView.Options.EnableEmailHyperlinks = false;
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -745,11 +664,9 @@ namespace SourceGit.Views
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
             if (_scrollViewer != null)
             {
-                _scrollViewer.Offset = SyncScrollOffset;
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.OneWay));
             }
-
-            UpdateTextMate();
 
             TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
@@ -765,16 +682,29 @@ namespace SourceGit.Views
                 _scrollViewer = null;
             }
 
-            if (_textMate != null)
-            {
-                _textMate.Dispose();
-                _textMate = null;
-            }
-
             TextArea.PointerWheelChanged -= OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
 
             GC.Collect();
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            if (DataContext is ViewModels.TwoSideTextDiff diff)
+            {
+                var builder = new StringBuilder();
+                var lines = IsOld ? diff.Old : diff.New;
+                foreach (var line in lines)
+                    builder.AppendLine(line.Content);
+
+                Text = builder.ToString();
+            }
+            else
+            {
+                Text = string.Empty;
+            }
         }
 
         private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
@@ -785,8 +715,8 @@ namespace SourceGit.Views
 
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (TextArea.IsFocused)
-                SetCurrentValue(SyncScrollOffsetProperty, _scrollViewer.Offset);
+            if (TextArea.IsFocused && DataContext is ViewModels.TwoSideTextDiff diff)
+                diff.SyncScrollOffset = _scrollViewer.Offset;
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -798,9 +728,7 @@ namespace SourceGit.Views
             var menu = new ContextMenu();
             var parentView = this.FindAncestorOfType<TextDiffView>();
             if (parentView != null)
-            {
                 parentView.FillContextMenuForWorkingCopyChange(menu, selection.StartPosition.Line, selection.EndPosition.Line, IsOld);
-            }
 
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
@@ -817,96 +745,11 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == DiffDataProperty)
-            {
-                if (DiffData != null)
-                {
-                    var builder = new StringBuilder();
-                    if (IsOld)
-                    {
-                        foreach (var line in DiffData.Old)
-                        {
-                            builder.AppendLine(line.Content);
-                        }
-                    }
-                    else
-                    {
-                        foreach (var line in DiffData.New)
-                        {
-                            builder.AppendLine(line.Content);
-                        }
-                    }
-
-                    Text = builder.ToString();
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
-                }
-                else
-                {
-                    Text = string.Empty;
-                }
-            }
-            else if (change.Property == SyncScrollOffsetProperty)
-            {
-                if (!TextArea.IsFocused && _scrollViewer != null)
-                    _scrollViewer.Offset = SyncScrollOffset;
-            }
-            else if (change.Property == UseSyntaxHighlightingProperty)
-            {
-                UpdateTextMate();
-            }
-            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
-            {
-                Models.TextMateHelper.SetThemeByApp(_textMate);
-            }
-        }
-
-        private void UpdateTextMate()
-        {
-            if (UseSyntaxHighlighting)
-            {
-                if (_textMate == null)
-                {
-                    TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
-                    _textMate = Models.TextMateHelper.CreateForEditor(this);
-                    TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
-
-                    if (DiffData != null)
-                        Models.TextMateHelper.SetGrammarByFileName(_textMate, DiffData.File);
-                }
-            }
-            else
-            {
-                if (_textMate != null)
-                {
-                    _textMate.Dispose();
-                    _textMate = null;
-                    GC.Collect();
-
-                    TextArea.TextView.Redraw();
-                }
-            }
-        }
-
-        private TextMate.Installation _textMate;
-        private readonly LineStyleTransformer _lineStyleTransformer = null;
         private ScrollViewer _scrollViewer = null;
     }
 
     public partial class TextDiffView : UserControl
     {
-        public static readonly StyledProperty<Models.TextDiff> TextDiffProperty =
-            AvaloniaProperty.Register<TextDiffView, Models.TextDiff>(nameof(TextDiff), null);
-
-        public Models.TextDiff TextDiff
-        {
-            get => GetValue(TextDiffProperty);
-            set => SetValue(TextDiffProperty, value);
-        }
-
         public static readonly StyledProperty<bool> UseSideBySideDiffProperty =
             AvaloniaProperty.Register<TextDiffView, bool>(nameof(UseSideBySideDiff), false);
 
@@ -916,13 +759,20 @@ namespace SourceGit.Views
             set => SetValue(UseSideBySideDiffProperty, value);
         }
 
-        public static readonly StyledProperty<Vector> SyncScrollOffsetProperty =
-            AvaloniaProperty.Register<TextDiffView, Vector>(nameof(SyncScrollOffset));
-
-        public Vector SyncScrollOffset
+        static TextDiffView()
         {
-            get => GetValue(SyncScrollOffsetProperty);
-            set => SetValue(SyncScrollOffsetProperty, value);
+            UseSideBySideDiffProperty.Changed.AddClassHandler<TextDiffView>((v, e) =>
+            {
+                if (v.DataContext is Models.TextDiff diff)
+                {
+                    diff.SyncScrollOffset = Vector.Zero;
+
+                    if (v.UseSideBySideDiff)
+                        v.Content = new ViewModels.TwoSideTextDiff(diff);
+                    else
+                        v.Content = diff;
+                }
+            });
         }
 
         public TextDiffView()
@@ -932,6 +782,10 @@ namespace SourceGit.Views
 
         public void FillContextMenuForWorkingCopyChange(ContextMenu menu, int startLine, int endLine, bool isOldSide)
         {
+            var diff = DataContext as Models.TextDiff;
+            if (diff == null)
+                return;
+
             var parentView = this.FindAncestorOfType<DiffView>();
             if (parentView == null)
                 return;
@@ -951,7 +805,7 @@ namespace SourceGit.Views
                 endLine = tmp;
             }
 
-            var selection = GetUnifiedSelection(startLine, endLine, isOldSide);
+            var selection = GetUnifiedSelection(diff, startLine, endLine, isOldSide);
             if (!selection.HasChanges)
                 return;
 
@@ -1033,17 +887,17 @@ namespace SourceGit.Views
                         var tmpFile = Path.GetTempFileName();
                         if (change.WorkTree == Models.ChangeState.Untracked)
                         {
-                            TextDiff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
+                            diff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
                         }
                         else if (!UseSideBySideDiff)
                         {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
-                            TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
+                            diff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
                         }
                         else
                         {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
-                            TextDiff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, isOldSide, tmpFile);
+                            diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, isOldSide, tmpFile);
                         }
 
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--cache --index").Exec();
@@ -1065,17 +919,17 @@ namespace SourceGit.Views
                         var tmpFile = Path.GetTempFileName();
                         if (change.WorkTree == Models.ChangeState.Untracked)
                         {
-                            TextDiff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
+                            diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
                         }
                         else if (!UseSideBySideDiff)
                         {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
-                            TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                            diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
                         }
                         else
                         {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
-                            TextDiff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
+                            diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
                         }
 
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--reverse").Exec();
@@ -1103,15 +957,15 @@ namespace SourceGit.Views
                         var tmpFile = Path.GetTempFileName();
                         if (change.Index == Models.ChangeState.Added)
                         {
-                            TextDiff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                            diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
                         }
                         else if (!UseSideBySideDiff)
                         {
-                            TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                            diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
                         }
                         else
                         {
-                            TextDiff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
+                            diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
                         }
 
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--cache --index --reverse").Exec();
@@ -1133,17 +987,17 @@ namespace SourceGit.Views
                         var tmpFile = Path.GetTempFileName();
                         if (change.WorkTree == Models.ChangeState.Untracked)
                         {
-                            TextDiff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
+                            diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
                         }
                         else if (!UseSideBySideDiff)
                         {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
-                            TextDiff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                            diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
                         }
                         else
                         {
                             var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
-                            TextDiff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
+                            diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
                         }
 
                         new Commands.Apply(ctx.RepositoryPath, tmpFile, true, "nowarn", "--index --reverse").Exec();
@@ -1162,44 +1016,29 @@ namespace SourceGit.Views
             menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        protected override void OnDataContextChanged(EventArgs e)
         {
-            base.OnPropertyChanged(change);
+            base.OnDataContextChanged(e);
 
-            var data = TextDiff;
-            if (data == null)
+            var diff = DataContext as Models.TextDiff;
+            if (diff == null)
             {
                 Content = null;
-                SyncScrollOffset = Vector.Zero;
+                GC.Collect();
                 return;
-            }    
-
-            if (change.Property == TextDiffProperty)
-            {
-                if (UseSideBySideDiff)
-                    Content = new ViewModels.TwoSideTextDiff(TextDiff);
-                else
-                    Content = TextDiff;
-
-                SetCurrentValue(SyncScrollOffsetProperty, TextDiff.SyncScrollOffset);
             }
-            else if (change.Property == UseSideBySideDiffProperty)
-            {
-                if (UseSideBySideDiff)
-                    Content = new ViewModels.TwoSideTextDiff(TextDiff);
-                else
-                    Content = TextDiff;
 
-                SetCurrentValue(SyncScrollOffsetProperty, Vector.Zero);
-            }
+            if (UseSideBySideDiff)
+                Content = new ViewModels.TwoSideTextDiff(diff, Content as ViewModels.TwoSideTextDiff);
+            else
+                Content = diff;
         }
 
-        private Models.TextDiffSelection GetUnifiedSelection(int startLine, int endLine, bool isOldSide)
+        private Models.TextDiffSelection GetUnifiedSelection(Models.TextDiff diff, int startLine, int endLine, bool isOldSide)
         {
             var rs = new Models.TextDiffSelection();
-            var diff = TextDiff;
 
-            endLine = Math.Min(endLine, TextDiff.Lines.Count);
+            endLine = Math.Min(endLine, diff.Lines.Count);
             if (Content is ViewModels.TwoSideTextDiff twoSides)
             {
                 var target = isOldSide ? twoSides.Old : twoSides.New;
@@ -1233,8 +1072,8 @@ namespace SourceGit.Views
 
                 var firstContent = target[firstContentLine];
                 var endContent = target[endContentLine];
-                startLine = TextDiff.Lines.IndexOf(firstContent) + 1;
-                endLine = TextDiff.Lines.IndexOf(endContent) + 1;
+                startLine = diff.Lines.IndexOf(firstContent) + 1;
+                endLine = diff.Lines.IndexOf(endContent) + 1;
             }
 
             rs.StartLine = startLine;

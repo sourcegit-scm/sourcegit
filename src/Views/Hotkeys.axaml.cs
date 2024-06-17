@@ -1,10 +1,9 @@
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
-    public partial class Hotkeys : Window
+    public partial class Hotkeys : ChromelessWindow
     {
         public Hotkeys()
         {

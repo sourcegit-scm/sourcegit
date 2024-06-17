@@ -1,35 +1,25 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:m="using:SourceGit.Models"
-        xmlns:vm="using:SourceGit.ViewModels"
-        xmlns:v="using:SourceGit.Views"
-        xmlns:c="using:SourceGit.Converters"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="SourceGit.Views.Blame"
-        x:Name="me"
-        x:DataType="vm:Blame"
-        Icon="/App.ico"
-        Title="{DynamicResource Text.Blame}"
-        Background="Transparent"
-        WindowStartupLocation="CenterOwner"
-        MinWidth="1280" MinHeight="720"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome"
-        SystemDecorations="{OnPlatform Full, Linux=None}">
-  <Grid Margin="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.ToContentMargin}}">
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    xmlns:c="using:SourceGit.Converters"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.Blame"
+                    x:Name="me"
+                    x:DataType="vm:Blame"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.Blame}"
+                    WindowStartupLocation="CenterOwner"
+                    MinWidth="1280" MinHeight="720">
+  <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="30"/>
       <RowDefinition Height="24"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
-
-    <!-- Custom window shadow for Linux -->
-    <Border Grid.Row="0" Grid.RowSpan="3"
-            Background="{DynamicResource Brush.Window}"
-            Effect="drop-shadow(0 0 6 #A0000000)"
-            IsVisible="{OnPlatform False, Linux=True}"/>
 
     <!-- TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto">
@@ -38,7 +28,9 @@
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
               DoubleTapped="MaximizeOrRestoreWindow"
-              PointerPressed="BeginMoveWindow"/>
+              PointerPressed="BeginMoveWindow"
+              PointerMoved="MoveWindow"
+              PointerReleased="EndMoveWindow"/>
 
       <!-- Caption Buttons (macOS) -->
       <Border Grid.Column="0" IsVisible="{OnPlatform False, macOS=True}">
@@ -58,12 +50,12 @@
     </Grid>
 
     <!-- File -->
-    <Border Grid.Row="1" Padding="8,0" Background="{DynamicResource Brush.Window}">
+    <Border Grid.Row="1" Padding="8,0">
       <TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
     </Border>
 
     <!-- Body -->
-    <Grid Grid.Row="2" Background="{DynamicResource Brush.Window}">
+    <Grid Grid.Row="2">
       <!-- Blame View -->
       <v:BlameTextEditor HorizontalScrollBarVisibility="Auto"
                          VerticalScrollBarVisibility="Auto"
@@ -86,64 +78,5 @@
       <!-- Loading -->
       <v:LoadingIcon Width="48" Height="48" IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}"/>
     </Grid>
-
-    <!-- Custom window sizer for Linux -->
-    <Grid Grid.Row="0" Grid.RowSpan="3" IsVisible="{OnPlatform False, Linux=True}" IsHitTestVisible="{Binding #me.WindowState, Converter={x:Static c:WindowStateConverters.IsNormal}}">
-      <Border Width="4" Height="4"
-              Background="Transparent"
-              HorizontalAlignment="Left" VerticalAlignment="Top"
-              Cursor="TopLeftCorner"
-              Tag="{x:Static WindowEdge.NorthWest}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Height="4" Margin="4,0"
-              Background="Transparent"
-              HorizontalAlignment="Stretch" VerticalAlignment="Top"
-              Cursor="TopSide"
-              Tag="{x:Static WindowEdge.North}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Width="4" Height="4"
-              Background="Transparent"
-              HorizontalAlignment="Right" VerticalAlignment="Top"
-              Cursor="TopRightCorner"
-              Tag="{x:Static WindowEdge.NorthEast}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Width="4" Margin="0,4"
-              Background="Transparent"
-              HorizontalAlignment="Left" VerticalAlignment="Stretch"
-              Cursor="LeftSide"
-              Tag="{x:Static WindowEdge.West}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Width="4" Margin="0,4"
-              Background="Transparent"
-              HorizontalAlignment="Right" VerticalAlignment="Stretch"
-              Cursor="RightSide"
-              Tag="{x:Static WindowEdge.East}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Width="4" Height="4"
-              Background="Transparent"
-              HorizontalAlignment="Left" VerticalAlignment="Bottom"
-              Cursor="BottomLeftCorner"
-              Tag="{x:Static WindowEdge.SouthWest}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Height="4" Margin="4,0"
-              Background="Transparent"
-              HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
-              Cursor="BottomSide"
-              Tag="{x:Static WindowEdge.South}"
-              PointerPressed="CustomResizeWindow"/>
-
-      <Border Width="4" Height="4"
-              Background="Transparent"
-              HorizontalAlignment="Right" VerticalAlignment="Bottom"
-              Cursor="BottomRightCorner"
-              Tag="{x:Static WindowEdge.SouthEast}"
-              PointerPressed="CustomResizeWindow"/>
-    </Grid>
   </Grid>
-</Window>
+</v:ChromelessWindow>

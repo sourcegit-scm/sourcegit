@@ -18,6 +18,143 @@
     <Setter Property="HideDelay" Value="0:0:0.2"/>
   </Style>
 
+  <Style Selector="Window">
+    <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
+    <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome"/>
+    <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
+    <Setter Property="SystemDecorations" Value="Full"/>
+    <Setter Property="Padding" Value="0"/>
+
+    <Style.Resources>
+      <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="Red"/>
+      <SolidColorBrush x:Key="SystemErrorTextColor" Color="Red"/>
+    </Style.Resources>
+  </Style>
+
+  <Style Selector="Window[WindowState=Maximized]">
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="0"/>
+  </Style>
+  
+  <Style Selector="Window[WindowState=Maximized].fix_maximized_padding">
+    <Setter Property="Padding" Value="6"/>
+  </Style>
+
+  <Style Selector="Window.custom_window_frame">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="SystemDecorations" Value="None"/>
+    <Setter Property="Padding" Value="12"/>
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid>
+          <Border x:Name="PART_BorderTopLeft"
+                  Classes="resize_border"
+                  Width="12" Height="12"
+                  Background="Transparent"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Cursor="TopLeftCorner"
+                  Tag="{x:Static WindowEdge.NorthWest}"/>
+
+          <Border x:Name="PART_BorderTop"
+                  Classes="resize_border"
+                  Height="12" Margin="12,0"
+                  Background="Transparent"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                  Cursor="TopSide"
+                  Tag="{x:Static WindowEdge.North}"/>
+
+          <Border x:Name="PART_BorderTopRight"
+                  Classes="resize_border"
+                  Width="12" Height="12"
+                  Background="Transparent"
+                  HorizontalAlignment="Right" VerticalAlignment="Top"
+                  Cursor="TopRightCorner"
+                  Tag="{x:Static WindowEdge.NorthEast}"/>
+
+          <Border x:Name="PART_BorderLeft"
+                  Classes="resize_border"
+                  Width="12" Margin="0,12"
+                  Background="Transparent"
+                  HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                  Cursor="LeftSide"
+                  Tag="{x:Static WindowEdge.West}"/>
+
+          <Border x:Name="PART_BorderRight"
+                  Classes="resize_border"
+                  Width="12" Margin="0,12"
+                  Background="Transparent"
+                  HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                  Cursor="RightSide"
+                  Tag="{x:Static WindowEdge.East}"/>
+
+          <Border x:Name="PART_BorderBottomLeft"
+                  Classes="resize_border"
+                  Width="12" Height="12"
+                  Background="Transparent"
+                  HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                  Cursor="BottomLeftCorner"
+                  Tag="{x:Static WindowEdge.SouthWest}"/>
+
+          <Border x:Name="PART_BorderBottom"
+                  Classes="resize_border"
+                  Height="12" Margin="12,0"
+                  Background="Transparent"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                  Cursor="BottomSide"
+                  Tag="{x:Static WindowEdge.South}"/>
+
+          <Border x:Name="PART_BorderBottomRight"
+                  Classes="resize_border"
+                  Width="12" Height="12"
+                  Background="Transparent"
+                  HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                  Cursor="BottomRightCorner"
+                  Tag="{x:Static WindowEdge.SouthEast}"/>
+
+          <Grid Margin="{TemplateBinding Padding}" Effect="drop-shadow(0 0 12 #A0000000)">
+            <Border x:Name="PART_ContentRoot"
+                    Background="{DynamicResource Brush.Window}"
+                    BorderBrush="{DynamicResource Brush.WindowBorder}"
+                    BorderThickness="1"
+                    CornerRadius="8">
+              <VisualLayerManager>
+                <Border CornerRadius="8" ClipToBounds="True">
+                  <ContentPresenter Name="PART_ContentPresenter"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </Border>
+              </VisualLayerManager>
+            </Border>
+          </Grid>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="Window.custom_window_frame[WindowState=Maximized]">
+    <Setter Property="Padding" Value="0"/>
+  </Style>
+
+  <Style Selector="Window.custom_window_frame[WindowState=Maximized] /template/ Border#PART_ContentRoot">
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+
+  <Style Selector="Window.custom_window_frame[WindowState=Maximized] /template/ Border.resize_border">
+    <Setter Property="IsVisible" Value="False"/>
+    <Setter Property="IsHitTestVisible" Value="False"/>
+  </Style>
+
+  <Style Selector="Window.custom_window_frame[CanResize=False] /template/ Border.resize_border">
+    <Setter Property="IsVisible" Value="False"/>
+    <Setter Property="IsHitTestVisible" Value="False"/>
+  </Style>
+
   <Style Selector="ContentPresenter">
     <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFont}"/>
     <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
@@ -1162,5 +1299,23 @@
   </Style>
   <Style Selector="TreeDataGridExpanderCell[IsExpanded=False] Path.folder_icon">
     <Setter Property="Data" Value="{StaticResource Icons.Folder.Fill}"/>
+  </Style>
+
+  <Style Selector="NumericUpDown">
+    <Style Selector="^ /template/ ButtonSpinner#PART_Spinner">
+      <Setter Property="MinHeight" Value="0"/>
+      <Setter Property="Height" Value="28"/>
+    </Style>
+    <Style Selector="^ /template/ TextBox#PART_TextBox">
+      <Setter Property="MinHeight" Value="0"/>
+      <Setter Property="Height" Value="28"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="^:focus-within /template/ ButtonSpinner#PART_Spinner">
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+    </Style>
+    <Style Selector="^ /template/ TextBox#PART_TextBox /template/ Border#PART_BorderElement">
+      <Setter Property="IsVisible" Value="False"/>
+    </Style>
   </Style>
 </Styles>

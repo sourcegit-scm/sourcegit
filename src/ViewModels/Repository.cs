@@ -52,13 +52,6 @@ namespace SourceGit.ViewModels
         } = new AvaloniaList<string>();
 
         [JsonIgnore]
-        public Models.GitFlow GitFlow
-        {
-            get => _gitflow;
-            set => SetProperty(ref _gitflow, value);
-        }
-
-        [JsonIgnore]
         public int SelectedViewIndex
         {
             get => _selectedViewIndex;
@@ -298,7 +291,6 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshSubmodules);
             Task.Run(RefreshWorkingCopyChanges);
             Task.Run(RefreshStashes);
-            Task.Run(RefreshGitFlow);
         }
 
         public void OpenInFileManager()
@@ -442,7 +434,7 @@ namespace SourceGit.ViewModels
             else
             {
                 visible = new Commands.QueryCommits(FullPath, $"-1000 -- \"{_searchCommitFilter}\"", false).Result();
-            }            
+            }
 
             SearchedCommits = visible;
         }
@@ -697,22 +689,6 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void RefreshGitFlow()
-        {
-            var config = new Commands.Config(_fullpath).ListAll();
-            var gitFlow = new Models.GitFlow();
-            if (config.TryGetValue("gitflow.prefix.feature", out var feature))
-                gitFlow.Feature = feature;
-            if (config.TryGetValue("gitflow.prefix.release", out var release))
-                gitFlow.Release = release;
-            if (config.TryGetValue("gitflow.prefix.hotfix", out var hotfix))
-                gitFlow.Hotfix = hotfix;
-            Dispatcher.UIThread.Invoke(() =>
-            {
-                GitFlow = gitFlow;
-            });
-        }
-
         public void CreateNewBranch()
         {
             var current = Branches.Find(x => x.IsCurrent);
@@ -797,7 +773,8 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
             menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
 
-            if (GitFlow.IsEnabled)
+            var isGitFlowEnabled = Commands.GitFlow.IsEnabled(_fullpath, _branches);
+            if (isGitFlowEnabled)
             {
                 var startFeature = new MenuItem();
                 startFeature.Header = App.Text("GitFlow.StartFeature");
@@ -805,7 +782,7 @@ namespace SourceGit.ViewModels
                 startFeature.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowStart(this, Models.GitFlowBranchType.Feature));
+                        PopupHost.ShowPopup(new GitFlowStart(this, "feature"));
                     e.Handled = true;
                 };
 
@@ -815,7 +792,7 @@ namespace SourceGit.ViewModels
                 startRelease.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowStart(this, Models.GitFlowBranchType.Release));
+                        PopupHost.ShowPopup(new GitFlowStart(this, "release"));
                     e.Handled = true;
                 };
 
@@ -825,7 +802,7 @@ namespace SourceGit.ViewModels
                 startHotfix.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowStart(this, Models.GitFlowBranchType.Hotfix));
+                        PopupHost.ShowPopup(new GitFlowStart(this, "hotfix"));
                     e.Handled = true;
                 };
 
@@ -909,6 +886,13 @@ namespace SourceGit.ViewModels
                 }
 
                 menu.Items.Add(push);
+
+                var compareWithBranch = CreateMenuItemToCompareBranches(branch);
+                if (compareWithBranch != null)
+                {
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(compareWithBranch);
+                }
             }
             else
             {
@@ -968,24 +952,6 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
 
-                var compare = new MenuItem();
-                compare.Header = App.Text("BranchCM.CompareWithHead");
-                compare.Icon = App.CreateMenuIcon("Icons.Compare");
-                compare.Click += (o, e) =>
-                {
-                    SearchResultSelectedCommit = null;
-
-                    if (_histories != null)
-                    {
-                        var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
-                        var head = new Commands.QuerySingleCommit(FullPath, current.Head).Result();
-                        _histories.AutoSelectedCommit = null;
-                        _histories.DetailContext = new RevisionCompare(FullPath, target, head);
-                    }
-
-                    e.Handled = true;
-                };
-
                 if (WorkingCopyChangesCount > 0)
                 {
                     var compareWithWorktree = new MenuItem();
@@ -1002,15 +968,22 @@ namespace SourceGit.ViewModels
                             _histories.DetailContext = new RevisionCompare(FullPath, target, null);
                         }
                     };
+                    menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(compareWithWorktree);
                 }
 
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(compare);
+                var compareWithBranch = CreateMenuItemToCompareBranches(branch);
+                if (compareWithBranch != null)
+                {
+                    if (WorkingCopyChangesCount == 0)
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+
+                    menu.Items.Add(compareWithBranch);
+                }
             }
 
-            var type = GitFlow.GetBranchType(branch.Name);
-            if (type != Models.GitFlowBranchType.None)
+            var detect = Commands.GitFlow.DetectType(_fullpath, _branches, branch.Name);
+            if (detect.IsGitFlowBranch)
             {
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
@@ -1018,7 +991,7 @@ namespace SourceGit.ViewModels
                 finish.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowFinish(this, branch, type));
+                        PopupHost.ShowPopup(new GitFlowFinish(this, branch, detect.Type, detect.Prefix));
                     e.Handled = true;
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
@@ -1263,50 +1236,38 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
                 menu.Items.Add(new MenuItem() { Header = "-" });
-
-                if (current.Head != branch.Head)
-                {
-                    var compare = new MenuItem();
-                    compare.Header = App.Text("BranchCM.CompareWithHead");
-                    compare.Icon = App.CreateMenuIcon("Icons.Compare");
-                    compare.Click += (o, e) =>
-                    {
-                        SearchResultSelectedCommit = null;
-
-                        if (_histories != null)
-                        {
-                            var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
-                            var head = new Commands.QuerySingleCommit(FullPath, current.Head).Result();
-                            _histories.AutoSelectedCommit = null;
-                            _histories.DetailContext = new RevisionCompare(FullPath, target, head);
-                        }
-
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(compare);
-
-                    if (WorkingCopyChangesCount > 0)
-                    {
-                        var compareWithWorktree = new MenuItem();
-                        compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
-                        compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
-                        compareWithWorktree.Click += (o, e) =>
-                        {
-                            SearchResultSelectedCommit = null;
-
-                            if (_histories != null)
-                            {
-                                var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
-                                _histories.AutoSelectedCommit = null;
-                                _histories.DetailContext = new RevisionCompare(FullPath, target, null);
-                            }
-                        };
-                        menu.Items.Add(compareWithWorktree);
-                    }
-
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                }
             }
+
+            var hasCompare = false;
+            if (WorkingCopyChangesCount > 0)
+            {
+                var compareWithWorktree = new MenuItem();
+                compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
+                compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithWorktree.Click += (o, e) =>
+                {
+                    SearchResultSelectedCommit = null;
+
+                    if (_histories != null)
+                    {
+                        var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
+                        _histories.AutoSelectedCommit = null;
+                        _histories.DetailContext = new RevisionCompare(FullPath, target, null);
+                    }
+                };
+                menu.Items.Add(compareWithWorktree);
+                hasCompare = true;
+            }
+
+            var compareWithBranch = CreateMenuItemToCompareBranches(branch);
+            if (compareWithBranch != null)
+            {
+                menu.Items.Add(compareWithBranch);
+                hasCompare = true;
+            }
+
+            if (hasCompare)
+                menu.Items.Add(new MenuItem() { Header = "-" });
 
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", $"{branch.Remote}/{branch.Name}");
@@ -1485,6 +1446,41 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        private MenuItem CreateMenuItemToCompareBranches(Models.Branch branch)
+        {
+            if (Branches.Count == 1)
+                return null;
+
+            var compare = new MenuItem();
+            compare.Header = App.Text("BranchCM.CompareWithBranch");
+            compare.Icon = App.CreateMenuIcon("Icons.Compare");
+
+            foreach (var b in Branches)
+            {
+                if (b.FullName != branch.FullName)
+                {
+                    var dup = b;
+                    var target = new MenuItem();
+                    target.Header = b.IsLocal ? b.Name : $"{b.Remote}/{b.Name}";
+                    target.Icon = App.CreateMenuIcon(b.IsCurrent ? "Icons.Check" : "Icons.Branch");
+                    target.Click += (_, e) =>
+                    {
+                        var wnd = new Views.BranchCompare()
+                        {
+                            DataContext = new BranchCompare(FullPath, branch, dup)
+                        };
+
+                        wnd.Show(App.GetTopLevel() as Window);
+                        e.Handled = true;
+                    };
+
+                    compare.Items.Add(target);
+                }
+            }
+
+            return compare;
+        }
+
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
         {
             var builder = new BranchTreeNode.Builder();
@@ -1513,7 +1509,6 @@ namespace SourceGit.ViewModels
 
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
-        private Models.GitFlow _gitflow = new Models.GitFlow();
 
         private Models.Watcher _watcher = null;
         private Histories _histories = null;

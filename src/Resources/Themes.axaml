@@ -6,6 +6,7 @@
       <Color x:Key="Color.MacOS.Minimize">#FFFFBE2F</Color>
       <Color x:Key="Color.MacOS.Maximize">#FF29c941</Color>
       <Color x:Key="Color.Window">#FFF0F5F9</Color>
+      <Color x:Key="Color.WindowBorder">#FFAFAFAF</Color>
       <Color x:Key="Color.TitleBar">#FFCFDEEA</Color>
       <Color x:Key="Color.ToolBar">#FFF0F5F9</Color>
       <Color x:Key="Color.Popup">#FFF8F8F8</Color>
@@ -14,22 +15,21 @@
       <Color x:Key="Color.Decorator">#FF6F6F6F</Color>
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
       <Color x:Key="Color.Conflict">#FF836C2E</Color>
+      <Color x:Key="Color.ConflictForeground">#FFFFFFFF</Color>
       <Color x:Key="Color.Border0">#FFCFCFCF</Color>
       <Color x:Key="Color.Border1">#FF898989</Color>
       <Color x:Key="Color.Border2">#FFCFCFCF</Color>
-      <Color x:Key="Color.Border3">#FFEFEFEF</Color>
       <Color x:Key="Color.FlatButton.Background">#FFF8F8F8</Color>
       <Color x:Key="Color.FlatButton.BackgroundHovered">White</Color>
       <Color x:Key="Color.FlatButton.PrimaryBackground">#FF4295FF</Color>
       <Color x:Key="Color.FlatButton.PrimaryBackgroundHovered">#FF529DFB</Color>
       <Color x:Key="Color.FG1">#FF1F1F1F</Color>
       <Color x:Key="Color.FG2">#FF6F6F6F</Color>
-      <Color x:Key="Color.FG3">#FFFFFFFF</Color>
-      <Color x:Key="Color.TextDiffView.LineBG1.EMPTY">#3C000000</Color>
-      <Color x:Key="Color.TextDiffView.LineBG1.ADD">#3C00FF00</Color>
-      <Color x:Key="Color.TextDiffView.LineBG1.DELETED">#3CFF0000</Color>
-      <Color x:Key="Color.TextDiffView.LineBG2.ADD">#5A00FF00</Color>
-      <Color x:Key="Color.TextDiffView.LineBG2.DELETED">#50FF0000</Color>
+      <Color x:Key="Color.Diff.EmptyBG">#3C000000</Color>
+      <Color x:Key="Color.Diff.AddedBG">#3C00FF00</Color>
+      <Color x:Key="Color.Diff.DeletedBG">#3CFF0000</Color>
+      <Color x:Key="Color.Diff.AddedHighlight">#5A00FF00</Color>
+      <Color x:Key="Color.Diff.DeletedHighlight">#50FF0000</Color>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -37,6 +37,7 @@
       <Color x:Key="Color.MacOS.Minimize">#FFFCBB2D</Color>
       <Color x:Key="Color.MacOS.Maximize">#FF25C53C</Color>
       <Color x:Key="Color.Window">#FF252525</Color>
+      <Color x:Key="Color.WindowBorder">#FF444444</Color>
       <Color x:Key="Color.TitleBar">#FF1F1F1F</Color>
       <Color x:Key="Color.ToolBar">#FF2C2C2C</Color>
       <Color x:Key="Color.Popup">#FF2B2B2B</Color>
@@ -45,22 +46,21 @@
       <Color x:Key="Color.Decorator">#FF505050</Color>
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
       <Color x:Key="Color.Conflict">#FFFAFAD2</Color>
+      <Color x:Key="Color.ConflictForeground">#FF252525</Color>
       <Color x:Key="Color.Border0">#FF181818</Color>
       <Color x:Key="Color.Border1">#FF7C7C7C</Color>
       <Color x:Key="Color.Border2">#FF404040</Color>
-      <Color x:Key="Color.Border3">#FF252525</Color>
       <Color x:Key="Color.FlatButton.Background">#FF303030</Color>
       <Color x:Key="Color.FlatButton.BackgroundHovered">#FF333333</Color>
       <Color x:Key="Color.FlatButton.PrimaryBackground">#FF3A3A3A</Color>
       <Color x:Key="Color.FlatButton.PrimaryBackgroundHovered">#FF404040</Color>
       <Color x:Key="Color.FG1">#FFDDDDDD</Color>
       <Color x:Key="Color.FG2">#40F1F1F1</Color>
-      <Color x:Key="Color.FG3">#FF252525</Color>
-      <Color x:Key="Color.TextDiffView.LineBG1.EMPTY">#3C000000</Color>
-      <Color x:Key="Color.TextDiffView.LineBG1.ADD">#3C00FF00</Color>
-      <Color x:Key="Color.TextDiffView.LineBG1.DELETED">#3CFF0000</Color>
-      <Color x:Key="Color.TextDiffView.LineBG2.ADD">#5A00FF00</Color>
-      <Color x:Key="Color.TextDiffView.LineBG2.DELETED">#50FF0000</Color>
+      <Color x:Key="Color.Diff.EmptyBG">#3C000000</Color>
+      <Color x:Key="Color.Diff.AddedBG">#3C00FF00</Color>
+      <Color x:Key="Color.Diff.DeletedBG">#3CFF0000</Color>
+      <Color x:Key="Color.Diff.AddedHighlight">#5A00FF00</Color>
+      <Color x:Key="Color.Diff.DeletedHighlight">#50FF0000</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 
@@ -68,6 +68,7 @@
   <SolidColorBrush x:Key="Brush.MacOS.Minimize" Color="{DynamicResource Color.MacOS.Minimize}"/>
   <SolidColorBrush x:Key="Brush.MacOS.Maximize" Color="{DynamicResource Color.MacOS.Maximize}"/>
   <SolidColorBrush x:Key="Brush.Window" Color="{DynamicResource Color.Window}"/>
+  <SolidColorBrush x:Key="Brush.WindowBorder" Color="{DynamicResource Color.WindowBorder}"/>
   <SolidColorBrush x:Key="Brush.TitleBar" Color="{DynamicResource Color.TitleBar}"/>
   <SolidColorBrush x:Key="Brush.ToolBar" Color="{DynamicResource Color.ToolBar}"/>
   <SolidColorBrush x:Key="Brush.Popup" Color="{DynamicResource Color.Popup}"/>
@@ -76,22 +77,21 @@
   <SolidColorBrush x:Key="Brush.Decorator" Color="{DynamicResource Color.Decorator}"/>
   <SolidColorBrush x:Key="Brush.DecoratorIcon" Color="{DynamicResource Color.DecoratorIcon}"/>
   <SolidColorBrush x:Key="Brush.Conflict" Color="{DynamicResource Color.Conflict}"/>
+  <SolidColorBrush x:Key="Brush.ConflictForeground" Color="{DynamicResource Color.ConflictForeground}"/>
   <SolidColorBrush x:Key="Brush.Border0" Color="{DynamicResource Color.Border0}"/>
   <SolidColorBrush x:Key="Brush.Border1" Color="{DynamicResource Color.Border1}"/>
   <SolidColorBrush x:Key="Brush.Border2" Color="{DynamicResource Color.Border2}"/>
-  <SolidColorBrush x:Key="Brush.Border3" Color="{DynamicResource Color.Border3}"/>
   <SolidColorBrush x:Key="Brush.FlatButton.Background" Color="{DynamicResource Color.FlatButton.Background}"/>
   <SolidColorBrush x:Key="Brush.FlatButton.BackgroundHovered" Color="{DynamicResource Color.FlatButton.BackgroundHovered}"/>
   <SolidColorBrush x:Key="Brush.FlatButton.PrimaryBackground" Color="{DynamicResource Color.FlatButton.PrimaryBackground}"/>
   <SolidColorBrush x:Key="Brush.FlatButton.PrimaryBackgroundHovered" Color="{DynamicResource Color.FlatButton.PrimaryBackgroundHovered}"/>
   <SolidColorBrush x:Key="Brush.FG1" Color="{DynamicResource Color.FG1}"/>
   <SolidColorBrush x:Key="Brush.FG2" Color="{DynamicResource Color.FG2}"/>
-  <SolidColorBrush x:Key="Brush.FG3" Color="{DynamicResource Color.FG3}"/>
   <SolidColorBrush x:Key="Brush.Accent" Color="{DynamicResource SystemAccentColor}"/>
   <SolidColorBrush x:Key="Brush.AccentHovered" Color="{DynamicResource SystemListLowColor}"/>
-  <SolidColorBrush x:Key="Brush.TextDiffView.LineBG1.EMPTY" Color="{DynamicResource Color.TextDiffView.LineBG1.EMPTY}"/>
-  <SolidColorBrush x:Key="Brush.TextDiffView.LineBG1.ADD" Color="{DynamicResource Color.TextDiffView.LineBG1.ADD}"/>
-  <SolidColorBrush x:Key="Brush.TextDiffView.LineBG1.DELETED" Color="{DynamicResource Color.TextDiffView.LineBG1.DELETED}"/>
-  <SolidColorBrush x:Key="Brush.TextDiffView.LineBG2.ADD" Color="{DynamicResource Color.TextDiffView.LineBG2.ADD}"/>
-  <SolidColorBrush x:Key="Brush.TextDiffView.LineBG2.DELETED" Color="{DynamicResource Color.TextDiffView.LineBG2.DELETED}"/>
+  <SolidColorBrush x:Key="Brush.Diff.EmptyBG" Color="{DynamicResource Color.Diff.EmptyBG}"/>
+  <SolidColorBrush x:Key="Brush.Diff.AddedBG" Color="{DynamicResource Color.Diff.AddedBG}"/>
+  <SolidColorBrush x:Key="Brush.Diff.DeletedBG" Color="{DynamicResource Color.Diff.DeletedBG}"/>
+  <SolidColorBrush x:Key="Brush.Diff.AddedHighlight" Color="{DynamicResource Color.Diff.AddedHighlight}"/>
+  <SolidColorBrush x:Key="Brush.Diff.DeletedHighlight" Color="{DynamicResource Color.Diff.DeletedHighlight}"/>
 </ResourceDictionary>

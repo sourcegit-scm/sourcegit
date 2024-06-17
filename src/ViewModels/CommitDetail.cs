@@ -385,6 +385,7 @@ namespace SourceGit.ViewModels
             FullMessage = string.Empty;
             VisibleChanges = null;
             SelectedChanges = null;
+            ViewRevisionFileContent = null;
 
             if (_commit == null)
                 return;

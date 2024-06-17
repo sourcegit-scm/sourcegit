@@ -1,27 +1,18 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:c="using:SourceGit.Converters"
-        xmlns:vm="using:SourceGit.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="SourceGit.Views.Hotkeys"
-        Icon="/App.ico"
-        Title="{DynamicResource Text.Hotkeys}"
-        Background="Transparent"
-        SizeToContent="WidthAndHeight"
-        CanResize="False"
-        WindowStartupLocation="CenterOwner"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome"
-        SystemDecorations="{OnPlatform Full, Linux=None}">
-  <Grid RowDefinitions="Auto,*" Margin="{OnPlatform 0, Linux=6}">
-    <!-- Custom window shadow for Linux -->
-    <Border Grid.Row="0" Grid.RowSpan="2"
-            Background="{DynamicResource Brush.Window}"
-            Effect="drop-shadow(0 0 6 #A0000000)"
-            IsVisible="{OnPlatform False, Linux=True}"/>
-
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:c="using:SourceGit.Converters"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.Hotkeys"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.Hotkeys}"
+                    SizeToContent="WidthAndHeight"
+                    CanResize="False"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
@@ -59,7 +50,7 @@
     </Grid>
 
     <!-- Body -->
-    <Border Grid.Row="1" Background="{DynamicResource Brush.Window}">
+    <Border Grid.Row="1">
       <StackPanel Orientation="Vertical" Margin="16,8,16,16">
         <TextBlock Text="{DynamicResource Text.Hotkeys.Global}"
                    Foreground="{DynamicResource Brush.FG2}"
@@ -93,7 +84,7 @@
                    FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
                    Margin="0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20,20,20" ColumnDefinitions="150,*">
+        <Grid RowDefinitions="20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.OpenSearchCommits}" />
 
@@ -109,8 +100,14 @@
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Space, macOS=␣}"/>
           <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
 
-          <TextBlock Grid.Row="5" Grid.Column="0" Classes="monospace bold" Text="F5"/>
-          <TextBlock Grid.Row="5" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
+          <TextBlock Grid.Row="5" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
+          <TextBlock Grid.Row="5" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Commit}" />
+
+          <TextBlock Grid.Row="6" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
+          <TextBlock Grid.Row="6" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.CommitAndPush}" />
+
+          <TextBlock Grid.Row="7" Grid.Column="0" Classes="monospace bold" Text="F5"/>
+          <TextBlock Grid.Row="7" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
         </Grid>
 
         <TextBlock Text="{DynamicResource Text.Hotkeys.TextEditor}"
@@ -135,4 +132,4 @@
       </StackPanel>
     </Border>    
   </Grid>
-</Window>
+</v:ChromelessWindow>

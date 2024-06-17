@@ -4,7 +4,7 @@ using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
-    public partial class SelfUpdate : Window
+    public partial class SelfUpdate : ChromelessWindow
     {
         public SelfUpdate()
         {

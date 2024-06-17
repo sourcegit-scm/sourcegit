@@ -28,7 +28,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _message = new Commands.QueryCommitFullMessage(_repo.FullPath, parent.SHA).Result();
-            
+
             Head = head;
             Parent = parent;
             View = new Views.Squash() { DataContext = this };

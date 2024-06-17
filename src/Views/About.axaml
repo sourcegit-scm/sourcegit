@@ -1,35 +1,25 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="using:SourceGit.ViewModels"
-        xmlns:v="using:SourceGit.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="SourceGit.Views.About"
-        x:DataType="v:About"
-        Icon="/App.ico"
-        Title="{DynamicResource Text.About}"
-        Background="Transparent"
-        SizeToContent="WidthAndHeight"
-        CanResize="False"
-        WindowStartupLocation="CenterScreen"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome"
-        SystemDecorations="{OnPlatform Full, Linux=None}">
-  <Grid RowDefinitions="Auto,*" Margin="{OnPlatform 0, Linux=6}">
-    <!-- Custom window shadow for Linux -->
-    <Border Grid.Row="0" Grid.RowSpan="2"
-            Background="{DynamicResource Brush.Window}"
-            Effect="drop-shadow(0 0 6 #A0000000)"
-            IsVisible="{OnPlatform False, Linux=True}"/>
-
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.About"
+                    x:DataType="v:About"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.About}"
+                    SizeToContent="WidthAndHeight"
+                    CanResize="False"
+                    WindowStartupLocation="CenterScreen">
+  <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
-      
+
       <Path Grid.Column="0"
             Width="14" Height="14"
             Margin="10,0,0,0"
@@ -59,7 +49,7 @@
       </Button>
     </Grid>
 
-    <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Background="{DynamicResource Brush.Window}">
+    <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
       <Image Grid.Column="0"
              Width="200" Height="200"
              Margin="8,0"
@@ -67,7 +57,7 @@
              HorizontalAlignment="Center"
              VerticalAlignment="Center"/>
 
-      <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,8,32,8">        
+      <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,8,32,8">
         <StackPanel Height="48" Orientation="Horizontal">
           <TextBlock Classes="bold" Text="SourceGit" FontSize="32" />
           <Border Margin="12,0,0,0" Height="20" CornerRadius="10" Background="{DynamicResource Brush.Accent}" Effect="drop-shadow(0 0 6 #40000000)">
@@ -91,7 +81,7 @@
             <TextBlock Text="{DynamicResource Text.About.Fonts}" />
             <TextBlock Text="JetBrains Mono" Cursor="Hand" Foreground="{DynamicResource Brush.Accent}" TextDecorations="Underline" PointerPressed="OnVisitJetBrainsMonoFont"/>
           </StackPanel>
-          
+
           <StackPanel Orientation="Horizontal" Height="18" Margin="0,2,0,0">
             <TextBlock Text="{DynamicResource Text.About.SourceCode}" />
             <TextBlock Text="Github" Cursor="Hand" Foreground="{DynamicResource Brush.Accent}" TextDecorations="Underline" PointerPressed="OnVisitSourceCode"/>
@@ -100,4 +90,4 @@
       </StackPanel>
     </Grid>
   </Grid>
-</Window>
+</v:ChromelessWindow>

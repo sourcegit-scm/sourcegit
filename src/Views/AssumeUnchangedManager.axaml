@@ -1,29 +1,19 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="using:SourceGit.ViewModels"
-        xmlns:v="using:SourceGit.Views"
-        xmlns:c="using:SourceGit.Converters"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="SourceGit.Views.AssumeUnchangedManager"
-        x:DataType="vm:AssumeUnchangedManager"
-        Icon="/App.ico"
-        Title="{DynamicResource Text.AssumeUnchanged}"
-        Background="Transparent"
-        Width="600" Height="400"
-        CanResize="False"
-        WindowStartupLocation="CenterOwner"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome"
-        SystemDecorations="{OnPlatform Full, Linux=None}">
-  <Grid RowDefinitions="Auto,*" Margin="{OnPlatform 0, Linux=6}">
-    <!-- Custom window shadow for Linux -->
-    <Border Grid.Row="0" Grid.RowSpan="2"
-            Background="{DynamicResource Brush.Window}"
-            Effect="drop-shadow(0 0 6 #A0000000)"
-            IsVisible="{OnPlatform False, Linux=True}"/>
-    
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    xmlns:c="using:SourceGit.Converters"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.AssumeUnchangedManager"
+                    x:DataType="vm:AssumeUnchangedManager"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.AssumeUnchanged}"
+                    Width="600" Height="400"
+                    CanResize="False"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,*">    
     <!-- TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
@@ -61,7 +51,7 @@
     </Grid>
     
     <!-- Unchanged Files -->
-    <Grid Grid.Row="1" Background="{DynamicResource Brush.Window}">
+    <Grid Grid.Row="1">
       <DataGrid Margin="8"
                 Background="{DynamicResource Brush.Contents}"
                 ItemsSource="{Binding Files}"
@@ -110,4 +100,4 @@
       </StackPanel>
     </Grid>    
   </Grid>
-</Window>
+</v:ChromelessWindow>

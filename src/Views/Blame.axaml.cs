@@ -319,7 +319,7 @@ namespace SourceGit.Views
         private TextMate.Installation _textMate = null;
     }
 
-    public partial class Blame : Window
+    public partial class Blame : ChromelessWindow
     {
         public Blame()
         {
@@ -333,31 +333,41 @@ namespace SourceGit.Views
 
         private void MaximizeOrRestoreWindow(object sender, TappedEventArgs e)
         {
-            if (WindowState == WindowState.Maximized)
-            {
-                WindowState = WindowState.Normal;
-            }
-            else
-            {
-                WindowState = WindowState.Maximized;
-            }
-            e.Handled = true;
-        }
+            _pressedTitleBar = false;
 
-        private void CustomResizeWindow(object sender, PointerPressedEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                if (border.Tag is WindowEdge edge)
-                {
-                    BeginResizeDrag(edge, e);
-                }
-            }
+            if (WindowState == WindowState.Maximized)
+                WindowState = WindowState.Normal;
+            else
+                WindowState = WindowState.Maximized;
+
+            e.Handled = true;
         }
 
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
         {
-            BeginMoveDrag(e);
+            if (e.ClickCount != 2)
+                _pressedTitleBar = true;
+        }
+
+        private void MoveWindow(object sender, PointerEventArgs e)
+        {
+            if (!_pressedTitleBar)
+                return;
+
+            var visual = (Visual)e.Source;
+            BeginMoveDrag(new PointerPressedEventArgs(
+                e.Source,
+                e.Pointer,
+                visual,
+                e.GetPosition(visual),
+                e.Timestamp,
+                new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonPressed),
+                e.KeyModifiers));
+        }
+
+        private void EndMoveWindow(object sender, PointerReleasedEventArgs e)
+        {
+            _pressedTitleBar = false;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -375,5 +385,7 @@ namespace SourceGit.Views
             }
             e.Handled = true;
         }
+
+        private bool _pressedTitleBar = false;
     }
 }

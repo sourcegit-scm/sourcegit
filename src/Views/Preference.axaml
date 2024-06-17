@@ -1,33 +1,23 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:m="using:SourceGit.Models"
-        xmlns:c="using:SourceGit.Converters"
-        xmlns:ac="using:Avalonia.Controls.Converters"
-        xmlns:vm="using:SourceGit.ViewModels"
-        xmlns:v="using:SourceGit.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="SourceGit.Views.Preference"
-        x:DataType="vm:Preference"
-        x:Name="me"
-        Icon="/App.ico"
-        Title="{DynamicResource Text.Preference}"
-        Background="Transparent"
-        Width="600" SizeToContent="Height"
-        CanResize="False"
-        WindowStartupLocation="CenterScreen"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome"
-        SystemDecorations="{OnPlatform Full, Linux=None}">
-  <Grid RowDefinitions="Auto,Auto" Margin="{OnPlatform 0, Linux=6}">
-    <!-- Custom window shadow for Linux -->
-    <Border Grid.Row="0" Grid.RowSpan="2"
-            Background="{DynamicResource Brush.Window}"
-            Effect="drop-shadow(0 0 6 #A0000000)"
-            IsVisible="{OnPlatform False, Linux=True}"/>
-
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:m="using:SourceGit.Models"
+                    xmlns:c="using:SourceGit.Converters"
+                    xmlns:ac="using:Avalonia.Controls.Converters"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.Preference"
+                    x:DataType="vm:Preference"
+                    x:Name="me"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.Preference}"
+                    Width="600" SizeToContent="Height"
+                    CanResize="False"
+                    WindowStartupLocation="CenterScreen">
+  <Grid RowDefinitions="Auto,Auto">
     <!-- TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
@@ -62,7 +52,7 @@
     </Grid>
 
     <!-- Body -->
-    <Border Grid.Row="1" Background="{DynamicResource Brush.Window}">
+    <Border Grid.Row="1">
       <TabControl>
         <TabItem>
           <TabItem.Header>
@@ -210,20 +200,7 @@
                            Padding="4"
                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                            CornerRadius="3"
-                           Value="{Binding DefaultFontSize, Mode=TwoWay}">
-              <NumericUpDown.Styles>
-                <Style Selector="NumericUpDown /template/ ButtonSpinner#PART_Spinner">
-                  <Setter Property="MinHeight" Value="0"/>
-                  <Setter Property="Height" Value="28"/>
-                </Style>
-                <Style Selector="NumericUpDown /template/ TextBox#PART_TextBox">
-                  <Setter Property="MinHeight" Value="0"/>
-                  <Setter Property="Height" Value="28"/>
-                  <Setter Property="VerticalContentAlignment" Value="Center"/>
-                  <Setter Property="CornerRadius" Value="3,0,0,3"/>
-                </Style>
-              </NumericUpDown.Styles>
-            </NumericUpDown>
+                           Value="{Binding DefaultFontSize, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="4" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.ColorOverrides}"
@@ -392,20 +369,7 @@
                              CornerRadius="3"
                              ParsingNumberStyle="Integer"
                              FormatString="0"
-                             Value="{Binding GitAutoFetchInterval, Mode=TwoWay, FallbackValue=10}">
-                <NumericUpDown.Styles>
-                  <Style Selector="NumericUpDown /template/ ButtonSpinner#PART_Spinner">
-                    <Setter Property="MinHeight" Value="0"/>
-                    <Setter Property="Height" Value="28"/>
-                  </Style>
-                  <Style Selector="NumericUpDown /template/ TextBox#PART_TextBox">
-                    <Setter Property="MinHeight" Value="0"/>
-                    <Setter Property="Height" Value="28"/>
-                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                    <Setter Property="CornerRadius" Value="3,0,0,3"/>
-                  </Style>
-                </NumericUpDown.Styles>
-              </NumericUpDown>
+                             Value="{Binding GitAutoFetchInterval, Mode=TwoWay, FallbackValue=10}"/>
               
               <TextBlock Grid.Column="1"
                          VerticalAlignment="Center"
@@ -553,4 +517,4 @@
       </TabControl>
     </Border>    
   </Grid>
-</Window>
+</v:ChromelessWindow>

@@ -19,27 +19,15 @@ namespace SourceGit.ViewModels
             get => _prefix;
         }
 
-        public bool IsFeature => _type == Models.GitFlowBranchType.Feature;
-        public bool IsRelease => _type == Models.GitFlowBranchType.Release;
-        public bool IsHotfix => _type == Models.GitFlowBranchType.Hotfix;
+        public bool IsFeature => _type == "feature";
+        public bool IsRelease => _type == "release";
+        public bool IsHotfix => _type == "hotfix";
 
-        public GitFlowStart(Repository repo, Models.GitFlowBranchType type)
+        public GitFlowStart(Repository repo, string type)
         {
             _repo = repo;
             _type = type;
-
-            switch (type)
-            {
-                case Models.GitFlowBranchType.Feature:
-                    _prefix = repo.GitFlow.Feature;
-                    break;
-                case Models.GitFlowBranchType.Release:
-                    _prefix = repo.GitFlow.Release;
-                    break;
-                default:
-                    _prefix = repo.GitFlow.Hotfix;
-                    break;
-            }
+            _prefix = Commands.GitFlow.Prefix(repo.FullPath, type);
 
             View = new Views.GitFlowStart() { DataContext = this };
         }
@@ -65,15 +53,15 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             return Task.Run(() =>
             {
-                SetProgressDescription($"Git Flow - starting {_prefix}{_name} ...");
-                var succ = new Commands.GitFlow(_repo.FullPath).Start(_type, _name);
+                SetProgressDescription($"Git Flow - starting {_type} {_name} ...");
+                var succ = Commands.GitFlow.Start(_repo.FullPath, _type, _name);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
         }
 
         private readonly Repository _repo = null;
-        private readonly Models.GitFlowBranchType _type = Models.GitFlowBranchType.Feature;
+        private readonly string _type = "feature";
         private readonly string _prefix = string.Empty;
         private string _name = null;
     }
