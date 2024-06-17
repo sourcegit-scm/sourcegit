@@ -37,6 +37,17 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OpenGitLFSMenu(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                var menu = repo.CreateContextMenuForGitLFS();
+                (sender as Control)?.OpenContextMenu(menu);
+            }
+
+            e.Handled = true;
+        }
+
         private async void OpenStatistics(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)

@@ -814,7 +814,7 @@ namespace SourceGit.ViewModels
             {
                 var init = new MenuItem();
                 init.Header = App.Text("GitFlow.Init");
-                init.Icon = App.CreateMenuIcon("Icons.GitFlow.Init");
+                init.Icon = App.CreateMenuIcon("Icons.Init");
                 init.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -823,6 +823,95 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(init);
             }
+            return menu;
+        }
+
+        public ContextMenu CreateContextMenuForGitLFS()
+        {
+            var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+
+            var lfs = new Commands.LFS(_fullpath);
+            if (lfs.IsEnabled())
+            {
+                var fetch = new MenuItem();
+                fetch.Header = App.Text("GitLFS.Fetch");
+                fetch.Icon = App.CreateMenuIcon("Icons.Fetch");
+                fetch.IsEnabled = Remotes.Count > 0;
+                fetch.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                    {
+                        if (Remotes.Count == 1)
+                            PopupHost.ShowAndStartPopup(new LFSFetch(this));
+                        else
+                            PopupHost.ShowPopup(new LFSFetch(this));
+                    }
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(fetch);
+
+                var pull = new MenuItem();
+                pull.Header = App.Text("GitLFS.Pull");
+                pull.Icon = App.CreateMenuIcon("Icons.Pull");
+                pull.IsEnabled = Remotes.Count > 0;
+                pull.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                    {
+                        if (Remotes.Count == 1)
+                            PopupHost.ShowAndStartPopup(new LFSPull(this));
+                        else
+                            PopupHost.ShowPopup(new LFSPull(this));
+                    }
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(pull);
+
+                var prune = new MenuItem();
+                prune.Header = App.Text("GitLFS.Prune");
+                prune.Icon = App.CreateMenuIcon("Icons.Clean");
+                prune.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowAndStartPopup(new LFSPrune(this));
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(prune);
+
+                var locks = new MenuItem();
+                locks.Header = App.Text("GitLFS.Locks");
+                locks.Icon = App.CreateMenuIcon("Icons.Lock");
+                locks.Click += (o, e) =>
+                {
+                    var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath) };
+                    dialog.Show(App.GetTopLevel() as Window);
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(locks);
+            }
+            else
+            {
+                var install = new MenuItem();
+                install.Header = App.Text("GitLFS.Install");
+                install.Icon = App.CreateMenuIcon("Icons.Init");
+                install.Click += (o, e) =>
+                {
+                    var succ = new Commands.LFS(_fullpath).Install();
+                    if (succ)
+                        App.SendNotification(_fullpath, $"LFS enabled successfully!");
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(install);
+            }
+
             return menu;
         }
 

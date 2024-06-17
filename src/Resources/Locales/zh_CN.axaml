@@ -231,6 +231,24 @@
   <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">开始版本分支...</x:String>
   <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">开始版本分支</x:String>
   <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">版本标签前缀 ：</x:String>
+  <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">拉取LFS对象 (fetch) ...</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">拉取LFS对象</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">执行`git lfs prune`命令，下载远程LFS对象，但不会更新工作副本。</x:String>
+  <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">启用Git LFS支持</x:String>
+  <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">显示LFS对象锁</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">没有锁定的LFS文件</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Lock" xml:space="preserve">锁定</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS对象锁状态</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">解锁</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">强制解锁</x:String>
+  <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">精简本地LFS对象存储</x:String>
+  <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">运行`git lfs prune`命令，从本地存储中精简当前版本不需要的LFS对象</x:String>
+  <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">拉回LFS对象 (pull) ...</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">拉回LFS对象</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">运行`git lfs pull`命令，下载远程LFS对象并更新工作副本。</x:String>
+  <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">跟踪名为'{0}'的文件</x:String>
+  <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">跟踪所有 *{0} 文件</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">历史记录</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">切换横向/纵向显示</x:String>
   <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">切换曲线/折线显示</x:String>
@@ -376,7 +394,7 @@
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">分支 ：</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">终止合并</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">清理本仓库(GC)</x:String>
-  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">本操作将执行`gc`，对于启用LFS的仓库也会执行`lfs prune`。</x:String>
+  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">本操作将执行`git gc`命令。</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">配置本仓库</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在文件浏览器中打开</x:String>
@@ -480,7 +498,7 @@
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">快速查找仓库...</x:String>
   <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">排序</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">本地更改</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">添加至 .gitignore 忽略列表 ...</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">添加至 .gitignore 忽略列表</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">忽略所有 *{0} 文件</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">忽略同目录下所有 *{0} 文件</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">忽略同目录下所有文件</x:String>

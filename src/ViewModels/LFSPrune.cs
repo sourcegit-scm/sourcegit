@@ -2,22 +2,22 @@
 
 namespace SourceGit.ViewModels
 {
-    public class Cleanup : Popup
+    public class LFSPrune : Popup
     {
-        public Cleanup(Repository repo)
+        public LFSPrune(Repository repo)
         {
             _repo = repo;
-            View = new Views.Cleanup() { DataContext = this };
+            View = new Views.LFSPrune() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = "Cleanup (GC & prune) ...";
+            ProgressDescription = "LFS prune ...";
 
             return Task.Run(() =>
             {
-                new Commands.GC(_repo.FullPath, SetProgressDescription).Exec();
+                new Commands.LFS(_repo.FullPath).Prune(SetProgressDescription);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

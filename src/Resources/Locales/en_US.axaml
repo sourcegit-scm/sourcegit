@@ -228,6 +228,24 @@
   <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">Start Release ...</x:String>
   <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">FLOW - Start Release</x:String>
   <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Version Tag Prefix :</x:String>
+  <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Fetch ...</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Fetch LFS Objects</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Run `git lfs fetch` to download Git LFS objects. This does not update the working copy.</x:String>
+  <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">Install Git LFS hooks</x:String>
+  <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">Show Locks</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">No Locked Files</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Lock" xml:space="preserve">Lock</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS Locks</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Unlock</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Force Unlock</x:String>
+  <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Prune</x:String>
+  <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Run `git lfs prune` to delete old LFS files from local storage</x:String>
+  <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Pull ...</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">Pull LFS Objects</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Run `git lfs pull` to download all Git LFS files for current ref &amp; checkout</x:String>
+  <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Track files named '{0}'</x:String>
+  <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Histories</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Switch Horizontal/Vertical Layout</x:String>
   <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Switch Curve/Polyline Graph Mode</x:String>
@@ -373,7 +391,7 @@
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Branch :</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">ABORT</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Cleanup(GC &amp; Prune)</x:String>
-  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Run `gc` command and do `lfs prune` if LFS is installed.</x:String>
+  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Run `git gc` command for this repository.</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Open In File Browser</x:String>
@@ -477,7 +495,7 @@
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Search Repositories ...</x:String>
   <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Sort</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Changes</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Add To .gitignore ...</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignore all *{0} files</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignore *{0} files in the same folder</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignore files in the same folder</x:String>
