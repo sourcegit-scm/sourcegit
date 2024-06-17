@@ -345,6 +345,8 @@
   <x:String x:Key="Text.Preference.Merger.Path" xml:space="preserve">Install Path</x:String>
   <x:String x:Key="Text.Preference.Merger.Path.Placeholder" xml:space="preserve">Input path for merge tool</x:String>
   <x:String x:Key="Text.Preference.Merger.Type" xml:space="preserve">Merger</x:String>
+  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>
+  <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Target :</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch :</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Into :</x:String>
@@ -383,8 +385,8 @@
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Delete ...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Edit ...</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch ...</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune.Target" xml:space="preserve">Target :</x:String>
+  <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Open In Browser</x:String>
+  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune ...</x:String>
   <x:String x:Key="Text.RenameBranch" xml:space="preserve">Rename Branch</x:String>
   <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">New Name :</x:String>
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Unique name for this branch</x:String>

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace SourceGit.Models
 {
@@ -10,6 +11,9 @@ namespace SourceGit.Models
         private static partial Regex REG_SSH1();
         [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-/]+/[\w\-\.]+(\.git)?$")]
         private static partial Regex REG_SSH2();
+
+        [GeneratedRegex(@"^git@([\w\.\-]+):([\w\-/]+/[\w\-\.]+)\.git$")]
+        private static partial Regex REG_TO_VISIT_URL_CAPTURE();
 
         private static readonly Regex[] URL_FORMATS = [
             REG_HTTPS(),
@@ -41,6 +45,30 @@ namespace SourceGit.Models
                 if (fmt.IsMatch(url))
                     return true;
             }
+            return false;
+        }
+
+        public bool TryGetVisitURL(out string url)
+        {
+            url = null;
+
+            if (URL.StartsWith("http", StringComparison.Ordinal))
+            {
+                if (URL.EndsWith(".git"))
+                    url = URL.Substring(0, URL.Length - 4);
+                else
+                    url = URL;
+
+                return true;
+            }
+
+            var match = REG_TO_VISIT_URL_CAPTURE().Match(URL);
+            if (match.Success)
+            {
+                url = $"https://{match.Groups[1].Value}/{match.Groups[2].Value}";
+                return true;
+            }
+
             return false;
         }
     }

@@ -348,6 +348,8 @@
   <x:String x:Key="Text.Preference.Merger.Path" xml:space="preserve">安裝路徑</x:String>
   <x:String x:Key="Text.Preference.Merger.Path.Placeholder" xml:space="preserve">填寫工具可執行檔案所在位置</x:String>
   <x:String x:Key="Text.Preference.Merger.Type" xml:space="preserve">工具</x:String>
+  <x:String x:Key="Text.PruneRemote" xml:space="preserve">清理遠端已刪除分支</x:String>
+  <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">目標 ：</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">拉回(pull)</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">拉取分支 ：</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">本地分支 ：</x:String>
@@ -386,8 +388,8 @@
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">刪除 ...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">編輯 ...</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">拉取(fetch)更新 ...</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">清理遠端已刪除分支</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune.Target" xml:space="preserve">目標 ：</x:String>
+  <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">在瀏覽器中訪問網址</x:String>
+  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">清理遠端已刪除分支 ...</x:String>
   <x:String x:Key="Text.RenameBranch" xml:space="preserve">分支重新命名</x:String>
   <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">新的名稱 ：</x:String>
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">新的分支名不能與現有分支名相同</x:String>

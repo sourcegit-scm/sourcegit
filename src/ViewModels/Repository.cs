@@ -1214,6 +1214,21 @@ namespace SourceGit.ViewModels
         {
             var menu = new ContextMenu();
 
+            if (remote.TryGetVisitURL(out string visitURL))
+            {
+                var visit = new MenuItem();
+                visit.Header = App.Text("RemoteCM.OpenInBrowser");
+                visit.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                visit.Click += (o, e) =>
+                {
+                    Native.OS.OpenBrowser(visitURL);
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(visit);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
             var fetch = new MenuItem();
             fetch.Header = App.Text("RemoteCM.Fetch");
             fetch.Icon = App.CreateMenuIcon("Icons.Fetch");
