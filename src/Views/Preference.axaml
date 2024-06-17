@@ -27,7 +27,7 @@
 
       <Path Grid.Column="0"
             Width="14" Height="14"
-            Data="{StaticResource Icons.Settings2}"
+            Data="{StaticResource Icons.Settings}"
             Margin="10,0,0,0"
             IsVisible="{OnPlatform True, macOS=False}"/>
 

@@ -1226,7 +1226,7 @@ namespace SourceGit.ViewModels
 
             var prune = new MenuItem();
             prune.Header = App.Text("RemoteCM.Prune");
-            prune.Icon = App.CreateMenuIcon("Icons.Clear2");
+            prune.Icon = App.CreateMenuIcon("Icons.Clean");
             prune.Click += (o, e) =>
             {
                 if (PopupHost.CanCreatePopup())
