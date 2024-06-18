@@ -35,23 +35,23 @@
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">二进制文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行追溯(blame)</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">选中文件不支持该操作!!!</x:String>
-  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout)${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout) ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithBranch" xml:space="preserve">与其他分支对比</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">与当前HEAD比较</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">与本地工作树比较</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">复制分支名</x:String>
-  <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">删除${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">删除选中的 {0} 个分支</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">放弃所有更改</x:String>
-  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快进(fast-forward)到${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">GIT工作流 - 完成${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">合并${0}$到${1}$</x:String>
-  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">拉回(pull)${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">拉回(pull)${0}$内容至${1}$</x:String>
+  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快进(fast-forward)到 ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">GIT工作流 - 完成 ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">拉回(pull) ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">拉回(pull) ${0}$ 内容至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">推送(push)${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">变基(rebase)${0}$分支至${1}$</x:String>
-  <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重命名${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支...</x:String>
+  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 分支至 ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重命名 ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支</x:String>
   <x:String x:Key="Text.BranchCM.UnsetUpstream" xml:space="preserve">取消追踪</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比较</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">字节</x:String>
@@ -88,8 +88,8 @@
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">与当前HEAD比较</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">与本地工作树比较</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">复制提交指纹</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">变基(rebase)${0}$到此处</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset)${0}$到此处</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 到此处</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset) ${0}$ 到此处</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">回滚此提交</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">编辑提交信息</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存为补丁 ...</x:String>
@@ -142,7 +142,7 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">删除分支确认</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
-  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支${0}$</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支 ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">删除多个分支</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">您正在尝试一次性删除多个分支，请务必仔细检查后再执行操作！</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">删除远程确认</x:String>
@@ -196,8 +196,8 @@
   <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">放弃选中的更改</x:String>
   <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">使用外部合并工具打开</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">另存为补丁...</x:String>
-  <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">暂存(add)...</x:String>
-  <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">暂存(add){0} 个文件...</x:String>
+  <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">暂存(add)</x:String>
+  <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">暂存(add){0} 个文件</x:String>
   <x:String x:Key="Text.FileCM.StageSelectedLines" xml:space="preserve">暂存选中的更改</x:String>
   <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">贮藏(stash)...</x:String>
   <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">贮藏(stash)选中的 {0} 个文件...</x:String>
@@ -387,9 +387,9 @@
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">复制远程地址</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">删除 ...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">编辑 ...</x:String>
-  <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">拉取(fetch)更新 ...</x:String>
+  <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">拉取(fetch)更新</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">在浏览器中打开</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">清理远程已删除分支 ...</x:String>
+  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">清理远程已删除分支</x:String>
   <x:String x:Key="Text.RenameBranch" xml:space="preserve">分支重命名</x:String>
   <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">新的名称 ：</x:String>
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">新的分支名不能与现有分支名相同</x:String>
@@ -483,8 +483,8 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">删除子模块</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">确    定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">复制标签名</x:String>
-  <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">删除${0}$</x:String>
-  <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送${0}$</x:String>
+  <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">仓库地址 ：</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模块</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Tip" xml:space="preserve">为此仓库执行`submodule update`命令，更新所有的子模块。</x:String>
