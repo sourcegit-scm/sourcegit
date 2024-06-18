@@ -30,7 +30,7 @@ Opensource Git GUI client.
 * GitFlow support
 * Git LFS support
 
-> **Linux** only tested on **Ubuntu 22.04** on **X11**.
+> **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
 
 ## How to Use
 
