@@ -54,6 +54,7 @@
                VerticalAlignment="Center"
                CornerRadius="2"
                Text="{Binding Name, Mode=TwoWay}"
+               Watermark="{DynamicResource Text.CreateBranch.Name.Placeholder}"
                v:AutoFocusBehaviour.IsEnabled="True"/>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
