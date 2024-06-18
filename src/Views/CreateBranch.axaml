@@ -13,7 +13,7 @@
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
                Classes="bold"
-               Text="{DynamicResource Text.CreateBranch}"/>
+               Text="{DynamicResource Text.CreateBranch.Title}"/>
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32" ColumnDefinitions="140,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

@@ -117,7 +117,7 @@
   <x:String x:Key="Text.Copy" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">複製路徑</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">複製檔名</x:String>
-  <x:String x:Key="Text.CreateBranch" xml:space="preserve">新建分支</x:String>
+  <x:String x:Key="Text.CreateBranch" xml:space="preserve">新建分支 ...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">新分支基於 ：</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">完成後切換到新分支</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
@@ -127,7 +127,7 @@
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名 ：</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">填寫分支名稱。</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">建立本地分支</x:String>
-  <x:String x:Key="Text.CreateTag" xml:space="preserve">新建標籤</x:String>
+  <x:String x:Key="Text.CreateTag" xml:space="preserve">新建標籤 ...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">標籤位於 ：</x:String>
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">使用GPG簽名</x:String>
   <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">標籤描述 ：</x:String>
@@ -135,6 +135,7 @@
   <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">標籤名 ：</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">推薦格式 ：v1.0.0-alpha</x:String>
   <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">推送到所有遠端倉庫</x:String>
+  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">新建標籤</x:String>
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">型別 ：</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">附註標籤</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">輕量標籤</x:String>
