@@ -449,12 +449,12 @@
 
         <TabItem>
           <TabItem.Header>
-            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Merger}"/>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.DiffMerge}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,Auto,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Merger.Type}"
+                       Text="{DynamicResource Text.Preference.DiffMerge.Type}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <ComboBox Grid.Row="0" Grid.Column="1"
@@ -477,41 +477,22 @@
             </ComboBox>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Merger.Path}"
+                       Text="{DynamicResource Text.Preference.DiffMerge.Path}"
                        HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
+                       Margin="0,0,16,0"
+                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
             <TextBox Grid.Row="1" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
-                     Text="{Binding ExternalMergeToolPath, Mode=TwoWay}">
+                     Text="{Binding ExternalMergeToolPath, Mode=TwoWay}"
+                     Watermark="{DynamicResource Text.Preference.DiffMerge.Path.Placeholder}"
+                     IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
               <TextBox.InnerRightContent>
                 <Button Classes="icon_button" Width="30" Height="30" Click="SelectExternalMergeTool">
                   <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
                 </Button>
               </TextBox.InnerRightContent>
             </TextBox>
-
-            <TextBlock Grid.Row="2" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Merger.CustomMergeCmd}"
-                       HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Margin="0,0,16,0"
-                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
-            <TextBox Grid.Row="2" Grid.Column="1"
-                     Height="28" Margin="0,2"
-                     CornerRadius="3"
-                     Text="{Binding ExternalMergeToolCmd, Mode=TwoWay}"
-                     IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
-
-            <TextBlock Grid.Row="3" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Merger.CustomDiffCmd}"
-                       HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Margin="0,0,16,0"
-                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
-            <TextBox Grid.Row="3" Grid.Column="1"
-                     Height="28" Margin="0,2"
-                     CornerRadius="3"
-                     Text="{Binding ExternalMergeToolDiffCmd, Mode=TwoWay}"
-                     IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
           </Grid>
         </TabItem>
       </TabControl>

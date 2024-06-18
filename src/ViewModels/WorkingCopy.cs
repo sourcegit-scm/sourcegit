@@ -1120,20 +1120,11 @@ namespace SourceGit.ViewModels
 
         private async void UseExternalMergeTool(Models.Change change)
         {
-            var type = Preference.Instance.ExternalMergeToolType;
-            var exec = Preference.Instance.ExternalMergeToolPath;
-
-            var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
-            if (tool == null)
-            {
-                App.RaiseException(_repo.FullPath, "Invalid merge tool in preference setting!");
-                return;
-            }
-
-            var args = tool.Type != 0 ? tool.Cmd : Preference.Instance.ExternalMergeToolCmd;
+            var toolType = Preference.Instance.ExternalMergeToolType;
+            var toolPath = Preference.Instance.ExternalMergeToolPath;
 
             _repo.SetWatcherEnabled(false);
-            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, exec, args, change.Path));
+            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, change.Path));
             _repo.SetWatcherEnabled(true);
         }
 

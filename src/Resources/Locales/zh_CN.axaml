@@ -342,12 +342,10 @@
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">签名程序所在路径</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">用户签名KEY</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">输入签名提交所使用的KEY</x:String>
-  <x:String x:Key="Text.Preference.Merger" xml:space="preserve">外部合并工具</x:String>
-  <x:String x:Key="Text.Preference.Merger.CustomDiffCmd" xml:space="preserve">对比模式启动参数</x:String>
-  <x:String x:Key="Text.Preference.Merger.CustomMergeCmd" xml:space="preserve">合并模式启动参数</x:String>
-  <x:String x:Key="Text.Preference.Merger.Path" xml:space="preserve">安装路径</x:String>
-  <x:String x:Key="Text.Preference.Merger.Path.Placeholder" xml:space="preserve">填写工具可执行文件所在位置</x:String>
-  <x:String x:Key="Text.Preference.Merger.Type" xml:space="preserve">工具</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">对比/合并工具</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">安装路径</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">填写工具可执行文件所在位置</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">工具</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">清理远程已删除分支</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">目标 ：</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">拉回(pull)</x:String>

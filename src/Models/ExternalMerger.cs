@@ -32,7 +32,7 @@ namespace SourceGit.Models
             if (OperatingSystem.IsWindows())
             {
                 Supported = new List<ExternalMerger>() {
-                    new ExternalMerger(0, "custom_diff", "Custom", "", "", ""),
+                    new ExternalMerger(0, "git", "Use Git Settings", "", "", ""),
                     new ExternalMerger(1, "vscode", "Visual Studio Code", "Code.exe", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(2, "vscode_insiders", "Visual Studio Code - Insiders", "Code - Insiders.exe", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(3, "vs", "Visual Studio", "vsDiffMerge.exe", "\"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\" /m", "\"$LOCAL\" \"$REMOTE\""),
@@ -46,7 +46,7 @@ namespace SourceGit.Models
             else if (OperatingSystem.IsMacOS())
             {
                 Supported = new List<ExternalMerger>() {
-                    new ExternalMerger(0, "custom_diff", "Custom", "", "", ""),
+                    new ExternalMerger(0, "git", "Use Git Settings", "", "", ""),
                     new ExternalMerger(1, "xcode", "FileMerge", "/usr/bin/opendiff", "\"$BASE\" \"$LOCAL\" \"$REMOTE\" -ancestor \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(2, "vscode", "Visual Studio Code", "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(3, "vscode_insiders", "Visual Studio Code - Insiders", "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
@@ -58,7 +58,7 @@ namespace SourceGit.Models
             else if (OperatingSystem.IsLinux())
             {
                 Supported = new List<ExternalMerger>() {
-                    new ExternalMerger(0, "custom_diff", "Custom", "", "", ""),
+                    new ExternalMerger(0, "git", "Use Git Settings", "", "", ""),
                     new ExternalMerger(1, "vscode", "Visual Studio Code", "/usr/share/code/code", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(2, "vscode_insiders", "Visual Studio Code - Insiders", "/usr/share/code-insiders/code-insiders", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(3, "kdiff3", "KDiff3", "/usr/bin/kdiff3", "\"$REMOTE\" -b \"$BASE\" \"$LOCAL\" -o \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\""),
@@ -70,7 +70,7 @@ namespace SourceGit.Models
             else
             {
                 Supported = new List<ExternalMerger>() {
-                    new ExternalMerger(0, "custom_diff", "Custom", "", "", ""),
+                    new ExternalMerger(0, "git", "Use Git Settings", "", "", ""),
                 };
             }
         }

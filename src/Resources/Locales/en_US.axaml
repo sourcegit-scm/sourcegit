@@ -339,12 +339,10 @@
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Input path for installed gpg program</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">User Signing Key</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">User's gpg signing key</x:String>
-  <x:String x:Key="Text.Preference.Merger" xml:space="preserve">EXTERNAL MERGE TOOL</x:String>
-  <x:String x:Key="Text.Preference.Merger.CustomDiffCmd" xml:space="preserve">Diff Command</x:String>
-  <x:String x:Key="Text.Preference.Merger.CustomMergeCmd" xml:space="preserve">Merge Command</x:String>
-  <x:String x:Key="Text.Preference.Merger.Path" xml:space="preserve">Install Path</x:String>
-  <x:String x:Key="Text.Preference.Merger.Path.Placeholder" xml:space="preserve">Input path for merge tool</x:String>
-  <x:String x:Key="Text.Preference.Merger.Type" xml:space="preserve">Merger</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Install Path</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Input path for diff/merge tool</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Tool</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>

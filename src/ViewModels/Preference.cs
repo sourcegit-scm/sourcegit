@@ -290,18 +290,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _externalMergeToolPath, value);
         }
 
-        public string ExternalMergeToolCmd
-        {
-            get => _externalMergeToolCmd;
-            set => SetProperty(ref _externalMergeToolCmd, value);
-        }
-
-        public string ExternalMergeToolDiffCmd
-        {
-            get => _externalMergeToolDiffCmd;
-            set => SetProperty(ref _externalMergeToolDiffCmd, value);
-        }
-
         public List<Repository> Repositories
         {
             get;
@@ -556,8 +544,6 @@ namespace SourceGit.ViewModels
 
         private int _externalMergeToolType = 0;
         private string _externalMergeToolPath = string.Empty;
-        private string _externalMergeToolCmd = string.Empty;
-        private string _externalMergeToolDiffCmd = string.Empty;
 
         private AvaloniaList<RepositoryNode> _repositoryNodes = new AvaloniaList<RepositoryNode>();
     }

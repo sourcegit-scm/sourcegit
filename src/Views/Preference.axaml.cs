@@ -287,6 +287,7 @@ namespace SourceGit.Views
             {
                 ViewModels.Preference.Instance.ExternalMergeToolType = 0;
                 type = 0;
+                return;
             }
 
             var tool = Models.ExternalMerger.Supported[type];
