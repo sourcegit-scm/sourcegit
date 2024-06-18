@@ -232,7 +232,7 @@
   <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">开始版本分支</x:String>
   <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">版本标签前缀 ：</x:String>
   <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
-  <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">拉取LFS对象 (fetch) ...</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">拉取LFS对象 (fetch)</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">拉取LFS对象</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">执行`git lfs prune`命令，下载远程LFS对象，但不会更新工作副本。</x:String>
   <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">启用Git LFS支持</x:String>
@@ -244,7 +244,7 @@
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">强制解锁</x:String>
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">精简本地LFS对象存储</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">运行`git lfs prune`命令，从本地存储中精简当前版本不需要的LFS对象</x:String>
-  <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">拉回LFS对象 (pull) ...</x:String>
+  <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">拉回LFS对象 (pull)</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">拉回LFS对象</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">运行`git lfs pull`命令，下载远程LFS对象并更新工作副本。</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">跟踪名为'{0}'的文件</x:String>

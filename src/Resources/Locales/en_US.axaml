@@ -229,7 +229,7 @@
   <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">FLOW - Start Release</x:String>
   <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Version Tag Prefix:</x:String>
   <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
-  <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Fetch ...</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Fetch LFS Objects</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Run `git lfs fetch` to download Git LFS objects. This does not update the working copy.</x:String>
   <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">Install Git LFS hooks</x:String>
@@ -241,7 +241,7 @@
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Force Unlock</x:String>
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Prune</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Run `git lfs prune` to delete old LFS files from local storage</x:String>
-  <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Pull ...</x:String>
+  <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">Pull LFS Objects</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Run `git lfs pull` to download all Git LFS files for current ref &amp; checkout</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Track files named '{0}'</x:String>
