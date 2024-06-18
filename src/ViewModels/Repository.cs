@@ -1160,7 +1160,7 @@ namespace SourceGit.ViewModels
             {
                 var tracking = new MenuItem();
                 tracking.Header = App.Text("BranchCM.Tracking");
-                tracking.Icon = App.CreateMenuIcon("Icons.Branch");
+                tracking.Icon = App.CreateMenuIcon("Icons.Track");
 
                 foreach (var b in remoteBranches)
                 {
