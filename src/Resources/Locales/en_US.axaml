@@ -493,6 +493,7 @@
   <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">Delete</x:String>
   <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">DRAG &amp; DROP FOLDER SUPPORTED. CUSTOM GROUPING SUPPORTED.</x:String>
   <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">Edit</x:String>
+  <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Open All Repositories</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Open Repository</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Open Terminal</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Search Repositories...</x:String>

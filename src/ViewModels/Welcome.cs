@@ -92,6 +92,26 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
             var hasRepo = Preference.FindRepository(node.Id) != null;
 
+            if (!node.IsRepository && node.SubNodes.Count > 0)
+            {
+                var openAll = new MenuItem();
+                openAll.Header = App.Text("Welcome.OpenAllInNode");
+                openAll.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                openAll.Click += (_, e) =>
+                {
+                    if (App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                    {
+                        var launcher = desktop.MainWindow.DataContext as Launcher;
+                        OpenAllInNode(launcher, node);
+                    }
+
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(openAll);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
             var edit = new MenuItem();
             edit.Header = App.Text("Welcome.Edit");
             edit.Icon = App.CreateMenuIcon("Icons.Edit");
@@ -198,6 +218,17 @@ namespace SourceGit.ViewModels
             else
             {
                 node.IsVisible = node.Name.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        private void OpenAllInNode(Launcher launcher, RepositoryNode node)
+        {
+            foreach (var subNode in node.SubNodes)
+            {
+                if (subNode.IsRepository)
+                    launcher.OpenRepositoryInTab(subNode, null);
+                else if (subNode.SubNodes.Count > 0)
+                    OpenAllInNode(launcher, subNode);
             }
         }
 
