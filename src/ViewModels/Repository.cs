@@ -834,6 +834,19 @@ namespace SourceGit.ViewModels
             var lfs = new Commands.LFS(_fullpath);
             if (lfs.IsEnabled())
             {
+                var addPattern = new MenuItem();
+                addPattern.Header = App.Text("GitLFS.AddTrackPattern");
+                addPattern.Icon = App.CreateMenuIcon("Icons.File.Add");
+                addPattern.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowPopup(new LFSTrackCustomPattern(this));
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(addPattern);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
                 var fetch = new MenuItem();
                 fetch.Header = App.Text("GitLFS.Fetch");
                 fetch.Icon = App.CreateMenuIcon("Icons.Fetch");

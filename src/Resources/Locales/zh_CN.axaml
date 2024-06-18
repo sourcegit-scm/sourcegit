@@ -232,6 +232,10 @@
   <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">开始版本分支</x:String>
   <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">版本标签前缀 ：</x:String>
   <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">添加追踪文件规则...</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.IsFilename" xml:space="preserve">匹配完整文件名</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.Pattern" xml:space="preserve">规则 ：</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">添加LFS追踪文件规则</x:String>
   <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">拉取LFS对象 (fetch)</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">拉取LFS对象</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">执行`git lfs prune`命令，下载远程LFS对象，但不会更新工作副本。</x:String>

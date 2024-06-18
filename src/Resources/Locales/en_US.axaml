@@ -229,6 +229,10 @@
   <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">FLOW - Start Release</x:String>
   <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Version Tag Prefix:</x:String>
   <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">Add Track Pattern...</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.IsFilename" xml:space="preserve">Pattern is file name</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.Pattern" xml:space="preserve">Custom Pattern:</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">Add Track Pattern to Git LFS</x:String>
   <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Fetch LFS Objects</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Run `git lfs fetch` to download Git LFS objects. This does not update the working copy.</x:String>
