@@ -11,7 +11,6 @@
                     Icon="/App.ico"
                     Title="{DynamicResource Text.GitLFS.Locks.Title}"
                     Width="600" Height="400"
-                    CanResize="False"
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
@@ -82,7 +81,7 @@
           <DataGridTemplateColumn>
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding User}" Margin="8,0"/>
+                <TextBlock Text="{Binding User}" Padding="16,0"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
