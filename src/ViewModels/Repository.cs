@@ -404,6 +404,18 @@ namespace SourceGit.ViewModels
             PopupHost.ShowPopup(new RepositoryConfigure(this));
         }
 
+        public void ClearHistoriesFilter()
+        {
+            Filters.Clear();
+
+            Task.Run(() =>
+            {
+                RefreshBranches();
+                RefreshTags();
+                RefreshCommits();
+            });
+        }
+
         public void ClearSearchCommitFilter()
         {
             SearchCommitFilter = string.Empty;
@@ -602,9 +614,19 @@ namespace SourceGit.ViewModels
                         validFilters.Add(filter);
                 }
             }
+
             if (validFilters.Count > 0)
             {
                 limits += string.Join(" ", validFilters);
+
+                if (Filters.Count != validFilters.Count)
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        Filters.Clear();
+                        Filters.AddRange(validFilters);
+                    });
+                }
             }
             else
             {

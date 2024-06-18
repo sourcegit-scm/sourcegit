@@ -400,10 +400,12 @@
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">終止合併</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">清理本倉庫(GC)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">本操作將執行`git gc`命令。</x:String>
+  <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">清空過濾規則</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">配置本倉庫</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在檔案瀏覽器中開啟</x:String>
   <x:String x:Key="Text.Repository.FilterBranchTip" xml:space="preserve">過濾顯示分支</x:String>
+  <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">過濾規則 ：</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本地分支</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">定位HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">新建分支</x:String>

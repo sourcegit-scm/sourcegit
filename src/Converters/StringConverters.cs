@@ -81,6 +81,16 @@ namespace SourceGit.Converters
                 return true;
             });
 
+        public static readonly FuncValueConverter<string, string> TrimRefsPrefix =
+            new FuncValueConverter<string, string>(v =>
+            {
+                if (v.StartsWith("refs/heads/", StringComparison.Ordinal))
+                    return v.Substring(11);
+                if (v.StartsWith("refs/remotes/", StringComparison.Ordinal))
+                    return v.Substring(13);
+                return v;
+            });
+
         [GeneratedRegex(@"^[\s\w]*(\d+)\.(\d+)[\.\-](\d+).*$")]
         private static partial Regex REG_GIT_VERSION();
 
