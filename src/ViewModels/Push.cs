@@ -19,25 +19,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _selectedLocalBranch, value))
-                {
-                    // If selected local branch has upstream branch. Try to find it's remote.
-                    if (!string.IsNullOrEmpty(value.Upstream))
-                    {
-                        var branch = _repo.Branches.Find(x => x.FullName == value.Upstream);
-                        if (branch != null)
-                        {
-                            var remote = _repo.Remotes.Find(x => x.Name == branch.Remote);
-                            if (remote != null && remote != _selectedRemote)
-                            {
-                                SelectedRemote = remote;
-                                return;
-                            }
-                        }
-                    }
-
-                    // Re-generate remote branches and auto-select remote branches.
                     AutoSelectBranchByRemote();
-                }
             }
         }
 
@@ -73,13 +55,23 @@ namespace SourceGit.ViewModels
         public Models.Branch SelectedRemoteBranch
         {
             get => _selectedRemoteBranch;
-            set => SetProperty(ref _selectedRemoteBranch, value);
+            set
+            {
+                if (SetProperty(ref _selectedRemoteBranch, value))
+                    IsSetTrackOptionVisible = value != null && _selectedLocalBranch.Upstream != value.FullName;
+            }
         }
 
         public bool PushAllTags
         {
             get;
             set;
+        }
+
+        public bool IsSetTrackOptionVisible
+        {
+            get => _isSetTrackOptionVisible;
+            private set => SetProperty(ref _isSetTrackOptionVisible, value);
         }
 
         public bool Tracking
@@ -160,7 +152,7 @@ namespace SourceGit.ViewModels
                     remoteBranchName,
                     PushAllTags,
                     ForcePush,
-                    Tracking,
+                    _isSetTrackOptionVisible && Tracking,
                     SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
@@ -218,5 +210,6 @@ namespace SourceGit.ViewModels
         private Models.Remote _selectedRemote = null;
         private List<Models.Branch> _remoteBranches = new List<Models.Branch>();
         private Models.Branch _selectedRemoteBranch = null;
+        private bool _isSetTrackOptionVisible = false;
     }
 }

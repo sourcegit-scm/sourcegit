@@ -13,7 +13,7 @@
                Classes="bold"
                Text="{DynamicResource Text.Push.Title}"/>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="150,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -73,8 +73,10 @@
       </ComboBox>
 
       <CheckBox Grid.Row="3" Grid.Column="1"
+                Height="32"
                 Content="{DynamicResource Text.Push.Tracking}"
-                IsChecked="{Binding Tracking, Mode=TwoWay}"/>
+                IsChecked="{Binding Tracking, Mode=TwoWay}"
+                IsVisible="{Binding IsSetTrackOptionVisible}"/>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.Push.WithAllTags}"
