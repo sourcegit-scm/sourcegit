@@ -191,6 +191,10 @@ namespace SourceGit
             var fmt = Current.FindResource($"Text.{key}") as string;
             if (string.IsNullOrWhiteSpace(fmt))
                 return $"Text.{key}";
+
+            if (args == null || args.Length == 0)
+                return fmt;
+
             return string.Format(fmt, args);
         }
 
