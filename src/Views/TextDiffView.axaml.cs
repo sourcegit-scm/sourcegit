@@ -105,6 +105,23 @@ namespace SourceGit.Views
             set => SetValue(UseSyntaxHighlightingProperty, value);
         }
 
+
+        /// <summary>
+        /// ShowHiddenSymbols StyledProperty definition
+        /// </summary>
+        public static readonly StyledProperty<bool> ShowHiddenSymbolsProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, bool>(nameof(ShowHiddenSymbols));
+
+        /// <summary>
+        /// Gets or sets the ShowHiddenSymbols property. This StyledProperty
+        /// indicates thath show hidden symbol like space and tab
+        /// </summary>
+        public bool ShowHiddenSymbols
+        {
+            get => this.GetValue(ShowHiddenSymbolsProperty);
+            set => SetValue(ShowHiddenSymbolsProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public IThemedTextDiffPresenter(TextArea area, TextDocument doc) : base(area, doc)
@@ -141,6 +158,12 @@ namespace SourceGit.Views
 
             if (change.Property == UseSyntaxHighlightingProperty)
                 UpdateTextMate();
+            else if(change.Property == ShowHiddenSymbolsProperty)
+            {
+                var showHiddenSymbols = change.NewValue is true;
+                this.Options.ShowTabs = showHiddenSymbols;
+                this.Options.ShowSpaces = showHiddenSymbols;
+            }
             else if (change.Property == FileNameProperty)
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
             else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)

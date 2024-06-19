@@ -22,7 +22,9 @@
                                    IndicatorForeground="{DynamicResource Brush.FG2}"
                                    FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                    UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                   WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"/>
+                                   WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
+                                   ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbols}"
+                                   />
     </DataTemplate>
 
     <DataTemplate DataType="vm:TwoSideTextDiff">
@@ -40,7 +42,9 @@
                                        IndicatorForeground="{DynamicResource Brush.FG2}"
                                        FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                        UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"/>
+                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
+                                       ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbols}"
+                                       />
 
         <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
@@ -57,7 +61,9 @@
                                        IndicatorForeground="{DynamicResource Brush.FG2}"
                                        FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                        UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"/>
+                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
+                                       ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbols}"
+                                       />
       </Grid>
     </DataTemplate>
   </UserControl.DataTemplates>
