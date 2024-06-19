@@ -261,6 +261,14 @@ namespace SourceGit.Views
             _pressedTab = true;
             _startDragTab = false;
             _pressedTabPosition = e.GetPosition(sender as Border);
+            _pressedPoint = e.GetCurrentPoint(sender as Border);
+            if (_pressedPoint.Properties.IsMiddleButtonPressed)
+            {
+                var vm = DataContext as ViewModels.Launcher;
+                vm.CloseTab(null);
+                e.Handled = true;
+                return;
+            }
         }
 
         private void OnPointerReleasedTab(object sender, PointerReleasedEventArgs e)
@@ -331,5 +339,6 @@ namespace SourceGit.Views
         private bool _pressedTab = false;
         private Point _pressedTabPosition = new Point();
         private bool _startDragTab = false;
+        private PointerPoint _pressedPoint = new PointerPoint();
     }
 }
