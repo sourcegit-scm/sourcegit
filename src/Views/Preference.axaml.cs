@@ -43,7 +43,7 @@ namespace SourceGit.Views
         {
             get;
             set;
-        }
+        } = Models.CRLFMode.Supported[0];
 
         public static readonly StyledProperty<string> GitVersionProperty =
             AvaloniaProperty.Register<Preference, string>(nameof(GitVersion));
