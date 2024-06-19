@@ -14,7 +14,10 @@ namespace SourceGit.Commands
 
         public Dictionary<string, string> ListAll()
         {
-            Args = "config -l";
+            if (string.IsNullOrEmpty(WorkingDirectory))
+                Args = "config --global -l";
+            else
+                Args = "config -l";
 
             var output = ReadToEnd();
             var rs = new Dictionary<string, string>();

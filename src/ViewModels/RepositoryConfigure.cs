@@ -52,7 +52,7 @@ namespace SourceGit.ViewModels
                 UserEmail = email;
             if (_cached.TryGetValue("commit.gpgsign", out var gpgCommitSign))
                 GPGCommitSigningEnabled = gpgCommitSign == "true";
-            if (_cached.TryGetValue("tag.gpgSign", out var gpgTagSign))
+            if (_cached.TryGetValue("tag.gpgsign", out var gpgTagSign))
                 GPGTagSigningEnabled = gpgTagSign == "true";
             if (_cached.TryGetValue("user.signingkey", out var signingKey))
                 GPGUserSigningKey = signingKey;
@@ -67,7 +67,7 @@ namespace SourceGit.ViewModels
             SetIfChanged("user.name", UserName);
             SetIfChanged("user.email", UserEmail);
             SetIfChanged("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false");
-            SetIfChanged("tag.gpgSign", GPGTagSigningEnabled ? "true" : "false");
+            SetIfChanged("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false");
             SetIfChanged("user.signingkey", GPGUserSigningKey);
             SetIfChanged("http.proxy", HttpProxy);
             return null;
