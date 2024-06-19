@@ -2,8 +2,8 @@
 {
     public enum DealWithLocalChanges
     {
+        DoNothing,
         StashAndReaply,
         Discard,
-        DoNothing,
     }
 }

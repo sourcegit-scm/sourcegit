@@ -72,17 +72,17 @@
           <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
         </StackPanel.Resources>
 
+        <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.DoNothing}"
+                     GroupName="LocalChanges"
+                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.DoNothing}}"/>
         <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.StashAndReply}"
                      GroupName="LocalChanges"
+                     Margin="8,0,0,0"
                      IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.StashAndReaply}}"/>
         <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.Discard}"
                      GroupName="LocalChanges"
                      Margin="8,0,0,0"
                      IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.Discard}}"/>
-        <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.DoNothing}"
-                     GroupName="LocalChanges"
-                     Margin="8,0,0,0"
-                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.DoNothing}}"/>
       </StackPanel>
 
       <CheckBox Grid.Row="4" Grid.Column="1"

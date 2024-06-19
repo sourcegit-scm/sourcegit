@@ -138,6 +138,6 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private string _name = null;
         private readonly string _baseOnRevision = null;
-        private Models.DealWithLocalChanges _preAction = Models.DealWithLocalChanges.StashAndReaply;
+        private Models.DealWithLocalChanges _preAction = Models.DealWithLocalChanges.DoNothing;
     }
 }
