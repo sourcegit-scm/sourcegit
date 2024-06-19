@@ -317,6 +317,18 @@ namespace SourceGit
             });
         }
 
+        public static async Task<string> GetClipboardTextAsync()
+        {
+            if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                if (desktop.MainWindow.Clipboard is { } clipboard)
+                {
+                   return await clipboard.GetTextAsync();
+                }
+            }
+            return default;
+        }
+
         private ResourceDictionary _activeLocale = null;
         private ResourceDictionary _colorOverrides = null;
         private Models.INotificationReceiver _notificationReceiver = null;

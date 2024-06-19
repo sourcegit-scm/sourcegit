@@ -56,6 +56,22 @@ namespace SourceGit.ViewModels
             _page = launcher.ActivePage;
 
             View = new Views.Clone() { DataContext = this };
+            App.GetClipboardTextAsync()
+                .ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        t.Exception.Handle(static _ => true);
+                    }
+                    else if (t.IsCompleted)
+                    {
+                        var result = t.Result;
+                        if (Models.Remote.IsValidURL(result))
+                        {
+                            Remote = result;
+                        }
+                    }
+                });
         }
 
         public static ValidationResult ValidateRemote(string remote, ValidationContext _)
