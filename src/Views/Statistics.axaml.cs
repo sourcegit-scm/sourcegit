@@ -12,6 +12,15 @@ namespace SourceGit.Views
 {
     public class Chart : Control
     {
+        public static readonly StyledProperty<IBrush> LabelBrushProperty =
+            AvaloniaProperty.Register<Chart, IBrush>(nameof(LabelBrush), Brushes.Black);
+
+        public IBrush LabelBrush
+        {
+            get => GetValue(LabelBrushProperty);
+            set => SetValue(LabelBrushProperty, value);
+        }
+
         public static readonly StyledProperty<IBrush> LineBrushProperty =
             AvaloniaProperty.Register<Chart, IBrush>(nameof(LineBrush), Brushes.Gray);
 
@@ -63,33 +72,19 @@ namespace SourceGit.Views
             }
 
             if (maxV < 5)
-            {
                 maxV = 5;
-            }
             else if (maxV < 10)
-            {
                 maxV = 10;
-            }
             else if (maxV < 50)
-            {
                 maxV = 50;
-            }
             else if (maxV < 100)
-            {
                 maxV = 100;
-            }
             else if (maxV < 200)
-            {
                 maxV = 200;
-            }
             else if (maxV < 500)
-            {
                 maxV = 500;
-            }
             else
-            {
                 maxV = (int)Math.Ceiling(maxV / 500.0) * 500;
-            }
 
             var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
             var pen = new Pen(LineBrush, 1);
@@ -100,7 +95,7 @@ namespace SourceGit.Views
             context.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, width, height));
 
             // Draw coordinate
-            var maxLabel = new FormattedText($"{maxV}", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 12.0, LineBrush);
+            var maxLabel = new FormattedText($"{maxV}", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 12.0, LabelBrush);
             var horizonStart = maxLabel.Width + 8;
             var labelHeight = maxLabel.Height;
             context.DrawText(maxLabel, new Point(0, -maxLabel.Height * 0.5));
@@ -122,7 +117,7 @@ namespace SourceGit.Views
                     FlowDirection.LeftToRight,
                     typeface,
                     12.0,
-                    LineBrush);
+                    LabelBrush);
 
                 var dashHeight = i * stepV;
                 var vy = Math.Max(0, dashHeight - vLabel.Height * 0.5);
@@ -155,7 +150,7 @@ namespace SourceGit.Views
                     FlowDirection.LeftToRight,
                     typeface,
                     10.0,
-                    LineBrush);
+                    LabelBrush);
                 var rect = _hitBoxes[i];
                 var xLabel = rect.X - (hLabel.Width - rect.Width) * 0.5;
                 var yLabel = height - labelHeight + 4;
@@ -188,7 +183,7 @@ namespace SourceGit.Views
                         FlowDirection.LeftToRight,
                         typeface,
                         12.0,
-                        LineBrush);
+                        LabelBrush);
 
                 var tx = rect.X - (tooltip.Width - rect.Width) * 0.5;
                 var ty = rect.Y - tooltip.Height - 4;
