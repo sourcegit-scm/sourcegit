@@ -23,7 +23,7 @@
                                    FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                    UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                    WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
-                                   ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbols}"
+                                   ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
                                    />
     </DataTemplate>
 
@@ -43,7 +43,7 @@
                                        FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                        UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                        WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
-                                       ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbols}"
+                                       ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
                                        />
 
         <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
@@ -62,7 +62,7 @@
                                        FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
                                        UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                        WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
-                                       ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbols}"
+                                       ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
                                        />
       </Grid>
     </DataTemplate>

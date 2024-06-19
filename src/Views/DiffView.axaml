@@ -34,14 +34,6 @@
 
           <!-- Toolbar Buttons -->
           <StackPanel Grid.Column="3" Margin="8,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
-            <ToggleButton Classes="line_path" 
-                          Width="32"
-                          IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbols, Mode=TwoWay}"
-                          IsVisible="{Binding IsTextDiff}" 
-                          ToolTip.Tip="{DynamicResource Text.Diff.ShowHiddenSymbols}">
-              <Path Width="18" Height="18" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Diff.ShowHiddenSymbols}"/>
-            </ToggleButton>
-            
             <Button Classes="icon_button" Width="32" Command="{Binding IncrUnified}" IsVisible="{Binding IsTextDiff}" ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Incr}">
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Incr}"/>
             </Button>
@@ -68,6 +60,14 @@
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.ToggleWordWrap}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.WordWrap}" Margin="0,2,0,0"/>
+            </ToggleButton>
+
+            <ToggleButton Classes="line_path"
+                          Width="32"
+                          IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView, Mode=TwoWay}"
+                          IsVisible="{Binding IsTextDiff}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.ShowHiddenSymbols}">
+              <Path Width="11" Height="11" Stretch="Uniform" Data="{StaticResource Icons.Whitespace}" Margin="0,1,0,0"/>
             </ToggleButton>
 
             <ToggleButton Classes="line_path"

@@ -182,6 +182,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _enableDiffViewWordWrap, value);
         }
 
+        public bool ShowHiddenSymbolsInDiffView
+        {
+            get => _showHiddenSymbolsInDiffView;
+            set => SetProperty(ref _showHiddenSymbolsInDiffView, value);
+        }
+
         public Models.ChangeViewMode UnstagedChangeViewMode
         {
             get => _unstagedChangeViewMode;
@@ -319,12 +325,6 @@ namespace SourceGit.ViewModels
             get;
             set;
         } = 0;
-
-        public bool ShowHiddenSymbols
-        {
-            get => _showHiddenSymbols;
-            set => SetProperty(ref _showHiddenSymbols, value);
-        }
 
         [JsonIgnore]
         public bool ShouldCheck4UpdateOnStartup
@@ -541,7 +541,7 @@ namespace SourceGit.ViewModels
         private bool _useSideBySideDiff = false;
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
-        private bool _showHiddenSymbols = false;
+        private bool _showHiddenSymbolsInDiffView = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
