@@ -210,16 +210,16 @@ namespace SourceGit.ViewModels
             return size > 0 ? (new Bitmap(stream), size) : (null, size);
         }
 
-        private Models.SubmoduleRevision QuerySubmoduleRevision(string repo, string sha)
+        private Models.RevisionSubmodule QuerySubmoduleRevision(string repo, string sha)
         {
             var commit = new Commands.QuerySingleCommit(repo, sha).Result();
             if (commit != null)
             {
                 var body = new Commands.QueryCommitFullMessage(repo, sha).Result();
-                return new Models.SubmoduleRevision() { Commit = commit, FullMessage = body };
+                return new Models.RevisionSubmodule() { Commit = commit, FullMessage = body };
             }
 
-            return new Models.SubmoduleRevision()
+            return new Models.RevisionSubmodule()
             {
                 Commit = new Models.Commit() { SHA = sha },
                 FullMessage = string.Empty,

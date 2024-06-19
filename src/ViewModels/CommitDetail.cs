@@ -201,7 +201,34 @@ namespace SourceGit.ViewModels
                     });
                     break;
                 case Models.ObjectType.Commit:
-                    ViewRevisionFileContent = new Models.RevisionSubmodule() { SHA = file.SHA };
+                    Task.Run(() =>
+                    {
+                        var submoduleRoot = Path.Combine(_repo, file.Path);
+                        var commit = new Commands.QuerySingleCommit(submoduleRoot, file.SHA).Result();
+                        if (commit != null)
+                        {
+                            var body = new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).Result();
+                            Dispatcher.UIThread.Invoke(() =>
+                            {
+                                ViewRevisionFileContent = new Models.RevisionSubmodule()
+                                {
+                                    Commit = commit,
+                                    FullMessage = body,
+                                };
+                            });
+                        }
+                        else
+                        {
+                            Dispatcher.UIThread.Invoke(() =>
+                            {
+                                ViewRevisionFileContent = new Models.RevisionSubmodule()
+                                {
+                                    Commit = new Models.Commit() { SHA = file.SHA },
+                                    FullMessage = string.Empty,
+                                };
+                            });
+                        }
+                    });
                     break;
                 default:
                     ViewRevisionFileContent = null;

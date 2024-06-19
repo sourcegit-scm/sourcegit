@@ -151,7 +151,7 @@
                   <Border IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <ContentControl Content="{Binding Old}">
                       <ContentControl.DataTemplates>
-                        <DataTemplate DataType="m:SubmoduleRevision">
+                        <DataTemplate DataType="m:RevisionSubmodule">
                           <Border Margin="0,0,0,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Background="{DynamicResource Brush.Window}">
                             <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" CanNavigate="False" Content="{Binding Commit}" Message="{Binding FullMessage}"/>
                           </Border>
