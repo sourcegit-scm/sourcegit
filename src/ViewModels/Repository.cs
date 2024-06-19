@@ -39,6 +39,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDir, value);
         }
 
+        public bool PreferRebaseInsteadOfMerge
+        {
+            get;
+            set;
+        } = true;
+
         public AvaloniaList<string> Filters
         {
             get;
