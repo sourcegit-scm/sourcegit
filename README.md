@@ -111,8 +111,6 @@ This app supports open repository in external tools listed in the table below.
 | Color.Border2 | Border color used in visual lines, like seperators, Rectange, etc. |
 | Color.FlatButton.Background | Flat button background color, like `Cancel`, `Commit & Push` button |
 | Color.FlatButton.BackgroundHovered | Flat button background color when hovered, like `Cancel` button |
-| Color.FlatButton.PrimaryBackground | Primary flat button background color, like `Ok`, `Commit` button |
-| Color.FlatButton.PrimaryBackgroundHovered | Primary flat button background color when hovered, like `Ok`, `Commit` button |
 | Color.FG1 | Primary foreground color for all text elements |
 | Color.FG2 | Secondary foreground color for all text elements |
 | Color.Diff.EmptyBG | Background color used in empty lines in diff viewer |

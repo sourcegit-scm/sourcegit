@@ -405,7 +405,8 @@
   </Style>
 
   <Style Selector="Button.flat">
-    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="TextBlock.TextAlignment" Value="Center"/>
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
@@ -419,8 +420,7 @@
                   Background="{TemplateBinding Background}"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}"
-                  CornerRadius="{TemplateBinding CornerRadius}"
-                  Effect="drop-shadow(0 0 2 #80000000)"/>
+                  CornerRadius="{TemplateBinding CornerRadius}"/>
 
           <ContentPresenter x:Name="PART_ContentPresenter"
                             Margin="2"
@@ -441,10 +441,11 @@
     <Setter Property="Background" Value="Transparent"/>
   </Style>
   <Style Selector="Button.flat.primary">
-    <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.PrimaryBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrush}"/>
+    <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}"/>
   </Style>
   <Style Selector="Button.flat.primary:pointerover /template/ Border#PART_Border">
-    <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.PrimaryBackgroundHovered}"/>
+    <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}"/>
   </Style>
   <Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
