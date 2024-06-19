@@ -320,6 +320,12 @@ namespace SourceGit.ViewModels
             set;
         } = 0;
 
+        public bool ShowHiddenSymbols
+        {
+            get => _showHiddenSymbols;
+            set => SetProperty(ref _showHiddenSymbols, value);
+        }
+
         [JsonIgnore]
         public bool ShouldCheck4UpdateOnStartup
         {
@@ -535,6 +541,7 @@ namespace SourceGit.ViewModels
         private bool _useSideBySideDiff = false;
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
+        private bool _showHiddenSymbols = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
