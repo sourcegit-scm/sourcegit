@@ -1538,6 +1538,27 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public void OpenSubmodule(string submodule)
+        {
+            var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
+            var gitDir = new Commands.QueryGitDir(root).Result();
+            var repo = Preference.AddRepository(root, gitDir);
+            
+            var node = new RepositoryNode()
+            {
+                Id = repo.FullPath,
+                Name = Path.GetFileName(repo.FullPath),
+                Bookmark = 0,
+                IsRepository = true,
+            };
+            
+            var launcher = App.GetTopLevel().DataContext as Launcher;
+            if (launcher != null)
+            {
+                launcher.OpenRepositoryInTab(node, null);
+            }
+        }
+
         public ContextMenu CreateContextMenuForSubmodule(string submodule)
         {
             var open = new MenuItem();
@@ -1545,23 +1566,7 @@ namespace SourceGit.ViewModels
             open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
             open.Click += (o, ev) =>
             {
-                var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
-                var gitDir = new Commands.QueryGitDir(root).Result();
-                var repo = Preference.AddRepository(root, gitDir);
-                var node = new RepositoryNode()
-                {
-                    Id = repo.FullPath,
-                    Name = Path.GetFileName(repo.FullPath),
-                    Bookmark = 0,
-                    IsRepository = true,
-                };
-
-                var launcher = App.GetTopLevel().DataContext as Launcher;
-                if (launcher != null)
-                {
-                    launcher.OpenRepositoryInTab(node, null);
-                }
-
+                OpenSubmodule(submodule);
                 ev.Handled = true;
             };
 
