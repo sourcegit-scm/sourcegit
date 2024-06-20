@@ -14,6 +14,8 @@ Opensource Git GUI client.
 * Supports SSH access with each remote
 * GIT commands with GUI
   * Clone/Fetch/Pull/Push...
+  * Merge/Rebase/Reset/Revert/Amend/Cherry-pick...
+  * Interactive rebase (Basic)
   * Branches
   * Remotes
   * Tags
