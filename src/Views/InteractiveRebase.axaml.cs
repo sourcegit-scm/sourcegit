@@ -59,10 +59,6 @@ namespace SourceGit.Views
                 item.SetAction(Models.InteractiveRebaseAction.Fixup);
             else if (e.Key == Key.D)
                 item.SetAction(Models.InteractiveRebaseAction.Drop);
-            else if (e.Key == Key.Up && e.KeyModifiers == KeyModifiers.Alt)
-                vm.MoveItemUp(item);
-            else if (e.Key == Key.Down && e.KeyModifiers == KeyModifiers.Alt)
-                vm.MoveItemDown(item);
         }
 
         private async void StartJobs(object sender, RoutedEventArgs e)
