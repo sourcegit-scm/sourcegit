@@ -26,28 +26,18 @@ namespace SourceGit.Models
     {
         public static int Process(string file)
         {
-
-            File.AppendAllLines("E:\\unknown.txt", ["------------", file]);
-
             try
             {
                 var filename = Path.GetFileName(file);
                 if (filename.Equals("git-rebase-todo", StringComparison.OrdinalIgnoreCase))
                 {
-                    File.AppendAllLines("E:\\unknown.txt", ["git-rebase-todo start"]);
                     var dirInfo = new DirectoryInfo(Path.GetDirectoryName(file));
                     if (!dirInfo.Exists || !dirInfo.Name.Equals("rebase-merge", StringComparison.Ordinal))
-                    {
-                        File.WriteAllLines("E:\\test.txt", ["git-rebase-todo", file]);
                         return -1;
-                    }
 
                     var jobsFile = Path.Combine(dirInfo.Parent.FullName, "sourcegit_rebase_jobs.json");
                     if (!File.Exists(jobsFile))
-                    {
-                        File.WriteAllLines("E:\\test.txt", ["git-rebase-todo", file, jobsFile]);
                         return -1;
-                    }
 
                     var jobs = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.ListInteractiveRebaseJob);
                     var lines = new List<string>();
@@ -76,12 +66,10 @@ namespace SourceGit.Models
                         }
                     }
 
-                    File.AppendAllLines("E:\\unknown.txt", ["git-rebase-todo end"]);
                     File.WriteAllLines(file, lines);
                 } 
                 else if (filename.Equals("COMMIT_EDITMSG", StringComparison.OrdinalIgnoreCase))
                 {
-                    File.AppendAllLines("E:\\unknown.txt", ["COMMIT_EDITMSG start"]);
                     var jobsFile = Path.Combine(Path.GetDirectoryName(file), "sourcegit_rebase_jobs.json");
                     if (!File.Exists(jobsFile))
                         return 0;
@@ -97,12 +85,6 @@ namespace SourceGit.Models
 
                     var job = jobs[done.Length - 1];
                     File.WriteAllText(file, job.Message);
-
-                    File.AppendAllLines("E:\\unknown.txt", ["COMMIT_EDITMSG end", File.ReadAllText(doneFile).ReplaceLineEndings("|")]);
-                }
-                else
-                {
-                    File.AppendAllLines("E:\\unknown.txt", [file]);
                 }
 
                 return 0;
