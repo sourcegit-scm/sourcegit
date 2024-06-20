@@ -15,6 +15,12 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.CommitDetail detail)
             {
                 var datagrid = sender as DataGrid;
+                if (datagrid.SelectedItem == null)
+                {
+                    e.Handled = true;
+                    return;
+                }
+
                 detail.ActivePageIndex = 1;
                 detail.SelectedChanges = new() { datagrid.SelectedItem as Models.Change };
             }
