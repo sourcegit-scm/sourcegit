@@ -45,7 +45,10 @@ namespace SourceGit
         {
             try
             {
-                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+                if (args.Length > 1 && args[0].Equals("--rebase-editor", StringComparison.Ordinal))
+                    Environment.Exit(Models.InteractiveRebaseEditor.Process(args[1]));
+                else
+                    BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             }
             catch (Exception ex)
             {

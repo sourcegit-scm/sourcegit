@@ -277,6 +277,18 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(revert);
+
+                var interactiveRebase = new MenuItem();
+                interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
+                interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                interactiveRebase.IsVisible = current.Head != commit.SHA;
+                interactiveRebase.Click += (o, e) =>
+                {
+                    var dialog = new Views.InteractiveRebase() { DataContext = new InteractiveRebase(_repo, current, commit) };
+                    dialog.ShowDialog(App.GetTopLevel() as Window);
+                    e.Handled = true;
+                };
+                menu.Items.Add(interactiveRebase);
             }
 
             if (current.Head != commit.SHA)

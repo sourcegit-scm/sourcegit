@@ -33,7 +33,7 @@
                AcceptsReturn="True"
                VerticalContentAlignment="Top"
                Text="{Binding Message, Mode=TwoWay}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>  
+               v:AutoFocusBehaviour.IsEnabled="True"/>
     </Grid>
   </StackPanel>
 </UserControl>

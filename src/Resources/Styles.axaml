@@ -160,6 +160,11 @@
     <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
   </Style>
 
+  <Style Selector="FlyoutPresenter">
+    <Setter Property="MaxWidth" Value="1024"/>
+    <Setter Property="MaxHeight" Value="768"/>
+  </Style>
+
   <Style Selector="Path">
     <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Stretch" Value="Uniform"/>

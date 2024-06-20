@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 
 namespace SourceGit.ViewModels
 {
@@ -57,12 +58,24 @@ namespace SourceGit.ViewModels
 
         public override bool Continue()
         {
-            var succ = base.Continue();
+            var exec = Process.GetCurrentProcess().MainModule.FileName;
+            var editor = $"\\\"{exec}\\\" --rebase-editor";
+
+            var succ = new Commands.Command()
+            {
+                WorkingDirectory = Repository,
+                Context = Repository,
+                Args = $"-c core.editor=\"{editor}\" rebase --continue",
+            }.Exec();
+
             if (succ)
             {
+                var jobsFile = Path.Combine(_gitDir, "sourcegit_rebase_jobs.json");
                 var rebaseMergeHead = Path.Combine(_gitDir, "REBASE_HEAD");
                 var rebaseMergeFolder = Path.Combine(_gitDir, "rebase-merge");
                 var rebaseApplyFolder = Path.Combine(_gitDir, "rebase-apply");
+                if (File.Exists(jobsFile))
+                    File.Delete(jobsFile);
                 if (File.Exists(rebaseMergeHead))
                     File.Delete(rebaseMergeHead);
                 if (Directory.Exists(rebaseMergeFolder))

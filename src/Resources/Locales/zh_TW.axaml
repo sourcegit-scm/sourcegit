@@ -88,6 +88,7 @@
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">與當前HEAD比較</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">與本地工作樹比較</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">複製提交指紋</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">互動式變基(rebase -i) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">變基(rebase) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">回滾此提交</x:String>
@@ -290,6 +291,11 @@
   <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">合併操作進行中。點選【終止】回滾到操作前的狀態。</x:String>
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">變基（Rebase）操作進行中。點選【終止】回滾到操作前的狀態。</x:String>
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">回滾提交操作進行中。點選【終止】回滾到操作前的狀態。</x:String>
+  <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">互動式變基</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">目標分支 ：</x:String>
+  <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">起始提交 ：</x:String>
+  <x:String x:Key="Text.InteractiveRebase.MoveUp" xml:space="preserve">向上移動</x:String>
+  <x:String x:Key="Text.InteractiveRebase.MoveDown" xml:space="preserve">向下移動</x:String>
   <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出錯了</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系統提示</x:String>
