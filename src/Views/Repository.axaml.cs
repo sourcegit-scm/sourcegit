@@ -332,5 +332,16 @@ namespace SourceGit.Views
                     outs.Add(b);
             }
         }
+
+        private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
+        {
+            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            {
+                var submodule = datagrid.SelectedItem as string;
+                (DataContext as ViewModels.Repository).OpenSubmodule(submodule); 
+            }
+
+            e.Handled = true;
+        }
     }
 }

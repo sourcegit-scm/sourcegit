@@ -457,6 +457,7 @@
                   HorizontalScrollBarVisibility="Disabled"
                   VerticalScrollBarVisibility="Auto"
                   ContextRequested="OnSubmoduleContextRequested"
+                  DoubleTapped="OnDoubleTappedSubmodule"
                   IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}">
           <DataGrid.Styles>
             <Style Selector="DataGridRow">
