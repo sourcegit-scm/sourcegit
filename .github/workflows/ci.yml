@@ -45,7 +45,7 @@ jobs:
       - name: Publish
         run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-x64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
       - name: Packing Program
-        run:  tar -cvf sourcegit.osx-x64.tar publish/
+        run:  tar -cvf sourcegit.osx-x64.tar -C publish/ .
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -68,7 +68,7 @@ jobs:
       - name: Publish
         run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-arm64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
       - name: Packing Program
-        run: tar -cvf sourcegit.osx-arm64.tar publish/
+        run: tar -cvf sourcegit.osx-arm64.tar -C publish/ .
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -93,7 +93,7 @@ jobs:
       - name: Rename Executable File
         run: mv publish/SourceGit publish/sourcegit
       - name: Packing Program
-        run: tar -cvf sourcegit.linux-x64.tar publish/
+        run: tar -cvf sourcegit.linux-x64.tar -C publish/ .
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
