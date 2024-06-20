@@ -9,6 +9,7 @@
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.InteractiveRebase"
                     x:DataType="vm:InteractiveRebase"
+                    Icon="/App.ico"
                     Title="{DynamicResource Text.InteractiveRebase}"
                     Width="1080" Height="720"
                     WindowStartupLocation="CenterOwner">
@@ -260,7 +261,9 @@
         <GridSplitter Grid.Row="1"
                       MinHeight="1"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      Background="Transparent"/>
+                      Background="Transparent"
+                      BorderThickness="0,1,0,0"
+                      BorderBrush="{DynamicResource Brush.Border2}"/>
 
         <Border Grid.Row="2" Background="{DynamicResource Brush.Window}">
           <Path Width="128" Height="128"

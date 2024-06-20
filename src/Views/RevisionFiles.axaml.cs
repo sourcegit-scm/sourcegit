@@ -59,7 +59,7 @@ namespace SourceGit.Views
                     disposable.Dispose();
 
                 var vm = DataContext as ViewModels.CommitDetail;
-                if (vm == null)
+                if (vm == null || vm.Commit == null)
                 {
                     Content = null;
                     GC.Collect();
