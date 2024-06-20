@@ -63,7 +63,7 @@
     </Grid>
     
     <!-- Body -->
-    <Border Grid.Row="2" Margin="8,0,8,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border0}">
+    <Border Grid.Row="2" Margin="8,0,8,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
       <Grid RowDefinitions="*,3,*">
         <DataGrid Grid.Row="0"
                   Background="{DynamicResource Brush.Contents}"
@@ -178,7 +178,7 @@
                     <Button Classes="icon_button" IsVisible="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.CanEditMessage}}">
                       <Button.Flyout>
                         <Flyout Placement="BottomEdgeAlignedLeft">
-                          <Panel Width="600" Height="200">
+                          <Panel Width="600" Height="120">
                             <TextBox Grid.Row="0"
                                      CornerRadius="2"
                                      AcceptsReturn="True"
