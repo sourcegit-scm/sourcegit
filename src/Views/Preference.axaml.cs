@@ -189,7 +189,9 @@ namespace SourceGit.Views
             SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false");
             SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false");
             SetIfChanged(config, "gpg.format", GPGFormat.Value);
-            SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGFormat.Value != "ssh" ? GPGExecutableFile : null);
+
+            if (!GPGFormat.Value.Equals("ssh", StringComparison.Ordinal))
+                SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
 
             Close();
         }
