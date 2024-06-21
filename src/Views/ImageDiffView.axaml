@@ -132,7 +132,7 @@
             <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}"/>            
             <TextBlock Classes="monospace"
                        Margin="8,0,0,0"
-                       Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"
+                       Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
                        Foreground="{DynamicResource Brush.FG2}"/>
           </StackPanel>
 
@@ -159,7 +159,7 @@
             <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.New}"/>
             <TextBlock Classes="monospace"
                        Margin="8,0,0,0"
-                       Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
+                       Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"
                        Foreground="{DynamicResource Brush.FG2}"/>
           </StackPanel>
         </Grid>
