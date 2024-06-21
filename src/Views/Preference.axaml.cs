@@ -162,8 +162,8 @@ namespace SourceGit.Views
                 if (config.TryGetValue("gpg.format", out var gpgFormat))
                     GPGFormat = Models.GPGFormat.Supported.Find(x => x.Value == gpgFormat) ?? Models.GPGFormat.Supported[0];
 
-                if (GPGFormat.Value == "opengpg" && config.TryGetValue("gpg.program", out var opengpg))
-                    GPGExecutableFile = opengpg;
+                if (GPGFormat.Value == "openpgp" && config.TryGetValue("gpg.program", out var openpgp))
+                    GPGExecutableFile = openpgp;
                 else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
                     GPGExecutableFile = gpgProgram;
 
@@ -181,8 +181,8 @@ namespace SourceGit.Views
             if (change.Property == GPGFormatProperty)
             {
                 var config = new Commands.Config(null).ListAll();
-                if (GPGFormat.Value == "opengpg" && config.TryGetValue("gpg.program", out var opengpg))
-                    GPGExecutableFile = opengpg;
+                if (GPGFormat.Value == "openpgp" && config.TryGetValue("gpg.program", out var openpgp))
+                    GPGExecutableFile = openpgp;
                 else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
                     GPGExecutableFile = gpgProgram;
             }
