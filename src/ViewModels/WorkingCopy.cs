@@ -190,29 +190,17 @@ namespace SourceGit.ViewModels
         {
             _repo = null;
 
-            if (_selectedUnstaged != null)
-            {
-                _selectedUnstaged.Clear();
-                OnPropertyChanged(nameof(SelectedUnstaged));
-            }
+            _selectedUnstaged.Clear();
+            OnPropertyChanged(nameof(SelectedUnstaged));
 
-            if (_selectedStaged != null)
-            {
-                _selectedStaged.Clear();
-                OnPropertyChanged(nameof(SelectedStaged));
-            }
+            _selectedStaged.Clear();
+            OnPropertyChanged(nameof(SelectedStaged));
 
-            if (_unstaged != null)
-            {
-                _unstaged.Clear();
-                OnPropertyChanged(nameof(Unstaged));
-            }
+            _unstaged.Clear();
+            OnPropertyChanged(nameof(Unstaged));
 
-            if (_staged != null)
-            {
-                _staged.Clear();
-                OnPropertyChanged(nameof(Staged));
-            }
+            _staged.Clear();
+            OnPropertyChanged(nameof(Staged));
 
             _detailContext = null;
             _commitMessage = string.Empty;
@@ -1210,10 +1198,10 @@ namespace SourceGit.ViewModels
         private bool _isCommitting = false;
         private bool _useAmend = false;
         private bool _canCommitWithPush = false;
-        private List<Models.Change> _unstaged = null;
-        private List<Models.Change> _staged = null;
-        private List<Models.Change> _selectedUnstaged = null;
-        private List<Models.Change> _selectedStaged = null;
+        private List<Models.Change> _unstaged = [];
+        private List<Models.Change> _staged = [];
+        private List<Models.Change> _selectedUnstaged = [];
+        private List<Models.Change> _selectedStaged = [];
         private int _count = 0;
         private object _detailContext = null;
         private string _commitMessage = string.Empty;

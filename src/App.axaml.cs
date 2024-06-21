@@ -53,9 +53,7 @@ namespace SourceGit
             catch (Exception ex)
             {
                 var builder = new StringBuilder();
-                builder.Append("Crash: ");
-                builder.Append(ex.Message);
-                builder.Append("\n\n");
+                builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
                 builder.Append("----------------------------\n");
                 builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
                 builder.Append($"OS: {Environment.OSVersion.ToString()}\n");
