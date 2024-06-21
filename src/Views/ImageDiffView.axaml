@@ -16,7 +16,11 @@
       </Style>
     </TabControl.Styles>
 
-    <TabItem Header="SIDE-BY-SIDE">
+    <TabItem>
+      <TabItem.Header>
+        <TextBlock Text="SIDE-BY-SIDE" FontSize="11"/>
+      </TabItem.Header>
+      
       <Grid ColumnDefinitions="*,32,*" RowDefinitions="Auto,*" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16">
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
           <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
@@ -59,8 +63,12 @@
         </Border>
       </Grid>
     </TabItem>
-    
-    <TabItem Header="SWIPE">
+
+    <TabItem>
+      <TabItem.Header>
+        <TextBlock Text="SWIPE" FontSize="11"/>
+      </TabItem.Header>
+      
       <Grid RowDefinitions="Auto,*" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
           <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
@@ -94,7 +102,11 @@
       </Grid>
     </TabItem>
 
-    <TabItem Header="BLEND">
+    <TabItem>
+      <TabItem.Header>
+        <TextBlock Text="BLEND" FontSize="11"/>
+      </TabItem.Header>
+      
       <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16,8,0">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
           <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
