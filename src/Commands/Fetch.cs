@@ -133,19 +133,12 @@ namespace SourceGit.Commands
             var job = new Job
             {
                 Cmd = new Fetch(repo, "--all", true, null) { RaiseError = false },
-                NextRunTimepoint = DateTime.Now.AddMinutes(Convert.ToDouble(Interval)),
+                NextRunTimepoint = DateTime.Now,
             };
 
             lock (_lock)
             {
-                if (_jobs.ContainsKey(repo))
-                {
-                    _jobs[repo] = job;
-                }
-                else
-                {
-                    _jobs.Add(repo, job);
-                }
+                _jobs[repo] = job;
             }
         }
 
