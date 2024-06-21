@@ -55,7 +55,7 @@
         <TextBlock Text="{DynamicResource Text.Hotkeys.Global}"
                    Foreground="{DynamicResource Brush.FG2}"
                    FontWeight="Bold"
-                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
+                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"
                    Margin="0,0,0,8"/>
 
         <Grid RowDefinitions="20,20,20,20,20,20" ColumnDefinitions="150,*">
@@ -81,7 +81,7 @@
         <TextBlock Text="{DynamicResource Text.Hotkeys.Repo}"
                    Foreground="{DynamicResource Brush.FG2}"
                    FontWeight="Bold"
-                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
+                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"
                    Margin="0,8"/>
 
         <Grid RowDefinitions="20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
@@ -113,7 +113,7 @@
         <TextBlock Text="{DynamicResource Text.Hotkeys.TextEditor}"
                    Foreground="{DynamicResource Brush.FG2}"
                    FontWeight="Bold"
-                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Increase}}"
+                   FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"
                    Margin="0,8"/>
 
         <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="150,*">
