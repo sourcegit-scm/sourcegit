@@ -174,6 +174,20 @@ namespace SourceGit.Views
             GitVersion = ver;
         }
 
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == GPGFormatProperty)
+            {
+                var config = new Commands.Config(null).ListAll();
+                if (GPGFormat.Value == "opengpg" && config.TryGetValue("gpg.program", out var opengpg))
+                    GPGExecutableFile = opengpg;
+                else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
+                    GPGExecutableFile = gpgProgram;
+            }
+        }
+
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
