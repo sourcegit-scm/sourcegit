@@ -239,19 +239,27 @@ namespace SourceGit.Views
             var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
             var alpha = Alpha;
             var left = OldImage;
-            if (left != null && alpha < 1)
-            {
-                var state = context.PushOpacity(1- alpha);
-                context.DrawImage(left, rect);
-                state.Dispose();
-            }
-
             var right = NewImage;
-            if (right != null && alpha > 0)
+
+            var drawLeft = left != null && alpha < 1.0;
+            var drawRight = right != null && alpha > 0;
+            if (drawLeft)
             {
-                var state = context.PushOpacity(alpha);
-                context.DrawImage(right, rect);
-                state.Dispose();
+                using (context.PushRenderOptions(new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Source }))
+                using (context.PushOpacity(1 - alpha))
+                    context.DrawImage(left, rect);
+
+                if (drawRight)
+                {
+                    using (context.PushRenderOptions(new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Plus }))
+                    using (context.PushOpacity(alpha))
+                        context.DrawImage(right, rect);
+                }
+            }
+            else if (drawRight)
+            {
+                using (context.PushOpacity(alpha))
+                    context.DrawImage(right, rect);
             }
         }
 
