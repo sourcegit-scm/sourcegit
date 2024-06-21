@@ -162,14 +162,18 @@ namespace SourceGit.Views
                 if (config.TryGetValue("gpg.format", out var gpgFormat))
                     GPGFormat = Models.GPGFormat.Supported.Find(x => x.Value == gpgFormat) ?? Models.GPGFormat.Supported[0];
 
-                if (GPGFormat.Value == "opengpg" && config.TryGetValue("gpg.program", out var opengpg))
-                    GPGExecutableFile = opengpg;
-                else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
-                    GPGExecutableFile = gpgProgram;
+                foreach (var supportedSingleFormat in Models.GPGFormat.Supported)
+                {
+                    _gpgExecutableFiles[supportedSingleFormat.Value] = config.GetValueOrDefault($"gpg.{supportedSingleFormat.Value}.program");
+                }
+                if (config.TryGetValue("gpg.program", out var defaultGpgProgram))
+                    _gpgExecutableFiles[Models.GPGFormat.Supported[0].Value] = defaultGpgProgram;
+                GPGExecutableFile = _gpgExecutableFiles[GPGFormat.Value];
 
                 ver = new Commands.Version().Query();
             }
 
+            this.PropertyChanged += PreferencePropertyChanged;
             InitializeComponent();
             GitVersion = ver;
         }
@@ -189,7 +193,7 @@ namespace SourceGit.Views
             SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false");
             SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false");
             SetIfChanged(config, "gpg.format", GPGFormat.Value);
-            SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGFormat.Value != "ssh" ? GPGExecutableFile : null);
+            SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
 
             Close();
         }
@@ -296,5 +300,19 @@ namespace SourceGit.Views
             if (changed)
                 new Commands.Config(null).Set(key, value);
         }
+
+        private void PreferencePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == GPGExecutableFileProperty)
+                _gpgExecutableFiles[GPGFormat.Value] = (string)e.NewValue;
+            else if (e.Property == GPGFormatProperty)
+            {
+                var newValue = _gpgExecutableFiles[GPGFormat.Value];
+                if (GPGExecutableFile != newValue)
+                    GPGExecutableFile = newValue;
+            }
+        }
+
+        private readonly Dictionary<string, string> _gpgExecutableFiles = new();
     }
 }
