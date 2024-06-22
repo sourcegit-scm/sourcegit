@@ -421,14 +421,12 @@
       <ControlTemplate>
         <Grid>
           <Border x:Name="PART_Border"
-                  Margin="2"
                   Background="{TemplateBinding Background}"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}"
                   CornerRadius="{TemplateBinding CornerRadius}"/>
 
           <ContentPresenter x:Name="PART_ContentPresenter"
-                            Margin="2"
                             Background="Transparent"
                             Padding="{TemplateBinding Padding}"
                             Content="{TemplateBinding Content}"

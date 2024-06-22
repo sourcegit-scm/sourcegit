@@ -295,7 +295,7 @@
                    Maximum="100"
                    IsVisible="False"/>
       <Button Grid.Column="1" Classes="flat primary" MinWidth="80" Content="{DynamicResource Text.Start}" Click="StartJobs"/>
-      <Button Grid.Column="2" Classes="flat" MinWidth="80" Content="{DynamicResource Text.Cancel}" Click="CloseWindow"/>
+      <Button Grid.Column="2" Classes="flat" Margin="8,0,0,0" MinWidth="80" Content="{DynamicResource Text.Cancel}" Click="CloseWindow"/>
     </Grid>
   </Grid>
 </v:ChromelessWindow>
