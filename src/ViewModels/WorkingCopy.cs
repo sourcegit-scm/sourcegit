@@ -131,7 +131,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        SelectedStaged = null;
+                        SelectedStaged = [];
 
                         if (value.Count == 1)
                             SetDetail(value[0]);
@@ -156,7 +156,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        SelectedUnstaged = null;
+                        SelectedUnstaged = [];
 
                         if (value.Count == 1)
                             SetDetail(value[0]);
