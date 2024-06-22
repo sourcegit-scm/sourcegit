@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{773082AC
 		build\build.linux.sh = build\build.linux.sh
 		build\build.osx.command = build\build.osx.command
 		build\build.windows.ps1 = build\build.windows.ps1
+		build\build.windows.installer.nsi = build\build.windows.installer.nsi
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{FD384607-ED99-47B7-AF31-FB245841BC92}"
@@ -38,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{ABC98884-F02
 	ProjectSection(SolutionItems) = preProject
 		build\resources\app\App.icns = build\resources\app\App.icns
 		build\resources\app\App.plist = build\resources\app\App.plist
+		build\resources\app\App.ico = build\resources\app\App.ico
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_common", "_common", "{04FD74B1-FBDB-496E-A48F-3D59D71FF952}"
