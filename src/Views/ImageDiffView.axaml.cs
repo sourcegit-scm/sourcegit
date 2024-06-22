@@ -9,10 +9,8 @@ using Avalonia.Styling;
 
 namespace SourceGit.Views
 {
-    public class ImageContainer : ContentControl
+    public class ImageContainer : Control
     {
-        protected override Type StyleKeyOverride => typeof(ContentControl);
-
         public override void Render(DrawingContext context)
         {
             if (_bgBrush == null)
@@ -54,7 +52,7 @@ namespace SourceGit.Views
         private DrawingBrush _bgBrush = null;
     }
 
-    public class ImagesSwipeControl : Control
+    public class ImagesSwipeControl : ImageContainer
     {
         public static readonly StyledProperty<double> AlphaProperty =
             AvaloniaProperty.Register<ImagesSwipeControl, double>(nameof(Alpha), 0.5);
@@ -91,6 +89,8 @@ namespace SourceGit.Views
 
         public override void Render(DrawingContext context)
         {
+            base.Render(context);
+
             var alpha = Alpha;
             var w = Bounds.Width;
             var h = Bounds.Height;
@@ -199,7 +199,7 @@ namespace SourceGit.Views
         private bool _lastInSlider = false;
     }
 
-    public class ImageBlendControl : Control
+    public class ImageBlendControl : ImageContainer
     {
         public static readonly StyledProperty<double> AlphaProperty =
             AvaloniaProperty.Register<ImageBlendControl, double>(nameof(Alpha), 1.0);
@@ -236,30 +236,50 @@ namespace SourceGit.Views
 
         public override void Render(DrawingContext context)
         {
+            base.Render(context);
+
             var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
             var alpha = Alpha;
             var left = OldImage;
             var right = NewImage;
-
             var drawLeft = left != null && alpha < 1.0;
             var drawRight = right != null && alpha > 0;
-            if (drawLeft)
-            {
-                using (context.PushRenderOptions(new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Source }))
-                using (context.PushOpacity(1 - alpha))
-                    context.DrawImage(left, rect);
+            var psize = left == null ? right.PixelSize : left.PixelSize;
+            var dpi = left == null ? right.Dpi : left.Dpi;
 
-                if (drawRight)
-                {
-                    using (context.PushRenderOptions(new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Plus }))
-                    using (context.PushOpacity(alpha))
-                        context.DrawImage(right, rect);
-                }
-            }
-            else if (drawRight)
+            using (var rt = new RenderTargetBitmap(psize, dpi))
             {
-                using (context.PushOpacity(alpha))
-                    context.DrawImage(right, rect);
+                var rtRect = new Rect(rt.Size);
+                using (var dc = rt.CreateDrawingContext())
+                {
+                    if (drawLeft)
+                    {
+                        if (drawRight)
+                        {
+                            using (dc.PushRenderOptions(RO_SRC))
+                            using (dc.PushOpacity(1 - alpha))
+                                dc.DrawImage(left, rtRect);
+
+                            using (dc.PushRenderOptions(RO_DST))
+                            using (dc.PushOpacity(alpha))
+                                dc.DrawImage(right, rtRect);
+                        }
+                        else
+                        {
+                            using (dc.PushRenderOptions(RO_SRC))
+                            using (dc.PushOpacity(1 - alpha))
+                                dc.DrawImage(left, rtRect);
+                        }
+                    }
+                    else if (drawRight)
+                    {
+                        using (dc.PushRenderOptions(RO_SRC))
+                        using (dc.PushOpacity(alpha))
+                            dc.DrawImage(right, rtRect);
+                    }
+                }
+
+                context.DrawImage(rt, rtRect, rect);
             }
         }
 
@@ -290,6 +310,9 @@ namespace SourceGit.Views
 
             return new Size(scale * img.Width, scale * img.Height);
         }
+
+        private static readonly RenderOptions RO_SRC = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Source, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
+        private static readonly RenderOptions RO_DST = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Plus, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
     }
 
     public partial class ImageDiffView : UserControl

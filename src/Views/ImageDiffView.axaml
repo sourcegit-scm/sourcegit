@@ -21,8 +21,8 @@
         <TextBlock Text="SIDE-BY-SIDE" FontSize="11"/>
       </TabItem.Header>
 
-      <UniformGrid Rows="1" Margin="8,16" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Grid RowDefinitions="Auto,*" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <UniformGrid Rows="1" Margin="0,16" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid RowDefinitions="Auto,*" Margin="16,0" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
             <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
               <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
@@ -36,15 +36,16 @@
           <Border Grid.Row="1" Margin="0,12,0,0" Effect="drop-shadow(0 0 8 #A0000000)">
             <Border Background="{DynamicResource Brush.Popup}" HorizontalAlignment="Center" Padding="8">
               <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
-                <v:ImageContainer>
+                <Grid>
+                  <v:ImageContainer/>
                   <Image Source="{Binding Old}" Stretch="Uniform" VerticalAlignment="Center"/>
-                </v:ImageContainer>
+                </Grid>
               </Border>
             </Border>
           </Border>
         </Grid>
         
-        <Grid RowDefinitions="Auto,*" Margin="32,0,0,0" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <Grid RowDefinitions="Auto,*" Margin="16,0" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
             <Border Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
               <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10"/>
@@ -58,9 +59,10 @@
           <Border Grid.Row="1" Margin="0,12,0,0" Effect="drop-shadow(0 0 8 #A0000000)">
             <Border Background="{DynamicResource Brush.Popup}" HorizontalAlignment="Center" Padding="8">
               <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
-                <v:ImageContainer>
+                <Grid>
+                  <v:ImageContainer/>
                   <Image Source="{Binding New}" Stretch="Uniform" VerticalAlignment="Center"/>
-                </v:ImageContainer>
+                </Grid>
               </Border>
             </Border>
           </Border>
@@ -95,11 +97,9 @@
         <Border Grid.Row="1" Margin="0,12,0,0" Effect="drop-shadow(0 0 8 #A0000000)">
           <Border HorizontalAlignment="Center" Background="{DynamicResource Brush.Window}">
             <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
-              <v:ImageContainer>
-                <v:ImagesSwipeControl OldImage="{Binding Old}"
-                                      NewImage="{Binding New}"
-                                      RenderOptions.BitmapInterpolationMode="HighQuality"/>
-              </v:ImageContainer>              
+              <v:ImagesSwipeControl OldImage="{Binding Old}"
+                                    NewImage="{Binding New}"
+                                    RenderOptions.BitmapInterpolationMode="HighQuality"/>             
             </Border>
           </Border>
         </Border>
@@ -133,12 +133,9 @@
         <Border Grid.Row="1" Margin="0,12,0,0" Effect="drop-shadow(0 0 8 #A0000000)">
           <Border HorizontalAlignment="Center" Background="{DynamicResource Brush.Window}">
             <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
-              <v:ImageContainer>
-                <v:ImageBlendControl Alpha="{Binding #ImageBlendSlider.Value}"
-                                     OldImage="{Binding Old}"
-                                     NewImage="{Binding New}"
-                                     RenderOptions.BitmapInterpolationMode="HighQuality"/>
-              </v:ImageContainer>
+              <v:ImageBlendControl Alpha="{Binding #ImageBlendSlider.Value}"
+                                   OldImage="{Binding Old}"
+                                   NewImage="{Binding New}"/>
             </Border>
           </Border>
         </Border>
