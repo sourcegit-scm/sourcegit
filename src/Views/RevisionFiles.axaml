@@ -58,9 +58,14 @@
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionImageFile">
-              <Border Background="{DynamicResource Brush.Window}" Effect="drop-shadow(0 0 8 #A0000000)" Margin="0,8" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
-                  <v:RevisionImageFileView Source="{Binding Image}" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+              <Border Margin="0,8" VerticalAlignment="Center" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
+                <Border Background="{DynamicResource Brush.Window}">
+                  <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
+                    <Grid>
+                      <v:ImageContainer/>
+                      <Image Source="{Binding Image}" Stretch="Uniform" VerticalAlignment="Center" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                    </Grid>
+                  </Border>
                 </Border>
               </Border>
             </DataTemplate>

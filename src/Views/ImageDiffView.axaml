@@ -28,9 +28,9 @@
               <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
             </Border>
 
-            <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-            <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding OldFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0" HorizontalAlignment="Right"/>
-            <TextBlock Grid.Column="3" Classes="monospace" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
+            <TextBlock Classes="monospace" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
+            <TextBlock Classes="monospace" Text="{Binding OldFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0" HorizontalAlignment="Right"/>
+            <TextBlock Classes="monospace" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
           </StackPanel>
 
           <Border Grid.Row="1" Margin="0,12,0,0" Effect="drop-shadow(0 0 8 #A0000000)">
@@ -51,9 +51,9 @@
               <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10"/>
             </Border>
 
-            <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-            <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding NewFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0" HorizontalAlignment="Right"/>
-            <TextBlock Grid.Column="3" Classes="monospace" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
+            <TextBlock Classes="monospace" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
+            <TextBlock Classes="monospace" Text="{Binding NewFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0" HorizontalAlignment="Right"/>
+            <TextBlock Classes="monospace" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
           </StackPanel>
 
           <Border Grid.Row="1" Margin="0,12,0,0" Effect="drop-shadow(0 0 8 #A0000000)">
