@@ -28,7 +28,7 @@ Opensource Git GUI client.
   * Blame
   * Revision Diffs
   * Branch Diff
-  * Image Diff
+  * Image Diff - Side-By-Side/Swipe/Blend
 * GitFlow support
 * Git LFS support
 
