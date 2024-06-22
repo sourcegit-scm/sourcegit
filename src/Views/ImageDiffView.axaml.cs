@@ -244,42 +244,35 @@ namespace SourceGit.Views
             var right = NewImage;
             var drawLeft = left != null && alpha < 1.0;
             var drawRight = right != null && alpha > 0;
-            var psize = left == null ? right.PixelSize : left.PixelSize;
-            var dpi = left == null ? right.Dpi : left.Dpi;
 
-            using (var rt = new RenderTargetBitmap(psize, dpi))
+            if (drawLeft && drawRight)
             {
-                var rtRect = new Rect(rt.Size);
-                using (var dc = rt.CreateDrawingContext())
+                using (var rt = new RenderTargetBitmap(right.PixelSize, right.Dpi))
                 {
-                    if (drawLeft)
-                    {
-                        if (drawRight)
-                        {
-                            using (dc.PushRenderOptions(RO_SRC))
-                            using (dc.PushOpacity(1 - alpha))
-                                dc.DrawImage(left, rtRect);
-
-                            using (dc.PushRenderOptions(RO_DST))
-                            using (dc.PushOpacity(alpha))
-                                dc.DrawImage(right, rtRect);
-                        }
-                        else
-                        {
-                            using (dc.PushRenderOptions(RO_SRC))
-                            using (dc.PushOpacity(1 - alpha))
-                                dc.DrawImage(left, rtRect);
-                        }
-                    }
-                    else if (drawRight)
+                    var rtRect = new Rect(rt.Size);
+                    using (var dc = rt.CreateDrawingContext())
                     {
                         using (dc.PushRenderOptions(RO_SRC))
+                        using (dc.PushOpacity(1 - alpha))
+                            dc.DrawImage(left, rtRect);
+
+                        using (dc.PushRenderOptions(RO_DST))
                         using (dc.PushOpacity(alpha))
                             dc.DrawImage(right, rtRect);
                     }
-                }
 
-                context.DrawImage(rt, rtRect, rect);
+                    context.DrawImage(rt, rtRect, rect);
+                }
+            }
+            else if (drawLeft)
+            {
+                using (context.PushOpacity(1 - alpha))
+                    context.DrawImage(left, rect);
+            }
+            else if (drawRight)
+            {
+                using (context.PushOpacity(alpha))
+                    context.DrawImage(right, rect);
             }
         }
 
