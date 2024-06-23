@@ -14,6 +14,13 @@
           CornerRadius="4">
     <Grid RowDefinitions="*,Auto">
       <Grid Grid.Row="0">
+        <Rectangle x:Name="SubjectGuideLine"
+                   Height="1"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   IsHitTestVisible="False"
+                   Fill="{DynamicResource Brush.Border2}"/>
+        
         <ae:TextEditor x:Name="TextEditor"
                        Foreground="{DynamicResource Brush.FG1}"
                        Background="Transparent"
@@ -31,13 +38,6 @@
                    Margin="2,1"
                    IsVisible="{Binding #ThisControl.Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
                    IsHitTestVisible="False"/>
-    
-        <Rectangle x:Name="SubjectGuideLine"
-                   Height="1"
-                   HorizontalAlignment="Stretch"
-                   VerticalAlignment="Top"
-                   IsHitTestVisible="False"
-                   Fill="{DynamicResource Brush.Border2}"/>
       </Grid>
       
       <Border Grid.Row="1" CornerRadius="0,0,4,4" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Brush.Border2}" Background="{DynamicResource Brush.Window}" ClipToBounds="True">
