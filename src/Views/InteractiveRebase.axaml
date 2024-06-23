@@ -163,8 +163,8 @@
                     </Button.Flyout>
                     
                     <StackPanel Orientation="Horizontal">
-                      <Ellipse Grid.Column="0" Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
-                      <TextBlock Grid.Column="1" Classes="monospace" Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
+                      <Ellipse Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
+                      <TextBlock Classes="monospace" Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
                     </StackPanel>
                   </Button>
                 </DataTemplate>
@@ -179,12 +179,7 @@
                       <Button.Flyout>
                         <Flyout Placement="BottomEdgeAlignedLeft">
                           <Panel Width="600" Height="120">
-                            <TextBox Grid.Row="0"
-                                     CornerRadius="2"
-                                     AcceptsReturn="True"
-                                     VerticalContentAlignment="Top"
-                                     Text="{Binding FullMessage, Mode=TwoWay}"
-                                     v:AutoFocusBehaviour.IsEnabled="True"/>
+                            <v:CommitMessageTextBox Text="{Binding FullMessage, Mode=TwoWay}"/>
                           </Panel>
                         </Flyout>
                       </Button.Flyout>

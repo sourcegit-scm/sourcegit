@@ -79,7 +79,7 @@ namespace SourceGit.Models
                     if (!File.Exists(doneFile))
                         return -1;
 
-                    var done = File.ReadAllText(doneFile).Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
+                    var done = File.ReadAllText(doneFile).Split(new char[] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
                     if (done.Length > jobs.Count)
                         return -1;
 

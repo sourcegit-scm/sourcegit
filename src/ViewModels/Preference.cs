@@ -134,6 +134,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _maxHistoryCommits, value);
         }
 
+        public int SubjectGuideLength
+        {
+            get => _subjectGuideLength;
+            set => SetProperty(ref _subjectGuideLength, value);
+        }
+
         public bool RestoreTabs
         {
             get => _restoreTabs;
@@ -534,9 +540,11 @@ namespace SourceGit.ViewModels
         private LayoutInfo _layout = new LayoutInfo();
 
         private int _maxHistoryCommits = 20000;
+        private int _subjectGuideLength = 50;
         private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
         private bool _check4UpdatesOnStartup = true;
+        
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _useSideBySideDiff = false;
         private bool _useSyntaxHighlighting = false;

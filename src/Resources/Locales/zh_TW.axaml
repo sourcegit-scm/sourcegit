@@ -108,6 +108,8 @@
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">父提交</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">相關引用</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交指紋</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">填寫提交資訊</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Tip" xml:space="preserve">Git使用空白行來劃分提交資訊中的主題與內容</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">倉庫配置</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">電子郵箱</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">郵箱地址</x:String>
@@ -331,6 +333,7 @@
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">顯示語言</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">最大歷史提交數</x:String>
   <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">啟動時恢復上次開啟的倉庫</x:String>
+  <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">SUBJECT字數檢測</x:String>
   <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">使用固定寬度的標題欄標籤</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">啟用定時自動拉取遠端更新</x:String>
@@ -522,7 +525,6 @@
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">現在您已可將其加入暫存區中</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提交</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交併推送</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitMessageTip" xml:space="preserve">填寫提交資訊</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">CTRL + Enter</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">檢測到衝突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">檔案衝突已解決</x:String>

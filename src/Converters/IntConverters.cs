@@ -18,5 +18,8 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<int, bool> IsNotOne =
             new FuncValueConverter<int, bool>(v => v != 1);
+
+        public static readonly FuncValueConverter<int, bool> IsBadSubjectLength =
+            new FuncValueConverter<int, bool>(v => v > ViewModels.Preference.Instance.SubjectGuideLength);
     }
 }

@@ -105,19 +105,12 @@ namespace SourceGit.Views
             set => SetValue(UseSyntaxHighlightingProperty, value);
         }
 
-        /// <summary>
-        /// ShowHiddenSymbols StyledProperty definition
-        /// </summary>
         public static readonly StyledProperty<bool> ShowHiddenSymbolsProperty =
             AvaloniaProperty.Register<IThemedTextDiffPresenter, bool>(nameof(ShowHiddenSymbols), false);
 
-        /// <summary>
-        /// Gets or sets the ShowHiddenSymbols property. This StyledProperty
-        /// indicates that show hidden symbol like space and tab
-        /// </summary>
         public bool ShowHiddenSymbols
         {
-            get => this.GetValue(ShowHiddenSymbolsProperty);
+            get => GetValue(ShowHiddenSymbolsProperty);
             set => SetValue(ShowHiddenSymbolsProperty, value);
         }
 

@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ae="using:AvaloniaEdit"
+             xmlns:c="using:SourceGit.Converters"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.CommitMessageTextBox"
+             x:Name="ThisControl">
+  <Border Background="{DynamicResource Brush.Contents}"
+          BorderThickness="1"
+          BorderBrush="{DynamicResource Brush.Border2}"
+          CornerRadius="4">
+    <Grid RowDefinitions="*,Auto">
+      <Grid Grid.Row="0">
+        <ae:TextEditor x:Name="TextEditor"
+                       Foreground="{DynamicResource Brush.FG1}"
+                       Background="Transparent"
+                       Padding="2,1"
+                       BorderThickness="0"
+                       WordWrap="True"
+                       Document="{Binding #ThisControl.Document}"
+                       TextChanged="OnTextEditorTextChanged"
+                       LayoutUpdated="OnTextEditorLayoutUpdated"/>
+        
+        <TextBlock Text="{DynamicResource Text.CommitMessageTextBox.Placeholder}"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Margin="2,1"
+                   IsVisible="{Binding #ThisControl.Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
+                   IsHitTestVisible="False"/>
+    
+        <Rectangle x:Name="SubjectGuideLine"
+                   Height="1"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   IsHitTestVisible="False"
+                   Fill="{DynamicResource Brush.Border2}"/>
+      </Grid>
+      
+      <Border Grid.Row="1" CornerRadius="0,0,4,4" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Brush.Border2}" Background="{DynamicResource Brush.Window}" ClipToBounds="True">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Path Grid.Column="0" Height="12" Width="12" Margin="4,0,0,0" Data="{DynamicResource Icons.Info}" ToolTip.Tip="{DynamicResource Text.CommitMessageTextBox.Tip}"/>
+          <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4,2">
+            <TextBlock Text="Subject:" FontSize="10" Foreground="{DynamicResource Brush.FG2}"/>
+            <TextBlock Classes="monospace" Margin="2,0,0,0" FontSize="10" Text="{Binding #ThisControl.SubjectLength}"/>
+            <TextBlock Classes="monospace" FontSize="10" Text="/"/>
+            <TextBlock Classes="monospace" FontSize="10" Text="{Binding Source={x:Static vm:Preference.Instance}, Path=SubjectGuideLength}"/>
+            <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #ThisControl.SubjectLength, Converter={x:Static c:IntConverters.IsBadSubjectLength}}"/>
+            <TextBlock Margin="8,0,0,0" Text="Total:" FontSize="10" Foreground="{DynamicResource Brush.FG2}"/>
+            <TextBlock Classes="monospace" Margin="2,0,0,0" FontSize="10" Text="{Binding #ThisControl.Text.Length}"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+    </Grid>
+  </Border>
+</UserControl>
+

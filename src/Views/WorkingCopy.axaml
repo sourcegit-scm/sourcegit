@@ -159,19 +159,10 @@
       </Grid>
 
       <!-- Commit Message -->
-      <TextBox Grid.Row="1"
-               Height="80"
-               Margin="0,4" Padding="2,1"
-               AcceptsReturn="True" AcceptsTab="True"
-               TextWrapping="Wrap"
-               VerticalContentAlignment="Top"
-               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-               ScrollViewer.VerticalScrollBarVisibility="Auto"
-               Background="{DynamicResource Brush.Contents}"
-               BorderThickness="1"
-               BorderBrush="{DynamicResource Brush.Border2}"
-               Watermark="{DynamicResource Text.WorkingCopy.CommitMessageTip}"
-               Text="{Binding CommitMessage, Mode=TwoWay}"/>
+      <v:CommitMessageTextBox Grid.Row="1"
+                              Height="100"
+                              Margin="0,4"
+                              Text="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
       <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto">
