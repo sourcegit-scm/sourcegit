@@ -42,15 +42,19 @@
       
       <Border Grid.Row="1" CornerRadius="0,0,4,4" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Brush.Border2}" Background="{DynamicResource Brush.Window}" ClipToBounds="True">
         <Grid ColumnDefinitions="Auto,*,Auto">
-          <Path Grid.Column="0" Height="12" Width="12" Margin="4,0,0,0" Data="{DynamicResource Icons.Info}" ToolTip.Tip="{DynamicResource Text.CommitMessageTextBox.Tip}"/>
+          <Border Grid.Column="0" Background="Transparent" Width="16" Height="16" ToolTip.Tip="{DynamicResource Text.CommitMessageTextBox.Tip}">
+            <Path Height="12" Width="12" Margin="4,0,0,0" Data="{DynamicResource Icons.Info}"/>
+          </Border>
+          
           <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4,2">
             <TextBlock Text="Subject:" FontSize="10" Foreground="{DynamicResource Brush.FG2}"/>
-            <TextBlock Classes="monospace" Margin="2,0,0,0" FontSize="10" Text="{Binding #ThisControl.SubjectLength}"/>
-            <TextBlock Classes="monospace" FontSize="10" Text="/"/>
-            <TextBlock Classes="monospace" FontSize="10" Text="{Binding Source={x:Static vm:Preference.Instance}, Path=SubjectGuideLength}"/>
-            <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #ThisControl.SubjectLength, Converter={x:Static c:IntConverters.IsBadSubjectLength}}"/>
-            <TextBlock Margin="8,0,0,0" Text="Total:" FontSize="10" Foreground="{DynamicResource Brush.FG2}"/>
-            <TextBlock Classes="monospace" Margin="2,0,0,0" FontSize="10" Text="{Binding #ThisControl.Text.Length}"/>
+            <TextBlock Classes="monospace" Margin="2,0,0,0" FontSize="11" Text="{Binding #ThisControl.SubjectLength}" IsVisible="{Binding #ThisControl.SubjectLength, Converter={x:Static c:IntConverters.IsSubjectLengthGood}}"/>
+            <TextBlock Classes="monospace" Margin="2,0,0,0" FontSize="11" Foreground="DarkGoldenrod" Text="{Binding #ThisControl.SubjectLength}" IsVisible="{Binding #ThisControl.SubjectLength, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
+            <TextBlock Classes="monospace" FontSize="11" Text="/"/>
+            <TextBlock Classes="monospace" FontSize="11" Text="{Binding Source={x:Static vm:Preference.Instance}, Path=SubjectGuideLength}"/>
+            <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #ThisControl.SubjectLength, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
+            <TextBlock Margin="8,0,0,0" Text="Total:" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+            <TextBlock Classes="monospace" Margin="2,0,0,0" FontSize="11" Text="{Binding #ThisControl.Text.Length}"/>
           </StackPanel>
         </Grid>
       </Border>

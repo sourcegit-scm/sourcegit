@@ -31,7 +31,6 @@ namespace SourceGit.Views
         public TextDocument Document
         {
             get;
-            private set;
         }
         
         public CommitMessageTextBox()
@@ -44,11 +43,8 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == TextProperty)
-            {
-                if (!_isDocumentTextChanging)
+            if (change.Property == TextProperty && !_isDocumentTextChanging)
                     Document.Text = Text;
-            }
         }
 
         private void OnTextEditorLayoutUpdated(object sender, EventArgs e)
@@ -85,23 +81,18 @@ namespace SourceGit.Views
             SetCurrentValue(TextProperty, Document.Text);
             _isDocumentTextChanging = false;
             
-            var setSubject = false;
-            for (int i = 0; i < Document.LineCount; i++)
+            for (var i = 0; i < Document.LineCount; i++)
             {
                 var line = Document.Lines[i];
                 if (line.LineNumber > 1 && line.Length == 0)
                 {
-                    var subject = Text.Substring(0, line.Offset).ReplaceLineEndings(" ").Trim();
+                    var subject = Text[..line.Offset].ReplaceLineEndings(" ").Trim();
                     SetCurrentValue(SubjectLengthProperty, subject.Length);
-                    setSubject = true;
-                    break;
+                    return;
                 }
                 
                 _subjectEndLineNumber = line.LineNumber;
             }
-
-            if (setSubject)
-                return;
             
             SetCurrentValue(SubjectLengthProperty, Text.ReplaceLineEndings(" ").Trim().Length);
         }
