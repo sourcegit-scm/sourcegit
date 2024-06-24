@@ -98,18 +98,9 @@ namespace SourceGit.ViewModels
 
         public void OpenExternalMergeTool()
         {
-            var type = Preference.Instance.ExternalMergeToolType;
-            var exec = Preference.Instance.ExternalMergeToolPath;
-
-            var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
-            if (tool == null || !File.Exists(exec))
-            {
-                App.RaiseException(_repo, "Invalid merge tool in preference setting!");
-                return;
-            }
-
-            var args = tool.Type != 0 ? tool.DiffCmd : Preference.Instance.ExternalMergeToolDiffCmd;
-            Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, exec, args, _option));
+            var toolType = Preference.Instance.ExternalMergeToolType;
+            var toolPath = Preference.Instance.ExternalMergeToolPath;
+            Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, _option));
         }
 
         private void LoadDiffContent()
@@ -219,16 +210,16 @@ namespace SourceGit.ViewModels
             return size > 0 ? (new Bitmap(stream), size) : (null, size);
         }
 
-        private Models.SubmoduleRevision QuerySubmoduleRevision(string repo, string sha)
+        private Models.RevisionSubmodule QuerySubmoduleRevision(string repo, string sha)
         {
             var commit = new Commands.QuerySingleCommit(repo, sha).Result();
             if (commit != null)
             {
                 var body = new Commands.QueryCommitFullMessage(repo, sha).Result();
-                return new Models.SubmoduleRevision() { Commit = commit, FullMessage = body };
+                return new Models.RevisionSubmodule() { Commit = commit, FullMessage = body };
             }
 
-            return new Models.SubmoduleRevision()
+            return new Models.RevisionSubmodule()
             {
                 Commit = new Models.Commit() { SHA = sha },
                 FullMessage = string.Empty,

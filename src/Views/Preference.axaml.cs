@@ -43,7 +43,7 @@ namespace SourceGit.Views
         {
             get;
             set;
-        }
+        } = Models.CRLFMode.Supported[0];
 
         public static readonly StyledProperty<string> GitVersionProperty =
             AvaloniaProperty.Register<Preference, string>(nameof(GitVersion));
@@ -157,13 +157,13 @@ namespace SourceGit.Views
                     CRLFMode = Models.CRLFMode.Supported.Find(x => x.Value == crlf);
                 if (config.TryGetValue("commit.gpgsign", out var gpgCommitSign))
                     EnableGPGCommitSigning = (gpgCommitSign == "true");
-                if (config.TryGetValue("tag.gpgSign", out var gpgTagSign))
+                if (config.TryGetValue("tag.gpgsign", out var gpgTagSign))
                     EnableGPGTagSigning = (gpgTagSign == "true");
                 if (config.TryGetValue("gpg.format", out var gpgFormat))
                     GPGFormat = Models.GPGFormat.Supported.Find(x => x.Value == gpgFormat) ?? Models.GPGFormat.Supported[0];
 
-                if (GPGFormat.Value == "opengpg" && config.TryGetValue("gpg.program", out var opengpg))
-                    GPGExecutableFile = opengpg;
+                if (GPGFormat.Value == "openpgp" && config.TryGetValue("gpg.program", out var openpgp))
+                    GPGExecutableFile = openpgp;
                 else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
                     GPGExecutableFile = gpgProgram;
 
@@ -174,6 +174,20 @@ namespace SourceGit.Views
             GitVersion = ver;
         }
 
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == GPGFormatProperty)
+            {
+                var config = new Commands.Config(null).ListAll();
+                if (GPGFormat.Value == "openpgp" && config.TryGetValue("gpg.program", out var openpgp))
+                    GPGExecutableFile = openpgp;
+                else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
+                    GPGExecutableFile = gpgProgram;
+            }
+        }
+
         private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
@@ -181,34 +195,17 @@ namespace SourceGit.Views
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            var cmd = new Commands.Config(null);
+            var config = new Commands.Config(null).ListAll();
+            SetIfChanged(config, "user.name", DefaultUser);
+            SetIfChanged(config, "user.email", DefaultEmail);
+            SetIfChanged(config, "user.signingkey", GPGUserKey);
+            SetIfChanged(config, "core.autocrlf", CRLFMode.Value);
+            SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false");
+            SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false");
+            SetIfChanged(config, "gpg.format", GPGFormat.Value);
 
-            var config = cmd.ListAll();
-            var oldUser = config.TryGetValue("user.name", out var user) ? user : string.Empty;
-            var oldEmail = config.TryGetValue("user.email", out var email) ? email : string.Empty;
-            var oldGPGSignKey = config.TryGetValue("user.signingkey", out var signingKey) ? signingKey : string.Empty;
-            var oldCRLF = config.TryGetValue("core.autocrlf", out var crlf) ? crlf : string.Empty;
-            var oldGPGFormat = config.TryGetValue("gpg.format", out var gpgFormat) ? gpgFormat : "opengpg";
-            var oldGPGCommitSignEnable = config.TryGetValue("commit.gpgsign", out var gpgCommitSign) ? gpgCommitSign : "false";
-            var oldGPGTagSignEnable = config.TryGetValue("tag.gpgSign", out var gpgTagSign) ? gpgTagSign : "false";
-            var oldGPGExec = config.TryGetValue("gpg.program", out var program) ? program : string.Empty;
-
-            if (DefaultUser != oldUser)
-                cmd.Set("user.name", DefaultUser);
-            if (DefaultEmail != oldEmail)
-                cmd.Set("user.email", DefaultEmail);
-            if (GPGUserKey != oldGPGSignKey)
-                cmd.Set("user.signingkey", GPGUserKey);
-            if (CRLFMode != null && CRLFMode.Value != oldCRLF)
-                cmd.Set("core.autocrlf", CRLFMode.Value);
-            if (EnableGPGCommitSigning != (oldGPGCommitSignEnable == "true"))
-                cmd.Set("commit.gpgsign", EnableGPGCommitSigning ? "true" : "false");
-            if (EnableGPGTagSigning != (oldGPGTagSignEnable == "true"))
-                cmd.Set("tag.gpgSign", EnableGPGTagSigning ? "true" : "false");
-            if (GPGFormat.Value != oldGPGFormat)
-                cmd.Set("gpg.format", GPGFormat.Value);
-            if (GPGExecutableFile != oldGPGExec)
-                cmd.Set($"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
+            if (!GPGFormat.Value.Equals("ssh", StringComparison.Ordinal))
+                SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
 
             Close();
         }
@@ -287,6 +284,7 @@ namespace SourceGit.Views
             {
                 ViewModels.Preference.Instance.ExternalMergeToolType = 0;
                 type = 0;
+                return;
             }
 
             var tool = Models.ExternalMerger.Supported[type];
@@ -301,6 +299,18 @@ namespace SourceGit.Views
             {
                 ViewModels.Preference.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
             }
+        }
+
+        private void SetIfChanged(Dictionary<string, string> cached, string key, string value)
+        {
+            bool changed = false;
+            if (cached.TryGetValue(key, out var old))
+                changed = old != value;
+            else if (!string.IsNullOrEmpty(value))
+                changed = true;
+
+            if (changed)
+                new Commands.Config(null).Set(key, value);
         }
     }
 }

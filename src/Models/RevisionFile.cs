@@ -25,6 +25,7 @@ namespace SourceGit.Models
 
     public class RevisionSubmodule
     {
-        public string SHA { get; set; }
+        public Commit Commit { get; set; } = null;
+        public string FullMessage { get; set; } = string.Empty;
     }
 }

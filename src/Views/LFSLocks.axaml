@@ -1,0 +1,125 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:c="using:SourceGit.Converters"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.LFSLocks"
+                    x:DataType="vm:LFSLocks"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.GitLFS.Locks.Title}"
+                    Width="600" Height="400"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,*">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
+      <Border Grid.Column="0" Grid.ColumnSpan="3"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Grid.Column="0"
+            Width="14" Height="14"
+            Margin="10,0,0,0"
+            Data="{StaticResource Icons.Lock}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
+        <Button Classes="caption_button_macos" Click="CloseWindow">
+          <Grid>
+            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
+            <Path Height="6" Width="6" Stretch="Fill" Fill="#404040" Stroke="#404040" StrokeThickness="1" Data="{StaticResource Icons.Window.Close}"/>
+          </Grid>
+        </Button>
+      </Grid>
+
+      <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                 Classes="bold"
+                 Text="{DynamicResource Text.GitLFS.Locks.Title}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <Button Grid.Column="2"
+              Classes="caption_button"
+              Click="CloseWindow"
+              IsVisible="{OnPlatform True, macOS=False}">
+        <Path Data="{StaticResource Icons.Window.Close}"/>
+      </Button>
+    </Grid>
+
+    <!-- Locked Files -->
+    <Grid Grid.Row="1">
+      <DataGrid Margin="8"
+                Background="{DynamicResource Brush.Contents}"
+                ItemsSource="{Binding Locks}"
+                SelectionMode="Single"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserSortColumns="False"
+                IsReadOnly="True"
+                HeadersVisibility="None"
+                Focusable="False"
+                RowHeight="26"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource Brush.Border2}"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+        <DataGrid.Columns>
+          <DataGridTemplateColumn Width="*">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                  <Path Width="14" Height="14" Margin="8,0,4,0" Data="{StaticResource Icons.File}"/>
+                  <TextBlock Text="{Binding File}" Margin="4,0"/>
+                </StackPanel>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <DataGridTemplateColumn>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding User}" Padding="16,0"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <DataGridTemplateColumn>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <Button Classes="icon_button" Click="OnUnlockButtonClicked" ToolTip.Tip="{DynamicResource Text.GitLFS.Locks.Unlock}">
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.Unlock}"/>
+                </Button>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <DataGridTemplateColumn>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <Button Classes="icon_button" Click="OnForceUnlockButtonClicked" ToolTip.Tip="{DynamicResource Text.GitLFS.Locks.UnlockForce}">
+                  <Path Width="14" Height="14" Fill="Red" Data="{StaticResource Icons.Unlock}"/>
+                </Button>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+
+      <!-- Empty -->
+      <StackPanel Orientation="Vertical"
+                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                  IsVisible="{Binding IsEmpty}">
+        <Path Width="48" Height="48" Data="{StaticResource Icons.Empty}" Fill="{DynamicResource Brush.FG2}"/>
+        <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.GitLFS.Locks.Empty}" Foreground="{DynamicResource Brush.FG2}"/>
+      </StackPanel>
+
+      <!-- Loading -->
+      <v:LoadingIcon Width="48" Height="48"
+                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     IsVisible="{Binding IsLoading}"/>
+    </Grid>
+  </Grid>
+</v:ChromelessWindow>

@@ -27,7 +27,7 @@
 
       <Path Grid.Column="0"
             Width="14" Height="14"
-            Data="{StaticResource Icons.Settings2}"
+            Data="{StaticResource Icons.Settings}"
             Margin="10,0,0,0"
             IsVisible="{OnPlatform True, macOS=False}"/>
 
@@ -58,7 +58,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.Locale}"
                        HorizontalAlignment="Right"
@@ -87,10 +87,23 @@
             </ComboBox>
 
             <TextBlock Grid.Row="2" Grid.Column="0"
+                       Text="{DynamicResource Text.Preference.General.SubjectGuideLength}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <NumericUpDown Grid.Row="2" Grid.Column="1"
+                           Minimum="50" Maximum="1000" Increment="1"
+                           Height="28"
+                           Padding="4"
+                           ShowButtonSpinner="False"
+                           BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                           CornerRadius="3"
+                           Value="{Binding SubjectGuideLength, Mode=TwoWay}"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.MaxHistoryCommits}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,64">
+            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,64">
               <Slider Grid.Column="0"
                       Minimum="20000" Maximum="100000"
                       TickPlacement="BottomRight" TickFrequency="5000"
@@ -114,16 +127,16 @@
                          Text="{Binding MaxHistoryCommits}"/>
             </Grid>
 
-            <CheckBox Grid.Row="3" Grid.Column="1"
+            <CheckBox Grid.Row="4" Grid.Column="1"
                       Content="{DynamicResource Text.Preference.General.RestoreTabs}"
                       IsChecked="{Binding RestoreTabs, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="4" Grid.Column="1"
+            <CheckBox Grid.Row="5" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preference.General.UseFixedTabWidth}"
                       IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="5" Grid.Column="1"
+            <CheckBox Grid.Row="6" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preference.General.Check4UpdatesOnStartup}"
                       IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=Check4UpdatesOnStartup, Mode=TwoWay}"/>
@@ -449,12 +462,12 @@
 
         <TabItem>
           <TabItem.Header>
-            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Merger}"/>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.DiffMerge}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,Auto,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Merger.Type}"
+                       Text="{DynamicResource Text.Preference.DiffMerge.Type}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <ComboBox Grid.Row="0" Grid.Column="1"
@@ -477,41 +490,22 @@
             </ComboBox>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Merger.Path}"
+                       Text="{DynamicResource Text.Preference.DiffMerge.Path}"
                        HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
+                       Margin="0,0,16,0"
+                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
             <TextBox Grid.Row="1" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
-                     Text="{Binding ExternalMergeToolPath, Mode=TwoWay}">
+                     Text="{Binding ExternalMergeToolPath, Mode=TwoWay}"
+                     Watermark="{DynamicResource Text.Preference.DiffMerge.Path.Placeholder}"
+                     IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
               <TextBox.InnerRightContent>
                 <Button Classes="icon_button" Width="30" Height="30" Click="SelectExternalMergeTool">
                   <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
                 </Button>
               </TextBox.InnerRightContent>
             </TextBox>
-
-            <TextBlock Grid.Row="2" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Merger.CustomMergeCmd}"
-                       HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Margin="0,0,16,0"
-                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
-            <TextBox Grid.Row="2" Grid.Column="1"
-                     Height="28" Margin="0,2"
-                     CornerRadius="3"
-                     Text="{Binding ExternalMergeToolCmd, Mode=TwoWay}"
-                     IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
-
-            <TextBlock Grid.Row="3" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Merger.CustomDiffCmd}"
-                       HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Margin="0,0,16,0"
-                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
-            <TextBox Grid.Row="3" Grid.Column="1"
-                     Height="28" Margin="0,2"
-                     CornerRadius="3"
-                     Text="{Binding ExternalMergeToolDiffCmd, Mode=TwoWay}"
-                     IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsZero}}"/>
           </Grid>
         </TabItem>
       </TabControl>

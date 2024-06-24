@@ -72,6 +72,10 @@
           <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitFlowMenu" ToolTip.Tip="{DynamicResource Text.GitFlow}">
             <Path Width="14" Height="14" Data="{StaticResource Icons.Flow}"/>
           </Button>
+
+          <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitLFSMenu" ToolTip.Tip="{DynamicResource Text.GitLFS}">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.LFS}"/>
+          </Button>
         </StackPanel>
 
         <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">          
@@ -94,7 +98,7 @@
           </Button>
 
           <Button Classes="icon_button" Width="32" Command="{Binding OpenConfigure}" ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
-            <Path Width="15" Height="15" Data="{StaticResource Icons.Settings1}"/>
+            <Path Width="15" Height="15" Data="{StaticResource Icons.Settings}"/>
           </Button>
         </StackPanel>
       </Grid>
@@ -453,6 +457,7 @@
                   HorizontalScrollBarVisibility="Disabled"
                   VerticalScrollBarVisibility="Auto"
                   ContextRequested="OnSubmoduleContextRequested"
+                  DoubleTapped="OnDoubleTappedSubmodule"
                   IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}">
           <DataGrid.Styles>
             <Style Selector="DataGridRow">
@@ -610,8 +615,8 @@
                     BorderBrush="{DynamicResource Brush.Border0}"/>
 
       <!-- Right -->
-      <Grid Grid.Column="2" RowDefinitions="Auto,*"> 
-        <Grid Grid.Row="0" Height="26" ColumnDefinitions="*,Auto,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <Grid Grid.Column="2" RowDefinitions="Auto,Auto,*"> 
+        <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
           <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
             <ContentControl.DataTemplates>
               <DataTemplate DataType="vm:CherryPickInProgress">
@@ -632,17 +637,68 @@
             </ContentControl.DataTemplates>
           </ContentControl>
 
-          <Button Grid.Column="1" Classes="flat" FontWeight="Regular" Content="{DynamicResource Text.Repository.Resolve}" Height="20" Padding="8,0" Margin="4,0" Command="{Binding GotoResolve}">
+          <Button Grid.Column="1" 
+                  Classes="flat" 
+                  FontWeight="Regular"
+                  BorderThickness="0"
+                  Content="{DynamicResource Text.Repository.Resolve}" 
+                  Padding="8,0" Margin="4,0" 
+                  Command="{Binding GotoResolve}">
             <Button.IsVisible>
               <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsNotOne}"/>
             </Button.IsVisible>
           </Button>
-
-          <Button Grid.Column="2" Classes="flat primary" FontWeight="Regular" Content="{DynamicResource Text.Repository.Continue}" Height="20" Padding="8,0" Margin="4,0" Command="{Binding ContinueMerge}" IsVisible="{Binding !HasUnsolvedConflicts}"/>
-          <Button Grid.Column="3" Classes="flat" FontWeight="Regular" Content="{DynamicResource Text.Repository.Abort}" Height="20" Padding="8,0" Margin="4,0" Command="{Binding AbortMerge}"/>
+          <Button Grid.Column="2" 
+                  Classes="flat primary" 
+                  FontWeight="Regular"
+                  BorderThickness="0"
+                  Content="{DynamicResource Text.Repository.Continue}" 
+                  Padding="8,0" Margin="4,0" 
+                  Command="{Binding ContinueMerge}" 
+                  IsVisible="{Binding !HasUnsolvedConflicts}"/>
+          <Button Grid.Column="3" 
+                  Classes="flat" 
+                  FontWeight="Regular"
+                  BorderThickness="0"
+                  Content="{DynamicResource Text.Repository.Abort}" 
+                  Padding="8,0" Margin="4,0" 
+                  Command="{Binding AbortMerge}"/>
         </Grid>
 
-        <ContentControl Grid.Row="1" Content="{Binding SelectedView}">
+        <Border Grid.Row="1" Background="{DynamicResource Brush.Window}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
+          <Border.IsVisible>
+            <MultiBinding Converter="{x:Static BoolConverters.And}">
+              <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
+              <Binding Path="Filters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
+            </MultiBinding>
+          </Border.IsVisible>
+
+          <Grid Height="28" ColumnDefinitions="Auto,*,Auto">
+            <TextBlock Grid.Column="0" Margin="8,0,0,0" Classes="info_label" Text="{DynamicResource Text.Repository.FilterCommitPrefix}"/>
+
+            <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Filters}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Border Height="20" Margin="0,0,6,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="12">
+                    <TextBlock Classes="monospace" Text="{Binding Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="8,0"/>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+            <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoriesFilter}">
+              <TextBlock Margin="16,0,8,0" Text="{DynamicResource Text.Repository.ClearAllCommitsFilter}" Foreground="{DynamicResource Brush.Accent}"/>
+            </Button>
+          </Grid>
+        </Border>
+
+        <ContentControl Grid.Row="2" Content="{Binding SelectedView}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:Histories">
               <v:Histories NavigationId="{Binding NavigationId}"/>

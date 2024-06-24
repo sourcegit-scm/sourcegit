@@ -142,18 +142,10 @@ namespace SourceGit.ViewModels
             diffWithMerger.Click += (_, ev) =>
             {
                 var opt = new Models.DiffOption(StartPoint.SHA, _endPoint, change);
-                var type = Preference.Instance.ExternalMergeToolType;
-                var exec = Preference.Instance.ExternalMergeToolPath;
+                var toolType = Preference.Instance.ExternalMergeToolType;
+                var toolPath = Preference.Instance.ExternalMergeToolPath;
 
-                var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
-                if (tool == null || !File.Exists(exec))
-                {
-                    App.RaiseException(_repo, "Invalid merge tool in preference setting!");
-                    return;
-                }
-
-                var args = tool.Type != 0 ? tool.DiffCmd : Preference.Instance.ExternalMergeToolDiffCmd;
-                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, exec, args, opt));
+                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, opt));
                 ev.Handled = true;
             };
             menu.Items.Add(diffWithMerger);

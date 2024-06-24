@@ -30,7 +30,7 @@
                   Padding="0"
                   Command="{Binding Clear}"
                   IsEnabled="{Binding Stashes.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-            <Path Width="14" Height="14" Data="{StaticResource Icons.Clear2}"/>
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Clean}"/>
           </Button>
         </Grid>
       </Border>

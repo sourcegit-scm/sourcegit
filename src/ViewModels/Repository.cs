@@ -39,6 +39,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDir, value);
         }
 
+        public bool PreferRebaseInsteadOfMerge
+        {
+            get;
+            set;
+        } = true;
+
         public AvaloniaList<string> Filters
         {
             get;
@@ -404,6 +410,18 @@ namespace SourceGit.ViewModels
             PopupHost.ShowPopup(new RepositoryConfigure(this));
         }
 
+        public void ClearHistoriesFilter()
+        {
+            Filters.Clear();
+
+            Task.Run(() =>
+            {
+                RefreshBranches();
+                RefreshTags();
+                RefreshCommits();
+            });
+        }
+
         public void ClearSearchCommitFilter()
         {
             SearchCommitFilter = string.Empty;
@@ -602,9 +620,19 @@ namespace SourceGit.ViewModels
                         validFilters.Add(filter);
                 }
             }
+
             if (validFilters.Count > 0)
             {
                 limits += string.Join(" ", validFilters);
+
+                if (Filters.Count != validFilters.Count)
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        Filters.Clear();
+                        Filters.AddRange(validFilters);
+                    });
+                }
             }
             else
             {
@@ -814,7 +842,7 @@ namespace SourceGit.ViewModels
             {
                 var init = new MenuItem();
                 init.Header = App.Text("GitFlow.Init");
-                init.Icon = App.CreateMenuIcon("Icons.GitFlow.Init");
+                init.Icon = App.CreateMenuIcon("Icons.Init");
                 init.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -823,6 +851,108 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(init);
             }
+            return menu;
+        }
+
+        public ContextMenu CreateContextMenuForGitLFS()
+        {
+            var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+
+            var lfs = new Commands.LFS(_fullpath);
+            if (lfs.IsEnabled())
+            {
+                var addPattern = new MenuItem();
+                addPattern.Header = App.Text("GitLFS.AddTrackPattern");
+                addPattern.Icon = App.CreateMenuIcon("Icons.File.Add");
+                addPattern.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowPopup(new LFSTrackCustomPattern(this));
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(addPattern);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                var fetch = new MenuItem();
+                fetch.Header = App.Text("GitLFS.Fetch");
+                fetch.Icon = App.CreateMenuIcon("Icons.Fetch");
+                fetch.IsEnabled = Remotes.Count > 0;
+                fetch.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                    {
+                        if (Remotes.Count == 1)
+                            PopupHost.ShowAndStartPopup(new LFSFetch(this));
+                        else
+                            PopupHost.ShowPopup(new LFSFetch(this));
+                    }
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(fetch);
+
+                var pull = new MenuItem();
+                pull.Header = App.Text("GitLFS.Pull");
+                pull.Icon = App.CreateMenuIcon("Icons.Pull");
+                pull.IsEnabled = Remotes.Count > 0;
+                pull.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                    {
+                        if (Remotes.Count == 1)
+                            PopupHost.ShowAndStartPopup(new LFSPull(this));
+                        else
+                            PopupHost.ShowPopup(new LFSPull(this));
+                    }
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(pull);
+
+                var prune = new MenuItem();
+                prune.Header = App.Text("GitLFS.Prune");
+                prune.Icon = App.CreateMenuIcon("Icons.Clean");
+                prune.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowAndStartPopup(new LFSPrune(this));
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(prune);
+
+                var locks = new MenuItem();
+                locks.Header = App.Text("GitLFS.Locks");
+                locks.Icon = App.CreateMenuIcon("Icons.Lock");
+                locks.Click += (o, e) =>
+                {
+                    var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath) };
+                    dialog.Show(App.GetTopLevel() as Window);
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(locks);
+            }
+            else
+            {
+                var install = new MenuItem();
+                install.Header = App.Text("GitLFS.Install");
+                install.Icon = App.CreateMenuIcon("Icons.Init");
+                install.Click += (o, e) =>
+                {
+                    var succ = new Commands.LFS(_fullpath).Install();
+                    if (succ)
+                        App.SendNotification(_fullpath, $"LFS enabled successfully!");
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(install);
+            }
+
             return menu;
         }
 
@@ -1058,7 +1188,7 @@ namespace SourceGit.ViewModels
             {
                 var tracking = new MenuItem();
                 tracking.Header = App.Text("BranchCM.Tracking");
-                tracking.Icon = App.CreateMenuIcon("Icons.Branch");
+                tracking.Icon = App.CreateMenuIcon("Icons.Track");
 
                 foreach (var b in remoteBranches)
                 {
@@ -1125,6 +1255,21 @@ namespace SourceGit.ViewModels
         {
             var menu = new ContextMenu();
 
+            if (remote.TryGetVisitURL(out string visitURL))
+            {
+                var visit = new MenuItem();
+                visit.Header = App.Text("RemoteCM.OpenInBrowser");
+                visit.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                visit.Click += (o, e) =>
+                {
+                    Native.OS.OpenBrowser(visitURL);
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(visit);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
             var fetch = new MenuItem();
             fetch.Header = App.Text("RemoteCM.Fetch");
             fetch.Icon = App.CreateMenuIcon("Icons.Fetch");
@@ -1137,7 +1282,7 @@ namespace SourceGit.ViewModels
 
             var prune = new MenuItem();
             prune.Header = App.Text("RemoteCM.Prune");
-            prune.Icon = App.CreateMenuIcon("Icons.Clear2");
+            prune.Icon = App.CreateMenuIcon("Icons.Clean");
             prune.Click += (o, e) =>
             {
                 if (PopupHost.CanCreatePopup())
@@ -1393,6 +1538,27 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public void OpenSubmodule(string submodule)
+        {
+            var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
+            var gitDir = new Commands.QueryGitDir(root).Result();
+            var repo = Preference.AddRepository(root, gitDir);
+            
+            var node = new RepositoryNode()
+            {
+                Id = repo.FullPath,
+                Name = Path.GetFileName(repo.FullPath),
+                Bookmark = 0,
+                IsRepository = true,
+            };
+            
+            var launcher = App.GetTopLevel().DataContext as Launcher;
+            if (launcher != null)
+            {
+                launcher.OpenRepositoryInTab(node, null);
+            }
+        }
+
         public ContextMenu CreateContextMenuForSubmodule(string submodule)
         {
             var open = new MenuItem();
@@ -1400,23 +1566,7 @@ namespace SourceGit.ViewModels
             open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
             open.Click += (o, ev) =>
             {
-                var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
-                var gitDir = new Commands.QueryGitDir(root).Result();
-                var repo = Preference.AddRepository(root, gitDir);
-                var node = new RepositoryNode()
-                {
-                    Id = repo.FullPath,
-                    Name = Path.GetFileName(repo.FullPath),
-                    Bookmark = 0,
-                    IsRepository = true,
-                };
-
-                var launcher = App.GetTopLevel().DataContext as Launcher;
-                if (launcher != null)
-                {
-                    launcher.OpenRepositoryInTab(node, null);
-                }
-
+                OpenSubmodule(submodule);
                 ev.Handled = true;
             };
 

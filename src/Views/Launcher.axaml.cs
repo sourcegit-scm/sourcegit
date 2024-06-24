@@ -258,6 +258,16 @@ namespace SourceGit.Views
 
         private void OnPointerPressedTab(object sender, PointerPressedEventArgs e)
         {
+            var border = sender as Border;
+            var point = e.GetCurrentPoint(border);
+            if (point.Properties.IsMiddleButtonPressed)
+            {
+                var vm = DataContext as ViewModels.Launcher;
+                vm.CloseTab(border.DataContext as ViewModels.LauncherPage);
+                e.Handled = true;
+                return;
+            }
+
             _pressedTab = true;
             _startDragTab = false;
             _pressedTabPosition = e.GetPosition(sender as Border);

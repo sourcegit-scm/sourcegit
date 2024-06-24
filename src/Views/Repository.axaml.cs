@@ -37,6 +37,17 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OpenGitLFSMenu(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                var menu = repo.CreateContextMenuForGitLFS();
+                (sender as Control)?.OpenContextMenu(menu);
+            }
+
+            e.Handled = true;
+        }
+
         private async void OpenStatistics(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
@@ -320,6 +331,17 @@ namespace SourceGit.Views
                 if (b != null && !outs.Contains(b))
                     outs.Add(b);
             }
+        }
+
+        private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
+        {
+            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            {
+                var submodule = datagrid.SelectedItem as string;
+                (DataContext as ViewModels.Repository).OpenSubmodule(submodule); 
+            }
+
+            e.Handled = true;
         }
     }
 }

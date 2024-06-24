@@ -105,6 +105,15 @@ namespace SourceGit.Views
             set => SetValue(UseSyntaxHighlightingProperty, value);
         }
 
+        public static readonly StyledProperty<bool> ShowHiddenSymbolsProperty =
+            AvaloniaProperty.Register<IThemedTextDiffPresenter, bool>(nameof(ShowHiddenSymbols), false);
+
+        public bool ShowHiddenSymbols
+        {
+            get => GetValue(ShowHiddenSymbolsProperty);
+            set => SetValue(ShowHiddenSymbolsProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public IThemedTextDiffPresenter(TextArea area, TextDocument doc) : base(area, doc)
@@ -140,11 +149,23 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == UseSyntaxHighlightingProperty)
+            {
                 UpdateTextMate();
+            }
+            else if (change.Property == ShowHiddenSymbolsProperty)
+            {
+                var val = change.NewValue is true;
+                Options.ShowTabs = val;
+                Options.ShowSpaces = val;
+            }
             else if (change.Property == FileNameProperty)
+            {
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
+            }
             else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
+            {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
+            }
         }
 
         protected void UpdateTextMate()

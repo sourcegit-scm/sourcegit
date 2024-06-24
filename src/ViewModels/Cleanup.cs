@@ -18,14 +18,6 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 new Commands.GC(_repo.FullPath, SetProgressDescription).Exec();
-
-                var lfs = new Commands.LFS(_repo.FullPath);
-                if (lfs.IsEnabled())
-                {
-                    SetProgressDescription("Run LFS prune ...");
-                    lfs.Prune(SetProgressDescription);
-                }
-
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

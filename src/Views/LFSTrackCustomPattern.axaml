@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.LFSTrackCustomPattern"
+             x:DataType="vm:LFSTrackCustomPattern">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+               Classes="bold"
+               Text="{DynamicResource Text.GitLFS.AddTrackPattern.Title}"/>
+    
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="150,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.GitLFS.AddTrackPattern.Pattern}"/>
+      <TextBox Grid.Row="0" Grid.Column="1"
+               Height="28"
+               CornerRadius="3"
+               Text="{Binding Pattern, Mode=TwoWay}"
+               v:AutoFocusBehaviour.IsEnabled="True"/>
+
+      <CheckBox Grid.Row="1" Grid.Column="1"
+                Content="{DynamicResource Text.GitLFS.AddTrackPattern.IsFilename}"
+                IsChecked="{Binding IsFilename, Mode=TwoWay}"/>
+    </Grid>
+  </StackPanel>
+</UserControl>

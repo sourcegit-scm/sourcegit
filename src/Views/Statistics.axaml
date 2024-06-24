@@ -76,8 +76,13 @@
           <Setter Property="Background" Value="Transparent"/>
         </Style>
 
+        <Style Selector="ListBoxItem Border.switcher_bg">
+          <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
+        </Style>
+
         <Style Selector="ListBoxItem:selected Border.switcher_bg">
-          <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+          <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
+          <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
         </Style>
 
         <Style Selector="TextBlock.view_mode_switcher">
@@ -86,24 +91,24 @@
         </Style>
 
         <Style Selector="ListBoxItem:selected TextBlock.view_mode_switcher">
-          <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+          <Setter Property="Foreground" Value="White"/>
         </Style>
       </ListBox.Styles>
 
       <ListBoxItem>
-        <Border Classes="switcher_bg" Height="28" Padding="16,0" BorderThickness="1,1,0,1" BorderBrush="{DynamicResource Brush.Border1}" CornerRadius="14,0,0,14">
+        <Border Classes="switcher_bg" Height="28" Padding="16,0" BorderThickness="1,1,0,1" CornerRadius="14,0,0,14">
           <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.ThisYear}"/>
         </Border>
       </ListBoxItem>
 
       <ListBoxItem>
-        <Border Classes="switcher_bg" Height="28" Padding="16,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
+        <Border Classes="switcher_bg" Height="28" Padding="16,0" BorderThickness="1">
           <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.ThisMonth}"/>
         </Border>
       </ListBoxItem>
 
       <ListBoxItem>
-        <Border Classes="switcher_bg" Height="28" Padding="16,0" BorderThickness="0,1,1,1" BorderBrush="{DynamicResource Brush.Border1}" CornerRadius="0,14,14,0">
+        <Border Classes="switcher_bg" Height="28" Padding="16,0" BorderThickness="0,1,1,1" CornerRadius="0,14,14,0">
           <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.ThisWeek}"/>
         </Border>
       </ListBoxItem>
@@ -125,12 +130,32 @@
                         HeadersVisibility="Column"
                         GridLinesVisibility="All"
                         BorderThickness="1"
-                        BorderBrush="{DynamicResource Brush.Border1}"
+                        BorderBrush="{DynamicResource Brush.Border2}"
                         Background="{DynamicResource Brush.Contents}"
+                        HorizontalGridLinesBrush="{DynamicResource Brush.Border2}"
+                        VerticalGridLinesBrush="{DynamicResource Brush.Border2}"
                         IsReadOnly="True"
                         RowHeight="26"
                         HorizontalScrollBarVisibility="Disabled"
                         VerticalScrollBarVisibility="Auto">
+                <DataGrid.Styles>
+                  <Style Selector="DataGridColumnHeader">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
+                    <Setter Property="Padding" Value="8,0,0,0"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
+                    <Setter Property="SeparatorBrush" Value="{DynamicResource Brush.Border2}" />
+
+                    <Style Selector="^:pointerover /template/ Grid#PART_ColumnHeaderRoot">
+                      <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
+                    </Style>
+
+                    <Style Selector="^:pressed /template/ Grid#PART_ColumnHeaderRoot">
+                      <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
+                    </Style>
+                  </Style>
+                </DataGrid.Styles>
+                
                 <DataGrid.Columns>
                   <DataGridTextColumn Width="150" Header="{DynamicResource Text.Statistics.Committer}" Binding="{Binding Name}"/>
                   <DataGridTextColumn Width="*" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
@@ -156,7 +181,8 @@
             <!-- Graph -->
             <v:Chart Grid.Column="1"
                      Margin="16,0,0,0"
-                     LineBrush="{DynamicResource Brush.Border1}"
+                     LabelBrush="{DynamicResource Brush.FG1}"
+                     LineBrush="{DynamicResource Brush.Border2}"
                      ShapeBrush="{DynamicResource Brush.Accent}"
                      Samples="{Binding Samples}"/>
           </Grid>

@@ -14,6 +14,8 @@ Opensource Git GUI client.
 * Supports SSH access with each remote
 * GIT commands with GUI
   * Clone/Fetch/Pull/Push...
+  * Merge/Rebase/Reset/Revert/Amend/Cherry-pick...
+  * Interactive rebase (Basic)
   * Branches
   * Remotes
   * Tags
@@ -26,10 +28,11 @@ Opensource Git GUI client.
   * Blame
   * Revision Diffs
   * Branch Diff
-  * Image Diff
+  * Image Diff - Side-By-Side/Swipe/Blend
 * GitFlow support
+* Git LFS support
 
-> **Linux** only tested on **Ubuntu 22.04** on **X11**.
+> **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
 
 ## How to Use
 
@@ -110,8 +113,6 @@ This app supports open repository in external tools listed in the table below.
 | Color.Border2 | Border color used in visual lines, like seperators, Rectange, etc. |
 | Color.FlatButton.Background | Flat button background color, like `Cancel`, `Commit & Push` button |
 | Color.FlatButton.BackgroundHovered | Flat button background color when hovered, like `Cancel` button |
-| Color.FlatButton.PrimaryBackground | Primary flat button background color, like `Ok`, `Commit` button |
-| Color.FlatButton.PrimaryBackgroundHovered | Primary flat button background color when hovered, like `Ok`, `Commit` button |
 | Color.FG1 | Primary foreground color for all text elements |
 | Color.FG2 | Secondary foreground color for all text elements |
 | Color.Diff.EmptyBG | Background color used in empty lines in diff viewer |

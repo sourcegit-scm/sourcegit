@@ -12,13 +12,13 @@
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
     <TextBlock FontSize="18"
                Classes="bold"
-               Text="{DynamicResource Text.CreateTag}"/>
+               Text="{DynamicResource Text.CreateTag.Title}"/>
     <Grid Margin="0,16,8,0" RowDefinitions="32,32,32,Auto,Auto,32" ColumnDefinitions="120,*">
-      <TextBlock Grid.Column="0"
+      <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.CreateTag.BasedOn}"/>
-      <ContentControl Grid.Column="1" Content="{Binding BasedOn}">
+      <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding BasedOn}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Branch">
             <StackPanel Orientation="Horizontal">
@@ -46,6 +46,7 @@
                VerticalAlignment="Center"
                CornerRadius="2"
                Text="{Binding TagName, Mode=TwoWay}"
+               Watermark="{DynamicResource Text.CreateTag.Name.Placeholder}"
                v:AutoFocusBehaviour.IsEnabled="True"/>
 
       <TextBlock Grid.Row="2" Grid.Column="0"

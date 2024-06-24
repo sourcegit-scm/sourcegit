@@ -1,0 +1,296 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:c="using:SourceGit.Converters"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.InteractiveRebase"
+                    x:DataType="vm:InteractiveRebase"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.InteractiveRebase}"
+                    Width="1080" Height="720"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,Auto,*,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
+      <Border Grid.Column="0" Grid.ColumnSpan="3"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Grid.Column="0"
+            Width="14" Height="14"
+            Margin="10,0,0,0"
+            Data="{StaticResource Icons.InteractiveRebase}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
+        <Button Classes="caption_button_macos" Click="CloseWindow">
+          <Grid>
+            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
+            <Path Height="6" Width="6" Stretch="Fill" Fill="#404040" Stroke="#404040" StrokeThickness="1" Data="{StaticResource Icons.Window.Close}"/>
+          </Grid>
+        </Button>
+      </Grid>
+
+      <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                 Classes="bold"
+                 Text="{DynamicResource Text.InteractiveRebase}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <Button Grid.Column="2"
+              Classes="caption_button"
+              Click="CloseWindow"
+              IsVisible="{OnPlatform True, macOS=False}">
+        <Path Data="{StaticResource Icons.Window.Close}"/>
+      </Button>
+    </Grid>
+
+    <!-- Operation Information -->
+    <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*" Margin="8">
+      <TextBlock Grid.Column="0" Text="{DynamicResource Text.InteractiveRebase.Target}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+      <Path Grid.Column="1" Width="14" Height="14" Margin="8,0,0,0" Data="{StaticResource Icons.Branch}"/>
+      <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Current, Converter={x:Static c:BranchConverters.ToName}}" Margin="8,0,0,0"/>
+
+      <TextBlock Grid.Column="3" Margin="48,0,0,0" Text="{DynamicResource Text.InteractiveRebase.On}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+      <Path Grid.Column="4" Width="14" Height="14" Margin="8,8,0,0" Data="{StaticResource Icons.Commit}"/>
+      <TextBlock Grid.Column="5" Classes="monospace" VerticalAlignment="Center" Text="{Binding On.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+      <TextBlock Grid.Column="6" VerticalAlignment="Center" Text="{Binding On.Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+    </Grid>
+    
+    <!-- Body -->
+    <Border Grid.Row="2" Margin="8,0,8,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+      <Grid RowDefinitions="*,3,*">
+        <DataGrid Grid.Row="0"
+                  Background="{DynamicResource Brush.Contents}"
+                  ItemsSource="{Binding Items}"
+                  SelectionMode="Single"
+                  SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="False"
+                  DragDrop.AllowDrop="True"
+                  IsReadOnly="True"
+                  HeadersVisibility="None"
+                  Focusable="False"
+                  RowHeight="28"
+                  HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto"
+                  KeyDown="OnDataGridKeyDown">          
+          <DataGrid.Columns>
+            <DataGridTemplateColumn Header="Option">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
+                  <Button Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent">
+                    <Button.Flyout>
+                      <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-4">
+                        <MenuItem InputGesture="P" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Pick}">
+                          <MenuItem.Icon>
+                            <Ellipse Width="14" Height="14" Fill="Green"/>
+                          </MenuItem.Icon>
+                          <MenuItem.Header>
+                            <Grid ColumnDefinitions="64,240">
+                              <TextBlock Grid.Column="0" Classes="monospace" Margin="4,0" Text="Pick"/>
+                              <TextBlock Grid.Column="1" Text="Use this commit" Foreground="{DynamicResource Brush.FG2}"/>
+                            </Grid>
+                          </MenuItem.Header>
+                        </MenuItem>
+
+                        <MenuItem InputGesture="E" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Edit}">
+                          <MenuItem.Icon>
+                            <Ellipse Width="14" Height="14" Fill="Orange"/>
+                          </MenuItem.Icon>
+                          <MenuItem.Header>
+                            <Grid ColumnDefinitions="64,240">
+                              <TextBlock Grid.Column="0" Classes="monospace" Margin="4,0" Text="Edit"/>
+                              <TextBlock Grid.Column="1" Text="Stop for amending" Foreground="{DynamicResource Brush.FG2}"/>
+                            </Grid>
+                          </MenuItem.Header>
+                        </MenuItem>
+
+                        <MenuItem InputGesture="R" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Reword}">
+                          <MenuItem.Icon>
+                            <Ellipse Width="14" Height="14" Fill="Orange"/>
+                          </MenuItem.Icon>
+                          <MenuItem.Header>
+                            <Grid ColumnDefinitions="64,240">
+                              <TextBlock Grid.Column="0" Classes="monospace" Margin="4,0" Text="Reword"/>
+                              <TextBlock Grid.Column="1" Text="Edit the commit message" Foreground="{DynamicResource Brush.FG2}"/>
+                            </Grid>
+                          </MenuItem.Header>
+                        </MenuItem>
+
+                        <MenuItem InputGesture="S" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Squash}">
+                          <MenuItem.Icon>
+                            <Ellipse Width="14" Height="14" Fill="LightGray"/>
+                          </MenuItem.Icon>
+                          <MenuItem.Header>
+                            <Grid ColumnDefinitions="64,240">
+                              <TextBlock Grid.Column="0" Classes="monospace" Margin="4,0" Text="Squash"/>
+                              <TextBlock Grid.Column="1" Text="Meld into previous commit" Foreground="{DynamicResource Brush.FG2}"/>
+                            </Grid>
+                          </MenuItem.Header>
+                        </MenuItem>
+
+                        <MenuItem InputGesture="F" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Fixup}">
+                          <MenuItem.Icon>
+                            <Ellipse Width="14" Height="14" Fill="LightGray"/>
+                          </MenuItem.Icon>
+                          <MenuItem.Header>
+                            <Grid ColumnDefinitions="64,240">
+                              <TextBlock Grid.Column="0" Classes="monospace" Margin="4,0" Text="Fixup"/>
+                              <TextBlock Grid.Column="1" Text="Like 'Squash' but discard message" Foreground="{DynamicResource Brush.FG2}"/>
+                            </Grid>
+                          </MenuItem.Header>
+                        </MenuItem>
+
+                        <MenuItem InputGesture="D" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Drop}">
+                          <MenuItem.Icon>
+                            <Ellipse Width="14" Height="14" Fill="Red"/>
+                          </MenuItem.Icon>
+                          <MenuItem.Header>
+                            <Grid ColumnDefinitions="64,240">
+                              <TextBlock Grid.Column="0" Classes="monospace" Margin="4,0" Text="Drop"/>
+                              <TextBlock Grid.Column="1" Text="Remove commit" Foreground="{DynamicResource Brush.FG2}"/>
+                            </Grid>
+                          </MenuItem.Header>
+                        </MenuItem>
+                      </MenuFlyout>
+                    </Button.Flyout>
+                    
+                    <StackPanel Orientation="Horizontal">
+                      <Ellipse Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
+                      <TextBlock Classes="monospace" Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
+                    </StackPanel>
+                  </Button>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Width="*" Header="SUBJECT">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
+                  <StackPanel Orientation="Horizontal">
+                    <Button Classes="icon_button" IsVisible="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.CanEditMessage}}">
+                      <Button.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedLeft">
+                          <Panel Width="600" Height="120">
+                            <v:CommitMessageTextBox Text="{Binding FullMessage, Mode=TwoWay}"/>
+                          </Panel>
+                        </Flyout>
+                      </Button.Flyout>
+                      <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Edit}"/>
+                    </Button>
+                    <TextBlock Classes="monospace" Text="{Binding Subject}" Margin="8,0,0,0"/>
+                  </StackPanel>                  
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Header="AVATAR">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
+                  <v:Avatar Width="16" Height="16"
+                            Margin="16,0,8,0"
+                            VerticalAlignment="Center"
+                            IsHitTestVisible="False"
+                            User="{Binding Commit.Author}"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn MaxWidth="100" Header="AUTHOR">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
+                  <TextBlock Classes="monospace" Text="{Binding Commit.Author.Name}" Margin="0,0,8,0"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Header="SHA">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
+                  <TextBlock Classes="monospace"
+                             Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                             Margin="12,0"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Header="TIME">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
+                  <TextBlock Classes="monospace" Text="{Binding Commit.CommitterTimeStr}" Margin="8,0"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Width="32" Header="MOVE UP">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
+                  <Button Classes="icon_button" Click="OnMoveItemUp" ToolTip.Tip="{DynamicResource Text.InteractiveRebase.MoveUp}">
+                    <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Up}"/>
+                  </Button>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn Width="32" Header="MOVE DOWN">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
+                  <Button Classes="icon_button" Click="OnMoveItemDown" ToolTip.Tip="{DynamicResource Text.InteractiveRebase.MoveDown}">
+                    <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Down}"/>
+                  </Button>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+
+        <v:LoadingIcon Grid.Row="0" Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+
+        <GridSplitter Grid.Row="1"
+                      MinHeight="1"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      Background="Transparent"
+                      BorderThickness="0,1,0,0"
+                      BorderBrush="{DynamicResource Brush.Border2}"/>
+
+        <Border Grid.Row="2" Background="{DynamicResource Brush.Window}">
+          <Path Width="128" Height="128"
+                Data="{StaticResource Icons.Detail}"
+                HorizontalAlignment="Center"
+                Fill="{DynamicResource Brush.FG2}"/>
+        </Border>
+
+        <Grid Grid.Row="2" IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}">
+          <ContentControl Content="{Binding DetailContext}">
+            <ContentControl.DataTemplates>
+              <DataTemplate DataType="vm:CommitDetail">
+                <v:CommitDetail/>
+              </DataTemplate>
+            </ContentControl.DataTemplates>
+          </ContentControl>
+        </Grid>
+      </Grid>
+    </Border>
+
+    <!-- Options -->
+    <Grid Grid.Row="3" ColumnDefinitions="*,Auto,Auto" Margin="8,0,8,8">
+      <ProgressBar x:Name="Running" 
+                   Grid.Column="0" 
+                   Margin="0,0,32,0" 
+                   Background="{DynamicResource Brush.FG2}" 
+                   Foreground="{DynamicResource Brush.Accent}" 
+                   Minimum="0" 
+                   Maximum="100"
+                   IsVisible="False"/>
+      <Button Grid.Column="1" Classes="flat primary" MinWidth="80" Content="{DynamicResource Text.Start}" Click="StartJobs"/>
+      <Button Grid.Column="2" Classes="flat" Margin="8,0,0,0" MinWidth="80" Content="{DynamicResource Text.Cancel}" Click="CloseWindow"/>
+    </Grid>
+  </Grid>
+</v:ChromelessWindow>

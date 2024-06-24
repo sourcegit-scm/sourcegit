@@ -131,7 +131,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        SelectedStaged = null;
+                        SelectedStaged = [];
 
                         if (value.Count == 1)
                             SetDetail(value[0]);
@@ -156,7 +156,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        SelectedUnstaged = null;
+                        SelectedUnstaged = [];
 
                         if (value.Count == 1)
                             SetDetail(value[0]);
@@ -190,29 +190,17 @@ namespace SourceGit.ViewModels
         {
             _repo = null;
 
-            if (_selectedUnstaged != null)
-            {
-                _selectedUnstaged.Clear();
-                OnPropertyChanged(nameof(SelectedUnstaged));
-            }
+            _selectedUnstaged.Clear();
+            OnPropertyChanged(nameof(SelectedUnstaged));
 
-            if (_selectedStaged != null)
-            {
-                _selectedStaged.Clear();
-                OnPropertyChanged(nameof(SelectedStaged));
-            }
+            _selectedStaged.Clear();
+            OnPropertyChanged(nameof(SelectedStaged));
 
-            if (_unstaged != null)
-            {
-                _unstaged.Clear();
-                OnPropertyChanged(nameof(Unstaged));
-            }
+            _unstaged.Clear();
+            OnPropertyChanged(nameof(Unstaged));
 
-            if (_staged != null)
-            {
-                _staged.Clear();
-                OnPropertyChanged(nameof(Staged));
-            }
+            _staged.Clear();
+            OnPropertyChanged(nameof(Staged));
 
             _detailContext = null;
             _commitMessage = string.Empty;
@@ -527,7 +515,7 @@ namespace SourceGit.ViewModels
 
                         e.Handled = true;
                     };
-                    
+
                     var assumeUnchanged = new MenuItem();
                     assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
                     assumeUnchanged.Icon = App.CreateMenuIcon("Icons.File.Ignore");
@@ -556,7 +544,9 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(history);
                     menu.Items.Add(new MenuItem() { Header = "-" });
-                    
+
+                    var extension = Path.GetExtension(change.Path);
+                    var hasExtra = false;
                     if (change.WorkTree == Models.ChangeState.Untracked)
                     {
                         var isRooted = change.Path.IndexOf('/', StringComparison.Ordinal) <= 0;
@@ -583,8 +573,7 @@ namespace SourceGit.ViewModels
                         };
                         addToIgnore.Items.Add(byParentFolder);
 
-                        var extension = Path.GetExtension(change.Path);
-                        if (!string.IsNullOrEmpty(extension)) 
+                        if (!string.IsNullOrEmpty(extension))
                         {
                             var byExtension = new MenuItem();
                             byExtension.Header = App.Text("WorkingCopy.AddToGitIgnore.Extension", extension);
@@ -594,7 +583,7 @@ namespace SourceGit.ViewModels
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(byExtension);
-                            
+
                             var byExtensionInSameFolder = new MenuItem();
                             byExtensionInSameFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.ExtensionInSameFolder", extension);
                             byExtensionInSameFolder.IsVisible = !isRooted;
@@ -607,8 +596,82 @@ namespace SourceGit.ViewModels
                         }
 
                         menu.Items.Add(addToIgnore);
-                        menu.Items.Add(new MenuItem() { Header = "-" });
+                        hasExtra = true;
                     }
+
+                    var lfsEnabled = new Commands.LFS(_repo.FullPath).IsEnabled();
+                    if (lfsEnabled)
+                    {
+                        var lfs = new MenuItem();
+                        lfs.Header = App.Text("GitLFS");
+                        lfs.Icon = App.CreateMenuIcon("Icons.LFS");
+
+                        var isLFSFiltered = new Commands.IsLFSFiltered(_repo.FullPath, change.Path).Result();
+                        if (!isLFSFiltered)
+                        {
+                            var filename = Path.GetFileName(change.Path);
+                            var lfsTrackThisFile = new MenuItem();
+                            lfsTrackThisFile.Header = App.Text("GitLFS.Track", filename);
+                            lfsTrackThisFile.Click += async (_, e) =>
+                            {
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track(filename, true));
+                                if (succ)
+                                    App.SendNotification(_repo.FullPath, $"Tracking file named {filename} successfully!");
+
+                                e.Handled = true;
+                            };
+                            lfs.Items.Add(lfsTrackThisFile);
+
+                            if (!string.IsNullOrEmpty(extension))
+                            {
+                                var lfsTrackByExtension = new MenuItem();
+                                lfsTrackByExtension.Header = App.Text("GitLFS.TrackByExtension", extension);
+                                lfsTrackByExtension.Click += async (_, e) =>
+                                {
+                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track("*" + extension, false));
+                                    if (succ)
+                                        App.SendNotification(_repo.FullPath, $"Tracking all *{extension} files successfully!");
+
+                                    e.Handled = true;
+                                };
+                                lfs.Items.Add(lfsTrackByExtension);
+                            }
+
+                            lfs.Items.Add(new MenuItem() { Header = "-" });
+                        }                        
+
+                        var lfsLock = new MenuItem();
+                        lfsLock.Header = App.Text("GitLFS.Locks.Lock");
+                        lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
+                        lfsLock.Click += async (_, e) =>
+                        {
+                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(change.Path));
+                            if (succ)
+                                App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
+
+                            e.Handled = true;
+                        };
+                        lfs.Items.Add(lfsLock);
+
+                        var lfsUnlock = new MenuItem();
+                        lfsUnlock.Header = App.Text("GitLFS.Locks.Unlock");
+                        lfsUnlock.Icon = App.CreateMenuIcon("Icons.Unlock");
+                        lfsUnlock.Click += async (_, e) =>
+                        {
+                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(change.Path, false));
+                            if (succ)
+                                App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
+
+                            e.Handled = true;
+                        };
+                        lfs.Items.Add(lfsUnlock);
+
+                        menu.Items.Add(lfs);
+                        hasExtra = true;
+                    }
+
+                    if (hasExtra)
+                        menu.Items.Add(new MenuItem() { Header = "-" });
                 }
 
                 var copy = new MenuItem();
@@ -702,9 +765,8 @@ namespace SourceGit.ViewModels
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                    {
                         PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, false));
-                    }
+
                     e.Handled = true;
                 };
 
@@ -797,9 +859,8 @@ namespace SourceGit.ViewModels
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                    {
                         PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, false));
-                    }
+
                     e.Handled = true;
                 };
 
@@ -854,6 +915,45 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
                 menu.Items.Add(new MenuItem() { Header = "-" });
+
+                var lfsEnabled = new Commands.LFS(_repo.FullPath).IsEnabled();
+                if (lfsEnabled)
+                {
+                    var lfs = new MenuItem();
+                    lfs.Header = App.Text("GitLFS");
+                    lfs.Icon = App.CreateMenuIcon("Icons.LFS");
+
+                    var lfsLock = new MenuItem();
+                    lfsLock.Header = App.Text("GitLFS.Locks.Lock");
+                    lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
+                    lfsLock.Click += async (_, e) =>
+                    {
+                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(change.Path));
+                        if (succ)
+                            App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
+
+                        e.Handled = true;
+                    };
+                    lfs.Items.Add(new MenuItem() { Header = "-" });
+                    lfs.Items.Add(lfsLock);
+
+                    var lfsUnlock = new MenuItem();
+                    lfsUnlock.Header = App.Text("GitLFS.Locks.Unlock");
+                    lfsUnlock.Icon = App.CreateMenuIcon("Icons.Unlock");
+                    lfsUnlock.Click += async (_, e) =>
+                    {
+                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(change.Path, false));
+                        if (succ)
+                            App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
+
+                        e.Handled = true;
+                    };
+                    lfs.Items.Add(lfsUnlock);
+
+                    menu.Items.Add(lfs);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
                 menu.Items.Add(copyPath);
                 menu.Items.Add(copyFileName);
             }
@@ -1013,20 +1113,11 @@ namespace SourceGit.ViewModels
 
         private async void UseExternalMergeTool(Models.Change change)
         {
-            var type = Preference.Instance.ExternalMergeToolType;
-            var exec = Preference.Instance.ExternalMergeToolPath;
-
-            var tool = Models.ExternalMerger.Supported.Find(x => x.Type == type);
-            if (tool == null)
-            {
-                App.RaiseException(_repo.FullPath, "Invalid merge tool in preference setting!");
-                return;
-            }
-
-            var args = tool.Type != 0 ? tool.Cmd : Preference.Instance.ExternalMergeToolCmd;
+            var toolType = Preference.Instance.ExternalMergeToolType;
+            var toolPath = Preference.Instance.ExternalMergeToolPath;
 
             _repo.SetWatcherEnabled(false);
-            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, exec, args, change.Path));
+            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, change.Path));
             _repo.SetWatcherEnabled(true);
         }
 
@@ -1107,10 +1198,10 @@ namespace SourceGit.ViewModels
         private bool _isCommitting = false;
         private bool _useAmend = false;
         private bool _canCommitWithPush = false;
-        private List<Models.Change> _unstaged = null;
-        private List<Models.Change> _staged = null;
-        private List<Models.Change> _selectedUnstaged = null;
-        private List<Models.Change> _selectedStaged = null;
+        private List<Models.Change> _unstaged = [];
+        private List<Models.Change> _staged = [];
+        private List<Models.Change> _selectedUnstaged = [];
+        private List<Models.Change> _selectedStaged = [];
         private int _count = 0;
         private object _detailContext = null;
         private string _commitMessage = string.Empty;

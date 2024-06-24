@@ -18,7 +18,7 @@
     <TextBlock x:Name="txtDesc"
                HorizontalAlignment="Stretch"
                TextWrapping="Wrap"
-               FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:FontSizeModifyConverters.Decrease}}"
+               FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                FontStyle="Italic"
                Text="{Binding #me.Description}"/>
     

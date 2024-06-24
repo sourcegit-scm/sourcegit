@@ -55,9 +55,9 @@ namespace SourceGit.ViewModels
 
         public bool UseRebase
         {
-            get;
-            set;
-        } = true;
+            get => _repo.PreferRebaseInsteadOfMerge;
+            set => _repo.PreferRebaseInsteadOfMerge = value;
+        }
 
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
         {
@@ -162,6 +162,6 @@ namespace SourceGit.ViewModels
         private Models.Remote _selectedRemote = null;
         private List<Models.Branch> _remoteBranches = null;
         private Models.Branch _selectedBranch = null;
-        private Models.DealWithLocalChanges _preAction = Models.DealWithLocalChanges.StashAndReaply;
+        private Models.DealWithLocalChanges _preAction = Models.DealWithLocalChanges.DoNothing;
     }
 }

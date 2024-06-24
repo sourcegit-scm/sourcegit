@@ -2,11 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ae="using:AvaloniaEdit"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
-             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionFiles"
              x:DataType="vm:CommitDetail">
@@ -58,9 +56,14 @@
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionImageFile">
-              <Border Background="{DynamicResource Brush.Window}" Effect="drop-shadow(0 0 8 #A0000000)" Margin="0,8" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
-                  <v:RevisionImageFileView Source="{Binding Image}" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+              <Border Margin="0,8" VerticalAlignment="Center" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
+                <Border Background="{DynamicResource Brush.Window}">
+                  <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
+                    <Grid>
+                      <v:ImageContainer/>
+                      <Image Source="{Binding Image}" Stretch="Uniform" VerticalAlignment="Center" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                    </Grid>
+                  </Border>
                 </Border>
               </Border>
             </DataTemplate>
@@ -78,10 +81,9 @@
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionSubmodule">
-              <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+              <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="8,8,8,0">
                 <TextBlock Text="{DynamicResource Text.CommitDetail.Files.Submodule}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
-                <Path Width="64" Height="64" Margin="0,16,0,0" Data="{StaticResource Icons.Submodule}" Fill="{DynamicResource Brush.FG2}"/>
-                <SelectableTextBlock Margin="0,16,0,0" Text="{Binding SHA}" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
+                <v:CommitBaseInfo Margin="0,16,0,0" CanNavigate="False" Content="{Binding Commit}" Message="{Binding FullMessage}"/>
               </StackPanel>
             </DataTemplate>
           </ContentControl.DataTemplates>

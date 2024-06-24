@@ -45,14 +45,15 @@ namespace SourceGit
         {
             try
             {
-                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+                if (args.Length > 1 && args[0].Equals("--rebase-editor", StringComparison.Ordinal))
+                    Environment.Exit(Models.InteractiveRebaseEditor.Process(args[1]));
+                else
+                    BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             }
             catch (Exception ex)
             {
                 var builder = new StringBuilder();
-                builder.Append("Crash: ");
-                builder.Append(ex.Message);
-                builder.Append("\n\n");
+                builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
                 builder.Append("----------------------------\n");
                 builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
                 builder.Append($"OS: {Environment.OSVersion.ToString()}\n");
@@ -191,6 +192,10 @@ namespace SourceGit
             var fmt = Current.FindResource($"Text.{key}") as string;
             if (string.IsNullOrWhiteSpace(fmt))
                 return $"Text.{key}";
+
+            if (args == null || args.Length == 0)
+                return fmt;
+
             return string.Format(fmt, args);
         }
 
@@ -311,6 +316,18 @@ namespace SourceGit
                     dialog.Show(desktop.MainWindow);
                 }
             });
+        }
+
+        public static async Task<string> GetClipboardTextAsync()
+        {
+            if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                if (desktop.MainWindow.Clipboard is { } clipboard)
+                {
+                   return await clipboard.GetTextAsync();
+                }
+            }
+            return default;
         }
 
         private ResourceDictionary _activeLocale = null;

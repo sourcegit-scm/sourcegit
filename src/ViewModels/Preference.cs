@@ -134,6 +134,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _maxHistoryCommits, value);
         }
 
+        public int SubjectGuideLength
+        {
+            get => _subjectGuideLength;
+            set => SetProperty(ref _subjectGuideLength, value);
+        }
+
         public bool RestoreTabs
         {
             get => _restoreTabs;
@@ -180,6 +186,12 @@ namespace SourceGit.ViewModels
         {
             get => _enableDiffViewWordWrap;
             set => SetProperty(ref _enableDiffViewWordWrap, value);
+        }
+
+        public bool ShowHiddenSymbolsInDiffView
+        {
+            get => _showHiddenSymbolsInDiffView;
+            set => SetProperty(ref _showHiddenSymbolsInDiffView, value);
         }
 
         public Models.ChangeViewMode UnstagedChangeViewMode
@@ -288,18 +300,6 @@ namespace SourceGit.ViewModels
         {
             get => _externalMergeToolPath;
             set => SetProperty(ref _externalMergeToolPath, value);
-        }
-
-        public string ExternalMergeToolCmd
-        {
-            get => _externalMergeToolCmd;
-            set => SetProperty(ref _externalMergeToolCmd, value);
-        }
-
-        public string ExternalMergeToolDiffCmd
-        {
-            get => _externalMergeToolDiffCmd;
-            set => SetProperty(ref _externalMergeToolDiffCmd, value);
         }
 
         public List<Repository> Repositories
@@ -540,13 +540,16 @@ namespace SourceGit.ViewModels
         private LayoutInfo _layout = new LayoutInfo();
 
         private int _maxHistoryCommits = 20000;
+        private int _subjectGuideLength = 50;
         private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
         private bool _check4UpdatesOnStartup = true;
+        
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _useSideBySideDiff = false;
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
+        private bool _showHiddenSymbolsInDiffView = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
@@ -556,8 +559,6 @@ namespace SourceGit.ViewModels
 
         private int _externalMergeToolType = 0;
         private string _externalMergeToolPath = string.Empty;
-        private string _externalMergeToolCmd = string.Empty;
-        private string _externalMergeToolDiffCmd = string.Empty;
 
         private AvaloniaList<RepositoryNode> _repositoryNodes = new AvaloniaList<RepositoryNode>();
     }
