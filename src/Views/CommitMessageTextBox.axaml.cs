@@ -13,8 +13,11 @@ namespace SourceGit.Views
         public static readonly StyledProperty<string> TextProperty =
             AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Text), string.Empty);
 
-        public static readonly StyledProperty<int> SubjectLengthProperty =
-            AvaloniaProperty.Register<CommitMessageTextBox, int>(nameof(SubjectLength));
+        public static readonly DirectProperty<CommitMessageTextBox, int> SubjectLengthProperty =
+            AvaloniaProperty.RegisterDirect<CommitMessageTextBox, int>(nameof(SubjectLength), o => o.SubjectLength);
+
+        public static readonly DirectProperty<CommitMessageTextBox, int> TotalLengthProperty =
+            AvaloniaProperty.RegisterDirect<CommitMessageTextBox, int>(nameof(TotalLength), o => o.TotalLength);
  
         public string Text
         {
@@ -24,8 +27,14 @@ namespace SourceGit.Views
 
         public int SubjectLength
         {
-            get => GetValue(SubjectLengthProperty);
-            set => SetValue(SubjectLengthProperty, value);
+            get => _subjectLength;
+            private set => SetAndRaise(SubjectLengthProperty, ref _subjectLength, value);
+        }
+
+        public int TotalLength
+        {
+            get => _totalLength;
+            private set => SetAndRaise(TotalLengthProperty, ref _totalLength, value);
         }
 
         public TextDocument Document
@@ -54,7 +63,7 @@ namespace SourceGit.Views
             {
                 if (_subjectEndLineNumber == 0)
                 {
-                    SubjectGuideLine.Margin = new Thickness(1, view.DefaultLineHeight + 2, 1, 0);
+                    SubjectGuideLine.Margin = new Thickness(0, view.DefaultLineHeight + 3, 0, 0);
                     SubjectGuideLine.IsVisible = true;
                     return;
                 }
@@ -64,8 +73,8 @@ namespace SourceGit.Views
                     var lineNumber = line.FirstDocumentLine.LineNumber;
                     if (lineNumber == _subjectEndLineNumber)
                     {
-                        var y = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset + 2;
-                        SubjectGuideLine.Margin = new Thickness(1, y, 1, 0);
+                        var y = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset + 3;
+                        SubjectGuideLine.Margin = new Thickness(0, y, 0, 0);
                         SubjectGuideLine.IsVisible = true;
                         return;
                     }
@@ -77,27 +86,38 @@ namespace SourceGit.Views
 
         private void OnTextEditorTextChanged(object sender, EventArgs e)
         {
+            var text = Document.Text;
             _isDocumentTextChanging = true;
-            SetCurrentValue(TextProperty, Document.Text);
+            SetCurrentValue(TextProperty, text);
+            TotalLength = text.Trim().Length;
             _isDocumentTextChanging = false;
-            
+
+            var foundData = false;
             for (var i = 0; i < Document.LineCount; i++)
             {
                 var line = Document.Lines[i];
-                if (line.LineNumber > 1 && line.Length == 0)
+                if (line.Length == 0)
                 {
-                    var subject = Text[..line.Offset].ReplaceLineEndings(" ").Trim();
-                    SetCurrentValue(SubjectLengthProperty, subject.Length);
-                    return;
+                    if (foundData)
+                    {
+                        SubjectLength = text[..line.Offset].ReplaceLineEndings(" ").Trim().Length;
+                        return;
+                    }
+                }
+                else
+                {
+                    foundData = true;
                 }
                 
                 _subjectEndLineNumber = line.LineNumber;
             }
             
-            SetCurrentValue(SubjectLengthProperty, Text.ReplaceLineEndings(" ").Trim().Length);
+            SubjectLength = text.ReplaceLineEndings(" ").Trim().Length;
         }
 
         private bool _isDocumentTextChanging = false;
         private int _subjectEndLineNumber = 0;
+        private int _totalLength = 0;
+        private int _subjectLength = 0;
     }
 }
