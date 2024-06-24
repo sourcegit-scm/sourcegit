@@ -149,7 +149,7 @@ namespace SourceGit.Native
                     break;
                 case Models.Shell.PowerShell:
                     startInfo.FileName = ChoosePowerShell();
-                    startInfo.Arguments = startInfo.FileName.EndsWith("pswd.exe") ? $"-WorkingDirectory \"{workdir}\" -Nologo" : "-Nologo";
+                    startInfo.Arguments = startInfo.FileName.EndsWith("pwsh.exe") ? $"-WorkingDirectory \"{workdir}\" -Nologo" : "-Nologo";
                     break;
                 case Models.Shell.CommandPrompt:
                     startInfo.FileName = "cmd";
