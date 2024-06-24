@@ -12,30 +12,17 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Reword}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,160,Auto" ColumnDefinitions="100,*">
-      <TextBlock Grid.Row="0" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Reword.On}"/>
-      <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
-        <Path Grid.Column="0" Margin="0,6,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
-        <TextBlock Grid.Column="1" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
-        <TextBlock Grid.Column="2" Text="{Binding Head.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
-      </Grid>
 
-      <TextBlock Grid.Row="1" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Margin="0,8,8,0"
-                 Text="{DynamicResource Text.Reword.Message}"/>
-      <v:CommitMessageTextBox Grid.Row="1" Grid.Column="1"
-                              Margin="0,5,0,0"
-                              Text="{Binding Message, Mode=TwoWay}"/>
-      
-      <TextBlock Grid.Row="2" Grid.Column="1"
-                 Margin="0,4,0,0"
-                 Text="{DynamicResource Text.Reword.Tip}"
-                 TextWrapping="Wrap"
-                 Foreground="{DynamicResource Brush.FG2}"/>
-    </Grid>
+    <StackPanel Margin="8,16,8,0" Orientation="Horizontal" HorizontalAlignment="Right">
+      <Path Margin="0,6,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
+      <TextBlock Classes="monospace" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+    </StackPanel>
+    
+    <v:CommitMessageTextBox Height="120" Margin="8,5,8,0" Text="{Binding Message, Mode=TwoWay}"/>
+    
+    <TextBlock Margin="8"
+               Text="{DynamicResource Text.Reword.Tip}"
+               TextWrapping="Wrap"
+               Foreground="{DynamicResource Brush.FG2}"/>
   </StackPanel>
 </UserControl>

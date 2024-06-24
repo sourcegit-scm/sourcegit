@@ -12,15 +12,7 @@
                Classes="bold"
                Text="{DynamicResource Text.Checkout.Commit}" />
 
-    <StackPanel Orientation="Horizontal" Margin="0,12,0,16">
-      <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
-      <TextBlock Margin="4,0,0,0" 
-                 Text="{DynamicResource Text.Checkout.Commit.Warning}"
-                 TextWrapping="Wrap"
-                 FontStyle="Italic"/>
-    </StackPanel>
-    
-    <Grid RowDefinitions="32,Auto" ColumnDefinitions="Auto,*" ClipToBounds="True" HorizontalAlignment="Center">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto,Auto" ColumnDefinitions="Auto,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -44,6 +36,16 @@
                      GroupName="LocalChanges"
                      Margin="8,0,0,0" />
       </StackPanel>
+
+      <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
+        <Path Grid.Column="0" 
+              Width="14" Height="14" 
+              Data="{StaticResource Icons.Error}" 
+              Fill="DarkOrange"/>
+        <TextBlock Grid.Column="1" Margin="8,0,0,0"
+                   Text="{DynamicResource Text.Checkout.Commit.Warning}"
+                   TextWrapping="Wrap"/>
+      </Grid>
     </Grid>
   </StackPanel>
 </UserControl>

@@ -253,7 +253,7 @@
     <Grid Grid.Row="1" Margin="0,36,0,0" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}" ClipToBounds="True">
       <Border Background="Transparent" PointerPressed="OnPopupCancelByClickMask"/>
 
-      <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)" CornerRadius="0,0,4,4" ClipToBounds="True">                
+      <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)" CornerRadius="0,0,8,8" ClipToBounds="True">                
         <ContentControl Content="{Binding ActivePage.Popup}" Background="{DynamicResource Brush.Popup}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:Popup">  
@@ -298,40 +298,44 @@
         <ItemsControl ItemsSource="{Binding ActivePage.Notifications}">
           <ItemsControl.ItemTemplate>
             <DataTemplate DataType="m:Notification">
-              <Grid Width="320" Margin="8">
-                <Border Background="{DynamicResource Brush.Window}" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="1" CornerRadius="4" Effect="drop-shadow(0 0 8 #40000000)"/>
+              <Border Margin="10,6" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 12 #A0000000)">
+                <Border Padding="8" CornerRadius="6" Background="{DynamicResource Brush.Popup}">
+                  <Grid RowDefinitions="26,Auto,32">
+                    <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsError}">
+                      <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
+                      <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Error}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding !IsError}">
+                      <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
+                      <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Info}"/>
+                    </StackPanel>
 
-                <Grid Margin="8" RowDefinitions="26,Auto,Auto">
-                  <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsError}">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
-                    <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Error}"/>
-                  </StackPanel>
-                  <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding !IsError}">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
-                    <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Info}"/>
-                  </StackPanel>
+                    <TextBox Grid.Row="1"
+                             Classes="no_background no_border"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             MaxHeight="100"
+                             Margin="8" Padding="0"
+                             VerticalContentAlignment="Top"
+                             Text="{Binding Message}"/>
 
-                  <TextBox Grid.Row="1"
-                           Classes="no_background no_border"
-                           IsReadOnly="True"
-                           TextWrapping="Wrap"
-                           ScrollViewer.VerticalScrollBarVisibility="Auto"
-                           MaxHeight="100"
-                           Margin="8" Padding="0"
-                           VerticalContentAlignment="Top"
-                           Text="{Binding Message}"/>
-                  <Button Grid.Row="2"
-                          Classes="flat primary"
-                          Height="30"
-                          Margin="4,0"
-                          Command="{Binding #me.((vm:Launcher)DataContext).ActivePage.DismissNotification}"
-                          CommandParameter="{Binding}"
-                          Content="{DynamicResource Text.Close}"
-                          HorizontalAlignment="Right"
-                          HorizontalContentAlignment="Center"
-                          VerticalContentAlignment="Center"/>
-                </Grid>
-              </Grid>
+                    <StackPanel Grid.Row="2" Margin="0,4,0,0" Orientation="Horizontal" HorizontalAlignment="Right">
+                      <Button Classes="flat"
+                              Margin="0,0,8,0"
+                              Command="{Binding CopyMessage}"
+                              Content="{DynamicResource Text.CopyMessage}"
+                              IsVisible="{Binding IsError}"/>
+                      
+                      <Button Classes="flat primary"
+                              Margin="0,0"
+                              Command="{Binding #me.((vm:Launcher)DataContext).ActivePage.DismissNotification}"
+                              CommandParameter="{Binding}"
+                              Content="{DynamicResource Text.Close}"/>
+                    </StackPanel>
+                  </Grid>
+                </Border>
+              </Border>
             </DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
