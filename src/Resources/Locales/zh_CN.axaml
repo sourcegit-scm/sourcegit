@@ -449,6 +449,7 @@
   <x:String x:Key="Text.Reword" xml:space="preserve">编辑提交信息</x:String>
   <x:String x:Key="Text.Reword.Message" xml:space="preserve">提交信息：</x:String>
   <x:String x:Key="Text.Reword.On" xml:space="preserve">提交：</x:String>
+  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">请使用Shift+Enter换行。Enter键已被【确  定】按钮占用。</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">执行操作中，请耐心等待...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">保    存</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">另存为...</x:String>

@@ -447,6 +447,7 @@
   <x:String x:Key="Text.Reword" xml:space="preserve">Reword Commit Message</x:String>
   <x:String x:Key="Text.Reword.Message" xml:space="preserve">Message:</x:String>
   <x:String x:Key="Text.Reword.On" xml:space="preserve">On:</x:String>
+  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Running. Please wait...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SAVE</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Save As...</x:String>

@@ -33,7 +33,7 @@
       
       <TextBlock Grid.Row="2" Grid.Column="1"
                  Margin="0,4,0,0"
-                 Text="Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button"
+                 Text="{DynamicResource Text.Reword.Tip}"
                  TextWrapping="Wrap"
                  Foreground="{DynamicResource Brush.FG2}"/>
     </Grid>
