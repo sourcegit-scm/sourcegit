@@ -90,7 +90,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MaxWidth="100" Header="AUTHOR">
+          <DataGridTemplateColumn Header="AUTHOR">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
                 <TextBlock Classes="monospace"
