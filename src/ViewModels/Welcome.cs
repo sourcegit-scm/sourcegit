@@ -151,19 +151,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(terminal);
             }
 
-            if (folderNode == null)
-            {
-                var addFolder = new MenuItem();
-                addFolder.Header = App.Text("Welcome.AddRootFolder");
-                addFolder.Icon = App.CreateMenuIcon("Icons.Folder.Add");
-                addFolder.Click += (_, e) =>
-                {
-                    AddRootNode();
-                    e.Handled = true;
-                };
-                menu.Items.Add(addFolder);
-            }
-            else
+            if (folderNode != null)
             {
                 var addSubFolder = new MenuItem();
                 addSubFolder.Header = App.Text("Welcome.AddSubFolder");
