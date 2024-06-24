@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -479,6 +480,12 @@ namespace SourceGit.ViewModels
         {
             var data = JsonSerializer.Serialize(_instance, JsonCodeGen.Default.Preference);
             File.WriteAllText(_savePath, data);
+        }
+
+        public static RepositoryNode FindParentNode(RepositoryNode node)
+        {
+            var container = FindNodeContainer(node, _instance._repositoryNodes);
+            return container == null ? null : _instance._repositoryNodes.FirstOrDefault(parentNode => parentNode.SubNodes == container);
         }
 
         private static RepositoryNode FindNodeRecursive(string id, AvaloniaList<RepositoryNode> collection)

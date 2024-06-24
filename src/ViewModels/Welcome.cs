@@ -23,7 +23,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchFilter, value))
-                    Referesh();
+                    Refresh();
             }
         }
 
@@ -122,6 +122,9 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             menu.Items.Add(edit);
+            
+            var parentNode = Preference.FindParentNode(node);
+            var folderNode = !node.IsRepository ? node : (parentNode is { IsRepository: false } ? parentNode : null);
 
             if (node.IsRepository)
             {
@@ -147,6 +150,19 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(terminal);
             }
+
+            if (folderNode == null)
+            {
+                var addFolder = new MenuItem();
+                addFolder.Header = App.Text("Welcome.AddRootFolder");
+                addFolder.Icon = App.CreateMenuIcon("Icons.Folder.Add");
+                addFolder.Click += (_, e) =>
+                {
+                    AddRootNode();
+                    e.Handled = true;
+                };
+                menu.Items.Add(addFolder);
+            }
             else
             {
                 var addSubFolder = new MenuItem();
@@ -154,7 +170,7 @@ namespace SourceGit.ViewModels
                 addSubFolder.Icon = App.CreateMenuIcon("Icons.Folder.Add");
                 addSubFolder.Click += (_, e) =>
                 {
-                    node.AddSubFolder();
+                    folderNode.AddSubFolder();
                     e.Handled = true;
                 };
                 menu.Items.Add(addSubFolder);
@@ -173,7 +189,7 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        private void Referesh()
+        private void Refresh()
         {
             if (string.IsNullOrWhiteSpace(_searchFilter))
             {
