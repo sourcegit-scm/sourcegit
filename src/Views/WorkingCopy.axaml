@@ -117,7 +117,7 @@
                   BorderBrush="{DynamicResource Brush.Border0}"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="0,4,4,4" RowDefinitions="*,Auto,32">
+    <Grid Grid.Column="2" Margin="0,4,4,4" RowDefinitions="*,4,128,36">
       <!-- Select Change Detail -->
       <Grid Grid.Row="0">
         <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
@@ -158,14 +158,16 @@
         </ContentControl>
       </Grid>
 
+      <!-- Splitter -->
+      <GridSplitter Grid.Row="1" MinHeight="1"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Background="Transparent"/>
+
       <!-- Commit Message -->
-      <v:CommitMessageTextBox Grid.Row="1"
-                              Height="100"
-                              Margin="0,4"
-                              Text="{Binding CommitMessage, Mode=TwoWay}"/>
+      <v:CommitMessageTextBox Grid.Row="2" Text="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto">
+      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto">
         <Button Grid.Column="0"
                 Classes="icon_button"
                 Width="14" Height="14"
