@@ -182,7 +182,7 @@
                        Classes="icon_button"
                        Width="48"
                        GroupName="SearchGroup" 
-                       IsChecked="{Binding IsSearching, Mode=TwoWay, Converter={x:Static c:BoolConverters.Inverse}}">
+                       IsChecked="{Binding !IsSearching, Mode=OneWay}">
             <Path Width="14" Height="14" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
           </RadioButton>
           

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-
-using Avalonia.Data.Converters;
+﻿using Avalonia.Data.Converters;
 using Avalonia.Media;
 
 namespace SourceGit.Converters
@@ -16,21 +13,5 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<bool, FontWeight> BoldIfTrue =
             new FuncValueConverter<bool, FontWeight>(x => x ? FontWeight.Bold : FontWeight.Regular);
-
-        public class InverseConverter : IValueConverter
-        {
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                return !(bool)value;
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                return !(bool)value;
-            }
-        }
-
-        public static readonly InverseConverter Inverse = new InverseConverter();
-
     }
 }
