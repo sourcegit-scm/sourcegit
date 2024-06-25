@@ -191,7 +191,8 @@
           <RadioButton Grid.Column="2"
                        Width="48"
                        Classes="icon_button"
-                       GroupName="SearchGroup">
+                       GroupName="SearchGroup"
+                       IsChecked="{Binding IsSearching, Mode=TwoWay}">
             <Path Width="14" Height="14" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
           </RadioButton>
         </Grid>
