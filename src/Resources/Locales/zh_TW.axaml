@@ -336,6 +336,7 @@
   <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">啟動時恢復上次開啟的倉庫</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">SUBJECT字數檢測</x:String>
   <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">使用固定寬度的標題欄標籤</x:String>
+  <x:String x:Key="Text.Preference.General.VisibleDiffContextLines" xml:space="preserve">DIFF上下文行數</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">啟用定時自動拉取遠端更新</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">自動拉取間隔</x:String>
