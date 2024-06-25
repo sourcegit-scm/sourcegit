@@ -91,101 +91,22 @@
       </Grid.ColumnDefinitions>
 
       <!-- Left Panel -->
-      <Grid Grid.Column="0" Classes="repository_leftpanel" RowDefinitions="Auto,Auto,*">
-        <!-- Page Switcher for Right Panel -->
-        <Border Grid.Row="0" Margin="8,4,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
-          <Border CornerRadius="6" ClipToBounds="True">
-            <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}">
-              <ListBox.Styles>
-                <Style Selector="ListBoxItem">
-                  <Setter Property="Height" Value="28"/>
-                  <Setter Property="Margin" Value="0"/>
-                  <Setter Property="Padding" Value="0"/>
-                  <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                  <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
-                </Style>
-                <Style Selector="ListBoxItem:nth-last-child(1)">
-                  <Setter Property="BorderThickness" Value="0"/>
-                </Style>
-                <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-                  <Setter Property="Background" Value="Transparent"/>
-                </Style>
-                <Style Selector="ListBoxItem:selected Grid.view_mode">
-                  <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
-                </Style>
-              </ListBox.Styles>
-
-              <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                  <StackPanel Orientation="Vertical"/>
-                </ItemsPanelTemplate>
-              </ListBox.ItemsPanel>
-
-              <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
-                  <ToggleButton Grid.Column="2"
-                                Classes="layout_direction"
-                                Width="32" Height="26"
-                                IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=TwoWay}"
-                                ToolTip.Tip="{DynamicResource Text.Histories.DisplayMode}"/>
-                  <Button Grid.Column="3" Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
-                  </Button>
-                </Grid>
-              </ListBoxItem>
-
-              <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Send}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.WorkingCopy}"/>
-                  <Border Grid.Column="2"
-                          Margin="6,0"
-                          Height="18"
-                          CornerRadius="9"
-                          VerticalAlignment="Center"
-                          Background="{DynamicResource Brush.Badge}"
-                          IsVisible="{Binding WorkingCopyChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}"/>
-                  </Border>
-                </Grid>
-              </ListBoxItem>
-
-              <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Stashes}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Stashes}"/>
-                  <Border Grid.Column="2"
-                          Margin="6,0"
-                          Height="18"
-                          CornerRadius="9"
-                          VerticalAlignment="Center"
-                          Background="{DynamicResource Brush.Badge}"
-                          IsVisible="{Binding StashesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}"/>
-                  </Border>
-                </Grid>
-              </ListBoxItem>
-            </ListBox>
-          </Border>
-        </Border>
-
+      <Grid Grid.Column="0" Classes="repository_leftpanel" RowDefinitions="Auto,*">
         <!-- Page Switcher for Left Contents (Dashboard or CommitSearch) -->
-        <Grid Grid.Row="1" Height="24" Margin="0,6" HorizontalAlignment="Center" ColumnDefinitions="48,1,48">
+        <Grid Grid.Row="0" Height="24" Margin="0,6" HorizontalAlignment="Center" ColumnDefinitions="48,1,48">
           <Border Grid.Column="0" Grid.ColumnSpan="3"
                   Height="24"
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   CornerRadius="12"/>
 
-          <RadioButton Grid.Column="0" 
+          <RadioButton Grid.Column="0"
                        Classes="icon_button"
                        Width="48"
-                       GroupName="SearchGroup" 
+                       GroupName="SearchGroup"
                        IsChecked="{Binding !IsSearching, Mode=OneWay}">
             <Path Width="14" Height="14" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
           </RadioButton>
-          
+
           <Rectangle Grid.Column="1" Width="0.65" HorizontalAlignment="Center" VerticalAlignment="Stretch" Fill="{DynamicResource Brush.Border2}"/>
 
           <RadioButton Grid.Column="2"
@@ -198,15 +119,93 @@
         </Grid>
         
         <!-- Dashboard -->
-        <Grid Grid.Row="2" Margin="0,0,0,8" RowDefinitions="Auto,28,Auto,28,*,28,Auto,28,Auto" IsVisible="{Binding !IsSearching}">
+        <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,28,Auto,28,*,28,Auto,28,Auto" IsVisible="{Binding !IsSearching}">
+          <!-- Page Switcher for Right Panel -->
+          <Border Grid.Row="0" Margin="8,0,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
+            <Border CornerRadius="6" ClipToBounds="True">
+              <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}">
+                <ListBox.Styles>
+                  <Style Selector="ListBoxItem">
+                    <Setter Property="Height" Value="28"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
+                  </Style>
+                  <Style Selector="ListBoxItem:nth-last-child(1)">
+                    <Setter Property="BorderThickness" Value="0"/>
+                  </Style>
+                  <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="Transparent"/>
+                  </Style>
+                  <Style Selector="ListBoxItem:selected Grid.view_mode">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
+                  </Style>
+                </ListBox.Styles>
+
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBoxItem>
+                  <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto,Auto">
+                    <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
+                    <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
+                    <ToggleButton Grid.Column="2"
+                                  Classes="layout_direction"
+                                  Width="32" Height="26"
+                                  IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=TwoWay}"
+                                  ToolTip.Tip="{DynamicResource Text.Histories.DisplayMode}"/>
+                    <Button Grid.Column="3" Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
+                      <Path Width="14" Height="14" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
+                    </Button>
+                  </Grid>
+                </ListBoxItem>
+
+                <ListBoxItem>
+                  <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
+                    <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Send}"/>
+                    <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.WorkingCopy}"/>
+                    <Border Grid.Column="2"
+                            Margin="6,0"
+                            Height="18"
+                            CornerRadius="9"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource Brush.Badge}"
+                            IsVisible="{Binding WorkingCopyChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                      <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}"/>
+                    </Border>
+                  </Grid>
+                </ListBoxItem>
+
+                <ListBoxItem>
+                  <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
+                    <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Stashes}"/>
+                    <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Stashes}"/>
+                    <Border Grid.Column="2"
+                            Margin="6,0"
+                            Height="18"
+                            CornerRadius="9"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource Brush.Badge}"
+                            IsVisible="{Binding StashesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                      <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}"/>
+                    </Border>
+                  </Grid>
+                </ListBoxItem>
+              </ListBox>
+            </Border>
+          </Border>
+          
           <!-- Filter Branches -->
-          <TextBox Grid.Row="0"
+          <TextBox Grid.Row="1"
                    Height="24"
-                   Margin="8,0,4,4"
+                   Margin="8,6,4,0"
                    BorderThickness="1"
                    CornerRadius="4"
                    BorderBrush="{DynamicResource Brush.Border2}"
-                   Background="Transparent"
                    Watermark="{DynamicResource Text.Repository.FilterBranchTip}"
                    Text="{Binding SearchBranchFilter, Mode=TwoWay}"
                    VerticalContentAlignment="Center">
@@ -233,8 +232,8 @@
           </TextBox>
 
           <!-- Local Branches -->
-          <TextBlock Grid.Row="1" Classes="group_header_label" Text="{DynamicResource Text.Repository.LocalBranches}"/>
-          <TreeView Grid.Row="2"
+          <TextBlock Grid.Row="2" Classes="group_header_label" Text="{DynamicResource Text.Repository.LocalBranches}"/>
+          <TreeView Grid.Row="3"
                     x:Name="localBranchTree"
                     MaxHeight="400"
                     Margin="8,0,4,0"
@@ -302,13 +301,13 @@
           </TreeView>
 
           <!-- Remotes -->
-          <Grid Grid.Row="3" ColumnDefinitions="*,Auto">
+          <Grid Grid.Row="4" ColumnDefinitions="*,Auto">
             <TextBlock Grid.Column="0" Classes="group_header_label" Text="{DynamicResource Text.Repository.Remotes}"/>
             <Button Grid.Column="1" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding AddRemote}" ToolTip.Tip="{DynamicResource Text.Repository.Remotes.Add}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Remote.Add}"/>
             </Button>
           </Grid>
-          <TreeView Grid.Row="4"
+          <TreeView Grid.Row="5"
                     x:Name="remoteBranchTree"
                     Margin="8,0,4,0"
                     SelectionMode="Multiple"
@@ -365,7 +364,7 @@
           </TreeView>
 
           <!-- Tags -->
-          <ToggleButton Grid.Row="5" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
+          <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
             <Grid ColumnDefinitions="Auto,*,Auto">
               <TextBlock Grid.Column="0" Classes="group_header_label" Margin="4,0,0,0" Text="{DynamicResource Text.Repository.Tags}"/>
               <TextBlock Grid.Column="1" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
@@ -374,7 +373,7 @@
               </Button>
             </Grid>
           </ToggleButton>
-          <DataGrid Grid.Row="6"
+          <DataGrid Grid.Row="7"
                     x:Name="tagsList"
                     MaxHeight="200"
                     Margin="8,0,4,0"
@@ -453,7 +452,7 @@
           </DataGrid>
 
           <!-- Submodules -->
-          <ToggleButton Grid.Row="7" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
+          <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
             <Grid ColumnDefinitions="Auto,*,Auto,Auto">
               <TextBlock Grid.Column="0" Classes="group_header_label" Margin="4,0,0,0" Text="{DynamicResource Text.Repository.Submodules}"/>
               <TextBlock Grid.Column="1" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
@@ -476,7 +475,7 @@
               </Button>
             </Grid>
           </ToggleButton>
-          <DataGrid Grid.Row="8"
+          <DataGrid Grid.Row="9"
                     MaxHeight="200"
                     Margin="8,0,4,0"
                     Background="Transparent"
@@ -535,7 +534,7 @@
         </Grid>
 
         <!-- Commit Search Panel -->
-        <Grid Grid.Row="2" RowDefinitions="Auto,32,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
+        <Grid Grid.Row="1" RowDefinitions="Auto,32,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
           <!-- Search Input Box -->
           <TextBox Grid.Row="0"
                    x:Name="txtSearchCommitsBox"
