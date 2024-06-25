@@ -435,7 +435,6 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">TAGS</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">NEW TAG</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Open In Terminal</x:String>
-  <x:String x:Key="Text.Repository.Workspace" xml:space="preserve">WORKSPACE</x:String>
   <x:String x:Key="Text.RepositoryURL" xml:space="preserve">Git Repository URL</x:String>
   <x:String x:Key="Text.Reset" xml:space="preserve">Reset Current Branch To Revision</x:String>
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Reset Mode:</x:String>

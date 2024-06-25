@@ -129,12 +129,6 @@ namespace SourceGit.Views
             else if (e.Key == Key.Escape)
             {
                 vm.ActivePage.CancelPopup();
-
-                if (vm.ActivePage.Data is ViewModels.Repository repo)
-                {
-                    repo.IsSearching = false;
-                }
-
                 e.Handled = true;
                 return;
             }

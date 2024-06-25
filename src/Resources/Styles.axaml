@@ -972,6 +972,30 @@
     </Style>
   </Style>
 
+  <Style Selector="RadioButton.icon_button">
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="Transparent">
+          <ContentPresenter x:Name="PART_ContentPresenter"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Foreground="{TemplateBinding Foreground}"
+                            RecognizesAccessKey="True" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:checked Path">
+      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="Opacity" Value="0.65"/>
+    </Style>
+  </Style>
+
   <Style Selector="ToggleButton.group_expander">
     <Setter Property="Margin" Value="0"/>
     <Setter Property="Padding" Value="0"/>

@@ -437,7 +437,6 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">標籤列表</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">新建標籤</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在終端中開啟</x:String>
-  <x:String x:Key="Text.Repository.Workspace" xml:space="preserve">工作區</x:String>
   <x:String x:Key="Text.RepositoryURL" xml:space="preserve">遠端倉庫地址</x:String>
   <x:String x:Key="Text.Reset" xml:space="preserve">重置(reset)當前分支到指定版本</x:String>
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">重置模式 ：</x:String>
