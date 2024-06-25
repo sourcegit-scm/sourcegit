@@ -93,60 +93,83 @@
       <!-- Left Panel -->
       <Grid Grid.Column="0" Classes="repository_leftpanel" RowDefinitions="Auto,Auto,*">
         <!-- Page Switcher for Right Panel -->
-        <ListBox Grid.Row="0" Margin="8,4,4,0" Classes="page_switcher" Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}">
-          <ListBox.ItemsPanel>
-            <ItemsPanelTemplate>
-              <StackPanel Orientation="Vertical"/>
-            </ItemsPanelTemplate>
-          </ListBox.ItemsPanel>
+        <Border Grid.Row="0" Margin="8,4,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
+          <Border CornerRadius="6" ClipToBounds="True">
+            <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}">
+              <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                  <Setter Property="Height" Value="28"/>
+                  <Setter Property="Margin" Value="0"/>
+                  <Setter Property="Padding" Value="0"/>
+                  <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
+                </Style>
+                <Style Selector="ListBoxItem:nth-last-child(1)">
+                  <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+                <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+                  <Setter Property="Background" Value="Transparent"/>
+                </Style>
+                <Style Selector="ListBoxItem:selected Grid.view_mode">
+                  <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
+                </Style>
+              </ListBox.Styles>
 
-          <ListBoxItem Height="28" BorderThickness="1,1,1,1" CornerRadius="6,6,0,0">
-            <Grid Height="28" ColumnDefinitions="32,*,Auto,Auto">
-              <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
-              <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
-              <ToggleButton Grid.Column="2" 
-                            Classes="layout_direction"
-                            Width="32" Height="26"
-                            IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=TwoWay}"
-                            ToolTip.Tip="{DynamicResource Text.Histories.DisplayMode}"/>
-              <Button Grid.Column="3" Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
-                <Path Width="14" Height="14" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
-              </Button>
-            </Grid>
-          </ListBoxItem>
+              <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+              </ListBox.ItemsPanel>
 
-          <ListBoxItem Height="26" BorderThickness="1,0,1,0">
-            <Grid Height="28" ColumnDefinitions="32,*,Auto">
-              <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Send}"/>
-              <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.WorkingCopy}"/>
-              <Border Grid.Column="2"
-                      Margin="6,0"
-                      Height="18"
-                      CornerRadius="9"
-                      VerticalAlignment="Center"
-                      Background="{DynamicResource Brush.Badge}"
-                      IsVisible="{Binding WorkingCopyChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}"/>
-              </Border>
-            </Grid>
-          </ListBoxItem>
+              <ListBoxItem>
+                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto,Auto">
+                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
+                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
+                  <ToggleButton Grid.Column="2"
+                                Classes="layout_direction"
+                                Width="32" Height="26"
+                                IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=TwoWay}"
+                                ToolTip.Tip="{DynamicResource Text.Histories.DisplayMode}"/>
+                  <Button Grid.Column="3" Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
+                  </Button>
+                </Grid>
+              </ListBoxItem>
 
-          <ListBoxItem Height="28" BorderThickness="1,1,1,1" CornerRadius="0,0,6,6">
-            <Grid Height="28" ColumnDefinitions="32,*,Auto">
-              <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Stashes}"/>
-              <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Stashes}"/>
-              <Border Grid.Column="2"
-                      Margin="6,0"
-                      Height="18"
-                      CornerRadius="9"
-                      VerticalAlignment="Center"
-                      Background="{DynamicResource Brush.Badge}"
-                      IsVisible="{Binding StashesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}"/>
-              </Border>
-            </Grid>
-          </ListBoxItem>
-        </ListBox>
+              <ListBoxItem>
+                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
+                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Send}"/>
+                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.WorkingCopy}"/>
+                  <Border Grid.Column="2"
+                          Margin="6,0"
+                          Height="18"
+                          CornerRadius="9"
+                          VerticalAlignment="Center"
+                          Background="{DynamicResource Brush.Badge}"
+                          IsVisible="{Binding WorkingCopyChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}"/>
+                  </Border>
+                </Grid>
+              </ListBoxItem>
+
+              <ListBoxItem>
+                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
+                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Stashes}"/>
+                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Stashes}"/>
+                  <Border Grid.Column="2"
+                          Margin="6,0"
+                          Height="18"
+                          CornerRadius="9"
+                          VerticalAlignment="Center"
+                          Background="{DynamicResource Brush.Badge}"
+                          IsVisible="{Binding StashesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}"/>
+                  </Border>
+                </Grid>
+              </ListBoxItem>
+            </ListBox>
+          </Border>
+        </Border>
 
         <!-- Page Switcher for Left Contents (Dashboard or CommitSearch) -->
         <Grid Grid.Row="1" Height="24" Margin="0,6" HorizontalAlignment="Center" ColumnDefinitions="48,1,48">

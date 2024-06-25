@@ -652,18 +652,6 @@
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
   </Style>
 
-  <Style Selector="ListBox.page_switcher ListBoxItem">
-    <Setter Property="Margin" Value="0"/>
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
-  </Style>
-  <Style Selector="ListBox.page_switcher ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
-  <Style Selector="ListBox.page_switcher ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
-  </Style>
-
   <Style Selector="ContextMenu">
     <Setter Property="HorizontalOffset" Value="-4"/>
     <Setter Property="VerticalOffset" Value="-4"/>
