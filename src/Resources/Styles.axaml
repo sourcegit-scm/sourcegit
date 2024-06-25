@@ -233,7 +233,7 @@
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
     <Setter Property="FontWeight" Value="Bold"/>
-    <Setter Property="Margin" Value="8,0,0,0"/>
+    <Setter Property="Margin" Value="10,0,0,0"/>
   </Style>
   <Style Selector="TextBlock.info_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
@@ -985,7 +985,7 @@
   </Style>
 
   <Style Selector="ToggleButton.group_expander">
-    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Margin" Value="8,0,0,0"/>
     <Setter Property="Padding" Value="0"/>
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -995,8 +995,8 @@
         <Grid ColumnDefinitions="Auto,*">
           <Path Grid.Column="0"
                 x:Name="PART_IndicatorIcon"
-                Margin="4,0,0,0"
                 Width="10"
+                Margin="0,0,2,0"
                 Data="{StaticResource Icons.Down}"
                 Fill="{DynamicResource Brush.FG2}"
                 VerticalAlignment="Center"
