@@ -197,7 +197,7 @@
         </Grid>
         
         <!-- Dashboard -->
-        <Grid Grid.Row="2" RowDefinitions="Auto,28,Auto,28,*,28,Auto,28,Auto" IsVisible="{Binding !IsSearching}">
+        <Grid Grid.Row="2" Margin="0,0,0,8" RowDefinitions="Auto,28,Auto,28,*,28,Auto,28,Auto" IsVisible="{Binding !IsSearching}">
           <!-- Filter Branches -->
           <TextBox Grid.Row="0"
                    Height="24"
@@ -423,7 +423,7 @@
               <DataGridTemplateColumn Header="ICON">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate x:DataType="{x:Type m:Tag}">
-                    <Path Width="10" Height="10" Margin="16,0,8,0" Data="{StaticResource Icons.Tag}"/>
+                    <Path Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Tag}"/>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
@@ -515,7 +515,7 @@
               <DataGridTemplateColumn Header="ICON">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <Path Width="10" Height="10" Margin="16,0,8,0" Data="{StaticResource Icons.Submodule}"/>
+                    <Path Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
@@ -523,7 +523,9 @@
               <DataGridTemplateColumn Width="*" Header="NAME">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Text="{Binding}" ClipToBounds="True" Classes="monospace"/>
+                    <Border Padding="0,0,4,0">
+                      <TextBlock Text="{Binding}" ClipToBounds="True" Classes="monospace" TextTrimming="CharacterEllipsis"/>
+                    </Border>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
