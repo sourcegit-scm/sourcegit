@@ -296,6 +296,12 @@ namespace SourceGit.ViewModels
                 interactiveRebase.IsVisible = current.Head != commit.SHA;
                 interactiveRebase.Click += (o, e) =>
                 {
+                    if (_repo.WorkingCopyChangesCount > 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                        return;
+                    }
+
                     var dialog = new Views.InteractiveRebase() { DataContext = new InteractiveRebase(_repo, current, commit) };
                     dialog.ShowDialog(App.GetTopLevel() as Window);
                     e.Handled = true;
