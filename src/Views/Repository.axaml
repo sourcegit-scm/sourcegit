@@ -123,14 +123,14 @@
             </ItemsPanelTemplate>
           </ListBox.ItemsPanel>
 
-          <ListBoxItem BorderThickness="1,1,1,1" CornerRadius="6,6,0,0">
+          <ListBoxItem Height="28" BorderThickness="1,1,1,1" CornerRadius="6,6,0,0">
             <Grid Height="28" ColumnDefinitions="32,*">
               <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
               <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
             </Grid>
           </ListBoxItem>
 
-          <ListBoxItem BorderThickness="1,0,1,0">
+          <ListBoxItem Height="26" BorderThickness="1,0,1,0">
             <Grid Height="28" ColumnDefinitions="32,*,Auto">
               <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Send}"/>
               <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.WorkingCopy}"/>
@@ -146,7 +146,7 @@
             </Grid>
           </ListBoxItem>
 
-          <ListBoxItem BorderThickness="1,1,1,1" CornerRadius="0,0,6,6">
+          <ListBoxItem Height="28" BorderThickness="1,1,1,1" CornerRadius="0,0,6,6">
             <Grid Height="28" ColumnDefinitions="32,*,Auto">
               <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Stashes}"/>
               <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Stashes}"/>
