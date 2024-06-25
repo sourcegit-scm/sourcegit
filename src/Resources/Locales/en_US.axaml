@@ -446,8 +446,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit revert changes</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Reword Commit Message</x:String>
-  <x:String x:Key="Text.Reword.Message" xml:space="preserve">Message:</x:String>
-  <x:String x:Key="Text.Reword.On" xml:space="preserve">On:</x:String>
   <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Running. Please wait...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SAVE</x:String>
@@ -461,9 +459,6 @@
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Software Update</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">There are currently no updates available.</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash HEAD Into Parent</x:String>
-  <x:String x:Key="Text.Squash.Head" xml:space="preserve">HEAD:</x:String>
-  <x:String x:Key="Text.Squash.Message" xml:space="preserve">Reword:</x:String>
-  <x:String x:Key="Text.Squash.To" xml:space="preserve">To:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH Private Key:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Private SSH key store path</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>

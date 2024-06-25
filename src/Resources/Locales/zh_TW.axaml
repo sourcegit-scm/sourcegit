@@ -448,8 +448,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">目標提交 ：</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">回滾後提交更改</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">編輯提交資訊</x:String>
-  <x:String x:Key="Text.Reword.Message" xml:space="preserve">提交資訊：</x:String>
-  <x:String x:Key="Text.Reword.On" xml:space="preserve">提交：</x:String>
   <x:String x:Key="Text.Reword.Tip" xml:space="preserve">請使用Shift+Enter換行。Enter鍵已被【確 定】按鈕佔用。</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">執行操作中，請耐心等待...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">保    存</x:String>
@@ -463,9 +461,6 @@
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">軟體更新</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">當前已是最新版本。</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">合併HEAD到上一個提交</x:String>
-  <x:String x:Key="Text.Squash.Head" xml:space="preserve">當前提交 :</x:String>
-  <x:String x:Key="Text.Squash.Message" xml:space="preserve">修改提交資訊：</x:String>
-  <x:String x:Key="Text.Squash.To" xml:space="preserve">合併到 :</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH金鑰 ：</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH金鑰檔案</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">開    始</x:String>
