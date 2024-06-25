@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:SourceGit.ViewModels"
+        xmlns:c="using:SourceGit.Converters"
         xmlns:ae="using:AvaloniaEdit"
         xmlns:aes="using:AvaloniaEdit.Search">
   <Design.PreviewWith>
@@ -327,6 +328,7 @@
     <Setter Property="BorderBrush" Value="Transparent"/>
   </Style>
   <Style Selector="TextBlock.tab_header">
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Opacity" Value=".56"/>
