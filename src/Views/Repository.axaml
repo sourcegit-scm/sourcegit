@@ -113,26 +113,26 @@
       </Grid.ColumnDefinitions>
 
       <!-- Left Normal Mode -->
-      <Grid Grid.Column="0" Classes="repository_leftpanel" RowDefinitions="28,Auto,5,28,28,Auto,28,*,28,Auto,28,Auto" Margin="0,0,0,4" IsVisible="{Binding !IsSearching}">
+      <Grid Grid.Column="0" Classes="repository_leftpanel" RowDefinitions="28,Auto,28,28,Auto,28,*,28,Auto,28,Auto" Margin="0,0,0,4" IsVisible="{Binding !IsSearching}">
         <!-- WorkingCopy -->
         <TextBlock Grid.Row="0" Classes="group_header_label" Text="{DynamicResource Text.Repository.Workspace}"/>
-        <ListBox Grid.Row="1" Classes="page_switcher" Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}">
+        <ListBox Grid.Row="1" Margin="8,4,4,0" Classes="page_switcher" Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}">
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
               <StackPanel Orientation="Vertical"/>
             </ItemsPanelTemplate>
           </ListBox.ItemsPanel>
 
-          <ListBoxItem Height="28">
-            <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="20,*">
-              <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Histories}"/>
+          <ListBoxItem BorderThickness="1,1,1,1" CornerRadius="6,6,0,0">
+            <Grid Height="28" ColumnDefinitions="32,*">
+              <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
               <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
             </Grid>
           </ListBoxItem>
 
-          <ListBoxItem Height="28">
-            <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="20,*,Auto">
-              <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Send}"/>
+          <ListBoxItem BorderThickness="1,0,1,0">
+            <Grid Height="28" ColumnDefinitions="32,*,Auto">
+              <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Send}"/>
               <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.WorkingCopy}"/>
               <Border Grid.Column="2"
                       Margin="6,0"
@@ -146,9 +146,9 @@
             </Grid>
           </ListBoxItem>
 
-          <ListBoxItem Height="28">
-            <Grid Margin="16,0,0,0" Height="28" ColumnDefinitions="20,*,Auto">
-              <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Stashes}"/>
+          <ListBoxItem BorderThickness="1,1,1,1" CornerRadius="0,0,6,6">
+            <Grid Height="28" ColumnDefinitions="32,*,Auto">
+              <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Stashes}"/>
               <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Stashes}"/>
               <Border Grid.Column="2"
                       Margin="6,0"
@@ -164,14 +164,13 @@
         </ListBox>
 
         <!-- Filter Branches -->
-        <Rectangle Grid.Row="2" Height=".65" HorizontalAlignment="Stretch" VerticalAlignment="Center" Fill="{DynamicResource Brush.Border2}"/>
-        <TextBox Grid.Row="3"
-                 Margin="4,2,1,0"
+        <TextBox Grid.Row="2"
+                 Margin="8,6,4,0"
                  Height="24"
                  BorderThickness="1"
-                 CornerRadius="3"
+                 CornerRadius="4"
                  BorderBrush="{DynamicResource Brush.Border2}"
-                 Background="{DynamicResource Brush.Contents}"
+                 Background="Transparent"
                  Watermark="{DynamicResource Text.Repository.FilterBranchTip}"
                  Text="{Binding SearchBranchFilter, Mode=TwoWay}"
                  VerticalContentAlignment="Center">
@@ -198,8 +197,8 @@
         </TextBox>
         
         <!-- Local Branches -->
-        <TextBlock Grid.Row="4" Classes="group_header_label" Text="{DynamicResource Text.Repository.LocalBranches}"/>
-        <TreeView Grid.Row="5"
+        <TextBlock Grid.Row="3" Classes="group_header_label" Text="{DynamicResource Text.Repository.LocalBranches}"/>
+        <TreeView Grid.Row="4"
                   x:Name="localBranchTree"
                   MaxHeight="400"
                   Margin="4,0,2,0"
@@ -267,13 +266,13 @@
         </TreeView>
 
         <!-- Remotes -->
-        <Grid Grid.Row="6" ColumnDefinitions="*,Auto">
+        <Grid Grid.Row="5" ColumnDefinitions="*,Auto">
           <TextBlock Grid.Column="0" Classes="group_header_label" Text="{DynamicResource Text.Repository.Remotes}"/>
           <Button Grid.Column="1" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding AddRemote}" ToolTip.Tip="{DynamicResource Text.Repository.Remotes.Add}">
             <Path Width="12" Height="12" Data="{StaticResource Icons.Remote.Add}"/>
           </Button>
         </Grid>
-        <TreeView Grid.Row="7"
+        <TreeView Grid.Row="6"
                   x:Name="remoteBranchTree"
                   Margin="4,0,2,0"
                   SelectionMode="Multiple"
@@ -330,7 +329,7 @@
         </TreeView>
 
         <!-- Tags -->
-        <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
+        <ToggleButton Grid.Row="7" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
           <Grid ColumnDefinitions="Auto,*,Auto">
             <TextBlock Grid.Column="0" Classes="group_header_label" Margin="4,0,0,0" Text="{DynamicResource Text.Repository.Tags}"/>
             <TextBlock Grid.Column="1" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
@@ -339,7 +338,7 @@
             </Button>
           </Grid>
         </ToggleButton>
-        <DataGrid Grid.Row="9"
+        <DataGrid Grid.Row="8"
                   x:Name="tagsList"
                   MaxHeight="200"
                   Margin="4,0,2,0"
@@ -418,7 +417,7 @@
         </DataGrid>
 
         <!-- Submodules -->
-        <ToggleButton Grid.Row="10" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
+        <ToggleButton Grid.Row="9" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
           <Grid ColumnDefinitions="Auto,*,Auto,Auto">
             <TextBlock Grid.Column="0" Classes="group_header_label" Margin="4,0,0,0" Text="{DynamicResource Text.Repository.Submodules}"/>
             <TextBlock Grid.Column="1" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
@@ -441,7 +440,7 @@
             </Button>
           </Grid>
         </ToggleButton>
-        <DataGrid Grid.Row="11"
+        <DataGrid Grid.Row="10"
                   MaxHeight="200"
                   Margin="4,0,6,0"
                   Background="Transparent"

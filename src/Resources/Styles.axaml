@@ -650,9 +650,10 @@
   </Style>
 
   <Style Selector="ListBox.page_switcher ListBoxItem">
-    <Setter Property="Margin" Value="4,0,2,0"/>
+    <Setter Property="Height" Value="28"/>
+    <Setter Property="Margin" Value="0"/>
     <Setter Property="Padding" Value="0"/>
-    <Setter Property="CornerRadius" Value="4"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
   </Style>
   <Style Selector="ListBox.page_switcher ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
