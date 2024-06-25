@@ -217,6 +217,12 @@ namespace SourceGit.ViewModels
                 reword.Icon = App.CreateMenuIcon("Icons.Edit");
                 reword.Click += (o, e) =>
                 {
+                    if (_repo.WorkingCopyChangesCount > 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                        return;
+                    }
+
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Reword(_repo, commit));
                     e.Handled = true;
@@ -229,6 +235,12 @@ namespace SourceGit.ViewModels
                 squash.IsEnabled = commit.Parents.Count == 1;
                 squash.Click += (o, e) =>
                 {
+                    if (_repo.WorkingCopyChangesCount > 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                        return;
+                    }
+
                     if (commit.Parents.Count == 1)
                     {
                         var parent = _commits.Find(x => x.SHA == commit.Parents[0]);

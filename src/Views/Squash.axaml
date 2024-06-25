@@ -12,40 +12,38 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Squash}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="28,28,120,Auto" ColumnDefinitions="100,*">
-      <TextBlock Grid.Row="0" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Squash.Head}"/>
-      <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
-        <Path Grid.Column="0" Margin="0,6,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
-        <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
-        <TextBlock Grid.Column="2" Text="{Binding Head.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
-      </Grid>
 
-      <TextBlock Grid.Row="1" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Squash.To}"/>
-      <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
-        <Path Grid.Column="0" Margin="0,6,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
-        <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Parent.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
-        <TextBlock Grid.Column="2" Text="{Binding Parent.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
-      </Grid>
+    <Grid Margin="0,18,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*">
+      <Border Grid.Column="0" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
+        <TextBlock Text="HEAD" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
+      </Border>
+      
+      <Path Grid.Column="1" 
+            Width="14" Height="14"
+            Margin="12,0,0,0"
+            Fill="{DynamicResource Brush.FG1}" 
+            Data="{StaticResource Icons.Down}" 
+            VerticalAlignment="Center"
+            RenderTransformOrigin="50%,50%"
+            RenderTransform="rotate(270deg)"/>
 
-      <TextBlock Grid.Row="2" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Margin="0,5,8,0"
-                 Text="{DynamicResource Text.Squash.Message}"/>
-      <v:CommitMessageTextBox Grid.Row="2" Grid.Column="1"
-                              Margin="0,4,0,0"
-                              Text="{Binding Message, Mode=TwoWay}"/>
-
-      <TextBlock Grid.Row="3" Grid.Column="1"
-                 Margin="0,4,0,0"
-                 Text="{DynamicResource Text.Reword.Tip}"
-                 TextWrapping="Wrap"
-                 Foreground="{DynamicResource Brush.FG2}"/>
+      <Path Grid.Column="2"
+            Margin="6,6,8,0"
+            Width="14" Height="14"
+            Fill="{DynamicResource Brush.FG1}"
+            Data="{StaticResource Icons.Commit}"/>
+      <TextBlock Grid.Column="3"
+                 Classes="monospace"
+                 Text="{Binding Parent.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                 Foreground="DarkOrange"/>
+      <TextBlock Grid.Column="4" Margin="8,0,0,0" Text="{Binding Parent.Subject}" TextTrimming="CharacterEllipsis"/>
     </Grid>
+
+    <v:CommitMessageTextBox Height="120" Margin="0,4,0,0" Text="{Binding Message, Mode=TwoWay}"/>
+
+    <TextBlock Margin="0,6,0,0"
+               Text="{DynamicResource Text.Reword.Tip}"
+               TextWrapping="Wrap"
+               Foreground="{DynamicResource Brush.FG2}"/>
   </StackPanel>
 </UserControl>
