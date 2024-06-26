@@ -91,6 +91,7 @@
           <StackPanel x:Name="launcherTabsBar" Orientation="Horizontal" SizeChanged="UpdateScrollIndicator">
             <ListBox Classes="launcher_page_tabbar"
                      ItemsSource="{Binding Pages}"
+                     SelectionMode="AlwaysSelected"
                      SelectedItem="{Binding ActivePage, Mode=TwoWay}">
               <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
