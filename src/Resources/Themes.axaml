@@ -6,7 +6,7 @@
       <Color x:Key="Color.MacOS.Minimize">#FFFFBE2F</Color>
       <Color x:Key="Color.MacOS.Maximize">#FF29c941</Color>
       <Color x:Key="Color.Window">#FFF0F5F9</Color>
-      <Color x:Key="Color.WindowBorder">#FFAFAFAF</Color>
+      <Color x:Key="Color.WindowBorder">#00000000</Color>
       <Color x:Key="Color.TitleBar">#FFCFDEEA</Color>
       <Color x:Key="Color.ToolBar">#FFF0F5F9</Color>
       <Color x:Key="Color.Popup">#FFF8F8F8</Color>
