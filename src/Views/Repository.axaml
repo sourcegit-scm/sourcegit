@@ -58,7 +58,7 @@
           </Button>
 
           <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitFlowMenu" ToolTip.Tip="{DynamicResource Text.GitFlow}">
-            <Path Width="14" Height="14" Data="{StaticResource Icons.Flow}"/>
+            <Path Width="14" Height="14" Data="{StaticResource Icons.GitFlow}"/>
           </Button>
 
           <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitLFSMenu" ToolTip.Tip="{DynamicResource Text.GitLFS}">

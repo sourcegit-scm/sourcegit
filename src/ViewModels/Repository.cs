@@ -796,6 +796,27 @@ namespace SourceGit.ViewModels
                 PopupHost.ShowAndStartPopup(new UpdateSubmodules(this));
         }
 
+        public void OpenSubmodule(string submodule)
+        {
+            var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
+            var gitDir = new Commands.QueryGitDir(root).Result();
+            var repo = Preference.AddRepository(root, gitDir);
+
+            var node = new RepositoryNode()
+            {
+                Id = repo.FullPath,
+                Name = Path.GetFileName(repo.FullPath),
+                Bookmark = 0,
+                IsRepository = true,
+            };
+
+            var launcher = App.GetTopLevel().DataContext as Launcher;
+            if (launcher != null)
+            {
+                launcher.OpenRepositoryInTab(node, null);
+            }
+        }
+
         public ContextMenu CreateContextMenuForGitFlow()
         {
             var menu = new ContextMenu();
@@ -1155,7 +1176,7 @@ namespace SourceGit.ViewModels
             {
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
-                finish.Icon = App.CreateMenuIcon("Icons.Flow");
+                finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
                 finish.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -1574,27 +1595,6 @@ namespace SourceGit.ViewModels
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copy);
             return menu;
-        }
-
-        public void OpenSubmodule(string submodule)
-        {
-            var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
-            var gitDir = new Commands.QueryGitDir(root).Result();
-            var repo = Preference.AddRepository(root, gitDir);
-            
-            var node = new RepositoryNode()
-            {
-                Id = repo.FullPath,
-                Name = Path.GetFileName(repo.FullPath),
-                Bookmark = 0,
-                IsRepository = true,
-            };
-            
-            var launcher = App.GetTopLevel().DataContext as Launcher;
-            if (launcher != null)
-            {
-                launcher.OpenRepositoryInTab(node, null);
-            }
         }
 
         public ContextMenu CreateContextMenuForSubmodule(string submodule)

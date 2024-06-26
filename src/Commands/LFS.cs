@@ -46,7 +46,7 @@ namespace SourceGit.Commands
 
         public bool Install()
         {
-            return new SubCmd(_repo, $"lfs install", null).Exec();
+            return new SubCmd(_repo, "lfs install --local", null).Exec();
         }
 
         public bool Track(string pattern, bool isFilenameMode = false)

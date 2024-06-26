@@ -486,7 +486,7 @@ namespace SourceGit.ViewModels
             {
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", current.Name);
-                finish.Icon = App.CreateMenuIcon("Icons.Flow");
+                finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
                 finish.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -545,7 +545,7 @@ namespace SourceGit.ViewModels
             {
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
-                finish.Icon = App.CreateMenuIcon("Icons.Flow");
+                finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
                 finish.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
