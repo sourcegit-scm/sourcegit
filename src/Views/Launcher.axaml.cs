@@ -124,6 +124,12 @@ namespace SourceGit.Views
                         e.Handled = true;
                         return;
                     }
+                    else if (e.Key == Key.H && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    {
+                        repo.IsSearching = false;
+                        e.Handled = true;
+                        return;
+                    }
                 }
             }
             else if (e.Key == Key.Escape)
