@@ -7,40 +7,11 @@ using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
-    public partial class Launcher : ChromelessWindow, Models.INotificationReceiver
+    public partial class Launcher : ChromelessWindow
     {
-        public static readonly StyledProperty<GridLength> TitleBarHeightProperty =
-            AvaloniaProperty.Register<Launcher, GridLength>(nameof(TitleBarHeight), new GridLength(38, GridUnitType.Pixel));
-
-        public GridLength TitleBarHeight
-        {
-            get => GetValue(TitleBarHeightProperty);
-            set => SetValue(TitleBarHeightProperty, value);
-        }
-
         public Launcher()
         {
-            DataContext = new ViewModels.Launcher();
             InitializeComponent();
-        }
-
-        public void OnReceiveNotification(string ctx, Models.Notification notice)
-        {
-            if (DataContext is ViewModels.Launcher vm)
-            {
-                foreach (var page in vm.Pages)
-                {
-                    var pageId = page.Node.Id.Replace("\\", "/");
-                    if (pageId == ctx)
-                    {
-                        page.Notifications.Add(notice);
-                        return;
-                    }
-                }
-
-                if (vm.ActivePage != null)
-                    vm.ActivePage.Notifications.Add(notice);
-            }
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -51,9 +22,9 @@ namespace SourceGit.Views
             {
                 var state = (WindowState)change.NewValue;
                 if (state == WindowState.Maximized)
-                    SetCurrentValue(TitleBarHeightProperty, new GridLength(OperatingSystem.IsMacOS() ? 34 : 30));
+                    MainLayout.RowDefinitions[0].Height = new GridLength(OperatingSystem.IsMacOS() ? 34 : 30);
                 else
-                    SetCurrentValue(TitleBarHeightProperty, new GridLength(38, GridUnitType.Pixel));
+                    MainLayout.RowDefinitions[0].Height = new GridLength(38);
             }
         }
 
@@ -196,139 +167,21 @@ namespace SourceGit.Views
         private void EndMoveWindow(object sender, PointerReleasedEventArgs e)
         {
             _pressedTitleBar = false;
-        }
-
-        private void ScrollTabs(object sender, PointerWheelEventArgs e)
-        {
-            if (!e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-            {
-                if (e.Delta.Y < 0)
-                    launcherTabsScroller.LineRight();
-                else if (e.Delta.Y > 0)
-                    launcherTabsScroller.LineLeft();
-                e.Handled = true;
-            }
-        }
-
-        private void ScrollTabsLeft(object sender, RoutedEventArgs e)
-        {
-            launcherTabsScroller.LineLeft();
-            e.Handled = true;
-        }
-
-        private void ScrollTabsRight(object sender, RoutedEventArgs e)
-        {
-            launcherTabsScroller.LineRight();
-            e.Handled = true;
-        }
-
-        private void UpdateScrollIndicator(object sender, SizeChangedEventArgs e)
-        {
-            if (launcherTabsBar.Bounds.Width > launcherTabsContainer.Bounds.Width)
-            {
-                leftScrollIndicator.IsVisible = true;
-                rightScrollIndicator.IsVisible = true;
-            }
-            else
-            {
-                leftScrollIndicator.IsVisible = false;
-                rightScrollIndicator.IsVisible = false;
-            }
-            e.Handled = true;
-        }
-
-        private void OnTabsScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (sender is ScrollViewer scrollViewer)
-            {
-                leftScrollIndicator.IsEnabled = scrollViewer.Offset.X > 0;
-                rightScrollIndicator.IsEnabled = scrollViewer.Offset.X < scrollViewer.Extent.Width - scrollViewer.Viewport.Width;
-            }
-        }
-
-        private void SetupDragAndDrop(object sender, RoutedEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                DragDrop.SetAllowDrop(border, true);
-                border.AddHandler(DragDrop.DropEvent, DropTab);
-            }
-            e.Handled = true;
-        }
-
-        private void OnPointerPressedTab(object sender, PointerPressedEventArgs e)
-        {
-            var border = sender as Border;
-            var point = e.GetCurrentPoint(border);
-            if (point.Properties.IsMiddleButtonPressed)
-            {
-                var vm = DataContext as ViewModels.Launcher;
-                vm.CloseTab(border.DataContext as ViewModels.LauncherPage);
-                e.Handled = true;
-                return;
-            }
-
-            _pressedTab = true;
-            _startDragTab = false;
-            _pressedTabPosition = e.GetPosition(sender as Border);
-        }
-
-        private void OnPointerReleasedTab(object sender, PointerReleasedEventArgs e)
-        {
-            _pressedTab = false;
-            _startDragTab = false;
-        }
-
-        private void OnPointerMovedOverTab(object sender, PointerEventArgs e)
-        {
-            if (_pressedTab && !_startDragTab && sender is Border border)
-            {
-                var delta = e.GetPosition(border) - _pressedTabPosition;
-                var sizeSquired = delta.X * delta.X + delta.Y * delta.Y;
-                if (sizeSquired < 64)
-                    return;
-
-                _startDragTab = true;
-
-                var data = new DataObject();
-                data.Set("MovedTab", border.DataContext);
-                DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
-            }
-            e.Handled = true;
-        }
-
-        private void DropTab(object sender, DragEventArgs e)
-        {
-            if (e.Data.Contains("MovedTab") && sender is Border border)
-            {
-                var to = border.DataContext as ViewModels.LauncherPage;
-                var moved = e.Data.Get("MovedTab") as ViewModels.LauncherPage;
-                if (to != null && moved != null && to != moved && DataContext is ViewModels.Launcher vm)
-                {
-                    vm.MoveTab(moved, to);
-                }
-            }
-
-            _pressedTab = false;
-            _startDragTab = false;
-            e.Handled = true;
-        }
+        }        
 
         private void OnPopupSure(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Launcher vm)
-            {
                 vm.ActivePage.ProcessPopup();
-            }
+
             e.Handled = true;
         }
 
         private void OnPopupCancel(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Launcher vm)
-            {
                 vm.ActivePage.CancelPopup();
-            }
+
             e.Handled = true;
         }
 
@@ -337,9 +190,14 @@ namespace SourceGit.Views
             OnPopupCancel(sender, e);
         }
 
+        private void OnDismissNotification(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && DataContext is ViewModels.Launcher vm)
+                vm.DismissNotification(btn.DataContext as ViewModels.Notification);
+
+            e.Handled = true;
+        }
+
         private bool _pressedTitleBar = false;
-        private bool _pressedTab = false;
-        private Point _pressedTabPosition = new Point();
-        private bool _startDragTab = false;
     }
 }

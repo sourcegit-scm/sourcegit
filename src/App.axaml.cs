@@ -112,20 +112,14 @@ namespace SourceGit
 
         public static void RaiseException(string context, string message)
         {
-            if (Current is App app && app._notificationReceiver != null)
-            {
-                var notice = new Models.Notification() { IsError = true, Message = message };
-                app._notificationReceiver.OnReceiveNotification(context, notice);
-            }
+            if (Current is App app && app._launcher != null)
+                app._launcher.DispatchNotification(context, message, true);
         }
 
         public static void SendNotification(string context, string message)
         {
-            if (Current is App app && app._notificationReceiver != null)
-            {
-                var notice = new Models.Notification() { IsError = false, Message = message };
-                app._notificationReceiver.OnReceiveNotification(context, notice);
-            }
+            if (Current is App app && app._launcher != null)
+                app._launcher.DispatchNotification(context, message, false);
         }
 
         public static void SetLocale(string localeKey)
@@ -285,9 +279,8 @@ namespace SourceGit
                 BindingPlugins.DataValidators.RemoveAt(0);
                 Native.OS.SetupEnternalTools();
 
-                var launcher = new Views.Launcher();
-                _notificationReceiver = launcher;
-                desktop.MainWindow = launcher;
+                _launcher = new ViewModels.Launcher();
+                desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
                 if (ViewModels.Preference.Instance.ShouldCheck4UpdateOnStartup)
                 {
@@ -330,8 +323,8 @@ namespace SourceGit
             return default;
         }
 
+        private ViewModels.Launcher _launcher = null;
         private ResourceDictionary _activeLocale = null;
         private ResourceDictionary _colorOverrides = null;
-        private Models.INotificationReceiver _notificationReceiver = null;
     }
 }

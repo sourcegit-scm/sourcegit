@@ -1,4 +1,4 @@
-﻿namespace SourceGit.Models
+﻿namespace SourceGit.ViewModels
 {
     public class Notification
     {
@@ -9,10 +9,5 @@
         {
             App.CopyText(Message);
         }
-    }
-
-    public interface INotificationReceiver
-    {
-        void OnReceiveNotification(string ctx, Notification notice);
     }
 }

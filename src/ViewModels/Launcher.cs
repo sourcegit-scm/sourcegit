@@ -2,6 +2,9 @@
 using System.IO;
 
 using Avalonia.Collections;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Media;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -40,7 +43,7 @@ namespace SourceGit.ViewModels
                 var root = new Commands.QueryRepositoryRootPath(path).Result();
                 if (string.IsNullOrEmpty(root))
                 {
-                    Pages[0].Notifications.Add(new Models.Notification
+                    Pages[0].Notifications.Add(new Notification
                     {
                         IsError = true,
                         Message = $"Given path: '{path}' is NOT a valid repository!"
@@ -124,7 +127,7 @@ namespace SourceGit.ViewModels
             ActivePage = Pages[prevIdx];
         }
 
-        public void CloseTab(object param)
+        public void CloseTab(LauncherPage page)
         {
             if (Pages.Count == 1)
             {
@@ -148,7 +151,6 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            LauncherPage page = param as LauncherPage;
             if (page == null)
                 page = _activePage;
 
@@ -248,6 +250,108 @@ namespace SourceGit.ViewModels
             }
 
             ActivePage = page;
+        }
+
+        public void DispatchNotification(string pageId, string message, bool isError)
+        {
+            var notification = new Notification() { 
+                IsError = isError, 
+                Message = message,
+            };
+
+            foreach (var page in Pages)
+            {
+                var id = page.Node.Id.Replace("\\", "/");
+                if (id == pageId)
+                {
+                    page.Notifications.Add(notification);
+                    return;
+                }
+            }
+
+            if (_activePage != null)
+                _activePage.Notifications.Add(notification);
+        }
+
+        public void DismissNotification(Notification notice)
+        {
+            if (notice != null)
+                ActivePage?.Notifications.Remove(notice);
+        }
+
+        public ContextMenu CreateContextForPageTab(LauncherPage page)
+        {
+            if (page == null)
+                return null;
+
+            var menu = new ContextMenu();
+            var close = new MenuItem();
+            close.Header = App.Text("PageTabBar.Tab.Close");
+            close.InputGesture = KeyGesture.Parse(OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W");
+            close.Click += (o, e) =>
+            {
+                CloseTab(page);
+                e.Handled = true;
+            };
+            menu.Items.Add(close);
+
+            var closeOthers = new MenuItem();
+            closeOthers.Header = App.Text("PageTabBar.Tab.CloseOther");
+            closeOthers.Click += (o, e) =>
+            {
+                CloseOtherTabs();
+                e.Handled = true;
+            };
+            menu.Items.Add(closeOthers);
+
+            var closeRight = new MenuItem();
+            closeRight.Header = App.Text("PageTabBar.Tab.CloseRight");
+            closeRight.Click += (o, e) =>
+            {
+                CloseRightTabs();
+                e.Handled = true;
+            };
+            menu.Items.Add(closeRight);
+
+            if (page.Node.IsRepository)
+            {
+                var bookmark = new MenuItem();
+                bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
+                bookmark.Icon = App.CreateMenuIcon("Icons.Bookmark");
+
+                for (int i = 0; i < Models.Bookmarks.Supported.Count; i++)
+                {
+                    var icon = App.CreateMenuIcon("Icons.Bookmark");
+                    icon.Fill = Models.Bookmarks.Brushes[i];
+                    icon.Stroke = App.Current.FindResource("Brush.FG1") as Brush;
+                    icon.StrokeThickness = i == 0 ? 1.0 : 0;
+
+                    var dupIdx = i;
+                    var setter = new MenuItem();
+                    setter.Header = icon;
+                    setter.Click += (o, e) =>
+                    {
+                        page.Node.Bookmark = dupIdx;
+                        e.Handled = true;
+                    };
+                    bookmark.Items.Add(setter);
+                }
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(bookmark);
+
+                var copyPath = new MenuItem();
+                copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
+                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyPath.Click += (o, e) =>
+                {
+                    page.CopyPath();
+                    e.Handled = true;
+                };
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(copyPath);
+            }
+
+            return menu;
         }
 
         private void CloseRepositoryInTab(LauncherPage page)
