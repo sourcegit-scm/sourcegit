@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public class LFSFetch : Popup
+    public class LFSPush : Popup
     {
         public List<Models.Remote> Remotes => _repo.Remotes;
 
@@ -13,20 +13,20 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public LFSFetch(Repository repo)
+        public LFSPush(Repository repo)
         {
             _repo = repo;
             SelectedRemote = _repo.Remotes[0];
-            View = new Views.LFSFetch() { DataContext = this };
+            View = new Views.LFSPush() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Fetching LFS objects from remote ...";
+            ProgressDescription = $"Push LFS objects to remote ...";
             return Task.Run(() =>
             {
-                new Commands.LFS(_repo.FullPath).Fetch(SelectedRemote.Name, SetProgressDescription);
+                new Commands.LFS(_repo.FullPath).Push(SelectedRemote.Name, SetProgressDescription);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

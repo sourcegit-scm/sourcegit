@@ -27,14 +27,15 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public LFSLocks(string repo)
+        public LFSLocks(string repo, string remote)
         {
             _repo = repo;
+            _remote = remote;
             Locks = new AvaloniaList<Models.LFSLock>();
 
             Task.Run(() =>
             {
-                var collect = new Commands.LFS(_repo).Locks();
+                var collect = new Commands.LFS(_repo).Locks(_remote);
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (collect.Count > 0)
@@ -54,7 +55,7 @@ namespace SourceGit.ViewModels
             IsLoading = true;
             Task.Run(() =>
             {
-                var succ = new Commands.LFS(_repo).Unlock(lfsLock.ID, force);
+                var succ = new Commands.LFS(_repo).Unlock(_remote, lfsLock.ID, force);
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (succ)
@@ -67,6 +68,7 @@ namespace SourceGit.ViewModels
         }
 
         private string _repo = string.Empty;
+        private string _remote = string.Empty;
         private bool _isLoading = true;
         private bool _isEmpty = false;
     }

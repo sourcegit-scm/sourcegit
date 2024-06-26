@@ -911,6 +911,24 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(pull);
 
+                var push = new MenuItem();
+                push.Header = App.Text("GitLFS.Push");
+                push.Icon = App.CreateMenuIcon("Icons.Push");
+                push.IsEnabled = Remotes.Count > 0;
+                push.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                    {
+                        if (Remotes.Count == 1)
+                            PopupHost.ShowAndStartPopup(new LFSPush(this));
+                        else
+                            PopupHost.ShowPopup(new LFSPush(this));
+                    }
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(push);
+
                 var prune = new MenuItem();
                 prune.Header = App.Text("GitLFS.Prune");
                 prune.Icon = App.CreateMenuIcon("Icons.Clean");
@@ -927,13 +945,33 @@ namespace SourceGit.ViewModels
                 var locks = new MenuItem();
                 locks.Header = App.Text("GitLFS.Locks");
                 locks.Icon = App.CreateMenuIcon("Icons.Lock");
-                locks.Click += (o, e) =>
+                locks.IsEnabled = Remotes.Count > 0;
+                if (Remotes.Count == 1)
                 {
-                    var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath) };
-                    dialog.Show(App.GetTopLevel() as Window);
+                    locks.Click += (o, e) =>
+                    {
+                        var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, Remotes[0].Name) };
+                        dialog.Show(App.GetTopLevel() as Window);
+                        e.Handled = true;
+                    };
+                }
+                else
+                {
+                    foreach (var remote in Remotes)
+                    {
+                        var remoteName = remote.Name;
+                        var lockRemote = new MenuItem();
+                        lockRemote.Header = remoteName;
+                        lockRemote.Click += (o, e) =>
+                        {
+                            var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, remoteName) };
+                            dialog.Show(App.GetTopLevel() as Window);
+                            e.Handled = true;
+                        };
+                        locks.Items.Add(lockRemote);
+                    }
+                }
 
-                    e.Handled = true;
-                };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(locks);
             }

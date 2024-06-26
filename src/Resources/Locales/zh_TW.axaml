@@ -257,6 +257,10 @@
   <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">拉回LFS物件 (pull)</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">拉回LFS物件</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">執行`git lfs pull`命令，下載遠端LFS物件并更新工作副本。</x:String>
+  <x:String x:Key="Text.GitLFS.Push" xml:space="preserve">推送</x:String>
+  <x:String x:Key="Text.GitLFS.Push.Title" xml:space="preserve">推送LFS物件</x:String>
+  <x:String x:Key="Text.GitLFS.Push.Tips" xml:space="preserve">將排隊的大檔推送到Git LFS遠端服務</x:String>
+  <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">遠端倉庫 ：</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">跟蹤名為'{0}'的檔案</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">跟蹤所有 *{0} 檔案</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">歷史記錄</x:String>
