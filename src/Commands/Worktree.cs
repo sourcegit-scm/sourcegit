@@ -88,12 +88,9 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool Lock(string fullpath, string reason)
+        public bool Lock(string fullpath)
         {
-            if (string.IsNullOrEmpty(reason))
-                Args = $"worktree lock \"{fullpath}\"";
-            else
-                Args = $"worktree lock --reason \"{reason}\" \"{fullpath}\"";
+            Args = $"worktree lock \"{fullpath}\"";
             return Exec();
         }
 

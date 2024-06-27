@@ -9,6 +9,7 @@
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; Free Git GUI Client</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Add Worktree</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Location:</x:String>
+  <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Path for this worktree. Relative path is supported.</x:String>
   <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">Branch Name:</x:String>
   <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Optional. Default is the destination folder name.</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Track Branch:</x:String>
@@ -311,10 +312,6 @@
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">NOTICE</x:String>
   <x:String x:Key="Text.Launcher.Menu" xml:space="preserve">Open Main Menu</x:String>
-  <x:String x:Key="Text.LockWorktree" xml:space="preserve">Lock Worktree</x:String>
-  <x:String x:Key="Text.LockWorktree.Reason" xml:space="preserve">Reason:</x:String>
-  <x:String x:Key="Text.LockWorktree.Reason.Placeholder" xml:space="preserve">Optional, specify a reason for the lock.</x:String>
-  <x:String x:Key="Text.LockWorktree.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Merge Branch</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>

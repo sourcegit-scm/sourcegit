@@ -13,7 +13,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.AddWorktree}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto" ColumnDefinitions="150,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -22,7 +22,8 @@
                x:Name="TxtLocation"
                Height="28"
                CornerRadius="3"
-               Text="{Binding FullPath, Mode=TwoWay}">
+               Text="{Binding Path, Mode=TwoWay}"
+               Watermark="{DynamicResource Text.AddWorktree.Location.Placeholder}">
         <TextBox.InnerRightContent>
           <Button Classes="icon_button" Width="28" Height="28" Margin="4,0,0,0" Click="SelectLocation">
             <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>

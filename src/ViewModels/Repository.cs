@@ -1731,8 +1731,11 @@ namespace SourceGit.ViewModels
                 loc.Icon = App.CreateMenuIcon("Icons.Lock");
                 loc.Click += (o, ev) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new LockWorktree(this, worktree));
+                    SetWatcherEnabled(false);
+                    var succ = new Commands.Worktree(_fullpath).Lock(worktree.FullPath);
+                    if (succ)
+                        worktree.IsLocked = true;
+                    SetWatcherEnabled(true);
                     ev.Handled = true;
                 };
                 menu.Items.Add(loc);

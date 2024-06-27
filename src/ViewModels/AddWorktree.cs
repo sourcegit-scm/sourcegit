@@ -13,10 +13,10 @@ namespace SourceGit.ViewModels
 
         [Required(ErrorMessage = "Worktree path is required!")]
         [CustomValidation(typeof(AddWorktree), nameof(ValidateWorktreePath))]
-        public string FullPath
+        public string Path
         {
-            get => _fullPath;
-            set => SetProperty(ref _fullPath, value, true);
+            get => _path;
+            set => SetProperty(ref _path, value, true);
         }
 
         [CustomValidation(typeof(AddWorktree), nameof(ValidateBranchName))]
@@ -63,9 +63,14 @@ namespace SourceGit.ViewModels
             View = new Views.AddWorktree() { DataContext = this };
         }
 
-        public static ValidationResult ValidateWorktreePath(string folder, ValidationContext _)
+        public static ValidationResult ValidateWorktreePath(string path, ValidationContext ctx)
         {
-            var info = new DirectoryInfo(folder);
+            var creator = ctx.ObjectInstance as AddWorktree;
+            if (creator == null)
+                return new ValidationResult("Missing runtime context to create branch!");
+
+            var fullPath = System.IO.Path.IsPathRooted(path) ? path : System.IO.Path.Combine(creator._repo.FullPath, path);
+            var info = new DirectoryInfo(fullPath);
             if (info.Exists)
             {
                 var files = info.GetFiles();
@@ -108,14 +113,14 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Worktree(_repo.FullPath).Add(_fullPath, _customName, tracking, SetProgressDescription);
+                var succ = new Commands.Worktree(_repo.FullPath).Add(_path, _customName, tracking, SetProgressDescription);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
         }
 
         private Repository _repo = null;
-        private string _fullPath = string.Empty;
+        private string _path = string.Empty;
         private string _customName = string.Empty;
         private bool _setTrackingBranch = false;
     }

@@ -12,6 +12,7 @@
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">开源免费的Git客户端</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">新增工作树</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">工作树路径 ：</x:String>
+  <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">填写该工作树的路径。支持相对路径。</x:String>
   <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">自定义分支名 ：</x:String>
   <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">选填。默认使用目标文件夹名称。</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">跟踪分支</x:String>
@@ -314,10 +315,6 @@
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出错了</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系统提示</x:String>
   <x:String x:Key="Text.Launcher.Menu" xml:space="preserve">主菜单</x:String>
-  <x:String x:Key="Text.LockWorktree" xml:space="preserve">锁定工作树</x:String>
-  <x:String x:Key="Text.LockWorktree.Reason" xml:space="preserve">原因 ：</x:String>
-  <x:String x:Key="Text.LockWorktree.Reason.Placeholder" xml:space="preserve">选填，为此锁定操作描述原因。</x:String>
-  <x:String x:Key="Text.LockWorktree.Target" xml:space="preserve">目标工作树 ：</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合并分支</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
