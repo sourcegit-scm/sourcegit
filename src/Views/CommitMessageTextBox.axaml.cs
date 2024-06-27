@@ -2,122 +2,137 @@ using System;
 
 using Avalonia;
 using Avalonia.Controls;
-
-using AvaloniaEdit.Document;
-using AvaloniaEdit.Rendering;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
+    public class EnhancedTextBox : TextBox
+    {
+        public static readonly RoutedEvent<KeyEventArgs> PreviewKeyDownEvent =
+            RoutedEvent.Register<ChangeCollectionView, KeyEventArgs>(nameof(KeyEventArgs), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        public event EventHandler<KeyEventArgs> PreviewKeyDown
+        {
+            add { AddHandler(PreviewKeyDownEvent, value); }
+            remove { RemoveHandler(PreviewKeyDownEvent, value); }
+        }
+
+        protected override Type StyleKeyOverride => typeof(TextBox);
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            var dump = new KeyEventArgs()
+            {
+                RoutedEvent = PreviewKeyDownEvent,
+                Route = RoutingStrategies.Direct,
+                Source = e.Source,
+                Key = e.Key,
+                KeyModifiers = e.KeyModifiers,
+                PhysicalKey = e.PhysicalKey,
+                KeySymbol = e.KeySymbol,
+            };
+
+            RaiseEvent(dump);
+
+            if (dump.Handled)
+                e.Handled = true;
+            else
+                base.OnKeyDown(e);
+        }
+    }
+
     public partial class CommitMessageTextBox : UserControl
     {
+        public enum TextChangeWay
+        {
+            None,
+            FromSource,
+            FromEditor,
+        }
+
         public static readonly StyledProperty<string> TextProperty =
             AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Text), string.Empty);
 
-        public static readonly DirectProperty<CommitMessageTextBox, int> SubjectLengthProperty =
-            AvaloniaProperty.RegisterDirect<CommitMessageTextBox, int>(nameof(SubjectLength), o => o.SubjectLength);
+        public static readonly StyledProperty<string> SubjectProperty =
+            AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Subject), string.Empty);
 
-        public static readonly DirectProperty<CommitMessageTextBox, int> TotalLengthProperty =
-            AvaloniaProperty.RegisterDirect<CommitMessageTextBox, int>(nameof(TotalLength), o => o.TotalLength);
- 
+        public static readonly StyledProperty<string> DescriptionProperty =
+            AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Description), string.Empty);
+
         public string Text
         {
             get => GetValue(TextProperty);
             set => SetValue(TextProperty, value);
         }
 
-        public int SubjectLength
+        public string Subject
         {
-            get => _subjectLength;
-            private set => SetAndRaise(SubjectLengthProperty, ref _subjectLength, value);
+            get => GetValue(SubjectProperty);
+            set => SetValue(SubjectProperty, value);
         }
 
-        public int TotalLength
+        public string Description
         {
-            get => _totalLength;
-            private set => SetAndRaise(TotalLengthProperty, ref _totalLength, value);
+            get => GetValue(DescriptionProperty);
+            set => SetValue(DescriptionProperty, value);
         }
 
-        public TextDocument Document
-        {
-            get;
-        }
-        
         public CommitMessageTextBox()
         {
-            Document = new TextDocument(Text);
             InitializeComponent();
         }
-        
+
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == TextProperty && !_isDocumentTextChanging)
-                    Document.Text = Text;
-        }
-
-        private void OnTextEditorLayoutUpdated(object sender, EventArgs e)
-        {
-            var view = TextEditor.TextArea?.TextView;
-            if (view is { VisualLinesValid: true })
+            if (change.Property == TextProperty && _changingWay == TextChangeWay.None)
             {
-                if (_subjectEndLineNumber == 0)
+                _changingWay = TextChangeWay.FromSource;
+                var normalized = Text.ReplaceLineEndings("\n").Trim();
+                var subjectEnd = normalized.IndexOf("\n\n", StringComparison.Ordinal);
+                if (subjectEnd == -1)
                 {
-                    SubjectGuideLine.Margin = new Thickness(0, view.DefaultLineHeight + 3, 0, 0);
-                    SubjectGuideLine.IsVisible = true;
-                    return;
-                }
-                
-                foreach (var line in view.VisualLines)
-                {
-                    var lineNumber = line.FirstDocumentLine.LineNumber;
-                    if (lineNumber == _subjectEndLineNumber)
-                    {
-                        var y = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset + 3;
-                        SubjectGuideLine.Margin = new Thickness(0, y, 0, 0);
-                        SubjectGuideLine.IsVisible = true;
-                        return;
-                    }
-                }
-            }
-            
-            SubjectGuideLine.IsVisible = false;
-        }
-
-        private void OnTextEditorTextChanged(object sender, EventArgs e)
-        {
-            var text = Document.Text;
-            _isDocumentTextChanging = true;
-            SetCurrentValue(TextProperty, text);
-            TotalLength = text.Trim().Length;
-            _isDocumentTextChanging = false;
-
-            var foundData = false;
-            for (var i = 0; i < Document.LineCount; i++)
-            {
-                var line = Document.Lines[i];
-                if (line.Length == 0)
-                {
-                    if (foundData)
-                    {
-                        SubjectLength = text[..line.Offset].ReplaceLineEndings(" ").Trim().Length;
-                        return;
-                    }
+                    SetCurrentValue(SubjectProperty, normalized.ReplaceLineEndings(" "));
+                    SetCurrentValue(DescriptionProperty, string.Empty);
                 }
                 else
                 {
-                    foundData = true;
+                    SetCurrentValue(SubjectProperty, normalized.Substring(0, subjectEnd).ReplaceLineEndings(" "));
+                    SetCurrentValue(DescriptionProperty, normalized.Substring(subjectEnd + 2));
                 }
-                
-                _subjectEndLineNumber = line.LineNumber;
+                _changingWay = TextChangeWay.None;
             }
-            
-            SubjectLength = text.ReplaceLineEndings(" ").Trim().Length;
+            else if ((change.Property == SubjectProperty || change.Property == DescriptionProperty) && _changingWay == TextChangeWay.None)
+            {
+                _changingWay = TextChangeWay.FromEditor;
+                SetCurrentValue(TextProperty, $"{Subject}\n\n{Description}");
+                _changingWay = TextChangeWay.None;
+            }
         }
 
-        private bool _isDocumentTextChanging = false;
-        private int _subjectEndLineNumber = 0;
-        private int _totalLength = 0;
-        private int _subjectLength = 0;
+        private void OnSubjectTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.Enter && e.KeyModifiers == KeyModifiers.None)
+                || (e.Key == Key.Right && SubjectEditor.CaretIndex == Subject.Length))
+            {
+                DescriptionEditor.Focus();
+                DescriptionEditor.CaretIndex = 0;
+                e.Handled = true;
+            }
+        }
+
+        private void OnDescriptionTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.Back || e.Key == Key.Left) && DescriptionEditor.CaretIndex == 0)
+            {
+                SubjectEditor.Focus();
+                SubjectEditor.CaretIndex = Subject.Length;
+                e.Handled = true;
+            }
+        }
+
+        private TextChangeWay _changingWay = TextChangeWay.None;
     }
 }
