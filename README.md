@@ -21,6 +21,7 @@ Opensource Git GUI client.
   * Tags
   * Stashes
   * Submodules
+  * Worktrees
   * Archive
   * Diff
   * Save as patch/apply

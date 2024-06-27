@@ -10,6 +10,12 @@
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• 等宽字体来自于 </x:String>
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• 项目源代码地址 </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">开源免费的Git客户端</x:String>
+  <x:String x:Key="Text.AddWorktree" xml:space="preserve">新增工作树</x:String>
+  <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">工作树路径 ：</x:String>
+  <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">自定义分支名 ：</x:String>
+  <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">选填。默认使用目标文件夹名称。</x:String>
+  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">跟踪分支</x:String>
+  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">设置上游跟踪分支</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">应用补丁(apply)</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">错误</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">输出错误，并终止应用补丁</x:String>
@@ -308,6 +314,10 @@
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出错了</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系统提示</x:String>
   <x:String x:Key="Text.Launcher.Menu" xml:space="preserve">主菜单</x:String>
+  <x:String x:Key="Text.LockWorktree" xml:space="preserve">锁定工作树</x:String>
+  <x:String x:Key="Text.LockWorktree.Reason" xml:space="preserve">原因 ：</x:String>
+  <x:String x:Key="Text.LockWorktree.Reason.Placeholder" xml:space="preserve">选填，为此锁定操作描述原因。</x:String>
+  <x:String x:Key="Text.LockWorktree.Target" xml:space="preserve">目标工作树 ：</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合并分支</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
@@ -370,6 +380,8 @@
   <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">工具</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">清理远程已删除分支</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">目标 ：</x:String>
+  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">清理工作树</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">清理在`$GIT_DIR/worktrees`中的无效工作树信息</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">拉回(pull)</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">拉取分支 ：</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">本地分支 ：</x:String>
@@ -410,6 +422,9 @@
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">拉取(fetch)更新</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">在浏览器中打开</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">清理远程已删除分支</x:String>
+  <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">移除工作树操作确认</x:String>
+  <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">启用`--force`选项</x:String>
+  <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">目标工作树 ：</x:String>
   <x:String x:Key="Text.RenameBranch" xml:space="preserve">分支重命名</x:String>
   <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">新的名称 ：</x:String>
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">新的分支名不能与现有分支名相同</x:String>
@@ -443,6 +458,9 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">标签列表</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">新建标签</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在终端中打开</x:String>
+  <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">工作树列表</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">新增工作树</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">清理</x:String>
   <x:String x:Key="Text.RepositoryURL" xml:space="preserve">远程仓库地址</x:String>
   <x:String x:Key="Text.Reset" xml:space="preserve">重置(reset)当前分支到指定版本</x:String>
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">重置模式 ：</x:String>
@@ -543,4 +561,8 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">查看忽略变更文件</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">请选中冲突文件，打开右键菜单，选择合适的解决方式</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本地工作树</x:String>
+  <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">复制工作树路径</x:String>
+  <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">锁定工作树</x:String>
+  <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作树</x:String>
+  <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除工作树锁定</x:String>
 </ResourceDictionary>

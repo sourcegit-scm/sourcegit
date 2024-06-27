@@ -315,6 +315,40 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
+        {
+            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            {
+                var submodule = datagrid.SelectedItem as string;
+                (DataContext as ViewModels.Repository).OpenSubmodule(submodule);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnWorktreeContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            {
+                var worktree = datagrid.SelectedItem as Models.Worktree;
+                var menu = repo.CreateContextMenuForWorktree(worktree);
+                datagrid.OpenContextMenu(menu);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnDoubleTappedWorktree(object sender, TappedEventArgs e)
+        {
+            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            {
+                var worktree = datagrid.SelectedItem as Models.Worktree;
+                (DataContext as ViewModels.Repository).OpenWorktree(worktree);
+            }
+
+            e.Handled = true;
+        }
+
         private void CollectBranchesFromNode(List<Models.Branch> outs, ViewModels.BranchTreeNode node)
         {
             if (node == null || node.IsRemote)
@@ -331,17 +365,6 @@ namespace SourceGit.Views
                 if (b != null && !outs.Contains(b))
                     outs.Add(b);
             }
-        }
-
-        private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
-        {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
-            {
-                var submodule = datagrid.SelectedItem as string;
-                (DataContext as ViewModels.Repository).OpenSubmodule(submodule); 
-            }
-
-            e.Handled = true;
         }
     }
 }
