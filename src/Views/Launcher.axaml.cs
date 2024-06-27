@@ -12,19 +12,30 @@ namespace SourceGit.Views
         public Launcher()
         {
             InitializeComponent();
+
+            var layout = ViewModels.Preference.Instance.Layout;
+            WindowState = layout.LauncherWindowState;
+
+            if (WindowState != WindowState.Maximized)
+            {
+                Width = layout.LauncherWidth;
+                Height = layout.LauncherHeight;
+            }
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == WindowStateProperty)
+            if (change.Property == WindowStateProperty && MainLayout != null)
             {
                 var state = (WindowState)change.NewValue;
                 if (state == WindowState.Maximized)
                     MainLayout.RowDefinitions[0].Height = new GridLength(OperatingSystem.IsMacOS() ? 34 : 30);
                 else
                     MainLayout.RowDefinitions[0].Height = new GridLength(38);
+
+                ViewModels.Preference.Instance.Layout.LauncherWindowState = state;
             }
         }
 
@@ -124,6 +135,10 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
+            var pref = ViewModels.Preference.Instance;
+            pref.Layout.LauncherWidth = Width;
+            pref.Layout.LauncherHeight = Height;
+
             var vm = DataContext as ViewModels.Launcher;
             vm.Quit();
 
