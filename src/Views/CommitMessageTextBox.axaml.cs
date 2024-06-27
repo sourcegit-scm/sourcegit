@@ -114,8 +114,7 @@ namespace SourceGit.Views
 
         private void OnSubjectTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if ((e.Key == Key.Enter && e.KeyModifiers == KeyModifiers.None)
-                || (e.Key == Key.Right && SubjectEditor.CaretIndex == Subject.Length))
+            if (e.Key == Key.Enter || (e.Key == Key.Right && SubjectEditor.CaretIndex == Subject.Length))
             {
                 DescriptionEditor.Focus();
                 DescriptionEditor.CaretIndex = 0;
