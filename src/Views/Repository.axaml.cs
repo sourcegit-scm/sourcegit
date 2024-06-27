@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Avalonia;
@@ -277,6 +278,18 @@ namespace SourceGit.Views
             }
 
             e.Handled = true;
+        }
+
+        private void OnTagPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == DataGrid.ItemsSourceProperty && DataContext is ViewModels.Repository vm)
+            {
+                if (vm.VisibleTags == null)
+                    return;
+
+                var desiredHeight = tagsList.RowHeight * vm.VisibleTags.Count;
+                tagsList.Height = Math.Min(200, desiredHeight);
+            }
         }
 
         private void OnToggleFilter(object sender, RoutedEventArgs e)

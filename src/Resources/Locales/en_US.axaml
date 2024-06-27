@@ -431,7 +431,6 @@
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Open In File Browser</x:String>
-  <x:String x:Key="Text.Repository.FilterBranchTip" xml:space="preserve">Filter Branches</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTERED BY:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOCAL BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigate To HEAD</x:String>
@@ -446,6 +445,7 @@
   <x:String x:Key="Text.Repository.Search.By" xml:space="preserve">Search By</x:String>
   <x:String x:Key="Text.Repository.Search.ByBaseInfo" xml:space="preserve">Information</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">File</x:String>
+  <x:String x:Key="Text.Repository.SearchBranchTag" xml:space="preserve">Search Branches &amp; Tags</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistics</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMODULES</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">ADD SUBMODULE</x:String>

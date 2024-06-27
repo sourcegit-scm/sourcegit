@@ -99,6 +99,7 @@ namespace SourceGit.ViewModels
                     var builder = BuildBranchTree(_branches, _remotes);
                     LocalBranchTrees = builder.Locals;
                     RemoteBranchTrees = builder.Remotes;
+                    VisibleTags = BuildVisibleTags();
                 }
             }
         }
@@ -143,6 +144,13 @@ namespace SourceGit.ViewModels
         {
             get => _tags;
             private set => SetProperty(ref _tags, value);
+        }
+
+        [JsonIgnore]
+        public List<Models.Tag> VisibleTags
+        {
+            get => _visibleTags;
+            private set => SetProperty(ref _visibleTags, value);
         }
 
         [JsonIgnore]
@@ -295,6 +303,7 @@ namespace SourceGit.ViewModels
             _localBranchTrees.Clear();
             _remoteBranchTrees.Clear();
             _tags.Clear();
+            _visibleTags.Clear();
             _submodules.Clear();
             _searchedCommits.Clear();
         }
@@ -633,6 +642,7 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() =>
             {
                 Tags = tags;
+                VisibleTags = BuildVisibleTags();
             });
         }
 
@@ -1827,6 +1837,25 @@ namespace SourceGit.ViewModels
             return builder;
         }
 
+        private List<Models.Tag> BuildVisibleTags()
+        {
+            var visible = new List<Models.Tag>();
+            if (string.IsNullOrEmpty(_searchBranchFilter))
+            {
+                visible.AddRange(_tags);
+            }
+            else
+            {
+                foreach (var t in _tags)
+                {
+                    if (t.Name.Contains(_searchBranchFilter, StringComparison.OrdinalIgnoreCase))
+                        visible.Add(t);
+                }
+            }
+
+            return visible;
+        }
+
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
 
@@ -1854,6 +1883,7 @@ namespace SourceGit.ViewModels
         private List<BranchTreeNode> _remoteBranchTrees = new List<BranchTreeNode>();
         private List<Models.Worktree> _worktrees = new List<Models.Worktree>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
+        private List<Models.Tag> _visibleTags = new List<Models.Tag>();
         private List<string> _submodules = new List<string>();
         private bool _includeUntracked = true;
 

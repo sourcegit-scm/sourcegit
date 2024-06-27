@@ -433,7 +433,6 @@
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">配置本倉庫</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在檔案瀏覽器中開啟</x:String>
-  <x:String x:Key="Text.Repository.FilterBranchTip" xml:space="preserve">過濾顯示分支</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">過濾規則 ：</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本地分支</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">定位HEAD</x:String>
@@ -448,6 +447,7 @@
   <x:String x:Key="Text.Repository.Search.By" xml:space="preserve">查詢方式</x:String>
   <x:String x:Key="Text.Repository.Search.ByBaseInfo" xml:space="preserve">摘要</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">檔案</x:String>
+  <x:String x:Key="Text.Repository.SearchBranchTag" xml:space="preserve">快速查找分支、標籤</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交統計</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模組列表</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">新增子模組</x:String>

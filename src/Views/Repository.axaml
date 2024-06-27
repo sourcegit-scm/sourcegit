@@ -206,7 +206,7 @@
                    BorderThickness="1"
                    CornerRadius="4"
                    BorderBrush="{DynamicResource Brush.Border2}"
-                   Watermark="{DynamicResource Text.Repository.FilterBranchTip}"
+                   Watermark="{DynamicResource Text.Repository.SearchBranchTag}"
                    Text="{Binding SearchBranchFilter, Mode=TwoWay}"
                    VerticalContentAlignment="Center">
             <TextBox.InnerLeftContent>
@@ -375,10 +375,9 @@
           </ToggleButton>
           <DataGrid Grid.Row="7"
                     x:Name="tagsList"
-                    MaxHeight="200"
                     Margin="8,0,4,0"
                     Background="Transparent"
-                    ItemsSource="{Binding Tags}"
+                    ItemsSource="{Binding VisibleTags}"
                     SelectionMode="Single"
                     CanUserReorderColumns="False"
                     CanUserResizeColumns="False"
@@ -391,7 +390,8 @@
                     VerticalScrollBarVisibility="Auto"
                     IsVisible="{Binding IsTagGroupExpanded, Mode=OneWay}"
                     SelectionChanged="OnTagDataGridSelectionChanged"
-                    ContextRequested="OnTagContextRequested">
+                    ContextRequested="OnTagContextRequested"
+                    PropertyChanged="OnTagPropertyChanged">
             <DataGrid.Styles>
               <Style Selector="DataGridRow">
                 <Setter Property="CornerRadius" Value="4" />
