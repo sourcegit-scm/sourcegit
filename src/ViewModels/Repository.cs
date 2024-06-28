@@ -169,7 +169,7 @@ namespace SourceGit.ViewModels
         [JsonIgnore]
         public int StashesCount
         {
-            get => _stashesPage == null ? 0 : _stashesPage.Count;
+            get => _stashesPage == null ? 0 : _stashesPage.Stashes.Count;
         }
 
         [JsonIgnore]

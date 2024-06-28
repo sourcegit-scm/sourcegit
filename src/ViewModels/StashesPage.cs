@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -10,20 +11,33 @@ namespace SourceGit.ViewModels
 {
     public class StashesPage : ObservableObject
     {
-        public int Count
-        {
-            get => _stashes == null ? 0 : _stashes.Count;
-        }
-
         public List<Models.Stash> Stashes
         {
             get => _stashes;
             set
             {
                 if (SetProperty(ref _stashes, value))
-                {
+                    RefreshVisible();
+            }
+        }
+
+        public List<Models.Stash> VisibleStashes
+        {
+            get => _visibleStashes;
+            private set
+            {
+                if (SetProperty(ref _visibleStashes, value))
                     SelectedStash = null;
-                }
+            }
+        }
+
+        public string SearchFilter
+        {
+            get => _searchFilter;
+            set
+            {
+                if (SetProperty(ref _searchFilter, value))
+                    RefreshVisible();
             }
         }
 
@@ -43,10 +57,7 @@ namespace SourceGit.ViewModels
                         Task.Run(() =>
                         {
                             var changes = new Commands.QueryStashChanges(_repo.FullPath, value.SHA).Result();
-                            Dispatcher.UIThread.Invoke(() =>
-                            {
-                                Changes = changes;
-                            });
+                            Dispatcher.UIThread.Invoke(() => Changes = changes);
                         });
                     }
                 }
@@ -59,9 +70,7 @@ namespace SourceGit.ViewModels
             private set
             {
                 if (SetProperty(ref _changes, value))
-                {
                     SelectedChange = null;
-                }
             }
         }
 
@@ -73,13 +82,9 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _selectedChange, value))
                 {
                     if (value == null)
-                    {
                         DiffContext = null;
-                    }
                     else
-                    {
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption($"{_selectedStash.SHA}^", _selectedStash.SHA, value), _diffContext);
-                    }
                 }
             }
         }
@@ -148,13 +153,37 @@ namespace SourceGit.ViewModels
         public void Clear()
         {
             if (PopupHost.CanCreatePopup())
-            {
                 PopupHost.ShowPopup(new ClearStashes(_repo));
+        }
+
+        public void ClearSearchFilter()
+        {
+            SearchFilter = string.Empty;
+        }
+
+        private void RefreshVisible()
+        {
+            if (string.IsNullOrEmpty(_searchFilter))
+            {
+                VisibleStashes = _stashes;
+            }
+            else
+            {
+                var visible = new List<Models.Stash>();
+                foreach (var s in _stashes)
+                {
+                    if (s.Message.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                        visible.Add(s);
+                }
+
+                VisibleStashes = visible;
             }
         }
 
         private Repository _repo = null;
-        private List<Models.Stash> _stashes = null;
+        private List<Models.Stash> _stashes = new List<Models.Stash>();
+        private List<Models.Stash> _visibleStashes = new List<Models.Stash>();
+        private string _searchFilter = string.Empty;
         private Models.Stash _selectedStash = null;
         private List<Models.Change> _changes = null;
         private Models.Change _selectedChange = null;
