@@ -61,6 +61,12 @@ namespace SourceGit
                 builder.Append($"Source: {ex.Source}\n");
                 builder.Append($"---------------------------\n\n");
                 builder.Append(ex.StackTrace);
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                    builder.Append($"\n\nInnerException::: {ex.GetType().FullName}: {ex.Message}\n");
+                    builder.Append(ex.StackTrace);
+                }
 
                 var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
                 var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
