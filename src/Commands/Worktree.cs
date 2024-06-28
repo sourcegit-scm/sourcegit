@@ -70,7 +70,7 @@ namespace SourceGit.Commands
                 Args += "--track ";
 
             if (!string.IsNullOrEmpty(name))
-                Args += $"-b {name} ";
+                Args += $"-B {name} ";
 
             Args += $"\"{fullpath}\" ";
 

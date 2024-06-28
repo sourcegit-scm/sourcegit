@@ -11,8 +11,6 @@ namespace SourceGit.Views
     {
         public Launcher()
         {
-            InitializeComponent();
-
             var layout = ViewModels.Preference.Instance.Layout;
             WindowState = layout.LauncherWindowState;
 
@@ -21,6 +19,8 @@ namespace SourceGit.Views
                 Width = layout.LauncherWidth;
                 Height = layout.LauncherHeight;
             }
+
+            InitializeComponent();
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
