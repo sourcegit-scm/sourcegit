@@ -62,7 +62,7 @@ namespace SourceGit.Commands
             return worktrees;
         }
 
-        public bool Add(string fullpath, string name, string tracking, Action<string> outputHandler)
+        public bool Add(string fullpath, string name, bool createNew, string tracking, Action<string> outputHandler)
         {
             Args = "worktree add ";
 
@@ -70,7 +70,12 @@ namespace SourceGit.Commands
                 Args += "--track ";
 
             if (!string.IsNullOrEmpty(name))
-                Args += $"-B {name} ";
+            {
+                if (createNew)
+                    Args += $"-b {name} ";
+                else
+                    Args += $"-B {name} ";
+            }
 
             Args += $"\"{fullpath}\" ";
 

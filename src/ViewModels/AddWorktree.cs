@@ -15,17 +15,17 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _path, value);
         }
 
-        public bool UseExistingBranch
+        public bool CreateNewBranch
         {
-            get => _useExistingBranch;
+            get => _createNewBranch;
             set
             {
-                if (SetProperty(ref _useExistingBranch, value, true))
+                if (SetProperty(ref _createNewBranch, value, true))
                 {
                     if (value)
-                        SelectedBranch = LocalBranches.Count > 0 ? LocalBranches[0] : string.Empty;
-                    else
                         SelectedBranch = string.Empty;
+                    else
+                        SelectedBranch = LocalBranches.Count > 0 ? LocalBranches[0] : string.Empty;
                 }
             }
         }
@@ -74,11 +74,6 @@ namespace SourceGit.ViewModels
                     RemoteBranches.Add($"{branch.Remote}/{branch.Name}");
             }
 
-            if (LocalBranches.Count > 0)
-                SelectedBranch = LocalBranches[0];
-            else
-                SelectedBranch = string.Empty;
-
             if (RemoteBranches.Count > 0)
                 SelectedTrackingBranch = RemoteBranches[0];
             else
@@ -114,11 +109,12 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Adding worktree ...";
 
+            var branchName = _selectedBranch;
             var tracking = _setTrackingBranch ? SelectedTrackingBranch : string.Empty;
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Worktree(_repo.FullPath).Add(_path, _selectedBranch, tracking, SetProgressDescription);
+                var succ = new Commands.Worktree(_repo.FullPath).Add(_path, branchName, _createNewBranch, tracking, SetProgressDescription);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
@@ -126,7 +122,7 @@ namespace SourceGit.ViewModels
 
         private Repository _repo = null;
         private string _path = string.Empty;
-        private bool _useExistingBranch = true;
+        private bool _createNewBranch = true;
         private string _selectedBranch = string.Empty;
         private bool _setTrackingBranch = false;
     }

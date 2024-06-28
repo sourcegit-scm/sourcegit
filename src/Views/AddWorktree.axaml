@@ -36,25 +36,32 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.AddWorktree.WhatToCheckout}"/>
       <StackPanel Grid.Row="1" Grid.Column="1" Height="32" Orientation="Horizontal">
-        <RadioButton Content="{DynamicResource Text.AddWorktree.WhatToCheckout.Existing}"
-                     GroupName="LocalChanges"
-                     IsChecked="{Binding UseExistingBranch, Mode=TwoWay}" />
         <RadioButton Content="{DynamicResource Text.AddWorktree.WhatToCheckout.CreateNew}"
-                     GroupName="LocalChanges"
-                     Margin="8,0,0,0" />
+                     GroupName="WhatToCheckout"
+                     IsChecked="{Binding CreateNewBranch, Mode=TwoWay}"/>
+        <RadioButton Content="{DynamicResource Text.AddWorktree.WhatToCheckout.Existing}"
+                     GroupName="WhatToCheckout"
+                     Margin="8,0,0,0"/>
       </StackPanel>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.AddWorktree.Name}"/>
+      <TextBox Grid.Row="2" Grid.Column="1"
+               Height="28"
+               CornerRadius="3"
+               Text="{Binding SelectedBranch, Mode=TwoWay}"
+               Watermark="{DynamicResource Text.AddWorktree.Name.Placeholder}"
+               IsEnabled="{Binding CreateNewBranch, Mode=OneWay}"
+               IsVisible="{Binding CreateNewBranch, Mode=OneWay}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding LocalBranches}"
                 SelectedItem="{Binding SelectedBranch, Mode=TwoWay}"
-                IsEnabled="{Binding UseExistingBranch, Mode=OneWay}"
-                IsVisible="{Binding UseExistingBranch, Mode=OneWay}">
+                IsEnabled="{Binding !CreateNewBranch, Mode=OneWay}"
+                IsVisible="{Binding !CreateNewBranch, Mode=OneWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate>
             <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
@@ -63,14 +70,7 @@
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
-      </ComboBox>
-      <TextBox Grid.Row="2" Grid.Column="1"
-               Height="28"
-               CornerRadius="3"
-               Text="{Binding SelectedBranch, Mode=TwoWay}"
-               Watermark="{DynamicResource Text.AddWorktree.Name.Placeholder}"
-               IsEnabled="{Binding !UseExistingBranch, Mode=OneWay}"
-               IsVisible="{Binding !UseExistingBranch, Mode=OneWay}"/>  
+      </ComboBox> 
 
       <Border Grid.Row="3" Grid.Column="0" 
               Height="32"
