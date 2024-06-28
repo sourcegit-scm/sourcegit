@@ -175,7 +175,7 @@
                             VerticalAlignment="Center"
                             Background="{DynamicResource Brush.Badge}"
                             IsVisible="{Binding WorkingCopyChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                      <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}"/>
+                      <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}"  Foreground="{DynamicResource Brush.BadgeFG}"/>
                     </Border>
                   </Grid>
                 </ListBoxItem>
@@ -191,7 +191,7 @@
                             VerticalAlignment="Center"
                             Background="{DynamicResource Brush.Badge}"
                             IsVisible="{Binding StashesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                      <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}"/>
+                      <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}"  Foreground="{DynamicResource Brush.BadgeFG}"/>
                     </Border>
                   </Grid>
                 </ListBoxItem>
