@@ -15,17 +15,23 @@ Open-source & Free Git Gui Client
 
 %install
 mkdir -p $RPM_BUILD_ROOT/opt/sourcegit
-mkdir -p $RPM_BUILD_ROOT/usr/bin
 mkdir -p $RPM_BUILD_ROOT/usr/share/applications
 mkdir -p $RPM_BUILD_ROOT/usr/share/icons
-cp -r ../../_common/usr $RPM_BUILD_ROOT/
+cp -r ../../_common/applications $RPM_BUILD_ROOT/usr/share/
+cp -r ../../_common/icons $RPM_BUILD_ROOT/usr/share/
 cp -f ../../../SourceGit/* $RPM_BUILD_ROOT/opt/sourcegit/
-chmod 755 -R $RPM_BUILD_ROOT
+chmod 755 -R $RPM_BUILD_ROOT/opt/sourcegit
+chmod 755 $RPM_BUILD_ROOT/usr/share/applications/sourcegit.desktop
 
 %files
-/opt
-%attr(555,root,root)/usr/bin
+/opt/sourcegit
 /usr/share
+
+%post
+ln -s /opt/sourcegit/sourcegit /usr/bin/sourcegit
+
+%postun
+rm -f /usr/bin/sourcegit
 
 %changelog
 # skip
