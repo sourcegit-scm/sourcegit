@@ -8,6 +8,9 @@
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Source code can be found at </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; Free Git GUI Client</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Add Worktree</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">What to Checkout:</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Existing Branch</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Create New Branch</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Location:</x:String>
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Path for this worktree. Relative path is supported.</x:String>
   <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">Branch Name:</x:String>

@@ -1,41 +1,57 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public partial class AddWorktree : Popup
+    public class AddWorktree : Popup
     {
-        [GeneratedRegex(@"^[\w\-/\.]+$")]
-        private static partial Regex REG_NAME();
-
         [Required(ErrorMessage = "Worktree path is required!")]
         [CustomValidation(typeof(AddWorktree), nameof(ValidateWorktreePath))]
         public string Path
         {
             get => _path;
-            set => SetProperty(ref _path, value, true);
+            set => SetProperty(ref _path, value);
         }
 
-        [CustomValidation(typeof(AddWorktree), nameof(ValidateBranchName))]
-        public string CustomName
+        public bool UseExistingBranch
         {
-            get => _customName;
-            set => SetProperty(ref _customName, value, true);
+            get => _useExistingBranch;
+            set
+            {
+                if (SetProperty(ref _useExistingBranch, value, true))
+                {
+                    if (value)
+                        SelectedBranch = LocalBranches.Count > 0 ? LocalBranches[0] : string.Empty;
+                    else
+                        SelectedBranch = string.Empty;
+                }
+            }
+        }
+
+        public List<string> LocalBranches
+        {
+            get;
+            private set;
+        }
+
+        public List<string> RemoteBranches
+        {
+            get;
+            private set;
+        }
+
+        public string SelectedBranch
+        {
+            get => _selectedBranch;
+            set => SetProperty(ref _selectedBranch, value);
         }
 
         public bool SetTrackingBranch
         {
             get => _setTrackingBranch;
             set => SetProperty(ref _setTrackingBranch, value);
-        }
-
-        public List<string> TrackingBranches
-        {
-            get;
-            private set;
         }
 
         public string SelectedTrackingBranch
@@ -48,15 +64,23 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
 
-            TrackingBranches = new List<string>();
+            LocalBranches = new List<string>();
+            RemoteBranches = new List<string>();
             foreach (var branch in repo.Branches)
             {
-                if (!branch.IsLocal)
-                    TrackingBranches.Add($"{branch.Remote}/{branch.Name}");
+                if (branch.IsLocal)
+                    LocalBranches.Add(branch.Name);
+                else
+                    RemoteBranches.Add($"{branch.Remote}/{branch.Name}");
             }
 
-            if (TrackingBranches.Count > 0)
-                SelectedTrackingBranch = TrackingBranches[0];
+            if (LocalBranches.Count > 0)
+                SelectedBranch = LocalBranches[0];
+            else
+                SelectedBranch = string.Empty;
+
+            if (RemoteBranches.Count > 0)
+                SelectedTrackingBranch = RemoteBranches[0];
             else
                 SelectedTrackingBranch = string.Empty;
 
@@ -81,25 +105,6 @@ namespace SourceGit.ViewModels
                 if (folders.Length > 0)
                     return new ValidationResult("Given path is not empty!!!");
             }
-                
-            return ValidationResult.Success;
-        }
-
-        public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
-        {
-            if (string.IsNullOrEmpty(name))
-                return ValidationResult.Success;
-
-            var creator = ctx.ObjectInstance as AddWorktree;
-            if (creator == null)
-                return new ValidationResult("Missing runtime context to create branch!");
-
-            foreach (var b in creator._repo.Branches)
-            {
-                var test = b.IsLocal ? b.Name : $"{b.Remote}/{b.Name}";
-                if (test == name)
-                    return new ValidationResult("A branch with same name already exists!");
-            }
 
             return ValidationResult.Success;
         }
@@ -113,7 +118,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Worktree(_repo.FullPath).Add(_path, _customName, tracking, SetProgressDescription);
+                var succ = new Commands.Worktree(_repo.FullPath).Add(_path, _selectedBranch, tracking, SetProgressDescription);
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
@@ -121,7 +126,8 @@ namespace SourceGit.ViewModels
 
         private Repository _repo = null;
         private string _path = string.Empty;
-        private string _customName = string.Empty;
+        private bool _useExistingBranch = true;
+        private string _selectedBranch = string.Empty;
         private bool _setTrackingBranch = false;
     }
 }
