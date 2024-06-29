@@ -175,7 +175,7 @@
                             VerticalAlignment="Center"
                             Background="{DynamicResource Brush.Badge}"
                             IsVisible="{Binding WorkingCopyChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                      <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}"/>
+                      <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
                     </Border>
                   </Grid>
                 </ListBoxItem>
@@ -191,7 +191,7 @@
                             VerticalAlignment="Center"
                             Background="{DynamicResource Brush.Badge}"
                             IsVisible="{Binding StashesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                      <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}"/>
+                      <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
                     </Border>
                   </Grid>
                 </ListBoxItem>
@@ -284,7 +284,7 @@
                   <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
 
                   <Border Grid.Column="2" Margin="8,0" Height="18" CornerRadius="9" VerticalAlignment="Center" Background="{DynamicResource Brush.Badge}" IsVisible="{Binding IsUpstreamTrackStatusVisible}">
-                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}"/>
+                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}" Foreground="{DynamicResource Brush.BadgeFG}"/>
                   </Border>
 
                   <ToggleButton Grid.Column="3"

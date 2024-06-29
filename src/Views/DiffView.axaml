@@ -26,7 +26,7 @@
                   Background="{DynamicResource Brush.Badge}"
                   IsVisible="{Binding FileModeChange, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                   ToolTip.Tip="{DynamicResource Text.Diff.FileModeChanged}">
-            <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="4,0" Text="{Binding FileModeChange}"/>
+            <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="4,0" Text="{Binding FileModeChange}" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
           <!-- Title -->
@@ -110,7 +110,7 @@
               <Path Width="64" Height="64" Data="{StaticResource Icons.Binary}" Fill="{DynamicResource Brush.FG2}"/>
               <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto,Auto">
                 <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
+                  <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
 
                 <TextBlock Grid.Row="0" Grid.Column="1" Classes="monospace" Text="{Binding OldSize}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
@@ -137,7 +137,7 @@
               <Path Width="64" Height="64" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
               <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto,Auto">
                 <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
+                  <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
 
                 <TextBlock Grid.Row="0" Grid.Column="1" Classes="monospace" Text="{Binding Old.Size}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>

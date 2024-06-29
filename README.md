@@ -107,6 +107,7 @@ This app supports open repository in external tools listed in the table below.
 | Color.Popup | Popup panel background color |
 | Color.Contents | Background color used in inputs, data grids, file content viewer, change lists, text diff viewer, etc. |
 | Color.Badge | Badge background color |
+| Color.BadgeFG | Badge foreground color |
 | Color.Conflict | Conflict panel background color |
 | Color.ConflictForeground | Conflict panel foreground color |
 | Color.Border0 | Border color used in some controls, like Window, Tab, Toolbar, etc. |
