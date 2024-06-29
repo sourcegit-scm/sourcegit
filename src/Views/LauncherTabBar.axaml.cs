@@ -62,7 +62,7 @@ namespace SourceGit.Views
                 {
                     x = LauncherTabsScroller.Bounds.X;
                     ctx.BeginFigure(new Point(x, y), true);
-                    y = 0;
+                    y = 1;
                     ctx.LineTo(new Point(x, y));
                     x = drawRightX - 6;
                 }
@@ -76,7 +76,7 @@ namespace SourceGit.Views
                     y = 6;
                     ctx.LineTo(new Point(x, y));
                     x += 6;
-                    y = 0;
+                    y = 1;
                     ctx.ArcTo(new Point(x, y), new Size(6, 6), angle, false, SweepDirection.Clockwise);
                     x = drawRightX - 6;
                 }
