@@ -93,9 +93,7 @@ namespace SourceGit.Native
             {
                 var dir = Path.GetDirectoryName(path);
                 if (Directory.Exists(dir))
-                {
                     Process.Start(_xdgOpenPath, $"\"{dir}\"");
-                }
             }
         }
 
@@ -133,9 +131,7 @@ namespace SourceGit.Native
             {
                 var test = Path.Combine(path, filename);
                 if (File.Exists(test))
-                {
                     return test;
-                }
             }
 
             return string.Empty;
@@ -149,33 +145,27 @@ namespace SourceGit.Native
             {
                 var test = Path.Combine(path, "gnome-terminal");
                 if (File.Exists(test))
-                {
                     return new Terminal(test, "--working-directory=\"{0}\"");
-                }
 
                 test = Path.Combine(path, "konsole");
                 if (File.Exists(test))
-                {
                     return new Terminal(test, "--workdir \"{0}\"");
-                }
 
                 test = Path.Combine(path, "xfce4-terminal");
                 if (File.Exists(test))
-                {
                     return new Terminal(test, "--working-directory=\"{0}\"");
-                }
 
                 test = Path.Combine(path, "lxterminal");
                 if (File.Exists(test))
-                {
                     return new Terminal(test, "--working-directory=\"{0}\"");
-                }
 
                 test = Path.Combine(path, "deepin-terminal");
                 if (File.Exists(test))
-                {
                     return new Terminal(test, "--work-directory \"{0}\"");
-                }
+
+                test = Path.Combine(path, "mate-terminal");
+                if (File.Exists(test))
+                    return new Terminal(test, "--working-directory=\"{0}\"");
             }
 
             return null;
