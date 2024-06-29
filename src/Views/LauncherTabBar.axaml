@@ -15,17 +15,20 @@
     </RepeatButton>
 
     <ScrollViewer Grid.Column="1"
+                  Margin="6,0"
                   x:Name="LauncherTabsScroller"
                   HorizontalAlignment="Left"
                   HorizontalScrollBarVisibility="Hidden"
                   VerticalScrollBarVisibility="Disabled"
-                  PointerWheelChanged="ScrollTabs"
-                  LayoutUpdated="OnTabsLayoutUpdated">
+                  PointerWheelChanged="ScrollTabs">
       <StackPanel Orientation="Horizontal">
-        <ListBox Classes="launcher_page_tabbar"
+        <ListBox x:Name="LauncherTabsList"
+                 Classes="launcher_page_tabbar"
                  ItemsSource="{Binding Pages}"
                  SelectionMode="AlwaysSelected"
-                 SelectedItem="{Binding ActivePage, Mode=TwoWay}">
+                 SelectedItem="{Binding ActivePage, Mode=TwoWay}"
+                 SelectionChanged="OnTabsSelectionChanged"
+                 LayoutUpdated="OnTabsLayoutUpdated">
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
               <StackPanel Orientation="Horizontal" Height="30"/>
@@ -34,10 +37,8 @@
 
           <ListBox.ItemTemplate>
             <DataTemplate DataType="{x:Type vm:LauncherPage}">
-              <Border Classes="launcher_pagetab"
-                      Height="30"
-                      BorderThickness="1,1,1,0"
-                      CornerRadius="6,6,0,0"
+              <Border Height="30"
+                      Background="Transparent"
                       PointerPressed="OnPointerPressedTab"
                       PointerMoved="OnPointerMovedOverTab"
                       PointerReleased="OnPointerReleasedTab"
@@ -86,11 +87,6 @@
                     </ToolTip.Tip>
                     <Path Width="8" Height="8" Data="{StaticResource Icons.Window.Close}"/>
                   </Button>
-                  <Rectangle Grid.Column="2"
-                             Width=".5" Height="20"
-                             HorizontalAlignment="Right" VerticalAlignment="Center"
-                             Fill="{DynamicResource Brush.FG2}"
-                             IsVisible="{Binding IsTabSplitterVisible}"/>
                 </Grid>
               </Border>
             </DataTemplate>

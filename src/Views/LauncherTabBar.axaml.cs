@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 
 namespace SourceGit.Views
 {
@@ -12,6 +13,98 @@ namespace SourceGit.Views
         public LauncherTabBar()
         {
             InitializeComponent();
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+
+            if (LauncherTabsList == null || LauncherTabsList.SelectedIndex == -1)
+                return;
+
+            var startX = LauncherTabsScroller.Offset.X;
+            var endX = startX + LauncherTabsScroller.Viewport.Width;
+            var height = LauncherTabsScroller.Viewport.Height;
+
+            var selectedIdx = LauncherTabsList.SelectedIndex;
+            var count = LauncherTabsList.ItemCount;
+            var separatorPen = new Pen(this.FindResource("Brush.FG2") as IBrush, 0.5);
+            var separatorY = (height - 20) * 0.5;
+            for (var i = 0; i < count; i++)
+            {
+                if (i == selectedIdx || i == selectedIdx - 1)
+                    continue;
+
+                var container = LauncherTabsList.ContainerFromIndex(i);
+                var containerEndX = container.Bounds.Right;
+                if (containerEndX < startX || containerEndX > endX)
+                    continue;
+
+                var separatorX = containerEndX - startX + LauncherTabsScroller.Bounds.X;
+                context.DrawLine(separatorPen, new Point(separatorX, separatorY), new Point(separatorX, separatorY + 20));
+            }
+
+            var selected = LauncherTabsList.ContainerFromIndex(selectedIdx);
+            var activeStartX = selected.Bounds.X;
+            var activeEndX = activeStartX + selected.Bounds.Width;
+            if (activeStartX > endX + 6 || activeEndX < startX - 6)
+                return;
+
+            var geo = new StreamGeometry();
+            var angle = Math.PI / 2;
+            var x = 0.0;
+            var y = height + 0.5;
+            using (var ctx = geo.Open())
+            {
+                var drawLeftX = activeStartX - startX + LauncherTabsScroller.Bounds.X;
+                var drawRightX = activeEndX - startX + LauncherTabsScroller.Bounds.X;
+                if (drawLeftX < LauncherTabsScroller.Bounds.X)
+                {
+                    x = LauncherTabsScroller.Bounds.X;
+                    ctx.BeginFigure(new Point(x, y), true);
+                    y = 0;
+                    ctx.LineTo(new Point(x, y));
+                    x = drawRightX - 6;
+                }
+                else
+                {
+                    x = drawLeftX - 6;
+                    ctx.BeginFigure(new Point(x, y), true);
+                    x = drawLeftX;
+                    y -= 6;
+                    ctx.ArcTo(new Point(x, y), new Size(6.5, 6.5), angle, false, SweepDirection.CounterClockwise);
+                    y = 6;
+                    ctx.LineTo(new Point(x, y));
+                    x += 6;
+                    y = 0;
+                    ctx.ArcTo(new Point(x, y), new Size(6, 6), angle, false, SweepDirection.Clockwise);
+                    x = drawRightX - 6;
+                }
+
+                if (drawRightX < LauncherTabsScroller.Bounds.Right)
+                {
+                    ctx.LineTo(new Point(x, y));
+                    x = drawRightX;
+                    y = 6;
+                    ctx.ArcTo(new Point(x, y), new Size(6, 6), angle, false, SweepDirection.Clockwise);
+                    y = height - 6;
+                    ctx.LineTo(new Point(x, y));
+                    x += 6;
+                    y = height + 0.5;
+                    ctx.ArcTo(new Point(x, y), new Size(6.5, 6.5), angle, false, SweepDirection.CounterClockwise);
+                }
+                else
+                {
+                    x = LauncherTabsScroller.Bounds.Right;
+                    ctx.LineTo(new Point(x, y));
+                    y = height + 0.5;
+                    ctx.LineTo(new Point(x, y));
+                }
+            }
+
+            var fill = this.FindResource("Brush.ToolBar") as IBrush;
+            var stroke = new Pen(this.FindResource("Brush.Border0") as IBrush, 1);
+            context.DrawGeometry(fill, stroke, geo);
         }
 
         private void ScrollTabs(object sender, PointerWheelEventArgs e)
@@ -52,6 +145,13 @@ namespace SourceGit.Views
                 LeftScrollIndicator.IsVisible = false;
                 RightScrollIndicator.IsVisible = false;
             }
+
+            InvalidateVisual();
+        }
+
+        private void OnTabsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            InvalidateVisual();
         }
 
         private void SetupDragAndDrop(object sender, RoutedEventArgs e)

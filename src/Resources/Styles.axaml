@@ -627,10 +627,6 @@
     </Setter>
   </Style>
 
-  <Style Selector="Border.launcher_pagetab">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderBrush" Value="Transparent"/>
-  </Style>
   <Style Selector="ListBox.launcher_page_tabbar">
     <Setter Property="Background" Value="Transparent"/>
   </Style>
@@ -642,14 +638,12 @@
     <Setter Property="Opacity" Value=".5"/>
   </Style>
   <Style Selector="ListBox.launcher_page_tabbar ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Opacity" Value=".85"/>
   </Style>
   <Style Selector="ListBox.launcher_page_tabbar ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Opacity" Value="1"/>
-  </Style>
-  <Style Selector="ListBoxItem:selected Border.launcher_pagetab">
-    <Setter Property="Background" Value="{DynamicResource Brush.ToolBar}"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
   </Style>
 
   <Style Selector="ContextMenu">

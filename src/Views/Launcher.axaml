@@ -37,11 +37,7 @@
       </Border>
 
       <!-- Menu (Windows/Linux) -->
-      <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" IsVisible="{OnPlatform True, macOS=False}">
-        <Button.Margin>
-          <OnPlatform Default="4,0,2,3" macOS="4,0,6,3"/>
-        </Button.Margin>
-        
+      <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" Margin="6,0,2,3" IsVisible="{OnPlatform True, macOS=False}">
         <Button.Flyout>
           <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
             <MenuItem Header="{DynamicResource Text.Preference}" Command="{x:Static s:App.OpenPreferenceCommand}" InputGesture="Ctrl+Shift+P">

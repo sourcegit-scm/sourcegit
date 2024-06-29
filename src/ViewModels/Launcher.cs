@@ -24,10 +24,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _activePage, value))
-                {
                     PopupHost.Active = value;
-                    UpdateTabSplitterVisible();
-                }
             }
         }
 
@@ -69,9 +66,7 @@ namespace SourceGit.ViewModels
 
                 var lastActiveIdx = Preference.Instance.LastActiveTabIdx;
                 if (lastActiveIdx >= 0 && lastActiveIdx < Pages.Count)
-                {
                     ActivePage = Pages[lastActiveIdx];
-                }
             }
         }
 
@@ -161,13 +156,11 @@ namespace SourceGit.ViewModels
                 ActivePage = Pages[removeIdx == Pages.Count - 1 ? removeIdx - 1 : removeIdx + 1];
                 CloseRepositoryInTab(page);
                 Pages.RemoveAt(removeIdx);
-                UpdateTabSplitterVisible();
             }
             else if (removeIdx + 1 == activeIdx)
             {
                 CloseRepositoryInTab(page);
                 Pages.RemoveAt(removeIdx);
-                UpdateTabSplitterVisible();
             }
             else
             {
@@ -363,13 +356,6 @@ namespace SourceGit.ViewModels
             }
 
             page.Data = null;
-        }
-
-        private void UpdateTabSplitterVisible()
-        {
-            var activePageIdx = ActivePage == null ? -1 : Pages.IndexOf(ActivePage);
-            for (int i = 0; i < Pages.Count; i++)
-                Pages[i].IsTabSplitterVisible = (activePageIdx != i && activePageIdx != i + 1);
         }
 
         private LauncherPage _activePage = null;
