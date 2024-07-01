@@ -203,6 +203,7 @@
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">快进(fast-forward，无需checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">拉取(fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">拉取所有的远程仓库</x:String>
+  <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">不拉取远程标签</x:String>
   <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">自动清理远程已删除分支</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">拉取远程仓库内容</x:String>
@@ -389,6 +390,7 @@
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">不做处理</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">贮藏并自动恢复</x:String>
+  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">不拉取远程标签</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">远程 ：</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉回（拉取并合并）</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">使用变基方式合并分支</x:String>
