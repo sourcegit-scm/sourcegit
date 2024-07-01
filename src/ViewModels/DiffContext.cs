@@ -111,27 +111,34 @@ namespace SourceGit.ViewModels
 
                 if (latest.TextDiff != null)
                 {
-                    var repo = App.FindOpenedRepository(_repo);
-                    if (repo != null && repo.Submodules.Contains(_option.Path))
+                    var count = latest.TextDiff.Lines.Count;
+                    var isSubmodule = false;
+                    if (count <= 3)
                     {
                         var submoduleDiff = new Models.SubmoduleDiff();
                         var submoduleRoot = $"{_repo}/{_option.Path}".Replace("\\", "/");
-                        foreach (var line in latest.TextDiff.Lines)
+                        isSubmodule = true;
+                        for (int i = 1; i < count; i++)
                         {
+                            var line = latest.TextDiff.Lines[i];
+                            if (!line.Content.StartsWith("Subproject commit ", StringComparison.Ordinal))
+                            {
+                                isSubmodule = false;
+                                break;
+                            }
+
+                            var sha = line.Content.Substring(18);
                             if (line.Type == Models.TextDiffLineType.Added)
-                            {
-                                var sha = line.Content.Substring("Subproject commit ".Length);
                                 submoduleDiff.New = QuerySubmoduleRevision(submoduleRoot, sha);
-                            }
                             else if (line.Type == Models.TextDiffLineType.Deleted)
-                            {
-                                var sha = line.Content.Substring("Subproject commit ".Length);
                                 submoduleDiff.Old = QuerySubmoduleRevision(submoduleRoot, sha);
-                            }
                         }
-                        rs = submoduleDiff;
+
+                        if (isSubmodule)
+                            rs = submoduleDiff;
                     }
-                    else
+
+                    if (!isSubmodule)
                     {
                         latest.TextDiff.File = _option.Path;
                         rs = latest.TextDiff;
