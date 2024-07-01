@@ -20,6 +20,11 @@ namespace SourceGit.Views
 
         protected override Type StyleKeyOverride => typeof(TextBox);
 
+        public void Paste(string text)
+        {
+            OnTextInput(new TextInputEventArgs() { Text = text });
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             var dump = new KeyEventArgs()
@@ -112,12 +117,42 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnSubjectTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+        private async void OnSubjectTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter || (e.Key == Key.Right && SubjectEditor.CaretIndex == Subject.Length))
             {
                 DescriptionEditor.Focus();
                 DescriptionEditor.CaretIndex = 0;
+                e.Handled = true;
+            }
+            else if (e.Key == Key.V && ((OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Meta) || (!OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Control)))
+            {
+                var text = await App.GetClipboardTextAsync();
+                text = text.Trim();
+
+                if (!string.IsNullOrEmpty(text))
+                {
+                    if (SubjectEditor.CaretIndex == Subject.Length)
+                    {
+                        var idx = text.IndexOf('\n');
+                        if (idx == -1)
+                        {
+                            SubjectEditor.Paste(text);
+                        }
+                        else
+                        {
+                            SubjectEditor.Paste(text.Substring(0, idx));
+                            DescriptionEditor.Focus();
+                            DescriptionEditor.CaretIndex = 0;
+                            DescriptionEditor.Paste(text.Substring(idx + 1) + "\n");
+                        }
+                    }
+                    else
+                    {
+                        SubjectEditor.Paste(text.ReplaceLineEndings(" "));
+                    }
+                }
+
                 e.Handled = true;
             }
         }
