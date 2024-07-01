@@ -5,14 +5,37 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.LFSFetch">
+             x:Class="SourceGit.Views.LFSFetch"
+             x:DataType="vm:LFSFetch">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.GitLFS.Fetch.Title}"/>
-    <TextBlock Text="{DynamicResource Text.GitLFS.Fetch.Tips}"
-               Margin="8,16,8,0"
-               HorizontalAlignment="Center"
-               TextWrapping="Wrap"/>
+
+    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto" ColumnDefinitions="120,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.GitLFS.Remote}"/>
+      <ComboBox Grid.Row="0" Grid.Column="1"
+                Height="28" Padding="8,0"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Remotes}"
+                SelectedItem="{Binding SelectedRemote, Mode=TwoWay}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate x:DataType="{x:Type m:Remote}">
+            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+              <Path Margin="0,6,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Remote}"/>
+              <TextBlock Text="{Binding Name}"/>
+            </StackPanel>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+      
+      <TextBlock Grid.Row="1" Grid.Column="1" 
+                 Text="{DynamicResource Text.GitLFS.Fetch.Tips}"
+                 Margin="0,8,0,0"
+                 TextWrapping="Wrap"/>
+    </Grid>
   </StackPanel>
 </UserControl>

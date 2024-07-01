@@ -6,12 +6,13 @@
       <Color x:Key="Color.MacOS.Minimize">#FFFFBE2F</Color>
       <Color x:Key="Color.MacOS.Maximize">#FF29c941</Color>
       <Color x:Key="Color.Window">#FFF0F5F9</Color>
-      <Color x:Key="Color.WindowBorder">#FFAFAFAF</Color>
+      <Color x:Key="Color.WindowBorder">#00000000</Color>
       <Color x:Key="Color.TitleBar">#FFCFDEEA</Color>
       <Color x:Key="Color.ToolBar">#FFF0F5F9</Color>
       <Color x:Key="Color.Popup">#FFF8F8F8</Color>
       <Color x:Key="Color.Contents">#FFFAFAFA</Color>
       <Color x:Key="Color.Badge">#FFB0CEE8</Color>
+      <Color x:Key="Color.BadgeFG">#FF1F1F1F</Color>
       <Color x:Key="Color.Decorator">#FF6F6F6F</Color>
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
       <Color x:Key="Color.Conflict">#FF836C2E</Color>
@@ -41,6 +42,7 @@
       <Color x:Key="Color.Popup">#FF2B2B2B</Color>
       <Color x:Key="Color.Contents">#FF1B1B1B</Color>
       <Color x:Key="Color.Badge">#FF8F8F8F</Color>
+      <Color x:Key="Color.BadgeFG">#FFDDDDDD</Color>
       <Color x:Key="Color.Decorator">#FF505050</Color>
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
       <Color x:Key="Color.Conflict">#FFFAFAD2</Color>
@@ -70,6 +72,7 @@
   <SolidColorBrush x:Key="Brush.Popup" Color="{DynamicResource Color.Popup}"/>
   <SolidColorBrush x:Key="Brush.Contents" Color="{DynamicResource Color.Contents}"/>
   <SolidColorBrush x:Key="Brush.Badge" Color="{DynamicResource Color.Badge}"/>
+  <SolidColorBrush x:Key="Brush.BadgeFG" Color="{DynamicResource Color.BadgeFG}"/>
   <SolidColorBrush x:Key="Brush.Decorator" Color="{DynamicResource Color.Decorator}"/>
   <SolidColorBrush x:Key="Brush.DecoratorIcon" Color="{DynamicResource Color.DecoratorIcon}"/>
   <SolidColorBrush x:Key="Brush.Conflict" Color="{DynamicResource Color.Conflict}"/>

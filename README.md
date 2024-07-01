@@ -21,6 +21,7 @@ Opensource Git GUI client.
   * Tags
   * Stashes
   * Submodules
+  * Worktrees
   * Archive
   * Diff
   * Save as patch/apply
@@ -105,7 +106,8 @@ This app supports open repository in external tools listed in the table below.
 | Color.ToolBar | Tool bar background color |
 | Color.Popup | Popup panel background color |
 | Color.Contents | Background color used in inputs, data grids, file content viewer, change lists, text diff viewer, etc. |
-| Color.Badage | Badage background color |
+| Color.Badge | Badge background color |
+| Color.BadgeFG | Badge foreground color |
 | Color.Conflict | Conflict panel background color |
 | Color.ConflictForeground | Conflict panel foreground color |
 | Color.Border0 | Border color used in some controls, like Window, Tab, Toolbar, etc. |

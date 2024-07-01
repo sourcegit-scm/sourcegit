@@ -11,6 +11,7 @@ namespace SourceGit.Models
         string GitDir { get; set; }
 
         void RefreshBranches();
+        void RefreshWorktrees();
         void RefreshTags();
         void RefreshCommits();
         void RefreshSubmodules();
@@ -132,6 +133,7 @@ namespace SourceGit.Models
                 }
 
                 Task.Run(_repo.RefreshWorkingCopyChanges);
+                Task.Run(_repo.RefreshWorktrees);
             }
 
             if (_updateWC > 0 && now > _updateWC)

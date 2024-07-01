@@ -57,16 +57,6 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _content, value);
         }
 
-        public int Unified
-        {
-            get => _unified;
-            set
-            {
-                if (SetProperty(ref _unified, value))
-                    LoadDiffContent();
-            }
-        }
-
         public DiffContext(string repo, Models.DiffOption option, DiffContext previous = null)
         {
             _repo = repo;
@@ -88,12 +78,20 @@ namespace SourceGit.ViewModels
 
         public void IncrUnified()
         {
-            Unified = _unified + 1;
+            var pref = Preference.Instance;
+            pref.DiffViewVisualLineNumbers = pref.DiffViewVisualLineNumbers + 1;
+            LoadDiffContent();
         }
 
         public void DecrUnified()
         {
-            Unified = Math.Max(4, _unified - 1);
+            var pref = Preference.Instance;
+            var unified = pref.DiffViewVisualLineNumbers - 1;
+            if (pref.DiffViewVisualLineNumbers != unified)
+            {
+                pref.DiffViewVisualLineNumbers = unified;
+                LoadDiffContent();
+            }
         }
 
         public void OpenExternalMergeTool()
@@ -105,9 +103,10 @@ namespace SourceGit.ViewModels
 
         private void LoadDiffContent()
         {
+            var unified = Preference.Instance.DiffViewVisualLineNumbers;
             Task.Run(() =>
             {
-                var latest = new Commands.Diff(_repo, _option, _unified).Result();
+                var latest = new Commands.Diff(_repo, _option, unified).Result();
                 var rs = null as object;
 
                 if (latest.TextDiff != null)
@@ -238,6 +237,5 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private bool _isTextDiff = false;
         private object _content = null;
-        private int _unified = 4;
     }
 }

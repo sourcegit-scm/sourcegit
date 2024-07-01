@@ -25,7 +25,7 @@
         <Grid RowDefinitions="Auto,*" Margin="16,0" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
             <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-              <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
+              <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
             </Border>
 
             <TextBlock Classes="monospace" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
@@ -78,7 +78,7 @@
       <Grid RowDefinitions="Auto,*" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
           <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
+            <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
           <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
@@ -114,7 +114,7 @@
       <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16,8,0">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
           <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
+            <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
           <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
@@ -142,7 +142,7 @@
 
         <Grid Grid.Row="2" ColumnDefinitions="100,200,100" Margin="0,12,0,0" HorizontalAlignment="Center">
           <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
-            <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}"/>            
+            <TextBlock Classes="monospace" Text="OLD"/>            
             <TextBlock Classes="monospace"
                        Margin="8,0,0,0"
                        Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
@@ -169,7 +169,7 @@
           </Slider>
 
           <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,0,0,0">
-            <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.New}"/>
+            <TextBlock Classes="monospace" Text="NEW"/>
             <TextBlock Classes="monospace"
                        Margin="8,0,0,0"
                        Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"

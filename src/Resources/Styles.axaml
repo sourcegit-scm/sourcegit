@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:SourceGit.ViewModels"
+        xmlns:c="using:SourceGit.Converters"
         xmlns:ae="using:AvaloniaEdit"
         xmlns:aes="using:AvaloniaEdit.Search">
   <Design.PreviewWith>
@@ -218,6 +219,7 @@
     <Setter Property="HorizontalAlignment" Value="Left"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
   </Style>
   <Style Selector="TextBlock.bold">
     <Setter Property="FontWeight" Value="Bold"/>
@@ -231,7 +233,7 @@
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
     <Setter Property="FontWeight" Value="Bold"/>
-    <Setter Property="Margin" Value="8,0,0,0"/>
+    <Setter Property="Margin" Value="10,0,0,0"/>
   </Style>
   <Style Selector="TextBlock.info_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
@@ -326,6 +328,7 @@
     <Setter Property="BorderBrush" Value="Transparent"/>
   </Style>
   <Style Selector="TextBlock.tab_header">
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Opacity" Value=".56"/>
@@ -624,10 +627,6 @@
     </Setter>
   </Style>
 
-  <Style Selector="Border.launcher_pagetab">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderBrush" Value="Transparent"/>
-  </Style>
   <Style Selector="ListBox.launcher_page_tabbar">
     <Setter Property="Background" Value="Transparent"/>
   </Style>
@@ -639,26 +638,12 @@
     <Setter Property="Opacity" Value=".5"/>
   </Style>
   <Style Selector="ListBox.launcher_page_tabbar ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Opacity" Value=".85"/>
   </Style>
   <Style Selector="ListBox.launcher_page_tabbar ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Opacity" Value="1"/>
-  </Style>
-  <Style Selector="ListBoxItem:selected Border.launcher_pagetab">
-    <Setter Property="Background" Value="{DynamicResource Brush.ToolBar}"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
-  </Style>
-
-  <Style Selector="ListBox.page_switcher ListBoxItem">
-    <Setter Property="Margin" Value="4,0,2,0"/>
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="CornerRadius" Value="4"/>
-  </Style>
-  <Style Selector="ListBox.page_switcher ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
-  </Style>
-  <Style Selector="ListBox.page_switcher ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
+    <Setter Property="Opacity" Value="1"/>
   </Style>
 
   <Style Selector="ContextMenu">
@@ -969,8 +954,32 @@
     </Style>
   </Style>
 
+  <Style Selector="RadioButton.icon_button">
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="Transparent">
+          <ContentPresenter x:Name="PART_ContentPresenter"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Foreground="{TemplateBinding Foreground}"
+                            RecognizesAccessKey="True" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:checked Path">
+      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="Opacity" Value="0.65"/>
+    </Style>
+  </Style>
+
   <Style Selector="ToggleButton.group_expander">
-    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Margin" Value="6,0,0,0"/>
     <Setter Property="Padding" Value="0"/>
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -980,8 +989,8 @@
         <Grid ColumnDefinitions="Auto,*">
           <Path Grid.Column="0"
                 x:Name="PART_IndicatorIcon"
-                Margin="4,0,0,0"
                 Width="10"
+                Margin="0,0,2,0"
                 Data="{StaticResource Icons.Down}"
                 Fill="{DynamicResource Brush.FG2}"
                 VerticalAlignment="Center"
@@ -1291,6 +1300,9 @@
   </Style>
 
   <Style Selector="TreeDataGridRow">
+    <Style.Resources>
+      <SolidColorBrush x:Key="TreeDataGridSelectedCellBackgroundBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.4" />
+    </Style.Resources>
     <Setter Property="Background" Value="Transparent"/>
   </Style>
   

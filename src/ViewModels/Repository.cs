@@ -99,6 +99,7 @@ namespace SourceGit.ViewModels
                     var builder = BuildBranchTree(_branches, _remotes);
                     LocalBranchTrees = builder.Locals;
                     RemoteBranchTrees = builder.Remotes;
+                    VisibleTags = BuildVisibleTags();
                 }
             }
         }
@@ -132,10 +133,24 @@ namespace SourceGit.ViewModels
         }
 
         [JsonIgnore]
+        public List<Models.Worktree> Worktrees
+        {
+            get => _worktrees;
+            private set => SetProperty(ref _worktrees, value);
+        }
+
+        [JsonIgnore]
         public List<Models.Tag> Tags
         {
             get => _tags;
             private set => SetProperty(ref _tags, value);
+        }
+
+        [JsonIgnore]
+        public List<Models.Tag> VisibleTags
+        {
+            get => _visibleTags;
+            private set => SetProperty(ref _visibleTags, value);
         }
 
         [JsonIgnore]
@@ -154,7 +169,7 @@ namespace SourceGit.ViewModels
         [JsonIgnore]
         public int StashesCount
         {
-            get => _stashesPage == null ? 0 : _stashesPage.Count;
+            get => _stashesPage == null ? 0 : _stashesPage.Stashes.Count;
         }
 
         [JsonIgnore]
@@ -220,6 +235,13 @@ namespace SourceGit.ViewModels
         }
 
         [JsonIgnore]
+        public bool IsWorktreeGroupExpanded
+        {
+            get => _isWorktreeGroupExpanded;
+            set => SetProperty(ref _isWorktreeGroupExpanded, value);
+        }
+
+        [JsonIgnore]
         public InProgressContext InProgressContext
         {
             get => _inProgressContext;
@@ -281,6 +303,7 @@ namespace SourceGit.ViewModels
             _localBranchTrees.Clear();
             _remoteBranchTrees.Clear();
             _tags.Clear();
+            _visibleTags.Clear();
             _submodules.Clear();
             _searchedCommits.Clear();
         }
@@ -295,6 +318,7 @@ namespace SourceGit.ViewModels
             });
 
             Task.Run(RefreshSubmodules);
+            Task.Run(RefreshWorktrees);
             Task.Run(RefreshWorkingCopyChanges);
             Task.Run(RefreshStashes);
         }
@@ -590,14 +614,35 @@ namespace SourceGit.ViewModels
             });
         }
 
+        public void RefreshWorktrees()
+        {
+            var worktrees = new Commands.Worktree(_fullpath).List();
+            var cleaned = new List<Models.Worktree>();
+
+            foreach (var worktree in worktrees)
+            {
+                if (worktree.IsBare || worktree.FullPath.Equals(_fullpath))
+                    continue;
+
+                cleaned.Add(worktree);
+            }
+
+            Dispatcher.UIThread.Invoke(() =>
+            {
+                Worktrees = cleaned;
+            });
+        }
+
         public void RefreshTags()
         {
             var tags = new Commands.QueryTags(FullPath).Result();
             foreach (var tag in tags)
                 tag.IsFiltered = Filters.Contains(tag.Name);
+
             Dispatcher.UIThread.Invoke(() =>
             {
                 Tags = tags;
+                VisibleTags = BuildVisibleTags();
             });
         }
 
@@ -656,10 +701,7 @@ namespace SourceGit.ViewModels
         public void RefreshSubmodules()
         {
             var submodules = new Commands.QuerySubmodules(FullPath).Result();
-            Dispatcher.UIThread.Invoke(() =>
-            {
-                Submodules = submodules;
-            });
+            Dispatcher.UIThread.Invoke(() => Submodules = submodules);
         }
 
         public void RefreshWorkingCopyChanges()
@@ -732,6 +774,16 @@ namespace SourceGit.ViewModels
 
         public void CheckoutBranch(Models.Branch branch)
         {
+            if (branch.IsLocal)
+            {
+                var worktree = _worktrees.Find(x => x.Branch == branch.FullName);
+                if (worktree != null)
+                {
+                    OpenWorktree(worktree);
+                    return;
+                }
+            }
+
             if (!PopupHost.CanCreatePopup())
                 return;
 
@@ -794,6 +846,57 @@ namespace SourceGit.ViewModels
         {
             if (PopupHost.CanCreatePopup())
                 PopupHost.ShowAndStartPopup(new UpdateSubmodules(this));
+        }
+
+        public void OpenSubmodule(string submodule)
+        {
+            var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
+            var gitDir = new Commands.QueryGitDir(root).Result();
+            var repo = Preference.AddRepository(root, gitDir);
+
+            var node = new RepositoryNode()
+            {
+                Id = repo.FullPath,
+                Name = Path.GetFileName(repo.FullPath),
+                Bookmark = 0,
+                IsRepository = true,
+            };
+
+            var launcher = App.GetTopLevel().DataContext as Launcher;
+            if (launcher != null)
+            {
+                launcher.OpenRepositoryInTab(node, null);
+            }
+        }
+
+        public void AddWorktree()
+        {
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowPopup(new AddWorktree(this));
+        }
+
+        public void PruneWorktrees()
+        {
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowAndStartPopup(new PruneWorktrees(this));
+        }
+
+        public void OpenWorktree(Models.Worktree worktree)
+        {
+            var gitDir = new Commands.QueryGitDir(worktree.FullPath).Result();
+            var repo = Preference.AddRepository(worktree.FullPath, gitDir);
+
+            var node = new RepositoryNode()
+            {
+                Id = repo.FullPath,
+                Name = Path.GetFileName(repo.FullPath),
+                Bookmark = 0,
+                IsRepository = true,
+            };
+
+            var launcher = App.GetTopLevel().DataContext as Launcher;
+            if (launcher != null)
+                launcher.OpenRepositoryInTab(node, null);
         }
 
         public ContextMenu CreateContextMenuForGitFlow()
@@ -911,6 +1014,24 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(pull);
 
+                var push = new MenuItem();
+                push.Header = App.Text("GitLFS.Push");
+                push.Icon = App.CreateMenuIcon("Icons.Push");
+                push.IsEnabled = Remotes.Count > 0;
+                push.Click += (o, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                    {
+                        if (Remotes.Count == 1)
+                            PopupHost.ShowAndStartPopup(new LFSPush(this));
+                        else
+                            PopupHost.ShowPopup(new LFSPush(this));
+                    }
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(push);
+
                 var prune = new MenuItem();
                 prune.Header = App.Text("GitLFS.Prune");
                 prune.Icon = App.CreateMenuIcon("Icons.Clean");
@@ -927,13 +1048,33 @@ namespace SourceGit.ViewModels
                 var locks = new MenuItem();
                 locks.Header = App.Text("GitLFS.Locks");
                 locks.Icon = App.CreateMenuIcon("Icons.Lock");
-                locks.Click += (o, e) =>
+                locks.IsEnabled = Remotes.Count > 0;
+                if (Remotes.Count == 1)
                 {
-                    var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath) };
-                    dialog.Show(App.GetTopLevel() as Window);
+                    locks.Click += (o, e) =>
+                    {
+                        var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, Remotes[0].Name) };
+                        dialog.Show(App.GetTopLevel() as Window);
+                        e.Handled = true;
+                    };
+                }
+                else
+                {
+                    foreach (var remote in Remotes)
+                    {
+                        var remoteName = remote.Name;
+                        var lockRemote = new MenuItem();
+                        lockRemote.Header = remoteName;
+                        lockRemote.Click += (o, e) =>
+                        {
+                            var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, remoteName) };
+                            dialog.Show(App.GetTopLevel() as Window);
+                            e.Handled = true;
+                        };
+                        locks.Items.Add(lockRemote);
+                    }
+                }
 
-                    e.Handled = true;
-                };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(locks);
             }
@@ -1117,7 +1258,7 @@ namespace SourceGit.ViewModels
             {
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
-                finish.Icon = App.CreateMenuIcon("Icons.Flow");
+                finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
                 finish.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -1201,9 +1342,8 @@ namespace SourceGit.ViewModels
                     target.Click += (o, e) =>
                     {
                         if (Commands.Branch.SetUpstream(_fullpath, branch.Name, upstream))
-                        {
                             Task.Run(RefreshBranches);
-                        }
+
                         e.Handled = true;
                     };
 
@@ -1215,9 +1355,8 @@ namespace SourceGit.ViewModels
                 unsetUpstream.Click += (_, e) =>
                 {
                     if (Commands.Branch.SetUpstream(_fullpath, branch.Name, string.Empty))
-                    {
                         Task.Run(RefreshBranches);
-                    }
+
                     e.Handled = true;
                 };
                 tracking.Items.Add(new MenuItem() { Header = "-" });
@@ -1538,27 +1677,6 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public void OpenSubmodule(string submodule)
-        {
-            var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
-            var gitDir = new Commands.QueryGitDir(root).Result();
-            var repo = Preference.AddRepository(root, gitDir);
-            
-            var node = new RepositoryNode()
-            {
-                Id = repo.FullPath,
-                Name = Path.GetFileName(repo.FullPath),
-                Bookmark = 0,
-                IsRepository = true,
-            };
-            
-            var launcher = App.GetTopLevel().DataContext as Launcher;
-            if (launcher != null)
-            {
-                launcher.OpenRepositoryInTab(node, null);
-            }
-        }
-
         public ContextMenu CreateContextMenuForSubmodule(string submodule)
         {
             var open = new MenuItem();
@@ -1593,6 +1711,68 @@ namespace SourceGit.ViewModels
             menu.Items.Add(open);
             menu.Items.Add(copy);
             menu.Items.Add(rm);
+            return menu;
+        }
+
+        public ContextMenu CreateContextMenuForWorktree(Models.Worktree worktree)
+        {
+            var menu = new ContextMenu();
+
+            if (worktree.IsLocked)
+            {
+                var unlock = new MenuItem();
+                unlock.Header = App.Text("Worktree.Unlock");
+                unlock.Icon = App.CreateMenuIcon("Icons.Unlock");
+                unlock.Click += (o, ev) =>
+                {
+                    SetWatcherEnabled(false);
+                    var succ = new Commands.Worktree(_fullpath).Unlock(worktree.FullPath);
+                    if (succ)
+                        worktree.IsLocked = false;
+                    SetWatcherEnabled(true);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(unlock);
+            }
+            else
+            {
+                var loc = new MenuItem();
+                loc.Header = App.Text("Worktree.Lock");
+                loc.Icon = App.CreateMenuIcon("Icons.Lock");
+                loc.Click += (o, ev) =>
+                {
+                    SetWatcherEnabled(false);
+                    var succ = new Commands.Worktree(_fullpath).Lock(worktree.FullPath);
+                    if (succ)
+                        worktree.IsLocked = true;
+                    SetWatcherEnabled(true);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(loc);
+            }
+
+            var remove = new MenuItem();
+            remove.Header = App.Text("Worktree.Remove");
+            remove.Icon = App.CreateMenuIcon("Icons.Clear");
+            remove.Click += (o, ev) =>
+            {
+                if (PopupHost.CanCreatePopup())
+                    PopupHost.ShowPopup(new RemoveWorktree(this, worktree));
+                ev.Handled = true;
+            };
+            menu.Items.Add(remove);
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("Worktree.CopyPath");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Click += (o, e) =>
+            {
+                App.CopyText(worktree.FullPath);
+                e.Handled = true;
+            };
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(copy);
+
             return menu;
         }
 
@@ -1657,6 +1837,25 @@ namespace SourceGit.ViewModels
             return builder;
         }
 
+        private List<Models.Tag> BuildVisibleTags()
+        {
+            var visible = new List<Models.Tag>();
+            if (string.IsNullOrEmpty(_searchBranchFilter))
+            {
+                visible.AddRange(_tags);
+            }
+            else
+            {
+                foreach (var t in _tags)
+                {
+                    if (t.Name.Contains(_searchBranchFilter, StringComparison.OrdinalIgnoreCase))
+                        visible.Add(t);
+                }
+            }
+
+            return visible;
+        }
+
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
 
@@ -1674,6 +1873,7 @@ namespace SourceGit.ViewModels
 
         private bool _isTagGroupExpanded = false;
         private bool _isSubmoduleGroupExpanded = false;
+        private bool _isWorktreeGroupExpanded = false;
 
         private string _searchBranchFilter = string.Empty;
 
@@ -1681,7 +1881,9 @@ namespace SourceGit.ViewModels
         private List<Models.Branch> _branches = new List<Models.Branch>();
         private List<BranchTreeNode> _localBranchTrees = new List<BranchTreeNode>();
         private List<BranchTreeNode> _remoteBranchTrees = new List<BranchTreeNode>();
+        private List<Models.Worktree> _worktrees = new List<Models.Worktree>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
+        private List<Models.Tag> _visibleTags = new List<Models.Tag>();
         private List<string> _submodules = new List<string>();
         private bool _includeUntracked = true;
 

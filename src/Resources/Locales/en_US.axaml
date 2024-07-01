@@ -7,6 +7,16 @@
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace fonts come from </x:String>
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Source code can be found at </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; Free Git GUI Client</x:String>
+  <x:String x:Key="Text.AddWorktree" xml:space="preserve">Add Worktree</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">What to Checkout:</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Existing Branch</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Create New Branch</x:String>
+  <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Location:</x:String>
+  <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Path for this worktree. Relative path is supported.</x:String>
+  <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">Branch Name:</x:String>
+  <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Optional. Default is the destination folder name.</x:String>
+  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Track Branch:</x:String>
+  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Tracking remote branch</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">Error</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Raise errors and refuses to apply the patch</x:String>
@@ -105,8 +115,8 @@
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">PARENTS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">REFS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Enter commit subject &amp; message</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Tip" xml:space="preserve">Git uses an empty line to separate the subject and extra message body.</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Enter commit subject</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Description</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository Configure</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Address</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email address</x:String>
@@ -115,6 +125,7 @@
   <x:String x:Key="Text.Configure.User" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">User name for this repository</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Copy</x:String>
+  <x:String x:Key="Text.CopyMessage" xml:space="preserve">COPY MESSAGE</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copy Path</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">Copy File Name</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Create Branch...</x:String>
@@ -253,6 +264,10 @@
   <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">Pull LFS Objects</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Run `git lfs pull` to download all Git LFS files for current ref &amp; checkout</x:String>
+  <x:String x:Key="Text.GitLFS.Push" xml:space="preserve">Push</x:String>
+  <x:String x:Key="Text.GitLFS.Push.Title" xml:space="preserve">Push LFS Objects</x:String>
+  <x:String x:Key="Text.GitLFS.Push.Tips" xml:space="preserve">Push queued large files to the Git LFS endpoint</x:String>
+  <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Track files named '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Histories</x:String>
@@ -272,9 +287,10 @@
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit staged changes</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit and push staged changes</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Dashboard mode (Default)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Force to reload this repository</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Stage/Unstage selected changes</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Open commit search</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Commit search mode</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Switch to 'Changes'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Switch to 'Histories'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Switch to 'Stashes'</x:String>
@@ -329,9 +345,10 @@
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Language</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
-  <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Restore windows</x:String>
+  <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Restore last opened tab(s) on startup</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Subject Guide Length</x:String>
   <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</x:String>
+  <x:String x:Key="Text.Preference.General.VisibleDiffContextLines" xml:space="preserve">Visible Diff Context Lines</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">Auto Fetch Interval</x:String>
@@ -360,6 +377,8 @@
   <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Tool</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Prune Worktrees</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune worktree information in `$GIT_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Into:</x:String>
@@ -401,6 +420,9 @@
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Open In Browser</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune</x:String>
   <x:String x:Key="Text.RemoteCM.Prune.Target" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Confirm to Remove Worktree</x:String>
+  <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Enable `--force` Option</x:String>
+  <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.RenameBranch" xml:space="preserve">Rename Branch</x:String>
   <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">New Name:</x:String>
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Unique name for this branch</x:String>
@@ -412,7 +434,6 @@
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Open In File Browser</x:String>
-  <x:String x:Key="Text.Repository.FilterBranchTip" xml:space="preserve">Filter Branches</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTERED BY:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOCAL BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigate To HEAD</x:String>
@@ -427,6 +448,7 @@
   <x:String x:Key="Text.Repository.Search.By" xml:space="preserve">Search By</x:String>
   <x:String x:Key="Text.Repository.Search.ByBaseInfo" xml:space="preserve">Information</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">File</x:String>
+  <x:String x:Key="Text.Repository.SearchBranchTag" xml:space="preserve">Search Branches &amp; Tags</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistics</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMODULES</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">ADD SUBMODULE</x:String>
@@ -434,7 +456,9 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">TAGS</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">NEW TAG</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Open In Terminal</x:String>
-  <x:String x:Key="Text.Repository.Workspace" xml:space="preserve">WORKSPACE</x:String>
+  <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ADD WORKTREE</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">PRUNE</x:String>
   <x:String x:Key="Text.RepositoryURL" xml:space="preserve">Git Repository URL</x:String>
   <x:String x:Key="Text.Reset" xml:space="preserve">Reset Current Branch To Revision</x:String>
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Reset Mode:</x:String>
@@ -445,8 +469,7 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit revert changes</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Reword Commit Message</x:String>
-  <x:String x:Key="Text.Reword.Message" xml:space="preserve">Message:</x:String>
-  <x:String x:Key="Text.Reword.On" xml:space="preserve">On:</x:String>
+  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Running. Please wait...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SAVE</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Save As...</x:String>
@@ -459,9 +482,6 @@
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Software Update</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">There are currently no updates available.</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash HEAD Into Parent</x:String>
-  <x:String x:Key="Text.Squash.Head" xml:space="preserve">HEAD:</x:String>
-  <x:String x:Key="Text.Squash.Message" xml:space="preserve">Reword:</x:String>
-  <x:String x:Key="Text.Squash.To" xml:space="preserve">To:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH Private Key:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Private SSH key store path</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
@@ -539,4 +559,8 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VIEW ASSUME UNCHANGED</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Right-click the selected file(s), and make your choice to resolve conflicts.</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">WORKTREE</x:String>
+  <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">Copy Path</x:String>
+  <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Lock</x:String>
+  <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
+  <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
 </ResourceDictionary>

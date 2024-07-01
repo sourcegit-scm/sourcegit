@@ -1,5 +1,5 @@
 Package: sourcegit
-Version: 8.8
+Version: 8.18
 Priority: optional
 Depends: libx11-6, libice6, libsm6
 Architecture: amd64

@@ -26,7 +26,7 @@
                   Background="{DynamicResource Brush.Badge}"
                   IsVisible="{Binding FileModeChange, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                   ToolTip.Tip="{DynamicResource Text.Diff.FileModeChanged}">
-            <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="4,0" Text="{Binding FileModeChange}"/>
+            <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="4,0" Text="{Binding FileModeChange}" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
           <!-- Title -->
@@ -34,11 +34,20 @@
 
           <!-- Toolbar Buttons -->
           <StackPanel Grid.Column="3" Margin="8,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
-            <Button Classes="icon_button" Width="32" Command="{Binding IncrUnified}" IsVisible="{Binding IsTextDiff}" ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Incr}">
+            <Button Classes="icon_button" 
+                    Width="32" 
+                    Command="{Binding IncrUnified}" 
+                    IsVisible="{Binding IsTextDiff}"
+                    ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Incr}">
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Incr}"/>
             </Button>
 
-            <Button Classes="icon_button" Width="32" Command="{Binding DecrUnified}" IsVisible="{Binding IsTextDiff}" ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Decr}" IsEnabled="{Binding Unified, Converter={x:Static c:IntConverters.IsGreaterThanFour}}">
+            <Button Classes="icon_button" 
+                    Width="32" 
+                    Command="{Binding DecrUnified}" 
+                    IsVisible="{Binding IsTextDiff}" 
+                    ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Decr}" 
+                    IsEnabled="{Binding Source={x:Static vm:Preference.Instance}, Path=DiffViewVisualLineNumbers, Converter={x:Static c:IntConverters.IsGreaterThanFour}}">
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Decr}"/>
             </Button>
 
@@ -101,7 +110,7 @@
               <Path Width="64" Height="64" Data="{StaticResource Icons.Binary}" Fill="{DynamicResource Brush.FG2}"/>
               <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto,Auto">
                 <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
+                  <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
 
                 <TextBlock Grid.Row="0" Grid.Column="1" Classes="monospace" Text="{Binding OldSize}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
@@ -128,7 +137,7 @@
               <Path Width="64" Height="64" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
               <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto,Auto">
                 <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10"/>
+                  <TextBlock Classes="monospace" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
 
                 <TextBlock Grid.Row="0" Grid.Column="1" Classes="monospace" Text="{Binding Old.Size}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>

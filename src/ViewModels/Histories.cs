@@ -217,6 +217,12 @@ namespace SourceGit.ViewModels
                 reword.Icon = App.CreateMenuIcon("Icons.Edit");
                 reword.Click += (o, e) =>
                 {
+                    if (_repo.WorkingCopyChangesCount > 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                        return;
+                    }
+
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Reword(_repo, commit));
                     e.Handled = true;
@@ -229,6 +235,12 @@ namespace SourceGit.ViewModels
                 squash.IsEnabled = commit.Parents.Count == 1;
                 squash.Click += (o, e) =>
                 {
+                    if (_repo.WorkingCopyChangesCount > 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                        return;
+                    }
+
                     if (commit.Parents.Count == 1)
                     {
                         var parent = _commits.Find(x => x.SHA == commit.Parents[0]);
@@ -284,6 +296,12 @@ namespace SourceGit.ViewModels
                 interactiveRebase.IsVisible = current.Head != commit.SHA;
                 interactiveRebase.Click += (o, e) =>
                 {
+                    if (_repo.WorkingCopyChangesCount > 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                        return;
+                    }
+
                     var dialog = new Views.InteractiveRebase() { DataContext = new InteractiveRebase(_repo, current, commit) };
                     dialog.ShowDialog(App.GetTopLevel() as Window);
                     e.Handled = true;
@@ -468,7 +486,7 @@ namespace SourceGit.ViewModels
             {
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", current.Name);
-                finish.Icon = App.CreateMenuIcon("Icons.Flow");
+                finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
                 finish.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -527,7 +545,7 @@ namespace SourceGit.ViewModels
             {
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
-                finish.Icon = App.CreateMenuIcon("Icons.Flow");
+                finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
                 finish.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())

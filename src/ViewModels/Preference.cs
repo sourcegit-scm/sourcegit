@@ -194,6 +194,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _showHiddenSymbolsInDiffView, value);
         }
 
+        public int DiffViewVisualLineNumbers
+        {
+            get => _diffViewVisualLineNumbers;
+            set => SetProperty(ref _diffViewVisualLineNumbers, value);
+        }
+
         public Models.ChangeViewMode UnstagedChangeViewMode
         {
             get => _unstagedChangeViewMode;
@@ -550,6 +556,7 @@ namespace SourceGit.ViewModels
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;
+        private int _diffViewVisualLineNumbers = 4;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

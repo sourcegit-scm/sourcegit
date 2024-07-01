@@ -117,7 +117,14 @@
                   BorderBrush="{DynamicResource Brush.Border0}"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="0,4,4,4" RowDefinitions="*,4,128,36">
+    <Grid Grid.Column="2" Margin="0,4,4,4">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" MinHeight="400"/>
+        <RowDefinition Height="4"/>
+        <RowDefinition Height="128" MinHeight="100"/>
+        <RowDefinition Height="36"/>
+      </Grid.RowDefinitions>
+      
       <!-- Select Change Detail -->
       <Grid Grid.Row="0">
         <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">

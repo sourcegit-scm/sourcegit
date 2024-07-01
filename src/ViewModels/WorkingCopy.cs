@@ -643,27 +643,71 @@ namespace SourceGit.ViewModels
                         var lfsLock = new MenuItem();
                         lfsLock.Header = App.Text("GitLFS.Locks.Lock");
                         lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
-                        lfsLock.Click += async (_, e) =>
+                        lfsLock.IsEnabled = _repo.Remotes.Count > 0;
+                        if (_repo.Remotes.Count == 1)
                         {
-                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(change.Path));
-                            if (succ)
-                                App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
+                            lfsLock.Click += async (o, e) =>
+                            {
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path));
+                                if (succ)
+                                    App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
-                            e.Handled = true;
-                        };
+                                e.Handled = true;
+                            };
+                        }
+                        else
+                        {
+                            foreach (var remote in _repo.Remotes)
+                            {
+                                var remoteName = remote.Name;
+                                var lockRemote = new MenuItem();
+                                lockRemote.Header = remoteName;
+                                lockRemote.Click += async (o, e) =>
+                                {
+                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path));
+                                    if (succ)
+                                        App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
+
+                                    e.Handled = true;
+                                };
+                                lfsLock.Items.Add(lockRemote);
+                            }
+                        }                        
                         lfs.Items.Add(lfsLock);
 
                         var lfsUnlock = new MenuItem();
                         lfsUnlock.Header = App.Text("GitLFS.Locks.Unlock");
                         lfsUnlock.Icon = App.CreateMenuIcon("Icons.Unlock");
-                        lfsUnlock.Click += async (_, e) =>
+                        lfsUnlock.IsEnabled = _repo.Remotes.Count > 0;
+                        if (_repo.Remotes.Count == 1)
                         {
-                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(change.Path, false));
-                            if (succ)
-                                App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
+                            lfsUnlock.Click += async (o, e) =>
+                            {
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false));
+                                if (succ)
+                                    App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
-                            e.Handled = true;
-                        };
+                                e.Handled = true;
+                            };
+                        }
+                        else
+                        {
+                            foreach (var remote in _repo.Remotes)
+                            {
+                                var remoteName = remote.Name;
+                                var unlockRemote = new MenuItem();
+                                unlockRemote.Header = remoteName;
+                                unlockRemote.Click += async (o, e) =>
+                                {
+                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false));
+                                    if (succ)
+                                        App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
+
+                                    e.Handled = true;
+                                };
+                                lfsUnlock.Items.Add(unlockRemote);
+                            }
+                        }                        
                         lfs.Items.Add(lfsUnlock);
 
                         menu.Items.Add(lfs);
@@ -926,28 +970,71 @@ namespace SourceGit.ViewModels
                     var lfsLock = new MenuItem();
                     lfsLock.Header = App.Text("GitLFS.Locks.Lock");
                     lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
-                    lfsLock.Click += async (_, e) =>
+                    lfsLock.IsEnabled = _repo.Remotes.Count > 0;
+                    if (_repo.Remotes.Count == 1)
                     {
-                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(change.Path));
-                        if (succ)
-                            App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
+                        lfsLock.Click += async (o, e) =>
+                        {
+                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path));
+                            if (succ)
+                                App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
-                        e.Handled = true;
-                    };
-                    lfs.Items.Add(new MenuItem() { Header = "-" });
+                            e.Handled = true;
+                        };
+                    }
+                    else
+                    {
+                        foreach (var remote in _repo.Remotes)
+                        {
+                            var remoteName = remote.Name;
+                            var lockRemote = new MenuItem();
+                            lockRemote.Header = remoteName;
+                            lockRemote.Click += async (o, e) =>
+                            {
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path));
+                                if (succ)
+                                    App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
+
+                                e.Handled = true;
+                            };
+                            lfsLock.Items.Add(lockRemote);
+                        }
+                    }                    
                     lfs.Items.Add(lfsLock);
 
                     var lfsUnlock = new MenuItem();
                     lfsUnlock.Header = App.Text("GitLFS.Locks.Unlock");
                     lfsUnlock.Icon = App.CreateMenuIcon("Icons.Unlock");
-                    lfsUnlock.Click += async (_, e) =>
+                    lfsUnlock.IsEnabled = _repo.Remotes.Count > 0;
+                    if (_repo.Remotes.Count == 1)
                     {
-                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(change.Path, false));
-                        if (succ)
-                            App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
+                        lfsUnlock.Click += async (o, e) =>
+                        {
+                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false));
+                            if (succ)
+                                App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
-                        e.Handled = true;
-                    };
+                            e.Handled = true;
+                        };
+                    }
+                    else
+                    {
+                        foreach (var remote in _repo.Remotes)
+                        {
+                            var remoteName = remote.Name;
+                            var unlockRemote = new MenuItem();
+                            unlockRemote.Header = remoteName;
+                            unlockRemote.Click += async (o, e) =>
+                            {
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false));
+                                if (succ)
+                                    App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
+
+                                e.Handled = true;
+                            };
+                            lfsUnlock.Items.Add(unlockRemote);
+                        }
+                    }                    
                     lfs.Items.Add(lfsUnlock);
 
                     menu.Items.Add(lfs);

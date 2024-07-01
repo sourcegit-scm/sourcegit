@@ -27,7 +27,7 @@ namespace SourceGit.ViewModels
         public Squash(Repository repo, Models.Commit head, Models.Commit parent)
         {
             _repo = repo;
-            _message = new Commands.QueryCommitFullMessage(_repo.FullPath, parent.SHA).Result();
+            _message = new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).Result();
 
             Head = head;
             Parent = parent;

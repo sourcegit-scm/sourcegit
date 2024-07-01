@@ -1,2 +1,0 @@
-#!/bin/bash
-exec /opt/sourcegit/sourcegit $1
