@@ -128,10 +128,10 @@ namespace SourceGit.Views
             else if (e.Key == Key.V && ((OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Meta) || (!OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Control)))
             {
                 var text = await App.GetClipboardTextAsync();
-                text = text.Trim();
-
-                if (!string.IsNullOrEmpty(text))
+                if (!string.IsNullOrWhiteSpace(text))
                 {
+                    text = text.Trim();
+
                     if (SubjectEditor.CaretIndex == Subject.Length)
                     {
                         var idx = text.IndexOf('\n');
