@@ -38,12 +38,12 @@
                 IsChecked="{Binding FetchAllRemotes, Mode=TwoWay}"/>
 
       <CheckBox Grid.Row="2" Grid.Column="1"
-                Content="{DynamicResource Text.Fetch.NoTags}"
-                IsChecked="{Binding NoTags, Mode=TwoWay}"/>
-
-      <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.Fetch.Prune}"
                 IsChecked="{Binding Prune, Mode=TwoWay}"/>
+
+      <CheckBox Grid.Row="3" Grid.Column="1"
+                Content="{DynamicResource Text.Fetch.NoTags}"
+                IsChecked="{Binding NoTags, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>
