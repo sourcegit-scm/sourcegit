@@ -378,11 +378,9 @@ namespace SourceGit.Views
 
         private void OnCommitSHAPointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (DataContext is ViewModels.Blame blame)
-            {
-                var txt = sender as TextBlock;
+            if (sender is TextBlock txt && DataContext is ViewModels.Blame blame)
                 blame.NavigateToCommit(txt.Text);
-            }
+
             e.Handled = true;
         }
 

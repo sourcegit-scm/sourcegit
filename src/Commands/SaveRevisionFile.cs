@@ -10,7 +10,7 @@ namespace SourceGit.Commands
     {
         public static void Run(string repo, string revision, string file, string saveTo)
         {
-            var isLFSFiltered = new IsLFSFiltered(repo, file).Result();
+            var isLFSFiltered = new IsLFSFiltered(repo, revision, file).Result();
             if (isLFSFiltered)
             {
                 var tmpFile = saveTo + ".tmp";

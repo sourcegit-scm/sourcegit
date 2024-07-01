@@ -1113,7 +1113,7 @@ namespace SourceGit.ViewModels
         public ContextMenu CreateContextMenuForCommitMessages()
         {
             var menu = new ContextMenu();
-            if (_repo.CommitMessages.Count == 0)
+            if (_repo.Settings.CommitMessages.Count == 0)
             {
                 var empty = new MenuItem();
                 empty.Header = App.Text("WorkingCopy.NoCommitHistories");
@@ -1128,7 +1128,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(tip);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
-            foreach (var message in _repo.CommitMessages)
+            foreach (var message in _repo.Settings.CommitMessages)
             {
                 var dump = message;
 
@@ -1228,7 +1228,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            PushCommitMessage();
+            _repo.Settings.PushCommitMessage(_commitMessage);
 
             SetDetail(null);
             IsCommitting = true;
@@ -1255,27 +1255,6 @@ namespace SourceGit.ViewModels
                     IsCommitting = false;
                 });
             });
-        }
-
-        private void PushCommitMessage()
-        {
-            var existIdx = _repo.CommitMessages.IndexOf(CommitMessage);
-            if (existIdx == 0)
-            {
-                return;
-            }
-            else if (existIdx > 0)
-            {
-                _repo.CommitMessages.Move(existIdx, 0);
-                return;
-            }
-
-            if (_repo.CommitMessages.Count > 9)
-            {
-                _repo.CommitMessages.RemoveRange(9, _repo.CommitMessages.Count - 9);
-            }
-
-            _repo.CommitMessages.Insert(0, CommitMessage);
         }
 
         private Repository _repo = null;

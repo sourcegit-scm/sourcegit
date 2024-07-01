@@ -90,7 +90,6 @@ namespace SourceGit.ViewModels
         public ContextMenu CreateContextMenu(RepositoryNode node)
         {
             var menu = new ContextMenu();
-            var hasRepo = Preference.FindRepository(node.Id) != null;
 
             if (!node.IsRepository && node.SubNodes.Count > 0)
             {
@@ -115,7 +114,6 @@ namespace SourceGit.ViewModels
             var edit = new MenuItem();
             edit.Header = App.Text("Welcome.Edit");
             edit.Icon = App.CreateMenuIcon("Icons.Edit");
-            edit.IsEnabled = !node.IsRepository || hasRepo;
             edit.Click += (_, e) =>
             {
                 node.Edit();
@@ -128,7 +126,6 @@ namespace SourceGit.ViewModels
                 var explore = new MenuItem();
                 explore.Header = App.Text("Repository.Explore");
                 explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
-                explore.IsEnabled = hasRepo;
                 explore.Click += (_, e) =>
                 {
                     node.OpenInFileManager();
@@ -139,7 +136,6 @@ namespace SourceGit.ViewModels
                 var terminal = new MenuItem();
                 terminal.Header = App.Text("Repository.Terminal");
                 terminal.Icon = App.CreateMenuIcon("Icons.Terminal");
-                terminal.IsEnabled = hasRepo;
                 terminal.Click += (_, e) =>
                 {
                     node.OpenTerminal();

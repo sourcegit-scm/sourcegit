@@ -110,9 +110,8 @@ namespace SourceGit.ViewModels
 
         public void NavigateTo(string commitSHA)
         {
-            var repo = Preference.FindRepository(_repo);
-            if (repo != null)
-                repo.NavigateToCommit(commitSHA);
+            var repo = App.FindOpenedRepository(_repo);
+            repo?.NavigateToCommit(commitSHA);
         }
 
         public void ClearSearchFilter()

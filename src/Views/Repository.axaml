@@ -794,14 +794,14 @@
           <Border.IsVisible>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
               <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
-              <Binding Path="Filters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
+              <Binding Path="Settings.Filters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
             </MultiBinding>
           </Border.IsVisible>
 
           <Grid Height="28" ColumnDefinitions="Auto,*,Auto">
             <TextBlock Grid.Column="0" Margin="8,0,0,0" Classes="info_label" Text="{DynamicResource Text.Repository.FilterCommitPrefix}"/>
 
-            <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Filters}">
+            <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Settings.Filters}">
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                   <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>

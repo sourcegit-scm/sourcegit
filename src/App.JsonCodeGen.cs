@@ -9,5 +9,6 @@ namespace SourceGit
     [JsonSerializable(typeof(List<Models.InteractiveRebaseJob>))]
     [JsonSerializable(typeof(Dictionary<string, string>))]
     [JsonSerializable(typeof(ViewModels.Preference))]
+    [JsonSerializable(typeof(ViewModels.RepositorySettings))]
     internal partial class JsonCodeGen : JsonSerializerContext { }
 }
