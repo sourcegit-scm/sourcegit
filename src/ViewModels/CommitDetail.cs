@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -12,7 +13,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class CommitDetail : ObservableObject
+    public partial class CommitDetail : ObservableObject
     {
         public DiffContext DiffContext
         {
@@ -164,39 +165,26 @@ namespace SourceGit.ViewModels
 
                         var contentStream = Commands.QueryFileContent.Run(_repo, _commit.SHA, file.Path);
                         var content = new StreamReader(contentStream).ReadToEnd();
-                        if (content.StartsWith("version https://git-lfs.github.com/spec/", StringComparison.Ordinal))
+                        var matchLFS = REG_LFS_FORMAT().Match(content);
+                        if (matchLFS.Success)
                         {
                             var obj = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
-                            var lines = content.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-                            if (lines.Length == 3)
-                            {
-                                foreach (var line in lines)
-                                {
-                                    if (line.StartsWith("oid sha256:", StringComparison.Ordinal))
-                                    {
-                                        obj.Object.Oid = line.Substring(11);
-                                    }
-                                    else if (line.StartsWith("size ", StringComparison.Ordinal))
-                                    {
-                                        obj.Object.Size = long.Parse(line.Substring(5));
-                                    }
-                                }
-                                Dispatcher.UIThread.Invoke(() =>
-                                {
-                                    ViewRevisionFileContent = obj;
-                                });
-                                return;
-                            }
-                        }
+                            obj.Object.Oid = matchLFS.Groups[1].Value;
+                            obj.Object.Size = long.Parse(matchLFS.Groups[2].Value);
 
-                        Dispatcher.UIThread.Invoke(() =>
+                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = obj);
+                        }
+                        else
                         {
-                            ViewRevisionFileContent = new Models.RevisionTextFile()
+                            Dispatcher.UIThread.Invoke(() =>
                             {
-                                FileName = file.Path,
-                                Content = content
-                            };
-                        });
+                                ViewRevisionFileContent = new Models.RevisionTextFile()
+                                {
+                                    FileName = file.Path,
+                                    Content = content
+                                };
+                            });
+                        }
                     });
                     break;
                 case Models.ObjectType.Commit:
@@ -463,6 +451,9 @@ namespace SourceGit.ViewModels
                 VisibleChanges = visible;
             }
         }
+
+        [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]
+        private static partial Regex REG_LFS_FORMAT();
 
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
         {
