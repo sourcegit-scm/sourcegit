@@ -253,11 +253,10 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var gitDir = new Commands.QueryGitDir(root).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    var repo = ViewModels.Preference.AddRepository(root, gitDir);
-                    var node = ViewModels.Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, parent, true);
+                    var normalizedPath = root.Replace("\\", "/");
+                    var node = ViewModels.Preference.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
                     launcher.OpenRepositoryInTab(node, page);
                 });
             });

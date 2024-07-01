@@ -111,7 +111,7 @@ namespace SourceGit.ViewModels
 
                 if (latest.TextDiff != null)
                 {
-                    var repo = Preference.FindRepository(_repo);
+                    var repo = App.FindOpenedRepository(_repo);
                     if (repo != null && repo.Submodules.Contains(_option.Path))
                     {
                         var submoduleDiff = new Models.SubmoduleDiff();

@@ -55,8 +55,8 @@ namespace SourceGit.ViewModels
 
         public bool UseRebase
         {
-            get => _repo.PreferRebaseInsteadOfMerge;
-            set => _repo.PreferRebaseInsteadOfMerge = value;
+            get => _repo.Settings.PreferRebaseInsteadOfMerge;
+            set => _repo.Settings.PreferRebaseInsteadOfMerge = value;
         }
 
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)

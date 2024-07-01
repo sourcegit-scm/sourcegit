@@ -187,6 +187,18 @@ namespace SourceGit
             }
         }
 
+        public static async Task<string> GetClipboardTextAsync()
+        {
+            if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                if (desktop.MainWindow.Clipboard is { } clipboard)
+                {
+                    return await clipboard.GetTextAsync();
+                }
+            }
+            return default;
+        }
+
         public static string Text(string key, params object[] args)
         {
             var fmt = Current.FindResource($"Text.{key}") as string;
@@ -259,6 +271,21 @@ namespace SourceGit
             });
         }
 
+        public static ViewModels.Repository FindOpenedRepository(string repoPath)
+        {
+            if (Current is App app && app._launcher != null)
+            {
+                foreach (var page in app._launcher.Pages)
+                {
+                    var id = page.Node.Id.Replace("\\", "/");
+                    if (id == repoPath && page.Data is ViewModels.Repository repo)
+                        return repo;
+                }
+            }
+
+            return null;
+        }
+
         public static void Quit()
         {
             if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -288,9 +315,10 @@ namespace SourceGit
                 _launcher = new ViewModels.Launcher();
                 desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
-                if (ViewModels.Preference.Instance.ShouldCheck4UpdateOnStartup)
+                var pref = ViewModels.Preference.Instance;
+                if (pref.ShouldCheck4UpdateOnStartup)
                 {
-                    ViewModels.Preference.Save();
+                    pref.Save();
                     Check4Update();
                 }
             }
@@ -315,18 +343,6 @@ namespace SourceGit
                     dialog.Show(desktop.MainWindow);
                 }
             });
-        }
-
-        public static async Task<string> GetClipboardTextAsync()
-        {
-            if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                if (desktop.MainWindow.Clipboard is { } clipboard)
-                {
-                   return await clipboard.GetTextAsync();
-                }
-            }
-            return default;
         }
 
         private ViewModels.Launcher _launcher = null;
