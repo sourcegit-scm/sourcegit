@@ -319,6 +319,7 @@ namespace SourceGit.ViewModels
             var blame = new MenuItem();
             blame.Header = App.Text("Blame");
             blame.Icon = App.CreateMenuIcon("Icons.Blame");
+            blame.IsEnabled = file.Type == Models.ObjectType.Blob;
             blame.Click += (o, ev) =>
             {
                 var window = new Views.Blame() { DataContext = new Blame(_repo, file.Path, _commit.SHA) };
