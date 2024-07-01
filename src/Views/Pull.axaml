@@ -86,12 +86,12 @@
       </StackPanel>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
-                Content="{DynamicResource Text.Pull.NoTags}"
-                IsChecked="{Binding NoTags, Mode=TwoWay}"/>
-
-      <CheckBox Grid.Row="5" Grid.Column="1"
                 Content="{DynamicResource Text.Pull.UseRebase}"
                 IsChecked="{Binding UseRebase, Mode=TwoWay}"/>
+
+      <CheckBox Grid.Row="5" Grid.Column="1"
+                Content="{DynamicResource Text.Pull.NoTags}"
+                IsChecked="{Binding NoTags, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

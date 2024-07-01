@@ -58,7 +58,7 @@
                                            Text="{Binding Name}" 
                                            FontSize="10" 
                                            Margin="4,0" 
-                                           Foreground="Black"
+                                           Foreground="{DynamicResource Brush.DecoratorFG}"
                                            FontWeight="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToFontWeight}}"/>
                               </Border>
                             </StackPanel>

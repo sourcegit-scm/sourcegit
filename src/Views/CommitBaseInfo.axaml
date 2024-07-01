@@ -94,7 +94,7 @@
                       <Path Width="8" Height="8" Data="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToIcon}}" Fill="{DynamicResource Brush.DecoratorIcon}"/>
                     </Border>
                     <Border Background="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToBackground}}">
-                      <TextBlock Classes="monospace" Text="{Binding Name}" FontSize="10" Margin="4,0" Foreground="Black"/>
+                      <TextBlock Classes="monospace" Text="{Binding Name}" FontSize="10" Margin="4,0" Foreground="{DynamicResource Brush.DecoratorFG}"/>
                     </Border>
                   </StackPanel>
                 </Border>
