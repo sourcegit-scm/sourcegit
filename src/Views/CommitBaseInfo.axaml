@@ -90,7 +90,7 @@
               <DataTemplate DataType="{x:Type m:Decorator}">
                 <Border Height="16" Margin="0,0,6,0" CornerRadius="2" ClipToBounds="True">
                   <StackPanel Orientation="Horizontal">
-                    <Border Background="{DynamicResource Brush.Decorator}" Width="16">
+                    <Border Background="{DynamicResource Brush.DecoratorIconBG}" Width="16">
                       <Path Width="8" Height="8" Data="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToIcon}}" Fill="{DynamicResource Brush.DecoratorIcon}"/>
                     </Border>
                     <Border Background="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToBackground}}">

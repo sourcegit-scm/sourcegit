@@ -11,8 +11,8 @@ namespace SourceGit.Converters
             new FuncValueConverter<Models.DecoratorType, IBrush>(v =>
             {
                 if (v == Models.DecoratorType.Tag)
-                    return Models.DecoratorResources.Backgrounds[0];
-                return Models.DecoratorResources.Backgrounds[1];
+                    return Application.Current.FindResource("Brush.DecoratorTag") as IBrush;
+                return Application.Current.FindResource("Brush.DecoratorBranch") as IBrush;
             });
 
         public static readonly FuncValueConverter<Models.DecoratorType, StreamGeometry> ToIcon =
