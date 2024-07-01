@@ -13,7 +13,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Pull.Title}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32" ColumnDefinitions="140,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="140,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -86,6 +86,10 @@
       </StackPanel>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
+                Content="{DynamicResource Text.Pull.NoTags}"
+                IsChecked="{Binding NoTags, Mode=TwoWay}"/>
+
+      <CheckBox Grid.Row="5" Grid.Column="1"
                 Content="{DynamicResource Text.Pull.UseRebase}"
                 IsChecked="{Binding UseRebase, Mode=TwoWay}"/>
     </Grid>

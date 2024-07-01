@@ -26,14 +26,19 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        }
+        } = true;
+
+        public bool NoTags
+        {
+            get;
+            set;
+        } = false;
 
         public Fetch(Repository repo, Models.Remote preferedRemote = null)
         {
             _repo = repo;
             _fetchAllRemotes = preferedRemote == null;
             SelectedRemote = preferedRemote != null ? preferedRemote : _repo.Remotes[0];
-            Prune = true;
             View = new Views.Fetch() { DataContext = this };
         }
 
@@ -47,13 +52,13 @@ namespace SourceGit.ViewModels
                     foreach (var remote in _repo.Remotes)
                     {
                         SetProgressDescription($"Fetching remote: {remote.Name}");
-                        new Commands.Fetch(_repo.FullPath, remote.Name, Prune, SetProgressDescription).Exec();
+                        new Commands.Fetch(_repo.FullPath, remote.Name, Prune, NoTags, SetProgressDescription).Exec();
                     }
                 }
                 else
                 {
                     SetProgressDescription($"Fetching remote: {SelectedRemote.Name}");
-                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, Prune, SetProgressDescription).Exec();
+                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, Prune, NoTags, SetProgressDescription).Exec();
                 }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

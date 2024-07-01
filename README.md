@@ -110,6 +110,10 @@ This app supports open repository in external tools listed in the table below.
 | Color.BadgeFG | Badge foreground color |
 | Color.Conflict | Conflict panel background color |
 | Color.ConflictForeground | Conflict panel foreground color |
+| Color.DecoratorIconBG | Background color for commit ref icon |
+| Color.DecoratorIcon | Foreground color for commit ref icon |
+| Color.DecoratorBranch | Background color for commit branch ref name |
+| Color.DecoratorTag | Background color for commit tag ref name |
 | Color.Border0 | Border color used in some controls, like Window, Tab, Toolbar, etc. |
 | Color.Border1 | Border color used in inputs, like TextBox, ComboBox, etc. |
 | Color.Border2 | Border color used in visual lines, like seperators, Rectange, etc. |

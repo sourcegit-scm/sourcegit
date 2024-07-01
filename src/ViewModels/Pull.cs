@@ -59,6 +59,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.PreferRebaseInsteadOfMerge = value;
         }
 
+        public bool NoTags
+        {
+            get;
+            set;
+        } = false;
+
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
         {
             _repo = repo;
@@ -145,7 +151,7 @@ namespace SourceGit.ViewModels
                 }
 
                 SetProgressDescription($"Pull {_selectedRemote.Name}/{_selectedBranch.Name}...");
-                var rs = new Commands.Pull(_repo.FullPath, _selectedRemote.Name, _selectedBranch.Name, UseRebase, SetProgressDescription).Exec();
+                var rs = new Commands.Pull(_repo.FullPath, _selectedRemote.Name, _selectedBranch.Name, UseRebase, NoTags, SetProgressDescription).Exec();
                 if (rs && needPopStash)
                 {
                     SetProgressDescription("Re-apply local changes...");
