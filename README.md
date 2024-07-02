@@ -52,7 +52,9 @@ This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationD
 For **Windows** users:
 
 * **MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
-* `sourcegit_x.y.win-x64.zip` may be reported as virus by Windows Defender. I don't know why. I have manually tested the zip to be uploaded using Windows Defender before uploading and no virus was found. If you have installed .NET 8 SDK locally, I suggest you to compile it yourself. And if you have any idea about how to fix this, please open an issue.
+* You can install the latest stable by `winget install SourceGit`.
+  - Note: `winget` will install this software as a commandline tool. You need run `SourceGit` from console or `Win+R` at the first time. Then you can add it to the taskbar.
+* Portable versions can be found in [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest)
 
 For **macOS** users:
 
