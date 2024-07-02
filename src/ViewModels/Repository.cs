@@ -268,11 +268,18 @@ namespace SourceGit.ViewModels
         public void Open()
         {
             var settingsFile = Path.Combine(_gitDir, "sourcegit.settings");
-            try
+            if (File.Exists(settingsFile))
             {
-                _settings = JsonSerializer.Deserialize(File.ReadAllText(settingsFile), JsonCodeGen.Default.RepositorySettings);
+                try
+                {
+                    _settings = JsonSerializer.Deserialize(File.ReadAllText(settingsFile), JsonCodeGen.Default.RepositorySettings);
+                }
+                catch
+                {
+                    _settings = new RepositorySettings();
+                }
             }
-            catch
+            else
             {
                 _settings = new RepositorySettings();
             }
@@ -1202,7 +1209,7 @@ namespace SourceGit.ViewModels
                 if (upstream != null)
                 {
                     var fastForward = new MenuItem();
-                    fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", $"{upstream.Remote}/{upstream.Name}");
+                    fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream.FriendlyName);
                     fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
                     fastForward.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrackStatus) && branch.UpstreamTrackStatus.IndexOf('↑') < 0;
                     fastForward.Click += (o, e) =>
@@ -1491,9 +1498,10 @@ namespace SourceGit.ViewModels
         {
             var menu = new ContextMenu();
             var current = Branches.Find(x => x.IsCurrent);
+            var name = branch.FriendlyName;
 
             var checkout = new MenuItem();
-            checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", $"{branch.Remote}/{branch.Name}");
+            checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", name);
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
             checkout.Click += (o, e) =>
             {
@@ -1506,7 +1514,7 @@ namespace SourceGit.ViewModels
             if (current != null)
             {
                 var pull = new MenuItem();
-                pull.Header = new Views.NameHighlightedTextBlock("BranchCM.PullInto", $"{branch.Remote}/{branch.Name}", current.Name);
+                pull.Header = new Views.NameHighlightedTextBlock("BranchCM.PullInto", name, current.Name);
                 pull.Icon = App.CreateMenuIcon("Icons.Pull");
                 pull.Click += (o, e) =>
                 {
@@ -1516,17 +1524,17 @@ namespace SourceGit.ViewModels
                 };
 
                 var merge = new MenuItem();
-                merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", $"{branch.Remote}/{branch.Name}", current.Name);
+                merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", name, current.Name);
                 merge.Icon = App.CreateMenuIcon("Icons.Merge");
                 merge.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Merge(this, $"{branch.Remote}/{branch.Name}", current.Name));
+                        PopupHost.ShowPopup(new Merge(this, name, current.Name));
                     e.Handled = true;
                 };
 
                 var rebase = new MenuItem();
-                rebase.Header = new Views.NameHighlightedTextBlock("BranchCM.Rebase", current.Name, $"{branch.Remote}/{branch.Name}");
+                rebase.Header = new Views.NameHighlightedTextBlock("BranchCM.Rebase", current.Name, name);
                 rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
                 rebase.Click += (o, e) =>
                 {
@@ -1573,7 +1581,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
             var delete = new MenuItem();
-            delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", $"{branch.Remote}/{branch.Name}");
+            delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (o, e) =>
             {
@@ -1617,7 +1625,7 @@ namespace SourceGit.ViewModels
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.Click += (o, e) =>
             {
-                App.CopyText(branch.Remote + "/" + branch.Name);
+                App.CopyText(name);
                 e.Handled = true;
             };
 
@@ -1810,7 +1818,7 @@ namespace SourceGit.ViewModels
                 {
                     var dup = b;
                     var target = new MenuItem();
-                    target.Header = b.IsLocal ? b.Name : $"{b.Remote}/{b.Name}";
+                    target.Header = b.FriendlyName;
                     target.Icon = App.CreateMenuIcon(b.IsCurrent ? "Icons.Check" : "Icons.Branch");
                     target.Click += (_, e) =>
                     {

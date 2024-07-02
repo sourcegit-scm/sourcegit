@@ -11,5 +11,7 @@
         public string UpstreamTrackStatus { get; set; }
         public string Remote { get; set; }
         public bool IsHead { get; set; }
+
+        public string FriendlyName => IsLocal ? Name : $"{Remote}/{Name}";
     }
 }

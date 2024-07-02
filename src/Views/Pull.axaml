@@ -48,7 +48,7 @@
           <DataTemplate x:DataType="{x:Type m:Branch}">
             <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
               <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-              <TextBlock Text="{Binding Converter={x:Static c:BranchConverters.ToName}}"/>
+              <TextBlock Text="{Binding FriendlyName}"/>
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>

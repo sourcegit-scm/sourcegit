@@ -71,7 +71,7 @@ namespace SourceGit.ViewModels
                 if (branch.IsLocal)
                     LocalBranches.Add(branch.Name);
                 else
-                    RemoteBranches.Add($"{branch.Remote}/{branch.Name}");
+                    RemoteBranches.Add(branch.FriendlyName);
             }
 
             if (RemoteBranches.Count > 0)
