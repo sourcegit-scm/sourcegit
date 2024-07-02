@@ -170,7 +170,13 @@ namespace SourceGit
 
                     var schema = JsonSerializer.Deserialize(File.ReadAllText(colorsFile), JsonCodeGen.Default.CustomColorSchema);
                     foreach (var kv in schema.Basic)
-                        resDic[$"Color.{kv.Key}"] = Color.Parse(kv.Value);
+                    {
+                        if (kv.Key.Equals("SystemAccentColor", StringComparison.Ordinal))
+                            resDic["SystemAccentColor"] = Color.Parse(kv.Value);
+                        else
+                            resDic[$"Color.{kv.Key}"] = Color.Parse(kv.Value);
+                    }
+                        
 
                     if (schema.Graph.Count > 0)
                     {
