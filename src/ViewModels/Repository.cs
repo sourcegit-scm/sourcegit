@@ -709,7 +709,7 @@ namespace SourceGit.ViewModels
             }
 
             var commits = new Commands.QueryCommits(FullPath, limits).Result();
-            var graph = Models.CommitGraph.Parse(commits, 8);
+            var graph = Models.CommitGraph.Parse(commits);
 
             Dispatcher.UIThread.Invoke(() =>
             {

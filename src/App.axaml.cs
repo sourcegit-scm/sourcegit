@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -159,15 +160,27 @@ namespace SourceGit
                 app._colorOverrides = null;
             }
 
+            Models.CommitGraph.SetDefaultPens();
+
             if (!string.IsNullOrEmpty(colorsFile) && File.Exists(colorsFile))
             {
                 try
                 {
                     var resDic = new ResourceDictionary();
 
-                    var schema = JsonSerializer.Deserialize(File.ReadAllText(colorsFile), JsonCodeGen.Default.DictionaryStringString);
-                    foreach (var kv in schema)
-                        resDic[kv.Key] = Color.Parse(kv.Value);
+                    var schema = JsonSerializer.Deserialize(File.ReadAllText(colorsFile), JsonCodeGen.Default.CustomColorSchema);
+                    foreach (var kv in schema.Basic)
+                        resDic[$"Color.{kv.Key}"] = Color.Parse(kv.Value);
+
+                    if (schema.Graph.Count > 0)
+                    {
+                        var penColors = new List<Color>();
+
+                        foreach (var c in schema.Graph)
+                            penColors.Add(Color.Parse(c));
+
+                        Models.CommitGraph.SetPenColors(penColors);
+                    }
 
                     app.Resources.MergedDictionaries.Add(resDic);
                     app._colorOverrides = resDic;
