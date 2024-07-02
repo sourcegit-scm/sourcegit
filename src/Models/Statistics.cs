@@ -49,7 +49,6 @@ namespace SourceGit.Models
 
         public Statistics()
         {
-            _utcStart = DateTime.UnixEpoch;
             _today = DateTime.Today;
             _thisWeekStart = _today.AddSeconds(-(int)_today.DayOfWeek * 3600 * 24 - _today.Hour * 3600 - _today.Minute * 60 - _today.Second);
             _thisWeekEnd = _thisWeekStart.AddDays(7);
@@ -115,7 +114,7 @@ namespace SourceGit.Models
 
         public void AddCommit(string committer, double timestamp)
         {
-            var time = _utcStart.AddSeconds(timestamp).ToLocalTime();
+            var time = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
             if (time.CompareTo(_thisWeekStart) >= 0 && time.CompareTo(_thisWeekEnd) < 0)
             {
                 Week.AddCommit((int)time.DayOfWeek, committer);
@@ -136,7 +135,6 @@ namespace SourceGit.Models
             Week.Complete();
         }
 
-        private readonly DateTime _utcStart;
         private readonly DateTime _today;
         private readonly DateTime _thisWeekStart;
         private readonly DateTime _thisWeekEnd;
