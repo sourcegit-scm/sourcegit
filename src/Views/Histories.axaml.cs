@@ -140,7 +140,7 @@ namespace SourceGit.Views
                 if (dot.Center.Y > bottom)
                     break;
 
-                context.DrawEllipse(dotFill, Models.CommitGraph.Pens[dot.Color], dot.Center, 3, 3);
+                context.DrawEllipse(dotFill, Models.CommitGraph.GetPen(dot.Color), dot.Center, 3, 3);
             }
         }
 
@@ -157,8 +157,10 @@ namespace SourceGit.Views
                     continue;
 
                 var geo = new StreamGeometry();
-                var pen = Models.CommitGraph.Pens[line.Color];
+                var pen = Models.CommitGraph.GetPen(line.Color);
+
                 pen.Thickness = 2.5;
+
                 using (var ctx = geo.Open())
                 {
                     var started = false;
@@ -228,7 +230,7 @@ namespace SourceGit.Views
                     ctx.QuadraticBezierTo(link.Control, link.End);
                 }
 
-                context.DrawGeometry(null, Models.CommitGraph.Pens[link.Color], geo);
+                context.DrawGeometry(null, Models.CommitGraph.GetPen(link.Color), geo);
             }
         }
     }

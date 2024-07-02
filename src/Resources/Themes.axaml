@@ -32,6 +32,16 @@
       <Color x:Key="Color.Diff.DeletedBG">#3CFF0000</Color>
       <Color x:Key="Color.Diff.AddedHighlight">#5A00FF00</Color>
       <Color x:Key="Color.Diff.DeletedHighlight">#50FF0000</Color>
+      <Color x:Key="Color.Graph.01">#FFFFA500</Color>
+      <Color x:Key="Color.Graph.02">#FF228B22</Color>
+      <Color x:Key="Color.Graph.03">#FFFFD700</Color>
+      <Color x:Key="Color.Graph.04">#FFFF00FF</Color>
+      <Color x:Key="Color.Graph.05">#FFFF0000</Color>
+      <Color x:Key="Color.Graph.06">#FF808080</Color>
+      <Color x:Key="Color.Graph.07">#FF40E0D0</Color>
+      <Color x:Key="Color.Graph.08">#FF808000</Color>
+      <Color x:Key="Color.Graph.09">#FFF0E68C</Color>
+      <Color x:Key="Color.Graph.10">#FF00FF00</Color>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -65,6 +75,16 @@
       <Color x:Key="Color.Diff.DeletedBG">#3CFF0000</Color>
       <Color x:Key="Color.Diff.AddedHighlight">#5A00FF00</Color>
       <Color x:Key="Color.Diff.DeletedHighlight">#50FF0000</Color>
+      <Color x:Key="Color.Graph.01">#FFFFA500</Color>
+      <Color x:Key="Color.Graph.02">#FF228B22</Color>
+      <Color x:Key="Color.Graph.03">#FFFFD700</Color>
+      <Color x:Key="Color.Graph.04">#FFFF00FF</Color>
+      <Color x:Key="Color.Graph.05">#FFFF0000</Color>
+      <Color x:Key="Color.Graph.06">#FF808080</Color>
+      <Color x:Key="Color.Graph.07">#FF40E0D0</Color>
+      <Color x:Key="Color.Graph.08">#FF808000</Color>
+      <Color x:Key="Color.Graph.09">#FFF0E68C</Color>
+      <Color x:Key="Color.Graph.10">#FF00FF00</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 

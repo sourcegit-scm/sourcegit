@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
-
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -709,8 +710,22 @@ namespace SourceGit.ViewModels
             }
 
             var commits = new Commands.QueryCommits(FullPath, limits).Result();
-            var graph = Models.CommitGraph.Parse(commits, 10);
 
+            // hack: color commits
+            Dispatcher.UIThread.Invoke(() => {
+                object res;
+                for (int i = 1; i <= 10; i++)
+                {
+                    if (Application.Current.TryFindResource($"Color.Graph.{i:00}", out res))
+                    {
+                        var color = (Color)res;
+                        var pen = new Pen(new SolidColorBrush(color));
+                        Models.CommitGraph.FillPen(i - 1, pen);
+                    }
+                }
+            });
+
+            var graph = Models.CommitGraph.Parse(commits, 10);
             Dispatcher.UIThread.Invoke(() =>
             {
                 if (_histories != null)

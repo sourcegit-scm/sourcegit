@@ -2,55 +2,37 @@
 using System.Collections.Generic;
 
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
 
 namespace SourceGit.Models
 {
     public class CommitGraph
     {
-        static SolidColorBrush CreateBrushFromHex(string hex)
+        public static Pen GetPen(int penId)
         {
-            // Rimuove il carattere '#' se presente all'inizio del codice esadecimale
-            if (hex.StartsWith("#"))
-            {
-                hex = hex.Substring(1);
-            }
-
-            // Converte il codice esadecimale in un valore ARGB
-            uint argb = uint.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-
-            // Estrae i componenti del colore
-            byte a = (byte)((argb >> 24) & 0xFF);
-            byte r = (byte)((argb >> 16) & 0xFF);
-            byte g = (byte)((argb >> 8) & 0xFF);
-            byte b = (byte)(argb & 0xFF);
-
-            // Crea un oggetto Color
-            Color color = Color.FromArgb(a, r, g, b);
-
-            // Crea e restituisce un SolidColorBrush usando il colore ottenuto
-            return new SolidColorBrush(color);
+            return Pens[penId];
         }
 
-        public static readonly Pen[] Pens = [
-            new Pen(CreateBrushFromHex("#ff15a0bf")),
-            new Pen(CreateBrushFromHex("#ff0669f7")),
-            new Pen(CreateBrushFromHex("#ff8e00c2")),
-            new Pen(CreateBrushFromHex("#ffc517b6")),
-            new Pen(CreateBrushFromHex("#ffd90171")),
-            new Pen(CreateBrushFromHex("#ffcd0101")),
-            new Pen(CreateBrushFromHex("#fff25d2e")),
-            new Pen(CreateBrushFromHex("#fff2ca33")),
-            new Pen(CreateBrushFromHex("#ff7bd938")),
-            new Pen(CreateBrushFromHex("#ff2ece9d")),
-            //new Pen(Brushes.Orange, 2),
-            //new Pen(Brushes.ForestGreen, 2),
-            //new Pen(Brushes.Gold, 2),
-            //new Pen(Brushes.Magenta, 2),
-            //new Pen(Brushes.Red, 2),
-            //new Pen(Brushes.Gray, 2),
-            //new Pen(Brushes.Turquoise, 2),
-            //new Pen(Brushes.Olive, 2),
+        public static void FillPen(int id, Pen pens)
+        {
+            if (id < Pens.Length)
+            {
+                Pens[id] = pens;
+            }
+        }
+
+        static Pen[] Pens = [
+            new Pen(Brushes.Orange, 2),
+            new Pen(Brushes.ForestGreen, 2),
+            new Pen(Brushes.Gold, 2),
+            new Pen(Brushes.Magenta, 2),
+            new Pen(Brushes.Red, 2),
+            new Pen(Brushes.Gray, 2),
+            new Pen(Brushes.Turquoise, 2),
+            new Pen(Brushes.Olive, 2),
+            new Pen(Brushes.Khaki, 2),
+            new Pen(Brushes.Lime, 2),
         ];
 
         public class Path
