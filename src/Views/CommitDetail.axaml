@@ -53,7 +53,7 @@
                                       Margin="16,0,0,0" 
                                       IsWorkingCopyChange="False" 
                                       Change="{Binding}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Path}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Path}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>
