@@ -29,7 +29,7 @@
 
     <Style.Resources>
       <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="Red"/>
-      <SolidColorBrush x:Key="SystemErrorTextColor" Color="Red"/>
+      <Color x:Key="SystemErrorTextColor">Red</Color>
     </Style.Resources>
   </Style>
 
