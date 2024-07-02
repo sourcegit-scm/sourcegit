@@ -10,37 +10,23 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnChangeListDoubleTapped(object sender, TappedEventArgs e)
+        private void OnChangeDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail)
+            if (DataContext is ViewModels.CommitDetail detail && sender is Grid grid && grid.DataContext is Models.Change change)
             {
-                var datagrid = sender as DataGrid;
-                if (datagrid.SelectedItem == null)
-                {
-                    e.Handled = true;
-                    return;
-                }
-
                 detail.ActivePageIndex = 1;
-                detail.SelectedChanges = new() { datagrid.SelectedItem as Models.Change };
+                detail.SelectedChanges = new() { change };
             }
 
             e.Handled = true;
         }
 
-        private void OnChangeListContextRequested(object sender, ContextRequestedEventArgs e)
+        private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail)
+            if (DataContext is ViewModels.CommitDetail detail && sender is Grid grid && grid.DataContext is Models.Change change)
             {
-                var datagrid = sender as DataGrid;
-                if (datagrid.SelectedItem == null)
-                {
-                    e.Handled = true;
-                    return;
-                }
-
-                var menu = detail.CreateChangeContextMenu(datagrid.SelectedItem as Models.Change);
-                datagrid.OpenContextMenu(menu);
+                var menu = detail.CreateChangeContextMenu(change);
+                grid.OpenContextMenu(menu);
             }
 
             e.Handled = true;
