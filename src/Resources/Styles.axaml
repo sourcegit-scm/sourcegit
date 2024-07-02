@@ -160,6 +160,11 @@
     <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
   </Style>
 
+  <Style Selector="ToolTip">
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+    <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
+  </Style>
+
   <Style Selector="FlyoutPresenter">
     <Setter Property="MaxWidth" Value="1024"/>
     <Setter Property="MaxHeight" Value="768"/>
