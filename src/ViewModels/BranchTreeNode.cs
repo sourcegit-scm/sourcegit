@@ -69,6 +69,17 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isSelected, value);
         }
 
+        public string Tooltip
+        {
+            get
+            {
+                if (Backend is Models.Branch b)
+                    return b.FriendlyName;
+
+                return null;
+            }
+        }
+
         public CornerRadius CornerRadius
         {
             get => _cornerRadius;

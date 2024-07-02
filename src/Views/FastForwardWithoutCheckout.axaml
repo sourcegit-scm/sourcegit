@@ -16,7 +16,7 @@
       <TextBlock Text="{Binding Local.Name}" Margin="8,0,0,0"/>
       <TextBlock Text="→" Margin="8,0"/>
       <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
-      <TextBlock Text="{Binding To, Converter={x:Static c:BranchConverters.ToName}}" Margin="8,0,0,0"/>
+      <TextBlock Text="{Binding To.FriendlyName}" Margin="8,0,0,0"/>
     </StackPanel>
   </StackPanel>
 </UserControl>

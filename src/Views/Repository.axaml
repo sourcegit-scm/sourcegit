@@ -269,7 +269,7 @@
             </TreeView.Styles>
             <TreeView.ItemTemplate>
               <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:BranchTreeNode}">
-                <Grid Height="24" ColumnDefinitions="20,*,Auto,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedBranchNode">
+                <Grid Height="24" ColumnDefinitions="20,*,Auto,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedBranchNode" ToolTip.Tip="{Binding Tooltip}">
                   <Path Grid.Column="0" Classes="folder_icon" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,1,0,0" IsVisible="{Binding IsFolder}"/>
                   <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,2,0,0" Data="{StaticResource Icons.Check}" IsVisible="{Binding IsCurrent}" VerticalAlignment="Center"/>
                   <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}" VerticalAlignment="Center">
@@ -281,7 +281,10 @@
                     </Path.IsVisible>
                   </Path>
 
-                  <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
+                  <TextBlock Grid.Column="1" 
+                             Text="{Binding Name}" 
+                             Classes="monospace" 
+                             FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
 
                   <Border Grid.Column="2" Margin="8,0" Height="18" CornerRadius="9" VerticalAlignment="Center" Background="{DynamicResource Brush.Badge}" IsVisible="{Binding IsUpstreamTrackStatusVisible}">
                     <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}" Foreground="{DynamicResource Brush.BadgeFG}"/>
@@ -294,7 +297,8 @@
                                 IsVisible="{Binding IsBranch}"
                                 Checked="OnToggleFilter"
                                 Unchecked="OnToggleFilter"
-                                IsChecked="{Binding IsFiltered}"/>
+                                IsChecked="{Binding IsFiltered}"
+                                ToolTip.Tip="{DynamicResource Text.Filter}"/>
                 </Grid>
               </TreeDataTemplate>
             </TreeView.ItemTemplate>
@@ -343,7 +347,7 @@
 
             <TreeView.ItemTemplate>
               <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:BranchTreeNode}">
-                <Grid Height="24" ColumnDefinitions="20,*,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedBranchNode">
+                <Grid Height="24" ColumnDefinitions="20,*,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedBranchNode" ToolTip.Tip="{Binding Tooltip}">
                   <Path Grid.Column="0" Classes="folder_icon" Width="10" Height="10" HorizontalAlignment="Left" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" VerticalAlignment="Center"/>
                   <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,2,0,0" Data="{StaticResource Icons.Remote}" IsVisible="{Binding IsRemote}" VerticalAlignment="Center"/>
                   <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}" VerticalAlignment="Center"/>
@@ -357,7 +361,8 @@
                                 Checked="OnToggleFilter"
                                 Unchecked="OnToggleFilter"
                                 IsVisible="{Binding IsBranch}"
-                                IsChecked="{Binding IsFiltered}"/>
+                                IsChecked="{Binding IsFiltered}"
+                                ToolTip.Tip="{DynamicResource Text.Filter}"/>
                 </Grid>
               </TreeDataTemplate>
             </TreeView.ItemTemplate>
@@ -444,7 +449,8 @@
                                   Background="Transparent"
                                   Checked="OnToggleFilter"
                                   Unchecked="OnToggleFilter"
-                                  IsChecked="{Binding IsFiltered}"/>
+                                  IsChecked="{Binding IsFiltered}"
+                                  ToolTip.Tip="{DynamicResource Text.Filter}"/>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
