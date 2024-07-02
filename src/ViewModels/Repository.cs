@@ -268,11 +268,18 @@ namespace SourceGit.ViewModels
         public void Open()
         {
             var settingsFile = Path.Combine(_gitDir, "sourcegit.settings");
-            try
+            if (File.Exists(settingsFile))
             {
-                _settings = JsonSerializer.Deserialize(File.ReadAllText(settingsFile), JsonCodeGen.Default.RepositorySettings);
+                try
+                {
+                    _settings = JsonSerializer.Deserialize(File.ReadAllText(settingsFile), JsonCodeGen.Default.RepositorySettings);
+                }
+                catch
+                {
+                    _settings = new RepositorySettings();
+                }
             }
-            catch
+            else
             {
                 _settings = new RepositorySettings();
             }
