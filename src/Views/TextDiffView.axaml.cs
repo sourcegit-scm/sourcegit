@@ -429,7 +429,18 @@ namespace SourceGit.Views
             {
                 var builder = new StringBuilder();
                 foreach (var line in textDiff.Lines)
-                    builder.AppendLine(line.Content);
+                {
+                    if (line.Content.Length > 10000)
+                    {
+                        builder.Append(line.Content.Substring(0, 1000));
+                        builder.Append($"...({line.Content.Length - 1000} character trimmed)");
+                        builder.AppendLine();
+                    }
+                    else
+                    {
+                        builder.AppendLine(line.Content);
+                    }
+                }
 
                 Text = builder.ToString();
             }
@@ -718,7 +729,18 @@ namespace SourceGit.Views
                 var builder = new StringBuilder();
                 var lines = IsOld ? diff.Old : diff.New;
                 foreach (var line in lines)
-                    builder.AppendLine(line.Content);
+                {
+                    if (line.Content.Length > 10000)
+                    {
+                        builder.Append(line.Content.Substring(0, 1000));
+                        builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
+                        builder.AppendLine();
+                    }
+                    else
+                    {
+                        builder.AppendLine(line.Content);
+                    }
+                }
 
                 Text = builder.ToString();
             }
