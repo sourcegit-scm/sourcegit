@@ -12,8 +12,8 @@ namespace SourceGit.ViewModels
 
         public Models.DealWithLocalChanges PreAction
         {
-            get => _preAction;
-            set => SetProperty(ref _preAction, value);
+            get => _repo.Settings.DealWithLocalChangesOnCheckoutBranch;
+            set => _repo.Settings.DealWithLocalChangesOnCheckoutBranch = value;
         }
 
         public Checkout(Repository repo, string branch)
@@ -34,7 +34,7 @@ namespace SourceGit.ViewModels
                 var needPopStash = false;
                 if (hasLocalChanges)
                 {
-                    if (_preAction == Models.DealWithLocalChanges.StashAndReaply)
+                    if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                     {
                         SetProgressDescription("Adding untracked changes ...");
                         var succ = new Commands.Add(_repo.FullPath).Exec();
@@ -52,7 +52,7 @@ namespace SourceGit.ViewModels
 
                         needPopStash = true;
                     }
-                    else if (_preAction == Models.DealWithLocalChanges.Discard)
+                    else if (PreAction == Models.DealWithLocalChanges.Discard)
                     {
                         SetProgressDescription("Discard local changes ...");
                         Commands.Discard.All(_repo.FullPath);
@@ -78,6 +78,5 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
-        private Models.DealWithLocalChanges _preAction = Models.DealWithLocalChanges.DoNothing;
     }
 }

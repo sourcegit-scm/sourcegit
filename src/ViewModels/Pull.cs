@@ -49,8 +49,8 @@ namespace SourceGit.ViewModels
 
         public Models.DealWithLocalChanges PreAction
         {
-            get => _preAction;
-            set => SetProperty(ref _preAction, value);
+            get => _repo.Settings.DealWithLocalChangesOnPull;
+            set => _repo.Settings.DealWithLocalChangesOnPull = value;
         }
 
         public bool UseRebase
@@ -61,9 +61,9 @@ namespace SourceGit.ViewModels
 
         public bool NoTags
         {
-            get;
-            set;
-        } = false;
+            get => _repo.Settings.FetchWithoutTagsOnPull;
+            set => _repo.Settings.FetchWithoutTagsOnPull = value;
+        }
 
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
         {
@@ -120,12 +120,13 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
+
             return Task.Run(() =>
             {
                 var needPopStash = false;
                 if (_repo.WorkingCopyChangesCount > 0)
                 {
-                    if (_preAction == Models.DealWithLocalChanges.StashAndReaply)
+                    if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                     {
                         SetProgressDescription("Adding untracked changes...");
                         var succ = new Commands.Add(_repo.FullPath).Exec();
@@ -143,7 +144,7 @@ namespace SourceGit.ViewModels
 
                         needPopStash = true;
                     }
-                    else if (_preAction == Models.DealWithLocalChanges.Discard)
+                    else if (PreAction == Models.DealWithLocalChanges.Discard)
                     {
                         SetProgressDescription("Discard local changes ...");
                         Commands.Discard.All(_repo.FullPath);
@@ -168,6 +169,5 @@ namespace SourceGit.ViewModels
         private Models.Remote _selectedRemote = null;
         private List<Models.Branch> _remoteBranches = null;
         private Models.Branch _selectedBranch = null;
-        private Models.DealWithLocalChanges _preAction = Models.DealWithLocalChanges.DoNothing;
     }
 }

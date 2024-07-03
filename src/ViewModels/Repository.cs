@@ -14,9 +14,51 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class RepositorySettings : ObservableObject
+    public class RepositorySettings
     {
+        public Models.DealWithLocalChanges DealWithLocalChangesOnCheckoutBranch
+        {
+            get;
+            set;
+        } = Models.DealWithLocalChanges.DoNothing;
+
+        public bool FetchWithoutTags
+        {
+            get;
+            set;
+        } = false;
+
+        public Models.DealWithLocalChanges DealWithLocalChangesOnPull
+        {
+            get;
+            set;
+        } = Models.DealWithLocalChanges.DoNothing;
+
         public bool PreferRebaseInsteadOfMerge
+        {
+            get;
+            set;
+        } = true;
+
+        public bool FetchWithoutTagsOnPull
+        {
+            get;
+            set;
+        } = false;
+
+        public bool PushAllTags
+        {
+            get;
+            set;
+        } = false;
+
+        public Models.DealWithLocalChanges DealWithLocalChangesOnCreateBranch
+        {
+            get;
+            set;
+        } = Models.DealWithLocalChanges.DoNothing;
+
+        public bool CheckoutBranchOnCreateBranch
         {
             get;
             set;

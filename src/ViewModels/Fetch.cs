@@ -30,9 +30,9 @@ namespace SourceGit.ViewModels
 
         public bool NoTags
         {
-            get;
-            set;
-        } = false;
+            get => _repo.Settings.FetchWithoutTags;
+            set => _repo.Settings.FetchWithoutTags = value;
+        }
 
         public Fetch(Repository repo, Models.Remote preferedRemote = null)
         {
@@ -45,6 +45,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
+
             return Task.Run(() =>
             {
                 if (FetchAllRemotes)
