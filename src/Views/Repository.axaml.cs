@@ -18,6 +18,16 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            if (DataContext is ViewModels.Repository repo && !repo.IsSearching)
+            {
+                UpdateLeftSidebarLayout();
+            }            
+        }
+
         private void OpenWithExternalTools(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
@@ -244,15 +254,24 @@ namespace SourceGit.Views
             if (sender is Grid grid && DataContext is ViewModels.Repository repo)
             {
                 var node = grid.DataContext as ViewModels.BranchTreeNode;
-                if (node != null && node.IsBranch)
+                if (node == null)
+                    return;
+
+                if (node.IsBranch)
                 {
                     var branch = node.Backend as Models.Branch;
                     if (branch.IsCurrent)
                         return;
 
                     repo.CheckoutBranch(branch);
-                    e.Handled = true;
                 }
+                else
+                {
+                    node.IsExpanded = !node.IsExpanded;
+                    UpdateLeftSidebarLayout();
+                }
+
+                e.Handled = true;
             }
         }
 
@@ -369,17 +388,34 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDashboardLayoutUpdated(object sender, EventArgs e) 
+        private void OnLeftSidebarTreeViewPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == TreeView.ItemsSourceProperty || e.Property == TreeView.IsVisibleProperty)
+            {
+                if (sender is TreeView tree && tree.IsVisible)
+                    UpdateLeftSidebarLayout();
+            }
+        }
+
+        private void OnLeftSidebarDataGridPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == DataGrid.ItemsSourceProperty || e.Property == DataGrid.IsVisibleProperty)
+            {
+                if (sender is DataGrid datagrid && datagrid.IsVisible)
+                    UpdateLeftSidebarLayout();
+            }
+        }
+
+        private void UpdateLeftSidebarLayout()
         {
             var vm = DataContext as ViewModels.Repository;
             if (vm == null || vm.Settings == null)
                 return;
 
-            var grid = sender as Grid;
-            if (grid == null || !grid.IsAttachedToVisualTree())
+            if (!IsLoaded)
                 return;
 
-            var leftHeight = grid.Bounds.Height - 28.0 * 5;
+            var leftHeight = leftSidebarGroups.Bounds.Height - 28.0 * 5;
             if (vm.IsTagGroupExpanded)
             {
                 var desiredHeight = Math.Min(200.0, tagsList.RowHeight * vm.VisibleTags.Count);

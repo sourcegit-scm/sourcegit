@@ -231,7 +231,7 @@
             </TextBox.InnerRightContent>
           </TextBox>
 
-          <Grid Grid.Row="2" RowDefinitions="28,Auto,28,Auto,28,Auto,28,Auto,28,Auto" LayoutUpdated="OnDashboardLayoutUpdated">
+          <Grid Grid.Row="2" x:Name="leftSidebarGroups" RowDefinitions="28,Auto,28,Auto,28,Auto,28,Auto,28,Auto">
             <!-- Local Branches -->
             <ToggleButton Grid.Row="0" Classes="group_expander" IsChecked="{Binding IsLocalBranchGroupExpanded, Mode=TwoWay}">
               <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.LocalBranches}"/>
@@ -245,7 +245,8 @@
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ContextRequested="OnLocalBranchContextMenuRequested"
-                      SelectionChanged="OnLocalBranchTreeSelectionChanged">
+                      SelectionChanged="OnLocalBranchTreeSelectionChanged"
+                      PropertyChanged="OnLeftSidebarTreeViewPropertyChanged">
               <TreeView.Styles>
                 <Style Selector="TreeViewItem" x:DataType="vm:BranchTreeNode">
                   <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
@@ -325,7 +326,8 @@
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ContextRequested="OnRemoteBranchContextMenuRequested"
-                      SelectionChanged="OnRemoteBranchTreeSelectionChanged">
+                      SelectionChanged="OnRemoteBranchTreeSelectionChanged"
+                      PropertyChanged="OnLeftSidebarTreeViewPropertyChanged">
               <TreeView.Styles>
                 <Style Selector="TreeViewItem" x:DataType="vm:BranchTreeNode">
                   <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
@@ -401,7 +403,8 @@
                       VerticalScrollBarVisibility="Auto"
                       IsVisible="{Binding IsTagGroupExpanded, Mode=OneWay}"
                       SelectionChanged="OnTagDataGridSelectionChanged"
-                      ContextRequested="OnTagContextRequested">
+                      ContextRequested="OnTagContextRequested"
+                      PropertyChanged="OnLeftSidebarDataGridPropertyChanged">
               <DataGrid.Styles>
                 <Style Selector="DataGridRow">
                   <Setter Property="CornerRadius" Value="4" />
@@ -504,6 +507,7 @@
                       VerticalScrollBarVisibility="Auto"
                       ContextRequested="OnSubmoduleContextRequested"
                       DoubleTapped="OnDoubleTappedSubmodule"
+                      PropertyChanged="OnLeftSidebarDataGridPropertyChanged"
                       IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}">
               <DataGrid.Styles>
                 <Style Selector="DataGridRow">
@@ -585,6 +589,7 @@
                       VerticalScrollBarVisibility="Auto"
                       ContextRequested="OnWorktreeContextRequested"
                       DoubleTapped="OnDoubleTappedWorktree"
+                      PropertyChanged="OnLeftSidebarDataGridPropertyChanged"
                       IsVisible="{Binding IsWorktreeGroupExpanded, Mode=OneWay}">
               <DataGrid.Styles>
                 <Style Selector="DataGridRow">
