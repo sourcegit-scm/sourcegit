@@ -392,8 +392,7 @@ namespace SourceGit.Views
         {
             if (e.Property == TreeView.ItemsSourceProperty || e.Property == TreeView.IsVisibleProperty)
             {
-                if (sender is TreeView tree && tree.IsVisible)
-                    UpdateLeftSidebarLayout();
+                UpdateLeftSidebarLayout();
             }
         }
 
@@ -401,8 +400,7 @@ namespace SourceGit.Views
         {
             if (e.Property == DataGrid.ItemsSourceProperty || e.Property == DataGrid.IsVisibleProperty)
             {
-                if (sender is DataGrid datagrid && datagrid.IsVisible)
-                    UpdateLeftSidebarLayout();
+                UpdateLeftSidebarLayout();
             }
         }
 
