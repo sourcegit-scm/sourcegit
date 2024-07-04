@@ -376,7 +376,7 @@ namespace SourceGit.Views
                 return;
 
             var grid = sender as Grid;
-            if (grid == null)
+            if (grid == null || !grid.IsAttachedToVisualTree())
                 return;
 
             var leftHeight = grid.Bounds.Height - 28.0 * 5;
