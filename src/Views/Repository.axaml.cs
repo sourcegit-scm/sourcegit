@@ -404,29 +404,20 @@ namespace SourceGit.Views
                     worktreeList.Height = desiredHeight;
             }
 
-            var desiredLocalBranchHeight = GetTreeRowsCount(vm.LocalBranchTrees) * 24;
-            var desiredRemoteHeight = GetTreeRowsCount(vm.RemoteBranchTrees) * 24;
-
-            if (!vm.IsRemoteGroupExpanded)
+            if (vm.IsLocalBranchGroupExpanded)
             {
-                if (vm.IsLocalBranchGroupExpanded)
-                {
-                    var localBranchHeight = Math.Min(leftHeight, desiredLocalBranchHeight);
+                var localBranchMax = vm.IsRemoteGroupExpanded ? leftHeight * 0.5 : leftHeight;
+                var desiredHeight = GetTreeRowsCount(vm.LocalBranchTrees) * 24;
+                var localBranchHeight = Math.Min(localBranchMax, desiredHeight);
+                if (!localBranchTree.Height.IsClose(localBranchHeight))
                     localBranchTree.Height = localBranchHeight;
-                }
+                leftHeight -= localBranchHeight;
             }
-            else
+
+            if (vm.IsRemoteGroupExpanded)
             {
-                if (vm.IsLocalBranchGroupExpanded)
-                {
-                    var localBranchHeight = Math.Min(leftHeight * 0.5, desiredLocalBranchHeight);
-                    if (!localBranchTree.Height.IsClose(localBranchHeight))
-                        localBranchTree.Height = localBranchHeight;
-
-                    leftHeight -= localBranchHeight;
-                }
-
-                var remoteHeight = Math.Min(leftHeight, desiredRemoteHeight);
+                var desiredHeight = GetTreeRowsCount(vm.RemoteBranchTrees) * 24;
+                var remoteHeight = Math.Min(leftHeight, desiredHeight);
                 if (!remoteBranchTree.Height.IsClose(remoteHeight))
                     remoteBranchTree.Height = remoteHeight;
             }
