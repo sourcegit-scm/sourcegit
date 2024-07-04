@@ -271,6 +271,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _searchedCommits, value);
         }
 
+        public bool IsLocalBranchGroupExpanded
+        {
+            get => _isLocalBranchGroupExpanded;
+            set => SetProperty(ref _isLocalBranchGroupExpanded, value);
+        }
+
+        public bool IsRemoteGroupExpanded
+        {
+            get => _isRemoteGroupExpanded;
+            set => SetProperty(ref _isRemoteGroupExpanded, value);
+        }
+
         public bool IsTagGroupExpanded
         {
             get => _isTagGroupExpanded;
@@ -355,14 +367,7 @@ namespace SourceGit.ViewModels
             _histories = null;
             _workingCopy = null;
             _stashesPage = null;
-            _isSearching = false;
-            _searchCommitFilter = string.Empty;
-
-            _isTagGroupExpanded = false;
-            _isSubmoduleGroupExpanded = false;
-
             _inProgressContext = null;
-            _hasUnsolvedConflicts = false;
 
             _remotes.Clear();
             _branches.Clear();
@@ -1941,6 +1946,8 @@ namespace SourceGit.ViewModels
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
 
+        private bool _isLocalBranchGroupExpanded = true;
+        private bool _isRemoteGroupExpanded = false;
         private bool _isTagGroupExpanded = false;
         private bool _isSubmoduleGroupExpanded = false;
         private bool _isWorktreeGroupExpanded = false;

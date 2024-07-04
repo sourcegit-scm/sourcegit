@@ -24,7 +24,6 @@ namespace SourceGit.ViewModels
         public string Name { get; set; }
         public BranchTreeNodeType Type { get; set; }
         public object Backend { get; set; }
-        public bool IsExpanded { get; set; }
         public bool IsFiltered { get; set; }
         public List<BranchTreeNode> Children { get; set; } = new List<BranchTreeNode>();
 
@@ -69,6 +68,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isSelected, value);
         }
 
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => SetProperty(ref _isExpanded, value);
+        }
+
         public string Tooltip
         {
             get
@@ -108,7 +113,9 @@ namespace SourceGit.ViewModels
                     child.UpdateCornerRadius(ref prev);
             }
         }
+
         private bool _isSelected = false;
+        private bool _isExpanded = false;
         private CornerRadius _cornerRadius = new CornerRadius(DEFAULT_CORNER);
 
         public class Builder
