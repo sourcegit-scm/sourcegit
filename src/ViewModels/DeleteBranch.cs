@@ -36,7 +36,8 @@ namespace SourceGit.ViewModels
             if (branch.IsLocal && !string.IsNullOrEmpty(branch.Upstream))
             {
                 TrackingRemoteBranch = repo.Branches.Find(x => x.FullName == branch.Upstream);
-                DeleteTrackingRemoteTip = new Views.NameHighlightedTextBlock("DeleteBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
+                if (TrackingRemoteBranch != null)
+                    DeleteTrackingRemoteTip = new Views.NameHighlightedTextBlock("DeleteBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
             }
 
             View = new Views.DeleteBranch() { DataContext = this };
