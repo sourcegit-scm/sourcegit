@@ -1216,7 +1216,8 @@
                                 Classes="tree_expander"
                                 Focusable="False"
                                 HorizontalAlignment="Center"
-                                IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}" />
+                                IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                IsHitTestVisible="False" />
                 </Panel>
                 <ContentPresenter Name="PART_HeaderPresenter"
                                   Grid.Column="1"
