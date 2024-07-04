@@ -255,14 +255,14 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTagDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnTagSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null)
+            if (sender is TreeView tree && tree.SelectedItem != null)
             {
                 localBranchTree.UnselectAll();
                 remoteBranchTree.UnselectAll();
 
-                var tag = datagrid.SelectedItem as Models.Tag;
+                var tag = tree.SelectedItem as Models.Tag;
                 if (DataContext is ViewModels.Repository repo)
                     repo.NavigateToCommit(tag.SHA);
             }
@@ -270,26 +270,14 @@ namespace SourceGit.Views
 
         private void OnTagContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            if (sender is TreeView tree && tree.SelectedItem != null && DataContext is ViewModels.Repository repo)
             {
-                var tag = datagrid.SelectedItem as Models.Tag;
+                var tag = tree.SelectedItem as Models.Tag;
                 var menu = repo.CreateContextMenuForTag(tag);
-                datagrid.OpenContextMenu(menu);
+                tree.OpenContextMenu(menu);
             }
 
             e.Handled = true;
-        }
-
-        private void OnTagPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            if (e.Property == DataGrid.ItemsSourceProperty && DataContext is ViewModels.Repository vm)
-            {
-                if (vm.VisibleTags == null)
-                    return;
-
-                var desiredHeight = tagsList.RowHeight * vm.VisibleTags.Count;
-                tagsList.Height = Math.Min(200, desiredHeight);
-            }
         }
 
         private void OnToggleFilter(object sender, RoutedEventArgs e)
@@ -318,11 +306,11 @@ namespace SourceGit.Views
 
         private void OnSubmoduleContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            if (sender is TreeView tree && tree.SelectedItem != null && DataContext is ViewModels.Repository repo)
             {
-                var submodule = datagrid.SelectedItem as string;
+                var submodule = tree.SelectedItem as string;
                 var menu = repo.CreateContextMenuForSubmodule(submodule);
-                datagrid.OpenContextMenu(menu);
+                tree.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -330,9 +318,9 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
         {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            if (sender is TreeView tree && tree.SelectedItem != null && DataContext is ViewModels.Repository repo)
             {
-                var submodule = datagrid.SelectedItem as string;
+                var submodule = tree.SelectedItem as string;
                 (DataContext as ViewModels.Repository).OpenSubmodule(submodule);
             }
 
@@ -341,11 +329,11 @@ namespace SourceGit.Views
 
         private void OnWorktreeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            if (sender is TreeView tree && tree.SelectedItem != null && DataContext is ViewModels.Repository repo)
             {
-                var worktree = datagrid.SelectedItem as Models.Worktree;
+                var worktree = tree.SelectedItem as Models.Worktree;
                 var menu = repo.CreateContextMenuForWorktree(worktree);
-                datagrid.OpenContextMenu(menu);
+                tree.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -353,9 +341,9 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedWorktree(object sender, TappedEventArgs e)
         {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            if (sender is TreeView tree && tree.SelectedItem != null && DataContext is ViewModels.Repository repo)
             {
-                var worktree = datagrid.SelectedItem as Models.Worktree;
+                var worktree = tree.SelectedItem as Models.Worktree;
                 (DataContext as ViewModels.Repository).OpenWorktree(worktree);
             }
 

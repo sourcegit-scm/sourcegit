@@ -119,7 +119,7 @@
         </Grid>
         
         <!-- Dashboard -->
-        <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,28,Auto,28,*,28,Auto,28,Auto,28,Auto" IsVisible="{Binding !IsSearching}">
+        <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearching}">
           <!-- Page Switcher for Right Panel -->
           <Border Grid.Row="0" Margin="8,0,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
             <Border CornerRadius="6" ClipToBounds="True">
@@ -231,396 +231,357 @@
             </TextBox.InnerRightContent>
           </TextBox>
 
-          <!-- Local Branches -->
-          <TextBlock Grid.Row="2" Classes="group_header_label" Text="{DynamicResource Text.Repository.LocalBranches}"/>
-          <TreeView Grid.Row="3"
-                    x:Name="localBranchTree"
-                    MaxHeight="400"
-                    Margin="8,0,4,0"
-                    SelectionMode="Multiple"
-                    ItemsSource="{Binding LocalBranchTrees}"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    ContextRequested="OnLocalBranchContextMenuRequested"
-                    SelectionChanged="OnLocalBranchTreeSelectionChanged">
-            <TreeView.Styles>
-              <Style Selector="TreeViewItem" x:DataType="vm:BranchTreeNode">
-                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
-                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
-                <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
-              </Style>
+          <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled">
+            <Grid RowDefinitions="28,Auto,28,Auto,28,Auto,28,Auto,28,Auto">
 
-              <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
-                <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
-                <Setter Property="Opacity" Value=".65"/>
-              </Style>
-              <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
-                <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
-                <Setter Property="Opacity" Value="1"/>
-              </Style>
-              <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
-                <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
-                <Setter Property="Opacity" Value=".65"/>
-              </Style>
-              <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
-                <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
-                <Setter Property="Opacity" Value=".8"/>
-              </Style>
-            </TreeView.Styles>
-            <TreeView.ItemTemplate>
-              <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:BranchTreeNode}">
-                <Grid Height="24" ColumnDefinitions="20,*,Auto,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedBranchNode">
-                  <Path Grid.Column="0" Classes="folder_icon" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,1,0,0" IsVisible="{Binding IsFolder}"/>
-                  <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,2,0,0" Data="{StaticResource Icons.Check}" IsVisible="{Binding IsCurrent}" VerticalAlignment="Center"/>
-                  <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}" VerticalAlignment="Center">
-                    <Path.IsVisible>
-                      <MultiBinding Converter="{x:Static BoolConverters.And}">
-                        <Binding Path="!IsFolder"/>
-                        <Binding Path="!IsCurrent"/>
-                      </MultiBinding>
-                    </Path.IsVisible>
-                  </Path>
+              <!-- Local Branches -->
+              <TextBlock Grid.Row="0" Classes="group_header_label" Text="{DynamicResource Text.Repository.LocalBranches}"/>
+              <TreeView Grid.Row="1"
+                        x:Name="localBranchTree"
+                        Margin="8,0,4,0"
+                        SelectionMode="Multiple"
+                        ItemsSource="{Binding LocalBranchTrees}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        ContextRequested="OnLocalBranchContextMenuRequested"
+                        SelectionChanged="OnLocalBranchTreeSelectionChanged">
+                <TreeView.Styles>
+                  <Style Selector="TreeViewItem" x:DataType="vm:BranchTreeNode">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
+                  </Style>
 
-                  <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
+                  <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                    <Setter Property="Opacity" Value=".65"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                    <Setter Property="Opacity" Value="1"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                    <Setter Property="Opacity" Value=".65"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                    <Setter Property="Opacity" Value=".8"/>
+                  </Style>
+                </TreeView.Styles>
+                <TreeView.ItemTemplate>
+                  <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:BranchTreeNode}">
+                    <Grid Height="24" ColumnDefinitions="20,*,Auto,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedBranchNode">
+                      <Path Grid.Column="0" Classes="folder_icon" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,1,0,0" IsVisible="{Binding IsFolder}"/>
+                      <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,2,0,0" Data="{StaticResource Icons.Check}" IsVisible="{Binding IsCurrent}" VerticalAlignment="Center"/>
+                      <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}" VerticalAlignment="Center">
+                        <Path.IsVisible>
+                          <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="!IsFolder"/>
+                            <Binding Path="!IsCurrent"/>
+                          </MultiBinding>
+                        </Path.IsVisible>
+                      </Path>
 
-                  <Border Grid.Column="2" Margin="8,0" Height="18" CornerRadius="9" VerticalAlignment="Center" Background="{DynamicResource Brush.Badge}" IsVisible="{Binding IsUpstreamTrackStatusVisible}">
-                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}" Foreground="{DynamicResource Brush.BadgeFG}"/>
-                  </Border>
+                      <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
 
-                  <ToggleButton Grid.Column="3"
-                                Classes="filter"
-                                Margin="0,0,8,0"
-                                Background="Transparent"
-                                IsVisible="{Binding IsBranch}"
-                                Checked="OnToggleFilter"
-                                Unchecked="OnToggleFilter"
-                                IsChecked="{Binding IsFiltered}"/>
+                      <Border Grid.Column="2" Margin="8,0" Height="18" CornerRadius="9" VerticalAlignment="Center" Background="{DynamicResource Brush.Badge}" IsVisible="{Binding IsUpstreamTrackStatusVisible}">
+                        <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                      </Border>
+
+                      <ToggleButton Grid.Column="3"
+                                    Classes="filter"
+                                    Margin="0,0,8,0"
+                                    Background="Transparent"
+                                    IsVisible="{Binding IsBranch}"
+                                    Checked="OnToggleFilter"
+                                    Unchecked="OnToggleFilter"
+                                    IsChecked="{Binding IsFiltered}"/>
+                    </Grid>
+                  </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+              </TreeView>
+
+              <!-- Remotes -->
+              <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Classes="group_header_label" Text="{DynamicResource Text.Repository.Remotes}"/>
+                <Button Grid.Column="1" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding AddRemote}" ToolTip.Tip="{DynamicResource Text.Repository.Remotes.Add}">
+                  <Path Width="12" Height="12" Data="{StaticResource Icons.Remote.Add}"/>
+                </Button>
+              </Grid>
+              <TreeView Grid.Row="3"
+                        x:Name="remoteBranchTree"
+                        Margin="8,0,4,0"
+                        SelectionMode="Multiple"
+                        ItemsSource="{Binding RemoteBranchTrees}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        ContextRequested="OnRemoteBranchContextMenuRequested"
+                        SelectionChanged="OnRemoteBranchTreeSelectionChanged">
+                <TreeView.Styles>
+                  <Style Selector="TreeViewItem" x:DataType="vm:BranchTreeNode">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
+                  </Style>
+
+                  <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                    <Setter Property="Opacity" Value=".65"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                    <Setter Property="Opacity" Value="1"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                    <Setter Property="Opacity" Value=".65"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                    <Setter Property="Opacity" Value=".8"/>
+                  </Style>
+                </TreeView.Styles>
+
+                <TreeView.ItemTemplate>
+                  <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:BranchTreeNode}">
+                    <Grid Height="24" ColumnDefinitions="20,*,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedBranchNode">
+                      <Path Grid.Column="0" Classes="folder_icon" Width="10" Height="10" HorizontalAlignment="Left" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" VerticalAlignment="Center"/>
+                      <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,2,0,0" Data="{StaticResource Icons.Remote}" IsVisible="{Binding IsRemote}" VerticalAlignment="Center"/>
+                      <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}" VerticalAlignment="Center"/>
+
+                      <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace"/>
+
+                      <ToggleButton Grid.Column="2"
+                                    Classes="filter"
+                                    Margin="0,0,8,0"
+                                    Background="Transparent"
+                                    Checked="OnToggleFilter"
+                                    Unchecked="OnToggleFilter"
+                                    IsVisible="{Binding IsBranch}"
+                                    IsChecked="{Binding IsFiltered}"/>
+                    </Grid>
+                  </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+              </TreeView>
+
+              <!-- Tags -->
+              <ToggleButton Grid.Row="4" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <TextBlock Grid.Column="0" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.Tags}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+                  <Button Grid.Column="2" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding CreateNewTag}" ToolTip.Tip="{DynamicResource Text.Repository.Tags.Add}">
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Tag.Add}"/>
+                  </Button>
                 </Grid>
-              </TreeDataTemplate>
-            </TreeView.ItemTemplate>
-          </TreeView>
+              </ToggleButton>
+              <TreeView Grid.Row="5"
+                        x:Name="tagsList"
+                        Margin="8,0,4,0"
+                        Background="Transparent"
+                        ItemsSource="{Binding VisibleTags}"
+                        SelectionMode="Single"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        Focusable="False"
+                        IsVisible="{Binding IsTagGroupExpanded, Mode=OneWay}"
+                        SelectionChanged="OnTagSelectionChanged"
+                        ContextRequested="OnTagContextRequested">
+                <TreeView.Styles>
+                  <Style Selector="TreeViewItem">
+                    <Setter Property="CornerRadius" Value="4" />
+                  </Style>
 
-          <!-- Remotes -->
-          <Grid Grid.Row="4" ColumnDefinitions="*,Auto">
-            <TextBlock Grid.Column="0" Classes="group_header_label" Text="{DynamicResource Text.Repository.Remotes}"/>
-            <Button Grid.Column="1" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding AddRemote}" ToolTip.Tip="{DynamicResource Text.Repository.Remotes.Add}">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.Remote.Add}"/>
-            </Button>
-          </Grid>
-          <TreeView Grid.Row="5"
-                    x:Name="remoteBranchTree"
-                    Margin="8,0,4,0"
-                    SelectionMode="Multiple"
-                    ItemsSource="{Binding RemoteBranchTrees}"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    ContextRequested="OnRemoteBranchContextMenuRequested"
-                    SelectionChanged="OnRemoteBranchTreeSelectionChanged">
-            <TreeView.Styles>
-              <Style Selector="TreeViewItem" x:DataType="vm:BranchTreeNode">
-                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
-                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
-                <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
-              </Style>
+                  <Style Selector="TreeViewItem /template/ Panel#PART_ExpandCollapseChevronContainer">
+                    <Setter Property="IsVisible" Value="False" />
+                  </Style>
 
-              <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
-                <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
-                <Setter Property="Opacity" Value=".65"/>
-              </Style>
-              <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
-                <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
-                <Setter Property="Opacity" Value="1"/>
-              </Style>
-              <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
-                <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
-                <Setter Property="Opacity" Value=".65"/>
-              </Style>
-              <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
-                <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
-                <Setter Property="Opacity" Value=".8"/>
-              </Style>
-            </TreeView.Styles>
+                  <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                    <Setter Property="Opacity" Value=".65"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                    <Setter Property="Opacity" Value="1"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                    <Setter Property="Opacity" Value=".65"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                    <Setter Property="Opacity" Value=".8"/>
+                  </Style>
+                </TreeView.Styles>
 
-            <TreeView.ItemTemplate>
-              <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="{x:Type vm:BranchTreeNode}">
-                <Grid Height="24" ColumnDefinitions="20,*,Auto" Background="Transparent" DoubleTapped="OnDoubleTappedBranchNode">
-                  <Path Grid.Column="0" Classes="folder_icon" Width="10" Height="10" HorizontalAlignment="Left" Margin="0,2,0,0" IsVisible="{Binding IsFolder}" VerticalAlignment="Center"/>
-                  <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="0,2,0,0" Data="{StaticResource Icons.Remote}" IsVisible="{Binding IsRemote}" VerticalAlignment="Center"/>
-                  <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}" VerticalAlignment="Center"/>
+                <TreeView.ItemTemplate>
+                  <TreeDataTemplate x:DataType="{x:Type m:Tag}">
+                    <Grid Height="24" ColumnDefinitions="Auto,*,Auto" Background="Transparent">
+                      <Path Grid.Column="0" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Tag}"/>
+                      <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace" TextTrimming="CharacterEllipsis" />
+                      <ToggleButton Grid.Column="2" Classes="filter"
+                                    Margin="0,0,8,0"
+                                    Background="Transparent"
+                                    Checked="OnToggleFilter"
+                                    Unchecked="OnToggleFilter"
+                                    IsChecked="{Binding IsFiltered}"/>
+                    </Grid>
+                  </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+              </TreeView>
 
-                  <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="monospace"/>
-
-                  <ToggleButton Grid.Column="2"
-                                Classes="filter"
-                                Margin="0,0,8,0"
-                                Background="Transparent"
-                                Checked="OnToggleFilter"
-                                Unchecked="OnToggleFilter"
-                                IsVisible="{Binding IsBranch}"
-                                IsChecked="{Binding IsFiltered}"/>
+              <!-- Submodules -->
+              <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                  <TextBlock Grid.Column="0" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.Submodules}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+                  <Button Grid.Column="2"
+                          Classes="icon_button"
+                          Width="14"
+                          Margin="8,0"
+                          Command="{Binding UpdateSubmodules}"
+                          IsVisible="{Binding Submodules, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
+                          ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Update}">
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
+                  </Button>
+                  <Button Grid.Column="3"
+                          Classes="icon_button"
+                          Width="14"
+                          Margin="0,0,8,0"
+                          Command="{Binding AddSubmodule}"
+                          ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Add}">
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Submodule.Add}"/>
+                  </Button>
                 </Grid>
-              </TreeDataTemplate>
-            </TreeView.ItemTemplate>
-          </TreeView>
+              </ToggleButton>
+              <TreeView Grid.Row="7"
+                        Margin="8,0,4,0"
+                        Background="Transparent"
+                        ItemsSource="{Binding Submodules}"
+                        SelectionMode="Single"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        Focusable="False"
+                        ContextRequested="OnSubmoduleContextRequested"
+                        DoubleTapped="OnDoubleTappedSubmodule"
+                        IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}">
+                <TreeView.Styles>
+                  <Style Selector="TreeViewItem">
+                    <Setter Property="CornerRadius" Value="4" />
+                  </Style>
 
-          <!-- Tags -->
-          <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="Auto,*,Auto">
-              <TextBlock Grid.Column="0" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.Tags}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-              <Button Grid.Column="2" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding CreateNewTag}" ToolTip.Tip="{DynamicResource Text.Repository.Tags.Add}">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Tag.Add}"/>
-              </Button>
+                  <Style Selector="TreeViewItem /template/ Panel#PART_ExpandCollapseChevronContainer">
+                    <Setter Property="IsVisible" Value="False" />
+                  </Style>
+
+                  <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                    <Setter Property="Opacity" Value=".65"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                    <Setter Property="Opacity" Value="1"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                    <Setter Property="Opacity" Value=".65"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                    <Setter Property="Opacity" Value=".8"/>
+                  </Style>
+                </TreeView.Styles>
+
+                <TreeView.ItemTemplate>
+                  <TreeDataTemplate>
+                    <Grid Height="24" ColumnDefinitions="Auto,*" Background="Transparent">
+                      <Path Grid.Column="0" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
+                      <Border Grid.Column="1" Padding="0,0,4,0">
+                        <TextBlock Text="{Binding}" ClipToBounds="True" Classes="monospace" TextTrimming="CharacterEllipsis"/>
+                      </Border>
+                    </Grid>
+                  </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+              </TreeView>
+
+              <!-- Worktrees -->
+              <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsWorktreeGroupExpanded, Mode=TwoWay}">
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                  <TextBlock Grid.Column="0" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.Worktrees}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+                  <Button Grid.Column="2"
+                          Classes="icon_button"
+                          Width="14"
+                          Margin="8,0"
+                          Command="{Binding PruneWorktrees}"
+                          IsVisible="{Binding Worktrees, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
+                          ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Prune}">
+                    <Path x:Name="icon" Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
+                  </Button>
+                  <Button Grid.Column="3"
+                          Classes="icon_button"
+                          Width="14"
+                          Margin="0,0,8,0"
+                          Command="{Binding AddWorktree}"
+                          ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Add}">
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Worktree.Add}"/>
+                  </Button>
+                </Grid>
+              </ToggleButton>
+              <TreeView Grid.Row="9"
+                        Margin="8,0,4,0"
+                        Background="Transparent"
+                        ItemsSource="{Binding Worktrees}"
+                        SelectionMode="Single"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        Focusable="False"
+                        ContextRequested="OnWorktreeContextRequested"
+                        DoubleTapped="OnDoubleTappedWorktree"
+                        IsVisible="{Binding IsWorktreeGroupExpanded, Mode=OneWay}">
+                <TreeView.Styles>
+                  <Style Selector="TreeViewItem">
+                    <Setter Property="CornerRadius" Value="4" />
+                  </Style>
+
+                  <Style Selector="TreeViewItem /template/ Panel#PART_ExpandCollapseChevronContainer">
+                    <Setter Property="IsVisible" Value="False" />
+                  </Style>
+
+                  <Style Selector="Grid.repository_leftpanel TreeViewItem /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                    <Setter Property="Opacity" Value=".65"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                    <Setter Property="Opacity" Value="1"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                    <Setter Property="Opacity" Value=".65"/>
+                  </Style>
+                  <Style Selector="Grid.repository_leftpanel:focus-within TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover Border#PART_Background">
+                    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                    <Setter Property="Opacity" Value=".8"/>
+                  </Style>
+                </TreeView.Styles>
+
+                <TreeView.ItemTemplate>
+                  <TreeDataTemplate>
+                    <Grid Height="24" ColumnDefinitions="Auto,*,Auto" Background="Transparent">
+                      <Path Grid.Column="0" Width="10" Height="10" Margin="8,0,0,0" Data="{StaticResource Icons.Worktree}"/>
+                      <TextBlock Grid.Column="1" Classes="monospace" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
+                        <Run Text="{Binding FullPath}"/>
+                        <Run Text="{Binding Name}" Foreground="{DynamicResource Brush.FG2}"/>
+                      </TextBlock>
+                      <Path Grid.Column="2" Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Lock}" Fill="{DynamicResource Brush.FG2}" IsVisible="{Binding IsLocked}"/>
+                    </Grid>
+                  </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+              </TreeView>
+
             </Grid>
-          </ToggleButton>
-          <DataGrid Grid.Row="7"
-                    x:Name="tagsList"
-                    Margin="8,0,4,0"
-                    Background="Transparent"
-                    ItemsSource="{Binding VisibleTags}"
-                    SelectionMode="Single"
-                    CanUserReorderColumns="False"
-                    CanUserResizeColumns="False"
-                    CanUserSortColumns="False"
-                    IsReadOnly="True"
-                    HeadersVisibility="None"
-                    Focusable="False"
-                    RowHeight="24"
-                    HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto"
-                    IsVisible="{Binding IsTagGroupExpanded, Mode=OneWay}"
-                    SelectionChanged="OnTagDataGridSelectionChanged"
-                    ContextRequested="OnTagContextRequested"
-                    PropertyChanged="OnTagPropertyChanged">
-            <DataGrid.Styles>
-              <Style Selector="DataGridRow">
-                <Setter Property="CornerRadius" Value="4" />
-              </Style>
-
-              <Style Selector="DataGridRow /template/ Border#RowBorder">
-                <Setter Property="ClipToBounds" Value="True" />
-              </Style>
-
-              <Style Selector="Grid.repository_leftpanel DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
-                <Setter Property="Opacity" Value=".5"/>
-              </Style>
-              <Style Selector="Grid.repository_leftpanel DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
-                <Setter Property="Opacity" Value="1"/>
-              </Style>
-              <Style Selector="Grid.repository_leftpanel:focus-within DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-                <Setter Property="Opacity" Value=".65"/>
-              </Style>
-              <Style Selector="Grid.repository_leftpanel:focus-within DataGridRow:selected:pointerover /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-                <Setter Property="Opacity" Value=".8"/>
-              </Style>
-            </DataGrid.Styles>
-
-            <DataGrid.Columns>
-              <DataGridTemplateColumn Header="ICON">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate x:DataType="{x:Type m:Tag}">
-                    <Path Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Tag}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Width="*" Header="NAME">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate x:DataType="{x:Type m:Tag}">
-                    <TextBlock Text="{Binding Name}" Classes="monospace" TextTrimming="CharacterEllipsis" />
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Header="FILTER">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate x:DataType="{x:Type m:Tag}">
-                    <ToggleButton Classes="filter"
-                                  Margin="0,0,8,0"
-                                  Background="Transparent"
-                                  Checked="OnToggleFilter"
-                                  Unchecked="OnToggleFilter"
-                                  IsChecked="{Binding IsFiltered}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-            </DataGrid.Columns>
-          </DataGrid>
-
-          <!-- Submodules -->
-          <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
-              <TextBlock Grid.Column="0" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.Submodules}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-              <Button Grid.Column="2"
-                      Classes="icon_button"
-                      Width="14"
-                      Margin="8,0"
-                      Command="{Binding UpdateSubmodules}"
-                      IsVisible="{Binding Submodules, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
-                      ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Update}">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
-              </Button>
-              <Button Grid.Column="3"
-                      Classes="icon_button"
-                      Width="14"
-                      Margin="0,0,8,0"
-                      Command="{Binding AddSubmodule}"
-                      ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Add}">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Submodule.Add}"/>
-              </Button>
-            </Grid>
-          </ToggleButton>
-          <DataGrid Grid.Row="9"
-                    MaxHeight="200"
-                    Margin="8,0,4,0"
-                    Background="Transparent"
-                    ItemsSource="{Binding Submodules}"
-                    SelectionMode="Single"
-                    CanUserReorderColumns="False"
-                    CanUserResizeColumns="False"
-                    CanUserSortColumns="False"
-                    IsReadOnly="True"
-                    HeadersVisibility="None"
-                    Focusable="False"
-                    RowHeight="26"
-                    HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto"
-                    ContextRequested="OnSubmoduleContextRequested"
-                    DoubleTapped="OnDoubleTappedSubmodule"
-                    IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}">
-            <DataGrid.Styles>
-              <Style Selector="DataGridRow">
-                <Setter Property="CornerRadius" Value="4" />
-              </Style>
-
-              <Style Selector="DataGridRow /template/ Border#RowBorder">
-                <Setter Property="ClipToBounds" Value="True" />
-              </Style>
-
-              <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
-              </Style>
-
-              <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-              </Style>
-            </DataGrid.Styles>
-
-            <DataGrid.Columns>
-              <DataGridTemplateColumn Header="ICON">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Path Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Width="*" Header="NAME">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Border Padding="0,0,4,0">
-                      <TextBlock Text="{Binding}" ClipToBounds="True" Classes="monospace" TextTrimming="CharacterEllipsis"/>
-                    </Border>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-            </DataGrid.Columns>
-          </DataGrid>
-
-          <!-- Worktrees -->
-          <ToggleButton Grid.Row="10" Classes="group_expander" IsChecked="{Binding IsWorktreeGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
-              <TextBlock Grid.Column="0" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.Worktrees}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-              <Button Grid.Column="2"
-                      Classes="icon_button"
-                      Width="14"
-                      Margin="8,0"
-                      Command="{Binding PruneWorktrees}"
-                      IsVisible="{Binding Worktrees, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
-                      ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Prune}">
-                <Path x:Name="icon" Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
-              </Button>
-              <Button Grid.Column="3"
-                      Classes="icon_button"
-                      Width="14"
-                      Margin="0,0,8,0"
-                      Command="{Binding AddWorktree}"
-                      ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Add}">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Worktree.Add}"/>
-              </Button>
-            </Grid>
-          </ToggleButton>
-          <DataGrid Grid.Row="11"
-                    MaxHeight="200"
-                    Margin="8,0,4,0"
-                    Background="Transparent"
-                    ItemsSource="{Binding Worktrees}"
-                    SelectionMode="Single"
-                    CanUserReorderColumns="False"
-                    CanUserResizeColumns="False"
-                    CanUserSortColumns="False"
-                    IsReadOnly="True"
-                    HeadersVisibility="None"
-                    Focusable="False"
-                    RowHeight="26"
-                    HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto"
-                    ContextRequested="OnWorktreeContextRequested"
-                    DoubleTapped="OnDoubleTappedWorktree"
-                    IsVisible="{Binding IsWorktreeGroupExpanded, Mode=OneWay}">
-            <DataGrid.Styles>
-              <Style Selector="DataGridRow">
-                <Setter Property="CornerRadius" Value="4" />
-              </Style>
-
-              <Style Selector="DataGridRow /template/ Border#RowBorder">
-                <Setter Property="ClipToBounds" Value="True" />
-              </Style>
-
-              <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
-              </Style>
-
-              <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-              </Style>
-            </DataGrid.Styles>
-
-            <DataGrid.Columns>
-              <DataGridTemplateColumn Header="ICON">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Path Width="10" Height="10" Margin="8,0,0,0" Data="{StaticResource Icons.Worktree}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Width="*" Header="FullPath">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <TextBlock Classes="monospace" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
-                      <Run Text="{Binding FullPath}"/>
-                      <Run Text="{Binding Name}" Foreground="{DynamicResource Brush.FG2}"/>
-                    </TextBlock>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Header="FullPath">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Path Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Lock}" Fill="{DynamicResource Brush.FG2}" IsVisible="{Binding IsLocked}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-            </DataGrid.Columns>
-          </DataGrid>
+          </ScrollViewer>
         </Grid>
 
         <!-- Commit Search Panel -->

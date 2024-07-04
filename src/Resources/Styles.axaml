@@ -1205,8 +1205,8 @@
             <Grid>
               <Border Name="PART_Background" CornerRadius="{TemplateBinding CornerRadius}" Background="Transparent"/>
               
-              <Grid Name="PART_Header" ColumnDefinitions="16,*" Margin="{TemplateBinding Level, Mode=OneWay, Converter={StaticResource TreeViewItemLeftMarginConverter}}">
-                <Panel Name="PART_ExpandCollapseChevronContainer">
+              <Grid Name="PART_Header" ColumnDefinitions="Auto,*" Margin="{TemplateBinding Level, Mode=OneWay, Converter={StaticResource TreeViewItemLeftMarginConverter}}">
+                <Panel Name="PART_ExpandCollapseChevronContainer" Width="{StaticResource TreeViewItemIndent}">
                   <ToggleButton Name="PART_ExpandCollapseChevron"
                                 Classes="tree_expander"
                                 Focusable="False"
