@@ -3,17 +3,16 @@
 version=`cat ../VERSION`
 
 # Cleanup
-rm -rf SourceGit *.tar.gz resources/deb/opt *.deb *.rpm
+rm -rf SourceGit *.tar.gz resources/deb/opt *.deb *.rpm *.AppImage
 
-# Compile
-dotnet publish ../src/SourceGit.csproj -c Release -r linux-x64 -o SourceGit -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
-mv SourceGit/SourceGit SourceGit/sourcegit
-cp resources/app/App.icns SourceGit/sourcegit.icns
-rm -f SourceGit/*.dbg
+# Generic AppImage
+cd resources/appimage
+./publish-appimage -y -o sourcegit-${version}.linux.x86_64.AppImage
 
-# General Linux archive
-tar -zcvf sourcegit_${version}.linux-x64.tar.gz SourceGit
-rm -f SourceGit/sourcegit.icns
+# Move to build dir
+mv AppImages/sourcegit-${version}.linux.x86_64.AppImage ../../
+mv AppImages/AppDir/usr/bin ../../SourceGit
+cd ../../
 
 # Debain/Ubuntu package
 mkdir -p resources/deb/opt/sourcegit/

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>com.sourcegit-scm.SourceGit</id>
+	<metadata_license>MIT</metadata_license>
+	<project_license>MIT</project_license>
+	<name>SourceGit</name>
+	<summary>Open-source GUI client for git users</summary>
+	<description>
+		<p>Open-source GUI client for git users</p>
+	</description>
+	<launchable type="desktop-id">com.sourcegit-scm.SourceGit.desktop</launchable>
+	<provides>
+		<id>com.sourcegit-scm.SourceGit.desktop</id>
+	</provides>
+</component>
