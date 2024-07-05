@@ -414,46 +414,113 @@ namespace SourceGit.Views
                 return;
 
             var leftHeight = leftSidebarGroups.Bounds.Height - 28.0 * 5;
+            var localBranchRows = vm.IsLocalBranchGroupExpanded ? GetTreeRowsCount(vm.LocalBranchTrees) : 0;
+            var remoteBranchRows = vm.IsRemoteGroupExpanded ? GetTreeRowsCount(vm.RemoteBranchTrees) : 0;
+            var desiredBranches = (localBranchRows + remoteBranchRows) * 24.0;
+            var desiredTag = vm.IsTagGroupExpanded ? tagsList.RowHeight * vm.VisibleTags.Count : 0;
+            var desiredSubmodule = vm.IsSubmoduleGroupExpanded ? submoduleList.RowHeight * vm.Submodules.Count : 0;
+            var desiredWorktree = vm.IsWorktreeGroupExpanded ? worktreeList.RowHeight * vm.Worktrees.Count : 0;
+            var desiredOthers = desiredTag + desiredSubmodule + desiredWorktree;
+            var hasOverflow = (desiredBranches + desiredOthers > leftHeight);
+
             if (vm.IsTagGroupExpanded)
             {
-                var desiredHeight = Math.Min(200.0, tagsList.RowHeight * vm.VisibleTags.Count);
-                leftHeight -= desiredHeight;
-                if (!tagsList.Height.IsClose(desiredHeight))
-                    tagsList.Height = desiredHeight;
+                var height = desiredTag;
+                if (hasOverflow)
+                {
+                    var test = leftHeight - desiredBranches - desiredSubmodule - desiredWorktree;
+                    if (test < 0)
+                        height = Math.Min(200, height);
+                    else
+                        height = Math.Max(200, test);
+                }
+                
+                leftHeight -= height;
+                tagsList.Height = height;
+                hasOverflow = (desiredBranches + desiredSubmodule + desiredWorktree) > leftHeight;
             }
 
             if (vm.IsSubmoduleGroupExpanded)
             {
-                var desiredHeight = Math.Min(200.0, submoduleList.RowHeight * vm.Submodules.Count);
-                leftHeight -= desiredHeight;
-                if (!submoduleList.Height.IsClose(desiredHeight))
-                    submoduleList.Height = desiredHeight;
+                var height = desiredSubmodule;
+                if (hasOverflow)
+                {
+                    var test = leftHeight - desiredBranches - desiredWorktree;
+                    if (test < 0)
+                        height = Math.Min(200, height);
+                    else
+                        height = Math.Max(200, test);
+                }
+
+                leftHeight -= height;
+                submoduleList.Height = height;
+                hasOverflow = (desiredBranches + desiredWorktree) > leftHeight;
             }
 
             if (vm.IsWorktreeGroupExpanded)
             {
-                var desiredHeight = Math.Min(200.0, worktreeList.RowHeight * vm.Worktrees.Count);
-                leftHeight -= desiredHeight;
-                if (!worktreeList.Height.IsClose(desiredHeight))
-                    worktreeList.Height = desiredHeight;
+                var height = desiredWorktree;
+                if (hasOverflow)
+                {
+                    var test = leftHeight - desiredBranches;
+                    if (test < 0)
+                        height = Math.Min(200, height);
+                    else
+                        height = Math.Max(200, test);
+                }
+
+                leftHeight -= height;
+                worktreeList.Height = height;
             }
 
-            if (vm.IsLocalBranchGroupExpanded)
+            if (desiredBranches > leftHeight)
             {
-                var localBranchMax = vm.IsRemoteGroupExpanded ? leftHeight * 0.5 : leftHeight;
-                var desiredHeight = GetTreeRowsCount(vm.LocalBranchTrees) * 24;
-                var localBranchHeight = Math.Min(localBranchMax, desiredHeight);
-                if (!localBranchTree.Height.IsClose(localBranchHeight))
-                    localBranchTree.Height = localBranchHeight;
-                leftHeight -= localBranchHeight;
+                var local = localBranchRows * 24.0;
+                var remote = remoteBranchRows * 24.0;
+                var half = leftHeight / 2;
+                if (vm.IsLocalBranchGroupExpanded)
+                {
+                    if (vm.IsRemoteGroupExpanded)
+                    {
+                        if (local < half)
+                        {
+                            localBranchTree.Height = local;
+                            remoteBranchTree.Height = leftHeight - local;
+                        }
+                        else if (remote < half)
+                        {
+                            remoteBranchTree.Height = remote;
+                            localBranchTree.Height = leftHeight - remote;
+                        }
+                        else
+                        {
+                            localBranchTree.Height = half;
+                            remoteBranchTree.Height = half;
+                        }
+                    }
+                    else
+                    {
+                        localBranchTree.Height = leftHeight;
+                    }
+                }
+                else if (vm.IsRemoteGroupExpanded)
+                {
+                    remoteBranchTree.Height = leftHeight;
+                }
             }
-
-            if (vm.IsRemoteGroupExpanded)
+            else
             {
-                var desiredHeight = GetTreeRowsCount(vm.RemoteBranchTrees) * 24;
-                var remoteHeight = Math.Min(leftHeight, desiredHeight);
-                if (!remoteBranchTree.Height.IsClose(remoteHeight))
-                    remoteBranchTree.Height = remoteHeight;
+                if (vm.IsLocalBranchGroupExpanded)
+                {
+                    var height = localBranchRows * 24;
+                    localBranchTree.Height = height;
+                }
+
+                if (vm.IsRemoteGroupExpanded)
+                {
+                    var height = remoteBranchRows * 24;
+                    remoteBranchTree.Height = height;
+                }
             }
         }
 
