@@ -241,7 +241,8 @@
                           Margin="8,0,4,0"
                           Nodes="{Binding LocalBranchTrees}"
                           IsVisible="{Binding IsLocalBranchGroupExpanded}"
-                          SelectionChanged="OnLocalBranchTreeSelectionChanged"/>
+                          SelectionChanged="OnLocalBranchTreeSelectionChanged"
+                          RowsChanged="OnBranchTreeRowsChanged"/>
 
             <!-- Remotes -->
             <ToggleButton Grid.Row="2" Classes="group_expander" IsChecked="{Binding IsRemoteGroupExpanded, Mode=TwoWay}">
@@ -257,7 +258,8 @@
                           Margin="8,0,4,0"
                           Nodes="{Binding RemoteBranchTrees}"
                           IsVisible="{Binding IsRemoteGroupExpanded}"
-                          SelectionChanged="OnRemoteBranchTreeSelectionChanged"/>
+                          SelectionChanged="OnRemoteBranchTreeSelectionChanged"
+                          RowsChanged="OnBranchTreeRowsChanged"/>
 
             <!-- Tags -->
             <ToggleButton Grid.Row="4" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">

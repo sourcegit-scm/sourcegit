@@ -113,6 +113,15 @@ namespace SourceGit.Views
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
 
+        public static readonly RoutedEvent<RoutedEventArgs> RowsChangedEvent =
+            RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(RowsChanged), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        public event EventHandler<RoutedEventArgs> RowsChanged
+        {
+            add { AddHandler(RowsChangedEvent, value); }
+            remove { RemoveHandler(RowsChangedEvent, value); }
+        }
+
         public BranchTree()
         {
             InitializeComponent();
@@ -121,6 +130,14 @@ namespace SourceGit.Views
         public void UnselectAll()
         {
             BranchesPresenter.SelectedItem = null;
+        }
+
+        protected override void OnSizeChanged(SizeChangedEventArgs e)
+        {
+            base.OnSizeChanged(e);
+
+            if (Bounds.Height >= 23.0)
+                BranchesPresenter.Height = Bounds.Height;
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -138,18 +155,20 @@ namespace SourceGit.Views
                     Rows.AddRange(rows);
                 }
 
-                var repo = this.FindAncestorOfType<Repository>();
-                repo?.UpdateLeftSidebarLayout();
+                RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
             }
             else if (change.Property == IsVisibleProperty)
             {
-                var repo = this.FindAncestorOfType<Repository>();
-                repo?.UpdateLeftSidebarLayout();
+                RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
             }
         }
 
         private void OnNodesSelectionChanged(object _, SelectionChangedEventArgs e)
         {
+            var repo = DataContext as ViewModels.Repository;
+            if (repo?.Settings == null)
+                return;
+
             foreach (var item in e.AddedItems)
             {
                 if (item is ViewModels.BranchTreeNode node)
@@ -167,10 +186,7 @@ namespace SourceGit.Views
                 return;
 
             if (selected.Count == 1 && selected[0] is ViewModels.BranchTreeNode { Backend: Models.Branch branch })
-            {
-                var repo = DataContext as ViewModels.Repository;
-                repo?.NavigateToCommit(branch.Head);
-            }
+                repo.NavigateToCommit(branch.Head);
 
             var prev = null as ViewModels.BranchTreeNode;
             foreach (var row in Rows)
@@ -285,8 +301,7 @@ namespace SourceGit.Views
                         rows.RemoveRange(idx + 1, removeCount);
                     }
 
-                    var repo = this.FindAncestorOfType<Repository>();
-                    repo?.UpdateLeftSidebarLayout();
+                    RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
                 }
             }
         }

@@ -15,132 +15,10 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public void UpdateLeftSidebarLayout()
-        {
-            var vm = DataContext as ViewModels.Repository;
-            if (vm == null || vm.Settings == null)
-                return;
-
-            if (!IsLoaded)
-                return;
-
-            var leftHeight = leftSidebarGroups.Bounds.Height - 28.0 * 5;
-            var localBranchRows = vm.IsLocalBranchGroupExpanded ? localBranchTree.Rows.Count : 0;
-            var remoteBranchRows = vm.IsRemoteGroupExpanded ? remoteBranchTree.Rows.Count : 0;
-            var desiredBranches = (localBranchRows + remoteBranchRows) * 24.0;
-            var desiredTag = vm.IsTagGroupExpanded ? tagsList.RowHeight * vm.VisibleTags.Count : 0;
-            var desiredSubmodule = vm.IsSubmoduleGroupExpanded ? submoduleList.RowHeight * vm.Submodules.Count : 0;
-            var desiredWorktree = vm.IsWorktreeGroupExpanded ? worktreeList.RowHeight * vm.Worktrees.Count : 0;
-            var desiredOthers = desiredTag + desiredSubmodule + desiredWorktree;
-            var hasOverflow = (desiredBranches + desiredOthers > leftHeight);
-
-            if (vm.IsTagGroupExpanded)
-            {
-                var height = desiredTag;
-                if (hasOverflow)
-                {
-                    var test = leftHeight - desiredBranches - desiredSubmodule - desiredWorktree;
-                    if (test < 0)
-                        height = Math.Min(200, height);
-                    else
-                        height = Math.Max(200, test);
-                }
-                
-                leftHeight -= height;
-                tagsList.Height = height;
-                hasOverflow = (desiredBranches + desiredSubmodule + desiredWorktree) > leftHeight;
-            }
-
-            if (vm.IsSubmoduleGroupExpanded)
-            {
-                var height = desiredSubmodule;
-                if (hasOverflow)
-                {
-                    var test = leftHeight - desiredBranches - desiredWorktree;
-                    if (test < 0)
-                        height = Math.Min(200, height);
-                    else
-                        height = Math.Max(200, test);
-                }
-
-                leftHeight -= height;
-                submoduleList.Height = height;
-                hasOverflow = (desiredBranches + desiredWorktree) > leftHeight;
-            }
-
-            if (vm.IsWorktreeGroupExpanded)
-            {
-                var height = desiredWorktree;
-                if (hasOverflow)
-                {
-                    var test = leftHeight - desiredBranches;
-                    if (test < 0)
-                        height = Math.Min(200, height);
-                    else
-                        height = Math.Max(200, test);
-                }
-
-                leftHeight -= height;
-                worktreeList.Height = height;
-            }
-
-            if (desiredBranches > leftHeight)
-            {
-                var local = localBranchRows * 24.0;
-                var remote = remoteBranchRows * 24.0;
-                var half = leftHeight / 2;
-                if (vm.IsLocalBranchGroupExpanded)
-                {
-                    if (vm.IsRemoteGroupExpanded)
-                    {
-                        if (local < half)
-                        {
-                            localBranchTree.Height = local;
-                            remoteBranchTree.Height = leftHeight - local;
-                        }
-                        else if (remote < half)
-                        {
-                            remoteBranchTree.Height = remote;
-                            localBranchTree.Height = leftHeight - remote;
-                        }
-                        else
-                        {
-                            localBranchTree.Height = half;
-                            remoteBranchTree.Height = half;
-                        }
-                    }
-                    else
-                    {
-                        localBranchTree.Height = leftHeight;
-                    }
-                }
-                else if (vm.IsRemoteGroupExpanded)
-                {
-                    remoteBranchTree.Height = leftHeight;
-                }
-            }
-            else
-            {
-                if (vm.IsLocalBranchGroupExpanded)
-                {
-                    var height = localBranchRows * 24;
-                    localBranchTree.Height = height;
-                }
-
-                if (vm.IsRemoteGroupExpanded)
-                {
-                    var height = remoteBranchRows * 24;
-                    remoteBranchTree.Height = height;
-                }
-            }
-        }
-
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
-
-            if (DataContext is ViewModels.Repository { IsSearching: false })
-                UpdateLeftSidebarLayout();
+            UpdateLeftSidebarLayout();
         }
 
         private void OpenWithExternalTools(object sender, RoutedEventArgs e)
@@ -211,7 +89,13 @@ namespace SourceGit.Views
             
             e.Handled = true;
         }
-        
+
+        private void OnBranchTreeRowsChanged(object _, RoutedEventArgs e)
+        {
+            UpdateLeftSidebarLayout();
+            e.Handled = true;
+        }
+
         private void OnLocalBranchTreeSelectionChanged(object _1, RoutedEventArgs _2)
         {
             remoteBranchTree.UnselectAll();
@@ -310,6 +194,128 @@ namespace SourceGit.Views
             {
                 UpdateLeftSidebarLayout();
             }
+        }
+
+        private void UpdateLeftSidebarLayout()
+        {
+            var vm = DataContext as ViewModels.Repository;
+            if (vm == null || vm.Settings == null)
+                return;
+
+            if (!IsLoaded)
+                return;
+
+            var leftHeight = leftSidebarGroups.Bounds.Height - 28.0 * 5;
+            var localBranchRows = vm.IsLocalBranchGroupExpanded ? localBranchTree.Rows.Count : 0;
+            var remoteBranchRows = vm.IsRemoteGroupExpanded ? remoteBranchTree.Rows.Count : 0;
+            var desiredBranches = (localBranchRows + remoteBranchRows) * 24.0;
+            var desiredTag = vm.IsTagGroupExpanded ? tagsList.RowHeight * vm.VisibleTags.Count : 0;
+            var desiredSubmodule = vm.IsSubmoduleGroupExpanded ? submoduleList.RowHeight * vm.Submodules.Count : 0;
+            var desiredWorktree = vm.IsWorktreeGroupExpanded ? worktreeList.RowHeight * vm.Worktrees.Count : 0;
+            var desiredOthers = desiredTag + desiredSubmodule + desiredWorktree;
+            var hasOverflow = (desiredBranches + desiredOthers > leftHeight);
+
+            if (vm.IsTagGroupExpanded)
+            {
+                var height = desiredTag;
+                if (hasOverflow)
+                {
+                    var test = leftHeight - desiredBranches - desiredSubmodule - desiredWorktree;
+                    if (test < 0)
+                        height = Math.Min(200, height);
+                    else
+                        height = Math.Max(200, test);
+                }
+
+                leftHeight -= height;
+                tagsList.Height = height;
+                hasOverflow = (desiredBranches + desiredSubmodule + desiredWorktree) > leftHeight;
+            }
+
+            if (vm.IsSubmoduleGroupExpanded)
+            {
+                var height = desiredSubmodule;
+                if (hasOverflow)
+                {
+                    var test = leftHeight - desiredBranches - desiredWorktree;
+                    if (test < 0)
+                        height = Math.Min(200, height);
+                    else
+                        height = Math.Max(200, test);
+                }
+
+                leftHeight -= height;
+                submoduleList.Height = height;
+                hasOverflow = (desiredBranches + desiredWorktree) > leftHeight;
+            }
+
+            if (vm.IsWorktreeGroupExpanded)
+            {
+                var height = desiredWorktree;
+                if (hasOverflow)
+                {
+                    var test = leftHeight - desiredBranches;
+                    if (test < 0)
+                        height = Math.Min(200, height);
+                    else
+                        height = Math.Max(200, test);
+                }
+
+                leftHeight -= height;
+                worktreeList.Height = height;
+            }
+
+            if (desiredBranches > leftHeight)
+            {
+                var local = localBranchRows * 24.0;
+                var remote = remoteBranchRows * 24.0;
+                var half = leftHeight / 2;
+                if (vm.IsLocalBranchGroupExpanded)
+                {
+                    if (vm.IsRemoteGroupExpanded)
+                    {
+                        if (local < half)
+                        {
+                            localBranchTree.Height = local;
+                            remoteBranchTree.Height = leftHeight - local;
+                        }
+                        else if (remote < half)
+                        {
+                            remoteBranchTree.Height = remote;
+                            localBranchTree.Height = leftHeight - remote;
+                        }
+                        else
+                        {
+                            localBranchTree.Height = half;
+                            remoteBranchTree.Height = half;
+                        }
+                    }
+                    else
+                    {
+                        localBranchTree.Height = leftHeight;
+                    }
+                }
+                else if (vm.IsRemoteGroupExpanded)
+                {
+                    remoteBranchTree.Height = leftHeight;
+                }
+            }
+            else
+            {
+                if (vm.IsLocalBranchGroupExpanded)
+                {
+                    var height = localBranchRows * 24;
+                    localBranchTree.Height = height;
+                }
+
+                if (vm.IsRemoteGroupExpanded)
+                {
+                    var height = remoteBranchRows * 24;
+                    remoteBranchTree.Height = height;
+                }
+            }
+
+            leftSidebarGroups.InvalidateMeasure();
         }
     }
 }

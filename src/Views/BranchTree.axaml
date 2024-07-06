@@ -10,13 +10,11 @@
              x:Name="ThisControl">
   <DataGrid x:Name="BranchesPresenter"
             ItemsSource="{Binding #ThisControl.Rows}"
-            Height="{Binding #ThisControl.Height}"
             Background="Transparent"
             RowHeight="24"
             CanUserReorderColumns="False"
             CanUserResizeColumns="False"
             CanUserSortColumns="False"
-            HorizontalAlignment="Stretch"
             HorizontalScrollBarVisibility="Disabled"
             VerticalScrollBarVisibility="Auto"
             HeadersVisibility="None"
@@ -48,27 +46,27 @@
         <Setter Property="Opacity" Value=".8"/>
       </Style>
     </DataGrid.Styles>
-    
+
     <DataGrid.Columns>
       <DataGridTemplateColumn Width="*">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate x:DataType="vm:BranchTreeNode">
             <Grid Height="24"
-                  Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}" 
-                  ColumnDefinitions="16,20,*,Auto,Auto" 
-                  Background="Transparent" 
-                  DoubleTapped="OnDoubleTappedBranchNode" 
+                  Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+                  ColumnDefinitions="16,20,*,Auto,Auto"
+                  Background="Transparent"
+                  DoubleTapped="OnDoubleTappedBranchNode"
                   ToolTip.Tip="{Binding Tooltip}">
-              
+
               <!-- Tree Expander -->
-              <ToggleButton Grid.Column="0" 
+              <ToggleButton Grid.Column="0"
                             Classes="tree_expander"
                             Focusable="False"
                             HorizontalAlignment="Center"
                             IsChecked="{Binding IsExpanded}"
                             IsHitTestVisible="False"
                             IsVisible="{Binding !IsBranch}"/>
-              
+
               <!-- Icon -->
               <v:BranchTreeNodeIcon Grid.Column="1"
                                     Node="{Binding}"
@@ -79,14 +77,14 @@
                          Text="{Binding Name}"
                          Classes="monospace"
                          FontWeight="{Binding NameFontWeight}"/>
-              
+
               <!-- Tracking status -->
-              <Border Grid.Column="3" 
-                      Margin="8,0" 
-                      Height="18" 
-                      CornerRadius="9" 
-                      VerticalAlignment="Center" 
-                      Background="{DynamicResource Brush.Badge}" 
+              <Border Grid.Column="3"
+                      Margin="8,0"
+                      Height="18"
+                      CornerRadius="9"
+                      VerticalAlignment="Center"
+                      Background="{DynamicResource Brush.Badge}"
                       IsVisible="{Binding IsUpstreamTrackStatusVisible}">
                 <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}" Foreground="{DynamicResource Brush.BadgeFG}"/>
               </Border>
