@@ -238,6 +238,7 @@
             </ToggleButton>
             <v:BranchTree Grid.Row="1"
                           x:Name="localBranchTree"
+                          Height="0"
                           Margin="8,0,4,0"
                           Nodes="{Binding LocalBranchTrees}"
                           IsVisible="{Binding IsLocalBranchGroupExpanded}"
@@ -255,6 +256,7 @@
             </ToggleButton>
             <v:BranchTree Grid.Row="3"
                           x:Name="remoteBranchTree"
+                          Height="0"
                           Margin="8,0,4,0"
                           Nodes="{Binding RemoteBranchTrees}"
                           IsVisible="{Binding IsRemoteGroupExpanded}"
@@ -273,6 +275,7 @@
             </ToggleButton>
             <DataGrid Grid.Row="5"
                       x:Name="tagsList"
+                      Height="0"
                       Margin="8,0,4,0"
                       Background="Transparent"
                       ItemsSource="{Binding VisibleTags}"
@@ -376,7 +379,7 @@
             </ToggleButton>
             <DataGrid Grid.Row="7"
                       x:Name="submoduleList"
-                      MaxHeight="200"
+                      Height="0"
                       Margin="8,0,4,0"
                       Background="Transparent"
                       ItemsSource="{Binding Submodules}"
@@ -459,6 +462,7 @@
             </ToggleButton>
             <DataGrid Grid.Row="9"
                       x:Name="worktreeList"
+                      Height="0"
                       Margin="8,0,4,0"
                       Background="Transparent"
                       ItemsSource="{Binding Worktrees}"
