@@ -16,6 +16,7 @@ namespace SourceGit.ViewModels
         public object Backend { get; private set; } = null;
         public int Depth { get; set; } = 0;
         public bool IsFiltered { get; set; } = false;
+        public bool IsSelected { get; set; } = false;
         public List<BranchTreeNode> Children { get; private set; } = new List<BranchTreeNode>();
         
         public bool IsExpanded

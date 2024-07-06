@@ -154,21 +154,24 @@ namespace SourceGit.Views
             if (selected == null || selected.Count == 0)
                 return;
 
-            var set = new HashSet<ViewModels.BranchTreeNode>();
-            foreach (var item in selected)
+            foreach (var item in e.AddedItems)
             {
                 if (item is ViewModels.BranchTreeNode node)
-                    set.Add(node);
+                    node.IsSelected = true;
+            }
+
+            foreach (var item in e.RemovedItems)
+            {
+                if (item is ViewModels.BranchTreeNode node)
+                    node.IsSelected = false;
             }
 
             var prev = null as ViewModels.BranchTreeNode;
-            var isPrevSelected = false;
             foreach (var row in Rows)
             {
-                var isSelected = set.Contains(row);
-                if (isSelected)
+                if (row.IsSelected)
                 {
-                    if (isPrevSelected)
+                    if (prev is { IsSelected: true })
                     {
                         var prevTop = prev.CornerRadius.TopLeft;
                         prev.CornerRadius = new CornerRadius(prevTop, 0);
@@ -180,7 +183,6 @@ namespace SourceGit.Views
                     }
                 }
 
-                isPrevSelected = isSelected;
                 prev = row;
             }
             
