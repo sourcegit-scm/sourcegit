@@ -175,7 +175,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OpenStatistics(object sender, RoutedEventArgs e)
+        private async void OpenStatistics(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo && TopLevel.GetTopLevel(this) is Window owner)
             {
@@ -187,11 +187,11 @@ namespace SourceGit.Views
 
         private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
-            if (e.Property == IsVisibleProperty && sender is Grid { IsVisible: true} grid)
+            if (e.Property == IsVisibleProperty && sender is Grid { IsVisible: true})
                 txtSearchCommitsBox.Focus();
         }
 
-        private void OnSearchKeyDown(object sender, KeyEventArgs e)
+        private void OnSearchKeyDown(object _, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -204,55 +204,33 @@ namespace SourceGit.Views
 
         private void OnSearchResultDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: not null } grid && DataContext is ViewModels.Repository repo)
+            if (sender is DataGrid { SelectedItem: Models.Commit commit } && DataContext is ViewModels.Repository repo)
             {
-                var commit = grid.SelectedItem as Models.Commit;
                 repo.NavigateToCommit(commit.SHA);
             }
             
             e.Handled = true;
         }
         
-        private void OnLocalBranchTreeSelectionChanged(object sender, RoutedEventArgs e)
+        private void OnLocalBranchTreeSelectionChanged(object _1, RoutedEventArgs _2)
         {
-            if (sender is BranchTree tree && DataContext is ViewModels.Repository repo)
-            {
-                var selected = tree.BranchesPresenter.SelectedItems;
-                if (selected == null || selected.Count == 0)
-                    return;
-                
-                remoteBranchTree.UnselectAll();
-                tagsList.SelectedItem = null;
-
-                if (selected.Count == 1 && selected[0] is ViewModels.BranchTreeNode { Backend: Models.Branch branch })
-                    repo.NavigateToCommit(branch.Head);
-            }
+            remoteBranchTree.UnselectAll();
+            tagsList.SelectedItem = null;
         }
         
-        private void OnRemoteBranchTreeSelectionChanged(object sender, RoutedEventArgs e)
+        private void OnRemoteBranchTreeSelectionChanged(object _1, RoutedEventArgs _2)
         {
-            if (sender is BranchTree tree && DataContext is ViewModels.Repository repo)
-            {
-                var selected = tree.BranchesPresenter.SelectedItems;
-                if (selected == null || selected.Count == 0)
-                    return;
-                
-                localBranchTree.UnselectAll();
-                tagsList.SelectedItem = null;
-
-                if (selected.Count == 1 && selected[0] is ViewModels.BranchTreeNode { Backend: Models.Branch branch })
-                    repo.NavigateToCommit(branch.Head);
-            }
+            localBranchTree.UnselectAll();
+            tagsList.SelectedItem = null;
         }
 
-        private void OnTagDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnTagDataGridSelectionChanged(object sender, SelectionChangedEventArgs _)
         {
-            if (sender is DataGrid { SelectedItem: not null } grid)
+            if (sender is DataGrid { SelectedItem: Models.Tag tag })
             {
                 localBranchTree.UnselectAll();
                 remoteBranchTree.UnselectAll();
 
-                var tag = grid.SelectedItem as Models.Tag;
                 if (DataContext is ViewModels.Repository repo)
                     repo.NavigateToCommit(tag.SHA);
             }
@@ -272,18 +250,9 @@ namespace SourceGit.Views
 
         private void OnToggleTagFilter(object sender, RoutedEventArgs e)
         {
-            if (sender is ToggleButton toggle)
+            if (sender is ToggleButton { DataContext: Models.Tag tag } toggle && DataContext is ViewModels.Repository repo)
             {
-                var filter = string.Empty;
-                if (toggle.DataContext is Models.Tag tag)
-                {
-                    filter = tag.Name;
-                }
-
-                if (!string.IsNullOrEmpty(filter) && DataContext is ViewModels.Repository repo)
-                {
-                    repo.UpdateFilter(filter, toggle.IsChecked == true);
-                }
+                repo.UpdateFilter(tag.Name, toggle.IsChecked == true);
             }
 
             e.Handled = true;
@@ -335,7 +304,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnLeftSidebarDataGridPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        private void OnLeftSidebarDataGridPropertyChanged(object _, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property == DataGrid.ItemsSourceProperty || e.Property == DataGrid.IsVisibleProperty)
             {

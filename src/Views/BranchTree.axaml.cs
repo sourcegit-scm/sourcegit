@@ -17,7 +17,7 @@ namespace SourceGit.Views
     public class BranchTreeNodeIcon : UserControl
     {
         public static readonly StyledProperty<ViewModels.BranchTreeNode> NodeProperty =
-            AvaloniaProperty.Register<BranchTreeNodeIcon, ViewModels.BranchTreeNode>(nameof(Node), null);
+            AvaloniaProperty.Register<BranchTreeNodeIcon, ViewModels.BranchTreeNode>(nameof(Node));
 
         public ViewModels.BranchTreeNode Node
         {
@@ -26,7 +26,7 @@ namespace SourceGit.Views
         }
         
         public static readonly StyledProperty<bool> IsExpandedProperty =
-            AvaloniaProperty.Register<BranchTreeNodeIcon, bool>(nameof(IsExpanded), false);
+            AvaloniaProperty.Register<BranchTreeNodeIcon, bool>(nameof(IsExpanded));
 
         public bool IsExpanded
         {
@@ -36,8 +36,8 @@ namespace SourceGit.Views
 
         static BranchTreeNodeIcon()
         {
-            NodeProperty.Changed.AddClassHandler<BranchTreeNodeIcon>((icon, e) => icon.UpdateContent());
-            IsExpandedProperty.Changed.AddClassHandler<BranchTreeNodeIcon>((icon, e) => icon.UpdateContent());
+            NodeProperty.Changed.AddClassHandler<BranchTreeNodeIcon>((icon, _) => icon.UpdateContent());
+            IsExpandedProperty.Changed.AddClassHandler<BranchTreeNodeIcon>((icon, _) => icon.UpdateContent());
         }
 
         private void UpdateContent()
@@ -90,7 +90,7 @@ namespace SourceGit.Views
     public partial class BranchTree : UserControl
     {
         public static readonly StyledProperty<List<ViewModels.BranchTreeNode>> NodesProperty =
-            AvaloniaProperty.Register<BranchTree, List<ViewModels.BranchTreeNode>>(nameof(Nodes), null);
+            AvaloniaProperty.Register<BranchTree, List<ViewModels.BranchTreeNode>>(nameof(Nodes));
 
         public List<ViewModels.BranchTreeNode> Nodes
         {
@@ -148,12 +148,8 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnNodesSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnNodesSelectionChanged(object _, SelectionChangedEventArgs e)
         {
-            var selected = BranchesPresenter.SelectedItems;
-            if (selected == null || selected.Count == 0)
-                return;
-
             foreach (var item in e.AddedItems)
             {
                 if (item is ViewModels.BranchTreeNode node)
@@ -164,6 +160,16 @@ namespace SourceGit.Views
             {
                 if (item is ViewModels.BranchTreeNode node)
                     node.IsSelected = false;
+            }
+            
+            var selected = BranchesPresenter.SelectedItems;
+            if (selected == null || selected.Count == 0)
+                return;
+
+            if (selected.Count == 1 && selected[0] is ViewModels.BranchTreeNode { Backend: Models.Branch branch })
+            {
+                var repo = DataContext as ViewModels.Repository;
+                repo?.NavigateToCommit(branch.Head);
             }
 
             var prev = null as ViewModels.BranchTreeNode;
@@ -189,7 +195,7 @@ namespace SourceGit.Views
             RaiseEvent(new RoutedEventArgs(SelectionChangedEvent));
         }
         
-        private void OnTreeContextRequested(object sender, ContextRequestedEventArgs e)
+        private void OnTreeContextRequested(object _1, ContextRequestedEventArgs _2)
         {
             var repo = DataContext as ViewModels.Repository;
             if (repo?.Settings == null)
@@ -237,7 +243,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDoubleTappedBranchNode(object sender, TappedEventArgs e)
+        private void OnDoubleTappedBranchNode(object sender, TappedEventArgs _)
         {
             if (sender is Grid { DataContext: ViewModels.BranchTreeNode node })
             {
