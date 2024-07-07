@@ -1,122 +1,63 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 using Avalonia;
 using Avalonia.Collections;
+using Avalonia.Media;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public enum BranchTreeNodeType
-    {
-        DetachedHead,
-        Remote,
-        Folder,
-        Branch,
-    }
-
     public class BranchTreeNode : ObservableObject
     {
-        public const double DEFAULT_CORNER = 4.0;
-
-        public string Name { get; set; }
-        public BranchTreeNodeType Type { get; set; }
-        public object Backend { get; set; }
-        public bool IsFiltered { get; set; }
-        public List<BranchTreeNode> Children { get; set; } = new List<BranchTreeNode>();
-
-        public bool IsUpstreamTrackStatusVisible
-        {
-            get => IsBranch && !string.IsNullOrEmpty((Backend as Models.Branch).UpstreamTrackStatus);
-        }
-
-        public string UpstreamTrackStatus
-        {
-            get => Type == BranchTreeNodeType.Branch ? (Backend as Models.Branch).UpstreamTrackStatus : "";
-        }
-
-        public bool IsRemote
-        {
-            get => Type == BranchTreeNodeType.Remote;
-        }
-
-        public bool IsFolder
-        {
-            get => Type == BranchTreeNodeType.Folder;
-        }
-
-        public bool IsBranch
-        {
-            get => Type == BranchTreeNodeType.Branch;
-        }
-
-        public bool IsDetachedHead
-        {
-            get => Type == BranchTreeNodeType.DetachedHead;
-        }
-
-        public bool IsCurrent
-        {
-            get => IsBranch && (Backend as Models.Branch).IsCurrent;
-        }
-
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set => SetProperty(ref _isSelected, value);
-        }
-
+        public string Name { get; private set; } = string.Empty;
+        public object Backend { get; private set; } = null;
+        public int Depth { get; set; } = 0;
+        public bool IsFiltered { get; set; } = false;
+        public bool IsSelected { get; set; } = false;
+        public List<BranchTreeNode> Children { get; private set; } = new List<BranchTreeNode>();
+        
         public bool IsExpanded
         {
             get => _isExpanded;
             set => SetProperty(ref _isExpanded, value);
         }
-
-        public string Tooltip
-        {
-            get
-            {
-                if (Backend is Models.Branch b)
-                    return b.FriendlyName;
-
-                return null;
-            }
-        }
-
+        
         public CornerRadius CornerRadius
         {
             get => _cornerRadius;
             set => SetProperty(ref _cornerRadius, value);
         }
-
-        public void UpdateCornerRadius(ref BranchTreeNode prev)
+        
+        public bool IsBranch
         {
-            if (_isSelected && prev != null && prev.IsSelected)
-            {
-                var prevTop = prev.CornerRadius.TopLeft;
-                prev.CornerRadius = new CornerRadius(prevTop, 0);
-                CornerRadius = new CornerRadius(0, DEFAULT_CORNER);
-            }
-            else if (CornerRadius.TopLeft != DEFAULT_CORNER ||
-                CornerRadius.BottomLeft != DEFAULT_CORNER)
-            {
-                CornerRadius = new CornerRadius(DEFAULT_CORNER);
-            }
-
-            prev = this;
-
-            if (!IsBranch && IsExpanded)
-            {
-                foreach (var child in Children)
-                    child.UpdateCornerRadius(ref prev);
-            }
+            get => Backend is Models.Branch;
         }
 
-        private bool _isSelected = false;
+        public bool IsUpstreamTrackStatusVisible
+        {
+            get => Backend is Models.Branch { IsLocal: true } branch && !string.IsNullOrEmpty(branch.UpstreamTrackStatus);
+        }
+
+        public string UpstreamTrackStatus
+        {
+            get => Backend is Models.Branch branch ? branch.UpstreamTrackStatus : "";
+        }
+
+        public FontWeight NameFontWeight
+        {
+            get => Backend is Models.Branch { IsCurrent: true } ? FontWeight.Bold : FontWeight.Regular;
+        }
+
+        public string Tooltip
+        {
+            get => Backend is Models.Branch b ? b.FriendlyName : null;
+        }
+        
         private bool _isExpanded = false;
-        private CornerRadius _cornerRadius = new CornerRadius(DEFAULT_CORNER);
+        private CornerRadius _cornerRadius = new CornerRadius(4);
 
         public class Builder
         {
@@ -133,7 +74,6 @@ namespace SourceGit.ViewModels
                     var node = new BranchTreeNode()
                     {
                         Name = remote.Name,
-                        Type = BranchTreeNodeType.Remote,
                         Backend = remote,
                         IsExpanded = bForceExpanded || _expanded.Contains(path),
                     };
@@ -176,9 +116,13 @@ namespace SourceGit.ViewModels
             {
                 foreach (var node in nodes)
                 {
+                    if (node.Backend is Models.Branch)
+                        continue;
+                    
                     var path = prefix + "/" + node.Name;
-                    if (node.Type != BranchTreeNodeType.Branch && node.IsExpanded)
+                    if (node.IsExpanded)
                         _expanded.Add(path);
+                    
                     CollectExpandedNodes(node.Children, path);
                 }
             }
@@ -191,7 +135,6 @@ namespace SourceGit.ViewModels
                     roots.Add(new BranchTreeNode()
                     {
                         Name = branch.Name,
-                        Type = BranchTreeNodeType.Branch,
                         Backend = branch,
                         IsExpanded = false,
                         IsFiltered = isFiltered,
@@ -215,7 +158,6 @@ namespace SourceGit.ViewModels
                         lastFolder = new BranchTreeNode()
                         {
                             Name = name,
-                            Type = BranchTreeNodeType.Folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
                         };
                         roots.Add(lastFolder);
@@ -226,7 +168,6 @@ namespace SourceGit.ViewModels
                         var cur = new BranchTreeNode()
                         {
                             Name = name,
-                            Type = BranchTreeNodeType.Folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
                         };
                         lastFolder.Children.Add(cur);
@@ -238,10 +179,9 @@ namespace SourceGit.ViewModels
                     sepIdx = branch.Name.IndexOf('/', start);
                 }
 
-                lastFolder.Children.Add(new BranchTreeNode()
+                lastFolder?.Children.Add(new BranchTreeNode()
                 {
                     Name = Path.GetFileName(branch.Name),
-                    Type = branch.IsHead ? BranchTreeNodeType.DetachedHead : BranchTreeNodeType.Branch,
                     Backend = branch,
                     IsExpanded = false,
                     IsFiltered = isFiltered,
@@ -252,16 +192,13 @@ namespace SourceGit.ViewModels
             {
                 nodes.Sort((l, r) =>
                 {
-                    if (l.Type == BranchTreeNodeType.DetachedHead)
-                    {
+                    if (l.Backend is Models.Branch { IsHead: true })
                         return -1;
-                    }
-                    if (l.Type == r.Type)
-                    {
-                        return l.Name.CompareTo(r.Name);
-                    }
 
-                    return (int)l.Type - (int)r.Type;
+                    if (l.Backend is Models.Branch)
+                        return r.Backend is Models.Branch ? string.Compare(l.Name, r.Name, StringComparison.Ordinal) : 1;
+                    
+                    return r.Backend is Models.Branch ? -1 : string.Compare(l.Name, r.Name, StringComparison.Ordinal);
                 });
 
                 foreach (var node in nodes)

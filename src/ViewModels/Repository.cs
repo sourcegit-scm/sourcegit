@@ -64,6 +64,12 @@ namespace SourceGit.ViewModels
             set;
         } = true;
 
+        public bool AutoStageBeforeCommit
+        {
+            get;
+            set;
+        } = false;
+
         public AvaloniaList<string> Filters
         {
             get;
@@ -1905,7 +1911,7 @@ namespace SourceGit.ViewModels
                         visibles.Add(b);
                 }
 
-                builder.Run(visibles, remotes, visibles.Count <= 20);
+                builder.Run(visibles, remotes, true);
             }
 
             return builder;

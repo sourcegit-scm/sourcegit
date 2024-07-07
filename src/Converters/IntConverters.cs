@@ -1,4 +1,5 @@
-﻿using Avalonia.Data.Converters;
+﻿using Avalonia;
+using Avalonia.Data.Converters;
 
 namespace SourceGit.Converters
 {
@@ -24,5 +25,8 @@ namespace SourceGit.Converters
         
         public static readonly FuncValueConverter<int, bool> IsSubjectLengthGood =
             new FuncValueConverter<int, bool>(v => v <= ViewModels.Preference.Instance.SubjectGuideLength);
+
+        public static readonly FuncValueConverter<int, Thickness> ToTreeMargin =
+            new FuncValueConverter<int, Thickness>(v => new Thickness(v * 16, 0, 0, 0));
     }
 }

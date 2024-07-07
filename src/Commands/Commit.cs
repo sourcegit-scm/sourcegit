@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Commit : Command
     {
-        public Commit(string repo, string message, bool amend, bool allowEmpty = false)
+        public Commit(string repo, string message, bool autoStage, bool amend, bool allowEmpty = false)
         {
             var file = Path.GetTempFileName();
             File.WriteAllText(file, message);
@@ -12,6 +12,8 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             Args = $"commit --file=\"{file}\"";
+            if (autoStage)
+                Args += " --all";
             if (amend)
                 Args += " --amend --no-edit";
             if (allowEmpty)
