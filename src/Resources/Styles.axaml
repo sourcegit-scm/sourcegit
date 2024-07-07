@@ -772,6 +772,7 @@
               <Popup Name="PART_Popup"
                      WindowManagerAddShadowHint="False"
                      Placement="RightEdgeAlignedTop"
+                     MaxHeight="400"
                      IsLightDismissEnabled="False"
                      HorizontalOffset="-4"
                      VerticalOffset="-4"
@@ -793,7 +794,13 @@
                       <ItemsPresenter Name="PART_ItemsPresenter"
                                       ItemsPanel="{TemplateBinding ItemsPanel}"
                                       Margin="{DynamicResource MenuFlyoutScrollerMargin}"
-                                      Grid.IsSharedSizeScope="True" />
+                                      Grid.IsSharedSizeScope="True">
+                        <ItemsPresenter.ItemsPanel>
+                          <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Vertical"/>
+                          </ItemsPanelTemplate>
+                        </ItemsPresenter.ItemsPanel>
+                      </ItemsPresenter>
                     </ScrollViewer>
                   </Border>
                 </Grid>
