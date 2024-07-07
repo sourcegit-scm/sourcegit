@@ -77,6 +77,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isCommitting, value);
         }
 
+        public bool AutoStageBeforeCommit
+        {
+            get => _repo.Settings.AutoStageBeforeCommit;
+            set => _repo.Settings.AutoStageBeforeCommit = value;
+        }
+
         public bool UseAmend
         {
             get => _useAmend;
@@ -1216,7 +1222,13 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (_staged.Count == 0)
+            if (_count == 0)
+            {
+                App.RaiseException(_repo.FullPath, "No files added to commit!");
+                return;
+            }
+
+            if (!AutoStageBeforeCommit && _staged.Count == 0)
             {
                 App.RaiseException(_repo.FullPath, "No files added to commit!");
                 return;
@@ -1234,9 +1246,10 @@ namespace SourceGit.ViewModels
             IsCommitting = true;
             _repo.SetWatcherEnabled(false);
 
+            var autoStage = AutoStageBeforeCommit;
             Task.Run(() =>
             {
-                var succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend).Exec();
+                var succ = new Commands.Commit(_repo.FullPath, _commitMessage, autoStage, _useAmend).Exec();
                 Dispatcher.UIThread.Post(() =>
                 {
                     if (succ)

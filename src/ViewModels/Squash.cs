@@ -43,7 +43,7 @@ namespace SourceGit.ViewModels
             {
                 var succ = new Commands.Reset(_repo.FullPath, Parent.SHA, "--soft").Exec();
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _message, true).Exec();
+                    succ = new Commands.Commit(_repo.FullPath, _message, false, true).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
