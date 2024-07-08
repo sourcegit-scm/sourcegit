@@ -169,23 +169,15 @@ namespace SourceGit
                     foreach (var kv in overrides.BasicColors)
                     {
                         if (kv.Key.Equals("SystemAccentColor", StringComparison.Ordinal))
-                            resDic["SystemAccentColor"] = Color.Parse(kv.Value);
+                            resDic["SystemAccentColor"] = kv.Value;
                         else
-                            resDic[$"Color.{kv.Key}"] = Color.Parse(kv.Value);
+                            resDic[$"Color.{kv.Key}"] = kv.Value;
                     }
 
                     if (overrides.GraphColors.Count > 0)
-                    {
-                        var penColors = new List<Color>();
-                        foreach (var c in overrides.GraphColors)
-                            penColors.Add(Color.Parse(c));
-
-                        Models.CommitGraph.SetPens(penColors, overrides.GraphPenThickness);
-                    }
+                        Models.CommitGraph.SetPens(overrides.GraphColors, overrides.GraphPenThickness);
                     else
-                    {
                         Models.CommitGraph.SetDefaultPens(overrides.GraphPenThickness);
-                    }
 
                     app.Resources.MergedDictionaries.Add(resDic);
                     app._themeOverrides = resDic;

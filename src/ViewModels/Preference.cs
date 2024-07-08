@@ -80,14 +80,12 @@ namespace SourceGit.ViewModels
             }
         }
 
-        [JsonConverter(typeof(FontFamilyConverter))]
         public FontFamily DefaultFont
         {
             get => _defaultFont;
             set => SetProperty(ref _defaultFont, value);
         }
 
-        [JsonConverter(typeof(FontFamilyConverter))]
         public FontFamily MonospaceFont
         {
             get => _monospaceFont;
@@ -516,19 +514,5 @@ namespace SourceGit.ViewModels
         private string _externalMergeToolPath = string.Empty;
 
         private AvaloniaList<RepositoryNode> _repositoryNodes = new AvaloniaList<RepositoryNode>();
-    }
-
-    public class FontFamilyConverter : JsonConverter<FontFamily>
-    {
-        public override FontFamily Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            var name = reader.GetString();
-            return new FontFamily(name);
-        }
-
-        public override void Write(Utf8JsonWriter writer, FontFamily value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(value.ToString());
-        }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 
+using Avalonia.Media;
+
 namespace SourceGit.Models
 {
     public class ThemeOverrides
     {
-        public Dictionary<string, string> BasicColors { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, Color> BasicColors { get; set; } = new Dictionary<string, Color>();
         public double GraphPenThickness { get; set; } = 1.5;
-        public List<string> GraphColors { get; set; } = new List<string>();
+        public List<Color> GraphColors { get; set; } = new List<Color>();
     }
 }
