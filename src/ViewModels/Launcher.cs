@@ -28,12 +28,11 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public Launcher()
+        public Launcher(string[] commandlines)
         {
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
-
-            var commandlines = Environment.GetCommandLineArgs();
+            
             if (commandlines.Length == 2)
             {
                 var path = commandlines[1];

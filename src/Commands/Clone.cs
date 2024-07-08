@@ -13,13 +13,9 @@ namespace SourceGit.Commands
             TraitErrorAsOutput = true;
 
             if (string.IsNullOrEmpty(sshKey))
-            {
                 Args = "-c credential.helper=manager ";
-            }
             else
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
+                UseSSHKey(sshKey);
 
             Args += "clone --progress --verbose --recurse-submodules ";
 

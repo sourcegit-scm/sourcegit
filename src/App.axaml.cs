@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -324,16 +325,25 @@ namespace SourceGit
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 BindingPlugins.DataValidators.RemoveAt(0);
-                Native.OS.SetupEnternalTools();
 
-                _launcher = new ViewModels.Launcher();
-                desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
-
-                var pref = ViewModels.Preference.Instance;
-                if (pref.ShouldCheck4UpdateOnStartup)
+                var commandlines = Environment.GetCommandLineArgs();
+                if (TryParseAskpass(commandlines, out var keyname))
                 {
-                    pref.Save();
-                    Check4Update();
+                    desktop.MainWindow = new Views.Askpass(Path.GetFileName(keyname));
+                }
+                else
+                {
+                    Native.OS.SetupEnternalTools();
+
+                    _launcher = new ViewModels.Launcher(commandlines);
+                    desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
+
+                    var pref = ViewModels.Preference.Instance;
+                    if (pref.ShouldCheck4UpdateOnStartup)
+                    {
+                        pref.Save();
+                        Check4Update();
+                    }
                 }
             }
 
@@ -358,6 +368,23 @@ namespace SourceGit
                 }
             });
         }
+
+        private static bool TryParseAskpass(string[] args, out string keyname)
+        {
+            keyname = string.Empty;
+
+            if (args.Length != 2)
+                return false;
+
+            var match = REG_ASKPASS().Match(args[1]);
+            if (match.Success)
+                keyname = match.Groups[1].Value;
+
+            return match.Success;
+        }
+
+        [GeneratedRegex(@"Enter\s+passphrase\s*for\s*key\s*['""]([^'""]+)['""]\:\s*", RegexOptions.IgnoreCase)]
+        private static partial Regex REG_ASKPASS();
 
         private ViewModels.Launcher _launcher = null;
         private ResourceDictionary _activeLocale = null;

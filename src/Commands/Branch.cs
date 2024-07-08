@@ -52,14 +52,10 @@
             cmd.Context = repo;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                cmd.Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
+            if (string.IsNullOrEmpty(sshKey))
                 cmd.Args = "-c credential.helper=manager ";
-            }
+            else
+                cmd.UseSSHKey(sshKey);
 
             cmd.Args += $"push {remote} --delete {name}";
             return cmd.Exec();

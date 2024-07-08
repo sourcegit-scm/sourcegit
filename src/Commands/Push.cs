@@ -12,14 +12,10 @@ namespace SourceGit.Commands
             _outputHandler = onProgress;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
+            if (string.IsNullOrEmpty(sshKey))
                 Args = "-c credential.helper=manager ";
-            }
+            else
+                UseSSHKey(sshKey);
 
             Args += "push --progress --verbose ";
 
@@ -39,14 +35,10 @@ namespace SourceGit.Commands
             Context = repo;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
+            if (string.IsNullOrEmpty(sshKey))
                 Args = "-c credential.helper=manager ";
-            }
+            else
+                UseSSHKey(sshKey);
 
             Args += "push ";
             if (isDelete)

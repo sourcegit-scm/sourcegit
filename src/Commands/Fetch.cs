@@ -15,14 +15,10 @@ namespace SourceGit.Commands
             TraitErrorAsOutput = true;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
+            if (string.IsNullOrEmpty(sshKey))
                 Args = "-c credential.helper=manager ";
-            }
+            else
+                UseSSHKey(sshKey);
 
             Args += "fetch --progress --verbose ";
             if (prune)
@@ -46,14 +42,10 @@ namespace SourceGit.Commands
             TraitErrorAsOutput = true;
 
             var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
+            if (string.IsNullOrEmpty(sshKey))
                 Args = "-c credential.helper=manager ";
-            }
+            else
+                UseSSHKey(sshKey);
 
             Args += $"fetch --progress --verbose {remote} {remoteBranch}:{localBranch}";
         }

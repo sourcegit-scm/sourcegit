@@ -1,0 +1,81 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.Askpass"
+                    x:DataType="v:Askpass"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.Askpass}"
+                    SizeToContent="WidthAndHeight"
+                    CanResize="False"
+                    WindowStartupLocation="CenterScreen">
+  <Grid RowDefinitions="Auto,*">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
+      <Border Grid.Column="0" Grid.ColumnSpan="3"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Grid.Column="0"
+            Width="14" Height="14"
+            Margin="10,0,0,0"
+            Data="{StaticResource Icons.Password}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
+        <Button Classes="caption_button_macos" Click="CloseWindow">
+          <Grid>
+            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
+            <Path Height="6" Width="6" Stretch="Fill" Fill="#404040" Stroke="#404040" StrokeThickness="1" Data="{StaticResource Icons.Window.Close}"/>
+          </Grid>
+        </Button>
+      </Grid>
+
+      <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Askpass}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <Button Grid.Column="2"
+              Classes="caption_button"
+              Click="CloseWindow"
+              IsVisible="{OnPlatform True, macOS=False}">
+        <Path Data="{StaticResource Icons.Window.Close}"/>
+      </Button>
+    </Grid>
+
+    <StackPanel Grid.Row="1" Margin="0,16" Orientation="Vertical">
+      <StackPanel Orientation="Horizontal" Margin="16,0">
+        <TextBlock Text="Enter passphrase for key: "/>
+        <Border Background="{DynamicResource Brush.Accent}" CornerRadius="4">
+          <TextBlock Text="{Binding KeyName}" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
+        </Border>
+      </StackPanel>
+      
+      <TextBox Margin="16"
+               MinWidth="300" 
+               Height="32" 
+               Text="{Binding Passphrase, Mode=TwoWay}" 
+               PasswordChar="*"
+               HorizontalAlignment="Stretch"/>
+      
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <Button Classes="flat primary"
+                Width="80"
+                Content="{DynamicResource Text.Sure}"
+                Click="EnterPassword"
+                HotKey="Enter"/>
+        <Button Classes="flat"
+                Width="80"
+                Margin="16,0,0,0"
+                Content="{DynamicResource Text.Cancel}"
+                Click="CloseWindow"/>
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</v:ChromelessWindow>

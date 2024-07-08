@@ -28,6 +28,15 @@ namespace SourceGit.Commands
         public string Args { get; set; } = string.Empty;
         public bool RaiseError { get; set; } = true;
         public bool TraitErrorAsOutput { get; set; } = false;
+        public Dictionary<string, string> Envs { get; set; } = new Dictionary<string, string>();
+
+        public void UseSSHKey(string key)
+        {
+            Envs.Add("DISPLAY", "required");
+            Envs.Add("SSH_ASKPASS", Process.GetCurrentProcess().MainModule.FileName);
+            Envs.Add("SSH_ASKPASS_REQUIRE", "prefer");
+            Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{key}'");
+        }
 
         public bool Exec()
         {
@@ -40,6 +49,10 @@ namespace SourceGit.Commands
             start.RedirectStandardError = true;
             start.StandardOutputEncoding = Encoding.UTF8;
             start.StandardErrorEncoding = Encoding.UTF8;
+
+            // User environment overrides.
+            foreach (var kv in Envs)
+                start.Environment.Add(kv.Key, kv.Value);
 
             // Force using en_US.UTF-8 locale to avoid GCM crash
             if (OperatingSystem.IsLinux())
@@ -94,7 +107,7 @@ namespace SourceGit.Commands
                     return;
                 if (e.Data.StartsWith("Filtering content:", StringComparison.Ordinal))
                     return;
-                if (_progressRegex().IsMatch(e.Data))
+                if (REG_PROGRESS().IsMatch(e.Data))
                     return;
                 errs.Add(e.Data);
             };
@@ -185,6 +198,9 @@ namespace SourceGit.Commands
         protected virtual void OnReadline(string line) { }
 
         [GeneratedRegex(@"\d+%")]
-        private static partial Regex _progressRegex();
+        private static partial Regex REG_PROGRESS();
+
+        [GeneratedRegex(@"Enter\s+passphrase\s*for\s*key\s*['""]([^'""]+)['""]\:\s*", RegexOptions.IgnoreCase)]
+        private static partial Regex REG_ASKPASS();
     }
 }
