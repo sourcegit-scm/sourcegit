@@ -340,11 +340,11 @@
   <x:String x:Key="Text.Paste" xml:space="preserve">貼上</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好設定</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外觀配置</x:String>
-  <x:String x:Key="Text.Preference.Appearance.ColorOverrides" xml:space="preserve">自訂配色檔</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">預設字型大小</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">等寬字型</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">主題</x:String>
+  <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">主題自訂</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">通用配置</x:String>
   <x:String x:Key="Text.Preference.General.AvatarServer" xml:space="preserve">頭像服務</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">啟動時檢測軟體更新</x:String>

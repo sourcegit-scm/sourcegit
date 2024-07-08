@@ -210,18 +210,18 @@ namespace SourceGit.Views
             Close();
         }
 
-        private async void SelectColorSchemaFile(object sender, RoutedEventArgs e)
+        private async void SelectThemeOverrideFile(object sender, RoutedEventArgs e)
         {
             var options = new FilePickerOpenOptions()
             {
-                FileTypeFilter = [new FilePickerFileType("Theme Color Schema File") { Patterns = ["*.json"] }],
+                FileTypeFilter = [new FilePickerFileType("Theme Overrides File") { Patterns = ["*.json"] }],
                 AllowMultiple = false,
             };
 
             var selected = await StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
             {
-                ViewModels.Preference.Instance.ColorOverrides = selected[0].Path.LocalPath;
+                ViewModels.Preference.Instance.ThemeOverrides = selected[0].Path.LocalPath;
             }
 
             e.Handled = true;

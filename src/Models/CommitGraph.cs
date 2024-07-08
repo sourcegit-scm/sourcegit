@@ -108,28 +108,19 @@ namespace SourceGit.Models
             private set;
         } = new List<Pen>();
 
-        public static void SetDefaultPens()
+        public static void SetDefaultPens(double thickness = 1.5)
         {
-            SetPenColors(_defaultPenColors);
+            SetPens(_defaultPenColors, thickness);
         }
 
-        public static void SetPenColors(List<Color> colors)
+        public static void SetPens(List<Color> colors, double thickness)
         {
             Pens.Clear();
 
             foreach (var c in colors)
-                Pens.Add(new Pen(c.ToUInt32(), 2));
+                Pens.Add(new Pen(c.ToUInt32(), thickness));
 
             _penCount = colors.Count;
-        }
-
-        public static void SetPenThickness(double value)
-        {
-            _penThickness = value;
-        }
-        public static double GetPenThickness()
-        {
-            return _penThickness;
         }
 
         public static CommitGraph Parse(List<Commit> commits)
@@ -277,7 +268,6 @@ namespace SourceGit.Models
             return temp;
         }
 
-        private static double _penThickness = 1;
         private static int _penCount = 0;
         private static readonly List<Color> _defaultPenColors = [
             Colors.Orange,

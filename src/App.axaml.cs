@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -144,7 +143,7 @@ namespace SourceGit
             app._activeLocale = targetLocale;
         }
 
-        public static void SetTheme(string theme, string colorsFile)
+        public static void SetTheme(string theme, string themeOverridesFile)
         {
             var app = Current as App;
 
@@ -155,62 +154,49 @@ namespace SourceGit
             else
                 app.RequestedThemeVariant = ThemeVariant.Default;
 
-            if (app._colorOverrides != null)
+            if (app._themeOverrides != null)
             {
-                app.Resources.MergedDictionaries.Remove(app._colorOverrides);
-                app._colorOverrides = null;
+                app.Resources.MergedDictionaries.Remove(app._themeOverrides);
+                app._themeOverrides = null;
             }
 
-            Models.CommitGraph.SetDefaultPens();
-
-            if (!string.IsNullOrEmpty(colorsFile) && File.Exists(colorsFile))
+            if (!string.IsNullOrEmpty(themeOverridesFile) && File.Exists(themeOverridesFile))
             {
                 try
                 {
                     var resDic = new ResourceDictionary();
-
-                    var schema = JsonSerializer.Deserialize(File.ReadAllText(colorsFile), JsonCodeGen.Default.CustomColorSchema);
-                    foreach (var kv in schema.Basic)
+                    var overrides = JsonSerializer.Deserialize(File.ReadAllText(themeOverridesFile), JsonCodeGen.Default.ThemeOverrides);
+                    foreach (var kv in overrides.BasicColors)
                     {
                         if (kv.Key.Equals("SystemAccentColor", StringComparison.Ordinal))
                             resDic["SystemAccentColor"] = Color.Parse(kv.Value);
                         else
                             resDic[$"Color.{kv.Key}"] = Color.Parse(kv.Value);
                     }
-                        
 
-                    if (schema.Graph.Count > 0)
+                    if (overrides.GraphColors.Count > 0)
                     {
                         var penColors = new List<Color>();
-
-                        foreach (var c in schema.Graph)
+                        foreach (var c in overrides.GraphColors)
                             penColors.Add(Color.Parse(c));
 
-                        Models.CommitGraph.SetPenColors(penColors);
+                        Models.CommitGraph.SetPens(penColors, overrides.GraphPenThickness);
                     }
-
-                    foreach (var kv in schema.General)
+                    else
                     {
-                        if (kv.Key.Equals("Pen.Thickness", StringComparison.Ordinal))
-                        {
-                            double thick = Models.CommitGraph.GetPenThickness();
-                            try
-                            {
-                                thick = double.Parse(kv.Value, CultureInfo.InvariantCulture);
-                            }
-                            catch
-                            {
-                            }
-                            Models.CommitGraph.SetPenThickness(thick);
-                        }
+                        Models.CommitGraph.SetDefaultPens(overrides.GraphPenThickness);
                     }
 
                     app.Resources.MergedDictionaries.Add(resDic);
-                    app._colorOverrides = resDic;
+                    app._themeOverrides = resDic;
                 }
                 catch
                 {
                 }
+            }
+            else
+            {
+                Models.CommitGraph.SetDefaultPens();
             }
         }
 
@@ -338,7 +324,7 @@ namespace SourceGit
             var pref = ViewModels.Preference.Instance;
 
             SetLocale(pref.Locale);
-            SetTheme(pref.Theme, pref.ColorOverrides);
+            SetTheme(pref.Theme, pref.ThemeOverrides);
         }
 
         public override void OnFrameworkInitializationCompleted()
@@ -383,6 +369,6 @@ namespace SourceGit
 
         private ViewModels.Launcher _launcher = null;
         private ResourceDictionary _activeLocale = null;
-        private ResourceDictionary _colorOverrides = null;
+        private ResourceDictionary _themeOverrides = null;
     }
 }

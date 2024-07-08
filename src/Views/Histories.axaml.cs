@@ -158,7 +158,6 @@ namespace SourceGit.Views
 
                 var geo = new StreamGeometry();
                 var pen = Models.CommitGraph.Pens[line.Color];
-                pen.Thickness = Models.CommitGraph.GetPenThickness();
 
                 using (var ctx = geo.Open())
                 {

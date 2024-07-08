@@ -66,16 +66,16 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _theme, value))
-                    App.SetTheme(_theme, _colorOverrides);
+                    App.SetTheme(_theme, _themeOverrides);
             }
         }
 
-        public string ColorOverrides
+        public string ThemeOverrides
         {
-            get => _colorOverrides;
+            get => _themeOverrides;
             set
             {
-                if (SetProperty(ref _colorOverrides, value))
+                if (SetProperty(ref _themeOverrides, value))
                     App.SetTheme(_theme, value);
             }
         }
@@ -487,7 +487,7 @@ namespace SourceGit.ViewModels
 
         private string _locale = "en_US";
         private string _theme = "Default";
-        private string _colorOverrides = string.Empty;
+        private string _themeOverrides = string.Empty;
         private FontFamily _defaultFont = null;
         private FontFamily _monospaceFont = null;
         private double _defaultFontSize = 13;
