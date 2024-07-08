@@ -4,7 +4,6 @@ namespace SourceGit.Commands
 {
     public partial class QueryFileSize : Command
     {
-
         [GeneratedRegex(@"^\d+\s+\w+\s+[0-9a-f]+\s+(\d+)\s+.*$")]
         private static partial Regex REG_FORMAT();
 
@@ -25,9 +24,7 @@ namespace SourceGit.Commands
             {
                 var match = REG_FORMAT().Match(rs.StdOut);
                 if (match.Success)
-                {
                     return long.Parse(match.Groups[1].Value);
-                }
             }
 
             return 0;

@@ -175,7 +175,7 @@ namespace SourceGit.ViewModels
                     }
                     else if (d.Type == Models.DecoratorType.RemoteBranchHead)
                     {
-                        var b = _repo.Branches.Find(x => !x.IsLocal && d.Name == $"{x.Remote}/{x.Name}");
+                        var b = _repo.Branches.Find(x => !x.IsLocal && d.Name == x.FriendlyName);
                         FillRemoteBranchMenu(menu, b, current, commit.IsMerged);
                     }
                     else if (d.Type == Models.DecoratorType.Tag)
@@ -583,7 +583,7 @@ namespace SourceGit.ViewModels
 
         private void FillRemoteBranchMenu(ContextMenu menu, Models.Branch branch, Models.Branch current, bool merged)
         {
-            var name = $"{branch.Remote}/{branch.Name}";
+            var name = branch.FriendlyName;
 
             var submenu = new MenuItem();
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");

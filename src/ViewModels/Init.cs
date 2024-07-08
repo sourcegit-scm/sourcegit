@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -29,11 +28,10 @@ namespace SourceGit.ViewModels
                 if (!succ)
                     return false;
 
-                var gitDir = Path.GetFullPath(Path.Combine(_targetPath, ".git"));
                 CallUIThread(() =>
                 {
-                    var repo = Preference.AddRepository(_targetPath, gitDir);
-                    Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, _parentNode, true);
+                    var normalizedPath = _targetPath.Replace("\\", "/");
+                    Preference.FindOrAddNodeByRepositoryPath(normalizedPath, _parentNode, true);
                 });
 
                 return true;

@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Pull : Command
     {
-        public Pull(string repo, string remote, string branch, bool useRebase, Action<string> outputHandler)
+        public Pull(string repo, string remote, string branch, bool useRebase, bool noTags, Action<string> outputHandler)
         {
             _outputHandler = outputHandler;
             WorkingDirectory = repo;
@@ -24,6 +24,9 @@ namespace SourceGit.Commands
             Args += "pull --verbose --progress --tags ";
             if (useRebase)
                 Args += "--rebase ";
+            if (noTags)
+                Args += "--no-tags ";
+
             Args += $"{remote} {branch}";
         }
 

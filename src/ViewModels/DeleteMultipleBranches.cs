@@ -37,7 +37,7 @@ namespace SourceGit.ViewModels
                 {
                     foreach (var target in Targets)
                     {
-                        SetProgressDescription($"Deleting remote branch : {target.Remote}/{target.Name}");
+                        SetProgressDescription($"Deleting remote branch : {target.FriendlyName}");
                         Commands.Branch.DeleteRemote(_repo.FullPath, target.Remote, target.Name);
                     }
                 }

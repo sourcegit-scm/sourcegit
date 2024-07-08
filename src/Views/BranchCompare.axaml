@@ -61,7 +61,7 @@
                         User="{Binding BaseHead.Author}"/>
               <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding BaseHead.Author.Name}" Margin="8,0,0,0"/>
               <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-                <TextBlock Text="{Binding Base, Converter={x:Static c:BranchConverters.ToName}}" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
+                <TextBlock Text="{Binding Base.FriendlyName}" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
               </Border>
               <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding BaseHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
               <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding BaseHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
@@ -82,7 +82,7 @@
                         User="{Binding ToHead.Author}"/>
               <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding ToHead.Author.Name}" Margin="8,0,0,0"/>
               <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-                <TextBlock Text="{Binding To, Converter={x:Static c:BranchConverters.ToName}}" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
+                <TextBlock Text="{Binding To.FriendlyName}" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
               </Border>
               <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding ToHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
               <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding ToHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>

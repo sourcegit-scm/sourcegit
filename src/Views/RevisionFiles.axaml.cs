@@ -9,8 +9,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using Avalonia.Styling;
 
 using AvaloniaEdit;
 using AvaloniaEdit.Document;

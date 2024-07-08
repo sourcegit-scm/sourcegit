@@ -22,15 +22,15 @@ namespace SourceGit.ViewModels
 
         public Models.DealWithLocalChanges PreAction
         {
-            get => _preAction;
-            set => SetProperty(ref _preAction, value);
+            get => _repo.Settings.DealWithLocalChangesOnCreateBranch;
+            set => _repo.Settings.DealWithLocalChangesOnCreateBranch = value;
         }
 
         public bool CheckoutAfterCreated
         {
-            get;
-            set;
-        } = true;
+            get => _repo.Settings.CheckoutBranchOnCreateBranch;
+            set => _repo.Settings.CheckoutBranchOnCreateBranch = value;
+        }
 
         public CreateBranch(Repository repo, Models.Branch branch)
         {
@@ -72,8 +72,7 @@ namespace SourceGit.ViewModels
 
             foreach (var b in creator._repo.Branches)
             {
-                var test = b.IsLocal ? b.Name : $"{b.Remote}/{b.Name}";
-                if (test == name)
+                if (b.FriendlyName == name)
                     return new ValidationResult("A branch with same name already exists!");
             }
 
@@ -90,7 +89,7 @@ namespace SourceGit.ViewModels
                     bool needPopStash = false;
                     if (_repo.WorkingCopyChangesCount > 0)
                     {
-                        if (_preAction == Models.DealWithLocalChanges.StashAndReaply)
+                        if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                         {
                             SetProgressDescription("Adding untracked changes...");
                             var succ = new Commands.Add(_repo.FullPath).Exec();
@@ -108,7 +107,7 @@ namespace SourceGit.ViewModels
 
                             needPopStash = true;
                         }
-                        else if (_preAction == Models.DealWithLocalChanges.Discard)
+                        else if (PreAction == Models.DealWithLocalChanges.Discard)
                         {
                             SetProgressDescription("Discard local changes...");
                             Commands.Discard.All(_repo.FullPath);
@@ -138,6 +137,5 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private string _name = null;
         private readonly string _baseOnRevision = null;
-        private Models.DealWithLocalChanges _preAction = Models.DealWithLocalChanges.DoNothing;
     }
 }

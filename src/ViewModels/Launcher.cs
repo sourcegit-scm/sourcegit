@@ -48,9 +48,8 @@ namespace SourceGit.ViewModels
                     return;
                 }
 
-                var gitDir = new Commands.QueryGitDir(root).Result();
-                var repo = Preference.AddRepository(root, gitDir);
-                var node = Preference.FindOrAddNodeByRepositoryPath(repo.FullPath, null, false);
+                var normalized = root.Replace("\\", "/");
+                var node = Preference.FindOrAddNodeByRepositoryPath(normalized, null, false);
                 OpenRepositoryInTab(node, null);
             }
             else if (Preference.Instance.RestoreTabs)
@@ -59,7 +58,15 @@ namespace SourceGit.ViewModels
                 {
                     var node = Preference.FindNode(id);
                     if (node == null)
-                        continue;
+                    {
+                        node = new RepositoryNode()
+                        {
+                            Id = id,
+                            Name = Path.GetFileName(id),
+                            Bookmark = 0,
+                            IsRepository = true,
+                        };
+                    }
 
                     OpenRepositoryInTab(node, null);
                 }
@@ -72,19 +79,26 @@ namespace SourceGit.ViewModels
 
         public void Quit()
         {
-            Preference.Instance.OpenedTabs.Clear();
+            var pref = Preference.Instance;
+            pref.OpenedTabs.Clear();
 
-            if (Preference.Instance.RestoreTabs)
+            if (pref.RestoreTabs)
             {
                 foreach (var page in Pages)
                 {
                     if (page.Node.IsRepository)
-                        Preference.Instance.OpenedTabs.Add(page.Node.Id);
+                        pref.OpenedTabs.Add(page.Node.Id);
                 }
             }
 
-            Preference.Instance.LastActiveTabIdx = Pages.IndexOf(ActivePage);
-            Preference.Save();
+            pref.LastActiveTabIdx = Pages.IndexOf(ActivePage);
+            pref.Save();
+
+            foreach (var page in Pages)
+            {
+                if (page.Data is Repository repo)
+                    repo.Close();
+            }
         }
 
         public void AddNewTab()
@@ -211,13 +225,26 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            var repo = Preference.FindRepository(node.Id);
-            if (repo == null || !Path.Exists(repo.FullPath))
+            if (!Path.Exists(node.Id))
             {
                 var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
                 App.RaiseException(ctx, "Repository does NOT exists any more. Please remove it.");
                 return;
             }
+
+            var gitDir = new Commands.QueryGitDir(node.Id).Result();
+            if (string.IsNullOrEmpty(gitDir))
+            {
+                var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
+                App.RaiseException(ctx, "Given path is not a valid git repository!");
+                return;
+            }
+
+            var repo = new Repository()
+            {
+                FullPath = node.Id,
+                GitDir = gitDir,
+            };
 
             repo.Open();
             Commands.AutoFetch.AddRepository(repo.FullPath);

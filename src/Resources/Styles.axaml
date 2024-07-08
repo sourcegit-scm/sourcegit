@@ -29,7 +29,7 @@
 
     <Style.Resources>
       <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="Red"/>
-      <SolidColorBrush x:Key="SystemErrorTextColor" Color="Red"/>
+      <Color x:Key="SystemErrorTextColor">Red</Color>
     </Style.Resources>
   </Style>
 
@@ -158,6 +158,11 @@
   <Style Selector="ContentPresenter">
     <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFont}"/>
     <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
+  </Style>
+
+  <Style Selector="ToolTip">
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+    <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
   </Style>
 
   <Style Selector="FlyoutPresenter">
@@ -767,6 +772,7 @@
               <Popup Name="PART_Popup"
                      WindowManagerAddShadowHint="False"
                      Placement="RightEdgeAlignedTop"
+                     MaxHeight="400"
                      IsLightDismissEnabled="False"
                      HorizontalOffset="-4"
                      VerticalOffset="-4"
@@ -788,7 +794,13 @@
                       <ItemsPresenter Name="PART_ItemsPresenter"
                                       ItemsPanel="{TemplateBinding ItemsPanel}"
                                       Margin="{DynamicResource MenuFlyoutScrollerMargin}"
-                                      Grid.IsSharedSizeScope="True" />
+                                      Grid.IsSharedSizeScope="True">
+                        <ItemsPresenter.ItemsPanel>
+                          <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Vertical"/>
+                          </ItemsPanelTemplate>
+                        </ItemsPresenter.ItemsPanel>
+                      </ItemsPresenter>
                     </ScrollViewer>
                   </Border>
                 </Grid>
@@ -1211,7 +1223,8 @@
                                 Classes="tree_expander"
                                 Focusable="False"
                                 HorizontalAlignment="Center"
-                                IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}" />
+                                IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                IsHitTestVisible="False" />
                 </Panel>
                 <ContentPresenter Name="PART_HeaderPresenter"
                                   Grid.Column="1"

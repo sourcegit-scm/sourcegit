@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -159,15 +160,33 @@ namespace SourceGit
                 app._colorOverrides = null;
             }
 
+            Models.CommitGraph.SetDefaultPens();
+
             if (!string.IsNullOrEmpty(colorsFile) && File.Exists(colorsFile))
             {
                 try
                 {
                     var resDic = new ResourceDictionary();
 
-                    var schema = JsonSerializer.Deserialize(File.ReadAllText(colorsFile), JsonCodeGen.Default.DictionaryStringString);
-                    foreach (var kv in schema)
-                        resDic[kv.Key] = Color.Parse(kv.Value);
+                    var schema = JsonSerializer.Deserialize(File.ReadAllText(colorsFile), JsonCodeGen.Default.CustomColorSchema);
+                    foreach (var kv in schema.Basic)
+                    {
+                        if (kv.Key.Equals("SystemAccentColor", StringComparison.Ordinal))
+                            resDic["SystemAccentColor"] = Color.Parse(kv.Value);
+                        else
+                            resDic[$"Color.{kv.Key}"] = Color.Parse(kv.Value);
+                    }
+                        
+
+                    if (schema.Graph.Count > 0)
+                    {
+                        var penColors = new List<Color>();
+
+                        foreach (var c in schema.Graph)
+                            penColors.Add(Color.Parse(c));
+
+                        Models.CommitGraph.SetPenColors(penColors);
+                    }
 
                     app.Resources.MergedDictionaries.Add(resDic);
                     app._colorOverrides = resDic;
@@ -185,6 +204,18 @@ namespace SourceGit
                 if (desktop.MainWindow.Clipboard is { } clipbord)
                     await clipbord.SetTextAsync(data);
             }
+        }
+
+        public static async Task<string> GetClipboardTextAsync()
+        {
+            if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                if (desktop.MainWindow.Clipboard is { } clipboard)
+                {
+                    return await clipboard.GetTextAsync();
+                }
+            }
+            return default;
         }
 
         public static string Text(string key, params object[] args)
@@ -259,6 +290,21 @@ namespace SourceGit
             });
         }
 
+        public static ViewModels.Repository FindOpenedRepository(string repoPath)
+        {
+            if (Current is App app && app._launcher != null)
+            {
+                foreach (var page in app._launcher.Pages)
+                {
+                    var id = page.Node.Id.Replace("\\", "/");
+                    if (id == repoPath && page.Data is ViewModels.Repository repo)
+                        return repo;
+                }
+            }
+
+            return null;
+        }
+
         public static void Quit()
         {
             if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -288,9 +334,10 @@ namespace SourceGit
                 _launcher = new ViewModels.Launcher();
                 desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
-                if (ViewModels.Preference.Instance.ShouldCheck4UpdateOnStartup)
+                var pref = ViewModels.Preference.Instance;
+                if (pref.ShouldCheck4UpdateOnStartup)
                 {
-                    ViewModels.Preference.Save();
+                    pref.Save();
                     Check4Update();
                 }
             }
@@ -315,18 +362,6 @@ namespace SourceGit
                     dialog.Show(desktop.MainWindow);
                 }
             });
-        }
-
-        public static async Task<string> GetClipboardTextAsync()
-        {
-            if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                if (desktop.MainWindow.Clipboard is { } clipboard)
-                {
-                   return await clipboard.GetTextAsync();
-                }
-            }
-            return default;
         }
 
         private ViewModels.Launcher _launcher = null;

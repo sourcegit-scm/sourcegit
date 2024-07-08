@@ -9,7 +9,6 @@ namespace SourceGit.Commands
 
         [GeneratedRegex(@"^\^?([0-9a-f]+)\s+.*\((.*)\s+(\d+)\s+[\-\+]?\d+\s+\d+\) (.*)")]
         private static partial Regex REG_FORMAT();
-        private static readonly DateTime UTC_START = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
 
         public Blame(string repo, string file, string revision)
         {
@@ -67,7 +66,7 @@ namespace SourceGit.Commands
             var commit = match.Groups[1].Value;
             var author = match.Groups[2].Value;
             var timestamp = int.Parse(match.Groups[3].Value);
-            var when = UTC_START.AddSeconds(timestamp).ToString("yyyy/MM/dd");
+            var when = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime().ToString("yyyy/MM/dd");
 
             var info = new Models.BlameLineInfo()
             {

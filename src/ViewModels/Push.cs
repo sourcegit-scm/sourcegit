@@ -64,8 +64,8 @@ namespace SourceGit.ViewModels
 
         public bool PushAllTags
         {
-            get;
-            set;
+            get => _repo.Settings.PushAllTags;
+            set => _repo.Settings.PushAllTags = value;
         }
 
         public bool IsSetTrackOptionVisible

@@ -114,6 +114,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">修改者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">變更列表</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">提交者</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">僅顯示前100項變更。 請前往『變更對比』頁面查看全部。</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">提交資訊</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">父提交</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">相關引用</x:String>
@@ -203,6 +204,7 @@
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">快進(fast-forward，無需checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">拉取(fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">拉取所有的遠端倉庫</x:String>
+  <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">不拉取遠端標籤</x:String>
   <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">自動清理遠端已刪除分支</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">遠端倉庫 ：</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">拉取遠端倉庫內容</x:String>
@@ -389,6 +391,7 @@
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">丟棄更改</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">不做處理</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">儲藏並自動恢復</x:String>
+  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">不拉取遠端標籤</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">遠端 ：</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉回（拉取併合並）</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">使用變基方式合併分支</x:String>
@@ -542,6 +545,8 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">忽略同路徑下所有檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">忽略本檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">修補(--amend)</x:String>
+  <x:String x:Key="Text.WorkingCopy.AutoStage" xml:space="preserve">自動暫存(--all)</x:String>
+  <x:String x:Key="Text.WorkingCopy.AutoStage.Tip" xml:space="preserve">提交前自動將修改過和刪除的檔案加入暫存區，但新增檔案需要手動添加。</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">現在您已可將其加入暫存區中</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提交</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交併推送</x:String>

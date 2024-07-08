@@ -8,17 +8,6 @@ namespace SourceGit.Models
 {
     public class CommitGraph
     {
-        public static readonly Pen[] Pens = [
-            new Pen(Brushes.Orange, 2),
-            new Pen(Brushes.ForestGreen, 2),
-            new Pen(Brushes.Gold, 2),
-            new Pen(Brushes.Magenta, 2),
-            new Pen(Brushes.Red, 2),
-            new Pen(Brushes.Gray, 2),
-            new Pen(Brushes.Turquoise, 2),
-            new Pen(Brushes.Olive, 2),
-        ];
-
         public class Path
         {
             public List<Point> Points = new List<Point>();
@@ -113,7 +102,28 @@ namespace SourceGit.Models
         public List<Link> Links { get; set; } = new List<Link>();
         public List<Dot> Dots { get; set; } = new List<Dot>();
 
-        public static CommitGraph Parse(List<Commit> commits, int colorCount)
+        public static List<Pen> Pens
+        {
+            get;
+            private set;
+        } = new List<Pen>();
+
+        public static void SetDefaultPens()
+        {
+            SetPenColors(_defaultPenColors);
+        }
+
+        public static void SetPenColors(List<Color> colors)
+        {
+            Pens.Clear();
+
+            foreach (var c in colors)
+                Pens.Add(new Pen(c.ToUInt32(), 2));
+
+            _penCount = colors.Count;
+        }
+
+        public static CommitGraph Parse(List<Commit> commits)
         {
             double UNIT_WIDTH = 12;
             double HALF_WIDTH = 6;
@@ -184,7 +194,7 @@ namespace SourceGit.Models
                     major = new PathHelper(commit.Parents[0], isMerged, colorIdx, new Point(offsetX, offsetY));
                     unsolved.Add(major);
                     temp.Paths.Add(major.Path);
-                    colorIdx = (colorIdx + 1) % colorCount;
+                    colorIdx = (colorIdx + 1) % _penCount;
                 }
 
                 // Calculate link position of this commit.
@@ -223,7 +233,7 @@ namespace SourceGit.Models
                         var l = new PathHelper(commit.Parents[j], isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT));
                         unsolved.Add(l);
                         temp.Paths.Add(l.Path);
-                        colorIdx = (colorIdx + 1) % colorCount;
+                        colorIdx = (colorIdx + 1) % _penCount;
                     }
                 }
 
@@ -257,5 +267,19 @@ namespace SourceGit.Models
 
             return temp;
         }
+
+        private static int _penCount = 0;
+        private static readonly List<Color> _defaultPenColors = [
+            Colors.Orange,
+            Colors.ForestGreen,
+            Colors.Gold,
+            Colors.Magenta,
+            Colors.Red,
+            Colors.Gray,
+            Colors.Turquoise,
+            Colors.Olive,
+            Colors.Khaki,
+            Colors.Lime,
+        ];
     }
 }

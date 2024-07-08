@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -14,6 +14,93 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public class RepositorySettings
+    {
+        public Models.DealWithLocalChanges DealWithLocalChangesOnCheckoutBranch
+        {
+            get;
+            set;
+        } = Models.DealWithLocalChanges.DoNothing;
+
+        public bool FetchWithoutTags
+        {
+            get;
+            set;
+        } = false;
+
+        public Models.DealWithLocalChanges DealWithLocalChangesOnPull
+        {
+            get;
+            set;
+        } = Models.DealWithLocalChanges.DoNothing;
+
+        public bool PreferRebaseInsteadOfMerge
+        {
+            get;
+            set;
+        } = true;
+
+        public bool FetchWithoutTagsOnPull
+        {
+            get;
+            set;
+        } = false;
+
+        public bool PushAllTags
+        {
+            get;
+            set;
+        } = false;
+
+        public Models.DealWithLocalChanges DealWithLocalChangesOnCreateBranch
+        {
+            get;
+            set;
+        } = Models.DealWithLocalChanges.DoNothing;
+
+        public bool CheckoutBranchOnCreateBranch
+        {
+            get;
+            set;
+        } = true;
+
+        public bool AutoStageBeforeCommit
+        {
+            get;
+            set;
+        } = false;
+
+        public AvaloniaList<string> Filters
+        {
+            get;
+            set;
+        } = new AvaloniaList<string>();
+
+        public AvaloniaList<string> CommitMessages
+        {
+            get;
+            set;
+        } = new AvaloniaList<string>();
+
+        public void PushCommitMessage(string message)
+        {
+            var existIdx = CommitMessages.IndexOf(message);
+            if (existIdx == 0)
+                return;
+
+            if (existIdx > 0)
+            {
+                CommitMessages.Move(existIdx, 0);
+                return;
+            }
+
+            if (CommitMessages.Count > 9)
+                CommitMessages.RemoveRange(9, CommitMessages.Count - 9);
+
+            CommitMessages.Insert(0, message);
+        }
+    }
+
     public class Repository : ObservableObject, Models.IRepository
     {
         public string FullPath
@@ -39,25 +126,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDir, value);
         }
 
-        public bool PreferRebaseInsteadOfMerge
+        public RepositorySettings Settings
         {
-            get;
-            set;
-        } = true;
+            get => _settings;
+            private set => SetProperty(ref _settings, value);
+        }
 
-        public AvaloniaList<string> Filters
-        {
-            get;
-            set;
-        } = new AvaloniaList<string>();
-
-        public AvaloniaList<string> CommitMessages
-        {
-            get;
-            set;
-        } = new AvaloniaList<string>();
-
-        [JsonIgnore]
         public int SelectedViewIndex
         {
             get => _selectedViewIndex;
@@ -81,14 +155,12 @@ namespace SourceGit.ViewModels
             }
         }
 
-        [JsonIgnore]
         public object SelectedView
         {
             get => _selectedView;
             set => SetProperty(ref _selectedView, value);
         }
 
-        [JsonIgnore]
         public string SearchBranchFilter
         {
             get => _searchBranchFilter;
@@ -104,75 +176,64 @@ namespace SourceGit.ViewModels
             }
         }
 
-        [JsonIgnore]
         public List<Models.Remote> Remotes
         {
             get => _remotes;
             private set => SetProperty(ref _remotes, value);
         }
 
-        [JsonIgnore]
         public List<Models.Branch> Branches
         {
             get => _branches;
             private set => SetProperty(ref _branches, value);
         }
 
-        [JsonIgnore]
         public List<BranchTreeNode> LocalBranchTrees
         {
             get => _localBranchTrees;
             private set => SetProperty(ref _localBranchTrees, value);
         }
 
-        [JsonIgnore]
         public List<BranchTreeNode> RemoteBranchTrees
         {
             get => _remoteBranchTrees;
             private set => SetProperty(ref _remoteBranchTrees, value);
         }
 
-        [JsonIgnore]
         public List<Models.Worktree> Worktrees
         {
             get => _worktrees;
             private set => SetProperty(ref _worktrees, value);
         }
 
-        [JsonIgnore]
         public List<Models.Tag> Tags
         {
             get => _tags;
             private set => SetProperty(ref _tags, value);
         }
 
-        [JsonIgnore]
         public List<Models.Tag> VisibleTags
         {
             get => _visibleTags;
             private set => SetProperty(ref _visibleTags, value);
         }
 
-        [JsonIgnore]
         public List<string> Submodules
         {
             get => _submodules;
             private set => SetProperty(ref _submodules, value);
         }
 
-        [JsonIgnore]
         public int WorkingCopyChangesCount
         {
             get => _workingCopy == null ? 0 : _workingCopy.Count;
         }
 
-        [JsonIgnore]
         public int StashesCount
         {
             get => _stashesPage == null ? 0 : _stashesPage.Stashes.Count;
         }
 
-        [JsonIgnore]
         public bool IncludeUntracked
         {
             get => _includeUntracked;
@@ -183,7 +244,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        [JsonIgnore]
         public bool IsSearching
         {
             get => _isSearching;
@@ -199,63 +259,66 @@ namespace SourceGit.ViewModels
             }
         }
 
-        [JsonIgnore]
         public int SearchCommitFilterType
         {
             get => _searchCommitFilterType;
             set => SetProperty(ref _searchCommitFilterType, value);
         }
 
-        [JsonIgnore]
         public string SearchCommitFilter
         {
             get => _searchCommitFilter;
             set => SetProperty(ref _searchCommitFilter, value);
         }
 
-        [JsonIgnore]
         public List<Models.Commit> SearchedCommits
         {
             get => _searchedCommits;
             set => SetProperty(ref _searchedCommits, value);
         }
 
-        [JsonIgnore]
+        public bool IsLocalBranchGroupExpanded
+        {
+            get => _isLocalBranchGroupExpanded;
+            set => SetProperty(ref _isLocalBranchGroupExpanded, value);
+        }
+
+        public bool IsRemoteGroupExpanded
+        {
+            get => _isRemoteGroupExpanded;
+            set => SetProperty(ref _isRemoteGroupExpanded, value);
+        }
+
         public bool IsTagGroupExpanded
         {
             get => _isTagGroupExpanded;
             set => SetProperty(ref _isTagGroupExpanded, value);
         }
 
-        [JsonIgnore]
         public bool IsSubmoduleGroupExpanded
         {
             get => _isSubmoduleGroupExpanded;
             set => SetProperty(ref _isSubmoduleGroupExpanded, value);
         }
 
-        [JsonIgnore]
         public bool IsWorktreeGroupExpanded
         {
             get => _isWorktreeGroupExpanded;
             set => SetProperty(ref _isWorktreeGroupExpanded, value);
         }
 
-        [JsonIgnore]
         public InProgressContext InProgressContext
         {
             get => _inProgressContext;
             private set => SetProperty(ref _inProgressContext, value);
         }
 
-        [JsonIgnore]
         public bool HasUnsolvedConflicts
         {
             get => _hasUnsolvedConflicts;
             private set => SetProperty(ref _hasUnsolvedConflicts, value);
         }
 
-        [JsonIgnore]
         public Models.Commit SearchResultSelectedCommit
         {
             get => _searchResultSelectedCommit;
@@ -264,6 +327,23 @@ namespace SourceGit.ViewModels
 
         public void Open()
         {
+            var settingsFile = Path.Combine(_gitDir, "sourcegit.settings");
+            if (File.Exists(settingsFile))
+            {
+                try
+                {
+                    _settings = JsonSerializer.Deserialize(File.ReadAllText(settingsFile), JsonCodeGen.Default.RepositorySettings);
+                }
+                catch
+                {
+                    _settings = new RepositorySettings();
+                }
+            }
+            else
+            {
+                _settings = new RepositorySettings();
+            }
+
             _watcher = new Models.Watcher(this);
             _histories = new Histories(this);
             _workingCopy = new WorkingCopy(this);
@@ -280,6 +360,10 @@ namespace SourceGit.ViewModels
         {
             SelectedView = 0.0; // Do NOT modify. Used to remove exists widgets for GC.Collect
 
+            var settingsSerialized = JsonSerializer.Serialize(_settings, JsonCodeGen.Default.RepositorySettings);
+            File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
+            _settings = null;
+
             _watcher.Dispose();
             _histories.Cleanup();
             _workingCopy.Cleanup();
@@ -289,14 +373,7 @@ namespace SourceGit.ViewModels
             _histories = null;
             _workingCopy = null;
             _stashesPage = null;
-            _isSearching = false;
-            _searchCommitFilter = string.Empty;
-
-            _isTagGroupExpanded = false;
-            _isSubmoduleGroupExpanded = false;
-
             _inProgressContext = null;
-            _hasUnsolvedConflicts = false;
 
             _remotes.Clear();
             _branches.Clear();
@@ -436,7 +513,7 @@ namespace SourceGit.ViewModels
 
         public void ClearHistoriesFilter()
         {
-            Filters.Clear();
+            _settings.Filters.Clear();
 
             Task.Run(() =>
             {
@@ -525,15 +602,15 @@ namespace SourceGit.ViewModels
             var changed = false;
             if (toggle)
             {
-                if (!Filters.Contains(filter))
+                if (!_settings.Filters.Contains(filter))
                 {
-                    Filters.Add(filter);
+                    _settings.Filters.Add(filter);
                     changed = true;
                 }
             }
             else
             {
-                changed = Filters.Remove(filter);
+                changed = _settings.Filters.Remove(filter);
             }
 
             if (changed)
@@ -637,7 +714,7 @@ namespace SourceGit.ViewModels
         {
             var tags = new Commands.QueryTags(FullPath).Result();
             foreach (var tag in tags)
-                tag.IsFiltered = Filters.Contains(tag.Name);
+                tag.IsFiltered = _settings.Filters.Contains(tag.Name);
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -652,7 +729,7 @@ namespace SourceGit.ViewModels
 
             var limits = $"-{Preference.Instance.MaxHistoryCommits} ";
             var validFilters = new List<string>();
-            foreach (var filter in Filters)
+            foreach (var filter in _settings.Filters)
             {
                 if (filter.StartsWith("refs/", StringComparison.Ordinal))
                 {
@@ -670,12 +747,12 @@ namespace SourceGit.ViewModels
             {
                 limits += string.Join(" ", validFilters);
 
-                if (Filters.Count != validFilters.Count)
+                if (_settings.Filters.Count != validFilters.Count)
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        Filters.Clear();
-                        Filters.AddRange(validFilters);
+                        _settings.Filters.Clear();
+                        _settings.Filters.AddRange(validFilters);
                     });
                 }
             }
@@ -685,7 +762,7 @@ namespace SourceGit.ViewModels
             }
 
             var commits = new Commands.QueryCommits(FullPath, limits).Result();
-            var graph = Models.CommitGraph.Parse(commits, 8);
+            var graph = Models.CommitGraph.Parse(commits);
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -851,22 +928,23 @@ namespace SourceGit.ViewModels
         public void OpenSubmodule(string submodule)
         {
             var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
-            var gitDir = new Commands.QueryGitDir(root).Result();
-            var repo = Preference.AddRepository(root, gitDir);
+            var normalizedPath = root.Replace("\\", "/");
 
-            var node = new RepositoryNode()
+            var node = Preference.FindNode(normalizedPath);
+            if (node == null)
             {
-                Id = repo.FullPath,
-                Name = Path.GetFileName(repo.FullPath),
-                Bookmark = 0,
-                IsRepository = true,
-            };
+                node = new RepositoryNode()
+                {
+                    Id = normalizedPath,
+                    Name = Path.GetFileName(normalizedPath),
+                    Bookmark = 0,
+                    IsRepository = true,
+                };
+            }
 
             var launcher = App.GetTopLevel().DataContext as Launcher;
             if (launcher != null)
-            {
                 launcher.OpenRepositoryInTab(node, null);
-            }
         }
 
         public void AddWorktree()
@@ -883,16 +961,17 @@ namespace SourceGit.ViewModels
 
         public void OpenWorktree(Models.Worktree worktree)
         {
-            var gitDir = new Commands.QueryGitDir(worktree.FullPath).Result();
-            var repo = Preference.AddRepository(worktree.FullPath, gitDir);
-
-            var node = new RepositoryNode()
+            var node = Preference.FindNode(worktree.FullPath);
+            if (node == null)
             {
-                Id = repo.FullPath,
-                Name = Path.GetFileName(repo.FullPath),
-                Bookmark = 0,
-                IsRepository = true,
-            };
+                node = new RepositoryNode()
+                {
+                    Id = worktree.FullPath,
+                    Name = Path.GetFileName(worktree.FullPath),
+                    Bookmark = 0,
+                    IsRepository = true,
+                };
+            }
 
             var launcher = App.GetTopLevel().DataContext as Launcher;
             if (launcher != null)
@@ -1183,7 +1262,7 @@ namespace SourceGit.ViewModels
                 if (upstream != null)
                 {
                     var fastForward = new MenuItem();
-                    fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", $"{upstream.Remote}/{upstream.Name}");
+                    fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream.FriendlyName);
                     fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
                     fastForward.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrackStatus) && branch.UpstreamTrackStatus.IndexOf('↑') < 0;
                     fastForward.Click += (o, e) =>
@@ -1472,9 +1551,10 @@ namespace SourceGit.ViewModels
         {
             var menu = new ContextMenu();
             var current = Branches.Find(x => x.IsCurrent);
+            var name = branch.FriendlyName;
 
             var checkout = new MenuItem();
-            checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", $"{branch.Remote}/{branch.Name}");
+            checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", name);
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
             checkout.Click += (o, e) =>
             {
@@ -1487,7 +1567,7 @@ namespace SourceGit.ViewModels
             if (current != null)
             {
                 var pull = new MenuItem();
-                pull.Header = new Views.NameHighlightedTextBlock("BranchCM.PullInto", $"{branch.Remote}/{branch.Name}", current.Name);
+                pull.Header = new Views.NameHighlightedTextBlock("BranchCM.PullInto", name, current.Name);
                 pull.Icon = App.CreateMenuIcon("Icons.Pull");
                 pull.Click += (o, e) =>
                 {
@@ -1497,17 +1577,17 @@ namespace SourceGit.ViewModels
                 };
 
                 var merge = new MenuItem();
-                merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", $"{branch.Remote}/{branch.Name}", current.Name);
+                merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", name, current.Name);
                 merge.Icon = App.CreateMenuIcon("Icons.Merge");
                 merge.Click += (o, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Merge(this, $"{branch.Remote}/{branch.Name}", current.Name));
+                        PopupHost.ShowPopup(new Merge(this, name, current.Name));
                     e.Handled = true;
                 };
 
                 var rebase = new MenuItem();
-                rebase.Header = new Views.NameHighlightedTextBlock("BranchCM.Rebase", current.Name, $"{branch.Remote}/{branch.Name}");
+                rebase.Header = new Views.NameHighlightedTextBlock("BranchCM.Rebase", current.Name, name);
                 rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
                 rebase.Click += (o, e) =>
                 {
@@ -1554,7 +1634,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
             var delete = new MenuItem();
-            delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", $"{branch.Remote}/{branch.Name}");
+            delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (o, e) =>
             {
@@ -1598,7 +1678,7 @@ namespace SourceGit.ViewModels
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.Click += (o, e) =>
             {
-                App.CopyText(branch.Remote + "/" + branch.Name);
+                App.CopyText(name);
                 e.Handled = true;
             };
 
@@ -1791,7 +1871,7 @@ namespace SourceGit.ViewModels
                 {
                     var dup = b;
                     var target = new MenuItem();
-                    target.Header = b.IsLocal ? b.Name : $"{b.Remote}/{b.Name}";
+                    target.Header = b.FriendlyName;
                     target.Icon = App.CreateMenuIcon(b.IsCurrent ? "Icons.Check" : "Icons.Branch");
                     target.Click += (_, e) =>
                     {
@@ -1814,7 +1894,7 @@ namespace SourceGit.ViewModels
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
         {
             var builder = new BranchTreeNode.Builder();
-            builder.SetFilters(Filters);
+            builder.SetFilters(_settings.Filters);
 
             if (string.IsNullOrEmpty(_searchBranchFilter))
             {
@@ -1831,7 +1911,7 @@ namespace SourceGit.ViewModels
                         visibles.Add(b);
                 }
 
-                builder.Run(visibles, remotes, visibles.Count <= 20);
+                builder.Run(visibles, remotes, true);
             }
 
             return builder;
@@ -1858,6 +1938,7 @@ namespace SourceGit.ViewModels
 
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
+        private RepositorySettings _settings = null;
 
         private Models.Watcher _watcher = null;
         private Histories _histories = null;
@@ -1871,6 +1952,8 @@ namespace SourceGit.ViewModels
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
 
+        private bool _isLocalBranchGroupExpanded = true;
+        private bool _isRemoteGroupExpanded = false;
         private bool _isTagGroupExpanded = false;
         private bool _isSubmoduleGroupExpanded = false;
         private bool _isWorktreeGroupExpanded = false;

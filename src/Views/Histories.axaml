@@ -46,7 +46,7 @@
                         <DataTemplate DataType="{x:Type m:Decorator}">
                           <Border Height="16" Margin="0,0,4,0" CornerRadius="2" ClipToBounds="True">
                             <StackPanel Orientation="Horizontal">
-                              <Border Background="{DynamicResource Brush.Decorator}" Width="16">
+                              <Border Background="{DynamicResource Brush.DecoratorIconBG}" Width="16">
                                 <Path Width="8" Height="8" 
                                       Stretch="Uniform" 
                                       Data="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToIcon}}" 
@@ -58,7 +58,7 @@
                                            Text="{Binding Name}" 
                                            FontSize="10" 
                                            Margin="4,0" 
-                                           Foreground="Black"
+                                           Foreground="{DynamicResource Brush.DecoratorFG}"
                                            FontWeight="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToFontWeight}}"/>
                               </Border>
                             </StackPanel>

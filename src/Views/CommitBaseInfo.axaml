@@ -90,11 +90,11 @@
               <DataTemplate DataType="{x:Type m:Decorator}">
                 <Border Height="16" Margin="0,0,6,0" CornerRadius="2" ClipToBounds="True">
                   <StackPanel Orientation="Horizontal">
-                    <Border Background="{DynamicResource Brush.Decorator}" Width="16">
+                    <Border Background="{DynamicResource Brush.DecoratorIconBG}" Width="16">
                       <Path Width="8" Height="8" Data="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToIcon}}" Fill="{DynamicResource Brush.DecoratorIcon}"/>
                     </Border>
                     <Border Background="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToBackground}}">
-                      <TextBlock Classes="monospace" Text="{Binding Name}" FontSize="10" Margin="4,0" Foreground="Black"/>
+                      <TextBlock Classes="monospace" Text="{Binding Name}" FontSize="10" Margin="4,0" Foreground="{DynamicResource Brush.DecoratorFG}"/>
                     </Border>
                   </StackPanel>
                 </Border>
@@ -104,9 +104,7 @@
 
           <!-- Messages -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
-          <ScrollViewer Grid.Row="3" Grid.Column="1" Margin="12,5,8,0" MaxHeight="64" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <SelectableTextBlock Text="{Binding #ThisControl.Message}" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" TextWrapping="Wrap"/>
-          </ScrollViewer>
+          <SelectableTextBlock Grid.Row="3" Grid.Column="1" Margin="12,5,8,0" Text="{Binding #ThisControl.Message}" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" TextWrapping="Wrap"/>
         </Grid>
       </StackPanel>
     </DataTemplate>

@@ -37,23 +37,14 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                // It will cause some issue on Linux. See https://github.com/sourcegit-scm/sourcegit/issues/99
-                // _instance.Repositories.RemoveAll(x => !Directory.Exists(x.FullPath));
-
                 if (_instance.DefaultFont == null)
-                {
                     _instance.DefaultFont = FontManager.Current.DefaultFontFamily;
-                }
 
                 if (_instance.MonospaceFont == null)
-                {
                     _instance.MonospaceFont = new FontFamily("fonts:SourceGit#JetBrains Mono");
-                }
 
                 if (!_instance.IsGitConfigured)
-                {
                     _instance.GitInstallPath = Native.OS.FindGitExecutable();
-                }
 
                 return _instance;
             }
@@ -274,9 +265,8 @@ namespace SourceGit.ViewModels
             set
             {
                 if (value is null or < 1)
-                {
                     return;
-                }
+
                 if (Commands.AutoFetch.Interval != value)
                 {
                     Commands.AutoFetch.Interval = (int)value;
@@ -307,12 +297,6 @@ namespace SourceGit.ViewModels
             get => _externalMergeToolPath;
             set => SetProperty(ref _externalMergeToolPath, value);
         }
-
-        public List<Repository> Repositories
-        {
-            get;
-            set;
-        } = new List<Repository>();
 
         public AvaloniaList<RepositoryNode> RepositoryNodes
         {
@@ -366,20 +350,14 @@ namespace SourceGit.ViewModels
             list.Sort((l, r) =>
             {
                 if (l.IsRepository != r.IsRepository)
-                {
                     return l.IsRepository ? 1 : -1;
-                }
                 else
-                {
                     return l.Name.CompareTo(r.Name);
-                }
             });
 
             collection.Clear();
             foreach (var one in list)
-            {
                 collection.Add(one);
-            }
         }
 
         public static RepositoryNode FindNode(string id)
@@ -451,39 +429,9 @@ namespace SourceGit.ViewModels
                 container.Add(one);
         }
 
-        public static Repository FindRepository(string path)
+        public void Save()
         {
-            foreach (var repo in _instance.Repositories)
-            {
-                if (repo.FullPath == path)
-                    return repo;
-            }
-            return null;
-        }
-
-        public static Repository AddRepository(string rootDir, string gitDir)
-        {
-            var normalized = rootDir.Replace('\\', '/');
-            var repo = FindRepository(normalized);
-            if (repo != null)
-            {
-                repo.GitDir = gitDir;
-                return repo;
-            }
-
-            repo = new Repository()
-            {
-                FullPath = normalized,
-                GitDir = gitDir
-            };
-
-            _instance.Repositories.Add(repo);
-            return repo;
-        }
-
-        public static void Save()
-        {
-            var data = JsonSerializer.Serialize(_instance, JsonCodeGen.Default.Preference);
+            var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
             File.WriteAllText(_savePath, data);
         }
 

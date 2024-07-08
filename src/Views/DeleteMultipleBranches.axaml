@@ -64,8 +64,7 @@
           <DataGridTemplateColumn Width="*" Header="NAME">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Converter={x:Static c:BranchConverters.ToName}}" ClipToBounds="True"
-                           Classes="monospace" />
+                <TextBlock Text="{Binding FriendlyName}" ClipToBounds="True" Classes="monospace" />
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>

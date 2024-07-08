@@ -7,7 +7,7 @@ namespace SourceGit.Commands
 {
     public class Fetch : Command
     {
-        public Fetch(string repo, string remote, bool prune, Action<string> outputHandler)
+        public Fetch(string repo, string remote, bool prune, bool noTags, Action<string> outputHandler)
         {
             _outputHandler = outputHandler;
             WorkingDirectory = repo;
@@ -24,9 +24,15 @@ namespace SourceGit.Commands
                 Args = "-c credential.helper=manager ";
             }
 
-            Args += "fetch --force --progress --verbose ";
+            Args += "fetch --progress --verbose ";
             if (prune)
                 Args += "--prune ";
+
+            if (noTags)
+                Args += "--no-tags ";
+            else
+                Args += "--force ";
+
             Args += remote;
 
             AutoFetch.MarkFetched(repo);
@@ -132,7 +138,7 @@ namespace SourceGit.Commands
         {
             var job = new Job
             {
-                Cmd = new Fetch(repo, "--all", true, null) { RaiseError = false },
+                Cmd = new Fetch(repo, "--all", true, false, null) { RaiseError = false },
                 NextRunTimepoint = DateTime.Now.AddMinutes(Convert.ToDouble(Interval)),
             };
 
