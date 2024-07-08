@@ -193,7 +193,7 @@ namespace SourceGit.Views
                             if (i < size - 1)
                             {
                                 var midY = (last.Y + cur.Y) / 2;
-                                ctx.CubicBezierTo(new Point(last.X, midY + 2), new Point(cur.X, midY - 2), cur);
+                                ctx.CubicBezierTo(new Point(last.X, midY + 4), new Point(cur.X, midY - 4), cur);
                             }
                             else
                             {

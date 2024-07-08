@@ -61,8 +61,13 @@ namespace SourceGit.Models
                 }
                 else if (x < LastX)
                 {
-                    if (y > LastY + halfHeight)
-                        Add(new Point(LastX, LastY + halfHeight));
+                    var testY = LastY + halfHeight;
+                    if (y > testY)
+                        Add(new Point(LastX, testY));
+
+                    if (!isEnd)
+                        y += halfHeight;
+
                     Add(new Point(x, y));
                 }
                 else if (isEnd)
