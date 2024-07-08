@@ -6,5 +6,6 @@ namespace SourceGit.Models
     {
         public Dictionary<string, string> Basic { get; set; } = new Dictionary<string, string>();
         public List<string> Graph { get; set; } = new List<string>();
+        public Dictionary<string,string> General { get; set; } = new Dictionary<string, string>();
     }
 }

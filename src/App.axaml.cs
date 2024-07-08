@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -186,6 +187,22 @@ namespace SourceGit
                             penColors.Add(Color.Parse(c));
 
                         Models.CommitGraph.SetPenColors(penColors);
+                    }
+
+                    foreach (var kv in schema.General)
+                    {
+                        if (kv.Key.Equals("Pen.Thickness", StringComparison.Ordinal))
+                        {
+                            double thick = Models.CommitGraph.GetPenThickness();
+                            try
+                            {
+                                thick = double.Parse(kv.Value, CultureInfo.InvariantCulture);
+                            }
+                            catch
+                            {
+                            }
+                            Models.CommitGraph.SetPenThickness(thick);
+                        }
                     }
 
                     app.Resources.MergedDictionaries.Add(resDic);
