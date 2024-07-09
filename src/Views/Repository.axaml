@@ -708,7 +708,7 @@
                   Command="{Binding AbortMerge}"/>
         </Grid>
 
-        <Border Grid.Row="1" Background="{DynamicResource Brush.Window}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
+        <Border Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
           <Border.IsVisible>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
               <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>

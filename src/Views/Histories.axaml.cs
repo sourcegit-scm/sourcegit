@@ -120,8 +120,11 @@ namespace SourceGit.Views
                 }
             }
 
+            var headerHeight = grid.ColumnHeaderHeight;
+            startY -= headerHeight;
+
             // Apply scroll offset.
-            context.PushClip(new Rect(Bounds.Left, Bounds.Top, grid.Columns[0].ActualWidth, Bounds.Height));
+            context.PushClip(new Rect(Bounds.Left, Bounds.Top + headerHeight, grid.Columns[0].ActualWidth, Bounds.Height));
             context.PushTransform(Matrix.CreateTranslation(0, -startY));
 
             // Calculate bounds.

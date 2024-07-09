@@ -18,19 +18,53 @@
                 SelectionMode="Extended"
                 SelectedItem="{Binding AutoSelectedCommit, Mode=OneWay}"
                 CanUserReorderColumns="False"
-                CanUserResizeColumns="False"
+                CanUserResizeColumns="True"
                 CanUserSortColumns="False"
                 IsReadOnly="True"
-                HeadersVisibility="None"
+                HeadersVisibility="Column"
                 Focusable="False"
                 RowHeight="28"
+                ColumnHeaderHeight="28"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto"
                 LayoutUpdated="OnCommitDataGridLayoutUpdated"
                 SelectionChanged="OnCommitDataGridSelectionChanged"
                 ContextRequested="OnCommitDataGridContextRequested">
+        <DataGrid.Styles>
+          <Style Selector="DataGridColumnHeader">
+            <Setter Property="MinHeight" Value="28"/>
+            <Setter Property="Template">
+              <ControlTemplate>
+                <Border Background="{DynamicResource Brush.Window}"
+                        BorderBrush="{DynamicResource Brush.Border0}"
+                        BorderThickness="0,0,0,1">
+                  <Grid ColumnDefinitions="*,1">
+                    <ContentControl x:Name="PART_ContentPresenter"
+                                    Grid.Column="0"
+                                    Margin="4,0"
+                                    Content="{TemplateBinding Content}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    HorizontalContentAlignment="Center"/>
+
+                    <Rectangle Name="VerticalSeparator"
+                               Grid.Column="1"
+                               Width="1"
+                               VerticalAlignment="Stretch"
+                               Fill="{DynamicResource Brush.Border0}"
+                               IsVisible="{TemplateBinding AreSeparatorsVisible}" />
+                  </Grid>
+                </Border>        
+              </ControlTemplate>
+            </Setter>
+          </Style>
+        </DataGrid.Styles>
+        
         <DataGrid.Columns>
-          <DataGridTemplateColumn Width="*" Header="GRAPH">
+          <DataGridTemplateColumn Width="*" CanUserResize="True">
+            <DataGridTemplateColumn.Header>
+              <TextBlock Classes="group_header_label" Margin="0" Text="GRAPH &amp; SUBJECT"/>
+            </DataGridTemplateColumn.Header>
+            
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
                 <Border Margin="{Binding Margin}">
@@ -77,44 +111,53 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn Header="AVATAR">
+          <DataGridTemplateColumn CanUserResize="True" Width="120">
+            <DataGridTemplateColumn.Header>
+              <TextBlock Classes="group_header_label" Margin="0" Text="AUTHOR"/>
+            </DataGridTemplateColumn.Header>
+            
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
-                <v:Avatar Width="16" Height="16"
-                          Margin="16,0,8,0"
-                          VerticalAlignment="Center"
-                          IsHitTestVisible="False"
-                          User="{Binding Author}"
-                          Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"/>
+                <Grid ColumnDefinitions="Auto,*" Margin="8,0">
+                  <v:Avatar Grid.Column="0"
+                            Width="16" Height="16"
+                            VerticalAlignment="Center"
+                            IsHitTestVisible="False"
+                            User="{Binding Author}"
+                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"/>
+                  <TextBlock Grid.Column="1" 
+                             Classes="monospace"
+                             Text="{Binding Author.Name}"
+                             Margin="8,0,0,0"
+                             Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"
+                             FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
+                </Grid>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn Header="AUTHOR">
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate x:DataType="{x:Type m:Commit}">
-                <TextBlock Classes="monospace"
-                           Text="{Binding Author.Name}"
-                           Margin="0,0,8,0"
-                           Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"
-                           FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
-
-          <DataGridTemplateColumn Header="SHA">
+          <DataGridTemplateColumn CanUserResize="False" MinWidth="96">
+            <DataGridTemplateColumn.Header>
+              <TextBlock Classes="group_header_label" Margin="0" Text="SHA"/>
+            </DataGridTemplateColumn.Header>
+            
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
                 <TextBlock Classes="monospace" 
                            Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
-                           Margin="12,0"
+                           Margin="8,0"
+                           HorizontalAlignment="Center"
                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"
                            FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn Header="TIME">
+          <DataGridTemplateColumn CanUserResize="False" MinWidth="156">
+            <DataGridTemplateColumn.Header>
+              <TextBlock Classes="group_header_label" Margin="0" Text="TIME"/>
+            </DataGridTemplateColumn.Header>
+            
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
                 <TextBlock Classes="monospace" 
