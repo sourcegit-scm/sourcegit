@@ -259,6 +259,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool IsSearchLoadingVisible
+        {
+            get => _isSearchLoadingVisible;
+            private set => SetProperty(ref _isSearchLoadingVisible, value);
+        }
+
         public int SearchCommitFilterType
         {
             get => _searchCommitFilterType;
@@ -533,29 +539,38 @@ namespace SourceGit.ViewModels
             if (_histories == null)
                 return;
 
-            var visible = new List<Models.Commit>();
+            IsSearchLoadingVisible = true;
 
-            if (_searchCommitFilterType == 0)
+            Task.Run(() =>
             {
-                foreach (var c in _histories.Commits)
+                var visible = new List<Models.Commit>();
+
+                if (_searchCommitFilterType == 0)
                 {
-                    if (c.SHA.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                        || c.Subject.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                        || c.Author.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                        || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                        || c.Author.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                        || c.Committer.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
+                    foreach (var c in _histories.Commits)
                     {
-                        visible.Add(c);
+                        if (c.SHA.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                            || c.Subject.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                            || c.Author.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                            || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                            || c.Author.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                            || c.Committer.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
+                        {
+                            visible.Add(c);
+                        }
                     }
                 }
-            }
-            else
-            {
-                visible = new Commands.QueryCommits(FullPath, $"-1000 -- \"{_searchCommitFilter}\"", false).Result();
-            }
+                else
+                {
+                    visible = new Commands.QueryCommits(FullPath, $"-1000 -- \"{_searchCommitFilter}\"", false).Result();
+                }
 
-            SearchedCommits = visible;
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    SearchedCommits = visible;
+                    IsSearchLoadingVisible = false;
+                });
+            });
         }
 
         public void ClearSearchBranchFilter()
@@ -1948,6 +1963,7 @@ namespace SourceGit.ViewModels
         private object _selectedView = null;
 
         private bool _isSearching = false;
+        private bool _isSearchLoadingVisible = false;
         private int _searchCommitFilterType = 0;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();

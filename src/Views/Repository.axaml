@@ -633,8 +633,19 @@
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Width="48" Height="48"
                 Data="{StaticResource Icons.Empty}"
-                Fill="{DynamicResource Brush.FG2}"
-                IsVisible="{Binding SearchedCommits.Count, Converter={x:Static c:IntConverters.IsZero}}"/>
+                Fill="{DynamicResource Brush.FG2}">
+            <Path.IsVisible>
+              <MultiBinding Converter="{x:Static BoolConverters.And}">
+                <Binding Path="SearchedCommits.Count" Converter="{x:Static c:IntConverters.IsZero}"/>
+                <Binding Path="IsSearchLoadingVisible" Converter="{x:Static BoolConverters.Not}"/>
+              </MultiBinding>
+            </Path.IsVisible>
+          </Path>
+          
+          <v:LoadingIcon Grid.Row="2"
+                         Width="48" Height="48"
+                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                         IsVisible="{Binding IsSearchLoadingVisible}"/>
         </Grid>
       </Grid>
 
