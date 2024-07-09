@@ -62,7 +62,7 @@
         <DataGrid.Columns>
           <DataGridTemplateColumn Width="*" CanUserResize="True">
             <DataGridTemplateColumn.Header>
-              <TextBlock Classes="group_header_label" Margin="0" Text="GRAPH &amp; SUBJECT"/>
+              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}"/>
             </DataGridTemplateColumn.Header>
             
             <DataGridTemplateColumn.CellTemplate>
@@ -113,7 +113,7 @@
 
           <DataGridTemplateColumn CanUserResize="True" Width="120">
             <DataGridTemplateColumn.Header>
-              <TextBlock Classes="group_header_label" Margin="0" Text="AUTHOR"/>
+              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Author}"/>
             </DataGridTemplateColumn.Header>
             
             <DataGridTemplateColumn.CellTemplate>
@@ -138,7 +138,7 @@
 
           <DataGridTemplateColumn CanUserResize="False" MinWidth="96">
             <DataGridTemplateColumn.Header>
-              <TextBlock Classes="group_header_label" Margin="0" Text="SHA"/>
+              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.SHA}"/>
             </DataGridTemplateColumn.Header>
             
             <DataGridTemplateColumn.CellTemplate>
@@ -155,7 +155,7 @@
 
           <DataGridTemplateColumn CanUserResize="False" MinWidth="156">
             <DataGridTemplateColumn.Header>
-              <TextBlock Classes="group_header_label" Margin="0" Text="TIME"/>
+              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Time}"/>
             </DataGridTemplateColumn.Header>
             
             <DataGridTemplateColumn.CellTemplate>

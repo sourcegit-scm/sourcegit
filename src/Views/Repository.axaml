@@ -717,7 +717,7 @@
           </Border.IsVisible>
 
           <Grid Height="28" ColumnDefinitions="Auto,*,Auto">
-            <TextBlock Grid.Column="0" Margin="8,0,0,0" Classes="info_label" Text="{DynamicResource Text.Repository.FilterCommitPrefix}"/>
+            <TextBlock Grid.Column="0" Margin="8,0,0,0" Classes="table_header" Text="{DynamicResource Text.Repository.FilterCommitPrefix}"/>
 
             <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Settings.Filters}">
               <ItemsControl.ItemsPanel>

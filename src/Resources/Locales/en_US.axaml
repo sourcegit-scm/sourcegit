@@ -277,6 +277,10 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">Histories</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Switch Horizontal/Vertical Layout</x:String>
   <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Switch Curve/Polyline Graph Mode</x:String>
+  <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
+  <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPH &amp; SUBJECT</x:String>
+  <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">COMMIT TIME</x:String>
   <x:String x:Key="Text.Histories.Search" xml:space="preserve">SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT</x:String>
   <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">CLEAR</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>

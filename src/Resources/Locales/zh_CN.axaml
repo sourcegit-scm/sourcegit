@@ -280,6 +280,10 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">历史记录</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">切换横向/纵向显示</x:String>
   <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">切换曲线/折线显示</x:String>
+  <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
+  <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路线图与主题</x:String>
+  <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交指纹</x:String>
+  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">提交时间</x:String>
   <x:String x:Key="Text.Histories.Search" xml:space="preserve">查询提交指纹、信息、作者。回车键开始，ESC键取消</x:String>
   <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">清空</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已选中 {0} 项提交</x:String>
