@@ -1,5 +1,6 @@
 using System;
 
+using Avalonia;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
@@ -7,6 +8,15 @@ namespace SourceGit.Views
 {
     public partial class Askpass : ChromelessWindow
     {
+        public static readonly StyledProperty<bool> ShowPasswordProperty =
+            AvaloniaProperty.Register<Askpass, bool>(nameof(ShowPassword), false);
+
+        public bool ShowPassword
+        {
+            get => GetValue(ShowPasswordProperty);
+            set => SetValue(ShowPasswordProperty, value);
+        }
+
         public string KeyName
         {
             get;

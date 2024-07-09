@@ -62,7 +62,15 @@
                Height="32" 
                Text="{Binding Passphrase, Mode=TwoWay}" 
                PasswordChar="*"
-               HorizontalAlignment="Stretch"/>
+               RevealPassword="{Binding ShowPassword, Mode=OneWay}"
+               HorizontalAlignment="Stretch">
+        <TextBox.InnerRightContent>
+          <ToggleButton Grid.Column="6"
+                        Classes="toggle_untracked"
+                        Width="26" Height="14"
+                        IsChecked="{Binding ShowPassword, Mode=TwoWay}"/>
+        </TextBox.InnerRightContent>
+      </TextBox>
       
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
         <Button Classes="flat primary"
