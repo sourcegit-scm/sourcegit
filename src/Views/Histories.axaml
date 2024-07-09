@@ -24,7 +24,7 @@
                 HeadersVisibility="Column"
                 Focusable="False"
                 RowHeight="28"
-                ColumnHeaderHeight="28"
+                ColumnHeaderHeight="24"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto"
                 LayoutUpdated="OnCommitDataGridLayoutUpdated"
@@ -32,7 +32,7 @@
                 ContextRequested="OnCommitDataGridContextRequested">
         <DataGrid.Styles>
           <Style Selector="DataGridColumnHeader">
-            <Setter Property="MinHeight" Value="28"/>
+            <Setter Property="MinHeight" Value="24"/>
             <Setter Property="Template">
               <ControlTemplate>
                 <Border Background="{DynamicResource Brush.Window}"
