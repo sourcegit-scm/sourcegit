@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace SourceGit.Commands
+﻿namespace SourceGit.Commands
 {
     public class Rebase : Command
     {
@@ -19,12 +17,10 @@ namespace SourceGit.Commands
     {
         public InteractiveRebase(string repo, string basedOn)
         {
-            var exec = Process.GetCurrentProcess().MainModule.FileName;
-            var editor = $"\\\"{exec}\\\" --rebase-editor";
-
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"-c core.editor=\"{editor}\" -c sequence.editor=\"{editor}\" -c rebase.abbreviateCommands=true rebase -i --autosquash {basedOn}";
+            Editor = EditorType.RebaseEditor;
+            Args = $"rebase -i --autosquash {basedOn}";
         }
     }
 }

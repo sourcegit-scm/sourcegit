@@ -47,8 +47,10 @@ namespace SourceGit
         {
             try
             {
-                if (args.Length > 1 && args[0].Equals("--rebase-editor", StringComparison.Ordinal))
-                    Environment.Exit(Models.InteractiveRebaseEditor.Process(args[1]));
+                if (TryLaunchedAsRebaseTodoEditor(args, out int exitTodo))
+                    Environment.Exit(exitTodo);
+                else if (TryLaunchedAsRebaseMessageEditor(args, out int exitMessage))
+                    Environment.Exit(exitMessage);
                 else
                     BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             }
@@ -326,28 +328,14 @@ namespace SourceGit
             {
                 BindingPlugins.DataValidators.RemoveAt(0);
 
-                var commandlines = Environment.GetCommandLineArgs();
-                if (TryParseAskpass(commandlines, out var keyname))
-                {
-                    desktop.MainWindow = new Views.Askpass(Path.GetFileName(keyname));
-                }
-                else
-                {
-                    Native.OS.SetupEnternalTools();
+                if (TryLaunchedAsCoreEditor(desktop))
+                    return;
 
-                    _launcher = new ViewModels.Launcher(commandlines);
-                    desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
+                if (TryLaunchedAsAskpass(desktop))
+                    return;
 
-                    var pref = ViewModels.Preference.Instance;
-                    if (pref.ShouldCheck4UpdateOnStartup)
-                    {
-                        pref.Save();
-                        Check4Update();
-                    }
-                }
+                TryLaunchedAsNormal(desktop);
             }
-
-            base.OnFrameworkInitializationCompleted();
         }
 
         private static void ShowSelfUpdateResult(object data)
@@ -358,10 +346,7 @@ namespace SourceGit
                 {
                     var dialog = new Views.SelfUpdate()
                     {
-                        DataContext = new ViewModels.SelfUpdate
-                        {
-                            Data = data
-                        }
+                        DataContext = new ViewModels.SelfUpdate() { Data = data }
                     };
 
                     dialog.Show(desktop.MainWindow);
@@ -369,18 +354,133 @@ namespace SourceGit
             });
         }
 
-        private static bool TryParseAskpass(string[] args, out string keyname)
+        private static bool TryLaunchedAsRebaseTodoEditor(string[] args, out int exitCode)
         {
-            keyname = string.Empty;
+            exitCode = -1;
 
-            if (args.Length != 2)
+            if (args.Length <= 1 || !args[0].Equals("--rebase-todo-editor", StringComparison.Ordinal))
+                return false;
+
+            var file = args[1];
+            var filename = Path.GetFileName(file);
+            if (!filename.Equals("git-rebase-todo", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            var dirInfo = new DirectoryInfo(Path.GetDirectoryName(file));
+            if (!dirInfo.Exists || !dirInfo.Name.Equals("rebase-merge", StringComparison.Ordinal))
+                return true;
+
+            var jobsFile = Path.Combine(dirInfo.Parent.FullName, "sourcegit_rebase_jobs.json");
+            if (!File.Exists(jobsFile))
+                return true;
+
+            var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            var lines = new List<string>();
+            foreach (var job in collection.Jobs)
+            {
+                switch (job.Action)
+                {
+                    case Models.InteractiveRebaseAction.Pick:
+                        lines.Add($"p {job.SHA}");
+                        break;
+                    case Models.InteractiveRebaseAction.Edit:
+                        lines.Add($"e {job.SHA}");
+                        break;
+                    case Models.InteractiveRebaseAction.Reword:
+                        lines.Add($"r {job.SHA}");
+                        break;
+                    case Models.InteractiveRebaseAction.Squash:
+                        lines.Add($"s {job.SHA}");
+                        break;
+                    case Models.InteractiveRebaseAction.Fixup:
+                        lines.Add($"f {job.SHA}");
+                        break;
+                    default:
+                        lines.Add($"d {job.SHA}");
+                        break;
+                }
+            }
+
+            File.WriteAllLines(file, lines);
+
+            exitCode = 0;
+            return true;
+        }
+
+        private static bool TryLaunchedAsRebaseMessageEditor(string[] args, out int exitCode)
+        {
+            exitCode = -1;
+
+            if (args.Length <= 1 || !args[0].Equals("--rebase-message-editor", StringComparison.Ordinal))
+                return false;
+
+            var file = args[1];
+            var filename = Path.GetFileName(file);
+            if (!filename.Equals("COMMIT_EDITMSG", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            var jobsFile = Path.Combine(Path.GetDirectoryName(file), "sourcegit_rebase_jobs.json");
+            if (!File.Exists(jobsFile))
+                return true;
+
+            var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            var doneFile = Path.Combine(Path.GetDirectoryName(file), "rebase-merge", "done");
+            if (!File.Exists(doneFile))
+                return true;
+
+            var done = File.ReadAllText(doneFile).Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            if (done.Length > collection.Jobs.Count)
+                return true;
+
+            var job = collection.Jobs[done.Length - 1];
+            File.WriteAllText(file, job.Message);
+
+            exitCode = 0;
+            return true;
+        }
+
+        private bool TryLaunchedAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var args = desktop.Args;
+            if (args.Length <= 1 || !args[0].Equals("--core-editor", StringComparison.Ordinal))
+                return false;
+
+            var file = args[1];
+            if (!File.Exists(file))
+                Environment.Exit(-1);
+
+            desktop.MainWindow = new Views.CodeEditor(file);
+            return true;
+        }
+
+        private bool TryLaunchedAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var args = desktop.Args;
+            if (args.Length <= 1 || !args[0].Equals("--askpass", StringComparison.Ordinal))
                 return false;
 
             var match = REG_ASKPASS().Match(args[1]);
-            if (match.Success)
-                keyname = match.Groups[1].Value;
+            if (!match.Success)
+                return false;
+                
+            desktop.MainWindow = new Views.Askpass(Path.GetFileName(match.Groups[1].Value));
+            return true;
+        }
 
-            return match.Success;
+        private void TryLaunchedAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            Native.OS.SetupEnternalTools();
+
+            var startupRepo = desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]) ? desktop.Args[0] : null;
+            _launcher = new ViewModels.Launcher(startupRepo);
+            desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
+
+            var pref = ViewModels.Preference.Instance;
+            if (pref.ShouldCheck4UpdateOnStartup)
+            {
+                pref.Save();
+                Check4Update();
+            }
         }
 
         [GeneratedRegex(@"Enter\s+passphrase\s*for\s*key\s*['""]([^'""]+)['""]\:\s*", RegexOptions.IgnoreCase)]

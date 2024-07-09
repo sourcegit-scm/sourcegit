@@ -94,6 +94,7 @@
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">父級目錄 ：</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">遠端倉庫 ：</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">關閉</x:String>
+  <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交資訊編輯器</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">挑選(cherry-pick)此提交</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">檢出此提交</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">與當前HEAD比較</x:String>

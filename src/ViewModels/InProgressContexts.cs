@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 
 namespace SourceGit.ViewModels
 {
@@ -39,7 +38,8 @@ namespace SourceGit.ViewModels
             {
                 WorkingDirectory = Repository,
                 Context = Repository,
-                Args = $"-c core.editor=true {Cmd} --continue",
+                Editor = Commands.Command.EditorType.None,
+                Args = $"{Cmd} --continue",
             }.Exec();
         }
     }
@@ -58,14 +58,12 @@ namespace SourceGit.ViewModels
 
         public override bool Continue()
         {
-            var exec = Process.GetCurrentProcess().MainModule.FileName;
-            var editor = $"\\\"{exec}\\\" --rebase-editor";
-
             var succ = new Commands.Command()
             {
                 WorkingDirectory = Repository,
                 Context = Repository,
-                Args = $"-c core.editor=\"{editor}\" rebase --continue",
+                Editor = Commands.Command.EditorType.RebaseEditor,
+                Args = $"rebase --continue",
             }.Exec();
 
             if (succ)

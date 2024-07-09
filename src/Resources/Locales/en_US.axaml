@@ -91,6 +91,7 @@
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Parent Folder:</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Repository URL:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">CLOSE</x:String>
+  <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick This Commit</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>

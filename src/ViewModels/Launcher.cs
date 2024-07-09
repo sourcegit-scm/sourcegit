@@ -28,21 +28,20 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public Launcher(string[] commandlines)
+        public Launcher(string startupRepo)
         {
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
             
-            if (commandlines.Length == 2)
+            if (!string.IsNullOrEmpty(startupRepo))
             {
-                var path = commandlines[1];
-                var root = new Commands.QueryRepositoryRootPath(path).Result();
+                var root = new Commands.QueryRepositoryRootPath(startupRepo).Result();
                 if (string.IsNullOrEmpty(root))
                 {
                     Pages[0].Notifications.Add(new Notification
                     {
                         IsError = true,
-                        Message = $"Given path: '{path}' is NOT a valid repository!"
+                        Message = $"Given path: '{startupRepo}' is NOT a valid repository!"
                     });
                     return;
                 }

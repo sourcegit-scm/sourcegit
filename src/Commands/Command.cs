@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
-
 using Avalonia.Threading;
 
 namespace SourceGit.Commands
@@ -22,9 +21,17 @@ namespace SourceGit.Commands
             public string StdErr { get; set; }
         }
 
+        public enum EditorType
+        {
+            None,
+            CoreEditor,
+            RebaseEditor,
+        }
+
         public string Context { get; set; } = string.Empty;
         public CancelToken Cancel { get; set; } = null;
         public string WorkingDirectory { get; set; } = null;
+        public EditorType Editor { get; set; } = EditorType.CoreEditor; // Only used in Exec() mode
         public string Args { get; set; } = string.Empty;
         public bool RaiseError { get; set; } = true;
         public bool TraitErrorAsOutput { get; set; } = false;
@@ -33,7 +40,7 @@ namespace SourceGit.Commands
         public void UseSSHKey(string key)
         {
             Envs.Add("DISPLAY", "required");
-            Envs.Add("SSH_ASKPASS", Process.GetCurrentProcess().MainModule.FileName);
+            Envs.Add("SSH_ASKPASS", $"\"{Process.GetCurrentProcess().MainModule.FileName}\" --askpass");
             Envs.Add("SSH_ASKPASS_REQUIRE", "prefer");
             Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{key}'");
         }
@@ -42,13 +49,31 @@ namespace SourceGit.Commands
         {
             var start = new ProcessStartInfo();
             start.FileName = Native.OS.GitExecutable;
-            start.Arguments = "--no-pager -c core.quotepath=off " + Args;
+            start.Arguments = "--no-pager -c core.quotepath=off ";
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
             start.RedirectStandardOutput = true;
             start.RedirectStandardError = true;
             start.StandardOutputEncoding = Encoding.UTF8;
             start.StandardErrorEncoding = Encoding.UTF8;
+
+            // Editors
+            var editorProgram = $"\\\"{Process.GetCurrentProcess().MainModule.FileName}\\\"";
+            switch (Editor)
+            {
+                case EditorType.CoreEditor:
+                    start.Arguments += $"-c core.editor=\"{editorProgram} --core-editor\" ";
+                    break;
+                case EditorType.RebaseEditor:
+                    start.Arguments += $"-c core.editor=\"{editorProgram} --rebase-message-editor\" -c sequence.editor=\"{editorProgram} --rebase-todo-editor\" -c rebase.abbreviateCommands=true ";
+                    break;
+                default:
+                    start.Arguments += "-c core.editor=true ";
+                    break;
+            }
+
+            // Append command args
+            start.Arguments += Args;
 
             // User environment overrides.
             foreach (var kv in Envs)
