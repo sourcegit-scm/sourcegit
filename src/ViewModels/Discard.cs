@@ -54,19 +54,18 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 if (_changes == null)
-                {
                     Commands.Discard.All(_repo.FullPath);
-                }
                 else if (_isUnstaged)
-                {
                     Commands.Discard.ChangesInWorkTree(_repo.FullPath, _changes);
-                }
                 else
-                {
                     Commands.Discard.ChangesInStaged(_repo.FullPath, _changes);
-                }
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.MarkWorkingCopyDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+                });
+
                 return true;
             });
         }
