@@ -113,7 +113,7 @@ namespace SourceGit.Models
             private set;
         } = new List<Pen>();
 
-        public static void SetDefaultPens(double thickness = 1.5)
+        public static void SetDefaultPens(double thickness = 2)
         {
             SetPens(_defaultPenColors, thickness);
         }
