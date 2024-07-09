@@ -127,6 +127,8 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.V && ((OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Meta) || (!OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Control)))
             {
+                e.Handled = true;
+
                 var text = await App.GetClipboardTextAsync();
                 if (!string.IsNullOrWhiteSpace(text))
                 {
@@ -152,8 +154,6 @@ namespace SourceGit.Views
                         SubjectEditor.Paste(text.ReplaceLineEndings(" "));
                     }
                 }
-
-                e.Handled = true;
             }
         }
 
