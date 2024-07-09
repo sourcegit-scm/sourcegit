@@ -50,12 +50,9 @@
     </Grid>
 
     <StackPanel Grid.Row="1" Margin="0,16" Orientation="Vertical">
-      <StackPanel Orientation="Horizontal" Margin="16,0">
-        <TextBlock Text="Enter passphrase for key: "/>
-        <Border Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-          <TextBlock Text="{Binding KeyName}" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
-        </Border>
-      </StackPanel>
+      <Border Margin="16,0">
+        <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+      </Border>
       
       <TextBox Margin="16"
                MinWidth="300" 

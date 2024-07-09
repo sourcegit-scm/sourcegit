@@ -17,7 +17,7 @@ namespace SourceGit.Views
             set => SetValue(ShowPasswordProperty, value);
         }
 
-        public string KeyName
+        public string Description
         {
             get;
             private set;
@@ -35,9 +35,9 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public Askpass(string keyname)
+        public Askpass(string description)
         {
-            KeyName = keyname;
+            Description = description;
             DataContext = this;
             InitializeComponent();
         }

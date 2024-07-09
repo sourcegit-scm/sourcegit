@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 
 namespace SourceGit.Commands
 {
@@ -11,6 +12,7 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
+            TraitErrorAsOutput = true;
             Args = $"commit --file=\"{file}\"";
             if (autoStage)
                 Args += " --all";
@@ -18,6 +20,8 @@ namespace SourceGit.Commands
                 Args += " --amend --no-edit";
             if (allowEmpty)
                 Args += " --allow-empty";
+
+            UseSSHAskpass();
         }
     }
 }

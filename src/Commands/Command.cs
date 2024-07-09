@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
+
 using Avalonia.Threading;
 
 namespace SourceGit.Commands
@@ -39,10 +40,15 @@ namespace SourceGit.Commands
 
         public void UseSSHKey(string key)
         {
+            UseSSHAskpass();
+            Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{key}'");
+        }
+
+        public void UseSSHAskpass()
+        {
             Envs.Add("DISPLAY", "required");
             Envs.Add("SSH_ASKPASS", $"\"{Process.GetCurrentProcess().MainModule.FileName}\" --askpass");
             Envs.Add("SSH_ASKPASS_REQUIRE", "prefer");
-            Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{key}'");
         }
 
         public bool Exec()

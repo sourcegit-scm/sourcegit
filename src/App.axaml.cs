@@ -458,12 +458,8 @@ namespace SourceGit
             var args = desktop.Args;
             if (args.Length <= 1 || !args[0].Equals("--askpass", StringComparison.Ordinal))
                 return false;
-
-            var match = REG_ASKPASS().Match(args[1]);
-            if (!match.Success)
-                return false;
                 
-            desktop.MainWindow = new Views.Askpass(Path.GetFileName(match.Groups[1].Value));
+            desktop.MainWindow = new Views.Askpass(args[1]);
             return true;
         }
 
@@ -482,9 +478,6 @@ namespace SourceGit
                 Check4Update();
             }
         }
-
-        [GeneratedRegex(@"Enter\s+passphrase\s*for\s*key\s*['""]([^'""]+)['""]\:\s*", RegexOptions.IgnoreCase)]
-        private static partial Regex REG_ASKPASS();
 
         private ViewModels.Launcher _launcher = null;
         private ResourceDictionary _activeLocale = null;
