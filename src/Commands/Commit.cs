@@ -19,8 +19,6 @@ namespace SourceGit.Commands
                 Args += " --amend --no-edit";
             if (allowEmpty)
                 Args += " --allow-empty";
-
-            UseSSHAskpass();
         }
     }
 }

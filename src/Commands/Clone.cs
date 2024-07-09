@@ -11,17 +11,14 @@ namespace SourceGit.Commands
             Context = ctx;
             WorkingDirectory = path;
             TraitErrorAsOutput = true;
-
-            if (string.IsNullOrEmpty(sshKey))
-                Args = "-c credential.helper=manager ";
-            else
-                UseSSHKey(sshKey);
-
-            Args += "clone --progress --verbose --recurse-submodules ";
+            SSHKey = sshKey;
+            Args = "clone --progress --verbose --recurse-submodules ";
 
             if (!string.IsNullOrEmpty(extraArgs))
                 Args += $"{extraArgs} ";
+
             Args += $"{url} ";
+
             if (!string.IsNullOrEmpty(localName))
                 Args += localName;
 

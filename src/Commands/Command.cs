@@ -33,23 +33,10 @@ namespace SourceGit.Commands
         public CancelToken Cancel { get; set; } = null;
         public string WorkingDirectory { get; set; } = null;
         public EditorType Editor { get; set; } = EditorType.CoreEditor; // Only used in Exec() mode
+        public string SSHKey { get; set; } = string.Empty;
         public string Args { get; set; } = string.Empty;
         public bool RaiseError { get; set; } = true;
         public bool TraitErrorAsOutput { get; set; } = false;
-        public Dictionary<string, string> Envs { get; set; } = new Dictionary<string, string>();
-
-        public void UseSSHKey(string key)
-        {
-            UseSSHAskpass();
-            Envs.Add("GIT_SSH_COMMAND", $"ssh -i '{key}'");
-        }
-
-        public void UseSSHAskpass()
-        {
-            Envs.Add("DISPLAY", "required");
-            Envs.Add("SSH_ASKPASS", $"\"{Process.GetCurrentProcess().MainModule.FileName}\" --askpass");
-            Envs.Add("SSH_ASKPASS_REQUIRE", "prefer");
-        }
 
         public bool Exec()
         {
@@ -63,15 +50,30 @@ namespace SourceGit.Commands
             start.StandardOutputEncoding = Encoding.UTF8;
             start.StandardErrorEncoding = Encoding.UTF8;
 
-            // Editors
-            var editorProgram = $"\\\"{Process.GetCurrentProcess().MainModule.FileName}\\\"";
+            // Force using this app as SSH askpass program
+            var selfExecFile = Process.GetCurrentProcess().MainModule.FileName;
+            start.Environment.Add("DISPLAY", "required");
+            start.Environment.Add("SSH_ASKPASS", $"\"{selfExecFile}\" --askpass");
+            start.Environment.Add("SSH_ASKPASS_REQUIRE", "prefer");
+
+            // If an SSH private key was provided, sets the environment.
+            if (!string.IsNullOrEmpty(SSHKey))
+                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -i '{SSHKey}'");
+            else
+                start.Arguments += "-c credential.helper=manager ";
+
+            // Force using en_US.UTF-8 locale to avoid GCM crash
+            if (OperatingSystem.IsLinux())
+                start.Environment.Add("LANG", "en_US.UTF-8");
+
+            // Force using this app as git editor.
             switch (Editor)
             {
                 case EditorType.CoreEditor:
-                    start.Arguments += $"-c core.editor=\"{editorProgram} --core-editor\" ";
+                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --core-editor\" ";
                     break;
                 case EditorType.RebaseEditor:
-                    start.Arguments += $"-c core.editor=\"{editorProgram} --rebase-message-editor\" -c sequence.editor=\"{editorProgram} --rebase-todo-editor\" -c rebase.abbreviateCommands=true ";
+                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --rebase-message-editor\" -c sequence.editor=\"\\\"{selfExecFile}\\\" --rebase-todo-editor\" -c rebase.abbreviateCommands=true ";
                     break;
                 default:
                     start.Arguments += "-c core.editor=true ";
@@ -81,14 +83,7 @@ namespace SourceGit.Commands
             // Append command args
             start.Arguments += Args;
 
-            // User environment overrides.
-            foreach (var kv in Envs)
-                start.Environment.Add(kv.Key, kv.Value);
-
-            // Force using en_US.UTF-8 locale to avoid GCM crash
-            if (OperatingSystem.IsLinux())
-                start.Environment.Add("LANG", "en_US.UTF-8");
-
+            // Working directory
             if (!string.IsNullOrEmpty(WorkingDirectory))
                 start.WorkingDirectory = WorkingDirectory;
 

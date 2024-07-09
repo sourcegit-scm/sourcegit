@@ -13,14 +13,9 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
+            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            Args = "fetch --progress --verbose ";
 
-            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (string.IsNullOrEmpty(sshKey))
-                Args = "-c credential.helper=manager ";
-            else
-                UseSSHKey(sshKey);
-
-            Args += "fetch --progress --verbose ";
             if (prune)
                 Args += "--prune ";
 
@@ -40,14 +35,8 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
-
-            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (string.IsNullOrEmpty(sshKey))
-                Args = "-c credential.helper=manager ";
-            else
-                UseSSHKey(sshKey);
-
-            Args += $"fetch --progress --verbose {remote} {remoteBranch}:{localBranch}";
+            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            Args = $"fetch --progress --verbose {remote} {remoteBranch}:{localBranch}";
         }
 
         protected override void OnReadline(string line)
