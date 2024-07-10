@@ -797,7 +797,6 @@
                           CornerRadius="{DynamicResource OverlayCornerRadius}">
                     <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
                       <ItemsPresenter Name="PART_ItemsPresenter"
-                                      ItemsPanel="{TemplateBinding ItemsPanel}"
                                       Margin="{DynamicResource MenuFlyoutScrollerMargin}"
                                       Grid.IsSharedSizeScope="True">
                         <ItemsPresenter.ItemsPanel>
@@ -1050,8 +1049,7 @@
     <Setter Property="VerticalAlignment" Value="Stretch"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Path Grid.Column="0"
-              x:Name="PART_IndicatorIcon"
+        <Path x:Name="PART_IndicatorIcon"
               Width="12"
               Data="{StaticResource Icons.Filter}"
               Fill="Transparent"
@@ -1103,8 +1101,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Border Background="Transparent">
-          <Path Grid.Column="0"
-                x:Name="PART_IndicatorIcon"
+          <Path x:Name="PART_IndicatorIcon"
                 Width="14" Height="14"
                 Stretch="Uniform"
                 Data="{StaticResource Icons.LayoutVertical}"
@@ -1147,8 +1144,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Border Background="Transparent">
-          <Path Grid.Column="0"
-                x:Name="PART_IndicatorIcon"
+          <Path x:Name="PART_IndicatorIcon"
                 Margin="{TemplateBinding Padding}"
                 Stretch="Fill"
                 Width="14" Height="10"
