@@ -604,3 +604,4 @@ build/*.zip
 build/*.tar.gz
 build/*.deb
 build/*.rpm
+build/*.AppImage

@@ -456,10 +456,10 @@ namespace SourceGit
         private bool TryLaunchedAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var args = desktop.Args;
-            if (args.Length <= 1 || !args[0].Equals("--askpass", StringComparison.Ordinal))
+            if (args.Length != 1 || !args[0].StartsWith("Enter passphrase", StringComparison.Ordinal))
                 return false;
                 
-            desktop.MainWindow = new Views.Askpass(args[1]);
+            desktop.MainWindow = new Views.Askpass(args[0]);
             return true;
         }
 
