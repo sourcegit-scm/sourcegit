@@ -496,7 +496,7 @@ namespace SourceGit.ViewModels
         private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
         private bool _check4UpdatesOnStartup = true;
-        
+
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _useSideBySideDiff = false;
         private bool _useSyntaxHighlighting = false;

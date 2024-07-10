@@ -644,7 +644,7 @@ namespace SourceGit.ViewModels
                             }
 
                             lfs.Items.Add(new MenuItem() { Header = "-" });
-                        }                        
+                        }
 
                         var lfsLock = new MenuItem();
                         lfsLock.Header = App.Text("GitLFS.Locks.Lock");
@@ -678,7 +678,7 @@ namespace SourceGit.ViewModels
                                 };
                                 lfsLock.Items.Add(lockRemote);
                             }
-                        }                        
+                        }
                         lfs.Items.Add(lfsLock);
 
                         var lfsUnlock = new MenuItem();
@@ -713,7 +713,7 @@ namespace SourceGit.ViewModels
                                 };
                                 lfsUnlock.Items.Add(unlockRemote);
                             }
-                        }                        
+                        }
                         lfs.Items.Add(lfsUnlock);
 
                         menu.Items.Add(lfs);
@@ -1005,7 +1005,7 @@ namespace SourceGit.ViewModels
                             };
                             lfsLock.Items.Add(lockRemote);
                         }
-                    }                    
+                    }
                     lfs.Items.Add(lfsLock);
 
                     var lfsUnlock = new MenuItem();
@@ -1040,7 +1040,7 @@ namespace SourceGit.ViewModels
                             };
                             lfsUnlock.Items.Add(unlockRemote);
                         }
-                    }                    
+                    }
                     lfs.Items.Add(lfsUnlock);
 
                     menu.Items.Add(lfs);

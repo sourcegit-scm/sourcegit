@@ -32,7 +32,7 @@ namespace SourceGit.ViewModels
         {
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
-            
+
             if (!string.IsNullOrEmpty(startupRepo))
             {
                 var root = new Commands.QueryRepositoryRootPath(startupRepo).Result();
@@ -272,8 +272,9 @@ namespace SourceGit.ViewModels
 
         public void DispatchNotification(string pageId, string message, bool isError)
         {
-            var notification = new Notification() { 
-                IsError = isError, 
+            var notification = new Notification()
+            {
+                IsError = isError,
                 Message = message,
             };
 

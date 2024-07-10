@@ -24,7 +24,7 @@ namespace SourceGit.Views
             get => GetValue(NodeProperty);
             set => SetValue(NodeProperty, value);
         }
-        
+
         public static readonly StyledProperty<bool> IsExpandedProperty =
             AvaloniaProperty.Register<BranchTreeNodeIcon, bool>(nameof(IsExpanded));
 
@@ -51,21 +51,21 @@ namespace SourceGit.Views
 
             if (node.Backend is Models.Remote)
             {
-                CreateContent(12, new Thickness(0,2,0,0), "Icons.Remote");
+                CreateContent(12, new Thickness(0, 2, 0, 0), "Icons.Remote");
             }
             else if (node.Backend is Models.Branch branch)
             {
                 if (branch.IsCurrent)
-                    CreateContent(12, new Thickness(0,2,0,0), "Icons.Check");
+                    CreateContent(12, new Thickness(0, 2, 0, 0), "Icons.Check");
                 else
-                    CreateContent(12, new Thickness(2,0,0,0), "Icons.Branch");
+                    CreateContent(12, new Thickness(2, 0, 0, 0), "Icons.Branch");
             }
             else
             {
                 if (node.IsExpanded)
-                    CreateContent(10, new Thickness(0,2,0,0), "Icons.Folder.Open");
+                    CreateContent(10, new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
                 else
-                    CreateContent(10, new Thickness(0,2,0,0), "Icons.Folder.Fill");
+                    CreateContent(10, new Thickness(0, 2, 0, 0), "Icons.Folder.Fill");
             }
         }
 
@@ -74,7 +74,7 @@ namespace SourceGit.Views
             var geo = this.FindResource(iconKey) as StreamGeometry;
             if (geo == null)
                 return;
-            
+
             Content = new Path()
             {
                 Width = size,
@@ -86,7 +86,7 @@ namespace SourceGit.Views
             };
         }
     }
-    
+
     public partial class BranchTree : UserControl
     {
         public static readonly StyledProperty<List<ViewModels.BranchTreeNode>> NodesProperty =
@@ -103,7 +103,7 @@ namespace SourceGit.Views
             get;
             private set;
         } = new AvaloniaList<ViewModels.BranchTreeNode>();
-        
+
         public static readonly RoutedEvent<RoutedEventArgs> SelectionChangedEvent =
             RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(SelectionChanged), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
@@ -180,7 +180,7 @@ namespace SourceGit.Views
                 if (item is ViewModels.BranchTreeNode node)
                     node.IsSelected = false;
             }
-            
+
             var selected = BranchesPresenter.SelectedItems;
             if (selected == null || selected.Count == 0)
                 return;
@@ -207,16 +207,16 @@ namespace SourceGit.Views
 
                 prev = row;
             }
-            
+
             RaiseEvent(new RoutedEventArgs(SelectionChangedEvent));
         }
-        
+
         private void OnTreeContextRequested(object _1, ContextRequestedEventArgs _2)
         {
             var repo = DataContext as ViewModels.Repository;
             if (repo?.Settings == null)
                 return;
-            
+
             var selected = BranchesPresenter.SelectedItems;
             if (selected == null || selected.Count == 0)
                 return;
@@ -280,7 +280,7 @@ namespace SourceGit.Views
                     var idx = rows.IndexOf(node);
                     if (idx == -1)
                         return;
-                
+
                     if (node.IsExpanded)
                     {
                         var subtree = new List<ViewModels.BranchTreeNode>();
@@ -305,7 +305,7 @@ namespace SourceGit.Views
                 }
             }
         }
-        
+
         private void OnToggleFilter(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton toggle && DataContext is ViewModels.Repository repo)
@@ -316,7 +316,7 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
-        
+
         private void MakeRows(List<ViewModels.BranchTreeNode> rows, List<ViewModels.BranchTreeNode> nodes, int depth)
         {
             foreach (var node in nodes)
@@ -326,7 +326,7 @@ namespace SourceGit.Views
 
                 if (!node.IsExpanded || node.Backend is Models.Branch)
                     continue;
-                
+
                 MakeRows(rows, node.Children, depth + 1);
             }
         }
@@ -338,7 +338,7 @@ namespace SourceGit.Views
                 outs.Add(branch);
                 return;
             }
-            
+
             foreach (var sub in node.Children)
                 CollectBranchesInNode(outs, sub);
         }

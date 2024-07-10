@@ -65,7 +65,7 @@ namespace SourceGit.Views
 
         private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
-            if (e.Property == IsVisibleProperty && sender is Grid { IsVisible: true})
+            if (e.Property == IsVisibleProperty && sender is Grid { IsVisible: true })
                 txtSearchCommitsBox.Focus();
         }
 
@@ -86,7 +86,7 @@ namespace SourceGit.Views
             {
                 repo.NavigateToCommit(commit.SHA);
             }
-            
+
             e.Handled = true;
         }
 
@@ -101,7 +101,7 @@ namespace SourceGit.Views
             remoteBranchTree.UnselectAll();
             tagsList.SelectedItem = null;
         }
-        
+
         private void OnRemoteBranchTreeSelectionChanged(object _1, RoutedEventArgs _2)
         {
             localBranchTree.UnselectAll();

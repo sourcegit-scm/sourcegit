@@ -26,7 +26,7 @@ namespace SourceGit.Models
 
                 if (Branch.StartsWith("refs/heads/", System.StringComparison.Ordinal))
                     return $"({Branch.Substring(11)})";
-                
+
                 if (Branch.StartsWith("refs/remotes/", System.StringComparison.Ordinal))
                     return $"({Branch.Substring(13)})";
 

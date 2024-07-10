@@ -50,9 +50,9 @@ namespace SourceGit
     }
 
     [JsonSourceGenerationOptions(
-        WriteIndented = true, 
-        IgnoreReadOnlyFields = true, 
-        IgnoreReadOnlyProperties = true, 
+        WriteIndented = true,
+        IgnoreReadOnlyFields = true,
+        IgnoreReadOnlyProperties = true,
         Converters = [
             typeof(ColorConverter),
             typeof(FontFamilyConverter),

@@ -182,7 +182,7 @@ namespace SourceGit.Views
         private void EndMoveWindow(object sender, PointerReleasedEventArgs e)
         {
             _pressedTitleBar = false;
-        }        
+        }
 
         private void OnPopupSure(object sender, RoutedEventArgs e)
         {

@@ -127,7 +127,7 @@ namespace SourceGit.Views
                 Cursor = new Cursor(StandardCursorType.SizeWestEast);
                 e.Pointer.Capture(this);
                 e.Handled = true;
-            }                
+            }
         }
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -163,7 +163,7 @@ namespace SourceGit.Views
                         _lastInSlider = false;
                         Cursor = null;
                     }
-                }                    
+                }
             }
         }
 

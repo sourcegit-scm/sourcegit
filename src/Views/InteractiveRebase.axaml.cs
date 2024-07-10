@@ -21,7 +21,7 @@ namespace SourceGit.Views
             Close();
         }
 
-        private void OnMoveItemUp(object sender, RoutedEventArgs e) 
+        private void OnMoveItemUp(object sender, RoutedEventArgs e)
         {
             if (sender is Control control && DataContext is ViewModels.InteractiveRebase vm)
             {
@@ -39,7 +39,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDataGridKeyDown(object sender, KeyEventArgs e) 
+        private void OnDataGridKeyDown(object sender, KeyEventArgs e)
         {
             var datagrid = sender as DataGrid;
             var item = datagrid.SelectedItem as ViewModels.InteractiveRebaseItem;

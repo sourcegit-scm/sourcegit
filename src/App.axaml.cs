@@ -458,7 +458,7 @@ namespace SourceGit
             var args = desktop.Args;
             if (args.Length != 1 || !args[0].StartsWith("Enter passphrase", StringComparison.Ordinal))
                 return false;
-                
+
             desktop.MainWindow = new Views.Askpass(args[0]);
             return true;
         }
