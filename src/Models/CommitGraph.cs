@@ -221,13 +221,17 @@ namespace SourceGit.Models
                     var parent = commit.Parents[j];
                     if (mapUnsolved.TryGetValue(parent, out var value))
                     {
+                        // Try to change the merge state of linked graph
                         var l = value;
-                        var link = new Link();
+                        if (isMerged)
+                            l.IsMerged = true;
 
+                        var link = new Link();
                         link.Start = position;
                         link.End = new Point(l.LastX, offsetY + HALF_HEIGHT);
                         link.Control = new Point(link.End.X, link.Start.Y);
                         link.Color = l.Path.Color;
+
                         temp.Links.Add(link);
                     }
                     else
