@@ -350,6 +350,7 @@ namespace SourceGit.Views
             foreach (var node in nodes)
             {
                 node.Depth = depth;
+                node.IsSelected = false;
                 rows.Add(node);
 
                 if (!node.IsExpanded || node.Backend is Models.Branch)
