@@ -170,7 +170,7 @@ namespace SourceGit.Views
                 if (subtree != null && subtree.Count > 0)
                 {
                     var subrows = new List<RevisionFileTreeNode>();
-                    MakeRows(subrows, node.Children, depth + 1);
+                    MakeRows(subrows, subtree, depth + 1);
                     _rows.InsertRange(idx + 1, subrows);
                 }
             }

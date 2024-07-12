@@ -1093,6 +1093,33 @@
       <Setter Property="Data" Value="M 0 4 L 8 4 L 4 8 Z" />
     </Style>
   </Style>
+  
+  <Style Selector="ToggleButton.change_tree_folder">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="IsHitTestVisible" Value="False"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="Transparent"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center">
+          <Path x:Name="ChevronPath"
+                Margin="0,2,0,0"
+                Data="{StaticResource Icons.Folder.Fill}"
+                Fill="Goldenrod"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:checked /template/ Path#ChevronPath">
+      <Setter Property="Data" Value="{StaticResource Icons.Folder.Open}" />
+    </Style>
+  </Style>
+  
   <Style Selector="ToggleButton.layout_direction">
     <Setter Property="Margin" Value="0"/>
     <Setter Property="Padding" Value="0"/>
@@ -1269,67 +1296,6 @@
     <Setter Property="Data" Value="{StaticResource Icons.Folder.Open}"/>
   </Style>
   <Style Selector="TreeViewItem[IsExpanded=False] Path.folder_icon">
-    <Setter Property="Data" Value="{StaticResource Icons.Folder.Fill}"/>
-  </Style>
-
-  <Style Selector="TreeDataGrid">
-    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border x:Name="RootBorder"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="{TemplateBinding CornerRadius}">
-          <DockPanel>
-            <ScrollViewer Name="PART_HeaderScrollViewer"
-                          DockPanel.Dock="Top"
-                          IsVisible="{TemplateBinding ShowColumnHeaders}"
-                          HorizontalScrollBarVisibility="Hidden"
-                          VerticalScrollBarVisibility="Disabled"
-                          BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}">
-              <Border x:Name="ColumnHeadersPresenterBorder">
-                <TreeDataGridColumnHeadersPresenter Name="PART_ColumnHeadersPresenter"
-                                                    ElementFactory="{TemplateBinding ElementFactory}"
-                                                    Items="{TemplateBinding Columns}" />
-              </Border>
-            </ScrollViewer>
-            <ScrollViewer Name="PART_ScrollViewer"
-                          HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
-                          BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}">
-              <TreeDataGridRowsPresenter Name="PART_RowsPresenter"
-                                         Columns="{TemplateBinding Columns}"
-                                         ElementFactory="{TemplateBinding ElementFactory}"
-                                         Items="{TemplateBinding Rows}" />
-            </ScrollViewer>
-          </DockPanel>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-
-    <Style Selector="^/template/ Border#ColumnHeadersPresenterBorder">
-      <Setter Property="BorderThickness" Value="0 0 0 1" />
-      <Setter Property="BorderBrush" Value="{DynamicResource TreeDataGridGridLinesBrush}" />
-    </Style>
-  </Style>
-
-  <Style Selector="TreeDataGridRow">
-    <Style.Resources>
-      <SolidColorBrush x:Key="TreeDataGridSelectedCellBackgroundBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.4" />
-    </Style.Resources>
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
-  
-  <Style Selector="TreeDataGridColumnHeader">
-    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-  </Style>
-  <Style Selector="TreeDataGridTextCell TextBlock">
-    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"/>
-  </Style>
-  <Style Selector="TreeDataGridExpanderCell[IsExpanded=True] Path.folder_icon">
-    <Setter Property="Data" Value="{StaticResource Icons.Folder.Open}"/>
-  </Style>
-  <Style Selector="TreeDataGridExpanderCell[IsExpanded=False] Path.folder_icon">
     <Setter Property="Data" Value="{StaticResource Icons.Folder.Fill}"/>
   </Style>
 

@@ -10,7 +10,7 @@ namespace SourceGit.Views
     public class EnhancedTextBox : TextBox
     {
         public static readonly RoutedEvent<KeyEventArgs> PreviewKeyDownEvent =
-            RoutedEvent.Register<ChangeCollectionView, KeyEventArgs>(nameof(KeyEventArgs), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            RoutedEvent.Register<EnhancedTextBox, KeyEventArgs>(nameof(KeyEventArgs), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
         public event EventHandler<KeyEventArgs> PreviewKeyDown
         {
