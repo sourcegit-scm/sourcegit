@@ -87,6 +87,23 @@ namespace SourceGit.Views
         }
     }
 
+    public class BranchTreeNodeToggleButton : ToggleButton
+    {
+        protected override Type StyleKeyOverride => typeof(ToggleButton);
+
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
+                DataContext is ViewModels.BranchTreeNode { IsBranch: false } node)
+            {
+                var tree = this.FindAncestorOfType<BranchTree>();
+                tree.ToggleNodeIsExpanded(node);
+            }
+
+            e.Handled = true;
+        }
+    }
+
     public partial class BranchTree : UserControl
     {
         public static readonly StyledProperty<List<ViewModels.BranchTreeNode>> NodesProperty =
@@ -132,6 +149,42 @@ namespace SourceGit.Views
             BranchesPresenter.SelectedItem = null;
         }
 
+        public void ToggleNodeIsExpanded(ViewModels.BranchTreeNode node)
+        {
+            _disableSelectionChangingEvent = true;
+            node.IsExpanded = !node.IsExpanded;
+
+            var rows = Rows;
+            var depth = node.Depth;
+            var idx = rows.IndexOf(node);
+            if (idx == -1)
+                return;
+
+            if (node.IsExpanded)
+            {
+                var subtree = new List<ViewModels.BranchTreeNode>();
+                MakeRows(subtree, node.Children, depth + 1);
+                rows.InsertRange(idx + 1, subtree);
+            }
+            else
+            {
+                var removeCount = 0;
+                for (int i = idx + 1; i < rows.Count; i++)
+                {
+                    var row = rows[i];
+                    if (row.Depth <= depth)
+                        break;
+
+                    row.IsSelected = false;
+                    removeCount++;
+                }
+                rows.RemoveRange(idx + 1, removeCount);
+            }
+
+            RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
+            _disableSelectionChangingEvent = false;
+        }
+
         protected override void OnSizeChanged(SizeChangedEventArgs e)
         {
             base.OnSizeChanged(e);
@@ -165,6 +218,9 @@ namespace SourceGit.Views
 
         private void OnNodesSelectionChanged(object _, SelectionChangedEventArgs e)
         {
+            if (_disableSelectionChangingEvent)
+                return;
+
             var repo = DataContext as ViewModels.Repository;
             if (repo?.Settings == null)
                 return;
@@ -273,35 +329,7 @@ namespace SourceGit.Views
                 }
                 else
                 {
-                    node.IsExpanded = !node.IsExpanded;
-
-                    var rows = Rows;
-                    var depth = node.Depth;
-                    var idx = rows.IndexOf(node);
-                    if (idx == -1)
-                        return;
-
-                    if (node.IsExpanded)
-                    {
-                        var subtree = new List<ViewModels.BranchTreeNode>();
-                        MakeRows(subtree, node.Children, depth + 1);
-                        rows.InsertRange(idx + 1, subtree);
-                    }
-                    else
-                    {
-                        var removeCount = 0;
-                        for (int i = idx + 1; i < rows.Count; i++)
-                        {
-                            var row = rows[i];
-                            if (row.Depth <= depth)
-                                break;
-
-                            removeCount++;
-                        }
-                        rows.RemoveRange(idx + 1, removeCount);
-                    }
-
-                    RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
+                    ToggleNodeIsExpanded(node);
                 }
             }
         }
@@ -342,6 +370,8 @@ namespace SourceGit.Views
             foreach (var sub in node.Children)
                 CollectBranchesInNode(outs, sub);
         }
+
+        private bool _disableSelectionChangingEvent = false;
     }
 }
 
