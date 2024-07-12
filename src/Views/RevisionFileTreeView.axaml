@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="using:SourceGit.Converters"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.RevisionFileTreeView"
+             x:Name="ThisControl">
+  <ListBox ItemsSource="{Binding #ThisControl.Rows}"
+           Background="Transparent"
+           SelectionMode="Single"
+           SelectionChanged="OnRowsSelectionChanged"
+           ScrollViewer.HorizontalScrollBarVisibility="Auto"
+           ScrollViewer.VerticalScrollBarVisibility="Auto">
+    <ListBox.ItemsPanel>
+      <ItemsPanelTemplate>
+        <VirtualizingStackPanel Orientation="Vertical"/>
+      </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+
+    <ListBox.Styles>
+      <Style Selector="ListBoxItem">
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+      </Style>
+    </ListBox.Styles>
+
+    <ListBox.ItemTemplate>
+      <DataTemplate DataType="v:RevisionFileTreeNode">
+        <Grid ColumnDefinitions="16,Auto,Auto,*"
+              Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+              Background="Transparent"
+              DoubleTapped="OnTreeNodeDoubleTapped"
+              ContextRequested="OnTreeNodeContextRequested">
+          <v:RevisionFileTreeNodeToggleButton Grid.Column="0"
+                                              Classes="tree_expander"
+                                              Focusable="False"
+                                              HorizontalAlignment="Center"
+                                              IsChecked="{Binding IsExpanded, Mode=OneWay}"
+                                              IsVisible="{Binding IsFolder}"/>
+          <v:RevisionTreeNodeIcon Grid.Column="1" Width="14" Height="14" Node="{Binding}" IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
+          <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding Name}" Margin="6,0,0,0"/>
+        </Grid>
+      </DataTemplate>
+    </ListBox.ItemTemplate>
+  </ListBox>
+</UserControl>

@@ -1070,15 +1070,15 @@
   </Style>
   <Style Selector="ToggleButton.tree_expander">
     <Setter Property="Margin" Value="0" />
-    <Setter Property="Width" Value="8" />
-    <Setter Property="Height" Value="8" />
+    <Setter Property="Width" Value="10" />
+    <Setter Property="Height" Value="10" />
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border Background="Transparent"
                 Width="{TemplateBinding Width}"
                 Height="{TemplateBinding Height}"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Center">
           <Path x:Name="ChevronPath"
                 Data="M 4 0 L 8 4 L 4 8 Z"
