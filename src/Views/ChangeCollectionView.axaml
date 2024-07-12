@@ -47,9 +47,10 @@
                                             IsVisible="{Binding IsFolder}"/>
 
               <ToggleButton Grid.Column="1"
-                            Classes="change_tree_folder"
+                            Classes="folder"
                             Focusable="False"
                             Width="14" Height="14"
+                            Foreground="Goldenrod"
                             IsChecked="{Binding IsExpanded}"
                             IsVisible="{Binding IsFolder}"/>
 
