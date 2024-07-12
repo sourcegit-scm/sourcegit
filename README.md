@@ -2,7 +2,7 @@
 
 Opensource Git GUI client.
 
-## Highlights
+## Highlights.
 
 * Supports Windows/macOS/Linux
 * Opensource/Free
