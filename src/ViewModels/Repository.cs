@@ -545,24 +545,33 @@ namespace SourceGit.ViewModels
             {
                 var visible = new List<Models.Commit>();
 
-                if (_searchCommitFilterType == 0)
+                switch (_searchCommitFilterType)
                 {
-                    foreach (var c in _histories.Commits)
-                    {
-                        if (c.SHA.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                            || c.Subject.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                            || c.Author.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                            || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                            || c.Author.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                            || c.Committer.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
+                    case 0:
+                        foreach (var c in _histories.Commits)
                         {
-                            visible.Add(c);
+                            if (c.SHA.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
+                                visible.Add(c);
                         }
-                    }
-                }
-                else
-                {
-                    visible = new Commands.QueryCommits(FullPath, $"-1000 -- \"{_searchCommitFilter}\"", false).Result();
+
+                        break;
+                    case 1:
+                        foreach (var c in _histories.Commits)
+                        {
+                            if (c.Author.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                                || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                                || c.Author.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
+                                || c.Committer.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
+                                visible.Add(c);
+                        }
+
+                        break;
+                    case 2:
+                        visible = new Commands.QueryCommits(FullPath, $"-1000 --grep=\"{_searchCommitFilter}\"", false).Result();
+                        break;
+                    case 3:
+                        visible = new Commands.QueryCommits(FullPath, $"-1000 -- \"{_searchCommitFilter}\"", false).Result();
+                        break;
                 }
 
                 Dispatcher.UIThread.Invoke(() =>

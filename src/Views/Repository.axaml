@@ -580,7 +580,9 @@
                       HorizontalAlignment="Right"
                       SelectedIndex="{Binding SearchCommitFilterType, Mode=TwoWay}">
               <ComboBox.Items>
-                <TextBlock Text="{DynamicResource Text.Repository.Search.ByBaseInfo}" FontSize="12"/>
+                <TextBlock Text="{DynamicResource Text.Repository.Search.BySHA}" FontSize="12"/>
+                <TextBlock Text="{DynamicResource Text.Repository.Search.ByUser}" FontSize="12"/>
+                <TextBlock Text="{DynamicResource Text.Repository.Search.ByMessage}" FontSize="12"/>
                 <TextBlock Text="{DynamicResource Text.Repository.Search.ByFile}" FontSize="12"/>
               </ComboBox.Items>
             </ComboBox>

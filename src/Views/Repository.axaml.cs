@@ -73,7 +73,7 @@ namespace SourceGit.Views
         {
             if (e.Key == Key.Enter)
             {
-                if (DataContext is ViewModels.Repository repo)
+                if (DataContext is ViewModels.Repository repo && !string.IsNullOrWhiteSpace(repo.SearchCommitFilter))
                     repo.StartSearchCommits();
 
                 e.Handled = true;
