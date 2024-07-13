@@ -242,7 +242,6 @@ namespace SourceGit.Views
         {
             if (_displayContext is ChangeCollectionAsTree tree)
             {
-                _disableSelectionChangingEvent = true;
                 node.IsExpanded = !node.IsExpanded;
 
                 var depth = node.Depth;
@@ -269,8 +268,6 @@ namespace SourceGit.Views
                     }
                     tree.Rows.RemoveRange(idx + 1, removeCount);
                 }
-
-                _disableSelectionChangingEvent = false;
             }
         }
 
