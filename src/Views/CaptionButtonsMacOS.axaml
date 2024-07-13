@@ -2,9 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:v="using:SourceGit.Views"
-             xmlns:m="using:SourceGit.Models"
-             xmlns:vm="using:SourceGit.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CaptionButtonsMacOS">
   <Grid Classes="caption_button_box">
@@ -12,7 +9,7 @@
       <Button Classes="caption_button_macos" Click="CloseWindow" Margin="10,0,0,0">
         <Grid>
           <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
-          <Path Height="6" Width="6" Stretch="Fill" Fill="#404040" Stroke="#404040" StrokeThickness="1" Data="{StaticResource Icons.Window.Close}"/>
+          <Path Height="6" Width="6" Stretch="Fill" Fill="#505050" Data="{StaticResource Icons.MacOS.Close}"/>
         </Grid>
       </Button>
       <Button Classes="caption_button_macos" Click="MinimizeWindow">
