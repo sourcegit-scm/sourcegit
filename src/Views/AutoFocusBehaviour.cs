@@ -7,7 +7,7 @@ namespace SourceGit.Views
     public class AutoFocusBehaviour : AvaloniaObject
     {
         public static readonly AttachedProperty<bool> IsEnabledProperty =
-            AvaloniaProperty.RegisterAttached<AutoFocusBehaviour, TextBox, bool>("IsEnabled", false, false);
+            AvaloniaProperty.RegisterAttached<AutoFocusBehaviour, TextBox, bool>("IsEnabled");
 
         static AutoFocusBehaviour()
         {
@@ -30,9 +30,11 @@ namespace SourceGit.Views
             {
                 elem.AttachedToVisualTree += (o, _) =>
                 {
-                    var text = o as TextBox;
-                    text.Focus(NavigationMethod.Directional);
-                    text.CaretIndex = text.Text == null ? 0 : text.Text.Length;
+                    if (o is TextBox box)
+                    {
+                        box.Focus(NavigationMethod.Directional);
+                        box.CaretIndex = box.Text?.Length ?? 0;
+                    }
                 };
             }
         }

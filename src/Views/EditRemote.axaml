@@ -2,10 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
-             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.EditRemote"
              x:DataType="vm:EditRemote">
@@ -44,7 +42,7 @@
                  Text="{DynamicResource Text.SSHKey}"
                  IsVisible="{Binding UseSSH}"/>
       <TextBox Grid.Row="2" Grid.Column="1"
-               x:Name="txtSSHKey"
+               x:Name="TxtSshKey"
                Height="26"
                CornerRadius="3"
                IsVisible="{Binding UseSSH}"

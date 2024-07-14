@@ -117,7 +117,7 @@ namespace SourceGit.Views
             }
         }
 
-        private async void OnSubjectTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+        private async void OnSubjectTextBoxPreviewKeyDown(object _, KeyEventArgs e)
         {
             if (e.Key == Key.Enter || (e.Key == Key.Right && SubjectEditor.CaretIndex == Subject.Length))
             {
@@ -157,7 +157,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDescriptionTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+        private void OnDescriptionTextBoxPreviewKeyDown(object _, KeyEventArgs e)
         {
             if ((e.Key == Key.Back || e.Key == Key.Left) && DescriptionEditor.CaretIndex == 0)
             {

@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:v="using:SourceGit.Views"
+             xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
-             xmlns:ac="using:Avalonia.Controls.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ChangeCollectionView"
              x:Name="ThisControl">
@@ -29,12 +29,12 @@
   </UserControl.Styles>
   
   <UserControl.DataTemplates>
-    <DataTemplate DataType="v:ChangeCollectionAsTree">
+    <DataTemplate DataType="vm:ChangeCollectionAsTree">
       <v:ChangeCollectionContainer ItemsSource="{Binding Rows}"
                                    SelectionMode="{Binding #ThisControl.SelectionMode}"
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
-          <DataTemplate DataType="v:ChangeTreeNode">
+          <DataTemplate DataType="vm:ChangeTreeNode">
             <Grid ColumnDefinitions="16,Auto,Auto,*"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                   Background="Transparent"
@@ -62,7 +62,7 @@
       </v:ChangeCollectionContainer>
     </DataTemplate>
 
-    <DataTemplate DataType="v:ChangeCollectionAsGrid">
+    <DataTemplate DataType="vm:ChangeCollectionAsGrid">
       <v:ChangeCollectionContainer ItemsSource="{Binding Changes}"
                                    SelectionMode="{Binding #ThisControl.SelectionMode}"
                                    SelectionChanged="OnRowSelectionChanged">
@@ -90,7 +90,7 @@
       </v:ChangeCollectionContainer>
     </DataTemplate>
 
-    <DataTemplate DataType="v:ChangeCollectionAsList">
+    <DataTemplate DataType="vm:ChangeCollectionAsList">
       <v:ChangeCollectionContainer ItemsSource="{Binding Changes}"
                                    SelectionMode="{Binding #ThisControl.SelectionMode}"
                                    SelectionChanged="OnRowSelectionChanged">

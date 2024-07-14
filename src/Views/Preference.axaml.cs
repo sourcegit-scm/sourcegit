@@ -18,13 +18,11 @@ namespace SourceGit.Views
         public AvaloniaList<FontFamily> InstalledFonts
         {
             get;
-            private set;
         }
 
         public AvaloniaList<FontFamily> InstalledMonospaceFonts
         {
             get;
-            private set;
         }
 
         public string DefaultUser
@@ -133,10 +131,8 @@ namespace SourceGit.Views
                                 typeface,
                                 12,
                                 Brushes.White);
-                    if (testI.Width == testW.Width)
-                    {
+                    if (Math.Abs(testI.Width - testW.Width) < 0.0001)
                         sysMonoFonts.Add(font);
-                    }
                 }
 
                 Dispatcher.UIThread.Post(() => InstalledMonospaceFonts.AddRange(sysMonoFonts));
@@ -188,12 +184,12 @@ namespace SourceGit.Views
             }
         }
 
-        private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
+        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
+        private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             var config = new Commands.Config(null).ListAll();
             SetIfChanged(config, "user.name", DefaultUser);
@@ -210,7 +206,7 @@ namespace SourceGit.Views
             Close();
         }
 
-        private async void SelectThemeOverrideFile(object sender, RoutedEventArgs e)
+        private async void SelectThemeOverrideFile(object _, RoutedEventArgs e)
         {
             var options = new FilePickerOpenOptions()
             {
@@ -227,7 +223,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void SelectGitExecutable(object sender, RoutedEventArgs e)
+        private async void SelectGitExecutable(object _, RoutedEventArgs e)
         {
             var pattern = OperatingSystem.IsWindows() ? "git.exe" : "git";
             var options = new FilePickerOpenOptions()
@@ -246,7 +242,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void SelectDefaultCloneDir(object sender, RoutedEventArgs e)
+        private async void SelectDefaultCloneDir(object _1, RoutedEventArgs _2)
         {
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
             var selected = await StorageProvider.OpenFolderPickerAsync(options);
@@ -256,7 +252,7 @@ namespace SourceGit.Views
             }
         }
 
-        private async void SelectGPGExecutable(object sender, RoutedEventArgs e)
+        private async void SelectGPGExecutable(object _1, RoutedEventArgs _2)
         {
             var patterns = new List<string>();
             if (OperatingSystem.IsWindows())
@@ -277,13 +273,12 @@ namespace SourceGit.Views
             }
         }
 
-        private async void SelectExternalMergeTool(object sender, RoutedEventArgs e)
+        private async void SelectExternalMergeTool(object _1, RoutedEventArgs _2)
         {
             var type = ViewModels.Preference.Instance.ExternalMergeToolType;
             if (type < 0 || type >= Models.ExternalMerger.Supported.Count)
             {
                 ViewModels.Preference.Instance.ExternalMergeToolType = 0;
-                type = 0;
                 return;
             }
 

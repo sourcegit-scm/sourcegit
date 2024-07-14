@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 
 namespace SourceGit.Views
 {
@@ -43,11 +42,7 @@ namespace SourceGit.Views
 
         private void StartAnim()
         {
-            Content = new Path()
-            {
-                Data = this.FindResource("Icons.Loading") as StreamGeometry,
-                Classes = { "rotating" },
-            };
+            Content = new Path() { Classes = { "rotating" } };
         }
 
         private void StopAnim()

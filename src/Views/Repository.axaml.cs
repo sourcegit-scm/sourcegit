@@ -66,7 +66,7 @@ namespace SourceGit.Views
         private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property == IsVisibleProperty && sender is Grid { IsVisible: true })
-                txtSearchCommitsBox.Focus();
+                TxtSearchCommitsBox.Focus();
         }
 
         private void OnSearchKeyDown(object _, KeyEventArgs e)
@@ -98,22 +98,22 @@ namespace SourceGit.Views
 
         private void OnLocalBranchTreeSelectionChanged(object _1, RoutedEventArgs _2)
         {
-            remoteBranchTree.UnselectAll();
-            tagsList.SelectedItem = null;
+            RemoteBranchTree.UnselectAll();
+            TagsList.SelectedItem = null;
         }
 
         private void OnRemoteBranchTreeSelectionChanged(object _1, RoutedEventArgs _2)
         {
-            localBranchTree.UnselectAll();
-            tagsList.SelectedItem = null;
+            LocalBranchTree.UnselectAll();
+            TagsList.SelectedItem = null;
         }
 
         private void OnTagDataGridSelectionChanged(object sender, SelectionChangedEventArgs _)
         {
             if (sender is DataGrid { SelectedItem: Models.Tag tag })
             {
-                localBranchTree.UnselectAll();
-                remoteBranchTree.UnselectAll();
+                LocalBranchTree.UnselectAll();
+                RemoteBranchTree.UnselectAll();
 
                 if (DataContext is ViewModels.Repository repo)
                     repo.NavigateToCommit(tag.SHA);
@@ -122,17 +122,16 @@ namespace SourceGit.Views
 
         private void OnTagContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            if (sender is DataGrid { SelectedItem: Models.Tag tag } grid && DataContext is ViewModels.Repository repo)
             {
-                var tag = datagrid.SelectedItem as Models.Tag;
                 var menu = repo.CreateContextMenuForTag(tag);
-                datagrid.OpenContextMenu(menu);
+                grid.OpenContextMenu(menu);
             }
 
             e.Handled = true;
         }
 
-        private void OnToggleTagFilter(object sender, RoutedEventArgs e)
+        private void OnTagFilterIsCheckedChanged(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton { DataContext: Models.Tag tag } toggle && DataContext is ViewModels.Repository repo)
             {
@@ -144,11 +143,10 @@ namespace SourceGit.Views
 
         private void OnSubmoduleContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid datagrid && datagrid.SelectedItem != null && DataContext is ViewModels.Repository repo)
+            if (sender is DataGrid { SelectedItem: string submodule } grid && DataContext is ViewModels.Repository repo)
             {
-                var submodule = datagrid.SelectedItem as string;
                 var menu = repo.CreateContextMenuForSubmodule(submodule);
-                datagrid.OpenContextMenu(menu);
+                grid.OpenContextMenu(menu);
             }
 
             e.Handled = true;
@@ -156,9 +154,8 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: not null } grid && DataContext is ViewModels.Repository repo)
+            if (sender is DataGrid { SelectedItem: string submodule } && DataContext is ViewModels.Repository repo)
             {
-                var submodule = grid.SelectedItem as string;
                 repo.OpenSubmodule(submodule);
             }
 
@@ -167,9 +164,8 @@ namespace SourceGit.Views
 
         private void OnWorktreeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: not null } grid && DataContext is ViewModels.Repository repo)
+            if (sender is DataGrid { SelectedItem: Models.Worktree worktree } grid && DataContext is ViewModels.Repository repo)
             {
-                var worktree = grid.SelectedItem as Models.Worktree;
                 var menu = repo.CreateContextMenuForWorktree(worktree);
                 grid.OpenContextMenu(menu);
             }
@@ -179,9 +175,8 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedWorktree(object sender, TappedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: not null } grid && DataContext is ViewModels.Repository repo)
+            if (sender is DataGrid { SelectedItem: Models.Worktree worktree } && DataContext is ViewModels.Repository repo)
             {
-                var worktree = grid.SelectedItem as Models.Worktree;
                 repo.OpenWorktree(worktree);
             }
 
@@ -205,13 +200,13 @@ namespace SourceGit.Views
             if (!IsLoaded)
                 return;
 
-            var leftHeight = leftSidebarGroups.Bounds.Height - 28.0 * 5;
-            var localBranchRows = vm.IsLocalBranchGroupExpanded ? localBranchTree.Rows.Count : 0;
-            var remoteBranchRows = vm.IsRemoteGroupExpanded ? remoteBranchTree.Rows.Count : 0;
+            var leftHeight = LeftSidebarGroups.Bounds.Height - 28.0 * 5;
+            var localBranchRows = vm.IsLocalBranchGroupExpanded ? LocalBranchTree.Rows.Count : 0;
+            var remoteBranchRows = vm.IsRemoteGroupExpanded ? RemoteBranchTree.Rows.Count : 0;
             var desiredBranches = (localBranchRows + remoteBranchRows) * 24.0;
-            var desiredTag = vm.IsTagGroupExpanded ? tagsList.RowHeight * vm.VisibleTags.Count : 0;
-            var desiredSubmodule = vm.IsSubmoduleGroupExpanded ? submoduleList.RowHeight * vm.Submodules.Count : 0;
-            var desiredWorktree = vm.IsWorktreeGroupExpanded ? worktreeList.RowHeight * vm.Worktrees.Count : 0;
+            var desiredTag = vm.IsTagGroupExpanded ? TagsList.RowHeight * vm.VisibleTags.Count : 0;
+            var desiredSubmodule = vm.IsSubmoduleGroupExpanded ? SubmoduleList.RowHeight * vm.Submodules.Count : 0;
+            var desiredWorktree = vm.IsWorktreeGroupExpanded ? WorktreeList.RowHeight * vm.Worktrees.Count : 0;
             var desiredOthers = desiredTag + desiredSubmodule + desiredWorktree;
             var hasOverflow = (desiredBranches + desiredOthers > leftHeight);
 
@@ -228,7 +223,7 @@ namespace SourceGit.Views
                 }
 
                 leftHeight -= height;
-                tagsList.Height = height;
+                TagsList.Height = height;
                 hasOverflow = (desiredBranches + desiredSubmodule + desiredWorktree) > leftHeight;
             }
 
@@ -245,7 +240,7 @@ namespace SourceGit.Views
                 }
 
                 leftHeight -= height;
-                submoduleList.Height = height;
+                SubmoduleList.Height = height;
                 hasOverflow = (desiredBranches + desiredWorktree) > leftHeight;
             }
 
@@ -262,7 +257,7 @@ namespace SourceGit.Views
                 }
 
                 leftHeight -= height;
-                worktreeList.Height = height;
+                WorktreeList.Height = height;
             }
 
             if (desiredBranches > leftHeight)
@@ -276,28 +271,28 @@ namespace SourceGit.Views
                     {
                         if (local < half)
                         {
-                            localBranchTree.Height = local;
-                            remoteBranchTree.Height = leftHeight - local;
+                            LocalBranchTree.Height = local;
+                            RemoteBranchTree.Height = leftHeight - local;
                         }
                         else if (remote < half)
                         {
-                            remoteBranchTree.Height = remote;
-                            localBranchTree.Height = leftHeight - remote;
+                            RemoteBranchTree.Height = remote;
+                            LocalBranchTree.Height = leftHeight - remote;
                         }
                         else
                         {
-                            localBranchTree.Height = half;
-                            remoteBranchTree.Height = half;
+                            LocalBranchTree.Height = half;
+                            RemoteBranchTree.Height = half;
                         }
                     }
                     else
                     {
-                        localBranchTree.Height = leftHeight;
+                        LocalBranchTree.Height = leftHeight;
                     }
                 }
                 else if (vm.IsRemoteGroupExpanded)
                 {
-                    remoteBranchTree.Height = leftHeight;
+                    RemoteBranchTree.Height = leftHeight;
                 }
             }
             else
@@ -305,17 +300,15 @@ namespace SourceGit.Views
                 if (vm.IsLocalBranchGroupExpanded)
                 {
                     var height = localBranchRows * 24;
-                    localBranchTree.Height = height;
+                    LocalBranchTree.Height = height;
                 }
 
                 if (vm.IsRemoteGroupExpanded)
                 {
                     var height = remoteBranchRows * 24;
-                    remoteBranchTree.Height = height;
+                    RemoteBranchTree.Height = height;
                 }
             }
-
-            leftSidebarGroups.InvalidateMeasure();
         }
     }
 }

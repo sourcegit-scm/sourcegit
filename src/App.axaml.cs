@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -45,12 +44,12 @@ namespace SourceGit
         [STAThread]
         public static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             {
                 LogException(e.ExceptionObject as Exception);
             };
 
-            TaskScheduler.UnobservedTaskException += (sender, e) =>
+            TaskScheduler.UnobservedTaskException += (_, e) =>
             {
                 LogException(e.Exception);
                 e.SetObserved();
@@ -333,7 +332,8 @@ namespace SourceGit
 
         private static void LogException(Exception ex)
         {
-            if (ex == null) return;
+            if (ex == null)
+                return;
 
             var builder = new StringBuilder();
             builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
@@ -467,7 +467,7 @@ namespace SourceGit
             if (!File.Exists(file))
                 Environment.Exit(-1);
 
-            desktop.MainWindow = new Views.CodeEditor(file);
+            desktop.MainWindow = new Views.StandaloneCommitMessageEditor(file);
             return true;
         }
 

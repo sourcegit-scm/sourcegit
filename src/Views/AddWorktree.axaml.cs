@@ -11,13 +11,13 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private async void SelectLocation(object sender, RoutedEventArgs e)
+        private async void SelectLocation(object _, RoutedEventArgs e)
         {
-            var options = new FolderPickerOpenOptions() { AllowMultiple = false };
             var toplevel = TopLevel.GetTopLevel(this);
             if (toplevel == null)
                 return;
 
+            var options = new FolderPickerOpenOptions() { AllowMultiple = false };
             var selected = await toplevel.StorageProvider.OpenFolderPickerAsync(options);
             if (selected.Count == 1)
                 TxtLocation.Text = selected[0].Path.LocalPath;

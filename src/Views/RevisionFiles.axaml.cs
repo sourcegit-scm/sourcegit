@@ -49,8 +49,7 @@ namespace SourceGit.Views
         {
             base.OnDataContextChanged(e);
 
-            var source = DataContext as Models.RevisionTextFile;
-            if (source != null)
+            if (DataContext is Models.RevisionTextFile source)
                 Text = source.Content;
             else
                 Text = string.Empty;
@@ -62,20 +61,23 @@ namespace SourceGit.Views
             if (string.IsNullOrEmpty(selected))
                 return;
 
-            var icon = new Avalonia.Controls.Shapes.Path();
-            icon.Width = 10;
-            icon.Height = 10;
-            icon.Stretch = Stretch.Uniform;
-            icon.Data = App.Current?.FindResource("Icons.Copy") as StreamGeometry;
-
-            var copy = new MenuItem();
-            copy.Header = App.Text("Copy");
-            copy.Icon = icon;
-            copy.Click += (o, ev) =>
+            var copy = new MenuItem() { Header = App.Text("Copy") };
+            copy.Click += (_, ev) =>
             {
                 App.CopyText(selected);
                 ev.Handled = true;
             };
+
+            if (this.FindResource("Icons.Copy") is Geometry geo)
+            {
+                copy.Icon = new Avalonia.Controls.Shapes.Path()
+                {
+                    Width = 10,
+                    Height = 10,
+                    Stretch = Stretch.Uniform,
+                    Data = geo,
+                };
+            }
 
             var menu = new ContextMenu();
             menu.Items.Add(copy);

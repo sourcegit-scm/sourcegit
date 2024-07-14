@@ -11,7 +11,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void MaximizeOrRestoreWindow(object sender, TappedEventArgs e)
+        private void MaximizeOrRestoreWindow(object _, TappedEventArgs e)
         {
             _pressedTitleBar = false;
 
@@ -23,18 +23,22 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
+        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             if (e.ClickCount != 2)
                 _pressedTitleBar = true;
         }
 
-        private void MoveWindow(object sender, PointerEventArgs e)
+        private void MoveWindow(object _, PointerEventArgs e)
         {
-            if (!_pressedTitleBar)
+            if (!_pressedTitleBar || e.Source == null)
                 return;
 
             var visual = (Visual)e.Source;
+            if (visual == null)
+                return;
+
+#pragma warning disable CS0618
             BeginMoveDrag(new PointerPressedEventArgs(
                 e.Source,
                 e.Pointer,
@@ -43,9 +47,10 @@ namespace SourceGit.Views
                 e.Timestamp,
                 new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonPressed),
                 e.KeyModifiers));
+#pragma warning restore CS0618
         }
 
-        private void EndMoveWindow(object sender, PointerReleasedEventArgs e)
+        private void EndMoveWindow(object _1, PointerReleasedEventArgs _2)
         {
             _pressedTitleBar = false;
         }

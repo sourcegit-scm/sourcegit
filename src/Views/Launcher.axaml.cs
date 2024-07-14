@@ -29,7 +29,7 @@ namespace SourceGit.Views
 
             if (change.Property == WindowStateProperty && MainLayout != null)
             {
-                var state = (WindowState)change.NewValue;
+                var state = (WindowState)change.NewValue!;
                 if (state == WindowState.Maximized)
                     MainLayout.RowDefinitions[0].Height = new GridLength(OperatingSystem.IsMacOS() ? 34 : 30);
                 else
@@ -42,6 +42,8 @@ namespace SourceGit.Views
         protected override void OnKeyDown(KeyEventArgs e)
         {
             var vm = DataContext as ViewModels.Launcher;
+            if (vm == null)
+                return;
 
             // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift) && e.Key == Key.P)
@@ -60,27 +62,31 @@ namespace SourceGit.Views
                     e.Handled = true;
                     return;
                 }
-                else if (e.Key == Key.T)
+
+                if (e.Key == Key.T)
                 {
                     vm.AddNewTab();
                     e.Handled = true;
                     return;
                 }
-                else if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) ||
+
+                if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) ||
                     (!OperatingSystem.IsMacOS() && !e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
                 {
                     vm.GotoNextTab();
                     e.Handled = true;
                     return;
                 }
-                else if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Left) ||
+
+                if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Left) ||
                     (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
                 {
                     vm.GotoPrevTab();
                     e.Handled = true;
                     return;
                 }
-                else if (vm.ActivePage.Data is ViewModels.Repository repo)
+
+                if (vm.ActivePage.Data is ViewModels.Repository repo)
                 {
                     if (e.Key == Key.D1 || e.Key == Key.NumPad1)
                     {
@@ -88,25 +94,29 @@ namespace SourceGit.Views
                         e.Handled = true;
                         return;
                     }
-                    else if (e.Key == Key.D2 || e.Key == Key.NumPad2)
+
+                    if (e.Key == Key.D2 || e.Key == Key.NumPad2)
                     {
                         repo.SelectedViewIndex = 1;
                         e.Handled = true;
                         return;
                     }
-                    else if (e.Key == Key.D3 || e.Key == Key.NumPad3)
+
+                    if (e.Key == Key.D3 || e.Key == Key.NumPad3)
                     {
                         repo.SelectedViewIndex = 2;
                         e.Handled = true;
                         return;
                     }
-                    else if (e.Key == Key.F)
+
+                    if (e.Key == Key.F)
                     {
                         repo.IsSearching = true;
                         e.Handled = true;
                         return;
                     }
-                    else if (e.Key == Key.H && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+
+                    if (e.Key == Key.H && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
                     {
                         repo.IsSearching = false;
                         e.Handled = true;
@@ -140,12 +150,12 @@ namespace SourceGit.Views
             pref.Layout.LauncherHeight = Height;
 
             var vm = DataContext as ViewModels.Launcher;
-            vm.Quit();
+            vm?.Quit();
 
             base.OnClosing(e);
         }
 
-        private void OnTitleBarDoubleTapped(object sender, TappedEventArgs e)
+        private void OnTitleBarDoubleTapped(object _, TappedEventArgs e)
         {
             _pressedTitleBar = false;
 
@@ -157,18 +167,22 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
+        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             if (e.ClickCount != 2)
                 _pressedTitleBar = true;
         }
 
-        private void MoveWindow(object sender, PointerEventArgs e)
+        private void MoveWindow(object _, PointerEventArgs e)
         {
-            if (!_pressedTitleBar)
+            if (!_pressedTitleBar || e.Source == null)
                 return;
 
             var visual = (Visual)e.Source;
+            if (visual == null)
+                return;
+
+#pragma warning disable CS0618
             BeginMoveDrag(new PointerPressedEventArgs(
                 e.Source,
                 e.Pointer,
@@ -177,14 +191,15 @@ namespace SourceGit.Views
                 e.Timestamp,
                 new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonPressed),
                 e.KeyModifiers));
+#pragma warning restore CS0618
         }
 
-        private void EndMoveWindow(object sender, PointerReleasedEventArgs e)
+        private void EndMoveWindow(object _1, PointerReleasedEventArgs _2)
         {
             _pressedTitleBar = false;
         }
 
-        private void OnPopupSure(object sender, RoutedEventArgs e)
+        private void OnPopupSure(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Launcher vm)
                 vm.ActivePage.ProcessPopup();
@@ -192,7 +207,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnPopupCancel(object sender, RoutedEventArgs e)
+        private void OnPopupCancel(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Launcher vm)
                 vm.ActivePage.CancelPopup();

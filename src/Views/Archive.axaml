@@ -14,11 +14,11 @@
                Classes="bold"
                Text="{DynamicResource Text.Archive.Title}"/>
     <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="120,*">
-      <TextBlock Grid.Column="0"
+      <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Archive.Revision}"/>
-      <ContentControl Grid.Column="1" Content="{Binding BasedOn}">
+      <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding BasedOn}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Branch">
             <StackPanel Orientation="Horizontal">
@@ -49,7 +49,7 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Archive.File}"/>
       <TextBox Grid.Row="1" Grid.Column="1"
-               x:Name="txtSaveFile"
+               x:Name="TxtSaveFile"
                Height="28"
                CornerRadius="3"
                Watermark="{DynamicResource Text.Archive.File.Placeholder}"

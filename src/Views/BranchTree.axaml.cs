@@ -97,7 +97,7 @@ namespace SourceGit.Views
                 DataContext is ViewModels.BranchTreeNode { IsBranch: false } node)
             {
                 var tree = this.FindAncestorOfType<BranchTree>();
-                tree.ToggleNodeIsExpanded(node);
+                tree?.ToggleNodeIsExpanded(node);
             }
 
             e.Handled = true;

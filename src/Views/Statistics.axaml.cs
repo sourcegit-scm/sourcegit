@@ -40,7 +40,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<List<Models.StatisticsSample>> SamplesProperty =
-            AvaloniaProperty.Register<Chart, List<Models.StatisticsSample>>(nameof(Samples), null);
+            AvaloniaProperty.Register<Chart, List<Models.StatisticsSample>>(nameof(Samples));
 
         public List<Models.StatisticsSample> Samples
         {
@@ -50,7 +50,7 @@ namespace SourceGit.Views
 
         static Chart()
         {
-            SamplesProperty.Changed.AddClassHandler<Chart>((c, e) =>
+            SamplesProperty.Changed.AddClassHandler<Chart>((c, _) =>
             {
                 c._hitBoxes.Clear();
                 c._lastHitIdx = -1;
@@ -87,7 +87,7 @@ namespace SourceGit.Views
                 maxV = (int)Math.Ceiling(maxV / 500.0) * 500;
 
             var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
-            var pen = new Pen(LineBrush, 1);
+            var pen = new Pen(LineBrush);
             var width = Bounds.Width;
             var height = Bounds.Height;
 
@@ -228,12 +228,12 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
+        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
+        private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             Close();
         }

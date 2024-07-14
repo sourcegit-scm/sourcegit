@@ -349,8 +349,8 @@ namespace SourceGit.ViewModels
             {
                 if (l.IsRepository != r.IsRepository)
                     return l.IsRepository ? 1 : -1;
-                else
-                    return l.Name.CompareTo(r.Name);
+
+                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
 
             collection.Clear();
@@ -413,13 +413,9 @@ namespace SourceGit.ViewModels
             list.Sort((l, r) =>
             {
                 if (l.IsRepository != r.IsRepository)
-                {
                     return l.IsRepository ? 1 : -1;
-                }
-                else
-                {
-                    return l.Name.CompareTo(r.Name);
-                }
+
+                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
 
             container.Clear();

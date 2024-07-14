@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 
 namespace SourceGit.Views
 {
@@ -51,20 +50,16 @@ namespace SourceGit.Views
 
         private void StartAnim()
         {
-            icon.Content = new Path()
-            {
-                Data = this.FindResource("Icons.Waiting") as StreamGeometry,
-                Classes = { "waiting" },
-            };
-            progressBar.IsIndeterminate = true;
+            Icon.Content = new Path() { Classes = { "waiting" } };
+            ProgressBar.IsIndeterminate = true;
         }
 
         private void StopAnim()
         {
-            if (icon.Content is Path path)
+            if (Icon.Content is Path path)
                 path.Classes.Clear();
-            icon.Content = null;
-            progressBar.IsIndeterminate = false;
+            Icon.Content = null;
+            ProgressBar.IsIndeterminate = false;
         }
     }
 }

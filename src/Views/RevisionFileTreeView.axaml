@@ -29,7 +29,7 @@
     </ListBox.Styles>
 
     <ListBox.ItemTemplate>
-      <DataTemplate DataType="v:RevisionFileTreeNode">
+      <DataTemplate DataType="vm:RevisionFileTreeNode">
         <Grid ColumnDefinitions="16,Auto,Auto,*"
               Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
               Background="Transparent"

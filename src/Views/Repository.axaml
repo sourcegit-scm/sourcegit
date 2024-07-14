@@ -231,13 +231,13 @@
             </TextBox.InnerRightContent>
           </TextBox>
 
-          <Grid Grid.Row="2" x:Name="leftSidebarGroups" Margin="0,4,0,0" RowDefinitions="28,Auto,28,Auto,28,Auto,28,Auto,28,Auto">
+          <Grid Grid.Row="2" x:Name="LeftSidebarGroups" Margin="0,4,0,0" RowDefinitions="28,Auto,28,Auto,28,Auto,28,Auto,28,Auto">
             <!-- Local Branches -->
             <ToggleButton Grid.Row="0" Classes="group_expander" IsChecked="{Binding IsLocalBranchGroupExpanded, Mode=TwoWay}">
               <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.LocalBranches}"/>
             </ToggleButton>
             <v:BranchTree Grid.Row="1"
-                          x:Name="localBranchTree"
+                          x:Name="LocalBranchTree"
                           Height="0"
                           Margin="8,0,4,0"
                           Nodes="{Binding LocalBranchTrees}"
@@ -255,7 +255,7 @@
               </Grid>
             </ToggleButton>
             <v:BranchTree Grid.Row="3"
-                          x:Name="remoteBranchTree"
+                          x:Name="RemoteBranchTree"
                           Height="0"
                           Margin="8,0,4,0"
                           Nodes="{Binding RemoteBranchTrees}"
@@ -274,7 +274,7 @@
               </Grid>
             </ToggleButton>
             <DataGrid Grid.Row="5"
-                      x:Name="tagsList"
+                      x:Name="TagsList"
                       Height="0"
                       Margin="8,0,4,0"
                       Background="Transparent"
@@ -343,8 +343,7 @@
                       <ToggleButton Classes="filter"
                                     Margin="0,0,8,0"
                                     Background="Transparent"
-                                    Checked="OnToggleTagFilter"
-                                    Unchecked="OnToggleTagFilter"
+                                    IsCheckedChanged="OnTagFilterIsCheckedChanged"
                                     IsChecked="{Binding IsFiltered}"
                                     ToolTip.Tip="{DynamicResource Text.Filter}"/>
                     </DataTemplate>
@@ -378,7 +377,7 @@
               </Grid>
             </ToggleButton>
             <DataGrid Grid.Row="7"
-                      x:Name="submoduleList"
+                      x:Name="SubmoduleList"
                       Height="0"
                       Margin="8,0,4,0"
                       Background="Transparent"
@@ -448,7 +447,7 @@
                         Command="{Binding PruneWorktrees}"
                         IsVisible="{Binding Worktrees, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
                         ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Prune}">
-                  <Path x:Name="icon" Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
+                  <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
                 </Button>
                 <Button Grid.Column="3"
                         Classes="icon_button"
@@ -461,7 +460,7 @@
               </Grid>
             </ToggleButton>
             <DataGrid Grid.Row="9"
-                      x:Name="worktreeList"
+                      x:Name="WorktreeList"
                       Height="0"
                       Margin="8,0,4,0"
                       Background="Transparent"
@@ -534,7 +533,7 @@
         <Grid Grid.Row="1" RowDefinitions="Auto,32,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
           <!-- Search Input Box -->
           <TextBox Grid.Row="0"
-                   x:Name="txtSearchCommitsBox"
+                   x:Name="TxtSearchCommitsBox"
                    Height="24"
                    BorderThickness="1"
                    BorderBrush="{DynamicResource Brush.Border2}"

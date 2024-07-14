@@ -34,7 +34,7 @@
       <Path Grid.Column="1" Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Down}" RenderTransformOrigin="50%,50%" RenderTransform="rotate(270deg)"/>
 
       <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
-        <ContentControl Grid.Column="2" Content="{Binding EndPoint}">
+        <ContentControl Content="{Binding EndPoint}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="m:Commit">
               <Grid RowDefinitions="Auto,*">

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 using Avalonia;
 using Avalonia.Collections;
@@ -11,35 +10,8 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-
 namespace SourceGit.Views
 {
-    public class RevisionFileTreeNode : ObservableObject
-    {
-        public Models.Object Backend { get; set; } = null;
-        public int Depth { get; set; } = 0;
-        public List<RevisionFileTreeNode> Children { get; set; } = new List<RevisionFileTreeNode>();
-
-        public string Name
-        {
-            get => Backend == null ? string.Empty : Path.GetFileName(Backend.Path);
-        }
-
-        public bool IsFolder
-        {
-            get => Backend != null && Backend.Type == Models.ObjectType.Tree;
-        }
-
-        public bool IsExpanded
-        {
-            get => _isExpanded;
-            set => SetProperty(ref _isExpanded, value);
-        }
-
-        private bool _isExpanded = false;
-    }
-
     public class RevisionFileTreeNodeToggleButton : ToggleButton
     {
         protected override Type StyleKeyOverride => typeof(ToggleButton);
@@ -47,10 +19,10 @@ namespace SourceGit.Views
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
-                DataContext is RevisionFileTreeNode { IsFolder: true } node)
+                DataContext is ViewModels.RevisionFileTreeNode { IsFolder: true } node)
             {
                 var tree = this.FindAncestorOfType<RevisionFileTreeView>();
-                tree.ToggleNodeIsExpanded(node);
+                tree?.ToggleNodeIsExpanded(node);
             }
 
             e.Handled = true;
@@ -59,10 +31,10 @@ namespace SourceGit.Views
 
     public class RevisionTreeNodeIcon : UserControl
     {
-        public static readonly StyledProperty<RevisionFileTreeNode> NodeProperty =
-            AvaloniaProperty.Register<RevisionTreeNodeIcon, RevisionFileTreeNode>(nameof(Node));
+        public static readonly StyledProperty<ViewModels.RevisionFileTreeNode> NodeProperty =
+            AvaloniaProperty.Register<RevisionTreeNodeIcon, ViewModels.RevisionFileTreeNode>(nameof(Node));
 
-        public RevisionFileTreeNode Node
+        public ViewModels.RevisionFileTreeNode Node
         {
             get => GetValue(NodeProperty);
             set => SetValue(NodeProperty, value);
@@ -86,31 +58,28 @@ namespace SourceGit.Views
         private void UpdateContent()
         {
             var node = Node;
-            if (node == null || node.Backend == null)
+            if (node?.Backend == null)
             {
                 Content = null;
                 return;
             }
 
             var obj = node.Backend;
-            if (obj.Type == Models.ObjectType.Blob)
+            switch (obj.Type)
             {
-                CreateContent(14, new Thickness(0, 0, 0, 0), "Icons.File");
-            }
-            else if (obj.Type == Models.ObjectType.Commit)
-            {
-                CreateContent(14, new Thickness(0, 0, 0, 0), "Icons.Submodule");
-            }
-            else
-            {
-                if (node.IsExpanded)
-                    CreateContent(14, new Thickness(0, 2, 0, 0), "Icons.Folder.Open", Brushes.Goldenrod);
-                else
-                    CreateContent(14, new Thickness(0, 2, 0, 0), "Icons.Folder.Fill", Brushes.Goldenrod);
+                case Models.ObjectType.Blob:
+                    CreateContent("Icons.File");
+                    break;
+                case Models.ObjectType.Commit:
+                    CreateContent("Icons.Submodule");
+                    break;
+                default:
+                    CreateContent(node.IsExpanded ? "Icons.Folder.Open" : "Icons.Folder.Fill", Brushes.Goldenrod);
+                    break;
             }
         }
 
-        private void CreateContent(double size, Thickness margin, string iconKey, IBrush fill = null)
+        private void CreateContent(string iconKey, IBrush fill = null)
         {
             var geo = this.FindResource(iconKey) as StreamGeometry;
             if (geo == null)
@@ -118,11 +87,10 @@ namespace SourceGit.Views
 
             var icon = new Avalonia.Controls.Shapes.Path()
             {
-                Width = size,
-                Height = size,
+                Width = 14,
+                Height = 14,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = margin,
                 Data = geo,
             };
 
@@ -136,7 +104,7 @@ namespace SourceGit.Views
     public partial class RevisionFileTreeView : UserControl
     {
         public static readonly StyledProperty<string> RevisionProperty =
-            AvaloniaProperty.Register<RevisionFileTreeView, string>(nameof(Revision), null);
+            AvaloniaProperty.Register<RevisionFileTreeView, string>(nameof(Revision));
 
         public string Revision
         {
@@ -144,7 +112,7 @@ namespace SourceGit.Views
             set => SetValue(RevisionProperty, value);
         }
 
-        public AvaloniaList<RevisionFileTreeNode> Rows
+        public AvaloniaList<ViewModels.RevisionFileTreeNode> Rows
         {
             get => _rows;
         }
@@ -154,7 +122,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public void ToggleNodeIsExpanded(RevisionFileTreeNode node)
+        public void ToggleNodeIsExpanded(ViewModels.RevisionFileTreeNode node)
         {
             _disableSelectionChangingEvent = true;
             node.IsExpanded = !node.IsExpanded;
@@ -169,7 +137,7 @@ namespace SourceGit.Views
                 var subtree = GetChildrenOfTreeNode(node);
                 if (subtree != null && subtree.Count > 0)
                 {
-                    var subrows = new List<RevisionFileTreeNode>();
+                    var subrows = new List<ViewModels.RevisionFileTreeNode>();
                     MakeRows(subrows, subtree, depth + 1);
                     _rows.InsertRange(idx + 1, subrows);
                 }
@@ -215,16 +183,16 @@ namespace SourceGit.Views
                 }
 
                 foreach (var obj in objects)
-                    _tree.Add(new RevisionFileTreeNode { Backend = obj });
+                    _tree.Add(new ViewModels.RevisionFileTreeNode { Backend = obj });
 
                 _tree.Sort((l, r) =>
                 {
                     if (l.IsFolder == r.IsFolder)
-                        return l.Name.CompareTo(r.Name);
+                        return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
                     return l.IsFolder ? -1 : 1;
                 });
 
-                var topTree = new List<RevisionFileTreeNode>();
+                var topTree = new List<ViewModels.RevisionFileTreeNode>();
                 MakeRows(topTree, _tree, 0);
                 _rows.AddRange(topTree);
                 GC.Collect();
@@ -233,7 +201,8 @@ namespace SourceGit.Views
 
         private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail vm && sender is Grid { DataContext: RevisionFileTreeNode { Backend: Models.Object obj } } grid)
+            if (DataContext is ViewModels.CommitDetail vm &&
+                sender is Grid { DataContext: ViewModels.RevisionFileTreeNode { Backend: { } obj } } grid)
             {
                 if (obj.Type != Models.ObjectType.Tree)
                 {
@@ -247,32 +216,31 @@ namespace SourceGit.Views
 
         private void OnTreeNodeDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (sender is Grid { DataContext: RevisionFileTreeNode { IsFolder: true } node })
+            if (sender is Grid { DataContext: ViewModels.RevisionFileTreeNode { IsFolder: true } node })
             {
                 var posX = e.GetPosition(this).X;
                 if (posX < node.Depth * 16 + 16)
                     return;
 
                 ToggleNodeIsExpanded(node);
-            }                
+            }
         }
 
-        private void OnRowsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnRowsSelectionChanged(object sender, SelectionChangedEventArgs _)
         {
             if (_disableSelectionChangingEvent)
                 return;
 
-            if (sender is ListBox list && DataContext is ViewModels.CommitDetail vm)
+            if (sender is ListBox { SelectedItem: ViewModels.RevisionFileTreeNode node } && DataContext is ViewModels.CommitDetail vm)
             {
-                var node = list.SelectedItem as RevisionFileTreeNode;
-                if (node != null && !node.IsFolder)
+                if (!node.IsFolder)
                     vm.ViewRevisionFile(node.Backend);
                 else
                     vm.ViewRevisionFile(null);
             }
         }
 
-        private List<RevisionFileTreeNode> GetChildrenOfTreeNode(RevisionFileTreeNode node)
+        private List<ViewModels.RevisionFileTreeNode> GetChildrenOfTreeNode(ViewModels.RevisionFileTreeNode node)
         {
             if (!node.IsFolder)
                 return null;
@@ -289,19 +257,19 @@ namespace SourceGit.Views
                 return null;
 
             foreach (var obj in objects)
-                node.Children.Add(new RevisionFileTreeNode() { Backend = obj });
+                node.Children.Add(new ViewModels.RevisionFileTreeNode() { Backend = obj });
 
             node.Children.Sort((l, r) =>
             {
                 if (l.IsFolder == r.IsFolder)
-                    return l.Name.CompareTo(r.Name);
+                    return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
                 return l.IsFolder ? -1 : 1;
             });
 
             return node.Children;
         }
 
-        private void MakeRows(List<RevisionFileTreeNode> rows, List<RevisionFileTreeNode> nodes, int depth)
+        private void MakeRows(List<ViewModels.RevisionFileTreeNode> rows, List<ViewModels.RevisionFileTreeNode> nodes, int depth)
         {
             foreach (var node in nodes)
             {
@@ -315,8 +283,8 @@ namespace SourceGit.Views
             }
         }
 
-        private List<RevisionFileTreeNode> _tree = new List<RevisionFileTreeNode>();
-        private AvaloniaList<RevisionFileTreeNode> _rows = new AvaloniaList<RevisionFileTreeNode>();
+        private List<ViewModels.RevisionFileTreeNode> _tree = new List<ViewModels.RevisionFileTreeNode>();
+        private AvaloniaList<ViewModels.RevisionFileTreeNode> _rows = new AvaloniaList<ViewModels.RevisionFileTreeNode>();
         private bool _disableSelectionChangingEvent = false;
     }
 }

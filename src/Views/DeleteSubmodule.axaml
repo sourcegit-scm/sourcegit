@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:c="using:SourceGit.Converters"
              xmlns:vm="using:SourceGit.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.DeleteSubmodule"
@@ -12,8 +11,7 @@
                Classes="bold"
                Text="{DynamicResource Text.DeleteSubmodule}"/>
     <StackPanel Orientation="Horizontal" Margin="0,16,0,0" Height="28" HorizontalAlignment="Center">
-      <TextBlock Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
+      <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.DeleteSubmodule.Path}"/>
       <Path Width="12" Height="12"

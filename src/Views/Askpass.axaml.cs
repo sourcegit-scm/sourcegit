@@ -9,7 +9,7 @@ namespace SourceGit.Views
     public partial class Askpass : ChromelessWindow
     {
         public static readonly StyledProperty<bool> ShowPasswordProperty =
-            AvaloniaProperty.Register<Askpass, bool>(nameof(ShowPassword), false);
+            AvaloniaProperty.Register<Askpass, bool>(nameof(ShowPassword));
 
         public bool ShowPassword
         {
@@ -42,18 +42,18 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
+        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
+        private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             Console.Out.WriteLine("No passphrase entered.");
             Environment.Exit(-1);
         }
 
-        private void EnterPassword(object sender, RoutedEventArgs e)
+        private void EnterPassword(object _1, RoutedEventArgs _2)
         {
             Console.Out.Write($"{Passphrase}\n");
             Environment.Exit(0);

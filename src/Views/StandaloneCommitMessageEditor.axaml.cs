@@ -1,20 +1,21 @@
 using System;
 using System.IO;
-using System.Text;
+
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
-    public partial class CodeEditor : ChromelessWindow
+    public partial class StandaloneCommitMessageEditor : ChromelessWindow
     {
-        public CodeEditor()
+        public StandaloneCommitMessageEditor()
         {
+            _file = string.Empty;
             DataContext = this;
             InitializeComponent();
         }
 
-        public CodeEditor(string file)
+        public StandaloneCommitMessageEditor(string file)
         {
             _file = file;
             DataContext = this;
@@ -33,22 +34,22 @@ namespace SourceGit.Views
             }
         }
 
-        private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
+        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
+        private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             Environment.Exit(-1);
         }
 
-        private void SaveAndClose(object sender, RoutedEventArgs e)
+        private void SaveAndClose(object _1, RoutedEventArgs _2)
         {
             File.WriteAllText(_file, Editor.Text);
             Environment.Exit(0);
         }
 
-        private string _file = string.Empty;
+        private readonly string _file;
     }
 }

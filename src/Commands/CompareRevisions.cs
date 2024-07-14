@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands
@@ -18,7 +19,7 @@ namespace SourceGit.Commands
         public List<Models.Change> Result()
         {
             Exec();
-            _changes.Sort((l, r) => l.Path.CompareTo(r.Path));
+            _changes.Sort((l, r) => string.Compare(l.Path, r.Path, StringComparison.Ordinal));
             return _changes;
         }
 

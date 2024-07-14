@@ -12,7 +12,7 @@
   <v:LayoutableGrid RowDefinitions="*,3,*" ColumnDefinitions="*,3,*"
                     UseHorizontal="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories}">
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-      <DataGrid x:Name="commitDataGrid"
+      <DataGrid x:Name="CommitDataGrid"
                 Background="{DynamicResource Brush.Contents}"
                 ItemsSource="{Binding Commits}"
                 SelectionMode="Extended"
@@ -171,7 +171,7 @@
         </DataGrid.Columns>
       </DataGrid>
 
-      <v:CommitGraph x:Name="commitGraph"
+      <v:CommitGraph x:Name="CommitGraph"
                      Graph="{Binding Graph}"
                      DotBrush="{DynamicResource Brush.Contents}"
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"

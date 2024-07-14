@@ -11,7 +11,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private async void SelectParentFolder(object sender, RoutedEventArgs e)
+        private async void SelectParentFolder(object _, RoutedEventArgs e)
         {
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
             var toplevel = TopLevel.GetTopLevel(this);
@@ -25,12 +25,17 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void SelectSSHKey(object sender, RoutedEventArgs e)
+        private async void SelectSSHKey(object _, RoutedEventArgs e)
         {
-            var options = new FilePickerOpenOptions() { AllowMultiple = false, FileTypeFilter = [new FilePickerFileType("SSHKey") { Patterns = ["*.*"] }] };
             var toplevel = TopLevel.GetTopLevel(this);
             if (toplevel == null)
                 return;
+
+            var options = new FilePickerOpenOptions()
+            {
+                AllowMultiple = false,
+                FileTypeFilter = [new FilePickerFileType("SSHKey") { Patterns = ["*.*"] }]
+            };
 
             var selected = await toplevel.StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)

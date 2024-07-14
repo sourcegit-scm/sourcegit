@@ -22,10 +22,10 @@ using AvaloniaEdit.Utils;
 
 namespace SourceGit.Views
 {
-    public class IThemedTextDiffPresenter : TextEditor
+    public class ThemedTextDiffPresenter : TextEditor
     {
         public static readonly StyledProperty<string> FileNameProperty =
-            AvaloniaProperty.Register<IThemedTextDiffPresenter, string>(nameof(FileName), string.Empty);
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, string>(nameof(FileName), string.Empty);
 
         public string FileName
         {
@@ -34,7 +34,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<IBrush> LineBrushProperty =
-            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(LineBrush), new SolidColorBrush(Colors.DarkGray));
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, IBrush>(nameof(LineBrush), new SolidColorBrush(Colors.DarkGray));
 
         public IBrush LineBrush
         {
@@ -43,7 +43,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<IBrush> EmptyContentBackgroundProperty =
-            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(EmptyContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)));
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, IBrush>(nameof(EmptyContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)));
 
         public IBrush EmptyContentBackground
         {
@@ -52,7 +52,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<IBrush> AddedContentBackgroundProperty =
-            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(AddedContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 255, 0)));
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, IBrush>(nameof(AddedContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 255, 0)));
 
         public IBrush AddedContentBackground
         {
@@ -61,7 +61,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<IBrush> DeletedContentBackgroundProperty =
-            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(DeletedContentBackground), new SolidColorBrush(Color.FromArgb(60, 255, 0, 0)));
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, IBrush>(nameof(DeletedContentBackground), new SolidColorBrush(Color.FromArgb(60, 255, 0, 0)));
 
         public IBrush DeletedContentBackground
         {
@@ -70,7 +70,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<IBrush> AddedHighlightBrushProperty =
-            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(AddedHighlightBrush), new SolidColorBrush(Color.FromArgb(90, 0, 255, 0)));
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, IBrush>(nameof(AddedHighlightBrush), new SolidColorBrush(Color.FromArgb(90, 0, 255, 0)));
 
         public IBrush AddedHighlightBrush
         {
@@ -79,7 +79,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<IBrush> DeletedHighlightBrushProperty =
-            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(DeletedHighlightBrush), new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)));
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, IBrush>(nameof(DeletedHighlightBrush), new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)));
 
         public IBrush DeletedHighlightBrush
         {
@@ -88,7 +88,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<IBrush> IndicatorForegroundProperty =
-            AvaloniaProperty.Register<IThemedTextDiffPresenter, IBrush>(nameof(IndicatorForeground), Brushes.Gray);
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, IBrush>(nameof(IndicatorForeground), Brushes.Gray);
 
         public IBrush IndicatorForeground
         {
@@ -97,7 +97,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
-            AvaloniaProperty.Register<IThemedTextDiffPresenter, bool>(nameof(UseSyntaxHighlighting), false);
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, bool>(nameof(UseSyntaxHighlighting));
 
         public bool UseSyntaxHighlighting
         {
@@ -106,7 +106,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<bool> ShowHiddenSymbolsProperty =
-            AvaloniaProperty.Register<IThemedTextDiffPresenter, bool>(nameof(ShowHiddenSymbols), false);
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, bool>(nameof(ShowHiddenSymbols));
 
         public bool ShowHiddenSymbols
         {
@@ -116,7 +116,7 @@ namespace SourceGit.Views
 
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
-        public IThemedTextDiffPresenter(TextArea area, TextDocument doc) : base(area, doc)
+        protected ThemedTextDiffPresenter(TextArea area, TextDocument doc) : base(area, doc)
         {
             IsReadOnly = true;
             ShowLineNumbers = false;
@@ -168,7 +168,7 @@ namespace SourceGit.Views
             }
         }
 
-        protected void UpdateTextMate()
+        private void UpdateTextMate()
         {
             if (UseSyntaxHighlighting)
             {
@@ -197,9 +197,9 @@ namespace SourceGit.Views
         protected IVisualLineTransformer _lineStyleTransformer = null;
     }
 
-    public class CombinedTextDiffPresenter : IThemedTextDiffPresenter
+    public class CombinedTextDiffPresenter : ThemedTextDiffPresenter
     {
-        public class LineNumberMargin : AbstractMargin
+        private class LineNumberMargin : AbstractMargin
         {
             public LineNumberMargin(CombinedTextDiffPresenter editor, bool isOldLine)
             {
@@ -247,18 +247,16 @@ namespace SourceGit.Views
                 {
                     return new Size(32, 0);
                 }
-                else
-                {
-                    var typeface = TextView.CreateTypeface();
-                    var test = new FormattedText(
-                            $"{_editor.DiffData.MaxLineNumber}",
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            typeface,
-                            _editor.FontSize,
-                            Brushes.White);
-                    return new Size(test.Width, 0);
-                }
+
+                var typeface = TextView.CreateTypeface();
+                var test = new FormattedText(
+                    $"{_editor.DiffData.MaxLineNumber}",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    _editor.FontSize,
+                    Brushes.White);
+                return new Size(test.Width, 0);
             }
 
             protected override void OnDataContextChanged(EventArgs e)
@@ -271,7 +269,7 @@ namespace SourceGit.Views
             private readonly bool _isOldLine;
         }
 
-        public class VerticalSeperatorMargin : AbstractMargin
+        private class VerticalSeperatorMargin : AbstractMargin
         {
             public VerticalSeperatorMargin(CombinedTextDiffPresenter editor)
             {
@@ -280,7 +278,7 @@ namespace SourceGit.Views
 
             public override void Render(DrawingContext context)
             {
-                var pen = new Pen(_editor.LineBrush, 1);
+                var pen = new Pen(_editor.LineBrush);
                 context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
             }
 
@@ -292,7 +290,7 @@ namespace SourceGit.Views
             private readonly CombinedTextDiffPresenter _editor = null;
         }
 
-        public class LineBackgroundRenderer : IBackgroundRenderer
+        private class LineBackgroundRenderer : IBackgroundRenderer
         {
             public KnownLayer Layer => KnownLayer.Background;
 
@@ -344,7 +342,7 @@ namespace SourceGit.Views
             private readonly CombinedTextDiffPresenter _editor = null;
         }
 
-        public class LineStyleTransformer : DocumentColorizingTransformer
+        private class LineStyleTransformer : DocumentColorizingTransformer
         {
             public LineStyleTransformer(CombinedTextDiffPresenter editor)
             {
@@ -405,7 +403,7 @@ namespace SourceGit.Views
             base.OnApplyTemplate(e);
 
             var scroller = (ScrollViewer)e.NameScope.Find("PART_ScrollViewer");
-            scroller.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.TwoWay));
+            scroller?.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.TwoWay));
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -466,7 +464,7 @@ namespace SourceGit.Views
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (o, ev) =>
+            copy.Click += (_, ev) =>
             {
                 App.CopyText(SelectedText);
                 ev.Handled = true;
@@ -479,9 +477,9 @@ namespace SourceGit.Views
         }
     }
 
-    public class SingleSideTextDiffPresenter : IThemedTextDiffPresenter
+    public class SingleSideTextDiffPresenter : ThemedTextDiffPresenter
     {
-        public class LineNumberMargin : AbstractMargin
+        private class LineNumberMargin : AbstractMargin
         {
             public LineNumberMargin(SingleSideTextDiffPresenter editor)
             {
@@ -529,18 +527,16 @@ namespace SourceGit.Views
                 {
                     return new Size(32, 0);
                 }
-                else
-                {
-                    var typeface = TextView.CreateTypeface();
-                    var test = new FormattedText(
-                            $"{_editor.DiffData.MaxLineNumber}",
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            typeface,
-                            _editor.FontSize,
-                            Brushes.White);
-                    return new Size(test.Width, 0);
-                }
+
+                var typeface = TextView.CreateTypeface();
+                var test = new FormattedText(
+                    $"{_editor.DiffData.MaxLineNumber}",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    _editor.FontSize,
+                    Brushes.White);
+                return new Size(test.Width, 0);
             }
 
             protected override void OnDataContextChanged(EventArgs e)
@@ -552,7 +548,7 @@ namespace SourceGit.Views
             private readonly SingleSideTextDiffPresenter _editor;
         }
 
-        public class VerticalSeperatorMargin : AbstractMargin
+        private class VerticalSeperatorMargin : AbstractMargin
         {
             public VerticalSeperatorMargin(SingleSideTextDiffPresenter editor)
             {
@@ -561,7 +557,7 @@ namespace SourceGit.Views
 
             public override void Render(DrawingContext context)
             {
-                var pen = new Pen(_editor.LineBrush, 1);
+                var pen = new Pen(_editor.LineBrush);
                 context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
             }
 
@@ -573,7 +569,7 @@ namespace SourceGit.Views
             private readonly SingleSideTextDiffPresenter _editor = null;
         }
 
-        public class LineBackgroundRenderer : IBackgroundRenderer
+        private class LineBackgroundRenderer : IBackgroundRenderer
         {
             public KnownLayer Layer => KnownLayer.Background;
 
@@ -626,7 +622,7 @@ namespace SourceGit.Views
             private readonly SingleSideTextDiffPresenter _editor = null;
         }
 
-        public class LineStyleTransformer : DocumentColorizingTransformer
+        private class LineStyleTransformer : DocumentColorizingTransformer
         {
             public LineStyleTransformer(SingleSideTextDiffPresenter editor)
             {
@@ -776,7 +772,7 @@ namespace SourceGit.Views
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (o, ev) =>
+            copy.Click += (_, ev) =>
             {
                 App.CopyText(SelectedText);
                 ev.Handled = true;
@@ -794,7 +790,7 @@ namespace SourceGit.Views
     public partial class TextDiffView : UserControl
     {
         public static readonly StyledProperty<bool> UseSideBySideDiffProperty =
-            AvaloniaProperty.Register<TextDiffView, bool>(nameof(UseSideBySideDiff), false);
+            AvaloniaProperty.Register<TextDiffView, bool>(nameof(UseSideBySideDiff));
 
         public bool UseSideBySideDiff
         {
@@ -804,7 +800,7 @@ namespace SourceGit.Views
 
         static TextDiffView()
         {
-            UseSideBySideDiffProperty.Changed.AddClassHandler<TextDiffView>((v, e) =>
+            UseSideBySideDiffProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
             {
                 if (v.DataContext is Models.TextDiff diff)
                 {
@@ -842,11 +838,7 @@ namespace SourceGit.Views
                 return;
 
             if (startLine > endLine)
-            {
-                var tmp = startLine;
-                startLine = endLine;
-                endLine = tmp;
-            }
+                (startLine, endLine) = (endLine, startLine);
 
             var selection = GetUnifiedSelection(diff, startLine, endLine, isOldSide);
             if (!selection.HasChanges)
@@ -868,7 +860,7 @@ namespace SourceGit.Views
                     stage.Click += (_, e) =>
                     {
                         var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                        workcopy.StageChanges(new List<Models.Change> { change });
+                        workcopy?.StageChanges(new List<Models.Change> { change });
                         e.Handled = true;
                     };
 
@@ -878,7 +870,7 @@ namespace SourceGit.Views
                     discard.Click += (_, e) =>
                     {
                         var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                        workcopy.Discard(new List<Models.Change> { change }, true);
+                        workcopy?.Discard(new List<Models.Change> { change }, true);
                         e.Handled = true;
                     };
 
@@ -893,7 +885,7 @@ namespace SourceGit.Views
                     unstage.Click += (_, e) =>
                     {
                         var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                        workcopy.UnstageChanges(new List<Models.Change> { change });
+                        workcopy?.UnstageChanges(new List<Models.Change> { change });
                         e.Handled = true;
                     };
 
@@ -903,7 +895,7 @@ namespace SourceGit.Views
                     discard.Click += (_, e) =>
                     {
                         var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                        workcopy.Discard(new List<Models.Change> { change }, false);
+                        workcopy?.Discard(new List<Models.Change> { change }, false);
                         e.Handled = true;
                     };
 
@@ -925,6 +917,9 @@ namespace SourceGit.Views
                     stage.Click += (_, e) =>
                     {
                         var repo = repoView.DataContext as ViewModels.Repository;
+                        if (repo == null)
+                            return;
+
                         repo.SetWatcherEnabled(false);
 
                         var tmpFile = Path.GetTempFileName();
@@ -957,6 +952,9 @@ namespace SourceGit.Views
                     discard.Click += (_, e) =>
                     {
                         var repo = repoView.DataContext as ViewModels.Repository;
+                        if (repo == null)
+                            return;
+
                         repo.SetWatcherEnabled(false);
 
                         var tmpFile = Path.GetTempFileName();
@@ -994,6 +992,9 @@ namespace SourceGit.Views
                     unstage.Click += (_, e) =>
                     {
                         var repo = repoView.DataContext as ViewModels.Repository;
+                        if (repo == null)
+                            return;
+
                         repo.SetWatcherEnabled(false);
 
                         var treeGuid = new Commands.QueryStagedFileBlobGuid(ctx.RepositoryPath, change.Path).Result();
@@ -1025,6 +1026,9 @@ namespace SourceGit.Views
                     discard.Click += (_, e) =>
                     {
                         var repo = repoView.DataContext as ViewModels.Repository;
+                        if (repo == null)
+                            return;
+
                         repo.SetWatcherEnabled(false);
 
                         var tmpFile = Path.GetTempFileName();

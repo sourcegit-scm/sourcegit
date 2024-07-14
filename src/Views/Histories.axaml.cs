@@ -11,7 +11,7 @@ namespace SourceGit.Views
     public class LayoutableGrid : Grid
     {
         public static readonly StyledProperty<bool> UseHorizontalProperty =
-            AvaloniaProperty.Register<LayoutableGrid, bool>(nameof(UseHorizontal), false);
+            AvaloniaProperty.Register<LayoutableGrid, bool>(nameof(UseHorizontal));
 
         public bool UseHorizontal
         {
@@ -96,10 +96,12 @@ namespace SourceGit.Views
         {
             base.Render(context);
 
-            var parent = this.FindAncestorOfType<Histories>();
+            var grid = this.FindAncestorOfType<Histories>()?.CommitDataGrid;
+            if (grid == null)
+                return;
+
             var graph = Graph;
-            var grid = parent.commitDataGrid;
-            if (graph == null || grid == null)
+            if (graph == null)
                 return;
 
             var rowsPresenter = grid.FindDescendantOfType<DataGridRowsPresenter>();
@@ -111,8 +113,7 @@ namespace SourceGit.Views
             double startY = 0;
             foreach (var child in rowsPresenter.Children)
             {
-                var row = child as DataGridRow;
-                if (row.IsVisible && row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight)
+                if (child is DataGridRow { IsVisible: true, Bounds.Top: <= 0 } row && row.Bounds.Top > -rowHeight)
                 {
                     var test = rowHeight * row.GetIndex() - row.Bounds.Top;
                     if (startY < test)
@@ -239,7 +240,7 @@ namespace SourceGit.Views
     public partial class Histories : UserControl
     {
         public static readonly StyledProperty<long> NavigationIdProperty =
-            AvaloniaProperty.Register<Histories, long>(nameof(NavigationId), 0);
+            AvaloniaProperty.Register<Histories, long>(nameof(NavigationId));
 
         public long NavigationId
         {
@@ -252,7 +253,7 @@ namespace SourceGit.Views
             NavigationIdProperty.Changed.AddClassHandler<Histories>((h, _) =>
             {
                 // Force scroll selected item (current head) into view. see issue #58
-                var datagrid = h.commitDataGrid;
+                var datagrid = h.CommitDataGrid;
                 if (datagrid != null && datagrid.SelectedItems.Count == 1)
                     datagrid.ScrollIntoView(datagrid.SelectedItems[0], null);
             });
@@ -263,16 +264,16 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnCommitDataGridLayoutUpdated(object sender, EventArgs e)
+        private void OnCommitDataGridLayoutUpdated(object _1, EventArgs _2)
         {
-            commitGraph.InvalidateVisual();
+            CommitGraph.InvalidateVisual();
         }
 
-        private void OnCommitDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnCommitDataGridSelectionChanged(object _, SelectionChangedEventArgs e)
         {
             if (DataContext is ViewModels.Histories histories)
             {
-                histories.Select(commitDataGrid.SelectedItems);
+                histories.Select(CommitDataGrid.SelectedItems);
             }
             e.Handled = true;
         }
