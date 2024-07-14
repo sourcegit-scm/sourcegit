@@ -67,7 +67,7 @@
               <!-- Content Area (allows double-click) -->
               <Grid Grid.Column="1"
                     Background="Transparent"
-                    ColumnDefinitions="20,*,Auto,Auto"
+                    ColumnDefinitions="18,*,Auto,Auto"
                     DoubleTapped="OnDoubleTappedBranchNode">
                 
                 <!-- Icon -->

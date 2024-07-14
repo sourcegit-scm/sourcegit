@@ -68,18 +68,18 @@ namespace SourceGit.Views
             switch (obj.Type)
             {
                 case Models.ObjectType.Blob:
-                    CreateContent("Icons.File");
+                    CreateContent("Icons.File", new Thickness(0, 0, 0, 0));
                     break;
                 case Models.ObjectType.Commit:
-                    CreateContent("Icons.Submodule");
+                    CreateContent("Icons.Submodule", new Thickness(0, 0, 0, 0));
                     break;
                 default:
-                    CreateContent(node.IsExpanded ? "Icons.Folder.Open" : "Icons.Folder.Fill", Brushes.Goldenrod);
+                    CreateContent(node.IsExpanded ? "Icons.Folder.Open" : "Icons.Folder.Fill", new Thickness(0, 2, 0, 0), Brushes.Goldenrod);
                     break;
             }
         }
 
-        private void CreateContent(string iconKey, IBrush fill = null)
+        private void CreateContent(string iconKey, Thickness margin, IBrush fill = null)
         {
             var geo = this.FindResource(iconKey) as StreamGeometry;
             if (geo == null)
@@ -89,6 +89,7 @@ namespace SourceGit.Views
             {
                 Width = 14,
                 Height = 14,
+                Margin = margin,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
                 Data = geo,
