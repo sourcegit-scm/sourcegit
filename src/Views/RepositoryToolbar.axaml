@@ -1,0 +1,78 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.RepositoryToolbar"
+             x:DataType="vm:Repository">
+  <Grid ColumnDefinitions="*,Auto,*">
+      <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
+        <Button Classes="icon_button" Width="32" Command="{Binding OpenInFileManager}" ToolTip.Tip="{DynamicResource Text.Repository.Explore}">
+          <Path Width="15" Height="13" Data="{StaticResource Icons.Folder.Open}" Margin="0,1,0,0"/>
+        </Button>
+        
+        <Button Classes="icon_button" Width="32" Command="{Binding OpenInTerminal}" ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">
+          <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
+          <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>
+        </Button>
+      </StackPanel>
+
+      <StackPanel Grid.Column="1" Orientation="Horizontal">
+        <Button Classes="icon_button" Width="32" Command="{Binding Fetch}" ToolTip.Tip="{DynamicResource Text.Fetch}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding Pull}" ToolTip.Tip="{DynamicResource Text.Pull}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding Push}" ToolTip.Tip="{DynamicResource Text.Push}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding StashAll}" ToolTip.Tip="{DynamicResource Text.Stash}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Stashes}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding ApplyPatch}" ToolTip.Tip="{DynamicResource Text.Apply}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Diff}"/>
+        </Button>
+
+        <Rectangle Width="1" Height="16"
+                   Margin="16,0,0,0"
+                   VerticalAlignment="Center"
+                   Fill="{DynamicResource Brush.Border2}"/>
+
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Branch.Add}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitFlowMenu" ToolTip.Tip="{DynamicResource Text.GitFlow}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.GitFlow}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitLFSMenu" ToolTip.Tip="{DynamicResource Text.GitLFS}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.LFS}"/>
+        </Button>
+      </StackPanel>
+
+      <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
+        <Button Classes="icon_button" Width="32" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Clean}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Click="OpenStatistics" ToolTip.Tip="{DynamicResource Text.Repository.Statistics}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Statistics}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Command="{Binding OpenConfigure}" ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
+          <Path Width="15" Height="15" Data="{StaticResource Icons.Settings}"/>
+        </Button>
+      </StackPanel>
+    </Grid>
+</UserControl>
+

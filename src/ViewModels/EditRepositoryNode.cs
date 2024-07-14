@@ -5,12 +5,6 @@ namespace SourceGit.ViewModels
 {
     public class EditRepositoryNode : Popup
     {
-        public RepositoryNode Node
-        {
-            get => _node;
-            set => SetProperty(ref _node, value);
-        }
-
         public string Id
         {
             get => _id;
@@ -60,8 +54,8 @@ namespace SourceGit.ViewModels
         }
 
         private RepositoryNode _node = null;
-        private string _id = string.Empty;
-        private string _name = string.Empty;
+        private string _id = null;
+        private string _name = null;
         private bool _isRepository = false;
         private int _bookmark = 0;
     }

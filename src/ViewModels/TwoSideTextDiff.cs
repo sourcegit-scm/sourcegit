@@ -6,7 +6,7 @@ namespace SourceGit.ViewModels
 {
     public class TwoSideTextDiff : ObservableObject
     {
-        public string File { get; set; } = string.Empty;
+        public string File { get; set; }
         public List<Models.TextDiffLine> Old { get; set; } = new List<Models.TextDiffLine>();
         public List<Models.TextDiffLine> New { get; set; } = new List<Models.TextDiffLine>();
         public int MaxLineNumber = 0;

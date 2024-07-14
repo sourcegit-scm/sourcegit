@@ -112,7 +112,7 @@ namespace SourceGit.ViewModels
                 if (Models.AvatarManager.SelectedServer != value)
                 {
                     Models.AvatarManager.SelectedServer = value;
-                    OnPropertyChanged(nameof(AvatarServer));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -221,7 +221,7 @@ namespace SourceGit.ViewModels
                 if (Native.OS.GitExecutable != value)
                 {
                     Native.OS.GitExecutable = value;
-                    OnPropertyChanged(nameof(GitInstallPath));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -233,7 +233,7 @@ namespace SourceGit.ViewModels
             {
                 if (Native.OS.SetShell(value))
                 {
-                    OnPropertyChanged(nameof(GitShell));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -252,7 +252,7 @@ namespace SourceGit.ViewModels
                 if (Commands.AutoFetch.IsEnabled != value)
                 {
                     Commands.AutoFetch.IsEnabled = value;
-                    OnPropertyChanged(nameof(GitAutoFetch));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -268,7 +268,7 @@ namespace SourceGit.ViewModels
                 if (Commands.AutoFetch.Interval != value)
                 {
                     Commands.AutoFetch.Interval = (int)value;
-                    OnPropertyChanged(nameof(GitAutoFetchInterval));
+                    OnPropertyChanged();
                 }
             }
         }

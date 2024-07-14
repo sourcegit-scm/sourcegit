@@ -9,7 +9,6 @@ namespace SourceGit.ViewModels
 
     public class Discard : Popup
     {
-
         public object Mode
         {
             get;

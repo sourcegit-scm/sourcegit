@@ -27,11 +27,8 @@ namespace SourceGit.Commands
                 return;
 
             var dateStr = line.Substring(0, dateEndIdx);
-            var date = 0.0;
-            if (!double.TryParse(dateStr, out date))
-                return;
-
-            _statistics.AddCommit(line.Substring(dateEndIdx + 1), date);
+            if (double.TryParse(dateStr, out var date))
+                _statistics.AddCommit(line.Substring(dateEndIdx + 1), date);
         }
 
         private readonly Models.Statistics _statistics = null;

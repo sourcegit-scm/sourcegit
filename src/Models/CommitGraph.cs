@@ -268,8 +268,9 @@ namespace SourceGit.Models
                 var path = unsolved[i];
                 var endY = (commits.Count - 0.5) * UNIT_HEIGHT;
 
-                if (path.Path.Points.Count == 1 && path.Path.Points[0].Y == endY)
+                if (path.Path.Points.Count == 1 && Math.Abs(path.Path.Points[0].Y - endY) < 0.0001)
                     continue;
+
                 path.Add((i + 0.5) * UNIT_WIDTH, endY + HALF_HEIGHT, HALF_HEIGHT, true);
             }
             unsolved.Clear();

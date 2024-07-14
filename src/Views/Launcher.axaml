@@ -4,8 +4,6 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:s="using:SourceGit"
                     xmlns:vm="using:SourceGit.ViewModels"
-                    xmlns:m="using:SourceGit.Models"
-                    xmlns:c="using:SourceGit.Converters"
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.Launcher"
@@ -75,110 +73,14 @@
         <v:CaptionButtons Height="30" VerticalAlignment="Top"/>
       </Border>
     </Grid>
-
-    <!-- Page body -->
-    <ContentControl Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" Content="{Binding ActivePage.Data}">
+    
+    <!-- Page -->
+    <ContentControl Grid.Row="1" Content="{Binding ActivePage}">
       <ContentControl.DataTemplates>
-        <DataTemplate DataType="vm:Welcome">
-          <v:Welcome/>
-        </DataTemplate>
-
-        <DataTemplate DataType="vm:Repository">
-          <v:Repository/>
+        <DataTemplate DataType="vm:LauncherPage">
+          <v:LauncherPage/>
         </DataTemplate>
       </ContentControl.DataTemplates>
     </ContentControl>
-
-    <!-- Popup container -->
-    <Grid Grid.Row="1" Margin="0,36,0,0" IsVisible="{Binding ActivePage.Popup, Converter={x:Static ObjectConverters.IsNotNull}}" ClipToBounds="True">
-      <Border Background="Transparent" PointerPressed="OnPopupCancelByClickMask"/>
-
-      <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)" CornerRadius="0,0,8,8" ClipToBounds="True">                
-        <ContentControl Content="{Binding ActivePage.Popup}" Background="{DynamicResource Brush.Popup}">
-          <ContentControl.DataTemplates>
-            <DataTemplate DataType="vm:Popup">  
-              <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">
-                <!-- Popup Widget -->
-                <ContentPresenter Margin="8,16,8,8"
-                                  Content="{Binding View}"
-                                  IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
-
-                <!-- Options -->
-                <StackPanel Margin="8,4,8,8"
-                            Height="32"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                  <Button Classes="flat primary"
-                          Width="80"
-                          Content="{DynamicResource Text.Sure}"
-                          Click="OnPopupSure"
-                          HotKey="Enter"/>
-                  <Button Classes="flat"
-                          Width="80"
-                          Margin="8,0,0,0"
-                          Content="{DynamicResource Text.Cancel}"
-                          Click="OnPopupCancel"/>
-                </StackPanel>
-
-                <!-- Running -->
-                <v:PopupRunningStatus Margin="12,8"
-                                      Description="{Binding ProgressDescription}"
-                                      IsVisible="{Binding InProgress}"/>
-              </StackPanel>
-            </DataTemplate>
-          </ContentControl.DataTemplates>
-        </ContentControl>
-      </Border>
-    </Grid>
-
-    <!-- Notification container -->
-    <Grid Grid.Row="1" Width="360" Margin="0,36,0,0" HorizontalAlignment="Right" VerticalAlignment="Top">
-      <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <ItemsControl ItemsSource="{Binding ActivePage.Notifications}">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate DataType="vm:Notification">
-              <Border Margin="10,6" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 12 #A0000000)">
-                <Border Padding="8" CornerRadius="6" Background="{DynamicResource Brush.Popup}">
-                  <Grid RowDefinitions="26,Auto,32">
-                    <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsError}">
-                      <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
-                      <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Error}"/>
-                    </StackPanel>
-                    <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding !IsError}">
-                      <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
-                      <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Info}"/>
-                    </StackPanel>
-
-                    <TextBox Grid.Row="1"
-                             Classes="no_background no_border"
-                             IsReadOnly="True"
-                             TextWrapping="Wrap"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             MaxHeight="100"
-                             Margin="8" Padding="0"
-                             VerticalContentAlignment="Top"
-                             Text="{Binding Message}"/>
-
-                    <StackPanel Grid.Row="2" Margin="0,4,0,0" Orientation="Horizontal" HorizontalAlignment="Right">
-                      <Button Classes="flat"
-                              Margin="0,0,8,0"
-                              Command="{Binding CopyMessage}"
-                              Content="{DynamicResource Text.CopyMessage}"
-                              IsVisible="{Binding IsError}"/>
-                      
-                      <Button Classes="flat primary"
-                              Margin="0,0"
-                              Content="{DynamicResource Text.Close}"
-                              Click="OnDismissNotification"/>
-                    </StackPanel>
-                  </Grid>
-                </Border>
-              </Border>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
-      </ScrollViewer>
-    </Grid>
   </Grid>
 </v:ChromelessWindow>

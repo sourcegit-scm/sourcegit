@@ -53,8 +53,6 @@ namespace SourceGit.Commands
                         _current.Subject = line;
                         nextPartIdx = -1;
                         break;
-                    default:
-                        break;
                 }
 
                 nextPartIdx++;
@@ -97,6 +95,9 @@ namespace SourceGit.Commands
             foreach (var sub in subs)
             {
                 var d = sub.Trim();
+                if (d.EndsWith("/HEAD", StringComparison.Ordinal))
+                    continue;
+
                 if (d.StartsWith("tag: refs/tags/", StringComparison.Ordinal))
                 {
                     _current.Decorators.Add(new Models.Decorator()
@@ -104,10 +105,6 @@ namespace SourceGit.Commands
                         Type = Models.DecoratorType.Tag,
                         Name = d.Substring(15),
                     });
-                }
-                else if (d.EndsWith("/HEAD", StringComparison.Ordinal))
-                {
-                    continue;
                 }
                 else if (d.StartsWith("HEAD -> refs/heads/", StringComparison.Ordinal))
                 {
@@ -159,10 +156,10 @@ namespace SourceGit.Commands
 
         private void MarkFirstMerged()
         {
-            Args = $"log --since=\"{_commits[_commits.Count - 1].CommitterTimeStr}\" --format=\"%H\"";
+            Args = $"log --since=\"{_commits[^1].CommitterTimeStr}\" --format=\"%H\"";
 
             var rs = ReadToEnd();
-            var shas = rs.StdOut.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var shas = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);
             if (shas.Length == 0)
                 return;
 

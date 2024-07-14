@@ -3,7 +3,6 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -197,35 +196,6 @@ namespace SourceGit.Views
         private void EndMoveWindow(object _1, PointerReleasedEventArgs _2)
         {
             _pressedTitleBar = false;
-        }
-
-        private void OnPopupSure(object _, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Launcher vm)
-                vm.ActivePage.ProcessPopup();
-
-            e.Handled = true;
-        }
-
-        private void OnPopupCancel(object _, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Launcher vm)
-                vm.ActivePage.CancelPopup();
-
-            e.Handled = true;
-        }
-
-        private void OnPopupCancelByClickMask(object sender, PointerPressedEventArgs e)
-        {
-            OnPopupCancel(sender, e);
-        }
-
-        private void OnDismissNotification(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && DataContext is ViewModels.Launcher vm)
-                vm.DismissNotification(btn.DataContext as ViewModels.Notification);
-
-            e.Handled = true;
         }
 
         private bool _pressedTitleBar = false;

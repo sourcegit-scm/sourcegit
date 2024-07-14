@@ -43,8 +43,8 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private readonly Repository _repo = null;
-        private readonly string _type = "feature";
-        private readonly string _prefix = string.Empty;
+        private readonly Repository _repo;
+        private readonly string _type;
+        private readonly string _prefix;
     }
 }

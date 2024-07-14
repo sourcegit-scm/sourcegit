@@ -78,7 +78,10 @@ namespace SourceGit.Native
             File.WriteAllText(tmp, builder.ToString());
 
             var proc = Process.Start("osascript", $"\"{tmp}\"");
-            proc.Exited += (o, e) => File.Delete(tmp);
+            if (proc != null)
+                proc.Exited += (_, _) => File.Delete(tmp);
+            else
+                File.Delete(tmp);
         }
 
         public void OpenWithDefaultEditor(string file)

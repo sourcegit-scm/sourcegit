@@ -108,8 +108,8 @@ namespace SourceGit.Models
 
         private readonly Change _workingCopyChange = null;
         private readonly bool _isUnstaged = false;
+        private readonly string _path;
         private readonly string _orgPath = string.Empty;
-        private readonly string _path = string.Empty;
         private readonly string _extra = string.Empty;
         private readonly List<string> _revisions = new List<string>();
     }

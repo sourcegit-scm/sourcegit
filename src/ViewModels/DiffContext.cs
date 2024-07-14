@@ -30,7 +30,6 @@ namespace SourceGit.ViewModels
         public string Title
         {
             get => _title;
-            private set => SetProperty(ref _title, value);
         }
 
         public string FileModeChange
@@ -237,9 +236,9 @@ namespace SourceGit.ViewModels
             ".ico", ".bmp", ".jpg", ".png", ".jpeg"
         };
 
-        private readonly string _repo = string.Empty;
+        private readonly string _repo;
         private readonly Models.DiffOption _option = null;
-        private string _title = string.Empty;
+        private string _title;
         private string _fileModeChange = string.Empty;
         private bool _isLoading = true;
         private bool _isTextDiff = false;

@@ -20,7 +20,7 @@ namespace SourceGit.Commands
 
         protected override void OnReadline(string line)
         {
-            var subs = line.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries);
+            var subs = line.Split('$', StringSplitOptions.RemoveEmptyEntries);
             if (subs.Length == 2)
             {
                 _loaded.Add(new Models.Tag()

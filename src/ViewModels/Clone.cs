@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -105,8 +106,8 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var name = Path.GetFileName(_remote);
-                    if (name.EndsWith(".git"))
+                    var name = Path.GetFileName(_remote)!;
+                    if (name.EndsWith(".git", StringComparison.Ordinal))
                         name = name.Substring(0, name.Length - 4);
                     path = Path.GetFullPath(Path.Combine(path, name));
                 }

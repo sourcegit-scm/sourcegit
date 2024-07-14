@@ -21,48 +21,6 @@ namespace SourceGit.Views
             UpdateLeftSidebarLayout();
         }
 
-        private void OpenWithExternalTools(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && DataContext is ViewModels.Repository repo)
-            {
-                var menu = repo.CreateContextMenuForExternalTools();
-                button.OpenContextMenu(menu);
-                e.Handled = true;
-            }
-        }
-
-        private void OpenGitFlowMenu(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-            {
-                var menu = repo.CreateContextMenuForGitFlow();
-                (sender as Control)?.OpenContextMenu(menu);
-            }
-
-            e.Handled = true;
-        }
-
-        private void OpenGitLFSMenu(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-            {
-                var menu = repo.CreateContextMenuForGitLFS();
-                (sender as Control)?.OpenContextMenu(menu);
-            }
-
-            e.Handled = true;
-        }
-
-        private async void OpenStatistics(object _, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo && TopLevel.GetTopLevel(this) is Window owner)
-            {
-                var dialog = new Statistics() { DataContext = new ViewModels.Statistics(repo.FullPath) };
-                await dialog.ShowDialog(owner);
-                e.Handled = true;
-            }
-        }
-
         private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property == IsVisibleProperty && sender is Grid { IsVisible: true })

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -292,12 +293,6 @@ namespace SourceGit.ViewModels
                 _activePage.Notifications.Add(notification);
         }
 
-        public void DismissNotification(Notification notice)
-        {
-            if (notice != null)
-                ActivePage?.Notifications.Remove(notice);
-        }
-
         public ContextMenu CreateContextForPageTab(LauncherPage page)
         {
             if (page == null)
@@ -307,7 +302,7 @@ namespace SourceGit.ViewModels
             var close = new MenuItem();
             close.Header = App.Text("PageTabBar.Tab.Close");
             close.InputGesture = KeyGesture.Parse(OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W");
-            close.Click += (o, e) =>
+            close.Click += (_, e) =>
             {
                 CloseTab(page);
                 e.Handled = true;
@@ -316,7 +311,7 @@ namespace SourceGit.ViewModels
 
             var closeOthers = new MenuItem();
             closeOthers.Header = App.Text("PageTabBar.Tab.CloseOther");
-            closeOthers.Click += (o, e) =>
+            closeOthers.Click += (_, e) =>
             {
                 CloseOtherTabs();
                 e.Handled = true;
@@ -325,7 +320,7 @@ namespace SourceGit.ViewModels
 
             var closeRight = new MenuItem();
             closeRight.Header = App.Text("PageTabBar.Tab.CloseRight");
-            closeRight.Click += (o, e) =>
+            closeRight.Click += (_, e) =>
             {
                 CloseRightTabs();
                 e.Handled = true;
@@ -342,13 +337,13 @@ namespace SourceGit.ViewModels
                 {
                     var icon = App.CreateMenuIcon("Icons.Bookmark");
                     icon.Fill = Models.Bookmarks.Brushes[i];
-                    icon.Stroke = App.Current.FindResource("Brush.FG1") as Brush;
+                    icon.Stroke = Application.Current?.FindResource("Brush.FG1") as Brush;
                     icon.StrokeThickness = i == 0 ? 1.0 : 0;
 
                     var dupIdx = i;
                     var setter = new MenuItem();
                     setter.Header = icon;
-                    setter.Click += (o, e) =>
+                    setter.Click += (_, e) =>
                     {
                         page.Node.Bookmark = dupIdx;
                         e.Handled = true;
@@ -361,7 +356,7 @@ namespace SourceGit.ViewModels
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyPath.Click += (o, e) =>
+                copyPath.Click += (_, e) =>
                 {
                     page.CopyPath();
                     e.Handled = true;

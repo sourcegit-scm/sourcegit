@@ -15,8 +15,8 @@ namespace SourceGit.Native
     {
         class Terminal
         {
-            public string FilePath { get; set; } = string.Empty;
-            public string OpenArgFormat { get; set; } = string.Empty;
+            public string FilePath { get; set; }
+            public string OpenArgFormat { get; set; }
 
             public Terminal(string exec, string fmt)
             {
@@ -115,12 +115,15 @@ namespace SourceGit.Native
             }
 
             var proc = Process.Start(_xdgOpenPath, $"\"{file}\"");
-            proc.WaitForExit();
+            if (proc != null)
+            {
+                proc.WaitForExit();
 
-            if (proc.ExitCode != 0)
-                App.RaiseException("", $"Failed to open \"{file}\"");
+                if (proc.ExitCode != 0)
+                    App.RaiseException("", $"Failed to open \"{file}\"");
 
-            proc.Close();
+                proc.Close();
+            }
         }
 
         private string FindExecutable(string filename)
@@ -177,7 +180,7 @@ namespace SourceGit.Native
             return File.Exists(path) ? path : FindExecutable("fleet");
         }
 
-        private string _xdgOpenPath = string.Empty;
+        private string _xdgOpenPath = null;
         private Terminal _terminal = null;
     }
 }

@@ -81,7 +81,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = false;
+                bool succ;
                 if (_annotated)
                     succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, Message, SignTag);
                 else
@@ -104,6 +104,6 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private string _tagName = string.Empty;
         private bool _annotated = true;
-        private readonly string _basedOn = string.Empty;
+        private readonly string _basedOn;
     }
 }

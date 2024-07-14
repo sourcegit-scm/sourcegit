@@ -73,8 +73,8 @@ namespace SourceGit.Native
             v.dwOSVersionInfoSize = (uint)Marshal.SizeOf<RTL_OSVERSIONINFOEX>();
             if (RtlGetVersion(ref v) == 0 && (v.dwMajorVersion < 10 || v.dwBuildNumber < 22000))
             {
-                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, e) => ExtendWindowFrame(w));
-                Window.LoadedEvent.AddClassHandler<Window>((w, e) => ExtendWindowFrame(w));
+                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => ExtendWindowFrame(w));
+                Control.LoadedEvent.AddClassHandler<Window>((w, _) => ExtendWindowFrame(w));
             }
         }
 
@@ -85,9 +85,9 @@ namespace SourceGit.Native
                 Microsoft.Win32.RegistryView.Registry64);
 
             var git = reg.OpenSubKey("SOFTWARE\\GitForWindows");
-            if (git != null)
+            if (git != null && git.GetValue("InstallPath") is string installPath)
             {
-                return Path.Combine(git.GetValue("InstallPath") as string, "bin", "git.exe");
+                return Path.Combine(installPath, "bin", "git.exe");
             }
 
             var builder = new StringBuilder("git.exe", 259);
@@ -137,7 +137,13 @@ namespace SourceGit.Native
             switch (Shell)
             {
                 case Models.Shell.Default:
-                    var binDir = Path.GetDirectoryName(OS.GitExecutable);
+                    if (string.IsNullOrEmpty(OS.GitExecutable))
+                    {
+                        App.RaiseException(workdir, $"Can NOT found bash.exe");
+                        return;
+                    }
+
+                    var binDir = Path.GetDirectoryName(OS.GitExecutable)!;
                     var bash = Path.Combine(binDir, "bash.exe");
                     if (!File.Exists(bash))
                     {
@@ -175,28 +181,23 @@ namespace SourceGit.Native
 
         public void OpenInFileManager(string path, bool select)
         {
-            var fullpath = string.Empty;
+            string fullpath;
             if (File.Exists(path))
             {
                 fullpath = new FileInfo(path).FullName;
-
-                // For security reason, we never execute a file.
-                // Instead, we open the folder and select it.
                 select = true;
             }
             else
             {
-                fullpath = new DirectoryInfo(path).FullName;
+                fullpath = new DirectoryInfo(path!).FullName;
             }
 
             if (select)
             {
-                // The fullpath here may be a file or a folder.
                 OpenFolderAndSelectFile(fullpath);
             }
             else
             {
-                // The fullpath here is always a folder.
                 Process.Start(new ProcessStartInfo(fullpath)
                 {
                     UseShellExecute = true,
@@ -362,7 +363,7 @@ namespace SourceGit.Native
             if (sublime != null)
             {
                 var icon = sublime.GetValue("DisplayIcon") as string;
-                return Path.Combine(Path.GetDirectoryName(icon), "subl.exe");
+                return Path.Combine(Path.GetDirectoryName(icon)!, "subl.exe");
             }
 
             // Sublime Text 3
@@ -370,7 +371,7 @@ namespace SourceGit.Native
             if (sublime3 != null)
             {
                 var icon = sublime3.GetValue("DisplayIcon") as string;
-                return Path.Combine(Path.GetDirectoryName(icon), "subl.exe");
+                return Path.Combine(Path.GetDirectoryName(icon)!, "subl.exe");
             }
 
             return string.Empty;

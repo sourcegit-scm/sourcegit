@@ -62,8 +62,8 @@ namespace SourceGit.ViewModels
         }
 
         private Models.InteractiveRebaseAction _action = Models.InteractiveRebaseAction.Pick;
-        private string _subject = string.Empty;
-        private string _fullMessage = string.Empty;
+        private string _subject;
+        private string _fullMessage;
     }
 
     public class InteractiveRebase : ObservableObject

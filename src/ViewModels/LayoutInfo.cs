@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 

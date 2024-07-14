@@ -27,7 +27,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _type = type;
-            _prefix = Commands.GitFlow.Prefix(repo.FullPath, type);
+            _prefix = Commands.GitFlow.GetPrefix(repo.FullPath, type);
 
             View = new Views.GitFlowStart() { DataContext = this };
         }
@@ -59,9 +59,9 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private readonly Repository _repo = null;
-        private readonly string _type = "feature";
-        private readonly string _prefix = string.Empty;
+        private readonly Repository _repo;
+        private readonly string _type;
+        private readonly string _prefix;
         private string _name = null;
     }
 }

@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 
-using Avalonia.Collections;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
     public class ChangeTreeNode : ObservableObject
     {
-        public string FullPath { get; set; } = string.Empty;
+        public string FullPath { get; set; }
         public int Depth { get; private set; } = 0;
         public Models.Change Change { get; set; } = null;
         public List<ChangeTreeNode> Children { get; set; } = new List<ChangeTreeNode>();
@@ -55,8 +53,7 @@ namespace SourceGit.ViewModels
                 else
                 {
                     ChangeTreeNode lastFolder = null;
-                    var start = 0;
-                    var depth = 0;
+                    int depth = 0;
 
                     while (sepIdx != -1)
                     {
@@ -79,12 +76,11 @@ namespace SourceGit.ViewModels
                             lastFolder = cur;
                         }
 
-                        start = sepIdx + 1;
                         depth++;
-                        sepIdx = c.Path.IndexOf('/', start);
+                        sepIdx = c.Path.IndexOf('/', sepIdx + 1);
                     }
 
-                    lastFolder.Children.Add(new ChangeTreeNode(c, depth));
+                    lastFolder?.Children.Add(new ChangeTreeNode(c, depth));
                 }
             }
 
@@ -125,21 +121,5 @@ namespace SourceGit.ViewModels
         }
 
         private bool _isExpanded = true;
-    }
-
-    public class ChangeCollectionAsTree
-    {
-        public List<ChangeTreeNode> Tree { get; set; } = new List<ChangeTreeNode>();
-        public AvaloniaList<ChangeTreeNode> Rows { get; set; } = new AvaloniaList<ChangeTreeNode>();
-    }
-
-    public class ChangeCollectionAsGrid
-    {
-        public AvaloniaList<Models.Change> Changes { get; set; } = new AvaloniaList<Models.Change>();
-    }
-
-    public class ChangeCollectionAsList
-    {
-        public AvaloniaList<Models.Change> Changes { get; set; } = new AvaloniaList<Models.Change>();
     }
 }

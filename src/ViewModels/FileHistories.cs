@@ -73,8 +73,8 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private readonly string _repo = string.Empty;
-        private readonly string _file = string.Empty;
+        private readonly string _repo = null;
+        private readonly string _file = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = null;
         private Models.Commit _selectedCommit = null;

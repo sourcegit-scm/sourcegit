@@ -119,7 +119,7 @@ namespace SourceGit.ViewModels
 
             var apply = new MenuItem();
             apply.Header = App.Text("StashCM.Apply");
-            apply.Click += (o, ev) =>
+            apply.Click += (_, ev) =>
             {
                 Task.Run(() => new Commands.Stash(_repo.FullPath).Apply(stash.Name));
                 ev.Handled = true;
@@ -127,7 +127,7 @@ namespace SourceGit.ViewModels
 
             var pop = new MenuItem();
             pop.Header = App.Text("StashCM.Pop");
-            pop.Click += (o, ev) =>
+            pop.Click += (_, ev) =>
             {
                 Task.Run(() => new Commands.Stash(_repo.FullPath).Pop(stash.Name));
                 ev.Handled = true;
@@ -135,7 +135,7 @@ namespace SourceGit.ViewModels
 
             var drop = new MenuItem();
             drop.Header = App.Text("StashCM.Drop");
-            drop.Click += (o, ev) =>
+            drop.Click += (_, ev) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new DropStash(_repo.FullPath, stash));

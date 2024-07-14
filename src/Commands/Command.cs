@@ -19,7 +19,6 @@ namespace SourceGit.Commands
         {
             public bool IsSuccess { get; set; }
             public string StdOut { get; set; }
-            public string StdErr { get; set; }
         }
 
         public enum EditorType
@@ -51,7 +50,7 @@ namespace SourceGit.Commands
             start.StandardErrorEncoding = Encoding.UTF8;
 
             // Force using this app as SSH askpass program
-            var selfExecFile = Process.GetCurrentProcess().MainModule.FileName;
+            var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;
             if (!OperatingSystem.IsLinux())
                 start.Environment.Add("DISPLAY", "required");
             start.Environment.Add("SSH_ASKPASS", selfExecFile); // Can not use parameter here, because it invoked by SSH with `exec`
@@ -199,20 +198,18 @@ namespace SourceGit.Commands
             {
                 proc.Start();
             }
-            catch (Exception e)
+            catch
             {
                 return new ReadToEndResult()
                 {
                     IsSuccess = false,
                     StdOut = string.Empty,
-                    StdErr = e.Message,
                 };
             }
 
             var rs = new ReadToEndResult()
             {
                 StdOut = proc.StandardOutput.ReadToEnd(),
-                StdErr = proc.StandardError.ReadToEnd(),
             };
 
             proc.WaitForExit();
@@ -226,8 +223,5 @@ namespace SourceGit.Commands
 
         [GeneratedRegex(@"\d+%")]
         private static partial Regex REG_PROGRESS();
-
-        [GeneratedRegex(@"Enter\s+passphrase\s*for\s*key\s*['""]([^'""]+)['""]\:\s*", RegexOptions.IgnoreCase)]
-        private static partial Regex REG_ASKPASS();
     }
 }

@@ -176,14 +176,8 @@ namespace SourceGit.ViewModels
                         }
                         else
                         {
-                            Dispatcher.UIThread.Invoke(() =>
-                            {
-                                ViewRevisionFileContent = new Models.RevisionTextFile()
-                                {
-                                    FileName = file.Path,
-                                    Content = content
-                                };
-                            });
+                            var txt = new Models.RevisionTextFile() { Content = content };
+                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = txt);
                         }
                     });
                     break;
@@ -256,7 +250,7 @@ namespace SourceGit.ViewModels
                 var blame = new MenuItem();
                 blame.Header = App.Text("Blame");
                 blame.Icon = App.CreateMenuIcon("Icons.Blame");
-                blame.Click += (o, ev) =>
+                blame.Click += (_, ev) =>
                 {
                     var window = new Views.Blame() { DataContext = new Blame(_repo, change.Path, _commit.SHA) };
                     window.Show();
@@ -320,7 +314,7 @@ namespace SourceGit.ViewModels
             blame.Header = App.Text("Blame");
             blame.Icon = App.CreateMenuIcon("Icons.Blame");
             blame.IsEnabled = file.Type == Models.ObjectType.Blob;
-            blame.Click += (o, ev) =>
+            blame.Click += (_, ev) =>
             {
                 var window = new Views.Blame() { DataContext = new Blame(_repo, file.Path, _commit.SHA) };
                 window.Show();
@@ -461,7 +455,7 @@ namespace SourceGit.ViewModels
             ".ico", ".bmp", ".jpg", ".png", ".jpeg"
         };
 
-        private string _repo = string.Empty;
+        private string _repo;
         private int _activePageIndex = 0;
         private Models.Commit _commit = null;
         private string _fullMessage = string.Empty;

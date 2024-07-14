@@ -125,14 +125,7 @@ namespace SourceGit.Commands
 
             lock (_lock)
             {
-                if (_jobs.ContainsKey(repo))
-                {
-                    _jobs[repo] = job;
-                }
-                else
-                {
-                    _jobs.Add(repo, job);
-                }
+                _jobs[repo] = job;
             }
         }
 

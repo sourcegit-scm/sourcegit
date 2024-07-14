@@ -18,7 +18,7 @@ namespace SourceGit.Converters
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                return (value as Models.Locale).Key;
+                return (value as Models.Locale)?.Key;
             }
         }
 
@@ -29,18 +29,21 @@ namespace SourceGit.Converters
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
                 var theme = (string)value;
+                if (string.IsNullOrEmpty(theme))
+                    return ThemeVariant.Default;
+
                 if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase))
                     return ThemeVariant.Light;
-                else if (theme.Equals("Dark", StringComparison.OrdinalIgnoreCase))
+
+                if (theme.Equals("Dark", StringComparison.OrdinalIgnoreCase))
                     return ThemeVariant.Dark;
-                else
-                    return ThemeVariant.Default;
+
+                return ThemeVariant.Default;
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                var theme = (ThemeVariant)value;
-                return theme.Key;
+                return (value as ThemeVariant)?.Key;
             }
         }
 

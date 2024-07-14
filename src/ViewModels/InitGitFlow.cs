@@ -114,8 +114,8 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private readonly Repository _repo = null;
-        private string _master = "master";
+        private readonly Repository _repo;
+        private string _master;
         private string _develop = "develop";
         private string _featurePrefix = "feature/";
         private string _releasePrefix = "release/";
