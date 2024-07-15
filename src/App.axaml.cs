@@ -122,7 +122,7 @@ namespace SourceGit
             Check4Update(true);
         });
 
-        public static readonly SimpleCommand QuitCommand = new SimpleCommand(Quit);
+        public static readonly SimpleCommand QuitCommand = new SimpleCommand(() => Quit(0));
 
         public static void RaiseException(string context, string message)
         {
@@ -315,12 +315,16 @@ namespace SourceGit
             return null;
         }
 
-        public static void Quit()
+        public static void Quit(int exitCode)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow?.Close();
-                desktop.Shutdown();
+                desktop.Shutdown(exitCode);
+            }
+            else
+            {
+                Environment.Exit(exitCode);
             }
         }
 
@@ -485,9 +489,10 @@ namespace SourceGit
 
             var file = args[1];
             if (!File.Exists(file))
-                Environment.Exit(-1);
+                desktop.Shutdown(-1);
+            else
+                desktop.MainWindow = new Views.StandaloneCommitMessageEditor(file);
 
-            desktop.MainWindow = new Views.StandaloneCommitMessageEditor(file);
             return true;
         }
 

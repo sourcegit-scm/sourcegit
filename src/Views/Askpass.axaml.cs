@@ -50,13 +50,13 @@ namespace SourceGit.Views
         private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             Console.Out.WriteLine("No passphrase entered.");
-            Environment.Exit(-1);
+            App.Quit(-1);
         }
 
         private void EnterPassword(object _1, RoutedEventArgs _2)
         {
             Console.Out.Write($"{Passphrase}\n");
-            Environment.Exit(0);
+            App.Quit(0);
         }
     }
 }

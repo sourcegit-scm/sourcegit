@@ -153,7 +153,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    App.Quit();
+                    App.Quit(0);
                 }
 
                 return;

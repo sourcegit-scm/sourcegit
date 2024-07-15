@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 
 using Avalonia.Input;
@@ -41,13 +40,13 @@ namespace SourceGit.Views
 
         private void CloseWindow(object _1, RoutedEventArgs _2)
         {
-            Environment.Exit(-1);
+            App.Quit(-1);
         }
 
         private void SaveAndClose(object _1, RoutedEventArgs _2)
         {
             File.WriteAllText(_file, Editor.Text);
-            Environment.Exit(0);
+            App.Quit(0);
         }
 
         private readonly string _file;
