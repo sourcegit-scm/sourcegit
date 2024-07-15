@@ -158,7 +158,7 @@ namespace SourceGit.Views
                 if (line.Points[size - 1].Y < top)
                     continue;
                 if (last.Y > bottom)
-                    continue;
+                    break;
 
                 var geo = new StreamGeometry();
                 var pen = Models.CommitGraph.Pens[line.Color];
