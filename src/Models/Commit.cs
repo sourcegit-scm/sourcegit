@@ -40,10 +40,7 @@ namespace SourceGit.Models
                     if (timespan.TotalHours > 1)
                         return $"{(int)timespan.TotalHours} hours ago";
 
-                    if (timespan.TotalMinutes > 1)
-                        return $"{(int)timespan.TotalMinutes} minutes ago";
-
-                    return $"Just now";
+                    return timespan.TotalMinutes < 1 ? "Just now" : $"{(int)timespan.TotalMinutes} minutes ago";
                 }
 
                 var diffYear = today.Year - committerTime.Year;
@@ -54,16 +51,10 @@ namespace SourceGit.Models
                         return diffMonth == 1 ? "Last month" : $"{diffMonth} months ago";
 
                     var diffDay = today.Day - committerTime.Day;
-                    if (diffDay > 0)
-                        return diffDay == 1 ? "Yesterday" : $"{diffDay} days ago";
-
-                    return "Today";
+                    return diffDay == 1 ? "Yesterday" : $"{diffDay} days ago";
                 }
 
-                if (diffYear == 1)
-                    return "Last year";
-
-                return $"{diffYear} years ago";
+                return diffYear == 1 ? "Last year" : $"{diffYear} years ago";
             }
         }
     }
