@@ -414,7 +414,7 @@ namespace SourceGit.ViewModels
 
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
-                explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                explore.Icon = App.CreateMenuIcon("Icons.Explore");
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Click += (_, e) =>
                 {
@@ -872,7 +872,7 @@ namespace SourceGit.ViewModels
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Header = App.Text("RevealFile");
-                explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                explore.Icon = App.CreateMenuIcon("Icons.Explore");
                 explore.Click += (_, e) =>
                 {
                     Native.OS.OpenInFileManager(path, true);

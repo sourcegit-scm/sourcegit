@@ -25,8 +25,6 @@
       <StackPanel Grid.Column="1" Orientation="Horizontal">
         <Path Width="12" Height="12" Margin="0,0,8,0"
               Fill="{Binding Node.Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
-              StrokeThickness="{Binding Node.Bookmark, Converter={x:Static c:BookmarkConverters.ToStrokeThickness}}"
-              Stroke="{DynamicResource Brush.FG1}"
               HorizontalAlignment="Left" VerticalAlignment="Center"
               Data="{StaticResource Icons.Bookmark}"
               IsVisible="{Binding Node.IsRepository}"/>

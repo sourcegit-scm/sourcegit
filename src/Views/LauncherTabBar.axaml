@@ -46,8 +46,6 @@
                   <Path Grid.Column="0"
                         Width="12" Height="12" Margin="12,0"
                         Fill="{Binding Node.Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
-                        StrokeThickness="{Binding Node.Bookmark, Converter={x:Static c:BookmarkConverters.ToStrokeThickness}}"
-                        Stroke="{DynamicResource Brush.FG1}"
                         Data="{StaticResource Icons.Bookmark}"
                         IsVisible="{Binding Node.IsRepository}"
                         IsHitTestVisible="False"/>

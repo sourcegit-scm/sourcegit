@@ -1075,8 +1075,8 @@
   </Style>
   <Style Selector="ToggleButton.tree_expander">
     <Setter Property="Margin" Value="0" />
-    <Setter Property="Width" Value="10" />
-    <Setter Property="Height" Value="10" />
+    <Setter Property="Width" Value="9" />
+    <Setter Property="Height" Value="9" />
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Template">
       <ControlTemplate>
@@ -1111,8 +1111,9 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
           <Path x:Name="ChevronPath"
-                Data="{StaticResource Icons.Folder.Fill}"
+                Data="{StaticResource Icons.Folder}"
                 Fill="{TemplateBinding Foreground}"
+                Stretch="Uniform"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"/>
         </Border>
