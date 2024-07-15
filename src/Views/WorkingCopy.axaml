@@ -65,7 +65,7 @@
       <!-- Unstaged Changes -->
       <v:ChangeCollectionView Grid.Row="1"
                               IsWorkingCopyChange="True"
-                              SingleSelect="False"
+                              SelectionMode="Multiple"
                               Background="{DynamicResource Brush.Contents}"
                               ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode}"
                               Changes="{Binding Unstaged}"
@@ -99,7 +99,7 @@
       <!-- Staged Changes -->
       <v:ChangeCollectionView Grid.Row="3"
                               IsWorkingCopyChange="False"
-                              SingleSelect="False"
+                              SelectionMode="Multiple"
                               Background="{DynamicResource Brush.Contents}"
                               ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode}"
                               Changes="{Binding Staged}"

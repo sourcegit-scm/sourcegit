@@ -1,12 +1,10 @@
 using System.IO;
-using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Platform.Storage;
-using Avalonia.Threading;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -17,7 +15,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void SetupTreeViewDragAndDrop(object sender, RoutedEventArgs e)
+        private void SetupTreeViewDragAndDrop(object sender, RoutedEventArgs _)
         {
             if (sender is TreeView view)
             {
@@ -27,7 +25,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void SetupTreeNodeDragAndDrop(object sender, RoutedEventArgs e)
+        private void SetupTreeNodeDragAndDrop(object sender, RoutedEventArgs _)
         {
             if (sender is Grid grid)
             {
@@ -62,7 +60,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnPointerReleasedOnTreeNode(object sender, PointerReleasedEventArgs e)
+        private void OnPointerReleasedOnTreeNode(object _1, PointerReleasedEventArgs _2)
         {
             _pressedTreeNode = false;
             _startDragTreeNode = false;
@@ -70,7 +68,8 @@ namespace SourceGit.Views
 
         private void OnPointerMovedOverTreeNode(object sender, PointerEventArgs e)
         {
-            if (_pressedTreeNode && !_startDragTreeNode && sender is Grid grid)
+            if (_pressedTreeNode && !_startDragTreeNode &&
+                sender is Grid { DataContext: ViewModels.RepositoryNode node } grid)
             {
                 var delta = e.GetPosition(grid) - _pressedTreeNodePosition;
                 var sizeSquired = delta.X * delta.X + delta.Y * delta.Y;
@@ -80,12 +79,12 @@ namespace SourceGit.Views
                 _startDragTreeNode = true;
 
                 var data = new DataObject();
-                data.Set("MovedRepositoryTreeNode", grid.DataContext);
+                data.Set("MovedRepositoryTreeNode", node);
                 DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
             }
         }
 
-        private void OnTreeViewLostFocus(object sender, RoutedEventArgs e)
+        private void OnTreeViewLostFocus(object _1, RoutedEventArgs _2)
         {
             _pressedTreeNode = false;
             _startDragTreeNode = false;
@@ -105,27 +104,27 @@ namespace SourceGit.Views
             }
         }
 
-        private async void DropOnTreeView(object sender, DragEventArgs e)
+        private void DropOnTreeView(object sender, DragEventArgs e)
         {
-            if (e.Data.Contains("MovedRepositoryTreeNode"))
+            if (e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
             {
                 e.Handled = true;
 
-                var moved = e.Data.Get("MovedRepositoryTreeNode") as ViewModels.RepositoryNode;
-                if (moved != null && DataContext is ViewModels.Welcome vm)
-                {
+                if (DataContext is ViewModels.Welcome vm)
                     vm.MoveNode(moved, null);
-                }
             }
             else if (e.Data.Contains(DataFormats.Files))
             {
                 e.Handled = true;
 
                 var items = e.Data.GetFiles();
-                foreach (var item in items)
+                if (items != null)
                 {
-                    await OpenOrInitRepository(item.Path.LocalPath);
-                    break;
+                    foreach (var item in items)
+                    {
+                        OpenOrInitRepository(item.Path.LocalPath);
+                        break;
+                    }
                 }
             }
 
@@ -158,10 +157,9 @@ namespace SourceGit.Views
             }
         }
 
-        private async void DropOnTreeNode(object sender, DragEventArgs e)
+        private void DropOnTreeNode(object sender, DragEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid == null)
+            if (sender is not Grid grid)
                 return;
 
             var to = grid.DataContext as ViewModels.RepositoryNode;
@@ -171,25 +169,25 @@ namespace SourceGit.Views
                 return;
             }
 
-            if (e.Data.Contains("MovedRepositoryTreeNode"))
+            if (e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
             {
                 e.Handled = true;
 
-                var moved = e.Data.Get("MovedRepositoryTreeNode") as ViewModels.RepositoryNode;
-                if (to != null && moved != null && to != moved && DataContext is ViewModels.Welcome vm)
-                {
+                if (to != moved && DataContext is ViewModels.Welcome vm)
                     vm.MoveNode(moved, to);
-                }
             }
             else if (e.Data.Contains(DataFormats.Files))
             {
                 e.Handled = true;
 
                 var items = e.Data.GetFiles();
-                foreach (var item in items)
+                if (items != null)
                 {
-                    await OpenOrInitRepository(item.Path.LocalPath, to);
-                    break;
+                    foreach (var item in items)
+                    {
+                        OpenOrInitRepository(item.Path.LocalPath, to);
+                        break;
+                    }
                 }
             }
 
@@ -200,66 +198,38 @@ namespace SourceGit.Views
         private void OnDoubleTappedTreeNode(object sender, TappedEventArgs e)
         {
             var grid = sender as Grid;
-            if (grid == null)
+            var to = grid?.DataContext as ViewModels.RepositoryNode;
+            if (to is not { IsRepository: true })
                 return;
 
-            var to = grid.DataContext as ViewModels.RepositoryNode;
-            if (to == null || !to.IsRepository)
-            {
-                return;
-            }
+            var parent = this.FindAncestorOfType<Launcher>();
+            if (parent?.DataContext is ViewModels.Launcher launcher)
+                launcher.OpenRepositoryInTab(to, null);
 
-            var launcher = TopLevel.GetTopLevel(this).DataContext as ViewModels.Launcher;
-            launcher.OpenRepositoryInTab(to, launcher.ActivePage);
             e.Handled = true;
         }
 
-        private async void OpenLocalRepository(object sender, RoutedEventArgs e)
+        private void OpenOrInitRepository(string path, ViewModels.RepositoryNode parent = null)
         {
-            if (!ViewModels.PopupHost.CanCreatePopup())
-                return;
-
-            var topLevel = TopLevel.GetTopLevel(this);
-            var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-            var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
-            if (selected.Count == 1)
-            {
-                await OpenOrInitRepository(selected[0].Path.LocalPath);
-            }
-        }
-
-        private Task OpenOrInitRepository(string path, ViewModels.RepositoryNode parent = null)
-        {
-            var launcher = TopLevel.GetTopLevel(this).DataContext as ViewModels.Launcher;
-            var page = launcher.ActivePage;
-
             if (!Directory.Exists(path))
             {
                 if (File.Exists(path))
                     path = Path.GetDirectoryName(path);
                 else
-                    return null;
+                    return;
             }
 
-            return Task.Run(() =>
+            var root = new Commands.QueryRepositoryRootPath(path).Result();
+            if (string.IsNullOrEmpty(root))
             {
-                var root = new Commands.QueryRepositoryRootPath(path).Result();
-                if (string.IsNullOrEmpty(root))
-                {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        (DataContext as ViewModels.Welcome).InitRepository(path, parent);
-                    });
-                    return;
-                }
+                (DataContext as ViewModels.Welcome)?.InitRepository(path, parent);
+                return;
+            }
 
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    var normalizedPath = root.Replace("\\", "/");
-                    var node = ViewModels.Preference.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
-                    launcher.OpenRepositoryInTab(node, page);
-                });
-            });
+            var normalizedPath = root.Replace("\\", "/");
+            var node = ViewModels.Preference.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
+            var launcher = this.FindAncestorOfType<Launcher>()?.DataContext as ViewModels.Launcher;
+            launcher?.OpenRepositoryInTab(node, launcher.ActivePage);
         }
 
         private bool _pressedTreeNode = false;

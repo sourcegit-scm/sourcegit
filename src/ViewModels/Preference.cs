@@ -66,28 +66,26 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _theme, value))
-                    App.SetTheme(_theme, _colorOverrides);
+                    App.SetTheme(_theme, _themeOverrides);
             }
         }
 
-        public string ColorOverrides
+        public string ThemeOverrides
         {
-            get => _colorOverrides;
+            get => _themeOverrides;
             set
             {
-                if (SetProperty(ref _colorOverrides, value))
+                if (SetProperty(ref _themeOverrides, value))
                     App.SetTheme(_theme, value);
             }
         }
 
-        [JsonConverter(typeof(FontFamilyConverter))]
         public FontFamily DefaultFont
         {
             get => _defaultFont;
             set => SetProperty(ref _defaultFont, value);
         }
 
-        [JsonConverter(typeof(FontFamilyConverter))]
         public FontFamily MonospaceFont
         {
             get => _monospaceFont;
@@ -114,7 +112,7 @@ namespace SourceGit.ViewModels
                 if (Models.AvatarManager.SelectedServer != value)
                 {
                     Models.AvatarManager.SelectedServer = value;
-                    OnPropertyChanged(nameof(AvatarServer));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -223,7 +221,7 @@ namespace SourceGit.ViewModels
                 if (Native.OS.GitExecutable != value)
                 {
                     Native.OS.GitExecutable = value;
-                    OnPropertyChanged(nameof(GitInstallPath));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -235,7 +233,7 @@ namespace SourceGit.ViewModels
             {
                 if (Native.OS.SetShell(value))
                 {
-                    OnPropertyChanged(nameof(GitShell));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -254,7 +252,7 @@ namespace SourceGit.ViewModels
                 if (Commands.AutoFetch.IsEnabled != value)
                 {
                     Commands.AutoFetch.IsEnabled = value;
-                    OnPropertyChanged(nameof(GitAutoFetch));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -270,7 +268,7 @@ namespace SourceGit.ViewModels
                 if (Commands.AutoFetch.Interval != value)
                 {
                     Commands.AutoFetch.Interval = (int)value;
-                    OnPropertyChanged(nameof(GitAutoFetchInterval));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -351,8 +349,8 @@ namespace SourceGit.ViewModels
             {
                 if (l.IsRepository != r.IsRepository)
                     return l.IsRepository ? 1 : -1;
-                else
-                    return l.Name.CompareTo(r.Name);
+
+                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
 
             collection.Clear();
@@ -415,13 +413,9 @@ namespace SourceGit.ViewModels
             list.Sort((l, r) =>
             {
                 if (l.IsRepository != r.IsRepository)
-                {
                     return l.IsRepository ? 1 : -1;
-                }
-                else
-                {
-                    return l.Name.CompareTo(r.Name);
-                }
+
+                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
 
             container.Clear();
@@ -487,7 +481,7 @@ namespace SourceGit.ViewModels
 
         private string _locale = "en_US";
         private string _theme = "Default";
-        private string _colorOverrides = string.Empty;
+        private string _themeOverrides = string.Empty;
         private FontFamily _defaultFont = null;
         private FontFamily _monospaceFont = null;
         private double _defaultFontSize = 13;
@@ -498,7 +492,7 @@ namespace SourceGit.ViewModels
         private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
         private bool _check4UpdatesOnStartup = true;
-        
+
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _useSideBySideDiff = false;
         private bool _useSyntaxHighlighting = false;
@@ -516,19 +510,5 @@ namespace SourceGit.ViewModels
         private string _externalMergeToolPath = string.Empty;
 
         private AvaloniaList<RepositoryNode> _repositoryNodes = new AvaloniaList<RepositoryNode>();
-    }
-
-    public class FontFamilyConverter : JsonConverter<FontFamily>
-    {
-        public override FontFamily Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            var name = reader.GetString();
-            return new FontFamily(name);
-        }
-
-        public override void Write(Utf8JsonWriter writer, FontFamily value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(value.ToString());
-        }
     }
 }

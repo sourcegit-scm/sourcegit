@@ -45,8 +45,8 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private readonly Repository _repo = null;
-        private string _message = string.Empty;
-        private string _oldMessage = string.Empty;
+        private readonly Repository _repo;
+        private string _message;
+        private string _oldMessage;
     }
 }

@@ -11,17 +11,17 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
+        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
+        private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             Close();
         }
 
-        private void GotoDownload(object sender, RoutedEventArgs e)
+        private void GotoDownload(object _, RoutedEventArgs e)
         {
             Native.OS.OpenBrowser("https://github.com/sourcegit-scm/sourcegit/releases/latest");
             e.Handled = true;
@@ -29,9 +29,9 @@ namespace SourceGit.Views
 
         private void IgnoreThisVersion(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            var ver = button.DataContext as Models.Version;
-            ViewModels.Preference.Instance.IgnoreUpdateTag = ver.TagName;
+            if (sender is Button { DataContext: Models.Version ver })
+                ViewModels.Preference.Instance.IgnoreUpdateTag = ver.TagName;
+
             Close();
             e.Handled = true;
         }

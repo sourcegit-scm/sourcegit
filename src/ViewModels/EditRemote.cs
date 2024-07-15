@@ -67,7 +67,7 @@ namespace SourceGit.ViewModels
                 foreach (var remote in edit._repo.Remotes)
                 {
                     if (remote != edit._remote && name == remote.Name)
-                        new ValidationResult("A remote with given name already exists!!!");
+                        return new ValidationResult("A remote with given name already exists!!!");
                 }
             }
 
@@ -84,7 +84,7 @@ namespace SourceGit.ViewModels
                 foreach (var remote in edit._repo.Remotes)
                 {
                     if (remote != edit._remote && url == remote.URL)
-                        new ValidationResult("A remote with the same url already exists!!!");
+                        return new ValidationResult("A remote with the same url already exists!!!");
                 }
             }
 
@@ -136,8 +136,8 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private readonly Models.Remote _remote = null;
-        private string _name = string.Empty;
-        private string _url = string.Empty;
+        private string _name = null;
+        private string _url = null;
         private bool _useSSH = false;
         private string _sshkey = string.Empty;
     }

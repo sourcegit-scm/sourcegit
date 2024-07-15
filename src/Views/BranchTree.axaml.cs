@@ -24,7 +24,7 @@ namespace SourceGit.Views
             get => GetValue(NodeProperty);
             set => SetValue(NodeProperty, value);
         }
-        
+
         public static readonly StyledProperty<bool> IsExpandedProperty =
             AvaloniaProperty.Register<BranchTreeNodeIcon, bool>(nameof(IsExpanded));
 
@@ -51,21 +51,21 @@ namespace SourceGit.Views
 
             if (node.Backend is Models.Remote)
             {
-                CreateContent(12, new Thickness(0,2,0,0), "Icons.Remote");
+                CreateContent(12, new Thickness(0, 2, 0, 0), "Icons.Remote");
             }
             else if (node.Backend is Models.Branch branch)
             {
                 if (branch.IsCurrent)
-                    CreateContent(12, new Thickness(0,2,0,0), "Icons.Check");
+                    CreateContent(12, new Thickness(0, 2, 0, 0), "Icons.Check");
                 else
-                    CreateContent(12, new Thickness(2,0,0,0), "Icons.Branch");
+                    CreateContent(12, new Thickness(2, 0, 0, 0), "Icons.Branch");
             }
             else
             {
                 if (node.IsExpanded)
-                    CreateContent(10, new Thickness(0,2,0,0), "Icons.Folder.Open");
+                    CreateContent(10, new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
                 else
-                    CreateContent(10, new Thickness(0,2,0,0), "Icons.Folder.Fill");
+                    CreateContent(10, new Thickness(0, 2, 0, 0), "Icons.Folder.Fill");
             }
         }
 
@@ -74,7 +74,7 @@ namespace SourceGit.Views
             var geo = this.FindResource(iconKey) as StreamGeometry;
             if (geo == null)
                 return;
-            
+
             Content = new Path()
             {
                 Width = size,
@@ -86,7 +86,24 @@ namespace SourceGit.Views
             };
         }
     }
-    
+
+    public class BranchTreeNodeToggleButton : ToggleButton
+    {
+        protected override Type StyleKeyOverride => typeof(ToggleButton);
+
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
+                DataContext is ViewModels.BranchTreeNode { IsBranch: false } node)
+            {
+                var tree = this.FindAncestorOfType<BranchTree>();
+                tree?.ToggleNodeIsExpanded(node);
+            }
+
+            e.Handled = true;
+        }
+    }
+
     public partial class BranchTree : UserControl
     {
         public static readonly StyledProperty<List<ViewModels.BranchTreeNode>> NodesProperty =
@@ -103,7 +120,7 @@ namespace SourceGit.Views
             get;
             private set;
         } = new AvaloniaList<ViewModels.BranchTreeNode>();
-        
+
         public static readonly RoutedEvent<RoutedEventArgs> SelectionChangedEvent =
             RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(SelectionChanged), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
@@ -130,6 +147,42 @@ namespace SourceGit.Views
         public void UnselectAll()
         {
             BranchesPresenter.SelectedItem = null;
+        }
+
+        public void ToggleNodeIsExpanded(ViewModels.BranchTreeNode node)
+        {
+            _disableSelectionChangingEvent = true;
+            node.IsExpanded = !node.IsExpanded;
+
+            var rows = Rows;
+            var depth = node.Depth;
+            var idx = rows.IndexOf(node);
+            if (idx == -1)
+                return;
+
+            if (node.IsExpanded)
+            {
+                var subtree = new List<ViewModels.BranchTreeNode>();
+                MakeRows(subtree, node.Children, depth + 1);
+                rows.InsertRange(idx + 1, subtree);
+            }
+            else
+            {
+                var removeCount = 0;
+                for (int i = idx + 1; i < rows.Count; i++)
+                {
+                    var row = rows[i];
+                    if (row.Depth <= depth)
+                        break;
+
+                    row.IsSelected = false;
+                    removeCount++;
+                }
+                rows.RemoveRange(idx + 1, removeCount);
+            }
+
+            RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
+            _disableSelectionChangingEvent = false;
         }
 
         protected override void OnSizeChanged(SizeChangedEventArgs e)
@@ -165,6 +218,9 @@ namespace SourceGit.Views
 
         private void OnNodesSelectionChanged(object _, SelectionChangedEventArgs e)
         {
+            if (_disableSelectionChangingEvent)
+                return;
+
             var repo = DataContext as ViewModels.Repository;
             if (repo?.Settings == null)
                 return;
@@ -180,7 +236,7 @@ namespace SourceGit.Views
                 if (item is ViewModels.BranchTreeNode node)
                     node.IsSelected = false;
             }
-            
+
             var selected = BranchesPresenter.SelectedItems;
             if (selected == null || selected.Count == 0)
                 return;
@@ -207,16 +263,16 @@ namespace SourceGit.Views
 
                 prev = row;
             }
-            
+
             RaiseEvent(new RoutedEventArgs(SelectionChangedEvent));
         }
-        
+
         private void OnTreeContextRequested(object _1, ContextRequestedEventArgs _2)
         {
             var repo = DataContext as ViewModels.Repository;
             if (repo?.Settings == null)
                 return;
-            
+
             var selected = BranchesPresenter.SelectedItems;
             if (selected == null || selected.Count == 0)
                 return;
@@ -273,39 +329,11 @@ namespace SourceGit.Views
                 }
                 else
                 {
-                    node.IsExpanded = !node.IsExpanded;
-
-                    var rows = Rows;
-                    var depth = node.Depth;
-                    var idx = rows.IndexOf(node);
-                    if (idx == -1)
-                        return;
-                
-                    if (node.IsExpanded)
-                    {
-                        var subtree = new List<ViewModels.BranchTreeNode>();
-                        MakeRows(subtree, node.Children, depth + 1);
-                        rows.InsertRange(idx + 1, subtree);
-                    }
-                    else
-                    {
-                        var removeCount = 0;
-                        for (int i = idx + 1; i < rows.Count; i++)
-                        {
-                            var row = rows[i];
-                            if (row.Depth <= depth)
-                                break;
-
-                            removeCount++;
-                        }
-                        rows.RemoveRange(idx + 1, removeCount);
-                    }
-
-                    RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
+                    ToggleNodeIsExpanded(node);
                 }
             }
         }
-        
+
         private void OnToggleFilter(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton toggle && DataContext is ViewModels.Repository repo)
@@ -316,17 +344,18 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
-        
+
         private void MakeRows(List<ViewModels.BranchTreeNode> rows, List<ViewModels.BranchTreeNode> nodes, int depth)
         {
             foreach (var node in nodes)
             {
                 node.Depth = depth;
+                node.IsSelected = false;
                 rows.Add(node);
 
                 if (!node.IsExpanded || node.Backend is Models.Branch)
                     continue;
-                
+
                 MakeRows(rows, node.Children, depth + 1);
             }
         }
@@ -338,10 +367,12 @@ namespace SourceGit.Views
                 outs.Add(branch);
                 return;
             }
-            
+
             foreach (var sub in node.Children)
                 CollectBranchesInNode(outs, sub);
         }
+
+        private bool _disableSelectionChangingEvent = false;
     }
 }
 

@@ -18,19 +18,19 @@ namespace SourceGit.ViewModels
         public bool IsFiltered { get; set; } = false;
         public bool IsSelected { get; set; } = false;
         public List<BranchTreeNode> Children { get; private set; } = new List<BranchTreeNode>();
-        
+
         public bool IsExpanded
         {
             get => _isExpanded;
             set => SetProperty(ref _isExpanded, value);
         }
-        
+
         public CornerRadius CornerRadius
         {
             get => _cornerRadius;
             set => SetProperty(ref _cornerRadius, value);
         }
-        
+
         public bool IsBranch
         {
             get => Backend is Models.Branch;
@@ -55,7 +55,7 @@ namespace SourceGit.ViewModels
         {
             get => Backend is Models.Branch b ? b.FriendlyName : null;
         }
-        
+
         private bool _isExpanded = false;
         private CornerRadius _cornerRadius = new CornerRadius(4);
 
@@ -118,11 +118,11 @@ namespace SourceGit.ViewModels
                 {
                     if (node.Backend is Models.Branch)
                         continue;
-                    
+
                     var path = prefix + "/" + node.Name;
                     if (node.IsExpanded)
                         _expanded.Add(path);
-                    
+
                     CollectExpandedNodes(node.Children, path);
                 }
             }
@@ -197,7 +197,7 @@ namespace SourceGit.ViewModels
 
                     if (l.Backend is Models.Branch)
                         return r.Backend is Models.Branch ? string.Compare(l.Name, r.Name, StringComparison.Ordinal) : 1;
-                    
+
                     return r.Backend is Models.Branch ? -1 : string.Compare(l.Name, r.Name, StringComparison.Ordinal);
                 });
 

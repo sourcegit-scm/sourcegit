@@ -28,7 +28,7 @@ namespace SourceGit.Models
 
                 var major = int.Parse(match.Groups[1].Value);
                 var minor = int.Parse(match.Groups[2].Value);
-                var ver = Assembly.GetExecutingAssembly().GetName().Version;
+                var ver = Assembly.GetExecutingAssembly().GetName().Version!;
                 return ver.Major < major || (ver.Major == major && ver.Minor < minor);
             }
         }

@@ -11,18 +11,21 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private async void SelectPatchFile(object sender, RoutedEventArgs e)
+        private async void SelectPatchFile(object _, RoutedEventArgs e)
         {
             var topLevel = TopLevel.GetTopLevel(this);
             if (topLevel == null)
                 return;
 
-            var options = new FilePickerOpenOptions() { AllowMultiple = false, FileTypeFilter = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }] };
+            var options = new FilePickerOpenOptions()
+            {
+                AllowMultiple = false,
+                FileTypeFilter = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }]
+            };
+
             var selected = await topLevel.StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
-            {
-                txtPatchFile.Text = selected[0].Path.LocalPath;
-            }
+                TxtPatchFile.Text = selected[0].Path.LocalPath;
 
             e.Handled = true;
         }

@@ -11,15 +11,21 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private async void SelectOutputFile(object sender, RoutedEventArgs e)
+        private async void SelectOutputFile(object _, RoutedEventArgs e)
         {
-            var options = new FilePickerSaveOptions() { DefaultExtension = ".zip", FileTypeChoices = [new FilePickerFileType("ZIP") { Patterns = ["*.zip"] }] };
             var toplevel = TopLevel.GetTopLevel(this);
+            if (toplevel == null)
+                return;
+
+            var options = new FilePickerSaveOptions()
+            {
+                DefaultExtension = ".zip",
+                FileTypeChoices = [new FilePickerFileType("ZIP") { Patterns = ["*.zip"] }]
+            };
+
             var selected = await toplevel.StorageProvider.SaveFilePickerAsync(options);
             if (selected != null)
-            {
-                txtSaveFile.Text = selected.Path.LocalPath;
-            }
+                TxtSaveFile.Text = selected.Path.LocalPath;
 
             e.Handled = true;
         }

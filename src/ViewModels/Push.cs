@@ -114,7 +114,7 @@ namespace SourceGit.ViewModels
             }
 
             // Find preferred remote if selected local branch has upstream.
-            if (!string.IsNullOrEmpty(_selectedLocalBranch.Upstream))
+            if (!string.IsNullOrEmpty(_selectedLocalBranch?.Upstream))
             {
                 foreach (var branch in repo.Branches)
                 {

@@ -37,7 +37,7 @@ namespace SourceGit.Views
                 if (view != null && view.VisualLinesValid)
                 {
                     var typeface = view.CreateTypeface();
-                    var underlinePen = new Pen(Brushes.DarkOrange, 1);
+                    var underlinePen = new Pen(Brushes.DarkOrange);
 
                     foreach (var line in view.VisualLines)
                     {
@@ -189,7 +189,7 @@ namespace SourceGit.Views
 
             public override void Render(DrawingContext context)
             {
-                var pen = new Pen(_editor.BorderBrush, 1);
+                var pen = new Pen(_editor.BorderBrush);
                 context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
             }
 
@@ -282,20 +282,23 @@ namespace SourceGit.Views
             if (string.IsNullOrEmpty(selected))
                 return;
 
-            var icon = new Avalonia.Controls.Shapes.Path();
-            icon.Width = 10;
-            icon.Height = 10;
-            icon.Stretch = Stretch.Uniform;
-            icon.Data = App.Current?.FindResource("Icons.Copy") as StreamGeometry;
-
-            var copy = new MenuItem();
-            copy.Header = App.Text("Copy");
-            copy.Icon = icon;
-            copy.Click += (o, ev) =>
+            var copy = new MenuItem() { Header = App.Text("Copy") };
+            copy.Click += (_, ev) =>
             {
                 App.CopyText(selected);
                 ev.Handled = true;
             };
+
+            if (this.FindResource("Icons.Copy") is StreamGeometry geo)
+            {
+                copy.Icon = new Avalonia.Controls.Shapes.Path()
+                {
+                    Width = 10,
+                    Height = 10,
+                    Stretch = Stretch.Fill,
+                    Data = geo,
+                };
+            }
 
             var menu = new ContextMenu();
             menu.Items.Add(copy);
@@ -323,7 +326,7 @@ namespace SourceGit.Views
     {
         public Blame()
         {
-            if (App.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 Owner = desktop.MainWindow;
             }
@@ -331,7 +334,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void MaximizeOrRestoreWindow(object sender, TappedEventArgs e)
+        private void MaximizeOrRestoreWindow(object _, TappedEventArgs e)
         {
             _pressedTitleBar = false;
 
@@ -343,18 +346,22 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
+        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             if (e.ClickCount != 2)
                 _pressedTitleBar = true;
         }
 
-        private void MoveWindow(object sender, PointerEventArgs e)
+        private void MoveWindow(object _, PointerEventArgs e)
         {
-            if (!_pressedTitleBar)
+            if (!_pressedTitleBar || e.Source == null)
                 return;
 
             var visual = (Visual)e.Source;
+            if (visual == null)
+                return;
+
+#pragma warning disable CS0618
             BeginMoveDrag(new PointerPressedEventArgs(
                 e.Source,
                 e.Pointer,
@@ -363,9 +370,10 @@ namespace SourceGit.Views
                 e.Timestamp,
                 new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonPressed),
                 e.KeyModifiers));
+#pragma warning restore CS0618
         }
 
-        private void EndMoveWindow(object sender, PointerReleasedEventArgs e)
+        private void EndMoveWindow(object _1, PointerReleasedEventArgs _2)
         {
             _pressedTitleBar = false;
         }
@@ -374,14 +382,6 @@ namespace SourceGit.Views
         {
             base.OnClosed(e);
             GC.Collect();
-        }
-
-        private void OnCommitSHAPointerPressed(object sender, PointerPressedEventArgs e)
-        {
-            if (sender is TextBlock txt && DataContext is ViewModels.Blame blame)
-                blame.NavigateToCommit(txt.Text);
-
-            e.Handled = true;
         }
 
         private bool _pressedTitleBar = false;

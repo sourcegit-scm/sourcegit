@@ -11,14 +11,12 @@ namespace SourceGit.Views
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail vm)
+            if (sender is ChangeCollectionView { SelectedChanges: { } selected } view &&
+                selected.Count == 1 &&
+                DataContext is ViewModels.CommitDetail vm)
             {
-                var selected = (sender as ChangeCollectionView)?.SelectedChanges;
-                if (selected != null && selected.Count == 1)
-                {
-                    var menu = vm.CreateChangeContextMenu(selected[0]);
-                    (sender as Control)?.OpenContextMenu(menu);
-                }
+                var menu = vm.CreateChangeContextMenu(selected[0]);
+                view.OpenContextMenu(menu);
             }
 
             e.Handled = true;

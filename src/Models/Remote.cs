@@ -40,11 +40,15 @@ namespace SourceGit.Models
 
         public static bool IsValidURL(string url)
         {
+            if (string.IsNullOrWhiteSpace(url))
+                return false;
+
             foreach (var fmt in URL_FORMATS)
             {
                 if (fmt.IsMatch(url))
                     return true;
             }
+
             return false;
         }
 

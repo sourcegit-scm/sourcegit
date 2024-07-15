@@ -64,7 +64,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<Bitmap> OldImageProperty =
-            AvaloniaProperty.Register<ImagesSwipeControl, Bitmap>(nameof(OldImage), null);
+            AvaloniaProperty.Register<ImagesSwipeControl, Bitmap>(nameof(OldImage));
 
         public Bitmap OldImage
         {
@@ -73,7 +73,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<Bitmap> NewImageProperty =
-            AvaloniaProperty.Register<ImagesSwipeControl, Bitmap>(nameof(NewImage), null);
+            AvaloniaProperty.Register<ImagesSwipeControl, Bitmap>(nameof(NewImage));
 
         public Bitmap NewImage
         {
@@ -127,7 +127,7 @@ namespace SourceGit.Views
                 Cursor = new Cursor(StandardCursorType.SizeWestEast);
                 e.Pointer.Capture(this);
                 e.Handled = true;
-            }                
+            }
         }
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -163,7 +163,7 @@ namespace SourceGit.Views
                         _lastInSlider = false;
                         Cursor = null;
                     }
-                }                    
+                }
             }
         }
 
@@ -185,13 +185,9 @@ namespace SourceGit.Views
 
         private Size GetDesiredSize(Size img, Size available)
         {
-            var w = available.Width;
-            var h = available.Height;
-
             var sw = available.Width / img.Width;
             var sh = available.Height / img.Height;
             var scale = Math.Min(sw, sh);
-
             return new Size(scale * img.Width, scale * img.Height);
         }
 
@@ -211,7 +207,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<Bitmap> OldImageProperty =
-            AvaloniaProperty.Register<ImageBlendControl, Bitmap>(nameof(OldImage), null);
+            AvaloniaProperty.Register<ImageBlendControl, Bitmap>(nameof(OldImage));
 
         public Bitmap OldImage
         {
@@ -220,7 +216,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<Bitmap> NewImageProperty =
-            AvaloniaProperty.Register<ImageBlendControl, Bitmap>(nameof(NewImage), null);
+            AvaloniaProperty.Register<ImageBlendControl, Bitmap>(nameof(NewImage));
 
         public Bitmap NewImage
         {
@@ -294,13 +290,9 @@ namespace SourceGit.Views
 
         private Size GetDesiredSize(Size img, Size available)
         {
-            var w = available.Width;
-            var h = available.Height;
-
             var sw = available.Width / img.Width;
             var sh = available.Height / img.Height;
             var scale = Math.Min(sw, sh);
-
             return new Size(scale * img.Width, scale * img.Height);
         }
 

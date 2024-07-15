@@ -38,7 +38,7 @@ namespace SourceGit.Models
 
             // If this repository is a worktree repository, just watch the main repository's gitdir.
             var gitDirNormalized = _repo.GitDir.Replace("\\", "/");
-            var worktreeIdx = gitDirNormalized.IndexOf(".git/worktrees/");
+            var worktreeIdx = gitDirNormalized.IndexOf(".git/worktrees/", StringComparison.Ordinal);
             var repoWatchDir = _repo.GitDir;
             if (worktreeIdx > 0)
                 repoWatchDir = _repo.GitDir.Substring(0, worktreeIdx + 4);

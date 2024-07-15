@@ -67,8 +67,8 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private string _repo = string.Empty;
-        private string _remote = string.Empty;
+        private string _repo;
+        private string _remote;
         private bool _isLoading = true;
         private bool _isEmpty = false;
     }

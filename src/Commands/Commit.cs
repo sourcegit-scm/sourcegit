@@ -11,6 +11,7 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
+            TraitErrorAsOutput = true;
             Args = $"commit --file=\"{file}\"";
             if (autoStage)
                 Args += " --all";

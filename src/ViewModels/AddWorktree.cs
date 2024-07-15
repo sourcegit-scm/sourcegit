@@ -88,6 +88,9 @@ namespace SourceGit.ViewModels
             if (creator == null)
                 return new ValidationResult("Missing runtime context to create branch!");
 
+            if (string.IsNullOrEmpty(path))
+                return new ValidationResult("Worktree path is required!");
+
             var fullPath = System.IO.Path.IsPathRooted(path) ? path : System.IO.Path.Combine(creator._repo.FullPath, path);
             var info = new DirectoryInfo(fullPath);
             if (info.Exists)

@@ -47,6 +47,9 @@ namespace SourceGit.Commands
             foreach (var sub in subs)
             {
                 var d = sub.Trim();
+                if (d.EndsWith("/HEAD", StringComparison.Ordinal))
+                    continue;
+
                 if (d.StartsWith("tag: refs/tags/", StringComparison.Ordinal))
                 {
                     decorators.Add(new Models.Decorator()
@@ -54,10 +57,6 @@ namespace SourceGit.Commands
                         Type = Models.DecoratorType.Tag,
                         Name = d.Substring(15),
                     });
-                }
-                else if (d.EndsWith("/HEAD", StringComparison.Ordinal))
-                {
-                    continue;
                 }
                 else if (d.StartsWith("HEAD -> refs/heads/", StringComparison.Ordinal))
                 {

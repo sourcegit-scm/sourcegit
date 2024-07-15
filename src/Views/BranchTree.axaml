@@ -53,51 +53,55 @@
           <DataTemplate x:DataType="vm:BranchTreeNode">
             <Grid Height="24"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                  ColumnDefinitions="16,20,*,Auto,Auto"
-                  Background="Transparent"
-                  DoubleTapped="OnDoubleTappedBranchNode"
+                  ColumnDefinitions="16,*"
                   ToolTip.Tip="{Binding Tooltip}">
 
               <!-- Tree Expander -->
-              <ToggleButton Grid.Column="0"
-                            Classes="tree_expander"
-                            Focusable="False"
-                            HorizontalAlignment="Center"
-                            IsChecked="{Binding IsExpanded}"
-                            IsHitTestVisible="False"
-                            IsVisible="{Binding !IsBranch}"/>
+              <v:BranchTreeNodeToggleButton Grid.Column="0"
+                                            Classes="tree_expander"
+                                            Focusable="False"
+                                            HorizontalAlignment="Center"
+                                            IsChecked="{Binding IsExpanded, Mode=OneWay}"
+                                            IsVisible="{Binding !IsBranch}"/>
 
-              <!-- Icon -->
-              <v:BranchTreeNodeIcon Grid.Column="1"
-                                    Node="{Binding}"
-                                    IsExpanded="{Binding IsExpanded}"/>
+              <!-- Content Area (allows double-click) -->
+              <Grid Grid.Column="1"
+                    Background="Transparent"
+                    ColumnDefinitions="18,*,Auto,Auto"
+                    DoubleTapped="OnDoubleTappedBranchNode">
+                
+                <!-- Icon -->
+                <v:BranchTreeNodeIcon Grid.Column="0"
+                                      Node="{Binding}"
+                                      IsExpanded="{Binding IsExpanded}"/>
 
-              <!-- Name -->
-              <TextBlock Grid.Column="2"
-                         Text="{Binding Name}"
-                         Classes="monospace"
-                         FontWeight="{Binding NameFontWeight}"/>
+                <!-- Name -->
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Name}"
+                           Classes="monospace"
+                           FontWeight="{Binding NameFontWeight}"/>
 
-              <!-- Tracking status -->
-              <Border Grid.Column="3"
-                      Margin="8,0"
-                      Height="18"
-                      CornerRadius="9"
-                      VerticalAlignment="Center"
-                      Background="{DynamicResource Brush.Badge}"
-                      IsVisible="{Binding IsUpstreamTrackStatusVisible}">
-                <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}" Foreground="{DynamicResource Brush.BadgeFG}"/>
-              </Border>
+                <!-- Tracking status -->
+                <Border Grid.Column="2"
+                        Margin="8,0"
+                        Height="18"
+                        CornerRadius="9"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource Brush.Badge}"
+                        IsVisible="{Binding IsUpstreamTrackStatusVisible}">
+                  <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                </Border>
 
-              <!-- Filter Toggle Button -->
-              <ToggleButton Grid.Column="4"
-                            Classes="filter"
-                            Margin="0,0,8,0"
-                            Background="Transparent"
-                            IsCheckedChanged="OnToggleFilter"
-                            IsVisible="{Binding IsBranch}"
-                            IsChecked="{Binding IsFiltered}"
-                            ToolTip.Tip="{DynamicResource Text.Filter}"/>
+                <!-- Filter Toggle Button -->
+                <ToggleButton Grid.Column="3"
+                              Classes="filter"
+                              Margin="0,0,8,0"
+                              Background="Transparent"
+                              IsCheckedChanged="OnToggleFilter"
+                              IsVisible="{Binding IsBranch}"
+                              IsChecked="{Binding IsFiltered}"
+                              ToolTip.Tip="{DynamicResource Text.Filter}"/>
+              </Grid>
             </Grid>
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>

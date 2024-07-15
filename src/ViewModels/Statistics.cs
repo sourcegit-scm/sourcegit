@@ -32,11 +32,9 @@ namespace SourceGit.ViewModels
 
         public Statistics(string repo)
         {
-            _repo = repo;
-
             Task.Run(() =>
             {
-                var result = new Commands.Statistics(_repo).Result();
+                var result = new Commands.Statistics(repo).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     _data = result;
@@ -65,7 +63,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private readonly string _repo = string.Empty;
         private bool _isLoading = true;
         private Models.Statistics _data = null;
         private Models.StatisticsReport _selectedReport = null;

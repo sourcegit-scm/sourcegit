@@ -35,8 +35,7 @@
 
       <!-- Search Bar -->
       <Border Grid.Row="1" BorderThickness="0,1" BorderBrush="{DynamicResource Brush.Border0}">
-        <TextBox Grid.Row="1"
-                 Height="24"
+        <TextBox Height="24"
                  Margin="4,0"
                  BorderThickness="1"
                  CornerRadius="12"

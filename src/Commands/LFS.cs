@@ -82,7 +82,7 @@ namespace SourceGit.Commands
             var rs = cmd.ReadToEnd();
             if (rs.IsSuccess)
             {
-                var lines = rs.StdOut.Split(new char[] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
+                var lines = rs.StdOut.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
                     var match = REG_LOCK().Match(line);

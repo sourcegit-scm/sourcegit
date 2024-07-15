@@ -11,12 +11,12 @@
                Classes="bold"
                Text="{DynamicResource Text.DeleteTag}"/>
     <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="150,*">
-      <TextBlock Grid.Column="0"
+      <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.DeleteTag.Tag}"/>
 
-      <StackPanel Grid.Column="1" Orientation="Horizontal">
+      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
         <TextBlock Text="{Binding Target.Name}" Margin="8,0,0,0"/>
       </StackPanel>

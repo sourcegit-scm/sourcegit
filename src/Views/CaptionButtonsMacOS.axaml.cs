@@ -11,7 +11,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        private void MinimizeWindow(object _1, RoutedEventArgs _2)
         {
             var window = this.FindAncestorOfType<Window>();
             if (window != null)
@@ -20,7 +20,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void MaximizeOrRestoreWindow(object sender, RoutedEventArgs e)
+        private void MaximizeOrRestoreWindow(object _1, RoutedEventArgs _2)
         {
             var window = this.FindAncestorOfType<Window>();
             if (window != null)
@@ -29,7 +29,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
+        private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             var window = this.FindAncestorOfType<Window>();
             if (window != null)

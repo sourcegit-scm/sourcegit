@@ -9,7 +9,6 @@ namespace SourceGit.Models
         public string Head { get; set; } = string.Empty;
         public bool IsBare { get; set; } = false;
         public bool IsDetached { get; set; } = false;
-        public bool IsPrunable { get; set; } = false;
 
         public bool IsLocked
         {
@@ -26,7 +25,7 @@ namespace SourceGit.Models
 
                 if (Branch.StartsWith("refs/heads/", System.StringComparison.Ordinal))
                     return $"({Branch.Substring(11)})";
-                
+
                 if (Branch.StartsWith("refs/remotes/", System.StringComparison.Ordinal))
                     return $"({Branch.Substring(13)})";
 

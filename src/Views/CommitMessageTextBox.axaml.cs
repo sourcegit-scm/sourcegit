@@ -10,7 +10,7 @@ namespace SourceGit.Views
     public class EnhancedTextBox : TextBox
     {
         public static readonly RoutedEvent<KeyEventArgs> PreviewKeyDownEvent =
-            RoutedEvent.Register<ChangeCollectionView, KeyEventArgs>(nameof(KeyEventArgs), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            RoutedEvent.Register<EnhancedTextBox, KeyEventArgs>(nameof(KeyEventArgs), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
         public event EventHandler<KeyEventArgs> PreviewKeyDown
         {
@@ -117,7 +117,7 @@ namespace SourceGit.Views
             }
         }
 
-        private async void OnSubjectTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+        private async void OnSubjectTextBoxPreviewKeyDown(object _, KeyEventArgs e)
         {
             if (e.Key == Key.Enter || (e.Key == Key.Right && SubjectEditor.CaretIndex == Subject.Length))
             {
@@ -127,6 +127,8 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.V && ((OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Meta) || (!OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Control)))
             {
+                e.Handled = true;
+
                 var text = await App.GetClipboardTextAsync();
                 if (!string.IsNullOrWhiteSpace(text))
                 {
@@ -152,12 +154,10 @@ namespace SourceGit.Views
                         SubjectEditor.Paste(text.ReplaceLineEndings(" "));
                     }
                 }
-
-                e.Handled = true;
             }
         }
 
-        private void OnDescriptionTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+        private void OnDescriptionTextBoxPreviewKeyDown(object _, KeyEventArgs e)
         {
             if ((e.Key == Key.Back || e.Key == Key.Left) && DescriptionEditor.CaretIndex == 0)
             {

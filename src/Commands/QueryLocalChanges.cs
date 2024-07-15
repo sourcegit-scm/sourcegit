@@ -52,7 +52,7 @@ namespace SourceGit.Commands
                     change.Set(Models.ChangeState.None, Models.ChangeState.Copied);
                     break;
                 case "M":
-                    change.Set(Models.ChangeState.Modified, Models.ChangeState.None);
+                    change.Set(Models.ChangeState.Modified);
                     break;
                 case "MM":
                     change.Set(Models.ChangeState.Modified, Models.ChangeState.Modified);
@@ -61,7 +61,7 @@ namespace SourceGit.Commands
                     change.Set(Models.ChangeState.Modified, Models.ChangeState.Deleted);
                     break;
                 case "A":
-                    change.Set(Models.ChangeState.Added, Models.ChangeState.None);
+                    change.Set(Models.ChangeState.Added);
                     break;
                 case "AM":
                     change.Set(Models.ChangeState.Added, Models.ChangeState.Modified);
@@ -70,10 +70,10 @@ namespace SourceGit.Commands
                     change.Set(Models.ChangeState.Added, Models.ChangeState.Deleted);
                     break;
                 case "D":
-                    change.Set(Models.ChangeState.Deleted, Models.ChangeState.None);
+                    change.Set(Models.ChangeState.Deleted);
                     break;
                 case "R":
-                    change.Set(Models.ChangeState.Renamed, Models.ChangeState.None);
+                    change.Set(Models.ChangeState.Renamed);
                     break;
                 case "RM":
                     change.Set(Models.ChangeState.Renamed, Models.ChangeState.Modified);
@@ -82,7 +82,7 @@ namespace SourceGit.Commands
                     change.Set(Models.ChangeState.Renamed, Models.ChangeState.Deleted);
                     break;
                 case "C":
-                    change.Set(Models.ChangeState.Copied, Models.ChangeState.None);
+                    change.Set(Models.ChangeState.Copied);
                     break;
                 case "CM":
                     change.Set(Models.ChangeState.Copied, Models.ChangeState.Modified);

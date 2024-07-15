@@ -42,7 +42,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnUnstagedChangeDoubleTapped(object sender, RoutedEventArgs e)
+        private void OnUnstagedChangeDoubleTapped(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
@@ -51,7 +51,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnStagedChangeDoubleTapped(object sender, RoutedEventArgs e)
+        private void OnStagedChangeDoubleTapped(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
@@ -60,7 +60,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnUnstagedKeyDown(object sender, KeyEventArgs e)
+        private void OnUnstagedKeyDown(object _, KeyEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm && e.Key == Key.Space)
             {
@@ -69,7 +69,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnStagedKeyDown(object sender, KeyEventArgs e)
+        private void OnStagedKeyDown(object _, KeyEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm && e.Key == Key.Space)
             {

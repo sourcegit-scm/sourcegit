@@ -14,12 +14,6 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public string SelectedSHA
-        {
-            get => _selectedSHA;
-            private set => SetProperty(ref _selectedSHA, value);
-        }
-
         public bool IsBinary
         {
             get => _data != null && _data.IsBinary;
@@ -53,8 +47,7 @@ namespace SourceGit.ViewModels
             repo?.NavigateToCommit(commitSHA);
         }
 
-        private readonly string _repo = string.Empty;
-        private string _selectedSHA = string.Empty;
+        private readonly string _repo;
         private Models.BlameData _data = null;
     }
 }

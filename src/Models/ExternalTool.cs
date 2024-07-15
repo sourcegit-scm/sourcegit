@@ -12,9 +12,9 @@ namespace SourceGit.Models
 {
     public class ExternalTool
     {
-        public string Name { get; private set; } = string.Empty;
-        public string Executable { get; private set; } = string.Empty;
-        public string OpenCmdArgs { get; private set; } = string.Empty;
+        public string Name { get; private set; }
+        public string Executable { get; private set; }
+        public string OpenCmdArgs { get; private set; }
         public Bitmap IconImage { get; private set; } = null;
 
         public ExternalTool(string name, string icon, string executable, string openCmdArgs)
@@ -25,10 +25,14 @@ namespace SourceGit.Models
 
             try
             {
-                var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{icon}.png", UriKind.RelativeOrAbsolute));
+                var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{icon}.png",
+                    UriKind.RelativeOrAbsolute));
                 IconImage = new Bitmap(asset);
             }
-            catch { }
+            catch
+            {
+                // ignore
+            }
         }
 
         public void Open(string repo)

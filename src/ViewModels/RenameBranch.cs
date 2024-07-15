@@ -60,7 +60,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private readonly Repository _repo = null;
-        private string _name = string.Empty;
+        private readonly Repository _repo;
+        private string _name;
     }
 }

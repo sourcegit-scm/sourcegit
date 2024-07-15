@@ -201,7 +201,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private string _repo = string.Empty;
+        private string _repo;
         private Models.Commit _baseHead = null;
         private Models.Commit _toHead = null;
         private List<Models.Change> _changes = null;

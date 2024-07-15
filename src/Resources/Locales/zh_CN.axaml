@@ -39,6 +39,7 @@
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">选择存档文件的存放路径</x:String>
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">指定的提交：</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">存档</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">不跟踪更改的文件</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">没有不跟踪更改的文件</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">移除</x:String>
@@ -93,6 +94,7 @@
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">父级目录 ：</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">关闭</x:String>
+  <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交信息编辑器</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">挑选(cherry-pick)此提交</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">检出此提交</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">与当前HEAD比较</x:String>
@@ -278,6 +280,10 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">历史记录</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">切换横向/纵向显示</x:String>
   <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">切换曲线/折线显示</x:String>
+  <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
+  <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路线图与主题</x:String>
+  <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交指纹</x:String>
+  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">提交时间</x:String>
   <x:String x:Key="Text.Histories.Search" xml:space="preserve">查询提交指纹、信息、作者。回车键开始，ESC键取消</x:String>
   <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">清空</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已选中 {0} 项提交</x:String>
@@ -340,11 +346,11 @@
   <x:String x:Key="Text.Paste" xml:space="preserve">粘贴</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好设置</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外观配置</x:String>
-  <x:String x:Key="Text.Preference.Appearance.ColorOverrides" xml:space="preserve">自定义配色文件</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">默认字体大小</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">等宽字体</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">主题</x:String>
+  <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">主题自定义</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">通用配置</x:String>
   <x:String x:Key="Text.Preference.General.AvatarServer" xml:space="preserve">头像服务</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">启动时检测软件更新</x:String>
@@ -451,8 +457,10 @@
   <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">解决冲突</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交</x:String>
   <x:String x:Key="Text.Repository.Search.By" xml:space="preserve">搜索途径</x:String>
-  <x:String x:Key="Text.Repository.Search.ByBaseInfo" xml:space="preserve">摘要</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">文件</x:String>
+  <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交信息</x:String>
+  <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交指纹</x:String>
+  <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">作者及提交者</x:String>
   <x:String x:Key="Text.Repository.SearchBranchTag" xml:space="preserve">快速查找分支、标签</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交统计</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模块列表</x:String>

@@ -6,22 +6,13 @@ namespace SourceGit.Commands
     {
         public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool force, bool track, Action<string> onProgress)
         {
+            _outputHandler = onProgress;
+
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
-            _outputHandler = onProgress;
-
-            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
-                Args = "-c credential.helper=manager ";
-            }
-
-            Args += "push --progress --verbose ";
+            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            Args = "push --progress --verbose ";
 
             if (withTags)
                 Args += "--tags ";
@@ -37,20 +28,12 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
+            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            Args = "push ";
 
-            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
-                Args = "-c credential.helper=manager ";
-            }
-
-            Args += "push ";
             if (isDelete)
                 Args += "--delete ";
+
             Args += $"{remote} refs/tags/{tag}";
         }
 

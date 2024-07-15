@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 
@@ -12,11 +13,11 @@ namespace SourceGit.Converters
                 switch (v)
                 {
                     case Models.ChangeViewMode.List:
-                        return App.Current?.FindResource("Icons.List") as StreamGeometry;
+                        return Application.Current?.FindResource("Icons.List") as StreamGeometry;
                     case Models.ChangeViewMode.Grid:
-                        return App.Current?.FindResource("Icons.Grid") as StreamGeometry;
+                        return Application.Current?.FindResource("Icons.Grid") as StreamGeometry;
                     default:
-                        return App.Current?.FindResource("Icons.Tree") as StreamGeometry;
+                        return Application.Current?.FindResource("Icons.Tree") as StreamGeometry;
                 }
             });
     }

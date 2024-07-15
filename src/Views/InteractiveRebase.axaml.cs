@@ -11,17 +11,17 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void BeginMoveWindow(object sender, PointerPressedEventArgs e)
+        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
+        private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             Close();
         }
 
-        private void OnMoveItemUp(object sender, RoutedEventArgs e) 
+        private void OnMoveItemUp(object sender, RoutedEventArgs e)
         {
             if (sender is Control control && DataContext is ViewModels.InteractiveRebase vm)
             {
@@ -39,14 +39,12 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDataGridKeyDown(object sender, KeyEventArgs e) 
+        private void OnDataGridKeyDown(object sender, KeyEventArgs e)
         {
-            var datagrid = sender as DataGrid;
-            var item = datagrid.SelectedItem as ViewModels.InteractiveRebaseItem;
+            var item = (sender as DataGrid)?.SelectedItem as ViewModels.InteractiveRebaseItem;
             if (item == null)
                 return;
 
-            var vm = DataContext as ViewModels.InteractiveRebase;
             if (e.Key == Key.P)
                 item.SetAction(Models.InteractiveRebaseAction.Pick);
             else if (e.Key == Key.E)
@@ -61,11 +59,14 @@ namespace SourceGit.Views
                 item.SetAction(Models.InteractiveRebaseAction.Drop);
         }
 
-        private async void StartJobs(object sender, RoutedEventArgs e)
+        private async void StartJobs(object _1, RoutedEventArgs _2)
         {
+            var vm = DataContext as ViewModels.InteractiveRebase;
+            if (vm == null)
+                return;
+
             Running.IsVisible = true;
             Running.IsIndeterminate = true;
-            var vm = DataContext as ViewModels.InteractiveRebase;
             await vm.Start();
             Running.IsIndeterminate = false;
             Running.IsVisible = false;

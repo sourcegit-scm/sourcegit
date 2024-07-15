@@ -31,8 +31,12 @@ namespace SourceGit.Views
 
         private void OnParentSHAPressed(object sender, PointerPressedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail && CanNavigate)
-                detail.NavigateTo((sender as Control).DataContext as string);
+            if (sender is Control { DataContext: string sha } &&
+                DataContext is ViewModels.CommitDetail detail &&
+                CanNavigate)
+            {
+                detail.NavigateTo(sha);
+            }
 
             e.Handled = true;
         }

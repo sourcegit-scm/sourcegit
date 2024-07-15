@@ -23,7 +23,7 @@ namespace SourceGit.Commands
             var rs = new Dictionary<string, string>();
             if (output.IsSuccess)
             {
-                var lines = output.StdOut.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                var lines = output.StdOut.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
                     var idx = line.IndexOf('=', StringComparison.Ordinal);
@@ -31,14 +31,7 @@ namespace SourceGit.Commands
                     {
                         var key = line.Substring(0, idx).Trim();
                         var val = line.Substring(idx + 1).Trim();
-                        if (rs.ContainsKey(key))
-                        {
-                            rs[key] = val;
-                        }
-                        else
-                        {
-                            rs.Add(key, val);
-                        }
+                        rs[key] = val;
                     }
                 }
             }

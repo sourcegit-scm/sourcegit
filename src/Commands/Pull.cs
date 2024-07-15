@@ -10,18 +10,9 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
+            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            Args = "pull --verbose --progress --tags ";
 
-            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
-                Args = "-c credential.helper=manager ";
-            }
-
-            Args += "pull --verbose --progress --tags ";
             if (useRebase)
                 Args += "--rebase ";
             if (noTags)

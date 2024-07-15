@@ -209,8 +209,8 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private string _repo = string.Empty;
-        private string _endPoint = string.Empty;
+        private string _repo;
+        private string _endPoint;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;

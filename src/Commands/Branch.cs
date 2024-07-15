@@ -25,14 +25,12 @@
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
+
             if (string.IsNullOrEmpty(upstream))
-            {
                 cmd.Args = $"branch {name} --unset-upstream";
-            }
             else
-            {
                 cmd.Args = $"branch {name} -u {upstream}";
-            }
+
             return cmd.Exec();
         }
 
@@ -50,18 +48,8 @@
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-
-            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                cmd.Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
-                cmd.Args = "-c credential.helper=manager ";
-            }
-
-            cmd.Args += $"push {remote} --delete {name}";
+            cmd.SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            cmd.Args = $"push {remote} --delete {name}";
             return cmd.Exec();
         }
     }

@@ -6,7 +6,6 @@ namespace SourceGit.ViewModels
 {
     public class Archive : Popup
     {
-
         [Required(ErrorMessage = "Output file name is required")]
         public string SaveFile
         {
@@ -67,7 +66,7 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
-        private string _saveFile = string.Empty;
-        private readonly string _revision = string.Empty;
+        private string _saveFile;
+        private readonly string _revision;
     }
 }

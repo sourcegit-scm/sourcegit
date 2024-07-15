@@ -87,7 +87,7 @@ namespace SourceGit.Views
 
             var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
 
-            IBrush background = null;
+            IBrush background;
             string indicator;
             if (IsWorkingCopyChange)
             {

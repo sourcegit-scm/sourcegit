@@ -61,8 +61,13 @@ namespace SourceGit.Models
                 }
                 else if (x < LastX)
                 {
-                    if (y > LastY + halfHeight)
-                        Add(new Point(LastX, LastY + halfHeight));
+                    var testY = LastY + halfHeight;
+                    if (y > testY)
+                        Add(new Point(LastX, testY));
+
+                    if (!isEnd)
+                        y += halfHeight;
+
                     Add(new Point(x, y));
                 }
                 else if (isEnd)
@@ -108,17 +113,17 @@ namespace SourceGit.Models
             private set;
         } = new List<Pen>();
 
-        public static void SetDefaultPens()
+        public static void SetDefaultPens(double thickness = 2)
         {
-            SetPenColors(_defaultPenColors);
+            SetPens(_defaultPenColors, thickness);
         }
 
-        public static void SetPenColors(List<Color> colors)
+        public static void SetPens(List<Color> colors, double thickness)
         {
             Pens.Clear();
 
             foreach (var c in colors)
-                Pens.Add(new Pen(c.ToUInt32(), 2));
+                Pens.Add(new Pen(c.ToUInt32(), thickness));
 
             _penCount = colors.Count;
         }
@@ -216,13 +221,17 @@ namespace SourceGit.Models
                     var parent = commit.Parents[j];
                     if (mapUnsolved.TryGetValue(parent, out var value))
                     {
+                        // Try to change the merge state of linked graph
                         var l = value;
-                        var link = new Link();
+                        if (isMerged)
+                            l.IsMerged = true;
 
+                        var link = new Link();
                         link.Start = position;
                         link.End = new Point(l.LastX, offsetY + HALF_HEIGHT);
                         link.Control = new Point(link.End.X, link.Start.Y);
                         link.Color = l.Path.Color;
+
                         temp.Links.Add(link);
                     }
                     else
@@ -259,8 +268,9 @@ namespace SourceGit.Models
                 var path = unsolved[i];
                 var endY = (commits.Count - 0.5) * UNIT_HEIGHT;
 
-                if (path.Path.Points.Count == 1 && path.Path.Points[0].Y == endY)
+                if (path.Path.Points.Count == 1 && Math.Abs(path.Path.Points[0].Y - endY) < 0.0001)
                     continue;
+
                 path.Add((i + 0.5) * UNIT_WIDTH, endY + HALF_HEIGHT, HALF_HEIGHT, true);
             }
             unsolved.Clear();

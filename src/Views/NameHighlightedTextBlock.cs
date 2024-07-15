@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -62,7 +61,7 @@ namespace SourceGit.Views
             if (string.IsNullOrEmpty(text))
                 return base.MeasureOverride(availableSize);
 
-            var typeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Normal, FontStretch.Normal);
+            var typeface = new Typeface(FontFamily);
             var formatted = new FormattedText(
                     Text,
                     CultureInfo.CurrentCulture,
@@ -80,11 +79,11 @@ namespace SourceGit.Views
             if (string.IsNullOrEmpty(text))
                 return;
 
-            var normalTypeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Normal, FontStretch.Normal);
-            var underlinePen = new Pen(Foreground, 1);
+            var normalTypeface = new Typeface(FontFamily);
+            var underlinePen = new Pen(Foreground);
             var offsetX = 0.0;
 
-            var parts = text.Split('$', StringSplitOptions.None);
+            var parts = text.Split('$');
             var isName = false;
             foreach (var part in parts)
             {

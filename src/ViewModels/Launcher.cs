@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -28,22 +29,20 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public Launcher()
+        public Launcher(string startupRepo)
         {
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
 
-            var commandlines = Environment.GetCommandLineArgs();
-            if (commandlines.Length == 2)
+            if (!string.IsNullOrEmpty(startupRepo))
             {
-                var path = commandlines[1];
-                var root = new Commands.QueryRepositoryRootPath(path).Result();
+                var root = new Commands.QueryRepositoryRootPath(startupRepo).Result();
                 if (string.IsNullOrEmpty(root))
                 {
                     Pages[0].Notifications.Add(new Notification
                     {
                         IsError = true,
-                        Message = $"Given path: '{path}' is NOT a valid repository!"
+                        Message = $"Given path: '{startupRepo}' is NOT a valid repository!"
                     });
                     return;
                 }
@@ -154,7 +153,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    App.Quit();
+                    App.Quit(0);
                 }
 
                 return;
@@ -274,8 +273,9 @@ namespace SourceGit.ViewModels
 
         public void DispatchNotification(string pageId, string message, bool isError)
         {
-            var notification = new Notification() { 
-                IsError = isError, 
+            var notification = new Notification()
+            {
+                IsError = isError,
                 Message = message,
             };
 
@@ -293,12 +293,6 @@ namespace SourceGit.ViewModels
                 _activePage.Notifications.Add(notification);
         }
 
-        public void DismissNotification(Notification notice)
-        {
-            if (notice != null)
-                ActivePage?.Notifications.Remove(notice);
-        }
-
         public ContextMenu CreateContextForPageTab(LauncherPage page)
         {
             if (page == null)
@@ -308,7 +302,7 @@ namespace SourceGit.ViewModels
             var close = new MenuItem();
             close.Header = App.Text("PageTabBar.Tab.Close");
             close.InputGesture = KeyGesture.Parse(OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W");
-            close.Click += (o, e) =>
+            close.Click += (_, e) =>
             {
                 CloseTab(page);
                 e.Handled = true;
@@ -317,7 +311,7 @@ namespace SourceGit.ViewModels
 
             var closeOthers = new MenuItem();
             closeOthers.Header = App.Text("PageTabBar.Tab.CloseOther");
-            closeOthers.Click += (o, e) =>
+            closeOthers.Click += (_, e) =>
             {
                 CloseOtherTabs();
                 e.Handled = true;
@@ -326,7 +320,7 @@ namespace SourceGit.ViewModels
 
             var closeRight = new MenuItem();
             closeRight.Header = App.Text("PageTabBar.Tab.CloseRight");
-            closeRight.Click += (o, e) =>
+            closeRight.Click += (_, e) =>
             {
                 CloseRightTabs();
                 e.Handled = true;
@@ -343,13 +337,13 @@ namespace SourceGit.ViewModels
                 {
                     var icon = App.CreateMenuIcon("Icons.Bookmark");
                     icon.Fill = Models.Bookmarks.Brushes[i];
-                    icon.Stroke = App.Current.FindResource("Brush.FG1") as Brush;
+                    icon.Stroke = Application.Current?.FindResource("Brush.FG1") as Brush;
                     icon.StrokeThickness = i == 0 ? 1.0 : 0;
 
                     var dupIdx = i;
                     var setter = new MenuItem();
                     setter.Header = icon;
-                    setter.Click += (o, e) =>
+                    setter.Click += (_, e) =>
                     {
                         page.Node.Bookmark = dupIdx;
                         e.Handled = true;
@@ -362,7 +356,7 @@ namespace SourceGit.ViewModels
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyPath.Click += (o, e) =>
+                copyPath.Click += (_, e) =>
                 {
                     page.CopyPath();
                     e.Handled = true;

@@ -13,18 +13,9 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
+            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            Args = "fetch --progress --verbose ";
 
-            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
-                Args = "-c credential.helper=manager ";
-            }
-
-            Args += "fetch --progress --verbose ";
             if (prune)
                 Args += "--prune ";
 
@@ -44,18 +35,8 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
-
-            var sshKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            if (!string.IsNullOrEmpty(sshKey))
-            {
-                Args = $"-c core.sshCommand=\"ssh -i '{sshKey}'\" ";
-            }
-            else
-            {
-                Args = "-c credential.helper=manager ";
-            }
-
-            Args += $"fetch --progress --verbose {remote} {remoteBranch}:{localBranch}";
+            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            Args = $"fetch --progress --verbose {remote} {remoteBranch}:{localBranch}";
         }
 
         protected override void OnReadline(string line)
@@ -144,14 +125,7 @@ namespace SourceGit.Commands
 
             lock (_lock)
             {
-                if (_jobs.ContainsKey(repo))
-                {
-                    _jobs[repo] = job;
-                }
-                else
-                {
-                    _jobs.Add(repo, job);
-                }
+                _jobs[repo] = job;
             }
         }
 

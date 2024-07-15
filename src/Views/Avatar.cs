@@ -38,7 +38,7 @@ namespace SourceGit.Views
         public Avatar()
         {
             var refetch = new MenuItem() { Header = App.Text("RefetchAvatar") };
-            refetch.Click += (o, e) =>
+            refetch.Click += (_, _) =>
             {
                 if (User != null)
                 {
@@ -59,7 +59,7 @@ namespace SourceGit.Views
                 return;
 
             var corner = (float)Math.Max(2, Bounds.Width / 16);
-            var img = Models.AvatarManager.Request(_emailMD5, false);
+            var img = Models.AvatarManager.Request(_emailMD5);
             if (img != null)
             {
                 var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
@@ -114,7 +114,7 @@ namespace SourceGit.Views
             foreach (var c in hash)
                 builder.Append(c.ToString("x2"));
             var md5 = builder.ToString();
-            if (avatar._emailMD5 != md5)
+            if (avatar._emailMD5 == null || avatar._emailMD5 != md5)
                 avatar._emailMD5 = md5;
 
             avatar._fallbackBrush = new LinearGradientBrush

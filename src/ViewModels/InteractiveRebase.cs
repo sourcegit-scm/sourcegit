@@ -62,8 +62,8 @@ namespace SourceGit.ViewModels
         }
 
         private Models.InteractiveRebaseAction _action = Models.InteractiveRebaseAction.Pick;
-        private string _subject = string.Empty;
-        private string _fullMessage = string.Empty;
+        private string _subject;
+        private string _fullMessage;
     }
 
     public class InteractiveRebase : ObservableObject
@@ -168,18 +168,18 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
 
             var saveFile = Path.Combine(_repo.GitDir, "sourcegit_rebase_jobs.json");
-            var jobs = new List<Models.InteractiveRebaseJob>();
+            var collection = new Models.InteractiveRebaseJobCollection();
             for (int i = Items.Count - 1; i >= 0; i--)
             {
                 var item = Items[i];
-                jobs.Add(new Models.InteractiveRebaseJob()
+                collection.Jobs.Add(new Models.InteractiveRebaseJob()
                 {
                     SHA = item.Commit.SHA,
                     Action = item.Action,
                     Message = item.FullMessage,
                 });
             }
-            File.WriteAllText(saveFile, JsonSerializer.Serialize(jobs, JsonCodeGen.Default.ListInteractiveRebaseJob));
+            File.WriteAllText(saveFile, JsonSerializer.Serialize(collection, JsonCodeGen.Default.InteractiveRebaseJobCollection));
 
             return Task.Run(() =>
             {

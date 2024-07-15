@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-
+using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -156,7 +156,7 @@ namespace SourceGit.ViewModels
             if (current == null)
                 return null;
 
-            var commit = datagrid.SelectedItem as Models.Commit;
+            var commit = (datagrid.SelectedItem as Models.Commit)!;
             var menu = new ContextMenu();
             var tags = new List<Models.Tag>();
 
@@ -202,7 +202,7 @@ namespace SourceGit.ViewModels
                 var reset = new MenuItem();
                 reset.Header = new Views.NameHighlightedTextBlock("CommitCM.Reset", current.Name);
                 reset.Icon = App.CreateMenuIcon("Icons.Reset");
-                reset.Click += (o, e) =>
+                reset.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Reset(_repo, current, commit));
@@ -215,7 +215,7 @@ namespace SourceGit.ViewModels
                 var reword = new MenuItem();
                 reword.Header = App.Text("CommitCM.Reword");
                 reword.Icon = App.CreateMenuIcon("Icons.Edit");
-                reword.Click += (o, e) =>
+                reword.Click += (_, e) =>
                 {
                     if (_repo.WorkingCopyChangesCount > 0)
                     {
@@ -233,7 +233,7 @@ namespace SourceGit.ViewModels
                 squash.Header = App.Text("CommitCM.Squash");
                 squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
                 squash.IsEnabled = commit.Parents.Count == 1;
-                squash.Click += (o, e) =>
+                squash.Click += (_, e) =>
                 {
                     if (_repo.WorkingCopyChangesCount > 0)
                     {
@@ -258,7 +258,7 @@ namespace SourceGit.ViewModels
                 var rebase = new MenuItem();
                 rebase.Header = new Views.NameHighlightedTextBlock("CommitCM.Rebase", current.Name);
                 rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
-                rebase.Click += (o, e) =>
+                rebase.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Rebase(_repo, current, commit));
@@ -269,7 +269,7 @@ namespace SourceGit.ViewModels
                 var cherryPick = new MenuItem();
                 cherryPick.Header = App.Text("CommitCM.CherryPick");
                 cherryPick.Icon = App.CreateMenuIcon("Icons.CherryPick");
-                cherryPick.Click += (o, e) =>
+                cherryPick.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new CherryPick(_repo, commit));
@@ -282,7 +282,7 @@ namespace SourceGit.ViewModels
                 var revert = new MenuItem();
                 revert.Header = App.Text("CommitCM.Revert");
                 revert.Icon = App.CreateMenuIcon("Icons.Undo");
-                revert.Click += (o, e) =>
+                revert.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Revert(_repo, commit));
@@ -294,7 +294,7 @@ namespace SourceGit.ViewModels
                 interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
                 interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
                 interactiveRebase.IsVisible = current.Head != commit.SHA;
-                interactiveRebase.Click += (o, e) =>
+                interactiveRebase.Click += (_, e) =>
                 {
                     if (_repo.WorkingCopyChangesCount > 0)
                     {
@@ -302,8 +302,12 @@ namespace SourceGit.ViewModels
                         return;
                     }
 
+                    var toplevel = datagrid.FindAncestorOfType<Views.Launcher>();
+                    if (toplevel == null)
+                        return;
+
                     var dialog = new Views.InteractiveRebase() { DataContext = new InteractiveRebase(_repo, current, commit) };
-                    dialog.ShowDialog(App.GetTopLevel() as Window);
+                    dialog.ShowDialog(toplevel);
                     e.Handled = true;
                 };
                 menu.Items.Add(interactiveRebase);
@@ -314,7 +318,7 @@ namespace SourceGit.ViewModels
                 var checkoutCommit = new MenuItem();
                 checkoutCommit.Header = App.Text("CommitCM.Checkout");
                 checkoutCommit.Icon = App.CreateMenuIcon("Icons.Detached");
-                checkoutCommit.Click += (o, e) =>
+                checkoutCommit.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new CheckoutCommit(_repo, commit));
@@ -330,7 +334,7 @@ namespace SourceGit.ViewModels
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("CommitCM.CompareWithHead");
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
-                compareWithHead.Click += (o, e) =>
+                compareWithHead.Click += (_, e) =>
                 {
                     var head = _commits.Find(x => x.SHA == current.Head);
                     if (head == null)
@@ -354,7 +358,7 @@ namespace SourceGit.ViewModels
                     var compareWithWorktree = new MenuItem();
                     compareWithWorktree.Header = App.Text("CommitCM.CompareWithWorktree");
                     compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
-                    compareWithWorktree.Click += (o, e) =>
+                    compareWithWorktree.Click += (_, e) =>
                     {
                         DetailContext = new RevisionCompare(_repo.FullPath, commit, null);
                         e.Handled = true;
@@ -368,7 +372,7 @@ namespace SourceGit.ViewModels
             var createBranch = new MenuItem();
             createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
             createBranch.Header = App.Text("CreateBranch");
-            createBranch.Click += (o, e) =>
+            createBranch.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new CreateBranch(_repo, commit));
@@ -379,7 +383,7 @@ namespace SourceGit.ViewModels
             var createTag = new MenuItem();
             createTag.Icon = App.CreateMenuIcon("Icons.Tag.Add");
             createTag.Header = App.Text("CreateTag");
-            createTag.Click += (o, e) =>
+            createTag.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new CreateTag(_repo, commit));
@@ -413,7 +417,7 @@ namespace SourceGit.ViewModels
             var archive = new MenuItem();
             archive.Icon = App.CreateMenuIcon("Icons.Archive");
             archive.Header = App.Text("Archive");
-            archive.Click += (o, e) =>
+            archive.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new Archive(_repo, commit));
@@ -425,7 +429,7 @@ namespace SourceGit.ViewModels
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
             copySHA.Icon = App.CreateMenuIcon("Icons.Copy");
-            copySHA.Click += (o, e) =>
+            copySHA.Click += (_, e) =>
             {
                 App.CopyText(commit.SHA);
                 e.Handled = true;
@@ -448,7 +452,7 @@ namespace SourceGit.ViewModels
                 fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream);
                 fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
                 fastForward.IsEnabled = !string.IsNullOrEmpty(current.UpstreamTrackStatus) && current.UpstreamTrackStatus.IndexOf('↑') < 0;
-                fastForward.Click += (o, e) =>
+                fastForward.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowAndStartPopup(new Merge(_repo, upstream, current.Name));
@@ -459,7 +463,7 @@ namespace SourceGit.ViewModels
                 var pull = new MenuItem();
                 pull.Header = new Views.NameHighlightedTextBlock("BranchCM.Pull", upstream);
                 pull.Icon = App.CreateMenuIcon("Icons.Pull");
-                pull.Click += (o, e) =>
+                pull.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Pull(_repo, null));
@@ -472,7 +476,7 @@ namespace SourceGit.ViewModels
             push.Header = new Views.NameHighlightedTextBlock("BranchCM.Push", current.Name);
             push.Icon = App.CreateMenuIcon("Icons.Push");
             push.IsEnabled = _repo.Remotes.Count > 0;
-            push.Click += (o, e) =>
+            push.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new Push(_repo, current));
@@ -487,7 +491,7 @@ namespace SourceGit.ViewModels
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", current.Name);
                 finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
-                finish.Click += (o, e) =>
+                finish.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new GitFlowFinish(_repo, current, detect.Type, detect.Prefix));
@@ -500,7 +504,7 @@ namespace SourceGit.ViewModels
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", current.Name);
             rename.Icon = App.CreateMenuIcon("Icons.Rename");
-            rename.Click += (o, e) =>
+            rename.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new RenameBranch(_repo, current));
@@ -520,7 +524,7 @@ namespace SourceGit.ViewModels
             var checkout = new MenuItem();
             checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", branch.Name);
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
-            checkout.Click += (o, e) =>
+            checkout.Click += (_, e) =>
             {
                 _repo.CheckoutBranch(branch);
                 e.Handled = true;
@@ -531,7 +535,7 @@ namespace SourceGit.ViewModels
             merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", branch.Name, current.Name);
             merge.Icon = App.CreateMenuIcon("Icons.Merge");
             merge.IsEnabled = !merged;
-            merge.Click += (o, e) =>
+            merge.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new Merge(_repo, branch.Name, current.Name));
@@ -546,7 +550,7 @@ namespace SourceGit.ViewModels
                 var finish = new MenuItem();
                 finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
                 finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
-                finish.Click += (o, e) =>
+                finish.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new GitFlowFinish(_repo, branch, detect.Type, detect.Prefix));
@@ -559,7 +563,7 @@ namespace SourceGit.ViewModels
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", branch.Name);
             rename.Icon = App.CreateMenuIcon("Icons.Rename");
-            rename.Click += (o, e) =>
+            rename.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new RenameBranch(_repo, branch));
@@ -570,7 +574,7 @@ namespace SourceGit.ViewModels
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", branch.Name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
-            delete.Click += (o, e) =>
+            delete.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new DeleteBranch(_repo, branch));
@@ -592,7 +596,7 @@ namespace SourceGit.ViewModels
             var checkout = new MenuItem();
             checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", name);
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
-            checkout.Click += (o, e) =>
+            checkout.Click += (_, e) =>
             {
                 _repo.CheckoutBranch(branch);
                 e.Handled = true;
@@ -603,7 +607,7 @@ namespace SourceGit.ViewModels
             merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", name, current.Name);
             merge.Icon = App.CreateMenuIcon("Icons.Merge");
             merge.IsEnabled = !merged;
-            merge.Click += (o, e) =>
+            merge.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new Merge(_repo, name, current.Name));
@@ -616,7 +620,7 @@ namespace SourceGit.ViewModels
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
-            delete.Click += (o, e) =>
+            delete.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new DeleteBranch(_repo, branch));
@@ -638,7 +642,7 @@ namespace SourceGit.ViewModels
             push.Header = new Views.NameHighlightedTextBlock("TagCM.Push", tag.Name);
             push.Icon = App.CreateMenuIcon("Icons.Push");
             push.IsEnabled = _repo.Remotes.Count > 0;
-            push.Click += (o, e) =>
+            push.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new PushTag(_repo, tag));
@@ -649,7 +653,7 @@ namespace SourceGit.ViewModels
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("TagCM.Delete", tag.Name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
-            delete.Click += (o, e) =>
+            delete.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new DeleteTag(_repo, tag));

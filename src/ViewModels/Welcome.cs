@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -49,13 +49,10 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (PopupHost.CanCreatePopup())
+            if (PopupHost.CanCreatePopup() &&
+                Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { DataContext: Launcher launcher } })
             {
-                if (App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                {
-                    var launcher = desktop.MainWindow.DataContext as Launcher;
-                    PopupHost.ShowPopup(new Clone(launcher));
-                }
+                PopupHost.ShowPopup(new Clone(launcher));
             }
         }
 
@@ -98,9 +95,9 @@ namespace SourceGit.ViewModels
                 openAll.Icon = App.CreateMenuIcon("Icons.Folder.Open");
                 openAll.Click += (_, e) =>
                 {
-                    if (App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                    if (PopupHost.CanCreatePopup() &&
+                        Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { DataContext: Launcher launcher } })
                     {
-                        var launcher = desktop.MainWindow.DataContext as Launcher;
                         OpenAllInNode(launcher, node);
                     }
 

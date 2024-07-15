@@ -48,20 +48,16 @@ namespace SourceGit.Native
         public static Models.Shell GetShell()
         {
             if (OperatingSystem.IsWindows())
-            {
-                return (_backend as Windows).Shell;
-            }
-            else
-            {
-                return Models.Shell.Default;
-            }
+                return (_backend as Windows)!.Shell;
+
+            return Models.Shell.Default;
         }
 
         public static bool SetShell(Models.Shell shell)
         {
             if (OperatingSystem.IsWindows())
             {
-                var windows = _backend as Windows;
+                var windows = (_backend as Windows)!;
                 if (windows.Shell != shell)
                 {
                     windows.Shell = shell;

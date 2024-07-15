@@ -44,7 +44,7 @@ namespace SourceGit.ViewModels
                 if (_repo.IncludeUntracked != value)
                 {
                     _repo.IncludeUntracked = value;
-                    OnPropertyChanged(nameof(IncludeUntracked));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -286,12 +286,16 @@ namespace SourceGit.ViewModels
 
         public void OpenAssumeUnchanged()
         {
+            var toplevel = App.GetTopLevel() as Window;
+            if (toplevel == null)
+                return;
+
             var dialog = new Views.AssumeUnchangedManager()
             {
                 DataContext = new AssumeUnchangedManager(_repo.FullPath)
             };
 
-            dialog.ShowDialog(App.GetTopLevel() as Window);
+            dialog.ShowDialog(toplevel);
         }
 
         public void StageSelected()
@@ -634,7 +638,7 @@ namespace SourceGit.ViewModels
                                 lfsTrackByExtension.Header = App.Text("GitLFS.TrackByExtension", extension);
                                 lfsTrackByExtension.Click += async (_, e) =>
                                 {
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track("*" + extension, false));
+                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track("*" + extension));
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Tracking all *{extension} files successfully!");
 
@@ -644,7 +648,7 @@ namespace SourceGit.ViewModels
                             }
 
                             lfs.Items.Add(new MenuItem() { Header = "-" });
-                        }                        
+                        }
 
                         var lfsLock = new MenuItem();
                         lfsLock.Header = App.Text("GitLFS.Locks.Lock");
@@ -652,7 +656,7 @@ namespace SourceGit.ViewModels
                         lfsLock.IsEnabled = _repo.Remotes.Count > 0;
                         if (_repo.Remotes.Count == 1)
                         {
-                            lfsLock.Click += async (o, e) =>
+                            lfsLock.Click += async (_, e) =>
                             {
                                 var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path));
                                 if (succ)
@@ -668,7 +672,7 @@ namespace SourceGit.ViewModels
                                 var remoteName = remote.Name;
                                 var lockRemote = new MenuItem();
                                 lockRemote.Header = remoteName;
-                                lockRemote.Click += async (o, e) =>
+                                lockRemote.Click += async (_, e) =>
                                 {
                                     var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path));
                                     if (succ)
@@ -678,7 +682,7 @@ namespace SourceGit.ViewModels
                                 };
                                 lfsLock.Items.Add(lockRemote);
                             }
-                        }                        
+                        }
                         lfs.Items.Add(lfsLock);
 
                         var lfsUnlock = new MenuItem();
@@ -687,7 +691,7 @@ namespace SourceGit.ViewModels
                         lfsUnlock.IsEnabled = _repo.Remotes.Count > 0;
                         if (_repo.Remotes.Count == 1)
                         {
-                            lfsUnlock.Click += async (o, e) =>
+                            lfsUnlock.Click += async (_, e) =>
                             {
                                 var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false));
                                 if (succ)
@@ -703,7 +707,7 @@ namespace SourceGit.ViewModels
                                 var remoteName = remote.Name;
                                 var unlockRemote = new MenuItem();
                                 unlockRemote.Header = remoteName;
-                                unlockRemote.Click += async (o, e) =>
+                                unlockRemote.Click += async (_, e) =>
                                 {
                                     var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false));
                                     if (succ)
@@ -713,7 +717,7 @@ namespace SourceGit.ViewModels
                                 };
                                 lfsUnlock.Items.Add(unlockRemote);
                             }
-                        }                        
+                        }
                         lfs.Items.Add(lfsUnlock);
 
                         menu.Items.Add(lfs);
@@ -823,7 +827,7 @@ namespace SourceGit.ViewModels
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
                 patch.Icon = App.CreateMenuIcon("Icons.Diff");
-                patch.Click += async (o, e) =>
+                patch.Click += async (_, e) =>
                 {
                     var topLevel = App.GetTopLevel();
                     if (topLevel == null)
@@ -869,7 +873,7 @@ namespace SourceGit.ViewModels
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Header = App.Text("RevealFile");
                 explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
-                explore.Click += (o, e) =>
+                explore.Click += (_, e) =>
                 {
                     Native.OS.OpenInFileManager(path, true);
                     e.Handled = true;
@@ -888,7 +892,7 @@ namespace SourceGit.ViewModels
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.Unstage");
                 unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
-                unstage.Click += (o, e) =>
+                unstage.Click += (_, e) =>
                 {
                     UnstageChanges(_selectedStaged);
                     e.Handled = true;
@@ -917,7 +921,7 @@ namespace SourceGit.ViewModels
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
                 patch.Icon = App.CreateMenuIcon("Icons.Diff");
-                patch.Click += async (o, e) =>
+                patch.Click += async (_, e) =>
                 {
                     var topLevel = App.GetTopLevel();
                     if (topLevel == null)
@@ -942,7 +946,7 @@ namespace SourceGit.ViewModels
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyPath.Click += (o, e) =>
+                copyPath.Click += (_, e) =>
                 {
                     App.CopyText(change.Path);
                     e.Handled = true;
@@ -979,7 +983,7 @@ namespace SourceGit.ViewModels
                     lfsLock.IsEnabled = _repo.Remotes.Count > 0;
                     if (_repo.Remotes.Count == 1)
                     {
-                        lfsLock.Click += async (o, e) =>
+                        lfsLock.Click += async (_, e) =>
                         {
                             var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path));
                             if (succ)
@@ -995,7 +999,7 @@ namespace SourceGit.ViewModels
                             var remoteName = remote.Name;
                             var lockRemote = new MenuItem();
                             lockRemote.Header = remoteName;
-                            lockRemote.Click += async (o, e) =>
+                            lockRemote.Click += async (_, e) =>
                             {
                                 var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path));
                                 if (succ)
@@ -1005,7 +1009,7 @@ namespace SourceGit.ViewModels
                             };
                             lfsLock.Items.Add(lockRemote);
                         }
-                    }                    
+                    }
                     lfs.Items.Add(lfsLock);
 
                     var lfsUnlock = new MenuItem();
@@ -1014,7 +1018,7 @@ namespace SourceGit.ViewModels
                     lfsUnlock.IsEnabled = _repo.Remotes.Count > 0;
                     if (_repo.Remotes.Count == 1)
                     {
-                        lfsUnlock.Click += async (o, e) =>
+                        lfsUnlock.Click += async (_, e) =>
                         {
                             var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false));
                             if (succ)
@@ -1030,7 +1034,7 @@ namespace SourceGit.ViewModels
                             var remoteName = remote.Name;
                             var unlockRemote = new MenuItem();
                             unlockRemote.Header = remoteName;
-                            unlockRemote.Click += async (o, e) =>
+                            unlockRemote.Click += async (_, e) =>
                             {
                                 var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false));
                                 if (succ)
@@ -1040,7 +1044,7 @@ namespace SourceGit.ViewModels
                             };
                             lfsUnlock.Items.Add(unlockRemote);
                         }
-                    }                    
+                    }
                     lfs.Items.Add(lfsUnlock);
 
                     menu.Items.Add(lfs);
@@ -1055,7 +1059,7 @@ namespace SourceGit.ViewModels
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.UnstageMulti", _selectedStaged.Count);
                 unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
-                unstage.Click += (o, e) =>
+                unstage.Click += (_, e) =>
                 {
                     UnstageChanges(_selectedStaged);
                     e.Handled = true;
@@ -1140,7 +1144,7 @@ namespace SourceGit.ViewModels
 
                 var item = new MenuItem();
                 item.Header = dump;
-                item.Click += (o, e) =>
+                item.Click += (_, e) =>
                 {
                     CommitMessage = dump;
                     e.Handled = true;

@@ -10,6 +10,20 @@ namespace SourceGit.Models
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
 
+        public User()
+        {
+            // Only used by User.Invalid
+        }
+
+        public User(string data)
+        {
+            var nameEndIdx = data.IndexOf('±', StringComparison.Ordinal);
+
+            Name = nameEndIdx > 0 ? data.Substring(0, nameEndIdx) : string.Empty;
+            Email = data.Substring(nameEndIdx + 1);
+            _hash = data.GetHashCode();
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null || !(obj is User))
@@ -21,21 +35,15 @@ namespace SourceGit.Models
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return _hash;
         }
 
         public static User FindOrAdd(string data)
         {
-            return _caches.GetOrAdd(data, key =>
-            {
-                var nameEndIdx = key.IndexOf('±', StringComparison.Ordinal);
-                var name = nameEndIdx > 0 ? key.Substring(0, nameEndIdx) : string.Empty;
-                var email = key.Substring(nameEndIdx + 1);
-
-                return new User() { Name = name, Email = email };
-            });
+            return _caches.GetOrAdd(data, key => new User(key));
         }
 
         private static ConcurrentDictionary<string, User> _caches = new ConcurrentDictionary<string, User>();
+        private readonly int _hash;
     }
 }

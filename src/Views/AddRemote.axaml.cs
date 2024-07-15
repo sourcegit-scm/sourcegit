@@ -11,15 +11,21 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private async void SelectSSHKey(object sender, RoutedEventArgs e)
+        private async void SelectSSHKey(object _, RoutedEventArgs e)
         {
-            var options = new FilePickerOpenOptions() { AllowMultiple = false, FileTypeFilter = [new FilePickerFileType("SSHKey") { Patterns = ["*.*"] }] };
             var toplevel = TopLevel.GetTopLevel(this);
+            if (toplevel == null)
+                return;
+
+            var options = new FilePickerOpenOptions()
+            {
+                AllowMultiple = false,
+                FileTypeFilter = [new FilePickerFileType("SSHKey") { Patterns = ["*.*"] }]
+            };
+
             var selected = await toplevel.StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
-            {
-                txtSSHKey.Text = selected[0].Path.LocalPath;
-            }
+                TxtSshKey.Text = selected[0].Path.LocalPath;
 
             e.Handled = true;
         }

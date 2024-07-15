@@ -5,7 +5,6 @@ namespace SourceGit.ViewModels
 {
     public class StashChanges : Popup
     {
-
         public string Message
         {
             get;

@@ -38,7 +38,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private string _targetPath = string.Empty;
+        private string _targetPath = null;
         private RepositoryNode _parentNode = null;
     }
 }

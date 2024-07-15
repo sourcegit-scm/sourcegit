@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands
 {
-    public partial class Worktree : Command
+    public class Worktree : Command
     {
-        [GeneratedRegex(@"^(\w)\s(\d+)$")]
-        private static partial Regex REG_AHEAD_BEHIND();
-
         public Worktree(string repo)
         {
             WorkingDirectory = repo;
@@ -24,7 +20,7 @@ namespace SourceGit.Commands
             var last = null as Models.Worktree;
             if (rs.IsSuccess)
             {
-                var lines = rs.StdOut.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                var lines = rs.StdOut.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
                     if (line.StartsWith("worktree ", StringComparison.Ordinal))
@@ -34,27 +30,23 @@ namespace SourceGit.Commands
                     }
                     else if (line.StartsWith("bare", StringComparison.Ordinal))
                     {
-                        last.IsBare = true;
+                        last!.IsBare = true;
                     }
                     else if (line.StartsWith("HEAD ", StringComparison.Ordinal))
                     {
-                        last.Head = line.Substring(5).Trim();
+                        last!.Head = line.Substring(5).Trim();
                     }
                     else if (line.StartsWith("branch ", StringComparison.Ordinal))
                     {
-                        last.Branch = line.Substring(7).Trim();
+                        last!.Branch = line.Substring(7).Trim();
                     }
                     else if (line.StartsWith("detached", StringComparison.Ordinal))
                     {
-                        last.IsDetached = true;
+                        last!.IsDetached = true;
                     }
                     else if (line.StartsWith("locked", StringComparison.Ordinal))
                     {
-                        last.IsLocked = true;
-                    }
-                    else if (line.StartsWith("prunable", StringComparison.Ordinal))
-                    {
-                        last.IsPrunable = true;
+                        last!.IsLocked = true;
                     }
                 }
             }

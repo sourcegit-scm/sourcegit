@@ -44,34 +44,29 @@ namespace SourceGit
         [STAThread]
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+            {
+                LogException(e.ExceptionObject as Exception);
+            };
+
+            TaskScheduler.UnobservedTaskException += (_, e) =>
+            {
+                LogException(e.Exception);
+                e.SetObserved();
+            };
+
             try
             {
-                if (args.Length > 1 && args[0].Equals("--rebase-editor", StringComparison.Ordinal))
-                    Environment.Exit(Models.InteractiveRebaseEditor.Process(args[1]));
+                if (TryLaunchedAsRebaseTodoEditor(args, out int exitTodo))
+                    Environment.Exit(exitTodo);
+                else if (TryLaunchedAsRebaseMessageEditor(args, out int exitMessage))
+                    Environment.Exit(exitMessage);
                 else
                     BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             }
             catch (Exception ex)
             {
-                var builder = new StringBuilder();
-                builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
-                builder.Append("----------------------------\n");
-                builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
-                builder.Append($"OS: {Environment.OSVersion.ToString()}\n");
-                builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
-                builder.Append($"Source: {ex.Source}\n");
-                builder.Append($"---------------------------\n\n");
-                builder.Append(ex.StackTrace);
-                while (ex.InnerException != null)
-                {
-                    ex = ex.InnerException;
-                    builder.Append($"\n\nInnerException::: {ex.GetType().FullName}: {ex.Message}\n");
-                    builder.Append(ex.StackTrace);
-                }
-
-                var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-                var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
-                File.WriteAllText(file, builder.ToString());
+                LogException(ex);
             }
         }
 
@@ -94,20 +89,32 @@ namespace SourceGit
 
         public static readonly SimpleCommand OpenPreferenceCommand = new SimpleCommand(() =>
         {
+            var toplevel = GetTopLevel() as Window;
+            if (toplevel == null)
+                return;
+            
             var dialog = new Views.Preference();
-            dialog.ShowDialog(GetTopLevel() as Window);
+            dialog.ShowDialog(toplevel);
         });
 
         public static readonly SimpleCommand OpenHotkeysCommand = new SimpleCommand(() =>
         {
+            var toplevel = GetTopLevel() as Window;
+            if (toplevel == null)
+                return;
+            
             var dialog = new Views.Hotkeys();
-            dialog.ShowDialog(GetTopLevel() as Window);
+            dialog.ShowDialog(toplevel);
         });
 
         public static readonly SimpleCommand OpenAboutCommand = new SimpleCommand(() =>
         {
+            var toplevel = GetTopLevel() as Window;
+            if (toplevel == null)
+                return;
+            
             var dialog = new Views.About();
-            dialog.ShowDialog(GetTopLevel() as Window);
+            dialog.ShowDialog(toplevel);
         });
 
         public static readonly SimpleCommand CheckForUpdateCommand = new SimpleCommand(() =>
@@ -115,7 +122,7 @@ namespace SourceGit
             Check4Update(true);
         });
 
-        public static readonly SimpleCommand QuitCommand = new SimpleCommand(Quit);
+        public static readonly SimpleCommand QuitCommand = new SimpleCommand(() => Quit(0));
 
         public static void RaiseException(string context, string message)
         {
@@ -132,7 +139,7 @@ namespace SourceGit
         public static void SetLocale(string localeKey)
         {
             var app = Current as App;
-            var targetLocale = app.Resources[localeKey] as ResourceDictionary;
+            var targetLocale = app?.Resources[localeKey] as ResourceDictionary;
             if (targetLocale == null || targetLocale == app._activeLocale)
                 return;
 
@@ -143,9 +150,11 @@ namespace SourceGit
             app._activeLocale = targetLocale;
         }
 
-        public static void SetTheme(string theme, string colorsFile)
+        public static void SetTheme(string theme, string themeOverridesFile)
         {
             var app = Current as App;
+            if (app == null)
+                return;
 
             if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase))
                 app.RequestedThemeVariant = ThemeVariant.Light;
@@ -154,63 +163,59 @@ namespace SourceGit
             else
                 app.RequestedThemeVariant = ThemeVariant.Default;
 
-            if (app._colorOverrides != null)
+            if (app._themeOverrides != null)
             {
-                app.Resources.MergedDictionaries.Remove(app._colorOverrides);
-                app._colorOverrides = null;
+                app.Resources.MergedDictionaries.Remove(app._themeOverrides);
+                app._themeOverrides = null;
             }
 
-            Models.CommitGraph.SetDefaultPens();
-
-            if (!string.IsNullOrEmpty(colorsFile) && File.Exists(colorsFile))
+            if (!string.IsNullOrEmpty(themeOverridesFile) && File.Exists(themeOverridesFile))
             {
                 try
                 {
                     var resDic = new ResourceDictionary();
-
-                    var schema = JsonSerializer.Deserialize(File.ReadAllText(colorsFile), JsonCodeGen.Default.CustomColorSchema);
-                    foreach (var kv in schema.Basic)
+                    var overrides = JsonSerializer.Deserialize(File.ReadAllText(themeOverridesFile), JsonCodeGen.Default.ThemeOverrides);
+                    foreach (var kv in overrides.BasicColors)
                     {
                         if (kv.Key.Equals("SystemAccentColor", StringComparison.Ordinal))
-                            resDic["SystemAccentColor"] = Color.Parse(kv.Value);
+                            resDic["SystemAccentColor"] = kv.Value;
                         else
-                            resDic[$"Color.{kv.Key}"] = Color.Parse(kv.Value);
+                            resDic[$"Color.{kv.Key}"] = kv.Value;
                     }
-                        
 
-                    if (schema.Graph.Count > 0)
-                    {
-                        var penColors = new List<Color>();
-
-                        foreach (var c in schema.Graph)
-                            penColors.Add(Color.Parse(c));
-
-                        Models.CommitGraph.SetPenColors(penColors);
-                    }
+                    if (overrides.GraphColors.Count > 0)
+                        Models.CommitGraph.SetPens(overrides.GraphColors, overrides.GraphPenThickness);
+                    else
+                        Models.CommitGraph.SetDefaultPens(overrides.GraphPenThickness);
 
                     app.Resources.MergedDictionaries.Add(resDic);
-                    app._colorOverrides = resDic;
+                    app._themeOverrides = resDic;
                 }
                 catch
                 {
+                    // ignore
                 }
+            }
+            else
+            {
+                Models.CommitGraph.SetDefaultPens();
             }
         }
 
         public static async void CopyText(string data)
         {
-            if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                if (desktop.MainWindow.Clipboard is { } clipbord)
+                if (desktop.MainWindow?.Clipboard is { } clipbord)
                     await clipbord.SetTextAsync(data);
             }
         }
 
         public static async Task<string> GetClipboardTextAsync()
         {
-            if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                if (desktop.MainWindow.Clipboard is { } clipboard)
+                if (desktop.MainWindow?.Clipboard is { } clipboard)
                 {
                     return await clipboard.GetTextAsync();
                 }
@@ -220,7 +225,7 @@ namespace SourceGit
 
         public static string Text(string key, params object[] args)
         {
-            var fmt = Current.FindResource($"Text.{key}") as string;
+            var fmt = Current?.FindResource($"Text.{key}") as string;
             if (string.IsNullOrWhiteSpace(fmt))
                 return $"Text.{key}";
 
@@ -236,16 +241,21 @@ namespace SourceGit
             icon.Width = 12;
             icon.Height = 12;
             icon.Stretch = Stretch.Uniform;
-            icon.Data = Current.FindResource(key) as StreamGeometry;
+
+            var geo = Current?.FindResource(key) as StreamGeometry;
+            if (geo != null)
+                icon.Data = geo;
+            
             return icon;
         }
 
         public static TopLevel GetTopLevel()
         {
-            if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 return desktop.MainWindow;
             }
+            
             return null;
         }
 
@@ -305,12 +315,16 @@ namespace SourceGit
             return null;
         }
 
-        public static void Quit()
+        public static void Quit(int exitCode)
         {
-            if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow.Close();
-                desktop.Shutdown();
+                desktop.MainWindow?.Close();
+                desktop.Shutdown(exitCode);
+            }
+            else
+            {
+                Environment.Exit(exitCode);
             }
         }
 
@@ -321,7 +335,7 @@ namespace SourceGit
             var pref = ViewModels.Preference.Instance;
 
             SetLocale(pref.Locale);
-            SetTheme(pref.Theme, pref.ColorOverrides);
+            SetTheme(pref.Theme, pref.ThemeOverrides);
         }
 
         public override void OnFrameworkInitializationCompleted()
@@ -329,34 +343,52 @@ namespace SourceGit
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 BindingPlugins.DataValidators.RemoveAt(0);
-                Native.OS.SetupEnternalTools();
 
-                _launcher = new ViewModels.Launcher();
-                desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
+                if (TryLaunchedAsCoreEditor(desktop))
+                    return;
 
-                var pref = ViewModels.Preference.Instance;
-                if (pref.ShouldCheck4UpdateOnStartup)
-                {
-                    pref.Save();
-                    Check4Update();
-                }
+                if (TryLaunchedAsAskpass(desktop))
+                    return;
+
+                TryLaunchedAsNormal(desktop);
+            }
+        }
+
+        private static void LogException(Exception ex)
+        {
+            if (ex == null)
+                return;
+
+            var builder = new StringBuilder();
+            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
+            builder.Append("----------------------------\n");
+            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
+            builder.Append($"OS: {Environment.OSVersion.ToString()}\n");
+            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
+            builder.Append($"Source: {ex.Source}\n");
+            builder.Append($"---------------------------\n\n");
+            builder.Append(ex.StackTrace);
+            while (ex.InnerException != null)
+            {
+                ex = ex.InnerException;
+                builder.Append($"\n\nInnerException::: {ex.GetType().FullName}: {ex.Message}\n");
+                builder.Append(ex.StackTrace);
             }
 
-            base.OnFrameworkInitializationCompleted();
+            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
+            File.WriteAllText(file, builder.ToString());
         }
 
         private static void ShowSelfUpdateResult(object data)
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: not null } desktop)
                 {
                     var dialog = new Views.SelfUpdate()
                     {
-                        DataContext = new ViewModels.SelfUpdate
-                        {
-                            Data = data
-                        }
+                        DataContext = new ViewModels.SelfUpdate() { Data = data }
                     };
 
                     dialog.Show(desktop.MainWindow);
@@ -364,8 +396,137 @@ namespace SourceGit
             });
         }
 
+        private static bool TryLaunchedAsRebaseTodoEditor(string[] args, out int exitCode)
+        {
+            exitCode = -1;
+
+            if (args.Length <= 1 || !args[0].Equals("--rebase-todo-editor", StringComparison.Ordinal))
+                return false;
+
+            var file = args[1];
+            var filename = Path.GetFileName(file);
+            if (!filename.Equals("git-rebase-todo", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            var dirInfo = new DirectoryInfo(Path.GetDirectoryName(file)!);
+            if (!dirInfo.Exists || !dirInfo.Name.Equals("rebase-merge", StringComparison.Ordinal))
+                return true;
+
+            var jobsFile = Path.Combine(dirInfo.Parent!.FullName, "sourcegit_rebase_jobs.json");
+            if (!File.Exists(jobsFile))
+                return true;
+
+            var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            var lines = new List<string>();
+            foreach (var job in collection.Jobs)
+            {
+                switch (job.Action)
+                {
+                    case Models.InteractiveRebaseAction.Pick:
+                        lines.Add($"p {job.SHA}");
+                        break;
+                    case Models.InteractiveRebaseAction.Edit:
+                        lines.Add($"e {job.SHA}");
+                        break;
+                    case Models.InteractiveRebaseAction.Reword:
+                        lines.Add($"r {job.SHA}");
+                        break;
+                    case Models.InteractiveRebaseAction.Squash:
+                        lines.Add($"s {job.SHA}");
+                        break;
+                    case Models.InteractiveRebaseAction.Fixup:
+                        lines.Add($"f {job.SHA}");
+                        break;
+                    default:
+                        lines.Add($"d {job.SHA}");
+                        break;
+                }
+            }
+
+            File.WriteAllLines(file, lines);
+
+            exitCode = 0;
+            return true;
+        }
+
+        private static bool TryLaunchedAsRebaseMessageEditor(string[] args, out int exitCode)
+        {
+            exitCode = -1;
+
+            if (args.Length <= 1 || !args[0].Equals("--rebase-message-editor", StringComparison.Ordinal))
+                return false;
+
+            var file = args[1];
+            var filename = Path.GetFileName(file);
+            if (!filename.Equals("COMMIT_EDITMSG", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            var jobsFile = Path.Combine(Path.GetDirectoryName(file)!, "sourcegit_rebase_jobs.json");
+            if (!File.Exists(jobsFile))
+                return true;
+
+            var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            var doneFile = Path.Combine(Path.GetDirectoryName(file)!, "rebase-merge", "done");
+            if (!File.Exists(doneFile))
+                return true;
+
+            var done = File.ReadAllText(doneFile).Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            if (done.Length > collection.Jobs.Count)
+                return true;
+
+            var job = collection.Jobs[done.Length - 1];
+            File.WriteAllText(file, job.Message);
+
+            exitCode = 0;
+            return true;
+        }
+
+        private bool TryLaunchedAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var args = desktop.Args;
+            if (args == null || args.Length <= 1 || !args[0].Equals("--core-editor", StringComparison.Ordinal))
+                return false;
+
+            var file = args[1];
+            if (!File.Exists(file))
+                desktop.Shutdown(-1);
+            else
+                desktop.MainWindow = new Views.StandaloneCommitMessageEditor(file);
+
+            return true;
+        }
+
+        private bool TryLaunchedAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var args = desktop.Args;
+            if (args == null || args.Length != 1 || !args[0].StartsWith("Enter passphrase", StringComparison.Ordinal))
+                return false;
+
+            desktop.MainWindow = new Views.Askpass(args[0]);
+            return true;
+        }
+
+        private void TryLaunchedAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            Native.OS.SetupEnternalTools();
+
+            string startupRepo = null;
+            if (desktop.Args != null && desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]))
+                startupRepo = desktop.Args[0];
+
+            _launcher = new ViewModels.Launcher(startupRepo);
+            desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
+
+            var pref = ViewModels.Preference.Instance;
+            if (pref.ShouldCheck4UpdateOnStartup)
+            {
+                pref.Save();
+                Check4Update();
+            }
+        }
+
         private ViewModels.Launcher _launcher = null;
         private ResourceDictionary _activeLocale = null;
-        private ResourceDictionary _colorOverrides = null;
+        private ResourceDictionary _themeOverrides = null;
     }
 }

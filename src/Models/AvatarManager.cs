@@ -75,7 +75,10 @@ namespace SourceGit.Models
                             }
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                        // ignored
+                    }
 
                     lock (_synclock)
                     {
@@ -84,10 +87,7 @@ namespace SourceGit.Models
 
                     Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        if (_resources.ContainsKey(md5))
-                            _resources[md5] = img;
-                        else
-                            _resources.Add(md5, img);
+                        _resources[md5] = img;
                         NotifyResourceChanged(md5);
                     });
                 }
@@ -134,7 +134,10 @@ namespace SourceGit.Models
                             return img;
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                        // ignore
+                    }
                 }
             }
 
@@ -156,7 +159,7 @@ namespace SourceGit.Models
         }
 
         private static readonly object _synclock = new object();
-        private static readonly string _storePath = string.Empty;
+        private static readonly string _storePath;
         private static readonly List<IAvatarHost> _avatars = new List<IAvatarHost>();
         private static readonly Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
         private static readonly HashSet<string> _requesting = new HashSet<string>();

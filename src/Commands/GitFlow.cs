@@ -64,7 +64,7 @@ namespace SourceGit.Commands
             return init.Exec();
         }
 
-        public static string Prefix(string repo, string type)
+        public static string GetPrefix(string repo, string type)
         {
             return new Config(repo).Get($"gitflow.prefix.{type}");
         }
