@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SourceGit.Commands
 {
@@ -9,8 +10,25 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s " + limits;
+            Args = "log --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s " + limits;
             _findFirstMerged = needFindHead;
+        }
+
+        public QueryCommits(string repo, int maxCount, string messageFilter)
+        {
+            var argsBuilder = new StringBuilder();
+            var words = messageFilter.Split(new[] { ' ', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var word in words)
+            {
+                var escaped = word.Trim().Replace("\"", "\\\"", StringComparison.Ordinal);
+                argsBuilder.Append($"--grep=\"{escaped}\" ");
+            }
+            argsBuilder.Append("--all-match");
+
+            WorkingDirectory = repo;
+            Context = repo;
+            Args = $"log -{maxCount} --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s " + argsBuilder.ToString();
+            _findFirstMerged = false;
         }
 
         public List<Models.Commit> Result()
