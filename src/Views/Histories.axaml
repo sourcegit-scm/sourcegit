@@ -155,18 +155,24 @@
 
           <DataGridTemplateColumn CanUserResize="False" MinWidth="156">
             <DataGridTemplateColumn.Header>
-              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Time}"/>
+              <StackPanel Orientation="Horizontal">
+                <ToggleButton Classes="time_display_mode" 
+                              Width="10" Height="10"
+                              IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"/>
+                <TextBlock Classes="table_header" Margin="4,0,0,0" Text="{DynamicResource Text.Histories.Header.Time}"/>
+              </StackPanel>
+
             </DataGridTemplateColumn.Header>
             
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
-                <Border Background="Transparent" ToolTip.Tip="{Binding CommitterTimeFromNowString}">
-                  <TextBlock Classes="monospace"
-                             Text="{Binding CommitterTimeStr}"
-                             Margin="8,0"
-                             Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"
-                             FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
-                </Border>
+                <v:CommitTimeTextBlock Classes="monospace"
+                                       Margin="8,0"
+                                       HorizontalAlignment="Center"
+                                       Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"
+                                       FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.BoldIfTrue}}"
+                                       Timestamp="{Binding CommitterTime}"
+                                       ShowAsDateTime="{Binding Source={x:Static vm:Preference.Instance}, Path=!DisplayTimeAsPeriodInHistories}"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>

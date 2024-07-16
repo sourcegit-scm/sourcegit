@@ -159,6 +159,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useTwoColumnsLayoutInHistories, value);
         }
 
+        public bool DisplayTimeAsPeriodInHistories
+        {
+            get => _displayTimeAsPeriodInHistories;
+            set => SetProperty(ref _displayTimeAsPeriodInHistories, value);
+        }
+
         public bool UseSideBySideDiff
         {
             get => _useSideBySideDiff;
@@ -494,6 +500,7 @@ namespace SourceGit.ViewModels
         private bool _check4UpdatesOnStartup = true;
 
         private bool _useTwoColumnsLayoutInHistories = false;
+        private bool _displayTimeAsPeriodInHistories = false;
         private bool _useSideBySideDiff = false;
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
