@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="en_US.axaml"/>
+    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">关于软件</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">关于本软件</x:String>
@@ -344,6 +344,15 @@
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">复制仓库路径</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">新标签页</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">粘贴</x:String>
+  <x:String x:Key="Text.Period.JustNow" xml:space="preserve">刚刚</x:String>
+  <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0}分钟前</x:String>
+  <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">{0}小时前</x:String>
+  <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨天</x:String>
+  <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0}天前</x:String>
+  <x:String x:Key="Text.Period.LastMonth" xml:space="preserve">上个月</x:String>
+  <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0}个月前</x:String>
+  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
+  <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0}年前</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好设置</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外观配置</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>

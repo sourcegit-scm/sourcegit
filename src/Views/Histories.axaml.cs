@@ -139,7 +139,7 @@ namespace SourceGit.Views
                 });
 
                 return true;
-            }, TimeSpan.FromSeconds(4));
+            }, TimeSpan.FromSeconds(10));
         }
 
         private void StopTimer()
@@ -164,9 +164,9 @@ namespace SourceGit.Views
                 var now = DateTime.Now;
                 var timespan = now - committerTime;
                 if (timespan.TotalHours > 1)
-                    return $"{(int)timespan.TotalHours} hours ago";
+                    return App.Text("Period.HoursAgo", (int)timespan.TotalHours);
 
-                return timespan.TotalMinutes < 1 ? "Just now" : $"{(int)timespan.TotalMinutes} minutes ago";
+                return timespan.TotalMinutes < 1 ? App.Text("Period.JustNow") : App.Text("Period.MinutesAgo", (int)timespan.TotalMinutes);
             }
 
             var diffYear = today.Year - committerTime.Year;
@@ -174,13 +174,13 @@ namespace SourceGit.Views
             {
                 var diffMonth = today.Month - committerTime.Month;
                 if (diffMonth > 0)
-                    return diffMonth == 1 ? "Last month" : $"{diffMonth} months ago";
+                    return diffMonth == 1 ? App.Text("Period.LastMonth") : App.Text("Period.MonthsAgo", diffMonth);
 
                 var diffDay = today.Day - committerTime.Day;
-                return diffDay == 1 ? "Yesterday" : $"{diffDay} days ago";
+                return diffDay == 1 ? App.Text("Period.Yesterday") : App.Text("Period.DaysAgo", diffDay);
             }
 
-            return diffYear == 1 ? "Last year" : $"{diffYear} years ago";
+            return diffYear == 1 ? App.Text("Period.LastYear") : App.Text("Period.YearsAgo", diffYear);
         }
 
         private IDisposable _refreshTimer = null;
