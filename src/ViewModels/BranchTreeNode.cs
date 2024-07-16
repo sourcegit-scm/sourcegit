@@ -152,6 +152,8 @@ namespace SourceGit.ViewModels
                     if (folders.TryGetValue(folder, out var val))
                     {
                         lastFolder = val;
+                        if (!lastFolder.IsExpanded)
+                            lastFolder.IsExpanded |= (branch.IsCurrent || _expanded.Contains(folder));
                     }
                     else if (lastFolder == null)
                     {
