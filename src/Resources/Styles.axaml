@@ -1087,7 +1087,7 @@
                 VerticalAlignment="Center">
           <Path x:Name="ChevronPath"
                 Data="M 4 0 L 8 4 L 4 8 Z"
-                Fill="{DynamicResource TreeViewItemForeground}"
+                Fill="{DynamicResource Brush.FG1}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"/>
         </Border>
@@ -1111,7 +1111,7 @@
                 VerticalAlignment="Center">
           <Path x:Name="ChevronPath"
                 Data="{StaticResource Icons.Calender}"
-                Fill="{DynamicResource TreeViewItemForeground}"
+                Fill="{DynamicResource Brush.FG1}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Opacity="0.65"/>
@@ -1121,6 +1121,11 @@
 
     <Style Selector="^:checked /template/ Path#ChevronPath">
       <Setter Property="Data" Value="{StaticResource Icons.Stopwatch}" />
+    </Style>
+
+    <Style Selector="^:pointerover /template/ Path#ChevronPath">
+      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+      <Setter Property="Opacity" Value="1"/>
     </Style>
   </Style>
   
