@@ -25,37 +25,5 @@ namespace SourceGit.Models
 
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;
         public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
-    
-        public string CommitterTimeFromNowString
-        {
-            get
-            {
-                var today = DateTime.Today;
-                var committerTime = DateTime.UnixEpoch.AddSeconds(CommitterTime).ToLocalTime();
-
-                if (committerTime >= today)
-                {
-                    var now = DateTime.Now;
-                    var timespan = now - committerTime;
-                    if (timespan.TotalHours > 1)
-                        return $"{(int)timespan.TotalHours} hours ago";
-
-                    return timespan.TotalMinutes < 1 ? "Just now" : $"{(int)timespan.TotalMinutes} minutes ago";
-                }
-
-                var diffYear = today.Year - committerTime.Year;
-                if (diffYear == 0)
-                {
-                    var diffMonth = today.Month - committerTime.Month;
-                    if (diffMonth > 0)
-                        return diffMonth == 1 ? "Last month" : $"{diffMonth} months ago";
-
-                    var diffDay = today.Day - committerTime.Day;
-                    return diffDay == 1 ? "Yesterday" : $"{diffDay} days ago";
-                }
-
-                return diffYear == 1 ? "Last year" : $"{diffYear} years ago";
-            }
-        }
     }
 }
