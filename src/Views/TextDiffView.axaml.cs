@@ -214,6 +214,71 @@ namespace SourceGit.Views
             }
         }
 
+        protected (int, int) FindRangeByIndex(List<Models.TextDiffLine> lines, int lineIdx)
+        {
+            var startIdx = -1;
+            var endIdx = -1;
+
+            var normalLineCount = 0;
+            var modifiedLineCount = 0;
+
+            for (int i = lineIdx; i >= 0; i--)
+            {
+                var line = lines[i];
+                if (line.Type == Models.TextDiffLineType.Indicator)
+                {
+                    startIdx = i;
+                    break;
+                }
+
+                if (line.Type == Models.TextDiffLineType.Normal)
+                {
+                    normalLineCount++;
+                    if (normalLineCount >= 2)
+                    {
+                        startIdx = i;
+                        break;
+                    }
+                }
+                else
+                {
+                    normalLineCount = 0;
+                    modifiedLineCount++;
+                }
+            }
+
+            normalLineCount = lines[lineIdx].Type == Models.TextDiffLineType.Normal ? 1 : 0;
+            for (int i = lineIdx + 1; i < lines.Count; i++)
+            {
+                var line = lines[i];
+                if (line.Type == Models.TextDiffLineType.Indicator)
+                {
+                    endIdx = i;
+                    break;
+                }
+
+                if (line.Type == Models.TextDiffLineType.Normal)
+                {
+                    normalLineCount++;
+                    if (normalLineCount >= 2)
+                    {
+                        endIdx = i;
+                        break;
+                    }
+                }
+                else
+                {
+                    normalLineCount = 0;
+                    modifiedLineCount++;
+                }
+            }
+
+            if (endIdx == -1)
+                endIdx = lines.Count - 1;
+
+            return modifiedLineCount > 0 ? (startIdx, endIdx) : (-1, -1);
+        }
+
         private void UpdateTextMate()
         {
             if (UseSyntaxHighlighting)
@@ -561,7 +626,7 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var (startIdx, endIdx) = FindRangeByIndex(lineIdx);
+                var (startIdx, endIdx) = FindRangeByIndex(DiffData.Lines, lineIdx);
                 if (startIdx == -1)
                 {
                     SetCurrentValue(HighlightChunkProperty, null);
@@ -596,72 +661,6 @@ namespace SourceGit.Views
 
             // The offset of TextView has not been updated here. Post a event to next frame.
             Dispatcher.UIThread.Post(() => OnTextViewPointerMoved(sender, e));
-        }
-
-        private (int, int) FindRangeByIndex(int lineIdx)
-        {
-            var startIdx = -1;
-            var endIdx = -1;
-
-            var normalLineCount = 0;
-            var modifiedLineCount = 0;
-
-            var lines = DiffData.Lines;
-            for (int i = lineIdx; i >= 0; i--)
-            {
-                var line = lines[i];
-                if (line.Type == Models.TextDiffLineType.Indicator)
-                {
-                    startIdx = i;
-                    break;
-                }
-
-                if (line.Type == Models.TextDiffLineType.Normal)
-                {
-                    normalLineCount++;
-                    if (normalLineCount >= 2)
-                    {
-                        startIdx = i;
-                        break;
-                    }
-                }
-                else
-                {
-                    normalLineCount = 0;
-                    modifiedLineCount++;
-                }
-            }
-
-            normalLineCount = lines[lineIdx].Type == Models.TextDiffLineType.Normal ? 1 : 0;
-            for (int i = lineIdx + 1; i < lines.Count; i++)
-            {
-                var line = lines[i];
-                if (line.Type == Models.TextDiffLineType.Indicator)
-                {
-                    endIdx = i;
-                    break;
-                }
-
-                if (line.Type == Models.TextDiffLineType.Normal)
-                {
-                    normalLineCount++;
-                    if (normalLineCount >= 2)
-                    {
-                        endIdx = i;
-                        break;
-                    }
-                }
-                else
-                {
-                    normalLineCount = 0;
-                    modifiedLineCount++;
-                }
-            }
-
-            if (endIdx == -1)
-                endIdx = lines.Count - 1;
-
-            return modifiedLineCount > 0 ? (startIdx, endIdx) : (-1, -1);
         }
     }
 
@@ -1055,71 +1054,6 @@ namespace SourceGit.Views
 
             // The offset of TextView has not been updated here. Post a event to next frame.
             Dispatcher.UIThread.Post(() => OnTextViewPointerMoved(sender, e));
-        }
-
-        private (int, int) FindRangeByIndex(List<Models.TextDiffLine> lines, int lineIdx)
-        {
-            var startIdx = -1;
-            var endIdx = -1;
-
-            var normalLineCount = 0;
-            var modifiedLineCount = 0;
-
-            for (int i = lineIdx; i >= 0; i--)
-            {
-                var line = lines[i];
-                if (line.Type == Models.TextDiffLineType.Indicator)
-                {
-                    startIdx = i;
-                    break;
-                }
-
-                if (line.Type == Models.TextDiffLineType.Normal)
-                {
-                    normalLineCount++;
-                    if (normalLineCount >= 2)
-                    {
-                        startIdx = i;
-                        break;
-                    }
-                }
-                else
-                {
-                    normalLineCount = 0;
-                    modifiedLineCount++;
-                }
-            }
-
-            normalLineCount = lines[lineIdx].Type == Models.TextDiffLineType.Normal ? 1 : 0;
-            for (int i = lineIdx + 1; i < lines.Count; i++)
-            {
-                var line = lines[i];
-                if (line.Type == Models.TextDiffLineType.Indicator)
-                {
-                    endIdx = i;
-                    break;
-                }
-
-                if (line.Type == Models.TextDiffLineType.Normal)
-                {
-                    normalLineCount++;
-                    if (normalLineCount >= 2)
-                    {
-                        endIdx = i;
-                        break;
-                    }
-                }
-                else
-                {
-                    normalLineCount = 0;
-                    modifiedLineCount++;
-                }
-            }
-
-            if (endIdx == -1)
-                endIdx = lines.Count - 1;
-
-            return modifiedLineCount > 0 ? (startIdx, endIdx) : (-1, -1);
         }
 
         private ScrollViewer _scrollViewer = null;
