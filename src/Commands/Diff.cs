@@ -110,6 +110,12 @@ namespace SourceGit.Commands
 
                 _oldLine = int.Parse(match.Groups[1].Value);
                 _newLine = int.Parse(match.Groups[2].Value);
+
+                if (_result.TextDiff.Lines.Count > 0)
+                {
+                    _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, "", 0, 0));
+                    _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, "", 0, 0));
+                }
                 _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
             }
             else
@@ -156,6 +162,11 @@ namespace SourceGit.Commands
                     {
                         _oldLine = int.Parse(match.Groups[1].Value);
                         _newLine = int.Parse(match.Groups[2].Value);
+                        if (_result.TextDiff.Lines.Count > 0)
+                        {
+                            _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, "", 0, 0));
+                            _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, "", 0, 0));
+                        }
                         _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
                     }
                     else
