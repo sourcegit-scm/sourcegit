@@ -162,7 +162,7 @@ namespace SourceGit.Views
             var pen = new Pen(color.ToUInt32());
 
             var x = ((Point)view.TranslatePoint(new Point(0, 0), this)).X;
-            var rect = new Rect(x, highlightChunk.Y, view.Bounds.Width, highlightChunk.Height);
+            var rect = new Rect(x - 4, highlightChunk.Y, view.Bounds.Width + 8, highlightChunk.Height);
 
             context.DrawRectangle(brush, null, rect);
             context.DrawLine(pen, rect.TopLeft, rect.TopRight);
