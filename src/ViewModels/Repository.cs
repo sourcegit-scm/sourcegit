@@ -566,10 +566,10 @@ namespace SourceGit.ViewModels
 
                         break;
                     case 2:
-                        visible = new Commands.QueryCommits(FullPath, 1000, _searchCommitFilter).Result();
+                        visible = new Commands.QueryCommits(FullPath, 1000, _searchCommitFilter, false).Result();
                         break;
                     case 3:
-                        visible = new Commands.QueryCommits(FullPath, $"-1000 -- \"{_searchCommitFilter}\"", false).Result();
+                        visible = new Commands.QueryCommits(FullPath, 1000, _searchCommitFilter, true).Result();
                         break;
                 }
 
