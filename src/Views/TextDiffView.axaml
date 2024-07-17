@@ -9,29 +9,11 @@
              x:Class="SourceGit.Views.TextDiffView"
              x:Name="ThisControl"
              Background="{DynamicResource Brush.Contents}">
-  <UserControl.DataTemplates>
-    <DataTemplate DataType="m:TextDiff">
-      <v:CombinedTextDiffPresenter FileName="{Binding File}"
-                                   Foreground="{DynamicResource Brush.FG1}"
-                                   LineBrush="{DynamicResource Brush.Border2}"
-                                   EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
-                                   AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
-                                   DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
-                                   AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
-                                   DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
-                                   IndicatorForeground="{DynamicResource Brush.FG2}"
-                                   FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
-                                   UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                   WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
-                                   ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                   />
-    </DataTemplate>
-
-    <DataTemplate DataType="vm:TwoSideTextDiff">
-      <Grid ColumnDefinitions="*,1,*">
-        <v:SingleSideTextDiffPresenter Grid.Column="0"
-                                       IsOld="True"
-                                       FileName="{Binding File}"
+  <Grid>
+    <ContentControl x:Name="Editor">
+      <ContentControl.DataTemplates>
+        <DataTemplate DataType="m:TextDiff">
+          <v:CombinedTextDiffPresenter FileName="{Binding File}"
                                        Foreground="{DynamicResource Brush.FG1}"
                                        LineBrush="{DynamicResource Brush.Border2}"
                                        EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
@@ -44,27 +26,55 @@
                                        UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                        WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
                                        ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                       />
+                                       HighlightChunk="{Binding #ThisControl.HighlightChunk, Mode=TwoWay}"/>
+        </DataTemplate>
 
-        <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+        <DataTemplate DataType="vm:TwoSideTextDiff">
+          <Grid ColumnDefinitions="*,1,*">
+            <v:SingleSideTextDiffPresenter Grid.Column="0"
+                                           IsOld="True"
+                                           FileName="{Binding File}"
+                                           Foreground="{DynamicResource Brush.FG1}"
+                                           LineBrush="{DynamicResource Brush.Border2}"
+                                           EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                           AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                           DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                           AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                           DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                           IndicatorForeground="{DynamicResource Brush.FG2}"
+                                           FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                                           UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
+                                           WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
+                                           ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
+                                           HighlightChunk="{Binding #ThisControl.HighlightChunk, Mode=TwoWay}"/>
 
-        <v:SingleSideTextDiffPresenter Grid.Column="2"
-                                       IsOld="False"
-                                       FileName="{Binding File}"
-                                       Foreground="{DynamicResource Brush.FG1}"
-                                       LineBrush="{DynamicResource Brush.Border2}"
-                                       EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
-                                       AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
-                                       DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
-                                       AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
-                                       DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
-                                       IndicatorForeground="{DynamicResource Brush.FG2}"
-                                       FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
-                                       UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
-                                       ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                       />
-      </Grid>
-    </DataTemplate>
-  </UserControl.DataTemplates>
+            <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+
+            <v:SingleSideTextDiffPresenter Grid.Column="2"
+                                           IsOld="False"
+                                           FileName="{Binding File}"
+                                           Foreground="{DynamicResource Brush.FG1}"
+                                           LineBrush="{DynamicResource Brush.Border2}"
+                                           EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                           AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                           DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                           AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                           DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                           IndicatorForeground="{DynamicResource Brush.FG2}"
+                                           FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                                           UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
+                                           WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
+                                           ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
+                                           HighlightChunk="{Binding #ThisControl.HighlightChunk, Mode=TwoWay}"/>
+          </Grid>
+        </DataTemplate>
+      </ContentControl.DataTemplates>
+    </ContentControl>
+
+    <StackPanel x:Name="Popup" IsVisible="False" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Effect="drop-shadow(0 0 6 #40000000)">
+      <Button Classes="flat" Content="{DynamicResource Text.Hunk.Stage}" Click="OnStageChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange}"/>
+      <Button Classes="flat" Content="{DynamicResource Text.Hunk.Unstage}" Click="OnUnstageChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange, Converter={x:Static BoolConverters.Not}}"/>
+      <Button Classes="flat" Content="{DynamicResource Text.Hunk.Discard}" Margin="8,0,0,0" Click="OnDiscardChunk"/>
+    </StackPanel>
+  </Grid>
 </UserControl>

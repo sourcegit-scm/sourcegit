@@ -66,6 +66,9 @@ namespace SourceGit.Models
         public Vector SyncScrollOffset { get; set; } = Vector.Zero;
         public int MaxLineNumber = 0;
 
+        public string Repo { get; set; } = null;
+        public DiffOption Option { get; set; } = null;
+
         public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
         {
             var isTracked = !string.IsNullOrEmpty(fileBlobGuid);

@@ -40,13 +40,13 @@ namespace SourceGit.Views
 
     public partial class ChangeCollectionView : UserControl
     {
-        public static readonly StyledProperty<bool> IsWorkingCopyChangeProperty =
-            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(IsWorkingCopyChange));
+        public static readonly StyledProperty<bool> IsUnstagedChangeProperty =
+            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(IsUnstagedChange));
 
-        public bool IsWorkingCopyChange
+        public bool IsUnstagedChange
         {
-            get => GetValue(IsWorkingCopyChangeProperty);
-            set => SetValue(IsWorkingCopyChangeProperty, value);
+            get => GetValue(IsUnstagedChangeProperty);
+            set => SetValue(IsUnstagedChangeProperty, value);
         }
 
         public static readonly StyledProperty<SelectionMode> SelectionModeProperty =

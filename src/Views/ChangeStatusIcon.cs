@@ -57,13 +57,13 @@ namespace SourceGit.Views
 
         private static readonly string[] INDICATOR = ["?", "±", "+", "−", "➜", "❏", "U", "★"];
 
-        public static readonly StyledProperty<bool> IsWorkingCopyChangeProperty =
-            AvaloniaProperty.Register<ChangeStatusIcon, bool>(nameof(IsWorkingCopyChange));
+        public static readonly StyledProperty<bool> IsUnstagedChangeProperty =
+            AvaloniaProperty.Register<ChangeStatusIcon, bool>(nameof(IsUnstagedChange));
 
-        public bool IsWorkingCopyChange
+        public bool IsUnstagedChange
         {
-            get => GetValue(IsWorkingCopyChangeProperty);
-            set => SetValue(IsWorkingCopyChangeProperty, value);
+            get => GetValue(IsUnstagedChangeProperty);
+            set => SetValue(IsUnstagedChangeProperty, value);
         }
 
         public static readonly StyledProperty<Models.Change> ChangeProperty =
@@ -77,7 +77,7 @@ namespace SourceGit.Views
 
         static ChangeStatusIcon()
         {
-            AffectsRender<ChangeStatusIcon>(IsWorkingCopyChangeProperty, ChangeProperty);
+            AffectsRender<ChangeStatusIcon>(IsUnstagedChangeProperty, ChangeProperty);
         }
 
         public override void Render(DrawingContext context)
@@ -89,7 +89,7 @@ namespace SourceGit.Views
 
             IBrush background;
             string indicator;
-            if (IsWorkingCopyChange)
+            if (IsUnstagedChange)
             {
                 if (Change.IsConflit)
                 {
