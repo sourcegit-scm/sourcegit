@@ -29,6 +29,17 @@ namespace SourceGit.Views
         public double Height { get; set; } = 0.0;
         public int StartIdx { get; set; } = 0;
         public int EndIdx { get; set; } = 0;
+
+        public bool ShouldReplace(TextViewHighlightChunk old)
+        {
+            if (old == null)
+                return true;
+
+            return Math.Abs(Y - old.Y) > 0.001 || 
+                Math.Abs(Height - old.Height) > 0.001 || 
+                StartIdx != old.StartIdx || 
+                EndIdx != old.EndIdx;
+        }
     }
 
     public class ThemedTextDiffPresenter : TextEditor
@@ -158,11 +169,11 @@ namespace SourceGit.Views
                 return;
 
             var color = (Color)this.FindResource("SystemAccentColor");
-            var brush = new SolidColorBrush(color, 0.5);
+            var brush = new SolidColorBrush(color, 0.1);
             var pen = new Pen(color.ToUInt32());
 
             var x = ((Point)view.TranslatePoint(new Point(0, 0), this)).X;
-            var rect = new Rect(x - 4, highlightChunk.Y, view.Bounds.Width + 8, highlightChunk.Height);
+            var rect = new Rect(x - 4, highlightChunk.Y, view.Bounds.Width + 7, highlightChunk.Height);
 
             context.DrawRectangle(brush, null, rect);
             context.DrawLine(pen, rect.TopLeft, rect.TopRight);
@@ -212,6 +223,21 @@ namespace SourceGit.Views
             {
                 InvalidateVisual();
             }
+        }
+
+        protected void TrySetHighlightChunk(TextViewHighlightChunk chunk)
+        {
+            var old = HighlightChunk;
+            if (chunk == null)
+            {
+                if (old != null)
+                    SetCurrentValue(HighlightChunkProperty, null);
+
+                return;
+            }
+
+            if (chunk.ShouldReplace(old))
+                SetCurrentValue(HighlightChunkProperty, chunk);
         }
 
         protected (int, int) FindRangeByIndex(List<Models.TextDiffLine> lines, int lineIdx)
@@ -598,7 +624,7 @@ namespace SourceGit.Views
 
             if (!string.IsNullOrEmpty(SelectedText))
             {
-                SetCurrentValue(HighlightChunkProperty, null);
+                TrySetHighlightChunk(null);
                 return;
             }
 
@@ -622,14 +648,14 @@ namespace SourceGit.Views
 
                 if (lineIdx == -1)
                 {
-                    SetCurrentValue(HighlightChunkProperty, null);
+                    TrySetHighlightChunk(null);
                     return;
                 }
 
                 var (startIdx, endIdx) = FindRangeByIndex(DiffData.Lines, lineIdx);
                 if (startIdx == -1)
                 {
-                    SetCurrentValue(HighlightChunkProperty, null);
+                    TrySetHighlightChunk(null);
                     return;
                 }
 
@@ -643,14 +669,13 @@ namespace SourceGit.Views
                     endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset:
                     view.Bounds.Height;
 
-                var hightlight = new TextViewHighlightChunk()
+                TrySetHighlightChunk(new TextViewHighlightChunk()
                 {
                     Y = rectStartY,
                     Height = rectEndY - rectStartY,
                     StartIdx = startIdx,
                     EndIdx = endIdx,
-                };
-                SetCurrentValue(HighlightChunkProperty, hightlight);
+                });
             }
         }
 
@@ -982,14 +1007,14 @@ namespace SourceGit.Views
 
             if (!string.IsNullOrEmpty(SelectedText))
             {
-                SetCurrentValue(HighlightChunkProperty, null);
+                TrySetHighlightChunk(null);
                 return;
             }
 
             var parentView = this.FindAncestorOfType<TextDiffView>();
             if (parentView == null || parentView.DataContext == null)
             {
-                SetCurrentValue(HighlightChunkProperty, null);
+                TrySetHighlightChunk(null);
                 return;
             }
 
@@ -1015,14 +1040,14 @@ namespace SourceGit.Views
 
                 if (lineIdx == -1)
                 {
-                    SetCurrentValue(HighlightChunkProperty, null);
+                    TrySetHighlightChunk(null);
                     return;
                 }
 
                 var (startIdx, endIdx) = FindRangeByIndex(lines, lineIdx);
                 if (startIdx == -1)
                 {
-                    SetCurrentValue(HighlightChunkProperty, null);
+                    TrySetHighlightChunk(null);
                     return;
                 }
 
@@ -1036,14 +1061,13 @@ namespace SourceGit.Views
                     endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
-                var hightlight = new TextViewHighlightChunk()
+                TrySetHighlightChunk(new TextViewHighlightChunk()
                 {
                     Y = rectStartY,
                     Height = rectEndY - rectStartY,
                     StartIdx = textDiff.Lines.IndexOf(lines[startIdx]),
-                    EndIdx = textDiff.Lines.IndexOf(lines[endIdx]),
-                };
-                SetCurrentValue(HighlightChunkProperty, hightlight);
+                    EndIdx = endIdx == lines.Count - 1 ? textDiff.Lines.Count - 1 : textDiff.Lines.IndexOf(lines[endIdx]),
+                });
             }
         }
 
@@ -1135,10 +1159,10 @@ namespace SourceGit.Views
             if (startLine > endLine)
                 (startLine, endLine) = (endLine, startLine);
 
-            if (UseSideBySideDiff)
-                (startLine, endLine) = GetUnifiedRange(diff, startLine, endLine, isOldSide);
+            if (Editor.Content is ViewModels.TwoSideTextDiff twoSides)
+                twoSides.ConvertsToCombinedRange(diff, ref startLine, ref endLine, isOldSide);
 
-            var selection = MakeSelection(diff, startLine, endLine, isOldSide);
+            var selection = diff.MakeSelection(startLine, endLine, UseSideBySideDiff, isOldSide);
             if (!selection.HasChanges)
                 return;
 
@@ -1405,7 +1429,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, false);
+            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, false, false);
             if (!selection.HasChanges)
                 return;
 
@@ -1463,7 +1487,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, false);
+            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, false, false);
             if (!selection.HasChanges)
                 return;
 
@@ -1519,7 +1543,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, false);
+            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, false, false);
             if (!selection.HasChanges)
                 return;
 
@@ -1563,123 +1587,6 @@ namespace SourceGit.Views
                 repo.MarkWorkingCopyDirtyManually();
                 repo.SetWatcherEnabled(true);
             }
-        }
-
-        private (int, int) GetUnifiedRange(Models.TextDiff diff, int startLine, int endLine, bool isOldSide)
-        {
-            endLine = Math.Min(endLine, diff.Lines.Count);
-            if (Editor.Content is ViewModels.TwoSideTextDiff twoSides)
-            {
-                var target = isOldSide ? twoSides.Old : twoSides.New;
-                var firstContentLine = -1;
-                for (int i = startLine - 1; i < endLine; i++)
-                {
-                    var line = target[i];
-                    if (line.Type != Models.TextDiffLineType.None)
-                    {
-                        firstContentLine = i;
-                        break;
-                    }
-                }
-
-                if (firstContentLine < 0)
-                    return (-1, -1);
-
-                var endContentLine = -1;
-                for (int i = Math.Min(endLine - 1, target.Count - 1); i >= startLine - 1; i--)
-                {
-                    var line = target[i];
-                    if (line.Type != Models.TextDiffLineType.None)
-                    {
-                        endContentLine = i;
-                        break;
-                    }
-                }
-
-                if (endContentLine < 0)
-                    return (-1, -1);
-
-                var firstContent = target[firstContentLine];
-                var endContent = target[endContentLine];
-                startLine = diff.Lines.IndexOf(firstContent) + 1;
-                endLine = diff.Lines.IndexOf(endContent) + 1;
-            }
-
-            return (startLine, endLine);
-        }
-
-        private Models.TextDiffSelection MakeSelection(Models.TextDiff diff, int startLine, int endLine, bool isOldSide)
-        {
-            var rs = new Models.TextDiffSelection();
-            rs.StartLine = startLine;
-            rs.EndLine = endLine;
-
-            for (int i = 0; i < startLine - 1; i++)
-            {
-                var line = diff.Lines[i];
-                if (line.Type == Models.TextDiffLineType.Added)
-                {
-                    rs.HasLeftChanges = true;
-                    rs.IgnoredAdds++;
-                }
-                else if (line.Type == Models.TextDiffLineType.Deleted)
-                {
-                    rs.HasLeftChanges = true;
-                    rs.IgnoredDeletes++;
-                }
-            }
-
-            for (int i = startLine - 1; i < endLine; i++)
-            {
-                var line = diff.Lines[i];
-                if (line.Type == Models.TextDiffLineType.Added)
-                {
-                    if (!UseSideBySideDiff)
-                    {
-                        rs.HasChanges = true;
-                        break;
-                    }
-                    else if (isOldSide)
-                    {
-                        rs.HasLeftChanges = true;
-                    }
-                    else
-                    {
-                        rs.HasChanges = true;
-                    }
-                }
-                else if (line.Type == Models.TextDiffLineType.Deleted)
-                {
-                    if (!UseSideBySideDiff)
-                    {
-                        rs.HasChanges = true;
-                        break;
-                    }
-                    else if (isOldSide)
-                    {
-                        rs.HasChanges = true;
-                    }
-                    else
-                    {
-                        rs.HasLeftChanges = true;
-                    }
-                }
-            }
-
-            if (!rs.HasLeftChanges)
-            {
-                for (int i = endLine; i < diff.Lines.Count; i++)
-                {
-                    var line = diff.Lines[i];
-                    if (line.Type == Models.TextDiffLineType.Added || line.Type == Models.TextDiffLineType.Deleted)
-                    {
-                        rs.HasLeftChanges = true;
-                        break;
-                    }
-                }
-            }
-
-            return rs;
         }
     }
 }

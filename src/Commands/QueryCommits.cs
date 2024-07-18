@@ -14,20 +14,30 @@ namespace SourceGit.Commands
             _findFirstMerged = needFindHead;
         }
 
-        public QueryCommits(string repo, int maxCount, string messageFilter)
+        public QueryCommits(string repo, int maxCount, string messageFilter, bool isFile)
         {
-            var argsBuilder = new StringBuilder();
-            var words = messageFilter.Split(new[] { ' ', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var word in words)
+            string search;
+            if (isFile)
             {
-                var escaped = word.Trim().Replace("\"", "\\\"", StringComparison.Ordinal);
-                argsBuilder.Append($"--grep=\"{escaped}\" ");
+                search = $"-- \"{messageFilter}\"";
             }
-            argsBuilder.Append("--all-match");
+            else
+            {
+                var argsBuilder = new StringBuilder();
+                var words = messageFilter.Split(new[] { ' ', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var word in words)
+                {
+                    var escaped = word.Trim().Replace("\"", "\\\"", StringComparison.Ordinal);
+                    argsBuilder.Append($"--grep=\"{escaped}\" ");
+                }
+                argsBuilder.Append("--all-match -i");
+                search = argsBuilder.ToString();
+            }
+            
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log -{maxCount} --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s " + argsBuilder.ToString();
+            Args = $"log -{maxCount} --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s --branches --remotes " + search;
             _findFirstMerged = false;
         }
 
