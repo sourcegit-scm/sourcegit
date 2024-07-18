@@ -310,9 +310,9 @@
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">定位到下一個匹配搜尋的位置</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">定位到上一個匹配搜尋的位置</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">開啟搜尋</x:String>
-  <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">暫存片斷</x:String>
+  <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">暫存</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">移出暫存區</x:String>
-  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">丟棄片斷</x:String>
+  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">丟棄</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">初始化新倉庫</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">路徑 ：</x:String>
   <x:String x:Key="Text.Init.Tip" xml:space="preserve">選擇目錄不是有效的Git倉庫。是否需要在此目錄執行`git init`操作？</x:String>

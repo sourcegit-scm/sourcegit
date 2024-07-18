@@ -26,7 +26,7 @@
                                        UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                        WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
                                        ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                       HighlightChunk="{Binding #ThisControl.HighlightChunk, Mode=TwoWay}"/>
+                                       SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
         </DataTemplate>
 
         <DataTemplate DataType="vm:TwoSideTextDiff">
@@ -46,7 +46,7 @@
                                            UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                            WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
                                            ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                           HighlightChunk="{Binding #ThisControl.HighlightChunk, Mode=TwoWay}"/>
+                                           SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
 
             <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
@@ -65,7 +65,7 @@
                                            UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                            WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
                                            ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                           HighlightChunk="{Binding #ThisControl.HighlightChunk, Mode=TwoWay}"/>
+                                           SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
           </Grid>
         </DataTemplate>
       </ContentControl.DataTemplates>

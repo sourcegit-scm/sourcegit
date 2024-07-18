@@ -69,7 +69,7 @@ namespace SourceGit.Models
         public string Repo { get; set; } = null;
         public DiffOption Option { get; set; } = null;
 
-        public TextDiffSelection MakeSelection(int startLine, int endLine, bool isSideBySide, bool isOldSide)
+        public TextDiffSelection MakeSelection(int startLine, int endLine, bool isCombined, bool isOldSide)
         {
             var rs = new TextDiffSelection();
             rs.StartLine = startLine;
@@ -95,7 +95,7 @@ namespace SourceGit.Models
                 var line = Lines[i];
                 if (line.Type == TextDiffLineType.Added)
                 {
-                    if (!isSideBySide)
+                    if (isCombined)
                     {
                         rs.HasChanges = true;
                         break;
@@ -111,7 +111,7 @@ namespace SourceGit.Models
                 }
                 else if (line.Type == TextDiffLineType.Deleted)
                 {
-                    if (!isSideBySide)
+                    if (isCombined)
                     {
                         rs.HasChanges = true;
                         break;

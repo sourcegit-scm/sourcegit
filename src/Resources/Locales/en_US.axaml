@@ -307,9 +307,9 @@
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Find next match</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Find previous match</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Open search panel</x:String>
-  <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage Hunk</x:String>
-  <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Unstage Hunk</x:String>
-  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Discard Hunk</x:String>
+  <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>
+  <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Unstage</x:String>
+  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Discard</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Initialize Repository</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Path:</x:String>
   <x:String x:Key="Text.Init.Tip" xml:space="preserve">Invalid repository detected. Run `git init` under this path?</x:String>
