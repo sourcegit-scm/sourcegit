@@ -9,7 +9,7 @@ on:
 jobs:
   build-windows:
     name: Build Windows x64
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -30,7 +30,7 @@ jobs:
           path: publish
   build-macos-intel:
     name: Build macOS (Intel)
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -76,7 +76,7 @@ jobs:
           path: sourcegit.osx-arm64.tar
   build-linux:
     name: Build Linux
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
