@@ -1162,7 +1162,7 @@ namespace SourceGit.Views
             if (UseSideBySideDiff)
                 (startLine, endLine) = GetUnifiedRange(diff, startLine, endLine, isOldSide);
 
-            var selection = MakeSelection(diff, startLine, endLine, isOldSide);
+            var selection = MakeSelection(diff, startLine, endLine, !UseSideBySideDiff, isOldSide);
             if (!selection.HasChanges)
                 return;
 
@@ -1429,7 +1429,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, false);
+            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, true, false);
             if (!selection.HasChanges)
                 return;
 
@@ -1487,7 +1487,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, false);
+            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, true, false);
             if (!selection.HasChanges)
                 return;
 
@@ -1543,7 +1543,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, false);
+            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, true, false);
             if (!selection.HasChanges)
                 return;
 
@@ -1632,7 +1632,7 @@ namespace SourceGit.Views
             return (startLine, endLine);
         }
 
-        private Models.TextDiffSelection MakeSelection(Models.TextDiff diff, int startLine, int endLine, bool isOldSide)
+        private Models.TextDiffSelection MakeSelection(Models.TextDiff diff, int startLine, int endLine, bool combined, bool isOldSide)
         {
             var rs = new Models.TextDiffSelection();
             rs.StartLine = startLine;
@@ -1658,7 +1658,7 @@ namespace SourceGit.Views
                 var line = diff.Lines[i];
                 if (line.Type == Models.TextDiffLineType.Added)
                 {
-                    if (!UseSideBySideDiff)
+                    if (combined)
                     {
                         rs.HasChanges = true;
                         break;
@@ -1674,7 +1674,7 @@ namespace SourceGit.Views
                 }
                 else if (line.Type == Models.TextDiffLineType.Deleted)
                 {
-                    if (!UseSideBySideDiff)
+                    if (combined)
                     {
                         rs.HasChanges = true;
                         break;
