@@ -29,6 +29,17 @@ namespace SourceGit.Views
         public double Height { get; set; } = 0.0;
         public int StartIdx { get; set; } = 0;
         public int EndIdx { get; set; } = 0;
+
+        public bool ShouldReplace(TextViewHighlightChunk old)
+        {
+            if (old == null)
+                return true;
+
+            return Math.Abs(Y - old.Y) > 0.001 || 
+                Math.Abs(Height - old.Height) > 0.001 || 
+                StartIdx != old.StartIdx || 
+                EndIdx != old.EndIdx;
+        }
     }
 
     public class ThemedTextDiffPresenter : TextEditor
@@ -212,6 +223,21 @@ namespace SourceGit.Views
             {
                 InvalidateVisual();
             }
+        }
+
+        protected void TrySetHighlightChunk(TextViewHighlightChunk chunk)
+        {
+            var old = HighlightChunk;
+            if (chunk == null)
+            {
+                if (old != null)
+                    SetCurrentValue(HighlightChunkProperty, null);
+
+                return;
+            }
+
+            if (chunk.ShouldReplace(old))
+                SetCurrentValue(HighlightChunkProperty, chunk);
         }
 
         protected (int, int) FindRangeByIndex(List<Models.TextDiffLine> lines, int lineIdx)
@@ -598,7 +624,7 @@ namespace SourceGit.Views
 
             if (!string.IsNullOrEmpty(SelectedText))
             {
-                SetCurrentValue(HighlightChunkProperty, null);
+                TrySetHighlightChunk(null);
                 return;
             }
 
@@ -622,14 +648,14 @@ namespace SourceGit.Views
 
                 if (lineIdx == -1)
                 {
-                    SetCurrentValue(HighlightChunkProperty, null);
+                    TrySetHighlightChunk(null);
                     return;
                 }
 
                 var (startIdx, endIdx) = FindRangeByIndex(DiffData.Lines, lineIdx);
                 if (startIdx == -1)
                 {
-                    SetCurrentValue(HighlightChunkProperty, null);
+                    TrySetHighlightChunk(null);
                     return;
                 }
 
@@ -643,14 +669,13 @@ namespace SourceGit.Views
                     endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset:
                     view.Bounds.Height;
 
-                var hightlight = new TextViewHighlightChunk()
+                TrySetHighlightChunk(new TextViewHighlightChunk()
                 {
                     Y = rectStartY,
                     Height = rectEndY - rectStartY,
                     StartIdx = startIdx,
                     EndIdx = endIdx,
-                };
-                SetCurrentValue(HighlightChunkProperty, hightlight);
+                });
             }
         }
 
@@ -982,14 +1007,14 @@ namespace SourceGit.Views
 
             if (!string.IsNullOrEmpty(SelectedText))
             {
-                SetCurrentValue(HighlightChunkProperty, null);
+                TrySetHighlightChunk(null);
                 return;
             }
 
             var parentView = this.FindAncestorOfType<TextDiffView>();
             if (parentView == null || parentView.DataContext == null)
             {
-                SetCurrentValue(HighlightChunkProperty, null);
+                TrySetHighlightChunk(null);
                 return;
             }
 
@@ -1015,14 +1040,14 @@ namespace SourceGit.Views
 
                 if (lineIdx == -1)
                 {
-                    SetCurrentValue(HighlightChunkProperty, null);
+                    TrySetHighlightChunk(null);
                     return;
                 }
 
                 var (startIdx, endIdx) = FindRangeByIndex(lines, lineIdx);
                 if (startIdx == -1)
                 {
-                    SetCurrentValue(HighlightChunkProperty, null);
+                    TrySetHighlightChunk(null);
                     return;
                 }
 
@@ -1036,14 +1061,13 @@ namespace SourceGit.Views
                     endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
-                var hightlight = new TextViewHighlightChunk()
+                TrySetHighlightChunk(new TextViewHighlightChunk()
                 {
                     Y = rectStartY,
                     Height = rectEndY - rectStartY,
                     StartIdx = textDiff.Lines.IndexOf(lines[startIdx]),
-                    EndIdx = textDiff.Lines.IndexOf(lines[endIdx]),
-                };
-                SetCurrentValue(HighlightChunkProperty, hightlight);
+                    EndIdx = endIdx == lines.Count - 1 ? textDiff.Lines.Count - 1 : textDiff.Lines.IndexOf(lines[endIdx]),
+                });
             }
         }
 
