@@ -58,11 +58,11 @@ namespace SourceGit.ViewModels
 
         public void ConvertsToCombinedRange(Models.TextDiff combined, ref int startLine, ref int endLine, bool isOldSide)
         {
-            endLine = Math.Min(endLine, combined.Lines.Count);
+            endLine = Math.Min(endLine, combined.Lines.Count - 1);
 
             var oneSide = isOldSide ? Old : New;
             var firstContentLine = -1;
-            for (int i = startLine - 1; i < endLine; i++)
+            for (int i = startLine; i <= endLine; i++)
             {
                 var line = oneSide[i];
                 if (line.Type != Models.TextDiffLineType.None)
@@ -76,7 +76,7 @@ namespace SourceGit.ViewModels
                 return;
 
             var endContentLine = -1;
-            for (int i = Math.Min(endLine - 1, oneSide.Count - 1); i >= startLine - 1; i--)
+            for (int i = Math.Min(endLine, oneSide.Count - 1); i >= startLine; i--)
             {
                 var line = oneSide[i];
                 if (line.Type != Models.TextDiffLineType.None)
@@ -91,8 +91,8 @@ namespace SourceGit.ViewModels
 
             var firstContent = oneSide[firstContentLine];
             var endContent = oneSide[endContentLine];
-            startLine = combined.Lines.IndexOf(firstContent) + 1;
-            endLine = combined.Lines.IndexOf(endContent) + 1;
+            startLine = combined.Lines.IndexOf(firstContent);
+            endLine = combined.Lines.IndexOf(endContent);
         }
 
         private void FillEmptyLines()

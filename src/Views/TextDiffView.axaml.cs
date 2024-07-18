@@ -23,14 +23,16 @@ using AvaloniaEdit.Utils;
 
 namespace SourceGit.Views
 {
-    public class TextViewHighlightChunk
+    public class TextDiffViewChunk
     {
         public double Y { get; set; } = 0.0;
         public double Height { get; set; } = 0.0;
         public int StartIdx { get; set; } = 0;
         public int EndIdx { get; set; } = 0;
+        public bool Combined { get; set; } = true;
+        public bool IsOldSide { get; set; } = false;
 
-        public bool ShouldReplace(TextViewHighlightChunk old)
+        public bool ShouldReplace(TextDiffViewChunk old)
         {
             if (old == null)
                 return true;
@@ -38,12 +40,203 @@ namespace SourceGit.Views
             return Math.Abs(Y - old.Y) > 0.001 || 
                 Math.Abs(Height - old.Height) > 0.001 || 
                 StartIdx != old.StartIdx || 
-                EndIdx != old.EndIdx;
+                EndIdx != old.EndIdx ||
+                Combined != Combined ||
+                IsOldSide != IsOldSide;
         }
     }
 
     public class ThemedTextDiffPresenter : TextEditor
     {
+        public class VerticalSeperatorMargin : AbstractMargin
+        {
+            public override void Render(DrawingContext context)
+            {
+                var presenter = this.FindAncestorOfType<ThemedTextDiffPresenter>();
+                if (presenter != null)
+                {
+                    var pen = new Pen(presenter.LineBrush);
+                    context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
+                }
+            }
+
+            protected override Size MeasureOverride(Size availableSize)
+            {
+                return new Size(1, 0);
+            }
+        }
+
+        public class LineNumberMargin : AbstractMargin
+        {
+            public LineNumberMargin(bool usePresenter, bool isOld)
+            {
+                _usePresenter = usePresenter;
+                _isOld = isOld;
+                ClipToBounds = true;
+            }
+
+            public override void Render(DrawingContext context)
+            {
+                var presenter = this.FindAncestorOfType<ThemedTextDiffPresenter>();
+                if (presenter == null)
+                    return;
+
+                var isOld = _isOld;
+                if (_usePresenter)
+                    isOld = presenter.IsOld;
+
+                var lines = presenter.GetLines();
+                var view = TextView;
+                if (view != null && view.VisualLinesValid)
+                {
+                    var typeface = view.CreateTypeface();
+                    foreach (var line in view.VisualLines)
+                    {
+                        var index = line.FirstDocumentLine.LineNumber;
+                        if (index > lines.Count)
+                            break;
+
+                        var info = lines[index - 1];
+                        var lineNumber = isOld ? info.OldLine : info.NewLine;
+                        if (string.IsNullOrEmpty(lineNumber))
+                            continue;
+
+                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
+                        var txt = new FormattedText(
+                            lineNumber,
+                            CultureInfo.CurrentCulture,
+                            FlowDirection.LeftToRight,
+                            typeface,
+                            presenter.FontSize,
+                            presenter.Foreground);
+                        context.DrawText(txt, new Point(Bounds.Width - txt.Width, y));
+                    }
+                }
+            }
+
+            protected override Size MeasureOverride(Size availableSize)
+            {
+                var presenter = this.FindAncestorOfType<ThemedTextDiffPresenter>();
+                if (presenter == null)
+                    return new Size(32, 0);
+
+                var maxLineNumber = presenter.GetMaxLineNumber();
+                var typeface = TextView.CreateTypeface();
+                var test = new FormattedText(
+                    $"{maxLineNumber}",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    presenter.FontSize,
+                    Brushes.White);
+                return new Size(test.Width, 0);
+            }
+
+            protected override void OnDataContextChanged(EventArgs e)
+            {
+                base.OnDataContextChanged(e);
+                InvalidateMeasure();
+            }
+
+            private bool _usePresenter = false;
+            private bool _isOld = false;
+        }
+
+        public class LineBackgroundRenderer : IBackgroundRenderer
+        {
+            public KnownLayer Layer => KnownLayer.Background;
+
+            public LineBackgroundRenderer(ThemedTextDiffPresenter presenter)
+            {
+                _presenter = presenter;
+            }
+
+            public void Draw(TextView textView, DrawingContext drawingContext)
+            {
+                if (_presenter.Document == null || !textView.VisualLinesValid)
+                    return;
+
+                var lines = _presenter.GetLines();
+                var width = textView.Bounds.Width;
+                foreach (var line in textView.VisualLines)
+                {
+                    if (line.FirstDocumentLine == null)
+                        continue;
+
+                    var index = line.FirstDocumentLine.LineNumber;
+                    if (index > lines.Count)
+                        break;
+
+                    var info = lines[index - 1];
+                    var bg = GetBrushByLineType(info.Type);
+                    if (bg == null)
+                        continue;
+
+                    var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset;
+                    drawingContext.DrawRectangle(bg, null, new Rect(0, y, width, line.Height));
+                }
+            }
+
+            private IBrush GetBrushByLineType(Models.TextDiffLineType type)
+            {
+                switch (type)
+                {
+                    case Models.TextDiffLineType.None:
+                        return _presenter.EmptyContentBackground;
+                    case Models.TextDiffLineType.Added:
+                        return _presenter.AddedContentBackground;
+                    case Models.TextDiffLineType.Deleted:
+                        return _presenter.DeletedContentBackground;
+                    default:
+                        return null;
+                }
+            }
+
+            private ThemedTextDiffPresenter _presenter = null;
+        }
+
+        public class LineStyleTransformer : DocumentColorizingTransformer
+        {
+            public LineStyleTransformer(ThemedTextDiffPresenter presenter)
+            {
+                _presenter = presenter;
+            }
+
+            protected override void ColorizeLine(DocumentLine line)
+            {
+                var lines = _presenter.GetLines();
+                var idx = line.LineNumber;
+                if (idx > lines.Count)
+                    return;
+
+                var info = lines[idx - 1];
+                if (info.Type == Models.TextDiffLineType.Indicator)
+                {
+                    ChangeLinePart(line.Offset, line.EndOffset, v =>
+                    {
+                        v.TextRunProperties.SetForegroundBrush(_presenter.IndicatorForeground);
+                        v.TextRunProperties.SetTypeface(new Typeface(_presenter.FontFamily, FontStyle.Italic));
+                    });
+
+                    return;
+                }
+
+                if (info.Highlights.Count > 0)
+                {
+                    var bg = info.Type == Models.TextDiffLineType.Added ? _presenter.AddedHighlightBrush : _presenter.DeletedHighlightBrush;
+                    foreach (var highlight in info.Highlights)
+                    {
+                        ChangeLinePart(line.Offset + highlight.Start, line.Offset + highlight.Start + highlight.Count, v =>
+                        {
+                            v.TextRunProperties.SetBackgroundBrush(bg);
+                        });
+                    }
+                }
+            }
+
+            private readonly ThemedTextDiffPresenter _presenter;
+        }
+
         public static readonly StyledProperty<string> FileNameProperty =
             AvaloniaProperty.Register<ThemedTextDiffPresenter, string>(nameof(FileName), string.Empty);
 
@@ -51,6 +244,15 @@ namespace SourceGit.Views
         {
             get => GetValue(FileNameProperty);
             set => SetValue(FileNameProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> IsOldProperty =
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, bool>(nameof(IsOld));
+
+        public bool IsOld
+        {
+            get => GetValue(IsOldProperty);
+            set => SetValue(IsOldProperty, value);
         }
 
         public static readonly StyledProperty<IBrush> LineBrushProperty =
@@ -134,34 +336,49 @@ namespace SourceGit.Views
             set => SetValue(ShowHiddenSymbolsProperty, value);
         }
 
-        public static readonly StyledProperty<TextViewHighlightChunk> HighlightChunkProperty =
-            AvaloniaProperty.Register<ThemedTextDiffPresenter, TextViewHighlightChunk>(nameof(HighlightChunk));
+        public static readonly StyledProperty<TextDiffViewChunk> SelectedChunkProperty =
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, TextDiffViewChunk>(nameof(SelectedChunk));
 
-        public TextViewHighlightChunk HighlightChunk
+        public TextDiffViewChunk SelectedChunk
         {
-            get => GetValue(HighlightChunkProperty);
-            set => SetValue(HighlightChunkProperty, value);
+            get => GetValue(SelectedChunkProperty);
+            set => SetValue(SelectedChunkProperty, value);
         }
 
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
-        protected ThemedTextDiffPresenter(TextArea area, TextDocument doc) : base(area, doc)
+        public ThemedTextDiffPresenter(TextArea area, TextDocument doc) : base(area, doc)
         {
             IsReadOnly = true;
             ShowLineNumbers = false;
             BorderThickness = new Thickness(0);
 
+            _lineStyleTransformer = new LineStyleTransformer(this);
+
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.Options.EnableHyperlinks = false;
             TextArea.TextView.Options.EnableEmailHyperlinks = false;
+
+            TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
+            TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
+        }
+
+        public virtual List<Models.TextDiffLine> GetLines()
+        {
+            return [];
+        }
+
+        public virtual int GetMaxLineNumber()
+        {
+            return 0;
         }
 
         public override void Render(DrawingContext context)
         {
             base.Render(context);
 
-            var highlightChunk = HighlightChunk;
-            if (highlightChunk == null)
+            var chunk = SelectedChunk;
+            if (chunk == null || (!chunk.Combined && chunk.IsOldSide != IsOld))
                 return;
 
             var view = TextArea.TextView;
@@ -173,7 +390,7 @@ namespace SourceGit.Views
             var pen = new Pen(color.ToUInt32());
 
             var x = ((Point)view.TranslatePoint(new Point(0, 0), this)).X;
-            var rect = new Rect(x - 4, highlightChunk.Y, view.Bounds.Width + 7, highlightChunk.Height);
+            var rect = new Rect(x - 4, chunk.Y, view.Bounds.Width + 7, chunk.Height);
 
             context.DrawRectangle(brush, null, rect);
             context.DrawLine(pen, rect.TopLeft, rect.TopRight);
@@ -219,25 +436,25 @@ namespace SourceGit.Views
             {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             }
-            else if (change.Property == HighlightChunkProperty)
+            else if (change.Property == SelectedChunkProperty)
             {
                 InvalidateVisual();
             }
         }
 
-        protected void TrySetHighlightChunk(TextViewHighlightChunk chunk)
+        protected void TrySetChunk(TextDiffViewChunk chunk)
         {
-            var old = HighlightChunk;
+            var old = SelectedChunk;
             if (chunk == null)
             {
                 if (old != null)
-                    SetCurrentValue(HighlightChunkProperty, null);
+                    SetCurrentValue(SelectedChunkProperty, null);
 
                 return;
             }
 
             if (chunk.ShouldReplace(old))
-                SetCurrentValue(HighlightChunkProperty, chunk);
+                SetCurrentValue(SelectedChunkProperty, chunk);
         }
 
         protected (int, int) FindRangeByIndex(List<Models.TextDiffLine> lines, int lineIdx)
@@ -331,208 +548,31 @@ namespace SourceGit.Views
         }
 
         private TextMate.Installation _textMate = null;
-        protected IVisualLineTransformer _lineStyleTransformer = null;
+        protected LineStyleTransformer _lineStyleTransformer = null;
     }
 
     public class CombinedTextDiffPresenter : ThemedTextDiffPresenter
     {
-        private class LineNumberMargin : AbstractMargin
-        {
-            public LineNumberMargin(CombinedTextDiffPresenter editor, bool isOldLine)
-            {
-                _editor = editor;
-                _isOldLine = isOldLine;
-                ClipToBounds = true;
-            }
-
-            public override void Render(DrawingContext context)
-            {
-                if (_editor.DiffData == null)
-                    return;
-
-                var view = TextView;
-                if (view != null && view.VisualLinesValid)
-                {
-                    var typeface = view.CreateTypeface();
-                    foreach (var line in view.VisualLines)
-                    {
-                        var index = line.FirstDocumentLine.LineNumber;
-                        if (index > _editor.DiffData.Lines.Count)
-                            break;
-
-                        var info = _editor.DiffData.Lines[index - 1];
-                        var lineNumber = _isOldLine ? info.OldLine : info.NewLine;
-                        if (string.IsNullOrEmpty(lineNumber))
-                            continue;
-
-                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
-                        var txt = new FormattedText(
-                            lineNumber,
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            typeface,
-                            _editor.FontSize,
-                            _editor.Foreground);
-                        context.DrawText(txt, new Point(Bounds.Width - txt.Width, y));
-                    }
-                }
-            }
-
-            protected override Size MeasureOverride(Size availableSize)
-            {
-                if (_editor.DiffData == null || TextView == null)
-                {
-                    return new Size(32, 0);
-                }
-
-                var typeface = TextView.CreateTypeface();
-                var test = new FormattedText(
-                    $"{_editor.DiffData.MaxLineNumber}",
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    typeface,
-                    _editor.FontSize,
-                    Brushes.White);
-                return new Size(test.Width, 0);
-            }
-
-            protected override void OnDataContextChanged(EventArgs e)
-            {
-                base.OnDataContextChanged(e);
-                InvalidateMeasure();
-            }
-
-            private readonly CombinedTextDiffPresenter _editor;
-            private readonly bool _isOldLine;
-        }
-
-        private class VerticalSeperatorMargin : AbstractMargin
-        {
-            public VerticalSeperatorMargin(CombinedTextDiffPresenter editor)
-            {
-                _editor = editor;
-            }
-
-            public override void Render(DrawingContext context)
-            {
-                var pen = new Pen(_editor.LineBrush);
-                context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
-            }
-
-            protected override Size MeasureOverride(Size availableSize)
-            {
-                return new Size(1, 0);
-            }
-
-            private readonly CombinedTextDiffPresenter _editor = null;
-        }
-
-        private class LineBackgroundRenderer : IBackgroundRenderer
-        {
-            public KnownLayer Layer => KnownLayer.Background;
-
-            public LineBackgroundRenderer(CombinedTextDiffPresenter editor)
-            {
-                _editor = editor;
-            }
-
-            public void Draw(TextView textView, DrawingContext drawingContext)
-            {
-                if (_editor.Document == null || !textView.VisualLinesValid)
-                    return;
-
-                var width = textView.Bounds.Width;
-                foreach (var line in textView.VisualLines)
-                {
-                    if (line.FirstDocumentLine == null)
-                        continue;
-
-                    var index = line.FirstDocumentLine.LineNumber;
-                    if (index > _editor.DiffData.Lines.Count)
-                        break;
-
-                    var info = _editor.DiffData.Lines[index - 1];
-                    var bg = GetBrushByLineType(info.Type);
-                    if (bg == null)
-                        continue;
-
-                    var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset;
-                    drawingContext.DrawRectangle(bg, null, new Rect(0, y, width, line.Height));
-                }
-            }
-
-            private IBrush GetBrushByLineType(Models.TextDiffLineType type)
-            {
-                switch (type)
-                {
-                    case Models.TextDiffLineType.None:
-                        return _editor.EmptyContentBackground;
-                    case Models.TextDiffLineType.Added:
-                        return _editor.AddedContentBackground;
-                    case Models.TextDiffLineType.Deleted:
-                        return _editor.DeletedContentBackground;
-                    default:
-                        return null;
-                }
-            }
-
-            private readonly CombinedTextDiffPresenter _editor = null;
-        }
-
-        private class LineStyleTransformer : DocumentColorizingTransformer
-        {
-            public LineStyleTransformer(CombinedTextDiffPresenter editor)
-            {
-                _editor = editor;
-            }
-
-            protected override void ColorizeLine(DocumentLine line)
-            {
-                var idx = line.LineNumber;
-                if (idx > _editor.DiffData.Lines.Count)
-                    return;
-
-                var info = _editor.DiffData.Lines[idx - 1];
-                if (info.Type == Models.TextDiffLineType.Indicator)
-                {
-                    ChangeLinePart(line.Offset, line.EndOffset, v =>
-                    {
-                        v.TextRunProperties.SetForegroundBrush(_editor.IndicatorForeground);
-                        v.TextRunProperties.SetTypeface(new Typeface(_editor.FontFamily, FontStyle.Italic));
-                    });
-
-                    return;
-                }
-
-                if (info.Highlights.Count > 0)
-                {
-                    var bg = info.Type == Models.TextDiffLineType.Added ? _editor.AddedHighlightBrush : _editor.DeletedHighlightBrush;
-                    foreach (var highlight in info.Highlights)
-                    {
-                        ChangeLinePart(line.Offset + highlight.Start, line.Offset + highlight.Start + highlight.Count, v =>
-                        {
-                            v.TextRunProperties.SetBackgroundBrush(bg);
-                        });
-                    }
-                }
-            }
-
-            private readonly CombinedTextDiffPresenter _editor;
-        }
-
-        public Models.TextDiff DiffData => DataContext as Models.TextDiff;
-
         public CombinedTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
-            _lineStyleTransformer = new LineStyleTransformer(this);
+            TextArea.LeftMargins.Add(new LineNumberMargin(false, true) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+            TextArea.LeftMargins.Add(new LineNumberMargin(false, false) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+        }
 
-            TextArea.LeftMargins.Add(new LineNumberMargin(this, true) { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
-            TextArea.LeftMargins.Add(new LineNumberMargin(this, false) { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
+        public override List<Models.TextDiffLine> GetLines()
+        {
+            if (DataContext is Models.TextDiff diff)
+                return diff.Lines;
+            return [];
+        }
 
-            TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
-            TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
+        public override int GetMaxLineNumber()
+        {
+            if (DataContext is Models.TextDiff diff)
+                return diff.MaxLineNumber;
+            return 0;
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -597,11 +637,6 @@ namespace SourceGit.Views
             if (selection.IsEmpty)
                 return;
 
-            var menu = new ContextMenu();
-            var parentView = this.FindAncestorOfType<TextDiffView>();
-            if (parentView != null)
-                parentView.FillContextMenuForWorkingCopyChange(menu, selection.StartPosition.Line, selection.EndPosition.Line, false);
-
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -611,6 +646,7 @@ namespace SourceGit.Views
                 ev.Handled = true;
             };
 
+            var menu = new ContextMenu();
             menu.Items.Add(copy);
 
             TextArea.TextView.OpenContextMenu(menu);
@@ -619,23 +655,65 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
         {
-            if (DiffData.Option.WorkingCopyChange == null)
+            var diff = DataContext as Models.TextDiff;
+            if (diff == null || diff.Option.WorkingCopyChange == null)
                 return;
 
-            if (!string.IsNullOrEmpty(SelectedText))
+            var selection = TextArea.Selection;
+            if (!selection.IsEmpty)
             {
-                TrySetHighlightChunk(null);
-                return;
-            }
+                var textView = TextArea.TextView;
+                var startIdx = Math.Min(selection.StartPosition.Line - 1, diff.Lines.Count - 1);
+                var endIdx = Math.Min(selection.EndPosition.Line - 1, diff.Lines.Count - 1);
 
-            if (sender is TextView { VisualLinesValid: true } view)
+                if (startIdx > endIdx)
+                    (startIdx, endIdx) = (endIdx, startIdx);
+
+                var hasChanges = false;
+                for (var i = startIdx; i <= endIdx; i++)
+                {
+                    var line = diff.Lines[i];
+                    if (line.Type == Models.TextDiffLineType.Added || line.Type == Models.TextDiffLineType.Deleted)
+                    {
+                        hasChanges = true;
+                        break;
+                    }
+                }
+
+                if (!hasChanges)
+                {
+                    TrySetChunk(null);
+                    return;
+                }
+
+                var startLine = textView.GetVisualLine(startIdx + 1);
+                var endLine = textView.GetVisualLine(endIdx + 1);
+
+                var rectStartY = startLine != null ?
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset :
+                    0;
+                var rectEndY = endLine != null ?
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - textView.VerticalOffset :
+                    textView.Bounds.Height;
+
+                TrySetChunk(new TextDiffViewChunk()
+                {
+                    Y = rectStartY,
+                    Height = rectEndY - rectStartY,
+                    StartIdx = startIdx,
+                    EndIdx = endIdx,
+                    Combined = true,
+                    IsOldSide = false,
+                });
+            }
+            else if (sender is TextView { VisualLinesValid: true } view)
             {
                 var y = e.GetPosition(view).Y + view.VerticalOffset;
                 var lineIdx = -1;
                 foreach (var line in view.VisualLines)
                 {
                     var index = line.FirstDocumentLine.LineNumber;
-                    if (index > DiffData.Lines.Count)
+                    if (index > diff.Lines.Count)
                         break;
 
                     var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.TextBottom);
@@ -648,14 +726,14 @@ namespace SourceGit.Views
 
                 if (lineIdx == -1)
                 {
-                    TrySetHighlightChunk(null);
+                    TrySetChunk(null);
                     return;
                 }
 
-                var (startIdx, endIdx) = FindRangeByIndex(DiffData.Lines, lineIdx);
+                var (startIdx, endIdx) = FindRangeByIndex(diff.Lines, lineIdx);
                 if (startIdx == -1)
                 {
-                    TrySetHighlightChunk(null);
+                    TrySetChunk(null);
                     return;
                 }
 
@@ -669,19 +747,22 @@ namespace SourceGit.Views
                     endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset:
                     view.Bounds.Height;
 
-                TrySetHighlightChunk(new TextViewHighlightChunk()
+                TrySetChunk(new TextDiffViewChunk()
                 {
                     Y = rectStartY,
                     Height = rectEndY - rectStartY,
                     StartIdx = startIdx,
                     EndIdx = endIdx,
+                    Combined = true,
+                    IsOldSide = false,
                 });
             }
         }
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (DiffData.Option.WorkingCopyChange == null)
+            var diff = DataContext as Models.TextDiff;
+            if (diff == null || diff.Option.WorkingCopyChange == null)
                 return;
 
             // The offset of TextView has not been updated here. Post a event to next frame.
@@ -691,210 +772,24 @@ namespace SourceGit.Views
 
     public class SingleSideTextDiffPresenter : ThemedTextDiffPresenter
     {
-        private class LineNumberMargin : AbstractMargin
-        {
-            public LineNumberMargin(SingleSideTextDiffPresenter editor)
-            {
-                _editor = editor;
-                ClipToBounds = true;
-            }
-
-            public override void Render(DrawingContext context)
-            {
-                if (_editor.DiffData == null)
-                    return;
-
-                var view = TextView;
-                if (view != null && view.VisualLinesValid)
-                {
-                    var typeface = view.CreateTypeface();
-                    var infos = _editor.IsOld ? _editor.DiffData.Old : _editor.DiffData.New;
-                    foreach (var line in view.VisualLines)
-                    {
-                        var index = line.FirstDocumentLine.LineNumber;
-                        if (index > infos.Count)
-                            break;
-
-                        var info = infos[index - 1];
-                        var lineNumber = _editor.IsOld ? info.OldLine : info.NewLine;
-                        if (string.IsNullOrEmpty(lineNumber))
-                            continue;
-
-                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
-                        var txt = new FormattedText(
-                            lineNumber,
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            typeface,
-                            _editor.FontSize,
-                            _editor.Foreground);
-                        context.DrawText(txt, new Point(Bounds.Width - txt.Width, y));
-                    }
-                }
-            }
-
-            protected override Size MeasureOverride(Size availableSize)
-            {
-                if (_editor.DiffData == null || TextView == null)
-                {
-                    return new Size(32, 0);
-                }
-
-                var typeface = TextView.CreateTypeface();
-                var test = new FormattedText(
-                    $"{_editor.DiffData.MaxLineNumber}",
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    typeface,
-                    _editor.FontSize,
-                    Brushes.White);
-                return new Size(test.Width, 0);
-            }
-
-            protected override void OnDataContextChanged(EventArgs e)
-            {
-                base.OnDataContextChanged(e);
-                InvalidateMeasure();
-            }
-
-            private readonly SingleSideTextDiffPresenter _editor;
-        }
-
-        private class VerticalSeperatorMargin : AbstractMargin
-        {
-            public VerticalSeperatorMargin(SingleSideTextDiffPresenter editor)
-            {
-                _editor = editor;
-            }
-
-            public override void Render(DrawingContext context)
-            {
-                var pen = new Pen(_editor.LineBrush);
-                context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
-            }
-
-            protected override Size MeasureOverride(Size availableSize)
-            {
-                return new Size(1, 0);
-            }
-
-            private readonly SingleSideTextDiffPresenter _editor = null;
-        }
-
-        private class LineBackgroundRenderer : IBackgroundRenderer
-        {
-            public KnownLayer Layer => KnownLayer.Background;
-
-            public LineBackgroundRenderer(SingleSideTextDiffPresenter editor)
-            {
-                _editor = editor;
-            }
-
-            public void Draw(TextView textView, DrawingContext drawingContext)
-            {
-                if (_editor.Document == null || !textView.VisualLinesValid)
-                    return;
-
-                var width = textView.Bounds.Width;
-                var infos = _editor.IsOld ? _editor.DiffData.Old : _editor.DiffData.New;
-                foreach (var line in textView.VisualLines)
-                {
-                    if (line.FirstDocumentLine == null)
-                        continue;
-
-                    var index = line.FirstDocumentLine.LineNumber;
-                    if (index > infos.Count)
-                        break;
-
-                    var info = infos[index - 1];
-                    var bg = GetBrushByLineType(info.Type);
-                    if (bg == null)
-                        continue;
-
-                    var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset;
-                    drawingContext.DrawRectangle(bg, null, new Rect(0, y, width, line.Height));
-                }
-            }
-
-            private IBrush GetBrushByLineType(Models.TextDiffLineType type)
-            {
-                switch (type)
-                {
-                    case Models.TextDiffLineType.None:
-                        return _editor.EmptyContentBackground;
-                    case Models.TextDiffLineType.Added:
-                        return _editor.AddedContentBackground;
-                    case Models.TextDiffLineType.Deleted:
-                        return _editor.DeletedContentBackground;
-                    default:
-                        return null;
-                }
-            }
-
-            private readonly SingleSideTextDiffPresenter _editor = null;
-        }
-
-        private class LineStyleTransformer : DocumentColorizingTransformer
-        {
-            public LineStyleTransformer(SingleSideTextDiffPresenter editor)
-            {
-                _editor = editor;
-            }
-
-            protected override void ColorizeLine(DocumentLine line)
-            {
-                var infos = _editor.IsOld ? _editor.DiffData.Old : _editor.DiffData.New;
-                var idx = line.LineNumber;
-                if (idx > infos.Count)
-                    return;
-
-                var info = infos[idx - 1];
-                if (info.Type == Models.TextDiffLineType.Indicator)
-                {
-                    ChangeLinePart(line.Offset, line.EndOffset, v =>
-                    {
-                        v.TextRunProperties.SetForegroundBrush(_editor.IndicatorForeground);
-                        v.TextRunProperties.SetTypeface(new Typeface(_editor.FontFamily, FontStyle.Italic));
-                    });
-
-                    return;
-                }
-
-                if (info.Highlights.Count > 0)
-                {
-                    var bg = info.Type == Models.TextDiffLineType.Added ? _editor.AddedHighlightBrush : _editor.DeletedHighlightBrush;
-                    foreach (var highlight in info.Highlights)
-                    {
-                        ChangeLinePart(line.Offset + highlight.Start, line.Offset + highlight.Start + highlight.Count, v =>
-                        {
-                            v.TextRunProperties.SetBackgroundBrush(bg);
-                        });
-                    }
-                }
-            }
-
-            private readonly SingleSideTextDiffPresenter _editor;
-        }
-
-        public static readonly StyledProperty<bool> IsOldProperty =
-            AvaloniaProperty.Register<SingleSideTextDiffPresenter, bool>(nameof(IsOld));
-
-        public bool IsOld
-        {
-            get => GetValue(IsOldProperty);
-            set => SetValue(IsOldProperty, value);
-        }
-
-        public ViewModels.TwoSideTextDiff DiffData => DataContext as ViewModels.TwoSideTextDiff;
-
         public SingleSideTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
-            _lineStyleTransformer = new LineStyleTransformer(this);
+            TextArea.LeftMargins.Add(new LineNumberMargin(true, false) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+        }
 
-            TextArea.LeftMargins.Add(new LineNumberMargin(this) { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
-            TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
-            TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
+        public override List<Models.TextDiffLine> GetLines()
+        {
+            if (DataContext is ViewModels.TwoSideTextDiff diff)
+                return IsOld ? diff.Old : diff.New;
+            return [];
+        }
+
+        public override int GetMaxLineNumber()
+        {
+            if (DataContext is ViewModels.TwoSideTextDiff diff)
+                return diff.MaxLineNumber;
+            return 0;
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -980,11 +875,6 @@ namespace SourceGit.Views
             if (selection.IsEmpty)
                 return;
 
-            var menu = new ContextMenu();
-            var parentView = this.FindAncestorOfType<TextDiffView>();
-            if (parentView != null)
-                parentView.FillContextMenuForWorkingCopyChange(menu, selection.StartPosition.Line, selection.EndPosition.Line, IsOld);
-
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -994,6 +884,7 @@ namespace SourceGit.Views
                 ev.Handled = true;
             };
 
+            var menu = new ContextMenu();
             menu.Items.Add(copy);
 
             TextArea.TextView.OpenContextMenu(menu);
@@ -1002,19 +893,71 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
         {
-            if (DiffData.Option.WorkingCopyChange == null)
+            var diff = DataContext as ViewModels.TwoSideTextDiff;
+            if (diff == null || diff.Option.WorkingCopyChange == null)
                 return;
 
-            if (!string.IsNullOrEmpty(SelectedText))
+            var parent = this.FindAncestorOfType<TextDiffView>();
+            if (parent == null)
+                return;
+
+            var selection = TextArea.Selection;
+            if (!selection.IsEmpty)
             {
-                TrySetHighlightChunk(null);
+                var lines = IsOld ? diff.Old : diff.New;
+                var textView = TextArea.TextView;
+                var startIdx = Math.Min(selection.StartPosition.Line - 1, lines.Count - 1);
+                var endIdx = Math.Min(selection.EndPosition.Line - 1, lines.Count - 1);
+
+                if (startIdx > endIdx)
+                    (startIdx, endIdx) = (endIdx, startIdx);
+
+                var hasChanges = false;
+                for (var i = startIdx; i <= endIdx; i++)
+                {
+                    var line = lines[i];
+                    if (line.Type == Models.TextDiffLineType.Added || line.Type == Models.TextDiffLineType.Deleted)
+                    {
+                        hasChanges = true;
+                        break;
+                    }
+                }
+
+                if (!hasChanges)
+                {
+                    TrySetChunk(null);
+                    return;
+                }
+
+                var startLine = textView.GetVisualLine(startIdx + 1);
+                var endLine = textView.GetVisualLine(endIdx + 1);
+
+                var rectStartY = startLine != null ?
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset :
+                    0;
+                var rectEndY = endLine != null ?
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - textView.VerticalOffset :
+                    textView.Bounds.Height;
+
+                diff.ConvertsToCombinedRange(parent.DataContext as Models.TextDiff, ref startIdx, ref endIdx, IsOld);
+
+                TrySetChunk(new TextDiffViewChunk()
+                {
+                    Y = rectStartY,
+                    Height = rectEndY - rectStartY,
+                    StartIdx = startIdx,
+                    EndIdx = endIdx,
+                    Combined = false,
+                    IsOldSide = IsOld,
+                });
+
                 return;
             }
 
             var parentView = this.FindAncestorOfType<TextDiffView>();
             if (parentView == null || parentView.DataContext == null)
             {
-                TrySetHighlightChunk(null);
+                TrySetChunk(null);
                 return;
             }
 
@@ -1023,7 +966,7 @@ namespace SourceGit.Views
             {
                 var y = e.GetPosition(view).Y + view.VerticalOffset;
                 var lineIdx = -1;
-                var lines = IsOld ? DiffData.Old : DiffData.New;
+                var lines = IsOld ? diff.Old : diff.New;
                 foreach (var line in view.VisualLines)
                 {
                     var index = line.FirstDocumentLine.LineNumber;
@@ -1040,14 +983,14 @@ namespace SourceGit.Views
 
                 if (lineIdx == -1)
                 {
-                    TrySetHighlightChunk(null);
+                    TrySetChunk(null);
                     return;
                 }
 
                 var (startIdx, endIdx) = FindRangeByIndex(lines, lineIdx);
                 if (startIdx == -1)
                 {
-                    TrySetHighlightChunk(null);
+                    TrySetChunk(null);
                     return;
                 }
 
@@ -1061,19 +1004,22 @@ namespace SourceGit.Views
                     endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
-                TrySetHighlightChunk(new TextViewHighlightChunk()
+                TrySetChunk(new TextDiffViewChunk()
                 {
                     Y = rectStartY,
                     Height = rectEndY - rectStartY,
                     StartIdx = textDiff.Lines.IndexOf(lines[startIdx]),
                     EndIdx = endIdx == lines.Count - 1 ? textDiff.Lines.Count - 1 : textDiff.Lines.IndexOf(lines[endIdx]),
+                    Combined = true,
+                    IsOldSide = false,
                 });
             }
         }
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (DiffData.Option.WorkingCopyChange == null)
+            var diff = DataContext as ViewModels.TwoSideTextDiff;
+            if (diff == null || diff.Option.WorkingCopyChange == null)
                 return;
 
             // The offset of TextView has not been updated here. Post a event to next frame.
@@ -1094,13 +1040,13 @@ namespace SourceGit.Views
             set => SetValue(UseSideBySideDiffProperty, value);
         }
 
-        public static readonly StyledProperty<TextViewHighlightChunk> HighlightChunkProperty =
-            AvaloniaProperty.Register<TextDiffView, TextViewHighlightChunk>(nameof(HighlightChunk));
+        public static readonly StyledProperty<TextDiffViewChunk> SelectedChunkProperty =
+            AvaloniaProperty.Register<TextDiffView, TextDiffViewChunk>(nameof(SelectedChunk));
 
-        public TextViewHighlightChunk HighlightChunk
+        public TextDiffViewChunk SelectedChunk
         {
-            get => GetValue(HighlightChunkProperty);
-            set => SetValue(HighlightChunkProperty, value);
+            get => GetValue(SelectedChunkProperty);
+            set => SetValue(SelectedChunkProperty, value);
         }
 
         public static readonly StyledProperty<bool> IsUnstagedChangeProperty =
@@ -1127,16 +1073,18 @@ namespace SourceGit.Views
                 }
             });
 
-            HighlightChunkProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
+            SelectedChunkProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
             {
-                if (v.HighlightChunk == null)
+                var chunk = v.SelectedChunk;
+                if (chunk == null)
                 {
                     v.Popup.IsVisible = false;
                     return;
                 }
 
-                var y = v.HighlightChunk.Y + 16;
-                v.Popup.Margin = new Thickness(0, y, 16, 0);
+                var top = chunk.Y + 16;
+                var right = (chunk.Combined || !chunk.IsOldSide) ? 16 : v.Bounds.Width * 0.5f + 16;
+                v.Popup.Margin = new Thickness(0, top, right, 0);
                 v.Popup.IsVisible = true;
             });
         }
@@ -1146,250 +1094,12 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public void FillContextMenuForWorkingCopyChange(ContextMenu menu, int startLine, int endLine, bool isOldSide)
-        {
-            var diff = DataContext as Models.TextDiff;
-            if (diff == null)
-                return;
-
-            var change = diff.Option.WorkingCopyChange;
-            if (change == null)
-                return;
-
-            if (startLine > endLine)
-                (startLine, endLine) = (endLine, startLine);
-
-            if (Editor.Content is ViewModels.TwoSideTextDiff twoSides)
-                twoSides.ConvertsToCombinedRange(diff, ref startLine, ref endLine, isOldSide);
-
-            var selection = diff.MakeSelection(startLine, endLine, UseSideBySideDiff, isOldSide);
-            if (!selection.HasChanges)
-                return;
-
-            // If all changes has been selected the use method provided by ViewModels.WorkingCopy.
-            // Otherwise, use `git apply`
-            if (!selection.HasLeftChanges)
-            {
-                var workcopyView = this.FindAncestorOfType<WorkingCopy>();
-                if (workcopyView == null)
-                    return;
-
-                if (diff.Option.IsUnstaged)
-                {
-                    var stage = new MenuItem();
-                    stage.Header = App.Text("FileCM.StageSelectedLines");
-                    stage.Icon = App.CreateMenuIcon("Icons.File.Add");
-                    stage.Click += (_, e) =>
-                    {
-                        var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                        workcopy?.StageChanges(new List<Models.Change> { change });
-                        e.Handled = true;
-                    };
-
-                    var discard = new MenuItem();
-                    discard.Header = App.Text("FileCM.DiscardSelectedLines");
-                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                    discard.Click += (_, e) =>
-                    {
-                        var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                        workcopy?.Discard(new List<Models.Change> { change }, true);
-                        e.Handled = true;
-                    };
-
-                    menu.Items.Add(stage);
-                    menu.Items.Add(discard);
-                }
-                else
-                {
-                    var unstage = new MenuItem();
-                    unstage.Header = App.Text("FileCM.UnstageSelectedLines");
-                    unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
-                    unstage.Click += (_, e) =>
-                    {
-                        var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                        workcopy?.UnstageChanges(new List<Models.Change> { change });
-                        e.Handled = true;
-                    };
-
-                    var discard = new MenuItem();
-                    discard.Header = App.Text("FileCM.DiscardSelectedLines");
-                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                    discard.Click += (_, e) =>
-                    {
-                        var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                        workcopy?.Discard(new List<Models.Change> { change }, false);
-                        e.Handled = true;
-                    };
-
-                    menu.Items.Add(unstage);
-                    menu.Items.Add(discard);
-                }
-            }
-            else
-            {
-                var repoView = this.FindAncestorOfType<Repository>();
-                if (repoView == null)
-                    return;
-
-                if (diff.Option.IsUnstaged)
-                {
-                    var stage = new MenuItem();
-                    stage.Header = App.Text("FileCM.StageSelectedLines");
-                    stage.Icon = App.CreateMenuIcon("Icons.File.Add");
-                    stage.Click += (_, e) =>
-                    {
-                        var repo = repoView.DataContext as ViewModels.Repository;
-                        if (repo == null)
-                            return;
-
-                        repo.SetWatcherEnabled(false);
-
-                        var tmpFile = Path.GetTempFileName();
-                        if (change.WorkTree == Models.ChangeState.Untracked)
-                        {
-                            diff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
-                        }
-                        else if (!UseSideBySideDiff)
-                        {
-                            var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
-                            diff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
-                        }
-                        else
-                        {
-                            var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
-                            diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, isOldSide, tmpFile);
-                        }
-
-                        new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index").Exec();
-                        File.Delete(tmpFile);
-
-                        repo.MarkWorkingCopyDirtyManually();
-                        repo.SetWatcherEnabled(true);
-                        e.Handled = true;
-                    };
-
-                    var discard = new MenuItem();
-                    discard.Header = App.Text("FileCM.DiscardSelectedLines");
-                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                    discard.Click += (_, e) =>
-                    {
-                        var repo = repoView.DataContext as ViewModels.Repository;
-                        if (repo == null)
-                            return;
-
-                        repo.SetWatcherEnabled(false);
-
-                        var tmpFile = Path.GetTempFileName();
-                        if (change.WorkTree == Models.ChangeState.Untracked)
-                        {
-                            diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
-                        }
-                        else if (!UseSideBySideDiff)
-                        {
-                            var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
-                            diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                        }
-                        else
-                        {
-                            var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
-                            diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
-                        }
-
-                        new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--reverse").Exec();
-                        File.Delete(tmpFile);
-
-                        repo.MarkWorkingCopyDirtyManually();
-                        repo.SetWatcherEnabled(true);
-                        e.Handled = true;
-                    };
-
-                    menu.Items.Add(stage);
-                    menu.Items.Add(discard);
-                }
-                else
-                {
-                    var unstage = new MenuItem();
-                    unstage.Header = App.Text("FileCM.UnstageSelectedLines");
-                    unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
-                    unstage.Click += (_, e) =>
-                    {
-                        var repo = repoView.DataContext as ViewModels.Repository;
-                        if (repo == null)
-                            return;
-
-                        repo.SetWatcherEnabled(false);
-
-                        var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
-                        var tmpFile = Path.GetTempFileName();
-                        if (change.Index == Models.ChangeState.Added)
-                        {
-                            diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                        }
-                        else if (!UseSideBySideDiff)
-                        {
-                            diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                        }
-                        else
-                        {
-                            diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
-                        }
-
-                        new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index --reverse").Exec();
-                        File.Delete(tmpFile);
-
-                        repo.MarkWorkingCopyDirtyManually();
-                        repo.SetWatcherEnabled(true);
-                        e.Handled = true;
-                    };
-
-                    var discard = new MenuItem();
-                    discard.Header = App.Text("FileCM.DiscardSelectedLines");
-                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                    discard.Click += (_, e) =>
-                    {
-                        var repo = repoView.DataContext as ViewModels.Repository;
-                        if (repo == null)
-                            return;
-
-                        repo.SetWatcherEnabled(false);
-
-                        var tmpFile = Path.GetTempFileName();
-                        var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
-                        if (change.Index == Models.ChangeState.Added)
-                        {
-                            diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                        }
-                        else if (!UseSideBySideDiff)
-                        {
-                            diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                        }
-                        else
-                        {
-                            diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, isOldSide, tmpFile);
-                        }
-
-                        new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--index --reverse").Exec();
-                        File.Delete(tmpFile);
-
-                        repo.MarkWorkingCopyDirtyManually();
-                        repo.SetWatcherEnabled(true);
-                        e.Handled = true;
-                    };
-
-                    menu.Items.Add(unstage);
-                    menu.Items.Add(discard);
-                }
-            }
-
-            menu.Items.Add(new MenuItem() { Header = "-" });
-        }
-
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);
 
-            if (HighlightChunk != null)
-                SetCurrentValue(HighlightChunkProperty, null);
+            if (SelectedChunk != null)
+                SetCurrentValue(SelectedChunkProperty, null);
 
             var diff = DataContext as Models.TextDiff;
             if (diff == null)
@@ -1411,13 +1121,13 @@ namespace SourceGit.Views
         {
             base.OnPointerExited(e);
 
-            if (HighlightChunk != null)
-                SetCurrentValue(HighlightChunkProperty, null);
+            if (SelectedChunk != null)
+                SetCurrentValue(SelectedChunkProperty, null);
         }
 
         private void OnStageChunk(object sender, RoutedEventArgs e)
         {
-            var chunk = HighlightChunk;
+            var chunk = SelectedChunk;
             if (chunk == null)
                 return;
 
@@ -1429,7 +1139,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, false, false);
+            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
             if (!selection.HasChanges)
                 return;
 
@@ -1459,10 +1169,15 @@ namespace SourceGit.Views
                 {
                     diff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
                 }
-                else
+                else if (chunk.Combined)
                 {
                     var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
                     diff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
+                }
+                else
+                {
+                    var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
+                    diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
                 }
 
                 new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index").Exec();
@@ -1475,7 +1190,7 @@ namespace SourceGit.Views
 
         private void OnUnstageChunk(object sender, RoutedEventArgs e)
         {
-            var chunk = HighlightChunk;
+            var chunk = SelectedChunk;
             if (chunk == null)
                 return;
 
@@ -1487,7 +1202,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, false, false);
+            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
             if (!selection.HasChanges)
                 return;
 
@@ -1518,8 +1233,10 @@ namespace SourceGit.Views
                 var tmpFile = Path.GetTempFileName();
                 if (change.Index == Models.ChangeState.Added)
                     diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                else
+                else if (chunk.Combined)
                     diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                else
+                    diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
 
                 new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index --reverse").Exec();
                 File.Delete(tmpFile);
@@ -1531,7 +1248,7 @@ namespace SourceGit.Views
 
         private void OnDiscardChunk(object sender, RoutedEventArgs e) 
         {
-            var chunk = HighlightChunk;
+            var chunk = SelectedChunk;
             if (chunk == null)
                 return;
 
@@ -1543,7 +1260,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, false, false);
+            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
             if (!selection.HasChanges)
                 return;
 
@@ -1571,14 +1288,19 @@ namespace SourceGit.Views
                 repo.SetWatcherEnabled(false);
 
                 var tmpFile = Path.GetTempFileName();
-                var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
                 if (change.Index == Models.ChangeState.Added)
                 {
-                    diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                }
+                    diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
+                }                    
+                else if (chunk.Combined)
+                {
+                    var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
+                    diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                }                    
                 else
                 {
-                    diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                    var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
+                    diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
                 }
 
                 new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", diff.Option.IsUnstaged ? "--reverse" : "--index --reverse").Exec();
