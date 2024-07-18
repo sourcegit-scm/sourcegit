@@ -1159,10 +1159,10 @@ namespace SourceGit.Views
             if (startLine > endLine)
                 (startLine, endLine) = (endLine, startLine);
 
-            if (UseSideBySideDiff)
-                (startLine, endLine) = GetUnifiedRange(diff, startLine, endLine, isOldSide);
+            if (Editor.Content is ViewModels.TwoSideTextDiff twoSides)
+                twoSides.ConvertsToCombinedRange(diff, ref startLine, ref endLine, isOldSide);
 
-            var selection = MakeSelection(diff, startLine, endLine, !UseSideBySideDiff, isOldSide);
+            var selection = diff.MakeSelection(startLine, endLine, UseSideBySideDiff, isOldSide);
             if (!selection.HasChanges)
                 return;
 
@@ -1429,7 +1429,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, true, false);
+            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, false, false);
             if (!selection.HasChanges)
                 return;
 
@@ -1487,7 +1487,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, true, false);
+            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, false, false);
             if (!selection.HasChanges)
                 return;
 
@@ -1543,7 +1543,7 @@ namespace SourceGit.Views
             if (change == null)
                 return;
 
-            var selection = MakeSelection(diff, chunk.StartIdx + 1, chunk.EndIdx + 1, true, false);
+            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, false, false);
             if (!selection.HasChanges)
                 return;
 
@@ -1587,123 +1587,6 @@ namespace SourceGit.Views
                 repo.MarkWorkingCopyDirtyManually();
                 repo.SetWatcherEnabled(true);
             }
-        }
-
-        private (int, int) GetUnifiedRange(Models.TextDiff diff, int startLine, int endLine, bool isOldSide)
-        {
-            endLine = Math.Min(endLine, diff.Lines.Count);
-            if (Editor.Content is ViewModels.TwoSideTextDiff twoSides)
-            {
-                var target = isOldSide ? twoSides.Old : twoSides.New;
-                var firstContentLine = -1;
-                for (int i = startLine - 1; i < endLine; i++)
-                {
-                    var line = target[i];
-                    if (line.Type != Models.TextDiffLineType.None)
-                    {
-                        firstContentLine = i;
-                        break;
-                    }
-                }
-
-                if (firstContentLine < 0)
-                    return (-1, -1);
-
-                var endContentLine = -1;
-                for (int i = Math.Min(endLine - 1, target.Count - 1); i >= startLine - 1; i--)
-                {
-                    var line = target[i];
-                    if (line.Type != Models.TextDiffLineType.None)
-                    {
-                        endContentLine = i;
-                        break;
-                    }
-                }
-
-                if (endContentLine < 0)
-                    return (-1, -1);
-
-                var firstContent = target[firstContentLine];
-                var endContent = target[endContentLine];
-                startLine = diff.Lines.IndexOf(firstContent) + 1;
-                endLine = diff.Lines.IndexOf(endContent) + 1;
-            }
-
-            return (startLine, endLine);
-        }
-
-        private Models.TextDiffSelection MakeSelection(Models.TextDiff diff, int startLine, int endLine, bool combined, bool isOldSide)
-        {
-            var rs = new Models.TextDiffSelection();
-            rs.StartLine = startLine;
-            rs.EndLine = endLine;
-
-            for (int i = 0; i < startLine - 1; i++)
-            {
-                var line = diff.Lines[i];
-                if (line.Type == Models.TextDiffLineType.Added)
-                {
-                    rs.HasLeftChanges = true;
-                    rs.IgnoredAdds++;
-                }
-                else if (line.Type == Models.TextDiffLineType.Deleted)
-                {
-                    rs.HasLeftChanges = true;
-                    rs.IgnoredDeletes++;
-                }
-            }
-
-            for (int i = startLine - 1; i < endLine; i++)
-            {
-                var line = diff.Lines[i];
-                if (line.Type == Models.TextDiffLineType.Added)
-                {
-                    if (combined)
-                    {
-                        rs.HasChanges = true;
-                        break;
-                    }
-                    else if (isOldSide)
-                    {
-                        rs.HasLeftChanges = true;
-                    }
-                    else
-                    {
-                        rs.HasChanges = true;
-                    }
-                }
-                else if (line.Type == Models.TextDiffLineType.Deleted)
-                {
-                    if (combined)
-                    {
-                        rs.HasChanges = true;
-                        break;
-                    }
-                    else if (isOldSide)
-                    {
-                        rs.HasChanges = true;
-                    }
-                    else
-                    {
-                        rs.HasLeftChanges = true;
-                    }
-                }
-            }
-
-            if (!rs.HasLeftChanges)
-            {
-                for (int i = endLine; i < diff.Lines.Count; i++)
-                {
-                    var line = diff.Lines[i];
-                    if (line.Type == Models.TextDiffLineType.Added || line.Type == Models.TextDiffLineType.Deleted)
-                    {
-                        rs.HasLeftChanges = true;
-                        break;
-                    }
-                }
-            }
-
-            return rs;
         }
     }
 }
