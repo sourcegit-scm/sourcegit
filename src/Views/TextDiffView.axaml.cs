@@ -169,11 +169,11 @@ namespace SourceGit.Views
                 return;
 
             var color = (Color)this.FindResource("SystemAccentColor");
-            var brush = new SolidColorBrush(color, 0.5);
+            var brush = new SolidColorBrush(color, 0.1);
             var pen = new Pen(color.ToUInt32());
 
             var x = ((Point)view.TranslatePoint(new Point(0, 0), this)).X;
-            var rect = new Rect(x - 4, highlightChunk.Y, view.Bounds.Width + 8, highlightChunk.Height);
+            var rect = new Rect(x - 4, highlightChunk.Y, view.Bounds.Width + 7, highlightChunk.Height);
 
             context.DrawRectangle(brush, null, rect);
             context.DrawLine(pen, rect.TopLeft, rect.TopRight);
