@@ -100,6 +100,16 @@
                         </DataTemplate>
                       </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    
+                    <Ellipse Width="5" Height="5"
+                             Margin="0,0,4,0"
+                             Fill="{DynamicResource Brush.Accent}"
+                             IsVisible="{Binding CanPushToUpstream}"/>
+
+                    <Ellipse Width="5" Height="5"
+                             Margin="0,0,4,0"
+                             Fill="{DynamicResource Brush.FG1}"
+                             IsVisible="{Binding CanPullFromUpstream}"/>
 
                     <TextBlock Classes="monospace" 
                                Text="{Binding Subject}"

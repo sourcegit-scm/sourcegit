@@ -36,14 +36,9 @@ namespace SourceGit.ViewModels
             get => Backend is Models.Branch;
         }
 
-        public bool IsUpstreamTrackStatusVisible
+        public string TrackStatus
         {
-            get => Backend is Models.Branch { IsLocal: true } branch && !string.IsNullOrEmpty(branch.UpstreamTrackStatus);
-        }
-
-        public string UpstreamTrackStatus
-        {
-            get => Backend is Models.Branch branch ? branch.UpstreamTrackStatus : "";
+            get => Backend is Models.Branch { IsLocal: true } branch ? branch.TrackStatus.ToString() : string.Empty;
         }
 
         public FontWeight NameFontWeight
