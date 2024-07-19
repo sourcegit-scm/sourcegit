@@ -69,6 +69,16 @@
               <DataTemplate x:DataType="{x:Type m:Commit}">
                 <Border Margin="{Binding Margin}">
                   <StackPanel Orientation="Horizontal" Margin="2,0,0,0">
+                    <Ellipse Width="5" Height="5"
+                             Margin="0,0,4,0"
+                             Fill="{DynamicResource Brush.Accent}"
+                             IsVisible="{Binding CanPushToUpstream}"/>
+
+                    <Ellipse Width="5" Height="5"
+                             Margin="0,0,4,0"
+                             Fill="{DynamicResource Brush.FG1}"
+                             IsVisible="{Binding CanPullFromUpstream}"/>
+                    
                     <ItemsControl ItemsSource="{Binding Decorators}" IsVisible="{Binding HasDecorators}">
                       <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -100,16 +110,6 @@
                         </DataTemplate>
                       </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    
-                    <Ellipse Width="5" Height="5"
-                             Margin="0,0,4,0"
-                             Fill="{DynamicResource Brush.Accent}"
-                             IsVisible="{Binding CanPushToUpstream}"/>
-
-                    <Ellipse Width="5" Height="5"
-                             Margin="0,0,4,0"
-                             Fill="{DynamicResource Brush.FG1}"
-                             IsVisible="{Binding CanPullFromUpstream}"/>
 
                     <TextBlock Classes="monospace" 
                                Text="{Binding Subject}"
