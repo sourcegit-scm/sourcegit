@@ -20,17 +20,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _syncScrollOffset, value);
         }
 
-        public Models.DiffOption Option
-        {
-            get;
-            set;
-        }
-
         public TwoSideTextDiff(Models.TextDiff diff, TwoSideTextDiff previous = null)
         {
             File = diff.File;
             MaxLineNumber = diff.MaxLineNumber;
-            Option = diff.Option;
 
             foreach (var line in diff.Lines)
             {

@@ -336,6 +336,15 @@ namespace SourceGit.Views
             set => SetValue(ShowHiddenSymbolsProperty, value);
         }
 
+        public static readonly StyledProperty<bool> EnableChunkSelectionProperty =
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, bool>(nameof(EnableChunkSelection));
+
+        public bool EnableChunkSelection
+        {
+            get => GetValue(EnableChunkSelectionProperty);
+            set => SetValue(EnableChunkSelectionProperty, value);
+        }
+
         public static readonly StyledProperty<TextDiffViewChunk> SelectedChunkProperty =
             AvaloniaProperty.Register<ThemedTextDiffPresenter, TextDiffViewChunk>(nameof(SelectedChunk));
 
@@ -479,13 +488,13 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
         {
-            if (sender is TextView view)
+            if (EnableChunkSelection && sender is TextView view)
                 UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
         }
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (sender is TextView view)
+            if (EnableChunkSelection && sender is TextView view)
             {
                 var y = e.GetPosition(view).Y + view.VerticalOffset;
                 Dispatcher.UIThread.Post(() => UpdateSelectedChunk(y));
@@ -636,7 +645,7 @@ namespace SourceGit.Views
         public override void UpdateSelectedChunk(double y)
         {
             var diff = DataContext as Models.TextDiff;
-            if (diff == null || diff.Option.WorkingCopyChange == null)
+            if (diff == null)
                 return;
 
             var view = TextArea.TextView;
@@ -796,7 +805,7 @@ namespace SourceGit.Views
         public override void UpdateSelectedChunk(double y)
         {
             var diff = DataContext as ViewModels.TwoSideTextDiff;
-            if (diff == null || diff.Option.WorkingCopyChange == null)
+            if (diff == null)
                 return;
 
             var parent = this.FindAncestorOfType<TextDiffView>();
@@ -1012,6 +1021,15 @@ namespace SourceGit.Views
             set => SetValue(IsUnstagedChangeProperty, value);
         }
 
+        public static readonly StyledProperty<bool> EnableChunkSelectionProperty =
+            AvaloniaProperty.Register<TextDiffView, bool>(nameof(EnableChunkSelection));
+
+        public bool EnableChunkSelection
+        {
+            get => GetValue(EnableChunkSelectionProperty);
+            set => SetValue(EnableChunkSelectionProperty, value);
+        }
+
         static TextDiffView()
         {
             UseSideBySideDiffProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
@@ -1069,6 +1087,7 @@ namespace SourceGit.Views
                 Editor.Content = diff;
 
             IsUnstagedChange = diff.Option.IsUnstaged;
+            EnableChunkSelection = diff.Option.WorkingCopyChange != null;
         }
 
         protected override void OnPointerExited(PointerEventArgs e)
@@ -1160,8 +1179,6 @@ namespace SourceGit.Views
             if (!selection.HasChanges)
                 return;
 
-            // If all changes has been selected the use method provided by ViewModels.WorkingCopy.
-            // Otherwise, use `git apply`
             if (!selection.HasLeftChanges)
             {
                 var workcopyView = this.FindAncestorOfType<WorkingCopy>();
@@ -1218,8 +1235,6 @@ namespace SourceGit.Views
             if (!selection.HasChanges)
                 return;
 
-            // If all changes has been selected the use method provided by ViewModels.WorkingCopy.
-            // Otherwise, use `git apply`
             if (!selection.HasLeftChanges)
             {
                 var workcopyView = this.FindAncestorOfType<WorkingCopy>();
