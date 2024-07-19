@@ -373,6 +373,10 @@ namespace SourceGit.Views
             return 0;
         }
 
+        public virtual void UpdateSelectedChunk(double y)
+        {
+        }
+
         public override void Render(DrawingContext context)
         {
             base.Render(context);
@@ -400,12 +404,21 @@ namespace SourceGit.Views
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+
+            TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+            TextArea.TextView.PointerMoved += OnTextViewPointerMoved;
+            TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
+
             UpdateTextMate();
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             base.OnUnloaded(e);
+
+            TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
+            TextArea.TextView.PointerMoved -= OnTextViewPointerMoved;
+            TextArea.TextView.PointerWheelChanged -= OnTextViewPointerWheelChanged;
 
             if (_textMate != null)
             {
@@ -439,6 +452,43 @@ namespace SourceGit.Views
             else if (change.Property == SelectedChunkProperty)
             {
                 InvalidateVisual();
+            }
+        }
+
+        private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            var selection = TextArea.Selection;
+            if (selection.IsEmpty)
+                return;
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("Copy");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Click += (_, ev) =>
+            {
+                App.CopyText(SelectedText);
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(copy);
+
+            TextArea.TextView.OpenContextMenu(menu);
+            e.Handled = true;
+        }
+
+        private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
+        {
+            if (sender is TextView view)
+                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+        }
+
+        private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
+        {
+            if (sender is TextView view)
+            {
+                var y = e.GetPosition(view).Y + view.VerticalOffset;
+                Dispatcher.UIThread.Post(() => UpdateSelectedChunk(y));
             }
         }
 
@@ -583,20 +633,109 @@ namespace SourceGit.Views
             scroller?.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.TwoWay));
         }
 
-        protected override void OnLoaded(RoutedEventArgs e)
+        public override void UpdateSelectedChunk(double y)
         {
-            base.OnLoaded(e);
-            TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            TextArea.TextView.PointerMoved += OnTextViewPointerMoved;
-            TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
-        }
+            var diff = DataContext as Models.TextDiff;
+            if (diff == null || diff.Option.WorkingCopyChange == null)
+                return;
 
-        protected override void OnUnloaded(RoutedEventArgs e)
-        {
-            base.OnUnloaded(e);
-            TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-            TextArea.TextView.PointerMoved -= OnTextViewPointerMoved;
-            TextArea.TextView.PointerWheelChanged -= OnTextViewPointerWheelChanged;
+            var view = TextArea.TextView;
+            var selection = TextArea.Selection;
+            if (!selection.IsEmpty)
+            {
+                var startIdx = Math.Min(selection.StartPosition.Line - 1, diff.Lines.Count - 1);
+                var endIdx = Math.Min(selection.EndPosition.Line - 1, diff.Lines.Count - 1);
+
+                if (startIdx > endIdx)
+                    (startIdx, endIdx) = (endIdx, startIdx);
+
+                var hasChanges = false;
+                for (var i = startIdx; i <= endIdx; i++)
+                {
+                    var line = diff.Lines[i];
+                    if (line.Type == Models.TextDiffLineType.Added || line.Type == Models.TextDiffLineType.Deleted)
+                    {
+                        hasChanges = true;
+                        break;
+                    }
+                }
+
+                if (!hasChanges)
+                {
+                    TrySetChunk(null);
+                    return;
+                }
+
+                var startLine = view.GetVisualLine(startIdx + 1);
+                var endLine = view.GetVisualLine(endIdx + 1);
+
+                var rectStartY = startLine != null ?
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
+                    0;
+                var rectEndY = endLine != null ?
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    view.Bounds.Height;
+
+                TrySetChunk(new TextDiffViewChunk()
+                {
+                    Y = rectStartY,
+                    Height = rectEndY - rectStartY,
+                    StartIdx = startIdx,
+                    EndIdx = endIdx,
+                    Combined = true,
+                    IsOldSide = false,
+                });
+            }
+            else
+            {
+                var lineIdx = -1;
+                foreach (var line in view.VisualLines)
+                {
+                    var index = line.FirstDocumentLine.LineNumber;
+                    if (index > diff.Lines.Count)
+                        break;
+
+                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.TextBottom);
+                    if (endY > y)
+                    {
+                        lineIdx = index - 1;
+                        break;
+                    }
+                }
+
+                if (lineIdx == -1)
+                {
+                    TrySetChunk(null);
+                    return;
+                }
+
+                var (startIdx, endIdx) = FindRangeByIndex(diff.Lines, lineIdx);
+                if (startIdx == -1)
+                {
+                    TrySetChunk(null);
+                    return;
+                }
+
+                var startLine = view.GetVisualLine(startIdx + 1);
+                var endLine = view.GetVisualLine(endIdx + 1);
+
+                var rectStartY = startLine != null ?
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
+                    0;
+                var rectEndY = endLine != null ?
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    view.Bounds.Height;
+
+                TrySetChunk(new TextDiffViewChunk()
+                {
+                    Y = rectStartY,
+                    Height = rectEndY - rectStartY,
+                    StartIdx = startIdx,
+                    EndIdx = endIdx,
+                    Combined = true,
+                    IsOldSide = false,
+                });
+            }
         }
 
         protected override void OnDataContextChanged(EventArgs e)
@@ -630,144 +769,6 @@ namespace SourceGit.Views
 
             GC.Collect();
         }
-
-        private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
-        {
-            var selection = TextArea.Selection;
-            if (selection.IsEmpty)
-                return;
-
-            var copy = new MenuItem();
-            copy.Header = App.Text("Copy");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
-            {
-                App.CopyText(SelectedText);
-                ev.Handled = true;
-            };
-
-            var menu = new ContextMenu();
-            menu.Items.Add(copy);
-
-            TextArea.TextView.OpenContextMenu(menu);
-            e.Handled = true;
-        }
-
-        private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
-        {
-            var diff = DataContext as Models.TextDiff;
-            if (diff == null || diff.Option.WorkingCopyChange == null)
-                return;
-
-            var selection = TextArea.Selection;
-            if (!selection.IsEmpty)
-            {
-                var textView = TextArea.TextView;
-                var startIdx = Math.Min(selection.StartPosition.Line - 1, diff.Lines.Count - 1);
-                var endIdx = Math.Min(selection.EndPosition.Line - 1, diff.Lines.Count - 1);
-
-                if (startIdx > endIdx)
-                    (startIdx, endIdx) = (endIdx, startIdx);
-
-                var hasChanges = false;
-                for (var i = startIdx; i <= endIdx; i++)
-                {
-                    var line = diff.Lines[i];
-                    if (line.Type == Models.TextDiffLineType.Added || line.Type == Models.TextDiffLineType.Deleted)
-                    {
-                        hasChanges = true;
-                        break;
-                    }
-                }
-
-                if (!hasChanges)
-                {
-                    TrySetChunk(null);
-                    return;
-                }
-
-                var startLine = textView.GetVisualLine(startIdx + 1);
-                var endLine = textView.GetVisualLine(endIdx + 1);
-
-                var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset :
-                    0;
-                var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - textView.VerticalOffset :
-                    textView.Bounds.Height;
-
-                TrySetChunk(new TextDiffViewChunk()
-                {
-                    Y = rectStartY,
-                    Height = rectEndY - rectStartY,
-                    StartIdx = startIdx,
-                    EndIdx = endIdx,
-                    Combined = true,
-                    IsOldSide = false,
-                });
-            }
-            else if (sender is TextView { VisualLinesValid: true } view)
-            {
-                var y = e.GetPosition(view).Y + view.VerticalOffset;
-                var lineIdx = -1;
-                foreach (var line in view.VisualLines)
-                {
-                    var index = line.FirstDocumentLine.LineNumber;
-                    if (index > diff.Lines.Count)
-                        break;
-
-                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.TextBottom);
-                    if (endY > y)
-                    {
-                        lineIdx = index - 1;
-                        break;
-                    }
-                }
-
-                if (lineIdx == -1)
-                {
-                    TrySetChunk(null);
-                    return;
-                }
-
-                var (startIdx, endIdx) = FindRangeByIndex(diff.Lines, lineIdx);
-                if (startIdx == -1)
-                {
-                    TrySetChunk(null);
-                    return;
-                }
-
-                var startLine = view.GetVisualLine(startIdx + 1);
-                var endLine = view.GetVisualLine(endIdx + 1);
-
-                var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset:
-                    0;
-                var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset:
-                    view.Bounds.Height;
-
-                TrySetChunk(new TextDiffViewChunk()
-                {
-                    Y = rectStartY,
-                    Height = rectEndY - rectStartY,
-                    StartIdx = startIdx,
-                    EndIdx = endIdx,
-                    Combined = true,
-                    IsOldSide = false,
-                });
-            }
-        }
-
-        private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
-        {
-            var diff = DataContext as Models.TextDiff;
-            if (diff == null || diff.Option.WorkingCopyChange == null)
-                return;
-
-            // The offset of TextView has not been updated here. Post a event to next frame.
-            Dispatcher.UIThread.Post(() => OnTextViewPointerMoved(sender, e));
-        }
     }
 
     public class SingleSideTextDiffPresenter : ThemedTextDiffPresenter
@@ -792,106 +793,7 @@ namespace SourceGit.Views
             return 0;
         }
 
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
-
-            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
-                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.OneWay));
-            }
-
-            TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
-            TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            TextArea.TextView.PointerMoved += OnTextViewPointerMoved;
-            TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
-        }
-
-        protected override void OnUnloaded(RoutedEventArgs e)
-        {
-            base.OnUnloaded(e);
-
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
-                _scrollViewer = null;
-            }
-
-            TextArea.PointerWheelChanged -= OnTextAreaPointerWheelChanged;
-            TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-            TextArea.TextView.PointerMoved -= OnTextViewPointerMoved;
-            TextArea.TextView.PointerWheelChanged -= OnTextViewPointerWheelChanged;
-
-            GC.Collect();
-        }
-
-        protected override void OnDataContextChanged(EventArgs e)
-        {
-            base.OnDataContextChanged(e);
-
-            if (DataContext is ViewModels.TwoSideTextDiff diff)
-            {
-                var builder = new StringBuilder();
-                var lines = IsOld ? diff.Old : diff.New;
-                foreach (var line in lines)
-                {
-                    if (line.Content.Length > 10000)
-                    {
-                        builder.Append(line.Content.Substring(0, 1000));
-                        builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
-                        builder.AppendLine();
-                    }
-                    else
-                    {
-                        builder.AppendLine(line.Content);
-                    }
-                }
-
-                Text = builder.ToString();
-            }
-            else
-            {
-                Text = string.Empty;
-            }
-        }
-
-        private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
-        {
-            if (!TextArea.IsFocused)
-                Focus();
-        }
-
-        private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (TextArea.IsFocused && DataContext is ViewModels.TwoSideTextDiff diff)
-                diff.SyncScrollOffset = _scrollViewer.Offset;
-        }
-
-        private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
-        {
-            var selection = TextArea.Selection;
-            if (selection.IsEmpty)
-                return;
-
-            var copy = new MenuItem();
-            copy.Header = App.Text("Copy");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
-            {
-                App.CopyText(SelectedText);
-                ev.Handled = true;
-            };
-
-            var menu = new ContextMenu();
-            menu.Items.Add(copy);
-
-            TextArea.TextView.OpenContextMenu(menu);
-            e.Handled = true;
-        }
-
-        private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
+        public override void UpdateSelectedChunk(double y)
         {
             var diff = DataContext as ViewModels.TwoSideTextDiff;
             if (diff == null || diff.Option.WorkingCopyChange == null)
@@ -901,11 +803,11 @@ namespace SourceGit.Views
             if (parent == null)
                 return;
 
+            var view = TextArea.TextView;
+            var lines = IsOld ? diff.Old : diff.New;
             var selection = TextArea.Selection;
             if (!selection.IsEmpty)
             {
-                var lines = IsOld ? diff.Old : diff.New;
-                var textView = TextArea.TextView;
                 var startIdx = Math.Min(selection.StartPosition.Line - 1, lines.Count - 1);
                 var endIdx = Math.Min(selection.EndPosition.Line - 1, lines.Count - 1);
 
@@ -929,15 +831,15 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var startLine = textView.GetVisualLine(startIdx + 1);
-                var endLine = textView.GetVisualLine(endIdx + 1);
+                var startLine = view.GetVisualLine(startIdx + 1);
+                var endLine = view.GetVisualLine(endIdx + 1);
 
                 var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset :
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
                     0;
                 var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - textView.VerticalOffset :
-                    textView.Bounds.Height;
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    view.Bounds.Height;
 
                 diff.ConvertsToCombinedRange(parent.DataContext as Models.TextDiff, ref startIdx, ref endIdx, IsOld);
 
@@ -954,19 +856,10 @@ namespace SourceGit.Views
                 return;
             }
 
-            var parentView = this.FindAncestorOfType<TextDiffView>();
-            if (parentView == null || parentView.DataContext == null)
+            var textDiff = this.FindAncestorOfType<TextDiffView>()?.DataContext as Models.TextDiff;
+            if (textDiff != null)
             {
-                TrySetChunk(null);
-                return;
-            }
-
-            var textDiff = parentView.DataContext as Models.TextDiff;
-            if (sender is TextView { VisualLinesValid: true } view)
-            {
-                var y = e.GetPosition(view).Y + view.VerticalOffset;
                 var lineIdx = -1;
-                var lines = IsOld ? diff.Old : diff.New;
                 foreach (var line in view.VisualLines)
                 {
                     var index = line.FirstDocumentLine.LineNumber;
@@ -1016,14 +909,75 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
+        protected override void OnLoaded(RoutedEventArgs e)
         {
-            var diff = DataContext as ViewModels.TwoSideTextDiff;
-            if (diff == null || diff.Option.WorkingCopyChange == null)
-                return;
+            base.OnLoaded(e);
 
-            // The offset of TextView has not been updated here. Post a event to next frame.
-            Dispatcher.UIThread.Post(() => OnTextViewPointerMoved(sender, e));
+            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.OneWay));
+            }
+
+            TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
+                _scrollViewer = null;
+            }
+
+            TextArea.PointerWheelChanged -= OnTextAreaPointerWheelChanged;
+
+            GC.Collect();
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            if (DataContext is ViewModels.TwoSideTextDiff diff)
+            {
+                var builder = new StringBuilder();
+                var lines = IsOld ? diff.Old : diff.New;
+                foreach (var line in lines)
+                {
+                    if (line.Content.Length > 10000)
+                    {
+                        builder.Append(line.Content.Substring(0, 1000));
+                        builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
+                        builder.AppendLine();
+                    }
+                    else
+                    {
+                        builder.AppendLine(line.Content);
+                    }
+                }
+
+                Text = builder.ToString();
+            }
+            else
+            {
+                Text = string.Empty;
+            }
+        }
+
+        private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (TextArea.IsFocused && DataContext is ViewModels.TwoSideTextDiff diff)
+                diff.SyncScrollOffset = _scrollViewer.Offset;
+        }
+
+        private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
+        {
+            if (!TextArea.IsFocused)
+                Focus();
         }
 
         private ScrollViewer _scrollViewer = null;
