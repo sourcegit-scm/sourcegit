@@ -149,7 +149,7 @@ namespace SourceGit.Models
                 var oldCount = unsolved.Count;
 
                 commit.CanPushToUpstream = canPushCommits.Remove(commit.SHA);
-                commit.CanPullFromUpstream = !commit.CanPushToUpstream && canPullCommits.Remove(commit.SHA);
+                commit.CanPullFromUpstream = canPullCommits.Remove(commit.SHA);
 
                 // Update current y offset
                 offsetY += UNIT_HEIGHT;
