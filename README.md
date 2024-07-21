@@ -98,15 +98,15 @@ This app supports open repository in external tools listed in the table below.
 
 * Dark Theme
 
-![Theme Dark](./screenshots/theme_dark.png)
+  ![Theme Dark](./screenshots/theme_dark.png)
 
 * Light Theme
 
-![Theme Light](./screenshots/theme_light.png)
+  ![Theme Light](./screenshots/theme_light.png)
 
-* Custom Themes
+* Custom
 
-You can find custom themes from [sourcegit-theme](https://github.com/sourcegit-scm/sourcegit-theme.git)
+  You can find custom themes from [sourcegit-theme](https://github.com/sourcegit-scm/sourcegit-theme.git)
 
 ## Contributing
 
