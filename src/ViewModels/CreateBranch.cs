@@ -6,7 +6,7 @@ namespace SourceGit.ViewModels
     public class CreateBranch : Popup
     {
         [Required(ErrorMessage = "Branch name is required!")]
-        [RegularExpression(@"^[\w\-/\.]+$", ErrorMessage = "Bad branch name format!")]
+        [RegularExpression(@"^[\w\-/\.#]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(CreateBranch), nameof(ValidateBranchName))]
         public string Name
         {

@@ -12,7 +12,7 @@ namespace SourceGit.ViewModels
         }
 
         [Required(ErrorMessage = "Branch name is required!!!")]
-        [RegularExpression(@"^[\w\-/\.]+$", ErrorMessage = "Bad branch name format!")]
+        [RegularExpression(@"^[\w\-/\.#]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(RenameBranch), nameof(ValidateBranchName))]
         public string Name
         {
