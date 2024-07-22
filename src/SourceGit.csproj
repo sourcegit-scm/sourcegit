@@ -44,4 +44,8 @@
     <TrimmerRootAssembly Include="SourceGit" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <LinkerArg Include="-mmacosx-version-min=11.0" Condition="$([MSBuild]::IsOSPlatform('OSX'))"/>
+  </ItemGroup>
 </Project>
