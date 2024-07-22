@@ -43,7 +43,7 @@ namespace SourceGit.ViewModels
                 if (_instance.MonospaceFont == null)
                     _instance.MonospaceFont = new FontFamily("fonts:SourceGit#JetBrains Mono");
 
-                if (!_instance.IsGitConfigured)
+                if (!_instance.IsGitConfigured())
                     _instance.GitInstallPath = Native.OS.FindGitExecutable();
 
                 return _instance;
@@ -213,12 +213,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _commitChangeViewMode, value);
         }
 
-        [JsonIgnore]
-        public bool IsGitConfigured
-        {
-            get => !string.IsNullOrEmpty(GitInstallPath) && File.Exists(GitInstallPath);
-        }
-
         public string GitInstallPath
         {
             get => Native.OS.GitExecutable;
@@ -326,28 +320,30 @@ namespace SourceGit.ViewModels
             set;
         } = 0;
 
-        [JsonIgnore]
-        public bool ShouldCheck4UpdateOnStartup
+        public bool IsGitConfigured()
         {
-            get
-            {
-                if (!_check4UpdatesOnStartup)
-                    return false;
-
-                var lastCheck = DateTime.UnixEpoch.AddSeconds(LastCheckUpdateTime).ToLocalTime();
-                var now = DateTime.Now;
-
-                if (lastCheck.Year == now.Year && lastCheck.Month == now.Month && lastCheck.Day == now.Day)
-                    return false;
-
-                LastCheckUpdateTime = now.Subtract(DateTime.UnixEpoch.ToLocalTime()).TotalSeconds;
-                return true;
-            }
+            var path = GitInstallPath;
+            return !string.IsNullOrEmpty(path) && File.Exists(path);
         }
 
-        public static void AddNode(RepositoryNode node, RepositoryNode to = null)
+        public bool ShouldCheck4UpdateOnStartup()
         {
-            var collection = to == null ? _instance._repositoryNodes : to.SubNodes;
+            if (!_check4UpdatesOnStartup)
+                return false;
+
+            var lastCheck = DateTime.UnixEpoch.AddSeconds(LastCheckUpdateTime).ToLocalTime();
+            var now = DateTime.Now;
+
+            if (lastCheck.Year == now.Year && lastCheck.Month == now.Month && lastCheck.Day == now.Day)
+                return false;
+
+            LastCheckUpdateTime = now.Subtract(DateTime.UnixEpoch.ToLocalTime()).TotalSeconds;
+            return true;
+        }
+
+        public void AddNode(RepositoryNode node, RepositoryNode to = null)
+        {
+            var collection = to == null ? _repositoryNodes : to.SubNodes;
             var list = new List<RepositoryNode>();
             list.AddRange(collection);
             list.Add(node);
@@ -364,14 +360,14 @@ namespace SourceGit.ViewModels
                 collection.Add(one);
         }
 
-        public static RepositoryNode FindNode(string id)
+        public RepositoryNode FindNode(string id)
         {
-            return FindNodeRecursive(id, _instance.RepositoryNodes);
+            return FindNodeRecursive(id, RepositoryNodes);
         }
 
-        public static RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent, bool shouldMoveNode)
+        public RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent, bool shouldMoveNode)
         {
-            var node = FindNodeRecursive(repo, _instance.RepositoryNodes);
+            var node = FindNodeRecursive(repo, RepositoryNodes);
             if (node == null)
             {
                 node = new RepositoryNode()
@@ -392,9 +388,9 @@ namespace SourceGit.ViewModels
             return node;
         }
 
-        public static void MoveNode(RepositoryNode node, RepositoryNode to = null)
+        public void MoveNode(RepositoryNode node, RepositoryNode to = null)
         {
-            if (to == null && _instance._repositoryNodes.Contains(node))
+            if (to == null && _repositoryNodes.Contains(node))
                 return;
             if (to != null && to.SubNodes.Contains(node))
                 return;
@@ -403,14 +399,14 @@ namespace SourceGit.ViewModels
             AddNode(node, to);
         }
 
-        public static void RemoveNode(RepositoryNode node)
+        public void RemoveNode(RepositoryNode node)
         {
-            RemoveNodeRecursive(node, _instance._repositoryNodes);
+            RemoveNodeRecursive(node, _repositoryNodes);
         }
 
-        public static void SortByRenamedNode(RepositoryNode node)
+        public void SortByRenamedNode(RepositoryNode node)
         {
-            var container = FindNodeContainer(node, _instance._repositoryNodes);
+            var container = FindNodeContainer(node, _repositoryNodes);
             if (container == null)
                 return;
 
@@ -435,7 +431,7 @@ namespace SourceGit.ViewModels
             File.WriteAllText(_savePath, data);
         }
 
-        private static RepositoryNode FindNodeRecursive(string id, AvaloniaList<RepositoryNode> collection)
+        private RepositoryNode FindNodeRecursive(string id, AvaloniaList<RepositoryNode> collection)
         {
             foreach (var node in collection)
             {
@@ -450,7 +446,7 @@ namespace SourceGit.ViewModels
             return null;
         }
 
-        private static AvaloniaList<RepositoryNode> FindNodeContainer(RepositoryNode node, AvaloniaList<RepositoryNode> collection)
+        private AvaloniaList<RepositoryNode> FindNodeContainer(RepositoryNode node, AvaloniaList<RepositoryNode> collection)
         {
             foreach (var sub in collection)
             {
@@ -465,7 +461,7 @@ namespace SourceGit.ViewModels
             return null;
         }
 
-        private static bool RemoveNodeRecursive(RepositoryNode node, AvaloniaList<RepositoryNode> collection)
+        private bool RemoveNodeRecursive(RepositoryNode node, AvaloniaList<RepositoryNode> collection)
         {
             if (collection.Contains(node))
             {

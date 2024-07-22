@@ -48,7 +48,7 @@ namespace SourceGit.ViewModels
             _node.Bookmark = _bookmark;
 
             if (needSort)
-                Preference.SortByRenamedNode(_node);
+                Preference.Instance.SortByRenamedNode(_node);
 
             return null;
         }

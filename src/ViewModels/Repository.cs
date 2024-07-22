@@ -965,7 +965,7 @@ namespace SourceGit.ViewModels
             var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
             var normalizedPath = root.Replace("\\", "/");
 
-            var node = Preference.FindNode(normalizedPath);
+            var node = Preference.Instance.FindNode(normalizedPath);
             if (node == null)
             {
                 node = new RepositoryNode()
@@ -996,7 +996,7 @@ namespace SourceGit.ViewModels
 
         public void OpenWorktree(Models.Worktree worktree)
         {
-            var node = Preference.FindNode(worktree.FullPath);
+            var node = Preference.Instance.FindNode(worktree.FullPath);
             if (node == null)
             {
                 node = new RepositoryNode()

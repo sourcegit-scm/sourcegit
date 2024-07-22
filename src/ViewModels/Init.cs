@@ -31,7 +31,7 @@ namespace SourceGit.ViewModels
                 CallUIThread(() =>
                 {
                     var normalizedPath = _targetPath.Replace("\\", "/");
-                    Preference.FindOrAddNodeByRepositoryPath(normalizedPath, _parentNode, true);
+                    Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, _parentNode, true);
                 });
 
                 return true;

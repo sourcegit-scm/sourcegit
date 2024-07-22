@@ -44,12 +44,12 @@ namespace SourceGit.Views
             var root = new Commands.QueryRepositoryRootPath(path).Result();
             if (string.IsNullOrEmpty(root))
             {
-                (DataContext as ViewModels.Welcome)?.InitRepository(path, parent);
+                ViewModels.Welcome.Instance.InitRepository(path, parent);
                 return;
             }
 
             var normalizedPath = root.Replace("\\", "/");
-            var node = ViewModels.Preference.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
+            var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
             var launcher = this.FindAncestorOfType<Launcher>()?.DataContext as ViewModels.Launcher;
             launcher?.OpenRepositoryInTab(node, launcher.ActivePage);
         }
