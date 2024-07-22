@@ -37,9 +37,9 @@ namespace SourceGit.Views
 
         private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is Grid grid && DataContext is ViewModels.Welcome vm)
+            if (sender is Grid grid)
             {
-                var menu = vm.CreateContextMenu(grid.DataContext as ViewModels.RepositoryNode);
+                var menu = ViewModels.Welcome.Instance.CreateContextMenu(grid.DataContext as ViewModels.RepositoryNode);
                 grid.OpenContextMenu(menu);
                 e.Handled = true;
             }
@@ -109,9 +109,7 @@ namespace SourceGit.Views
             if (e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
             {
                 e.Handled = true;
-
-                if (DataContext is ViewModels.Welcome vm)
-                    vm.MoveNode(moved, null);
+                ViewModels.Welcome.Instance.MoveNode(moved, null);
             }
             else if (e.Data.Contains(DataFormats.Files))
             {
@@ -173,8 +171,8 @@ namespace SourceGit.Views
             {
                 e.Handled = true;
 
-                if (to != moved && DataContext is ViewModels.Welcome vm)
-                    vm.MoveNode(moved, to);
+                if (to != moved)
+                    ViewModels.Welcome.Instance.MoveNode(moved, to);
             }
             else if (e.Data.Contains(DataFormats.Files))
             {
@@ -222,12 +220,12 @@ namespace SourceGit.Views
             var root = new Commands.QueryRepositoryRootPath(path).Result();
             if (string.IsNullOrEmpty(root))
             {
-                (DataContext as ViewModels.Welcome)?.InitRepository(path, parent);
+                ViewModels.Welcome.Instance.InitRepository(path, parent);
                 return;
             }
 
             var normalizedPath = root.Replace("\\", "/");
-            var node = ViewModels.Preference.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
+            var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
             var launcher = this.FindAncestorOfType<Launcher>()?.DataContext as ViewModels.Launcher;
             launcher?.OpenRepositoryInTab(node, launcher.ActivePage);
         }

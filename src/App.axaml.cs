@@ -520,7 +520,7 @@ namespace SourceGit
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
             var pref = ViewModels.Preference.Instance;
-            if (pref.ShouldCheck4UpdateOnStartup)
+            if (pref.ShouldCheck4UpdateOnStartup())
             {
                 pref.Save();
                 Check4Update();

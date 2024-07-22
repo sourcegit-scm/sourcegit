@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -23,13 +24,13 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchFilter, value))
-                    Referesh();
+                    Refresh();
             }
         }
 
         public void InitRepository(string path, RepositoryNode parent)
         {
-            if (!Preference.Instance.IsGitConfigured)
+            if (!Preference.Instance.IsGitConfigured())
             {
                 App.RaiseException(PopupHost.Active.GetId(), App.Text("NotConfigured"));
                 return;
@@ -43,7 +44,7 @@ namespace SourceGit.ViewModels
 
         public void Clone()
         {
-            if (!Preference.Instance.IsGitConfigured)
+            if (!Preference.Instance.IsGitConfigured())
             {
                 App.RaiseException(string.Empty, App.Text("NotConfigured"));
                 return;
@@ -58,7 +59,7 @@ namespace SourceGit.ViewModels
 
         public void OpenTerminal()
         {
-            if (!Preference.Instance.IsGitConfigured)
+            if (!Preference.Instance.IsGitConfigured())
             {
                 App.RaiseException(PopupHost.Active.GetId(), App.Text("NotConfigured"));
             }
@@ -81,7 +82,7 @@ namespace SourceGit.ViewModels
 
         public void MoveNode(RepositoryNode from, RepositoryNode to)
         {
-            Preference.MoveNode(from, to);
+            Preference.Instance.MoveNode(from, to);
         }
 
         public ContextMenu CreateContextMenu(RepositoryNode node)
@@ -166,7 +167,7 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        private void Referesh()
+        private void Refresh()
         {
             if (string.IsNullOrWhiteSpace(_searchFilter))
             {

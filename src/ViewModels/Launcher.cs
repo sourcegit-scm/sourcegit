@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
 
-using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -34,6 +32,7 @@ namespace SourceGit.ViewModels
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
 
+            var pref = Preference.Instance;
             if (!string.IsNullOrEmpty(startupRepo))
             {
                 var root = new Commands.QueryRepositoryRootPath(startupRepo).Result();
@@ -48,14 +47,14 @@ namespace SourceGit.ViewModels
                 }
 
                 var normalized = root.Replace("\\", "/");
-                var node = Preference.FindOrAddNodeByRepositoryPath(normalized, null, false);
+                var node = pref.FindOrAddNodeByRepositoryPath(normalized, null, false);
                 OpenRepositoryInTab(node, null);
             }
-            else if (Preference.Instance.RestoreTabs)
+            else if (pref.RestoreTabs)
             {
-                foreach (var id in Preference.Instance.OpenedTabs)
+                foreach (var id in pref.OpenedTabs)
                 {
-                    var node = Preference.FindNode(id);
+                    var node = pref.FindNode(id);
                     if (node == null)
                     {
                         node = new RepositoryNode()
@@ -70,7 +69,7 @@ namespace SourceGit.ViewModels
                     OpenRepositoryInTab(node, null);
                 }
 
-                var lastActiveIdx = Preference.Instance.LastActiveTabIdx;
+                var lastActiveIdx = pref.LastActiveTabIdx;
                 if (lastActiveIdx >= 0 && lastActiveIdx < Pages.Count)
                     ActivePage = Pages[lastActiveIdx];
             }

@@ -139,7 +139,7 @@ namespace SourceGit.Views
             });
 
             var ver = string.Empty;
-            if (pref.IsGitConfigured)
+            if (pref.IsGitConfigured())
             {
                 var config = new Commands.Config(null).ListAll();
 

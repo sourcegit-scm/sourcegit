@@ -73,7 +73,7 @@ namespace SourceGit.Commands
             branch.IsCurrent = parts[2] == "*";
             branch.Upstream = parts[3];
 
-            if (branch.IsLocal && !parts[4].Equals("=", StringComparison.Ordinal))
+            if (branch.IsLocal && !string.IsNullOrEmpty(parts[4]) && !parts[4].Equals("=", StringComparison.Ordinal))
                 _needQueryTrackStatus.Add(branch);
             else
                 branch.TrackStatus = new Models.BranchTrackStatus();
