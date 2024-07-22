@@ -3,7 +3,9 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -65,6 +67,123 @@ namespace SourceGit.Views
                 }
             }
         }
+    }
+
+    public class CommitTimeTextBlock : TextBlock
+    {
+        public static readonly StyledProperty<bool> ShowAsDateTimeProperty =
+            AvaloniaProperty.Register<CommitTimeTextBlock, bool>(nameof(ShowAsDateTime), true);
+
+        public bool ShowAsDateTime
+        {
+            get => GetValue(ShowAsDateTimeProperty);
+            set => SetValue(ShowAsDateTimeProperty, value);
+        }
+
+        public static readonly StyledProperty<ulong> TimestampProperty =
+            AvaloniaProperty.Register<CommitTimeTextBlock, ulong>(nameof(Timestamp));
+
+        public ulong Timestamp
+        {
+            get => GetValue(TimestampProperty);
+            set => SetValue(TimestampProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(TextBlock);
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == TimestampProperty)
+            {
+                SetCurrentValue(TextProperty, GetDisplayText());
+            }
+            else if (change.Property == ShowAsDateTimeProperty)
+            {
+                SetCurrentValue(TextProperty, GetDisplayText());
+
+                if (ShowAsDateTime)
+                    StopTimer();
+                else
+                    StartTimer();    
+            }
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            if (!ShowAsDateTime)
+                StartTimer();
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+            StopTimer();
+        }
+
+        private void StartTimer()
+        {
+            if (_refreshTimer != null)
+                return;
+
+            _refreshTimer = DispatcherTimer.Run(() =>
+            {
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    var text = GetDisplayText();
+                    if (!text.Equals(Text, StringComparison.Ordinal))
+                        Text = text;
+                });
+
+                return true;
+            }, TimeSpan.FromSeconds(10));
+        }
+
+        private void StopTimer()
+        {
+            if (_refreshTimer != null)
+            {
+                _refreshTimer.Dispose();
+                _refreshTimer = null;
+            }
+        }
+
+        private string GetDisplayText()
+        {
+            if (ShowAsDateTime)
+                return DateTime.UnixEpoch.AddSeconds(Timestamp).ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss");
+
+            var today = DateTime.Today;
+            var committerTime = DateTime.UnixEpoch.AddSeconds(Timestamp).ToLocalTime();
+
+            if (committerTime >= today)
+            {
+                var now = DateTime.Now;
+                var timespan = now - committerTime;
+                if (timespan.TotalHours > 1)
+                    return App.Text("Period.HoursAgo", (int)timespan.TotalHours);
+
+                return timespan.TotalMinutes < 1 ? App.Text("Period.JustNow") : App.Text("Period.MinutesAgo", (int)timespan.TotalMinutes);
+            }
+
+            var diffYear = today.Year - committerTime.Year;
+            if (diffYear == 0)
+            {
+                var diffMonth = today.Month - committerTime.Month;
+                if (diffMonth > 0)
+                    return diffMonth == 1 ? App.Text("Period.LastMonth") : App.Text("Period.MonthsAgo", diffMonth);
+
+                var diffDay = today.Day - committerTime.Day;
+                return diffDay == 1 ? App.Text("Period.Yesterday") : App.Text("Period.DaysAgo", diffDay);
+            }
+
+            return diffYear == 1 ? App.Text("Period.LastYear") : App.Text("Period.YearsAgo", diffYear);
+        }
+
+        private IDisposable _refreshTimer = null;
     }
 
     public class CommitGraph : Control
@@ -158,7 +277,7 @@ namespace SourceGit.Views
                 if (line.Points[size - 1].Y < top)
                     continue;
                 if (last.Y > bottom)
-                    continue;
+                    break;
 
                 var geo = new StreamGeometry();
                 var pen = Models.CommitGraph.Pens[line.Color];

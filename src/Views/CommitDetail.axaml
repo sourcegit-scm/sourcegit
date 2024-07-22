@@ -51,7 +51,6 @@
                                       Width="14" Height="14" 
                                       HorizontalAlignment="Left" 
                                       Margin="16,0,0,0" 
-                                      IsWorkingCopyChange="False" 
                                       Change="{Binding}"/>
                   <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Path}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                 </Grid>

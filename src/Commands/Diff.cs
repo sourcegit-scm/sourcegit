@@ -14,6 +14,11 @@ namespace SourceGit.Commands
 
         public Diff(string repo, Models.DiffOption opt, int unified)
         {
+            _result.TextDiff = new Models.TextDiff() {
+                Repo = repo,
+                Option = opt,
+            };
+
             WorkingDirectory = repo;
             Context = repo;
             Args = $"diff --ignore-cr-at-eol --unified={unified} {opt}";
@@ -214,7 +219,7 @@ namespace SourceGit.Commands
             }
         }
 
-        private readonly Models.DiffResult _result = new Models.DiffResult() { TextDiff = new Models.TextDiff() };
+        private readonly Models.DiffResult _result = new Models.DiffResult();
         private readonly List<Models.TextDiffLine> _deleted = new List<Models.TextDiffLine>();
         private readonly List<Models.TextDiffLine> _added = new List<Models.TextDiffLine>();
         private int _oldLine = 0;

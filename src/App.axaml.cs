@@ -188,6 +188,8 @@ namespace SourceGit
                     else
                         Models.CommitGraph.SetDefaultPens(overrides.GraphPenThickness);
 
+                    Models.Commit.OpacityForNotMerged = overrides.OpacityForNotMergedCommits;
+
                     app.Resources.MergedDictionaries.Add(resDic);
                     app._themeOverrides = resDic;
                 }

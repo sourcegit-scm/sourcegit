@@ -129,7 +129,7 @@ namespace SourceGit.ViewModels
 
             var diffWithMerger = new MenuItem();
             diffWithMerger.Header = App.Text("DiffWithMerger");
-            diffWithMerger.Icon = App.CreateMenuIcon("Icons.Diff");
+            diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
             diffWithMerger.Click += (_, ev) =>
             {
                 var toolType = Preference.Instance.ExternalMergeToolType;
@@ -146,7 +146,7 @@ namespace SourceGit.ViewModels
                 var full = Path.GetFullPath(Path.Combine(_repo, change.Path));
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
-                explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                explore.Icon = App.CreateMenuIcon("Icons.Explore");
                 explore.IsEnabled = File.Exists(full);
                 explore.Click += (_, ev) =>
                 {

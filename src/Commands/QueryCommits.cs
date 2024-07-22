@@ -14,20 +14,29 @@ namespace SourceGit.Commands
             _findFirstMerged = needFindHead;
         }
 
-        public QueryCommits(string repo, int maxCount, string messageFilter)
+        public QueryCommits(string repo, int maxCount, string messageFilter, bool isFile)
         {
-            var argsBuilder = new StringBuilder();
-            var words = messageFilter.Split(new[] { ' ', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var word in words)
+            string search;
+            if (isFile)
             {
-                var escaped = word.Trim().Replace("\"", "\\\"", StringComparison.Ordinal);
-                argsBuilder.Append($"--grep=\"{escaped}\" ");
+                search = $"-- \"{messageFilter}\"";
             }
-            argsBuilder.Append("--all-match");
+            else
+            {
+                var argsBuilder = new StringBuilder();
+                var words = messageFilter.Split(new[] { ' ', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var word in words)
+                {
+                    var escaped = word.Trim().Replace("\"", "\\\"", StringComparison.Ordinal);
+                    argsBuilder.Append($"--grep=\"{escaped}\" ");
+                }
+                argsBuilder.Append("--all-match -i");
+                search = argsBuilder.ToString();
+            }
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log -{maxCount} --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s " + argsBuilder.ToString();
+            Args = $"log -{maxCount} --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s --branches --remotes " + search;
             _findFirstMerged = false;
         }
 
@@ -53,7 +62,9 @@ namespace SourceGit.Commands
                         ParseParent(line);
                         break;
                     case 2:
-                        ParseDecorators(line);
+                        _current.ParseDecorators(line);
+                        if (_current.IsMerged && !_isHeadFounded)
+                            _isHeadFounded = true;
                         break;
                     case 3:
                         _current.Author = Models.User.FindOrAdd(line);
@@ -102,74 +113,6 @@ namespace SourceGit.Commands
 
             _current.Parents.Add(data.Substring(0, idx));
             _current.Parents.Add(data.Substring(idx + 1));
-        }
-
-        private void ParseDecorators(string data)
-        {
-            if (data.Length < 3)
-                return;
-
-            var subs = data.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var sub in subs)
-            {
-                var d = sub.Trim();
-                if (d.EndsWith("/HEAD", StringComparison.Ordinal))
-                    continue;
-
-                if (d.StartsWith("tag: refs/tags/", StringComparison.Ordinal))
-                {
-                    _current.Decorators.Add(new Models.Decorator()
-                    {
-                        Type = Models.DecoratorType.Tag,
-                        Name = d.Substring(15),
-                    });
-                }
-                else if (d.StartsWith("HEAD -> refs/heads/", StringComparison.Ordinal))
-                {
-                    _current.IsMerged = true;
-                    _current.Decorators.Add(new Models.Decorator()
-                    {
-                        Type = Models.DecoratorType.CurrentBranchHead,
-                        Name = d.Substring(19),
-                    });
-                }
-                else if (d.Equals("HEAD"))
-                {
-                    _current.IsMerged = true;
-                    _current.Decorators.Add(new Models.Decorator()
-                    {
-                        Type = Models.DecoratorType.CurrentCommitHead,
-                        Name = d,
-                    });
-                }
-                else if (d.StartsWith("refs/heads/", StringComparison.Ordinal))
-                {
-                    _current.Decorators.Add(new Models.Decorator()
-                    {
-                        Type = Models.DecoratorType.LocalBranchHead,
-                        Name = d.Substring(11),
-                    });
-                }
-                else if (d.StartsWith("refs/remotes/", StringComparison.Ordinal))
-                {
-                    _current.Decorators.Add(new Models.Decorator()
-                    {
-                        Type = Models.DecoratorType.RemoteBranchHead,
-                        Name = d.Substring(13),
-                    });
-                }
-            }
-
-            _current.Decorators.Sort((l, r) =>
-            {
-                if (l.Type != r.Type)
-                    return (int)l.Type - (int)r.Type;
-                else
-                    return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
-            });
-
-            if (_current.IsMerged && !_isHeadFounded)
-                _isHeadFounded = true;
         }
 
         private void MarkFirstMerged()

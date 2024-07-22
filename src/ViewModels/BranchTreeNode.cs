@@ -36,14 +36,9 @@ namespace SourceGit.ViewModels
             get => Backend is Models.Branch;
         }
 
-        public bool IsUpstreamTrackStatusVisible
+        public string TrackStatus
         {
-            get => Backend is Models.Branch { IsLocal: true } branch && !string.IsNullOrEmpty(branch.UpstreamTrackStatus);
-        }
-
-        public string UpstreamTrackStatus
-        {
-            get => Backend is Models.Branch branch ? branch.UpstreamTrackStatus : "";
+            get => Backend is Models.Branch { IsLocal: true } branch ? branch.TrackStatus.ToString() : string.Empty;
         }
 
         public FontWeight NameFontWeight
@@ -152,6 +147,8 @@ namespace SourceGit.ViewModels
                     if (folders.TryGetValue(folder, out var val))
                     {
                         lastFolder = val;
+                        if (!lastFolder.IsExpanded)
+                            lastFolder.IsExpanded |= (branch.IsCurrent || _expanded.Contains(folder));
                     }
                     else if (lastFolder == null)
                     {

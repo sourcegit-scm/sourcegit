@@ -31,6 +31,7 @@
   <UserControl.DataTemplates>
     <DataTemplate DataType="vm:ChangeCollectionAsTree">
       <v:ChangeCollectionContainer ItemsSource="{Binding Rows}"
+                                   SelectedItems="{Binding SelectedRows, Mode=TwoWay}"
                                    SelectionMode="{Binding #ThisControl.SelectionMode}"
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
@@ -50,11 +51,12 @@
                             Classes="folder"
                             Focusable="False"
                             Width="14" Height="14"
+                            Margin="0,1,0,0"
                             Foreground="Goldenrod"
                             IsChecked="{Binding IsExpanded}"
                             IsVisible="{Binding IsFolder}"/>
 
-              <v:ChangeStatusIcon Grid.Column="1" Width="14" Height="14" IsWorkingCopyChange="{Binding #ThisControl.IsWorkingCopyChange}" Change="{Binding Change}" IsVisible="{Binding !IsFolder}"/>
+              <v:ChangeStatusIcon Grid.Column="1" Width="14" Height="14" IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}" Change="{Binding Change}" IsVisible="{Binding !IsFolder}"/>
               <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
             </Grid>
           </DataTemplate>
@@ -64,6 +66,7 @@
 
     <DataTemplate DataType="vm:ChangeCollectionAsGrid">
       <v:ChangeCollectionContainer ItemsSource="{Binding Changes}"
+                                   SelectedItems="{Binding SelectedChanges, Mode=TwoWay}"
                                    SelectionMode="{Binding #ThisControl.SelectionMode}"
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
@@ -72,7 +75,7 @@
               <v:ChangeStatusIcon Grid.Column="0"
                                   Width="14" Height="14"
                                   Margin="4,0,0,0"
-                                  IsWorkingCopyChange="{Binding #ThisControl.IsWorkingCopyChange}"
+                                  IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
                                   Change="{Binding}" />
 
               <TextBlock Grid.Column="1"
@@ -92,6 +95,7 @@
 
     <DataTemplate DataType="vm:ChangeCollectionAsList">
       <v:ChangeCollectionContainer ItemsSource="{Binding Changes}"
+                                   SelectedItems="{Binding SelectedChanges, Mode=TwoWay}"
                                    SelectionMode="{Binding #ThisControl.SelectionMode}"
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
@@ -100,7 +104,7 @@
               <v:ChangeStatusIcon Grid.Column="0"
                                   Width="14" Height="14"
                                   Margin="4,0,0,0"
-                                  IsWorkingCopyChange="{Binding #ThisControl.IsWorkingCopyChange}"
+                                  IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
                                   Change="{Binding}" />
 
               <TextBlock Grid.Column="1"

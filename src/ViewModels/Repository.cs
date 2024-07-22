@@ -566,10 +566,10 @@ namespace SourceGit.ViewModels
 
                         break;
                     case 2:
-                        visible = new Commands.QueryCommits(FullPath, 1000, _searchCommitFilter).Result();
+                        visible = new Commands.QueryCommits(FullPath, 1000, _searchCommitFilter, false).Result();
                         break;
                     case 3:
-                        visible = new Commands.QueryCommits(FullPath, $"-1000 -- \"{_searchCommitFilter}\"", false).Result();
+                        visible = new Commands.QueryCommits(FullPath, 1000, _searchCommitFilter, true).Result();
                         break;
                 }
 
@@ -784,8 +784,20 @@ namespace SourceGit.ViewModels
                 limits += "--branches --remotes --tags";
             }
 
-            var commits = new Commands.QueryCommits(FullPath, limits).Result();
-            var graph = Models.CommitGraph.Parse(commits);
+            var canPushCommits = new HashSet<string>();
+            var canPullCommits = new HashSet<string>();
+            var currentBranch = Branches.Find(x => x.IsCurrent);
+            if (currentBranch != null)
+            {
+                foreach (var sha in currentBranch.TrackStatus.Ahead)
+                    canPushCommits.Add(sha);
+
+                foreach (var sha in currentBranch.TrackStatus.Behind)
+                    canPullCommits.Add(sha);
+            }
+
+            var commits = new Commands.QueryCommits(_fullpath, limits).Result();
+            var graph = Models.CommitGraph.Parse(commits, canPushCommits, canPullCommits);
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -1244,7 +1256,7 @@ namespace SourceGit.ViewModels
                     var fastForward = new MenuItem();
                     fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream);
                     fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                    fastForward.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrackStatus) && branch.UpstreamTrackStatus.IndexOf('↑') < 0;
+                    fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
                     fastForward.Click += (_, e) =>
                     {
                         if (PopupHost.CanCreatePopup())
@@ -1295,7 +1307,7 @@ namespace SourceGit.ViewModels
                     var fastForward = new MenuItem();
                     fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream.FriendlyName);
                     fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                    fastForward.IsEnabled = !string.IsNullOrEmpty(branch.UpstreamTrackStatus) && branch.UpstreamTrackStatus.IndexOf('↑') < 0;
+                    fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
                     fastForward.Click += (_, e) =>
                     {
                         if (PopupHost.CanCreatePopup())

@@ -1075,8 +1075,8 @@
   </Style>
   <Style Selector="ToggleButton.tree_expander">
     <Setter Property="Margin" Value="0" />
-    <Setter Property="Width" Value="10" />
-    <Setter Property="Height" Value="10" />
+    <Setter Property="Width" Value="9" />
+    <Setter Property="Height" Value="9" />
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Template">
       <ControlTemplate>
@@ -1087,7 +1087,7 @@
                 VerticalAlignment="Center">
           <Path x:Name="ChevronPath"
                 Data="M 4 0 L 8 4 L 4 8 Z"
-                Fill="{DynamicResource TreeViewItemForeground}"
+                Fill="{DynamicResource Brush.FG1}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"/>
         </Border>
@@ -1096,6 +1096,36 @@
 
     <Style Selector="^:checked /template/ Path#ChevronPath">
       <Setter Property="Data" Value="M 0 4 L 8 4 L 4 8 Z" />
+    </Style>
+  </Style>
+
+  <Style Selector="ToggleButton.time_display_mode">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="Transparent"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center">
+          <Path x:Name="ChevronPath"
+                Data="{StaticResource Icons.Calender}"
+                Fill="{DynamicResource Brush.FG1}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Opacity="0.65"/>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:checked /template/ Path#ChevronPath">
+      <Setter Property="Data" Value="{StaticResource Icons.Stopwatch}" />
+    </Style>
+
+    <Style Selector="^:pointerover /template/ Path#ChevronPath">
+      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+      <Setter Property="Opacity" Value="1"/>
     </Style>
   </Style>
   
@@ -1111,8 +1141,9 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
           <Path x:Name="ChevronPath"
-                Data="{StaticResource Icons.Folder.Fill}"
+                Data="{StaticResource Icons.Folder}"
                 Fill="{TemplateBinding Foreground}"
+                Stretch="Uniform"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"/>
         </Border>

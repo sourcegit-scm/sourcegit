@@ -69,6 +69,16 @@
               <DataTemplate x:DataType="{x:Type m:Commit}">
                 <Border Margin="{Binding Margin}">
                   <StackPanel Orientation="Horizontal" Margin="2,0,0,0">
+                    <Ellipse Width="5" Height="5"
+                             Margin="0,0,4,0"
+                             Fill="{DynamicResource Brush.Accent}"
+                             IsVisible="{Binding CanPushToUpstream}"/>
+
+                    <Ellipse Width="5" Height="5"
+                             Margin="0,0,4,0"
+                             Fill="{DynamicResource Brush.FG1}"
+                             IsVisible="{Binding CanPullFromUpstream}"/>
+                    
                     <ItemsControl ItemsSource="{Binding Decorators}" IsVisible="{Binding HasDecorators}">
                       <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -103,8 +113,8 @@
 
                     <TextBlock Classes="monospace" 
                                Text="{Binding Subject}"
-                               Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"
-                               FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
+                               Opacity="{Binding Opacity}"
+                               FontWeight="{Binding FontWeight}"/>
                   </StackPanel>
                 </Border>
               </DataTemplate>
@@ -124,13 +134,13 @@
                             VerticalAlignment="Center"
                             IsHitTestVisible="False"
                             User="{Binding Author}"
-                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"/>
+                            Opacity="{Binding Opacity}"/>
                   <TextBlock Grid.Column="1" 
                              Classes="monospace"
                              Text="{Binding Author.Name}"
                              Margin="8,0,0,0"
-                             Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"
-                             FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
+                             Opacity="{Binding Opacity}"
+                             FontWeight="{Binding FontWeight}"/>
                 </Grid>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
@@ -147,24 +157,32 @@
                            Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                            Margin="8,0"
                            HorizontalAlignment="Center"
-                           Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"
-                           FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
+                           Opacity="{Binding Opacity}"
+                           FontWeight="{Binding FontWeight}"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
           <DataGridTemplateColumn CanUserResize="False" MinWidth="156">
             <DataGridTemplateColumn.Header>
-              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Time}"/>
+              <StackPanel Orientation="Horizontal">
+                <ToggleButton Classes="time_display_mode" 
+                              Width="10" Height="10"
+                              IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"/>
+                <TextBlock Classes="table_header" Margin="4,0,0,0" Text="{DynamicResource Text.Histories.Header.Time}"/>
+              </StackPanel>
+
             </DataGridTemplateColumn.Header>
             
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
-                <TextBlock Classes="monospace" 
-                           Text="{Binding CommitterTimeStr}"
-                           Margin="8,0"
-                           Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.HalfIfFalse}}"
-                           FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.BoldIfTrue}}"/>
+                <v:CommitTimeTextBlock Classes="monospace"
+                                       Margin="8,0"
+                                       HorizontalAlignment="Center"
+                                       Opacity="{Binding Opacity}"
+                                       FontWeight="{Binding FontWeight}"
+                                       Timestamp="{Binding CommitterTime}"
+                                       ShowAsDateTime="{Binding Source={x:Static vm:Preference.Instance}, Path=!DisplayTimeAsPeriodInHistories}"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>

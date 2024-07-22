@@ -21,7 +21,7 @@
                  VerticalContentAlignment="Center"
                  Text="{Binding SearchFilter, Mode=TwoWay}">
           <TextBox.InnerLeftContent>
-            <Path Width="16" Height="16" Margin="6,0,3,0" Data="{StaticResource Icons.Search}" Fill="{DynamicResource Brush.FG1}"/>
+            <Path Width="16" Height="16" Margin="6,0,3,0" Data="{StaticResource Icons.Search}" Fill="{DynamicResource Brush.FG2}"/>
           </TextBox.InnerLeftContent>
 
           <TextBox.InnerRightContent>
@@ -59,7 +59,7 @@
           <TreeView.ItemTemplate>
             <TreeDataTemplate ItemsSource="{Binding SubNodes}">
               <Grid Height="30"
-                    ColumnDefinitions="Auto,Auto,*"
+                    ColumnDefinitions="18,Auto,*"
                     Background="Transparent"
                     Loaded="SetupTreeNodeDragAndDrop"
                     ContextRequested="OnTreeNodeContextRequested"
@@ -68,19 +68,18 @@
                     PointerReleased="OnPointerReleasedOnTreeNode"
                     DoubleTapped="OnDoubleTappedTreeNode"
                     ClipToBounds="True">
-                <Path Grid.Column="0" Width="12" Height="12" Margin="0,0,4,0"
+                <Path Grid.Column="0" 
+                      Width="14" Height="14"
                       Fill="{Binding Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
-                      StrokeThickness="{Binding Bookmark, Converter={x:Static c:BookmarkConverters.ToStrokeThickness}}"
-                      Stroke="{DynamicResource Brush.FG1}"
-                      HorizontalAlignment="Left"
+                      HorizontalAlignment="Center"
                       Data="{StaticResource Icons.Bookmark}"
                       IsVisible="{Binding IsRepository}"/>
 
                 <ToggleButton Grid.Column="0"
                               Classes="folder"
                               Focusable="False"
-                              Width="12" Height="12"
-                              Margin="0,0,4,0"
+                              Width="14" Height="14"
+                              HorizontalAlignment="Left"
                               Foreground="{DynamicResource Brush.FG1}"
                               IsChecked="{Binding IsExpanded}"
                               IsVisible="{Binding !IsRepository}"/>

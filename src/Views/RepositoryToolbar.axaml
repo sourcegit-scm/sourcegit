@@ -9,7 +9,7 @@
   <Grid ColumnDefinitions="*,Auto,*">
       <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
         <Button Classes="icon_button" Width="32" Command="{Binding OpenInFileManager}" ToolTip.Tip="{DynamicResource Text.Repository.Explore}">
-          <Path Width="15" Height="13" Data="{StaticResource Icons.Folder.Open}" Margin="0,1,0,0"/>
+          <Path Width="15" Height="15" Data="{StaticResource Icons.Explore}" Margin="0,2,0,0"/>
         </Button>
         
         <Button Classes="icon_button" Width="32" Command="{Binding OpenInTerminal}" ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">

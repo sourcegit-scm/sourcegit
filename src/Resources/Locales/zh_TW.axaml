@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="en_US.axaml"/>
+    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">關於軟體</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">關於本軟體</x:String>
@@ -310,6 +310,9 @@
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">定位到下一個匹配搜尋的位置</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">定位到上一個匹配搜尋的位置</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">開啟搜尋</x:String>
+  <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">暫存</x:String>
+  <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">移出暫存區</x:String>
+  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">丟棄</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">初始化新倉庫</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">路徑 ：</x:String>
   <x:String x:Key="Text.Init.Tip" xml:space="preserve">選擇目錄不是有效的Git倉庫。是否需要在此目錄執行`git init`操作？</x:String>
@@ -344,6 +347,15 @@
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">複製倉庫路徑</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">新標籤頁</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">貼上</x:String>
+  <x:String x:Key="Text.Period.JustNow" xml:space="preserve">剛剛</x:String>
+  <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0}分鐘前</x:String>
+  <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">{0}小時前</x:String>
+  <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨天</x:String>
+  <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0}天前</x:String>
+  <x:String x:Key="Text.Period.LastMonth" xml:space="preserve">上個月</x:String>
+  <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0}個月前</x:String>
+  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
+  <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0}年前</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好設定</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外觀配置</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>

@@ -74,7 +74,7 @@ namespace SourceGit.Views
                     CreateContent("Icons.Submodule", new Thickness(0, 0, 0, 0));
                     break;
                 default:
-                    CreateContent(node.IsExpanded ? "Icons.Folder.Open" : "Icons.Folder.Fill", new Thickness(0, 2, 0, 0), Brushes.Goldenrod);
+                    CreateContent(node.IsExpanded ? "Icons.Folder.Open" : "Icons.Folder", new Thickness(0, 2, 0, 0), Brushes.Goldenrod);
                     break;
             }
         }
@@ -90,6 +90,7 @@ namespace SourceGit.Views
                 Width = 14,
                 Height = 14,
                 Margin = margin,
+                Stretch = Stretch.Uniform,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
                 Data = geo,

@@ -6,7 +6,7 @@ namespace SourceGit.ViewModels
     public class GitFlowStart : Popup
     {
         [Required(ErrorMessage = "Name is required!!!")]
-        [RegularExpression(@"^[\w\-/\.]+$", ErrorMessage = "Bad branch name format!")]
+        [RegularExpression(@"^[\w\-/\.#]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(GitFlowStart), nameof(ValidateBranchName))]
         public string Name
         {

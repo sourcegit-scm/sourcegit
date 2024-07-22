@@ -164,7 +164,7 @@ namespace SourceGit.Models
 
         private void OnRepositoryChanged(object o, FileSystemEventArgs e)
         {
-            if (string.IsNullOrEmpty(e.Name))
+            if (string.IsNullOrEmpty(e.Name) || e.Name.EndsWith(".lock", StringComparison.Ordinal))
                 return;
 
             var name = e.Name.Replace("\\", "/");

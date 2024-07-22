@@ -307,6 +307,9 @@
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Find next match</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Find previous match</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Open search panel</x:String>
+  <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>
+  <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Unstage</x:String>
+  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Discard</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Initialize Repository</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Path:</x:String>
   <x:String x:Key="Text.Init.Tip" xml:space="preserve">Invalid repository detected. Run `git init` under this path?</x:String>
@@ -341,6 +344,15 @@
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copy Repository Path</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositories</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Paste</x:String>
+  <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Just now</x:String>
+  <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} minutes ago</x:String>
+  <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">{0} hours ago</x:String>
+  <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Yesterday</x:String>
+  <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} days ago</x:String>
+  <x:String x:Key="Text.Period.LastMonth" xml:space="preserve">Last month</x:String>
+  <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} months ago</x:String>
+  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Last year</x:String>
+  <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} years ago</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">Preference</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APPEARANCE</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Default Font</x:String>

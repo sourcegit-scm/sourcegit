@@ -1,5 +1,26 @@
-﻿namespace SourceGit.Models
+﻿using System.Collections.Generic;
+
+namespace SourceGit.Models
 {
+    public class BranchTrackStatus
+    {
+        public List<string> Ahead { get; set; } = new List<string>();
+        public List<string> Behind { get; set; } = new List<string>();
+
+        public override string ToString()
+        {
+            if (Ahead.Count == 0 && Behind.Count == 0)
+                return string.Empty;
+
+            var track = "";
+            if (Ahead.Count > 0)
+                track += $"{Ahead.Count}↑";
+            if (Behind.Count > 0)
+                track += $" {Behind.Count}↓";
+            return track.Trim();
+        }
+    }
+
     public class Branch
     {
         public string Name { get; set; }
@@ -8,7 +29,7 @@
         public bool IsLocal { get; set; }
         public bool IsCurrent { get; set; }
         public string Upstream { get; set; }
-        public string UpstreamTrackStatus { get; set; }
+        public BranchTrackStatus TrackStatus { get; set; }
         public string Remote { get; set; }
         public bool IsHead { get; set; }
 

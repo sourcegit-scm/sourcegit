@@ -122,7 +122,7 @@ namespace SourceGit.ViewModels
             {
                 var explore = new MenuItem();
                 explore.Header = App.Text("Repository.Explore");
-                explore.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                explore.Icon = App.CreateMenuIcon("Icons.Explore");
                 explore.Click += (_, e) =>
                 {
                     node.OpenInFileManager();

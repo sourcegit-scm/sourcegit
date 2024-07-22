@@ -12,21 +12,6 @@ namespace SourceGit.ViewModels
 {
     public class DiffContext : ObservableObject
     {
-        public string RepositoryPath
-        {
-            get => _repo;
-        }
-
-        public Models.Change WorkingCopyChange
-        {
-            get => _option.WorkingCopyChange;
-        }
-
-        public bool IsUnstaged
-        {
-            get => _option.IsUnstaged;
-        }
-
         public string Title
         {
             get => _title;

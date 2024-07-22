@@ -88,8 +88,13 @@
                         CornerRadius="9"
                         VerticalAlignment="Center"
                         Background="{DynamicResource Brush.Badge}"
-                        IsVisible="{Binding IsUpstreamTrackStatusVisible}">
-                  <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding UpstreamTrackStatus}" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                        IsVisible="{Binding TrackStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                  <TextBlock Classes="monospace" 
+                             FontSize="10" 
+                             HorizontalAlignment="Center" 
+                             Margin="9,0" 
+                             Text="{Binding TrackStatus}" 
+                             Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
 
                 <!-- Filter Toggle Button -->

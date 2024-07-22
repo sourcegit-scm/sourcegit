@@ -128,7 +128,7 @@
           <DataGridTemplateColumn Header="ICON">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <v:ChangeStatusIcon Width="14" Height="14" IsWorkingCopyChange="False" Change="{Binding}"/>
+                <v:ChangeStatusIcon Width="14" Height="14" Change="{Binding}"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>

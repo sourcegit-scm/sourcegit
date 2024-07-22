@@ -66,6 +66,83 @@ namespace SourceGit.Models
         public Vector SyncScrollOffset { get; set; } = Vector.Zero;
         public int MaxLineNumber = 0;
 
+        public string Repo { get; set; } = null;
+        public DiffOption Option { get; set; } = null;
+
+        public TextDiffSelection MakeSelection(int startLine, int endLine, bool isCombined, bool isOldSide)
+        {
+            var rs = new TextDiffSelection();
+            rs.StartLine = startLine;
+            rs.EndLine = endLine;
+
+            for (int i = 0; i < startLine - 1; i++)
+            {
+                var line = Lines[i];
+                if (line.Type == TextDiffLineType.Added)
+                {
+                    rs.HasLeftChanges = true;
+                    rs.IgnoredAdds++;
+                }
+                else if (line.Type == TextDiffLineType.Deleted)
+                {
+                    rs.HasLeftChanges = true;
+                    rs.IgnoredDeletes++;
+                }
+            }
+
+            for (int i = startLine - 1; i < endLine; i++)
+            {
+                var line = Lines[i];
+                if (line.Type == TextDiffLineType.Added)
+                {
+                    if (isCombined)
+                    {
+                        rs.HasChanges = true;
+                        break;
+                    }
+                    else if (isOldSide)
+                    {
+                        rs.HasLeftChanges = true;
+                    }
+                    else
+                    {
+                        rs.HasChanges = true;
+                    }
+                }
+                else if (line.Type == TextDiffLineType.Deleted)
+                {
+                    if (isCombined)
+                    {
+                        rs.HasChanges = true;
+                        break;
+                    }
+                    else if (isOldSide)
+                    {
+                        rs.HasChanges = true;
+                    }
+                    else
+                    {
+                        rs.HasLeftChanges = true;
+                    }
+                }
+            }
+
+            if (!rs.HasLeftChanges)
+            {
+                for (int i = endLine; i < Lines.Count; i++)
+                {
+                    var line = Lines[i];
+                    if (line.Type == TextDiffLineType.Added || line.Type == TextDiffLineType.Deleted)
+                    {
+                        rs.HasLeftChanges = true;
+                        break;
+                    }
+                }
+            }
+
+            return rs;
+        }
+
         public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
         {
             var isTracked = !string.IsNullOrEmpty(fileBlobGuid);
@@ -389,9 +466,6 @@ namespace SourceGit.Models
             System.IO.File.WriteAllText(output, builder.ToString());
         }
 
-        [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
-        private static partial Regex REG_INDICATOR();
-
         private bool ProcessIndicatorForPatch(StringBuilder builder, TextDiffLine indicator, int idx, int start, int end, int ignoreRemoves, int ignoreAdds, bool revert, bool tailed)
         {
             var match = REG_INDICATOR().Match(indicator.Content);
@@ -551,6 +625,9 @@ namespace SourceGit.Models
             builder.Append($"\n@@ -{oldStart},{oldCount} +{newStart},{newCount} @@");
             return true;
         }
+
+        [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
+        private static partial Regex REG_INDICATOR();
     }
 
     public class LFSDiff

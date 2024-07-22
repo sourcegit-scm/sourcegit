@@ -336,9 +336,9 @@ namespace SourceGit.ViewModels
                 for (int i = 0; i < Models.Bookmarks.Supported.Count; i++)
                 {
                     var icon = App.CreateMenuIcon("Icons.Bookmark");
-                    icon.Fill = Models.Bookmarks.Brushes[i];
-                    icon.Stroke = Application.Current?.FindResource("Brush.FG1") as Brush;
-                    icon.StrokeThickness = i == 0 ? 1.0 : 0;
+
+                    if (i != 0)
+                        icon.Fill = Models.Bookmarks.Brushes[i];
 
                     var dupIdx = i;
                     var setter = new MenuItem();
