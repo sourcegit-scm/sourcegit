@@ -1,10 +1,9 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 
 namespace SourceGit.Models
 {
-    public partial class Version
+    public class Version
     {
         [JsonPropertyName("name")]
         public string Name { get; set; }
@@ -15,21 +14,20 @@ namespace SourceGit.Models
         [JsonPropertyName("body")]
         public string Body { get; set; }
 
-        [GeneratedRegex(@"^v(\d+)\.(\d+)$")]
-        private static partial Regex REG_VERSION_TAG();
-
         public bool IsNewVersion
         {
             get
             {
-                var match = REG_VERSION_TAG().Match(TagName);
-                if (!match.Success)
+                try
+                {
+                    System.Version version = new System.Version(TagName.Substring(1));
+                    System.Version current = Assembly.GetExecutingAssembly().GetName().Version!;
+                    return current.CompareTo(version) < 0;
+                }
+                catch
+                {
                     return false;
-
-                var major = int.Parse(match.Groups[1].Value);
-                var minor = int.Parse(match.Groups[2].Value);
-                var ver = Assembly.GetExecutingAssembly().GetName().Version!;
-                return ver.Major < major || (ver.Major == major && ver.Minor < minor);
+                }
             }
         }
     }
