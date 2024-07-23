@@ -128,7 +128,7 @@ namespace SourceGit.Models
         public void FindJetBrainsFromToolbox(Func<string> platformFinder)
         {
             var exclude = new List<string> { "fleet", "dotmemory", "dottrace", "resharper-u", "androidstudio" };
-            var supported_icons = new List<string> { "CL", "DB", "DL", "DS", "GO", "IC", "IU", "JB", "PC", "PS", "PY", "QA", "QD", "RD", "RM", "RR", "WRS", "WS" };
+            var supported_icons = new List<string> { "CL", "DB", "DL", "DS", "GO", "JB", "PC", "PS", "PY", "QA", "QD", "RD", "RM", "RR", "WRS", "WS" };
             var state = Path.Combine(platformFinder(), "state.json");
             if (File.Exists(state))
             {
