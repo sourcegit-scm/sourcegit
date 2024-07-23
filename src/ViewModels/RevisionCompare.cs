@@ -101,6 +101,7 @@ namespace SourceGit.ViewModels
         public void Swap()
         {
             (StartPoint, EndPoint) = (_endPoint, _startPoint);
+            SelectedChanges = [];
             Task.Run(Refresh);
         }
 
