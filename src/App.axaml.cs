@@ -501,10 +501,15 @@ namespace SourceGit
         private bool TryLaunchedAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var args = desktop.Args;
-            if (args == null || args.Length != 1 || !args[0].StartsWith("Enter passphrase", StringComparison.Ordinal))
+            if (args == null || args.Length != 1)
                 return false;
 
-            desktop.MainWindow = new Views.Askpass(args[0]);
+            var param = args[0];
+            if (!param.StartsWith("enter passphrase", StringComparison.OrdinalIgnoreCase) &&
+                !param.Contains(" password", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            desktop.MainWindow = new Views.Askpass(param);
             return true;
         }
 
