@@ -2,28 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-
 using Avalonia.Controls;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class CompareTargetWorktree
+    public sealed class CompareTargetWorktree : Models.IObjectId
     {
         public string SHA => string.Empty;
     }
 
     public class RevisionCompare : ObservableObject
     {
-        public Models.Commit StartPoint
+        public Models.IObjectId StartPoint
         {
             get;
             private set;
         }
 
-        public object EndPoint
+        public Models.IObjectId EndPoint
         {
             get;
             private set;
@@ -43,7 +41,7 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _selectedChanges, value))
                 {
                     if (value != null && value.Count == 1)
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(StartPoint.SHA, _endPoint, value[0]), _diffContext);
+                        DiffContext = new DiffContext(_repo, new Models.DiffOption(StartPoint.SHA, EndPoint?.SHA ?? string.Empty, value[0]), _diffContext);
                     else
                         DiffContext = null;
                 }
@@ -76,31 +74,13 @@ namespace SourceGit.ViewModels
             if (endPoint == null)
             {
                 EndPoint = new CompareTargetWorktree();
-                _endPoint = string.Empty;
             }
             else
             {
                 EndPoint = endPoint;
-                _endPoint = endPoint.SHA;
             }
 
-            Task.Run(() =>
-            {
-                _changes = new Commands.CompareRevisions(_repo, startPoint.SHA, _endPoint).Result();
-
-                var visible = _changes;
-                if (!string.IsNullOrWhiteSpace(_searchFilter))
-                {
-                    visible = new List<Models.Change>();
-                    foreach (var c in _changes)
-                    {
-                        if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
-                            visible.Add(c);
-                    }
-                }
-
-                Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
-            });
+            Task.Run(Refresh);
         }
 
         public void Cleanup()
@@ -140,7 +120,7 @@ namespace SourceGit.ViewModels
             diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
             diffWithMerger.Click += (_, ev) =>
             {
-                var opt = new Models.DiffOption(StartPoint.SHA, _endPoint, change);
+                var opt = new Models.DiffOption(StartPoint.SHA, EndPoint?.SHA ?? string.Empty, change);
                 var toolType = Preference.Instance.ExternalMergeToolType;
                 var toolPath = Preference.Instance.ExternalMergeToolPath;
 
@@ -209,8 +189,32 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private void Refresh()
+        {
+            _changes = new Commands.CompareRevisions(_repo, StartPoint.SHA, EndPoint?.SHA ?? string.Empty).Result();
+
+            var visible = _changes;
+            if (!string.IsNullOrWhiteSpace(_searchFilter))
+            {
+                visible = [];
+                foreach (var c in _changes)
+                {
+                    if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                        visible.Add(c);
+                }
+            }
+
+            Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
+        }
+
+        public void Swap()
+        {
+            (StartPoint, EndPoint) = (EndPoint, StartPoint);
+            OnPropertyChanged(string.Empty);
+            Task.Run(Refresh);
+        }
+
         private string _repo;
-        private string _endPoint;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;

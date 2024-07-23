@@ -192,6 +192,7 @@
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可见的行数</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">请选择需要对比的文件</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">显示隐藏符号</x:String>
+  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">反向提交</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">使用外部比对工具查看</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">放弃更改确认</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本地址未提交的修改。</x:String>

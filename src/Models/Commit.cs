@@ -6,7 +6,7 @@ using Avalonia.Media;
 
 namespace SourceGit.Models
 {
-    public class Commit
+    public class Commit: IObjectId
     {
         public static double OpacityForNotMerged
         {
