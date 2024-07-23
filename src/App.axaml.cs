@@ -92,7 +92,7 @@ namespace SourceGit
             var toplevel = GetTopLevel() as Window;
             if (toplevel == null)
                 return;
-            
+
             var dialog = new Views.Preference();
             dialog.ShowDialog(toplevel);
         });
@@ -102,7 +102,7 @@ namespace SourceGit
             var toplevel = GetTopLevel() as Window;
             if (toplevel == null)
                 return;
-            
+
             var dialog = new Views.Hotkeys();
             dialog.ShowDialog(toplevel);
         });
@@ -112,7 +112,7 @@ namespace SourceGit
             var toplevel = GetTopLevel() as Window;
             if (toplevel == null)
                 return;
-            
+
             var dialog = new Views.About();
             dialog.ShowDialog(toplevel);
         });
@@ -247,7 +247,7 @@ namespace SourceGit
             var geo = Current?.FindResource(key) as StreamGeometry;
             if (geo != null)
                 icon.Data = geo;
-            
+
             return icon;
         }
 
@@ -257,7 +257,7 @@ namespace SourceGit
             {
                 return desktop.MainWindow;
             }
-            
+
             return null;
         }
 

@@ -37,9 +37,9 @@ namespace SourceGit.Views
             if (old == null)
                 return true;
 
-            return Math.Abs(Y - old.Y) > 0.001 || 
-                Math.Abs(Height - old.Height) > 0.001 || 
-                StartIdx != old.StartIdx || 
+            return Math.Abs(Y - old.Y) > 0.001 ||
+                Math.Abs(Height - old.Height) > 0.001 ||
+                StartIdx != old.StartIdx ||
                 EndIdx != old.EndIdx ||
                 Combined != Combined ||
                 IsOldSide != IsOldSide;
@@ -1217,7 +1217,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDiscardChunk(object sender, RoutedEventArgs e) 
+        private void OnDiscardChunk(object sender, RoutedEventArgs e)
         {
             var chunk = SelectedChunk;
             if (chunk == null)
@@ -1260,12 +1260,12 @@ namespace SourceGit.Views
                 if (change.Index == Models.ChangeState.Added)
                 {
                     diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
-                }                    
+                }
                 else if (chunk.Combined)
                 {
                     var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
                     diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                }                    
+                }
                 else
                 {
                     var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();

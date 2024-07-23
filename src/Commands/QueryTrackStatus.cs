@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class QueryTrackStatus : Command
     {
-        public QueryTrackStatus(string repo, string local, string upstream) 
+        public QueryTrackStatus(string repo, string local, string upstream)
         {
             WorkingDirectory = repo;
             Context = repo;

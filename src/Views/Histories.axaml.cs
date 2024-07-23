@@ -106,7 +106,7 @@ namespace SourceGit.Views
                 if (ShowAsDateTime)
                     StopTimer();
                 else
-                    StartTimer();    
+                    StartTimer();
             }
         }
 
