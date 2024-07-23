@@ -10,16 +10,12 @@
              x:Class="SourceGit.Views.RevisionCompare"
              x:DataType="vm:RevisionCompare"
              Background="{DynamicResource Brush.Window}">
-
   <UserControl.Resources>
-    <DataTemplate DataType="m:Commit"
-                  x:Key="CommitInfoTemplate">
+    <!-- Template for Models.Commit -->
+    <DataTemplate DataType="m:Commit" x:Key="CommitInfoTemplate">
       <Grid RowDefinitions="Auto,*">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
-          <v:Avatar Width="16" Height="16"
-                    VerticalAlignment="Center"
-                    IsHitTestVisible="False"
-                    User="{Binding Author}"/>
+          <v:Avatar Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
           <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
           <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4" IsVisible="{Binding IsCurrentHead}">
             <TextBlock Text="HEAD" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
@@ -32,8 +28,8 @@
       </Grid>
     </DataTemplate>
 
-    <DataTemplate DataType="vm:CompareTargetWorktree"
-                  x:Key="WorktreeTemplate">
+    <!-- Template for Models.CompareTargetWorktree -->
+    <DataTemplate DataType="m:CompareTargetWorktree" x:Key="WorktreeTemplate">
       <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
         <TextBlock Text="{DynamicResource Text.Worktree}" Classes="monospace" Margin="4,2" Foreground="#FFDDDDDD"/>
       </Border>
@@ -41,7 +37,9 @@
   </UserControl.Resources>
   
   <Grid RowDefinitions="50,*" Margin="4">
+    <!-- Compare Revision Info -->
     <Grid Grid.Row="0" Margin="48,0,48,4" ColumnDefinitions="*,48,*">
+      <!-- Base Revision -->
       <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <ContentControl Content="{Binding StartPoint}">
           <ContentControl.DataTemplates>
@@ -51,17 +49,12 @@
         </ContentControl>
       </Border>
 
-      <Button Classes="icon_button"
-              Command="{Binding Swap, Mode = OneTime}"
-              Grid.Column="1"
-              HorizontalAlignment="Center"
-              ToolTip.Tip="{DynamicResource Text.Diff.SyntaxHighlight}">
-        <Path Grid.Column="1" Width="16" Height="16"
-              Fill="{DynamicResource Brush.FG2}"
-              Data="{DynamicResource Icons.Compare}"
-              />
+      <!-- Swap Button -->
+      <Button Classes="icon_button" Command="{Binding Swap}" Grid.Column="1" HorizontalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Diff.SwapCommits}">
+        <Path Grid.Column="1" Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Compare}"/>
       </Button>
 
+      <!-- Right Revision -->
       <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <ContentControl Content="{Binding EndPoint}">
           <ContentControl.DataTemplates>
@@ -72,6 +65,7 @@
       </Border>
     </Grid>
 
+    <!-- Changes View -->
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="256" MinWidth="200" MaxWidth="480"/>

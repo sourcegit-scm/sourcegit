@@ -9,7 +9,7 @@
         Commit,
     }
 
-    public class Object: IObjectId
+    public class Object
     {
         public string SHA { get; set; }
         public ObjectType Type { get; set; }

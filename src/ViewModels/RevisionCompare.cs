@@ -2,29 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+
 using Avalonia.Controls;
 using Avalonia.Threading;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public sealed class CompareTargetWorktree : Models.IObjectId
-    {
-        public string SHA => string.Empty;
-    }
-
     public class RevisionCompare : ObservableObject
     {
-        public Models.IObjectId StartPoint
+        public object StartPoint
         {
-            get;
-            private set;
+            get => _startPoint;
+            private set => SetProperty(ref _startPoint, value);
         }
 
-        public Models.IObjectId EndPoint
+        public object EndPoint
         {
-            get;
-            private set;
+            get => _endPoint;
+            private set => SetProperty(ref _endPoint, value);
         }
 
         public List<Models.Change> VisibleChanges
@@ -41,9 +38,14 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _selectedChanges, value))
                 {
                     if (value != null && value.Count == 1)
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(StartPoint.SHA, EndPoint?.SHA ?? string.Empty, value[0]), _diffContext);
+                    {
+                        var option = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), value[0]);
+                        DiffContext = new DiffContext(_repo, option, _diffContext);
+                    }
                     else
+                    {
                         DiffContext = null;
+                    }
                 }
             }
         }
@@ -69,16 +71,8 @@ namespace SourceGit.ViewModels
         public RevisionCompare(string repo, Models.Commit startPoint, Models.Commit endPoint)
         {
             _repo = repo;
-            StartPoint = startPoint;
-
-            if (endPoint == null)
-            {
-                EndPoint = new CompareTargetWorktree();
-            }
-            else
-            {
-                EndPoint = endPoint;
-            }
+            _startPoint = (object)startPoint ?? new Models.CompareTargetWorktree();
+            _endPoint = (object)endPoint ?? new Models.CompareTargetWorktree();
 
             Task.Run(Refresh);
         }
@@ -86,6 +80,8 @@ namespace SourceGit.ViewModels
         public void Cleanup()
         {
             _repo = null;
+            _startPoint = null;
+            _endPoint = null;
             if (_changes != null)
                 _changes.Clear();
             if (_visibleChanges != null)
@@ -100,6 +96,12 @@ namespace SourceGit.ViewModels
         {
             var repo = App.FindOpenedRepository(_repo);
             repo?.NavigateToCommit(commitSHA);
+        }
+
+        public void Swap()
+        {
+            (StartPoint, EndPoint) = (_endPoint, _startPoint);
+            Task.Run(Refresh);
         }
 
         public void ClearSearchFilter()
@@ -120,7 +122,7 @@ namespace SourceGit.ViewModels
             diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
             diffWithMerger.Click += (_, ev) =>
             {
-                var opt = new Models.DiffOption(StartPoint.SHA, EndPoint?.SHA ?? string.Empty, change);
+                var opt = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), change);
                 var toolType = Preference.Instance.ExternalMergeToolType;
                 var toolPath = Preference.Instance.ExternalMergeToolPath;
 
@@ -191,7 +193,7 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            _changes = new Commands.CompareRevisions(_repo, StartPoint.SHA, EndPoint?.SHA ?? string.Empty).Result();
+            _changes = new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint)).Result();
 
             var visible = _changes;
             if (!string.IsNullOrWhiteSpace(_searchFilter))
@@ -207,14 +209,14 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
         }
 
-        public void Swap()
+        private string GetSHA(object obj)
         {
-            (StartPoint, EndPoint) = (EndPoint, StartPoint);
-            OnPropertyChanged(string.Empty);
-            Task.Run(Refresh);
+            return obj is Models.Commit commit ? commit.SHA : string.Empty;
         }
 
         private string _repo;
+        private object _startPoint = null;
+        private object _endPoint = null;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;
