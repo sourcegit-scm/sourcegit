@@ -4,7 +4,6 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -14,93 +13,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class RepositorySettings
-    {
-        public Models.DealWithLocalChanges DealWithLocalChangesOnCheckoutBranch
-        {
-            get;
-            set;
-        } = Models.DealWithLocalChanges.DoNothing;
-
-        public bool FetchWithoutTags
-        {
-            get;
-            set;
-        } = false;
-
-        public Models.DealWithLocalChanges DealWithLocalChangesOnPull
-        {
-            get;
-            set;
-        } = Models.DealWithLocalChanges.DoNothing;
-
-        public bool PreferRebaseInsteadOfMerge
-        {
-            get;
-            set;
-        } = true;
-
-        public bool FetchWithoutTagsOnPull
-        {
-            get;
-            set;
-        } = false;
-
-        public bool PushAllTags
-        {
-            get;
-            set;
-        } = false;
-
-        public Models.DealWithLocalChanges DealWithLocalChangesOnCreateBranch
-        {
-            get;
-            set;
-        } = Models.DealWithLocalChanges.DoNothing;
-
-        public bool CheckoutBranchOnCreateBranch
-        {
-            get;
-            set;
-        } = true;
-
-        public bool AutoStageBeforeCommit
-        {
-            get;
-            set;
-        } = false;
-
-        public AvaloniaList<string> Filters
-        {
-            get;
-            set;
-        } = new AvaloniaList<string>();
-
-        public AvaloniaList<string> CommitMessages
-        {
-            get;
-            set;
-        } = new AvaloniaList<string>();
-
-        public void PushCommitMessage(string message)
-        {
-            var existIdx = CommitMessages.IndexOf(message);
-            if (existIdx == 0)
-                return;
-
-            if (existIdx > 0)
-            {
-                CommitMessages.Move(existIdx, 0);
-                return;
-            }
-
-            if (CommitMessages.Count > 9)
-                CommitMessages.RemoveRange(9, CommitMessages.Count - 9);
-
-            CommitMessages.Insert(0, message);
-        }
-    }
-
     public class Repository : ObservableObject, Models.IRepository
     {
         public string FullPath
@@ -126,7 +38,7 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDir, value);
         }
 
-        public RepositorySettings Settings
+        public Models.RepositorySettings Settings
         {
             get => _settings;
         }
@@ -341,12 +253,12 @@ namespace SourceGit.ViewModels
                 }
                 catch
                 {
-                    _settings = new RepositorySettings();
+                    _settings = new Models.RepositorySettings();
                 }
             }
             else
             {
-                _settings = new RepositorySettings();
+                _settings = new Models.RepositorySettings();
             }
 
             _watcher = new Models.Watcher(this);
@@ -1985,7 +1897,7 @@ namespace SourceGit.ViewModels
 
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
-        private RepositorySettings _settings = null;
+        private Models.RepositorySettings _settings = null;
 
         private Models.Watcher _watcher = null;
         private Histories _histories = null;
