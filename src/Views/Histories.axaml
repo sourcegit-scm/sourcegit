@@ -39,12 +39,12 @@
                         BorderBrush="{DynamicResource Brush.Border0}"
                         BorderThickness="0,0,0,1">
                   <Grid ColumnDefinitions="*,1">
-                    <ContentControl x:Name="PART_ContentPresenter"
-                                    Grid.Column="0"
-                                    Margin="4,0"
-                                    Content="{TemplateBinding Content}"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    HorizontalContentAlignment="Center"/>
+                    <ContentPresenter x:Name="PART_ContentPresenter"
+                                      Grid.Column="0"
+                                      Margin="4,0"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      HorizontalContentAlignment="Center"/>
 
                     <Rectangle Name="VerticalSeparator"
                                Grid.Column="1"
