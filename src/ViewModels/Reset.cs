@@ -1,26 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using Avalonia.Media;
+﻿using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public class ResetMode
-    {
-        public string Name { get; set; }
-        public string Desc { get; set; }
-        public string Arg { get; set; }
-        public IBrush Color { get; set; }
-
-        public ResetMode(string n, string d, string a, IBrush b)
-        {
-            Name = n;
-            Desc = d;
-            Arg = a;
-            Color = b;
-        }
-    }
-
     public class Reset : Popup
     {
         public Models.Branch Current
@@ -35,13 +16,7 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public List<ResetMode> Modes
-        {
-            get;
-            private set;
-        }
-
-        public ResetMode SelectedMode
+        public Models.ResetMode SelectedMode
         {
             get;
             set;
@@ -52,12 +27,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Current = current;
             To = to;
-            Modes = new List<ResetMode>() {
-                new ResetMode("Soft", "Keep all changes. Stage differences", "--soft", Brushes.Green),
-                new ResetMode("Mixed", "Keep all changes. Unstage differences", "--mixed", Brushes.Orange),
-                new ResetMode("Hard", "Discard all changes", "--hard", Brushes.Red),
-            };
-            SelectedMode = Modes[0];
+            SelectedMode = Models.ResetMode.Supported[0];
             View = new Views.Reset() { DataContext = this };
         }
 

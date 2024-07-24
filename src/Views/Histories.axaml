@@ -215,7 +215,7 @@
             <v:RevisionCompare/>
           </DataTemplate>
 
-          <DataTemplate DataType="vm:CountSelectedCommits">
+          <DataTemplate DataType="x:Int32">
             <Grid Background="{DynamicResource Brush.Window}">
               <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Path Width="128" Height="128"
@@ -227,7 +227,7 @@
                            Margin="0,16"
                            FontSize="24" FontWeight="Bold"
                            Foreground="{DynamicResource Brush.FG2}"
-                           Text="{Binding Count, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
+                           Text="{Binding Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
               </StackPanel>
             </Grid>
           </DataTemplate>

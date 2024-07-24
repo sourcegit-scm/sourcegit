@@ -9,11 +9,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class CountSelectedCommits
-    {
-        public int Count { get; set; }
-    }
-
     public class Histories : ObservableObject
     {
         public bool IsLoading
@@ -143,7 +138,7 @@ namespace SourceGit.ViewModels
             else
             {
                 _repo.SearchResultSelectedCommit = null;
-                DetailContext = new CountSelectedCommits() { Count = commits.Count };
+                DetailContext = commits.Count;
             }
         }
 

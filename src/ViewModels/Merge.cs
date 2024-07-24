@@ -1,22 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public class MergeMode
-    {
-        public string Name { get; set; }
-        public string Desc { get; set; }
-        public string Arg { get; set; }
-
-        public MergeMode(string n, string d, string a)
-        {
-            Name = n;
-            Desc = d;
-            Arg = a;
-        }
-    }
-
     public class Merge : Popup
     {
         public string Source
@@ -31,13 +16,7 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public List<MergeMode> Modes
-        {
-            get;
-            private set;
-        }
-
-        public MergeMode SelectedMode
+        public Models.MergeMode SelectedMode
         {
             get;
             set;
@@ -48,13 +27,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Source = source;
             Into = into;
-            Modes = new List<MergeMode>() {
-                new MergeMode("Default", "Fast-forward if possible", ""),
-                new MergeMode("No Fast-forward", "Always create a merge commit", "--no-ff"),
-                new MergeMode("Squash", "Use '--squash'", "--squash"),
-                new MergeMode("Don't commit", "Merge without commit", "--no-commit"),
-            };
-            SelectedMode = Modes[0];
+            SelectedMode = Models.MergeMode.Supported[0];
             View = new Views.Merge() { DataContext = this };
         }
 
