@@ -302,6 +302,11 @@ namespace SourceGit
             });
         }
 
+        public static ViewModels.Launcher GetLauncer()
+        {
+            return Current is App app ? app._launcher : null;
+        }
+
         public static ViewModels.Repository FindOpenedRepository(string repoPath)
         {
             if (Current is App app && app._launcher != null)

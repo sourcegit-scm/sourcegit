@@ -4,7 +4,6 @@ using System.Globalization;
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -326,11 +325,6 @@ namespace SourceGit.Views
     {
         public Blame()
         {
-            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                Owner = desktop.MainWindow;
-            }
-
             InitializeComponent();
         }
 
