@@ -68,7 +68,7 @@ namespace SourceGit.ViewModels
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
         {
             _repo = repo;
-            _current = repo.Branches.Find(x => x.IsCurrent);
+            _current = repo.CurrentBranch;
 
             if (specifiedRemoteBranch != null)
             {

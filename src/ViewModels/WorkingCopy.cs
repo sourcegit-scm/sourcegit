@@ -90,7 +90,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _useAmend, value) && value)
                 {
-                    var currentBranch = _repo.Branches.Find(x => x.IsCurrent);
+                    var currentBranch = _repo.CurrentBranch;
                     if (currentBranch == null)
                     {
                         App.RaiseException(_repo.FullPath, "No commits to amend!!!");

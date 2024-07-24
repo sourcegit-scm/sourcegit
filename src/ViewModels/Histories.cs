@@ -147,7 +147,7 @@ namespace SourceGit.ViewModels
             if (datagrid.SelectedItems.Count != 1)
                 return null;
 
-            var current = _repo.Branches.Find(x => x.IsCurrent);
+            var current = _repo.CurrentBranch;
             if (current == null)
                 return null;
 
