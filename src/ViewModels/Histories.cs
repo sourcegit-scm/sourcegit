@@ -435,6 +435,17 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             menu.Items.Add(copySHA);
+            
+            var copyInfo = new MenuItem();
+            copyInfo.Header = App.Text("CommitCM.CopyInfo");
+            copyInfo.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyInfo.Click += (_, e) =>
+            {
+                App.CopyText($"{commit.SHA[..7]} - {commit.Subject}");
+                e.Handled = true;
+            };
+            menu.Items.Add(copyInfo);
+            
             return menu;
         }
 
