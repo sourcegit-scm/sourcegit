@@ -17,7 +17,7 @@
       </Button>
 
       <Button Classes="icon_button" Width="32" Command="{Binding OpenTerminal}" ToolTip.Tip="{DynamicResource Text.Welcome.OpenTerminal}">
-        <Path Width="12" Height="12" Data="{StaticResource Icons.Terminal}"/>
+        <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
       </Button>      
     </StackPanel>
 
