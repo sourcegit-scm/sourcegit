@@ -14,7 +14,7 @@
         </Button>
         
         <Button Classes="icon_button" Width="32" Command="{Binding OpenInTerminal}" ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">
-          <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
+          <Path Width="12" Height="12" Data="{StaticResource Icons.Terminal}"/>
         </Button>
 
         <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
@@ -27,11 +27,11 @@
                    Fill="{DynamicResource Brush.Border2}"/>
 
         <Button Classes="icon_button" Width="32" Click="OpenStatistics" ToolTip.Tip="{DynamicResource Text.Repository.Statistics}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Statistics}"/>
+          <Path Width="12" Height="12" Data="{StaticResource Icons.Statistics}"/>
         </Button>
 
         <Button Classes="icon_button" Width="32" Command="{Binding OpenConfigure}" ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
-          <Path Width="15" Height="15" Data="{StaticResource Icons.Settings}"/>
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Settings}"/>
         </Button>
       </StackPanel>
 
@@ -86,7 +86,7 @@
       <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
         <Path Width="12" Height="12" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
 
-        <ContentControl Margin="4,0,0,0">
+        <ContentControl Margin="6,0,0,0">
           <ContentControl.Content>
             <Binding Path="CurrentBranch">
               <Binding.TargetNullValue>
@@ -105,7 +105,7 @@
         </ContentControl>
 
         <Button Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
-          <Path Width="12" Height="12" Margin="0,2,0,0" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
+          <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
         </Button>
       </StackPanel>
     </Grid>
