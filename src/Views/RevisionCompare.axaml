@@ -10,9 +10,8 @@
              x:Class="SourceGit.Views.RevisionCompare"
              x:DataType="vm:RevisionCompare"
              Background="{DynamicResource Brush.Window}">
-  <UserControl.Resources>
-    <!-- Template for Models.Commit -->
-    <DataTemplate DataType="m:Commit" x:Key="CommitInfoTemplate">
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="m:Commit">
       <Grid RowDefinitions="Auto,*">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
           <v:Avatar Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
@@ -27,25 +26,23 @@
         <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
       </Grid>
     </DataTemplate>
-
-    <!-- Template for Models.CompareTargetWorktree -->
-    <DataTemplate DataType="m:CompareTargetWorktree" x:Key="WorktreeTemplate">
-      <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-        <TextBlock Text="{DynamicResource Text.Worktree}" Classes="monospace" Margin="4,2" Foreground="#FFDDDDDD"/>
-      </Border>
-    </DataTemplate>
-  </UserControl.Resources>
+  </UserControl.DataTemplates>
   
   <Grid RowDefinitions="50,*" Margin="4">
     <!-- Compare Revision Info -->
     <Grid Grid.Row="0" Margin="48,0,48,4" ColumnDefinitions="*,48,*">
       <!-- Base Revision -->
       <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
-        <ContentControl Content="{Binding StartPoint}">
-          <ContentControl.DataTemplates>
-            <StaticResource ResourceKey="CommitInfoTemplate"/>
-            <StaticResource ResourceKey="WorktreeTemplate"/>
-          </ContentControl.DataTemplates>
+        <ContentControl>
+          <ContentControl.Content>
+            <Binding Path="StartPoint">
+              <Binding.TargetNullValue>
+                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
+                  <TextBlock Text="{DynamicResource Text.Worktree}" Classes="monospace" Margin="4,2" Foreground="#FFDDDDDD"/>
+                </Border>
+              </Binding.TargetNullValue>
+            </Binding>
+          </ContentControl.Content>
         </ContentControl>
       </Border>
 
@@ -56,11 +53,16 @@
 
       <!-- Right Revision -->
       <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
-        <ContentControl Content="{Binding EndPoint}">
-          <ContentControl.DataTemplates>
-            <StaticResource ResourceKey="CommitInfoTemplate"/>
-            <StaticResource ResourceKey="WorktreeTemplate"/>
-          </ContentControl.DataTemplates>
+        <ContentControl>
+          <ContentControl.Content>
+            <Binding Path="EndPoint">
+              <Binding.TargetNullValue>
+                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
+                  <TextBlock Text="{DynamicResource Text.Worktree}" Classes="monospace" Margin="4,2" Foreground="#FFDDDDDD"/>
+                </Border>
+              </Binding.TargetNullValue>
+            </Binding>
+          </ContentControl.Content>
         </ContentControl>
       </Border>
     </Grid>

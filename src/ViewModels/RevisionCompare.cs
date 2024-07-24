@@ -71,8 +71,8 @@ namespace SourceGit.ViewModels
         public RevisionCompare(string repo, Models.Commit startPoint, Models.Commit endPoint)
         {
             _repo = repo;
-            _startPoint = (object)startPoint ?? new Models.CompareTargetWorktree();
-            _endPoint = (object)endPoint ?? new Models.CompareTargetWorktree();
+            _startPoint = startPoint;
+            _endPoint = endPoint;
 
             Task.Run(Refresh);
         }
