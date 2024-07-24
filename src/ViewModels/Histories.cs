@@ -430,7 +430,7 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             menu.Items.Add(copySHA);
-            
+
             var copyInfo = new MenuItem();
             copyInfo.Header = App.Text("CommitCM.CopyInfo");
             copyInfo.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -440,7 +440,7 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             menu.Items.Add(copyInfo);
-            
+
             return menu;
         }
 

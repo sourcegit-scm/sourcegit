@@ -4,7 +4,7 @@ namespace SourceGit.Models
 {
     public class ResetMode
     {
-        public static readonly ResetMode[] Supported = 
+        public static readonly ResetMode[] Supported =
         [
             new ResetMode("Soft", "Keep all changes. Stage differences", "--soft", Brushes.Green),
             new ResetMode("Mixed", "Keep all changes. Unstage differences", "--mixed", Brushes.Orange),
