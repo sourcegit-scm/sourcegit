@@ -96,8 +96,8 @@
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copy SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copy Info</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copy SHA</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactive Rebase ${0}$ to Here</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ to Here</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ to Here</x:String>

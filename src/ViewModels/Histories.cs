@@ -441,7 +441,7 @@ namespace SourceGit.ViewModels
             copyInfo.Icon = App.CreateMenuIcon("Icons.Copy");
             copyInfo.Click += (_, e) =>
             {
-                App.CopyText($"{commit.SHA[..7]} - {commit.Subject}");
+                App.CopyText($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
                 e.Handled = true;
             };
             menu.Items.Add(copyInfo);
