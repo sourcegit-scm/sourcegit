@@ -19,7 +19,7 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess)
                 return status;
 
-            var lines = rs.StdOut.Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
+            var lines = rs.StdOut.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
                 if (line[0] == '>')
