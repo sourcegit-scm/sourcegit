@@ -90,7 +90,7 @@
           <ContentControl.Content>
             <Binding Path="CurrentBranch">
               <Binding.TargetNullValue>
-                <TextBlock Classes="monospace" Text="(No commits yet)"/>
+                <TextBlock Classes="monospace" Text="--"/>
               </Binding.TargetNullValue>
             </Binding>
           </ContentControl.Content>
