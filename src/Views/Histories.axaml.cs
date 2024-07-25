@@ -371,6 +371,9 @@ namespace SourceGit.Views
         {
             NavigationIdProperty.Changed.AddClassHandler<Histories>((h, _) =>
             {
+                if (h.DataContext == null)
+                    return;
+
                 // Force scroll selected item (current head) into view. see issue #58
                 var datagrid = h.CommitDataGrid;
                 if (datagrid != null && datagrid.SelectedItems.Count == 1)

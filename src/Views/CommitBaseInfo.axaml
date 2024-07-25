@@ -78,30 +78,18 @@
           </ItemsControl>
 
           <!-- REFS -->
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding Decorators.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
-          <ItemsControl Grid.Row="2" Grid.Column="1" Height="24" Margin="12,0,0,0" ItemsSource="{Binding Decorators}" IsVisible="{Binding Decorators.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <ItemsControl.ItemTemplate>
-              <DataTemplate DataType="{x:Type m:Decorator}">
-                <Border Height="16" Margin="0,0,6,0" CornerRadius="2" ClipToBounds="True">
-                  <StackPanel Orientation="Horizontal">
-                    <Border Background="{DynamicResource Brush.DecoratorIconBG}" Width="16">
-                      <Path Width="8" Height="8" Data="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToIcon}}" Fill="{DynamicResource Brush.DecoratorIcon}"/>
-                    </Border>
-                    <Border Background="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToBackground}}">
-                      <TextBlock Classes="monospace" Text="{Binding Name}" FontSize="10" Margin="4,0" Foreground="{DynamicResource Brush.DecoratorFG}"/>
-                    </Border>
-                  </StackPanel>
-                </Border>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
+          <Border Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" Height="24" IsVisible="{Binding HasDecorators}">
+            <v:CommitRefsPresenter IconBackground="{DynamicResource Brush.DecoratorIconBG}"
+                                   IconForeground="{DynamicResource Brush.DecoratorIcon}"
+                                   BranchNameBackground="{DynamicResource Brush.DecoratorBranch}"
+                                   TagNameBackground="{DynamicResource Brush.DecoratorTag}"
+                                   LabelForeground="{DynamicResource Brush.DecoratorFG}"
+                                   FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                                   FontSize="10"
+                                   VerticalAlignment="Center"/>
+          </Border>
+          
           <!-- Messages -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
           <SelectableTextBlock Grid.Row="3" Grid.Column="1" Margin="12,5,8,0" Text="{Binding #ThisControl.Message}" FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" TextWrapping="Wrap"/>
