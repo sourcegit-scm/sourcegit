@@ -427,13 +427,6 @@ namespace SourceGit.ViewModels
             PopupHost.ShowAndStartPopup(new Cleanup(this));
         }
 
-        public void OpenConfigure()
-        {
-            if (!PopupHost.CanCreatePopup())
-                return;
-            PopupHost.ShowPopup(new RepositoryConfigure(this));
-        }
-
         public void ClearHistoriesFilter()
         {
             _settings.Filters.Clear();

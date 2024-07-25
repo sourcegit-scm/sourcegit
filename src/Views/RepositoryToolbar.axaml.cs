@@ -20,6 +20,26 @@ namespace SourceGit.Views
             }
         }
 
+        private async void OpenStatistics(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo && TopLevel.GetTopLevel(this) is Window owner)
+            {
+                var dialog = new Statistics() { DataContext = new ViewModels.Statistics(repo.FullPath) };
+                await dialog.ShowDialog(owner);
+                e.Handled = true;
+            }
+        }
+
+        private async void OpenConfigure(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo && TopLevel.GetTopLevel(this) is Window owner)
+            {
+                var dialog = new RepositoryConfigure() { DataContext = new ViewModels.RepositoryConfigure(repo) };
+                await dialog.ShowDialog(owner);
+                e.Handled = true;
+            }
+        }
+
         private void OpenGitFlowMenu(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
@@ -40,16 +60,6 @@ namespace SourceGit.Views
             }
 
             e.Handled = true;
-        }
-
-        private async void OpenStatistics(object _, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo && TopLevel.GetTopLevel(this) is Window owner)
-            {
-                var dialog = new Statistics() { DataContext = new ViewModels.Statistics(repo.FullPath) };
-                await dialog.ShowDialog(owner);
-                e.Handled = true;
-            }
         }
     }
 }

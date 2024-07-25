@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class RepositoryConfigure : Popup
+    public class RepositoryConfigure : ObservableObject
     {
         public string UserName
         {
@@ -58,11 +58,9 @@ namespace SourceGit.ViewModels
                 GPGUserSigningKey = signingKey;
             if (_cached.TryGetValue("http.proxy", out var proxy))
                 HttpProxy = proxy;
-
-            View = new Views.RepositoryConfigure() { DataContext = this };
         }
 
-        public override Task<bool> Sure()
+        public void Save()
         {
             SetIfChanged("user.name", UserName);
             SetIfChanged("user.email", UserEmail);
@@ -70,7 +68,6 @@ namespace SourceGit.ViewModels
             SetIfChanged("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false");
             SetIfChanged("user.signingkey", GPGUserSigningKey);
             SetIfChanged("http.proxy", HttpProxy);
-            return null;
         }
 
         private void SetIfChanged(string key, string value)
