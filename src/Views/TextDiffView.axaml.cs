@@ -391,7 +391,7 @@ namespace SourceGit.Views
             base.Render(context);
 
             var chunk = SelectedChunk;
-            if (chunk == null || (!chunk.Combined && chunk.IsOldSide != IsOld))
+            if (chunk == null || (!chunk.Combined && chunk.IsOldSide != IsOld) || chunk.Height == 0)
                 return;
 
             var view = TextArea.TextView;
@@ -639,7 +639,11 @@ namespace SourceGit.Views
             base.OnApplyTemplate(e);
 
             var scroller = (ScrollViewer)e.NameScope.Find("PART_ScrollViewer");
-            scroller?.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.TwoWay));
+            if (scroller != null)
+            {
+                scroller.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.TwoWay));
+                scroller.GotFocus += (_, _) => TrySetChunk(null);
+            }
         }
 
         public override void UpdateSelectedChunk(double y)
@@ -672,6 +676,35 @@ namespace SourceGit.Views
                 if (!hasChanges)
                 {
                     TrySetChunk(null);
+                    return;
+                }
+
+                var firstLineIdx = view.VisualLines[0].FirstDocumentLine.LineNumber - 1;
+                var lastLineIdx = view.VisualLines[^1].FirstDocumentLine.LineNumber - 1;
+                if (endIdx < firstLineIdx)
+                {
+                    TrySetChunk(new TextDiffViewChunk()
+                    {
+                        Y = 0,
+                        Height = 0,
+                        StartIdx = startIdx,
+                        EndIdx = endIdx,
+                        Combined = true,
+                        IsOldSide = false,
+                    });
+                    return;
+                }
+                else if (startIdx > lastLineIdx)
+                {
+                    TrySetChunk(new TextDiffViewChunk()
+                    {
+                        Y = 0,
+                        Height = 0,
+                        StartIdx = startIdx,
+                        EndIdx = endIdx,
+                        Combined = true,
+                        IsOldSide = false,
+                    });
                     return;
                 }
 
@@ -840,6 +873,39 @@ namespace SourceGit.Views
                     return;
                 }
 
+                var firstLineIdx = view.VisualLines[0].FirstDocumentLine.LineNumber - 1;
+                var lastLineIdx = view.VisualLines[^1].FirstDocumentLine.LineNumber - 1;
+                if (endIdx < firstLineIdx)
+                {
+                    diff.ConvertsToCombinedRange(parent.DataContext as Models.TextDiff, ref startIdx, ref endIdx, IsOld);
+
+                    TrySetChunk(new TextDiffViewChunk()
+                    {
+                        Y = 0,
+                        Height = 0,
+                        StartIdx = startIdx,
+                        EndIdx = endIdx,
+                        Combined = false,
+                        IsOldSide = IsOld,
+                    });
+                    return;
+                }
+                else if (startIdx > lastLineIdx)
+                {
+                    diff.ConvertsToCombinedRange(parent.DataContext as Models.TextDiff, ref startIdx, ref endIdx, IsOld);
+
+                    TrySetChunk(new TextDiffViewChunk()
+                    {
+                        Y = 0,
+                        Height = 0,
+                        StartIdx = startIdx,
+                        EndIdx = endIdx,
+                        Combined = false,
+                        IsOldSide = IsOld,
+                    });
+                    return;
+                }
+
                 var startLine = view.GetVisualLine(startIdx + 1);
                 var endLine = view.GetVisualLine(endIdx + 1);
 
@@ -925,6 +991,7 @@ namespace SourceGit.Views
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
             if (_scrollViewer != null)
             {
+                _scrollViewer.GotFocus += OnTextViewScrollGotFocus;
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
                 _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.OneWay));
             }
@@ -939,6 +1006,7 @@ namespace SourceGit.Views
             if (_scrollViewer != null)
             {
                 _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
+                _scrollViewer.GotFocus -= OnTextViewScrollGotFocus;
                 _scrollViewer = null;
             }
 
@@ -975,6 +1043,11 @@ namespace SourceGit.Views
             {
                 Text = string.Empty;
             }
+        }
+
+        private void OnTextViewScrollGotFocus(object sender, GotFocusEventArgs e)
+        {
+            TrySetChunk(null);
         }
 
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -1048,7 +1121,7 @@ namespace SourceGit.Views
             SelectedChunkProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
             {
                 var chunk = v.SelectedChunk;
-                if (chunk == null)
+                if (chunk == null || chunk.Height == 0)
                 {
                     v.Popup.IsVisible = false;
                     return;
