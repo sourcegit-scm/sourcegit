@@ -289,6 +289,7 @@
   <x:String x:Key="Text.Histories.Search" xml:space="preserve">查詢提交指紋、資訊、作者。回車鍵開始，ESC鍵取消</x:String>
   <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">清空</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已選中 {0} 項提交</x:String>
+  <x:String x:Key="Text.Histories.UncommittedChanges.Subject" xml:space="preserve">★未提交的本地更改★</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">快捷鍵參考</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">全域性快捷鍵</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">取消彈出面板</x:String>
@@ -383,6 +384,7 @@
   <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">預設克隆路徑</x:String>
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">郵箱</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">預設GIT使用者郵箱</x:String>
+  <x:String x:Key="Text.Preference.Git.ShowUncommittedChangesInHistory" xml:space="preserve">显示历史记录中未提交的更改</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">安裝路徑</x:String>
   <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">終端Shell</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">使用者名稱</x:String>

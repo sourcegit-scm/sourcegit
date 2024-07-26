@@ -263,8 +263,12 @@ namespace SourceGit.Views
                     continue;
                 if (dot.Center.Y > bottom)
                     break;
-
-                context.DrawEllipse(dotFill, Models.CommitGraph.Pens[dot.Color], dot.Center, 3, 3);
+                var pen = Models.CommitGraph.Pens[dot.Color];
+                if (dot.IsWorkCopy)
+                {
+                    pen = new Pen(pen.Brush, pen.Thickness, s_UncommittedCahngesLineDashStyle);
+                }
+                context.DrawEllipse(dotFill, pen, dot.Center, 5, 5);
             }
         }
 
@@ -282,7 +286,6 @@ namespace SourceGit.Views
 
                 var geo = new StreamGeometry();
                 var pen = Models.CommitGraph.Pens[line.Color];
-
                 using (var ctx = geo.Open())
                 {
                     var started = false;
@@ -351,10 +354,12 @@ namespace SourceGit.Views
                     ctx.BeginFigure(link.Start, false);
                     ctx.QuadraticBezierTo(link.Control, link.End);
                 }
-
-                context.DrawGeometry(null, Models.CommitGraph.Pens[link.Color], geo);
+                var pen = Models.CommitGraph.Pens[link.Color];
+                context.DrawGeometry(null, pen, geo);
             }
         }
+
+        private readonly static IDashStyle s_UncommittedCahngesLineDashStyle = new DashStyle() { Dashes = [1, 1], Offset = 1 };
     }
 
     public partial class Histories : UserControl
@@ -403,7 +408,7 @@ namespace SourceGit.Views
 
         private void OnCommitDataGridContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is DataGrid datagrid)
+            if (DataContext is ViewModels.Histories histories && sender is DataGrid datagrid && datagrid.SelectedItem is Models.Commit { IsWorkCopy: false})
             {
                 var menu = histories.MakeContextMenu(datagrid);
                 datagrid.OpenContextMenu(menu);

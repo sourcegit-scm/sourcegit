@@ -116,7 +116,14 @@ namespace SourceGit.ViewModels
                 AutoSelectedCommit = commit;
                 NavigationId = _navigationId + 1;
 
-                if (_detailContext is CommitDetail detail)
+
+                if (commit.IsWorkCopy)
+                {
+                    var wc = _repo.WorkingCopy ??= new WorkingCopy(_repo);
+                    DetailContext = wc;
+                    wc.RefreshWorkingCopyChangesAsync();
+                }
+                else if (_detailContext is CommitDetail detail)
                 {
                     detail.Commit = commit;
                 }

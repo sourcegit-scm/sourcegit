@@ -118,7 +118,7 @@
     <!-- Right -->
     <Grid Grid.Column="2" Margin="0,4,4,4">
       <Grid.RowDefinitions>
-        <RowDefinition Height="*" MinHeight="400"/>
+        <RowDefinition Height="*"/>
         <RowDefinition Height="4"/>
         <RowDefinition Height="128" MinHeight="100"/>
         <RowDefinition Height="36"/>
@@ -153,7 +153,7 @@
                     <TextBlock Margin="0,16,0,8" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts.Resolved}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource Text.WorkingCopy.CanStageTip}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
                   </StackPanel>
-                </Grid>                
+                </Grid>
               </Border>
             </DataTemplate>
 

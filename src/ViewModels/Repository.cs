@@ -716,6 +716,7 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
             var limits = $"-{Preference.Instance.MaxHistoryCommits} ";
+            var showUncommitedChangedInHistory = Preference.Instance.ShowUncommittedChangesInHistory;
             var validFilters = new List<string>();
             foreach (var filter in _settings.Filters)
             {
@@ -762,6 +763,36 @@ namespace SourceGit.ViewModels
             }
 
             var commits = new Commands.QueryCommits(_fullpath, limits).Result();
+            if (showUncommitedChangedInHistory)
+            {
+                var changes = new Commands.QueryLocalChanges(_fullpath, _includeUntracked).Result();
+                if(changes.Count > 0)
+                {
+                    var config = new Commands.Config(_fullpath).ListAll();
+                    var currentUser = new Models.User();
+                    if (config.TryGetValue("user.name", out var name))
+                        currentUser.Name = name;
+                    if (config.TryGetValue("user.email", out var email))
+                        currentUser.Email = email;
+                    var date = (ulong)DateTime.Now.ToUniversalTime().Subtract(DateTime.UnixEpoch).TotalSeconds;
+                    commits.Insert(0,new Models.Commit()
+                    {
+                        Subject = App.Text("Histories.UncommittedChanges.Subject"),
+                        CanPullFromUpstream = false,
+                        Author = currentUser,
+                        Committer = currentUser,
+                        Parents = [currentBranch.Head],
+                        AuthorTime = date,
+                        CommitterTime = date,
+                        Decorators = [
+                            new Models.Decorator()
+                            {
+                                Type = Models.DecoratorType.CurrentBranchHead,
+                                Name = currentBranch.FriendlyName,
+                            }]
+                    });
+                }
+            }
             var graph = Models.CommitGraph.Parse(commits, canPushCommits, canPullCommits);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -781,41 +812,15 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() => Submodules = submodules);
         }
 
-        public void RefreshWorkingCopyChanges()
+        public async void RefreshWorkingCopyChanges()
         {
-            var changes = new Commands.QueryLocalChanges(_fullpath, _includeUntracked).Result();
             if (_workingCopy == null)
                 return;
 
-            var hasUnsolvedConflict = _workingCopy.SetData(changes);
-            var inProgress = null as InProgressContext;
+            var result = await _workingCopy.RefreshWorkingCopyChangesAsync();
 
-            var rebaseMergeFolder = Path.Combine(_gitDir, "rebase-merge");
-            var rebaseApplyFolder = Path.Combine(_gitDir, "rebase-apply");
-            if (File.Exists(Path.Combine(_gitDir, "CHERRY_PICK_HEAD")))
-            {
-                inProgress = new CherryPickInProgress(_fullpath);
-            }
-            else if (File.Exists(Path.Combine(_gitDir, "REBASE_HEAD")) && Directory.Exists(rebaseMergeFolder))
-            {
-                inProgress = new RebaseInProgress(this);
-            }
-            else if (File.Exists(Path.Combine(_gitDir, "REVERT_HEAD")))
-            {
-                inProgress = new RevertInProgress(_fullpath);
-            }
-            else if (File.Exists(Path.Combine(_gitDir, "MERGE_HEAD")))
-            {
-                inProgress = new MergeInProgress(_fullpath);
-            }
-            else
-            {
-                if (Directory.Exists(rebaseMergeFolder))
-                    Directory.Delete(rebaseMergeFolder, true);
-
-                if (Directory.Exists(rebaseApplyFolder))
-                    Directory.Delete(rebaseApplyFolder, true);
-            }
+            var hasUnsolvedConflict = result.HasUnsolvedConflict;
+            var inProgress = result.InProgressContext;
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -1955,6 +1960,12 @@ namespace SourceGit.ViewModels
                     Dispatcher.UIThread.Invoke(() => _revisionFiles.AddRange(files));
                 });
             }
+        }
+
+        public WorkingCopy WorkingCopy
+        {
+            get => _workingCopy;
+            set => _workingCopy = value;
         }
 
         private string _fullpath = string.Empty;

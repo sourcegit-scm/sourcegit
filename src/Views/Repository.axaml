@@ -87,7 +87,7 @@
                 </Grid>
               </ListBoxItem>
 
-              <ListBoxItem>
+              <ListBoxItem IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=!ShowUncommittedChangesInHistory , Mode=OneWay}">
                 <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
                   <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Send}"/>
                   <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.WorkingCopy}"/>

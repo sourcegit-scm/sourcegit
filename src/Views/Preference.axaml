@@ -244,7 +244,7 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Git}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,Auto,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,Auto,32,32,32,32,32,Auto,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Git.Path}"
                        HorizontalAlignment="Right"
@@ -395,6 +395,10 @@
                          Margin="5,0,0,0"
                          Text="{DynamicResource Text.Preference.Git.AutoFetchIntervalSuffix}" />
             </Grid>
+            <CheckBox Grid.Row="9" Grid.Column="1"
+                      Content="{DynamicResource Text.Preference.Git.ShowUncommittedChangesInHistory}"
+                      IsChecked="{Binding ShowUncommittedChangesInHistory, Mode=TwoWay}"
+                      />
           </Grid>
         </TabItem>
 

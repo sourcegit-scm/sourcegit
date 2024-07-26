@@ -189,6 +189,11 @@
         </ContentControl.Content>
         
         <ContentControl.DataTemplates>
+
+          <DataTemplate DataType="vm:WorkingCopy">
+            <v:WorkingCopy/>
+          </DataTemplate>
+          
           <DataTemplate DataType="vm:CommitDetail">
             <v:CommitDetail/>
           </DataTemplate>
