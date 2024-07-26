@@ -391,19 +391,13 @@ namespace SourceGit.Views
             base.Render(context);
 
             var chunk = SelectedChunk;
-            if (chunk == null || (!chunk.Combined && chunk.IsOldSide != IsOld) || chunk.Height == 0)
-                return;
-
-            var view = TextArea.TextView;
-            if (view == null || !view.VisualLinesValid)
+            if (chunk == null || (!chunk.Combined && chunk.IsOldSide != IsOld))
                 return;
 
             var color = (Color)this.FindResource("SystemAccentColor");
             var brush = new SolidColorBrush(color, 0.1);
             var pen = new Pen(color.ToUInt32());
-
-            var x = ((Point)view.TranslatePoint(new Point(0, 0), this)).X;
-            var rect = new Rect(x - 4, chunk.Y, view.Bounds.Width + 7, chunk.Height);
+            var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
 
             context.DrawRectangle(brush, null, rect);
             context.DrawLine(pen, rect.TopLeft, rect.TopRight);
@@ -683,28 +677,12 @@ namespace SourceGit.Views
                 var lastLineIdx = view.VisualLines[^1].FirstDocumentLine.LineNumber - 1;
                 if (endIdx < firstLineIdx)
                 {
-                    TrySetChunk(new TextDiffViewChunk()
-                    {
-                        Y = 0,
-                        Height = 0,
-                        StartIdx = startIdx,
-                        EndIdx = endIdx,
-                        Combined = true,
-                        IsOldSide = false,
-                    });
+                    TrySetChunk(null);
                     return;
                 }
                 else if (startIdx > lastLineIdx)
                 {
-                    TrySetChunk(new TextDiffViewChunk()
-                    {
-                        Y = 0,
-                        Height = 0,
-                        StartIdx = startIdx,
-                        EndIdx = endIdx,
-                        Combined = true,
-                        IsOldSide = false,
-                    });
+                    TrySetChunk(null);
                     return;
                 }
 
@@ -877,32 +855,12 @@ namespace SourceGit.Views
                 var lastLineIdx = view.VisualLines[^1].FirstDocumentLine.LineNumber - 1;
                 if (endIdx < firstLineIdx)
                 {
-                    diff.ConvertsToCombinedRange(parent.DataContext as Models.TextDiff, ref startIdx, ref endIdx, IsOld);
-
-                    TrySetChunk(new TextDiffViewChunk()
-                    {
-                        Y = 0,
-                        Height = 0,
-                        StartIdx = startIdx,
-                        EndIdx = endIdx,
-                        Combined = false,
-                        IsOldSide = IsOld,
-                    });
+                    TrySetChunk(null);
                     return;
                 }
                 else if (startIdx > lastLineIdx)
                 {
-                    diff.ConvertsToCombinedRange(parent.DataContext as Models.TextDiff, ref startIdx, ref endIdx, IsOld);
-
-                    TrySetChunk(new TextDiffViewChunk()
-                    {
-                        Y = 0,
-                        Height = 0,
-                        StartIdx = startIdx,
-                        EndIdx = endIdx,
-                        Combined = false,
-                        IsOldSide = IsOld,
-                    });
+                    TrySetChunk(null);
                     return;
                 }
 
@@ -1121,7 +1079,7 @@ namespace SourceGit.Views
             SelectedChunkProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
             {
                 var chunk = v.SelectedChunk;
-                if (chunk == null || chunk.Height == 0)
+                if (chunk == null)
                 {
                     v.Popup.IsVisible = false;
                     return;
