@@ -66,7 +66,7 @@ namespace SourceGit.ViewModels
                     {
                         Dispatcher.UIThread.Invoke(() => Remote = text);
                     }
-                } 
+                }
                 catch
                 {
                     // ignore

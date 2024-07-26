@@ -11,15 +11,22 @@ namespace SourceGit.Views
         public Launcher()
         {
             var layout = ViewModels.Preference.Instance.Layout;
-            WindowState = layout.LauncherWindowState;
-
-            if (WindowState != WindowState.Maximized)
+            if (layout.LauncherWindowState != WindowState.Maximized)
             {
                 Width = layout.LauncherWidth;
                 Height = layout.LauncherHeight;
             }
 
             InitializeComponent();
+        }
+
+        protected override void OnOpened(EventArgs e)
+        {
+            base.OnOpened(e);
+
+            var layout = ViewModels.Preference.Instance.Layout;
+            if (layout.LauncherWindowState == WindowState.Maximized)
+                WindowState = WindowState.Maximized;
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

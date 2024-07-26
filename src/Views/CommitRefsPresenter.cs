@@ -83,14 +83,14 @@ namespace SourceGit.Views
         static CommitRefsPresenter()
         {
             AffectsMeasure<CommitRefsPresenter>(
-                FontFamilyProperty, 
+                FontFamilyProperty,
                 FontSizeProperty,
                 LabelForegroundProperty);
 
             AffectsRender<CommitRefsPresenter>(
-                IconBackgroundProperty, 
-                IconForegroundProperty, 
-                BranchNameBackgroundProperty, 
+                IconBackgroundProperty,
+                IconForegroundProperty,
+                BranchNameBackgroundProperty,
                 TagNameBackgroundProperty);
         }
 
@@ -102,7 +102,7 @@ namespace SourceGit.Views
             var iconFG = IconForeground;
             var iconBG = IconBackground;
             var branchBG = BranchNameBackground;
-            var tagBG = TagNameBackground;            
+            var tagBG = TagNameBackground;
             var x = 0.0;
 
             foreach (var item in _items)
@@ -141,7 +141,7 @@ namespace SourceGit.Views
 
                 foreach (var decorator in commit.Decorators)
                 {
-                    var isHead = decorator.Type == Models.DecoratorType.CurrentBranchHead || 
+                    var isHead = decorator.Type == Models.DecoratorType.CurrentBranchHead ||
                         decorator.Type == Models.DecoratorType.CurrentCommitHead;
 
                     var label = new FormattedText(
