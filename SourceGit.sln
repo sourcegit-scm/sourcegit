@@ -75,6 +75,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SPECS", "SPECS", "{7802CD7A
 		build\resources\rpm\SPECS\build.spec = build\resources\rpm\SPECS\build.spec
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "appimage", "appimage", "{5D125DD9-B48A-491F-B2FB-D7830D74C4DC}"
+	ProjectSection(SolutionItems) = preProject
+		build\resources\appimage\publish-appimage = build\resources\appimage\publish-appimage
+		build\resources\appimage\publish-appimage.conf = build\resources\appimage\publish-appimage.conf
+		build\resources\appimage\runtime-x86_64 = build\resources\appimage\runtime-x86_64
+		build\resources\appimage\sourcegit.appdata.xml = build\resources\appimage\sourcegit.appdata.xml
+		build\resources\appimage\sourcegit.png = build\resources\appimage\sourcegit.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +113,7 @@ Global
 		{F101849D-BDB7-40D4-A516-751150C3CCFC} = {9C2F0CDA-B56E-44A5-94B6-F3EA7AC20CDC}
 		{9BA0B044-0CC9-46F8-B551-204F149BF45D} = {FD384607-ED99-47B7-AF31-FB245841BC92}
 		{7802CD7A-591B-4EDD-96F8-9BF3F61692E4} = {9BA0B044-0CC9-46F8-B551-204F149BF45D}
+		{5D125DD9-B48A-491F-B2FB-D7830D74C4DC} = {FD384607-ED99-47B7-AF31-FB245841BC92}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7FF1B9C6-B5BF-4A50-949F-4B407A0E31C9}
