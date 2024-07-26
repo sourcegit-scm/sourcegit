@@ -10,8 +10,42 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.UpdateSubmodules}"/>
-    <TextBlock Text="{DynamicResource Text.UpdateSubmodules.Tip}"
-               Margin="0,16,0,0"
-               HorizontalAlignment="Center"/>
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32" ColumnDefinitions="120,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.UpdateSubmodules.Target}"/>
+      <ComboBox Grid.Row="0" Grid.Column="1"
+                Height="28" Padding="8,0"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Submodules}"
+                SelectedItem="{Binding SelectedSubmodule, Mode=TwoWay}"
+                IsEnabled="{Binding !UpdateAll}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate x:DataType="x:String">
+            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+              <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Submodule}"/>
+              <TextBlock Text="{Binding}"/>
+            </StackPanel>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+
+      <CheckBox Grid.Row="1" Grid.Column="1"
+                Content="{DynamicResource Text.UpdateSubmodules.All}"
+                IsChecked="{Binding UpdateAll, Mode=TwoWay}"/>
+
+      <CheckBox Grid.Row="2" Grid.Column="1"
+                Content="{DynamicResource Text.UpdateSubmodules.Init}"
+                IsChecked="{Binding EnableInit, Mode=TwoWay}"/>
+
+      <CheckBox Grid.Row="3" Grid.Column="1"
+                Content="{DynamicResource Text.UpdateSubmodules.Recursive}"
+                IsChecked="{Binding EnableRecursive, Mode=TwoWay}"/>
+
+      <CheckBox Grid.Row="4" Grid.Column="1"
+                Content="{DynamicResource Text.UpdateSubmodules.UseRemote}"
+                IsChecked="{Binding EnableRemote, Mode=TwoWay}"/>
+    </Grid>
   </StackPanel>
 </UserControl>

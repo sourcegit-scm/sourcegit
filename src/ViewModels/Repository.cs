@@ -863,7 +863,7 @@ namespace SourceGit.ViewModels
         public void UpdateSubmodules()
         {
             if (PopupHost.CanCreatePopup())
-                PopupHost.ShowAndStartPopup(new UpdateSubmodules(this));
+                PopupHost.ShowPopup(new UpdateSubmodules(this));
         }
 
         public void OpenSubmodule(string submodule)

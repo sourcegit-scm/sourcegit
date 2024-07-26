@@ -545,7 +545,11 @@
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Tip" xml:space="preserve">Run `submodule update` command for this repository.</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Recursively</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodule:</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Use --remote option</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Warning</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Create Group</x:String>
   <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">Create Sub-Group</x:String>
