@@ -144,9 +144,13 @@ namespace SourceGit.Views
         private void OnLeftSidebarDataGridPropertyChanged(object _, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property == DataGrid.ItemsSourceProperty || e.Property == DataGrid.IsVisibleProperty)
-            {
                 UpdateLeftSidebarLayout();
-            }
+        }
+
+        private void OnLeftSidebarSizeChanged(object _, SizeChangedEventArgs e)
+        {
+            if (e.HeightChanged)
+                UpdateLeftSidebarLayout();
         }
 
         private void UpdateLeftSidebarLayout()
