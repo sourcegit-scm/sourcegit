@@ -3,10 +3,6 @@ using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public class DiscardModeAll { }
-    public class DiscardModeSingle { public string File { get; set; } }
-    public class DiscardModeMulti { public int Count { get; set; } }
-
     public class Discard : Popup
     {
         public object Mode
@@ -19,7 +15,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
 
-            Mode = new DiscardModeAll();
+            Mode = null;
             View = new Views.Discard { DataContext = this };
         }
 
@@ -30,17 +26,11 @@ namespace SourceGit.ViewModels
             _isUnstaged = isUnstaged;
 
             if (_changes == null)
-            {
-                Mode = new DiscardModeAll();
-            }
+                Mode = null;
             else if (_changes.Count == 1)
-            {
-                Mode = new DiscardModeSingle() { File = _changes[0].Path };
-            }
+                Mode = _changes[0].Path;
             else
-            {
-                Mode = new DiscardModeMulti() { Count = _changes.Count };
-            }
+                Mode = _changes.Count;
 
             View = new Views.Discard() { DataContext = this };
         }

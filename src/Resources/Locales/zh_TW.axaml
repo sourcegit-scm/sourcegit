@@ -197,7 +197,7 @@
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">使用外部比對工具檢視</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">放棄更改確認</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本地址未提交的修改。</x:String>
-  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">需要放棄的變更 ：</x:String>
+  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">變更 ：</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">總計{0}項選中更改</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">本操作不支援回退，請確認後繼續！！！</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">書籤 ：</x:String>

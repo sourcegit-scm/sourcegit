@@ -12,28 +12,32 @@
                Classes="bold"
                Text="{DynamicResource Text.Discard}"/>
 
-    <Grid Margin="0,16,0,8" RowDefinitions="32,32" ColumnDefinitions="150,*">
+    <Grid Margin="0,16,0,8" RowDefinitions="32,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,8,0" HorizontalAlignment="Right" Text="{DynamicResource Text.Discard.Changes}"/>
-      <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding Mode}">
+      <ContentControl Grid.Row="0" Grid.Column="1">
+        <ContentControl.Content>
+          <Binding Path="Mode">
+            <Binding.TargetNullValue>
+              <StackPanel Orientation="Horizontal">
+                <Path Width="12" Height="12" Margin="0,2,0,0" Data="{StaticResource Icons.Folder.Open}"/>
+                <TextBlock Text="{DynamicResource Text.Discard.All}" Margin="4,0,0,0"/>
+              </StackPanel>
+            </Binding.TargetNullValue>
+          </Binding>
+        </ContentControl.Content>
+
         <ContentControl.DataTemplates>
-          <DataTemplate DataType="vm:DiscardModeAll">
+          <DataTemplate DataType="x:String">
             <StackPanel Orientation="Horizontal">
-              <Path Width="12" Height="12" Margin="0,2,0,0" Data="{StaticResource Icons.Folder.Open}"/>
-              <TextBlock Text="{DynamicResource Text.Discard.All}" Margin="4,0,0,0"/>
+              <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
+              <TextBlock Text="{Binding}" Margin="4,0,0,0"/>
             </StackPanel>
           </DataTemplate>
 
-          <DataTemplate DataType="vm:DiscardModeSingle">
+          <DataTemplate DataType="x:Int32">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
-              <TextBlock Text="{Binding File}" Margin="4,0,0,0"/>
-            </StackPanel>
-          </DataTemplate>
-
-          <DataTemplate DataType="vm:DiscardModeMulti">
-            <StackPanel Orientation="Horizontal">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
-              <TextBlock Text="{Binding Count, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Discard.Total'}" Margin="4,0,0,0"/>
+              <TextBlock Text="{Binding, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Discard.Total'}" Margin="4,0,0,0"/>
             </StackPanel>
           </DataTemplate>
         </ContentControl.DataTemplates>
