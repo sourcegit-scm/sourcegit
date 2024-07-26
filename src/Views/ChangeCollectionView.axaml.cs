@@ -174,8 +174,9 @@ namespace SourceGit.Views
                 return;
 
             _disableSelectionChangingEvent = true;
+
             var selected = new List<Models.Change>();
-            if (sender is ListBox { SelectedItems: not null } list)
+            if (sender is ListBox list)
             {
                 foreach (var item in list.SelectedItems)
                 {
@@ -186,7 +187,27 @@ namespace SourceGit.Views
                 }
             }
 
-            TrySetSelected(selected);
+            var old = SelectedChanges ?? [];
+            if (old.Count != selected.Count)
+            {
+                SetCurrentValue(SelectedChangesProperty, selected);
+            }
+            else
+            {
+                bool allEquals = true;
+                foreach (var c in old)
+                {
+                    if (!selected.Contains(c))
+                    {
+                        allEquals = false;
+                        break;
+                    }
+                }
+
+                if (!allEquals)
+                    SetCurrentValue(SelectedChangesProperty, selected);
+            }
+
             _disableSelectionChangingEvent = false;
         }
 
@@ -328,33 +349,6 @@ namespace SourceGit.Views
             {
                 outs.Add(node.Change);
             }
-        }
-
-        private void TrySetSelected(List<Models.Change> changes)
-        {
-            var old = SelectedChanges;
-            if (old == null && changes.Count == 0)
-                return;
-
-            if (old != null && old.Count == changes.Count)
-            {
-                bool allEquals = true;
-                foreach (var c in old)
-                {
-                    if (!changes.Contains(c))
-                    {
-                        allEquals = false;
-                        break;
-                    }
-                }
-
-                if (allEquals)
-                    return;
-            }
-
-            _disableSelectionChangingEvent = true;
-            SetCurrentValue(SelectedChangesProperty, changes);
-            _disableSelectionChangingEvent = false;
         }
 
         private bool _disableSelectionChangingEvent = false;
