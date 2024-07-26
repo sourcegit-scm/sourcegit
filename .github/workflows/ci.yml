@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: dotnet build -c Release
       - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r win-x64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
+        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r win-x64
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -43,7 +43,7 @@ jobs:
       - name: Build
         run: dotnet build -c Release
       - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-x64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
+        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-x64
       - name: Packing Program
         run:  tar -cvf sourcegit.osx-x64.tar -C publish/ .
       - name: Upload Artifact
@@ -66,7 +66,7 @@ jobs:
       - name: Build
         run: dotnet build -c Release
       - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-arm64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
+        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-arm64
       - name: Packing Program
         run: tar -cvf sourcegit.osx-arm64.tar -C publish/ .
       - name: Upload Artifact
@@ -89,7 +89,7 @@ jobs:
       - name: Build
         run: dotnet build -c Release
       - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r linux-x64 -p:PublishAot=true -p:PublishTrimmed=true -p:TrimMode=link --self-contained
+        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r linux-x64
       - name: Rename Executable File
         run: mv publish/SourceGit publish/sourcegit
       - name: Packing Program
