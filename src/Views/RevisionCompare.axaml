@@ -11,6 +11,12 @@
              x:DataType="vm:RevisionCompare"
              Background="{DynamicResource Brush.Window}">
   <UserControl.DataTemplates>
+    <DataTemplate DataType="m:Null">
+      <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
+        <TextBlock Text="{DynamicResource Text.Worktree}" Classes="monospace" Margin="4,2" Foreground="#FFDDDDDD"/>
+      </Border>
+    </DataTemplate>
+    
     <DataTemplate DataType="m:Commit">
       <Grid RowDefinitions="Auto,*">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
@@ -33,17 +39,7 @@
     <Grid Grid.Row="0" Margin="48,0,48,4" ColumnDefinitions="*,48,*">
       <!-- Base Revision -->
       <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
-        <ContentControl>
-          <ContentControl.Content>
-            <Binding Path="StartPoint">
-              <Binding.TargetNullValue>
-                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-                  <TextBlock Text="{DynamicResource Text.Worktree}" Classes="monospace" Margin="4,2" Foreground="#FFDDDDDD"/>
-                </Border>
-              </Binding.TargetNullValue>
-            </Binding>
-          </ContentControl.Content>
-        </ContentControl>
+        <ContentControl Content="{Binding StartPoint}"/>
       </Border>
 
       <!-- Swap Button -->
@@ -53,17 +49,7 @@
 
       <!-- Right Revision -->
       <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
-        <ContentControl>
-          <ContentControl.Content>
-            <Binding Path="EndPoint">
-              <Binding.TargetNullValue>
-                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-                  <TextBlock Text="{DynamicResource Text.Worktree}" Classes="monospace" Margin="4,2" Foreground="#FFDDDDDD"/>
-                </Border>
-              </Binding.TargetNullValue>
-            </Binding>
-          </ContentControl.Content>
-        </ContentControl>
+        <ContentControl Content="{Binding EndPoint}"/>
       </Border>
     </Grid>
 

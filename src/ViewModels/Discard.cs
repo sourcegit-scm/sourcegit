@@ -15,7 +15,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
 
-            Mode = null;
+            Mode = new Models.Null();
             View = new Views.Discard { DataContext = this };
         }
 
@@ -26,7 +26,7 @@ namespace SourceGit.ViewModels
             _isUnstaged = isUnstaged;
 
             if (_changes == null)
-                Mode = null;
+                Mode = new Models.Null();
             else if (_changes.Count == 1)
                 Mode = _changes[0].Path;
             else

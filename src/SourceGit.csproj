@@ -52,7 +52,7 @@
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
   </ItemGroup>
   
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <LinkerArg Include="-mmacosx-version-min=11.0" Condition="$([MSBuild]::IsOSPlatform('OSX'))"/>
   </ItemGroup>
 </Project>
