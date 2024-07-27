@@ -58,6 +58,12 @@ namespace SourceGit.ViewModels
             get => _repo.Settings.PreferRebaseInsteadOfMerge;
             set => _repo.Settings.PreferRebaseInsteadOfMerge = value;
         }
+        
+        public bool FetchAllBranchesOnPull
+        {
+            get => _repo.Settings.FetchAllBranchesOnPull;
+            set => _repo.Settings.FetchAllBranchesOnPull = value;
+        }
 
         public bool NoTags
         {
@@ -149,6 +155,12 @@ namespace SourceGit.ViewModels
                         SetProgressDescription("Discard local changes ...");
                         Commands.Discard.All(_repo.FullPath);
                     }
+                }
+
+                if (FetchAllBranchesOnPull)
+                {
+                    SetProgressDescription($"Fetching remote: {_selectedRemote.Name}...");
+                    new Commands.Fetch(_repo.FullPath, _selectedRemote.Name, false, NoTags, SetProgressDescription).Exec();
                 }
 
                 SetProgressDescription($"Pull {_selectedRemote.Name}/{_selectedBranch.Name}...");
