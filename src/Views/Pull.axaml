@@ -83,18 +83,18 @@
                      Margin="8,0,0,0"
                      IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.Discard}}"/>
       </StackPanel>
-
+      
       <CheckBox Grid.Row="4" Grid.Column="1"
-                Content="{DynamicResource Text.Pull.UseRebase}"
-                IsChecked="{Binding UseRebase, Mode=TwoWay}"/>
+                Content="{DynamicResource Text.Pull.FetchAllBranches}"
+                IsChecked="{Binding FetchAllBranches, Mode=TwoWay}"/>
 
       <CheckBox Grid.Row="5" Grid.Column="1"
                 Content="{DynamicResource Text.Pull.NoTags}"
                 IsChecked="{Binding NoTags, Mode=TwoWay}"/>
-      
+
       <CheckBox Grid.Row="6" Grid.Column="1"
-                Content="{DynamicResource Text.Pull.FetchAllBranchesOnPull}"
-                IsChecked="{Binding FetchAllBranchesOnPull, Mode=TwoWay}"/>
+                Content="{DynamicResource Text.Pull.UseRebase}"
+                IsChecked="{Binding UseRebase, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>
