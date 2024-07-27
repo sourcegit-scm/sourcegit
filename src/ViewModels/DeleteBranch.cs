@@ -65,7 +65,11 @@ namespace SourceGit.ViewModels
                     Commands.Branch.DeleteRemote(_repo.FullPath, Target.Remote, Target.Name);
                 }
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.MarkBranchesDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+                });
                 return true;
             });
         }
