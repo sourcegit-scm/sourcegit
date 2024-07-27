@@ -34,6 +34,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool FetchAllBranchesOnPull
+        {
+            get;
+            set;
+        } = false;
+
         public bool PushAllTags
         {
             get;
