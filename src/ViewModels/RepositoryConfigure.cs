@@ -37,8 +37,8 @@ namespace SourceGit.ViewModels
 
         public string HttpProxy
         {
-            get;
-            set;
+            get => _httpProxy;
+            set => SetProperty(ref _httpProxy, value);
         }
 
         public RepositoryConfigure(Repository repo)
@@ -58,6 +58,11 @@ namespace SourceGit.ViewModels
                 GPGUserSigningKey = signingKey;
             if (_cached.TryGetValue("http.proxy", out var proxy))
                 HttpProxy = proxy;
+        }
+
+        public void ClearHttpProxy()
+        {
+            HttpProxy = string.Empty;
         }
 
         public void Save()
@@ -90,5 +95,6 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private readonly Dictionary<string, string> _cached = null;
+        private string _httpProxy;
     }
 }
