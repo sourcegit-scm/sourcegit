@@ -8,8 +8,7 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionCompare"
-             x:DataType="vm:RevisionCompare"
-             Background="{DynamicResource Brush.Window}">
+             x:DataType="vm:RevisionCompare">
   <UserControl.DataTemplates>
     <DataTemplate DataType="m:Null">
       <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">

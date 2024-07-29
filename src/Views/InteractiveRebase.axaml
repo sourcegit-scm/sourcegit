@@ -260,15 +260,14 @@
                       BorderThickness="0,1,0,0"
                       BorderBrush="{DynamicResource Brush.Border2}"/>
 
-        <Border Grid.Row="2" Background="{DynamicResource Brush.Window}">
+        <Grid Grid.Row="2">
           <Path Width="128" Height="128"
                 Data="{StaticResource Icons.Detail}"
                 HorizontalAlignment="Center"
-                Fill="{DynamicResource Brush.FG2}"/>
-        </Border>
-
-        <Grid Grid.Row="2" IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}">
-          <ContentControl Content="{Binding DetailContext}">
+                Fill="{DynamicResource Brush.FG2}"
+                IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNull}}"/>
+          
+          <ContentControl Content="{Binding DetailContext}" IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}">
             <ContentControl.DataTemplates>
               <DataTemplate DataType="vm:CommitDetail">
                 <v:CommitDetail/>

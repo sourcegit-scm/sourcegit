@@ -8,8 +8,7 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitDetail"
-             x:DataType="vm:CommitDetail"
-             Background="{DynamicResource Brush.Window}">
+             x:DataType="vm:CommitDetail">
   <TabControl SelectedIndex="{Binding ActivePageIndex, Mode=TwoWay}" Padding="4">
     <!-- Information Page -->
     <TabItem>
