@@ -87,11 +87,11 @@
                 <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4" Background="Transparent" ContextRequested="OnStashContextRequested">
                   <Grid RowDefinitions="Auto,*" >
                     <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
-                      <TextBlock Grid.Column="0" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" TextDecorations="Underline" Cursor="Hand"/>
-                      <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="0" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" TextDecorations="Underline" Cursor="Hand"/>
+                      <TextBlock Grid.Column="1" Classes="primary" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                     </Grid>
 
-                    <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding Message}" VerticalAlignment="Bottom"/>
+                    <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Message}" VerticalAlignment="Bottom"/>
                   </Grid>
                 </Border>
               </DataTemplate>
@@ -136,7 +136,7 @@
           <DataGridTemplateColumn Width="*" Header="PATH">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <TextBlock Classes="monospace" Text="{Binding Path}" Margin="4,0,0,0"/>
+                <TextBlock Classes="primary" Text="{Binding Path}" Margin="4,0,0,0"/>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>

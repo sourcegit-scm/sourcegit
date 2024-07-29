@@ -21,7 +21,7 @@
               HorizontalAlignment="Left" VerticalAlignment="Center"
               Data="{StaticResource Icons.Stashes}"/>
 
-        <TextBlock VerticalAlignment="Center" Classes="monospace" Text="{Binding Stash.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+        <TextBlock VerticalAlignment="Center" Classes="primary" Text="{Binding Stash.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
         <TextBlock VerticalAlignment="Center" Text="{Binding Stash.Message}" Margin="8,0,0,0"/>
       </StackPanel>
     </Grid>

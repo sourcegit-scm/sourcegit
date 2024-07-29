@@ -79,7 +79,7 @@
                                            FontSize="10"
                                            VerticalAlignment="Center"/>
 
-                    <TextBlock Classes="monospace" 
+                    <TextBlock Classes="primary" 
                                Text="{Binding Subject}"
                                Opacity="{Binding Opacity}"
                                FontWeight="{Binding FontWeight}"/>
@@ -104,7 +104,7 @@
                             User="{Binding Author}"
                             Opacity="{Binding Opacity}"/>
                   <TextBlock Grid.Column="1" 
-                             Classes="monospace"
+                             Classes="primary"
                              Text="{Binding Author.Name}"
                              Margin="8,0,0,0"
                              Opacity="{Binding Opacity}"
@@ -121,7 +121,7 @@
             
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
-                <TextBlock Classes="monospace" 
+                <TextBlock Classes="primary" 
                            Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                            Margin="8,0"
                            HorizontalAlignment="Center"
@@ -144,7 +144,7 @@
             
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
-                <v:CommitTimeTextBlock Classes="monospace"
+                <v:CommitTimeTextBlock Classes="primary"
                                        Margin="8,0"
                                        HorizontalAlignment="Center"
                                        Opacity="{Binding Opacity}"

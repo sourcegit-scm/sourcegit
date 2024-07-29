@@ -84,9 +84,9 @@
                               IsChecked="{Binding IsExpanded}"
                               IsVisible="{Binding !IsRepository}"/>
 
-                <TextBlock Grid.Column="1" Classes="monospace" VerticalAlignment="Center" Text="{Binding Name}"/>
+                <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding Name}"/>
                 <TextBlock Grid.Column="2"
-                           Classes="monospace"
+                           Classes="primary"
                            Margin="8,0"
                            HorizontalAlignment="Right" VerticalAlignment="Center"
                            Foreground="{DynamicResource Brush.FG2}"

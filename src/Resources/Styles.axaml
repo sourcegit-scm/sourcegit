@@ -258,7 +258,7 @@
   <Style Selector="TextBlock.italic">
     <Setter Property="FontStyle" Value="Italic"/>
   </Style>
-  <Style Selector="TextBlock.monospace, SelectableTextBlock.monospace">
+  <Style Selector="TextBlock.primary, SelectableTextBlock.primary">
     <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=PrimaryFont}"/>
   </Style>
   <Style Selector="TextBlock.group_header_label">

@@ -61,7 +61,7 @@
           <DataGridTemplateColumn Width="*" Header="NAME">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding FriendlyName}" ClipToBounds="True" Classes="monospace" />
+                <TextBlock Text="{Binding FriendlyName}" ClipToBounds="True" Classes="primary" />
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>

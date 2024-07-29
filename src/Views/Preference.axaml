@@ -265,8 +265,7 @@
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-              <TextBlock Classes="monospace" 
-                         Margin="0,0,8,0"
+              <TextBlock Margin="0,0,8,0"
                          Text="{Binding #ThisControl.GitVersion}" 
                          IsVisible="{Binding #ThisControl.GitVersion, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 

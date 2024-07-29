@@ -78,7 +78,7 @@
               <ListBoxItem>
                 <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
                   <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.Histories}"/>
                   <ToggleButton Grid.Column="2"
                                 Classes="layout_direction"
                                 Width="32" Height="26"
@@ -90,7 +90,7 @@
               <ListBoxItem>
                 <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
                   <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Send}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.WorkingCopy}"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.WorkingCopy}"/>
                   <Border Grid.Column="2"
                           Margin="6,0"
                           Height="18"
@@ -98,7 +98,7 @@
                           VerticalAlignment="Center"
                           Background="{DynamicResource Brush.Badge}"
                           IsVisible="{Binding WorkingCopyChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                    <TextBlock Classes="primary" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
                   </Border>
                 </Grid>
               </ListBoxItem>
@@ -106,7 +106,7 @@
               <ListBoxItem>
                 <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
                   <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Stashes}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Stashes}"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.Stashes}"/>
                   <Border Grid.Column="2"
                           Margin="6,0"
                           Height="18"
@@ -114,7 +114,7 @@
                           VerticalAlignment="Center"
                           Background="{DynamicResource Brush.Badge}"
                           IsVisible="{Binding StashesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                    <TextBlock Classes="primary" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
                   </Border>
                 </Grid>
               </ListBoxItem>
@@ -255,7 +255,7 @@
               <DataGridTemplateColumn Width="*" Header="NAME">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate x:DataType="{x:Type m:Tag}">
-                    <TextBlock Text="{Binding Name}" Classes="monospace" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding Name}" Classes="primary" TextTrimming="CharacterEllipsis" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
@@ -350,7 +350,7 @@
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
                     <Border Padding="0,0,4,0">
-                      <TextBlock Text="{Binding}" ClipToBounds="True" Classes="monospace" TextTrimming="CharacterEllipsis"/>
+                      <TextBlock Text="{Binding}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
                     </Border>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
@@ -432,7 +432,7 @@
               <DataGridTemplateColumn Width="*" Header="FullPath">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Classes="monospace" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
+                    <TextBlock Classes="primary" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
                       <Run Text="{Binding FullPath}"/>
                       <Run Text="{Binding Name}" Foreground="{DynamicResource Brush.FG2}"/>
                     </TextBlock>
@@ -539,9 +539,9 @@
                                   VerticalAlignment="Center"
                                   IsHitTestVisible="False"
                                   User="{Binding Author}"/>
-                        <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                        <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-                        <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="2" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                       </Grid>
 
                       <TextBlock Grid.Row="1" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
@@ -653,7 +653,7 @@
             <ItemsControl.ItemTemplate>
               <DataTemplate>
                 <Border Height="20" Margin="0,0,6,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="12">
-                  <TextBlock Classes="monospace" Text="{Binding Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="8,0"/>
+                  <TextBlock Classes="primary" Text="{Binding Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="8,0"/>
                 </Border>
               </DataTemplate>
             </ItemsControl.ItemTemplate>

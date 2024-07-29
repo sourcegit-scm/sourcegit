@@ -78,7 +78,7 @@
                 <!-- Name -->
                 <TextBlock Grid.Column="1"
                            Text="{Binding Name}"
-                           Classes="monospace"
+                           Classes="primary"
                            FontWeight="{Binding NameFontWeight}"/>
 
                 <!-- Tracking status -->
@@ -89,7 +89,7 @@
                         VerticalAlignment="Center"
                         Background="{DynamicResource Brush.Badge}"
                         IsVisible="{Binding TrackStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                  <TextBlock Classes="monospace" 
+                  <TextBlock Classes="primary" 
                              FontSize="10" 
                              HorizontalAlignment="Center" 
                              Margin="9,0" 

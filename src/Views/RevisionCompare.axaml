@@ -12,7 +12,7 @@
   <UserControl.DataTemplates>
     <DataTemplate DataType="m:Null">
       <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-        <TextBlock Text="{DynamicResource Text.Worktree}" Classes="monospace" Margin="4,2" Foreground="#FFDDDDDD"/>
+        <TextBlock Text="{DynamicResource Text.Worktree}" Classes="primary" Margin="4,2" Foreground="#FFDDDDDD"/>
       </Border>
     </DataTemplate>
     
@@ -20,15 +20,15 @@
       <Grid RowDefinitions="Auto,*">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
           <v:Avatar Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-          <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
           <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4" IsVisible="{Binding IsCurrentHead}">
-            <TextBlock Text="HEAD" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
+            <TextBlock Text="HEAD" Classes="primary" Margin="4,0" Foreground="#FFDDDDDD"/>
           </Border>
-          <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
-          <TextBlock Grid.Column="4" Classes="monospace" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="3" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA" />
+          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
         </Grid>
 
-        <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+        <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
       </Grid>
     </DataTemplate>
   </UserControl.DataTemplates>

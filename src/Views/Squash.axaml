@@ -15,7 +15,7 @@
 
     <Grid Margin="0,18,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*">
       <Border Grid.Column="0" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-        <TextBlock Text="HEAD" Classes="monospace" Margin="4,0" Foreground="#FFDDDDDD"/>
+        <TextBlock Text="HEAD" Classes="primary" Margin="4,0" Foreground="#FFDDDDDD"/>
       </Border>
       
       <Path Grid.Column="1" 
@@ -33,7 +33,7 @@
             Fill="{DynamicResource Brush.FG1}"
             Data="{StaticResource Icons.Commit}"/>
       <TextBlock Grid.Column="3"
-                 Classes="monospace"
+                 Classes="primary"
                  Text="{Binding Parent.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                  Foreground="DarkOrange"/>
       <TextBlock Grid.Column="4" Margin="8,0,0,0" Text="{Binding Parent.Subject}" TextTrimming="CharacterEllipsis"/>
