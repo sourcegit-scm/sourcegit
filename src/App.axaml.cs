@@ -92,7 +92,7 @@ namespace SourceGit
             var toplevel = GetTopLevel() as Window;
             if (toplevel == null)
                 return;
-            
+
             var dialog = new Views.Preference();
             dialog.ShowDialog(toplevel);
         });
@@ -102,7 +102,7 @@ namespace SourceGit
             var toplevel = GetTopLevel() as Window;
             if (toplevel == null)
                 return;
-            
+
             var dialog = new Views.Hotkeys();
             dialog.ShowDialog(toplevel);
         });
@@ -112,7 +112,7 @@ namespace SourceGit
             var toplevel = GetTopLevel() as Window;
             if (toplevel == null)
                 return;
-            
+
             var dialog = new Views.About();
             dialog.ShowDialog(toplevel);
         });
@@ -247,7 +247,7 @@ namespace SourceGit
             var geo = Current?.FindResource(key) as StreamGeometry;
             if (geo != null)
                 icon.Data = geo;
-            
+
             return icon;
         }
 
@@ -257,7 +257,7 @@ namespace SourceGit
             {
                 return desktop.MainWindow;
             }
-            
+
             return null;
         }
 
@@ -300,6 +300,11 @@ namespace SourceGit
                         ShowSelfUpdateResult(e);
                 }
             });
+        }
+
+        public static ViewModels.Launcher GetLauncer()
+        {
+            return Current is App app ? app._launcher : null;
         }
 
         public static ViewModels.Repository FindOpenedRepository(string repoPath)
@@ -501,10 +506,15 @@ namespace SourceGit
         private bool TryLaunchedAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var args = desktop.Args;
-            if (args == null || args.Length != 1 || !args[0].StartsWith("Enter passphrase", StringComparison.Ordinal))
+            if (args == null || args.Length != 1)
                 return false;
 
-            desktop.MainWindow = new Views.Askpass(args[0]);
+            var param = args[0];
+            if (!param.StartsWith("enter passphrase", StringComparison.OrdinalIgnoreCase) &&
+                !param.Contains(" password", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            desktop.MainWindow = new Views.Askpass(param);
             return true;
         }
 

@@ -18,11 +18,11 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _data, value);
         }
 
-        public AvaloniaList<Notification> Notifications
+        public AvaloniaList<Models.Notification> Notifications
         {
             get;
             set;
-        } = new AvaloniaList<Notification>();
+        } = new AvaloniaList<Models.Notification>();
 
         public LauncherPage()
         {

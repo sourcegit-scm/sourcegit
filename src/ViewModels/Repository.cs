@@ -4,7 +4,6 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -14,93 +13,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class RepositorySettings
-    {
-        public Models.DealWithLocalChanges DealWithLocalChangesOnCheckoutBranch
-        {
-            get;
-            set;
-        } = Models.DealWithLocalChanges.DoNothing;
-
-        public bool FetchWithoutTags
-        {
-            get;
-            set;
-        } = false;
-
-        public Models.DealWithLocalChanges DealWithLocalChangesOnPull
-        {
-            get;
-            set;
-        } = Models.DealWithLocalChanges.DoNothing;
-
-        public bool PreferRebaseInsteadOfMerge
-        {
-            get;
-            set;
-        } = true;
-
-        public bool FetchWithoutTagsOnPull
-        {
-            get;
-            set;
-        } = false;
-
-        public bool PushAllTags
-        {
-            get;
-            set;
-        } = false;
-
-        public Models.DealWithLocalChanges DealWithLocalChangesOnCreateBranch
-        {
-            get;
-            set;
-        } = Models.DealWithLocalChanges.DoNothing;
-
-        public bool CheckoutBranchOnCreateBranch
-        {
-            get;
-            set;
-        } = true;
-
-        public bool AutoStageBeforeCommit
-        {
-            get;
-            set;
-        } = false;
-
-        public AvaloniaList<string> Filters
-        {
-            get;
-            set;
-        } = new AvaloniaList<string>();
-
-        public AvaloniaList<string> CommitMessages
-        {
-            get;
-            set;
-        } = new AvaloniaList<string>();
-
-        public void PushCommitMessage(string message)
-        {
-            var existIdx = CommitMessages.IndexOf(message);
-            if (existIdx == 0)
-                return;
-
-            if (existIdx > 0)
-            {
-                CommitMessages.Move(existIdx, 0);
-                return;
-            }
-
-            if (CommitMessages.Count > 9)
-                CommitMessages.RemoveRange(9, CommitMessages.Count - 9);
-
-            CommitMessages.Insert(0, message);
-        }
-    }
-
     public class Repository : ObservableObject, Models.IRepository
     {
         public string FullPath
@@ -126,7 +38,7 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDir, value);
         }
 
-        public RepositorySettings Settings
+        public Models.RepositorySettings Settings
         {
             get => _settings;
         }
@@ -185,6 +97,12 @@ namespace SourceGit.ViewModels
         {
             get => _branches;
             private set => SetProperty(ref _branches, value);
+        }
+
+        public Models.Branch CurrentBranch
+        {
+            get => _currentBranch;
+            private set => SetProperty(ref _currentBranch, value);
         }
 
         public List<BranchTreeNode> LocalBranchTrees
@@ -341,12 +259,12 @@ namespace SourceGit.ViewModels
                 }
                 catch
                 {
-                    _settings = new RepositorySettings();
+                    _settings = new Models.RepositorySettings();
                 }
             }
             else
             {
-                _settings = new RepositorySettings();
+                _settings = new Models.RepositorySettings();
             }
 
             _watcher = new Models.Watcher(this);
@@ -363,7 +281,7 @@ namespace SourceGit.ViewModels
 
         public void Close()
         {
-            SelectedView = 0.0; // Do NOT modify. Used to remove exists widgets for GC.Collect
+            SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
 
             var settingsSerialized = JsonSerializer.Serialize(_settings, JsonCodeGen.Default.RepositorySettings);
             File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
@@ -452,7 +370,7 @@ namespace SourceGit.ViewModels
             if (!PopupHost.CanCreatePopup())
                 return;
 
-            if (Remotes.Count == 0)
+            if (_remotes.Count == 0)
             {
                 App.RaiseException(_fullpath, "No remotes added to this repository!!!");
                 return;
@@ -466,7 +384,7 @@ namespace SourceGit.ViewModels
             if (!PopupHost.CanCreatePopup())
                 return;
 
-            if (Remotes.Count == 0)
+            if (_remotes.Count == 0)
             {
                 App.RaiseException(_fullpath, "No remotes added to this repository!!!");
                 return;
@@ -480,13 +398,13 @@ namespace SourceGit.ViewModels
             if (!PopupHost.CanCreatePopup())
                 return;
 
-            if (Remotes.Count == 0)
+            if (_remotes.Count == 0)
             {
                 App.RaiseException(_fullpath, "No remotes added to this repository!!!");
                 return;
             }
 
-            if (Branches.Find(x => x.IsCurrent) == null)
+            if (_currentBranch == null)
             {
                 App.RaiseException(_fullpath, "Can NOT found current branch!!!");
                 return;
@@ -507,13 +425,6 @@ namespace SourceGit.ViewModels
             if (!PopupHost.CanCreatePopup())
                 return;
             PopupHost.ShowAndStartPopup(new Cleanup(this));
-        }
-
-        public void OpenConfigure()
-        {
-            if (!PopupHost.CanCreatePopup())
-                return;
-            PopupHost.ShowPopup(new RepositoryConfigure(this));
         }
 
         public void ClearHistoriesFilter()
@@ -566,10 +477,10 @@ namespace SourceGit.ViewModels
 
                         break;
                     case 2:
-                        visible = new Commands.QueryCommits(FullPath, 1000, _searchCommitFilter, false).Result();
+                        visible = new Commands.QueryCommits(_fullpath, 1000, _searchCommitFilter, false).Result();
                         break;
                     case 3:
-                        visible = new Commands.QueryCommits(FullPath, 1000, _searchCommitFilter, true).Result();
+                        visible = new Commands.QueryCommits(_fullpath, 1000, _searchCommitFilter, true).Result();
                         break;
                 }
 
@@ -615,9 +526,8 @@ namespace SourceGit.ViewModels
 
         public void NavigateToCurrentHead()
         {
-            var cur = Branches.Find(x => x.IsCurrent);
-            if (cur != null)
-                NavigateToCommit(cur.Head);
+            if (_currentBranch != null)
+                NavigateToCommit(_currentBranch.Head);
         }
 
         public void UpdateFilter(string filter, bool toggle)
@@ -695,22 +605,20 @@ namespace SourceGit.ViewModels
 
         public void RefreshBranches()
         {
-            var branches = new Commands.QueryBranches(FullPath).Result();
-            var remotes = new Commands.QueryRemotes(FullPath).Result();
+            var branches = new Commands.QueryBranches(_fullpath).Result();
+            var remotes = new Commands.QueryRemotes(_fullpath).Result();
             var builder = BuildBranchTree(branches, remotes);
 
             Dispatcher.UIThread.Invoke(() =>
             {
                 Remotes = remotes;
                 Branches = branches;
+                CurrentBranch = branches.Find(x => x.IsCurrent);
                 LocalBranchTrees = builder.Locals;
                 RemoteBranchTrees = builder.Remotes;
 
                 if (_workingCopy != null)
-                {
-                    var cur = Branches.Find(x => x.IsCurrent);
-                    _workingCopy.CanCommitWithPush = cur != null && !string.IsNullOrEmpty(cur.Upstream);
-                }
+                    _workingCopy.CanCommitWithPush = _currentBranch != null && !string.IsNullOrEmpty(_currentBranch.Upstream);
             });
         }
 
@@ -735,7 +643,7 @@ namespace SourceGit.ViewModels
 
         public void RefreshTags()
         {
-            var tags = new Commands.QueryTags(FullPath).Result();
+            var tags = new Commands.QueryTags(_fullpath).Result();
             foreach (var tag in tags)
                 tag.IsFiltered = _settings.Filters.Contains(tag.Name);
 
@@ -786,7 +694,7 @@ namespace SourceGit.ViewModels
 
             var canPushCommits = new HashSet<string>();
             var canPullCommits = new HashSet<string>();
-            var currentBranch = Branches.Find(x => x.IsCurrent);
+            var currentBranch = _branches.Find(x => x.IsCurrent);
             if (currentBranch != null)
             {
                 foreach (var sha in currentBranch.TrackStatus.Ahead)
@@ -812,13 +720,13 @@ namespace SourceGit.ViewModels
 
         public void RefreshSubmodules()
         {
-            var submodules = new Commands.QuerySubmodules(FullPath).Result();
+            var submodules = new Commands.QuerySubmodules(_fullpath).Result();
             Dispatcher.UIThread.Invoke(() => Submodules = submodules);
         }
 
         public void RefreshWorkingCopyChanges()
         {
-            var changes = new Commands.QueryLocalChanges(FullPath, _includeUntracked).Result();
+            var changes = new Commands.QueryLocalChanges(_fullpath, _includeUntracked).Result();
             if (_workingCopy == null)
                 return;
 
@@ -862,7 +770,7 @@ namespace SourceGit.ViewModels
 
         public void RefreshStashes()
         {
-            var stashes = new Commands.QueryStashes(FullPath).Result();
+            var stashes = new Commands.QueryStashes(_fullpath).Result();
             Dispatcher.UIThread.Invoke(() =>
             {
                 if (_stashesPage != null)
@@ -873,15 +781,14 @@ namespace SourceGit.ViewModels
 
         public void CreateNewBranch()
         {
-            var current = Branches.Find(x => x.IsCurrent);
-            if (current == null)
+            if (_currentBranch == null)
             {
                 App.RaiseException(_fullpath, "Git do not hold any branch until you do first commit.");
                 return;
             }
 
             if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new CreateBranch(this, current));
+                PopupHost.ShowPopup(new CreateBranch(this, _currentBranch));
         }
 
         public void CheckoutBranch(Models.Branch branch)
@@ -908,7 +815,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                foreach (var b in Branches)
+                foreach (var b in _branches)
                 {
                     if (b.IsLocal && b.Upstream == branch.FullName)
                     {
@@ -931,15 +838,14 @@ namespace SourceGit.ViewModels
 
         public void CreateNewTag()
         {
-            var current = Branches.Find(x => x.IsCurrent);
-            if (current == null)
+            if (_currentBranch == null)
             {
                 App.RaiseException(_fullpath, "Git do not hold any branch until you do first commit.");
                 return;
             }
 
             if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new CreateTag(this, current));
+                PopupHost.ShowPopup(new CreateTag(this, _currentBranch));
         }
 
         public void AddRemote()
@@ -957,7 +863,7 @@ namespace SourceGit.ViewModels
         public void UpdateSubmodules()
         {
             if (PopupHost.CanCreatePopup())
-                PopupHost.ShowAndStartPopup(new UpdateSubmodules(this));
+                PopupHost.ShowPopup(new UpdateSubmodules(this));
         }
 
         public void OpenSubmodule(string submodule)
@@ -1095,12 +1001,12 @@ namespace SourceGit.ViewModels
                 var fetch = new MenuItem();
                 fetch.Header = App.Text("GitLFS.Fetch");
                 fetch.Icon = App.CreateMenuIcon("Icons.Fetch");
-                fetch.IsEnabled = Remotes.Count > 0;
+                fetch.IsEnabled = _remotes.Count > 0;
                 fetch.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                     {
-                        if (Remotes.Count == 1)
+                        if (_remotes.Count == 1)
                             PopupHost.ShowAndStartPopup(new LFSFetch(this));
                         else
                             PopupHost.ShowPopup(new LFSFetch(this));
@@ -1113,12 +1019,12 @@ namespace SourceGit.ViewModels
                 var pull = new MenuItem();
                 pull.Header = App.Text("GitLFS.Pull");
                 pull.Icon = App.CreateMenuIcon("Icons.Pull");
-                pull.IsEnabled = Remotes.Count > 0;
+                pull.IsEnabled = _remotes.Count > 0;
                 pull.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                     {
-                        if (Remotes.Count == 1)
+                        if (_remotes.Count == 1)
                             PopupHost.ShowAndStartPopup(new LFSPull(this));
                         else
                             PopupHost.ShowPopup(new LFSPull(this));
@@ -1131,12 +1037,12 @@ namespace SourceGit.ViewModels
                 var push = new MenuItem();
                 push.Header = App.Text("GitLFS.Push");
                 push.Icon = App.CreateMenuIcon("Icons.Push");
-                push.IsEnabled = Remotes.Count > 0;
+                push.IsEnabled = _remotes.Count > 0;
                 push.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                     {
-                        if (Remotes.Count == 1)
+                        if (_remotes.Count == 1)
                             PopupHost.ShowAndStartPopup(new LFSPush(this));
                         else
                             PopupHost.ShowPopup(new LFSPush(this));
@@ -1162,8 +1068,8 @@ namespace SourceGit.ViewModels
                 var locks = new MenuItem();
                 locks.Header = App.Text("GitLFS.Locks");
                 locks.Icon = App.CreateMenuIcon("Icons.Lock");
-                locks.IsEnabled = Remotes.Count > 0;
-                if (Remotes.Count == 1)
+                locks.IsEnabled = _remotes.Count > 0;
+                if (_remotes.Count == 1)
                 {
                     locks.Click += (_, e) =>
                     {
@@ -1171,14 +1077,14 @@ namespace SourceGit.ViewModels
                         if (topLevel == null)
                             return;
 
-                        var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, Remotes[0].Name) };
+                        var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, _remotes[0].Name) };
                         dialog.Show(topLevel);
                         e.Handled = true;
                     };
                 }
                 else
                 {
-                    foreach (var remote in Remotes)
+                    foreach (var remote in _remotes)
                     {
                         var remoteName = remote.Name;
                         var lockRemote = new MenuItem();
@@ -1226,7 +1132,7 @@ namespace SourceGit.ViewModels
             var push = new MenuItem();
             push.Header = new Views.NameHighlightedTextBlock("BranchCM.Push", branch.Name);
             push.Icon = App.CreateMenuIcon("Icons.Push");
-            push.IsEnabled = Remotes.Count > 0;
+            push.IsEnabled = _remotes.Count > 0;
             push.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
@@ -1289,8 +1195,6 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                var current = Branches.Find(x => x.IsCurrent);
-
                 var checkout = new MenuItem();
                 checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", branch.Name);
                 checkout.Icon = App.CreateMenuIcon("Icons.Check");
@@ -1301,7 +1205,7 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(checkout);
 
-                var upstream = Branches.Find(x => x.FullName == branch.Upstream);
+                var upstream = _branches.Find(x => x.FullName == branch.Upstream);
                 if (upstream != null)
                 {
                     var fastForward = new MenuItem();
@@ -1323,22 +1227,22 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(push);
 
                 var merge = new MenuItem();
-                merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", branch.Name, current.Name);
+                merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", branch.Name, _currentBranch.Name);
                 merge.Icon = App.CreateMenuIcon("Icons.Merge");
                 merge.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Merge(this, branch.Name, current.Name));
+                        PopupHost.ShowPopup(new Merge(this, branch.Name, _currentBranch.Name));
                     e.Handled = true;
                 };
 
                 var rebase = new MenuItem();
-                rebase.Header = new Views.NameHighlightedTextBlock("BranchCM.Rebase", current.Name, branch.Name);
+                rebase.Header = new Views.NameHighlightedTextBlock("BranchCM.Rebase", _currentBranch.Name, branch.Name);
                 rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
                 rebase.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Rebase(this, current, branch));
+                        PopupHost.ShowPopup(new Rebase(this, _currentBranch, branch));
                     e.Handled = true;
                 };
 
@@ -1356,9 +1260,9 @@ namespace SourceGit.ViewModels
 
                         if (_histories != null)
                         {
-                            var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
+                            var target = new Commands.QuerySingleCommit(_fullpath, branch.Head).Result();
                             _histories.AutoSelectedCommit = null;
-                            _histories.DetailContext = new RevisionCompare(FullPath, target, null);
+                            _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                         }
                     };
                     menu.Items.Add(new MenuItem() { Header = "-" });
@@ -1441,7 +1345,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(new MenuItem() { Header = "-" });
 
             var remoteBranches = new List<Models.Branch>();
-            foreach (var b in Branches)
+            foreach (var b in _branches)
             {
                 if (!b.IsLocal)
                     remoteBranches.Add(b);
@@ -1593,7 +1497,6 @@ namespace SourceGit.ViewModels
         public ContextMenu CreateContextMenuForRemoteBranch(Models.Branch branch)
         {
             var menu = new ContextMenu();
-            var current = Branches.Find(x => x.IsCurrent);
             var name = branch.FriendlyName;
 
             var checkout = new MenuItem();
@@ -1607,10 +1510,10 @@ namespace SourceGit.ViewModels
             menu.Items.Add(checkout);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
-            if (current != null)
+            if (_currentBranch != null)
             {
                 var pull = new MenuItem();
-                pull.Header = new Views.NameHighlightedTextBlock("BranchCM.PullInto", name, current.Name);
+                pull.Header = new Views.NameHighlightedTextBlock("BranchCM.PullInto", name, _currentBranch.Name);
                 pull.Icon = App.CreateMenuIcon("Icons.Pull");
                 pull.Click += (_, e) =>
                 {
@@ -1620,22 +1523,22 @@ namespace SourceGit.ViewModels
                 };
 
                 var merge = new MenuItem();
-                merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", name, current.Name);
+                merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", name, _currentBranch.Name);
                 merge.Icon = App.CreateMenuIcon("Icons.Merge");
                 merge.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Merge(this, name, current.Name));
+                        PopupHost.ShowPopup(new Merge(this, name, _currentBranch.Name));
                     e.Handled = true;
                 };
 
                 var rebase = new MenuItem();
-                rebase.Header = new Views.NameHighlightedTextBlock("BranchCM.Rebase", current.Name, name);
+                rebase.Header = new Views.NameHighlightedTextBlock("BranchCM.Rebase", _currentBranch.Name, name);
                 rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
                 rebase.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Rebase(this, current, branch));
+                        PopupHost.ShowPopup(new Rebase(this, _currentBranch, branch));
                     e.Handled = true;
                 };
 
@@ -1657,9 +1560,9 @@ namespace SourceGit.ViewModels
 
                     if (_histories != null)
                     {
-                        var target = new Commands.QuerySingleCommit(FullPath, branch.Head).Result();
+                        var target = new Commands.QuerySingleCommit(_fullpath, branch.Head).Result();
                         _histories.AutoSelectedCommit = null;
-                        _histories.DetailContext = new RevisionCompare(FullPath, target, null);
+                        _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                     }
                 };
                 menu.Items.Add(compareWithWorktree);
@@ -1751,7 +1654,7 @@ namespace SourceGit.ViewModels
             var pushTag = new MenuItem();
             pushTag.Header = new Views.NameHighlightedTextBlock("TagCM.Push", tag.Name);
             pushTag.Icon = App.CreateMenuIcon("Icons.Push");
-            pushTag.IsEnabled = Remotes.Count > 0;
+            pushTag.IsEnabled = _remotes.Count > 0;
             pushTag.Click += (_, ev) =>
             {
                 if (PopupHost.CanCreatePopup())
@@ -1901,14 +1804,14 @@ namespace SourceGit.ViewModels
 
         private MenuItem CreateMenuItemToCompareBranches(Models.Branch branch)
         {
-            if (Branches.Count == 1)
+            if (_branches.Count == 1)
                 return null;
 
             var compare = new MenuItem();
             compare.Header = App.Text("BranchCM.CompareWithBranch");
             compare.Icon = App.CreateMenuIcon("Icons.Compare");
 
-            foreach (var b in Branches)
+            foreach (var b in _branches)
             {
                 if (b.FullName != branch.FullName)
                 {
@@ -1924,7 +1827,7 @@ namespace SourceGit.ViewModels
 
                         var wnd = new Views.BranchCompare()
                         {
-                            DataContext = new BranchCompare(FullPath, branch, dup)
+                            DataContext = new BranchCompare(_fullpath, branch, dup)
                         };
 
                         wnd.Show(topLevel);
@@ -1985,7 +1888,7 @@ namespace SourceGit.ViewModels
 
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
-        private RepositorySettings _settings = null;
+        private Models.RepositorySettings _settings = null;
 
         private Models.Watcher _watcher = null;
         private Histories _histories = null;
@@ -2010,6 +1913,7 @@ namespace SourceGit.ViewModels
 
         private List<Models.Remote> _remotes = new List<Models.Remote>();
         private List<Models.Branch> _branches = new List<Models.Branch>();
+        private Models.Branch _currentBranch = null;
         private List<BranchTreeNode> _localBranchTrees = new List<BranchTreeNode>();
         private List<BranchTreeNode> _remoteBranchTrees = new List<BranchTreeNode>();
         private List<Models.Worktree> _worktrees = new List<Models.Worktree>();

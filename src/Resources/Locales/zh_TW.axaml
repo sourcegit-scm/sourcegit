@@ -99,6 +99,7 @@
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">檢出此提交</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">與當前HEAD比較</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">與本地工作樹比較</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">複製簡要資訊</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">複製提交指紋</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">互動式變基(rebase -i) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">變基(rebase) ${0}$ 到此處</x:String>
@@ -192,10 +193,11 @@
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可見的行數</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">請選擇需要對比的檔案</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">顯示隱藏符號</x:String>
+  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">交換比對雙方</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">使用外部比對工具檢視</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">放棄更改確認</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本地址未提交的修改。</x:String>
-  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">需要放棄的變更 ：</x:String>
+  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">變更 ：</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">總計{0}項選中更改</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">本操作不支援回退，請確認後繼續！！！</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">書籤 ：</x:String>
@@ -404,6 +406,7 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">清理在`$GIT_DIR/worktrees`中的無效工作樹資訊</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">拉回(pull)</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">拉取分支 ：</x:String>
+  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">拉取遠端中的所有分支變更</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">本地分支 ：</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">丟棄更改</x:String>
@@ -545,7 +548,11 @@
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">倉庫地址 ：</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模組</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Tip" xml:space="preserve">本操作將執行 `submodule update` 。</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">更新所有子模組</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">啟用『--init』選項</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">啟用『--recursive』選項</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">子模組 ：</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">啟用『--remote』選項</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">新建分組</x:String>
   <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">新建子分組</x:String>

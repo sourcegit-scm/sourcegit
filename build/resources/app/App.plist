@@ -2,30 +2,30 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleIconFile</key>
-    <string>App.icns</string>
-    <key>CFBundleIdentifier</key>
-    <string>com.sourcegit-scm.sourcegit</string>
-    <key>CFBundleName</key>
-    <string>SourceGit</string>
-    <key>CFBundleVersion</key>
-    <string>SOURCE_GIT_VERSION.0</string>
-    <key>LSMinimumSystemVersion</key>
-    <string>10.12</string>
-    <key>LSEnvironment</key>
-    <dict>
-        <key>PATH</key>
-        <string>/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
-    </dict>
-    <key>CFBundleExecutable</key>
-    <string>SourceGit</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-    <key>CFBundleShortVersionString</key>
-    <string>SOURCE_GIT_VERSION</string>
-    <key>NSHighResolutionCapable</key>
-    <true/>
+	<key>CFBundleIconFile</key>
+	<string>App.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.sourcegit-scm.sourcegit</string>
+	<key>CFBundleName</key>
+	<string>SourceGit</string>
+	<key>CFBundleVersion</key>
+	<string>SOURCE_GIT_VERSION.0</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>11.0</string>
+	<key>LSEnvironment</key>
+	<dict>
+		<key>PATH</key>
+		<string>/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+	</dict>
+	<key>CFBundleExecutable</key>
+	<string>SourceGit</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>SOURCE_GIT_VERSION</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
 </dict>
 </plist>

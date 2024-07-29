@@ -69,7 +69,10 @@
           </Grid>
         </Border>
 
-        <Path Grid.Column="1" Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Down}" RenderTransformOrigin="50%,50%" RenderTransform="rotate(270deg)"/>
+        <!-- Swap Button -->
+        <Button Grid.Column="1" Classes="icon_button" Command="{Binding Swap}" HorizontalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Diff.SwapCommits}">
+          <Path Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Compare}"/>
+        </Button>
 
         <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
           <Grid RowDefinitions="Auto,*">

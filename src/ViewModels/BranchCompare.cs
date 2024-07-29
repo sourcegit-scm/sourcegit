@@ -14,14 +14,14 @@ namespace SourceGit.ViewModels
     {
         public Models.Branch Base
         {
-            get;
-            private set;
+            get => _based;
+            private set => SetProperty(ref _based, value);
         }
 
         public Models.Branch To
         {
-            get;
-            private set;
+            get => _to;
+            private set => SetProperty(ref _to, value);
         }
 
         public Models.Commit BaseHead
@@ -50,7 +50,7 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _selectedChanges, value))
                 {
                     if (value != null && value.Count == 1)
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(Base.Head, To.Head, value[0]), _diffContext);
+                        DiffContext = new DiffContext(_repo, new Models.DiffOption(_based.Head, _to.Head, value[0]), _diffContext);
                     else
                         DiffContext = null;
                 }
@@ -78,40 +78,27 @@ namespace SourceGit.ViewModels
         public BranchCompare(string repo, Models.Branch baseBranch, Models.Branch toBranch)
         {
             _repo = repo;
+            _based = baseBranch;
+            _to = toBranch;
 
-            Base = baseBranch;
-            To = toBranch;
-
-            Task.Run(() =>
-            {
-                var baseHead = new Commands.QuerySingleCommit(_repo, Base.Head).Result();
-                var toHead = new Commands.QuerySingleCommit(_repo, To.Head).Result();
-                _changes = new Commands.CompareRevisions(_repo, Base.Head, To.Head).Result();
-
-                var visible = _changes;
-                if (!string.IsNullOrWhiteSpace(_searchFilter))
-                {
-                    visible = new List<Models.Change>();
-                    foreach (var c in _changes)
-                    {
-                        if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
-                            visible.Add(c);
-                    }
-                }
-
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    BaseHead = baseHead;
-                    ToHead = toHead;
-                    VisibleChanges = visible;
-                });
-            });
+            Refresh();
         }
 
         public void NavigateTo(string commitSHA)
         {
             var repo = App.FindOpenedRepository(_repo);
             repo?.NavigateToCommit(commitSHA);
+        }
+
+        public void Swap()
+        {
+            (Base, To) = (_to, _based);
+            SelectedChanges = [];
+
+            if (_baseHead != null)
+                (BaseHead, ToHead) = (_toHead, _baseHead);
+
+            Refresh();
         }
 
         public void ClearSearchFilter()
@@ -134,7 +121,7 @@ namespace SourceGit.ViewModels
             {
                 var toolType = Preference.Instance.ExternalMergeToolType;
                 var toolPath = Preference.Instance.ExternalMergeToolPath;
-                var opt = new Models.DiffOption(Base.Head, To.Head, change);
+                var opt = new Models.DiffOption(_based.Head, _to.Head, change);
 
                 Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, opt));
                 ev.Handled = true;
@@ -179,6 +166,38 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        private void Refresh()
+        {
+            Task.Run(() =>
+            {
+                if (_baseHead == null)
+                {
+                    var baseHead = new Commands.QuerySingleCommit(_repo, _based.Head).Result();
+                    var toHead = new Commands.QuerySingleCommit(_repo, _to.Head).Result();
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        BaseHead = baseHead;
+                        ToHead = toHead;
+                    });
+                }
+
+                _changes = new Commands.CompareRevisions(_repo, _based.Head, _to.Head).Result();
+
+                var visible = _changes;
+                if (!string.IsNullOrWhiteSpace(_searchFilter))
+                {
+                    visible = new List<Models.Change>();
+                    foreach (var c in _changes)
+                    {
+                        if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                            visible.Add(c);
+                    }
+                }
+
+                Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
+            });
+        }
+
         private void RefreshVisible()
         {
             if (_changes == null)
@@ -202,6 +221,8 @@ namespace SourceGit.ViewModels
         }
 
         private string _repo;
+        private Models.Branch _based = null;
+        private Models.Branch _to = null;
         private Models.Commit _baseHead = null;
         private Models.Commit _toHead = null;
         private List<Models.Change> _changes = null;

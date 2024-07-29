@@ -58,6 +58,12 @@ namespace SourceGit.ViewModels
             get => _repo.Settings.PreferRebaseInsteadOfMerge;
             set => _repo.Settings.PreferRebaseInsteadOfMerge = value;
         }
+        
+        public bool FetchAllBranches
+        {
+            get => _repo.Settings.FetchAllBranchesOnPull;
+            set => _repo.Settings.FetchAllBranchesOnPull = value;
+        }
 
         public bool NoTags
         {
@@ -68,7 +74,7 @@ namespace SourceGit.ViewModels
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
         {
             _repo = repo;
-            _current = repo.Branches.Find(x => x.IsCurrent);
+            _current = repo.CurrentBranch;
 
             if (specifiedRemoteBranch != null)
             {
@@ -151,8 +157,32 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                SetProgressDescription($"Pull {_selectedRemote.Name}/{_selectedBranch.Name}...");
-                var rs = new Commands.Pull(_repo.FullPath, _selectedRemote.Name, _selectedBranch.Name, UseRebase, NoTags, SetProgressDescription).Exec();
+                var rs = false;
+                if (FetchAllBranches)
+                {
+                    SetProgressDescription($"Fetching remote: {_selectedRemote.Name}...");
+                    rs = new Commands.Fetch(_repo.FullPath, _selectedRemote.Name, false, NoTags, SetProgressDescription).Exec();
+                    if (!rs)
+                        return false;
+
+                    // Use merge/rebase instead of pull as fetch is done manually.
+                    if (UseRebase)
+                    {
+                        SetProgressDescription($"Rebase {_current.Name} on {_selectedBranch.FriendlyName} ...");
+                        rs = new Commands.Rebase(_repo.FullPath, _selectedBranch.FriendlyName, false).Exec();
+                    }
+                    else
+                    {
+                        SetProgressDescription($"Merge {_selectedBranch.FriendlyName} into {_current.Name} ...");
+                        rs = new Commands.Merge(_repo.FullPath, _selectedBranch.FriendlyName, "", SetProgressDescription).Exec();
+                    }
+                }
+                else
+                {
+                    SetProgressDescription($"Pull {_selectedRemote.Name}/{_selectedBranch.Name}...");
+                    rs = new Commands.Pull(_repo.FullPath, _selectedRemote.Name, _selectedBranch.Name, UseRebase, NoTags, SetProgressDescription).Exec();
+                }
+
                 if (rs && needPopStash)
                 {
                     SetProgressDescription("Re-apply local changes...");

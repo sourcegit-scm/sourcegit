@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RepositoryToolbar"
@@ -9,15 +10,23 @@
   <Grid ColumnDefinitions="*,Auto,*">
       <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
         <Button Classes="icon_button" Width="32" Command="{Binding OpenInFileManager}" ToolTip.Tip="{DynamicResource Text.Repository.Explore}">
-          <Path Width="15" Height="15" Data="{StaticResource Icons.Explore}" Margin="0,2,0,0"/>
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}" Margin="0,2,0,0"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
+          <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>
         </Button>
         
         <Button Classes="icon_button" Width="32" Command="{Binding OpenInTerminal}" ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">
           <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
         </Button>
 
-        <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
-          <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>
+        <Button Classes="icon_button" Width="32" Click="OpenStatistics" ToolTip.Tip="{DynamicResource Text.Repository.Statistics}">
+          <Path Width="13" Height="13" Data="{StaticResource Icons.Statistics}"/>
+        </Button>
+
+        <Button Classes="icon_button" Width="32" Click="OpenConfigure" ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Settings}"/>
         </Button>
       </StackPanel>
 
@@ -58,19 +67,35 @@
         <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitLFSMenu" ToolTip.Tip="{DynamicResource Text.GitLFS}">
           <Path Width="14" Height="14" Data="{StaticResource Icons.LFS}"/>
         </Button>
+
+        <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
+          <Path Width="14" Height="14" Margin="0,1,0,0" Data="{StaticResource Icons.Clean}"/>
+        </Button>
       </StackPanel>
 
       <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
-        <Button Classes="icon_button" Width="32" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Clean}"/>
-        </Button>
+        <Path Width="13" Height="13" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
 
-        <Button Classes="icon_button" Width="32" Click="OpenStatistics" ToolTip.Tip="{DynamicResource Text.Repository.Statistics}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Statistics}"/>
-        </Button>
+        <ContentControl Margin="6,0,0,0">
+          <ContentControl.Content>
+            <Binding Path="CurrentBranch">
+              <Binding.TargetNullValue>
+                <TextBlock Classes="monospace" Text="--"/>
+              </Binding.TargetNullValue>
+            </Binding>
+          </ContentControl.Content>
 
-        <Button Classes="icon_button" Width="32" Command="{Binding OpenConfigure}" ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
-          <Path Width="15" Height="15" Data="{StaticResource Icons.Settings}"/>
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="m:Branch">
+              <Border Background="Transparent" ToolTip.Tip="{Binding FriendlyName}">
+                <TextBlock Classes="monospace" Text="{Binding FriendlyName}" MaxWidth="250" TextTrimming="CharacterEllipsis"/>
+              </Border>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+
+        <Button Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
+          <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
         </Button>
       </StackPanel>
     </Grid>

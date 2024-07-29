@@ -38,7 +38,5 @@ namespace SourceGit.Commands
 
             return null;
         }
-
-        
     }
 }

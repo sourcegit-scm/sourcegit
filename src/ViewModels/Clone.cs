@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
+using Avalonia.Threading;
+
 namespace SourceGit.ViewModels
 {
     public class Clone : Popup
@@ -51,28 +53,25 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _extraArgs, value);
         }
 
-        public Clone(Launcher launcher)
+        public Clone()
         {
-            _launcher = launcher;
-            _page = launcher.ActivePage;
-
             View = new Views.Clone() { DataContext = this };
-            App.GetClipboardTextAsync()
-                .ContinueWith(t =>
+
+            Task.Run(async () =>
+            {
+                try
                 {
-                    if (t.IsFaulted)
+                    var text = await App.GetClipboardTextAsync();
+                    if (Models.Remote.IsValidURL(text))
                     {
-                        t.Exception.Handle(static _ => true);
+                        Dispatcher.UIThread.Invoke(() => Remote = text);
                     }
-                    else if (t.IsCompleted)
-                    {
-                        var result = t.Result;
-                        if (Models.Remote.IsValidURL(result))
-                        {
-                            Remote = result;
-                        }
-                    }
-                });
+                }
+                catch
+                {
+                    // ignore
+                }
+            });
         }
 
         public static ValidationResult ValidateRemote(string remote, ValidationContext _)
@@ -131,15 +130,24 @@ namespace SourceGit.ViewModels
                 {
                     var normalizedPath = path.Replace("\\", "/");
                     var node = Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, null, true);
-                    _launcher.OpenRepositoryInTab(node, _page);
+                    var launcher = App.GetLauncer();
+                    var page = null as LauncherPage;
+                    foreach (var one in launcher.Pages)
+                    {
+                        if (one.GetId() == HostPageId)
+                        {
+                            page = one;
+                            break;
+                        }
+                    }
+
+                    launcher.OpenRepositoryInTab(node, page);
                 });
 
                 return true;
             });
         }
 
-        private readonly Launcher _launcher = null;
-        private readonly LauncherPage _page = null;
         private string _remote = string.Empty;
         private bool _useSSH = false;
         private string _sshKey = string.Empty;

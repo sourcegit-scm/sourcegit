@@ -27,11 +27,11 @@
       <Color x:Key="Color.FlatButton.BackgroundHovered">White</Color>
       <Color x:Key="Color.FG1">#FF1F1F1F</Color>
       <Color x:Key="Color.FG2">#FF6F6F6F</Color>
-      <Color x:Key="Color.Diff.EmptyBG">#3C000000</Color>
-      <Color x:Key="Color.Diff.AddedBG">#3C00FF00</Color>
-      <Color x:Key="Color.Diff.DeletedBG">#3CFF0000</Color>
-      <Color x:Key="Color.Diff.AddedHighlight">#5A00FF00</Color>
-      <Color x:Key="Color.Diff.DeletedHighlight">#50FF0000</Color>
+      <Color x:Key="Color.Diff.EmptyBG">#10000000</Color>
+      <Color x:Key="Color.Diff.AddedBG">#80BFE6C1</Color>
+      <Color x:Key="Color.Diff.DeletedBG">#80FF9797</Color>
+      <Color x:Key="Color.Diff.AddedHighlight">#A7E1A7</Color>
+      <Color x:Key="Color.Diff.DeletedHighlight">#F19B9D</Color>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -43,7 +43,7 @@
       <Color x:Key="Color.TitleBar">#FF1F1F1F</Color>
       <Color x:Key="Color.ToolBar">#FF2C2C2C</Color>
       <Color x:Key="Color.Popup">#FF2B2B2B</Color>
-      <Color x:Key="Color.Contents">#FF1B1B1B</Color>
+      <Color x:Key="Color.Contents">#FF1C1C1C</Color>
       <Color x:Key="Color.Badge">#FF8F8F8F</Color>
       <Color x:Key="Color.BadgeFG">#FFDDDDDD</Color>
       <Color x:Key="Color.DecoratorIconBG">#FF505050</Color>
@@ -61,10 +61,10 @@
       <Color x:Key="Color.FG1">#FFDDDDDD</Color>
       <Color x:Key="Color.FG2">#40F1F1F1</Color>
       <Color x:Key="Color.Diff.EmptyBG">#3C000000</Color>
-      <Color x:Key="Color.Diff.AddedBG">#3C00FF00</Color>
-      <Color x:Key="Color.Diff.DeletedBG">#3CFF0000</Color>
-      <Color x:Key="Color.Diff.AddedHighlight">#5A00FF00</Color>
-      <Color x:Key="Color.Diff.DeletedHighlight">#50FF0000</Color>
+      <Color x:Key="Color.Diff.AddedBG">#C03A5C3F</Color>
+      <Color x:Key="Color.Diff.DeletedBG">#C0633F3E</Color>
+      <Color x:Key="Color.Diff.AddedHighlight">#A0308D3C</Color>
+      <Color x:Key="Color.Diff.DeletedHighlight">#A09F4247</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 

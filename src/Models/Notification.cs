@@ -1,4 +1,4 @@
-﻿namespace SourceGit.ViewModels
+﻿namespace SourceGit.Models
 {
     public class Notification
     {

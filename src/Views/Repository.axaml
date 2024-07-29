@@ -76,7 +76,7 @@
               </ListBox.ItemsPanel>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
                   <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
                   <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
                   <ToggleButton Grid.Column="2"
@@ -84,9 +84,6 @@
                                 Width="32" Height="26"
                                 IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=TwoWay}"
                                 ToolTip.Tip="{DynamicResource Text.Histories.DisplayMode}"/>
-                  <Button Grid.Column="3" Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
-                  </Button>
                 </Grid>
               </ListBoxItem>
 
@@ -157,7 +154,7 @@
           </TextBox.InnerRightContent>
         </TextBox>
 
-        <Grid Grid.Row="2" x:Name="LeftSidebarGroups" Margin="0,4,0,0" RowDefinitions="28,Auto,28,Auto,28,Auto,28,Auto,28,Auto">
+        <Grid Grid.Row="2" x:Name="LeftSidebarGroups" Margin="0,4,0,0" RowDefinitions="28,Auto,28,Auto,28,Auto,28,Auto,28,Auto" SizeChanged="OnLeftSidebarSizeChanged">
           <!-- Local Branches -->
           <ToggleButton Grid.Row="0" Classes="group_expander" IsChecked="{Binding IsLocalBranchGroupExpanded, Mode=TwoWay}">
             <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.LocalBranches}"/>

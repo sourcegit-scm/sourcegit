@@ -5,11 +5,11 @@ namespace SourceGit.Commands
 {
     public partial class AssumeUnchanged
     {
-        partial class ViewCommand : Command
-        {
-            [GeneratedRegex(@"^(\w)\s+(.+)$")]
-            private static partial Regex REG();
+        [GeneratedRegex(@"^(\w)\s+(.+)$")]
+        private static partial Regex REG_PARSE();
 
+        class ViewCommand : Command
+        {
             public ViewCommand(string repo)
             {
                 WorkingDirectory = repo;
@@ -25,7 +25,7 @@ namespace SourceGit.Commands
 
             protected override void OnReadline(string line)
             {
-                var match = REG().Match(line);
+                var match = REG_PARSE().Match(line);
                 if (!match.Success)
                     return;
 

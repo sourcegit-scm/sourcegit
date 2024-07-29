@@ -1,9 +1,7 @@
 ﻿using System;
 
-using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -50,23 +48,16 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (PopupHost.CanCreatePopup() &&
-                Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { DataContext: Launcher launcher } })
-            {
-                PopupHost.ShowPopup(new Clone(launcher));
-            }
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowPopup(new Clone());
         }
 
         public void OpenTerminal()
         {
             if (!Preference.Instance.IsGitConfigured())
-            {
                 App.RaiseException(PopupHost.Active.GetId(), App.Text("NotConfigured"));
-            }
             else
-            {
                 Native.OS.OpenTerminal(null);
-            }
         }
 
         public void ClearSearchFilter()
@@ -96,12 +87,7 @@ namespace SourceGit.ViewModels
                 openAll.Icon = App.CreateMenuIcon("Icons.Folder.Open");
                 openAll.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup() &&
-                        Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { DataContext: Launcher launcher } })
-                    {
-                        OpenAllInNode(launcher, node);
-                    }
-
+                    OpenAllInNode(App.GetLauncer(), node);
                     e.Handled = true;
                 };
 

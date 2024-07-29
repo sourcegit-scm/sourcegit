@@ -38,7 +38,7 @@ namespace SourceGit.ViewModels
                 var root = new Commands.QueryRepositoryRootPath(startupRepo).Result();
                 if (string.IsNullOrEmpty(root))
                 {
-                    Pages[0].Notifications.Add(new Notification
+                    Pages[0].Notifications.Add(new Models.Notification
                     {
                         IsError = true,
                         Message = $"Given path: '{startupRepo}' is NOT a valid repository!"
@@ -272,7 +272,7 @@ namespace SourceGit.ViewModels
 
         public void DispatchNotification(string pageId, string message, bool isError)
         {
-            var notification = new Notification()
+            var notification = new Models.Notification()
             {
                 IsError = isError,
                 Message = message,

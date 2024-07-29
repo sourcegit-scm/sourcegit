@@ -1,18 +1,53 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.RepositoryConfigure"
-             x:DataType="vm:RepositoryConfigure">
-  <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Configure}"/>
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.RepositoryConfigure"
+                    x:DataType="vm:RepositoryConfigure"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.Configure}"
+                    Width="600" SizeToContent="Height"
+                    CanResize="False"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,Auto,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
+      <Border Grid.Column="0" Grid.ColumnSpan="3"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="150,*">
+      <Path Grid.Column="0"
+            Width="14" Height="14"
+            Data="{StaticResource Icons.Settings}"
+            Margin="10,0,0,0"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
+        <Button Classes="caption_button_macos" Click="CloseWindow">
+          <Grid>
+            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
+            <Path Height="6" Width="6" Stretch="Fill" Fill="#505050" Data="{StaticResource Icons.MacOS.Close}"/>
+          </Grid>
+        </Button>
+      </Grid>
+
+      <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Configure}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <Button Grid.Column="2" Classes="caption_button" Click="CloseWindow" IsVisible="{OnPlatform True, macOS=False}">
+        <Path Data="{StaticResource Icons.Window.Close}"/>
+      </Button>
+    </Grid>
+
+    <!-- Body -->
+    <Grid Grid.Row="1" Margin="16,8,16,0" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -42,7 +77,13 @@
                Height="28"
                CornerRadius="3"
                Watermark="{DynamicResource Text.Configure.Proxy.Placeholder}"
-               Text="{Binding HttpProxy, Mode=TwoWay}"/>
+               Text="{Binding HttpProxy, Mode=TwoWay}">
+        <TextBox.InnerRightContent>
+          <Button Classes="icon_button" IsVisible="{Binding HttpProxy, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Command="{Binding ClearHttpProxy}">
+            <Path Width="16" Height="16" Margin="0,0,0,0" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
+          </Button>
+        </TextBox.InnerRightContent>
+      </TextBox>
 
       <TextBlock Grid.Row="3" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -62,5 +103,23 @@
                 Content="{DynamicResource Text.Preference.GPG.TagEnabled}"
                 IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
     </Grid>
-  </StackPanel>
-</UserControl>
+
+    <!-- Options -->
+    <StackPanel Grid.Row="2"
+                Margin="8,4,8,8"
+                Height="32"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+      <Button Classes="flat primary"
+              Width="80"
+              Content="{DynamicResource Text.Sure}"
+              Click="SaveAndClose"
+              HotKey="Enter"/>
+      <Button Classes="flat"
+              Width="80"
+              Margin="8,0,0,0"
+              Content="{DynamicResource Text.Cancel}"
+              Click="CloseWindow"/>
+    </StackPanel>
+  </Grid>
+</v:ChromelessWindow>

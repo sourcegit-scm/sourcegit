@@ -9,7 +9,7 @@ namespace SourceGit.Commands
         {
             Context = repo;
             WorkingDirectory = repo;
-            Args = "for-each-ref --sort=-creatordate --format=\"$%(refname:short)$%(objectname)$%(*objectname)\" refs/tags";
+            Args = "tag -l --sort=-creatordate --format=\"$%(refname)$%(objectname)$%(*objectname)\"";
         }
 
         public List<Models.Tag> Result()
@@ -25,7 +25,7 @@ namespace SourceGit.Commands
             {
                 _loaded.Add(new Models.Tag()
                 {
-                    Name = subs[0],
+                    Name = subs[0].Substring(10),
                     SHA = subs[1],
                 });
             }
@@ -33,7 +33,7 @@ namespace SourceGit.Commands
             {
                 _loaded.Add(new Models.Tag()
                 {
-                    Name = subs[0],
+                    Name = subs[0].Substring(10),
                     SHA = subs[2],
                 });
             }

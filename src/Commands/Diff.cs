@@ -14,7 +14,8 @@ namespace SourceGit.Commands
 
         public Diff(string repo, Models.DiffOption opt, int unified)
         {
-            _result.TextDiff = new Models.TextDiff() {
+            _result.TextDiff = new Models.TextDiff()
+            {
                 Repo = repo,
                 Option = opt,
             };

@@ -33,26 +33,16 @@
         <DataGrid.Styles>
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
             <Setter Property="Template">
               <ControlTemplate>
                 <Border Background="{DynamicResource Brush.Window}"
                         BorderBrush="{DynamicResource Brush.Border0}"
-                        BorderThickness="0,0,0,1">
-                  <Grid ColumnDefinitions="*,1">
-                    <ContentControl x:Name="PART_ContentPresenter"
-                                    Grid.Column="0"
-                                    Margin="4,0"
+                        BorderThickness="0,0,1,1">
+                  <ContentPresenter x:Name="PART_ContentPresenter"
                                     Content="{TemplateBinding Content}"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    HorizontalContentAlignment="Center"/>
-
-                    <Rectangle Name="VerticalSeparator"
-                               Grid.Column="1"
-                               Width="1"
-                               VerticalAlignment="Stretch"
-                               Fill="{DynamicResource Brush.Border0}"
-                               IsVisible="{TemplateBinding AreSeparatorsVisible}" />
-                  </Grid>
+                                    HorizontalAlignment="Center"/>
                 </Border>        
               </ControlTemplate>
             </Setter>
@@ -78,38 +68,16 @@
                              Margin="0,0,4,0"
                              Fill="{DynamicResource Brush.FG1}"
                              IsVisible="{Binding CanPullFromUpstream}"/>
-                    
-                    <ItemsControl ItemsSource="{Binding Decorators}" IsVisible="{Binding HasDecorators}">
-                      <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                          <WrapPanel Orientation="Horizontal" VerticalAlignment="Center"/>
-                        </ItemsPanelTemplate>
-                      </ItemsControl.ItemsPanel>
 
-                      <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type m:Decorator}">
-                          <Border Height="16" Margin="0,0,4,0" CornerRadius="2" ClipToBounds="True">
-                            <StackPanel Orientation="Horizontal">
-                              <Border Background="{DynamicResource Brush.DecoratorIconBG}" Width="16">
-                                <Path Width="8" Height="8" 
-                                      Stretch="Uniform" 
-                                      Data="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToIcon}}" 
-                                      Fill="{DynamicResource Brush.DecoratorIcon}"
-                                      VerticalAlignment="Center"/>
-                              </Border>
-                              <Border Background="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToBackground}}">
-                                <TextBlock Classes="monospace" 
-                                           Text="{Binding Name}" 
-                                           FontSize="10" 
-                                           Margin="4,0" 
-                                           Foreground="{DynamicResource Brush.DecoratorFG}"
-                                           FontWeight="{Binding Type, Converter={x:Static c:DecoratorTypeConverters.ToFontWeight}}"/>
-                              </Border>
-                            </StackPanel>
-                          </Border>
-                        </DataTemplate>
-                      </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <v:CommitRefsPresenter IsVisible="{Binding HasDecorators}"
+                                           IconBackground="{DynamicResource Brush.DecoratorIconBG}"
+                                           IconForeground="{DynamicResource Brush.DecoratorIcon}"
+                                           BranchNameBackground="{DynamicResource Brush.DecoratorBranch}"
+                                           TagNameBackground="{DynamicResource Brush.DecoratorTag}"
+                                           LabelForeground="{DynamicResource Brush.DecoratorFG}"
+                                           FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                                           FontSize="10"
+                                           VerticalAlignment="Center"/>
 
                     <TextBlock Classes="monospace" 
                                Text="{Binding Subject}"
@@ -169,7 +137,7 @@
                 <ToggleButton Classes="time_display_mode" 
                               Width="10" Height="10"
                               IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"/>
-                <TextBlock Classes="table_header" Margin="4,0,0,0" Text="{DynamicResource Text.Histories.Header.Time}"/>
+                <TextBlock Classes="table_header" Margin="6,0,0,0" Text="{DynamicResource Text.Histories.Header.Time}"/>
               </StackPanel>
 
             </DataGridTemplateColumn.Header>
@@ -224,7 +192,7 @@
             <v:RevisionCompare/>
           </DataTemplate>
 
-          <DataTemplate DataType="vm:CountSelectedCommits">
+          <DataTemplate DataType="x:Int32">
             <Grid Background="{DynamicResource Brush.Window}">
               <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Path Width="128" Height="128"
@@ -236,7 +204,7 @@
                            Margin="0,16"
                            FontSize="24" FontWeight="Bold"
                            Foreground="{DynamicResource Brush.FG2}"
-                           Text="{Binding Count, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
+                           Text="{Binding Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
               </StackPanel>
             </Grid>
           </DataTemplate>

@@ -34,7 +34,7 @@ namespace SourceGit.Views
 
         private void OnDismissNotification(object sender, RoutedEventArgs e)
         {
-            if (sender is Button { DataContext: ViewModels.Notification notice } &&
+            if (sender is Button { DataContext: Models.Notification notice } &&
                 DataContext is ViewModels.LauncherPage page)
                 page.Notifications.Remove(notice);
 

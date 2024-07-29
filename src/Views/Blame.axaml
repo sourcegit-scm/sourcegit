@@ -9,7 +9,6 @@
                     x:DataType="vm:Blame"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Blame}"
-                    WindowStartupLocation="CenterOwner"
                     MinWidth="1280" MinHeight="720">
   <Grid>
     <Grid.RowDefinitions>

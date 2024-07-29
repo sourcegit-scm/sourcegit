@@ -37,9 +37,9 @@ namespace SourceGit.Views
             if (old == null)
                 return true;
 
-            return Math.Abs(Y - old.Y) > 0.001 || 
-                Math.Abs(Height - old.Height) > 0.001 || 
-                StartIdx != old.StartIdx || 
+            return Math.Abs(Y - old.Y) > 0.001 ||
+                Math.Abs(Height - old.Height) > 0.001 ||
+                StartIdx != old.StartIdx ||
                 EndIdx != old.EndIdx ||
                 Combined != Combined ||
                 IsOldSide != IsOldSide;
@@ -394,16 +394,10 @@ namespace SourceGit.Views
             if (chunk == null || (!chunk.Combined && chunk.IsOldSide != IsOld))
                 return;
 
-            var view = TextArea.TextView;
-            if (view == null || !view.VisualLinesValid)
-                return;
-
             var color = (Color)this.FindResource("SystemAccentColor");
             var brush = new SolidColorBrush(color, 0.1);
             var pen = new Pen(color.ToUInt32());
-
-            var x = ((Point)view.TranslatePoint(new Point(0, 0), this)).X;
-            var rect = new Rect(x - 4, chunk.Y, view.Bounds.Width + 7, chunk.Height);
+            var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
 
             context.DrawRectangle(brush, null, rect);
             context.DrawLine(pen, rect.TopLeft, rect.TopRight);
@@ -639,7 +633,11 @@ namespace SourceGit.Views
             base.OnApplyTemplate(e);
 
             var scroller = (ScrollViewer)e.NameScope.Find("PART_ScrollViewer");
-            scroller?.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.TwoWay));
+            if (scroller != null)
+            {
+                scroller.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.TwoWay));
+                scroller.GotFocus += (_, _) => TrySetChunk(null);
+            }
         }
 
         public override void UpdateSelectedChunk(double y)
@@ -670,6 +668,19 @@ namespace SourceGit.Views
                 }
 
                 if (!hasChanges)
+                {
+                    TrySetChunk(null);
+                    return;
+                }
+
+                var firstLineIdx = view.VisualLines[0].FirstDocumentLine.LineNumber - 1;
+                var lastLineIdx = view.VisualLines[^1].FirstDocumentLine.LineNumber - 1;
+                if (endIdx < firstLineIdx)
+                {
+                    TrySetChunk(null);
+                    return;
+                }
+                else if (startIdx > lastLineIdx)
                 {
                     TrySetChunk(null);
                     return;
@@ -840,6 +851,19 @@ namespace SourceGit.Views
                     return;
                 }
 
+                var firstLineIdx = view.VisualLines[0].FirstDocumentLine.LineNumber - 1;
+                var lastLineIdx = view.VisualLines[^1].FirstDocumentLine.LineNumber - 1;
+                if (endIdx < firstLineIdx)
+                {
+                    TrySetChunk(null);
+                    return;
+                }
+                else if (startIdx > lastLineIdx)
+                {
+                    TrySetChunk(null);
+                    return;
+                }
+
                 var startLine = view.GetVisualLine(startIdx + 1);
                 var endLine = view.GetVisualLine(endIdx + 1);
 
@@ -925,6 +949,7 @@ namespace SourceGit.Views
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
             if (_scrollViewer != null)
             {
+                _scrollViewer.GotFocus += OnTextViewScrollGotFocus;
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
                 _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.OneWay));
             }
@@ -939,6 +964,7 @@ namespace SourceGit.Views
             if (_scrollViewer != null)
             {
                 _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
+                _scrollViewer.GotFocus -= OnTextViewScrollGotFocus;
                 _scrollViewer = null;
             }
 
@@ -975,6 +1001,11 @@ namespace SourceGit.Views
             {
                 Text = string.Empty;
             }
+        }
+
+        private void OnTextViewScrollGotFocus(object sender, GotFocusEventArgs e)
+        {
+            TrySetChunk(null);
         }
 
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -1217,7 +1248,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDiscardChunk(object sender, RoutedEventArgs e) 
+        private void OnDiscardChunk(object sender, RoutedEventArgs e)
         {
             var chunk = SelectedChunk;
             if (chunk == null)
@@ -1260,12 +1291,12 @@ namespace SourceGit.Views
                 if (change.Index == Models.ChangeState.Added)
                 {
                     diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
-                }                    
+                }
                 else if (chunk.Combined)
                 {
                     var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
                     diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                }                    
+                }
                 else
                 {
                     var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();

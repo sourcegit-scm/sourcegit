@@ -5,7 +5,6 @@ namespace SourceGit.Commands
 {
     public partial class QueryStashChanges : Command
     {
-
         [GeneratedRegex(@"^(\s?[\w\?]{1,4})\s+(.+)$")]
         private static partial Regex REG_FORMAT();
 
