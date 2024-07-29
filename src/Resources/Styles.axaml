@@ -259,7 +259,7 @@
     <Setter Property="FontStyle" Value="Italic"/>
   </Style>
   <Style Selector="TextBlock.monospace, SelectableTextBlock.monospace">
-    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"/>
+    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=PrimaryFont}"/>
   </Style>
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>

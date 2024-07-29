@@ -150,7 +150,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.Theme}"
                        HorizontalAlignment="Right"
@@ -232,6 +232,10 @@
                 </Button>
               </TextBox.InnerRightContent>
             </TextBox>
+
+            <CheckBox Grid.Row="5" Grid.Column="1"
+                      Content="{DynamicResource Text.Preference.Appearance.OnlyUseMonoFontInEditor}"
+                      IsChecked="{Binding OnlyUseMonoFontInEditor, Mode=TwoWay}"/>
           </Grid>
         </TabItem>
 
