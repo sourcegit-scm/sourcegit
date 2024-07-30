@@ -29,10 +29,32 @@ namespace SourceGit.Views
 
         private void OnSearchKeyDown(object _, KeyEventArgs e)
         {
+            var repo = DataContext as ViewModels.Repository;
             if (e.Key == Key.Enter)
             {
-                if (DataContext is ViewModels.Repository repo && !string.IsNullOrWhiteSpace(repo.SearchCommitFilter))
+                if (!string.IsNullOrWhiteSpace(repo.SearchCommitFilter))
                     repo.StartSearchCommits();
+
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Down)
+            {
+                if (repo.IsSearchCommitSuggestionOpen)
+                {
+                    SearchSuggestionBox.Focus(NavigationMethod.Tab);
+                    SearchSuggestionBox.SelectedIndex = 0;
+                }
+                    
+
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape)
+            {
+                if (repo.IsSearchCommitSuggestionOpen)
+                {
+                    repo.SearchCommitFilterSuggestion.Clear();
+                    repo.IsSearchCommitSuggestionOpen = false;
+                }
 
                 e.Handled = true;
             }
@@ -271,6 +293,38 @@ namespace SourceGit.Views
                     RemoteBranchTree.Height = height;
                 }
             }
+        }
+
+        private void OnSearchSuggestionBoxKeyDown(object sender, KeyEventArgs e) 
+        {
+            var repo = DataContext as ViewModels.Repository;
+            if (e.Key == Key.Escape)
+            {
+                repo.IsSearchCommitSuggestionOpen = false;
+                repo.SearchCommitFilterSuggestion.Clear();
+
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Enter && SearchSuggestionBox.SelectedItem is string content)
+            {
+                repo.SearchCommitFilter = content;
+                TxtSearchCommitsBox.CaretIndex = content.Length;
+                repo.StartSearchCommits();
+                e.Handled = true;
+            }
+        }
+
+        private void OnSearchSuggestionDoubleTapped(object sender, TappedEventArgs e) 
+        {
+            var repo = DataContext as ViewModels.Repository;
+            var content = (sender as StackPanel)?.DataContext as string;
+            if (!string.IsNullOrEmpty(content))
+            {
+                repo.SearchCommitFilter = content;
+                TxtSearchCommitsBox.CaretIndex = content.Length;
+                repo.StartSearchCommits();
+            }
+            e.Handled = true;
         }
     }
 }

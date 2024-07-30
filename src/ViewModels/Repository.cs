@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -170,8 +171,15 @@ namespace SourceGit.ViewModels
                 {
                     SearchedCommits = new List<Models.Commit>();
                     SearchCommitFilter = string.Empty;
+                    SearchCommitFilterSuggestion.Clear();
+                    IsSearchCommitSuggestionOpen = false;
+                    _revisionFiles.Clear();
+
                     if (value)
+                    {
                         SelectedViewIndex = 0;
+                        UpdateCurrentRevisionFilesForSearchSuggestion();
+                    }
                 }
             }
         }
@@ -185,14 +193,58 @@ namespace SourceGit.ViewModels
         public int SearchCommitFilterType
         {
             get => _searchCommitFilterType;
-            set => SetProperty(ref _searchCommitFilterType, value);
+            set
+            {
+                if (SetProperty(ref _searchCommitFilterType, value))
+                    UpdateCurrentRevisionFilesForSearchSuggestion();
+            }
         }
 
         public string SearchCommitFilter
         {
             get => _searchCommitFilter;
-            set => SetProperty(ref _searchCommitFilter, value);
+            set
+            {
+                if (SetProperty(ref _searchCommitFilter, value) &&
+                    _searchCommitFilterType == 3 &&
+                    !string.IsNullOrEmpty(value) && 
+                    value.Length >= 2 && 
+                    _revisionFiles.Count > 0)
+                {
+                    var suggestion = new List<string>();
+                    foreach (var file in _revisionFiles)
+                    {
+                        if (file.Contains(value, StringComparison.OrdinalIgnoreCase) && file.Length != value.Length)
+                        {
+                            suggestion.Add(file);
+                            if (suggestion.Count > 100)
+                                break;
+                        }
+                    }
+
+                    SearchCommitFilterSuggestion.Clear();
+                    SearchCommitFilterSuggestion.AddRange(suggestion);
+                    IsSearchCommitSuggestionOpen = SearchCommitFilterSuggestion.Count > 0;
+                }
+                else if (SearchCommitFilterSuggestion.Count > 0)
+                {
+                    SearchCommitFilterSuggestion.Clear();
+                    IsSearchCommitSuggestionOpen = false;
+                }
+            }
         }
+
+        public bool IsSearchCommitSuggestionOpen
+        {
+            get => _isSearchCommitSuggestionOpen;
+            set => SetProperty(ref _isSearchCommitSuggestionOpen, value);
+        }
+
+        public AvaloniaList<string> SearchCommitFilterSuggestion
+        {
+            get;
+            private set;
+        } = new AvaloniaList<string>();
 
         public List<Models.Commit> SearchedCommits
         {
@@ -306,6 +358,9 @@ namespace SourceGit.ViewModels
             _visibleTags.Clear();
             _submodules.Clear();
             _searchedCommits.Clear();
+
+            _revisionFiles.Clear();
+            SearchCommitFilterSuggestion.Clear();
         }
 
         public void RefreshAll()
@@ -450,6 +505,8 @@ namespace SourceGit.ViewModels
                 return;
 
             IsSearchLoadingVisible = true;
+            IsSearchCommitSuggestionOpen = false;
+            SearchCommitFilterSuggestion.Clear();
 
             Task.Run(() =>
             {
@@ -1886,6 +1943,20 @@ namespace SourceGit.ViewModels
             return visible;
         }
 
+        private void UpdateCurrentRevisionFilesForSearchSuggestion()
+        {
+            _revisionFiles.Clear();
+
+            if (_searchCommitFilterType == 3)
+            {
+                Task.Run(() =>
+                {
+                    var files = new Commands.QueryCurrentRevisionFiles(_fullpath).Result();
+                    Dispatcher.UIThread.Invoke(() => _revisionFiles.AddRange(files));
+                });
+            }
+        }
+
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.RepositorySettings _settings = null;
@@ -1899,9 +1970,11 @@ namespace SourceGit.ViewModels
 
         private bool _isSearching = false;
         private bool _isSearchLoadingVisible = false;
+        private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 0;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
+        private List<string> _revisionFiles = new List<string>();
 
         private bool _isLocalBranchGroupExpanded = true;
         private bool _isRemoteGroupExpanded = false;
