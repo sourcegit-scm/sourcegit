@@ -83,13 +83,21 @@ namespace SourceGit.ViewModels
         public FontFamily DefaultFont
         {
             get => _defaultFont;
-            set => SetProperty(ref _defaultFont, value);
+            set
+            {
+                if (SetProperty(ref _defaultFont, value) && _onlyUseMonoFontInEditor)
+                    OnPropertyChanged(nameof(PrimaryFont));
+            }
         }
 
         public FontFamily MonospaceFont
         {
             get => _monospaceFont;
-            set => SetProperty(ref _monospaceFont, value);
+            set
+            {
+                if (SetProperty(ref _monospaceFont, value) && !_onlyUseMonoFontInEditor)
+                    OnPropertyChanged(nameof(PrimaryFont));
+            }
         }
 
         [JsonIgnore]
