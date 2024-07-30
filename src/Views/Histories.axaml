@@ -29,7 +29,8 @@
                 VerticalScrollBarVisibility="Auto"
                 LayoutUpdated="OnCommitDataGridLayoutUpdated"
                 SelectionChanged="OnCommitDataGridSelectionChanged"
-                ContextRequested="OnCommitDataGridContextRequested">
+                ContextRequested="OnCommitDataGridContextRequested"
+                DoubleTapped="OnCommitDataGridDoubleTapped">
         <DataGrid.Styles>
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
