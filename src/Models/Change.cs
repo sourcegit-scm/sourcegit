@@ -13,6 +13,7 @@ namespace SourceGit.Models
     {
         None,
         Modified,
+        TypeChanged,
         Added,
         Deleted,
         Renamed,

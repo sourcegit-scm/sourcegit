@@ -19,6 +19,12 @@ namespace SourceGit.Views
             },
             new LinearGradientBrush
             {
+                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
+                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            },
+            new LinearGradientBrush
+            {
                 GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(47, 185, 47), 0), new GradientStop(Color.FromRgb(75, 189, 75), 1) },
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
@@ -55,7 +61,7 @@ namespace SourceGit.Views
             },
         ];
 
-        private static readonly string[] INDICATOR = ["?", "±", "+", "−", "➜", "❏", "U", "★"];
+        private static readonly string[] INDICATOR = ["?", "±", "T", "+", "−", "➜", "❏", "U", "★"];
 
         public static readonly StyledProperty<bool> IsUnstagedChangeProperty =
             AvaloniaProperty.Register<ChangeStatusIcon, bool>(nameof(IsUnstagedChange));

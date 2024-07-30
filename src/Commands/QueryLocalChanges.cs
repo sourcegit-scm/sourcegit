@@ -39,6 +39,9 @@ namespace SourceGit.Commands
                 case " M":
                     change.Set(Models.ChangeState.None, Models.ChangeState.Modified);
                     break;
+                case " T":
+                    change.Set(Models.ChangeState.None, Models.ChangeState.TypeChanged);
+                    break;
                 case " A":
                     change.Set(Models.ChangeState.None, Models.ChangeState.Added);
                     break;
@@ -57,14 +60,32 @@ namespace SourceGit.Commands
                 case "MM":
                     change.Set(Models.ChangeState.Modified, Models.ChangeState.Modified);
                     break;
+                case "MT":
+                    change.Set(Models.ChangeState.Modified, Models.ChangeState.TypeChanged);
+                    break;
                 case "MD":
                     change.Set(Models.ChangeState.Modified, Models.ChangeState.Deleted);
+                    break;
+                case "T":
+                    change.Set(Models.ChangeState.TypeChanged);
+                    break;
+                case "TM":
+                    change.Set(Models.ChangeState.TypeChanged, Models.ChangeState.Modified);
+                    break;
+                case "TT":
+                    change.Set(Models.ChangeState.TypeChanged, Models.ChangeState.TypeChanged);
+                    break;
+                case "TD":
+                    change.Set(Models.ChangeState.TypeChanged, Models.ChangeState.Deleted);
                     break;
                 case "A":
                     change.Set(Models.ChangeState.Added);
                     break;
                 case "AM":
                     change.Set(Models.ChangeState.Added, Models.ChangeState.Modified);
+                    break;
+                case "AT":
+                    change.Set(Models.ChangeState.Added, Models.ChangeState.TypeChanged);
                     break;
                 case "AD":
                     change.Set(Models.ChangeState.Added, Models.ChangeState.Deleted);
@@ -78,6 +99,9 @@ namespace SourceGit.Commands
                 case "RM":
                     change.Set(Models.ChangeState.Renamed, Models.ChangeState.Modified);
                     break;
+                case "RT":
+                    change.Set(Models.ChangeState.Renamed, Models.ChangeState.TypeChanged);
+                    break;
                 case "RD":
                     change.Set(Models.ChangeState.Renamed, Models.ChangeState.Deleted);
                     break;
@@ -86,6 +110,9 @@ namespace SourceGit.Commands
                     break;
                 case "CM":
                     change.Set(Models.ChangeState.Copied, Models.ChangeState.Modified);
+                    break;
+                case "CT":
+                    change.Set(Models.ChangeState.Copied, Models.ChangeState.TypeChanged);
                     break;
                 case "CD":
                     change.Set(Models.ChangeState.Copied, Models.ChangeState.Deleted);
