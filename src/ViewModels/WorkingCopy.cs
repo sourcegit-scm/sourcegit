@@ -23,11 +23,8 @@ namespace SourceGit.ViewModels
         {
             Task.Run(() =>
             {
-                var result = new Commands.IsConflictResolved(repo, change).Result();
-                Dispatcher.UIThread.Post(() =>
-                {
-                    IsResolved = result;
-                });
+                var result = new Commands.IsConflictResolved(repo, change).ReadToEnd().IsSuccess;
+                Dispatcher.UIThread.Post(() => IsResolved = result);
             });
         }
 

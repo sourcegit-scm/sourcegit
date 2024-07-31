@@ -44,7 +44,7 @@ namespace SourceGit.Views
                     SearchSuggestionBox.Focus(NavigationMethod.Tab);
                     SearchSuggestionBox.SelectedIndex = 0;
                 }
-                    
+
 
                 e.Handled = true;
             }
@@ -295,7 +295,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnSearchSuggestionBoxKeyDown(object sender, KeyEventArgs e) 
+        private void OnSearchSuggestionBoxKeyDown(object sender, KeyEventArgs e)
         {
             var repo = DataContext as ViewModels.Repository;
             if (e.Key == Key.Escape)
@@ -314,7 +314,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnSearchSuggestionDoubleTapped(object sender, TappedEventArgs e) 
+        private void OnSearchSuggestionDoubleTapped(object sender, TappedEventArgs e)
         {
             var repo = DataContext as ViewModels.Repository;
             var content = (sender as StackPanel)?.DataContext as string;

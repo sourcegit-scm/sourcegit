@@ -38,13 +38,9 @@ namespace SourceGit.Commands
                 ProcessInlineHighlights();
 
                 if (_result.TextDiff.Lines.Count == 0)
-                {
                     _result.TextDiff = null;
-                }
                 else
-                {
                     _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
-                }
             }
 
             return _result;

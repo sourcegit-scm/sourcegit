@@ -58,7 +58,7 @@ namespace SourceGit.ViewModels
             get => _repo.Settings.PreferRebaseInsteadOfMerge;
             set => _repo.Settings.PreferRebaseInsteadOfMerge = value;
         }
-        
+
         public bool FetchAllBranches
         {
             get => _repo.Settings.FetchAllBranchesOnPull;

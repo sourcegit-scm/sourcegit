@@ -207,8 +207,8 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _searchCommitFilter, value) &&
                     _searchCommitFilterType == 3 &&
-                    !string.IsNullOrEmpty(value) && 
-                    value.Length >= 2 && 
+                    !string.IsNullOrEmpty(value) &&
+                    value.Length >= 2 &&
                     _revisionFiles.Count > 0)
                 {
                     var suggestion = new List<string>();

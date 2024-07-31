@@ -415,7 +415,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.Histories histories && sender is DataGrid datagrid && datagrid.SelectedItems is { Count: 1 } selectedItems)
             {
-                histories.DoubleTapped(selectedItems[0] as Models.Commit);   
+                histories.DoubleTapped(selectedItems[0] as Models.Commit);
             }
             e.Handled = true;
         }
