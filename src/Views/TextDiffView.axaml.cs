@@ -1273,7 +1273,7 @@ namespace SourceGit.Views
                     return;
 
                 var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                workcopy?.Discard(new List<Models.Change> { change }, diff.Option.IsUnstaged);
+                workcopy?.Discard(new List<Models.Change> { change });
             }
             else
             {
@@ -1303,7 +1303,7 @@ namespace SourceGit.Views
                     diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
                 }
 
-                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", diff.Option.IsUnstaged ? "--reverse" : "--index --reverse").Exec();
+                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--reverse").Exec();
                 File.Delete(tmpFile);
 
                 repo.MarkWorkingCopyDirtyManually();

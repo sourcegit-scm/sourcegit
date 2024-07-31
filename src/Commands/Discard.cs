@@ -11,7 +11,7 @@ namespace SourceGit.Commands
             new Clean(repo).Exec();
         }
 
-        public static void ChangesInWorkTree(string repo, List<Models.Change> changes)
+        public static void Changes(string repo, List<Models.Change> changes)
         {
             var needClean = new List<string>();
             var needCheckout = new List<string>();
@@ -19,13 +19,9 @@ namespace SourceGit.Commands
             foreach (var c in changes)
             {
                 if (c.WorkTree == Models.ChangeState.Untracked || c.WorkTree == Models.ChangeState.Added)
-                {
                     needClean.Add(c.Path);
-                }
                 else
-                {
                     needCheckout.Add(c.Path);
-                }
             }
 
             for (int i = 0; i < needClean.Count; i += 10)
@@ -38,18 +34,6 @@ namespace SourceGit.Commands
             {
                 var count = Math.Min(10, needCheckout.Count - i);
                 new Restore(repo, needCheckout.GetRange(i, count), "--worktree --recurse-submodules").Exec();
-            }
-        }
-
-        public static void ChangesInStaged(string repo, List<Models.Change> changes)
-        {
-            for (int i = 0; i < changes.Count; i += 10)
-            {
-                var count = Math.Min(10, changes.Count - i);
-                var files = new List<string>();
-                for (int j = 0; j < count; j++)
-                    files.Add(changes[i + j].Path);
-                new Restore(repo, files, "--staged --worktree --recurse-submodules").Exec();
             }
         }
     }
