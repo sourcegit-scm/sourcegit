@@ -553,6 +553,7 @@
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodule:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Use --remote option</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Warning</x:String>
+  <x:String x:Key="Text.Welcome" xml:space="preserve">Welcome Page</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Create Group</x:String>
   <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">Create Sub-Group</x:String>
   <x:String x:Key="Text.Welcome.Clone" xml:space="preserve">Clone Repository</x:String>

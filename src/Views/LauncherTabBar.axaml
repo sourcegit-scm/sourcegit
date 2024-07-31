@@ -42,6 +42,13 @@
                       PointerReleased="OnPointerReleasedTab"
                       Loaded="SetupDragAndDrop"
                       ContextRequested="OnTabContextRequested">
+                <ToolTip.Tip>
+                  <Grid>
+                    <TextBlock Text="{DynamicResource Text.Welcome}" IsVisible="{Binding !Node.IsRepository}"/>
+                    <TextBlock Text="{Binding Node.Id}" IsVisible="{Binding Node.IsRepository}"/>
+                  </Grid>
+                </ToolTip.Tip>
+                
                 <Grid Width="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
                   <Path Grid.Column="0"
                         Width="12" Height="12" Margin="12,0"

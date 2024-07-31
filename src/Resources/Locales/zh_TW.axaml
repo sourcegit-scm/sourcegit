@@ -555,6 +555,7 @@
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">子模組 ：</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">啟用『--remote』選項</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
+  <x:String x:Key="Text.Welcome" xml:space="preserve">起始頁</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">新建分組</x:String>
   <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">新建子分組</x:String>
   <x:String x:Key="Text.Welcome.Clone" xml:space="preserve">克隆遠端倉庫</x:String>
