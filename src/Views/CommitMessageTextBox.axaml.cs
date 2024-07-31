@@ -146,7 +146,7 @@ namespace SourceGit.Views
                             SubjectEditor.Paste(text.Substring(0, idx));
                             DescriptionEditor.Focus();
                             DescriptionEditor.CaretIndex = 0;
-                            DescriptionEditor.Paste(text.Substring(idx + 1) + "\n");
+                            DescriptionEditor.Paste(text.Substring(idx + 1).Trim());
                         }
                     }
                     else
