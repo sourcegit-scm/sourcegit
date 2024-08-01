@@ -89,7 +89,7 @@
 
               <ListBoxItem>
                 <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Send}"/>
+                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Changes}"/>
                   <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.WorkingCopy}"/>
                   <Border Grid.Column="2"
                           Margin="6,0"
