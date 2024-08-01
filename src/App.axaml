@@ -11,6 +11,7 @@
         <ResourceInclude Source="/Resources/Themes.axaml"/>
       </ResourceDictionary.MergedDictionaries>
 
+      <ResourceInclude x:Key="de_DE" Source="/Resources/Locales/de_DE.axaml"/>
       <ResourceInclude x:Key="en_US" Source="/Resources/Locales/en_US.axaml"/>
       <ResourceInclude x:Key="pt_BR" Source="/Resources/Locales/pt_BR.axaml"/>
       <ResourceInclude x:Key="zh_CN" Source="/Resources/Locales/zh_CN.axaml"/>
