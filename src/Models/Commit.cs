@@ -104,4 +104,10 @@ namespace SourceGit.Models
             });
         }
     }
+
+    public class CommitWithMessage
+    {
+        public Commit Commit { get; set; } = new Commit();
+        public string Message { get; set; } = "";
+    }
 }
