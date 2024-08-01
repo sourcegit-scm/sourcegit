@@ -491,7 +491,7 @@ namespace SourceGit.ViewModels
 
                     var stash = new MenuItem();
                     stash.Header = App.Text("FileCM.Stash");
-                    stash.Icon = App.CreateMenuIcon("Icons.Stashes");
+                    stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                     stash.Click += (_, e) =>
                     {
                         if (PopupHost.CanCreatePopup())
@@ -815,7 +815,7 @@ namespace SourceGit.ViewModels
 
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.StashMulti", _selectedUnstaged.Count);
-                stash.Icon = App.CreateMenuIcon("Icons.Stashes");
+                stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -900,7 +900,7 @@ namespace SourceGit.ViewModels
 
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.Stash");
-                stash.Icon = App.CreateMenuIcon("Icons.Stashes");
+                stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -1057,7 +1057,7 @@ namespace SourceGit.ViewModels
 
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.StashMulti", _selectedStaged.Count);
-                stash.Icon = App.CreateMenuIcon("Icons.Stashes");
+                stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())

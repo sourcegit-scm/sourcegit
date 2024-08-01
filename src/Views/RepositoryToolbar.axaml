@@ -44,7 +44,7 @@
         </Button>
 
         <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding StashAll}" ToolTip.Tip="{DynamicResource Text.Stash}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Stashes}"/>
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Stashes.Add}"/>
         </Button>
 
         <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding ApplyPatch}" ToolTip.Tip="{DynamicResource Text.Apply}">
