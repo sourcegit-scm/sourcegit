@@ -25,7 +25,7 @@ namespace SourceGit.Models
 
             try
             {
-                var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{icon}.png",
+                var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/ExternalToolIcons/{icon}.png",
                     UriKind.RelativeOrAbsolute));
                 IconImage = new Bitmap(asset);
             }

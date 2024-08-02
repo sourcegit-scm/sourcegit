@@ -294,22 +294,22 @@
                       IsVisible="{OnPlatform False, Windows=True}">
               <ComboBox.Items>
                 <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/git-bash.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/git-bash.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
                   <TextBlock Grid.Column="1" Text="Git Bash" Margin="6,0,0,0"/>
                 </Grid>
                 
                 <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/pwsh.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/pwsh.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
                   <TextBlock Grid.Column="1" Text="PowerShell" Margin="6,0,0,0"/>
                 </Grid>
 
                 <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/cmd.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/cmd.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
                   <TextBlock Grid.Column="1" Text="Command Prompt" Margin="6,0,0,0"/>
                 </Grid>
 
                 <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/wt.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/wt.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
                   <TextBlock Grid.Column="1" Text="Default Shell in Windows Terminal" Margin="6,0,0,0"/>
                 </Grid>
               </ComboBox.Items>
