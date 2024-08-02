@@ -208,8 +208,8 @@ namespace SourceGit
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                if (desktop.MainWindow?.Clipboard is { } clipbord)
-                    await clipbord.SetTextAsync(data);
+                if (desktop.MainWindow?.Clipboard is { } clipboard)
+                    await clipboard.SetTextAsync(data);
             }
         }
 
