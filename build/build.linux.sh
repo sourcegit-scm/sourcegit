@@ -16,12 +16,13 @@ cd ../../
 
 # Debain/Ubuntu package
 mkdir -p resources/deb/opt/sourcegit/
+mkdir -p resources/deb/usr/bin
 mkdir -p resources/deb/usr/share/applications
 mkdir -p resources/deb/usr/share/icons
 cp -f SourceGit/* resources/deb/opt/sourcegit/
+ln -sf ../../opt/sourcegit/sourcegit resources/deb/usr/bin
 cp -r resources/_common/applications resources/deb/usr/share/
 cp -r resources/_common/icons resources/deb/usr/share/
-chmod +x -R resources/deb/opt/sourcegit
 sed -i "2s/.*/Version: ${version}/g" resources/deb/DEBIAN/control
 dpkg-deb --build resources/deb ./sourcegit_${version}-1_amd64.deb
 
