@@ -781,7 +781,7 @@
                                     ContentTemplate="{TemplateBinding HeaderTemplate}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Stretch"
-                                    RecognizesAccessKey="True"/>
+                                    RecognizesAccessKey="False"/>
                   <TextBlock x:Name="PART_InputGestureText"
                              Grid.Column="2"
                              Classes="CaptionTextBlockStyle"
