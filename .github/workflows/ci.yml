@@ -99,3 +99,41 @@ jobs:
         with:
           name: sourcegit.linux-x64
           path: sourcegit.linux-x64.tar
+  build-linux-arm64:
+    name: Build Linux (arm64)
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Configure arm64 packages
+        run: |
+          sudo dpkg --add-architecture arm64
+          echo 'deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ focal main restricted
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ focal-updates main restricted
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ focal-backports main restricted' \
+          | sudo tee /etc/apt/sources.list.d/arm64.list
+          sudo sed -i -e 's/^deb http/deb [arch=amd64] http/g' /etc/apt/sources.list
+          sudo sed -i -e 's/^deb mirror/deb [arch=amd64] mirror/g' /etc/apt/sources.list
+      - name: Install cross-compiling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install clang llvm gcc-aarch64-linux-gnu zlib1g-dev:arm64
+      - name: Build
+        run: dotnet build -c Release
+      - name: Publish
+        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r linux-arm64
+      - name: Rename Executable File
+        run: mv publish/SourceGit publish/sourcegit
+      - name: Packing Program
+        run: tar -cvf sourcegit.linux-arm64.tar -C publish/ .
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sourcegit.linux-arm64
+          path: sourcegit.linux-arm64.tar
