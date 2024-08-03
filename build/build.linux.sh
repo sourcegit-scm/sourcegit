@@ -24,7 +24,7 @@ ln -sf ../../opt/sourcegit/sourcegit resources/deb/usr/bin
 cp -r resources/_common/applications resources/deb/usr/share/
 cp -r resources/_common/icons resources/deb/usr/share/
 sed -i "2s/.*/Version: ${version}/g" resources/deb/DEBIAN/control
-dpkg-deb --build resources/deb ./sourcegit_${version}-1_amd64.deb
+dpkg-deb --root-owner-group --build resources/deb ./sourcegit_${version}-1_amd64.deb
 
 # Redhat/CentOS/Fedora package
 rpmbuild -bb --target=x86_64 resources/rpm/SPECS/build.spec --define "_topdir `pwd`/resources/rpm" --define "_version ${version}"
