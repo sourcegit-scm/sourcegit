@@ -60,6 +60,12 @@ jobs:
       - name: Rename executable file
         if: ${{ startsWith(matrix.runtime, 'linux-') }}
         run: mv publish/SourceGit publish/sourcegit
+      - name: Tar artifact
+        if: ${{ startsWith(matrix.runtime, 'linux-') }}
+        run: |
+          tar -cvf "sourcegit.${{ matrix.runtime }}.tar" -C publish .
+          rm -r publish/*
+          mv "sourcegit.${{ matrix.runtime }}.tar" publish
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
