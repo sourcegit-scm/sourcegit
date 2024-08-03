@@ -1,0 +1,95 @@
+name: Package
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: Source Git package version
+        required: true
+        type: string
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/ci.yml
+  windows-portable:
+    name: Package portable Windows app
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runtime: [win-x64, win-arm64]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Download build
+        uses: actions/download-artifact@v4
+        with:
+          name: sourcegit.${{ matrix.runtime }}
+          path: build/SourceGit
+      - name: Package
+        env:
+          VERSION: ${{ inputs.version }}
+          RUNTIME: ${{ matrix.runtime }}
+        run: ./build/ci/package.windows-portable.sh
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: package.${{ matrix.runtime }}
+          path: build/sourcegit_*.zip
+  osx-app:
+    name: Package OSX app
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runtime: [osx-x64, osx-arm64]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Download build
+        uses: actions/download-artifact@v4
+        with:
+          name: sourcegit.${{ matrix.runtime }}
+          path: build/SourceGit
+      - name: Package
+        env:
+          VERSION: ${{ inputs.version }}
+          RUNTIME: ${{ matrix.runtime }}
+        run: ./build/ci/package.osx-app.sh
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: package.${{ matrix.runtime }}
+          path: build/sourcegit_*.zip
+  linux:
+    name: Package Linux
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runtime: [linux-x64, linux-arm64]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Download package dependencies
+        run: |
+          sudo add-apt-repository universe
+          sudo apt-get update
+          sudo apt-get install desktop-file-utils rpm libfuse2
+      - name: Download build
+        uses: actions/download-artifact@v4
+        with:
+          name: sourcegit.${{ matrix.runtime }}
+          path: build/SourceGit
+      - name: Package
+        env:
+          VERSION: ${{ inputs.version }}
+          RUNTIME: ${{ matrix.runtime }}
+        run: ./build/ci/package.linux.sh
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: package.${{ matrix.runtime }}
+          path: |
+            build/sourcegit-*.AppImage
+            build/sourcegit_*.deb
+            build/sourcegit-*.rpm
