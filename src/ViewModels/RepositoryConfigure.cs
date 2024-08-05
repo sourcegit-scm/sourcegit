@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -43,12 +42,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _httpProxy, value);
         }
 
-        public AvaloniaList<IssueTrackerRule> IssueTrackerRules
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
         {
-            get => _repo.IssueTrackerSetting.Rules;
+            get => _repo.Settings.IssueTrackerRules;
         }
 
-        public IssueTrackerRule SelectedIssueTrackerRule
+        public Models.IssueTrackerRule SelectedIssueTrackerRule
         {
             get => _selectedIssueTrackerRule;
             set => SetProperty(ref _selectedIssueTrackerRule, value);
@@ -86,29 +85,29 @@ namespace SourceGit.ViewModels
                 {
                     if (remote.TryGetVisitURL(out string url))
                     {
-                        SelectedIssueTrackerRule = _repo.IssueTrackerSetting.AddGithub(url);
+                        SelectedIssueTrackerRule = _repo.Settings.AddGithubIssueTracker(url);
                         return;
                     }
                 }
             }
 
-            SelectedIssueTrackerRule = _repo.IssueTrackerSetting.AddGithub(null);
+            SelectedIssueTrackerRule = _repo.Settings.AddGithubIssueTracker(null);
         }
 
         public void AddSampleJiraIssueTracker()
         {
-            SelectedIssueTrackerRule = _repo.IssueTrackerSetting.AddJira();
+            SelectedIssueTrackerRule = _repo.Settings.AddJiraIssueTracker();
         }
 
         public void NewIssueTracker()
         {
-            SelectedIssueTrackerRule = _repo.IssueTrackerSetting.Add();
+            SelectedIssueTrackerRule = _repo.Settings.AddNewIssueTracker();
         }
 
         public void RemoveSelectedIssueTracker()
         {
-            if (_selectedIssueTrackerRule != null)
-                _repo.IssueTrackerSetting.Rules.Remove(_selectedIssueTrackerRule);
+            _repo.Settings.RemoveIssueTracker(_selectedIssueTrackerRule);
+            SelectedIssueTrackerRule = null;
         }
 
         public void Save()
@@ -142,6 +141,6 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private readonly Dictionary<string, string> _cached = null;
         private string _httpProxy;
-        private IssueTrackerRule _selectedIssueTrackerRule = null;
+        private Models.IssueTrackerRule _selectedIssueTrackerRule = null;
     }
 }

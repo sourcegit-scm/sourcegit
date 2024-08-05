@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
 
@@ -24,13 +25,13 @@ namespace SourceGit.Views
             set => SetValue(MessageProperty, value);
         }
 
-        public static readonly StyledProperty<ViewModels.IssueTrackerRuleSetting> IssueTrackerSettingProperty =
-            AvaloniaProperty.Register<CommitBaseInfo, ViewModels.IssueTrackerRuleSetting>(nameof(IssueTrackerSetting));
+        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
 
-        public ViewModels.IssueTrackerRuleSetting IssueTrackerSetting
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
         {
-            get => GetValue(IssueTrackerSettingProperty);
-            set => SetValue(IssueTrackerSettingProperty, value);
+            get => GetValue(IssueTrackerRulesProperty);
+            set => SetValue(IssueTrackerRulesProperty, value);
         }
 
         public CommitBaseInfo()

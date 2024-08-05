@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
@@ -19,13 +20,13 @@ namespace SourceGit.Views
             set => SetValue(MessageProperty, value);
         }
 
-        public static readonly StyledProperty<ViewModels.IssueTrackerRuleSetting> IssueTrackerSettingProperty =
-            AvaloniaProperty.Register<CommitMessagePresenter, ViewModels.IssueTrackerRuleSetting>(nameof(IssueTrackerSetting));
+        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
+            AvaloniaProperty.Register<CommitMessagePresenter, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
 
-        public ViewModels.IssueTrackerRuleSetting IssueTrackerSetting
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
         {
-            get => GetValue(IssueTrackerSettingProperty);
-            set => SetValue(IssueTrackerSettingProperty, value);
+            get => GetValue(IssueTrackerRulesProperty);
+            set => SetValue(IssueTrackerRulesProperty, value);
         }
 
         protected override Type StyleKeyOverride => typeof(SelectableTextBlock);
@@ -34,7 +35,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == MessageProperty || change.Property == IssueTrackerSettingProperty)
+            if (change.Property == MessageProperty || change.Property == IssueTrackerRulesProperty)
             {
                 Inlines.Clear();
 
@@ -42,14 +43,14 @@ namespace SourceGit.Views
                 if (string.IsNullOrEmpty(message))
                     return;
 
-                var rules = IssueTrackerSetting?.Rules;
+                var rules = IssueTrackerRules;
                 if (rules == null || rules.Count == 0)
                 {
                     Inlines.Add(new Run(message));
                     return;
                 }
 
-                var matches = new List<ViewModels.IssueTrackerMatch>();
+                var matches = new List<Models.IssueTrackerMatch>();
                 foreach (var rule in rules)
                     rule.Matches(matches, message);
 

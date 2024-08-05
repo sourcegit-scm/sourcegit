@@ -44,11 +44,6 @@ namespace SourceGit.ViewModels
             get => _settings;
         }
 
-        public IssueTrackerRuleSetting IssueTrackerSetting
-        {
-            get => _issueTrackerSetting;
-        }
-
         public int SelectedViewIndex
         {
             get => _selectedViewIndex;
@@ -324,23 +319,6 @@ namespace SourceGit.ViewModels
                 _settings = new Models.RepositorySettings();
             }
 
-            var issueTrackerSettingsFile = Path.Combine(_gitDir, "sourcegit.issuetracker.settings");
-            if (File.Exists(issueTrackerSettingsFile))
-            {
-                try
-                {
-                    _issueTrackerSetting = JsonSerializer.Deserialize(File.ReadAllText(issueTrackerSettingsFile), JsonCodeGen.Default.IssueTrackerRuleSetting);
-                }
-                catch
-                {
-                    _issueTrackerSetting = new IssueTrackerRuleSetting();
-                }
-            }
-            else
-            {
-                _issueTrackerSetting = new IssueTrackerRuleSetting();
-            }
-
             _watcher = new Models.Watcher(this);
             _histories = new Histories(this);
             _workingCopy = new WorkingCopy(this);
@@ -360,10 +338,6 @@ namespace SourceGit.ViewModels
             var settingsSerialized = JsonSerializer.Serialize(_settings, JsonCodeGen.Default.RepositorySettings);
             File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
             _settings = null;
-
-            var issueTrackerSerialized = JsonSerializer.Serialize(_issueTrackerSetting, JsonCodeGen.Default.IssueTrackerRuleSetting);
-            File.WriteAllText(Path.Combine(_gitDir, "sourcegit.issuetracker.settings"), issueTrackerSerialized);
-            _issueTrackerSetting = null;
 
             _watcher.Dispose();
             _histories.Cleanup();
@@ -1986,7 +1960,6 @@ namespace SourceGit.ViewModels
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.RepositorySettings _settings = null;
-        private IssueTrackerRuleSetting _issueTrackerSetting = null;
 
         private Models.Watcher _watcher = null;
         private Histories _histories = null;

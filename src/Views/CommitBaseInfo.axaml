@@ -96,7 +96,7 @@
                                     Margin="12,5,8,0" 
                                     Classes="primary" 
                                     Message="{Binding #ThisControl.Message}"
-                                    IssueTrackerSetting="{Binding #ThisControl.IssueTrackerSetting}"
+                                    IssueTrackerRules="{Binding #ThisControl.IssueTrackerRules}"
                                     TextWrapping="Wrap"/>
         </Grid>
       </StackPanel>

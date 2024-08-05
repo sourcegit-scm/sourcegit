@@ -5,7 +5,7 @@ using Avalonia.Collections;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace SourceGit.Models
 {
     public class IssueTrackerMatch
     {
@@ -72,7 +72,7 @@ namespace SourceGit.ViewModels
                 return;
 
             var matches = _regex.Matches(message);
-            for (int i = 0; i < matches.Count; i++)
+            for (var i = 0; i < matches.Count; i++)
             {
                 var match = matches[i];
                 if (!match.Success)
@@ -97,7 +97,7 @@ namespace SourceGit.ViewModels
                 range.Start = start;
                 range.Length = len;
                 range.URL = _urlTemplate;
-                for (int j = 1; j < match.Groups.Count; j++)
+                for (var j = 1; j < match.Groups.Count; j++)
                 {
                     var group = match.Groups[j];
                     if (group.Success)
@@ -112,53 +112,5 @@ namespace SourceGit.ViewModels
         private string _regexString;
         private string _urlTemplate;
         private Regex _regex = null;
-    }
-
-    public class IssueTrackerRuleSetting
-    {
-        public AvaloniaList<IssueTrackerRule> Rules
-        {
-            get;
-            set;
-        } = new AvaloniaList<IssueTrackerRule>();
-
-        public IssueTrackerRule Add()
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "New Issue Tracker",
-                RegexString = "#(\\d+)",
-                URLTemplate = "https://xxx/$1",
-            };
-
-            Rules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddGithub(string repoURL)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "Github ISSUE",
-                RegexString = "#(\\d+)",
-                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://github.com/username/repository/issues/$1" : $"{repoURL}/issues/$1",
-            };
-
-            Rules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddJira()
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "Jira Tracker",
-                RegexString = "PROJ-(\\d+)",
-                URLTemplate = "https://jira.yourcompany.com/browse/PROJ-$1",
-            };
-
-            Rules.Add(rule);
-            return rule;
-        }
     }
 }

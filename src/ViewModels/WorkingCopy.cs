@@ -541,7 +541,7 @@ namespace SourceGit.ViewModels
                     history.Icon = App.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        var window = new Views.FileHistories() { DataContext = new FileHistories(_repo.FullPath, change.Path, _repo.IssueTrackerSetting) };
+                        var window = new Views.FileHistories() { DataContext = new FileHistories(_repo.FullPath, change.Path, _repo.Settings.IssueTrackerRules) };
                         window.Show();
                         e.Handled = true;
                     };

@@ -94,7 +94,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var commitDetail = new CommitDetail(_repo.FullPath, _repo.IssueTrackerSetting);
+                    var commitDetail = new CommitDetail(_repo.FullPath, _repo.Settings.IssueTrackerRules);
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }
@@ -122,7 +122,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var commitDetail = new CommitDetail(_repo.FullPath, _repo.IssueTrackerSetting);
+                    var commitDetail = new CommitDetail(_repo.FullPath, _repo.Settings.IssueTrackerRules);
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }

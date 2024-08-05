@@ -21,7 +21,7 @@
           <!-- Base Information -->
           <v:CommitBaseInfo Content="{Binding Commit}" 
                             Message="{Binding FullMessage}"
-                            IssueTrackerSetting="{Binding IssueTrackerSetting}"/>
+                            IssueTrackerRules="{Binding IssueTrackerRules}"/>
 
           <!-- Line -->
           <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}"/>

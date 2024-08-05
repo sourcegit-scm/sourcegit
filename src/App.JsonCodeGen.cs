@@ -64,6 +64,5 @@ namespace SourceGit
     [JsonSerializable(typeof(Models.Version))]
     [JsonSerializable(typeof(Models.RepositorySettings))]
     [JsonSerializable(typeof(ViewModels.Preference))]
-    [JsonSerializable(typeof(ViewModels.IssueTrackerRuleSetting))]
     internal partial class JsonCodeGen : JsonSerializerContext { }
 }
