@@ -363,6 +363,7 @@
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">預設字型大小</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">等寬字型</x:String>
+  <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">僅在文字編輯器中使用等寬字體</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">主題</x:String>
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">主題自訂</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">通用配置</x:String>
@@ -554,6 +555,7 @@
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">子模組 ：</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">啟用『--remote』選項</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
+  <x:String x:Key="Text.Welcome" xml:space="preserve">起始頁</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">新建分組</x:String>
   <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">新建子分組</x:String>
   <x:String x:Key="Text.Welcome.Clone" xml:space="preserve">克隆遠端倉庫</x:String>

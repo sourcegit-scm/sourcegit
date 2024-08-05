@@ -41,7 +41,7 @@ namespace SourceGit.Views
         {
             get;
             set;
-        } = Models.CRLFMode.Supported[0];
+        } = null;
 
         public static readonly StyledProperty<string> GitVersionProperty =
             AvaloniaProperty.Register<Preference, string>(nameof(GitVersion));
@@ -195,7 +195,7 @@ namespace SourceGit.Views
             SetIfChanged(config, "user.name", DefaultUser);
             SetIfChanged(config, "user.email", DefaultEmail);
             SetIfChanged(config, "user.signingkey", GPGUserKey);
-            SetIfChanged(config, "core.autocrlf", CRLFMode.Value);
+            SetIfChanged(config, "core.autocrlf", CRLFMode != null ? CRLFMode.Value : null);
             SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false");
             SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false");
             SetIfChanged(config, "gpg.format", GPGFormat.Value);

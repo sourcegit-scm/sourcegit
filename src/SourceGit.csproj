@@ -29,10 +29,11 @@
 
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
-    <AvaloniaResource Include="Resources/ExternalToolIcons/*" />
-    <AvaloniaResource Include="Resources/ExternalToolIcons/JetBrains/*" />
     <AvaloniaResource Include="Resources/Fonts/*" />
-    <AvaloniaResource Include="Resources/ShellIcons/*" />
+    <AvaloniaResource Include="Resources/Images/*" />
+    <AvaloniaResource Include="Resources/Images/ExternalToolIcons/*" />
+    <AvaloniaResource Include="Resources/Images/ExternalToolIcons/JetBrains/*" />
+    <AvaloniaResource Include="Resources/Images/ShellIcons/*" />
   </ItemGroup>
 
   <ItemGroup>

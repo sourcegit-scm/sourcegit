@@ -59,22 +59,22 @@
                    Margin="0,0,0,8"/>
 
         <Grid RowDefinitions="20,20,20,20,20,20" ColumnDefinitions="150,*">
-          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Shift+P, macOS=⌘+\,}"/>
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+P, macOS=⌘+\,}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.OpenPreference}"/>
           
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+T, macOS=⌘+T}"/>
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+T, macOS=⌘+T}"/>
           <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.NewTab}" />
 
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+W, macOS=⌘+W}" />
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+W, macOS=⌘+W}" />
           <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CloseTab}" />
 
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Shift+Ctrl+Tab, macOS=⌘+⌥+←}"/>
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Shift+Ctrl+Tab, macOS=⌘+⌥+←}"/>
           <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoPrevTab}" />
 
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Tab, macOS=⌘+⌥+→}"/>
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Tab, macOS=⌘+⌥+→}"/>
           <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoNextTab}" />
 
-          <TextBlock Grid.Row="5" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
+          <TextBlock Grid.Row="5" Grid.Column="0" Classes="primary bold" Text="ESC"/>
           <TextBlock Grid.Row="5" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CancelPopup}" />
         </Grid>
 
@@ -85,31 +85,31 @@
                    Margin="0,8"/>
 
         <Grid RowDefinitions="20,20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
-          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Shift+H, macOS=⌘+⇧+H}"/>
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+H, macOS=⌘+⇧+H}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.GoHome}" />
           
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
           <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.OpenSearchCommits}" />
 
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+1, macOS=⌘+1}"/>
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+1, macOS=⌘+1}"/>
           <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewHistories}" />
 
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+2, macOS=⌘+2}"/>
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+2, macOS=⌘+2}"/>
           <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewChanges}" />
 
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+3, macOS=⌘+3}"/>
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+3, macOS=⌘+3}"/>
           <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewStashes}" />
 
-          <TextBlock Grid.Row="5" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Space, macOS=␣}"/>
+          <TextBlock Grid.Row="5" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Space, macOS=␣}"/>
           <TextBlock Grid.Row="5" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
 
-          <TextBlock Grid.Row="6" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
+          <TextBlock Grid.Row="6" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
           <TextBlock Grid.Row="6" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Commit}" />
 
-          <TextBlock Grid.Row="7" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
+          <TextBlock Grid.Row="7" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
           <TextBlock Grid.Row="7" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.CommitAndPush}" />
 
-          <TextBlock Grid.Row="8" Grid.Column="0" Classes="monospace bold" Text="F5"/>
+          <TextBlock Grid.Row="8" Grid.Column="0" Classes="primary bold" Text="F5"/>
           <TextBlock Grid.Row="8" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
         </Grid>
 
@@ -120,16 +120,16 @@
                    Margin="0,8"/>
 
         <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="150,*">
-          <TextBlock Grid.Row="0" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.Search}" />
 
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="monospace bold" Text="{OnPlatform Shift+F3/Shift+Enter, macOS=⇧+F3/⇧+Enter}"/>
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Shift+F3/Shift+Enter, macOS=⇧+F3/⇧+Enter}"/>
           <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoPrevMatch}" />
 
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="monospace bold" Text="F3/Enter"/>
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="primary bold" Text="F3/Enter"/>
           <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.GotoNextMatch}" />
 
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="monospace bold" Text="ESC"/>
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="primary bold" Text="ESC"/>
           <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.CloseSearch}" />
         </Grid>
       </StackPanel>

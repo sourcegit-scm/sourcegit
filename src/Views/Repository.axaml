@@ -78,7 +78,7 @@
               <ListBoxItem>
                 <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
                   <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Histories}"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.Histories}"/>
                   <ToggleButton Grid.Column="2"
                                 Classes="layout_direction"
                                 Width="32" Height="26"
@@ -89,8 +89,8 @@
 
               <ListBoxItem>
                 <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Send}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.WorkingCopy}"/>
+                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Changes}"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.WorkingCopy}"/>
                   <Border Grid.Column="2"
                           Margin="6,0"
                           Height="18"
@@ -98,7 +98,7 @@
                           VerticalAlignment="Center"
                           Background="{DynamicResource Brush.Badge}"
                           IsVisible="{Binding WorkingCopyChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                    <TextBlock Classes="primary" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
                   </Border>
                 </Grid>
               </ListBoxItem>
@@ -106,7 +106,7 @@
               <ListBoxItem>
                 <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
                   <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Stashes}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{DynamicResource Text.Stashes}"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.Stashes}"/>
                   <Border Grid.Column="2"
                           Margin="6,0"
                           Height="18"
@@ -114,7 +114,7 @@
                           VerticalAlignment="Center"
                           Background="{DynamicResource Brush.Badge}"
                           IsVisible="{Binding StashesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                    <TextBlock Classes="monospace" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                    <TextBlock Classes="primary" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding StashesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
                   </Border>
                 </Grid>
               </ListBoxItem>
@@ -255,7 +255,7 @@
               <DataGridTemplateColumn Width="*" Header="NAME">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate x:DataType="{x:Type m:Tag}">
-                    <TextBlock Text="{Binding Name}" Classes="monospace" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding Name}" Classes="primary" TextTrimming="CharacterEllipsis" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
@@ -350,7 +350,7 @@
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
                     <Border Padding="0,0,4,0">
-                      <TextBlock Text="{Binding}" ClipToBounds="True" Classes="monospace" TextTrimming="CharacterEllipsis"/>
+                      <TextBlock Text="{Binding}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
                     </Border>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
@@ -432,7 +432,7 @@
               <DataGridTemplateColumn Width="*" Header="FullPath">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Classes="monospace" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
+                    <TextBlock Classes="primary" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
                       <Run Text="{Binding FullPath}"/>
                       <Run Text="{Binding Name}" Foreground="{DynamicResource Brush.FG2}"/>
                     </TextBlock>
@@ -453,40 +453,92 @@
       </Grid>
 
       <!-- Commit Search Panel -->
-      <Grid Grid.Row="1" RowDefinitions="Auto,32,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
+      <Grid Grid.Row="1" RowDefinitions="24,32,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
         <!-- Search Input Box -->
-        <TextBox Grid.Row="0"
-                 x:Name="TxtSearchCommitsBox"
-                 Height="24"
-                 BorderThickness="1"
-                 BorderBrush="{DynamicResource Brush.Border2}"
-                 Background="{DynamicResource Brush.Contents}"
-                 CornerRadius="4"
-                 Watermark="{DynamicResource Text.Repository.Search}"
-                 Text="{Binding SearchCommitFilter, Mode=TwoWay}"
-                 VerticalContentAlignment="Center"
-                 KeyDown="OnSearchKeyDown">
-          <TextBox.InnerLeftContent>
-            <Path Width="14" Height="14"
-                  Margin="6,0,0,0"
-                  Fill="{DynamicResource Brush.FG2}"
-                  Data="{StaticResource Icons.Search}"/>
-          </TextBox.InnerLeftContent>
-
-          <TextBox.InnerRightContent>
-            <Button Classes="icon_button"
-                    Width="16"
-                    Margin="0,0,6,0"
-                    Command="{Binding ClearSearchCommitFilter}"
-                    IsVisible="{Binding SearchCommitFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                    HorizontalAlignment="Right">
+        <Grid Grid.Row="0">
+          <TextBox x:Name="TxtSearchCommitsBox"
+                   Height="24"
+                   BorderThickness="1"
+                   BorderBrush="{DynamicResource Brush.Border2}"
+                   Background="{DynamicResource Brush.Contents}"
+                   CornerRadius="4"
+                   Watermark="{DynamicResource Text.Repository.Search}"
+                   Text="{Binding SearchCommitFilter, Mode=TwoWay}"
+                   VerticalContentAlignment="Center"
+                   KeyDown="OnSearchKeyDown">
+            <TextBox.InnerLeftContent>
               <Path Width="14" Height="14"
-                    Margin="0,1,0,0"
-                    Fill="{DynamicResource Brush.FG1}"
-                    Data="{StaticResource Icons.Clear}"/>
-            </Button>
-          </TextBox.InnerRightContent>
-        </TextBox>
+                    Margin="6,0,0,0"
+                    Fill="{DynamicResource Brush.FG2}"
+                    Data="{StaticResource Icons.Search}"/>
+            </TextBox.InnerLeftContent>
+
+            <TextBox.InnerRightContent>
+              <Button Classes="icon_button"
+                      Width="16"
+                      Margin="0,0,6,0"
+                      Command="{Binding ClearSearchCommitFilter}"
+                      IsVisible="{Binding SearchCommitFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                      HorizontalAlignment="Right">
+                <Path Width="14" Height="14"
+                      Margin="0,1,0,0"
+                      Fill="{DynamicResource Brush.FG1}"
+                      Data="{StaticResource Icons.Clear}"/>
+              </Button>
+            </TextBox.InnerRightContent>
+          </TextBox>
+
+          <Popup PlacementTarget="{Binding #TxtSearchCommitsBox}"
+                 Placement="BottomEdgeAlignedLeft"
+                 HorizontalOffset="-8" VerticalAlignment="-8"
+                 IsOpen="{Binding IsSearchCommitSuggestionOpen}">
+            <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
+              <Border Background="{DynamicResource Brush.Popup}" CornerRadius="4" Padding="4" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
+                <ListBox x:Name="SearchSuggestionBox"
+                         Background="Transparent"
+                         SelectionMode="Single"
+                         ItemsSource="{Binding SearchCommitFilterSuggestion}"
+                         MaxHeight="400"
+                         Focusable="True"
+                         KeyDown="OnSearchSuggestionBoxKeyDown">
+                  <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                      <Setter Property="Padding" Value="0"/>
+                      <Setter Property="MinHeight" Value="26"/>
+                      <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+
+                    <Style Selector="ListBox">
+                      <Setter Property="FocusAdorner">
+                        <FocusAdornerTemplate>
+                          <Grid/>
+                        </FocusAdornerTemplate>
+                      </Setter>
+                    </Style>
+                  </ListBox.Styles>
+
+                  <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                  </ListBox.ItemsPanel>
+
+                  <ListBox.ItemTemplate>
+                    <DataTemplate DataType="x:String">
+                      <StackPanel Background="Transparent" Orientation="Vertical" Margin="8,4" DoubleTapped="OnSearchSuggestionDoubleTapped">
+                        <StackPanel Orientation="Horizontal">
+                          <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
+                          <TextBlock Classes="primary" Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
+                        </StackPanel>
+                        <TextBlock Classes="primary" FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+              </Border>
+            </Border>
+          </Popup>
+        </Grid>
 
         <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Column="0"
@@ -539,9 +591,9 @@
                                   VerticalAlignment="Center"
                                   IsHitTestVisible="False"
                                   User="{Binding Author}"/>
-                        <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                        <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-                        <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="2" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                       </Grid>
 
                       <TextBlock Grid.Row="1" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
@@ -653,7 +705,7 @@
             <ItemsControl.ItemTemplate>
               <DataTemplate>
                 <Border Height="20" Margin="0,0,6,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="12">
-                  <TextBlock Classes="monospace" Text="{Binding Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="8,0"/>
+                  <TextBlock Classes="primary" Text="{Binding Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="8,0"/>
                 </Border>
               </DataTemplate>
             </ItemsControl.ItemTemplate>

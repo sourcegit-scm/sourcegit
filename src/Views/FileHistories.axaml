@@ -80,12 +80,12 @@
                   <Grid RowDefinitions="Auto,*">
                     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
                       <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                      <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                      <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-                      <TextBlock Grid.Column="3" Classes="monospace" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="2" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                     </Grid>
 
-                    <TextBlock Grid.Row="1" Classes="monospace" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+                    <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
                   </Grid>
                 </Border>
               </DataTemplate>
@@ -120,22 +120,26 @@
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       Background="Transparent"/>
 
-        <Grid Grid.Row="2" Margin="0,0,4,4">
-          <Border Background="{DynamicResource Brush.Window}">
-            <Path Width="128" Height="128"
-                  Data="{StaticResource Icons.Detail}"
-                  HorizontalAlignment="Center"
-                  Fill="{DynamicResource Brush.FG2}"/>
-          </Border>
-
-          <ContentControl Content="{Binding DetailContext}">
+        <Border Grid.Row="2" Margin="0,0,4,4">
+          <ContentControl>
+            <ContentControl.Content>
+              <Binding Path="DetailContext">
+                <Binding.TargetNullValue>
+                  <Path Width="128" Height="128"
+                        Data="{StaticResource Icons.Detail}"
+                        HorizontalAlignment="Center"
+                        Fill="{DynamicResource Brush.FG2}"/>
+                </Binding.TargetNullValue>
+              </Binding>
+            </ContentControl.Content>
+            
             <ContentControl.DataTemplates>
               <DataTemplate DataType="vm:CommitDetail">
                 <v:CommitDetail/>
               </DataTemplate>
             </ContentControl.DataTemplates>
           </ContentControl>
-        </Grid>
+        </Border>
       </Grid>
     </Grid>
   </Grid>

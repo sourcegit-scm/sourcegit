@@ -13,6 +13,7 @@ namespace SourceGit.Models
     {
         None,
         Modified,
+        TypeChanged,
         Added,
         Deleted,
         Renamed,
@@ -21,12 +22,19 @@ namespace SourceGit.Models
         Untracked
     }
 
+    public class ChangeDataForAmend
+    {
+        public string FileMode { get; set; } = "";
+        public string ObjectHash { get; set; } = "";
+    }
+
     public class Change
     {
-        public ChangeState Index { get; set; }
+        public ChangeState Index { get; set; } = ChangeState.None;
         public ChangeState WorkTree { get; set; } = ChangeState.None;
         public string Path { get; set; } = "";
         public string OriginalPath { get; set; } = "";
+        public ChangeDataForAmend DataForAmend { get; set; } = null;
 
         public bool IsConflit
         {

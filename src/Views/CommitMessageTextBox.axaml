@@ -41,10 +41,10 @@
                     Margin="8,0"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
-          <TextBlock Classes="monospace" Margin="2,0,0,0" FontSize="11" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthGood}}"/>
-          <TextBlock Classes="monospace" Margin="2,0,0,0" FontSize="11" Foreground="DarkGoldenrod" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
-          <TextBlock Classes="monospace" FontSize="11" Text="/"/>
-          <TextBlock Classes="monospace" FontSize="11" Text="{Binding Source={x:Static vm:Preference.Instance}, Path=SubjectGuideLength}"/>
+          <TextBlock Classes="primary" Margin="2,0,0,0" FontSize="11" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthGood}}"/>
+          <TextBlock Classes="primary" Margin="2,0,0,0" FontSize="11" Foreground="DarkGoldenrod" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
+          <TextBlock Classes="primary" FontSize="11" Text="/"/>
+          <TextBlock Classes="primary" FontSize="11" Text="{Binding Source={x:Static vm:Preference.Instance}, Path=SubjectGuideLength}"/>
           <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
         </StackPanel>
       </Grid>

@@ -12,7 +12,7 @@ namespace SourceGit.ViewModels
         }
 
         [Required(ErrorMessage = "Tag name is required!")]
-        [RegularExpression(@"^[^/]{1}[\w\-\./]*$", ErrorMessage = "Bad tag name format!")]
+        [RegularExpression(@"^(?!\.)(?!/)(?!.*\.$)(?!.*/$)(?!.*\.\.)[\w\-\./]+$", ErrorMessage = "Bad tag name format!")]
         [CustomValidation(typeof(CreateTag), nameof(ValidateTagName))]
         public string TagName
         {

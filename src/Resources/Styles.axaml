@@ -258,8 +258,8 @@
   <Style Selector="TextBlock.italic">
     <Setter Property="FontStyle" Value="Italic"/>
   </Style>
-  <Style Selector="TextBlock.monospace, SelectableTextBlock.monospace">
-    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"/>
+  <Style Selector="TextBlock.primary, SelectableTextBlock.primary">
+    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=PrimaryFont}"/>
   </Style>
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
@@ -781,7 +781,7 @@
                                     ContentTemplate="{TemplateBinding HeaderTemplate}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Stretch"
-                                    RecognizesAccessKey="True"/>
+                                    RecognizesAccessKey="False"/>
                   <TextBlock x:Name="PART_InputGestureText"
                              Grid.Column="2"
                              Classes="CaptionTextBlockStyle"

@@ -150,7 +150,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.Theme}"
                        HorizontalAlignment="Right"
@@ -232,6 +232,10 @@
                 </Button>
               </TextBox.InnerRightContent>
             </TextBox>
+
+            <CheckBox Grid.Row="5" Grid.Column="1"
+                      Content="{DynamicResource Text.Preference.Appearance.OnlyUseMonoFontInEditor}"
+                      IsChecked="{Binding OnlyUseMonoFontInEditor, Mode=TwoWay}"/>
           </Grid>
         </TabItem>
 
@@ -261,8 +265,7 @@
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-              <TextBlock Classes="monospace" 
-                         Margin="0,0,8,0"
+              <TextBlock Margin="0,0,8,0"
                          Text="{Binding #ThisControl.GitVersion}" 
                          IsVisible="{Binding #ThisControl.GitVersion, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
@@ -291,22 +294,22 @@
                       IsVisible="{OnPlatform False, Windows=True}">
               <ComboBox.Items>
                 <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/git-bash.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/git-bash.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
                   <TextBlock Grid.Column="1" Text="Git Bash" Margin="6,0,0,0"/>
                 </Grid>
                 
                 <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/pwsh.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/pwsh.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
                   <TextBlock Grid.Column="1" Text="PowerShell" Margin="6,0,0,0"/>
                 </Grid>
 
                 <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/cmd.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/cmd.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
                   <TextBlock Grid.Column="1" Text="Command Prompt" Margin="6,0,0,0"/>
                 </Grid>
 
                 <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/ShellIcons/wt.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/wt.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
                   <TextBlock Grid.Column="1" Text="Default Shell in Windows Terminal" Margin="6,0,0,0"/>
                 </Grid>
               </ComboBox.Items>

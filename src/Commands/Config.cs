@@ -50,24 +50,16 @@ namespace SourceGit.Commands
             if (!allowEmpty && string.IsNullOrWhiteSpace(value))
             {
                 if (string.IsNullOrEmpty(WorkingDirectory))
-                {
                     Args = $"config --global --unset {key}";
-                }
                 else
-                {
                     Args = $"config --unset {key}";
-                }
             }
             else
             {
                 if (string.IsNullOrWhiteSpace(WorkingDirectory))
-                {
                     Args = $"config --global {key} \"{value}\"";
-                }
                 else
-                {
                     Args = $"config {key} \"{value}\"";
-                }
             }
 
             return Exec();

@@ -83,13 +83,37 @@ namespace SourceGit.ViewModels
         public FontFamily DefaultFont
         {
             get => _defaultFont;
-            set => SetProperty(ref _defaultFont, value);
+            set
+            {
+                if (SetProperty(ref _defaultFont, value) && _onlyUseMonoFontInEditor)
+                    OnPropertyChanged(nameof(PrimaryFont));
+            }
         }
 
         public FontFamily MonospaceFont
         {
             get => _monospaceFont;
-            set => SetProperty(ref _monospaceFont, value);
+            set
+            {
+                if (SetProperty(ref _monospaceFont, value) && !_onlyUseMonoFontInEditor)
+                    OnPropertyChanged(nameof(PrimaryFont));
+            }
+        }
+
+        [JsonIgnore]
+        public FontFamily PrimaryFont
+        {
+            get => _onlyUseMonoFontInEditor ? _defaultFont : _monospaceFont;
+        }
+
+        public bool OnlyUseMonoFontInEditor
+        {
+            get => _onlyUseMonoFontInEditor;
+            set
+            {
+                if (SetProperty(ref _onlyUseMonoFontInEditor, value))
+                    OnPropertyChanged(nameof(PrimaryFont));
+            }
         }
 
         public double DefaultFontSize
@@ -486,6 +510,7 @@ namespace SourceGit.ViewModels
         private string _themeOverrides = string.Empty;
         private FontFamily _defaultFont = null;
         private FontFamily _monospaceFont = null;
+        private bool _onlyUseMonoFontInEditor = false;
         private double _defaultFontSize = 13;
         private LayoutInfo _layout = new LayoutInfo();
 

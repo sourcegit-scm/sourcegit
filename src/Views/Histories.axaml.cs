@@ -3,6 +3,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
@@ -406,6 +407,15 @@ namespace SourceGit.Views
             {
                 var menu = histories.MakeContextMenu(datagrid);
                 datagrid.OpenContextMenu(menu);
+            }
+            e.Handled = true;
+        }
+
+        private void OnCommitDataGridDoubleTapped(object sender, TappedEventArgs e)
+        {
+            if (DataContext is ViewModels.Histories histories && sender is DataGrid datagrid && datagrid.SelectedItems is { Count: 1 } selectedItems)
+            {
+                histories.DoubleTapped(selectedItems[0] as Models.Commit);
             }
             e.Handled = true;
         }

@@ -6,7 +6,6 @@ namespace SourceGit.Commands
 {
     public partial class Blame : Command
     {
-
         [GeneratedRegex(@"^\^?([0-9a-f]+)\s+.*\((.*)\s+(\d+)\s+[\-\+]?\d+\s+\d+\) (.*)")]
         private static partial Regex REG_FORMAT();
 

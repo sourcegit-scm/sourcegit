@@ -39,7 +39,11 @@ namespace SourceGit.Models
             }
             else
             {
-                _extra = "--cached";
+                if (change.DataForAmend != null)
+                    _extra = "--cached HEAD^";
+                else
+                    _extra = "--cached";
+
                 _path = change.Path;
                 _orgPath = change.OriginalPath;
             }

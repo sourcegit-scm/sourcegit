@@ -24,6 +24,12 @@ namespace SourceGit.Views
                 return;
 
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
+            if (Directory.Exists(ViewModels.Preference.Instance.GitDefaultCloneDir))
+            {
+                var folder = await topLevel.StorageProvider.TryGetFolderFromPathAsync(ViewModels.Preference.Instance.GitDefaultCloneDir);
+                options.SuggestedStartLocation = folder;
+            }
+
             var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
             if (selected.Count == 1)
                 OpenOrInitRepository(selected[0].Path.LocalPath);

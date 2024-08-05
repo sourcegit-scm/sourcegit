@@ -29,7 +29,8 @@
                 VerticalScrollBarVisibility="Auto"
                 LayoutUpdated="OnCommitDataGridLayoutUpdated"
                 SelectionChanged="OnCommitDataGridSelectionChanged"
-                ContextRequested="OnCommitDataGridContextRequested">
+                ContextRequested="OnCommitDataGridContextRequested"
+                DoubleTapped="OnCommitDataGridDoubleTapped">
         <DataGrid.Styles>
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
@@ -79,7 +80,7 @@
                                            FontSize="10"
                                            VerticalAlignment="Center"/>
 
-                    <TextBlock Classes="monospace" 
+                    <TextBlock Classes="primary" 
                                Text="{Binding Subject}"
                                Opacity="{Binding Opacity}"
                                FontWeight="{Binding FontWeight}"/>
@@ -104,7 +105,7 @@
                             User="{Binding Author}"
                             Opacity="{Binding Opacity}"/>
                   <TextBlock Grid.Column="1" 
-                             Classes="monospace"
+                             Classes="primary"
                              Text="{Binding Author.Name}"
                              Margin="8,0,0,0"
                              Opacity="{Binding Opacity}"
@@ -121,7 +122,7 @@
             
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
-                <TextBlock Classes="monospace" 
+                <TextBlock Classes="primary" 
                            Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                            Margin="8,0"
                            HorizontalAlignment="Center"
@@ -144,7 +145,7 @@
             
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="{x:Type m:Commit}">
-                <v:CommitTimeTextBlock Classes="monospace"
+                <v:CommitTimeTextBlock Classes="primary"
                                        Margin="8,0"
                                        HorizontalAlignment="Center"
                                        Opacity="{Binding Opacity}"
@@ -174,15 +175,19 @@
                   Background="{DynamicResource Brush.Window}"
                   BorderBrush="{DynamicResource Brush.Border0}"/>
 
-    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
-      <Border Background="{DynamicResource Brush.Window}">
-        <Path Width="128" Height="128"
-              Data="{StaticResource Icons.Detail}"
-              HorizontalAlignment="Center"
-              Fill="{DynamicResource Brush.FG2}"/>
-      </Border>
-
-      <ContentControl Content="{Binding DetailContext}">
+    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+      <ContentControl>
+        <ContentControl.Content>
+          <Binding Path="DetailContext">
+            <Binding.TargetNullValue>
+              <Path Width="128" Height="128"
+                    Data="{StaticResource Icons.Detail}"
+                    HorizontalAlignment="Center"
+                    Fill="{DynamicResource Brush.FG2}"/>
+            </Binding.TargetNullValue>
+          </Binding>
+        </ContentControl.Content>
+        
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:CommitDetail">
             <v:CommitDetail/>
@@ -193,23 +198,21 @@
           </DataTemplate>
 
           <DataTemplate DataType="x:Int32">
-            <Grid Background="{DynamicResource Brush.Window}">
-              <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Path Width="128" Height="128"
-                      Data="{StaticResource Icons.Detail}"
-                      HorizontalAlignment="Center"
-                      Fill="{DynamicResource Brush.FG2}"/>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+              <Path Width="128" Height="128"
+                    Data="{StaticResource Icons.Detail}"
+                    HorizontalAlignment="Center"
+                    Fill="{DynamicResource Brush.FG2}"/>
 
-                <TextBlock HorizontalAlignment="Center"
-                           Margin="0,16"
-                           FontSize="24" FontWeight="Bold"
-                           Foreground="{DynamicResource Brush.FG2}"
-                           Text="{Binding Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
-              </StackPanel>
-            </Grid>
+              <TextBlock HorizontalAlignment="Center"
+                         Margin="0,16"
+                         FontSize="24" FontWeight="Bold"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         Text="{Binding Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
+            </StackPanel>
           </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>
-    </Grid>
+    </Border>
   </v:LayoutableGrid>
 </UserControl>

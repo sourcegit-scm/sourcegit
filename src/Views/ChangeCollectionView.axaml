@@ -57,7 +57,7 @@
                             IsVisible="{Binding IsFolder}"/>
 
               <v:ChangeStatusIcon Grid.Column="1" Width="14" Height="14" IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}" Change="{Binding Change}" IsVisible="{Binding !IsFolder}"/>
-              <TextBlock Grid.Column="2" Classes="monospace" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
+              <TextBlock Grid.Column="2" Classes="primary" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>
@@ -79,12 +79,12 @@
                                   Change="{Binding}" />
 
               <TextBlock Grid.Column="1"
-                         Classes="monospace"
+                         Classes="primary"
                          Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}"
                          Margin="4,0"/>
 
               <TextBlock Grid.Column="2"
-                         Classes="monospace"
+                         Classes="primary"
                          Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}"
                          Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
@@ -108,7 +108,7 @@
                                   Change="{Binding}" />
 
               <TextBlock Grid.Column="1"
-                         Classes="monospace"
+                         Classes="primary"
                          Text="{Binding Path}"
                          Margin="4,0"/>
             </Grid>

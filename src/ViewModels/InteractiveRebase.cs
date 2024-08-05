@@ -51,9 +51,7 @@ namespace SourceGit.ViewModels
         public InteractiveRebaseItem(Models.Commit c, string message)
         {
             Commit = c;
-
-            _subject = c.Subject;
-            _fullMessage = message;
+            FullMessage = message;
         }
 
         public void SetAction(object param)
@@ -120,21 +118,14 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var commits = new Commands.QueryCommits(repoPath, $"{on.SHA}...HEAD", false).Result();
-                var messages = new Dictionary<string, string>();
+                var commits = new Commands.QueryCommitsWithFullMessage(repoPath, $"{on.SHA}...HEAD").Result();
+                var list = new List<InteractiveRebaseItem>();
 
                 foreach (var c in commits)
-                {
-                    var fullMessage = new Commands.QueryCommitFullMessage(repoPath, c.SHA).Result();
-                    messages.Add(c.SHA, fullMessage);
-                }
+                    list.Add(new InteractiveRebaseItem(c.Commit, c.Message));
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    var list = new List<InteractiveRebaseItem>();
-                    foreach (var c in commits)
-                        list.Add(new InteractiveRebaseItem(c, messages[c.SHA]));
-
                     Items.AddRange(list);
                     IsLoading = false;
                 });

@@ -10,7 +10,7 @@
                     x:DataType="vm:Launcher"
                     Icon="/App.ico"
                     Title="SourceGit"
-                    MinWidth="1280" MinHeight="720"
+                    MinWidth="1024" MinHeight="600"
                     WindowStartupLocation="CenterScreen"> 
   <Grid x:Name="MainLayout">
     <Grid.RowDefinitions>

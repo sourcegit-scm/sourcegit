@@ -142,6 +142,38 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void DoubleTapped(Models.Commit commit)
+        {
+            if (commit == null || commit.IsCurrentHead)
+                return;
+
+            var firstRemoteBranch = null as Models.Branch;
+            foreach (var d in commit.Decorators)
+            {
+                if (d.Type == Models.DecoratorType.LocalBranchHead)
+                {
+                    var b = _repo.Branches.Find(x => x.FriendlyName == d.Name);
+                    if (b != null)
+                    {
+                        _repo.CheckoutBranch(b);
+                        return;
+                    }
+                }
+                else if (d.Type == Models.DecoratorType.RemoteBranchHead && firstRemoteBranch == null)
+                {
+                    firstRemoteBranch = _repo.Branches.Find(x => x.FriendlyName == d.Name);
+                }
+            }
+
+            if (PopupHost.CanCreatePopup())
+            {
+                if (firstRemoteBranch != null)
+                    PopupHost.ShowPopup(new CreateBranch(_repo, firstRemoteBranch));
+                else
+                    PopupHost.ShowPopup(new CheckoutCommit(_repo, commit));
+            }
+        }
+
         public ContextMenu MakeContextMenu(DataGrid datagrid)
         {
             if (datagrid.SelectedItems.Count != 1)

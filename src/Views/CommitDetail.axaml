@@ -8,8 +8,7 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitDetail"
-             x:DataType="vm:CommitDetail"
-             Background="{DynamicResource Brush.Window}">
+             x:DataType="vm:CommitDetail">
   <TabControl SelectedIndex="{Binding ActivePageIndex, Mode=TwoWay}" Padding="4">
     <!-- Information Page -->
     <TabItem>
@@ -33,7 +32,7 @@
             <ListBox.Styles>
               <Style Selector="ListBoxItem">
                 <Setter Property="Padding" Value="0"/>
-                <Setter Property="MinHeight" Value="26"/>
+                <Setter Property="MinHeight" Value="24"/>
                 <Setter Property="CornerRadius" Value="4"/>
               </Style>
             </ListBox.Styles>
@@ -46,13 +45,13 @@
             
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Change">
-                <Grid Background="Transparent" Height="26" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
+                <Grid Background="Transparent" Height="24" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
                   <v:ChangeStatusIcon Grid.Column="0" 
                                       Width="14" Height="14" 
                                       HorizontalAlignment="Left" 
                                       Margin="16,0,0,0" 
                                       Change="{Binding}"/>
-                  <TextBlock Grid.Column="1" Classes="monospace" Text="{Binding Path}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Path}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>

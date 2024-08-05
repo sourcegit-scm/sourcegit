@@ -25,7 +25,7 @@
     </Border>
     
     <!-- Body -->
-    <Border Grid.Row="1" Background="{DynamicResource Brush.Window}">
+    <Border Grid.Row="1">
       <ContentControl Content="{Binding Data}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Welcome">

@@ -20,7 +20,7 @@ namespace SourceGit.Models
         {
             get
             {
-                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/ExternalToolIcons/{Icon}.png", UriKind.RelativeOrAbsolute));
+                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/ExternalToolIcons/{Icon}.png", UriKind.RelativeOrAbsolute));
                 return new Bitmap(icon);
             }
         }

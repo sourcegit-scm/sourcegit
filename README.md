@@ -7,7 +7,7 @@ Opensource Git GUI client.
 * Supports Windows/macOS/Linux
 * Opensource/Free
 * Fast
-* English/简体中文/繁體中文
+* English/German/Português/简体中文/繁體中文
 * Built-in light/dark themes
 * Customize theme
 * Visual commit graph
@@ -109,6 +109,8 @@ This app supports open repository in external tools listed in the table below.
   You can find custom themes from [sourcegit-theme](https://github.com/sourcegit-scm/sourcegit-theme.git)
 
 ## Contributing
+
+Everyone is welcome to submit a PR. Please make sure your PR is based on the latest `develop` branch and the target branch of PR is `develop`.
 
 Thanks to all the people who contribute.
 
