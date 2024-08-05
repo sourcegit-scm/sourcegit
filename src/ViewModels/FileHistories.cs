@@ -54,11 +54,11 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _detailContext, value);
         }
 
-        public FileHistories(string repo, string file)
+        public FileHistories(string repo, string file, IssueTrackerRuleSetting issueTrackerSetting)
         {
             _repo = repo;
             _file = file;
-            _detailContext = new CommitDetail(repo);
+            _detailContext = new CommitDetail(repo, issueTrackerSetting);
 
             Task.Run(() =>
             {

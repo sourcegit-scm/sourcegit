@@ -88,9 +88,15 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _viewRevisionFileContent, value);
         }
 
-        public CommitDetail(string repo)
+        public IssueTrackerRuleSetting IssueTrackerSetting
+        {
+            get => _issueTrackerSetting;
+        }
+
+        public CommitDetail(string repo, IssueTrackerRuleSetting issueTrackerSetting)
         {
             _repo = repo;
+            _issueTrackerSetting = issueTrackerSetting;
         }
 
         public void Cleanup()
@@ -242,7 +248,7 @@ namespace SourceGit.ViewModels
                 history.Icon = App.CreateMenuIcon("Icons.Histories");
                 history.Click += (_, ev) =>
                 {
-                    var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
+                    var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path, _issueTrackerSetting) };
                     window.Show();
                     ev.Handled = true;
                 };
@@ -305,7 +311,7 @@ namespace SourceGit.ViewModels
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path) };
+                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path, _issueTrackerSetting) };
                 window.Show();
                 ev.Handled = true;
             };
@@ -457,6 +463,7 @@ namespace SourceGit.ViewModels
         };
 
         private string _repo;
+        private IssueTrackerRuleSetting _issueTrackerSetting = null;
         private int _activePageIndex = 0;
         private Models.Commit _commit = null;
         private string _fullMessage = string.Empty;

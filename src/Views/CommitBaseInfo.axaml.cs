@@ -24,6 +24,15 @@ namespace SourceGit.Views
             set => SetValue(MessageProperty, value);
         }
 
+        public static readonly StyledProperty<ViewModels.IssueTrackerRuleSetting> IssueTrackerSettingProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, ViewModels.IssueTrackerRuleSetting>(nameof(IssueTrackerSetting));
+
+        public ViewModels.IssueTrackerRuleSetting IssueTrackerSetting
+        {
+            get => GetValue(IssueTrackerSettingProperty);
+            set => SetValue(IssueTrackerSettingProperty, value);
+        }
+
         public CommitBaseInfo()
         {
             InitializeComponent();
