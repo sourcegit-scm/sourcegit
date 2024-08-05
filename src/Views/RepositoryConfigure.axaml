@@ -191,18 +191,18 @@
               <DataTemplate DataType="m:IssueTrackerRule">
                 <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                   <TextBlock Grid.Row="0" Text="{DynamicResource Text.Configure.IssueTracker.RuleName}"/>
-                  <TextBox Grid.Row="1" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
+                  <TextBox Grid.Row="1" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
                   <TextBlock Grid.Row="2" Margin="0,12,0,0" Text="{DynamicResource Text.Configure.IssueTracker.Regex}"/>
-                  <TextBox Grid.Row="3" CornerRadius="3" Height="28" Text="{Binding RegexString, Mode=TwoWay}">
+                  <TextBox Grid.Row="3" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding RegexString, Mode=TwoWay}">
                     <TextBox.InnerRightContent>
                       <Path Margin="4,0" Width="12" Height="12" Data="{StaticResource Icons.Error}" Fill="OrangeRed" IsVisible="{Binding !IsRegexValid}"/>
                     </TextBox.InnerRightContent>
                   </TextBox>
 
                   <TextBlock Grid.Row="4" Margin="0,12,0,0" Text="{DynamicResource Text.Configure.IssueTracker.URLTemplate}"/>
-                  <TextBox Grid.Row="5" CornerRadius="3" Height="28" Text="{Binding URLTemplate, Mode=TwoWay}"/>
-                  <TextBlock Grid.Row="6" Text="{DynamicResource Text.Configure.IssueTracker.URLTemplate.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBox Grid.Row="5" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding URLTemplate, Mode=TwoWay}"/>
+                  <TextBlock Grid.Row="6" Margin="0,2,0,0" Text="{DynamicResource Text.Configure.IssueTracker.URLTemplate.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
                 </Grid>
               </DataTemplate>
             </ContentControl.DataTemplates>
