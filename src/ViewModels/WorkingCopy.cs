@@ -278,12 +278,14 @@ namespace SourceGit.ViewModels
                 _isLoadingData = true;
                 Unstaged = unstaged;
                 Staged = staged;
+                SelectedUnstaged = selectedUnstaged;
+                SelectedStaged = selectedStaged;
                 _isLoadingData = false;
 
-                if (selectedUnstaged.Count > 0)
-                    SelectedUnstaged = selectedUnstaged;
-                else if (selectedStaged.Count > 0)
-                    SelectedStaged = selectedStaged;
+                if (selectedUnstaged.Count == 1)
+                    SetDetail(selectedUnstaged[0]);
+                else if (selectedStaged.Count == 1)
+                    SetDetail(selectedStaged[0]);
                 else
                     SetDetail(null);
 
