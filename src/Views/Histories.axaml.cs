@@ -459,6 +459,16 @@ namespace SourceGit.Views
             set => SetValue(NavigationIdProperty, value);
         }
 
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        {
+            get
+            {
+                if (DataContext is ViewModels.Histories histories)
+                    return histories.IssueTrackerRules;
+                return null;
+            }
+        }
+
         static Histories()
         {
             NavigationIdProperty.Changed.AddClassHandler<Histories>((h, _) =>
