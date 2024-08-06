@@ -135,7 +135,7 @@ namespace SourceGit.ViewModels
                     if (value == null || value.Count == 0)
                     {
                         if (_selectedStaged == null || _selectedStaged.Count == 0)
-                            SetDetail(null);
+                            SetDetail(null, true);
                     }
                     else
                     {
@@ -143,9 +143,9 @@ namespace SourceGit.ViewModels
                             SelectedStaged = [];
 
                         if (value.Count == 1)
-                            SetDetail(value[0]);
+                            SetDetail(value[0], true);
                         else
-                            SetDetail(null);
+                            SetDetail(null, true);
                     }
                 }
             }
@@ -161,7 +161,7 @@ namespace SourceGit.ViewModels
                     if (value == null || value.Count == 0)
                     {
                         if (_selectedUnstaged == null || _selectedUnstaged.Count == 0)
-                            SetDetail(null);
+                            SetDetail(null, false);
                     }
                     else
                     {
@@ -169,9 +169,9 @@ namespace SourceGit.ViewModels
                             SelectedUnstaged = [];
 
                         if (value.Count == 1)
-                            SetDetail(value[0]);
+                            SetDetail(value[0], false);
                         else
-                            SetDetail(null);
+                            SetDetail(null, false);
                     }
                 }
             }
@@ -224,9 +224,11 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (_selectedUnstaged.Count == 1)
-                        SetDetail(_selectedUnstaged[0]);
+                        SetDetail(_selectedUnstaged[0], true);
                     else if (_selectedStaged.Count == 1)
-                        SetDetail(_selectedStaged[0]);
+                        SetDetail(_selectedStaged[0], false);
+                    else
+                        SetDetail(null, false);
                 });
 
                 return _cached.Find(x => x.IsConflit) != null;
@@ -283,11 +285,11 @@ namespace SourceGit.ViewModels
                 _isLoadingData = false;
 
                 if (selectedUnstaged.Count == 1)
-                    SetDetail(selectedUnstaged[0]);
+                    SetDetail(selectedUnstaged[0], true);
                 else if (selectedStaged.Count == 1)
-                    SetDetail(selectedStaged[0]);
+                    SetDetail(selectedStaged[0], false);
                 else
-                    SetDetail(null);
+                    SetDetail(null, false);
 
                 // Try to load merge message from MERGE_MSG
                 if (string.IsNullOrEmpty(_commitMessage))
@@ -332,7 +334,6 @@ namespace SourceGit.ViewModels
             if (_unstaged.Count == 0 || changes.Count == 0)
                 return;
 
-            SetDetail(null);
             IsStaging = true;
             _repo.SetWatcherEnabled(false);
             if (changes.Count == _unstaged.Count)
@@ -370,7 +371,6 @@ namespace SourceGit.ViewModels
             if (_staged.Count == 0 || changes.Count == 0)
                 return;
 
-            SetDetail(null);
             IsUnstaging = true;
             _repo.SetWatcherEnabled(false);
             if (_useAmend)
@@ -1170,12 +1170,11 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void SetDetail(Models.Change change)
+        private void SetDetail(Models.Change change, bool isUnstaged)
         {
             if (_isLoadingData)
                 return;
 
-            var isUnstaged = _selectedUnstaged != null && _selectedUnstaged.Count > 0;
             if (change == null)
                 DetailContext = null;
             else if (change.IsConflit && isUnstaged)
@@ -1258,10 +1257,8 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            _repo.Settings.PushCommitMessage(_commitMessage);
-
-            SetDetail(null);
             IsCommitting = true;
+            _repo.Settings.PushCommitMessage(_commitMessage);
             _repo.SetWatcherEnabled(false);
 
             var autoStage = AutoStageBeforeCommit;
