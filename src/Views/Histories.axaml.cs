@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -66,6 +70,93 @@ namespace SourceGit.Views
                     if (child is GridSplitter splitter)
                         splitter.BorderThickness = new Thickness(0, 1, 0, 0);
                 }
+            }
+        }
+    }
+
+    public class CommitSubjectPresenter : TextBlock
+    {
+        public static readonly StyledProperty<string> SubjectProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, string>(nameof(Subject));
+
+        public string Subject
+        {
+            get => GetValue(SubjectProperty);
+            set => SetValue(SubjectProperty, value);
+        }
+
+        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
+
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        {
+            get => GetValue(IssueTrackerRulesProperty);
+            set => SetValue(IssueTrackerRulesProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(TextBlock);
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == SubjectProperty || change.Property == IssueTrackerRulesProperty)
+            {
+                Inlines.Clear();
+
+                var subject = Subject;
+                if (string.IsNullOrEmpty(subject))
+                    return;
+
+                var rules = IssueTrackerRules;
+                if (rules == null || rules.Count == 0)
+                {
+                    Inlines.Add(new Run(subject));
+                    return;
+                }
+
+                var matches = new List<Models.IssueTrackerMatch>();
+                foreach (var rule in rules)
+                    rule.Matches(matches, subject);
+
+                if (matches.Count == 0)
+                {
+                    Inlines.Add(new Run(subject));
+                    return;
+                }
+
+                matches.Sort((l, r) => l.Start - r.Start);
+
+                int pos = 0;
+                foreach (var match in matches)
+                {
+                    if (match.Start > pos)
+                        Inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
+
+                    var link = new TextBlock();
+                    link.SetValue(TextProperty, subject.Substring(match.Start, match.Length));
+                    link.SetValue(ToolTip.TipProperty, match.URL);
+                    link.Classes.Add("issue_link");
+                    link.PointerPressed += OnLinkPointerPressed;
+                    Inlines.Add(link);
+
+                    pos = match.Start + match.Length;
+                }
+
+                if (pos < subject.Length)
+                    Inlines.Add(new Run(subject.Substring(pos)));
+            }
+        }
+
+        private void OnLinkPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            if (sender is TextBlock text)
+            {
+                var tooltip = text.GetValue(ToolTip.TipProperty) as string;
+                if (!string.IsNullOrEmpty(tooltip))
+                    Native.OS.OpenBrowser(tooltip);
+
+                e.Handled = true;
             }
         }
     }

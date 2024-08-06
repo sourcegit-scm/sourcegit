@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
@@ -53,6 +53,11 @@ namespace SourceGit.ViewModels
         {
             get => _detailContext;
             set => SetProperty(ref _detailContext, value);
+        }
+
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        {
+            get => _repo.Settings.IssueTrackerRules;
         }
 
         public Histories(Repository repo)
