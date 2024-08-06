@@ -7,9 +7,9 @@
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Erstellt mit </x:String>
   <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• TextEditor von </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace Schriftarten von </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Quelltext findenst du unter </x:String>
-  <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; freier Git GUI Client</x:String>
+  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace-Schriftarten von </x:String>
+  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Quelltext findest du auf </x:String>
+  <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Open Source &amp; freier Git GUI Client</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Worktree hinzufügen</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Was auschecken:</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Existierender Branch</x:String>
