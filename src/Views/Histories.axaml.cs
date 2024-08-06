@@ -1,5 +1,5 @@
 using System;
-
+using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -418,6 +418,25 @@ namespace SourceGit.Views
                 histories.DoubleTapped(selectedItems[0] as Models.Commit);
             }
             e.Handled = true;
+        }
+
+        private void OnCommitDataGridKeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is DataGrid grid && 
+                grid.SelectedItems is { Count: > 0 } selected && 
+                e.Key == Key.C && 
+                e.KeyModifiers.HasFlag(KeyModifiers.Control))
+            {
+                var builder = new StringBuilder();
+                foreach (var item in selected)
+                {
+                    if (item is Models.Commit commit)
+                        builder.AppendLine($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
+                }
+
+                App.CopyText(builder.ToString());
+                e.Handled = true;
+            }
         }
     }
 }
