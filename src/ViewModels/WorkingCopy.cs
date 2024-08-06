@@ -1270,6 +1270,7 @@ namespace SourceGit.ViewModels
                 {
                     if (succ)
                     {
+                        SelectedStaged = [];
                         CommitMessage = string.Empty;
                         UseAmend = false;
 
