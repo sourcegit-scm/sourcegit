@@ -92,7 +92,12 @@
           
           <!-- Messages -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
-          <SelectableTextBlock Grid.Row="3" Grid.Column="1" Margin="12,5,8,0" Classes="primary" Text="{Binding #ThisControl.Message}" TextWrapping="Wrap"/>
+          <v:CommitMessagePresenter Grid.Row="3" Grid.Column="1" 
+                                    Margin="12,5,8,0" 
+                                    Classes="primary" 
+                                    Message="{Binding #ThisControl.Message}"
+                                    IssueTrackerRules="{Binding #ThisControl.IssueTrackerRules}"
+                                    TextWrapping="Wrap"/>
         </Grid>
       </StackPanel>
     </DataTemplate>

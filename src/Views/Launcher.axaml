@@ -25,9 +25,7 @@
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               DoubleTapped="OnTitleBarDoubleTapped"
-              PointerPressed="BeginMoveWindow"
-              PointerMoved="MoveWindow"
-              PointerReleased="EndMoveWindow"/>
+              PointerPressed="BeginMoveWindow"/>
 
       <!-- Caption Buttons (macOS) -->
       <Border Grid.Column="0" VerticalAlignment="Stretch" Margin="2,0,8,3" IsVisible="{OnPlatform False, macOS=True}">

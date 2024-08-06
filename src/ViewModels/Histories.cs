@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
@@ -55,6 +55,11 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _detailContext, value);
         }
 
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        {
+            get => _repo.Settings.IssueTrackerRules;
+        }
+
         public Histories(Repository repo)
         {
             _repo = repo;
@@ -94,7 +99,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var commitDetail = new CommitDetail(_repo.FullPath);
+                    var commitDetail = new CommitDetail(_repo.FullPath, _repo.Settings.IssueTrackerRules);
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }
@@ -122,7 +127,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var commitDetail = new CommitDetail(_repo.FullPath);
+                    var commitDetail = new CommitDetail(_repo.FullPath, _repo.Settings.IssueTrackerRules);
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }

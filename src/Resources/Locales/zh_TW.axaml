@@ -127,6 +127,15 @@
   <x:String x:Key="Text.Configure" xml:space="preserve">倉庫配置</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">電子郵箱</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">郵箱地址</x:String>
+  <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT配置</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追蹤</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增匹配Github Issue規則</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增匹配Jira規則</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">新增自定義規則</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">匹配ISSUE的正則表達式 ：</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">規則名 ：</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">為ISSUE生成的URL連結 ：</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">可在URL中使用$1，$2等變數填入正則表示式匹配的內容</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP代理</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP網路代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">使用者名稱</x:String>

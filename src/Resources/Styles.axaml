@@ -164,6 +164,7 @@
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
     <Setter Property="VerticalOffset" Value="-8"/>
+    <Setter Property="TextBlock.TextDecorations" Value=""/>
     <Setter Property="Template">
       <ControlTemplate>
         <Grid Effect="drop-shadow(0 0 8 #80000000)">
@@ -275,6 +276,13 @@
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="HorizontalAlignment" Value="Right"/>
+  </Style>
+  <Style Selector="TextBlock.issue_link">
+    <Setter Property="Foreground" Value="{DynamicResource Brush.Link}"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+  <Style Selector="TextBlock.issue_link:pointerover">
+    <Setter Property="TextDecorations" Value="Underline"/>
   </Style>
   
   <Style Selector="SelectableTextBlock">
@@ -781,7 +789,7 @@
                                     ContentTemplate="{TemplateBinding HeaderTemplate}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Stretch"
-                                    RecognizesAccessKey="True"/>
+                                    RecognizesAccessKey="False"/>
                   <TextBlock x:Name="PART_InputGestureText"
                              Grid.Column="2"
                              Classes="CaptionTextBlockStyle"

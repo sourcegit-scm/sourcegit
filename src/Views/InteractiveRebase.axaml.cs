@@ -21,6 +21,55 @@ namespace SourceGit.Views
             Close();
         }
 
+        private void OnSetupRowHeaderDragDrop(object sender, RoutedEventArgs e)
+        {
+            if (sender is Border border)
+            {
+                DragDrop.SetAllowDrop(border, true);
+                border.AddHandler(DragDrop.DragOverEvent, OnRowHeaderDragOver);
+            }
+        }
+
+        private void OnRowHeaderPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            if (sender is Border border && border.DataContext is ViewModels.InteractiveRebaseItem item)
+            {
+                var data = new DataObject();
+                data.Set("InteractiveRebaseItem", item);
+                DragDrop.DoDragDrop(e, data, DragDropEffects.Move | DragDropEffects.Copy | DragDropEffects.Link);
+            }
+        }
+
+        private void OnRowHeaderDragOver(object sender, DragEventArgs e)
+        {
+            if (DataContext is ViewModels.InteractiveRebase vm &&
+                e.Data.Get("InteractiveRebaseItem") is ViewModels.InteractiveRebaseItem src && 
+                sender is Border { DataContext: ViewModels.InteractiveRebaseItem dst } border &&
+                src != dst)
+            {
+                e.DragEffects = DragDropEffects.Move | DragDropEffects.Copy | DragDropEffects.Link;
+
+                var p = e.GetPosition(border);
+                if (p.Y > border.Bounds.Height * 0.33 && p.Y < border.Bounds.Height * 0.67)
+                {
+                    var srcIdx = vm.Items.IndexOf(src);
+                    var dstIdx = vm.Items.IndexOf(dst);
+                    if (srcIdx < dstIdx)
+                    {
+                        for (var i = srcIdx; i < dstIdx; i++)
+                            vm.MoveItemDown(src);
+                    }
+                    else
+                    {
+                        for (var i = srcIdx; i > dstIdx; i--)
+                            vm.MoveItemUp(src);
+                    }
+                }                
+                
+                e.Handled = true;
+            }
+        }
+
         private void OnMoveItemUp(object sender, RoutedEventArgs e)
         {
             if (sender is Control control && DataContext is ViewModels.InteractiveRebase vm)

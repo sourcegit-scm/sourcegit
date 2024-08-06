@@ -11,31 +11,31 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void MinimizeWindow(object _1, RoutedEventArgs _2)
+        private void MinimizeWindow(object _, RoutedEventArgs e)
         {
             var window = this.FindAncestorOfType<Window>();
             if (window != null)
-            {
                 window.WindowState = WindowState.Minimized;
-            }
+
+            e.Handled = true;
         }
 
-        private void MaximizeOrRestoreWindow(object _1, RoutedEventArgs _2)
+        private void MaximizeOrRestoreWindow(object _, RoutedEventArgs e)
         {
             var window = this.FindAncestorOfType<Window>();
             if (window != null)
-            {
                 window.WindowState = window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-            }
+
+            e.Handled = true;
         }
 
-        private void CloseWindow(object _1, RoutedEventArgs _2)
+        private void CloseWindow(object _, RoutedEventArgs e)
         {
             var window = this.FindAncestorOfType<Window>();
             if (window != null)
-            {
                 window.Close();
-            }
+
+            e.Handled = true;
         }
     }
 }

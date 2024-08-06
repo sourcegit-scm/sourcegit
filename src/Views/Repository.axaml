@@ -488,7 +488,7 @@
             </TextBox.InnerRightContent>
           </TextBox>
 
-          <Popup PlacementTarget="#TxtSearchCommitsBox"
+          <Popup PlacementTarget="{Binding #TxtSearchCommitsBox}"
                  Placement="BottomEdgeAlignedLeft"
                  HorizontalOffset="-8" VerticalAlignment="-8"
                  IsOpen="{Binding IsSearchCommitSuggestionOpen}">

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Avalonia.Collections;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -54,11 +54,11 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _detailContext, value);
         }
 
-        public FileHistories(string repo, string file)
+        public FileHistories(string repo, string file, AvaloniaList<Models.IssueTrackerRule> issueTrackerRules)
         {
             _repo = repo;
             _file = file;
-            _detailContext = new CommitDetail(repo);
+            _detailContext = new CommitDetail(repo, issueTrackerRules);
 
             Task.Run(() =>
             {

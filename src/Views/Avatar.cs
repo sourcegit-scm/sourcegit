@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Security.Cryptography;
-using System.Text;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -41,10 +39,7 @@ namespace SourceGit.Views
             refetch.Click += (_, _) =>
             {
                 if (User != null)
-                {
-                    Models.AvatarManager.Request(_emailMD5, true);
-                    InvalidateVisual();
-                }
+                    Models.AvatarManager.Request(User.Email, true);
             };
 
             ContextMenu = new ContextMenu();
@@ -59,7 +54,7 @@ namespace SourceGit.Views
                 return;
 
             var corner = (float)Math.Max(2, Bounds.Width / 16);
-            var img = Models.AvatarManager.Request(_emailMD5);
+            var img = Models.AvatarManager.Request(User.Email, false);
             if (img != null)
             {
                 var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
@@ -74,9 +69,9 @@ namespace SourceGit.Views
             }
         }
 
-        public void OnAvatarResourceChanged(string md5)
+        public void OnAvatarResourceChanged(string email)
         {
-            if (_emailMD5 == md5)
+            if (User.Email.Equals(email, StringComparison.Ordinal))
             {
                 InvalidateVisual();
             }
@@ -97,25 +92,13 @@ namespace SourceGit.Views
         private static void OnUserPropertyChanged(Avatar avatar, AvaloniaPropertyChangedEventArgs e)
         {
             if (avatar.User == null)
-            {
-                avatar._emailMD5 = null;
                 return;
-            }
 
             var placeholder = string.IsNullOrWhiteSpace(avatar.User.Name) ? "?" : avatar.User.Name.Substring(0, 1);
             var chars = placeholder.ToCharArray();
             var sum = 0;
             foreach (var c in chars)
                 sum += Math.Abs(c);
-
-            var lowered = avatar.User.Email.ToLower(CultureInfo.CurrentCulture).Trim();
-            var hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(lowered));
-            var builder = new StringBuilder();
-            foreach (var c in hash)
-                builder.Append(c.ToString("x2"));
-            var md5 = builder.ToString();
-            if (avatar._emailMD5 == null || avatar._emailMD5 != md5)
-                avatar._emailMD5 = md5;
 
             avatar._fallbackBrush = new LinearGradientBrush
             {
@@ -139,6 +122,5 @@ namespace SourceGit.Views
 
         private FormattedText _fallbackLabel = null;
         private LinearGradientBrush _fallbackBrush = null;
-        private string _emailMD5 = null;
     }
 }

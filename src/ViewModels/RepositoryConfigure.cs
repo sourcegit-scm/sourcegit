@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -41,6 +42,17 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _httpProxy, value);
         }
 
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        {
+            get => _repo.Settings.IssueTrackerRules;
+        }
+
+        public Models.IssueTrackerRule SelectedIssueTrackerRule
+        {
+            get => _selectedIssueTrackerRule;
+            set => SetProperty(ref _selectedIssueTrackerRule, value);
+        }
+
         public RepositoryConfigure(Repository repo)
         {
             _repo = repo;
@@ -63,6 +75,39 @@ namespace SourceGit.ViewModels
         public void ClearHttpProxy()
         {
             HttpProxy = string.Empty;
+        }
+
+        public void AddSampleGithubIssueTracker()
+        {
+            foreach (var remote in _repo.Remotes)
+            {
+                if (remote.URL.Contains("github.com", System.StringComparison.Ordinal))
+                {
+                    if (remote.TryGetVisitURL(out string url))
+                    {
+                        SelectedIssueTrackerRule = _repo.Settings.AddGithubIssueTracker(url);
+                        return;
+                    }
+                }
+            }
+
+            SelectedIssueTrackerRule = _repo.Settings.AddGithubIssueTracker(null);
+        }
+
+        public void AddSampleJiraIssueTracker()
+        {
+            SelectedIssueTrackerRule = _repo.Settings.AddJiraIssueTracker();
+        }
+
+        public void NewIssueTracker()
+        {
+            SelectedIssueTrackerRule = _repo.Settings.AddNewIssueTracker();
+        }
+
+        public void RemoveSelectedIssueTracker()
+        {
+            _repo.Settings.RemoveIssueTracker(_selectedIssueTrackerRule);
+            SelectedIssueTrackerRule = null;
         }
 
         public void Save()
@@ -96,5 +141,6 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private readonly Dictionary<string, string> _cached = null;
         private string _httpProxy;
+        private Models.IssueTrackerRule _selectedIssueTrackerRule = null;
     }
 }

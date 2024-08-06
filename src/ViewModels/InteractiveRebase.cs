@@ -114,7 +114,7 @@ namespace SourceGit.ViewModels
             Current = current;
             On = on;
             IsLoading = true;
-            DetailContext = new CommitDetail(repoPath);
+            DetailContext = new CommitDetail(repoPath, repo.Settings.IssueTrackerRules);
 
             Task.Run(() =>
             {

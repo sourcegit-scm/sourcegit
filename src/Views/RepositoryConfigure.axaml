@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -47,79 +48,167 @@
     </Grid>
 
     <!-- Body -->
-    <Grid Grid.Row="1" Margin="16,8,16,0" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
-      <TextBlock Grid.Row="0" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Configure.User}"/>
-      <TextBox Grid.Row="0" Grid.Column="1"
-               Height="28"
-               CornerRadius="3"
-               Watermark="{DynamicResource Text.Configure.User.Placeholder}"
-               Text="{Binding UserName, Mode=TwoWay}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
+    <TabControl Grid.Row="1">
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
+        </TabItem.Header>
 
-      <TextBlock Grid.Row="1" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Configure.Email}"/>
-      <TextBox Grid.Row="1" Grid.Column="1"
-               Height="28"
-               CornerRadius="3"
-               Watermark="{DynamicResource Text.Configure.Email.Placeholder}"
-               Text="{Binding UserEmail, Mode=TwoWay}"/>
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Row="0" Grid.Column="0"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Margin="0,0,8,0"
+                     Text="{DynamicResource Text.Configure.User}"/>
+          <TextBox Grid.Row="0" Grid.Column="1"
+                   Height="28"
+                   CornerRadius="3"
+                   Watermark="{DynamicResource Text.Configure.User.Placeholder}"
+                   Text="{Binding UserName, Mode=TwoWay}"
+                   v:AutoFocusBehaviour.IsEnabled="True"/>
 
-      <TextBlock Grid.Row="2" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Configure.Proxy}"/>
-      <TextBox Grid.Row="2" Grid.Column="1"
-               Height="28"
-               CornerRadius="3"
-               Watermark="{DynamicResource Text.Configure.Proxy.Placeholder}"
-               Text="{Binding HttpProxy, Mode=TwoWay}">
-        <TextBox.InnerRightContent>
-          <Button Classes="icon_button" IsVisible="{Binding HttpProxy, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Command="{Binding ClearHttpProxy}">
-            <Path Width="16" Height="16" Margin="0,0,0,0" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
-          </Button>
-        </TextBox.InnerRightContent>
-      </TextBox>
+          <TextBlock Grid.Row="1" Grid.Column="0"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Margin="0,0,8,0"
+                     Text="{DynamicResource Text.Configure.Email}"/>
+          <TextBox Grid.Row="1" Grid.Column="1"
+                   Height="28"
+                   CornerRadius="3"
+                   Watermark="{DynamicResource Text.Configure.Email.Placeholder}"
+                   Text="{Binding UserEmail, Mode=TwoWay}"/>
 
-      <TextBlock Grid.Row="3" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Preference.GPG.UserKey}"/>
-      <TextBox Grid.Row="3" Grid.Column="1"
-               Height="28"
-               CornerRadius="3"
-               Watermark="{DynamicResource Text.Preference.GPG.UserKey.Placeholder}"
-               Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
+          <TextBlock Grid.Row="2" Grid.Column="0"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Margin="0,0,8,0"
+                     Text="{DynamicResource Text.Configure.Proxy}"/>
+          <TextBox Grid.Row="2" Grid.Column="1"
+                   Height="28"
+                   CornerRadius="3"
+                   Watermark="{DynamicResource Text.Configure.Proxy.Placeholder}"
+                   Text="{Binding HttpProxy, Mode=TwoWay}">
+            <TextBox.InnerRightContent>
+              <Button Classes="icon_button" IsVisible="{Binding HttpProxy, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Command="{Binding ClearHttpProxy}">
+                <Path Width="16" Height="16" Margin="0,0,0,0" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+            </TextBox.InnerRightContent>
+          </TextBox>
 
-      <CheckBox Grid.Row="4" Grid.Column="1"
-                Content="{DynamicResource Text.Preference.GPG.CommitEnabled}"
-                IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
+          <TextBlock Grid.Row="3" Grid.Column="0"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Margin="0,0,8,0"
+                     Text="{DynamicResource Text.Preference.GPG.UserKey}"/>
+          <TextBox Grid.Row="3" Grid.Column="1"
+                   Height="28"
+                   CornerRadius="3"
+                   Watermark="{DynamicResource Text.Preference.GPG.UserKey.Placeholder}"
+                   Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
 
-      <CheckBox Grid.Row="5" Grid.Column="1"
-                Content="{DynamicResource Text.Preference.GPG.TagEnabled}"
-                IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
-    </Grid>
+          <CheckBox Grid.Row="4" Grid.Column="1"
+                    Content="{DynamicResource Text.Preference.GPG.CommitEnabled}"
+                    IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
 
-    <!-- Options -->
-    <StackPanel Grid.Row="2"
-                Margin="8,4,8,8"
-                Height="32"
-                Orientation="Horizontal"
-                HorizontalAlignment="Center">
-      <Button Classes="flat primary"
-              Width="80"
-              Content="{DynamicResource Text.Sure}"
-              Click="SaveAndClose"
-              HotKey="Enter"/>
-      <Button Classes="flat"
-              Width="80"
-              Margin="8,0,0,0"
-              Content="{DynamicResource Text.Cancel}"
-              Click="CloseWindow"/>
-    </StackPanel>
+          <CheckBox Grid.Row="5" Grid.Column="1"
+                    Content="{DynamicResource Text.Preference.GPG.TagEnabled}"
+                    IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
+        </Grid>
+      </TabItem>
+
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.IssueTracker}"/>
+        </TabItem.Header>
+
+        <Grid ColumnDefinitions="200,*" Height="250" Margin="0,8,0,16">
+          <Border Grid.Column="0"
+                  BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+                  Background="{DynamicResource Brush.Contents}">
+            <Grid RowDefinitions="*,1,Auto">
+              <ListBox Grid.Row="0" 
+                       Background="Transparent" 
+                       ItemsSource="{Binding IssueTrackerRules}" 
+                       SelectedItem="{Binding SelectedIssueTrackerRule, Mode=TwoWay}"
+                       SelectionMode="AlwaysSelected,Single">
+                <ListBox.Styles>
+                  <Style Selector="ListBoxItem">
+                    <Setter Property="MinHeight" Value="0"/>
+                    <Setter Property="Height" Value="26"/>
+                    <Setter Property="Padding" Value="4,2"/>
+                  </Style>
+                </ListBox.Styles>
+                
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="m:IssueTrackerRule">
+                    <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+
+              <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+
+              <StackPanel Grid.Row="2" Orientation="Horizontal" Background="{DynamicResource Brush.ToolBar}">
+                <Button Classes="icon_button">
+                  <Button.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.NewRule}" Command="{Binding NewIssueTracker}"/>
+                      <MenuItem Header="-"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGithub}" Command="{Binding AddSampleGithubIssueTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleJira}" Command="{Binding AddSampleJiraIssueTracker}"/>
+                    </MenuFlyout>
+                  </Button.Flyout>
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
+                </Button>
+
+                <Rectangle Grid.Row="1" Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+
+                <Button Classes="icon_button" Command="{Binding RemoveSelectedIssueTracker}">
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
+                </Button>
+
+                <Rectangle Grid.Row="1" Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+              </StackPanel>
+            </Grid>
+          </Border>
+
+          <ContentControl Grid.Column="1" Content="{Binding SelectedIssueTrackerRule}" Margin="16,0,0,0">
+            <ContentControl.Content>
+              <Binding Path="SelectedIssueTrackerRule">
+                <Binding.TargetNullValue>
+                  <Path Width="64" Height="64"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="{DynamicResource Brush.FG2}"
+                        Data="{StaticResource Icons.Issue}"/>
+                </Binding.TargetNullValue>
+              </Binding>
+            </ContentControl.Content>
+            
+            <ContentControl.DataTemplates>
+              <DataTemplate DataType="m:IssueTrackerRule">
+                <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                  <TextBlock Grid.Row="0" Text="{DynamicResource Text.Configure.IssueTracker.RuleName}"/>
+                  <TextBox Grid.Row="1" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
+
+                  <TextBlock Grid.Row="2" Margin="0,12,0,0" Text="{DynamicResource Text.Configure.IssueTracker.Regex}"/>
+                  <TextBox Grid.Row="3" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding RegexString, Mode=TwoWay}">
+                    <TextBox.InnerRightContent>
+                      <Path Margin="4,0" Width="12" Height="12" Data="{StaticResource Icons.Error}" Fill="OrangeRed" IsVisible="{Binding !IsRegexValid}"/>
+                    </TextBox.InnerRightContent>
+                  </TextBox>
+
+                  <TextBlock Grid.Row="4" Margin="0,12,0,0" Text="{DynamicResource Text.Configure.IssueTracker.URLTemplate}"/>
+                  <TextBox Grid.Row="5" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding URLTemplate, Mode=TwoWay}"/>
+                  <TextBlock Grid.Row="6" Margin="0,2,0,0" Text="{DynamicResource Text.Configure.IssueTracker.URLTemplate.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+                </Grid>
+              </DataTemplate>
+            </ContentControl.DataTemplates>
+          </ContentControl>
+        </Grid>
+      </TabItem>
+    </TabControl>
   </Grid>
 </v:ChromelessWindow>

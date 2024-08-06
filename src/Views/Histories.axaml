@@ -27,10 +27,12 @@
                 ColumnHeaderHeight="24"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto"
+                ClipboardCopyMode="None"
                 LayoutUpdated="OnCommitDataGridLayoutUpdated"
                 SelectionChanged="OnCommitDataGridSelectionChanged"
                 ContextRequested="OnCommitDataGridContextRequested"
-                DoubleTapped="OnCommitDataGridDoubleTapped">
+                DoubleTapped="OnCommitDataGridDoubleTapped"
+                KeyDown="OnCommitDataGridKeyDown">
         <DataGrid.Styles>
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
@@ -80,10 +82,11 @@
                                            FontSize="10"
                                            VerticalAlignment="Center"/>
 
-                    <TextBlock Classes="primary" 
-                               Text="{Binding Subject}"
-                               Opacity="{Binding Opacity}"
-                               FontWeight="{Binding FontWeight}"/>
+                    <v:CommitSubjectPresenter Classes="primary" 
+                                              Subject="{Binding Subject}"
+                                              IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
+                                              Opacity="{Binding Opacity}"
+                                              FontWeight="{Binding FontWeight}"/>
                   </StackPanel>
                 </Border>
               </DataTemplate>

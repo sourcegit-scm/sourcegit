@@ -15,6 +15,7 @@ Opensource Git GUI client.
 * GIT commands with GUI
   * Clone/Fetch/Pull/Push...
   * Merge/Rebase/Reset/Revert/Amend/Cherry-pick...
+  * Amend/Reword
   * Interactive rebase (Basic)
   * Branches
   * Remotes
@@ -30,8 +31,9 @@ Opensource Git GUI client.
   * Revision Diffs
   * Branch Diff
   * Image Diff - Side-By-Side/Swipe/Blend
-* GitFlow support
-* Git LFS support
+* GitFlow
+* Git LFS
+* Issue Link
 
 > **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
 

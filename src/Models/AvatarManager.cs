@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Threading;
 
 namespace SourceGit.Models
 {
     public interface IAvatarHost
     {
-        void OnAvatarResourceChanged(string md5);
+        void OnAvatarResourceChanged(string email);
     }
 
-    public static class AvatarManager
+    public static partial class AvatarManager
     {
         public static string SelectedServer
         {
@@ -29,33 +34,42 @@ namespace SourceGit.Models
             if (!Directory.Exists(_storePath))
                 Directory.CreateDirectory(_storePath);
 
+            var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/github.png", UriKind.RelativeOrAbsolute));
+            _resources.Add("noreply@github.com", new Bitmap(icon));
+
             Task.Run(() =>
             {
                 while (true)
                 {
-                    var md5 = null as string;
+                    var email = null as string;
 
                     lock (_synclock)
                     {
                         foreach (var one in _requesting)
                         {
-                            md5 = one;
+                            email = one;
                             break;
                         }
                     }
 
-                    if (md5 == null)
+                    if (email == null)
                     {
                         Thread.Sleep(100);
                         continue;
                     }
+
+                    var md5 = GetEmailHash(email);
+                    var matchGithubUser = REG_GITHUB_USER_EMAIL().Match(email);
+                    var url = matchGithubUser.Success ?
+                        $"https://avatars.githubusercontent.com/{matchGithubUser.Groups[2].Value}" :
+                        $"{SelectedServer}{md5}?d=404";
 
                     var localFile = Path.Combine(_storePath, md5);
                     var img = null as Bitmap;
                     try
                     {
                         var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(2) };
-                        var task = client.GetAsync($"{SelectedServer}{md5}?d=404");
+                        var task = client.GetAsync(url);
                         task.Wait();
 
                         var rsp = task.Result;
@@ -82,13 +96,13 @@ namespace SourceGit.Models
 
                     lock (_synclock)
                     {
-                        _requesting.Remove(md5);
+                        _requesting.Remove(email);
                     }
 
                     Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        _resources[md5] = img;
-                        NotifyResourceChanged(md5);
+                        _resources[email] = img;
+                        NotifyResourceChanged(email);
                     });
                 }
             });
@@ -104,25 +118,28 @@ namespace SourceGit.Models
             _avatars.Remove(host);
         }
 
-        public static Bitmap Request(string md5, bool forceRefetch = false)
+        public static Bitmap Request(string email, bool forceRefetch)
         {
             if (forceRefetch)
             {
-                if (_resources.ContainsKey(md5))
-                    _resources.Remove(md5);
+                if (email.Equals("noreply@github.com", StringComparison.Ordinal))
+                    return null;
 
-                var localFile = Path.Combine(_storePath, md5);
+                if (_resources.ContainsKey(email))
+                    _resources.Remove(email);
+
+                var localFile = Path.Combine(_storePath, GetEmailHash(email));
                 if (File.Exists(localFile))
                     File.Delete(localFile);
 
-                NotifyResourceChanged(md5);
+                NotifyResourceChanged(email);
             }
             else
             {
-                if (_resources.TryGetValue(md5, out var value))
+                if (_resources.TryGetValue(email, out var value))
                     return value;
 
-                var localFile = Path.Combine(_storePath, md5);
+                var localFile = Path.Combine(_storePath, GetEmailHash(email));
                 if (File.Exists(localFile))
                 {
                     try
@@ -130,7 +147,7 @@ namespace SourceGit.Models
                         using (var stream = File.OpenRead(localFile))
                         {
                             var img = Bitmap.DecodeToWidth(stream, 128);
-                            _resources.Add(md5, img);
+                            _resources.Add(email, img);
                             return img;
                         }
                     }
@@ -143,18 +160,28 @@ namespace SourceGit.Models
 
             lock (_synclock)
             {
-                if (!_requesting.Contains(md5))
-                    _requesting.Add(md5);
+                if (!_requesting.Contains(email))
+                    _requesting.Add(email);
             }
 
             return null;
         }
 
-        private static void NotifyResourceChanged(string md5)
+        private static string GetEmailHash(string email)
+        {
+            var lowered = email.ToLower(CultureInfo.CurrentCulture).Trim();
+            var hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(lowered));
+            var builder = new StringBuilder();
+            foreach (var c in hash)
+                builder.Append(c.ToString("x2"));
+            return builder.ToString();
+        }
+
+        private static void NotifyResourceChanged(string email)
         {
             foreach (var avatar in _avatars)
             {
-                avatar.OnAvatarResourceChanged(md5);
+                avatar.OnAvatarResourceChanged(email);
             }
         }
 
@@ -163,5 +190,8 @@ namespace SourceGit.Models
         private static readonly List<IAvatarHost> _avatars = new List<IAvatarHost>();
         private static readonly Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
         private static readonly HashSet<string> _requesting = new HashSet<string>();
+
+        [GeneratedRegex(@"^(?:(\d+)\+)?(.+?)@users\.noreply\.github\.com$")]
+        private static partial Regex REG_GITHUB_USER_EMAIL();
     }
 }

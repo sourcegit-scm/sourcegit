@@ -49,9 +49,9 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Rebase(_repo.FullPath, _revision, AutoStash).Exec();
+                new Commands.Rebase(_repo.FullPath, _revision, AutoStash).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
+                return true;
             });
         }
 

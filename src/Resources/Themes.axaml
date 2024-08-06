@@ -32,6 +32,7 @@
       <Color x:Key="Color.Diff.DeletedBG">#80FF9797</Color>
       <Color x:Key="Color.Diff.AddedHighlight">#A7E1A7</Color>
       <Color x:Key="Color.Diff.DeletedHighlight">#F19B9D</Color>
+      <Color x:Key="Color.Link">#0000EE</Color>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -65,6 +66,7 @@
       <Color x:Key="Color.Diff.DeletedBG">#C0633F3E</Color>
       <Color x:Key="Color.Diff.AddedHighlight">#A0308D3C</Color>
       <Color x:Key="Color.Diff.DeletedHighlight">#A09F4247</Color>
+      <Color x:Key="Color.Link">#4DAAFC</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 
@@ -100,4 +102,5 @@
   <SolidColorBrush x:Key="Brush.Diff.DeletedBG" Color="{DynamicResource Color.Diff.DeletedBG}"/>
   <SolidColorBrush x:Key="Brush.Diff.AddedHighlight" Color="{DynamicResource Color.Diff.AddedHighlight}"/>
   <SolidColorBrush x:Key="Brush.Diff.DeletedHighlight" Color="{DynamicResource Color.Diff.DeletedHighlight}"/>
+  <SolidColorBrush x:Key="Brush.Link" Color="{DynamicResource Color.Link}"/>
 </ResourceDictionary>

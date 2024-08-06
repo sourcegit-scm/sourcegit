@@ -19,7 +19,9 @@
       <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical">
           <!-- Base Information -->
-          <v:CommitBaseInfo Content="{Binding Commit}" Message="{Binding FullMessage}"/>
+          <v:CommitBaseInfo Content="{Binding Commit}" 
+                            Message="{Binding FullMessage}"
+                            IssueTrackerRules="{Binding IssueTrackerRules}"/>
 
           <!-- Line -->
           <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}"/>
@@ -32,7 +34,7 @@
             <ListBox.Styles>
               <Style Selector="ListBoxItem">
                 <Setter Property="Padding" Value="0"/>
-                <Setter Property="MinHeight" Value="26"/>
+                <Setter Property="MinHeight" Value="24"/>
                 <Setter Property="CornerRadius" Value="4"/>
               </Style>
             </ListBox.Styles>
@@ -45,7 +47,7 @@
             
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Change">
-                <Grid Background="Transparent" Height="26" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
+                <Grid Background="Transparent" Height="24" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
                   <v:ChangeStatusIcon Grid.Column="0" 
                                       Width="14" Height="14" 
                                       HorizontalAlignment="Left" 
