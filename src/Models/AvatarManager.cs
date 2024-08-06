@@ -122,6 +122,9 @@ namespace SourceGit.Models
         {
             if (forceRefetch)
             {
+                if (email.Equals("noreply@github.com", StringComparison.Ordinal))
+                    return null;
+
                 if (_resources.ContainsKey(email))
                     _resources.Remove(email);
 
