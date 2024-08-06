@@ -218,7 +218,22 @@ namespace SourceGit.ViewModels
 
         public bool SetData(List<Models.Change> changes)
         {
+            if (!IsChanged(_cached, changes))
+            {
+                // Just force refresh selected changes.
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    if (_selectedUnstaged.Count > 0)
+                        SelectedUnstaged = new List<Models.Change>(_selectedUnstaged);
+                    else if (_selectedStaged.Count > 0)
+                        SelectedStaged = new List<Models.Change>(_selectedStaged);
+                });
+
+                return _cached.Find(x => x.IsConflit) != null;
+            }
+
             _cached = changes;
+            _count = _cached.Count;
 
             var unstaged = new List<Models.Change>();
             var staged = new List<Models.Change>();
@@ -227,12 +242,12 @@ namespace SourceGit.ViewModels
 
             var lastSelectedUnstaged = new HashSet<string>();
             var lastSelectedStaged = new HashSet<string>();
-            if (_selectedUnstaged != null)
+            if (_selectedUnstaged != null && _selectedUnstaged.Count > 0)
             {
                 foreach (var c in _selectedUnstaged)
                     lastSelectedUnstaged.Add(c.Path);
             }
-            else if (_selectedStaged != null)
+            else if (_selectedStaged != null && _selectedStaged.Count > 0)
             {
                 foreach (var c in _selectedStaged)
                     lastSelectedStaged.Add(c.Path);
@@ -257,8 +272,6 @@ namespace SourceGit.ViewModels
                 if (lastSelectedStaged.Contains(c.Path))
                     selectedStaged.Add(c);
             }
-
-            _count = changes.Count;
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -1271,6 +1284,24 @@ namespace SourceGit.ViewModels
                     IsCommitting = false;
                 });
             });
+        }
+
+        private bool IsChanged(List<Models.Change> old, List<Models.Change> cur)
+        {
+            if (old.Count != cur.Count)
+                return true;
+
+            var oldSet = new HashSet<string>();
+            foreach (var c in old)
+                oldSet.Add($"{c.Path}\n{c.WorkTree}\n{c.Index}");
+
+            foreach (var c in cur)
+            {
+                if (!oldSet.Contains($"{c.Path}\n{c.WorkTree}\n{c.Index}"))
+                    return true;
+            }
+
+            return false;
         }
 
         private Repository _repo = null;
