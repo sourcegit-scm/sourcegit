@@ -223,10 +223,10 @@ namespace SourceGit.ViewModels
                 // Just force refresh selected changes.
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    if (_selectedUnstaged.Count > 0)
-                        SelectedUnstaged = new List<Models.Change>(_selectedUnstaged);
-                    else if (_selectedStaged.Count > 0)
-                        SelectedStaged = new List<Models.Change>(_selectedStaged);
+                    if (_selectedUnstaged.Count == 1)
+                        SetDetail(_selectedUnstaged[0]);
+                    else if (_selectedStaged.Count == 1)
+                        SetDetail(_selectedStaged[0]);
                 });
 
                 return _cached.Find(x => x.IsConflit) != null;
