@@ -28,11 +28,11 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Checkout '{Branch}' ...";
 
-            var hasLocalChanges = _repo.WorkingCopyChangesCount > 0;
             return Task.Run(() =>
             {
+                var changes = new Commands.QueryLocalChanges(_repo.FullPath, false).Result();
                 var needPopStash = false;
-                if (hasLocalChanges)
+                if (changes.Count > 0)
                 {
                     if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                     {

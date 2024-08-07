@@ -10,11 +10,6 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public bool HasLocalChanges
-        {
-            get => _repo.WorkingCopyChangesCount > 0;
-        }
-
         public bool AutoStash
         {
             get => _autoStash;
@@ -35,8 +30,9 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
+                var changes = new Commands.QueryLocalChanges(_repo.FullPath, false).Result();
                 var needPopStash = false;
-                if (HasLocalChanges)
+                if (changes.Count > 0)
                 {
                     if (AutoStash)
                     {

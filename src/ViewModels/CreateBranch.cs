@@ -86,8 +86,9 @@ namespace SourceGit.ViewModels
             {
                 if (CheckoutAfterCreated)
                 {
-                    bool needPopStash = false;
-                    if (_repo.WorkingCopyChangesCount > 0)
+                    var changes = new Commands.QueryLocalChanges(_repo.FullPath, false).Result();
+                    var needPopStash = false;
+                    if (changes.Count > 0)
                     {
                         if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                         {
