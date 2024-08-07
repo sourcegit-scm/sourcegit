@@ -134,14 +134,8 @@ namespace SourceGit.ViewModels
                 {
                     if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                     {
-                        SetProgressDescription("Adding untracked changes...");
-                        var succ = new Commands.Add(_repo.FullPath).Exec();
-                        if (succ)
-                        {
-                            SetProgressDescription("Stash local changes...");
-                            succ = new Commands.Stash(_repo.FullPath).Push("PULL_AUTO_STASH");
-                        }
-
+                        SetProgressDescription("Stash local changes...");
+                        var succ = new Commands.Stash(_repo.FullPath).Push("PULL_AUTO_STASH");
                         if (!succ)
                         {
                             CallUIThread(() => _repo.SetWatcherEnabled(true));
