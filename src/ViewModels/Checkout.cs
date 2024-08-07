@@ -59,11 +59,7 @@ namespace SourceGit.ViewModels
                 if (needPopStash)
                 {
                     SetProgressDescription("Re-apply local changes...");
-                    rs = new Commands.Stash(_repo.FullPath).Apply("stash@{0}");
-                    if (rs)
-                    {
-                        rs = new Commands.Stash(_repo.FullPath).Drop("stash@{0}");
-                    }
+                    rs = new Commands.Stash(_repo.FullPath).Pop("stash@{0}");
                 }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
