@@ -55,7 +55,11 @@
              SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
              HorizontalAlignment="Center"
              VerticalAlignment="Center"
-             Background="Transparent">
+             Background="Transparent"
+             BorderThickness="1"
+             BorderBrush="{DynamicResource Brush.Border2}"
+             CornerRadius="14"
+             Padding="3,0">
       <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
           <StackPanel Orientation="Horizontal"/>
@@ -64,6 +68,7 @@
 
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
+          <Setter Property="Height" Value="28"/>
           <Setter Property="Padding" Value="0"/>
           <Setter Property="Background" Value="Transparent"/>
         </Style>
@@ -77,17 +82,24 @@
         </Style>
 
         <Style Selector="ListBoxItem Border.switcher_bg">
-          <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
+          <Setter Property="Height" Value="22"/>
+          <Setter Property="CornerRadius" Value="11"/>
+          <Setter Property="Background" Value="Transparent"/>
+          <Setter Property="VerticalAlignment" Value="Center"/>
+          <Setter Property="Padding" Value="16,0"/>
         </Style>
 
         <Style Selector="ListBoxItem:selected Border.switcher_bg">
           <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
-          <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
         </Style>
 
         <Style Selector="TextBlock.view_mode_switcher">
           <Setter Property="FontWeight" Value="Bold"/>
           <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
+        </Style>
+
+        <Style Selector="ListBoxItem:pointerover TextBlock.view_mode_switcher">
+          <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
         </Style>
 
         <Style Selector="ListBoxItem:selected TextBlock.view_mode_switcher">
@@ -96,19 +108,19 @@
       </ListBox.Styles>
 
       <ListBoxItem>
-        <Border Classes="switcher_bg" Height="28" Padding="16,0" BorderThickness="1,1,0,1" CornerRadius="14,0,0,14">
+        <Border Classes="switcher_bg">
           <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.ThisYear}"/>
         </Border>
       </ListBoxItem>
 
       <ListBoxItem>
-        <Border Classes="switcher_bg" Height="28" Padding="16,0" BorderThickness="1">
+        <Border Classes="switcher_bg">
           <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.ThisMonth}"/>
         </Border>
       </ListBoxItem>
 
       <ListBoxItem>
-        <Border Classes="switcher_bg" Height="28" Padding="16,0" BorderThickness="0,1,1,1" CornerRadius="0,14,14,0">
+        <Border Classes="switcher_bg">
           <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.ThisWeek}"/>
         </Border>
       </ListBoxItem>
