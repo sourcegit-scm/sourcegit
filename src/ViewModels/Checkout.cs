@@ -30,9 +30,9 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var changes = new Commands.QueryLocalChanges(_repo.FullPath, false).Result();
+                var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
                 var needPopStash = false;
-                if (changes.Count > 0)
+                if (changes > 0)
                 {
                     if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                     {
