@@ -9,6 +9,7 @@ using Avalonia.Media;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
+using AvaloniaEdit.TextMate;
 
 namespace SourceGit.Views
 {
@@ -35,6 +36,7 @@ namespace SourceGit.Views
             base.OnLoaded(e);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+            UpdateTextMate();
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -42,6 +44,13 @@ namespace SourceGit.Views
             base.OnUnloaded(e);
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
+
+            if (_textMate != null)
+            {
+                _textMate.Dispose();
+                _textMate = null;
+            }
+
             GC.Collect();
         }
 
@@ -50,9 +59,14 @@ namespace SourceGit.Views
             base.OnDataContextChanged(e);
 
             if (DataContext is Models.RevisionTextFile source)
+            {
+                UpdateTextMate();
                 Text = source.Content;
+            }
             else
+            {
                 Text = string.Empty;
+            }                
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -85,6 +99,17 @@ namespace SourceGit.Views
             TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
         }
+
+        private void UpdateTextMate()
+        {
+            if (_textMate == null)
+                _textMate = Models.TextMateHelper.CreateForEditor(this);
+
+            if (DataContext is Models.RevisionTextFile file)
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, file.FileName);
+        }
+
+        private TextMate.Installation _textMate = null;
     }
 
     public partial class RevisionFiles : UserControl

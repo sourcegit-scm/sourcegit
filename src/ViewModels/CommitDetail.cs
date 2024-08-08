@@ -183,7 +183,7 @@ namespace SourceGit.ViewModels
                         }
                         else
                         {
-                            var txt = new Models.RevisionTextFile() { Content = content };
+                            var txt = new Models.RevisionTextFile() { FileName = file.Path, Content = content };
                             Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = txt);
                         }
                     });
