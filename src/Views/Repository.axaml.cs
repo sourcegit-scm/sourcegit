@@ -123,9 +123,9 @@ namespace SourceGit.Views
 
         private void OnSubmoduleContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: string submodule } grid && DataContext is ViewModels.Repository repo)
+            if (sender is DataGrid { SelectedItem: Models.Submodule submodule } grid && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForSubmodule(submodule);
+                var menu = repo.CreateContextMenuForSubmodule(submodule.Path);
                 grid.OpenContextMenu(menu);
             }
 
@@ -134,9 +134,9 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: string submodule } && DataContext is ViewModels.Repository repo)
+            if (sender is DataGrid { SelectedItem: Models.Submodule submodule } && DataContext is ViewModels.Repository repo)
             {
-                repo.OpenSubmodule(submodule);
+                repo.OpenSubmodule(submodule.Path);
             }
 
             e.Handled = true;

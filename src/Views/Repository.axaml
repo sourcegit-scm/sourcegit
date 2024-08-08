@@ -349,9 +349,14 @@
               <DataGridTemplateColumn Width="*" Header="NAME">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <Border Padding="0,0,4,0">
-                      <TextBlock Text="{Binding}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
-                    </Border>
+                    <Grid Background="Transparent" Margin="0,0,4,0" ColumnDefinitions="*,8">
+                      <TextBlock Grid.Column="0" Text="{Binding Path}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
+                      <Path Grid.Column="1"
+                            Width="8" Height="8"
+                            Fill="Goldenrod"
+                            Data="{StaticResource Icons.Modified}"
+                            IsVisible="{Binding IsDirty}"/>
+                    </Grid>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>

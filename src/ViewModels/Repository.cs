@@ -136,7 +136,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _visibleTags, value);
         }
 
-        public List<string> Submodules
+        public List<Models.Submodule> Submodules
         {
             get => _submodules;
             private set => SetProperty(ref _submodules, value);
@@ -778,6 +778,9 @@ namespace SourceGit.ViewModels
         public void RefreshSubmodules()
         {
             var submodules = new Commands.QuerySubmodules(_fullpath).Result();
+            if (_watcher != null) 
+                _watcher.UpdateSubmodules(submodules);
+
             Dispatcher.UIThread.Invoke(() => Submodules = submodules);
         }
 
@@ -1992,7 +1995,7 @@ namespace SourceGit.ViewModels
         private List<Models.Worktree> _worktrees = new List<Models.Worktree>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
         private List<Models.Tag> _visibleTags = new List<Models.Tag>();
-        private List<string> _submodules = new List<string>();
+        private List<Models.Submodule> _submodules = new List<Models.Submodule>();
         private bool _includeUntracked = true;
 
         private InProgressContext _inProgressContext = null;

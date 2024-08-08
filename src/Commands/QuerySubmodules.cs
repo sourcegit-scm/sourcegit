@@ -17,9 +17,10 @@ namespace SourceGit.Commands
             Args = "submodule status";
         }
 
-        public List<string> Result()
+        public List<Models.Submodule> Result()
         {
             Exec();
+            new UpdateSubmoduleStatus(WorkingDirectory, _submodules).Result();
             return _submodules;
         }
 
@@ -28,17 +29,17 @@ namespace SourceGit.Commands
             var match = REG_FORMAT1().Match(line);
             if (match.Success)
             {
-                _submodules.Add(match.Groups[1].Value);
+                _submodules.Add(new Models.Submodule() { Path = match.Groups[1].Value });
                 return;
             }
 
             match = REG_FORMAT2().Match(line);
             if (match.Success)
             {
-                _submodules.Add(match.Groups[1].Value);
+                _submodules.Add(new Models.Submodule() { Path = match.Groups[1].Value });
             }
         }
 
-        private readonly List<string> _submodules = new List<string>();
+        private readonly List<Models.Submodule> _submodules = new List<Models.Submodule>();
     }
 }
