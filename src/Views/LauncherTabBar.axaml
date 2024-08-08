@@ -64,7 +64,6 @@
                         IsHitTestVisible="False"/>
                   <TextBlock Grid.Column="1"
                              Classes="primary"
-                             FontSize="12"
                              HorizontalAlignment="Stretch" VerticalAlignment="Center"
                              TextAlignment="Center"
                              Text="{Binding Node.Name}"
@@ -72,7 +71,6 @@
                              IsHitTestVisible="False"/>
                   <TextBlock Grid.Column="1"
                              Classes="primary"
-                             FontSize="12"
                              HorizontalAlignment="Stretch" VerticalAlignment="Center"
                              TextAlignment="Center"
                              Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
