@@ -163,18 +163,18 @@
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
                 </Button>
 
-                <Rectangle Grid.Row="1" Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
 
                 <Button Classes="icon_button" Command="{Binding RemoveSelectedIssueTracker}">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
                 </Button>
 
-                <Rectangle Grid.Row="1" Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
               </StackPanel>
             </Grid>
           </Border>
 
-          <ContentControl Grid.Column="1" Content="{Binding SelectedIssueTrackerRule}" Margin="16,0,0,0">
+          <ContentControl Grid.Column="1" Margin="16,0,0,0">
             <ContentControl.Content>
               <Binding Path="SelectedIssueTrackerRule">
                 <Binding.TargetNullValue>
@@ -189,7 +189,7 @@
             
             <ContentControl.DataTemplates>
               <DataTemplate DataType="m:IssueTrackerRule">
-                <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                   <TextBlock Grid.Row="0" Text="{DynamicResource Text.Configure.IssueTracker.RuleName}"/>
                   <TextBox Grid.Row="1" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
