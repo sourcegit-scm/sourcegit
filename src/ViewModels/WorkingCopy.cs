@@ -1238,25 +1238,33 @@ namespace SourceGit.ViewModels
                 App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
                 return;
             }
-
-            if (_count == 0)
-            {
-                App.RaiseException(_repo.FullPath, "No files added to commit!");
-                return;
-            }
-
-            if (!AutoStageBeforeCommit && _staged.Count == 0)
-            {
-                App.RaiseException(_repo.FullPath, "No files added to commit!");
-                return;
-            }
-
+            
             if (string.IsNullOrWhiteSpace(_commitMessage))
             {
                 App.RaiseException(_repo.FullPath, "Commit without message is NOT allowed!");
                 return;
             }
 
+            if (!_useAmend)
+            {
+                if (AutoStageBeforeCommit)
+                {
+                    if (_count == 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "No files added to commit!");
+                        return;
+                    }
+                }
+                else
+                {
+                    if (_staged.Count == 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "No files added to commit!");
+                        return;
+                    }
+                }
+            }
+            
             IsCommitting = true;
             _repo.Settings.PushCommitMessage(_commitMessage);
             _repo.SetWatcherEnabled(false);
