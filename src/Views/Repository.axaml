@@ -219,6 +219,7 @@
             <DataGrid.Styles>
               <Style Selector="DataGridRow">
                 <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="Height" Value="24"/>
               </Style>
 
               <Style Selector="DataGridRow /template/ Border#RowBorder">
@@ -312,7 +313,7 @@
                     IsReadOnly="True"
                     HeadersVisibility="None"
                     Focusable="False"
-                    RowHeight="26"
+                    RowHeight="24"
                     HorizontalScrollBarVisibility="Disabled"
                     VerticalScrollBarVisibility="Auto"
                     ContextRequested="OnSubmoduleContextRequested"
@@ -322,6 +323,7 @@
             <DataGrid.Styles>
               <Style Selector="DataGridRow">
                 <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="Height" Value="24"/>
               </Style>
 
               <Style Selector="DataGridRow /template/ Border#RowBorder">
@@ -400,7 +402,7 @@
                     IsReadOnly="True"
                     HeadersVisibility="None"
                     Focusable="False"
-                    RowHeight="26"
+                    RowHeight="24"
                     HorizontalScrollBarVisibility="Disabled"
                     VerticalScrollBarVisibility="Auto"
                     ContextRequested="OnWorktreeContextRequested"
@@ -409,7 +411,8 @@
                     IsVisible="{Binding IsWorktreeGroupExpanded, Mode=OneWay}">
             <DataGrid.Styles>
               <Style Selector="DataGridRow">
-                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="CornerRadius" Value="4"/>
+                <Setter Property="Height" Value="24"/>
               </Style>
 
               <Style Selector="DataGridRow /template/ Border#RowBorder">
