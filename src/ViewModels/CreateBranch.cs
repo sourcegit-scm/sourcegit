@@ -35,7 +35,7 @@ namespace SourceGit.ViewModels
         public CreateBranch(Repository repo, Models.Branch branch)
         {
             _repo = repo;
-            _baseOnRevision = branch.FullName;
+            _baseOnRevision = branch.IsDetachedHead ? branch.Head : branch.FullName;
 
             if (!branch.IsLocal && repo.Branches.Find(x => x.IsLocal && x.Name == branch.Name) == null)
             {

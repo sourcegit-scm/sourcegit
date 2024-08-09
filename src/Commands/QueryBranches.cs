@@ -39,7 +39,7 @@ namespace SourceGit.Commands
 
             if (refName.StartsWith(PREFIX_DETACHED, StringComparison.Ordinal))
             {
-                branch.IsHead = true;
+                branch.IsDetachedHead = true;
             }
 
             if (refName.StartsWith(PREFIX_LOCAL, StringComparison.Ordinal))

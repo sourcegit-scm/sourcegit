@@ -746,7 +746,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                limits += "--branches --remotes --tags";
+                limits += "--exclude=refs/stash --all";
             }
 
             var commits = new Commands.QueryCommits(_fullpath, limits).Result();
