@@ -25,8 +25,6 @@ namespace SourceGit.Models
         public bool HasDecorators => Decorators.Count > 0;
 
         public bool IsMerged { get; set; } = false;
-        public bool CanPushToUpstream { get; set; } = false;
-        public bool CanPullFromUpstream { get; set; } = false;
         public Thickness Margin { get; set; } = new Thickness(0);
 
         public string AuthorTimeStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss");
