@@ -211,7 +211,7 @@
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <NumericUpDown Grid.Row="3" Grid.Column="1"
-                           Minimum="10" Maximum="16" Increment="0.5"
+                           Minimum="10" Maximum="18" Increment="0.5"
                            Height="28"
                            Padding="4"
                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
