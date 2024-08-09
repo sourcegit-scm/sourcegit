@@ -126,7 +126,7 @@
                        Background="Transparent" 
                        ItemsSource="{Binding IssueTrackerRules}" 
                        SelectedItem="{Binding SelectedIssueTrackerRule, Mode=TwoWay}"
-                       SelectionMode="AlwaysSelected,Single">
+                       SelectionMode="Single">
                 <ListBox.Styles>
                   <Style Selector="ListBoxItem">
                     <Setter Property="MinHeight" Value="0"/>
