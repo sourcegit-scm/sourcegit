@@ -66,7 +66,7 @@ namespace SourceGit.Views
             else
             {
                 Text = string.Empty;
-            }                
+            }
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)

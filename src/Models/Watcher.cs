@@ -71,7 +71,7 @@ namespace SourceGit.Models
             }
         }
 
-        public void UpdateSubmodules(List<Submodule> submodules)
+        public void SetSubmodules(List<Submodule> submodules)
         {
             lock (_lockSubmodule)
             {
@@ -223,7 +223,7 @@ namespace SourceGit.Models
                         return;
                     }
                 }
-            }            
+            }
 
             _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
         }

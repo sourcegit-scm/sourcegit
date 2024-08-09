@@ -1238,7 +1238,7 @@ namespace SourceGit.ViewModels
                 App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
                 return;
             }
-            
+
             if (string.IsNullOrWhiteSpace(_commitMessage))
             {
                 App.RaiseException(_repo.FullPath, "Commit without message is NOT allowed!");
@@ -1264,7 +1264,7 @@ namespace SourceGit.ViewModels
                     }
                 }
             }
-            
+
             IsCommitting = true;
             _repo.Settings.PushCommitMessage(_commitMessage);
             _repo.SetWatcherEnabled(false);

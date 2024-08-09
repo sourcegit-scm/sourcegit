@@ -778,8 +778,8 @@ namespace SourceGit.ViewModels
         public void RefreshSubmodules()
         {
             var submodules = new Commands.QuerySubmodules(_fullpath).Result();
-            if (_watcher != null) 
-                _watcher.UpdateSubmodules(submodules);
+            if (_watcher != null)
+                _watcher.SetSubmodules(submodules);
 
             Dispatcher.UIThread.Invoke(() => Submodules = submodules);
         }

@@ -523,9 +523,9 @@ namespace SourceGit.Views
 
         private void OnCommitDataGridKeyDown(object sender, KeyEventArgs e)
         {
-            if (sender is DataGrid grid && 
-                grid.SelectedItems is { Count: > 0 } selected && 
-                e.Key == Key.C && 
+            if (sender is DataGrid grid &&
+                grid.SelectedItems is { Count: > 0 } selected &&
+                e.Key == Key.C &&
                 e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
                 var builder = new StringBuilder();
