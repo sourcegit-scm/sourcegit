@@ -182,6 +182,7 @@ namespace SourceGit.Models
             if (name.StartsWith("modules", StringComparison.Ordinal) && name.EndsWith("HEAD", StringComparison.Ordinal))
             {
                 _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
+                _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
             }
             else if (name.StartsWith("refs/tags", StringComparison.Ordinal))
             {
@@ -220,7 +221,7 @@ namespace SourceGit.Models
                     if (name.StartsWith(submodule, StringComparison.Ordinal))
                     {
                         _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
-                        break;
+                        return;
                     }
                 }
             }
