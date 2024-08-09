@@ -220,7 +220,7 @@ namespace SourceGit.Models
                     if (name.StartsWith(submodule, StringComparison.Ordinal))
                     {
                         _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
-                        return;
+                        break;
                     }
                 }
             }
