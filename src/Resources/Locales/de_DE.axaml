@@ -7,7 +7,7 @@
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Erstellt mit </x:String>
   <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• Text Editor von </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace Schriftarten von </x:String>
+  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace-Schriftarten von </x:String>
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Quelltext findest du unter </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Open Source &amp; freier Git GUI Client</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Worktree hinzufügen</x:String>
@@ -368,11 +368,11 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Leztes Jahr</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">Vor {0} Jahren</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">Einstellungen</x:String>
-  <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">Erscheinungsbild</x:String>
+  <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">ERSCHEINUNGSBILD</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Standardschriftart</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Standardschriftgröße</x:String>
-  <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Monospace Schriftart</x:String>
-  <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Verwende nur die Monospace Schriftart im Text Editor</x:String>
+  <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Monospace-Schriftart</x:String>
+  <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Verwende nur die Monospace-Schriftart im Text Editor</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Design</x:String>
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Design-Anpassungen</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">ALLGEMEIN</x:String>
