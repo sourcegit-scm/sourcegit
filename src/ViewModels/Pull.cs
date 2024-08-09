@@ -182,30 +182,29 @@ namespace SourceGit.ViewModels
             RemoteBranches = branches;
 
             var autoSelectedBranch = false;
-            if (!string.IsNullOrEmpty(_current.Upstream))
+            if (!string.IsNullOrEmpty(_current.Upstream) &&
+                _current.Upstream.StartsWith($"refs/remotes/{remoteName}/", System.StringComparison.Ordinal))
             {
-                if (_current.Upstream.StartsWith($"refs/remotes/{remoteName}/", System.StringComparison.Ordinal))
+                foreach (var branch in branches)
                 {
-                    foreach (var branch in branches)
+                    if (_current.Upstream == branch.FullName)
                     {
-                        if (_current.Upstream == branch.FullName)
-                        {
-                            SelectedBranch = branch;
-                            autoSelectedBranch = true;
-                            break;
-                        }
+                        SelectedBranch = branch;
+                        autoSelectedBranch = true;
+                        break;
                     }
                 }
-                else
+            }
+
+            if (!autoSelectedBranch)
+            {
+                foreach (var branch in branches)
                 {
-                    foreach (var branch in branches)
+                    if (_current.Name == branch.Name)
                     {
-                        if (_current.Name == branch.Name)
-                        {
-                            SelectedBranch = branch;
-                            autoSelectedBranch = true;
-                            break;
-                        }
+                        SelectedBranch = branch;
+                        autoSelectedBranch = true;
+                        break;
                     }
                 }
             }
