@@ -14,18 +14,15 @@ fi
 
 arch=
 appimage_arch=
-appimage_runtime=
 target=
 case "$RUNTIME" in
     linux-x64)
         arch=amd64
         appimage_arch=x86_64
-        appimage_runtime=runtime-fuse2-x86_64
         target=x86_64;;
     linux-arm64)
         arch=arm64
         appimage_arch=arm_aarch64
-        appimage_runtime=runtime-fuse2-aarch64
         target=aarch64;;
     *)
         echo "Unknown runtime $RUNTIME"
@@ -33,17 +30,12 @@ case "$RUNTIME" in
 esac
 
 APPIMAGETOOL_URL=https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
-APPIMAGE_RUNTIME_URL=https://github.com/AppImage/type2-runtime/releases/download/old/$appimage_runtime 
 
 cd build
 
 if [ ! -f "appimagetool" ]; then
     curl -o appimagetool -L "$APPIMAGETOOL_URL"
     chmod +x appimagetool
-fi
-
-if [ ! -f "appimage_runtime" ]; then
-    curl -o appimage_runtime -L "$APPIMAGE_RUNTIME_URL"
 fi
 
 rm -f SourceGit/*.dbg
@@ -61,7 +53,7 @@ ln -rsf SourceGit.AppDir/opt/sourcegit/sourcegit SourceGit.AppDir/AppRun
 ln -rsf SourceGit.AppDir/usr/share/applications/com.sourcegit_scm.SourceGit.desktop SourceGit.AppDir
 cp resources/appimage/sourcegit.appdata.xml SourceGit.AppDir/usr/share/metainfo/com.sourcegit_scm.SourceGit.appdata.xml
 
-ARCH="$appimage_arch" ./appimagetool -v --runtime-file appimage_runtime SourceGit.AppDir "sourcegit-$VERSION.linux.$arch.AppImage"
+ARCH="$appimage_arch" ./appimagetool -v SourceGit.AppDir "sourcegit-$VERSION.linux.$arch.AppImage"
 
 mkdir -p resources/deb/opt/sourcegit/
 mkdir -p resources/deb/usr/bin
