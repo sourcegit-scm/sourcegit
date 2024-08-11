@@ -47,7 +47,6 @@ namespace SourceGit.Views
                     SearchSuggestionBox.SelectedIndex = 0;
                 }
 
-
                 e.Handled = true;
             }
             else if (e.Key == Key.Escape)
