@@ -66,7 +66,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        runtime: [linux-x64, linux-arm64]
+        # runtime: [linux-x64, linux-arm64]
+        runtime: [linux-x64]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
