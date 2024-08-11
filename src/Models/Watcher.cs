@@ -198,7 +198,7 @@ namespace SourceGit.Models
                 (name.StartsWith("worktrees/", StringComparison.Ordinal) && name.EndsWith("/HEAD", StringComparison.Ordinal)))
             {
                 _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
-                
+
                 lock (_submodules)
                 {
                     if (_submodules.Count > 0)

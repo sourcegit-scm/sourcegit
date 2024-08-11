@@ -487,6 +487,7 @@
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">作者及提交者</x:String>
   <x:String x:Key="Text.Repository.SearchBranchTag" xml:space="preserve">快速查找分支、标签</x:String>
+  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以树型结构展示</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交统计</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模块列表</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">添加子模块</x:String>
