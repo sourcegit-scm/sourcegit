@@ -44,6 +44,8 @@ namespace SourceGit
         [STAThread]
         public static void Main(string[] args)
         {
+            Native.OS.SetupDataDir();
+
             AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             {
                 LogException(e.ExceptionObject as Exception);

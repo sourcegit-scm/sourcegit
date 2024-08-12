@@ -45,11 +45,11 @@ You can download the latest stable from [Releases](https://github.com/sourcegit-
 
 This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationData}/SourceGit"`, which is platform-dependent, to store user settings, downloaded avatars and crash logs.
 
-| OS      | PATH                                            |
-|---------|-------------------------------------------------|
-| Windows | `C:\Users\USER_NAME\AppData\Roaming\SourceGit`  |
-| Linux   | `${HOME}/.config/SourceGit`                     |
-| macOS   | `${HOME}/Library/Application Support/SourceGit` |
+| OS      | PATH                                                |
+|---------|-----------------------------------------------------|
+| Windows | `C:\Users\USER_NAME\AppData\Roaming\SourceGit`      |
+| Linux   | `${HOME}/.config/SourceGit` or `${HOME}/.Sourcegit` |
+| macOS   | `${HOME}/Library/Application Support/SourceGit`     |
 
 For **Windows** users:
 

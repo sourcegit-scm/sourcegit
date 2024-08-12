@@ -21,9 +21,9 @@ namespace SourceGit.Native
             void OpenWithDefaultEditor(string file);
         }
 
-        public static readonly string DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SourceGit");
+        public static string DataDir { get; private set; } = string.Empty;
         public static string GitExecutable { get; set; } = string.Empty;
-        public static List<Models.ExternalTool> ExternalTools { get; set; } = new List<Models.ExternalTool>();
+        public static List<Models.ExternalTool> ExternalTools { get; set; } = [];
 
         static OS()
         {
@@ -70,10 +70,19 @@ namespace SourceGit.Native
 
         public static void SetupApp(AppBuilder builder)
         {
+            _backend.SetupApp(builder);
+        }
+
+        public static void SetupDataDir()
+        {
+            var osAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (string.IsNullOrEmpty(osAppDataDir))
+                DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".SourceGit");
+            else
+                DataDir = Path.Combine(osAppDataDir, "SourceGit");
+
             if (!Directory.Exists(DataDir))
                 Directory.CreateDirectory(DataDir);
-
-            _backend.SetupApp(builder);
         }
 
         public static void SetupEnternalTools()
