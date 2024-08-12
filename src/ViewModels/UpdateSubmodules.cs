@@ -7,8 +7,9 @@ namespace SourceGit.ViewModels
     {
         public List<string> Submodules
         {
-            get => _repo.Submodules;
-        }
+            get;
+            private set;
+        } = new List<string>();
 
         public string SelectedSubmodule
         {
@@ -43,7 +44,11 @@ namespace SourceGit.ViewModels
         public UpdateSubmodules(Repository repo)
         {
             _repo = repo;
-            SelectedSubmodule = repo.Submodules.Count > 0 ? repo.Submodules[0] : string.Empty;
+
+            foreach (var submodule in _repo.Submodules)
+                Submodules.Add(submodule.Path);
+
+            SelectedSubmodule = Submodules.Count > 0 ? Submodules[0] : string.Empty;
             View = new Views.UpdateSubmodules() { DataContext = this };
         }
 

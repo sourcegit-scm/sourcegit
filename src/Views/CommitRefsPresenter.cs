@@ -158,7 +158,7 @@ namespace SourceGit.Views
                         IsTag = decorator.Type == Models.DecoratorType.Tag,
                     };
 
-                    var geo = null as StreamGeometry;
+                    StreamGeometry geo;
                     switch (decorator.Type)
                     {
                         case Models.DecoratorType.CurrentBranchHead:
@@ -176,7 +176,7 @@ namespace SourceGit.Views
                             break;
                     }
 
-                    var drawGeo = geo.Clone();
+                    var drawGeo = geo!.Clone();
                     var iconBounds = drawGeo.Bounds;
                     var translation = Matrix.CreateTranslation(-(Vector)iconBounds.Position);
                     var scale = Math.Min(8.0 / iconBounds.Width, 8.0 / iconBounds.Height);

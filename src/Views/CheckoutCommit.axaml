@@ -26,9 +26,8 @@
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Checkout.LocalChanges}"
-                 IsVisible="{Binding HasLocalChanges}"/>
-      <StackPanel Grid.Row="1" Grid.Column="1" Height="32" Orientation="Horizontal" IsVisible="{Binding HasLocalChanges}">
+                 Text="{DynamicResource Text.Checkout.LocalChanges}"/>
+      <StackPanel Grid.Row="1" Grid.Column="1" Height="32" Orientation="Horizontal">
         <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReply}"
                      GroupName="LocalChanges"
                      IsChecked="{Binding AutoStash, Mode=TwoWay}" />

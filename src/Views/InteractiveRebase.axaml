@@ -73,7 +73,6 @@
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserSortColumns="False"
-                  DragDrop.AllowDrop="True"
                   IsReadOnly="True"
                   HeadersVisibility="None"
                   Focusable="False"
@@ -82,6 +81,19 @@
                   VerticalScrollBarVisibility="Auto"
                   KeyDown="OnDataGridKeyDown">          
           <DataGrid.Columns>
+            <DataGridTemplateColumn Width="16" Header="DragHandler">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
+                  <Border Background="Transparent" 
+                          Margin="4,0,0,0"
+                          Loaded="OnSetupRowHeaderDragDrop"
+                          PointerPressed="OnRowHeaderPointerPressed">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Move}" Fill="{DynamicResource Brush.FG2}"/>
+                  </Border>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            
             <DataGridTemplateColumn Header="Option">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">

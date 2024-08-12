@@ -164,6 +164,7 @@
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
     <Setter Property="VerticalOffset" Value="-8"/>
+    <Setter Property="TextBlock.TextDecorations" Value=""/>
     <Setter Property="Template">
       <ControlTemplate>
         <Grid Effect="drop-shadow(0 0 8 #80000000)">
@@ -275,6 +276,13 @@
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="HorizontalAlignment" Value="Right"/>
+  </Style>
+  <Style Selector="TextBlock.issue_link">
+    <Setter Property="Foreground" Value="{DynamicResource Brush.Link}"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+  <Style Selector="TextBlock.issue_link:pointerover">
+    <Setter Property="TextDecorations" Value="Underline"/>
   </Style>
   
   <Style Selector="SelectableTextBlock">
@@ -1247,6 +1255,38 @@
   </Style>
   <Style Selector="ToggleButton.toggle_untracked:pointerover /template/ Path#PART_IndicatorIcon">
     <Setter Property="Opacity" Value="1"/>
+  </Style>
+  
+  <Style Selector="ToggleButton.tag_display_mode">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="Transparent"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center">
+          <Path x:Name="ChevronPath"
+                Width="11" Height="11"
+                Margin="0,1,0,0"
+                Data="{StaticResource Icons.Tree}"
+                Fill="{DynamicResource Brush.FG1}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Opacity="0.65"/>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:checked /template/ Path#ChevronPath">
+      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+    </Style>
+
+    <Style Selector="^:pointerover /template/ Path#ChevronPath">
+      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
   </Style>
   
   <Style Selector="Slider">

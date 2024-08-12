@@ -127,6 +127,15 @@
   <x:String x:Key="Text.Configure" xml:space="preserve">仓库配置</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">电子邮箱</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">邮箱地址</x:String>
+  <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT配置</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增匹配Github Issue规则</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增匹配Jira规则</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">新增自定义规则</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">匹配ISSUE的正则表达式 ：</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">规则名 ：</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">为ISSUE生成的URL链接 ：</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">可在URL中使用$1，$2等变量填入正则表达式匹配的内容</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP代理</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP网络代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">用户名</x:String>
@@ -478,6 +487,7 @@
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">作者及提交者</x:String>
   <x:String x:Key="Text.Repository.SearchBranchTag" xml:space="preserve">快速查找分支、标签</x:String>
+  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以树型结构展示</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交统计</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模块列表</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">添加子模块</x:String>

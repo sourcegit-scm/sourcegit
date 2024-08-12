@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -66,6 +70,175 @@ namespace SourceGit.Views
                     if (child is GridSplitter splitter)
                         splitter.BorderThickness = new Thickness(0, 1, 0, 0);
                 }
+            }
+        }
+    }
+
+    public class CommitStatusIndicator : Control
+    {
+        public static readonly StyledProperty<Models.Branch> CurrentBranchProperty =
+            AvaloniaProperty.Register<CommitStatusIndicator, Models.Branch>(nameof(CurrentBranch));
+
+        public Models.Branch CurrentBranch
+        {
+            get => GetValue(CurrentBranchProperty);
+            set => SetValue(CurrentBranchProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> AheadBrushProperty =
+            AvaloniaProperty.Register<CommitStatusIndicator, IBrush>(nameof(AheadBrush));
+
+        public IBrush AheadBrush
+        {
+            get => GetValue(AheadBrushProperty);
+            set => SetValue(AheadBrushProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> BehindBrushProperty =
+            AvaloniaProperty.Register<CommitStatusIndicator, IBrush>(nameof(BehindBrush));
+
+        public IBrush BehindBrush
+        {
+            get => GetValue(BehindBrushProperty);
+            set => SetValue(BehindBrushProperty, value);
+        }
+
+        enum Status
+        {
+            Normal,
+            Ahead,
+            Behind,
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            if (_status == Status.Normal)
+                return;
+
+            context.DrawEllipse(_status == Status.Ahead ? AheadBrush : BehindBrush, null, new Rect(0, 0, 5, 5));
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            if (DataContext is Models.Commit commit && CurrentBranch is not null)
+            {
+                var sha = commit.SHA;
+                var track = CurrentBranch.TrackStatus;
+
+                if (track.Ahead.Contains(sha))
+                    _status = Status.Ahead;
+                else if (track.Behind.Contains(sha))
+                    _status = Status.Behind;
+                else
+                    _status = Status.Normal;
+            }
+            else
+            {
+                _status = Status.Normal;
+            }
+
+            return _status == Status.Normal ? new Size(0, 0) : new Size(9, 5);
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+            InvalidateMeasure();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+            if (change.Property == CurrentBranchProperty)
+                InvalidateMeasure();
+        }
+
+        private Status _status = Status.Normal;
+    }
+
+    public class CommitSubjectPresenter : TextBlock
+    {
+        public static readonly StyledProperty<string> SubjectProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, string>(nameof(Subject));
+
+        public string Subject
+        {
+            get => GetValue(SubjectProperty);
+            set => SetValue(SubjectProperty, value);
+        }
+
+        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
+
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        {
+            get => GetValue(IssueTrackerRulesProperty);
+            set => SetValue(IssueTrackerRulesProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(TextBlock);
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == SubjectProperty || change.Property == IssueTrackerRulesProperty)
+            {
+                Inlines.Clear();
+
+                var subject = Subject;
+                if (string.IsNullOrEmpty(subject))
+                    return;
+
+                var rules = IssueTrackerRules;
+                if (rules == null || rules.Count == 0)
+                {
+                    Inlines.Add(new Run(subject));
+                    return;
+                }
+
+                var matches = new List<Models.IssueTrackerMatch>();
+                foreach (var rule in rules)
+                    rule.Matches(matches, subject);
+
+                if (matches.Count == 0)
+                {
+                    Inlines.Add(new Run(subject));
+                    return;
+                }
+
+                matches.Sort((l, r) => l.Start - r.Start);
+
+                int pos = 0;
+                foreach (var match in matches)
+                {
+                    if (match.Start > pos)
+                        Inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
+
+                    var link = new TextBlock();
+                    link.SetValue(TextProperty, subject.Substring(match.Start, match.Length));
+                    link.SetValue(ToolTip.TipProperty, match.URL);
+                    link.Classes.Add("issue_link");
+                    link.PointerPressed += OnLinkPointerPressed;
+                    Inlines.Add(link);
+
+                    pos = match.Start + match.Length;
+                }
+
+                if (pos < subject.Length)
+                    Inlines.Add(new Run(subject.Substring(pos)));
+            }
+        }
+
+        private void OnLinkPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            if (sender is TextBlock text)
+            {
+                var tooltip = text.GetValue(ToolTip.TipProperty) as string;
+                if (!string.IsNullOrEmpty(tooltip))
+                    Native.OS.OpenBrowser(tooltip);
+
+                e.Handled = true;
             }
         }
     }
@@ -359,6 +532,15 @@ namespace SourceGit.Views
 
     public partial class Histories : UserControl
     {
+        public static readonly StyledProperty<Models.Branch> CurrentBranchProperty =
+            AvaloniaProperty.Register<Histories, Models.Branch>(nameof(CurrentBranch));
+
+        public Models.Branch CurrentBranch
+        {
+            get => GetValue(CurrentBranchProperty);
+            set => SetValue(CurrentBranchProperty, value);
+        }
+
         public static readonly StyledProperty<long> NavigationIdProperty =
             AvaloniaProperty.Register<Histories, long>(nameof(NavigationId));
 
@@ -366,6 +548,16 @@ namespace SourceGit.Views
         {
             get => GetValue(NavigationIdProperty);
             set => SetValue(NavigationIdProperty, value);
+        }
+
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        {
+            get
+            {
+                if (DataContext is ViewModels.Histories histories)
+                    return histories.IssueTrackerRules;
+                return null;
+            }
         }
 
         static Histories()
@@ -418,6 +610,25 @@ namespace SourceGit.Views
                 histories.DoubleTapped(selectedItems[0] as Models.Commit);
             }
             e.Handled = true;
+        }
+
+        private void OnCommitDataGridKeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is DataGrid grid &&
+                grid.SelectedItems is { Count: > 0 } selected &&
+                e.Key == Key.C &&
+                e.KeyModifiers.HasFlag(KeyModifiers.Control))
+            {
+                var builder = new StringBuilder();
+                foreach (var item in selected)
+                {
+                    if (item is Models.Commit commit)
+                        builder.AppendLine($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
+                }
+
+                App.CopyText(builder.ToString());
+                e.Handled = true;
+            }
         }
     }
 }

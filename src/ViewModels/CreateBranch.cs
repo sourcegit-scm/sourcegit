@@ -35,7 +35,7 @@ namespace SourceGit.ViewModels
         public CreateBranch(Repository repo, Models.Branch branch)
         {
             _repo = repo;
-            _baseOnRevision = branch.FullName;
+            _baseOnRevision = branch.IsDetachedHead ? branch.Head : branch.FullName;
 
             if (!branch.IsLocal && repo.Branches.Find(x => x.IsLocal && x.Name == branch.Name) == null)
             {
@@ -86,19 +86,14 @@ namespace SourceGit.ViewModels
             {
                 if (CheckoutAfterCreated)
                 {
-                    bool needPopStash = false;
-                    if (_repo.WorkingCopyChangesCount > 0)
+                    var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
+                    var needPopStash = false;
+                    if (changes > 0)
                     {
                         if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                         {
-                            SetProgressDescription("Adding untracked changes...");
-                            var succ = new Commands.Add(_repo.FullPath).Exec();
-                            if (succ)
-                            {
-                                SetProgressDescription("Stash local changes");
-                                succ = new Commands.Stash(_repo.FullPath).Push("CREATE_BRANCH_AUTO_STASH");
-                            }
-
+                            SetProgressDescription("Stash local changes");
+                            var succ = new Commands.Stash(_repo.FullPath).Push("CREATE_BRANCH_AUTO_STASH");
                             if (!succ)
                             {
                                 CallUIThread(() => _repo.SetWatcherEnabled(true));

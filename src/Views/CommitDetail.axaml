@@ -19,7 +19,9 @@
       <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical">
           <!-- Base Information -->
-          <v:CommitBaseInfo Content="{Binding Commit}" Message="{Binding FullMessage}"/>
+          <v:CommitBaseInfo Content="{Binding Commit}" 
+                            Message="{Binding FullMessage}"
+                            IssueTrackerRules="{Binding IssueTrackerRules}"/>
 
           <!-- Line -->
           <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}"/>

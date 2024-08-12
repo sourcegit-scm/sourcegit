@@ -76,6 +76,12 @@ namespace SourceGit.Models
             set;
         } = new AvaloniaList<string>();
 
+        public AvaloniaList<IssueTrackerRule> IssueTrackerRules
+        {
+            get;
+            set;
+        } = new AvaloniaList<IssueTrackerRule>();
+
         public void PushCommitMessage(string message)
         {
             var existIdx = CommitMessages.IndexOf(message);
@@ -92,6 +98,51 @@ namespace SourceGit.Models
                 CommitMessages.RemoveRange(9, CommitMessages.Count - 9);
 
             CommitMessages.Insert(0, message);
+        }
+
+        public IssueTrackerRule AddNewIssueTracker()
+        {
+            var rule = new IssueTrackerRule()
+            {
+                Name = "New Issue Tracker",
+                RegexString = "#(\\d+)",
+                URLTemplate = "https://xxx/$1",
+            };
+
+            IssueTrackerRules.Add(rule);
+            return rule;
+        }
+
+        public IssueTrackerRule AddGithubIssueTracker(string repoURL)
+        {
+            var rule = new IssueTrackerRule()
+            {
+                Name = "Github ISSUE",
+                RegexString = "#(\\d+)",
+                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://github.com/username/repository/issues/$1" : $"{repoURL}/issues/$1",
+            };
+
+            IssueTrackerRules.Add(rule);
+            return rule;
+        }
+
+        public IssueTrackerRule AddJiraIssueTracker()
+        {
+            var rule = new IssueTrackerRule()
+            {
+                Name = "Jira Tracker",
+                RegexString = "PROJ-(\\d+)",
+                URLTemplate = "https://jira.yourcompany.com/browse/PROJ-$1",
+            };
+
+            IssueTrackerRules.Add(rule);
+            return rule;
+        }
+
+        public void RemoveIssueTracker(IssueTrackerRule rule)
+        {
+            if (rule != null)
+                IssueTrackerRules.Remove(rule);
         }
     }
 }

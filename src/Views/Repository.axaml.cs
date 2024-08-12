@@ -2,7 +2,6 @@ using System;
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
@@ -30,6 +29,9 @@ namespace SourceGit.Views
         private void OnSearchKeyDown(object _, KeyEventArgs e)
         {
             var repo = DataContext as ViewModels.Repository;
+            if (repo == null)
+                return;
+
             if (e.Key == Key.Enter)
             {
                 if (!string.IsNullOrWhiteSpace(repo.SearchCommitFilter))
@@ -44,7 +46,6 @@ namespace SourceGit.Views
                     SearchSuggestionBox.Focus(NavigationMethod.Tab);
                     SearchSuggestionBox.SelectedIndex = 0;
                 }
-
 
                 e.Handled = true;
             }
@@ -79,53 +80,32 @@ namespace SourceGit.Views
         private void OnLocalBranchTreeSelectionChanged(object _1, RoutedEventArgs _2)
         {
             RemoteBranchTree.UnselectAll();
-            TagsList.SelectedItem = null;
+            TagsList.UnselectAll();
         }
 
         private void OnRemoteBranchTreeSelectionChanged(object _1, RoutedEventArgs _2)
         {
             LocalBranchTree.UnselectAll();
-            TagsList.SelectedItem = null;
+            TagsList.UnselectAll();
         }
 
-        private void OnTagDataGridSelectionChanged(object sender, SelectionChangedEventArgs _)
+        private void OnTagsRowsChanged(object _, RoutedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: Models.Tag tag })
-            {
-                LocalBranchTree.UnselectAll();
-                RemoteBranchTree.UnselectAll();
-
-                if (DataContext is ViewModels.Repository repo)
-                    repo.NavigateToCommit(tag.SHA);
-            }
-        }
-
-        private void OnTagContextRequested(object sender, ContextRequestedEventArgs e)
-        {
-            if (sender is DataGrid { SelectedItem: Models.Tag tag } grid && DataContext is ViewModels.Repository repo)
-            {
-                var menu = repo.CreateContextMenuForTag(tag);
-                grid.OpenContextMenu(menu);
-            }
-
+            UpdateLeftSidebarLayout();
             e.Handled = true;
         }
 
-        private void OnTagFilterIsCheckedChanged(object sender, RoutedEventArgs e)
+        private void OnTagsSelectionChanged(object _1, RoutedEventArgs _2)
         {
-            if (sender is ToggleButton { DataContext: Models.Tag tag } toggle && DataContext is ViewModels.Repository repo)
-            {
-                repo.UpdateFilter(tag.Name, toggle.IsChecked == true);
-            }
-
-            e.Handled = true;
+            LocalBranchTree.UnselectAll();
+            RemoteBranchTree.UnselectAll();
         }
 
         private void OnSubmoduleContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: string submodule } grid && DataContext is ViewModels.Repository repo)
+            if (sender is DataGrid { SelectedItem: Models.Submodule submodule } grid && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForSubmodule(submodule);
+                var menu = repo.CreateContextMenuForSubmodule(submodule.Path);
                 grid.OpenContextMenu(menu);
             }
 
@@ -134,9 +114,9 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: string submodule } && DataContext is ViewModels.Repository repo)
+            if (sender is DataGrid { SelectedItem: Models.Submodule submodule } && DataContext is ViewModels.Repository repo)
             {
-                repo.OpenSubmodule(submodule);
+                repo.OpenSubmodule(submodule.Path);
             }
 
             e.Handled = true;
@@ -188,7 +168,7 @@ namespace SourceGit.Views
             var localBranchRows = vm.IsLocalBranchGroupExpanded ? LocalBranchTree.Rows.Count : 0;
             var remoteBranchRows = vm.IsRemoteGroupExpanded ? RemoteBranchTree.Rows.Count : 0;
             var desiredBranches = (localBranchRows + remoteBranchRows) * 24.0;
-            var desiredTag = vm.IsTagGroupExpanded ? TagsList.RowHeight * vm.VisibleTags.Count : 0;
+            var desiredTag = vm.IsTagGroupExpanded ? 24.0 * TagsList.Rows : 0;
             var desiredSubmodule = vm.IsSubmoduleGroupExpanded ? SubmoduleList.RowHeight * vm.Submodules.Count : 0;
             var desiredWorktree = vm.IsWorktreeGroupExpanded ? WorktreeList.RowHeight * vm.Worktrees.Count : 0;
             var desiredOthers = desiredTag + desiredSubmodule + desiredWorktree;
@@ -295,9 +275,12 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnSearchSuggestionBoxKeyDown(object sender, KeyEventArgs e)
+        private void OnSearchSuggestionBoxKeyDown(object _, KeyEventArgs e)
         {
             var repo = DataContext as ViewModels.Repository;
+            if (repo == null)
+                return;
+
             if (e.Key == Key.Escape)
             {
                 repo.IsSearchCommitSuggestionOpen = false;
@@ -317,6 +300,9 @@ namespace SourceGit.Views
         private void OnSearchSuggestionDoubleTapped(object sender, TappedEventArgs e)
         {
             var repo = DataContext as ViewModels.Repository;
+            if (repo == null)
+                return;
+
             var content = (sender as StackPanel)?.DataContext as string;
             if (!string.IsNullOrEmpty(content))
             {

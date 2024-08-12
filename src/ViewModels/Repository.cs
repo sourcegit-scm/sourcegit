@@ -136,7 +136,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _visibleTags, value);
         }
 
-        public List<string> Submodules
+        public List<Models.Submodule> Submodules
         {
             get => _submodules;
             private set => SetProperty(ref _submodules, value);
@@ -746,23 +746,11 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                limits += "--branches --remotes --tags";
-            }
-
-            var canPushCommits = new HashSet<string>();
-            var canPullCommits = new HashSet<string>();
-            var currentBranch = _branches.Find(x => x.IsCurrent);
-            if (currentBranch != null)
-            {
-                foreach (var sha in currentBranch.TrackStatus.Ahead)
-                    canPushCommits.Add(sha);
-
-                foreach (var sha in currentBranch.TrackStatus.Behind)
-                    canPullCommits.Add(sha);
+                limits += "--exclude=refs/stash --all";
             }
 
             var commits = new Commands.QueryCommits(_fullpath, limits).Result();
-            var graph = Models.CommitGraph.Parse(commits, canPushCommits, canPullCommits);
+            var graph = Models.CommitGraph.Parse(commits);
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -778,6 +766,9 @@ namespace SourceGit.ViewModels
         public void RefreshSubmodules()
         {
             var submodules = new Commands.QuerySubmodules(_fullpath).Result();
+            if (_watcher != null)
+                _watcher.SetSubmodules(submodules);
+
             Dispatcher.UIThread.Invoke(() => Submodules = submodules);
         }
 
@@ -1992,7 +1983,7 @@ namespace SourceGit.ViewModels
         private List<Models.Worktree> _worktrees = new List<Models.Worktree>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
         private List<Models.Tag> _visibleTags = new List<Models.Tag>();
-        private List<string> _submodules = new List<string>();
+        private List<Models.Submodule> _submodules = new List<Models.Submodule>();
         private bool _includeUntracked = true;
 
         private InProgressContext _inProgressContext = null;

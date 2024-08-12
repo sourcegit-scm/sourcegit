@@ -1,0 +1,103 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.TagsView">
+  <UserControl.Styles>
+    <Style Selector="ListBox">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+      <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+      <Setter Property="ItemsPanel">
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel Orientation="Vertical"/>
+        </ItemsPanelTemplate>
+      </Setter>
+    </Style>
+    
+    <Style Selector="ListBoxItem">
+      <Setter Property="Height" Value="24"/>
+      <Setter Property="Margin" Value="0"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="CornerRadius" Value="4"/>
+    </Style>
+  </UserControl.Styles>
+  
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="vm:TagCollectionAsTree">
+      <ListBox ItemsSource="{Binding Rows}" 
+               SelectionMode="Single" 
+               SelectionChanged="OnRowSelectionChanged">
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="vm:TagTreeNode">
+            <Grid ColumnDefinitions="16,Auto,*,Auto"
+                  Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+                  Background="Transparent"
+                  ContextRequested="OnRowContextRequested"
+                  DoubleTapped="OnDoubleTappedNode">
+              <v:TagTreeNodeToggleButton Grid.Column="0"
+                                         Classes="tree_expander"
+                                         Focusable="False"
+                                         HorizontalAlignment="Center"
+                                         IsChecked="{Binding IsExpanded, Mode=OneWay}"
+                                         IsVisible="{Binding IsFolder}"/>
+              
+              <v:TagTreeNodeIcon Grid.Column="1"
+                                 Node="{Binding .}"
+                                 IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
+
+              <TextBlock Grid.Column="2" 
+                         Classes="primary" 
+                         Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" 
+                         Margin="8,0,0,0"/>
+              
+              <ToggleButton Grid.Column="3"
+                            Classes="filter"
+                            Margin="0,0,8,0"
+                            Background="Transparent"
+                            IsCheckedChanged="OnToggleFilter"
+                            IsChecked="{Binding IsFiltered}"
+                            ToolTip.Tip="{DynamicResource Text.Filter}"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </DataTemplate>
+
+    <DataTemplate DataType="vm:TagCollectionAsList">
+      <ListBox ItemsSource="{Binding Tags}"
+               SelectionMode="Single" 
+               SelectionChanged="OnRowSelectionChanged">
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="m:Tag">
+            <Grid ColumnDefinitions="Auto,*,Auto" Background="Transparent" ContextRequested="OnRowContextRequested">
+              <Path Grid.Column="0" 
+                    Width="10" Height="10"
+                    Margin="8,0,0,0"
+                    Data="{StaticResource Icons.Tag}"/>
+
+              <TextBlock Grid.Column="1"
+                         Classes="primary" 
+                         Text="{Binding Name}" 
+                         Margin="8,0,0,0"/>
+              
+              <ToggleButton Grid.Column="2"
+                            Classes="filter"
+                            Margin="0,0,8,0"
+                            Background="Transparent"
+                            IsCheckedChanged="OnToggleFilter"
+                            IsChecked="{Binding IsFiltered}"
+                            ToolTip.Tip="{DynamicResource Text.Filter}"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </DataTemplate>
+  </UserControl.DataTemplates>
+</UserControl>
+

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands
@@ -9,6 +10,8 @@ namespace SourceGit.Commands
         private static partial Regex REG_FORMAT1();
         [GeneratedRegex(@"^[\-\+ ][0-9a-f]+\s(.*)$")]
         private static partial Regex REG_FORMAT2();
+        [GeneratedRegex(@"^\s?[\w\?]{1,4}\s+(.+)$")]
+        private static partial Regex REG_FORMAT_STATUS();
 
         public QuerySubmodules(string repo)
         {
@@ -17,28 +20,59 @@ namespace SourceGit.Commands
             Args = "submodule status";
         }
 
-        public List<string> Result()
+        public List<Models.Submodule> Result()
         {
-            Exec();
-            return _submodules;
-        }
+            var submodules = new List<Models.Submodule>();
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return submodules;
 
-        protected override void OnReadline(string line)
-        {
-            var match = REG_FORMAT1().Match(line);
-            if (match.Success)
+            var builder = new StringBuilder();
+            var lines = rs.StdOut.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
             {
-                _submodules.Add(match.Groups[1].Value);
-                return;
+                var match = REG_FORMAT1().Match(line);
+                if (match.Success)
+                {
+                    var path = match.Groups[1].Value;
+                    builder.Append($"\"{path}\" ");
+                    submodules.Add(new Models.Submodule() { Path = path });
+                    continue;
+                }
+
+                match = REG_FORMAT2().Match(line);
+                if (match.Success)
+                {
+                    var path = match.Groups[1].Value;
+                    builder.Append($"\"{path}\" ");
+                    submodules.Add(new Models.Submodule() { Path = path });
+                }
             }
 
-            match = REG_FORMAT2().Match(line);
-            if (match.Success)
+            if (submodules.Count > 0)
             {
-                _submodules.Add(match.Groups[1].Value);
-            }
-        }
+                Args = $"status -uno --porcelain -- {builder}";
+                rs = ReadToEnd();
+                if (!rs.IsSuccess)
+                    return submodules;
 
-        private readonly List<string> _submodules = new List<string>();
+                var dirty = new HashSet<string>();
+                lines = rs.StdOut.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
+                foreach (var line in lines)
+                {
+                    var match = REG_FORMAT_STATUS().Match(line);
+                    if (match.Success)
+                    {
+                        var path = match.Groups[1].Value;
+                        dirty.Add(path);
+                    }
+                }
+
+                foreach (var submodule in submodules)
+                    submodule.IsDirty = dirty.Contains(submodule.Path);
+            }
+
+            return submodules;
+        }
     }
 }

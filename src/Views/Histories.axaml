@@ -27,10 +27,12 @@
                 ColumnHeaderHeight="24"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto"
+                ClipboardCopyMode="None"
                 LayoutUpdated="OnCommitDataGridLayoutUpdated"
                 SelectionChanged="OnCommitDataGridSelectionChanged"
                 ContextRequested="OnCommitDataGridContextRequested"
-                DoubleTapped="OnCommitDataGridDoubleTapped">
+                DoubleTapped="OnCommitDataGridDoubleTapped"
+                KeyDown="OnCommitDataGridKeyDown">
         <DataGrid.Styles>
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
@@ -60,15 +62,10 @@
               <DataTemplate x:DataType="{x:Type m:Commit}">
                 <Border Margin="{Binding Margin}">
                   <StackPanel Orientation="Horizontal" Margin="2,0,0,0">
-                    <Ellipse Width="5" Height="5"
-                             Margin="0,0,4,0"
-                             Fill="{DynamicResource Brush.Accent}"
-                             IsVisible="{Binding CanPushToUpstream}"/>
-
-                    <Ellipse Width="5" Height="5"
-                             Margin="0,0,4,0"
-                             Fill="{DynamicResource Brush.FG1}"
-                             IsVisible="{Binding CanPullFromUpstream}"/>
+                    <v:CommitStatusIndicator CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
+                                             AheadBrush="{DynamicResource Brush.Accent}"
+                                             BehindBrush="{DynamicResource Brush.FG1}"
+                                             VerticalAlignment="Center"/>
 
                     <v:CommitRefsPresenter IsVisible="{Binding HasDecorators}"
                                            IconBackground="{DynamicResource Brush.DecoratorIconBG}"
@@ -80,10 +77,11 @@
                                            FontSize="10"
                                            VerticalAlignment="Center"/>
 
-                    <TextBlock Classes="primary" 
-                               Text="{Binding Subject}"
-                               Opacity="{Binding Opacity}"
-                               FontWeight="{Binding FontWeight}"/>
+                    <v:CommitSubjectPresenter Classes="primary" 
+                                              Subject="{Binding Subject}"
+                                              IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
+                                              Opacity="{Binding Opacity}"
+                                              FontWeight="{Binding FontWeight}"/>
                   </StackPanel>
                 </Border>
               </DataTemplate>

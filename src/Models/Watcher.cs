@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,6 +68,16 @@ namespace SourceGit.Models
             else
             {
                 _lockCount++;
+            }
+        }
+
+        public void SetSubmodules(List<Submodule> submodules)
+        {
+            lock (_lockSubmodule)
+            {
+                _submodules.Clear();
+                foreach (var submodule in submodules)
+                    _submodules.Add(submodule.Path);
             }
         }
 
@@ -168,9 +179,10 @@ namespace SourceGit.Models
                 return;
 
             var name = e.Name.Replace("\\", "/");
-            if (name.StartsWith("modules", StringComparison.Ordinal))
+            if (name.StartsWith("modules", StringComparison.Ordinal) && name.EndsWith("HEAD", StringComparison.Ordinal))
             {
                 _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
+                _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
             }
             else if (name.StartsWith("refs/tags", StringComparison.Ordinal))
             {
@@ -186,6 +198,12 @@ namespace SourceGit.Models
                 (name.StartsWith("worktrees/", StringComparison.Ordinal) && name.EndsWith("/HEAD", StringComparison.Ordinal)))
             {
                 _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
+
+                lock (_submodules)
+                {
+                    if (_submodules.Count > 0)
+                        _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
+                }
             }
             else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal))
             {
@@ -201,6 +219,19 @@ namespace SourceGit.Models
             var name = e.Name.Replace("\\", "/");
             if (name == ".git" || name.StartsWith(".git/", StringComparison.Ordinal))
                 return;
+
+            lock (_submodules)
+            {
+                foreach (var submodule in _submodules)
+                {
+                    if (name.StartsWith(submodule, StringComparison.Ordinal))
+                    {
+                        _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
+                        return;
+                    }
+                }
+            }
+
             _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
         }
 
@@ -214,5 +245,8 @@ namespace SourceGit.Models
         private long _updateSubmodules = 0;
         private long _updateStashes = 0;
         private long _updateTags = 0;
+
+        private object _lockSubmodule = new object();
+        private List<string> _submodules = new List<string>();
     }
 }

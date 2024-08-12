@@ -21,16 +21,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _selectedRemote, value))
-                {
-                    var branches = new List<Models.Branch>();
-                    foreach (var branch in _repo.Branches)
-                    {
-                        if (branch.Remote == value.Name)
-                            branches.Add(branch);
-                    }
-                    RemoteBranches = branches;
-                    SelectedBranch = branches.Count > 0 ? branches[0] : null;
-                }
+                    PostRemoteSelected();
             }
         }
 
@@ -80,44 +71,33 @@ namespace SourceGit.ViewModels
             {
                 _selectedRemote = repo.Remotes.Find(x => x.Name == specifiedRemoteBranch.Remote);
                 _selectedBranch = specifiedRemoteBranch;
+
+                var branches = new List<Models.Branch>();
+                foreach (var branch in _repo.Branches)
+                {
+                    if (branch.Remote == specifiedRemoteBranch.Remote)
+                        branches.Add(branch);
+                }
+
+                _remoteBranches = branches;
                 HasSpecifiedRemoteBranch = true;
             }
             else
             {
+                var autoSelectedRemote = null as Models.Remote;
                 if (!string.IsNullOrEmpty(_current.Upstream))
                 {
-                    foreach (var branch in repo.Branches)
+                    var remoteNameEndIdx = _current.Upstream.IndexOf('/', 13);
+                    if (remoteNameEndIdx > 0)
                     {
-                        if (!branch.IsLocal && _current.Upstream == branch.FullName)
-                        {
-                            _selectedRemote = repo.Remotes.Find(x => x.Name == branch.Remote);
-                            _selectedBranch = branch;
-                            break;
-                        }
+                        var remoteName = _current.Upstream.Substring(13, remoteNameEndIdx - 13);
+                        autoSelectedRemote = _repo.Remotes.Find(x => x.Name == remoteName);
                     }
                 }
 
+                _selectedRemote = autoSelectedRemote ?? repo.Remotes[0];
+                PostRemoteSelected();
                 HasSpecifiedRemoteBranch = false;
-            }
-
-            // Make sure remote is exists.
-            if (_selectedRemote == null)
-            {
-                _selectedRemote = repo.Remotes[0];
-                _selectedBranch = null;
-                HasSpecifiedRemoteBranch = false;
-            }
-
-            _remoteBranches = new List<Models.Branch>();
-            foreach (var branch in _repo.Branches)
-            {
-                if (branch.Remote == _selectedRemote.Name)
-                    _remoteBranches.Add(branch);
-            }
-
-            if (_selectedBranch == null && _remoteBranches.Count > 0)
-            {
-                _selectedBranch = _remoteBranches[0];
             }
 
             View = new Views.Pull() { DataContext = this };
@@ -129,19 +109,14 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
+                var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
                 var needPopStash = false;
-                if (_repo.WorkingCopyChangesCount > 0)
+                if (changes > 0)
                 {
                     if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                     {
-                        SetProgressDescription("Adding untracked changes...");
-                        var succ = new Commands.Add(_repo.FullPath).Exec();
-                        if (succ)
-                        {
-                            SetProgressDescription("Stash local changes...");
-                            succ = new Commands.Stash(_repo.FullPath).Push("PULL_AUTO_STASH");
-                        }
-
+                        SetProgressDescription("Stash local changes...");
+                        var succ = new Commands.Stash(_repo.FullPath).Push("PULL_AUTO_STASH");
                         if (!succ)
                         {
                             CallUIThread(() => _repo.SetWatcherEnabled(true));
@@ -192,6 +167,50 @@ namespace SourceGit.ViewModels
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return rs;
             });
+        }
+
+        private void PostRemoteSelected()
+        {
+            var remoteName = _selectedRemote.Name;
+            var branches = new List<Models.Branch>();
+            foreach (var branch in _repo.Branches)
+            {
+                if (branch.Remote == remoteName)
+                    branches.Add(branch);
+            }
+
+            RemoteBranches = branches;
+
+            var autoSelectedBranch = false;
+            if (!string.IsNullOrEmpty(_current.Upstream) &&
+                _current.Upstream.StartsWith($"refs/remotes/{remoteName}/", System.StringComparison.Ordinal))
+            {
+                foreach (var branch in branches)
+                {
+                    if (_current.Upstream == branch.FullName)
+                    {
+                        SelectedBranch = branch;
+                        autoSelectedBranch = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!autoSelectedBranch)
+            {
+                foreach (var branch in branches)
+                {
+                    if (_current.Name == branch.Name)
+                    {
+                        SelectedBranch = branch;
+                        autoSelectedBranch = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!autoSelectedBranch)
+                SelectedBranch = branches.Count > 0 ? branches[0] : null;
         }
 
         private readonly Repository _repo = null;

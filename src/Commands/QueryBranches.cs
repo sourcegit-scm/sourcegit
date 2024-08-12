@@ -7,7 +7,8 @@ namespace SourceGit.Commands
     {
         private const string PREFIX_LOCAL = "refs/heads/";
         private const string PREFIX_REMOTE = "refs/remotes/";
-        private const string PREFIX_DETACHED = "(HEAD detached at";
+        private const string PREFIX_DETACHED_AT = "(HEAD detached at";
+        private const string PREFIX_DETACHED_FROM = "(HEAD detached from";
 
         public QueryBranches(string repo)
         {
@@ -37,9 +38,9 @@ namespace SourceGit.Commands
             if (refName.EndsWith("/HEAD", StringComparison.Ordinal))
                 return;
 
-            if (refName.StartsWith(PREFIX_DETACHED, StringComparison.Ordinal))
+            if (refName.StartsWith(PREFIX_DETACHED_AT, StringComparison.Ordinal) || refName.StartsWith(PREFIX_DETACHED_FROM, StringComparison.Ordinal))
             {
-                branch.IsHead = true;
+                branch.IsDetachedHead = true;
             }
 
             if (refName.StartsWith(PREFIX_LOCAL, StringComparison.Ordinal))

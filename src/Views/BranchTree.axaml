@@ -23,6 +23,7 @@
     <DataGrid.Styles>
       <Style Selector="DataGridRow" x:DataType="vm:BranchTreeNode">
         <Setter Property="CornerRadius" Value="{Binding CornerRadius}" />
+        <Setter Property="Height" Value="24"/>
       </Style>
 
       <Style Selector="DataGridRow /template/ Border#RowBorder">

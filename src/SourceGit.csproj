@@ -9,7 +9,7 @@
     <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
-    
+
     <Product>SourceGit</Product>
     <Description>OpenSource GIT client</Description>
     <Company>sourcegit-scm</Company>
@@ -37,23 +37,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.1.1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.1.1" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.1" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.1.1" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.1.1" Condition="'$(Configuration)' == 'Debug'" />
-    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.0.6" />
+    <PackageReference Include="Avalonia" Version="11.0.13" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.13" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.13" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.13" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.0.13" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.56" />
+    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.60" />
   </ItemGroup>
 
   <ItemGroup>
     <TrimmerRootAssembly Include="SourceGit" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
   </ItemGroup>
-  
-  <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <LinkerArg Include="-mmacosx-version-min=11.0" Condition="$([MSBuild]::IsOSPlatform('OSX'))"/>
+
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+    <LinkerArg Include="-mmacosx-version-min=11.0" Condition="'$(Configuration)' == 'Release'"/>
   </ItemGroup>
 </Project>

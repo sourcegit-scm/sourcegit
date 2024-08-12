@@ -189,7 +189,7 @@ namespace SourceGit.ViewModels
             {
                 nodes.Sort((l, r) =>
                 {
-                    if (l.Backend is Models.Branch { IsHead: true })
+                    if (l.Backend is Models.Branch { IsDetachedHead: true })
                         return -1;
 
                     if (l.Backend is Models.Branch)

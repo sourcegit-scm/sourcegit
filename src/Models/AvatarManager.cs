@@ -34,6 +34,9 @@ namespace SourceGit.Models
             if (!Directory.Exists(_storePath))
                 Directory.CreateDirectory(_storePath);
 
+            var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/github.png", UriKind.RelativeOrAbsolute));
+            _resources.Add("noreply@github.com", new Bitmap(icon));
+
             Task.Run(() =>
             {
                 while (true)
@@ -117,19 +120,11 @@ namespace SourceGit.Models
 
         public static Bitmap Request(string email, bool forceRefetch)
         {
-            if (email.Equals("noreply@github.com", StringComparison.Ordinal))
-            {
-                if (_githubEmailAvatar == null)
-                {
-                    var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/github.png", UriKind.RelativeOrAbsolute));
-                    _githubEmailAvatar = new Bitmap(icon);
-                }
-
-                return _githubEmailAvatar;
-            }
-
             if (forceRefetch)
             {
+                if (email.Equals("noreply@github.com", StringComparison.Ordinal))
+                    return null;
+
                 if (_resources.ContainsKey(email))
                     _resources.Remove(email);
 
@@ -198,6 +193,5 @@ namespace SourceGit.Models
 
         [GeneratedRegex(@"^(?:(\d+)\+)?(.+?)@users\.noreply\.github\.com$")]
         private static partial Regex REG_GITHUB_USER_EMAIL();
-        private static Bitmap _githubEmailAvatar = null;
     }
 }

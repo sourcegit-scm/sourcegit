@@ -39,10 +39,7 @@ namespace SourceGit.Views
             refetch.Click += (_, _) =>
             {
                 if (User != null)
-                {
                     Models.AvatarManager.Request(User.Email, true);
-                    InvalidateVisual();
-                }
             };
 
             ContextMenu = new ContextMenu();

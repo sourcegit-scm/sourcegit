@@ -28,22 +28,16 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Checkout '{Branch}' ...";
 
-            var hasLocalChanges = _repo.WorkingCopyChangesCount > 0;
             return Task.Run(() =>
             {
+                var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
                 var needPopStash = false;
-                if (hasLocalChanges)
+                if (changes > 0)
                 {
                     if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                     {
-                        SetProgressDescription("Adding untracked changes ...");
-                        var succ = new Commands.Add(_repo.FullPath).Exec();
-                        if (succ)
-                        {
-                            SetProgressDescription("Stash local changes ...");
-                            succ = new Commands.Stash(_repo.FullPath).Push("CHECKOUT_AUTO_STASH");
-                        }
-
+                        SetProgressDescription("Stash local changes ...");
+                        var succ = new Commands.Stash(_repo.FullPath).Push("CHECKOUT_AUTO_STASH");
                         if (!succ)
                         {
                             CallUIThread(() => _repo.SetWatcherEnabled(true));
@@ -65,11 +59,7 @@ namespace SourceGit.ViewModels
                 if (needPopStash)
                 {
                     SetProgressDescription("Re-apply local changes...");
-                    rs = new Commands.Stash(_repo.FullPath).Apply("stash@{0}");
-                    if (rs)
-                    {
-                        rs = new Commands.Stash(_repo.FullPath).Drop("stash@{0}");
-                    }
+                    rs = new Commands.Stash(_repo.FullPath).Pop("stash@{0}");
                 }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

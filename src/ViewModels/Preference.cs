@@ -177,6 +177,12 @@ namespace SourceGit.ViewModels
             set;
         } = string.Empty;
 
+        public bool ShowTagsAsTree
+        {
+            get => _showTagsAsTree;
+            set => SetProperty(ref _showTagsAsTree, value);
+        }
+
         public bool UseTwoColumnsLayoutInHistories
         {
             get => _useTwoColumnsLayoutInHistories;
@@ -520,6 +526,7 @@ namespace SourceGit.ViewModels
         private bool _useFixedTabWidth = true;
         private bool _check4UpdatesOnStartup = true;
 
+        private bool _showTagsAsTree = false;
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _displayTimeAsPeriodInHistories = false;
         private bool _useSideBySideDiff = false;

@@ -1085,7 +1085,7 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var top = chunk.Y + 16;
+                var top = chunk.Y + (chunk.Height >= 36 ? 16 : 4);
                 var right = (chunk.Combined || !chunk.IsOldSide) ? 16 : v.Bounds.Width * 0.5f + 16;
                 v.Popup.Margin = new Thickness(0, top, right, 0);
                 v.Popup.IsVisible = true;
@@ -1147,27 +1147,22 @@ namespace SourceGit.Views
             if (!selection.HasChanges)
                 return;
 
+            var repoView = this.FindAncestorOfType<Repository>();
+            if (repoView == null)
+                return;
+
+            var repo = repoView.DataContext as ViewModels.Repository;
+            if (repo == null)
+                return;
+
+            repo.SetWatcherEnabled(false);
+
             if (!selection.HasLeftChanges)
             {
-                var workcopyView = this.FindAncestorOfType<WorkingCopy>();
-                if (workcopyView == null)
-                    return;
-
-                var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                workcopy?.StageChanges(new List<Models.Change> { change });
+                new Commands.Add(repo.FullPath, [change]).Exec();
             }
             else
             {
-                var repoView = this.FindAncestorOfType<Repository>();
-                if (repoView == null)
-                    return;
-
-                var repo = repoView.DataContext as ViewModels.Repository;
-                if (repo == null)
-                    return;
-
-                repo.SetWatcherEnabled(false);
-
                 var tmpFile = Path.GetTempFileName();
                 if (change.WorkTree == Models.ChangeState.Untracked)
                 {
@@ -1186,10 +1181,10 @@ namespace SourceGit.Views
 
                 new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index").Exec();
                 File.Delete(tmpFile);
-
-                repo.MarkWorkingCopyDirtyManually();
-                repo.SetWatcherEnabled(true);
             }
+
+            repo.MarkWorkingCopyDirtyManually();
+            repo.SetWatcherEnabled(true);
         }
 
         private void OnUnstageChunk(object sender, RoutedEventArgs e)
@@ -1210,27 +1205,25 @@ namespace SourceGit.Views
             if (!selection.HasChanges)
                 return;
 
+            var repoView = this.FindAncestorOfType<Repository>();
+            if (repoView == null)
+                return;
+
+            var repo = repoView.DataContext as ViewModels.Repository;
+            if (repo == null)
+                return;
+
+            repo.SetWatcherEnabled(false);
+
             if (!selection.HasLeftChanges)
             {
-                var workcopyView = this.FindAncestorOfType<WorkingCopy>();
-                if (workcopyView == null)
-                    return;
-
-                var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                workcopy?.UnstageChanges(new List<Models.Change> { change });
+                if (change.DataForAmend != null)
+                    new Commands.UnstageChangesForAmend(repo.FullPath, [change]).Exec();
+                else
+                    new Commands.Reset(repo.FullPath, [change]).Exec();
             }
             else
             {
-                var repoView = this.FindAncestorOfType<Repository>();
-                if (repoView == null)
-                    return;
-
-                var repo = repoView.DataContext as ViewModels.Repository;
-                if (repo == null)
-                    return;
-
-                repo.SetWatcherEnabled(false);
-
                 var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
                 var tmpFile = Path.GetTempFileName();
                 if (change.Index == Models.ChangeState.Added)
@@ -1242,10 +1235,10 @@ namespace SourceGit.Views
 
                 new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index --reverse").Exec();
                 File.Delete(tmpFile);
-
-                repo.MarkWorkingCopyDirtyManually();
-                repo.SetWatcherEnabled(true);
             }
+
+            repo.MarkWorkingCopyDirtyManually();
+            repo.SetWatcherEnabled(true);
         }
 
         private void OnDiscardChunk(object sender, RoutedEventArgs e)
@@ -1266,27 +1259,22 @@ namespace SourceGit.Views
             if (!selection.HasChanges)
                 return;
 
+            var repoView = this.FindAncestorOfType<Repository>();
+            if (repoView == null)
+                return;
+
+            var repo = repoView.DataContext as ViewModels.Repository;
+            if (repo == null)
+                return;
+
+            repo.SetWatcherEnabled(false);
+
             if (!selection.HasLeftChanges)
             {
-                var workcopyView = this.FindAncestorOfType<WorkingCopy>();
-                if (workcopyView == null)
-                    return;
-
-                var workcopy = workcopyView.DataContext as ViewModels.WorkingCopy;
-                workcopy?.Discard(new List<Models.Change> { change });
+                Commands.Discard.Changes(repo.FullPath, [change]);
             }
             else
             {
-                var repoView = this.FindAncestorOfType<Repository>();
-                if (repoView == null)
-                    return;
-
-                var repo = repoView.DataContext as ViewModels.Repository;
-                if (repo == null)
-                    return;
-
-                repo.SetWatcherEnabled(false);
-
                 var tmpFile = Path.GetTempFileName();
                 if (change.Index == Models.ChangeState.Added)
                 {
@@ -1305,10 +1293,10 @@ namespace SourceGit.Views
 
                 new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--reverse").Exec();
                 File.Delete(tmpFile);
-
-                repo.MarkWorkingCopyDirtyManually();
-                repo.SetWatcherEnabled(true);
             }
+
+            repo.MarkWorkingCopyDirtyManually();
+            repo.SetWatcherEnabled(true);
         }
     }
 }

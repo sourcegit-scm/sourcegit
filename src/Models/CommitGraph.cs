@@ -128,7 +128,7 @@ namespace SourceGit.Models
             _penCount = colors.Count;
         }
 
-        public static CommitGraph Parse(List<Commit> commits, HashSet<string> canPushCommits, HashSet<string> canPullCommits)
+        public static CommitGraph Parse(List<Commit> commits)
         {
             double UNIT_WIDTH = 12;
             double HALF_WIDTH = 6;
@@ -147,9 +147,6 @@ namespace SourceGit.Models
                 var major = null as PathHelper;
                 var isMerged = commit.IsMerged;
                 var oldCount = unsolved.Count;
-
-                commit.CanPushToUpstream = canPushCommits.Remove(commit.SHA);
-                commit.CanPullFromUpstream = canPullCommits.Remove(commit.SHA);
 
                 // Update current y offset
                 offsetY += UNIT_HEIGHT;
