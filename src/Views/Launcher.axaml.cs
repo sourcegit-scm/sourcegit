@@ -153,9 +153,19 @@ namespace SourceGit.Views
 
             base.OnKeyDown(e);
 
+            // Record unhandled key modifers.
             if (!e.Handled)
             {
                 _unhandledModifiers = e.KeyModifiers;
+
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Alt) && (e.Key == Key.LeftAlt || e.Key == Key.RightAlt))
+                    _unhandledModifiers |= KeyModifiers.Alt;
+
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Control) && (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl))
+                    _unhandledModifiers |= KeyModifiers.Control;
+
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Shift) && (e.Key == Key.LeftShift || e.Key == Key.RightShift))
+                    _unhandledModifiers |= KeyModifiers.Shift;
             }
         }
 
