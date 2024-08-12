@@ -20,6 +20,11 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        public bool HasKeyModifier(KeyModifiers modifier)
+        {
+            return _unhandledModifiers.HasFlag(modifier);
+        }
+
         protected override void OnOpened(EventArgs e)
         {
             base.OnOpened(e);
@@ -147,6 +152,17 @@ namespace SourceGit.Views
             }
 
             base.OnKeyDown(e);
+
+            if (!e.Handled)
+            {
+                _unhandledModifiers = e.KeyModifiers;
+            }
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            _unhandledModifiers = KeyModifiers.None;
         }
 
         protected override void OnClosing(WindowClosingEventArgs e)
@@ -178,5 +194,7 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private KeyModifiers _unhandledModifiers = KeyModifiers.None;
     }
 }
