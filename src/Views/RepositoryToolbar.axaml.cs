@@ -71,6 +71,12 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void StashAll(object _, RoutedEventArgs e)
+        {
+            (DataContext as ViewModels.Repository)?.StashAll(_hasCtrl);
+            e.Handled = true;
+        }
+
         private void OpenGitFlowMenu(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)

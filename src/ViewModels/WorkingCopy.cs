@@ -317,6 +317,17 @@ namespace SourceGit.ViewModels
             dialog.ShowDialog(toplevel);
         }
 
+        public void StashAll(bool autoStart)
+        {
+            if (!PopupHost.CanCreatePopup())
+                return;
+
+            if (autoStart)
+                PopupHost.ShowAndStartPopup(new StashChanges(_repo, _cached, true));
+            else
+                PopupHost.ShowPopup(new StashChanges(_repo, _cached, true));
+        }
+
         public void StageSelected()
         {
             StageChanges(_selectedUnstaged);

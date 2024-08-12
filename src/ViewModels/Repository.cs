@@ -616,15 +616,9 @@ namespace SourceGit.ViewModels
                 Task.Run(RefreshCommits);
         }
 
-        public void StashAll()
+        public void StashAll(bool autoStart)
         {
-            if (PopupHost.CanCreatePopup())
-            {
-                var changes = new List<Models.Change>();
-                changes.AddRange(_workingCopy.Unstaged);
-                changes.AddRange(_workingCopy.Staged);
-                PopupHost.ShowPopup(new StashChanges(this, changes, true));
-            }
+            _workingCopy?.StashAll(autoStart);
         }
 
         public void GotoResolve()

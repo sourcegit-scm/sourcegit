@@ -64,7 +64,14 @@
           <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
         </Button>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding StashAll}" ToolTip.Tip="{DynamicResource Text.Stash}">
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="StashAll">
+          <ToolTip.Tip>
+            <StackPanel Orientation="Vertical">
+              <TextBlock Text="{DynamicResource Text.Stash}"/>
+              <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
+            </StackPanel>
+          </ToolTip.Tip>
+          
           <Path Width="14" Height="14" Data="{StaticResource Icons.Stashes.Add}"/>
         </Button>
 
