@@ -253,6 +253,9 @@
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
   </Style>
+  <Style Selector="TextBlock.small">
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"/>
+  </Style>
   <Style Selector="TextBlock.bold">
     <Setter Property="FontWeight" Value="Bold"/>
   </Style>

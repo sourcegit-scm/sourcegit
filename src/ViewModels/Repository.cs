@@ -420,7 +420,7 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public void Fetch()
+        public void Fetch(bool autoStart)
         {
             if (!PopupHost.CanCreatePopup())
                 return;
@@ -431,10 +431,13 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            PopupHost.ShowPopup(new Fetch(this));
+            if (autoStart)
+                PopupHost.ShowAndStartPopup(new Fetch(this));
+            else
+                PopupHost.ShowPopup(new Fetch(this));
         }
 
-        public void Pull()
+        public void Pull(bool autoStart)
         {
             if (!PopupHost.CanCreatePopup())
                 return;
@@ -445,10 +448,13 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            PopupHost.ShowPopup(new Pull(this, null));
+            if (autoStart)
+                PopupHost.ShowAndStartPopup(new Pull(this, null));
+            else
+                PopupHost.ShowPopup(new Pull(this, null));
         }
 
-        public void Push()
+        public void Push(bool autoStart)
         {
             if (!PopupHost.CanCreatePopup())
                 return;
@@ -465,7 +471,10 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            PopupHost.ShowPopup(new Push(this, null));
+            if (autoStart)
+                PopupHost.ShowAndStartPopup(new Push(this, null));
+            else
+                PopupHost.ShowPopup(new Push(this, null));
         }
 
         public void ApplyPatch()

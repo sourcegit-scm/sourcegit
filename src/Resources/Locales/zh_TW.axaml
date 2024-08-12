@@ -166,6 +166,7 @@
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">型別 ：</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">附註標籤</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">輕量標籤</x:String>
+  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">按住Ctrl鍵點擊將以預設參數運行</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪下</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">刪除分支確認</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>

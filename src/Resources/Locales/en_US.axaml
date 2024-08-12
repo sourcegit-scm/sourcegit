@@ -163,6 +163,7 @@
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Kind:</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">annotated</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">lightweight</x:String>
+  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Hold Ctrl to start directly</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Cut</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Delete Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>

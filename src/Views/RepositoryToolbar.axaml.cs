@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -8,6 +9,18 @@ namespace SourceGit.Views
         public RepositoryToolbar()
         {
             InitializeComponent();
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            _hasCtrl = e.KeyModifiers.HasFlag(KeyModifiers.Control);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            _hasCtrl = false;
         }
 
         private void OpenWithExternalTools(object sender, RoutedEventArgs e)
@@ -40,6 +53,24 @@ namespace SourceGit.Views
             }
         }
 
+        private void Fetch(object _, RoutedEventArgs e)
+        {
+            (DataContext as ViewModels.Repository)?.Fetch(_hasCtrl);
+            e.Handled = true;
+        }
+
+        private void Pull(object _, RoutedEventArgs e)
+        {
+            (DataContext as ViewModels.Repository)?.Pull(_hasCtrl);
+            e.Handled = true;
+        }
+
+        private void Push(object _, RoutedEventArgs e)
+        {
+            (DataContext as ViewModels.Repository)?.Push(_hasCtrl);
+            e.Handled = true;
+        }
+
         private void OpenGitFlowMenu(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
@@ -61,6 +92,8 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private bool _hasCtrl = false;
     }
 }
 
