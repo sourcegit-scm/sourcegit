@@ -166,6 +166,7 @@
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Art:</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">Mit Anmerkung</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">Ohne Anmerkung</x:String>
+  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Halte Strg gedrückt, um direkt auszuführen</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Ausschneiden</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Branch löschen</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
@@ -488,6 +489,7 @@
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">Autor &amp; Committer</x:String>
   <x:String x:Key="Text.Repository.SearchBranchTag" xml:space="preserve">Suche Branches &amp; Tags</x:String>
+  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Zeige Tags als Baum</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistiken</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMODULE</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">SUBMODUL HINZUFÜGEN</x:String>
