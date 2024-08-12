@@ -93,11 +93,8 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateSSHKey(string sshkey, ValidationContext ctx)
         {
-            if (ctx.ObjectInstance is EditRemote edit && edit.UseSSH)
+            if (ctx.ObjectInstance is EditRemote { _useSSH: true } && !string.IsNullOrEmpty(sshkey))
             {
-                if (string.IsNullOrEmpty(sshkey))
-                    return new ValidationResult("SSH private key is required");
-
                 if (!File.Exists(sshkey))
                     return new ValidationResult("Given SSH private key can NOT be found!");
             }
