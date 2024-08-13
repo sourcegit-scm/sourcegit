@@ -668,8 +668,7 @@
       <ContentControl Grid.Row="2" Content="{Binding SelectedView}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Histories">
-            <v:Histories CurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).CurrentBranch}" 
-                         NavigationId="{Binding NavigationId}"/>
+            <v:Histories CurrentBranch="{Binding Repo.CurrentBranch}" NavigationId="{Binding NavigationId}"/>
           </DataTemplate>
 
           <DataTemplate DataType="vm:WorkingCopy">
