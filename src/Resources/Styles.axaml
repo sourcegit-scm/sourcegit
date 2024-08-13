@@ -280,11 +280,11 @@
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="HorizontalAlignment" Value="Right"/>
   </Style>
-  <Style Selector="TextBlock.issue_link">
+
+  <Style Selector="Run.issue_link">
     <Setter Property="Foreground" Value="{DynamicResource Brush.Link}"/>
-    <Setter Property="Cursor" Value="Hand"/>
   </Style>
-  <Style Selector="TextBlock.issue_link:pointerover">
+  <Style Selector="Run.issue_link.issue_link_hovered">
     <Setter Property="TextDecorations" Value="Underline"/>
   </Style>
   

@@ -11,6 +11,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.Utilities;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -185,6 +186,8 @@ namespace SourceGit.Views
             if (change.Property == SubjectProperty || change.Property == IssueTrackerRulesProperty)
             {
                 Inlines.Clear();
+                _matches = null;
+                ClearHoveredIssueLink();
 
                 var subject = Subject;
                 if (string.IsNullOrEmpty(subject))
@@ -208,6 +211,7 @@ namespace SourceGit.Views
                 }
 
                 matches.Sort((l, r) => l.Start - r.Start);
+                _matches = matches;
 
                 int pos = 0;
                 foreach (var match in matches)
@@ -215,12 +219,9 @@ namespace SourceGit.Views
                     if (match.Start > pos)
                         Inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
 
-                    var link = new TextBlock();
-                    link.SetValue(TextProperty, subject.Substring(match.Start, match.Length));
-                    link.SetValue(ToolTip.TipProperty, match.URL);
-                    link.Classes.Add("issue_link");
-                    link.PointerPressed += OnLinkPointerPressed;
-                    Inlines.Add(link);
+                    match.Link = new Run(subject.Substring(match.Start, match.Length));
+                    match.Link.Classes.Add("issue_link");
+                    Inlines.Add(match.Link);
 
                     pos = match.Start + match.Length;
                 }
@@ -230,17 +231,71 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnLinkPointerPressed(object sender, PointerPressedEventArgs e)
+        protected override void OnPointerMoved(PointerEventArgs e)
         {
-            if (sender is TextBlock text)
-            {
-                var tooltip = text.GetValue(ToolTip.TipProperty) as string;
-                if (!string.IsNullOrEmpty(tooltip))
-                    Native.OS.OpenBrowser(tooltip);
+            base.OnPointerMoved(e);
 
-                e.Handled = true;
+            if (_matches != null)
+            {
+                var padding = Padding;
+                var point = e.GetPosition(this) - new Point(padding.Left, padding.Top);
+                point = new Point(
+                    MathUtilities.Clamp(point.X, 0, Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0)),
+                    MathUtilities.Clamp(point.Y, 0, Math.Max(TextLayout.Height, 0)));
+
+                var textPosition = TextLayout.HitTestPoint(point).TextPosition;
+                foreach (var match in _matches)
+                {
+                    if (!match.Intersect(textPosition, 1))
+                        continue;
+
+                    if (match == _lastHover)
+                        return;
+
+                    _lastHover = match;
+                    SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
+                    ToolTip.SetTip(this, match.URL);
+                    ToolTip.SetIsOpen(this, true);
+                    e.Handled = true;
+                    return;
+                }
+
+                ClearHoveredIssueLink();
             }
         }
+
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            if (_lastHover != null)
+            {
+                Native.OS.OpenBrowser(_lastHover.URL);
+                ClearHoveredIssueLink();
+                e.Handled = true;
+                return;
+            }
+
+            base.OnPointerPressed(e);
+        }
+
+        protected override void OnPointerExited(PointerEventArgs e)
+        {
+            base.OnPointerExited(e);
+            ClearHoveredIssueLink();
+        }
+
+        private void ClearHoveredIssueLink()
+        {
+            if (_lastHover != null)
+            {
+                ToolTip.SetTip(this, null);
+                SetCurrentValue(CursorProperty, Cursor.Parse("Arrow"));
+                _lastHover.Link.Classes.Remove("issue_link_hovered");
+                _lastHover = null;
+            }
+        }
+
+        private List<Models.IssueTrackerMatch> _matches = null;
+        private Models.IssueTrackerMatch _lastHover = null;
     }
 
     public class CommitTimeTextBlock : TextBlock
