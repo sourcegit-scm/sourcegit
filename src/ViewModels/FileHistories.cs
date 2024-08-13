@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Avalonia.Collections;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -35,7 +33,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(value, _file), _diffContext);
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(value, _file), _diffContext);
                         DetailContext.Commit = value;
                     }
                 }
@@ -54,15 +52,15 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _detailContext, value);
         }
 
-        public FileHistories(string repo, string file, AvaloniaList<Models.IssueTrackerRule> issueTrackerRules)
+        public FileHistories(Repository repo, string file)
         {
             _repo = repo;
             _file = file;
-            _detailContext = new CommitDetail(repo, issueTrackerRules);
+            _detailContext = new CommitDetail(repo);
 
             Task.Run(() =>
             {
-                var commits = new Commands.QueryCommits(_repo, $"-n 10000 -- \"{file}\"", false).Result();
+                var commits = new Commands.QueryCommits(_repo.FullPath, $"-n 10000 -- \"{file}\"", false).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     IsLoading = false;
@@ -73,7 +71,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private readonly string _repo = null;
+        private readonly Repository _repo = null;
         private readonly string _file = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = null;
