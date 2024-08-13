@@ -1,4 +1,0 @@
-#!bin/sh
-
-rm -f /usr/bin/sourcegit
-exit 0

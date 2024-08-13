@@ -1,117 +1,45 @@
 name: Continuous Integration
 on:
   push:
-    branches:
-      - develop
+    branches: [develop]
   pull_request:
     branches: [develop]
   workflow_dispatch:
+  workflow_call:
 jobs:
-  build-windows:
-    name: Build Windows x64
-    runs-on: windows-2019
+  build:
+    strategy:
+      matrix:
+        include:
+          - name : Windows x64
+            os: windows-2019
+            runtime: win-x64
+          - name : Windows ARM64
+            os: windows-2019
+            runtime: win-arm64
+          - name : macOS (Intel)
+            os: macos-13
+            runtime: osx-x64
+          - name : macOS (Apple Silicon)
+            os: macos-latest
+            runtime: osx-arm64
+          - name : Linux
+            os: ubuntu-20.04
+            runtime: linux-x64
+        #   - name : Linux (arm64)
+        #     os: ubuntu-20.04
+        #     runtime: linux-arm64
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-      - name: Build
-        run: dotnet build -c Release
-      - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r win-x64
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sourcegit.win-x64
-          path: publish
-  build-macos-intel:
-    name: Build macOS (Intel)
-    runs-on: macos-13
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-      - name: Build
-        run: dotnet build -c Release
-      - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-x64
-      - name: Packing Program
-        run:  tar -cvf sourcegit.osx-x64.tar -C publish/ .
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sourcegit.osx-x64
-          path: sourcegit.osx-x64.tar
-  build-macos-arm64:
-    name: Build macOS (Apple Silicon)
-    runs-on: macos-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-      - name: Build
-        run: dotnet build -c Release
-      - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r osx-arm64
-      - name: Packing Program
-        run: tar -cvf sourcegit.osx-arm64.tar -C publish/ .
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sourcegit.osx-arm64
-          path: sourcegit.osx-arm64.tar
-  build-linux:
-    name: Build Linux
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-      - name: Build
-        run: dotnet build -c Release
-      - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r linux-x64
-      - name: Rename Executable File
-        run: mv publish/SourceGit publish/sourcegit
-      - name: Packing Program
-        run: tar -cvf sourcegit.linux-x64.tar -C publish/ .
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sourcegit.linux-x64
-          path: sourcegit.linux-x64.tar
-  build-linux-arm64:
-    name: Build Linux (arm64)
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
       - name: Configure arm64 packages
+        if: ${{ matrix.runtime == 'linux-arm64' }}
         run: |
           sudo dpkg --add-architecture arm64
           echo 'deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ focal main restricted
@@ -121,19 +49,25 @@ jobs:
           sudo sed -i -e 's/^deb http/deb [arch=amd64] http/g' /etc/apt/sources.list
           sudo sed -i -e 's/^deb mirror/deb [arch=amd64] mirror/g' /etc/apt/sources.list
       - name: Install cross-compiling dependencies
+        if: ${{ matrix.runtime == 'linux-arm64' }}
         run: |
           sudo apt-get update
           sudo apt-get install clang llvm gcc-aarch64-linux-gnu zlib1g-dev:arm64
       - name: Build
         run: dotnet build -c Release
       - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r linux-arm64
-      - name: Rename Executable File
+        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r ${{ matrix.runtime }}
+      - name: Rename executable file
+        if: ${{ startsWith(matrix.runtime, 'linux-') }}
         run: mv publish/SourceGit publish/sourcegit
-      - name: Packing Program
-        run: tar -cvf sourcegit.linux-arm64.tar -C publish/ .
-      - name: Upload Artifact
+      - name: Tar artifact
+        if: ${{ startsWith(matrix.runtime, 'linux-') }}
+        run: |
+          tar -cvf "sourcegit.${{ matrix.runtime }}.tar" -C publish .
+          rm -r publish/*
+          mv "sourcegit.${{ matrix.runtime }}.tar" publish
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sourcegit.linux-arm64
-          path: sourcegit.linux-arm64.tar
+          name: sourcegit.${{ matrix.runtime }}
+          path: publish
