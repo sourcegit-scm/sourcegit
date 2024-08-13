@@ -106,6 +106,8 @@ namespace SourceGit.Views
                         return;
 
                     _lastHover = match;
+                    _lastHover.Link.Classes.Add("issue_link_hovered");
+
                     SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
                     ToolTip.SetTip(this, match.URL);
                     ToolTip.SetIsOpen(this, true);
