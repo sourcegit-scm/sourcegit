@@ -26,9 +26,9 @@ jobs:
           - name : Linux
             os: ubuntu-20.04
             runtime: linux-x64
-        #   - name : Linux (arm64)
-        #     os: ubuntu-20.04
-        #     runtime: linux-arm64
+          - name : Linux (arm64)
+            os: ubuntu-20.04
+            runtime: linux-arm64
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps:
