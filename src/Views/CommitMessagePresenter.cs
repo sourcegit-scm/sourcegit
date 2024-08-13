@@ -120,7 +120,7 @@ namespace SourceGit.Views
         {
             if (_lastHover != null)
             {
-                SetCurrentValue(SelectionEndProperty, SelectionStart);
+                e.Pointer.Capture(null);
                 Native.OS.OpenBrowser(_lastHover.URL);
                 ClearHoveredIssueLink();
                 e.Handled = true;
