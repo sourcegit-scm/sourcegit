@@ -77,11 +77,10 @@
                                            FontSize="10"
                                            VerticalAlignment="Center"/>
 
-                    <v:CommitSubjectPresenter Classes="primary" 
-                                              Subject="{Binding Subject}"
-                                              IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
-                                              Opacity="{Binding Opacity}"
-                                              FontWeight="{Binding FontWeight}"/>
+                    <TextBlock Classes="primary"
+                               Text="{Binding Subject}"
+                               Opacity="{Binding Opacity}"
+                               FontWeight="{Binding FontWeight}"/>
                   </StackPanel>
                 </Border>
               </DataTemplate>
