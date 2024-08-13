@@ -91,8 +91,9 @@ namespace SourceGit.ViewModels
 
         public AvaloniaList<Models.CommitLink> WebLinks
         {
-            get => _repo.TryGetCommitLinks();
-        }
+            get;
+            private set;
+        } = new AvaloniaList<Models.CommitLink>();
 
         public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
         {
@@ -102,6 +103,19 @@ namespace SourceGit.ViewModels
         public CommitDetail(Repository repo)
         {
             _repo = repo;
+
+            foreach (var remote in repo.Remotes)
+            {
+                if (remote.TryGetVisitURL(out var url))
+                {
+                    if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = "Github", URLTemplate = $"{url}/commit/SOURCEGIT_COMMIT_HASH_CODE" });
+                    else if (url.StartsWith("https://gitlab.com/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = "GitLab", URLTemplate = $"{url}/-/commit/SOURCEGIT_COMMIT_HASH_CODE" });
+                    else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = "Gitee", URLTemplate = $"{url}/commit/SOURCEGIT_COMMIT_HASH_CODE" });
+                }
+            }
         }
 
         public void Cleanup()

@@ -496,25 +496,6 @@ namespace SourceGit.ViewModels
             PopupHost.ShowAndStartPopup(new Cleanup(this));
         }
 
-        public AvaloniaList<Models.CommitLink> TryGetCommitLinks()
-        {
-            var rs = new AvaloniaList<Models.CommitLink>();
-            foreach (var remote in _remotes)
-            {
-                if (remote.TryGetVisitURL(out var url))
-                {
-                    if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
-                        rs.Add(new Models.CommitLink() { Name = "Github", URLTemplate = $"{url}/commit/SOURCEGIT_COMMIT_HASH_CODE" });
-                    else if (url.StartsWith("https://gitlab.com/", StringComparison.Ordinal))
-                        rs.Add(new Models.CommitLink() { Name = "GitLab", URLTemplate = $"{url}/-/commit/SOURCEGIT_COMMIT_HASH_CODE" });
-                    else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
-                        rs.Add(new Models.CommitLink() { Name = "Gitee", URLTemplate = $"{url}/commit/SOURCEGIT_COMMIT_HASH_CODE" });
-                }
-            }
-
-            return rs;
-        }
-
         public void ClearHistoriesFilter()
         {
             _settings.Filters.Clear();
