@@ -191,9 +191,11 @@ namespace SourceGit.Views
                     requiredWidth += label.Width + 16 /* icon */ + 8 /* label margin */ + 4 /* item right margin */;
                 }
 
+                InvalidateVisual();
                 return new Size(requiredWidth, 16);
             }
 
+            InvalidateVisual();
             return new Size(0, 0);
         }
 
