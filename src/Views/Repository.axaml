@@ -97,8 +97,8 @@
                           CornerRadius="9"
                           VerticalAlignment="Center"
                           Background="{DynamicResource Brush.Badge}"
-                          IsVisible="{Binding WorkingCopyChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                    <TextBlock Classes="primary" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding WorkingCopyChangesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                          IsVisible="{Binding LocalChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                    <TextBlock Classes="primary" FontSize="10" HorizontalAlignment="Center" Margin="9,0" Text="{Binding LocalChangesCount}" Foreground="{DynamicResource Brush.BadgeFG}"/>
                   </Border>
                 </Grid>
               </ListBoxItem>

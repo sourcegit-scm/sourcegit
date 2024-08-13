@@ -243,7 +243,7 @@ namespace SourceGit.ViewModels
                 reword.Icon = App.CreateMenuIcon("Icons.Edit");
                 reword.Click += (_, e) =>
                 {
-                    if (_repo.WorkingCopyChangesCount > 0)
+                    if (_repo.LocalChangesCount > 0)
                     {
                         App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
                         return;
@@ -261,7 +261,7 @@ namespace SourceGit.ViewModels
                 squash.IsEnabled = commit.Parents.Count == 1;
                 squash.Click += (_, e) =>
                 {
-                    if (_repo.WorkingCopyChangesCount > 0)
+                    if (_repo.LocalChangesCount > 0)
                     {
                         App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
                         return;
@@ -322,7 +322,7 @@ namespace SourceGit.ViewModels
                 interactiveRebase.IsVisible = current.Head != commit.SHA;
                 interactiveRebase.Click += (_, e) =>
                 {
-                    if (_repo.WorkingCopyChangesCount > 0)
+                    if (_repo.LocalChangesCount > 0)
                     {
                         App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
                         return;
@@ -379,7 +379,7 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(compareWithHead);
 
-                if (_repo.WorkingCopyChangesCount > 0)
+                if (_repo.LocalChangesCount > 0)
                 {
                     var compareWithWorktree = new MenuItem();
                     compareWithWorktree.Header = App.Text("CommitCM.CompareWithWorktree");

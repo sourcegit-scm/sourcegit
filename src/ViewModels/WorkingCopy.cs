@@ -177,8 +177,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public int Count => _count;
-
         public object DetailContext
         {
             get => _detailContext;
