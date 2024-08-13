@@ -77,7 +77,7 @@ namespace SourceGit.Native
         {
             var osAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             if (string.IsNullOrEmpty(osAppDataDir))
-                DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".SourceGit");
+                DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".sourcegit");
             else
                 DataDir = Path.Combine(osAppDataDir, "SourceGit");
 
