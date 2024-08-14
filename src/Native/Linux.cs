@@ -47,9 +47,6 @@ namespace SourceGit.Native
             {
                 EnableIme = true,
             });
-
-            // Free-desktop file picker has an extra black background panel.
-            builder.UseManagedSystemDialogs();
         }
 
         public string FindGitExecutable()
