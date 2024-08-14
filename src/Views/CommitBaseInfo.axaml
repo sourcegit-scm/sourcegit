@@ -81,6 +81,7 @@
                            Text="{Binding Converter={x:Static c:StringConverters.ToShortSHA}}"
                            Foreground="DarkOrange"
                            TextDecorations="Underline"
+                           Cursor="Hand"
                            Margin="0,0,16,0"
                            PointerPressed="OnParentSHAPressed"/>
               </DataTemplate>

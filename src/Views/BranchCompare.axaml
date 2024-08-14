@@ -59,7 +59,7 @@
               <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
                 <TextBlock Text="{Binding Base.FriendlyName}" Classes="primary" Margin="4,0" Foreground="#FFDDDDDD"/>
               </Border>
-              <TextBlock Grid.Column="3" Classes="primary" Text="{Binding BaseHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
+              <TextBlock Grid.Column="3" Classes="primary" Text="{Binding BaseHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
               <TextBlock Grid.Column="4" Classes="primary" Text="{Binding BaseHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
             </Grid>
 
@@ -83,7 +83,7 @@
               <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
                 <TextBlock Text="{Binding To.FriendlyName}" Classes="primary" Margin="4,0" Foreground="#FFDDDDDD"/>
               </Border>
-              <TextBlock Grid.Column="3" Classes="primary" Text="{Binding ToHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" PointerPressed="OnPressedSHA"/>
+              <TextBlock Grid.Column="3" Classes="primary" Text="{Binding ToHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
               <TextBlock Grid.Column="4" Classes="primary" Text="{Binding ToHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
             </Grid>
 
