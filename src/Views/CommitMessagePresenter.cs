@@ -106,7 +106,7 @@ namespace SourceGit.Views
                         return;
 
                     _lastHover = match;
-                    _lastHover.Link.Classes.Add("issue_link_hovered");
+                    //_lastHover.Link.Classes.Add("issue_link_hovered");
 
                     SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
                     ToolTip.SetTip(this, match.URL);
@@ -124,7 +124,6 @@ namespace SourceGit.Views
             {
                 e.Pointer.Capture(null);
                 Native.OS.OpenBrowser(_lastHover.URL);
-                ClearHoveredIssueLink();
                 e.Handled = true;
                 return;
             }
@@ -144,7 +143,7 @@ namespace SourceGit.Views
             {
                 ToolTip.SetTip(this, null);
                 SetCurrentValue(CursorProperty, Cursor.Parse("IBeam"));
-                _lastHover.Link.Classes.Remove("issue_link_hovered");
+                //_lastHover.Link.Classes.Remove("issue_link_hovered");
                 _lastHover = null;
             }
         }

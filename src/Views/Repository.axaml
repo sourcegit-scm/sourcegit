@@ -668,7 +668,9 @@
       <ContentControl Grid.Row="2" Content="{Binding SelectedView}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Histories">
-            <v:Histories CurrentBranch="{Binding Repo.CurrentBranch}" NavigationId="{Binding NavigationId}"/>
+            <v:Histories CurrentBranch="{Binding Repo.CurrentBranch}"
+                         IssueTrackerRules="{Binding Repo.Settings.IssueTrackerRules}"
+                         NavigationId="{Binding NavigationId}"/>
           </DataTemplate>
 
           <DataTemplate DataType="vm:WorkingCopy">

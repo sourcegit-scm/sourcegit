@@ -1,13 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.Utilities;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -151,6 +155,146 @@ namespace SourceGit.Views
         }
 
         private Status _status = Status.Normal;
+    }
+
+    public class CommitSubjectPresenter : TextBlock
+    {
+        public static readonly StyledProperty<string> SubjectProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, string>(nameof(Subject));
+
+        public string Subject
+        {
+            get => GetValue(SubjectProperty);
+            set => SetValue(SubjectProperty, value);
+        }
+
+        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
+
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        {
+            get => GetValue(IssueTrackerRulesProperty);
+            set => SetValue(IssueTrackerRulesProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(TextBlock);
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == SubjectProperty || change.Property == IssueTrackerRulesProperty)
+            {
+                Inlines.Clear();
+                _matches = null;
+                ClearHoveredIssueLink();
+
+                var subject = Subject;
+                if (string.IsNullOrEmpty(subject))
+                    return;
+
+                var rules = IssueTrackerRules;
+                if (rules == null || rules.Count == 0)
+                {
+                    Inlines.Add(new Run(subject));
+                    return;
+                }
+
+                var matches = new List<Models.IssueTrackerMatch>();
+                foreach (var rule in rules)
+                    rule.Matches(matches, subject);
+
+                if (matches.Count == 0)
+                {
+                    Inlines.Add(new Run(subject));
+                    return;
+                }
+
+                matches.Sort((l, r) => l.Start - r.Start);
+                _matches = matches;
+
+                int pos = 0;
+                foreach (var match in matches)
+                {
+                    if (match.Start > pos)
+                        Inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
+
+                    match.Link = new Run(subject.Substring(match.Start, match.Length));
+                    match.Link.Classes.Add("issue_link");
+                    Inlines.Add(match.Link);
+
+                    pos = match.Start + match.Length;
+                }
+
+                if (pos < subject.Length)
+                    Inlines.Add(new Run(subject.Substring(pos)));
+
+                InvalidateTextLayout();
+            }
+        }
+
+        protected override void OnPointerMoved(PointerEventArgs e)
+        {
+            base.OnPointerMoved(e);
+
+            if (_matches != null)
+            {
+                var padding = Padding;
+                var point = e.GetPosition(this) - new Point(padding.Left, padding.Top);
+                point = new Point(
+                    MathUtilities.Clamp(point.X, 0, Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0)),
+                    MathUtilities.Clamp(point.Y, 0, Math.Max(TextLayout.Height, 0)));
+
+                var textPosition = TextLayout.HitTestPoint(point).TextPosition;
+                foreach (var match in _matches)
+                {
+                    if (!match.Intersect(textPosition, 1))
+                        continue;
+
+                    if (match == _lastHover)
+                        return;
+
+                    _lastHover = match;
+                    //_lastHover.Link.Classes.Add("issue_link_hovered");
+
+                    SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
+                    ToolTip.SetTip(this, match.URL);
+                    ToolTip.SetIsOpen(this, true);
+                    e.Handled = true;
+                    return;
+                }
+
+                ClearHoveredIssueLink();
+            }
+        }
+
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            base.OnPointerPressed(e);
+
+            if (_lastHover != null)
+                Native.OS.OpenBrowser(_lastHover.URL);
+        }
+
+        protected override void OnPointerExited(PointerEventArgs e)
+        {
+            base.OnPointerExited(e);
+            ClearHoveredIssueLink();
+        }
+
+        private void ClearHoveredIssueLink()
+        {
+            if (_lastHover != null)
+            {
+                ToolTip.SetTip(this, null);
+                SetCurrentValue(CursorProperty, Cursor.Parse("Arrow"));
+                //_lastHover.Link.Classes.Remove("issue_link_hovered");
+                _lastHover = null;
+            }
+        }
+
+        private List<Models.IssueTrackerMatch> _matches = null;
+        private Models.IssueTrackerMatch _lastHover = null;
     }
 
     public class CommitTimeTextBlock : TextBlock
@@ -449,6 +593,15 @@ namespace SourceGit.Views
         {
             get => GetValue(CurrentBranchProperty);
             set => SetValue(CurrentBranchProperty, value);
+        }
+
+        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
+            AvaloniaProperty.Register<Histories, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
+
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        {
+            get => GetValue(IssueTrackerRulesProperty);
+            set => SetValue(IssueTrackerRulesProperty, value);
         }
 
         public static readonly StyledProperty<long> NavigationIdProperty =
