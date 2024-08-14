@@ -29,7 +29,7 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
           RUNTIME: ${{ matrix.runtime }}
-        run: ./build/ci/package.windows-portable.sh
+        run: ./build/scripts/package.windows-portable.sh
       - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:
@@ -54,7 +54,7 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
           RUNTIME: ${{ matrix.runtime }}
-        run: ./build/ci/package.osx-app.sh
+        run: ./build/scripts/package.osx-app.sh
       - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:
@@ -87,7 +87,7 @@ jobs:
         run: |
           mkdir build/SourceGit
           tar -xf "build/sourcegit.${{ matrix.runtime }}.tar" -C build/SourceGit
-          ./build/ci/package.linux.sh
+          ./build/scripts/package.linux.sh
       - name: Upload package artifacts
         uses: actions/upload-artifact@v4
         with:

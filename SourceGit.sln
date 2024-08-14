@@ -6,11 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SourceGit", "src\SourceGit.csproj", "{2091C34D-4A17-4375-BEF3-4D60BE8113E4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{773082AC-D9C8-4186-8521-4B6A7BEE6158}"
-	ProjectSection(SolutionItems) = preProject
-		build\build.linux.sh = build\build.linux.sh
-		build\build.osx.command = build\build.osx.command
-		build\build.windows.ps1 = build\build.windows.ps1
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{FD384607-ED99-47B7-AF31-FB245841BC92}"
 EndProject
@@ -77,9 +72,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SPECS", "SPECS", "{7802CD7A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "appimage", "appimage", "{5D125DD9-B48A-491F-B2FB-D7830D74C4DC}"
 	ProjectSection(SolutionItems) = preProject
-		build\resources\appimage\publish-appimage = build\resources\appimage\publish-appimage
-		build\resources\appimage\publish-appimage.conf = build\resources\appimage\publish-appimage.conf
-		build\resources\appimage\runtime-x86_64 = build\resources\appimage\runtime-x86_64
 		build\resources\appimage\sourcegit.appdata.xml = build\resources\appimage\sourcegit.appdata.xml
 		build\resources\appimage\sourcegit.png = build\resources\appimage\sourcegit.png
 	EndProjectSection
