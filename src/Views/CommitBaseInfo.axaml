@@ -60,7 +60,7 @@
                                  Margin="12,0,0,0" 
                                  VerticalAlignment="Center"/>
 
-            <Button Classes="icon_button" Click="OnOpenWebLink" IsVisible="{Binding #ThisControl.WebLinks, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+            <Button Classes="icon_button" Cursor="Hand" Click="OnOpenWebLink" IsVisible="{Binding #ThisControl.WebLinks, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Link}" Fill="{DynamicResource Brush.Link}"/>
             </Button>
           </StackPanel>
