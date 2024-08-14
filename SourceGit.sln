@@ -14,6 +14,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{67B6D05F-A000-40BA-ADB4-C9065F880D7B}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\ci.yml = .github\workflows\ci.yml
+		.github\workflows\package.yml = .github\workflows\package.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{49A7C2D6-558C-4FAA-8F5D-EEE81497AED7}"
@@ -76,6 +78,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "appimage", "appimage", "{5D
 		build\resources\appimage\sourcegit.png = build\resources\appimage\sourcegit.png
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C54D4001-9940-477C-A0B6-E795ED0A3209}"
+	ProjectSection(SolutionItems) = preProject
+		build\scripts\package.linux.sh = build\scripts\package.linux.sh
+		build\scripts\package.osx-app.sh = build\scripts\package.osx-app.sh
+		build\scripts\package.windows-portable.sh = build\scripts\package.windows-portable.sh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +115,7 @@ Global
 		{9BA0B044-0CC9-46F8-B551-204F149BF45D} = {FD384607-ED99-47B7-AF31-FB245841BC92}
 		{7802CD7A-591B-4EDD-96F8-9BF3F61692E4} = {9BA0B044-0CC9-46F8-B551-204F149BF45D}
 		{5D125DD9-B48A-491F-B2FB-D7830D74C4DC} = {FD384607-ED99-47B7-AF31-FB245841BC92}
+		{C54D4001-9940-477C-A0B6-E795ED0A3209} = {773082AC-D9C8-4186-8521-4B6A7BEE6158}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7FF1B9C6-B5BF-4A50-949F-4B407A0E31C9}
