@@ -260,6 +260,33 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
             menu.Items.Add(diffWithMerger);
+            menu.Items.Add(new MenuItem { Header = "-" });
+
+            if (File.Exists(Path.Combine(_repo.FullPath, change.Path)))
+            {
+                var resetToThisRevision = new MenuItem();
+                resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.Undo");
+                resetToThisRevision.Click += (_, ev) =>
+                {
+                    new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}");
+                    ev.Handled = true;
+                };
+
+                var resetToFirstParent = new MenuItem();
+                resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
+                resetToFirstParent.Icon = App.CreateMenuIcon("Icons.Undo");
+                resetToFirstParent.IsEnabled = _commit.Parents.Count > 0 && change.Index != Models.ChangeState.Added;
+                resetToFirstParent.Click += (_, ev) =>
+                {
+                    new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}~1");
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(resetToThisRevision);
+                menu.Items.Add(resetToFirstParent);
+                menu.Items.Add(new MenuItem { Header = "-" });
+            }
 
             if (change.Index != Models.ChangeState.Deleted)
             {
@@ -294,7 +321,6 @@ namespace SourceGit.ViewModels
                     ev.Handled = true;
                 };
 
-                menu.Items.Add(new MenuItem { Header = "-" });
                 menu.Items.Add(history);
                 menu.Items.Add(blame);
                 menu.Items.Add(explore);
