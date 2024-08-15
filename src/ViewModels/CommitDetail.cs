@@ -115,7 +115,7 @@ namespace SourceGit.ViewModels
                     else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
                         WebLinks.Add(new Models.CommitLink() { Name = "Gitee", URLPrefix = $"{url}/commit/" });
                     else if (url.StartsWith("https://bitbucket.org/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "Bithbucket", URLPrefix = $"{url}/commits/" });
+                        WebLinks.Add(new Models.CommitLink() { Name = "Bitbucket", URLPrefix = $"{url}/commits/" });
                 }
             }
         }
