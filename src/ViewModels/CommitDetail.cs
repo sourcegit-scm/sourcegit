@@ -109,11 +109,13 @@ namespace SourceGit.ViewModels
                 if (remote.TryGetVisitURL(out var url))
                 {
                     if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "Github", URLTemplate = $"{url}/commit/SOURCEGIT_COMMIT_HASH_CODE" });
+                        WebLinks.Add(new Models.CommitLink() { Name = "Github", URLPrefix = $"{url}/commit/" });
                     else if (url.StartsWith("https://gitlab.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "GitLab", URLTemplate = $"{url}/-/commit/SOURCEGIT_COMMIT_HASH_CODE" });
+                        WebLinks.Add(new Models.CommitLink() { Name = "GitLab", URLPrefix = $"{url}/-/commit/" });
                     else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "Gitee", URLTemplate = $"{url}/commit/SOURCEGIT_COMMIT_HASH_CODE" });
+                        WebLinks.Add(new Models.CommitLink() { Name = "Gitee", URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://bitbucket.org/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = "Bithbucket", URLPrefix = $"{url}/commits/" });
                 }
             }
         }

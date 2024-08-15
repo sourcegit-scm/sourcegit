@@ -51,7 +51,7 @@ namespace SourceGit.Views
                     
                     foreach (var link in links)
                     {
-                        var url = link.URLTemplate.Replace("SOURCEGIT_COMMIT_HASH_CODE", detail.Commit.SHA);
+                        var url = $"{link.URLPrefix}{detail.Commit.SHA}";
                         var item = new MenuItem() { Header = link.Name };
                         item.Click += (_, ev) =>
                         {
@@ -66,7 +66,7 @@ namespace SourceGit.Views
                 }
                 else if (links.Count == 1)
                 {
-                    var url = links[0].URLTemplate.Replace("SOURCEGIT_COMMIT_HASH_CODE", detail.Commit.SHA);
+                    var url = $"{links[0].URLPrefix}{detail.Commit.SHA}";
                     Native.OS.OpenBrowser(url);
                 }
             }            
