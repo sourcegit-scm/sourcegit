@@ -84,17 +84,27 @@ For **Linux** users:
 
 This app supports open repository in external tools listed in the table below.
 
-| Tool                          | Windows | macOS | Linux | Environment Variable |
-|-------------------------------|---------|-------|-------|----------------------|
-| Visual Studio Code            | YES     | YES   | YES   | VSCODE_PATH          |
-| Visual Studio Code - Insiders | YES     | YES   | YES   | VSCODE_INSIDERS_PATH |
-| VSCodium                      | YES     | YES   | YES   | VSCODIUM_PATH        |
-| JetBrains Fleet               | YES     | YES   | YES   | FLEET_PATH           |
-| Sublime Text                  | YES     | YES   | YES   | SUBLIME_TEXT_PATH    |
+| Tool                          | Windows | macOS | Linux | KEY IN `external_editors.json` |
+|-------------------------------|---------|-------|-------|--------------------------------|
+| Visual Studio Code            | YES     | YES   | YES   | VSCODE                         |
+| Visual Studio Code - Insiders | YES     | YES   | YES   | VSCODE_INSIDERS                |
+| VSCodium                      | YES     | YES   | YES   | VSCODIUM                       |
+| JetBrains Fleet               | YES     | YES   | YES   | FLEET                          |
+| Sublime Text                  | YES     | YES   | YES   | SUBLIME_TEXT                   |
 
-* You can set the given environment variable for special tool if it can NOT be found by this app automatically.
-* Installing `JetBrains Toolbox` will help this app to find other JetBrains tools installed on your device.
-* On macOS, you may need to use `launchctl setenv` to make sure the app can read these environment variables.
+> [!NOTE]
+> This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.
+> To solve this problem you can add a file named `external_editors.json` and provide the path directly. For example:
+```json
+{
+    "tools": {
+        "VSCODE": "D:\\VSCode\\Code.exe"
+    }
+}
+```
+
+> [!NOTE]
+> This app also supports a lot of `JetBrains` IDEs, installing `JetBrains Toolbox` will help this app to find them.
 
 ## Screenshots
 

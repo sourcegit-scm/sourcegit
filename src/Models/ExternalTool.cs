@@ -79,6 +79,12 @@ namespace SourceGit.Models
         public string LaunchCommand { get; set; }
     }
 
+    public class ExternalToolPaths
+    {
+        [JsonPropertyName("tools")]
+        public Dictionary<string, string> Tools { get; set; } = new Dictionary<string, string>(); 
+    }
+
     public class ExternalToolsFinder
     {
         public List<ExternalTool> Founded
@@ -87,42 +93,60 @@ namespace SourceGit.Models
             private set;
         } = new List<ExternalTool>();
 
-        public void TryAdd(string name, string icon, string args, string env, Func<string> finder)
+        public ExternalToolsFinder()
         {
-            var path = Environment.GetEnvironmentVariable(env);
-            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+            var customPathsConfig = Path.Combine(Native.OS.DataDir, "external_editors.json");
+            try
             {
-                path = finder();
-                if (string.IsNullOrEmpty(path) || !File.Exists(path))
-                    return;
+                if (File.Exists(customPathsConfig))
+                    _customPaths = JsonSerializer.Deserialize(File.ReadAllText(customPathsConfig), JsonCodeGen.Default.ExternalToolPaths);
+            }
+            catch
+            {
+                // Ignore
             }
 
-            Founded.Add(new ExternalTool(name, icon, path, args));
+            if (_customPaths == null)
+                _customPaths = new ExternalToolPaths();
+        }
+
+        public void TryAdd(string name, string icon, string args, string key, Func<string> finder)
+        {
+            if (_customPaths.Tools.TryGetValue(key, out var customPath) && File.Exists(customPath))
+            {
+                Founded.Add(new ExternalTool(name, icon, customPath, args));
+            }
+            else
+            {
+                var path = finder();
+                if (!string.IsNullOrEmpty(path) && File.Exists(path))
+                    Founded.Add(new ExternalTool(name, icon, path, args));
+            }
         }
 
         public void VSCode(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code", "vscode", "\"{0}\"", "VSCODE_PATH", platformFinder);
+            TryAdd("Visual Studio Code", "vscode", "\"{0}\"", "VSCODE", platformFinder);
         }
 
         public void VSCodeInsiders(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", "\"{0}\"", "VSCODE_INSIDERS_PATH", platformFinder);
+            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", "\"{0}\"", "VSCODE_INSIDERS", platformFinder);
         }
 
         public void VSCodium(Func<string> platformFinder)
         {
-            TryAdd("VSCodium", "codium", "\"{0}\"", "VSCODIUM_PATH", platformFinder);
+            TryAdd("VSCodium", "codium", "\"{0}\"", "VSCODIUM", platformFinder);
         }
 
         public void Fleet(Func<string> platformFinder)
         {
-            TryAdd("Fleet", "fleet", "\"{0}\"", "FLEET_PATH", platformFinder);
+            TryAdd("Fleet", "fleet", "\"{0}\"", "FLEET", platformFinder);
         }
 
         public void SublimeText(Func<string> platformFinder)
         {
-            TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT_PATH", platformFinder);
+            TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT", platformFinder);
         }
 
         public void FindJetBrainsFromToolbox(Func<string> platformFinder)
@@ -146,5 +170,7 @@ namespace SourceGit.Models
                 }
             }
         }
+
+        private ExternalToolPaths _customPaths = null;
     }
 }

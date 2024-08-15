@@ -58,6 +58,7 @@ namespace SourceGit
             typeof(GridLengthConverter),
         ]
     )]
+    [JsonSerializable(typeof(Models.ExternalToolPaths))]
     [JsonSerializable(typeof(Models.InteractiveRebaseJobCollection))]
     [JsonSerializable(typeof(Models.JetBrainsState))]
     [JsonSerializable(typeof(Models.ThemeOverrides))]
