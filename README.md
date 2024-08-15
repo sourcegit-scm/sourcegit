@@ -35,6 +35,7 @@ Opensource Git GUI client.
 * Git LFS
 * Issue Link
 
+> [!WARNING]
 > **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
 
 ## How to Use
@@ -51,6 +52,9 @@ This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationD
 | Linux   | `${HOME}/.config/SourceGit` or `${HOME}/.sourcegit` |
 | macOS   | `${HOME}/Library/Application Support/SourceGit`     |
 
+> [!TIP]
+> You can open the app data dir from the main menu.
+
 For **Windows** users:
 
 * **MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
@@ -58,6 +62,7 @@ For **Windows** users:
   ```shell
   winget install SourceGit
   ```
+  > [!NOTE]
   > `winget` will install this software as a commandline tool. You need run `SourceGit` from console or `Win+R` at the first time. Then you can add it to the taskbar.
 * You can install the latest stable by `scoope` with follow commands:
   ```shell
@@ -94,7 +99,7 @@ This app supports open repository in external tools listed in the table below.
 
 > [!NOTE]
 > This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.
-> To solve this problem you can add a file named `external_editors.json` and provide the path directly. For example:
+> To solve this problem you can add a file named `external_editors.json` in app data dir and provide the path directly. For example:
 ```json
 {
     "tools": {
