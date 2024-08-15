@@ -189,8 +189,7 @@
                   Margin="12,0,0,0"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding AutoStageBeforeCommit, Mode=TwoWay}"
-                  Content="{DynamicResource Text.WorkingCopy.AutoStage}"
-                  ToolTip.Tip="{DynamicResource Text.WorkingCopy.AutoStage.Tip}"/>
+                  Content="{DynamicResource Text.WorkingCopy.AutoStage}"/>
 
         <CheckBox Grid.Column="2"
                   Height="24"

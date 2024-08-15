@@ -574,7 +574,6 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignorar apenas este arquivo</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Corrigir</x:String>
   <x:String x:Key="Text.WorkingCopy.AutoStage" xml:space="preserve">Auto-Stage</x:String>
-  <x:String x:Key="Text.WorkingCopy.AutoStage.Tip" xml:space="preserve">Informe ao comando para automaticamente stagear arquivos que foram modificados e excluídos, mas novos arquivos que você não informou ao Git não serão afetados.</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Você pode stagear este arquivo agora.</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>

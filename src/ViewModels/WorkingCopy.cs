@@ -1282,9 +1282,10 @@ namespace SourceGit.ViewModels
                 return;
             }
 
+            var autoStage = AutoStageBeforeCommit;
             if (!_useAmend)
             {
-                if (AutoStageBeforeCommit)
+                if (autoStage)
                 {
                     if (_count == 0)
                     {
@@ -1306,26 +1307,28 @@ namespace SourceGit.ViewModels
             _repo.Settings.PushCommitMessage(_commitMessage);
             _repo.SetWatcherEnabled(false);
 
-            var autoStage = AutoStageBeforeCommit;
             Task.Run(() =>
             {
-                var succ = new Commands.Commit(_repo.FullPath, _commitMessage, autoStage, _useAmend).Exec();
+                var succ = true;
+                if (autoStage && _unstaged.Count > 0)
+                    succ = new Commands.Add(_repo.FullPath).Exec();
+                
+                if (succ)
+                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend).Exec();
+
                 Dispatcher.UIThread.Post(() =>
                 {
                     if (succ)
                     {
-                        SelectedStaged = [];
                         CommitMessage = string.Empty;
                         UseAmend = false;
 
                         if (autoPush)
-                        {
                             PopupHost.ShowAndStartPopup(new Push(_repo, null));
-                        }
                     }
+
                     _repo.MarkWorkingCopyDirtyManually();
                     _repo.SetWatcherEnabled(true);
-
                     IsCommitting = false;
                 });
             });
