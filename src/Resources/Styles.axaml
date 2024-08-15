@@ -1339,6 +1339,9 @@
   <Style Selector="DataGrid /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
     <Setter Property="IsVisible" Value="False"/>
   </Style>
+  <Style Selector="DataGridCell">
+    <Setter Property="MinHeight" Value="24"/>
+  </Style>
   <Style Selector="DataGridCell:focus /template/ Grid#FocusVisual">
     <Setter Property="IsVisible" Value="False"/>
   </Style>
