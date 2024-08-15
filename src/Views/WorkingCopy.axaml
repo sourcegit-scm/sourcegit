@@ -175,13 +175,13 @@
       <!-- Commit Options -->
       <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
         <Button Grid.Column="0"
-                Classes="icon_button"
+                Classes="no_border"
                 Margin="4,0,0,0" Padding="0"
                 Click="OnOpenCommitMessagePicker">
-          <StackPanel Orientation="Horizontal">
-            <Path Width="14" Height="14" Data="{StaticResource Icons.CommitMessage}"/>
-            <TextBlock Margin="4,0,0,0" Text="{DynamicResource Text.WorkingCopy.CommitMessageHelper}"/>
-          </StackPanel>
+          <Grid ColumnDefinitions="Auto,*">
+            <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
+            <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{DynamicResource Text.WorkingCopy.CommitMessageHelper}"/>
+          </Grid>
         </Button>
 
         <CheckBox Grid.Column="1"
