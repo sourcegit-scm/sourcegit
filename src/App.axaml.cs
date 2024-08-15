@@ -109,6 +109,11 @@ namespace SourceGit
             dialog.ShowDialog(toplevel);
         });
 
+        public static readonly SimpleCommand OpenAppDataDirCommand = new SimpleCommand(() =>
+        {
+            Native.OS.OpenInFileManager(Native.OS.DataDir);
+        });
+
         public static readonly SimpleCommand OpenAboutCommand = new SimpleCommand(() =>
         {
             var toplevel = GetTopLevel() as Window;

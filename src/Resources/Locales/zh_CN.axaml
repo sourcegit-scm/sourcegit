@@ -348,6 +348,7 @@
   <x:String x:Key="Text.Name" xml:space="preserve">名称 ：</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">GIT尚未配置。请打开【偏好设置】配置GIT路径。</x:String>
   <x:String x:Key="Text.Notice" xml:space="preserve">系统提示</x:String>
+  <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">浏览应用数据目录</x:String>
   <x:String x:Key="Text.OpenFolder" xml:space="preserve">选择文件夹</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">打开文件...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">选填。</x:String>

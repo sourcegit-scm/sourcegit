@@ -41,6 +41,11 @@
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Settings}"/>
               </MenuItem.Icon>
             </MenuItem>
+            <MenuItem Header="{DynamicResource Text.OpenAppDataDir}" Command="{x:Static s:App.OpenAppDataDirCommand}">
+              <MenuItem.Icon>
+                <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}"/>
+              </MenuItem.Icon>
+            </MenuItem>
             <MenuItem Header="{DynamicResource Text.Hotkeys}" Command="{x:Static s:App.OpenHotkeysCommand}">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Hotkeys}"/>
