@@ -595,9 +595,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">STRG + Enter</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">KONFLIKTE ERKANNT</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">DATEI KONFLIKTE GELÖST</x:String>
-  <x:String x:Key="Text.WorkingCopy.HasCommitHistories" xml:space="preserve">LETZTE COMMIT-NACHRICHTEN</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">NICHT-VERFOLGTE DATEIEN INKLUDIEREN</x:String>
-  <x:String x:Key="Text.WorkingCopy.MessageHistories" xml:space="preserve">NACHRICHTEN HISTORIE</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">KEINE BISHERIGEN COMMIT-NACHRICHTEN</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">GESTAGED</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">UNSTAGEN</x:String>

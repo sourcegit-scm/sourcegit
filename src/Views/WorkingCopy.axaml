@@ -176,10 +176,12 @@
       <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
         <Button Grid.Column="0"
                 Classes="icon_button"
-                Width="14" Height="14"
-                Click="OnOpenCommitMessagePicker"
-                ToolTip.Tip="{DynamicResource Text.WorkingCopy.MessageHistories}">
-          <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.List}"/>
+                Margin="4,0,0,0" Padding="0"
+                Click="OnOpenCommitMessagePicker">
+          <StackPanel Orientation="Horizontal">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.CommitMessage}"/>
+            <TextBlock Margin="4,0,0,0" Text="{DynamicResource Text.WorkingCopy.CommitMessageHelper}"/>
+          </StackPanel>
         </Button>
 
         <CheckBox Grid.Column="1"

@@ -125,6 +125,9 @@
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">填寫提交信息主題</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">詳細描述</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">倉庫配置</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交資訊範本</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">範本名稱 ：</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">範本內容 ：</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">電子郵箱</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">郵箱地址</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT配置</x:String>
@@ -591,13 +594,13 @@
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">現在您已可將其加入暫存區中</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提交</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交併推送</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">歷史輸入/範本</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">CTRL + Enter</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">檢測到衝突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">檔案衝突已解決</x:String>
-  <x:String x:Key="Text.WorkingCopy.HasCommitHistories" xml:space="preserve">最近輸入的提交資訊</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未跟蹤檔案</x:String>
-  <x:String x:Key="Text.WorkingCopy.MessageHistories" xml:space="preserve">歷史提交資訊</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">沒有提交資訊記錄</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">沒有可應用的提交資訊範本</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">已暫存</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">從暫存區移除選中</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">從暫存區移除所有</x:String>
@@ -605,6 +608,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">暫存選中</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">暫存所有</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">檢視忽略變更檔案</x:String>
+  <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">範本：${0}$</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">請選中衝突檔案，開啟右鍵選單，選擇合適的解決方式</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本地工作樹</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">拷贝工作樹路徑</x:String>
