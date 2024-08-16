@@ -172,8 +172,9 @@ namespace SourceGit.Views
                     if (bg == null)
                         continue;
 
-                    var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset;
-                    drawingContext.DrawRectangle(bg, null, new Rect(0, y, width, line.Height));
+                    var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
+                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
+                    drawingContext.DrawRectangle(bg, null, new Rect(0, startY, width, endY - startY));
                 }
             }
 
