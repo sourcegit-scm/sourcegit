@@ -266,7 +266,7 @@ namespace SourceGit.ViewModels
             {
                 var resetToThisRevision = new MenuItem();
                 resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
-                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.Undo");
+                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
                 resetToThisRevision.Click += (_, ev) =>
                 {
                     new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}");
@@ -275,8 +275,8 @@ namespace SourceGit.ViewModels
 
                 var resetToFirstParent = new MenuItem();
                 resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
-                resetToFirstParent.Icon = App.CreateMenuIcon("Icons.Undo");
-                resetToFirstParent.IsEnabled = _commit.Parents.Count > 0 && change.Index != Models.ChangeState.Added;
+                resetToFirstParent.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToFirstParent.IsEnabled = _commit.Parents.Count > 0 && change.Index != Models.ChangeState.Added && change.Index != Models.ChangeState.Renamed;
                 resetToFirstParent.Click += (_, ev) =>
                 {
                     new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}~1");
