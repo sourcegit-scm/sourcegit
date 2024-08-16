@@ -409,6 +409,7 @@ namespace SourceGit.Views
             base.OnLoaded(e);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+            TextArea.TextView.PointerEntered += OnTextViewPointerEntered;
             TextArea.TextView.PointerMoved += OnTextViewPointerMoved;
             TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
 
@@ -420,6 +421,7 @@ namespace SourceGit.Views
             base.OnUnloaded(e);
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
+            TextArea.TextView.PointerEntered -= OnTextViewPointerEntered;
             TextArea.TextView.PointerMoved -= OnTextViewPointerMoved;
             TextArea.TextView.PointerWheelChanged -= OnTextViewPointerWheelChanged;
 
@@ -478,6 +480,12 @@ namespace SourceGit.Views
 
             TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
+        }
+
+        private void OnTextViewPointerEntered(object sender, PointerEventArgs e)
+        {
+            if (EnableChunkSelection && sender is TextView view)
+                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
         }
 
         private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
