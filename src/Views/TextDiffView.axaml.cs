@@ -175,6 +175,50 @@ namespace SourceGit.Views
                     var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
                     var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
                     drawingContext.DrawRectangle(bg, null, new Rect(0, startY, width, endY - startY));
+
+                    if (info.Highlights.Count > 0)
+                    {
+                        var highlightBG = info.Type == Models.TextDiffLineType.Added ? _presenter.AddedHighlightBrush : _presenter.DeletedHighlightBrush;
+                        var processingIdxStart = 0;
+                        var processingIdxEnd = 0;
+                        var nextHightlight = 0;
+
+                        var cloned = new List<Models.TextInlineRange>();
+                        cloned.AddRange(info.Highlights);
+
+                        foreach (var tl in line.TextLines)
+                        {
+                            processingIdxEnd += tl.Length;
+
+                            var y = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineTop) - textView.VerticalOffset;
+                            var height = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineBottom) - textView.VerticalOffset - y;
+
+                            while (nextHightlight < cloned.Count)
+                            {
+                                var highlight = cloned[nextHightlight];
+                                if (highlight.Start >= processingIdxEnd)
+                                {
+                                    processingIdxStart = processingIdxEnd;
+                                    break;
+                                }
+
+                                var start = highlight.Start < processingIdxStart ? processingIdxStart : highlight.Start;
+                                var end = highlight.End >= processingIdxEnd ? processingIdxEnd : highlight.End + 1;
+
+                                var x = line.GetTextLineVisualXPosition(tl, start) - textView.HorizontalOffset;
+                                var w = line.GetTextLineVisualXPosition(tl, end) - textView.HorizontalOffset - x;
+                                var rect = new Rect(x, y, w, height);
+                                drawingContext.DrawRectangle(highlightBG, null, rect);
+
+                                if (highlight.End >= processingIdxEnd)
+                                    break;
+
+                                nextHightlight++;
+                            }
+
+                            processingIdxStart = processingIdxEnd;
+                        }
+                    }
                 }
             }
 
@@ -220,18 +264,6 @@ namespace SourceGit.Views
                     });
 
                     return;
-                }
-
-                if (info.Highlights.Count > 0)
-                {
-                    var bg = info.Type == Models.TextDiffLineType.Added ? _presenter.AddedHighlightBrush : _presenter.DeletedHighlightBrush;
-                    foreach (var highlight in info.Highlights)
-                    {
-                        ChangeLinePart(line.Offset + highlight.Start, line.Offset + highlight.Start + highlight.Count, v =>
-                        {
-                            v.TextRunProperties.SetBackgroundBrush(bg);
-                        });
-                    }
                 }
             }
 

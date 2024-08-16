@@ -19,8 +19,8 @@ namespace SourceGit.Models
     public class TextInlineRange
     {
         public int Start { get; set; }
-        public int Count { get; set; }
-        public TextInlineRange(int p, int n) { Start = p; Count = n; }
+        public int End { get; set; }
+        public TextInlineRange(int p, int n) { Start = p; End = p + n - 1; }
     }
 
     public class TextDiffLine
