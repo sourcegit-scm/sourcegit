@@ -183,31 +183,25 @@ namespace SourceGit.Views
                         var processingIdxEnd = 0;
                         var nextHightlight = 0;
 
-                        var cloned = new List<Models.TextInlineRange>();
-                        cloned.AddRange(info.Highlights);
-
                         foreach (var tl in line.TextLines)
                         {
                             processingIdxEnd += tl.Length;
 
                             var y = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineTop) - textView.VerticalOffset;
-                            var height = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineBottom) - textView.VerticalOffset - y;
+                            var h = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineBottom) - textView.VerticalOffset - y;
 
-                            while (nextHightlight < cloned.Count)
+                            while (nextHightlight < info.Highlights.Count)
                             {
-                                var highlight = cloned[nextHightlight];
+                                var highlight = info.Highlights[nextHightlight];
                                 if (highlight.Start >= processingIdxEnd)
-                                {
-                                    processingIdxStart = processingIdxEnd;
                                     break;
-                                }
 
-                                var start = highlight.Start < processingIdxStart ? processingIdxStart : highlight.Start;
-                                var end = highlight.End >= processingIdxEnd ? processingIdxEnd : highlight.End + 1;
+                                var start = line.GetVisualColumn(highlight.Start < processingIdxStart ? processingIdxStart : highlight.Start);
+                                var end = line.GetVisualColumn(highlight.End >= processingIdxEnd ? processingIdxEnd : highlight.End + 1);
 
                                 var x = line.GetTextLineVisualXPosition(tl, start) - textView.HorizontalOffset;
                                 var w = line.GetTextLineVisualXPosition(tl, end) - textView.HorizontalOffset - x;
-                                var rect = new Rect(x, y, w, height);
+                                var rect = new Rect(x, y, w, h);
                                 drawingContext.DrawRectangle(highlightBG, null, rect);
 
                                 if (highlight.End >= processingIdxEnd)
