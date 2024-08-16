@@ -262,7 +262,8 @@ namespace SourceGit.ViewModels
             menu.Items.Add(diffWithMerger);
             menu.Items.Add(new MenuItem { Header = "-" });
 
-            if (File.Exists(Path.Combine(_repo.FullPath, change.Path)))
+            var fullPath = Path.Combine(_repo.FullPath, change.Path);
+            if (File.Exists(fullPath))
             {
                 var resetToThisRevision = new MenuItem();
                 resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
@@ -283,8 +284,19 @@ namespace SourceGit.ViewModels
                     ev.Handled = true;
                 };
 
+                var explore = new MenuItem();
+                explore.Header = App.Text("RevealFile");
+                explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                explore.Click += (_, ev) =>
+                {
+                    Native.OS.OpenInFileManager(fullPath, true);
+                    ev.Handled = true;
+                };
+
                 menu.Items.Add(resetToThisRevision);
                 menu.Items.Add(resetToFirstParent);
+                menu.Items.Add(new MenuItem { Header = "-" });
+                menu.Items.Add(explore);
                 menu.Items.Add(new MenuItem { Header = "-" });
             }
 
@@ -308,22 +320,10 @@ namespace SourceGit.ViewModels
                     var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, change.Path, _commit.SHA) };
                     window.Show();
                     ev.Handled = true;
-                };
-
-                var full = Path.GetFullPath(Path.Combine(_repo.FullPath, change.Path));
-                var explore = new MenuItem();
-                explore.Header = App.Text("RevealFile");
-                explore.Icon = App.CreateMenuIcon("Icons.Explore");
-                explore.IsEnabled = File.Exists(full);
-                explore.Click += (_, ev) =>
-                {
-                    Native.OS.OpenInFileManager(full, true);
-                    ev.Handled = true;
-                };
+                };                
 
                 menu.Items.Add(history);
                 menu.Items.Add(blame);
-                menu.Items.Add(explore);
                 menu.Items.Add(new MenuItem { Header = "-" });
             }
 
@@ -352,34 +352,25 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateRevisionFileContextMenu(Models.Object file)
         {
-            var history = new MenuItem();
-            history.Header = App.Text("FileHistory");
-            history.Icon = App.CreateMenuIcon("Icons.Histories");
-            history.Click += (_, ev) =>
+            var fullPath = Path.Combine(_repo.FullPath, file.Path);
+
+            var resetToThisRevision = new MenuItem();
+            resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+            resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+            resetToThisRevision.IsEnabled = File.Exists(fullPath);
+            resetToThisRevision.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path) };
-                window.Show();
+                new Commands.Checkout(_repo.FullPath).FileWithRevision(file.Path, $"{_commit.SHA}");
                 ev.Handled = true;
             };
 
-            var blame = new MenuItem();
-            blame.Header = App.Text("Blame");
-            blame.Icon = App.CreateMenuIcon("Icons.Blame");
-            blame.IsEnabled = file.Type == Models.ObjectType.Blob;
-            blame.Click += (_, ev) =>
-            {
-                var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, file.Path, _commit.SHA) };
-                window.Show();
-                ev.Handled = true;
-            };
-
-            var full = Path.GetFullPath(Path.Combine(_repo.FullPath, file.Path));
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
             explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.IsEnabled = File.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
-                Native.OS.OpenInFileManager(full, file.Type == Models.ObjectType.Blob);
+                Native.OS.OpenInFileManager(fullPath, file.Type == Models.ObjectType.Blob);
                 ev.Handled = true;
             };
 
@@ -404,6 +395,27 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var history = new MenuItem();
+            history.Header = App.Text("FileHistory");
+            history.Icon = App.CreateMenuIcon("Icons.Histories");
+            history.Click += (_, ev) =>
+            {
+                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path) };
+                window.Show();
+                ev.Handled = true;
+            };
+
+            var blame = new MenuItem();
+            blame.Header = App.Text("Blame");
+            blame.Icon = App.CreateMenuIcon("Icons.Blame");
+            blame.IsEnabled = file.Type == Models.ObjectType.Blob;
+            blame.Click += (_, ev) =>
+            {
+                var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, file.Path, _commit.SHA) };
+                window.Show();
+                ev.Handled = true;
+            };
+            
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -423,10 +435,14 @@ namespace SourceGit.ViewModels
             };
 
             var menu = new ContextMenu();
-            menu.Items.Add(history);
-            menu.Items.Add(blame);
+            menu.Items.Add(resetToThisRevision);
+            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(explore);
             menu.Items.Add(saveAs);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(history);
+            menu.Items.Add(blame);
+            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copyPath);
             menu.Items.Add(copyFileName);
             return menu;
