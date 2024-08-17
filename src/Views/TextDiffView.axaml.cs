@@ -41,8 +41,8 @@ namespace SourceGit.Views
                 Math.Abs(Height - old.Height) > 0.001 ||
                 StartIdx != old.StartIdx ||
                 EndIdx != old.EndIdx ||
-                Combined != Combined ||
-                IsOldSide != IsOldSide;
+                Combined != old.Combined ||
+                IsOldSide != old.IsOldSide;
         }
     }
 
@@ -92,6 +92,9 @@ namespace SourceGit.Views
                     var typeface = view.CreateTypeface();
                     foreach (var line in view.VisualLines)
                     {
+                        if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                            continue;
+                        
                         var index = line.FirstDocumentLine.LineNumber;
                         if (index > lines.Count)
                             break;
@@ -160,7 +163,7 @@ namespace SourceGit.Views
                 var width = textView.Bounds.Width;
                 foreach (var line in textView.VisualLines)
                 {
-                    if (line.FirstDocumentLine == null)
+                    if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
                         continue;
 
                     var index = line.FirstDocumentLine.LineNumber;
@@ -256,8 +259,6 @@ namespace SourceGit.Views
                         v.TextRunProperties.SetForegroundBrush(_presenter.IndicatorForeground);
                         v.TextRunProperties.SetTypeface(new Typeface(_presenter.FontFamily, FontStyle.Italic));
                     });
-
-                    return;
                 }
             }
 
@@ -421,7 +422,7 @@ namespace SourceGit.Views
             if (chunk == null || (!chunk.Combined && chunk.IsOldSide != IsOld))
                 return;
 
-            var color = (Color)this.FindResource("SystemAccentColor");
+            var color = (Color)this.FindResource("SystemAccentColor")!;
             var brush = new SolidColorBrush(color, 0.1);
             var pen = new Pen(color.ToUInt32());
             var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
@@ -710,12 +711,7 @@ namespace SourceGit.Views
 
                 var firstLineIdx = view.VisualLines[0].FirstDocumentLine.LineNumber - 1;
                 var lastLineIdx = view.VisualLines[^1].FirstDocumentLine.LineNumber - 1;
-                if (endIdx < firstLineIdx)
-                {
-                    TrySetChunk(null);
-                    return;
-                }
-                else if (startIdx > lastLineIdx)
+                if (endIdx < firstLineIdx || startIdx > lastLineIdx)
                 {
                     TrySetChunk(null);
                     return;
@@ -746,6 +742,9 @@ namespace SourceGit.Views
                 var lineIdx = -1;
                 foreach (var line in view.VisualLines)
                 {
+                    if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                        continue;
+                    
                     var index = line.FirstDocumentLine.LineNumber;
                     if (index > diff.Lines.Count)
                         break;
@@ -888,12 +887,7 @@ namespace SourceGit.Views
 
                 var firstLineIdx = view.VisualLines[0].FirstDocumentLine.LineNumber - 1;
                 var lastLineIdx = view.VisualLines[^1].FirstDocumentLine.LineNumber - 1;
-                if (endIdx < firstLineIdx)
-                {
-                    TrySetChunk(null);
-                    return;
-                }
-                else if (startIdx > lastLineIdx)
+                if (endIdx < firstLineIdx || startIdx > lastLineIdx)
                 {
                     TrySetChunk(null);
                     return;
@@ -930,6 +924,9 @@ namespace SourceGit.Views
                 var lineIdx = -1;
                 foreach (var line in view.VisualLines)
                 {
+                    if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                        continue;
+                    
                     var index = line.FirstDocumentLine.LineNumber;
                     if (index > lines.Count)
                         break;
@@ -1164,7 +1161,7 @@ namespace SourceGit.Views
                 SetCurrentValue(SelectedChunkProperty, null);
         }
 
-        private void OnStageChunk(object sender, RoutedEventArgs e)
+        private void OnStageChunk(object _1, RoutedEventArgs _2)
         {
             var chunk = SelectedChunk;
             if (chunk == null)
@@ -1222,7 +1219,7 @@ namespace SourceGit.Views
             repo.SetWatcherEnabled(true);
         }
 
-        private void OnUnstageChunk(object sender, RoutedEventArgs e)
+        private void OnUnstageChunk(object _1, RoutedEventArgs _2)
         {
             var chunk = SelectedChunk;
             if (chunk == null)
@@ -1276,7 +1273,7 @@ namespace SourceGit.Views
             repo.SetWatcherEnabled(true);
         }
 
-        private void OnDiscardChunk(object sender, RoutedEventArgs e)
+        private void OnDiscardChunk(object _1, RoutedEventArgs _2)
         {
             var chunk = SelectedChunk;
             if (chunk == null)

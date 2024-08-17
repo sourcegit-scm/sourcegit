@@ -30,6 +30,7 @@
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
     <AvaloniaResource Include="Resources/Fonts/*" />
+    <AvaloniaResource Include="Resources/Grammars/*" />
     <AvaloniaResource Include="Resources/Images/*" />
     <AvaloniaResource Include="Resources/Images/ExternalToolIcons/*" />
     <AvaloniaResource Include="Resources/Images/ExternalToolIcons/JetBrains/*" />

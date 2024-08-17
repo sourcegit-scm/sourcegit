@@ -5,7 +5,6 @@ using System.IO;
 using System.Runtime.Versioning;
 
 using Avalonia;
-using Avalonia.Dialogs;
 using Avalonia.Media;
 
 namespace SourceGit.Native
