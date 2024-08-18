@@ -128,19 +128,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _layout, value);
         }
 
-        public string AvatarServer
-        {
-            get => Models.AvatarManager.SelectedServer;
-            set
-            {
-                if (Models.AvatarManager.SelectedServer != value)
-                {
-                    Models.AvatarManager.SelectedServer = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         public int MaxHistoryCommits
         {
             get => _maxHistoryCommits;
@@ -262,9 +249,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (Native.OS.SetShell(value))
-                {
                     OnPropertyChanged();
-                }
             }
         }
 
@@ -276,12 +261,12 @@ namespace SourceGit.ViewModels
 
         public bool GitAutoFetch
         {
-            get => Commands.AutoFetch.IsEnabled;
+            get => Models.AutoFetchManager.Instance.IsEnabled;
             set
             {
-                if (Commands.AutoFetch.IsEnabled != value)
+                if (Models.AutoFetchManager.Instance.IsEnabled != value)
                 {
-                    Commands.AutoFetch.IsEnabled = value;
+                    Models.AutoFetchManager.Instance.IsEnabled = value;
                     OnPropertyChanged();
                 }
             }
@@ -289,15 +274,15 @@ namespace SourceGit.ViewModels
 
         public int? GitAutoFetchInterval
         {
-            get => Commands.AutoFetch.Interval;
+            get => Models.AutoFetchManager.Instance.Interval;
             set
             {
-                if (value is null or < 1)
+                if (value is null || value < 1)
                     return;
-
-                if (Commands.AutoFetch.Interval != value)
+                
+                if (Models.AutoFetchManager.Instance.Interval != value)
                 {
-                    Commands.AutoFetch.Interval = (int)value;
+                    Models.AutoFetchManager.Instance.Interval = (int)value;
                     OnPropertyChanged();
                 }
             }
@@ -336,7 +321,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = new List<string>();
+        } = [];
 
         public int LastActiveTabIdx
         {

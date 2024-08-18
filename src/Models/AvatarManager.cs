@@ -20,15 +20,31 @@ namespace SourceGit.Models
         void OnAvatarResourceChanged(string email);
     }
 
-    public static partial class AvatarManager
+    public partial class AvatarManager
     {
-        public static string SelectedServer
+        public static AvatarManager Instance
         {
-            get;
-            set;
-        } = "https://www.gravatar.com/avatar/";
+            get
+            {
+                if (_instance == null)
+                    _instance = new AvatarManager();
 
-        static AvatarManager()
+                return _instance;
+            }
+        }
+        
+        private static AvatarManager _instance = null;
+        
+        [GeneratedRegex(@"^(?:(\d+)\+)?(.+?)@users\.noreply\.github\.com$")]
+        private static partial Regex REG_GITHUB_USER_EMAIL();
+
+        private object _synclock = new object();
+        private string _storePath;
+        private List<IAvatarHost> _avatars = new List<IAvatarHost>();
+        private Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
+        private HashSet<string> _requesting = new HashSet<string>();
+        
+        public void Start()
         {
             _storePath = Path.Combine(Native.OS.DataDir, "avatars");
             if (!Directory.Exists(_storePath))
@@ -62,7 +78,7 @@ namespace SourceGit.Models
                     var matchGithubUser = REG_GITHUB_USER_EMAIL().Match(email);
                     var url = matchGithubUser.Success ?
                         $"https://avatars.githubusercontent.com/{matchGithubUser.Groups[2].Value}" :
-                        $"{SelectedServer}{md5}?d=404";
+                        $"https://www.gravatar.com/avatar/{md5}?d=404";
 
                     var localFile = Path.Combine(_storePath, md5);
                     var img = null as Bitmap;
@@ -105,20 +121,22 @@ namespace SourceGit.Models
                         NotifyResourceChanged(email);
                     });
                 }
+                
+                // ReSharper disable once FunctionNeverReturns
             });
         }
 
-        public static void Subscribe(IAvatarHost host)
+        public void Subscribe(IAvatarHost host)
         {
             _avatars.Add(host);
         }
 
-        public static void Unsubscribe(IAvatarHost host)
+        public void Unsubscribe(IAvatarHost host)
         {
             _avatars.Remove(host);
         }
 
-        public static Bitmap Request(string email, bool forceRefetch)
+        public Bitmap Request(string email, bool forceRefetch)
         {
             if (forceRefetch)
             {
@@ -167,7 +185,7 @@ namespace SourceGit.Models
             return null;
         }
 
-        private static string GetEmailHash(string email)
+        private string GetEmailHash(string email)
         {
             var lowered = email.ToLower(CultureInfo.CurrentCulture).Trim();
             var hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(lowered));
@@ -177,21 +195,12 @@ namespace SourceGit.Models
             return builder.ToString();
         }
 
-        private static void NotifyResourceChanged(string email)
+        private void NotifyResourceChanged(string email)
         {
             foreach (var avatar in _avatars)
             {
                 avatar.OnAvatarResourceChanged(email);
             }
         }
-
-        private static readonly object _synclock = new object();
-        private static readonly string _storePath;
-        private static readonly List<IAvatarHost> _avatars = new List<IAvatarHost>();
-        private static readonly Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
-        private static readonly HashSet<string> _requesting = new HashSet<string>();
-
-        [GeneratedRegex(@"^(?:(\d+)\+)?(.+?)@users\.noreply\.github\.com$")]
-        private static partial Regex REG_GITHUB_USER_EMAIL();
     }
 }

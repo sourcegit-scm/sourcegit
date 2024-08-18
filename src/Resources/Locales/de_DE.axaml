@@ -378,7 +378,6 @@
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Design</x:String>
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Design-Anpassungen</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">ALLGEMEIN</x:String>
-  <x:String x:Key="Text.Preference.General.AvatarServer" xml:space="preserve">Avatar Server</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Beim Starten nach Updates suchen</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Sprache</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Commit-Historie</x:String>

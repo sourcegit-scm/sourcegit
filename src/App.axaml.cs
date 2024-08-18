@@ -528,6 +528,8 @@ namespace SourceGit
         private void TryLaunchedAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
         {
             Native.OS.SetupEnternalTools();
+            Models.AvatarManager.Instance.Start();
+            Models.AutoFetchManager.Instance.Start();
 
             string startupRepo = null;
             if (desktop.Args != null && desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]))
