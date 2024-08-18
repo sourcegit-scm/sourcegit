@@ -94,7 +94,7 @@ namespace SourceGit.Views
                     {
                         if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
                             continue;
-                        
+
                         var index = line.FirstDocumentLine.LineNumber;
                         if (index > lines.Count)
                             break;
@@ -744,7 +744,7 @@ namespace SourceGit.Views
                 {
                     if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
                         continue;
-                    
+
                     var index = line.FirstDocumentLine.LineNumber;
                     if (index > diff.Lines.Count)
                         break;
@@ -926,7 +926,7 @@ namespace SourceGit.Views
                 {
                     if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
                         continue;
-                    
+
                     var index = line.FirstDocumentLine.LineNumber;
                     if (index > lines.Count)
                         break;

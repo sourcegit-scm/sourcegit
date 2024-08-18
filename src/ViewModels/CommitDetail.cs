@@ -320,7 +320,7 @@ namespace SourceGit.ViewModels
                     var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, change.Path, _commit.SHA) };
                     window.Show();
                     ev.Handled = true;
-                };                
+                };
 
                 menu.Items.Add(history);
                 menu.Items.Add(blame);
@@ -415,7 +415,7 @@ namespace SourceGit.ViewModels
                 window.Show();
                 ev.Handled = true;
             };
-            
+
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");

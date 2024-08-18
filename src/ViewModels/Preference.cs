@@ -279,7 +279,7 @@ namespace SourceGit.ViewModels
             {
                 if (value is null || value < 1)
                     return;
-                
+
                 if (Models.AutoFetchManager.Instance.Interval != value)
                 {
                     Models.AutoFetchManager.Instance.Interval = (int)value;

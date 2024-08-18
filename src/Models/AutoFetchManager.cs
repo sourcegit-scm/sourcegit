@@ -17,13 +17,13 @@ namespace SourceGit.Models
                 return _instance;
             }
         }
-        
+
         public class Job
         {
             public Commands.Fetch Cmd = null;
             public DateTime NextRunTimepoint = DateTime.MinValue;
         }
-        
+
         public bool IsEnabled
         {
             get;
@@ -36,7 +36,7 @@ namespace SourceGit.Models
             set
             {
                 _interval = Math.Max(1, value);
-                
+
                 lock (_lock)
                 {
                     foreach (var job in _jobs)
@@ -81,7 +81,7 @@ namespace SourceGit.Models
 
                     Thread.Sleep(2000);
                 }
-                
+
                 // ReSharper disable once FunctionNeverReturns
             });
         }

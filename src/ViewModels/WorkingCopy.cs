@@ -1312,7 +1312,7 @@ namespace SourceGit.ViewModels
                 var succ = true;
                 if (autoStage && _unstaged.Count > 0)
                     succ = new Commands.Add(_repo.FullPath).Exec();
-                
+
                 if (succ)
                     succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend).Exec();
 

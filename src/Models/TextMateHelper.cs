@@ -41,7 +41,7 @@ namespace SourceGit.Models
                 }
             }
         }
-        
+
         public IRawTheme GetTheme(string scopeName)
         {
             return _backend.GetTheme(scopeName);
@@ -74,7 +74,7 @@ namespace SourceGit.Models
             var grammar = _extraGrammars.Find(x => x.GetScopeName().EndsWith(extension, StringComparison.OrdinalIgnoreCase));
             if (grammar != null)
                 return grammar.GetScopeName();
-            
+
             if (extension == ".h")
                 extension = ".cpp";
             else if (extension == ".resx" || extension == ".plist" || extension == ".manifest")
@@ -88,7 +88,7 @@ namespace SourceGit.Models
         private readonly RegistryOptions _backend;
         private readonly List<IRawGrammar> _extraGrammars;
     }
-    
+
     public static class TextMateHelper
     {
         public static TextMate.Installation CreateForEditor(TextEditor editor)

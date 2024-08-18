@@ -48,7 +48,7 @@ namespace SourceGit.Views
                 if (links.Count > 1)
                 {
                     var menu = new ContextMenu();
-                    
+
                     foreach (var link in links)
                     {
                         var url = $"{link.URLPrefix}{detail.Commit.SHA}";
@@ -69,7 +69,7 @@ namespace SourceGit.Views
                     var url = $"{links[0].URLPrefix}{detail.Commit.SHA}";
                     Native.OS.OpenBrowser(url);
                 }
-            }            
+            }
 
             e.Handled = true;
         }

@@ -32,9 +32,9 @@ namespace SourceGit.Models
                 return _instance;
             }
         }
-        
+
         private static AvatarManager _instance = null;
-        
+
         [GeneratedRegex(@"^(?:(\d+)\+)?(.+?)@users\.noreply\.github\.com$")]
         private static partial Regex REG_GITHUB_USER_EMAIL();
 
@@ -43,7 +43,7 @@ namespace SourceGit.Models
         private List<IAvatarHost> _avatars = new List<IAvatarHost>();
         private Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
         private HashSet<string> _requesting = new HashSet<string>();
-        
+
         public void Start()
         {
             _storePath = Path.Combine(Native.OS.DataDir, "avatars");
@@ -121,7 +121,7 @@ namespace SourceGit.Models
                         NotifyResourceChanged(email);
                     });
                 }
-                
+
                 // ReSharper disable once FunctionNeverReturns
             });
         }

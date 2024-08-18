@@ -82,7 +82,7 @@ namespace SourceGit.Models
     public class ExternalToolPaths
     {
         [JsonPropertyName("tools")]
-        public Dictionary<string, string> Tools { get; set; } = new Dictionary<string, string>(); 
+        public Dictionary<string, string> Tools { get; set; } = new Dictionary<string, string>();
     }
 
     public class ExternalToolsFinder
