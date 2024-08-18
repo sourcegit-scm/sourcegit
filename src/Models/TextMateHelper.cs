@@ -22,7 +22,7 @@ namespace SourceGit.Models
         public RegistryOptionsWrapper(ThemeName defaultTheme)
         {
             _backend = new RegistryOptions(defaultTheme);
-            _extraGrammars = new Dictionary<string, IRawGrammar>();
+            _extraGrammars = new List<IRawGrammar>();
 
             string[] extraGrammarFiles = ["toml.json"];
             foreach (var file in extraGrammarFiles)
@@ -33,7 +33,7 @@ namespace SourceGit.Models
                 try
                 {
                     var grammar = GrammarReader.ReadGrammarSync(new StreamReader(asset));
-                    _extraGrammars.Add(grammar.GetScopeName(), grammar);
+                    _extraGrammars.Add(grammar);
                 }
                 catch
                 {
@@ -49,10 +49,8 @@ namespace SourceGit.Models
 
         public IRawGrammar GetGrammar(string scopeName)
         {
-            if (_extraGrammars.TryGetValue(scopeName, out var grammar))
-                return grammar;
-
-            return _backend.GetGrammar(scopeName);
+            var grammar = _extraGrammars.Find(x => x.GetScopeName().Equals(scopeName, StringComparison.Ordinal));
+            return grammar ?? _backend.GetGrammar(scopeName);
         }
 
         public ICollection<string> GetInjections(string scopeName)
@@ -73,13 +71,13 @@ namespace SourceGit.Models
         public string GetScopeByFileName(string filename)
         {
             var extension = Path.GetExtension(filename);
-            var scope = $"source{extension}";
-            if (_extraGrammars.ContainsKey(scope))
-                return scope;
+            var grammar = _extraGrammars.Find(x => x.GetScopeName().EndsWith(extension, StringComparison.OrdinalIgnoreCase));
+            if (grammar != null)
+                return grammar.GetScopeName();
             
             if (extension == ".h")
                 extension = ".cpp";
-            else if (extension == ".resx" || extension == ".plist")
+            else if (extension == ".resx" || extension == ".plist" || extension == ".manifest")
                 extension = ".xml";
             else if (extension == ".command")
                 extension = ".sh";
@@ -87,8 +85,8 @@ namespace SourceGit.Models
             return _backend.GetScopeByExtension(extension);
         }
 
-        private RegistryOptions _backend = null;
-        private Dictionary<string, IRawGrammar> _extraGrammars = null;
+        private readonly RegistryOptions _backend;
+        private readonly List<IRawGrammar> _extraGrammars;
     }
     
     public static class TextMateHelper
@@ -108,10 +106,8 @@ namespace SourceGit.Models
 
             if (installation.RegistryOptions is RegistryOptionsWrapper reg)
             {
-                if (Application.Current?.ActualThemeVariant == ThemeVariant.Dark)
-                    installation.SetTheme(reg.LoadTheme(ThemeName.DarkPlus));
-                else
-                    installation.SetTheme(reg.LoadTheme(ThemeName.LightPlus));
+                var isDark = Application.Current?.ActualThemeVariant == ThemeVariant.Dark;
+                installation.SetTheme(reg.LoadTheme(isDark ? ThemeName.DarkPlus : ThemeName.LightPlus));
             }
         }
 
