@@ -53,7 +53,7 @@ namespace SourceGit.Native
         {
             if (Directory.Exists(path))
             {
-                Process.Start("open", path);
+                Process.Start("open", $"\"{path}\"");
             }
             else if (File.Exists(path))
             {
