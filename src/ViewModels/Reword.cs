@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Commit(_repo.FullPath, _message, false, true, true).Exec();
+                var succ = new Commands.Commit(_repo.FullPath, _message, true, true).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

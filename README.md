@@ -35,6 +35,7 @@ Opensource Git GUI client.
 * Git LFS
 * Issue Link
 
+> [!WARNING]
 > **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
 
 ## How to Use
@@ -45,11 +46,14 @@ You can download the latest stable from [Releases](https://github.com/sourcegit-
 
 This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationData}/SourceGit"`, which is platform-dependent, to store user settings, downloaded avatars and crash logs.
 
-| OS      | PATH                                            |
-|---------|-------------------------------------------------|
-| Windows | `C:\Users\USER_NAME\AppData\Roaming\SourceGit`  |
-| Linux   | `${HOME}/.config/SourceGit`                     |
-| macOS   | `${HOME}/Library/Application Support/SourceGit` |
+| OS      | PATH                                                |
+|---------|-----------------------------------------------------|
+| Windows | `C:\Users\USER_NAME\AppData\Roaming\SourceGit`      |
+| Linux   | `${HOME}/.config/SourceGit` or `${HOME}/.sourcegit` |
+| macOS   | `${HOME}/Library/Application Support/SourceGit`     |
+
+> [!TIP]
+> You can open the app data dir from the main menu.
 
 For **Windows** users:
 
@@ -58,7 +62,8 @@ For **Windows** users:
   ```shell
   winget install SourceGit
   ```
-  > `winget` will install this software as a commandline tool. You need run `SourceGit` from console or `Win+R` at the first time. Then you can add it to the taskbar.
+> [!NOTE]
+> `winget` will install this software as a commandline tool. You need run `SourceGit` from console or `Win+R` at the first time. Then you can add it to the taskbar.
 * You can install the latest stable by `scoope` with follow commands:
   ```shell
   scoop bucket add extras
@@ -84,17 +89,27 @@ For **Linux** users:
 
 This app supports open repository in external tools listed in the table below.
 
-| Tool                          | Windows | macOS | Linux | Environment Variable |
-|-------------------------------|---------|-------|-------|----------------------|
-| Visual Studio Code            | YES     | YES   | YES   | VSCODE_PATH          |
-| Visual Studio Code - Insiders | YES     | YES   | YES   | VSCODE_INSIDERS_PATH |
-| VSCodium                      | YES     | YES   | YES   | VSCODIUM_PATH        |
-| JetBrains Fleet               | YES     | YES   | YES   | FLEET_PATH           |
-| Sublime Text                  | YES     | YES   | YES   | SUBLIME_TEXT_PATH    |
+| Tool                          | Windows | macOS | Linux | KEY IN `external_editors.json` |
+|-------------------------------|---------|-------|-------|--------------------------------|
+| Visual Studio Code            | YES     | YES   | YES   | VSCODE                         |
+| Visual Studio Code - Insiders | YES     | YES   | YES   | VSCODE_INSIDERS                |
+| VSCodium                      | YES     | YES   | YES   | VSCODIUM                       |
+| JetBrains Fleet               | YES     | YES   | YES   | FLEET                          |
+| Sublime Text                  | YES     | YES   | YES   | SUBLIME_TEXT                   |
 
-* You can set the given environment variable for special tool if it can NOT be found by this app automatically.
-* Installing `JetBrains Toolbox` will help this app to find other JetBrains tools installed on your device.
-* On macOS, you may need to use `launchctl setenv` to make sure the app can read these environment variables.
+> [!NOTE]
+> This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.
+> To solve this problem you can add a file named `external_editors.json` in app data dir and provide the path directly. For example:
+```json
+{
+    "tools": {
+        "VSCODE": "D:\\VSCode\\Code.exe"
+    }
+}
+```
+
+> [!NOTE]
+> This app also supports a lot of `JetBrains` IDEs, installing `JetBrains Toolbox` will help this app to find them.
 
 ## Screenshots
 

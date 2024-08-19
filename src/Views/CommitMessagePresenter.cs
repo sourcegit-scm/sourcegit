@@ -6,6 +6,7 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
+using Avalonia.Utilities;
 
 namespace SourceGit.Views
 {
@@ -38,6 +39,8 @@ namespace SourceGit.Views
             if (change.Property == MessageProperty || change.Property == IssueTrackerRulesProperty)
             {
                 Inlines.Clear();
+                _matches = null;
+                ClearHoveredIssueLink();
 
                 var message = Message;
                 if (string.IsNullOrEmpty(message))
@@ -61,6 +64,7 @@ namespace SourceGit.Views
                 }
 
                 matches.Sort((l, r) => l.Start - r.Start);
+                _matches = matches;
 
                 int pos = 0;
                 foreach (var match in matches)
@@ -68,12 +72,9 @@ namespace SourceGit.Views
                     if (match.Start > pos)
                         Inlines.Add(new Run(message.Substring(pos, match.Start - pos)));
 
-                    var link = new TextBlock();
-                    link.SetValue(TextProperty, message.Substring(match.Start, match.Length));
-                    link.SetValue(ToolTip.TipProperty, match.URL);
-                    link.Classes.Add("issue_link");
-                    link.PointerPressed += OnLinkPointerPressed;
-                    Inlines.Add(link);
+                    match.Link = new Run(message.Substring(match.Start, match.Length));
+                    match.Link.Classes.Add("issue_link");
+                    Inlines.Add(match.Link);
 
                     pos = match.Start + match.Length;
                 }
@@ -83,16 +84,71 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnLinkPointerPressed(object sender, PointerPressedEventArgs e)
+        protected override void OnPointerMoved(PointerEventArgs e)
         {
-            if (sender is TextBlock text)
-            {
-                var tooltip = text.GetValue(ToolTip.TipProperty) as string;
-                if (!string.IsNullOrEmpty(tooltip))
-                    Native.OS.OpenBrowser(tooltip);
+            base.OnPointerMoved(e);
 
-                e.Handled = true;
+            if (e.Pointer.Captured == null && _matches != null)
+            {
+                var padding = Padding;
+                var point = e.GetPosition(this) - new Point(padding.Left, padding.Top);
+                point = new Point(
+                    MathUtilities.Clamp(point.X, 0, Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0)),
+                    MathUtilities.Clamp(point.Y, 0, Math.Max(TextLayout.Height, 0)));
+
+                var pos = TextLayout.HitTestPoint(point).TextPosition;
+                foreach (var match in _matches)
+                {
+                    if (!match.Intersect(pos, 1))
+                        continue;
+
+                    if (match == _lastHover)
+                        return;
+
+                    _lastHover = match;
+                    //_lastHover.Link.Classes.Add("issue_link_hovered");
+
+                    SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
+                    ToolTip.SetTip(this, match.URL);
+                    ToolTip.SetIsOpen(this, true);
+                    return;
+                }
+
+                ClearHoveredIssueLink();
             }
         }
+
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            if (_lastHover != null)
+            {
+                e.Pointer.Capture(null);
+                Native.OS.OpenBrowser(_lastHover.URL);
+                e.Handled = true;
+                return;
+            }
+
+            base.OnPointerPressed(e);
+        }
+
+        protected override void OnPointerExited(PointerEventArgs e)
+        {
+            base.OnPointerExited(e);
+            ClearHoveredIssueLink();
+        }
+
+        private void ClearHoveredIssueLink()
+        {
+            if (_lastHover != null)
+            {
+                ToolTip.SetTip(this, null);
+                SetCurrentValue(CursorProperty, Cursor.Parse("IBeam"));
+                //_lastHover.Link.Classes.Remove("issue_link_hovered");
+                _lastHover = null;
+            }
+        }
+
+        private List<Models.IssueTrackerMatch> _matches = null;
+        private Models.IssueTrackerMatch _lastHover = null;
     }
 }

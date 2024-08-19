@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
+using Avalonia.Controls.Documents;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
@@ -10,6 +10,7 @@ namespace SourceGit.Models
         public int Start { get; set; } = 0;
         public int Length { get; set; } = 0;
         public string URL { get; set; } = "";
+        public Run Link { get; set; } = null;
 
         public bool Intersect(int start, int length)
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
@@ -11,6 +10,11 @@ namespace SourceGit.ViewModels
 {
     public class Histories : ObservableObject
     {
+        public Repository Repo
+        {
+            get => _repo;
+        }
+
         public bool IsLoading
         {
             get => _isLoading;
@@ -55,11 +59,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _detailContext, value);
         }
 
-        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
-        {
-            get => _repo.Settings.IssueTrackerRules;
-        }
-
         public Histories(Repository repo)
         {
             _repo = repo;
@@ -99,7 +98,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var commitDetail = new CommitDetail(_repo.FullPath, _repo.Settings.IssueTrackerRules);
+                    var commitDetail = new CommitDetail(_repo);
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }
@@ -127,7 +126,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var commitDetail = new CommitDetail(_repo.FullPath, _repo.Settings.IssueTrackerRules);
+                    var commitDetail = new CommitDetail(_repo);
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }
@@ -249,7 +248,7 @@ namespace SourceGit.ViewModels
                 reword.Icon = App.CreateMenuIcon("Icons.Edit");
                 reword.Click += (_, e) =>
                 {
-                    if (_repo.WorkingCopyChangesCount > 0)
+                    if (_repo.LocalChangesCount > 0)
                     {
                         App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
                         return;
@@ -267,7 +266,7 @@ namespace SourceGit.ViewModels
                 squash.IsEnabled = commit.Parents.Count == 1;
                 squash.Click += (_, e) =>
                 {
-                    if (_repo.WorkingCopyChangesCount > 0)
+                    if (_repo.LocalChangesCount > 0)
                     {
                         App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
                         return;
@@ -328,7 +327,7 @@ namespace SourceGit.ViewModels
                 interactiveRebase.IsVisible = current.Head != commit.SHA;
                 interactiveRebase.Click += (_, e) =>
                 {
-                    if (_repo.WorkingCopyChangesCount > 0)
+                    if (_repo.LocalChangesCount > 0)
                     {
                         App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
                         return;
@@ -385,7 +384,7 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(compareWithHead);
 
-                if (_repo.WorkingCopyChangesCount > 0)
+                if (_repo.LocalChangesCount > 0)
                 {
                     var compareWithWorktree = new MenuItem();
                     compareWithWorktree.Header = App.Text("CommitCM.CompareWithWorktree");

@@ -39,7 +39,7 @@ namespace SourceGit.Views
             refetch.Click += (_, _) =>
             {
                 if (User != null)
-                    Models.AvatarManager.Request(User.Email, true);
+                    Models.AvatarManager.Instance.Request(User.Email, true);
             };
 
             ContextMenu = new ContextMenu();
@@ -54,7 +54,7 @@ namespace SourceGit.Views
                 return;
 
             var corner = (float)Math.Max(2, Bounds.Width / 16);
-            var img = Models.AvatarManager.Request(User.Email, false);
+            var img = Models.AvatarManager.Instance.Request(User.Email, false);
             if (img != null)
             {
                 var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
@@ -72,21 +72,19 @@ namespace SourceGit.Views
         public void OnAvatarResourceChanged(string email)
         {
             if (User.Email.Equals(email, StringComparison.Ordinal))
-            {
                 InvalidateVisual();
-            }
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
-            Models.AvatarManager.Subscribe(this);
+            Models.AvatarManager.Instance.Subscribe(this);
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             base.OnUnloaded(e);
-            Models.AvatarManager.Unsubscribe(this);
+            Models.AvatarManager.Instance.Unsubscribe(this);
         }
 
         private static void OnUserPropertyChanged(Avatar avatar, AvaloniaPropertyChangedEventArgs e)

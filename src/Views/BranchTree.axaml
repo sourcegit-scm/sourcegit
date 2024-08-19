@@ -83,20 +83,13 @@
                            FontWeight="{Binding NameFontWeight}"/>
 
                 <!-- Tracking status -->
-                <Border Grid.Column="2"
-                        Margin="8,0"
-                        Height="18"
-                        CornerRadius="9"
-                        VerticalAlignment="Center"
-                        Background="{DynamicResource Brush.Badge}"
-                        IsVisible="{Binding TrackStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                  <TextBlock Classes="primary" 
-                             FontSize="10" 
-                             HorizontalAlignment="Center" 
-                             Margin="9,0" 
-                             Text="{Binding TrackStatus}" 
-                             Foreground="{DynamicResource Brush.BadgeFG}"/>
-                </Border>
+                <v:BranchTreeNodeTrackStatusPresenter Grid.Column="2"
+                                                      Margin="8,0"
+                                                      VerticalAlignment="Center"
+                                                      FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                                                      FontSize="10"
+                                                      Foreground="{DynamicResource Brush.BadgeFG}"
+                                                      Background="{DynamicResource Brush.Badge}"/>
 
                 <!-- Filter Toggle Button -->
                 <ToggleButton Grid.Column="3"

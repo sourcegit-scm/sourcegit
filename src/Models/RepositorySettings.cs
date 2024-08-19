@@ -70,6 +70,12 @@ namespace SourceGit.Models
             set;
         } = new AvaloniaList<string>();
 
+        public AvaloniaList<CommitTemplate> CommitTemplates
+        {
+            get;
+            set;
+        } = new AvaloniaList<CommitTemplate>();
+
         public AvaloniaList<string> CommitMessages
         {
             get;

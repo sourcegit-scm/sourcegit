@@ -31,19 +31,47 @@
       </StackPanel>
 
       <StackPanel Grid.Column="1" Orientation="Horizontal">
-        <Button Classes="icon_button" Width="32" Command="{Binding Fetch}" ToolTip.Tip="{DynamicResource Text.Fetch}">
+        <Button Classes="icon_button" Width="32" Click="Fetch">
+          <ToolTip.Tip>
+            <StackPanel Orientation="Vertical">
+              <TextBlock Text="{DynamicResource Text.Fetch}"/>
+              <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
+            </StackPanel>
+          </ToolTip.Tip>
+          
           <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}"/>
         </Button>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding Pull}" ToolTip.Tip="{DynamicResource Text.Pull}">
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Pull">
+          <ToolTip.Tip>
+            <StackPanel Orientation="Vertical">
+              <TextBlock Text="{DynamicResource Text.Pull}"/>
+              <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
+            </StackPanel>
+          </ToolTip.Tip>
+          
           <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
         </Button>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding Push}" ToolTip.Tip="{DynamicResource Text.Push}">
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Push">
+          <ToolTip.Tip>
+            <StackPanel Orientation="Vertical">
+              <TextBlock Text="{DynamicResource Text.Push}"/>
+              <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
+            </StackPanel>
+          </ToolTip.Tip>
+          
           <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
         </Button>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding StashAll}" ToolTip.Tip="{DynamicResource Text.Stash}">
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="StashAll">
+          <ToolTip.Tip>
+            <StackPanel Orientation="Vertical">
+              <TextBlock Text="{DynamicResource Text.Stash}"/>
+              <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
+            </StackPanel>
+          </ToolTip.Tip>
+          
           <Path Width="14" Height="14" Data="{StaticResource Icons.Stashes.Add}"/>
         </Button>
 

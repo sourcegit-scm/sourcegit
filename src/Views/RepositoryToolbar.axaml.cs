@@ -1,5 +1,7 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -38,6 +40,34 @@ namespace SourceGit.Views
                 await dialog.ShowDialog(owner);
                 e.Handled = true;
             }
+        }
+
+        private void Fetch(object _, RoutedEventArgs e)
+        {
+            var launcher = this.FindAncestorOfType<Launcher>();
+            (DataContext as ViewModels.Repository)?.Fetch(launcher?.HasKeyModifier(KeyModifiers.Control) ?? false);
+            e.Handled = true;
+        }
+
+        private void Pull(object _, RoutedEventArgs e)
+        {
+            var launcher = this.FindAncestorOfType<Launcher>();
+            (DataContext as ViewModels.Repository)?.Pull(launcher?.HasKeyModifier(KeyModifiers.Control) ?? false);
+            e.Handled = true;
+        }
+
+        private void Push(object _, RoutedEventArgs e)
+        {
+            var launcher = this.FindAncestorOfType<Launcher>();
+            (DataContext as ViewModels.Repository)?.Push(launcher?.HasKeyModifier(KeyModifiers.Control) ?? false);
+            e.Handled = true;
+        }
+
+        private void StashAll(object _, RoutedEventArgs e)
+        {
+            var launcher = this.FindAncestorOfType<Launcher>();
+            (DataContext as ViewModels.Repository)?.StashAll(launcher?.HasKeyModifier(KeyModifiers.Control) ?? false);
+            e.Handled = true;
         }
 
         private void OpenGitFlowMenu(object sender, RoutedEventArgs e)

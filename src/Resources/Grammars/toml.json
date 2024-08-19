@@ -1,0 +1,343 @@
+{
+  "version": "1.0.0",
+  "scopeName": "source.toml",
+  "uuid": "8b4e5008-c50d-11ea-a91b-54ee75aeeb97",
+  "information_for_contributors": [
+    "Originally was maintained by aster (galaster@foxmail.com). This notice is only kept here for the record, please don't send e-mails about bugs and other issues."
+  ],
+  "patterns": [
+    {
+      "include": "#commentDirective"
+    },
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#table"
+    },
+    {
+      "include": "#entryBegin"
+    },
+    {
+      "include": "#value"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "captures": {
+        "1": {
+          "name": "comment.line.number-sign.toml"
+        },
+        "2": {
+          "name": "punctuation.definition.comment.toml"
+        }
+      },
+      "comment": "Comments",
+      "match": "\\s*((#).*)$"
+    },
+    "commentDirective": {
+      "captures": {
+        "1": {
+          "name": "meta.preprocessor.toml"
+        },
+        "2": {
+          "name": "punctuation.definition.meta.preprocessor.toml"
+        }
+      },
+      "comment": "Comments",
+      "match": "\\s*((#):.*)$"
+    },
+    "table": {
+      "patterns": [
+        {
+          "name": "meta.table.toml",
+          "match": "^\\s*(\\[)\\s*((?:(?:(?:[A-Za-z0-9_+-]+)|(?:\"[^\"]+\")|(?:'[^']+'))\\s*\\.?\\s*)+)\\s*(\\])",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.table.toml"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "match": "(?:[A-Za-z0-9_+-]+)|(?:\"[^\"]+\")|(?:'[^']+')",
+                  "name": "support.type.property-name.table.toml"
+                },
+                {
+                  "match": "\\.",
+                  "name": "punctuation.separator.dot.toml"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.table.toml"
+            }
+          }
+        },
+        {
+          "name": "meta.array.table.toml",
+          "match": "^\\s*(\\[\\[)\\s*((?:(?:(?:[A-Za-z0-9_+-]+)|(?:\"[^\"]+\")|(?:'[^']+'))\\s*\\.?\\s*)+)\\s*(\\]\\])",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.array.table.toml"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "match": "(?:[A-Za-z0-9_+-]+)|(?:\"[^\"]+\")|(?:'[^']+')",
+                  "name": "support.type.property-name.array.toml"
+                },
+                {
+                  "match": "\\.",
+                  "name": "punctuation.separator.dot.toml"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.array.table.toml"
+            }
+          }
+        },
+        {
+          "begin": "(\\{)",
+          "end": "(\\})",
+          "name": "meta.table.inline.toml",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.table.inline.toml"
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.table.inline.toml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment"
+            },
+            {
+              "match": ",",
+              "name": "punctuation.separator.table.inline.toml"
+            },
+            {
+              "include": "#entryBegin"
+            },
+            {
+              "include": "#value"
+            }
+          ]
+        }
+      ]
+    },
+    "entryBegin": {
+      "name": "meta.entry.toml",
+      "match": "\\s*((?:(?:(?:[A-Za-z0-9_+-]+)|(?:\"[^\"]+\")|(?:'[^']+'))\\s*\\.?\\s*)+)\\s*(=)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "match": "(?:[A-Za-z0-9_+-]+)|(?:\"[^\"]+\")|(?:'[^']+')",
+              "name": "support.type.property-name.toml"
+            },
+            {
+              "match": "\\.",
+              "name": "punctuation.separator.dot.toml"
+            }
+          ]
+        },
+        "2": {
+          "name": "punctuation.eq.toml"
+        }
+      }
+    },
+    "value": {
+      "patterns": [
+        {
+          "name": "string.quoted.triple.basic.block.toml",
+          "begin": "\"\"\"",
+          "end": "\"\"\"",
+          "patterns": [
+            {
+              "match": "\\\\([btnfr\"\\\\\\n/ ]|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})",
+              "name": "constant.character.escape.toml"
+            },
+            {
+              "match": "\\\\[^btnfr/\"\\\\\\n]",
+              "name": "invalid.illegal.escape.toml"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.basic.line.toml",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "match": "\\\\([btnfr\"\\\\\\n/ ]|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})",
+              "name": "constant.character.escape.toml"
+            },
+            {
+              "match": "\\\\[^btnfr/\"\\\\\\n]",
+              "name": "invalid.illegal.escape.toml"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.triple.literal.block.toml",
+          "begin": "'''",
+          "end": "'''"
+        },
+        {
+          "name": "string.quoted.single.literal.line.toml",
+          "begin": "'",
+          "end": "'"
+        },
+        {
+          "captures": {
+            "1": {
+              "name": "constant.other.time.datetime.offset.toml"
+            }
+          },
+          "match": "(?<!\\w)(\\d{4}\\-\\d{2}\\-\\d{2}[T| ]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[\\+\\-]\\d{2}:\\d{2}))(?!\\w)"
+        },
+        {
+          "captures": {
+            "1": {
+              "name": "constant.other.time.datetime.local.toml"
+            }
+          },
+          "match": "(\\d{4}\\-\\d{2}\\-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?)"
+        },
+        {
+          "name": "constant.other.time.date.toml",
+          "match": "\\d{4}\\-\\d{2}\\-\\d{2}"
+        },
+        {
+          "name": "constant.other.time.time.toml",
+          "match": "\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?"
+        },
+        {
+          "match": "(?<!\\w)(true|false)(?!\\w)",
+          "captures": {
+            "1": {
+              "name": "constant.language.boolean.toml"
+            }
+          }
+        },
+        {
+          "match": "(?<!\\w)([\\+\\-]?(0|([1-9](([0-9]|_[0-9])+)?))(?:(?:\\.([0-9]+))?[eE][\\+\\-]?[1-9]_?[0-9]*|(?:\\.[0-9_]*)))(?!\\w)",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.float.toml"
+            }
+          }
+        },
+        {
+          "match": "(?<!\\w)((?:[\\+\\-]?(0|([1-9](([0-9]|_[0-9])+)?))))(?!\\w)",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.integer.toml"
+            }
+          }
+        },
+        {
+          "match": "(?<!\\w)([\\+\\-]?inf)(?!\\w)",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.inf.toml"
+            }
+          }
+        },
+        {
+          "match": "(?<!\\w)([\\+\\-]?nan)(?!\\w)",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.nan.toml"
+            }
+          }
+        },
+        {
+          "match": "(?<!\\w)((?:0x(([0-9a-fA-F](([0-9a-fA-F]|_[0-9a-fA-F])+)?))))(?!\\w)",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.hex.toml"
+            }
+          }
+        },
+        {
+          "match": "(?<!\\w)(0o[0-7](_?[0-7])*)(?!\\w)",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.oct.toml"
+            }
+          }
+        },
+        {
+          "match": "(?<!\\w)(0b[01](_?[01])*)(?!\\w)",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.bin.toml"
+            }
+          }
+        },
+        {
+          "name": "meta.array.toml",
+          "begin": "(?<!\\w)(\\[)\\s*",
+          "end": "\\s*(\\])(?!\\w)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.array.toml"
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.array.toml"
+            }
+          },
+          "patterns": [
+            {
+              "match": ",",
+              "name": "punctuation.separator.array.toml"
+            },
+            {
+              "include": "#comment"
+            },
+            {
+              "include": "#value"
+            }
+          ]
+        },
+        {
+          "begin": "(\\{)",
+          "end": "(\\})",
+          "name": "meta.table.inline.toml",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.table.inline.toml"
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.table.inline.toml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment"
+            },
+            {
+              "match": ",",
+              "name": "punctuation.separator.table.inline.toml"
+            },
+            {
+              "include": "#entryBegin"
+            },
+            {
+              "include": "#value"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

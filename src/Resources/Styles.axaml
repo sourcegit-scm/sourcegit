@@ -251,7 +251,11 @@
     <Setter Property="HorizontalAlignment" Value="Left"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFont}"/>
     <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
+  </Style>
+  <Style Selector="TextBlock.small">
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"/>
   </Style>
   <Style Selector="TextBlock.bold">
     <Setter Property="FontWeight" Value="Bold"/>
@@ -277,12 +281,9 @@
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="HorizontalAlignment" Value="Right"/>
   </Style>
-  <Style Selector="TextBlock.issue_link">
+
+  <Style Selector="Run.issue_link">
     <Setter Property="Foreground" Value="{DynamicResource Brush.Link}"/>
-    <Setter Property="Cursor" Value="Hand"/>
-  </Style>
-  <Style Selector="TextBlock.issue_link:pointerover">
-    <Setter Property="TextDecorations" Value="Underline"/>
   </Style>
   
   <Style Selector="SelectableTextBlock">
@@ -453,6 +454,21 @@
   </Style>
   <Style Selector="Button.icon_button:disabled Path">
     <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+  </Style>
+
+  <Style Selector="Button.no_border">
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Button.no_border /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style Selector="Button.no_border:pointerover Path">
+    <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+  </Style>
+  <Style Selector="Button.no_border:pressed">
+    <Setter Property="RenderTransform" Value="scale(1.0)"/>
   </Style>
 
   <Style Selector="Button.flat">
@@ -753,148 +769,137 @@
   </Style>
 
   <Style Selector="MenuItem">
-    <Style.Resources>
-      <ControlTheme x:Key="{x:Type MenuItem}" TargetType="MenuItem">
-        <Setter Property="Height" Value="28"/>
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}" />
-        <Setter Property="Template">
-          <ControlTemplate>
-            <Panel>
-              <Border Name="PART_LayoutRoot"
-                      Padding="0,0,4,0"
-                      Background="{TemplateBinding Background}"
-                      BorderBrush="{TemplateBinding BorderBrush}"
-                      BorderThickness="{TemplateBinding BorderThickness}"
-                      CornerRadius="3">
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIcon" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGT" />
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemChevron" />
-                  </Grid.ColumnDefinitions>
+    <Setter Property="Height" Value="28"/>
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}" />
 
-                  <Border Grid.Column="0" Width="28">
-                    <ContentControl x:Name="PART_IconPresenter"
-                                    Content="{TemplateBinding Icon}"
-                                    IsVisible="False"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"/>
-                  </Border>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel>
+          <Border Name="PART_LayoutRoot"
+                  Padding="0,0,4,0"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="3">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="28" SharedSizeGroup="MenuItemIcon" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGT" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemChevron" />
+              </Grid.ColumnDefinitions>
 
-                  <ContentPresenter Grid.Column="1"
-                                    Name="PART_HeaderPresenter"
-                                    Content="{TemplateBinding Header}"
-                                    ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Stretch"
-                                    RecognizesAccessKey="False"/>
-                  <TextBlock x:Name="PART_InputGestureText"
-                             Grid.Column="2"
-                             Classes="CaptionTextBlockStyle"
-                             Margin="{DynamicResource MenuInputGestureTextMargin}"
-                             Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
-                             HorizontalAlignment="Right"
-                             VerticalAlignment="Center"
-                             Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
-                             FontSize="11"/>
-                  <Path Name="PART_ChevronPath"
-                        Width="6"
-                        Data="M573 512 215 881c-20 20-20 51 0 61l61 61c20 20 51 20 61 0l461-461c10-10 10-20 10-31s0-20-10-31L338 20C317 0 287 0 276 20L215 82c-20 20-20 51 0 61L573 512z"
-                        Fill="{DynamicResource Brush.FG2}"
-                        Margin="8,0,0,0"
-                        VerticalAlignment="Center"
-                        Grid.Column="3" />
-                </Grid>
+              <ContentControl Grid.Column="0"
+                              x:Name="PART_IconPresenter"
+                              Content="{TemplateBinding Icon}"
+                              IsVisible="False"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+              <ContentPresenter Grid.Column="1"
+                                x:Name="PART_HeaderPresenter"
+                                Content="{TemplateBinding Header}"
+                                Foreground="{TemplateBinding Foreground}"
+                                ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Stretch"
+                                RecognizesAccessKey="False"/>
+              
+              <TextBlock x:Name="PART_InputGestureText"
+                         Grid.Column="2"
+                         Classes="CaptionTextBlockStyle"
+                         Margin="{DynamicResource MenuInputGestureTextMargin}"
+                         Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
+                         HorizontalAlignment="Right"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                         FontSize="11"/>
+              
+              <Path Name="PART_ChevronPath"
+                    Width="6"
+                    Data="M573 512 215 881c-20 20-20 51 0 61l61 61c20 20 51 20 61 0l461-461c10-10 10-20 10-31s0-20-10-31L338 20C317 0 287 0 276 20L215 82c-20 20-20 51 0 61L573 512z"
+                    Fill="{DynamicResource Brush.FG2}"
+                    Margin="8,0,0,0"
+                    VerticalAlignment="Center"
+                    Grid.Column="3" />
+            </Grid>
+          </Border>
+          <Popup Name="PART_Popup"
+                 WindowManagerAddShadowHint="False"
+                 Placement="RightEdgeAlignedTop"
+                 MaxHeight="400"
+                 IsLightDismissEnabled="False"
+                 HorizontalOffset="-4"
+                 VerticalOffset="-4"
+                 IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
+            <Grid>
+              <Border Background="{DynamicResource Brush.Popup}" Margin="4" CornerRadius="{DynamicResource OverlayCornerRadius}">
+                <Border.Effect>
+                  <DropShadowEffect OffsetX="0" OffsetY="0" Color="Black" BlurRadius="4" Opacity=".6"/>
+                </Border.Effect>
               </Border>
-              <Popup Name="PART_Popup"
-                     WindowManagerAddShadowHint="False"
-                     Placement="RightEdgeAlignedTop"
-                     MaxHeight="400"
-                     IsLightDismissEnabled="False"
-                     HorizontalOffset="-4"
-                     VerticalOffset="-4"
-                     IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
-                <Grid>
-                  <Border Background="{DynamicResource Brush.Popup}" Margin="4" CornerRadius="{DynamicResource OverlayCornerRadius}">
-                    <Border.Effect>
-                      <DropShadowEffect OffsetX="0" OffsetY="0" Color="Black" BlurRadius="4" Opacity=".6"/>
-                    </Border.Effect>
-                  </Border>
 
-                  <Border BorderThickness="0"
-                          Margin="8,4"
-                          MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
-                          MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
-                          HorizontalAlignment="Stretch"
-                          CornerRadius="{DynamicResource OverlayCornerRadius}">
-                    <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
-                      <ItemsPresenter Name="PART_ItemsPresenter"
-                                      Margin="{DynamicResource MenuFlyoutScrollerMargin}"
-                                      Grid.IsSharedSizeScope="True">
-                        <ItemsPresenter.ItemsPanel>
-                          <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Orientation="Vertical"/>
-                          </ItemsPanelTemplate>
-                        </ItemsPresenter.ItemsPanel>
-                      </ItemsPresenter>
-                    </ScrollViewer>
-                  </Border>
-                </Grid>
-              </Popup>
-            </Panel>
-          </ControlTemplate>
-        </Setter>
+              <Border BorderThickness="0"
+                      Margin="8,4"
+                      MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
+                      MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
+                      HorizontalAlignment="Stretch"
+                      CornerRadius="{DynamicResource OverlayCornerRadius}">
+                <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
+                  <ItemsPresenter Name="PART_ItemsPresenter"
+                                  Margin="{DynamicResource MenuFlyoutScrollerMargin}"
+                                  Grid.IsSharedSizeScope="True">
+                    <ItemsPresenter.ItemsPanel>
+                      <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Vertical"/>
+                      </ItemsPanelTemplate>
+                    </ItemsPresenter.ItemsPanel>
+                  </ItemsPresenter>
+                </ScrollViewer>
+              </Border>
+            </Grid>
+          </Popup>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+    
+    <Style Selector="^:icon /template/ ContentControl#PART_IconPresenter">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
 
-        <Style Selector="^:icon /template/ ContentControl#PART_IconPresenter">
-          <Setter Property="IsVisible" Value="True" />
-        </Style>
+    <Style Selector="^:selected">
+      <Style Selector="^ /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPointerOver}" />
+      </Style>
+      <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
+      </Style>
+      <Style Selector="^ /template/ TextBlock#PART_InputGestureText">
+        <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPointerOver}" />
+      </Style>
+      <Style Selector="^ /template/ Path#PART_ChevronPath">
+        <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronPointerOver}" />
+      </Style>
+    </Style>
 
-        <Style Selector="^:selected">
-          <Style Selector="^ /template/ Border#PART_LayoutRoot">
-            <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPointerOver}" />
-          </Style>
-          <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
-            <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
-          </Style>
-          <Style Selector="^ /template/ TextBlock#PART_InputGestureText">
-            <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPointerOver}" />
-          </Style>
-          <Style Selector="^ /template/ Path#PART_ChevronPath">
-            <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronPointerOver}" />
-          </Style>
-        </Style>
+    <Style Selector="^:disabled">
+      <Setter Property="Opacity" Value="0.65"/>
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
 
-        <Style Selector="^:disabled">
-          <Style Selector="^ /template/ Border#PART_LayoutRoot">
-            <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundDisabled}" />
-          </Style>
-          <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
-            <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundDisabled}" />
-          </Style>
-          <Style Selector="^ /template/ TextBlock#PART_InputGestureText">
-            <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundDisabled}" />
-          </Style>
-          <Style Selector="^ /template/ Path#PART_ChevronPath">
-            <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronDisabled}" />
-          </Style>
-        </Style>
+    <Style Selector="^:empty /template/ Path#PART_ChevronPath">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
 
-        <Style Selector="^:empty /template/ Path#PART_ChevronPath">
-          <Setter Property="IsVisible" Value="False" />
-        </Style>
-
-        <Style Selector="^:separator">
-          <Setter Property="Height" Value="5"/>
-          <Setter Property="Template">
-            <ControlTemplate>
-              <Separator Margin="28,0,4,0" Height=".5" VerticalAlignment="Center" Background="{DynamicResource Brush.Border2}"/>
-            </ControlTemplate>
-          </Setter>
-        </Style>
-      </ControlTheme>
-    </Style.Resources>
+    <Style Selector="^:separator">
+      <Setter Property="Height" Value="5"/>
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Separator Margin="28,0,4,0" Height=".5" VerticalAlignment="Center" Background="{DynamicResource Brush.Border2}"/>
+        </ControlTemplate>
+      </Setter>
+    </Style>
   </Style>
 
   <Style Selector="ComboBox">
@@ -1323,6 +1328,9 @@
 
   <Style Selector="DataGrid /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
     <Setter Property="IsVisible" Value="False"/>
+  </Style>
+  <Style Selector="DataGridCell">
+    <Setter Property="MinHeight" Value="24"/>
   </Style>
   <Style Selector="DataGridCell:focus /template/ Grid#FocusVisual">
     <Setter Property="IsVisible" Value="False"/>

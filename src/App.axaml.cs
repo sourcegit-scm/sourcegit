@@ -44,6 +44,8 @@ namespace SourceGit
         [STAThread]
         public static void Main(string[] args)
         {
+            Native.OS.SetupDataDir();
+
             AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             {
                 LogException(e.ExceptionObject as Exception);
@@ -105,6 +107,11 @@ namespace SourceGit
 
             var dialog = new Views.Hotkeys();
             dialog.ShowDialog(toplevel);
+        });
+
+        public static readonly SimpleCommand OpenAppDataDirCommand = new SimpleCommand(() =>
+        {
+            Native.OS.OpenInFileManager(Native.OS.DataDir);
         });
 
         public static readonly SimpleCommand OpenAboutCommand = new SimpleCommand(() =>
@@ -521,6 +528,8 @@ namespace SourceGit
         private void TryLaunchedAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
         {
             Native.OS.SetupEnternalTools();
+            Models.AvatarManager.Instance.Start();
+            Models.AutoFetchManager.Instance.Start();
 
             string startupRepo = null;
             if (desktop.Args != null && desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]))

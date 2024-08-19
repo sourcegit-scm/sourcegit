@@ -14,24 +14,23 @@ Requires: libSM.so.6
 Open-source & Free Git Gui Client
 
 %install
-mkdir -p $RPM_BUILD_ROOT/opt/sourcegit
-mkdir -p $RPM_BUILD_ROOT/usr/share/applications
-mkdir -p $RPM_BUILD_ROOT/usr/share/icons
-cp -r ../../_common/applications $RPM_BUILD_ROOT/usr/share/
-cp -r ../../_common/icons $RPM_BUILD_ROOT/usr/share/
-cp -f ../../../SourceGit/* $RPM_BUILD_ROOT/opt/sourcegit/
-chmod 755 -R $RPM_BUILD_ROOT/opt/sourcegit
-chmod 755 $RPM_BUILD_ROOT/usr/share/applications/sourcegit.desktop
+mkdir -p %{buildroot}/opt/sourcegit
+mkdir -p %{buildroot}/%{_bindir}
+mkdir -p %{buildroot}/usr/share/applications
+mkdir -p %{buildroot}/usr/share/icons
+cp -f ../../../SourceGit/* %{buildroot}/opt/sourcegit/
+ln -sf ../../opt/sourcegit/sourcegit %{buildroot}/%{_bindir}
+cp -r ../../_common/applications %{buildroot}/%{_datadir}
+cp -r ../../_common/icons %{buildroot}/%{_datadir}
+chmod 755 -R %{buildroot}/opt/sourcegit
+chmod 755 %{buildroot}/%{_datadir}/applications/sourcegit.desktop
 
 %files
-/opt/sourcegit
-/usr/share
-
-%post
-ln -s /opt/sourcegit/sourcegit /usr/bin/sourcegit
-
-%postun
-rm -f /usr/bin/sourcegit
+%dir /opt/sourcegit/
+/opt/sourcegit/*
+/usr/share/applications/sourcegit.desktop
+/usr/share/icons/*
+%{_bindir}/sourcegit
 
 %changelog
 # skip

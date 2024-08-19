@@ -67,6 +67,8 @@
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比較</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">位元組</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">取    消</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">重置檔案到該版本</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">重置檔案到上一版本</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">切換變更顯示模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">檔名+路徑列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">全路徑列表模式</x:String>
@@ -125,6 +127,9 @@
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">填寫提交信息主題</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">詳細描述</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">倉庫配置</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交資訊範本</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">範本名稱 ：</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">範本內容 ：</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">電子郵箱</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">郵箱地址</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT配置</x:String>
@@ -166,6 +171,7 @@
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">型別 ：</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">附註標籤</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">輕量標籤</x:String>
+  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">按住Ctrl鍵點擊將以預設參數運行</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪下</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">刪除分支確認</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
@@ -347,6 +353,7 @@
   <x:String x:Key="Text.Name" xml:space="preserve">名稱 ：</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">GIT尚未配置。請開啟【偏好設定】配置GIT路徑。</x:String>
   <x:String x:Key="Text.Notice" xml:space="preserve">系統提示</x:String>
+  <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">瀏覽程式資料目錄</x:String>
   <x:String x:Key="Text.OpenFolder" xml:space="preserve">選擇資料夾</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">開啟檔案...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">選填。</x:String>
@@ -376,7 +383,6 @@
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">主題</x:String>
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">主題自訂</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">通用配置</x:String>
-  <x:String x:Key="Text.Preference.General.AvatarServer" xml:space="preserve">頭像服務</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">啟動時檢測軟體更新</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">顯示語言</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">最大歷史提交數</x:String>
@@ -584,18 +590,17 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">忽略同路徑下所有檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">忽略本檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">修補(--amend)</x:String>
-  <x:String x:Key="Text.WorkingCopy.AutoStage" xml:space="preserve">自動暫存(--all)</x:String>
-  <x:String x:Key="Text.WorkingCopy.AutoStage.Tip" xml:space="preserve">提交前自動將修改過和刪除的檔案加入暫存區，但新增檔案需要手動添加。</x:String>
+  <x:String x:Key="Text.WorkingCopy.AutoStage" xml:space="preserve">自動暫存</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">現在您已可將其加入暫存區中</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提交</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交併推送</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">歷史輸入/範本</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">CTRL + Enter</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">檢測到衝突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">檔案衝突已解決</x:String>
-  <x:String x:Key="Text.WorkingCopy.HasCommitHistories" xml:space="preserve">最近輸入的提交資訊</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未跟蹤檔案</x:String>
-  <x:String x:Key="Text.WorkingCopy.MessageHistories" xml:space="preserve">歷史提交資訊</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">沒有提交資訊記錄</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">沒有可應用的提交資訊範本</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">已暫存</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">從暫存區移除選中</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">從暫存區移除所有</x:String>
@@ -603,6 +608,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">暫存選中</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">暫存所有</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">檢視忽略變更檔案</x:String>
+  <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">範本：${0}$</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">請選中衝突檔案，開啟右鍵選單，選擇合適的解決方式</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本地工作樹</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">拷贝工作樹路徑</x:String>

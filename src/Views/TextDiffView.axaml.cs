@@ -41,8 +41,8 @@ namespace SourceGit.Views
                 Math.Abs(Height - old.Height) > 0.001 ||
                 StartIdx != old.StartIdx ||
                 EndIdx != old.EndIdx ||
-                Combined != Combined ||
-                IsOldSide != IsOldSide;
+                Combined != old.Combined ||
+                IsOldSide != old.IsOldSide;
         }
     }
 
@@ -92,6 +92,9 @@ namespace SourceGit.Views
                     var typeface = view.CreateTypeface();
                     foreach (var line in view.VisualLines)
                     {
+                        if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                            continue;
+
                         var index = line.FirstDocumentLine.LineNumber;
                         if (index > lines.Count)
                             break;
@@ -160,7 +163,7 @@ namespace SourceGit.Views
                 var width = textView.Bounds.Width;
                 foreach (var line in textView.VisualLines)
                 {
-                    if (line.FirstDocumentLine == null)
+                    if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
                         continue;
 
                     var index = line.FirstDocumentLine.LineNumber;
@@ -172,8 +175,47 @@ namespace SourceGit.Views
                     if (bg == null)
                         continue;
 
-                    var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - textView.VerticalOffset;
-                    drawingContext.DrawRectangle(bg, null, new Rect(0, y, width, line.Height));
+                    var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
+                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
+                    drawingContext.DrawRectangle(bg, null, new Rect(0, startY, width, endY - startY));
+
+                    if (info.Highlights.Count > 0)
+                    {
+                        var highlightBG = info.Type == Models.TextDiffLineType.Added ? _presenter.AddedHighlightBrush : _presenter.DeletedHighlightBrush;
+                        var processingIdxStart = 0;
+                        var processingIdxEnd = 0;
+                        var nextHightlight = 0;
+
+                        foreach (var tl in line.TextLines)
+                        {
+                            processingIdxEnd += tl.Length;
+
+                            var y = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineTop) - textView.VerticalOffset;
+                            var h = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineBottom) - textView.VerticalOffset - y;
+
+                            while (nextHightlight < info.Highlights.Count)
+                            {
+                                var highlight = info.Highlights[nextHightlight];
+                                if (highlight.Start >= processingIdxEnd)
+                                    break;
+
+                                var start = line.GetVisualColumn(highlight.Start < processingIdxStart ? processingIdxStart : highlight.Start);
+                                var end = line.GetVisualColumn(highlight.End >= processingIdxEnd ? processingIdxEnd : highlight.End + 1);
+
+                                var x = line.GetTextLineVisualXPosition(tl, start) - textView.HorizontalOffset;
+                                var w = line.GetTextLineVisualXPosition(tl, end) - textView.HorizontalOffset - x;
+                                var rect = new Rect(x, y, w, h);
+                                drawingContext.DrawRectangle(highlightBG, null, rect);
+
+                                if (highlight.End >= processingIdxEnd)
+                                    break;
+
+                                nextHightlight++;
+                            }
+
+                            processingIdxStart = processingIdxEnd;
+                        }
+                    }
                 }
             }
 
@@ -217,20 +259,6 @@ namespace SourceGit.Views
                         v.TextRunProperties.SetForegroundBrush(_presenter.IndicatorForeground);
                         v.TextRunProperties.SetTypeface(new Typeface(_presenter.FontFamily, FontStyle.Italic));
                     });
-
-                    return;
-                }
-
-                if (info.Highlights.Count > 0)
-                {
-                    var bg = info.Type == Models.TextDiffLineType.Added ? _presenter.AddedHighlightBrush : _presenter.DeletedHighlightBrush;
-                    foreach (var highlight in info.Highlights)
-                    {
-                        ChangeLinePart(line.Offset + highlight.Start, line.Offset + highlight.Start + highlight.Count, v =>
-                        {
-                            v.TextRunProperties.SetBackgroundBrush(bg);
-                        });
-                    }
                 }
             }
 
@@ -394,7 +422,7 @@ namespace SourceGit.Views
             if (chunk == null || (!chunk.Combined && chunk.IsOldSide != IsOld))
                 return;
 
-            var color = (Color)this.FindResource("SystemAccentColor");
+            var color = (Color)this.FindResource("SystemAccentColor")!;
             var brush = new SolidColorBrush(color, 0.1);
             var pen = new Pen(color.ToUInt32());
             var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
@@ -409,6 +437,7 @@ namespace SourceGit.Views
             base.OnLoaded(e);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+            TextArea.TextView.PointerEntered += OnTextViewPointerEntered;
             TextArea.TextView.PointerMoved += OnTextViewPointerMoved;
             TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
 
@@ -420,6 +449,7 @@ namespace SourceGit.Views
             base.OnUnloaded(e);
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
+            TextArea.TextView.PointerEntered -= OnTextViewPointerEntered;
             TextArea.TextView.PointerMoved -= OnTextViewPointerMoved;
             TextArea.TextView.PointerWheelChanged -= OnTextViewPointerWheelChanged;
 
@@ -478,6 +508,12 @@ namespace SourceGit.Views
 
             TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
+        }
+
+        private void OnTextViewPointerEntered(object sender, PointerEventArgs e)
+        {
+            if (EnableChunkSelection && sender is TextView view)
+                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
         }
 
         private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
@@ -675,12 +711,7 @@ namespace SourceGit.Views
 
                 var firstLineIdx = view.VisualLines[0].FirstDocumentLine.LineNumber - 1;
                 var lastLineIdx = view.VisualLines[^1].FirstDocumentLine.LineNumber - 1;
-                if (endIdx < firstLineIdx)
-                {
-                    TrySetChunk(null);
-                    return;
-                }
-                else if (startIdx > lastLineIdx)
+                if (endIdx < firstLineIdx || startIdx > lastLineIdx)
                 {
                     TrySetChunk(null);
                     return;
@@ -711,6 +742,9 @@ namespace SourceGit.Views
                 var lineIdx = -1;
                 foreach (var line in view.VisualLines)
                 {
+                    if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                        continue;
+
                     var index = line.FirstDocumentLine.LineNumber;
                     if (index > diff.Lines.Count)
                         break;
@@ -853,12 +887,7 @@ namespace SourceGit.Views
 
                 var firstLineIdx = view.VisualLines[0].FirstDocumentLine.LineNumber - 1;
                 var lastLineIdx = view.VisualLines[^1].FirstDocumentLine.LineNumber - 1;
-                if (endIdx < firstLineIdx)
-                {
-                    TrySetChunk(null);
-                    return;
-                }
-                else if (startIdx > lastLineIdx)
+                if (endIdx < firstLineIdx || startIdx > lastLineIdx)
                 {
                     TrySetChunk(null);
                     return;
@@ -895,6 +924,9 @@ namespace SourceGit.Views
                 var lineIdx = -1;
                 foreach (var line in view.VisualLines)
                 {
+                    if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                        continue;
+
                     var index = line.FirstDocumentLine.LineNumber;
                     if (index > lines.Count)
                         break;
@@ -1129,7 +1161,7 @@ namespace SourceGit.Views
                 SetCurrentValue(SelectedChunkProperty, null);
         }
 
-        private void OnStageChunk(object sender, RoutedEventArgs e)
+        private void OnStageChunk(object _1, RoutedEventArgs _2)
         {
             var chunk = SelectedChunk;
             if (chunk == null)
@@ -1187,7 +1219,7 @@ namespace SourceGit.Views
             repo.SetWatcherEnabled(true);
         }
 
-        private void OnUnstageChunk(object sender, RoutedEventArgs e)
+        private void OnUnstageChunk(object _1, RoutedEventArgs _2)
         {
             var chunk = SelectedChunk;
             if (chunk == null)
@@ -1241,7 +1273,7 @@ namespace SourceGit.Views
             repo.SetWatcherEnabled(true);
         }
 
-        private void OnDiscardChunk(object sender, RoutedEventArgs e)
+        private void OnDiscardChunk(object _1, RoutedEventArgs _2)
         {
             var chunk = SelectedChunk;
             if (chunk == null)

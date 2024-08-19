@@ -1,5 +1,0 @@
-#!bin/sh
-
-echo 'Create link on /usr/bin'
-ln -s /opt/sourcegit/sourcegit /usr/bin/sourcegit
-exit 0

@@ -20,6 +20,11 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        public bool HasKeyModifier(KeyModifiers modifier)
+        {
+            return _unhandledModifiers.HasFlag(modifier);
+        }
+
         protected override void OnOpened(EventArgs e)
         {
             base.OnOpened(e);
@@ -147,6 +152,27 @@ namespace SourceGit.Views
             }
 
             base.OnKeyDown(e);
+
+            // Record unhandled key modifers.
+            if (!e.Handled)
+            {
+                _unhandledModifiers = e.KeyModifiers;
+
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Alt) && (e.Key == Key.LeftAlt || e.Key == Key.RightAlt))
+                    _unhandledModifiers |= KeyModifiers.Alt;
+
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Control) && (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl))
+                    _unhandledModifiers |= KeyModifiers.Control;
+
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Shift) && (e.Key == Key.LeftShift || e.Key == Key.RightShift))
+                    _unhandledModifiers |= KeyModifiers.Shift;
+            }
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            _unhandledModifiers = KeyModifiers.None;
         }
 
         protected override void OnClosing(WindowClosingEventArgs e)
@@ -178,5 +204,7 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private KeyModifiers _unhandledModifiers = KeyModifiers.None;
     }
 }

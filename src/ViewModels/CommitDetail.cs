@@ -66,7 +66,7 @@ namespace SourceGit.ViewModels
                     if (value == null || value.Count != 1)
                         DiffContext = null;
                     else
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(_commit, value[0]), _diffContext);
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, value[0]), _diffContext);
                 }
             }
         }
@@ -89,15 +89,35 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _viewRevisionFileContent, value);
         }
 
+        public AvaloniaList<Models.CommitLink> WebLinks
+        {
+            get;
+            private set;
+        } = new AvaloniaList<Models.CommitLink>();
+
         public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
         {
-            get => _issueTrackerRules;
+            get => _repo.Settings?.IssueTrackerRules;
         }
 
-        public CommitDetail(string repo, AvaloniaList<Models.IssueTrackerRule> issueTrackerRules)
+        public CommitDetail(Repository repo)
         {
             _repo = repo;
-            _issueTrackerRules = issueTrackerRules;
+
+            foreach (var remote in repo.Remotes)
+            {
+                if (remote.TryGetVisitURL(out var url))
+                {
+                    if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = "Github", URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://gitlab.com/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = "GitLab", URLPrefix = $"{url}/-/commit/" });
+                    else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = "Gitee", URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://bitbucket.org/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = "Bitbucket", URLPrefix = $"{url}/commits/" });
+                }
+            }
         }
 
         public void Cleanup()
@@ -118,8 +138,7 @@ namespace SourceGit.ViewModels
 
         public void NavigateTo(string commitSHA)
         {
-            var repo = App.FindOpenedRepository(_repo);
-            repo?.NavigateToCommit(commitSHA);
+            _repo?.NavigateToCommit(commitSHA);
         }
 
         public void ClearSearchChangeFilter()
@@ -129,7 +148,7 @@ namespace SourceGit.ViewModels
 
         public List<Models.Object> GetRevisionFilesUnderFolder(string parentFolder)
         {
-            return new Commands.QueryRevisionObjects(_repo, _commit.SHA, parentFolder).Result();
+            return new Commands.QueryRevisionObjects(_repo.FullPath, _commit.SHA, parentFolder).Result();
         }
 
         public void ViewRevisionFile(Models.Object file)
@@ -145,13 +164,13 @@ namespace SourceGit.ViewModels
                 case Models.ObjectType.Blob:
                     Task.Run(() =>
                     {
-                        var isBinary = new Commands.IsBinary(_repo, _commit.SHA, file.Path).Result();
+                        var isBinary = new Commands.IsBinary(_repo.FullPath, _commit.SHA, file.Path).Result();
                         if (isBinary)
                         {
                             var ext = Path.GetExtension(file.Path);
                             if (IMG_EXTS.Contains(ext))
                             {
-                                var stream = Commands.QueryFileContent.Run(_repo, _commit.SHA, file.Path);
+                                var stream = Commands.QueryFileContent.Run(_repo.FullPath, _commit.SHA, file.Path);
                                 var bitmap = stream.Length > 0 ? new Bitmap(stream) : null;
                                 Dispatcher.UIThread.Invoke(() =>
                                 {
@@ -160,7 +179,7 @@ namespace SourceGit.ViewModels
                             }
                             else
                             {
-                                var size = new Commands.QueryFileSize(_repo, file.Path, _commit.SHA).Result();
+                                var size = new Commands.QueryFileSize(_repo.FullPath, file.Path, _commit.SHA).Result();
                                 Dispatcher.UIThread.Invoke(() =>
                                 {
                                     ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
@@ -170,7 +189,7 @@ namespace SourceGit.ViewModels
                             return;
                         }
 
-                        var contentStream = Commands.QueryFileContent.Run(_repo, _commit.SHA, file.Path);
+                        var contentStream = Commands.QueryFileContent.Run(_repo.FullPath, _commit.SHA, file.Path);
                         var content = new StreamReader(contentStream).ReadToEnd();
                         var matchLFS = REG_LFS_FORMAT().Match(content);
                         if (matchLFS.Success)
@@ -191,7 +210,7 @@ namespace SourceGit.ViewModels
                 case Models.ObjectType.Commit:
                     Task.Run(() =>
                     {
-                        var submoduleRoot = Path.Combine(_repo, file.Path);
+                        var submoduleRoot = Path.Combine(_repo.FullPath, file.Path);
                         var commit = new Commands.QuerySingleCommit(submoduleRoot, file.SHA).Result();
                         if (commit != null)
                         {
@@ -237,10 +256,49 @@ namespace SourceGit.ViewModels
                 var toolPath = Preference.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption(_commit, change);
 
-                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, opt));
+                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo.FullPath, toolType, toolPath, opt));
                 ev.Handled = true;
             };
             menu.Items.Add(diffWithMerger);
+            menu.Items.Add(new MenuItem { Header = "-" });
+
+            var fullPath = Path.Combine(_repo.FullPath, change.Path);
+            if (File.Exists(fullPath))
+            {
+                var resetToThisRevision = new MenuItem();
+                resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToThisRevision.Click += (_, ev) =>
+                {
+                    new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}");
+                    ev.Handled = true;
+                };
+
+                var resetToFirstParent = new MenuItem();
+                resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
+                resetToFirstParent.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToFirstParent.IsEnabled = _commit.Parents.Count > 0 && change.Index != Models.ChangeState.Added && change.Index != Models.ChangeState.Renamed;
+                resetToFirstParent.Click += (_, ev) =>
+                {
+                    new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}~1");
+                    ev.Handled = true;
+                };
+
+                var explore = new MenuItem();
+                explore.Header = App.Text("RevealFile");
+                explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                explore.Click += (_, ev) =>
+                {
+                    Native.OS.OpenInFileManager(fullPath, true);
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(resetToThisRevision);
+                menu.Items.Add(resetToFirstParent);
+                menu.Items.Add(new MenuItem { Header = "-" });
+                menu.Items.Add(explore);
+                menu.Items.Add(new MenuItem { Header = "-" });
+            }
 
             if (change.Index != Models.ChangeState.Deleted)
             {
@@ -249,7 +307,7 @@ namespace SourceGit.ViewModels
                 history.Icon = App.CreateMenuIcon("Icons.Histories");
                 history.Click += (_, ev) =>
                 {
-                    var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path, _issueTrackerRules) };
+                    var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
                     window.Show();
                     ev.Handled = true;
                 };
@@ -259,26 +317,13 @@ namespace SourceGit.ViewModels
                 blame.Icon = App.CreateMenuIcon("Icons.Blame");
                 blame.Click += (_, ev) =>
                 {
-                    var window = new Views.Blame() { DataContext = new Blame(_repo, change.Path, _commit.SHA) };
+                    var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, change.Path, _commit.SHA) };
                     window.Show();
                     ev.Handled = true;
                 };
 
-                var full = Path.GetFullPath(Path.Combine(_repo, change.Path));
-                var explore = new MenuItem();
-                explore.Header = App.Text("RevealFile");
-                explore.Icon = App.CreateMenuIcon("Icons.Explore");
-                explore.IsEnabled = File.Exists(full);
-                explore.Click += (_, ev) =>
-                {
-                    Native.OS.OpenInFileManager(full, true);
-                    ev.Handled = true;
-                };
-
-                menu.Items.Add(new MenuItem { Header = "-" });
                 menu.Items.Add(history);
                 menu.Items.Add(blame);
-                menu.Items.Add(explore);
                 menu.Items.Add(new MenuItem { Header = "-" });
             }
 
@@ -307,34 +352,25 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateRevisionFileContextMenu(Models.Object file)
         {
-            var history = new MenuItem();
-            history.Header = App.Text("FileHistory");
-            history.Icon = App.CreateMenuIcon("Icons.Histories");
-            history.Click += (_, ev) =>
+            var fullPath = Path.Combine(_repo.FullPath, file.Path);
+
+            var resetToThisRevision = new MenuItem();
+            resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+            resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+            resetToThisRevision.IsEnabled = File.Exists(fullPath);
+            resetToThisRevision.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path, _issueTrackerRules) };
-                window.Show();
+                new Commands.Checkout(_repo.FullPath).FileWithRevision(file.Path, $"{_commit.SHA}");
                 ev.Handled = true;
             };
 
-            var blame = new MenuItem();
-            blame.Header = App.Text("Blame");
-            blame.Icon = App.CreateMenuIcon("Icons.Blame");
-            blame.IsEnabled = file.Type == Models.ObjectType.Blob;
-            blame.Click += (_, ev) =>
-            {
-                var window = new Views.Blame() { DataContext = new Blame(_repo, file.Path, _commit.SHA) };
-                window.Show();
-                ev.Handled = true;
-            };
-
-            var full = Path.GetFullPath(Path.Combine(_repo, file.Path));
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
             explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.IsEnabled = File.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
-                Native.OS.OpenInFileManager(full, file.Type == Models.ObjectType.Blob);
+                Native.OS.OpenInFileManager(fullPath, file.Type == Models.ObjectType.Blob);
                 ev.Handled = true;
             };
 
@@ -353,9 +389,30 @@ namespace SourceGit.ViewModels
                 if (selected.Count == 1)
                 {
                     var saveTo = Path.Combine(selected[0].Path.LocalPath, Path.GetFileName(file.Path));
-                    Commands.SaveRevisionFile.Run(_repo, _commit.SHA, file.Path, saveTo);
+                    Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, saveTo);
                 }
 
+                ev.Handled = true;
+            };
+
+            var history = new MenuItem();
+            history.Header = App.Text("FileHistory");
+            history.Icon = App.CreateMenuIcon("Icons.Histories");
+            history.Click += (_, ev) =>
+            {
+                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path) };
+                window.Show();
+                ev.Handled = true;
+            };
+
+            var blame = new MenuItem();
+            blame.Header = App.Text("Blame");
+            blame.Icon = App.CreateMenuIcon("Icons.Blame");
+            blame.IsEnabled = file.Type == Models.ObjectType.Blob;
+            blame.Click += (_, ev) =>
+            {
+                var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, file.Path, _commit.SHA) };
+                window.Show();
                 ev.Handled = true;
             };
 
@@ -378,10 +435,14 @@ namespace SourceGit.ViewModels
             };
 
             var menu = new ContextMenu();
-            menu.Items.Add(history);
-            menu.Items.Add(blame);
+            menu.Items.Add(resetToThisRevision);
+            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(explore);
             menu.Items.Add(saveAs);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(history);
+            menu.Items.Add(blame);
+            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copyPath);
             menu.Items.Add(copyFileName);
             return menu;
@@ -406,9 +467,9 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var fullMessage = new Commands.QueryCommitFullMessage(_repo, _commit.SHA).Result();
+                var fullMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).Result();
                 var parent = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];
-                var cmdChanges = new Commands.CompareRevisions(_repo, parent, _commit.SHA) { Cancel = _cancelToken };
+                var cmdChanges = new Commands.CompareRevisions(_repo.FullPath, parent, _commit.SHA) { Cancel = _cancelToken };
                 var changes = cmdChanges.Result();
                 var visible = changes;
                 if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
@@ -463,8 +524,7 @@ namespace SourceGit.ViewModels
             ".ico", ".bmp", ".jpg", ".png", ".jpeg"
         };
 
-        private string _repo;
-        private AvaloniaList<Models.IssueTrackerRule> _issueTrackerRules = null;
+        private Repository _repo = null;
         private int _activePageIndex = 0;
         private Models.Commit _commit = null;
         private string _fullMessage = string.Empty;

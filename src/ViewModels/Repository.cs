@@ -142,14 +142,16 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _submodules, value);
         }
 
-        public int WorkingCopyChangesCount
+        public int LocalChangesCount
         {
-            get => _workingCopy == null ? 0 : _workingCopy.Count;
+            get => _localChangesCount;
+            private set => SetProperty(ref _localChangesCount, value);
         }
 
         public int StashesCount
         {
-            get => _stashesPage == null ? 0 : _stashesPage.Stashes.Count;
+            get => _stashesCount;
+            private set => SetProperty(ref _stashesCount, value);
         }
 
         public bool IncludeUntracked
@@ -350,6 +352,9 @@ namespace SourceGit.ViewModels
             _stashesPage = null;
             _inProgressContext = null;
 
+            _localChangesCount = 0;
+            _stashesCount = 0;
+
             _remotes.Clear();
             _branches.Clear();
             _localBranchTrees.Clear();
@@ -420,7 +425,7 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public void Fetch()
+        public void Fetch(bool autoStart)
         {
             if (!PopupHost.CanCreatePopup())
                 return;
@@ -431,10 +436,13 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            PopupHost.ShowPopup(new Fetch(this));
+            if (autoStart)
+                PopupHost.ShowAndStartPopup(new Fetch(this));
+            else
+                PopupHost.ShowPopup(new Fetch(this));
         }
 
-        public void Pull()
+        public void Pull(bool autoStart)
         {
             if (!PopupHost.CanCreatePopup())
                 return;
@@ -445,10 +453,13 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            PopupHost.ShowPopup(new Pull(this, null));
+            if (autoStart)
+                PopupHost.ShowAndStartPopup(new Pull(this, null));
+            else
+                PopupHost.ShowPopup(new Pull(this, null));
         }
 
-        public void Push()
+        public void Push(bool autoStart)
         {
             if (!PopupHost.CanCreatePopup())
                 return;
@@ -465,7 +476,10 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            PopupHost.ShowPopup(new Push(this, null));
+            if (autoStart)
+                PopupHost.ShowAndStartPopup(new Push(this, null));
+            else
+                PopupHost.ShowPopup(new Push(this, null));
         }
 
         public void ApplyPatch()
@@ -607,15 +621,9 @@ namespace SourceGit.ViewModels
                 Task.Run(RefreshCommits);
         }
 
-        public void StashAll()
+        public void StashAll(bool autoStart)
         {
-            if (PopupHost.CanCreatePopup())
-            {
-                var changes = new List<Models.Change>();
-                changes.AddRange(_workingCopy.Unstaged);
-                changes.AddRange(_workingCopy.Staged);
-                PopupHost.ShowPopup(new StashChanges(this, changes, true));
-            }
+            _workingCopy?.StashAll(autoStart);
         }
 
         public void GotoResolve()
@@ -812,7 +820,7 @@ namespace SourceGit.ViewModels
             {
                 InProgressContext = inProgress;
                 HasUnsolvedConflicts = hasUnsolvedConflict;
-                OnPropertyChanged(nameof(WorkingCopyChangesCount));
+                LocalChangesCount = changes.Count;
             });
         }
 
@@ -823,7 +831,8 @@ namespace SourceGit.ViewModels
             {
                 if (_stashesPage != null)
                     _stashesPage.Stashes = stashes;
-                OnPropertyChanged(nameof(StashesCount));
+
+                StashesCount = stashes.Count;
             });
         }
 
@@ -856,7 +865,7 @@ namespace SourceGit.ViewModels
 
             if (branch.IsLocal)
             {
-                if (WorkingCopyChangesCount > 0)
+                if (_localChangesCount > 0)
                     PopupHost.ShowPopup(new Checkout(this, branch.Name));
                 else
                     PopupHost.ShowAndStartPopup(new Checkout(this, branch.Name));
@@ -1193,7 +1202,7 @@ namespace SourceGit.ViewModels
                 var discard = new MenuItem();
                 discard.Header = App.Text("BranchCM.DiscardAll");
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                discard.IsEnabled = _workingCopy.Count > 0;
+                discard.IsEnabled = _localChangesCount > 0;
                 discard.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
@@ -1297,7 +1306,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
 
-                if (WorkingCopyChangesCount > 0)
+                if (_localChangesCount > 0)
                 {
                     var compareWithWorktree = new MenuItem();
                     compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
@@ -1320,7 +1329,7 @@ namespace SourceGit.ViewModels
                 var compareWithBranch = CreateMenuItemToCompareBranches(branch);
                 if (compareWithBranch != null)
                 {
-                    if (WorkingCopyChangesCount == 0)
+                    if (_localChangesCount == 0)
                         menu.Items.Add(new MenuItem() { Header = "-" });
 
                     menu.Items.Add(compareWithBranch);
@@ -1597,7 +1606,7 @@ namespace SourceGit.ViewModels
             }
 
             var hasCompare = false;
-            if (WorkingCopyChangesCount > 0)
+            if (_localChangesCount > 0)
             {
                 var compareWithWorktree = new MenuItem();
                 compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
@@ -1958,6 +1967,9 @@ namespace SourceGit.ViewModels
         private StashesPage _stashesPage = null;
         private int _selectedViewIndex = 0;
         private object _selectedView = null;
+
+        private int _localChangesCount = 0;
+        private int _stashesCount = 0;
 
         private bool _isSearching = false;
         private bool _isSearchLoadingVisible = false;

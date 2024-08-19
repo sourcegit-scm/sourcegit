@@ -77,7 +77,7 @@
                                            FontSize="10"
                                            VerticalAlignment="Center"/>
 
-                    <v:CommitSubjectPresenter Classes="primary" 
+                    <v:CommitSubjectPresenter Classes="primary"
                                               Subject="{Binding Subject}"
                                               IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
                                               Opacity="{Binding Opacity}"

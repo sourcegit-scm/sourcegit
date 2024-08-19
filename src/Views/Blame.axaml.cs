@@ -40,6 +40,9 @@ namespace SourceGit.Views
 
                     foreach (var line in view.VisualLines)
                     {
+                        if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                            continue;
+
                         var lineNumber = line.FirstDocumentLine.LineNumber;
                         if (lineNumber > _editor.BlameData.LineInfos.Count)
                             break;
@@ -151,6 +154,9 @@ namespace SourceGit.Views
 
                     foreach (var line in view.VisualLines)
                     {
+                        if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                            continue;
+
                         var lineNumber = line.FirstDocumentLine.LineNumber;
                         if (lineNumber >= _editor.BlameData.LineInfos.Count)
                             break;

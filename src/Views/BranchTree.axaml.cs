@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 using Avalonia;
 using Avalonia.Collections;
@@ -102,6 +103,99 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+    }
+
+    public class BranchTreeNodeTrackStatusPresenter : Control
+    {
+        public static readonly StyledProperty<FontFamily> FontFamilyProperty =
+            TextBlock.FontFamilyProperty.AddOwner<BranchTreeNodeTrackStatusPresenter>();
+
+        public FontFamily FontFamily
+        {
+            get => GetValue(FontFamilyProperty);
+            set => SetValue(FontFamilyProperty, value);
+        }
+
+        public static readonly StyledProperty<double> FontSizeProperty =
+           TextBlock.FontSizeProperty.AddOwner<BranchTreeNodeTrackStatusPresenter>();
+
+        public double FontSize
+        {
+            get => GetValue(FontSizeProperty);
+            set => SetValue(FontSizeProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> ForegroundProperty =
+            AvaloniaProperty.Register<BranchTreeNodeTrackStatusPresenter, IBrush>(nameof(Foreground), Brushes.White);
+
+        public IBrush Foreground
+        {
+            get => GetValue(ForegroundProperty);
+            set => SetValue(ForegroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> BackgroundProperty =
+            AvaloniaProperty.Register<BranchTreeNodeTrackStatusPresenter, IBrush>(nameof(Background), Brushes.White);
+
+        public IBrush Background
+        {
+            get => GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
+        }
+
+        static BranchTreeNodeTrackStatusPresenter()
+        {
+            AffectsMeasure<BranchTreeNodeTrackStatusPresenter>(
+                FontSizeProperty,
+                FontFamilyProperty,
+                ForegroundProperty);
+
+            AffectsRender<BranchTreeNodeTrackStatusPresenter>(
+                ForegroundProperty,
+                BackgroundProperty);
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+
+            if (_label != null)
+            {
+                context.DrawRectangle(Background, null, new RoundedRect(new Rect(0, 0, _label.Width + 18, 18), new CornerRadius(9)));
+                context.DrawText(_label, new Point(9, 9 - _label.Height * 0.5));
+            }
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+            InvalidateMeasure();
+            InvalidateVisual();
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            _label = null;
+
+            if (DataContext is ViewModels.BranchTreeNode { Backend: Models.Branch branch })
+            {
+                var status = branch.TrackStatus.ToString();
+                if (!string.IsNullOrEmpty(status))
+                {
+                    _label = new FormattedText(
+                        status,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(FontFamily),
+                        FontSize,
+                        Foreground);
+                }
+            }
+
+            return _label != null ? new Size(_label.Width + 18, 18) : new Size(0, 0);
+        }
+
+        private FormattedText _label = null;
     }
 
     public partial class BranchTree : UserControl

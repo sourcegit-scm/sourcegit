@@ -42,6 +42,17 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _httpProxy, value);
         }
 
+        public AvaloniaList<Models.CommitTemplate> CommitTemplates
+        {
+            get => _repo.Settings.CommitTemplates;
+        }
+
+        public Models.CommitTemplate SelectedCommitTemplate
+        {
+            get => _selectedCommitTemplate;
+            set => SetProperty(ref _selectedCommitTemplate, value);
+        }
+
         public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
         {
             get => _repo.Settings.IssueTrackerRules;
@@ -77,6 +88,20 @@ namespace SourceGit.ViewModels
             HttpProxy = string.Empty;
         }
 
+        public void AddCommitTemplate()
+        {
+            var template = new Models.CommitTemplate() { Name = "New Template" };
+            _repo.Settings.CommitTemplates.Add(template);
+            SelectedCommitTemplate = template;
+        }
+
+        public void RemoveSelectedCommitTemplate()
+        {
+            if (_selectedCommitTemplate != null)
+                _repo.Settings.CommitTemplates.Remove(_selectedCommitTemplate);
+            SelectedCommitTemplate = null;
+        }
+
         public void AddSampleGithubIssueTracker()
         {
             foreach (var remote in _repo.Remotes)
@@ -106,7 +131,8 @@ namespace SourceGit.ViewModels
 
         public void RemoveSelectedIssueTracker()
         {
-            _repo.Settings.RemoveIssueTracker(_selectedIssueTrackerRule);
+            if (_selectedIssueTrackerRule != null)
+                _repo.Settings.RemoveIssueTracker(_selectedIssueTrackerRule);
             SelectedIssueTrackerRule = null;
         }
 
@@ -141,6 +167,7 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private readonly Dictionary<string, string> _cached = null;
         private string _httpProxy;
+        private Models.CommitTemplate _selectedCommitTemplate = null;
         private Models.IssueTrackerRule _selectedIssueTrackerRule = null;
     }
 }
