@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:c="using:SourceGit.Converters"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Welcome"
              x:DataType="vm:Welcome">
@@ -19,7 +20,8 @@
                  Background="{DynamicResource Brush.Contents}"
                  Watermark="{DynamicResource Text.Welcome.Search}"
                  VerticalContentAlignment="Center"
-                 Text="{Binding SearchFilter, Mode=TwoWay}">
+                 Text="{Binding SearchFilter, Mode=TwoWay}"
+                 v:AutoFocusBehaviour.IsEnabled="True">
           <TextBox.InnerLeftContent>
             <Path Width="16" Height="16" Margin="6,0,3,0" Data="{StaticResource Icons.Search}" Fill="{DynamicResource Brush.FG2}"/>
           </TextBox.InnerLeftContent>
