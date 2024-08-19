@@ -49,12 +49,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: sourcegit.${{ matrix.runtime }}
-          path: build/SourceGit
+          path: build
       - name: Package
         env:
           VERSION: ${{ inputs.version }}
           RUNTIME: ${{ matrix.runtime }}
-        run: ./build/scripts/package.osx-app.sh
+        run: |
+          mkdir build/SourceGit
+          tar -xf "build/sourcegit.${{ matrix.runtime }}.tar" -C build/SourceGit
+          ./build/scripts/package.osx-app.sh
       - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:

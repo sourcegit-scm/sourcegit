@@ -61,7 +61,7 @@ jobs:
         if: ${{ startsWith(matrix.runtime, 'linux-') }}
         run: mv publish/SourceGit publish/sourcegit
       - name: Tar artifact
-        if: ${{ startsWith(matrix.runtime, 'linux-') }}
+        if: ${{ startsWith(matrix.runtime, 'linux-') || startsWith(matrix.runtime, 'osx-') }}
         run: |
           tar -cvf "sourcegit.${{ matrix.runtime }}.tar" -C publish .
           rm -r publish/*
@@ -70,4 +70,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sourcegit.${{ matrix.runtime }}
-          path: publish
+          path: publish/*
