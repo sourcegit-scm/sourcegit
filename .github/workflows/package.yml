@@ -7,12 +7,8 @@ on:
         required: true
         type: string
 jobs:
-  build:
-    name: Build
-    uses: ./.github/workflows/ci.yml
   windows-portable:
     name: Package portable Windows app
-    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -37,7 +33,6 @@ jobs:
           path: build/sourcegit_*.zip
   osx-app:
     name: Package OSX app
-    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -65,7 +60,6 @@ jobs:
           path: build/sourcegit_*.zip
   linux:
     name: Package Linux
-    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
