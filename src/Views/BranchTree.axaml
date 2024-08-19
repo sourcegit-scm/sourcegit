@@ -86,7 +86,7 @@
                 <v:BranchTreeNodeTrackStatusPresenter Grid.Column="2"
                                                       Margin="8,0"
                                                       VerticalAlignment="Center"
-                                                      FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                                                      FontFamily="{DynamicResource Fonts.Monospace}"
                                                       FontSize="10"
                                                       Foreground="{DynamicResource Brush.BadgeFG}"
                                                       Background="{DynamicResource Brush.Badge}"/>

@@ -156,7 +156,7 @@
   </Style>
 
   <Style Selector="ContentPresenter">
-    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFont}"/>
+    <Setter Property="FontFamily" Value="{DynamicResource Fonts.Default}"/>
     <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
   </Style>
 
@@ -251,7 +251,7 @@
     <Setter Property="HorizontalAlignment" Value="Left"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
-    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFont}"/>
+    <Setter Property="FontFamily" Value="{DynamicResource Fonts.Default}"/>
     <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
   </Style>
   <Style Selector="TextBlock.small">
@@ -264,7 +264,7 @@
     <Setter Property="FontStyle" Value="Italic"/>
   </Style>
   <Style Selector="TextBlock.primary, SelectableTextBlock.primary">
-    <Setter Property="FontFamily" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=PrimaryFont}"/>
+    <Setter Property="FontFamily" Value="{DynamicResource Fonts.Primary}"/>
   </Style>
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>

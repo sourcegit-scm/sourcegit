@@ -20,20 +20,6 @@ namespace SourceGit
         }
     }
 
-    public class FontFamilyConverter : JsonConverter<FontFamily>
-    {
-        public override FontFamily Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            var name = reader.GetString();
-            return new FontFamily(name);
-        }
-
-        public override void Write(Utf8JsonWriter writer, FontFamily value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(value.ToString());
-        }
-    }
-
     public class GridLengthConverter : JsonConverter<GridLength>
     {
         public override GridLength Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -54,7 +40,6 @@ namespace SourceGit
         IgnoreReadOnlyProperties = true,
         Converters = [
             typeof(ColorConverter),
-            typeof(FontFamilyConverter),
             typeof(GridLengthConverter),
         ]
     )]

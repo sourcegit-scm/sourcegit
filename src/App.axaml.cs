@@ -104,6 +104,7 @@ namespace SourceGit
             var pref = ViewModels.Preference.Instance;
             SetLocale(pref.Locale);
             SetTheme(pref.Theme, pref.ThemeOverrides);
+            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
         }
 
         public override void OnFrameworkInitializationCompleted()
@@ -143,7 +144,10 @@ namespace SourceGit
         public static void SetLocale(string localeKey)
         {
             var app = Current as App;
-            var targetLocale = app?.Resources[localeKey] as ResourceDictionary;
+            if (app == null)
+                return;
+
+            var targetLocale = app.Resources[localeKey] as ResourceDictionary;
             if (targetLocale == null || targetLocale == app._activeLocale)
                 return;
 
@@ -205,6 +209,46 @@ namespace SourceGit
             else
             {
                 Models.CommitGraph.SetDefaultPens();
+            }
+        }
+
+        public static void SetFonts(string defaultFont, string monospaceFont, bool onlyUseMonospaceFontInEditor)
+        {
+            var app = Current as App;
+            if (app == null)
+                return;
+
+            if (app._fontsOverrides != null)
+            {
+                app.Resources.MergedDictionaries.Remove(app._fontsOverrides);
+                app._fontsOverrides = null;
+            }
+
+            var resDic = new ResourceDictionary();
+            if (!string.IsNullOrEmpty(defaultFont))
+                resDic.Add("Fonts.Default", new FontFamily(defaultFont));
+
+            if (string.IsNullOrEmpty(monospaceFont))
+            {
+                if (!string.IsNullOrEmpty(defaultFont))
+                    monospaceFont = $"fonts:SourceGit#JetBrains Mono,{defaultFont}";
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(defaultFont) && !monospaceFont.Contains(defaultFont, StringComparison.Ordinal))
+                    monospaceFont = $"{monospaceFont},{defaultFont}";
+
+                resDic.Add("Fonts.Monospace", new FontFamily(monospaceFont));
+            }
+
+            var primary = onlyUseMonospaceFontInEditor ? defaultFont : monospaceFont;
+            if (!string.IsNullOrEmpty(primary))
+                resDic.Add("Fonts.Primary", new FontFamily(primary));
+            
+            if (resDic.Count > 0)
+            {
+                app.Resources.MergedDictionaries.Add(resDic);
+                app._fontsOverrides = resDic;
             }
         }
 
@@ -510,5 +554,6 @@ namespace SourceGit
         private ViewModels.Launcher _launcher = null;
         private ResourceDictionary _activeLocale = null;
         private ResourceDictionary _themeOverrides = null;
+        private ResourceDictionary _fontsOverrides = null;
     }
 }

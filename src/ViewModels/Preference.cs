@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 using Avalonia.Collections;
-using Avalonia.Media;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -20,6 +19,7 @@ namespace SourceGit.ViewModels
             {
                 if (_instance == null)
                 {
+                    _isLoading = true;
                     if (!File.Exists(_savePath))
                     {
                         _instance = new Preference();
@@ -35,13 +35,8 @@ namespace SourceGit.ViewModels
                             _instance = new Preference();
                         }
                     }
+                    _isLoading = false;
                 }
-
-                if (_instance.DefaultFont == null)
-                    _instance.DefaultFont = FontManager.Current.DefaultFontFamily;
-
-                if (_instance.MonospaceFont == null)
-                    _instance.MonospaceFont = new FontFamily("fonts:SourceGit#JetBrains Mono");
 
                 if (!_instance.IsGitConfigured())
                     _instance.GitInstallPath = Native.OS.FindGitExecutable();
@@ -55,7 +50,7 @@ namespace SourceGit.ViewModels
             get => _locale;
             set
             {
-                if (SetProperty(ref _locale, value))
+                if (SetProperty(ref _locale, value) && !_isLoading)
                     App.SetLocale(value);
             }
         }
@@ -65,7 +60,7 @@ namespace SourceGit.ViewModels
             get => _theme;
             set
             {
-                if (SetProperty(ref _theme, value))
+                if (SetProperty(ref _theme, value) && !_isLoading)
                     App.SetTheme(_theme, _themeOverrides);
             }
         }
@@ -75,35 +70,28 @@ namespace SourceGit.ViewModels
             get => _themeOverrides;
             set
             {
-                if (SetProperty(ref _themeOverrides, value))
+                if (SetProperty(ref _themeOverrides, value) && !_isLoading)
                     App.SetTheme(_theme, value);
             }
         }
 
-        public FontFamily DefaultFont
+        public string DefaultFontFamily
         {
-            get => _defaultFont;
-            set
-            {
-                if (SetProperty(ref _defaultFont, value) && _onlyUseMonoFontInEditor)
-                    OnPropertyChanged(nameof(PrimaryFont));
+            get => _defaultFontFamily;
+            set {
+                if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
+                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
 
-        public FontFamily MonospaceFont
+        public string MonospaceFontFamily
         {
-            get => _monospaceFont;
+            get => _monospaceFontFamily;
             set
             {
-                if (SetProperty(ref _monospaceFont, value) && !_onlyUseMonoFontInEditor)
-                    OnPropertyChanged(nameof(PrimaryFont));
+                if (SetProperty(ref _monospaceFontFamily, value) && !_isLoading)
+                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
-        }
-
-        [JsonIgnore]
-        public FontFamily PrimaryFont
-        {
-            get => _onlyUseMonoFontInEditor ? _defaultFont : _monospaceFont;
         }
 
         public bool OnlyUseMonoFontInEditor
@@ -111,8 +99,8 @@ namespace SourceGit.ViewModels
             get => _onlyUseMonoFontInEditor;
             set
             {
-                if (SetProperty(ref _onlyUseMonoFontInEditor, value))
-                    OnPropertyChanged(nameof(PrimaryFont));
+                if (SetProperty(ref _onlyUseMonoFontInEditor, value) && !_isLoading)
+                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
 
@@ -494,13 +482,14 @@ namespace SourceGit.ViewModels
         }
 
         private static Preference _instance = null;
+        private static bool _isLoading = false;
         private static readonly string _savePath = Path.Combine(Native.OS.DataDir, "preference.json");
 
         private string _locale = "en_US";
         private string _theme = "Default";
         private string _themeOverrides = string.Empty;
-        private FontFamily _defaultFont = null;
-        private FontFamily _monospaceFont = null;
+        private string _defaultFontFamily = string.Empty;
+        private string _monospaceFontFamily = string.Empty;
         private bool _onlyUseMonoFontInEditor = false;
         private double _defaultFontSize = 13;
         private LayoutInfo _layout = new LayoutInfo();

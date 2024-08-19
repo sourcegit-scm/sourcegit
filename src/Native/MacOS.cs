@@ -6,7 +6,6 @@ using System.Runtime.Versioning;
 using System.Text;
 
 using Avalonia;
-using Avalonia.Media;
 
 namespace SourceGit.Native
 {
@@ -15,11 +14,6 @@ namespace SourceGit.Native
     {
         public void SetupApp(AppBuilder builder)
         {
-            builder.With(new FontManagerOptions()
-            {
-                DefaultFamilyName = "PingFang SC",
-            });
-
             builder.With(new MacOSPlatformOptions()
             {
                 DisableDefaultApplicationMenuItems = true,

@@ -91,7 +91,8 @@ namespace SourceGit.Views
             if (Change == null || Bounds.Width <= 0)
                 return;
 
-            var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
+            var fontFamily = this.FindResource("Fonts.Monospace") as FontFamily;
+            var typeface = new Typeface(fontFamily);
 
             IBrush background;
             string indicator;

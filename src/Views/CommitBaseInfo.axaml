@@ -96,7 +96,7 @@
                                    BranchNameBackground="{DynamicResource Brush.DecoratorBranch}"
                                    TagNameBackground="{DynamicResource Brush.DecoratorTag}"
                                    LabelForeground="{DynamicResource Brush.DecoratorFG}"
-                                   FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                                   FontFamily="{DynamicResource Fonts.Monospace}"
                                    FontSize="10"
                                    VerticalAlignment="Center"/>
           </Border>
