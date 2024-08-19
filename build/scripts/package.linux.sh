@@ -60,7 +60,7 @@ mkdir -p resources/deb/usr/bin
 mkdir -p resources/deb/usr/share/applications
 mkdir -p resources/deb/usr/share/icons
 cp -f SourceGit/* resources/deb/opt/sourcegit
-ln -sf ../../opt/sourcegit/sourcegit resources/deb/usr/bin
+ln -rsf resources/deb/opt/sourcegit/sourcegit resources/deb/usr/bin
 cp -r resources/_common/applications resources/deb/usr/share
 cp -r resources/_common/icons resources/deb/usr/share
 sed -i -e "s/^Version:.*/Version: $VERSION/" -e "s/^Architecture:.*/Architecture: $arch/" resources/deb/DEBIAN/control
