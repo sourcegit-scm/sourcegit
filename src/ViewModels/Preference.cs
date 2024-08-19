@@ -85,8 +85,11 @@ namespace SourceGit.ViewModels
             get => _defaultFont;
             set
             {
-                if (SetProperty(ref _defaultFont, value) && _onlyUseMonoFontInEditor)
+                if (SetProperty(ref _defaultFont, value))
+                {
+                    MonospaceFontWithFallbackDefault = new FontFamily($"{_monospaceFont}, {_defaultFont}");
                     OnPropertyChanged(nameof(PrimaryFont));
+                }
             }
         }
 
@@ -95,15 +98,25 @@ namespace SourceGit.ViewModels
             get => _monospaceFont;
             set
             {
-                if (SetProperty(ref _monospaceFont, value) && !_onlyUseMonoFontInEditor)
+                if (SetProperty(ref _monospaceFont, value))
+                {
+                    MonospaceFontWithFallbackDefault = new FontFamily($"{_monospaceFont}, {_defaultFont}");
                     OnPropertyChanged(nameof(PrimaryFont));
+                }
             }
+        }
+
+        [JsonIgnore]
+        public FontFamily MonospaceFontWithFallbackDefault
+        {
+            get => _monospaceFontWithFallbackDefault;
+            set => SetProperty(ref _monospaceFontWithFallbackDefault, value);
         }
 
         [JsonIgnore]
         public FontFamily PrimaryFont
         {
-            get => _onlyUseMonoFontInEditor ? _defaultFont : _monospaceFont;
+            get => _onlyUseMonoFontInEditor ? _defaultFont : _monospaceFontWithFallbackDefault;
         }
 
         public bool OnlyUseMonoFontInEditor
@@ -112,7 +125,10 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _onlyUseMonoFontInEditor, value))
+                {
+                    MonospaceFontWithFallbackDefault = new FontFamily($"{_monospaceFont}, {_defaultFont}");
                     OnPropertyChanged(nameof(PrimaryFont));
+                }
             }
         }
 
@@ -501,6 +517,7 @@ namespace SourceGit.ViewModels
         private string _themeOverrides = string.Empty;
         private FontFamily _defaultFont = null;
         private FontFamily _monospaceFont = null;
+        private FontFamily _monospaceFontWithFallbackDefault = null;
         private bool _onlyUseMonoFontInEditor = false;
         private double _defaultFontSize = 13;
         private LayoutInfo _layout = new LayoutInfo();

@@ -42,7 +42,7 @@
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionTextFile">
-              <v:RevisionTextFileView FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}" Background="{DynamicResource Brush.Contents}"/>
+              <v:RevisionTextFileView FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFontWithFallbackDefault}" Background="{DynamicResource Brush.Contents}"/>
             </DataTemplate>
 
             <DataTemplate DataType="m:RevisionImageFile">

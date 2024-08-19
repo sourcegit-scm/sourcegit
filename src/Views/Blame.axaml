@@ -58,7 +58,7 @@
                          BorderThickness="1"
                          Background="{DynamicResource Brush.Contents}"
                          Foreground="{DynamicResource Brush.FG1}"
-                         FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                         FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFontWithFallbackDefault}"
                          BlameData="{Binding Data}"/>
       
       <!-- Not supported mask (for binary files) -->

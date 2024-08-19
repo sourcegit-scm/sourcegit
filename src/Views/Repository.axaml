@@ -95,7 +95,7 @@
                                       Margin="6,0"
                                       VerticalAlignment="Center"
                                       Count="{Binding LocalChangesCount}"
-                                      FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                                      FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFontWithFallbackDefault}"
                                       FontSize="10"
                                       Foreground="{DynamicResource Brush.BadgeFG}"
                                       Background="{DynamicResource Brush.Badge}"/>
@@ -110,7 +110,7 @@
                                       Margin="6,0"
                                       VerticalAlignment="Center"
                                       Count="{Binding StashesCount}"
-                                      FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                                      FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFontWithFallbackDefault}"
                                       FontSize="10"
                                       Foreground="{DynamicResource Brush.BadgeFG}"
                                       Background="{DynamicResource Brush.Badge}"/>
