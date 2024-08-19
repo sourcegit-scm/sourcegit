@@ -67,6 +67,8 @@
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Branch Vergleich</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">Bytes</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">ABBRECHEN</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Auf diese Revision zurücksetzen</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Auf Vorgänger-Revision zurücksetzen</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">ANZEIGE MODUS ÄNDERN</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Zeige als Datei- und Ordnerliste</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Zeige als Pfadliste</x:String>
@@ -125,6 +127,9 @@
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Commit-Nachricht</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Details</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository Einstellungen</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT TEMPLATE</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Template Name:</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Template Inhalt:</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Adresse</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email Adresse</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
@@ -590,11 +595,13 @@
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Du kannst diese Datei jetzt stagen.</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/Historie</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">STRG + Enter</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">KONFLIKTE ERKANNT</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">DATEI KONFLIKTE GELÖST</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">NICHT-VERFOLGTE DATEIEN INKLUDIEREN</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">KEINE BISHERIGEN COMMIT-NACHRICHTEN</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">KEINE COMMIT TEMPLATES</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">GESTAGED</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">UNSTAGEN</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">ALLES UNSTAGEN</x:String>
@@ -602,6 +609,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">STAGEN</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">ALLES STAGEN</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">ALS UNVERÄNDERT ANGENOMMENE ANZEIGEN</x:String>
+  <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Template: ${0}$</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Rechtsklick auf selektierte Dateien und wähle die Konfliktlösungen aus.</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">WORKTREE</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">Pfad kopieren</x:String>
