@@ -59,7 +59,7 @@ namespace SourceGit.Views
             // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift) && e.Key == Key.P)
             {
-                App.OpenPreferenceCommand.Execute(null);
+                App.OpenDialog(new Preference());
                 e.Handled = true;
                 return;
             }

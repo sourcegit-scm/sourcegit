@@ -380,12 +380,12 @@ namespace SourceGit.ViewModels
             saveAs.IsEnabled = file.Type == Models.ObjectType.Blob;
             saveAs.Click += async (_, ev) =>
             {
-                var topLevel = App.GetTopLevel();
-                if (topLevel == null)
+                var storageProvider = App.GetStorageProvider();
+                if (storageProvider == null)
                     return;
 
                 var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
+                var selected = await storageProvider.OpenFolderPickerAsync(options);
                 if (selected.Count == 1)
                 {
                     var saveTo = Path.Combine(selected[0].Path.LocalPath, Path.GetFileName(file.Path));

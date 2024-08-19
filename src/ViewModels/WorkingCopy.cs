@@ -303,16 +303,10 @@ namespace SourceGit.ViewModels
 
         public void OpenAssumeUnchanged()
         {
-            var toplevel = App.GetTopLevel() as Window;
-            if (toplevel == null)
-                return;
-
-            var dialog = new Views.AssumeUnchangedManager()
+            App.OpenDialog(new Views.AssumeUnchangedManager()
             {
                 DataContext = new AssumeUnchangedManager(_repo.FullPath)
-            };
-
-            dialog.ShowDialog(toplevel);
+            });
         }
 
         public void StashAll(bool autoStart)
@@ -530,8 +524,8 @@ namespace SourceGit.ViewModels
                     patch.Icon = App.CreateMenuIcon("Icons.Diff");
                     patch.Click += async (_, e) =>
                     {
-                        var topLevel = App.GetTopLevel();
-                        if (topLevel == null)
+                        var storageProvider = App.GetStorageProvider();
+                        if (storageProvider == null)
                             return;
 
                         var options = new FilePickerSaveOptions();
@@ -539,7 +533,7 @@ namespace SourceGit.ViewModels
                         options.DefaultExtension = ".patch";
                         options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                        var storageFile = await topLevel.StorageProvider.SaveFilePickerAsync(options);
+                        var storageFile = await storageProvider.SaveFilePickerAsync(options);
                         if (storageFile != null)
                         {
                             var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
@@ -853,8 +847,8 @@ namespace SourceGit.ViewModels
                 patch.Icon = App.CreateMenuIcon("Icons.Diff");
                 patch.Click += async (_, e) =>
                 {
-                    var topLevel = App.GetTopLevel();
-                    if (topLevel == null)
+                    var storageProvider = App.GetStorageProvider();
+                    if (storageProvider == null)
                         return;
 
                     var options = new FilePickerSaveOptions();
@@ -862,7 +856,7 @@ namespace SourceGit.ViewModels
                     options.DefaultExtension = ".patch";
                     options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                    var storageFile = await topLevel.StorageProvider.SaveFilePickerAsync(options);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
                         var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
@@ -938,8 +932,8 @@ namespace SourceGit.ViewModels
                 patch.Icon = App.CreateMenuIcon("Icons.Diff");
                 patch.Click += async (_, e) =>
                 {
-                    var topLevel = App.GetTopLevel();
-                    if (topLevel == null)
+                    var storageProvider = App.GetStorageProvider();
+                    if (storageProvider == null)
                         return;
 
                     var options = new FilePickerSaveOptions();
@@ -947,7 +941,7 @@ namespace SourceGit.ViewModels
                     options.DefaultExtension = ".patch";
                     options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                    var storageFile = await topLevel.StorageProvider.SaveFilePickerAsync(options);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
                         var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
@@ -1085,9 +1079,8 @@ namespace SourceGit.ViewModels
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                    {
                         PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, false));
-                    }
+
                     e.Handled = true;
                 };
 
@@ -1096,8 +1089,8 @@ namespace SourceGit.ViewModels
                 patch.Icon = App.CreateMenuIcon("Icons.Diff");
                 patch.Click += async (_, e) =>
                 {
-                    var topLevel = App.GetTopLevel();
-                    if (topLevel == null)
+                    var storageProvider = App.GetStorageProvider();
+                    if (storageProvider == null)
                         return;
 
                     var options = new FilePickerSaveOptions();
@@ -1105,7 +1098,7 @@ namespace SourceGit.ViewModels
                     options.DefaultExtension = ".patch";
                     options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                    var storageFile = await topLevel.StorageProvider.SaveFilePickerAsync(options);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
                         var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));

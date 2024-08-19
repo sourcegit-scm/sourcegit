@@ -15,6 +15,7 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
+using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using Avalonia.Threading;
 
@@ -41,6 +42,13 @@ namespace SourceGit
 
     public partial class App : Application
     {
+        public static readonly SimpleCommand OpenPreferenceCommand = new SimpleCommand(() => OpenDialog(new Views.Preference()));
+        public static readonly SimpleCommand OpenHotkeysCommand = new SimpleCommand(() => OpenDialog(new Views.Hotkeys()));
+        public static readonly SimpleCommand OpenAppDataDirCommand = new SimpleCommand(() => Native.OS.OpenInFileManager(Native.OS.DataDir));
+        public static readonly SimpleCommand OpenAboutCommand = new SimpleCommand(() => OpenDialog(new Views.About()));
+        public static readonly SimpleCommand CheckForUpdateCommand = new SimpleCommand(() => Check4Update(true));
+        public static readonly SimpleCommand QuitCommand = new SimpleCommand(() => Quit(0));
+
         [STAThread]
         public static void Main(string[] args)
         {
@@ -89,47 +97,36 @@ namespace SourceGit
             return builder;
         }
 
-        public static readonly SimpleCommand OpenPreferenceCommand = new SimpleCommand(() =>
+        public override void Initialize()
         {
-            var toplevel = GetTopLevel() as Window;
-            if (toplevel == null)
-                return;
+            AvaloniaXamlLoader.Load(this);
 
-            var dialog = new Views.Preference();
-            dialog.ShowDialog(toplevel);
-        });
+            var pref = ViewModels.Preference.Instance;
+            SetLocale(pref.Locale);
+            SetTheme(pref.Theme, pref.ThemeOverrides);
+        }
 
-        public static readonly SimpleCommand OpenHotkeysCommand = new SimpleCommand(() =>
+        public override void OnFrameworkInitializationCompleted()
         {
-            var toplevel = GetTopLevel() as Window;
-            if (toplevel == null)
-                return;
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                BindingPlugins.DataValidators.RemoveAt(0);
 
-            var dialog = new Views.Hotkeys();
-            dialog.ShowDialog(toplevel);
-        });
+                if (TryLaunchedAsCoreEditor(desktop))
+                    return;
 
-        public static readonly SimpleCommand OpenAppDataDirCommand = new SimpleCommand(() =>
+                if (TryLaunchedAsAskpass(desktop))
+                    return;
+
+                TryLaunchedAsNormal(desktop);
+            }
+        }
+
+        public static void OpenDialog(Window window)
         {
-            Native.OS.OpenInFileManager(Native.OS.DataDir);
-        });
-
-        public static readonly SimpleCommand OpenAboutCommand = new SimpleCommand(() =>
-        {
-            var toplevel = GetTopLevel() as Window;
-            if (toplevel == null)
-                return;
-
-            var dialog = new Views.About();
-            dialog.ShowDialog(toplevel);
-        });
-
-        public static readonly SimpleCommand CheckForUpdateCommand = new SimpleCommand(() =>
-        {
-            Check4Update(true);
-        });
-
-        public static readonly SimpleCommand QuitCommand = new SimpleCommand(() => Quit(0));
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                window.ShowDialog(desktop.MainWindow);
+        }
 
         public static void RaiseException(string context, string message)
         {
@@ -258,17 +255,74 @@ namespace SourceGit
             return icon;
         }
 
-        public static TopLevel GetTopLevel()
+        public static IStorageProvider GetStorageProvider()
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                return desktop.MainWindow.StorageProvider;
+
+            return null;
+        }
+
+        public static ViewModels.Launcher GetLauncer()
+        {
+            return Current is App app ? app._launcher : null;
+        }
+
+        public static ViewModels.Repository FindOpenedRepository(string repoPath)
+        {
+            if (Current is App app && app._launcher != null)
             {
-                return desktop.MainWindow;
+                foreach (var page in app._launcher.Pages)
+                {
+                    var id = page.Node.Id.Replace("\\", "/");
+                    if (id == repoPath && page.Data is ViewModels.Repository repo)
+                        return repo;
+                }
             }
 
             return null;
         }
 
-        public static void Check4Update(bool manually = false)
+        public static void Quit(int exitCode)
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.MainWindow?.Close();
+                desktop.Shutdown(exitCode);
+            }
+            else
+            {
+                Environment.Exit(exitCode);
+            }
+        }
+
+        private static void LogException(Exception ex)
+        {
+            if (ex == null)
+                return;
+
+            var builder = new StringBuilder();
+            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
+            builder.Append("----------------------------\n");
+            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
+            builder.Append($"OS: {Environment.OSVersion.ToString()}\n");
+            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
+            builder.Append($"Source: {ex.Source}\n");
+            builder.Append($"---------------------------\n\n");
+            builder.Append(ex.StackTrace);
+            while (ex.InnerException != null)
+            {
+                ex = ex.InnerException;
+                builder.Append($"\n\nInnerException::: {ex.GetType().FullName}: {ex.Message}\n");
+                builder.Append(ex.StackTrace);
+            }
+
+            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
+            File.WriteAllText(file, builder.ToString());
+        }
+
+        private static void Check4Update(bool manually = false)
         {
             Task.Run(async () =>
             {
@@ -309,104 +363,11 @@ namespace SourceGit
             });
         }
 
-        public static ViewModels.Launcher GetLauncer()
-        {
-            return Current is App app ? app._launcher : null;
-        }
-
-        public static ViewModels.Repository FindOpenedRepository(string repoPath)
-        {
-            if (Current is App app && app._launcher != null)
-            {
-                foreach (var page in app._launcher.Pages)
-                {
-                    var id = page.Node.Id.Replace("\\", "/");
-                    if (id == repoPath && page.Data is ViewModels.Repository repo)
-                        return repo;
-                }
-            }
-
-            return null;
-        }
-
-        public static void Quit(int exitCode)
-        {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                desktop.MainWindow?.Close();
-                desktop.Shutdown(exitCode);
-            }
-            else
-            {
-                Environment.Exit(exitCode);
-            }
-        }
-
-        public override void Initialize()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            var pref = ViewModels.Preference.Instance;
-
-            SetLocale(pref.Locale);
-            SetTheme(pref.Theme, pref.ThemeOverrides);
-        }
-
-        public override void OnFrameworkInitializationCompleted()
-        {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                BindingPlugins.DataValidators.RemoveAt(0);
-
-                if (TryLaunchedAsCoreEditor(desktop))
-                    return;
-
-                if (TryLaunchedAsAskpass(desktop))
-                    return;
-
-                TryLaunchedAsNormal(desktop);
-            }
-        }
-
-        private static void LogException(Exception ex)
-        {
-            if (ex == null)
-                return;
-
-            var builder = new StringBuilder();
-            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
-            builder.Append("----------------------------\n");
-            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
-            builder.Append($"OS: {Environment.OSVersion.ToString()}\n");
-            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
-            builder.Append($"Source: {ex.Source}\n");
-            builder.Append($"---------------------------\n\n");
-            builder.Append(ex.StackTrace);
-            while (ex.InnerException != null)
-            {
-                ex = ex.InnerException;
-                builder.Append($"\n\nInnerException::: {ex.GetType().FullName}: {ex.Message}\n");
-                builder.Append(ex.StackTrace);
-            }
-
-            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
-            File.WriteAllText(file, builder.ToString());
-        }
-
         private static void ShowSelfUpdateResult(object data)
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: not null } desktop)
-                {
-                    var dialog = new Views.SelfUpdate()
-                    {
-                        DataContext = new ViewModels.SelfUpdate() { Data = data }
-                    };
-
-                    dialog.Show(desktop.MainWindow);
-                }
+                OpenDialog(new Views.SelfUpdate() { DataContext = new ViewModels.SelfUpdate() { Data = data } });
             });
         }
 

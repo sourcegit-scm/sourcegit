@@ -940,9 +940,7 @@ namespace SourceGit.ViewModels
                 };
             }
 
-            var launcher = App.GetTopLevel().DataContext as Launcher;
-            if (launcher != null)
-                launcher.OpenRepositoryInTab(node, null);
+            App.GetLauncer()?.OpenRepositoryInTab(node, null);
         }
 
         public void AddWorktree()
@@ -971,9 +969,7 @@ namespace SourceGit.ViewModels
                 };
             }
 
-            var launcher = App.GetTopLevel().DataContext as Launcher;
-            if (launcher != null)
-                launcher.OpenRepositoryInTab(node, null);
+            App.GetLauncer()?.OpenRepositoryInTab(node, null);
         }
 
         public ContextMenu CreateContextMenuForGitFlow()
@@ -1130,12 +1126,8 @@ namespace SourceGit.ViewModels
                 {
                     locks.Click += (_, e) =>
                     {
-                        var topLevel = App.GetTopLevel() as Window;
-                        if (topLevel == null)
-                            return;
-
                         var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, _remotes[0].Name) };
-                        dialog.Show(topLevel);
+                        App.OpenDialog(dialog);
                         e.Handled = true;
                     };
                 }
@@ -1148,12 +1140,8 @@ namespace SourceGit.ViewModels
                         lockRemote.Header = remoteName;
                         lockRemote.Click += (_, e) =>
                         {
-                            var topLevel = App.GetTopLevel() as Window;
-                            if (topLevel == null)
-                                return;
-
                             var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, remoteName) };
-                            dialog.Show(topLevel);
+                            App.OpenDialog(dialog);
                             e.Handled = true;
                         };
                         locks.Items.Add(lockRemote);
@@ -1878,16 +1866,9 @@ namespace SourceGit.ViewModels
                     target.Icon = App.CreateMenuIcon(b.IsCurrent ? "Icons.Check" : "Icons.Branch");
                     target.Click += (_, e) =>
                     {
-                        var topLevel = App.GetTopLevel() as Window;
-                        if (topLevel == null)
-                            return;
-
-                        var wnd = new Views.BranchCompare()
-                        {
-                            DataContext = new BranchCompare(_fullpath, branch, dup)
-                        };
-
-                        wnd.Show(topLevel);
+                        App.OpenDialog(new Views.BranchCompare() { 
+                            DataContext = new BranchCompare(_fullpath, branch, dup) 
+                        });
                         e.Handled = true;
                     };
 
