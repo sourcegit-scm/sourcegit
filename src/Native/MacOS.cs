@@ -20,7 +20,7 @@ namespace SourceGit.Native
 
         public MacOS()
         {
-            _terminal = Directory.Exists("/Applications/iTerm2.app") ? TerminalType.iTerm2 : TerminalType.Terminal;
+            _terminal = Directory.Exists("/Applications/iTerm.app") ? TerminalType.iTerm2 : TerminalType.Terminal;
         }
 
         public void SetupApp(AppBuilder builder)
