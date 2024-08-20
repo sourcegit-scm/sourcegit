@@ -14,13 +14,8 @@ namespace SourceGit.Native
     {
         enum TerminalType
         {
-            Terminal,
+            Default,
             iTerm2,
-        }
-
-        public MacOS()
-        {
-            _terminal = Directory.Exists("/Applications/iTerm.app") ? TerminalType.iTerm2 : TerminalType.Terminal;
         }
 
         public void SetupApp(AppBuilder builder)
@@ -33,7 +28,6 @@ namespace SourceGit.Native
 
         public string FindGitExecutable()
         {
-            // XCode built-in git
             return File.Exists("/usr/bin/git") ? "/usr/bin/git" : string.Empty;
         }
 
@@ -57,13 +51,9 @@ namespace SourceGit.Native
         public void OpenInFileManager(string path, bool select)
         {
             if (Directory.Exists(path))
-            {
                 Process.Start("open", $"\"{path}\"");
-            }
             else if (File.Exists(path))
-            {
                 Process.Start("open", $"\"{path}\" -R");
-            }
         }
 
         public void OpenTerminal(string workdir)
@@ -71,8 +61,9 @@ namespace SourceGit.Native
             var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
             dir = dir.Replace(" ", "\\ ");
 
+            var terminal = DetectTerminal();
             var cmdBuilder = new StringBuilder();
-            switch (_terminal)
+            switch (terminal)
             {
                 case TerminalType.iTerm2:
                     cmdBuilder.AppendLine("on run argv");
@@ -109,6 +100,12 @@ namespace SourceGit.Native
             Process.Start("open", $"\"{file}\"");
         }
 
-        private readonly TerminalType _terminal;
+        private TerminalType DetectTerminal()
+        {
+            if (Directory.Exists("/Applications/iTerm.app"))
+                return TerminalType.iTerm2;
+
+            return TerminalType.Default;
+        }
     }
 }
