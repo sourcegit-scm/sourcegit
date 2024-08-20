@@ -12,85 +12,15 @@ namespace SourceGit.Native
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend
     {
-        enum SupportedTerminals
+        enum TerminalType
         {
-            NativeTerminal,
+            Terminal,
             iTerm2,
-        }
-
-        class Terminal
-        {
-            public SupportedTerminals Application { get; set; }
-
-            public Terminal(SupportedTerminals application)
-            {
-                Application = application;
-            }
-
-            public void Open(string dir)
-            {
-                string command = GetTerminalCommand(dir);
-                if (command == null)
-                    return;
-
-                var tmp = Path.GetTempFileName();
-                File.WriteAllText(tmp, command);
-
-                var proc = Process.Start("osascript", $"\"{tmp}\"");
-                if (proc != null)
-                    proc.Exited += (_, _) => File.Delete(tmp);
-                else
-                    File.Delete(tmp);
-            }
-
-            private string GetTerminalCommand(string dir)
-            {
-                switch(Application)
-                {
-                    case SupportedTerminals.NativeTerminal:
-                        return GetNativeTerminalCommand(dir);
-                    case SupportedTerminals.iTerm2:
-                        return GetITerm2Command(dir);
-                    default:
-                        App.RaiseException(dir, $"Only supports native Terminal and iTerm2!");
-                        return null;
-                }
-            }
-
-            private string GetNativeTerminalCommand(string dir)
-            {
-                var builder = new StringBuilder();
-                builder.AppendLine("on run argv");
-                builder.AppendLine("    tell application \"Terminal\"");
-                builder.AppendLine($"        do script \"cd {dir}\"");
-                builder.AppendLine("        activate");
-                builder.AppendLine("    end tell");
-                builder.AppendLine("end run");
-                return builder.ToString();
-            }
-
-            private string GetITerm2Command(string dir)
-            {
-                var builder = new StringBuilder();
-                builder.AppendLine("on run argv");
-                builder.AppendLine("    tell application \"iTerm2\"");
-                builder.AppendLine("        create window with default profile");
-                builder.AppendLine("        tell the current session of the current window");
-                builder.AppendLine($"            write text \"cd {dir}\"");
-                builder.AppendLine("        end tell");
-                builder.AppendLine("    end tell");
-                builder.AppendLine("end run");
-                return builder.ToString();
-            }
         }
 
         public MacOS()
         {
-            // TODO: use config
-            if (IsITermInstalled())
-                _terminal = new Terminal(SupportedTerminals.iTerm2);
-            else
-                _terminal = new Terminal(SupportedTerminals.NativeTerminal);
+            _terminal = Directory.Exists("/Applications/iTerm2.app") ? TerminalType.iTerm2 : TerminalType.Terminal;
         }
 
         public void SetupApp(AppBuilder builder)
@@ -141,19 +71,44 @@ namespace SourceGit.Native
             var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
             dir = dir.Replace(" ", "\\ ");
 
-            _terminal.Open(dir);
+            var cmdBuilder = new StringBuilder();
+            switch (_terminal)
+            {
+                case TerminalType.iTerm2:
+                    cmdBuilder.AppendLine("on run argv");
+                    cmdBuilder.AppendLine("    tell application \"iTerm2\"");
+                    cmdBuilder.AppendLine("        create window with default profile");
+                    cmdBuilder.AppendLine("        tell the current session of the current window");
+                    cmdBuilder.AppendLine($"            write text \"cd {dir}\"");
+                    cmdBuilder.AppendLine("        end tell");
+                    cmdBuilder.AppendLine("    end tell");
+                    cmdBuilder.AppendLine("end run");
+                    break;
+                default:
+                    cmdBuilder.AppendLine("on run argv");
+                    cmdBuilder.AppendLine("    tell application \"Terminal\"");
+                    cmdBuilder.AppendLine($"        do script \"cd {dir}\"");
+                    cmdBuilder.AppendLine("        activate");
+                    cmdBuilder.AppendLine("    end tell");
+                    cmdBuilder.AppendLine("end run");
+                    break;
+            }
+
+            var tmp = Path.GetTempFileName();
+            File.WriteAllText(tmp, cmdBuilder.ToString());
+
+            var proc = Process.Start("osascript", $"\"{tmp}\"");
+            if (proc != null)
+                proc.Exited += (_, _) => File.Delete(tmp);
+            else
+                File.Delete(tmp);
         }
 
         public void OpenWithDefaultEditor(string file)
         {
-            Process.Start("open", file);
+            Process.Start("open", $"\"{file}\"");
         }
 
-        private bool IsITermInstalled()
-        {
-            return Directory. Exists("/Applications/iTerm.app");
-        }
-
-        private readonly Terminal _terminal = null;
+        private readonly TerminalType _terminal;
     }
 }
