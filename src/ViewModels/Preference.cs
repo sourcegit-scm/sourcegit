@@ -78,7 +78,8 @@ namespace SourceGit.ViewModels
         public string DefaultFontFamily
         {
             get => _defaultFontFamily;
-            set {
+            set
+            {
                 if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
                     App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }

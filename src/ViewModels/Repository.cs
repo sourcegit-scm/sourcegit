@@ -1866,8 +1866,9 @@ namespace SourceGit.ViewModels
                     target.Icon = App.CreateMenuIcon(b.IsCurrent ? "Icons.Check" : "Icons.Branch");
                     target.Click += (_, e) =>
                     {
-                        App.OpenDialog(new Views.BranchCompare() { 
-                            DataContext = new BranchCompare(_fullpath, branch, dup) 
+                        App.OpenDialog(new Views.BranchCompare()
+                        {
+                            DataContext = new BranchCompare(_fullpath, branch, dup)
                         });
                         e.Handled = true;
                     };

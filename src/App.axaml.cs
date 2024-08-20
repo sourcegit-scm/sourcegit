@@ -247,7 +247,7 @@ namespace SourceGit
             var primary = onlyUseMonospaceFontInEditor ? defaultFont : monospaceFont;
             if (!string.IsNullOrEmpty(primary))
                 resDic.Add("Fonts.Primary", new FontFamily(primary));
-            
+
             if (resDic.Count > 0)
             {
                 app.Resources.MergedDictionaries.Add(resDic);
