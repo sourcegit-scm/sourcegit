@@ -240,70 +240,31 @@
               </Button>
             </Grid>
           </ToggleButton>
-          <DataGrid Grid.Row="7"
-                    x:Name="SubmoduleList"
-                    Height="0"
-                    Margin="8,0,4,0"
-                    Background="Transparent"
-                    ItemsSource="{Binding Submodules}"
-                    SelectionMode="Single"
-                    CanUserReorderColumns="False"
-                    CanUserResizeColumns="False"
-                    CanUserSortColumns="False"
-                    IsReadOnly="True"
-                    HeadersVisibility="None"
-                    Focusable="False"
-                    RowHeight="24"
-                    HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto"
-                    ContextRequested="OnSubmoduleContextRequested"
-                    DoubleTapped="OnDoubleTappedSubmodule"
-                    PropertyChanged="OnLeftSidebarDataGridPropertyChanged"
-                    IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}">
-            <DataGrid.Styles>
-              <Style Selector="DataGridRow">
-                <Setter Property="CornerRadius" Value="4" />
-                <Setter Property="Height" Value="24"/>
-              </Style>
-
-              <Style Selector="DataGridRow /template/ Border#RowBorder">
-                <Setter Property="ClipToBounds" Value="True" />
-              </Style>
-
-              <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
-              </Style>
-
-              <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-              </Style>
-            </DataGrid.Styles>
-
-            <DataGrid.Columns>
-              <DataGridTemplateColumn Header="ICON">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Path Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Width="*" Header="NAME">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Grid Background="Transparent" Margin="0,0,4,0" ColumnDefinitions="*,8">
-                      <TextBlock Grid.Column="0" Text="{Binding Path}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
-                      <Path Grid.Column="1"
-                            Width="8" Height="8"
-                            Fill="Goldenrod"
-                            Data="{StaticResource Icons.Modified}"
-                            IsVisible="{Binding IsDirty}"/>
-                    </Grid>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-            </DataGrid.Columns>
-          </DataGrid>
+          <ListBox Grid.Row="7"
+                   x:Name="SubmoduleList"
+                   Height="0"
+                   Margin="8,0,4,0"
+                   Classes="repo_left_content_list"
+                   ItemsSource="{Binding Submodules}"
+                   SelectionMode="Single"
+                   ContextRequested="OnSubmoduleContextRequested"
+                   DoubleTapped="OnDoubleTappedSubmodule"
+                   PropertyChanged="OnLeftSidebarDataGridPropertyChanged"
+                   IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="m:Submodule">
+                <Grid ColumnDefinitions="Auto,*,8">
+                  <Path Grid.Column="0" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Path}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
+                  <Path Grid.Column="2"
+                        Width="8" Height="8"
+                        Fill="Goldenrod"
+                        Data="{StaticResource Icons.Modified}"
+                        IsVisible="{Binding IsDirty}"/>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
 
           <!-- Worktrees -->
           <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsWorktreeGroupExpanded, Mode=TwoWay}">
@@ -329,74 +290,30 @@
               </Button>
             </Grid>
           </ToggleButton>
-          <DataGrid Grid.Row="9"
-                    x:Name="WorktreeList"
-                    Height="0"
-                    Margin="8,0,4,0"
-                    Background="Transparent"
-                    ItemsSource="{Binding Worktrees}"
-                    SelectionMode="Single"
-                    CanUserReorderColumns="False"
-                    CanUserResizeColumns="False"
-                    CanUserSortColumns="False"
-                    IsReadOnly="True"
-                    HeadersVisibility="None"
-                    Focusable="False"
-                    RowHeight="24"
-                    HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto"
-                    ContextRequested="OnWorktreeContextRequested"
-                    DoubleTapped="OnDoubleTappedWorktree"
-                    PropertyChanged="OnLeftSidebarDataGridPropertyChanged"
-                    IsVisible="{Binding IsWorktreeGroupExpanded, Mode=OneWay}">
-            <DataGrid.Styles>
-              <Style Selector="DataGridRow">
-                <Setter Property="CornerRadius" Value="4"/>
-                <Setter Property="Height" Value="24"/>
-              </Style>
-
-              <Style Selector="DataGridRow /template/ Border#RowBorder">
-                <Setter Property="ClipToBounds" Value="True" />
-              </Style>
-
-              <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
-              </Style>
-
-              <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
-                <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-              </Style>
-            </DataGrid.Styles>
-
-            <DataGrid.Columns>
-              <DataGridTemplateColumn Header="ICON">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Path Width="10" Height="10" Margin="8,0,0,0" Data="{StaticResource Icons.Worktree}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Width="*" Header="FullPath">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <TextBlock Classes="primary" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
-                      <Run Text="{Binding FullPath}"/>
-                      <Run Text="{Binding Name}" Foreground="{DynamicResource Brush.FG2}"/>
-                    </TextBlock>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn Header="FullPath">
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Path Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Lock}" Fill="{DynamicResource Brush.FG2}" IsVisible="{Binding IsLocked}"/>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-            </DataGrid.Columns>
-          </DataGrid>
+          <ListBox Grid.Row="9"
+                   x:Name="WorktreeList"
+                   Height="0"
+                   Margin="8,0,4,0"
+                   Classes="repo_left_content_list"
+                   ItemsSource="{Binding Worktrees}"
+                   SelectionMode="Single"
+                   ContextRequested="OnWorktreeContextRequested"
+                   DoubleTapped="OnDoubleTappedWorktree"
+                   PropertyChanged="OnLeftSidebarDataGridPropertyChanged"
+                   IsVisible="{Binding IsWorktreeGroupExpanded, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="m:Worktree">
+                <Grid ColumnDefinitions="Auto,*,22">
+                  <Path Grid.Column="0" Width="10" Height="10" Margin="8,0,0,0" Data="{StaticResource Icons.Worktree}"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
+                    <Run Text="{Binding FullPath}"/>
+                    <Run Text="{Binding Name}" Foreground="{DynamicResource Brush.FG2}"/>
+                  </TextBlock>
+                  <Path Grid.Column="2" Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Lock}" Fill="{DynamicResource Brush.FG2}" IsVisible="{Binding IsLocked}"/>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
         </Grid>
       </Grid>
 

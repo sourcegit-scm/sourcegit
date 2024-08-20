@@ -7,31 +7,12 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.TagsView">
-  <UserControl.Styles>
-    <Style Selector="ListBox">
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-      <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-      <Setter Property="ItemsPanel">
-        <ItemsPanelTemplate>
-          <VirtualizingStackPanel Orientation="Vertical"/>
-        </ItemsPanelTemplate>
-      </Setter>
-    </Style>
-    
-    <Style Selector="ListBoxItem">
-      <Setter Property="Height" Value="24"/>
-      <Setter Property="Margin" Value="0"/>
-      <Setter Property="Padding" Value="0"/>
-      <Setter Property="CornerRadius" Value="4"/>
-    </Style>
-  </UserControl.Styles>
-  
+             x:Class="SourceGit.Views.TagsView">  
   <UserControl.DataTemplates>
     <DataTemplate DataType="vm:TagCollectionAsTree">
-      <ListBox ItemsSource="{Binding Rows}" 
-               SelectionMode="Single" 
+      <ListBox Classes="repo_left_content_list"
+               ItemsSource="{Binding Rows}"
+               SelectionMode="Single"
                SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:TagTreeNode">
@@ -70,7 +51,8 @@
     </DataTemplate>
 
     <DataTemplate DataType="vm:TagCollectionAsList">
-      <ListBox ItemsSource="{Binding Tags}"
+      <ListBox Classes="repo_left_content_list"
+               ItemsSource="{Binding Tags}"
                SelectionMode="Single" 
                SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>

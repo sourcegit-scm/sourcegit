@@ -8,104 +8,78 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.BranchTree"
              x:Name="ThisControl">
-  <DataGrid x:Name="BranchesPresenter"
-            ItemsSource="{Binding #ThisControl.Rows}"
-            Background="Transparent"
-            RowHeight="24"
-            CanUserReorderColumns="False"
-            CanUserResizeColumns="False"
-            CanUserSortColumns="False"
-            HorizontalScrollBarVisibility="Disabled"
-            VerticalScrollBarVisibility="Auto"
-            HeadersVisibility="None"
-            SelectionChanged="OnNodesSelectionChanged"
-            ContextRequested="OnTreeContextRequested">
-    <DataGrid.Styles>
-      <Style Selector="DataGridRow" x:DataType="vm:BranchTreeNode">
-        <Setter Property="CornerRadius" Value="{Binding CornerRadius}" />
-        <Setter Property="Height" Value="24"/>
+  <ListBox x:Name="BranchesPresenter"
+           Classes="repo_left_content_list"
+           ItemsSource="{Binding #ThisControl.Rows}"
+           SelectionMode="Multiple"
+           SelectionChanged="OnNodesSelectionChanged"
+           ContextRequested="OnTreeContextRequested">
+    <ListBox.ItemsPanel>
+      <ItemsPanelTemplate>
+        <VirtualizingStackPanel Orientation="Vertical"/>
+      </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+
+    <ListBox.Styles>
+      <Style Selector="ListBoxItem" x:DataType="vm:BranchTreeNode">
+        <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
       </Style>
+    </ListBox.Styles>
 
-      <Style Selector="DataGridRow /template/ Border#RowBorder">
-        <Setter Property="ClipToBounds" Value="True" />
-      </Style>
+    <ListBox.ItemTemplate>
+      <DataTemplate DataType="vm:BranchTreeNode">
+        <Grid Height="24"
+              Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+              ColumnDefinitions="16,*"
+              ToolTip.Tip="{Binding Tooltip}">
 
-      <Style Selector="Grid.repository_leftpanel DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
-        <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
-        <Setter Property="Opacity" Value=".5"/>
-      </Style>
-      <Style Selector="Grid.repository_leftpanel DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
-        <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
-        <Setter Property="Opacity" Value="1"/>
-      </Style>
-      <Style Selector="Grid.repository_leftpanel:focus-within DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
-        <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-        <Setter Property="Opacity" Value=".65"/>
-      </Style>
-      <Style Selector="Grid.repository_leftpanel:focus-within DataGridRow:selected:pointerover /template/ Rectangle#BackgroundRectangle">
-        <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-        <Setter Property="Opacity" Value=".8"/>
-      </Style>
-    </DataGrid.Styles>
+        <!-- Tree Expander -->
+        <v:BranchTreeNodeToggleButton Grid.Column="0"
+                                      Classes="tree_expander"
+                                      Focusable="False"
+                                      HorizontalAlignment="Center"
+                                      IsChecked="{Binding IsExpanded, Mode=OneWay}"
+                                      IsVisible="{Binding !IsBranch}"/>
 
-    <DataGrid.Columns>
-      <DataGridTemplateColumn Width="*">
-        <DataGridTemplateColumn.CellTemplate>
-          <DataTemplate x:DataType="vm:BranchTreeNode">
-            <Grid Height="24"
-                  Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                  ColumnDefinitions="16,*"
-                  ToolTip.Tip="{Binding Tooltip}">
+        <!-- Content Area (allows double-click) -->
+        <Grid Grid.Column="1"
+              Background="Transparent"
+              ColumnDefinitions="18,*,Auto,Auto"
+              DoubleTapped="OnDoubleTappedBranchNode">
 
-              <!-- Tree Expander -->
-              <v:BranchTreeNodeToggleButton Grid.Column="0"
-                                            Classes="tree_expander"
-                                            Focusable="False"
-                                            HorizontalAlignment="Center"
-                                            IsChecked="{Binding IsExpanded, Mode=OneWay}"
-                                            IsVisible="{Binding !IsBranch}"/>
+          <!-- Icon -->
+          <v:BranchTreeNodeIcon Grid.Column="0"
+                                Node="{Binding}"
+                                IsExpanded="{Binding IsExpanded}"/>
 
-              <!-- Content Area (allows double-click) -->
-              <Grid Grid.Column="1"
-                    Background="Transparent"
-                    ColumnDefinitions="18,*,Auto,Auto"
-                    DoubleTapped="OnDoubleTappedBranchNode">
-                
-                <!-- Icon -->
-                <v:BranchTreeNodeIcon Grid.Column="0"
-                                      Node="{Binding}"
-                                      IsExpanded="{Binding IsExpanded}"/>
+          <!-- Name -->
+          <TextBlock Grid.Column="1"
+                      Text="{Binding Name}"
+                      Classes="primary"
+                      FontWeight="{Binding NameFontWeight}"/>
 
-                <!-- Name -->
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Name}"
-                           Classes="primary"
-                           FontWeight="{Binding NameFontWeight}"/>
+          <!-- Tracking status -->
+          <v:BranchTreeNodeTrackStatusPresenter Grid.Column="2"
+                                                Margin="8,0"
+                                                VerticalAlignment="Center"
+                                                FontFamily="{DynamicResource Fonts.Monospace}"
+                                                FontSize="10"
+                                                Foreground="{DynamicResource Brush.BadgeFG}"
+                                                Background="{DynamicResource Brush.Badge}"/>
 
-                <!-- Tracking status -->
-                <v:BranchTreeNodeTrackStatusPresenter Grid.Column="2"
-                                                      Margin="8,0"
-                                                      VerticalAlignment="Center"
-                                                      FontFamily="{DynamicResource Fonts.Monospace}"
-                                                      FontSize="10"
-                                                      Foreground="{DynamicResource Brush.BadgeFG}"
-                                                      Background="{DynamicResource Brush.Badge}"/>
-
-                <!-- Filter Toggle Button -->
-                <ToggleButton Grid.Column="3"
-                              Classes="filter"
-                              Margin="0,0,8,0"
-                              Background="Transparent"
-                              IsCheckedChanged="OnToggleFilter"
-                              IsVisible="{Binding IsBranch}"
-                              IsChecked="{Binding IsFiltered}"
-                              ToolTip.Tip="{DynamicResource Text.Filter}"/>
-              </Grid>
-            </Grid>
-          </DataTemplate>
-        </DataGridTemplateColumn.CellTemplate>
-      </DataGridTemplateColumn>
-    </DataGrid.Columns>
-  </DataGrid>
+          <!-- Filter Toggle Button -->
+          <ToggleButton Grid.Column="3"
+                        Classes="filter"
+                        Margin="0,0,8,0"
+                        Background="Transparent"
+                        IsCheckedChanged="OnToggleFilter"
+                        IsVisible="{Binding IsBranch}"
+                        IsChecked="{Binding IsFiltered}"
+                        ToolTip.Tip="{DynamicResource Text.Filter}"/>
+          </Grid>
+        </Grid>
+      </DataTemplate>
+    </ListBox.ItemTemplate>
+  </ListBox>
 </UserControl>
 
