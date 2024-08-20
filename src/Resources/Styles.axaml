@@ -143,6 +143,7 @@
 
   <Style Selector="Window.custom_window_frame[WindowState=Maximized] /template/ Border#PART_ContentRoot">
     <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="CornerRadius" Value="0"/>
   </Style>
 
   <Style Selector="Window.custom_window_frame[WindowState=Maximized] /template/ Border.resize_border">
