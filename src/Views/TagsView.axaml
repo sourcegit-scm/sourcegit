@@ -7,7 +7,13 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.TagsView">  
+             x:Class="SourceGit.Views.TagsView">
+  <UserControl.Styles>
+    <Style Selector="ListBoxItem">
+      <Setter Property="CornerRadius" Value="4"/>
+    </Style>
+  </UserControl.Styles>
+  
   <UserControl.DataTemplates>
     <DataTemplate DataType="vm:TagCollectionAsTree">
       <ListBox Classes="repo_left_content_list"

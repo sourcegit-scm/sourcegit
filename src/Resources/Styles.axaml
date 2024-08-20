@@ -191,9 +191,6 @@
     <Setter Property="MaxWidth" Value="1024"/>
     <Setter Property="MaxHeight" Value="768"/>
   </Style>
-  
-  <Style Selector="Grid.repository_leftpanel">
-  </Style>
 
   <Style Selector="Path">
     <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
@@ -720,7 +717,6 @@
       <Setter Property="Height" Value="24"/>
       <Setter Property="Margin" Value="0"/>
       <Setter Property="Padding" Value="0"/>
-      <Setter Property="CornerRadius" Value="4"/>
 
       <Setter Property="Template">
         <ControlTemplate>
@@ -739,24 +735,24 @@
         </ControlTemplate>
       </Setter>
     </Style>
-  </Style>
 
-  <Style Selector="Grid.repository_leftpanel ListBox.repo_left_content_list ListBoxItem:pointerover /template/ Border#PART_Background">
-    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
-    <Setter Property="Opacity" Value=".5"/>
-  </Style>
-  <Style Selector="Grid.repository_leftpanel ListBox.repo_left_content_list ListBoxItem:selected /template/ Border#PART_Background">
-    <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
-    <Setter Property="Opacity" Value="1"/>
-  </Style>
-  <Style Selector="Grid.repository_leftpanel:focus-within ListBox.repo_left_content_list ListBoxItem:selected /template/ Border#PART_Background">
-    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
-    <Setter Property="Opacity" Value=".65"/>
-  </Style>
-  <Style Selector="Grid.repository_leftpanel:focus-within ListBox.repo_left_content_list ListBoxItem:selected:pointerover /template/ Border#PART_Background">
-    <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
-    <Setter Property="Opacity" Value=".8"/>
-  </Style>
+    <Style Selector="^ ListBoxItem:pointerover /template/ Border#PART_Background">
+      <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+      <Setter Property="Opacity" Value=".5"/>
+    </Style>
+    <Style Selector="^ ListBoxItem:selected /template/ Border#PART_Background">
+      <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:focus-within ListBoxItem:selected /template/ Border#PART_Background">
+      <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+      <Setter Property="Opacity" Value=".65"/>
+    </Style>
+    <Style Selector="^:focus-within ListBoxItem:selected:pointerover /template/ Border#PART_Background">
+      <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+      <Setter Property="Opacity" Value=".8"/>
+    </Style>
+  </Style>  
 
   <Style Selector="ContextMenu">
     <Setter Property="HorizontalOffset" Value="-4"/>

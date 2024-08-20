@@ -17,7 +17,7 @@
     </Grid.ColumnDefinitions>
 
     <!-- Left Panel -->
-    <Grid Grid.Column="0" Classes="repository_leftpanel" RowDefinitions="Auto,*">
+    <Grid Grid.Column="0" RowDefinitions="Auto,*">
       <!-- Page Switcher for Left Contents (Dashboard or CommitSearch) -->
       <Grid Grid.Row="0" Height="24" Margin="0,6" HorizontalAlignment="Center" ColumnDefinitions="48,1,48">
         <Border Grid.Column="0" Grid.ColumnSpan="3"
@@ -251,6 +251,11 @@
                    DoubleTapped="OnDoubleTappedSubmodule"
                    PropertyChanged="OnLeftSidebarDataGridPropertyChanged"
                    IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}">
+            <ListBox.Styles>
+              <Style Selector="ListBoxItem">
+                <Setter Property="CornerRadius" Value="4"/>
+              </Style>
+            </ListBox.Styles>
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Submodule">
                 <Grid ColumnDefinitions="Auto,*,8">
@@ -301,6 +306,11 @@
                    DoubleTapped="OnDoubleTappedWorktree"
                    PropertyChanged="OnLeftSidebarDataGridPropertyChanged"
                    IsVisible="{Binding IsWorktreeGroupExpanded, Mode=OneWay}">
+            <ListBox.Styles>
+              <Style Selector="ListBoxItem">
+                <Setter Property="CornerRadius" Value="4"/>
+              </Style>
+            </ListBox.Styles>
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Worktree">
                 <Grid ColumnDefinitions="Auto,*,22">
