@@ -40,6 +40,12 @@ namespace SourceGit.Models
             set;
         } = true;
 
+        public bool CheckSubmodulesOnPush
+        {
+            get;
+            set;
+        } = true;
+
         public bool PushAllTags
         {
             get;

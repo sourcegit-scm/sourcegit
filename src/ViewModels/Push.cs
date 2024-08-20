@@ -62,12 +62,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool PushAllTags
-        {
-            get => _repo.Settings.PushAllTags;
-            set => _repo.Settings.PushAllTags = value;
-        }
-
         public bool IsSetTrackOptionVisible
         {
             get => _isSetTrackOptionVisible;
@@ -79,6 +73,23 @@ namespace SourceGit.ViewModels
             get;
             set;
         } = true;
+
+        public bool IsCheckSubmodulesVisible
+        {
+            get => _repo.Submodules.Count > 0;
+        }
+
+        public bool CheckSubmodules
+        {
+            get;
+            set;
+        } = true;
+
+        public bool PushAllTags
+        {
+            get => _repo.Settings.PushAllTags;
+            set => _repo.Settings.PushAllTags = value;
+        }
 
         public bool ForcePush
         {
@@ -151,8 +162,9 @@ namespace SourceGit.ViewModels
                     _selectedRemote.Name,
                     remoteBranchName,
                     PushAllTags,
-                    ForcePush,
+                    _repo.Submodules.Count > 0 && CheckSubmodules,
                     _isSetTrackOptionVisible && Tracking,
+                    ForcePush,
                     SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
