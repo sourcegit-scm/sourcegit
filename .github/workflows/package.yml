@@ -7,12 +7,8 @@ on:
         required: true
         type: string
 jobs:
-  build:
-    name: Build
-    uses: ./.github/workflows/ci.yml
   windows-portable:
     name: Package portable Windows app
-    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -37,7 +33,6 @@ jobs:
           path: build/sourcegit_*.zip
   osx-app:
     name: Package OSX app
-    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -49,12 +44,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: sourcegit.${{ matrix.runtime }}
-          path: build/SourceGit
+          path: build
       - name: Package
         env:
           VERSION: ${{ inputs.version }}
           RUNTIME: ${{ matrix.runtime }}
-        run: ./build/scripts/package.osx-app.sh
+        run: |
+          mkdir build/SourceGit
+          tar -xf "build/sourcegit.${{ matrix.runtime }}.tar" -C build/SourceGit
+          ./build/scripts/package.osx-app.sh
       - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:
@@ -62,7 +60,6 @@ jobs:
           path: build/sourcegit_*.zip
   linux:
     name: Package Linux
-    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:

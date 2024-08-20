@@ -4,6 +4,9 @@ on:
     tags:
       - v*
 jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
   version:
     name: Prepare version string
     runs-on: ubuntu-latest
@@ -16,13 +19,13 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
   package:
-    needs: version
+    needs: [build, version]
     name: Package
     uses: ./.github/workflows/package.yml
     with:
       version: ${{ needs.version.outputs.version }}
   release:
-    needs: [version, package]
+    needs: [package, version]
     name: Release
     runs-on: ubuntu-latest
     permissions:
@@ -34,7 +37,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" -t "Release ${TAG#v}" --notes-from-tag
+          VERSION: ${{ needs.version.outputs.version }}
+        run: gh release create "$TAG" -t "Release $VERSION" --notes-from-tag
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -45,5 +49,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
-          VERSION: ${{ needs.version.outputs.version }}
         run: gh release upload "$TAG" packages/*

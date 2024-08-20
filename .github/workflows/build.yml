@@ -1,0 +1,68 @@
+name: Build
+on:
+  workflow_call:
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - name : Windows x64
+            os: windows-2019
+            runtime: win-x64
+          - name : Windows ARM64
+            os: windows-2019
+            runtime: win-arm64
+          - name : macOS (Intel)
+            os: macos-13
+            runtime: osx-x64
+          - name : macOS (Apple Silicon)
+            os: macos-latest
+            runtime: osx-arm64
+          - name : Linux
+            os: ubuntu-20.04
+            runtime: linux-x64
+          - name : Linux (arm64)
+            os: ubuntu-20.04
+            runtime: linux-arm64
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Configure arm64 packages
+        if: ${{ matrix.runtime == 'linux-arm64' }}
+        run: |
+          sudo dpkg --add-architecture arm64
+          echo 'deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ focal main restricted
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ focal-updates main restricted
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ focal-backports main restricted' \
+          | sudo tee /etc/apt/sources.list.d/arm64.list
+          sudo sed -i -e 's/^deb http/deb [arch=amd64] http/g' /etc/apt/sources.list
+          sudo sed -i -e 's/^deb mirror/deb [arch=amd64] mirror/g' /etc/apt/sources.list
+      - name: Install cross-compiling dependencies
+        if: ${{ matrix.runtime == 'linux-arm64' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install clang llvm gcc-aarch64-linux-gnu zlib1g-dev:arm64
+      - name: Build
+        run: dotnet build -c Release
+      - name: Publish
+        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r ${{ matrix.runtime }}
+      - name: Rename executable file
+        if: ${{ startsWith(matrix.runtime, 'linux-') }}
+        run: mv publish/SourceGit publish/sourcegit
+      - name: Tar artifact
+        if: ${{ startsWith(matrix.runtime, 'linux-') || startsWith(matrix.runtime, 'osx-') }}
+        run: |
+          tar -cvf "sourcegit.${{ matrix.runtime }}.tar" -C publish .
+          rm -r publish/*
+          mv "sourcegit.${{ matrix.runtime }}.tar" publish
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sourcegit.${{ matrix.runtime }}
+          path: publish/*
