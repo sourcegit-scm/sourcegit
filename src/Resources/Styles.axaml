@@ -47,6 +47,7 @@
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="SystemDecorations" Value="None"/>
     <Setter Property="Padding" Value="12"/>
+    <Setter Property="CornerRadius" Value="8"/>
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -120,9 +121,9 @@
                     Background="{DynamicResource Brush.Window}"
                     BorderBrush="{DynamicResource Brush.WindowBorder}"
                     BorderThickness="1"
-                    CornerRadius="8">
+                    CornerRadius="{TemplateBinding CornerRadius}">
               <VisualLayerManager>
-                <Border CornerRadius="8" ClipToBounds="True">
+                <Border CornerRadius="{TemplateBinding CornerRadius}" ClipToBounds="True">
                   <ContentPresenter Name="PART_ContentPresenter"
                                     ContentTemplate="{TemplateBinding ContentTemplate}"
                                     Content="{TemplateBinding Content}"
@@ -139,11 +140,11 @@
 
   <Style Selector="Window.custom_window_frame[WindowState=Maximized]">
     <Setter Property="Padding" Value="0"/>
+    <Setter Property="CornerRadius" Value="0"/>
   </Style>
 
   <Style Selector="Window.custom_window_frame[WindowState=Maximized] /template/ Border#PART_ContentRoot">
     <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="CornerRadius" Value="0"/>
   </Style>
 
   <Style Selector="Window.custom_window_frame[WindowState=Maximized] /template/ Border.resize_border">
