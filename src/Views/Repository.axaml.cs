@@ -63,11 +63,6 @@ namespace SourceGit.Views
                 FontFamilyProperty,
                 ForegroundProperty,
                 CountProperty);
-
-            AffectsRender<CounterPresenter>(
-                ForegroundProperty,
-                BackgroundProperty,
-                CountProperty);
         }
 
         public override void Render(DrawingContext context)
