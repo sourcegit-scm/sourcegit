@@ -514,7 +514,7 @@
   <Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
   </Style>
-  <Style Selector="Button.flat.primary TextBlock">
+  <Style Selector="Button.flat.primary > TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
   </Style>
 
