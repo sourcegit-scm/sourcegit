@@ -200,7 +200,7 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var matches = new List<Models.IssueTrackerMatch>();
+                var matches = new List<Models.Hyperlink>();
                 foreach (var rule in rules)
                     rule.Matches(matches, subject);
 
@@ -219,9 +219,9 @@ namespace SourceGit.Views
                     if (match.Start > pos)
                         Inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
 
-                    match.Link = new Run(subject.Substring(match.Start, match.Length));
-                    match.Link.Classes.Add("issue_link");
-                    Inlines.Add(match.Link);
+                    var link = new Run(subject.Substring(match.Start, match.Length));
+                    link.Classes.Add("issue_link");
+                    Inlines.Add(link);
 
                     pos = match.Start + match.Length;
                 }
@@ -239,11 +239,10 @@ namespace SourceGit.Views
 
             if (_matches != null)
             {
-                var padding = Padding;
-                var point = e.GetPosition(this) - new Point(padding.Left, padding.Top);
-                point = new Point(
-                    MathUtilities.Clamp(point.X, 0, Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0)),
-                    MathUtilities.Clamp(point.Y, 0, Math.Max(TextLayout.Height, 0)));
+                var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
+                var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
+                var y = Math.Min(Math.Max(point.Y, 0), Math.Max(TextLayout.Height, 0));
+                point = new Point(x, y);
 
                 var textPosition = TextLayout.HitTestPoint(point).TextPosition;
                 foreach (var match in _matches)
@@ -255,10 +254,8 @@ namespace SourceGit.Views
                         return;
 
                     _lastHover = match;
-                    //_lastHover.Link.Classes.Add("issue_link_hovered");
-
                     SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
-                    ToolTip.SetTip(this, match.URL);
+                    ToolTip.SetTip(this, match.Link);
                     ToolTip.SetIsOpen(this, true);
                     e.Handled = true;
                     return;
@@ -273,7 +270,7 @@ namespace SourceGit.Views
             base.OnPointerPressed(e);
 
             if (_lastHover != null)
-                Native.OS.OpenBrowser(_lastHover.URL);
+                Native.OS.OpenBrowser(_lastHover.Link);
         }
 
         protected override void OnPointerExited(PointerEventArgs e)
@@ -288,13 +285,12 @@ namespace SourceGit.Views
             {
                 ToolTip.SetTip(this, null);
                 SetCurrentValue(CursorProperty, Cursor.Parse("Arrow"));
-                //_lastHover.Link.Classes.Remove("issue_link_hovered");
                 _lastHover = null;
             }
         }
 
-        private List<Models.IssueTrackerMatch> _matches = null;
-        private Models.IssueTrackerMatch _lastHover = null;
+        private List<Models.Hyperlink> _matches = null;
+        private Models.Hyperlink _lastHover = null;
     }
 
     public class CommitTimeTextBlock : TextBlock

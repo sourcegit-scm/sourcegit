@@ -131,7 +131,6 @@
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email address</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE TRACKER</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleCommitLink" xml:space="preserve">Add Sample Commit HASH Rule</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Add Sample Github Rule</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Add Sample Jira Rule</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">New Rule</x:String>

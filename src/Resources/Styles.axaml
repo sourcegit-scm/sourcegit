@@ -284,6 +284,10 @@
   <Style Selector="Run.issue_link">
     <Setter Property="Foreground" Value="{DynamicResource Brush.Link}"/>
   </Style>
+  <Style Selector="Run.commit_link">
+    <Setter Property="Foreground" Value="DarkOrange"/>
+    <Setter Property="TextDecorations" Value="Underline"/>
+  </Style>
   
   <Style Selector="SelectableTextBlock">
     <Setter Property="HorizontalAlignment" Value="Left"/>

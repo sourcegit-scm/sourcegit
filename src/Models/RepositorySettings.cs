@@ -125,19 +125,6 @@ namespace SourceGit.Models
             return rule;
         }
 
-        public IssueTrackerRule AddCommitLinkIssueTracker()
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "Commit Link",
-                RegexString = @"\b([0-9a-fA-F]{8,40})\b",
-                URLTemplate = "https://test/$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
         public IssueTrackerRule AddGithubIssueTracker(string repoURL)
         {
             var rule = new IssueTrackerRule()

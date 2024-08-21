@@ -1,29 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Avalonia.Controls.Documents;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
-    public class IssueTrackerMatch
-    {
-        public int Start { get; set; } = 0;
-        public int Length { get; set; } = 0;
-        public string URL { get; set; } = "";
-        public Run Link { get; set; } = null;
-
-        public bool Intersect(int start, int length)
-        {
-            if (start == Start)
-                return true;
-
-            if (start < Start)
-                return start + length > Start;
-
-            return start < Start + Length;
-        }
-    }
-
     public class IssueTrackerRule : ObservableObject
     {
         public string Name
@@ -65,7 +46,7 @@ namespace SourceGit.Models
             set => SetProperty(ref _urlTemplate, value);
         }
 
-        public void Matches(List<IssueTrackerMatch> outs, string message)
+        public void Matches(List<Hyperlink> outs, string message)
         {
             if (_regex == null || string.IsNullOrEmpty(_urlTemplate))
                 return;
@@ -92,17 +73,15 @@ namespace SourceGit.Models
                 if (intersect)
                     continue;
 
-                var range = new IssueTrackerMatch();
-                range.Start = start;
-                range.Length = len;
-                range.URL = _urlTemplate;
+                var link = _urlTemplate;
                 for (var j = 1; j < match.Groups.Count; j++)
                 {
                     var group = match.Groups[j];
                     if (group.Success)
-                        range.URL = range.URL.Replace($"${j}", group.Value);
+                        link = link.Replace($"${j}", group.Value);
                 }
 
+                var range = new Hyperlink(start, len, link);
                 outs.Add(range);
             }
         }

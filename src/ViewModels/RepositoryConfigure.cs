@@ -102,11 +102,6 @@ namespace SourceGit.ViewModels
             SelectedCommitTemplate = null;
         }
 
-        public void AddSampleCommitLinkTracker()
-        {
-            SelectedIssueTrackerRule = _repo.Settings.AddCommitLinkIssueTracker();
-        }
-
         public void AddSampleGithubIssueTracker()
         {
             foreach (var remote in _repo.Remotes)
