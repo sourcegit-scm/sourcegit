@@ -98,6 +98,7 @@ namespace SourceGit.Views
                 _label = null;
             }
 
+            InvalidateVisual();
             return _label != null ? new Size(_label.Width + 18, 18) : new Size(0, 0);
         }
 
