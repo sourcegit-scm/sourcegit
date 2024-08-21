@@ -284,6 +284,19 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isWorktreeGroupExpanded, value);
         }
 
+        public bool FirstParentFilterToggled
+        {
+            get => _firstParentFilterToggled;
+            set
+            {
+                if (SetProperty(ref _firstParentFilterToggled, value))
+                {
+                    _settings.FirstParentFilterEnabled = value;
+                    Task.Run(RefreshCommits);
+                }
+            }
+        }
+
         public InProgressContext InProgressContext
         {
             get => _inProgressContext;
@@ -752,9 +765,13 @@ namespace SourceGit.ViewModels
                     });
                 }
             }
+            else if (_settings.FirstParentFilterEnabled)
+            {
+                limits += "--first-parent ";
+            }
             else
             {
-                limits += "--exclude=refs/stash --all";
+                limits += "--exclude=refs/stash --all ";
             }
 
             var commits = new Commands.QueryCommits(_fullpath, limits).Result();
@@ -1957,6 +1974,7 @@ namespace SourceGit.ViewModels
         private bool _isSearchLoadingVisible = false;
         private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 0;
+        private bool _firstParentFilterToggled = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
         private List<string> _revisionFiles = new List<string>();
