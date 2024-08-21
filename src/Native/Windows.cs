@@ -183,6 +183,7 @@ namespace SourceGit.Native
             else
             {
                 fullpath = new DirectoryInfo(path!).FullName;
+                fullpath += Path.DirectorySeparatorChar;
             }
 
             if (select)
