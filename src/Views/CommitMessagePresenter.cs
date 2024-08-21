@@ -159,7 +159,7 @@ namespace SourceGit.Views
                 {
                     Native.OS.OpenBrowser(_lastHover.Link);
                 }
-                
+
                 e.Handled = true;
                 return;
             }

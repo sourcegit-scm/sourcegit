@@ -1,6 +1,4 @@
-﻿using Avalonia.Controls.Documents;
-
-namespace SourceGit.Models
+﻿namespace SourceGit.Models
 {
     public class Hyperlink
     {
