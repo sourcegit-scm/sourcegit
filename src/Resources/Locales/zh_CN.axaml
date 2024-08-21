@@ -134,6 +134,7 @@
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">邮箱地址</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleCommitLink" xml:space="preserve">新增匹配提交HASH规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增匹配Github Issue规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增匹配Jira规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">新增自定义规则</x:String>

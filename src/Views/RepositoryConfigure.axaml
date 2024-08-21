@@ -241,6 +241,7 @@
                     <MenuFlyout Placement="BottomEdgeAlignedLeft">
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.NewRule}" Command="{Binding NewIssueTracker}"/>
                       <MenuItem Header="-"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleCommitLink}" Command="{Binding AddSampleCommitLinkTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGithub}" Command="{Binding AddSampleGithubIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleJira}" Command="{Binding AddSampleJiraIssueTracker}"/>
                     </MenuFlyout>
