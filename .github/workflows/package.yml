@@ -31,6 +31,10 @@ jobs:
         with:
           name: package.${{ matrix.runtime }}
           path: build/sourcegit_*.zip
+      - name: Delete temp artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: sourcegit.${{ matrix.runtime }}
   osx-app:
     name: Package OSX app
     runs-on: macos-latest
@@ -58,6 +62,10 @@ jobs:
         with:
           name: package.${{ matrix.runtime }}
           path: build/sourcegit_*.zip
+      - name: Delete temp artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: sourcegit.${{ matrix.runtime }}
   linux:
     name: Package Linux
     runs-on: ubuntu-latest
@@ -93,3 +101,7 @@ jobs:
             build/sourcegit-*.AppImage
             build/sourcegit_*.deb
             build/sourcegit-*.rpm
+      - name: Delete temp artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: sourcegit.${{ matrix.runtime }}
