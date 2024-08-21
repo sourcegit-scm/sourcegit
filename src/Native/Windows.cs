@@ -203,7 +203,7 @@ namespace SourceGit.Native
         public void OpenWithDefaultEditor(string file)
         {
             var info = new FileInfo(file);
-            var start = new ProcessStartInfo("cmd", $"/c start {info.FullName}");
+            var start = new ProcessStartInfo("cmd", $"/c start \"\" \"{info.FullName}\"");
             start.CreateNoWindow = true;
             Process.Start(start);
         }
