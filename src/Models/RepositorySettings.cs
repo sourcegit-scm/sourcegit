@@ -70,6 +70,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool FirstParentFilterEnabled
+        {
+            get;
+            set;
+        } = false;
+
         public AvaloniaList<string> Filters
         {
             get;
