@@ -73,6 +73,16 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedView, value);
         }
 
+        public bool EnableFirstParentInHistories
+        {
+            get => _enableFirstParentInHistories;
+            set
+            {
+                if (SetProperty(ref _enableFirstParentInHistories, value))
+                    Task.Run(RefreshCommits);
+            }
+        }
+
         public string SearchBranchFilter
         {
             get => _searchBranchFilter;
@@ -282,19 +292,6 @@ namespace SourceGit.ViewModels
         {
             get => _isWorktreeGroupExpanded;
             set => SetProperty(ref _isWorktreeGroupExpanded, value);
-        }
-
-        public bool FirstParentFilterToggled
-        {
-            get => _firstParentFilterToggled;
-            set
-            {
-                if (SetProperty(ref _firstParentFilterToggled, value))
-                {
-                    _settings.FirstParentFilterEnabled = value;
-                    Task.Run(RefreshCommits);
-                }
-            }
         }
 
         public InProgressContext InProgressContext
@@ -737,6 +734,9 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
             var limits = $"-{Preference.Instance.MaxHistoryCommits} ";
+            if (_enableFirstParentInHistories)
+                limits += "--first-parent ";
+
             var validFilters = new List<string>();
             foreach (var filter in _settings.Filters)
             {
@@ -765,17 +765,13 @@ namespace SourceGit.ViewModels
                     });
                 }
             }
-            else if (_settings.FirstParentFilterEnabled)
-            {
-                limits += "--first-parent ";
-            }
             else
             {
-                limits += "--exclude=refs/stash --all ";
+                limits += "--exclude=refs/stash --all";
             }
 
             var commits = new Commands.QueryCommits(_fullpath, limits).Result();
-            var graph = Models.CommitGraph.Parse(commits);
+            var graph = Models.CommitGraph.Parse(commits, _enableFirstParentInHistories);
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -1974,7 +1970,7 @@ namespace SourceGit.ViewModels
         private bool _isSearchLoadingVisible = false;
         private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 0;
-        private bool _firstParentFilterToggled = false;
+        private bool _enableFirstParentInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
         private List<string> _revisionFiles = new List<string>();

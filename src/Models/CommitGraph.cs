@@ -128,7 +128,7 @@ namespace SourceGit.Models
             _penCount = colors.Count;
         }
 
-        public static CommitGraph Parse(List<Commit> commits)
+        public static CommitGraph Parse(List<Commit> commits, bool firstParentOnlyEnabled)
         {
             double UNIT_WIDTH = 12;
             double HALF_WIDTH = 6;
@@ -215,34 +215,37 @@ namespace SourceGit.Models
                     temp.Dots.Add(new Dot() { Center = position, Color = 0 });
                 }
 
-                // Deal with parents
-                for (int j = 1; j < commit.Parents.Count; j++)
+                // Deal with other parents (the first parent has been processed)
+                if (!firstParentOnlyEnabled)
                 {
-                    var parent = commit.Parents[j];
-                    if (mapUnsolved.TryGetValue(parent, out var value))
+                    for (int j = 1; j < commit.Parents.Count; j++)
                     {
-                        // Try to change the merge state of linked graph
-                        var l = value;
-                        if (isMerged)
-                            l.IsMerged = true;
+                        var parent = commit.Parents[j];
+                        if (mapUnsolved.TryGetValue(parent, out var value))
+                        {
+                            // Try to change the merge state of linked graph
+                            var l = value;
+                            if (isMerged)
+                                l.IsMerged = true;
 
-                        var link = new Link();
-                        link.Start = position;
-                        link.End = new Point(l.LastX, offsetY + HALF_HEIGHT);
-                        link.Control = new Point(link.End.X, link.Start.Y);
-                        link.Color = l.Path.Color;
+                            var link = new Link();
+                            link.Start = position;
+                            link.End = new Point(l.LastX, offsetY + HALF_HEIGHT);
+                            link.Control = new Point(link.End.X, link.Start.Y);
+                            link.Color = l.Path.Color;
 
-                        temp.Links.Add(link);
-                    }
-                    else
-                    {
-                        offsetX += UNIT_WIDTH;
+                            temp.Links.Add(link);
+                        }
+                        else
+                        {
+                            offsetX += UNIT_WIDTH;
 
-                        // Create new curve for parent commit that not includes before
-                        var l = new PathHelper(commit.Parents[j], isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT));
-                        unsolved.Add(l);
-                        temp.Paths.Add(l.Path);
-                        colorIdx = (colorIdx + 1) % _penCount;
+                            // Create new curve for parent commit that not includes before
+                            var l = new PathHelper(parent, isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT));
+                            unsolved.Add(l);
+                            temp.Paths.Add(l.Path);
+                            colorIdx = (colorIdx + 1) % _penCount;
+                        }
                     }
                 }
 

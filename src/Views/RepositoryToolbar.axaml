@@ -125,10 +125,6 @@
         <Button Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
           <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
         </Button>
-
-        <ToggleButton Classes="icon_button" Width="32" IsChecked="{Binding FirstParentFilterToggled, Mode=TwoWay}" ToolTip.Tip="{DynamicResource Text.Repository.FirstParentFilterToggle}">
-          <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.FirstParentFilter}" Fill="{DynamicResource Brush.FG1}"/>
-        </ToggleButton>
       </StackPanel>
     </Grid>
 </UserControl>
