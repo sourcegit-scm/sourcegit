@@ -56,6 +56,8 @@ namespace SourceGit.Views
 
             var normalizedPath = root.Replace("\\", "/");
             var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, parent, false);
+            ViewModels.Welcome.Instance.Refresh();
+
             var launcher = this.FindAncestorOfType<Launcher>()?.DataContext as ViewModels.Launcher;
             launcher?.OpenRepositoryInTab(node, launcher.ActivePage);
         }

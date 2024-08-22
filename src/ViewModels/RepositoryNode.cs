@@ -49,6 +49,13 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isVisible, value);
         }
 
+        [JsonIgnore]
+        public int Depth
+        {
+            get;
+            set;
+        } = 0;
+
         public AvaloniaList<RepositoryNode> SubNodes
         {
             get => _subNodes;

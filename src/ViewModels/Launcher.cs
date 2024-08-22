@@ -48,6 +48,7 @@ namespace SourceGit.ViewModels
 
                 var normalized = root.Replace("\\", "/");
                 var node = pref.FindOrAddNodeByRepositoryPath(normalized, null, false);
+                Welcome.Instance.Refresh();
                 OpenRepositoryInTab(node, null);
             }
             else if (pref.RestoreTabs)

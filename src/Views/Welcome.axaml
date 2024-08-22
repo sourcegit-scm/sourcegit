@@ -11,7 +11,9 @@
   <Grid RowDefinitions="*,36">
     <Grid Grid.Row="0" Margin="0,8" ColumnDefinitions="*,600,*">
       <Grid Grid.Column="1" RowDefinitions="Auto,*">
+        <!-- Search Box -->
         <TextBox Grid.Row="0"
+                 x:Name="SearchBox"
                  Height="32"
                  Padding="0"
                  CornerRadius="16"
@@ -19,7 +21,6 @@
                  BorderThickness="1"
                  Background="{DynamicResource Brush.Contents}"
                  Watermark="{DynamicResource Text.Welcome.Search}"
-                 KeyDown="OnSearchBoxKeyDown"
                  VerticalContentAlignment="Center"
                  Text="{Binding SearchFilter, Mode=TwoWay}"
                  v:AutoFocusBehaviour.IsEnabled="True">
@@ -34,30 +35,32 @@
           </TextBox.InnerRightContent>
         </TextBox>
 
-        <TreeView Grid.Row="1"
-                  x:Name="ReposTree"
-                  Margin="0,8,8,0"
-                  ItemsSource="{Binding RepositoryNodes}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  Loaded="SetupTreeViewDragAndDrop"
-                  LostFocus="OnTreeViewLostFocus"
-                  SelectionChanged="OnTreeViewSelectionChanged"
-                  KeyDown="OnTreeViewKeyDown">
-          <TreeView.ContextMenu>
-            <ContextMenu>
-              <MenuItem Header="{DynamicResource Text.Welcome.AddRootFolder}" Command="{Binding AddRootNode}">
-                <MenuItem.Icon>
-                  <Path Width="12" Height="12" Data="{DynamicResource Icons.Folder.Add}"/>
-                </MenuItem.Icon>
-              </MenuItem>
-            </ContextMenu>
-          </TreeView.ContextMenu>
-
-          <TreeView.Styles>
-            <Style Selector="TreeViewItem" x:DataType="vm:RepositoryNode">
-              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
-              <Setter Property="IsVisible" Value="{Binding IsVisible}"/>
+        <!-- Repository Tree -->
+        <ListBox Grid.Row="1"
+                 x:Name="TreeContainer"
+                 Margin="0,8,8,0"
+                 Focusable="True"
+                 Background="Transparent"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ItemsSource="{Binding Rows}"
+                 SelectionMode="Single"
+                 Loaded="SetupTreeViewDragAndDrop"
+                 LostFocus="OnTreeViewLostFocus"
+                 KeyDown="OnTreeViewKeyDown">
+          <ListBox.Styles>
+            <Style Selector="ListBox">
+              <Setter Property="FocusAdorner">
+                <FocusAdornerTemplate>
+                  <Border Background="Transparent" BorderThickness="0"/>
+                </FocusAdornerTemplate>
+              </Setter>
+            </Style>
+            
+            <Style Selector="ListBoxItem" x:DataType="vm:RepositoryNode">
+              <Setter Property="Margin" Value="0"/>
+              <Setter Property="Padding" Value="0"/>
+              <Setter Property="Height" Value="30"/>
               <Setter Property="CornerRadius" Value="4"/>
               <Setter Property="FocusAdorner">
                 <FocusAdornerTemplate>
@@ -65,13 +68,29 @@
                 </FocusAdornerTemplate>
               </Setter>
             </Style>
-          </TreeView.Styles>
+          </ListBox.Styles>
 
-          <TreeView.ItemTemplate>
-            <TreeDataTemplate ItemsSource="{Binding SubNodes}">
-              <Grid Height="30"
-                    ColumnDefinitions="18,Auto,*"
-                    Background="Transparent"
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <VirtualizingStackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+
+          <ListBox.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="{DynamicResource Text.Welcome.AddRootFolder}" Command="{Binding AddRootNode}">
+                <MenuItem.Icon>
+                  <Path Width="12" Height="12" Data="{DynamicResource Icons.Folder.Add}"/>
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </ListBox.ContextMenu>
+
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="vm:RepositoryNode">
+              <Grid Background="Transparent"
+                    ColumnDefinitions="16,18,Auto,*"
+                    Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                     Loaded="SetupTreeNodeDragAndDrop"
                     ContextRequested="OnTreeNodeContextRequested"
                     PointerPressed="OnPointerPressedTreeNode"
@@ -79,14 +98,21 @@
                     PointerReleased="OnPointerReleasedOnTreeNode"
                     DoubleTapped="OnDoubleTappedTreeNode"
                     ClipToBounds="True">
-                <Path Grid.Column="0" 
+                <v:RepositoryTreeNodeToggleButton Grid.Column="0"
+                                                  Classes="tree_expander"
+                                                  Focusable="False"
+                                                  HorizontalAlignment="Center"
+                                                  IsChecked="{Binding IsExpanded, Mode=OneWay}"
+                                                  IsVisible="{Binding !IsRepository}"/>
+                
+                <Path Grid.Column="1"
                       Width="14" Height="14"
                       Fill="{Binding Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
                       HorizontalAlignment="Center"
                       Data="{StaticResource Icons.Bookmark}"
                       IsVisible="{Binding IsRepository}"/>
 
-                <ToggleButton Grid.Column="0"
+                <ToggleButton Grid.Column="1"
                               Classes="folder"
                               Focusable="False"
                               Width="14" Height="14"
@@ -95,8 +121,11 @@
                               IsChecked="{Binding IsExpanded}"
                               IsVisible="{Binding !IsRepository}"/>
 
-                <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding Name}"/>
-                <TextBlock Grid.Column="2"
+                <TextBlock Grid.Column="2" 
+                           Classes="primary" 
+                           VerticalAlignment="Center" 
+                           Text="{Binding Name}"/>
+                <TextBlock Grid.Column="3"
                            Classes="primary"
                            Margin="8,0"
                            HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -104,12 +133,13 @@
                            Text="{Binding Id}"
                            IsVisible="{Binding IsRepository}"/>
               </Grid>
-            </TreeDataTemplate>
-          </TreeView.ItemTemplate>
-        </TreeView>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
       </Grid>
     </Grid>
 
+    <!-- Tips -->
     <TextBlock Grid.Row="1"
                Classes="italic"
                Margin="0,0,8,0"

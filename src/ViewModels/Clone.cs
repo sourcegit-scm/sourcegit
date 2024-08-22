@@ -141,6 +141,7 @@ namespace SourceGit.ViewModels
                         }
                     }
 
+                    Welcome.Instance.Refresh();
                     launcher.OpenRepositoryInTab(node, page);
                 });
 
