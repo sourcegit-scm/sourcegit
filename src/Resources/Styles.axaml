@@ -805,7 +805,7 @@
 
           <Border Name="LayoutRoot"
                   Margin="4"
-                  Background="{TemplateBinding Background}"
+                  Background="Transparent"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="0"
                   Padding="4,2"
