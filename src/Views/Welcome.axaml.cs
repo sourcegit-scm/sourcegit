@@ -95,9 +95,9 @@ namespace SourceGit.Views
 
         private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is Grid grid)
+            if (sender is Grid { DataContext: ViewModels.RepositoryNode node } grid)
             {
-                var menu = ViewModels.Welcome.Instance.CreateContextMenu(grid.DataContext as ViewModels.RepositoryNode);
+                var menu = ViewModels.Welcome.Instance.CreateContextMenu(node);
                 grid.OpenContextMenu(menu);
                 e.Handled = true;
             }

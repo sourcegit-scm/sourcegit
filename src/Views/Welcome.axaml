@@ -89,6 +89,7 @@
           <ListBox.ItemTemplate>
             <DataTemplate DataType="vm:RepositoryNode">
               <Grid Background="Transparent"
+                    VerticalAlignment="Center"
                     ColumnDefinitions="16,18,Auto,*"
                     Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                     Loaded="SetupTreeNodeDragAndDrop"
