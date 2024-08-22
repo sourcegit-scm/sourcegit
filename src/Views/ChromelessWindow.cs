@@ -3,6 +3,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Platform;
 
 namespace SourceGit.Views
 {
@@ -19,12 +20,25 @@ namespace SourceGit.Views
         {
             if (OperatingSystem.IsLinux())
             {
-                if (!UseSystemWindowFrame)
+                if (UseSystemWindowFrame)
+                {
+                    ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.Default;
+                    ExtendClientAreaToDecorationsHint = false;
+                }
+                else
+                {
+                    ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
+                    ExtendClientAreaToDecorationsHint = true;
                     Classes.Add("custom_window_frame");
+                }
             }
-            else if (OperatingSystem.IsWindows())
+            else
             {
-                Classes.Add("fix_maximized_padding");
+                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
+                ExtendClientAreaToDecorationsHint = true;
+
+                if (OperatingSystem.IsWindows())
+                    Classes.Add("fix_maximized_padding");
             }
         }
 

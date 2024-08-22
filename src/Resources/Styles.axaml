@@ -22,8 +22,6 @@
     <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
-    <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome"/>
-    <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
     <Setter Property="SystemDecorations" Value="Full"/>
     <Setter Property="Padding" Value="0"/>
 
