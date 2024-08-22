@@ -8,6 +8,25 @@ namespace SourceGit.Views
 {
     public partial class Launcher : ChromelessWindow
     {
+        public static readonly StyledProperty<GridLength> CaptionHeightProperty =
+            AvaloniaProperty.Register<Launcher, GridLength>(nameof(CaptionHeight));
+
+        public GridLength CaptionHeight
+        {
+            get => GetValue(CaptionHeightProperty);
+            set => SetValue(CaptionHeightProperty, value);
+        }
+
+        public bool IsRightCaptionButtonsVisible
+        {
+            get
+            {
+                if (OperatingSystem.IsLinux())
+                    return !ViewModels.Preference.Instance.UseSystemWindowFrame;
+                return OperatingSystem.IsWindows();
+            }
+        }
+
         public Launcher()
         {
             var layout = ViewModels.Preference.Instance.Layout;
@@ -16,6 +35,11 @@ namespace SourceGit.Views
                 Width = layout.LauncherWidth;
                 Height = layout.LauncherHeight;
             }
+
+            if (UseSystemWindowFrame)
+                CaptionHeight = new GridLength(30);
+            else
+                CaptionHeight = new GridLength(38);
 
             InitializeComponent();
         }
@@ -38,13 +62,15 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == WindowStateProperty && MainLayout != null)
+            if (change.Property == WindowStateProperty)
             {
                 var state = (WindowState)change.NewValue!;
-                if (state == WindowState.Maximized)
-                    MainLayout.RowDefinitions[0].Height = new GridLength(OperatingSystem.IsMacOS() ? 34 : 30);
+                if (OperatingSystem.IsLinux() && UseSystemWindowFrame)
+                    CaptionHeight = new GridLength(30);
+                else if (state == WindowState.Maximized)
+                    CaptionHeight = new GridLength(OperatingSystem.IsMacOS() ? 34 : 30);
                 else
-                    MainLayout.RowDefinitions[0].Height = new GridLength(38);
+                    CaptionHeight = new GridLength(38);
 
                 ViewModels.Preference.Instance.Layout.LauncherWindowState = state;
             }

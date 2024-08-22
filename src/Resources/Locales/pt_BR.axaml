@@ -382,13 +382,13 @@
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Usar apenas fonte monoespaçada no editor de texto</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Tema</x:String>
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Sobrescrever Tema</x:String>
+  <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Usar largura fixa da aba na barra de título</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">GERAL</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Verificar atualizações na inicialização</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Idioma</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Commits do Histórico</x:String>
   <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Restaurar as últimas abas abertas na inicialização</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Comprimento do Guia de Assunto</x:String>
-  <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">Usar largura fixa da aba na barra de título</x:String>
   <x:String x:Key="Text.Preference.General.VisibleDiffContextLines" xml:space="preserve">Linhas de Contexto de Diferença Visíveis</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Buscar remotos automaticamente</x:String>

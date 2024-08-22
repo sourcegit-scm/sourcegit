@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -246,6 +247,20 @@ namespace SourceGit.Views
 
             if (changed)
                 new Commands.Config(null).Set(key, value);
+        }
+
+        private void OnUseNativeWindowFrameChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox box)
+            {
+                ViewModels.Preference.Instance.UseSystemWindowFrame = box.IsChecked == true;
+                ViewModels.Preference.Instance.Save();
+
+                var dialog = new ConfirmRestart();
+                App.OpenDialog(dialog);
+            }
+            
+            e.Handled = true;
         }
     }
 }

@@ -4,16 +4,16 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                    x:Class="SourceGit.Views.Askpass"
-                    x:DataType="v:Askpass"
+                    x:Class="SourceGit.Views.ConfirmRestart"
+                    x:Name="ThisControl"
+                    Title="Restart Required"
                     Icon="/App.ico"
-                    Title="{DynamicResource Text.Askpass}"
-                    SizeToContent="WidthAndHeight"
                     CanResize="False"
-                    WindowStartupLocation="CenterScreen">
+                    SizeToContent="WidthAndHeight"
+                    WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !UseSystemWindowFrame}">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
@@ -22,7 +22,7 @@
       <Path Grid.Column="0"
             Width="14" Height="14"
             Margin="10,0,0,0"
-            Data="{StaticResource Icons.Password}"
+            Data="{StaticResource Icons.Info}"
             IsVisible="{OnPlatform True, macOS=False}"/>
 
       <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
@@ -36,7 +36,7 @@
 
       <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
                  Classes="bold"
-                 Text="{DynamicResource Text.Askpass}"
+                 Text="Restart Required"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
 
@@ -50,36 +50,16 @@
 
     <StackPanel Grid.Row="1" Margin="0,16" Orientation="Vertical">
       <Border Margin="16,0">
-        <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+        <TextBlock Text="You need to restart this app to apply changes."/>
       </Border>
-      
-      <TextBox Margin="16"
-               MinWidth="300" 
-               Height="32" 
-               Text="{Binding Passphrase, Mode=TwoWay}" 
-               PasswordChar="*"
-               RevealPassword="{Binding ShowPassword, Mode=OneWay}"
-               HorizontalAlignment="Stretch">
-        <TextBox.InnerRightContent>
-          <ToggleButton Grid.Column="6"
-                        Classes="toggle_untracked"
-                        Width="26" Height="14"
-                        IsChecked="{Binding ShowPassword, Mode=TwoWay}"/>
-        </TextBox.InnerRightContent>
-      </TextBox>
-      
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <Button Classes="flat primary"
-                Width="80"
-                Content="{DynamicResource Text.Sure}"
-                Click="EnterPassword"
-                HotKey="Enter"/>
-        <Button Classes="flat"
-                Width="80"
-                Margin="16,0,0,0"
-                Content="{DynamicResource Text.Cancel}"
-                Click="CloseWindow"/>
-      </StackPanel>
+
+      <Button Classes="flat primary"
+              Width="80"
+              Margin="0,16,0,0"
+              Content="{DynamicResource Text.Sure}"
+              Click="Restart"
+              HorizontalAlignment="Center"
+              HotKey="Enter"/>
     </StackPanel>
   </Grid>
 </v:ChromelessWindow>

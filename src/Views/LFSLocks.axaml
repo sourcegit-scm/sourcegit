@@ -7,13 +7,14 @@
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.LFSLocks"
                     x:DataType="vm:LFSLocks"
+                    x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.GitLFS.Locks.Title}"
                     Width="600" Height="400"
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"

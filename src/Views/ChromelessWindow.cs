@@ -8,14 +8,24 @@ namespace SourceGit.Views
 {
     public class ChromelessWindow : Window
     {
+        public bool UseSystemWindowFrame
+        {
+            get => OperatingSystem.IsLinux() && ViewModels.Preference.Instance.UseSystemWindowFrame;
+        }
+
         protected override Type StyleKeyOverride => typeof(Window);
 
         public ChromelessWindow()
         {
             if (OperatingSystem.IsLinux())
-                Classes.Add("custom_window_frame");
+            {
+                if (!UseSystemWindowFrame)
+                    Classes.Add("custom_window_frame");
+            }
             else if (OperatingSystem.IsWindows())
+            {
                 Classes.Add("fix_maximized_padding");
+            }
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)

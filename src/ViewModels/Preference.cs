@@ -105,6 +105,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool UseSystemWindowFrame
+        {
+            get => _useSystemWindowFrame;
+            set => SetProperty(ref _useSystemWindowFrame, value);
+        }
+
         public double DefaultFontSize
         {
             get => _defaultFontSize;
@@ -492,6 +498,7 @@ namespace SourceGit.ViewModels
         private string _defaultFontFamily = string.Empty;
         private string _monospaceFontFamily = string.Empty;
         private bool _onlyUseMonoFontInEditor = false;
+        private bool _useSystemWindowFrame = false;
         private double _defaultFontSize = 13;
         private LayoutInfo _layout = new LayoutInfo();
 

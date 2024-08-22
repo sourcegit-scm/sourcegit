@@ -9,18 +9,18 @@
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.FileHistories"
                     x:DataType="vm:FileHistories"
-                    x:Name="me"
+                    x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.FileHistory}"
                     MinWidth="1280" MinHeight="720">
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="30"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <!-- Bottom border -->
       <Border Grid.Column="0" Grid.ColumnSpan="5"
               Background="{DynamicResource Brush.TitleBar}"

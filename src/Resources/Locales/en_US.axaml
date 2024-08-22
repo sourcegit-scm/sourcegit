@@ -379,13 +379,14 @@
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Only use monospace font in text editor</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Theme</x:String>
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Theme Overrides</x:String>
+  <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</x:String>
+  <x:String x:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">Use native window frame</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">GENERAL</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Language</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
   <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Restore last opened tab(s) on startup</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Subject Guide Length</x:String>
-  <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</x:String>
   <x:String x:Key="Text.Preference.General.VisibleDiffContextLines" xml:space="preserve">Visible Diff Context Lines</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>

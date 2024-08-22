@@ -382,13 +382,13 @@
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Verwende nur die Monospace-Schriftart im Texteditor</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Design</x:String>
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Design-Anpassungen</x:String>
+  <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Fixe Tab-Breite in Titelleiste</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">ALLGEMEIN</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Beim Starten nach Updates suchen</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Sprache</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Commit-Historie</x:String>
   <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Zuletzt geöffnete Tabs beim Starten wiederherstellen</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Längenvorgabe für Commit-Nachrichten</x:String>
-  <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">Fixe Tab-Breite in Titelleiste</x:String>
   <x:String x:Key="Text.Preference.General.VisibleDiffContextLines" xml:space="preserve">Sichtbare Vergleichskontextzeilen</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Remotes automatisch fetchen</x:String>
