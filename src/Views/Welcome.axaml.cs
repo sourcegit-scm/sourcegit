@@ -48,7 +48,6 @@ namespace SourceGit.Views
                     if (c is TreeViewItem { IsVisible: true } item)
                     {
                         ReposTree.SelectedItem = item.DataContext;
-                        item.Focus();
                         break;
                     }
                 }
@@ -59,13 +58,41 @@ namespace SourceGit.Views
 
         private void OnTreeViewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space && ReposTree.SelectedItem is ViewModels.RepositoryNode { IsRepository: true } node)
+            if (ReposTree.SelectedItem is ViewModels.RepositoryNode node)
             {
-                var parent = this.FindAncestorOfType<Launcher>();
-                if (parent?.DataContext is ViewModels.Launcher launcher)
-                    launcher.OpenRepositoryInTab(node, null);
+                if (e.Key == Key.Space && node.IsRepository)
+                {
+                    var parent = this.FindAncestorOfType<Launcher>();
+                    if (parent?.DataContext is ViewModels.Launcher launcher)
+                        launcher.OpenRepositoryInTab(node, null);
 
-                e.Handled = true;
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Down)
+                {
+                    var next = ViewModels.Welcome.Instance.GetNextVisible(node);
+                    if (next != null)
+                        ReposTree.SelectedItem = next;
+
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Up)
+                {
+                    var prev = ViewModels.Welcome.Instance.GetPrevVisible(node);
+                    if (prev != null)
+                        ReposTree.SelectedItem = prev;
+
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void OnTreeViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ReposTree.SelectedItem is ViewModels.RepositoryNode node)
+            {
+                var item = FindTreeViewItemByNode(node, ReposTree);
+                item?.Focus(NavigationMethod.Directional);
             }
         }
 
@@ -262,6 +289,26 @@ namespace SourceGit.Views
             var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
             var launcher = this.FindAncestorOfType<Launcher>()?.DataContext as ViewModels.Launcher;
             launcher?.OpenRepositoryInTab(node, launcher.ActivePage);
+        }
+
+        private TreeViewItem FindTreeViewItemByNode(ViewModels.RepositoryNode node, ItemsControl container)
+        {
+            var items = container.GetRealizedContainers();
+
+            foreach (var item in items)
+            {
+                if (item is TreeViewItem { DataContext: ViewModels.RepositoryNode test } treeViewItem)
+                {
+                    if (test == node)
+                        return treeViewItem;
+
+                    var child = FindTreeViewItemByNode(node, treeViewItem);
+                    if (child != null)
+                        return child;
+                }
+            }
+
+            return null;
         }
 
         private bool _pressedTreeNode = false;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -74,6 +75,30 @@ namespace SourceGit.ViewModels
         public void MoveNode(RepositoryNode from, RepositoryNode to)
         {
             Preference.Instance.MoveNode(from, to);
+        }
+
+        public RepositoryNode GetPrevVisible(RepositoryNode node)
+        {
+            var visibleRows = new List<RepositoryNode>();
+            CollectVisibleRows(visibleRows, RepositoryNodes);
+
+            var idx = visibleRows.IndexOf(node);
+            if (idx <= 1)
+                return null;
+
+            return visibleRows[idx - 1];
+        }
+
+        public RepositoryNode GetNextVisible(RepositoryNode node)
+        {
+            var visibleRows = new List<RepositoryNode>();
+            CollectVisibleRows(visibleRows, RepositoryNodes);
+
+            var idx = visibleRows.IndexOf(node);
+            if (idx < 0 || idx >= visibleRows.Count - 1)
+                return null;
+
+            return visibleRows[idx + 1];
         }
 
         public ContextMenu CreateContextMenu(RepositoryNode node)
@@ -209,6 +234,20 @@ namespace SourceGit.ViewModels
                     launcher.OpenRepositoryInTab(subNode, null);
                 else if (subNode.SubNodes.Count > 0)
                     OpenAllInNode(launcher, subNode);
+            }
+        }
+
+        private void CollectVisibleRows(List<RepositoryNode> visible, AvaloniaList<RepositoryNode> collection)
+        {
+            foreach (var node in collection)
+            {
+                if (node.IsVisible)
+                {
+                    visible.Add(node);
+
+                    if (!node.IsRepository)
+                        CollectVisibleRows(visible, node.SubNodes);
+                }
             }
         }
 

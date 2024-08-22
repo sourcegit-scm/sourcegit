@@ -42,6 +42,7 @@
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   Loaded="SetupTreeViewDragAndDrop"
                   LostFocus="OnTreeViewLostFocus"
+                  SelectionChanged="OnTreeViewSelectionChanged"
                   KeyDown="OnTreeViewKeyDown">
           <TreeView.ContextMenu>
             <ContextMenu>
