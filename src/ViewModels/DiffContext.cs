@@ -87,6 +87,14 @@ namespace SourceGit.ViewModels
 
         private void LoadDiffContent()
         {
+            if (_option.Path.EndsWith('/'))
+            {
+                Content = null;
+                IsTextDiff = false;
+                IsLoading = false;
+                return;
+            }
+
             var unified = Preference.Instance.DiffViewVisualLineNumbers;
             Task.Run(() =>
             {
