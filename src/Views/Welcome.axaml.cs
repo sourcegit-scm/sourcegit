@@ -35,6 +35,40 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnSearchBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Down || e.Key == Key.FnDownArrow)
+            {
+                var containers = ReposTree.GetRealizedContainers();
+                if (containers == null)
+                    return;
+
+                foreach (var c in containers)
+                {
+                    if (c is TreeViewItem { IsVisible: true } item)
+                    {
+                        ReposTree.SelectedItem = item.DataContext;
+                        item.Focus();
+                        break;
+                    }
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        private void OnTreeViewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space && ReposTree.SelectedItem is ViewModels.RepositoryNode { IsRepository: true } node)
+            {
+                var parent = this.FindAncestorOfType<Launcher>();
+                if (parent?.DataContext is ViewModels.Launcher launcher)
+                    launcher.OpenRepositoryInTab(node, null);
+
+                e.Handled = true;
+            }
+        }
+
         private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (sender is Grid grid)

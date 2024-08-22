@@ -19,6 +19,7 @@
                  BorderThickness="1"
                  Background="{DynamicResource Brush.Contents}"
                  Watermark="{DynamicResource Text.Welcome.Search}"
+                 KeyDown="OnSearchBoxKeyDown"
                  VerticalContentAlignment="Center"
                  Text="{Binding SearchFilter, Mode=TwoWay}"
                  v:AutoFocusBehaviour.IsEnabled="True">
@@ -34,12 +35,14 @@
         </TextBox>
 
         <TreeView Grid.Row="1"
+                  x:Name="ReposTree"
                   Margin="0,8,8,0"
                   ItemsSource="{Binding RepositoryNodes}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   Loaded="SetupTreeViewDragAndDrop"
-                  LostFocus="OnTreeViewLostFocus">
+                  LostFocus="OnTreeViewLostFocus"
+                  KeyDown="OnTreeViewKeyDown">
           <TreeView.ContextMenu>
             <ContextMenu>
               <MenuItem Header="{DynamicResource Text.Welcome.AddRootFolder}" Command="{Binding AddRootNode}">
@@ -55,6 +58,11 @@
               <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
               <Setter Property="IsVisible" Value="{Binding IsVisible}"/>
               <Setter Property="CornerRadius" Value="4"/>
+              <Setter Property="FocusAdorner">
+                <FocusAdornerTemplate>
+                  <Border Background="Transparent" BorderThickness="0"/>
+                </FocusAdornerTemplate>
+              </Setter>
             </Style>
           </TreeView.Styles>
 
