@@ -3,6 +3,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -158,6 +159,19 @@ namespace SourceGit.Views
                         repo.IsSearching = false;
                         e.Handled = true;
                         return;
+                    }
+                }
+                else
+                {
+                    var welcome = this.FindDescendantOfType<Welcome>();
+                    if (welcome != null)
+                    {
+                        if (e.Key == Key.F)
+                        {
+                            welcome.SearchBox.Focus();
+                            e.Handled = true;
+                            return;
+                        }
                     }
                 }
             }

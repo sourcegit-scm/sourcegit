@@ -45,13 +45,6 @@ namespace SourceGit.Views
                     TreeContainer.Focus(NavigationMethod.Directional);
                     e.Handled = true;
                 }
-                else if (e.Key == Key.F &&
-                    ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Meta)) ||
-                    (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Control))))
-                {
-                    SearchBox.Focus();
-                    e.Handled = true;
-                }
                 else if (e.Key == Key.Escape)
                 {
                     ViewModels.Welcome.Instance.ClearSearchFilter();
