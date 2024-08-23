@@ -17,6 +17,15 @@ namespace SourceGit.Views
             public bool IsTag { get; set; } = false;
         }
 
+        public static readonly StyledProperty<List<Models.Decorator>> RefsProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, List<Models.Decorator>>(nameof(Refs));
+
+        public List<Models.Decorator> Refs
+        {
+            get => GetValue(RefsProperty);
+            set => SetValue(RefsProperty, value);
+        }
+
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
             TextBlock.FontFamilyProperty.AddOwner<CommitRefsPresenter>();
 
@@ -85,7 +94,8 @@ namespace SourceGit.Views
             AffectsMeasure<CommitRefsPresenter>(
                 FontFamilyProperty,
                 FontSizeProperty,
-                LabelForegroundProperty);
+                LabelForegroundProperty,
+                RefsProperty);
 
             AffectsRender<CommitRefsPresenter>(
                 IconBackgroundProperty,
@@ -121,17 +131,12 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnDataContextChanged(EventArgs e)
-        {
-            base.OnDataContextChanged(e);
-            InvalidateMeasure();
-        }
-
         protected override Size MeasureOverride(Size availableSize)
         {
             _items.Clear();
 
-            if (DataContext is Models.Commit commit && commit.HasDecorators)
+            var refs = Refs;
+            if (refs != null && refs.Count > 0)
             {
                 var typeface = new Typeface(FontFamily);
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
@@ -139,7 +144,7 @@ namespace SourceGit.Views
                 var labelSize = FontSize;
                 var requiredWidth = 0.0;
 
-                foreach (var decorator in commit.Decorators)
+                foreach (var decorator in refs)
                 {
                     var isHead = decorator.Type == Models.DecoratorType.CurrentBranchHead ||
                         decorator.Type == Models.DecoratorType.CurrentCommitHead;

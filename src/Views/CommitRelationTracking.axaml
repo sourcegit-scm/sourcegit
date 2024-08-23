@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:v="using:SourceGit.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.CommitRelationTracking">
+  <Grid RowDefinitions="Auto,Auto,Auto">
+    <TextBlock Grid.Row="0" Classes="info_label" Text="COMMIT CONTAINS IN" HorizontalAlignment="Center"/>
+    <Rectangle Grid.Row="1" Height="1" HorizontalAlignment="Stretch" Margin="0,8" Fill="{DynamicResource Brush.Border2}"/>
+    <ScrollViewer Grid.Row="2" MinWidth="300" MaxWidth="500" MaxHeight="200" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+      <ItemsControl x:Name="Container">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+
+        <ItemsControl.ItemTemplate>
+          <DataTemplate DataType="m:Decorator">
+            <Border Height="20" Margin="0,4,6,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="12">
+              <StackPanel Orientation="Horizontal" Margin="8,0" VerticalAlignment="Center">
+                <Path Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding !IsTag}"/>
+                <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding IsTag}"/>
+                <TextBlock Classes="primary" Text="{Binding Name}" Margin="2,0,0,0"/>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+    
+    <v:LoadingIcon x:Name="LoadingIcon" Grid.Row="2" HorizontalAlignment="Center" Margin="0,16" Width="24" Height="24" IsVisible="False"/>
+  </Grid>
+</UserControl>

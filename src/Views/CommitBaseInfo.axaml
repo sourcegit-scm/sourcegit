@@ -57,11 +57,15 @@
           <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
             <SelectableTextBlock Classes="primary" 
                                  Text="{Binding SHA}" 
-                                 Margin="12,0,0,0" 
+                                 Margin="12,0,4,0" 
                                  VerticalAlignment="Center"/>
 
-            <Button Classes="icon_button" Cursor="Hand" Click="OnOpenWebLink" IsVisible="{Binding #ThisControl.WebLinks, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+            <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenWebLink" IsVisible="{Binding #ThisControl.WebLinks, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Link}" Fill="{DynamicResource Brush.Link}"/>
+            </Button>
+
+            <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenContainsIn" IsVisible="{Binding #ThisControl.SupportsContainsIn}" ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.ContainsIn}">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Relation}"/>
             </Button>
           </StackPanel>
 
@@ -98,7 +102,8 @@
                                    LabelForeground="{DynamicResource Brush.DecoratorFG}"
                                    FontFamily="{DynamicResource Fonts.Monospace}"
                                    FontSize="10"
-                                   VerticalAlignment="Center"/>
+                                   VerticalAlignment="Center"
+                                   Refs="{Binding Decorators}"/>
           </Border>
           
           <!-- Messages -->
