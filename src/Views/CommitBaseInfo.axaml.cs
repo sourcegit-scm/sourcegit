@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -15,6 +17,15 @@ namespace SourceGit.Views
         {
             get => GetValue(MessageProperty);
             set => SetValue(MessageProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> SupportsContainsInProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(SupportsContainsIn));
+
+        public bool SupportsContainsIn
+        {
+            get => GetValue(SupportsContainsInProperty);
+            set => SetValue(SupportsContainsInProperty, value);
         }
 
         public static readonly StyledProperty<AvaloniaList<Models.CommitLink>> WebLinksProperty =
@@ -69,6 +80,19 @@ namespace SourceGit.Views
                     var url = $"{links[0].URLPrefix}{detail.Commit.SHA}";
                     Native.OS.OpenBrowser(url);
                 }
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnOpenContainsIn(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.CommitDetail detail && sender is Button button)
+            {
+                var tracking = new CommitRelationTracking(detail);
+                var flyout = new Flyout();
+                flyout.Content = tracking;
+                flyout.ShowAt(button);
             }
 
             e.Handled = true;

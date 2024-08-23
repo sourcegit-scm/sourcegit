@@ -119,6 +119,8 @@
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">修改者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">變更列表</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">提交者</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">查看包含此提交的分支/標籤</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">本提交已被以下分支/標籤包含</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">僅顯示前100項變更。 請前往『變更對比』頁面查看全部。</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">提交資訊</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">父提交</x:String>
