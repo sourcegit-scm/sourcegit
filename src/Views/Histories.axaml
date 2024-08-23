@@ -72,8 +72,8 @@
                                            BranchNameBackground="{DynamicResource Brush.DecoratorBranch}"
                                            TagNameBackground="{DynamicResource Brush.DecoratorTag}"
                                            LabelForeground="{DynamicResource Brush.DecoratorFG}"
-                                           FontFamily="{DynamicResource Fonts.Monospace}"
-                                           FontSize="10"
+                                           FontFamily="{DynamicResource Fonts.Primary}"
+                                           FontSize="11"
                                            VerticalAlignment="Center"
                                            Refs="{Binding Decorators}"/>
 
