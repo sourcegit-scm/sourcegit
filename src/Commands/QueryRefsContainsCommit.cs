@@ -5,7 +5,7 @@ namespace SourceGit.Commands
 {
     public class QueryRefsContainsCommit : Command
     {
-        public QueryRefsContainsCommit(string repo, string commit) 
+        public QueryRefsContainsCommit(string repo, string commit)
         {
             WorkingDirectory = repo;
             RaiseError = false;

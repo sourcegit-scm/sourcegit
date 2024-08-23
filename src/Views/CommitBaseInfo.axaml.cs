@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
