@@ -154,7 +154,7 @@ namespace SourceGit.Views
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         isHead ? typefaceBold : typeface,
-                        labelSize,
+                        isHead ? labelSize + 0.5 : labelSize,
                         labelFG);
 
                     var item = new RenderItem()
