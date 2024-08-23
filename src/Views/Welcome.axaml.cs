@@ -45,7 +45,7 @@ namespace SourceGit.Views
                     TreeContainer.Focus(NavigationMethod.Directional);
                     e.Handled = true;
                 }
-                else if (e.Key == Key.F && 
+                else if (e.Key == Key.F &&
                     ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Meta)) ||
                     (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Control))))
                 {

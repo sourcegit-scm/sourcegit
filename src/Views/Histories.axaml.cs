@@ -477,7 +477,7 @@ namespace SourceGit.Views
 
             // Draw contents
             DrawCurves(context, graph, top, bottom);
-            DrawAnchors(context, graph, top, bottom);            
+            DrawAnchors(context, graph, top, bottom);
         }
 
         private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom)
@@ -598,8 +598,6 @@ namespace SourceGit.Views
                 }
             }
         }
-
-        private Geometry _mergeIcon = null;
     }
 
     public partial class Histories : UserControl

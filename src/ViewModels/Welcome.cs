@@ -255,7 +255,7 @@ namespace SourceGit.ViewModels
                 if (node.IsRepository || !node.IsExpanded)
                     continue;
 
-                MakeTreeRows(rows, node.SubNodes, depth+1);
+                MakeTreeRows(rows, node.SubNodes, depth + 1);
             }
         }
 

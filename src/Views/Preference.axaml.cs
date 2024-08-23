@@ -259,7 +259,7 @@ namespace SourceGit.Views
                 var dialog = new ConfirmRestart();
                 App.OpenDialog(dialog);
             }
-            
+
             e.Handled = true;
         }
     }
