@@ -242,7 +242,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void MakeTreeRows(List<RepositoryNode> rows, AvaloniaList<RepositoryNode> nodes, int depth = 0)
+        private void MakeTreeRows(List<RepositoryNode> rows, List<RepositoryNode> nodes, int depth = 0)
         {
             foreach (var node in nodes)
             {

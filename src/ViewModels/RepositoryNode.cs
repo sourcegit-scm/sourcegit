@@ -1,6 +1,5 @@
-﻿using System.Text.Json.Serialization;
-
-using Avalonia.Collections;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -56,11 +55,11 @@ namespace SourceGit.ViewModels
             set;
         } = 0;
 
-        public AvaloniaList<RepositoryNode> SubNodes
+        public List<RepositoryNode> SubNodes
         {
-            get => _subNodes;
-            set => SetProperty(ref _subNodes, value);
-        }
+            get;
+            set;
+        } = [];
 
         public void Edit()
         {
@@ -100,6 +99,5 @@ namespace SourceGit.ViewModels
         private int _bookmark = 0;
         private bool _isExpanded = false;
         private bool _isVisible = true;
-        private AvaloniaList<RepositoryNode> _subNodes = new AvaloniaList<RepositoryNode>();
     }
 }
