@@ -3,7 +3,8 @@
   <x:String x:Key="Text.About.Menu" xml:space="preserve">A propos de SourceGit</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Compilé avec </x:String>
   <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• TextEditor de </x:String> <!-- Seemingly not used yet -->
+  <x:String x:Key="Text.About.Editor" xml:space="preserve">• TextEditor de </x:String>
+  <!-- Seemingly not used yet -->
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• La police Monospace vient de </x:String>
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Le code source est disponible sur </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Client Git gratuit et open source</x:String>
@@ -91,7 +92,7 @@
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Nom local :</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Nom de dépôt. Optionnel.</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Dossier parent :</x:String>
-  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">URL du dépôt:</x:String>
+  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">URL du dépôt :</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">FERMER</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editeur</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick ce commit</x:String>
@@ -136,7 +137,8 @@
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Nouvelle règle</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Issue Regex Expression:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">nom de règle :</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL résultant:</x:String> <!-- A vérifier -->
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL résultant:</x:String>
+  <!-- A vérifier -->
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Please use $1, $2 to access regex groups values.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP proxy used by this repository</x:String>
@@ -147,7 +149,8 @@
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copier le chemin</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">Copier le nom de fichier</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Créer une branche...</x:String>
-  <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Basé sur :</x:String>  <!-- A vérifier si féminin-->
+  <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Basé sur :</x:String>
+  <!-- A vérifier si féminin-->
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Check out the created branch</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Rejeter</x:String>
@@ -166,7 +169,8 @@
   <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Push vers tous les arpès création</x:String>
   <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">Créer un nouveau tag</x:String>
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Kind:</x:String>
-  <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">annoté</x:String>  <!-- A vérifier si féminin-->
+  <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">annoté</x:String>
+  <!-- A vérifier si féminin-->
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">lightweight</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Maintenir Ctrl pour commencer directement</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Couper</x:String>
@@ -230,7 +234,8 @@
   <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Rejeter les changements dans les lignes sélectionnées</x:String>
   <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">Ouvrir l'outil de merge externe</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Savegarder le patch sous...</x:String>
-  <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Stage</x:String> <!-- Est-ce un verbe ou un nom ? -->
+  <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Stage</x:String>
+  <!-- Est-ce un verbe ou un nom ? -->
   <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Stage {0} files</x:String>
   <x:String x:Key="Text.FileCM.StageSelectedLines" xml:space="preserve">Stage Changes in Selected Line(s)</x:String>
   <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">Stash...</x:String>
@@ -301,13 +306,13 @@
   <x:String x:Key="Text.Histories.Search" xml:space="preserve">SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT</x:String>
   <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">CLEAR</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
-  <x:String x:Key="Text.Hotkeys" xml:space="preserve">Keyboard Shortcuts Reference</x:String>
+  <x:String x:Key="Text.Hotkeys" xml:space="preserve">Référence des raccourcis clavier</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Cancel current popup</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Close current page</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Go to previous page</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Go to next page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Create new page</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Créer une nouvelle page</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">Open preference dialog</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit staged changes</x:String>
@@ -347,18 +352,18 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Source Branch:</x:String>
-  <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
-  <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git has NOT been configured. Please to go [Preference] and configure it first.</x:String>
+  <x:String x:Key="Text.Name" xml:space="preserve">Nom :</x:String>
+  <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git n'a PAS été configuré. Veuillez d'abord le faire dans le menu Préférence.</x:String>
   <x:String x:Key="Text.Notice" xml:space="preserve">NOTICE</x:String>
-  <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Open App Data Dir</x:String>
+  <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Ouvrir le dossier AppData</x:String>
   <x:String x:Key="Text.OpenFolder" xml:space="preserve">SELECT FOLDER</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">Open With...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Optional.</x:String>
-  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Create New Page</x:String>
+  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Créer un nouvel onglet</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Bookmark</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Close Tab</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Close Other Tabs</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Close Tabs to the Right</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Fermer l'onglet</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Fermer les autres onglets</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Fermer les onglets à droite</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copy Repository Path</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Dépôts</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Paste</x:String>
@@ -371,7 +376,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">il y a {0} mois</x:String>
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">L'an dernier</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">il y a {0} ans</x:String>
-  <x:String x:Key="Text.Preference" xml:space="preserve">Préférence</x:String>
+  <x:String x:Key="Text.Preference" xml:space="preserve">Préférences</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APPARENCE</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Police par défaut</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Taille de police par défaut</x:String>
@@ -382,7 +387,7 @@
   <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Utiliser des onglets de taille fixe dans la barre de titre</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">Utiliser un cadre de fenêtre natif</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">GÉNÉRAL</x:String>
-  <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Vérifier les mises-à-jour au démarrage</x:String>
+  <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Vérifier les mises à jour au démarrage</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Language</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
   <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Restaurer les onglets au démarrage</x:String>
@@ -475,7 +480,7 @@
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Clear all</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</x:String>
-  <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Open In File Browser</x:String>
+  <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Ouvrir dans l'explorateur Windows</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTERED BY:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOCAL BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigate To HEAD</x:String>
@@ -501,7 +506,7 @@
   <x:String x:Key="Text.Repository.Submodules.Update" xml:space="preserve">UPDATE SUBMODULE</x:String>
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">TAGS</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">NEW TAG</x:String>
-  <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Open In Terminal</x:String>
+  <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Ouvrir dans un terminal</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ADD WORKTREE</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">PRUNE</x:String>
@@ -520,13 +525,13 @@
   <x:String x:Key="Text.Save" xml:space="preserve">SAVE</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Save As...</x:String>
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Patch has been saved successfully!</x:String>
-  <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Check for Updates...</x:String>
-  <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">New version of this software is available: </x:String>
-  <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Check for updates failed!</x:String>
-  <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">Download</x:String>
-  <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Skip This Version</x:String>
-  <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Software Update</x:String>
-  <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">There are currently no updates available.</x:String>
+  <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Vérifier les mises à jour...</x:String>
+  <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Une nouvelle version du logiciel est disponible :</x:String>
+  <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">La vérification de mise à jour à échouée !</x:String>
+  <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">Télécharger</x:String>
+  <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Passer cette version</x:String>
+  <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Mise à jour du logiciel</x:String>
+  <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Il n'y a pas de mise à jour pour le moment.</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash HEAD Into Parent</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH Private Key:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Private SSH key store path</x:String>
@@ -572,18 +577,18 @@
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodule:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Use --remote option</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Warning</x:String>
-  <x:String x:Key="Text.Welcome" xml:space="preserve">Welcome Page</x:String>
-  <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Create Group</x:String>
-  <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">Create Sub-Group</x:String>
-  <x:String x:Key="Text.Welcome.Clone" xml:space="preserve">Clone Repository</x:String>
-  <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">Delete</x:String>
-  <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">DRAG &amp; DROP FOLDER SUPPORTED. CUSTOM GROUPING SUPPORTED.</x:String>
-  <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">Edit</x:String>
-  <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Open All Repositories</x:String>
-  <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Open Repository</x:String>
-  <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Open Terminal</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Search Repositories...</x:String>
-  <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Sort</x:String>
+  <x:String x:Key="Text.Welcome" xml:space="preserve">Page d'accueil</x:String>
+  <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Créer un groupe</x:String>
+  <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">Créer un sous-groupe</x:String>
+  <x:String x:Key="Text.Welcome.Clone" xml:space="preserve">Cloner un dépôt</x:String>
+  <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">Supprimer</x:String>
+  <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">GLISSER / DEPOSER DE DOSSIER SUPPORTÉ. GROUPAGE PERSONNALISÉ SUPPORTÉ.</x:String>
+  <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">Éditer</x:String>
+  <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Ouvrir tous les dépôts</x:String>
+  <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Ouvrir un dépôt</x:String>
+  <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Ouvrir le terminal</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Chercher des dépôts...</x:String>
+  <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Trier</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Changes</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignore all *{0} files</x:String>
