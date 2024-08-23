@@ -485,7 +485,6 @@
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOKALE BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Zum HEAD wechseln</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Aktiviere '--first-parent' Option</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Erster-Eltern-Filter</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Erstelle Branch</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Öffne in {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Öffne in externen Tools</x:String>
