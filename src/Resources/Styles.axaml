@@ -1046,13 +1046,15 @@
     <Setter Property="VerticalAlignment" Value="Stretch"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Path x:Name="PART_IndicatorIcon"
-              Width="12"
-              Data="{StaticResource Icons.Filter}"
-              Fill="Transparent"
-              StrokeThickness="1"
-              Stroke="{DynamicResource Brush.FG2}"
-              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Border Background="Transparent">
+          <Path x:Name="PART_IndicatorIcon"
+                Width="12"
+                Data="{StaticResource Icons.Filter}"
+                Fill="Transparent"
+                StrokeThickness="1"
+                Stroke="{DynamicResource Brush.FG2}"
+                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
       </ControlTemplate>
     </Setter>
   </Style>
@@ -1063,7 +1065,7 @@
     <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
   </Style>
   <Style Selector="ToggleButton.filter:pointerover /template/ Path#PART_IndicatorIcon">
-    <Setter Property="Stroke" Value="{DynamicResource Brush.AccentHovered}"/>
+    <Setter Property="Stroke" Value="{DynamicResource Brush.Accent}"/>
   </Style>
   <Style Selector="ToggleButton.tree_expander">
     <Setter Property="Margin" Value="0" />
