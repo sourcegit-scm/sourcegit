@@ -122,7 +122,7 @@ This app supports open repository in external tools listed in the table below.
 
 * Custom
 
-  You can find custom themes from [sourcegit-theme](https://github.com/sourcegit-scm/sourcegit-theme.git)
+  You can find custom themes from [sourcegit-theme](https://github.com/sourcegit-scm/sourcegit-theme.git). And welcome to share your own themes.
 
 ## Contributing
 
