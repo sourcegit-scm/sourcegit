@@ -13,12 +13,12 @@
       <Color x:Key="Color.Contents">#FFFAFAFA</Color>
       <Color x:Key="Color.Badge">#FFB0CEE8</Color>
       <Color x:Key="Color.BadgeFG">#FF1F1F1F</Color>
-      <Color x:Key="Color.DecoratorIconBG">#FF6F6F6F</Color>
-      <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
-      <Color x:Key="Color.DecoratorBranch">#FFFFB835</Color>
-      <Color x:Key="Color.DecoratorHead">#fb5607</Color>
-      <Color x:Key="Color.DecoratorTag">#669900</Color>
-      <Color x:Key="Color.DecoratorFG">Black</Color>
+      <Color x:Key="Color.DecoratorIconBG">DarkGray</Color>
+      <Color x:Key="Color.DecoratorIcon">#0C0E21</Color>
+      <Color x:Key="Color.DecoratorBranch">#008585</Color>
+      <Color x:Key="Color.DecoratorHead">#0C0E21</Color>
+      <Color x:Key="Color.DecoratorTag">#79855f</Color>
+      <Color x:Key="Color.DecoratorFG">White</Color>
       <Color x:Key="Color.Conflict">#FF836C2E</Color>
       <Color x:Key="Color.ConflictForeground">#FFFFFFFF</Color>
       <Color x:Key="Color.Border0">#FFCFCFCF</Color>
@@ -52,7 +52,7 @@
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
       <Color x:Key="Color.DecoratorBranch">#FFFFB835</Color>
       <Color x:Key="Color.DecoratorHead">#f4f1de</Color>
-      <Color x:Key="Color.DecoratorTag">#669900</Color>
+      <Color x:Key="Color.DecoratorTag">#FF02C302</Color>
       <Color x:Key="Color.DecoratorFG">Black</Color>
       <Color x:Key="Color.Conflict">#FFFAFAD2</Color>
       <Color x:Key="Color.ConflictForeground">#FF252525</Color>
