@@ -585,7 +585,7 @@ namespace SourceGit.Views
                 {
                     case Models.CommitGraph.DotType.Head:
                         context.DrawEllipse(dotFill, pen, dot.Center, 6, 6);
-                        context.DrawEllipse(pen.Brush, null, dot.Center, 2, 2);
+                        context.DrawEllipse(pen.Brush, null, dot.Center, 3, 3);
                         break;
                     case Models.CommitGraph.DotType.Merge:
                         context.DrawEllipse(pen.Brush, null, dot.Center, 6, 6);
