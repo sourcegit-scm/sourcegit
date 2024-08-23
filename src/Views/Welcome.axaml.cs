@@ -50,6 +50,12 @@ namespace SourceGit.Views
                     (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Control))))
                 {
                     SearchBox.Focus();
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Escape)
+                {
+                    ViewModels.Welcome.Instance.ClearSearchFilter();
+                    e.Handled = true;
                 }
             }
         }
