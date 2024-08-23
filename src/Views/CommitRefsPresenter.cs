@@ -14,7 +14,7 @@ namespace SourceGit.Views
         {
             public Geometry Icon { get; set; } = null;
             public FormattedText Label { get; set; } = null;
-            public bool IsTag { get; set; } = false;
+            public IBrush LabelBG { get; set; } = null;
         }
 
         public static readonly StyledProperty<List<Models.Decorator>> RefsProperty =
@@ -80,6 +80,15 @@ namespace SourceGit.Views
             set => SetValue(BranchNameBackgroundProperty, value);
         }
 
+        public static readonly StyledProperty<IBrush> HeadBranchNameBackgroundProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(HeadBranchNameBackground), Brushes.White);
+
+        public IBrush HeadBranchNameBackground
+        {
+            get => GetValue(HeadBranchNameBackgroundProperty);
+            set => SetValue(HeadBranchNameBackgroundProperty, value);
+        }
+
         public static readonly StyledProperty<IBrush> TagNameBackgroundProperty =
             AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(TagNameBackground), Brushes.White);
 
@@ -111,8 +120,6 @@ namespace SourceGit.Views
 
             var iconFG = IconForeground;
             var iconBG = IconBackground;
-            var branchBG = BranchNameBackground;
-            var tagBG = TagNameBackground;
             var x = 0.0;
 
             foreach (var item in _items)
@@ -121,7 +128,7 @@ namespace SourceGit.Views
                 var labelRect = new RoundedRect(new Rect(x + 16, 0, item.Label.Width + 8, 16), new CornerRadius(0, 2, 2, 0));
 
                 context.DrawRectangle(iconBG, null, iconRect);
-                context.DrawRectangle(item.IsTag ? tagBG : branchBG, null, labelRect);
+                context.DrawRectangle(item.LabelBG, null, labelRect);
                 context.DrawText(item.Label, new Point(x + 20, 8.0 - item.Label.Height * 0.5));
 
                 using (context.PushTransform(Matrix.CreateTranslation(x + 4, 4)))
@@ -141,6 +148,9 @@ namespace SourceGit.Views
                 var typeface = new Typeface(FontFamily);
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
                 var labelFG = LabelForeground;
+                var branchBG = BranchNameBackground;
+                var headBG = HeadBranchNameBackground;
+                var tagBG = TagNameBackground;
                 var labelSize = FontSize;
                 var requiredWidth = 0.0;
 
@@ -154,29 +164,31 @@ namespace SourceGit.Views
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         isHead ? typefaceBold : typeface,
-                        isHead ? labelSize + 0.5 : labelSize,
+                        labelSize,
                         labelFG);
 
-                    var item = new RenderItem()
-                    {
-                        Label = label,
-                        IsTag = decorator.Type == Models.DecoratorType.Tag,
-                    };
-
+                    var item = new RenderItem() { Label = label };
                     StreamGeometry geo;
                     switch (decorator.Type)
                     {
                         case Models.DecoratorType.CurrentBranchHead:
+                            item.LabelBG = headBG;
+                            geo = this.FindResource("Icons.Check") as StreamGeometry;
+                            break;
                         case Models.DecoratorType.CurrentCommitHead:
+                            item.LabelBG = branchBG;
                             geo = this.FindResource("Icons.Check") as StreamGeometry;
                             break;
                         case Models.DecoratorType.RemoteBranchHead:
+                            item.LabelBG = branchBG;
                             geo = this.FindResource("Icons.Remote") as StreamGeometry;
                             break;
                         case Models.DecoratorType.Tag:
+                            item.LabelBG = tagBG;
                             geo = this.FindResource("Icons.Tag") as StreamGeometry;
                             break;
                         default:
+                            item.LabelBG = branchBG;
                             geo = this.FindResource("Icons.Branch") as StreamGeometry;
                             break;
                     }

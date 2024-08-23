@@ -98,6 +98,7 @@
             <v:CommitRefsPresenter IconBackground="{DynamicResource Brush.DecoratorIconBG}"
                                    IconForeground="{DynamicResource Brush.DecoratorIcon}"
                                    BranchNameBackground="{DynamicResource Brush.DecoratorBranch}"
+                                   HeadBranchNameBackground="{DynamicResource Brush.DecoratorHead}"
                                    TagNameBackground="{DynamicResource Brush.DecoratorTag}"
                                    LabelForeground="{DynamicResource Brush.DecoratorFG}"
                                    FontFamily="{DynamicResource Fonts.Primary}"

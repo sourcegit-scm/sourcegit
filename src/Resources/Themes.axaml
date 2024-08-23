@@ -16,7 +16,8 @@
       <Color x:Key="Color.DecoratorIconBG">#FF6F6F6F</Color>
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
       <Color x:Key="Color.DecoratorBranch">#FFFFB835</Color>
-      <Color x:Key="Color.DecoratorTag">#FF02C302</Color>
+      <Color x:Key="Color.DecoratorHead">#fb5607</Color>
+      <Color x:Key="Color.DecoratorTag">#669900</Color>
       <Color x:Key="Color.DecoratorFG">Black</Color>
       <Color x:Key="Color.Conflict">#FF836C2E</Color>
       <Color x:Key="Color.ConflictForeground">#FFFFFFFF</Color>
@@ -50,7 +51,8 @@
       <Color x:Key="Color.DecoratorIconBG">#FF505050</Color>
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
       <Color x:Key="Color.DecoratorBranch">#FFFFB835</Color>
-      <Color x:Key="Color.DecoratorTag">#FF02C302</Color>
+      <Color x:Key="Color.DecoratorHead">#f4f1de</Color>
+      <Color x:Key="Color.DecoratorTag">#669900</Color>
       <Color x:Key="Color.DecoratorFG">Black</Color>
       <Color x:Key="Color.Conflict">#FFFAFAD2</Color>
       <Color x:Key="Color.ConflictForeground">#FF252525</Color>
@@ -84,6 +86,7 @@
   <SolidColorBrush x:Key="Brush.DecoratorIconBG" Color="{DynamicResource Color.DecoratorIconBG}"/>
   <SolidColorBrush x:Key="Brush.DecoratorIcon" Color="{DynamicResource Color.DecoratorIcon}"/>
   <SolidColorBrush x:Key="Brush.DecoratorBranch" Color="{DynamicResource Color.DecoratorBranch}"/>
+  <SolidColorBrush x:Key="Brush.DecoratorHead" Color="{DynamicResource Color.DecoratorHead}"/>
   <SolidColorBrush x:Key="Brush.DecoratorTag" Color="{DynamicResource Color.DecoratorTag}"/>
   <SolidColorBrush x:Key="Brush.DecoratorFG" Color="{DynamicResource Color.DecoratorFG}"/>
   <SolidColorBrush x:Key="Brush.Conflict" Color="{DynamicResource Color.Conflict}"/>
