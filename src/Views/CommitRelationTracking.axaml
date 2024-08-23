@@ -31,6 +31,6 @@
       </ItemsControl>
     </ScrollViewer>
     
-    <v:LoadingIcon x:Name="LoadingIcon" Grid.Row="2" HorizontalAlignment="Center" Margin="0,16" Width="24" Height="24" IsVisible="False"/>
+    <v:LoadingIcon x:Name="LoadingIcon" Grid.Row="2" HorizontalAlignment="Center" Margin="0,8" Width="14" Height="14" IsVisible="False"/>
   </Grid>
 </UserControl>
