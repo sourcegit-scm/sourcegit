@@ -24,6 +24,15 @@
                  VerticalContentAlignment="Center"
                  Text="{Binding SearchFilter, Mode=TwoWay}"
                  v:AutoFocusBehaviour.IsEnabled="True">
+          <TextBox.Styles>
+            <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+              <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
+            </Style>
+            <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+              <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
+            </Style>
+          </TextBox.Styles>
+          
           <TextBox.InnerLeftContent>
             <Path Width="16" Height="16" Margin="6,0,3,0" Data="{StaticResource Icons.Search}" Fill="{DynamicResource Brush.FG2}"/>
           </TextBox.InnerLeftContent>
