@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitRelationTracking">
   <Grid RowDefinitions="Auto,Auto,Auto">
-    <TextBlock Grid.Row="0" Classes="info_label" Text="COMMIT CONTAINS IN" HorizontalAlignment="Center"/>
+    <TextBlock Grid.Row="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.ContainsIn.Title}" HorizontalAlignment="Center"/>
     <Rectangle Grid.Row="1" Height="1" HorizontalAlignment="Stretch" Margin="0,8" Fill="{DynamicResource Brush.Border2}"/>
     <ScrollViewer Grid.Row="2" MinWidth="300" MaxWidth="500" MaxHeight="200" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
       <ItemsControl x:Name="Container">
