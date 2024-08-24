@@ -79,6 +79,11 @@ namespace SourceGit.ViewModels
             _repo.NavigateToCommit(commit.SHA);
         }
 
+        public void ResetToSelectedRevision()
+        {
+            new Commands.Checkout(_repo.FullPath).FileWithRevision(_file, $"{_selectedCommit.SHA}");
+        }
+
         private void RefreshViewContent()
         {
             if (_selectedCommit == null)
