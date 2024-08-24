@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -28,56 +27,7 @@
     <!-- File Content Viewer -->
     <Grid Grid.Column="2">
       <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-        <ContentControl Content="{Binding ViewRevisionFileContent}">
-          <ContentControl.DataTemplates>
-            <DataTemplate DataType="m:RevisionBinaryFile">
-              <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Path Width="64" Height="64" Data="{StaticResource Icons.Error}" Fill="{DynamicResource Brush.FG2}"/>
-                <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.BinaryNotSupported}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
-                <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{Binding Size}" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Text="{DynamicResource Text.Bytes}" Margin="8,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
-                </StackPanel>
-              </StackPanel>
-            </DataTemplate>
-
-            <DataTemplate DataType="m:RevisionTextFile">
-              <v:RevisionTextFileView FontFamily="{DynamicResource Fonts.Monospace}" Background="{DynamicResource Brush.Contents}"/>
-            </DataTemplate>
-
-            <DataTemplate DataType="m:RevisionImageFile">
-              <Border Margin="0,8" VerticalAlignment="Center" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
-                <Border Background="{DynamicResource Brush.Window}">
-                  <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
-                    <Grid>
-                      <v:ImageContainer/>
-                      <Image Source="{Binding Image}" Stretch="Uniform" VerticalAlignment="Center" RenderOptions.BitmapInterpolationMode="HighQuality"/>
-                    </Grid>
-                  </Border>
-                </Border>
-              </Border>
-            </DataTemplate>
-
-            <DataTemplate DataType="m:RevisionLFSObject">
-              <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="{DynamicResource Text.CommitDetail.Files.LFS}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
-                <Path Width="64" Height="64" Margin="0,24,0,0" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
-                <SelectableTextBlock Margin="0,16,0,0" Text="{Binding Object.Oid}" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
-                <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{Binding Object.Size}" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Text="{DynamicResource Text.Bytes}" Margin="8,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
-                </StackPanel>
-              </StackPanel>
-            </DataTemplate>
-
-            <DataTemplate DataType="m:RevisionSubmodule">
-              <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="8,8,8,0">
-                <TextBlock Text="{DynamicResource Text.CommitDetail.Files.Submodule}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
-                <v:CommitBaseInfo Margin="0,16,0,0" Content="{Binding Commit}" Message="{Binding FullMessage}"/>
-              </StackPanel>
-            </DataTemplate>
-          </ContentControl.DataTemplates>
-        </ContentControl>
+        <v:RevisionFileContentViewer Content="{Binding ViewRevisionFileContent}"/>
       </Border>
     </Grid>
   </Grid>

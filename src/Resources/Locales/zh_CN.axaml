@@ -246,6 +246,8 @@
   <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">使用 THEIRS (checkout --theirs)</x:String>
   <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">使用 MINE (checkout --ours)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">文件历史</x:String>
+  <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">文件内容</x:String>
+  <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">文件变更</x:String>
   <x:String x:Key="Text.Filter" xml:space="preserve">过滤</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">GIT工作流</x:String>
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">开发分支 ：</x:String>

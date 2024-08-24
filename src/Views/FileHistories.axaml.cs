@@ -27,5 +27,16 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private void OnPressCommitSHA(object sender, PointerPressedEventArgs e)
+        {
+            if (sender is TextBlock { DataContext: Models.Commit commit } &&
+                DataContext is ViewModels.FileHistories vm)
+            {
+                vm.NavigateToCommit(commit);
+            }
+
+            e.Handled = true;
+        }
     }
 }
