@@ -383,59 +383,59 @@
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APPARENCE</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Police par défaut</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Taille de police par défaut</x:String>
-  <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Monospace Font</x:String>
-  <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">N'uilisez que des polices monospace pour l'éditeur de texte</x:String>
+  <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Police monospace</x:String>
+  <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">N'utiliser que des polices monospace pour l'éditeur de texte</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Thème</x:String>
-  <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Theme Overrides</x:String>
+  <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Dérogations de thème</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Utiliser des onglets de taille fixe dans la barre de titre</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">Utiliser un cadre de fenêtre natif</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">GÉNÉRAL</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Vérifier les mises à jour au démarrage</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Language</x:String>
-  <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
+  <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Historique de commits</x:String>
   <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Restaurer les onglets au démarrage</x:String>
-  <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Subject Guide Length</x:String>
-  <x:String x:Key="Text.Preference.General.VisibleDiffContextLines" xml:space="preserve">Visible Diff Context Lines</x:String>
+  <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Guide de longueur du sujet</x:String>
+  <x:String x:Key="Text.Preference.General.VisibleDiffContextLines" xml:space="preserve">Lignes de contexte visibles (Diff)</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">Auto Fetch Interval</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(s)</x:String>
-  <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Enable Auto CRLF</x:String>
-  <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Default Clone Dir</x:String>
-  <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">User Email</x:String>
-  <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Global git user email</x:String>
-  <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Install Path</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Fetch les dépôts distants automatiquement</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">Intervalle de fetch auto</x:String>
+  <x:String x:Key="Text.Preference.Git.AutoFetchIntervalSuffix" xml:space="preserve">minute(s)</x:String>
+  <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Activer auto CRLF</x:String>
+  <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Répertoire de clônage par défaut</x:String>
+  <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">E-mail utilsateur</x:String>
+  <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">E-mail utilsateur global</x:String>
+  <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Chemin d'installation</x:String>
   <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">Shell</x:String>
-  <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">User Name</x:String>
-  <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Global git user name</x:String>
-  <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git version</x:String>
-  <x:String x:Key="Text.Preference.Git.Invalid" xml:space="preserve">Git (>= 2.23.0) is required by this app</x:String>
-  <x:String x:Key="Text.Preference.GPG" xml:space="preserve">GPG SIGNING</x:String>
-  <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">Commit GPG signing</x:String>
-  <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">Tag GPG signing</x:String>
-  <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">GPG Format</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">Program Install Path</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Input path for installed gpg program</x:String>
-  <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">User Signing Key</x:String>
-  <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">User's gpg signing key</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Install Path</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Input path for diff/merge tool</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Tool</x:String>
-  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>
-  <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Target:</x:String>
-  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Prune Worktrees</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune worktree information in `$GIT_DIR/worktrees`</x:String>
+  <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">Nom d'utilisateur</x:String>
+  <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Nom d'utilisateur global</x:String>
+  <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Version de Git</x:String>
+  <x:String x:Key="Text.Preference.Git.Invalid" xml:space="preserve">Cette application requière Git (>= 2.23.0)</x:String>
+  <x:String x:Key="Text.Preference.GPG" xml:space="preserve">SIGNATURE GPG</x:String>
+  <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">Signature GPG de commit</x:String>
+  <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">Signature GPG de tag</x:String>
+  <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">Format GPG</x:String>
+  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">Chemin d'installation du programme</x:String>
+  <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Saisir le chemin d'installation vers le programme GPG</x:String>
+  <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">Clé de signature de l'utilisateur</x:String>
+  <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">Clé de signature GPG de l'utilisateur</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">OUTIL DIFF/MERGE</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Chemin d'installation</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Saisir le chemin d'installation de l'outil diff/merge</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Outil</x:String>
+  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Élaguer une branche distant</x:String> <!-- If it is indeed about a branch -->
+  <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Cible :</x:String>
+  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Élaguer les Worktrees</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve"> Élaguer les information de worktree dans `$GIT_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
-  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch all branches</x:String>
-  <x:String x:Key="Text.Pull.Into" xml:space="preserve">Into:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Local Changes:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Fetch without tags</x:String>
-  <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branche :</x:String>
+  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch toutes les branches</x:String>
+  <x:String x:Key="Text.Pull.Into" xml:space="preserve">Dans :</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Rejeter</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Ne rien faire</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Réappliquer</x:String>
+  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Fetch sans les tags</x:String>
+  <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Distant :</x:String> <!-- Branch ?-->
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Use rebase instead of merge</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">Push</x:String>
