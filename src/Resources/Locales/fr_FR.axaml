@@ -311,30 +311,30 @@
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Référence des raccourcis clavier</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Cancel current popup</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Close current page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Go to previous page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Go to next page</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Annuler le popup en cours</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Fermer la page en cours</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Aller à la page précédente</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Aller à la page suivante</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Créer une nouvelle page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">Open preference dialog</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit staged changes</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit and push staged changes</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Dashboard mode (Default)</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Force to reload this repository</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Stage/Unstage selected changes</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Commit search mode</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Switch to 'Changes'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Switch to 'Histories'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Switch to 'Stashes'</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">TEXT EDITOR</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Close search panel</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Find next match</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Find previous match</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Open search panel</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">Ouvrir le dialogue des préférences</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">DÉPÔT</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit les changements de l'index</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit et pousser les changements de l'index</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Mode tableau de bord (Défaut)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Forcer le rechargement du dépôt</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Ajouter/Retirer les changements sélectionnés de l'index</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Recherche de commit</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Basculer vers 'Changements'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Basculer vers 'Historique'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Basculer vers 'Stashes'</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">ÉDITEUR DE TEXTE</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Fermer le panneau de recherche</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Trouver la prochaine correspondance</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Trouver la correspondance précédente</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Ouvrir le panneau de recherche</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>
-  <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Unstage</x:String>
-  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Discard</x:String>
+  <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Retirer de l'index</x:String>
+  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Rejeter</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Initialize Repository</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Path:</x:String>
   <x:String x:Key="Text.Init.Tip" xml:space="preserve">Invalid repository detected. Run `git init` under this path?</x:String>
