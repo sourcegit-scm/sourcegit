@@ -145,6 +145,7 @@
   <x:String x:Key="Text.Configure.User" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">User name for this repository</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Copy</x:String>
+  <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copy All Text</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">COPY MESSAGE</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copy Path</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">Copy File Name</x:String>

@@ -148,6 +148,7 @@
   <x:String x:Key="Text.Configure.User" xml:space="preserve">使用者名稱</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">應用於本倉庫的使用者名稱</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">複製</x:String>
+  <x:String x:Key="Text.CopyAllText" xml:space="preserve">複製全部内容</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">複製內容</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">複製路徑</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">複製檔名</x:String>

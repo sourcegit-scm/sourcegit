@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -21,34 +20,8 @@ using Avalonia.Threading;
 
 namespace SourceGit
 {
-    public class SimpleCommand : ICommand
-    {
-        public event EventHandler CanExecuteChanged
-        {
-            add { }
-            remove { }
-        }
-
-        public SimpleCommand(Action action)
-        {
-            _action = action;
-        }
-
-        public bool CanExecute(object parameter) => _action != null;
-        public void Execute(object parameter) => _action?.Invoke();
-
-        private Action _action = null;
-    }
-
     public partial class App : Application
     {
-        public static readonly SimpleCommand OpenPreferenceCommand = new SimpleCommand(() => OpenDialog(new Views.Preference()));
-        public static readonly SimpleCommand OpenHotkeysCommand = new SimpleCommand(() => OpenDialog(new Views.Hotkeys()));
-        public static readonly SimpleCommand OpenAppDataDirCommand = new SimpleCommand(() => Native.OS.OpenInFileManager(Native.OS.DataDir));
-        public static readonly SimpleCommand OpenAboutCommand = new SimpleCommand(() => OpenDialog(new Views.About()));
-        public static readonly SimpleCommand CheckForUpdateCommand = new SimpleCommand(() => Check4Update(true));
-        public static readonly SimpleCommand QuitCommand = new SimpleCommand(() => Quit(0));
-
         [STAThread]
         public static void Main(string[] args)
         {
@@ -125,8 +98,8 @@ namespace SourceGit
 
         public static void OpenDialog(Window window)
         {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                window.ShowDialog(desktop.MainWindow);
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner})
+                window.ShowDialog(owner);
         }
 
         public static void RaiseException(string context, string message)
@@ -260,7 +233,7 @@ namespace SourceGit
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 if (desktop.MainWindow?.Clipboard is { } clipboard)
-                    await clipboard.SetTextAsync(data);
+                    await clipboard.SetTextAsync(data ?? "");
             }
         }
 
@@ -305,7 +278,7 @@ namespace SourceGit
         public static IStorageProvider GetStorageProvider()
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                return desktop.MainWindow.StorageProvider;
+                return desktop.MainWindow?.StorageProvider;
 
             return null;
         }
