@@ -145,6 +145,7 @@ namespace SourceGit.ViewModels
                     Models.AutoFetchManager.Instance.RemoveRepository(repo.FullPath);
                     repo.Close();
 
+                    Welcome.Instance.ClearSearchFilter();
                     last.Node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
                     last.Data = Welcome.Instance;
                     last.Popup = null;
