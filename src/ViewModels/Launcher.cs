@@ -22,8 +22,11 @@ namespace SourceGit.ViewModels
             get => _activePage;
             set
             {
-                if (SetProperty(ref _activePage, value))
+                var old = _activePage;
+                if (SetProperty(ref _activePage, value)) {
                     PopupHost.Active = value;
+                    UpdateSearchFilter(old, value);
+                }
             }
         }
 
@@ -377,6 +380,14 @@ namespace SourceGit.ViewModels
             }
 
             page.Data = null;
+        }
+
+        private static void UpdateSearchFilter(LauncherPage oldPage, LauncherPage newPage) {
+            if (oldPage != null) {
+                oldPage.SearchFilter = Welcome.Instance.SearchFilter;
+            }
+
+            Welcome.Instance.SearchFilter = newPage.SearchFilter;
         }
 
         private LauncherPage _activePage = null;

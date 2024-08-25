@@ -24,6 +24,12 @@ namespace SourceGit.ViewModels
             set;
         } = new AvaloniaList<Models.Notification>();
 
+        public string SearchFilter
+        {
+            get => _searchFilter;
+            set => SetProperty(ref _searchFilter, value);
+        }
+
         public LauncherPage()
         {
             _node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
@@ -49,5 +55,6 @@ namespace SourceGit.ViewModels
 
         private RepositoryNode _node = null;
         private object _data = null;
+        private string _searchFilter = string.Empty;
     }
 }
