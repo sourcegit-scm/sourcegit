@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -240,6 +242,25 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(reset);
+                
+                var squash = new MenuItem();
+                squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
+                squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
+                squash.IsVisible = commit.IsMerged;
+                squash.Click += (_, e) =>
+                {
+                    if (_repo.LocalChangesCount > 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                        return;
+                    }
+                    
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowPopup(new Squash(_repo, commit, commit.SHA));
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(squash);
             }
             else
             {
@@ -276,7 +297,7 @@ namespace SourceGit.ViewModels
                     {
                         var parent = _commits.Find(x => x.SHA == commit.Parents[0]);
                         if (parent != null && PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new Squash(_repo, commit, parent));
+                            PopupHost.ShowPopup(new Squash(_repo, parent, commit.SHA));
                     }
 
                     e.Handled = true;

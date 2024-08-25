@@ -110,6 +110,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">編輯提交訊息</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存為修補檔 (patch)...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合併此提交到上一個提交</x:String>
+  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">合併之後的提交到此處</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">變更對比</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">搜尋變更...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">檔案列表</x:String>
@@ -534,7 +535,7 @@
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">忽略此版本</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">軟體更新</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">目前已是最新版本。</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">合併 HEAD 至前次提交</x:String>
+  <x:String x:Key="Text.Squash" xml:space="preserve">壓縮為單個提交</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH 金鑰:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH 金鑰檔案</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">開  始</x:String>
