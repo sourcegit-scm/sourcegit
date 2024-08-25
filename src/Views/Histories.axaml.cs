@@ -184,7 +184,7 @@ namespace SourceGit.Views
 
             if (change.Property == SubjectProperty || change.Property == IssueTrackerRulesProperty)
             {
-                Inlines.Clear();
+                Inlines!.Clear();
                 _matches = null;
                 ClearHoveredIssueLink();
 

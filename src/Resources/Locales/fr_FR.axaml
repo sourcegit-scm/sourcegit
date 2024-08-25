@@ -395,7 +395,6 @@
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Historique de commits</x:String>
   <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Restaurer les onglets au démarrage</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Guide de longueur du sujet</x:String>
-  <x:String x:Key="Text.Preference.General.VisibleDiffContextLines" xml:space="preserve">Lignes de contexte visibles (Diff)</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Fetch les dépôts distants automatiquement</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">Intervalle de fetch auto</x:String>

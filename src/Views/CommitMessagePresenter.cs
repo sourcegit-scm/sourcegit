@@ -42,7 +42,7 @@ namespace SourceGit.Views
 
             if (change.Property == MessageProperty || change.Property == IssueTrackerRulesProperty)
             {
-                Inlines.Clear();
+                Inlines!.Clear();
                 _matches = null;
                 ClearHoveredIssueLink();
 

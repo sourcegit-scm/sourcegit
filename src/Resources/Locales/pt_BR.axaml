@@ -389,7 +389,6 @@
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Commits do Histórico</x:String>
   <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Restaurar as últimas abas abertas na inicialização</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Comprimento do Guia de Assunto</x:String>
-  <x:String x:Key="Text.Preference.General.VisibleDiffContextLines" xml:space="preserve">Linhas de Contexto de Diferença Visíveis</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Buscar remotos automaticamente</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">Intervalo de Busca Automática</x:String>
