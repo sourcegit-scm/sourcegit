@@ -171,13 +171,13 @@
 
           <ListBoxItem>
             <Border Classes="switcher_bg">
-              <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.FileHistory.FileContent}"/>
+              <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.FileHistory.FileChange}"/>
             </Border>
           </ListBoxItem>
 
           <ListBoxItem>
             <Border Classes="switcher_bg">
-              <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.FileHistory.FileChange}"/>
+              <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.FileHistory.FileContent}"/>
             </Border>
           </ListBoxItem>
         </ListBox>

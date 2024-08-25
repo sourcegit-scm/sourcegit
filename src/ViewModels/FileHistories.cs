@@ -93,9 +93,9 @@ namespace SourceGit.ViewModels
             }
 
             if (_viewMode == 0)
-                SetViewContentAsRevisionFile();
-            else
                 SetViewContentAsDiff();
+            else
+                SetViewContentAsRevisionFile();
         }
 
         private void SetViewContentAsRevisionFile()
