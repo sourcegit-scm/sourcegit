@@ -535,6 +535,7 @@
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">软件更新</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">当前已是最新版本。</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">压缩为单个提交</x:String>
+  <x:String x:Key="Text.Squash.Into" xml:space="preserve">合并入：</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH密钥 ：</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH密钥文件</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">开    始</x:String>
