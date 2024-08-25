@@ -739,6 +739,7 @@
     <Setter Property="Height" Value="28"/>
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}" />
+    <Setter Property="Cursor" Value="Arrow"/>
 
     <Setter Property="Template">
       <ControlTemplate>
