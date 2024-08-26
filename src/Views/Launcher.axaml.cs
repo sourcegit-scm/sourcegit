@@ -3,11 +3,31 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
     public partial class Launcher : ChromelessWindow
     {
+        public static readonly StyledProperty<GridLength> CaptionHeightProperty =
+            AvaloniaProperty.Register<Launcher, GridLength>(nameof(CaptionHeight));
+
+        public GridLength CaptionHeight
+        {
+            get => GetValue(CaptionHeightProperty);
+            set => SetValue(CaptionHeightProperty, value);
+        }
+
+        public bool IsRightCaptionButtonsVisible
+        {
+            get
+            {
+                if (OperatingSystem.IsLinux())
+                    return !ViewModels.Preference.Instance.UseSystemWindowFrame;
+                return OperatingSystem.IsWindows();
+            }
+        }
+
         public Launcher()
         {
             var layout = ViewModels.Preference.Instance.Layout;
@@ -16,6 +36,11 @@ namespace SourceGit.Views
                 Width = layout.LauncherWidth;
                 Height = layout.LauncherHeight;
             }
+
+            if (UseSystemWindowFrame)
+                CaptionHeight = new GridLength(30);
+            else
+                CaptionHeight = new GridLength(38);
 
             InitializeComponent();
         }
@@ -38,13 +63,15 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == WindowStateProperty && MainLayout != null)
+            if (change.Property == WindowStateProperty)
             {
                 var state = (WindowState)change.NewValue!;
-                if (state == WindowState.Maximized)
-                    MainLayout.RowDefinitions[0].Height = new GridLength(OperatingSystem.IsMacOS() ? 34 : 30);
+                if (OperatingSystem.IsLinux() && UseSystemWindowFrame)
+                    CaptionHeight = new GridLength(30);
+                else if (state == WindowState.Maximized)
+                    CaptionHeight = new GridLength(OperatingSystem.IsMacOS() ? 34 : 30);
                 else
-                    MainLayout.RowDefinitions[0].Height = new GridLength(38);
+                    CaptionHeight = new GridLength(38);
 
                 ViewModels.Preference.Instance.Layout.LauncherWindowState = state;
             }
@@ -59,7 +86,7 @@ namespace SourceGit.Views
             // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift) && e.Key == Key.P)
             {
-                App.OpenPreferenceCommand.Execute(null);
+                App.OpenDialog(new Preference());
                 e.Handled = true;
                 return;
             }
@@ -132,6 +159,19 @@ namespace SourceGit.Views
                         repo.IsSearching = false;
                         e.Handled = true;
                         return;
+                    }
+                }
+                else
+                {
+                    var welcome = this.FindDescendantOfType<Welcome>();
+                    if (welcome != null)
+                    {
+                        if (e.Key == Key.F)
+                        {
+                            welcome.SearchBox.Focus();
+                            e.Handled = true;
+                            return;
+                        }
                     }
                 }
             }

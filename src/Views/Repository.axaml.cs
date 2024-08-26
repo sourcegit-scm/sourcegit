@@ -63,11 +63,6 @@ namespace SourceGit.Views
                 FontFamilyProperty,
                 ForegroundProperty,
                 CountProperty);
-
-            AffectsRender<CounterPresenter>(
-                ForegroundProperty,
-                BackgroundProperty,
-                CountProperty);
         }
 
         public override void Render(DrawingContext context)
@@ -98,6 +93,7 @@ namespace SourceGit.Views
                 _label = null;
             }
 
+            InvalidateVisual();
             return _label != null ? new Size(_label.Width + 18, 18) : new Size(0, 0);
         }
 
@@ -200,7 +196,7 @@ namespace SourceGit.Views
 
         private void OnSubmoduleContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: Models.Submodule submodule } grid && DataContext is ViewModels.Repository repo)
+            if (sender is ListBox { SelectedItem: Models.Submodule submodule } grid && DataContext is ViewModels.Repository repo)
             {
                 var menu = repo.CreateContextMenuForSubmodule(submodule.Path);
                 grid.OpenContextMenu(menu);
@@ -211,7 +207,7 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: Models.Submodule submodule } && DataContext is ViewModels.Repository repo)
+            if (sender is ListBox { SelectedItem: Models.Submodule submodule } && DataContext is ViewModels.Repository repo)
             {
                 repo.OpenSubmodule(submodule.Path);
             }
@@ -221,7 +217,7 @@ namespace SourceGit.Views
 
         private void OnWorktreeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: Models.Worktree worktree } grid && DataContext is ViewModels.Repository repo)
+            if (sender is ListBox { SelectedItem: Models.Worktree worktree } grid && DataContext is ViewModels.Repository repo)
             {
                 var menu = repo.CreateContextMenuForWorktree(worktree);
                 grid.OpenContextMenu(menu);
@@ -232,7 +228,7 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedWorktree(object sender, TappedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItem: Models.Worktree worktree } && DataContext is ViewModels.Repository repo)
+            if (sender is ListBox { SelectedItem: Models.Worktree worktree } && DataContext is ViewModels.Repository repo)
             {
                 repo.OpenWorktree(worktree);
             }
@@ -242,7 +238,7 @@ namespace SourceGit.Views
 
         private void OnLeftSidebarDataGridPropertyChanged(object _, AvaloniaPropertyChangedEventArgs e)
         {
-            if (e.Property == DataGrid.ItemsSourceProperty || e.Property == DataGrid.IsVisibleProperty)
+            if (e.Property == ListBox.ItemsSourceProperty || e.Property == ListBox.IsVisibleProperty)
                 UpdateLeftSidebarLayout();
         }
 
@@ -266,8 +262,8 @@ namespace SourceGit.Views
             var remoteBranchRows = vm.IsRemoteGroupExpanded ? RemoteBranchTree.Rows.Count : 0;
             var desiredBranches = (localBranchRows + remoteBranchRows) * 24.0;
             var desiredTag = vm.IsTagGroupExpanded ? 24.0 * TagsList.Rows : 0;
-            var desiredSubmodule = vm.IsSubmoduleGroupExpanded ? SubmoduleList.RowHeight * vm.Submodules.Count : 0;
-            var desiredWorktree = vm.IsWorktreeGroupExpanded ? WorktreeList.RowHeight * vm.Worktrees.Count : 0;
+            var desiredSubmodule = vm.IsSubmoduleGroupExpanded ? 24.0 * vm.Submodules.Count : 0;
+            var desiredWorktree = vm.IsWorktreeGroupExpanded ? 24.0 * vm.Worktrees.Count : 0;
             var desiredOthers = desiredTag + desiredSubmodule + desiredWorktree;
             var hasOverflow = (desiredBranches + desiredOthers > leftHeight);
 

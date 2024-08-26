@@ -14,7 +14,14 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.CreateBranch.Title}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32" ColumnDefinitions="140,*">
+    <Grid Margin="0,16,0,0" ColumnDefinitions="140,*">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="32"/>
+        <RowDefinition Height="32"/>
+        <RowDefinition Height="Auto" MinHeight="32"/>
+        <RowDefinition Height="32"/>
+      </Grid.RowDefinitions>
+      
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -61,23 +68,23 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.CreateBranch.LocalChanges}"/>
-      <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-        <StackPanel.Resources>
+      <WrapPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+        <WrapPanel.Resources>
           <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
-        </StackPanel.Resources>
+        </WrapPanel.Resources>
 
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.DoNothing}"
                      GroupName="LocalChanges"
+                     Margin="0,0,8,0"
                      IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.DoNothing}}"/>
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
                      GroupName="LocalChanges"
-                     Margin="8,0,0,0"
+                     Margin="0,0,8,0"
                      IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.StashAndReaply}}"/>
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"
                      GroupName="LocalChanges"
-                     Margin="8,0,0,0"
                      IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.Discard}}"/>
-      </StackPanel>
+      </WrapPanel>
       
       <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.CreateBranch.Checkout}"

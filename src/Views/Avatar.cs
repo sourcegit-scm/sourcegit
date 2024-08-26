@@ -105,7 +105,8 @@ namespace SourceGit.Views
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
             };
 
-            var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
+            var fontFamily = avatar.FindResource("Fonts.Monospace") as FontFamily;
+            var typeface = new Typeface(fontFamily);
 
             avatar._fallbackLabel = new FormattedText(
                 placeholder,

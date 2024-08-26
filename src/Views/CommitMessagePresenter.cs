@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
-using Avalonia.Utilities;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
-    public class CommitMessagePresenter : SelectableTextBlock
+    public partial class CommitMessagePresenter : SelectableTextBlock
     {
+        [GeneratedRegex(@"\b([0-9a-fA-F]{8,40})\b")]
+        private static partial Regex REG_SHA_FORMAT();
+
         public static readonly StyledProperty<string> MessageProperty =
             AvaloniaProperty.Register<CommitMessagePresenter, string>(nameof(Message));
 
@@ -38,7 +42,7 @@ namespace SourceGit.Views
 
             if (change.Property == MessageProperty || change.Property == IssueTrackerRulesProperty)
             {
-                Inlines.Clear();
+                Inlines!.Clear();
                 _matches = null;
                 ClearHoveredIssueLink();
 
@@ -46,16 +50,35 @@ namespace SourceGit.Views
                 if (string.IsNullOrEmpty(message))
                     return;
 
-                var rules = IssueTrackerRules;
-                if (rules == null || rules.Count == 0)
+                var matches = new List<Models.Hyperlink>();
+                if (IssueTrackerRules is { Count: > 0 } rules)
                 {
-                    Inlines.Add(new Run(message));
-                    return;
+                    foreach (var rule in rules)
+                        rule.Matches(matches, message);
                 }
 
-                var matches = new List<Models.IssueTrackerMatch>();
-                foreach (var rule in rules)
-                    rule.Matches(matches, message);
+                var shas = REG_SHA_FORMAT().Matches(message);
+                for (int i = 0; i < shas.Count; i++)
+                {
+                    var sha = shas[i];
+                    if (!sha.Success)
+                        continue;
+
+                    var start = sha.Index;
+                    var len = sha.Length;
+                    var intersect = false;
+                    foreach (var match in matches)
+                    {
+                        if (match.Intersect(start, len))
+                        {
+                            intersect = true;
+                            break;
+                        }
+                    }
+
+                    if (!intersect)
+                        matches.Add(new Models.Hyperlink(start, len, sha.Groups[1].Value, true));
+                }
 
                 if (matches.Count == 0)
                 {
@@ -72,9 +95,9 @@ namespace SourceGit.Views
                     if (match.Start > pos)
                         Inlines.Add(new Run(message.Substring(pos, match.Start - pos)));
 
-                    match.Link = new Run(message.Substring(match.Start, match.Length));
-                    match.Link.Classes.Add("issue_link");
-                    Inlines.Add(match.Link);
+                    var link = new Run(message.Substring(match.Start, match.Length));
+                    link.Classes.Add(match.IsCommitSHA ? "commit_link" : "issue_link");
+                    Inlines.Add(link);
 
                     pos = match.Start + match.Length;
                 }
@@ -90,11 +113,10 @@ namespace SourceGit.Views
 
             if (e.Pointer.Captured == null && _matches != null)
             {
-                var padding = Padding;
-                var point = e.GetPosition(this) - new Point(padding.Left, padding.Top);
-                point = new Point(
-                    MathUtilities.Clamp(point.X, 0, Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0)),
-                    MathUtilities.Clamp(point.Y, 0, Math.Max(TextLayout.Height, 0)));
+                var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
+                var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
+                var y = Math.Min(Math.Max(point.Y, 0), Math.Max(TextLayout.Height, 0));
+                point = new Point(x, y);
 
                 var pos = TextLayout.HitTestPoint(point).TextPosition;
                 foreach (var match in _matches)
@@ -105,12 +127,15 @@ namespace SourceGit.Views
                     if (match == _lastHover)
                         return;
 
-                    _lastHover = match;
-                    //_lastHover.Link.Classes.Add("issue_link_hovered");
-
                     SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
-                    ToolTip.SetTip(this, match.URL);
-                    ToolTip.SetIsOpen(this, true);
+
+                    _lastHover = match;
+                    if (!_lastHover.IsCommitSHA)
+                    {
+                        ToolTip.SetTip(this, match.Link);
+                        ToolTip.SetIsOpen(this, true);
+                    }
+
                     return;
                 }
 
@@ -123,7 +148,18 @@ namespace SourceGit.Views
             if (_lastHover != null)
             {
                 e.Pointer.Capture(null);
-                Native.OS.OpenBrowser(_lastHover.URL);
+
+                if (_lastHover.IsCommitSHA)
+                {
+                    var parentView = this.FindAncestorOfType<CommitBaseInfo>();
+                    if (parentView is { DataContext: ViewModels.CommitDetail detail })
+                        detail.NavigateTo(_lastHover.Link);
+                }
+                else
+                {
+                    Native.OS.OpenBrowser(_lastHover.Link);
+                }
+
                 e.Handled = true;
                 return;
             }
@@ -143,12 +179,11 @@ namespace SourceGit.Views
             {
                 ToolTip.SetTip(this, null);
                 SetCurrentValue(CursorProperty, Cursor.Parse("IBeam"));
-                //_lastHover.Link.Classes.Remove("issue_link_hovered");
                 _lastHover = null;
             }
         }
 
-        private List<Models.IssueTrackerMatch> _matches = null;
-        private Models.IssueTrackerMatch _lastHover = null;
+        private List<Models.Hyperlink> _matches = null;
+        private Models.Hyperlink _lastHover = null;
     }
 }

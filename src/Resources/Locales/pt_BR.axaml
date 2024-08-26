@@ -382,14 +382,13 @@
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Usar apenas fonte monoespaçada no editor de texto</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Tema</x:String>
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Sobrescrever Tema</x:String>
+  <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Usar largura fixa da aba na barra de título</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">GERAL</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Verificar atualizações na inicialização</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Idioma</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Commits do Histórico</x:String>
   <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Restaurar as últimas abas abertas na inicialização</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Comprimento do Guia de Assunto</x:String>
-  <x:String x:Key="Text.Preference.General.UseFixedTabWidth" xml:space="preserve">Usar largura fixa da aba na barra de título</x:String>
-  <x:String x:Key="Text.Preference.General.VisibleDiffContextLines" xml:space="preserve">Linhas de Contexto de Diferença Visíveis</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Buscar remotos automaticamente</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">Intervalo de Busca Automática</x:String>
@@ -480,6 +479,7 @@
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTRADO POR:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCHES LOCAIS</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navegar para HEAD</x:String>
+  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Filtro do Primeiro Pai</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Criar Branch</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Abrir em {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Abrir em Ferramentas Externas</x:String>
@@ -527,7 +527,7 @@
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Ignorar esta versão</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Atualização de Software</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Não há atualizações disponíveis no momento.</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Unir HEAD ao Parent</x:String>
+  <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Chave SSH Privada:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Caminho para a chave SSH privada</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">INICIAR</x:String>

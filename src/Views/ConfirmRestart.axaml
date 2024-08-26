@@ -1,0 +1,65 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.ConfirmRestart"
+                    x:Name="ThisControl"
+                    Title="Restart Required"
+                    Icon="/App.ico"
+                    CanResize="False"
+                    SizeToContent="WidthAndHeight"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,*">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Grid.Column="0" Grid.ColumnSpan="3"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Grid.Column="0"
+            Width="14" Height="14"
+            Margin="10,0,0,0"
+            Data="{StaticResource Icons.Info}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
+        <Button Classes="caption_button_macos" Click="CloseWindow">
+          <Grid>
+            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
+            <Path Height="6" Width="6" Stretch="Fill" Fill="#505050" Data="{StaticResource Icons.MacOS.Close}"/>
+          </Grid>
+        </Button>
+      </Grid>
+
+      <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                 Classes="bold"
+                 Text="Restart Required"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <Button Grid.Column="2"
+              Classes="caption_button"
+              Click="CloseWindow"
+              IsVisible="{OnPlatform True, macOS=False}">
+        <Path Data="{StaticResource Icons.Window.Close}"/>
+      </Button>
+    </Grid>
+
+    <StackPanel Grid.Row="1" Margin="0,16" Orientation="Vertical">
+      <Border Margin="16,0">
+        <TextBlock Text="You need to restart this app to apply changes."/>
+      </Border>
+
+      <Button Classes="flat primary"
+              Width="80"
+              Margin="0,16,0,0"
+              Content="{DynamicResource Text.Sure}"
+              Click="Restart"
+              HorizontalAlignment="Center"
+              HotKey="Enter"/>
+    </StackPanel>
+  </Grid>
+</v:ChromelessWindow>

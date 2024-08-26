@@ -67,15 +67,16 @@
                                              BehindBrush="{DynamicResource Brush.FG1}"
                                              VerticalAlignment="Center"/>
 
-                    <v:CommitRefsPresenter IsVisible="{Binding HasDecorators}"
-                                           IconBackground="{DynamicResource Brush.DecoratorIconBG}"
+                    <v:CommitRefsPresenter IconBackground="{DynamicResource Brush.DecoratorIconBG}"
                                            IconForeground="{DynamicResource Brush.DecoratorIcon}"
                                            BranchNameBackground="{DynamicResource Brush.DecoratorBranch}"
+                                           HeadBranchNameBackground="{DynamicResource Brush.DecoratorHead}"
                                            TagNameBackground="{DynamicResource Brush.DecoratorTag}"
                                            LabelForeground="{DynamicResource Brush.DecoratorFG}"
-                                           FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
-                                           FontSize="10"
-                                           VerticalAlignment="Center"/>
+                                           FontFamily="{DynamicResource Fonts.Primary}"
+                                           FontSize="11"
+                                           VerticalAlignment="Center"
+                                           Refs="{Binding Decorators}"/>
 
                     <v:CommitSubjectPresenter Classes="primary"
                                               Subject="{Binding Subject}"

@@ -11,7 +11,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
-using Avalonia.Utilities;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -185,7 +184,7 @@ namespace SourceGit.Views
 
             if (change.Property == SubjectProperty || change.Property == IssueTrackerRulesProperty)
             {
-                Inlines.Clear();
+                Inlines!.Clear();
                 _matches = null;
                 ClearHoveredIssueLink();
 
@@ -200,7 +199,7 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var matches = new List<Models.IssueTrackerMatch>();
+                var matches = new List<Models.Hyperlink>();
                 foreach (var rule in rules)
                     rule.Matches(matches, subject);
 
@@ -219,9 +218,9 @@ namespace SourceGit.Views
                     if (match.Start > pos)
                         Inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
 
-                    match.Link = new Run(subject.Substring(match.Start, match.Length));
-                    match.Link.Classes.Add("issue_link");
-                    Inlines.Add(match.Link);
+                    var link = new Run(subject.Substring(match.Start, match.Length));
+                    link.Classes.Add("issue_link");
+                    Inlines.Add(link);
 
                     pos = match.Start + match.Length;
                 }
@@ -239,11 +238,10 @@ namespace SourceGit.Views
 
             if (_matches != null)
             {
-                var padding = Padding;
-                var point = e.GetPosition(this) - new Point(padding.Left, padding.Top);
-                point = new Point(
-                    MathUtilities.Clamp(point.X, 0, Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0)),
-                    MathUtilities.Clamp(point.Y, 0, Math.Max(TextLayout.Height, 0)));
+                var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
+                var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
+                var y = Math.Min(Math.Max(point.Y, 0), Math.Max(TextLayout.Height, 0));
+                point = new Point(x, y);
 
                 var textPosition = TextLayout.HitTestPoint(point).TextPosition;
                 foreach (var match in _matches)
@@ -255,10 +253,8 @@ namespace SourceGit.Views
                         return;
 
                     _lastHover = match;
-                    //_lastHover.Link.Classes.Add("issue_link_hovered");
-
                     SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
-                    ToolTip.SetTip(this, match.URL);
+                    ToolTip.SetTip(this, match.Link);
                     ToolTip.SetIsOpen(this, true);
                     e.Handled = true;
                     return;
@@ -273,7 +269,7 @@ namespace SourceGit.Views
             base.OnPointerPressed(e);
 
             if (_lastHover != null)
-                Native.OS.OpenBrowser(_lastHover.URL);
+                Native.OS.OpenBrowser(_lastHover.Link);
         }
 
         protected override void OnPointerExited(PointerEventArgs e)
@@ -288,13 +284,12 @@ namespace SourceGit.Views
             {
                 ToolTip.SetTip(this, null);
                 SetCurrentValue(CursorProperty, Cursor.Parse("Arrow"));
-                //_lastHover.Link.Classes.Remove("issue_link_hovered");
                 _lastHover = null;
             }
         }
 
-        private List<Models.IssueTrackerMatch> _matches = null;
-        private Models.IssueTrackerMatch _lastHover = null;
+        private List<Models.Hyperlink> _matches = null;
+        private Models.Hyperlink _lastHover = null;
     }
 
     public class CommitTimeTextBlock : TextBlock
@@ -479,25 +474,14 @@ namespace SourceGit.Views
             var top = startY;
             var bottom = startY + grid.Bounds.Height + rowHeight * 2;
 
-            // Draw all curves
-            DrawCurves(context, top, bottom);
-
-            // Draw connect dots
-            IBrush dotFill = DotBrush;
-            foreach (var dot in graph.Dots)
-            {
-                if (dot.Center.Y < top)
-                    continue;
-                if (dot.Center.Y > bottom)
-                    break;
-
-                context.DrawEllipse(dotFill, Models.CommitGraph.Pens[dot.Color], dot.Center, 3, 3);
-            }
+            // Draw contents
+            DrawCurves(context, graph, top, bottom);
+            DrawAnchors(context, graph, top, bottom);
         }
 
-        private void DrawCurves(DrawingContext context, double top, double bottom)
+        private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom)
         {
-            foreach (var line in Graph.Paths)
+            foreach (var line in graph.Paths)
             {
                 var last = line.Points[0];
                 var size = line.Points.Count;
@@ -565,7 +549,7 @@ namespace SourceGit.Views
                 context.DrawGeometry(null, pen, geo);
             }
 
-            foreach (var link in Graph.Links)
+            foreach (var link in graph.Links)
             {
                 if (link.End.Y < top)
                     continue;
@@ -580,6 +564,37 @@ namespace SourceGit.Views
                 }
 
                 context.DrawGeometry(null, Models.CommitGraph.Pens[link.Color], geo);
+            }
+        }
+
+        private void DrawAnchors(DrawingContext context, Models.CommitGraph graph, double top, double bottom)
+        {
+            IBrush dotFill = DotBrush;
+            Pen dotFillPen = new Pen(dotFill, 2);
+
+            foreach (var dot in graph.Dots)
+            {
+                if (dot.Center.Y < top)
+                    continue;
+                if (dot.Center.Y > bottom)
+                    break;
+
+                var pen = Models.CommitGraph.Pens[dot.Color];
+                switch (dot.Type)
+                {
+                    case Models.CommitGraph.DotType.Head:
+                        context.DrawEllipse(dotFill, pen, dot.Center, 6, 6);
+                        context.DrawEllipse(pen.Brush, null, dot.Center, 3, 3);
+                        break;
+                    case Models.CommitGraph.DotType.Merge:
+                        context.DrawEllipse(pen.Brush, null, dot.Center, 6, 6);
+                        context.DrawLine(dotFillPen, new Point(dot.Center.X, dot.Center.Y - 3), new Point(dot.Center.X, dot.Center.Y + 3));
+                        context.DrawLine(dotFillPen, new Point(dot.Center.X - 3, dot.Center.Y), new Point(dot.Center.X + 3, dot.Center.Y));
+                        break;
+                    default:
+                        context.DrawEllipse(dotFill, pen, dot.Center, 3, 3);
+                        break;
+                }
             }
         }
     }

@@ -3,19 +3,43 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Platform;
 
 namespace SourceGit.Views
 {
     public class ChromelessWindow : Window
     {
+        public bool UseSystemWindowFrame
+        {
+            get => OperatingSystem.IsLinux() && ViewModels.Preference.Instance.UseSystemWindowFrame;
+        }
+
         protected override Type StyleKeyOverride => typeof(Window);
 
         public ChromelessWindow()
         {
             if (OperatingSystem.IsLinux())
-                Classes.Add("custom_window_frame");
-            else if (OperatingSystem.IsWindows())
-                Classes.Add("fix_maximized_padding");
+            {
+                if (UseSystemWindowFrame)
+                {
+                    ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.Default;
+                    ExtendClientAreaToDecorationsHint = false;
+                }
+                else
+                {
+                    ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
+                    ExtendClientAreaToDecorationsHint = true;
+                    Classes.Add("custom_window_frame");
+                }
+            }
+            else
+            {
+                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
+                ExtendClientAreaToDecorationsHint = true;
+
+                if (OperatingSystem.IsWindows())
+                    Classes.Add("fix_maximized_padding");
+            }
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)

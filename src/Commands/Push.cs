@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Push : Command
     {
-        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool force, bool track, Action<string> onProgress)
+        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force, Action<string> onProgress)
         {
             _outputHandler = onProgress;
 
@@ -16,6 +16,8 @@ namespace SourceGit.Commands
 
             if (withTags)
                 Args += "--tags ";
+            if (checkSubmodules)
+                Args += "--recurse-submodules=check ";
             if (track)
                 Args += "-u ";
             if (force)

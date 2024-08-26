@@ -7,18 +7,19 @@
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.Blame"
                     x:DataType="vm:Blame"
+                    x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Blame}"
                     MinWidth="1280" MinHeight="720">
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="30"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="24"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <!-- Bottom border -->
       <Border Grid.Column="0" Grid.ColumnSpan="4"
               Background="{DynamicResource Brush.TitleBar}"
@@ -58,7 +59,7 @@
                          BorderThickness="1"
                          Background="{DynamicResource Brush.Contents}"
                          Foreground="{DynamicResource Brush.FG1}"
-                         FontFamily="{Binding Source={x:Static vm:Preference.Instance}, Path=MonospaceFont}"
+                         FontFamily="{DynamicResource Fonts.Monospace}"
                          BlameData="{Binding Data}"/>
       
       <!-- Not supported mask (for binary files) -->

@@ -7,12 +7,8 @@ on:
         required: true
         type: string
 jobs:
-  build:
-    name: Build
-    uses: ./.github/workflows/ci.yml
   windows-portable:
     name: Package portable Windows app
-    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -35,10 +31,13 @@ jobs:
         with:
           name: package.${{ matrix.runtime }}
           path: build/sourcegit_*.zip
+      - name: Delete temp artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: sourcegit.${{ matrix.runtime }}
   osx-app:
     name: Package OSX app
-    needs: build
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       matrix:
         runtime: [osx-x64, osx-arm64]
@@ -49,20 +48,26 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: sourcegit.${{ matrix.runtime }}
-          path: build/SourceGit
+          path: build
       - name: Package
         env:
           VERSION: ${{ inputs.version }}
           RUNTIME: ${{ matrix.runtime }}
-        run: ./build/scripts/package.osx-app.sh
+        run: |
+          mkdir build/SourceGit
+          tar -xf "build/sourcegit.${{ matrix.runtime }}.tar" -C build/SourceGit
+          ./build/scripts/package.osx-app.sh
       - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:
           name: package.${{ matrix.runtime }}
           path: build/sourcegit_*.zip
+      - name: Delete temp artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: sourcegit.${{ matrix.runtime }}
   linux:
     name: Package Linux
-    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -96,3 +101,7 @@ jobs:
             build/sourcegit-*.AppImage
             build/sourcegit_*.deb
             build/sourcegit-*.rpm
+      - name: Delete temp artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: sourcegit.${{ matrix.runtime }}

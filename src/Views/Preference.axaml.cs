@@ -1,30 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
 
 using Avalonia;
-using Avalonia.Collections;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 using Avalonia.Platform.Storage;
-using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
     public partial class Preference : ChromelessWindow
     {
-        public AvaloniaList<FontFamily> InstalledFonts
-        {
-            get;
-        }
-
-        public AvaloniaList<FontFamily> InstalledMonospaceFonts
-        {
-            get;
-        }
-
         public string DefaultUser
         {
             get;
@@ -92,51 +78,6 @@ namespace SourceGit.Views
         {
             var pref = ViewModels.Preference.Instance;
             DataContext = pref;
-
-            var builtInMono = new FontFamily("fonts:SourceGit#JetBrains Mono");
-
-            InstalledFonts = new AvaloniaList<FontFamily>();
-            InstalledFonts.Add(builtInMono);
-            InstalledFonts.AddRange(FontManager.Current.SystemFonts);
-
-            InstalledMonospaceFonts = new AvaloniaList<FontFamily>();
-            InstalledMonospaceFonts.Add(builtInMono);
-
-            var curMonoFont = pref.MonospaceFont;
-            if (curMonoFont != builtInMono)
-            {
-                InstalledMonospaceFonts.Add(curMonoFont);
-            }
-
-            Task.Run(() =>
-            {
-                var sysMonoFonts = new List<FontFamily>();
-                foreach (var font in FontManager.Current.SystemFonts)
-                {
-                    if (font == curMonoFont)
-                        continue;
-
-                    var typeface = new Typeface(font);
-                    var testI = new FormattedText(
-                                "i",
-                                CultureInfo.CurrentCulture,
-                                FlowDirection.LeftToRight,
-                                typeface,
-                                12,
-                                Brushes.White);
-                    var testW = new FormattedText(
-                                "W",
-                                CultureInfo.CurrentCulture,
-                                FlowDirection.LeftToRight,
-                                typeface,
-                                12,
-                                Brushes.White);
-                    if (Math.Abs(testI.Width - testW.Width) < 0.0001)
-                        sysMonoFonts.Add(font);
-                }
-
-                Dispatcher.UIThread.Post(() => InstalledMonospaceFonts.AddRange(sysMonoFonts));
-            });
 
             var ver = string.Empty;
             if (pref.IsGitConfigured())
@@ -306,6 +247,20 @@ namespace SourceGit.Views
 
             if (changed)
                 new Commands.Config(null).Set(key, value);
+        }
+
+        private void OnUseNativeWindowFrameChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox box)
+            {
+                ViewModels.Preference.Instance.UseSystemWindowFrame = box.IsChecked == true;
+                ViewModels.Preference.Instance.Save();
+
+                var dialog = new ConfirmRestart();
+                App.OpenDialog(dialog);
+            }
+
+            e.Handled = true;
         }
     }
 }

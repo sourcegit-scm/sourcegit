@@ -48,6 +48,7 @@ namespace SourceGit.ViewModels
 
                 var normalized = root.Replace("\\", "/");
                 var node = pref.FindOrAddNodeByRepositoryPath(normalized, null, false);
+                Welcome.Instance.Refresh();
                 OpenRepositoryInTab(node, null);
             }
             else if (pref.RestoreTabs)
@@ -144,6 +145,7 @@ namespace SourceGit.ViewModels
                     Models.AutoFetchManager.Instance.RemoveRepository(repo.FullPath);
                     repo.Close();
 
+                    Welcome.Instance.ClearSearchFilter();
                     last.Node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
                     last.Data = Welcome.Instance;
                     last.Popup = null;

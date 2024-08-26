@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using System.Text;
 
 namespace SourceGit.Commands
 {
@@ -19,14 +19,11 @@ namespace SourceGit.Commands
 
         public bool Push(List<Models.Change> changes, string message)
         {
-            var temp = Path.GetTempFileName();
-            var stream = new FileStream(temp, FileMode.Create);
-            var writer = new StreamWriter(stream);
-
+            var pathsBuilder = new StringBuilder();
             var needAdd = new List<Models.Change>();
             foreach (var c in changes)
             {
-                writer.WriteLine(c.Path);
+                pathsBuilder.Append($"\"{c.Path}\" ");
 
                 if (c.WorkTree == Models.ChangeState.Added || c.WorkTree == Models.ChangeState.Untracked)
                 {
@@ -44,15 +41,9 @@ namespace SourceGit.Commands
                 needAdd.Clear();
             }
 
-            writer.Flush();
-            stream.Flush();
-            writer.Close();
-            stream.Close();
-
-            Args = $"stash push -m \"{message}\" --pathspec-from-file=\"{temp}\"";
-            var succ = Exec();
-            File.Delete(temp);
-            return succ;
+            var paths = pathsBuilder.ToString();
+            Args = $"stash push -m \"{message}\" -- {paths}";
+            return Exec();
         }
 
         public bool Apply(string name)

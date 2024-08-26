@@ -86,7 +86,8 @@ namespace SourceGit.Views
             else
                 maxV = (int)Math.Ceiling(maxV / 500.0) * 500;
 
-            var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
+            var fontFamily = this.FindResource("Fonts.Monospace") as FontFamily;
+            var typeface = new Typeface(fontFamily);
             var pen = new Pen(LineBrush);
             var width = Bounds.Width;
             var height = Bounds.Height;

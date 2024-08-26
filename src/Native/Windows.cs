@@ -8,7 +8,6 @@ using System.Text;
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Media;
 
 namespace SourceGit.Native
 {
@@ -62,12 +61,6 @@ namespace SourceGit.Native
 
         public void SetupApp(AppBuilder builder)
         {
-            builder.With(new FontManagerOptions()
-            {
-                DefaultFamilyName = "Microsoft YaHei UI",
-                FontFallbacks = [new FontFallback { FontFamily = "Microsoft YaHei" }],
-            });
-
             // Fix drop shadow issue on Windows 10
             RTL_OSVERSIONINFOEX v = new RTL_OSVERSIONINFOEX();
             v.dwOSVersionInfoSize = (uint)Marshal.SizeOf<RTL_OSVERSIONINFOEX>();
@@ -190,6 +183,7 @@ namespace SourceGit.Native
             else
             {
                 fullpath = new DirectoryInfo(path!).FullName;
+                fullpath += Path.DirectorySeparatorChar;
             }
 
             if (select)
@@ -209,7 +203,7 @@ namespace SourceGit.Native
         public void OpenWithDefaultEditor(string file)
         {
             var info = new FileInfo(file);
-            var start = new ProcessStartInfo("cmd", $"/c start {info.FullName}");
+            var start = new ProcessStartInfo("cmd", $"/c start \"\" \"{info.FullName}\"");
             start.CreateNoWindow = true;
             Process.Start(start);
         }

@@ -104,7 +104,7 @@ namespace SourceGit.Views
                         if (string.IsNullOrEmpty(lineNumber))
                             continue;
 
-                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
+                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineMiddle) - view.VerticalOffset;
                         var txt = new FormattedText(
                             lineNumber,
                             CultureInfo.CurrentCulture,
@@ -112,7 +112,7 @@ namespace SourceGit.Views
                             typeface,
                             presenter.FontSize,
                             presenter.Foreground);
-                        context.DrawText(txt, new Point(Bounds.Width - txt.Width, y));
+                        context.DrawText(txt, new Point(Bounds.Width - txt.Width, y - txt.Height * 0.5));
                     }
                 }
             }
@@ -392,7 +392,7 @@ namespace SourceGit.Views
 
             _lineStyleTransformer = new LineStyleTransformer(this);
 
-            TextArea.TextView.Margin = new Thickness(4, 0);
+            TextArea.TextView.Margin = new Thickness(2, 0);
             TextArea.TextView.Options.EnableHyperlinks = false;
             TextArea.TextView.Options.EnableEmailHyperlinks = false;
 

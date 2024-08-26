@@ -73,6 +73,16 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedView, value);
         }
 
+        public bool EnableFirstParentInHistories
+        {
+            get => _enableFirstParentInHistories;
+            set
+            {
+                if (SetProperty(ref _enableFirstParentInHistories, value))
+                    Task.Run(RefreshCommits);
+            }
+        }
+
         public string SearchBranchFilter
         {
             get => _searchBranchFilter;
@@ -724,6 +734,9 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
             var limits = $"-{Preference.Instance.MaxHistoryCommits} ";
+            if (_enableFirstParentInHistories)
+                limits += "--first-parent ";
+
             var validFilters = new List<string>();
             foreach (var filter in _settings.Filters)
             {
@@ -758,7 +771,7 @@ namespace SourceGit.ViewModels
             }
 
             var commits = new Commands.QueryCommits(_fullpath, limits).Result();
-            var graph = Models.CommitGraph.Parse(commits);
+            var graph = Models.CommitGraph.Parse(commits, _enableFirstParentInHistories);
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -940,9 +953,7 @@ namespace SourceGit.ViewModels
                 };
             }
 
-            var launcher = App.GetTopLevel().DataContext as Launcher;
-            if (launcher != null)
-                launcher.OpenRepositoryInTab(node, null);
+            App.GetLauncer()?.OpenRepositoryInTab(node, null);
         }
 
         public void AddWorktree()
@@ -971,9 +982,7 @@ namespace SourceGit.ViewModels
                 };
             }
 
-            var launcher = App.GetTopLevel().DataContext as Launcher;
-            if (launcher != null)
-                launcher.OpenRepositoryInTab(node, null);
+            App.GetLauncer()?.OpenRepositoryInTab(node, null);
         }
 
         public ContextMenu CreateContextMenuForGitFlow()
@@ -1130,12 +1139,8 @@ namespace SourceGit.ViewModels
                 {
                     locks.Click += (_, e) =>
                     {
-                        var topLevel = App.GetTopLevel() as Window;
-                        if (topLevel == null)
-                            return;
-
                         var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, _remotes[0].Name) };
-                        dialog.Show(topLevel);
+                        App.OpenDialog(dialog);
                         e.Handled = true;
                     };
                 }
@@ -1148,12 +1153,8 @@ namespace SourceGit.ViewModels
                         lockRemote.Header = remoteName;
                         lockRemote.Click += (_, e) =>
                         {
-                            var topLevel = App.GetTopLevel() as Window;
-                            if (topLevel == null)
-                                return;
-
                             var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, remoteName) };
-                            dialog.Show(topLevel);
+                            App.OpenDialog(dialog);
                             e.Handled = true;
                         };
                         locks.Items.Add(lockRemote);
@@ -1878,16 +1879,10 @@ namespace SourceGit.ViewModels
                     target.Icon = App.CreateMenuIcon(b.IsCurrent ? "Icons.Check" : "Icons.Branch");
                     target.Click += (_, e) =>
                     {
-                        var topLevel = App.GetTopLevel() as Window;
-                        if (topLevel == null)
-                            return;
-
-                        var wnd = new Views.BranchCompare()
+                        App.OpenDialog(new Views.BranchCompare()
                         {
                             DataContext = new BranchCompare(_fullpath, branch, dup)
-                        };
-
-                        wnd.Show(topLevel);
+                        });
                         e.Handled = true;
                     };
 
@@ -1975,6 +1970,7 @@ namespace SourceGit.ViewModels
         private bool _isSearchLoadingVisible = false;
         private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 0;
+        private bool _enableFirstParentInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
         private List<string> _revisionFiles = new List<string>();

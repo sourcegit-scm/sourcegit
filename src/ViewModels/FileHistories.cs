@@ -1,11 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class FileHistories : ObservableObject
+    public class FileHistoriesRevisionFile(string path, object content)
+    {
+        public string Path { get; set; } = path;
+        public object Content { get; set; } = content;
+    }
+
+    public partial class FileHistories : ObservableObject
     {
         public bool IsLoading
         {
@@ -25,38 +36,30 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _selectedCommit, value))
-                {
-                    if (value == null)
-                    {
-                        DiffContext = null;
-                        DetailContext.Commit = null;
-                    }
-                    else
-                    {
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(value, _file), _diffContext);
-                        DetailContext.Commit = value;
-                    }
-                }
+                    RefreshViewContent();
             }
         }
 
-        public DiffContext DiffContext
+        public int ViewMode
         {
-            get => _diffContext;
-            set => SetProperty(ref _diffContext, value);
+            get => _viewMode;
+            set
+            {
+                if (SetProperty(ref _viewMode, value))
+                    RefreshViewContent();
+            }
         }
 
-        public CommitDetail DetailContext
+        public object ViewContent
         {
-            get => _detailContext;
-            set => SetProperty(ref _detailContext, value);
+            get => _viewContent;
+            private set => SetProperty(ref _viewContent, value);
         }
 
         public FileHistories(Repository repo, string file)
         {
             _repo = repo;
             _file = file;
-            _detailContext = new CommitDetail(repo);
 
             Task.Run(() =>
             {
@@ -71,12 +74,127 @@ namespace SourceGit.ViewModels
             });
         }
 
+        public void NavigateToCommit(Models.Commit commit)
+        {
+            _repo.NavigateToCommit(commit.SHA);
+        }
+
+        public void ResetToSelectedRevision()
+        {
+            new Commands.Checkout(_repo.FullPath).FileWithRevision(_file, $"{_selectedCommit.SHA}");
+        }
+
+        private void RefreshViewContent()
+        {
+            if (_selectedCommit == null)
+            {
+                ViewContent = null;
+                return;
+            }
+
+            if (_viewMode == 0)
+                SetViewContentAsDiff();
+            else
+                SetViewContentAsRevisionFile();
+        }
+
+        private void SetViewContentAsRevisionFile()
+        {
+            var objs = new Commands.QueryRevisionObjects(_repo.FullPath, _selectedCommit.SHA, _file).Result();
+            if (objs.Count == 0)
+            {
+                ViewContent = new FileHistoriesRevisionFile(_file, null);
+                return;
+            }
+
+            var obj = objs[0];
+            switch (obj.Type)
+            {
+                case Models.ObjectType.Blob:
+                    Task.Run(() =>
+                    {
+                        var isBinary = new Commands.IsBinary(_repo.FullPath, _selectedCommit.SHA, _file).Result();
+                        if (isBinary)
+                        {
+                            var ext = Path.GetExtension(_file);
+                            if (IMG_EXTS.Contains(ext))
+                            {
+                                var stream = Commands.QueryFileContent.Run(_repo.FullPath, _selectedCommit.SHA, _file);
+                                var bitmap = stream.Length > 0 ? new Bitmap(stream) : null;
+                                var image = new Models.RevisionImageFile() { Image = bitmap };
+                                Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, image));
+                            }
+                            else
+                            {
+                                var size = new Commands.QueryFileSize(_repo.FullPath, _file, _selectedCommit.SHA).Result();
+                                var binaryFile = new Models.RevisionBinaryFile() { Size = size };
+                                Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, binaryFile));
+                            }
+
+                            return;
+                        }
+
+                        var contentStream = Commands.QueryFileContent.Run(_repo.FullPath, _selectedCommit.SHA, _file);
+                        var content = new StreamReader(contentStream).ReadToEnd();
+                        var matchLFS = REG_LFS_FORMAT().Match(content);
+                        if (matchLFS.Success)
+                        {
+                            var lfs = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
+                            lfs.Object.Oid = matchLFS.Groups[1].Value;
+                            lfs.Object.Size = long.Parse(matchLFS.Groups[2].Value);
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, lfs));
+                        }
+                        else
+                        {
+                            var txt = new Models.RevisionTextFile() { FileName = obj.Path, Content = content };
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, txt));
+                        }
+                    });
+                    break;
+                case Models.ObjectType.Commit:
+                    Task.Run(() =>
+                    {
+                        var submoduleRoot = Path.Combine(_repo.FullPath, _file);
+                        var commit = new Commands.QuerySingleCommit(submoduleRoot, obj.SHA).Result();
+                        if (commit != null)
+                        {
+                            var message = new Commands.QueryCommitFullMessage(submoduleRoot, obj.SHA).Result();
+                            var module = new Models.RevisionSubmodule() { Commit = commit, FullMessage = message };
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, module));
+                        }
+                        else
+                        {
+                            var module = new Models.RevisionSubmodule() { Commit = new Models.Commit() { SHA = obj.SHA }, FullMessage = "" };
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, module));
+                        }
+                    });
+                    break;
+                default:
+                    ViewContent = new FileHistoriesRevisionFile(_file, null);
+                    break;
+            }
+        }
+
+        private void SetViewContentAsDiff()
+        {
+            var option = new Models.DiffOption(_selectedCommit, _file);
+            ViewContent = new DiffContext(_repo.FullPath, option, _viewContent as DiffContext);
+        }
+
+        [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]
+        private static partial Regex REG_LFS_FORMAT();
+
+        private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
+        {
+            ".ico", ".bmp", ".jpg", ".png", ".jpeg"
+        };
+
         private readonly Repository _repo = null;
         private readonly string _file = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = null;
         private Models.Commit _selectedCommit = null;
-        private DiffContext _diffContext = null;
-        private CommitDetail _detailContext = null;
+        private int _viewMode = 0;
+        private object _viewContent = null;
     }
 }

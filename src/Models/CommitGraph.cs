@@ -97,8 +97,16 @@ namespace SourceGit.Models
             public int Color;
         }
 
+        public enum DotType
+        {
+            Default,
+            Head,
+            Merge,
+        }
+
         public class Dot
         {
+            public DotType Type;
             public Point Center;
             public int Color;
         }
@@ -128,12 +136,13 @@ namespace SourceGit.Models
             _penCount = colors.Count;
         }
 
-        public static CommitGraph Parse(List<Commit> commits)
+        public static CommitGraph Parse(List<Commit> commits, bool firstParentOnlyEnabled)
         {
             double UNIT_WIDTH = 12;
             double HALF_WIDTH = 6;
             double UNIT_HEIGHT = 28;
             double HALF_HEIGHT = 14;
+            double H_MARGIN = 2;
 
             var temp = new CommitGraph();
             var unsolved = new List<PathHelper>();
@@ -152,7 +161,7 @@ namespace SourceGit.Models
                 offsetY += UNIT_HEIGHT;
 
                 // Find first curves that links to this commit and marks others that links to this commit ended.
-                double offsetX = -HALF_WIDTH;
+                double offsetX = H_MARGIN - HALF_WIDTH;
                 foreach (var l in unsolved)
                 {
                     if (l.Next == commit.SHA)
@@ -204,45 +213,54 @@ namespace SourceGit.Models
 
                 // Calculate link position of this commit.
                 Point position = new Point(offsetX, offsetY);
+                int dotColor = 0;
                 if (major != null)
                 {
                     major.IsMerged = isMerged;
                     position = new Point(major.LastX, offsetY);
-                    temp.Dots.Add(new Dot() { Center = position, Color = major.Path.Color });
+                    dotColor = major.Path.Color;
                 }
+
+                Dot anchor = new Dot() { Center = position, Color = dotColor };
+                if (commit.IsCurrentHead)
+                    anchor.Type = DotType.Head;
+                else if (commit.Parents.Count > 1)
+                    anchor.Type = DotType.Merge;
                 else
+                    anchor.Type = DotType.Default;
+                temp.Dots.Add(anchor);
+
+                // Deal with other parents (the first parent has been processed)
+                if (!firstParentOnlyEnabled)
                 {
-                    temp.Dots.Add(new Dot() { Center = position, Color = 0 });
-                }
-
-                // Deal with parents
-                for (int j = 1; j < commit.Parents.Count; j++)
-                {
-                    var parent = commit.Parents[j];
-                    if (mapUnsolved.TryGetValue(parent, out var value))
+                    for (int j = 1; j < commit.Parents.Count; j++)
                     {
-                        // Try to change the merge state of linked graph
-                        var l = value;
-                        if (isMerged)
-                            l.IsMerged = true;
+                        var parent = commit.Parents[j];
+                        if (mapUnsolved.TryGetValue(parent, out var value))
+                        {
+                            // Try to change the merge state of linked graph
+                            var l = value;
+                            if (isMerged)
+                                l.IsMerged = true;
 
-                        var link = new Link();
-                        link.Start = position;
-                        link.End = new Point(l.LastX, offsetY + HALF_HEIGHT);
-                        link.Control = new Point(link.End.X, link.Start.Y);
-                        link.Color = l.Path.Color;
+                            var link = new Link();
+                            link.Start = position;
+                            link.End = new Point(l.LastX, offsetY + HALF_HEIGHT);
+                            link.Control = new Point(link.End.X, link.Start.Y);
+                            link.Color = l.Path.Color;
 
-                        temp.Links.Add(link);
-                    }
-                    else
-                    {
-                        offsetX += UNIT_WIDTH;
+                            temp.Links.Add(link);
+                        }
+                        else
+                        {
+                            offsetX += UNIT_WIDTH;
 
-                        // Create new curve for parent commit that not includes before
-                        var l = new PathHelper(commit.Parents[j], isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT));
-                        unsolved.Add(l);
-                        temp.Paths.Add(l.Path);
-                        colorIdx = (colorIdx + 1) % _penCount;
+                            // Create new curve for parent commit that not includes before
+                            var l = new PathHelper(parent, isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT));
+                            unsolved.Add(l);
+                            temp.Paths.Add(l.Path);
+                            colorIdx = (colorIdx + 1) % _penCount;
+                        }
                     }
                 }
 
@@ -255,7 +273,7 @@ namespace SourceGit.Models
 
                 // Margins & merge state (used by datagrid).
                 commit.IsMerged = isMerged;
-                commit.Margin = new Thickness(Math.Max(offsetX + HALF_WIDTH, oldCount * UNIT_WIDTH), 0, 0, 0);
+                commit.Margin = new Thickness(Math.Max(offsetX + HALF_WIDTH, oldCount * UNIT_WIDTH + H_MARGIN) + H_MARGIN, 0, 0, 0);
 
                 // Clean up
                 ended.Clear();
@@ -271,7 +289,7 @@ namespace SourceGit.Models
                 if (path.Path.Points.Count == 1 && Math.Abs(path.Path.Points[0].Y - endY) < 0.0001)
                     continue;
 
-                path.Add((i + 0.5) * UNIT_WIDTH, endY + HALF_HEIGHT, HALF_HEIGHT, true);
+                path.Add((i + 0.5) * UNIT_WIDTH + H_MARGIN, endY + HALF_HEIGHT, HALF_HEIGHT, true);
             }
             unsolved.Clear();
 

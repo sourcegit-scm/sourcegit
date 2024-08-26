@@ -41,6 +41,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _content, value);
         }
 
+        public int UnifiedLines
+        {
+            get => _unifiedLines;
+            private set => SetProperty(ref _unifiedLines, value);
+        }
+
         public DiffContext(string repo, Models.DiffOption option, DiffContext previous = null)
         {
             _repo = repo;
@@ -50,6 +56,7 @@ namespace SourceGit.ViewModels
             {
                 _isTextDiff = previous._isTextDiff;
                 _content = previous._content;
+                _unifiedLines = previous._unifiedLines;
             }
 
             if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
@@ -62,20 +69,14 @@ namespace SourceGit.ViewModels
 
         public void IncrUnified()
         {
-            var pref = Preference.Instance;
-            pref.DiffViewVisualLineNumbers = pref.DiffViewVisualLineNumbers + 1;
+            UnifiedLines = _unifiedLines + 1;
             LoadDiffContent();
         }
 
         public void DecrUnified()
         {
-            var pref = Preference.Instance;
-            var unified = pref.DiffViewVisualLineNumbers - 1;
-            if (pref.DiffViewVisualLineNumbers != unified)
-            {
-                pref.DiffViewVisualLineNumbers = unified;
-                LoadDiffContent();
-            }
+            UnifiedLines = Math.Max(4, _unifiedLines - 1);
+            LoadDiffContent();
         }
 
         public void OpenExternalMergeTool()
@@ -87,10 +88,17 @@ namespace SourceGit.ViewModels
 
         private void LoadDiffContent()
         {
-            var unified = Preference.Instance.DiffViewVisualLineNumbers;
+            if (_option.Path.EndsWith('/'))
+            {
+                Content = null;
+                IsTextDiff = false;
+                IsLoading = false;
+                return;
+            }
+
             Task.Run(() =>
             {
-                var latest = new Commands.Diff(_repo, _option, unified).Result();
+                var latest = new Commands.Diff(_repo, _option, _unifiedLines).Result();
                 var rs = null as object;
 
                 if (latest.TextDiff != null)
@@ -225,6 +233,7 @@ namespace SourceGit.ViewModels
         private readonly Models.DiffOption _option = null;
         private string _title;
         private string _fileModeChange = string.Empty;
+        private int _unifiedLines = 4;
         private bool _isLoading = true;
         private bool _isTextDiff = false;
         private object _content = null;

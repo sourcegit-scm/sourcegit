@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -11,10 +12,11 @@ namespace SourceGit.ViewModels
     {
         public static Welcome Instance => _instance;
 
-        public AvaloniaList<RepositoryNode> RepositoryNodes
+        public AvaloniaList<RepositoryNode> Rows
         {
-            get => Preference.Instance.RepositoryNodes;
-        }
+            get;
+            private set;
+        } = [];
 
         public string SearchFilter
         {
@@ -23,6 +25,60 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _searchFilter, value))
                     Refresh();
+            }
+        }
+
+        public Welcome()
+        {
+            Refresh();
+        }
+
+        public void Refresh()
+        {
+            if (string.IsNullOrWhiteSpace(_searchFilter))
+            {
+                foreach (var node in Preference.Instance.RepositoryNodes)
+                    ResetVisibility(node);
+            }
+            else
+            {
+                foreach (var node in Preference.Instance.RepositoryNodes)
+                    SetVisibilityBySearch(node);
+            }
+
+            var rows = new List<RepositoryNode>();
+            MakeTreeRows(rows, Preference.Instance.RepositoryNodes);
+            Rows.Clear();
+            Rows.AddRange(rows);
+        }
+
+        public void ToggleNodeIsExpanded(RepositoryNode node)
+        {
+            node.IsExpanded = !node.IsExpanded;
+
+            var depth = node.Depth;
+            var idx = Rows.IndexOf(node);
+            if (idx == -1)
+                return;
+
+            if (node.IsExpanded)
+            {
+                var subrows = new List<RepositoryNode>();
+                MakeTreeRows(subrows, node.SubNodes, depth + 1);
+                Rows.InsertRange(idx + 1, subrows);
+            }
+            else
+            {
+                var removeCount = 0;
+                for (int i = idx + 1; i < Rows.Count; i++)
+                {
+                    var row = Rows[i];
+                    if (row.Depth <= depth)
+                        break;
+
+                    removeCount++;
+                }
+                Rows.RemoveRange(idx + 1, removeCount);
             }
         }
 
@@ -35,9 +91,7 @@ namespace SourceGit.ViewModels
             }
 
             if (PopupHost.CanCreatePopup())
-            {
                 PopupHost.ShowPopup(new Init(path, parent));
-            }
         }
 
         public void Clone()
@@ -74,6 +128,7 @@ namespace SourceGit.ViewModels
         public void MoveNode(RepositoryNode from, RepositoryNode to)
         {
             Preference.Instance.MoveNode(from, to);
+            Refresh();
         }
 
         public ContextMenu CreateContextMenu(RepositoryNode node)
@@ -153,20 +208,6 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        private void Refresh()
-        {
-            if (string.IsNullOrWhiteSpace(_searchFilter))
-            {
-                foreach (var node in RepositoryNodes)
-                    ResetVisibility(node);
-            }
-            else
-            {
-                foreach (var node in RepositoryNodes)
-                    SetVisibilityBySearch(node);
-            }
-        }
-
         private void ResetVisibility(RepositoryNode node)
         {
             node.IsVisible = true;
@@ -197,7 +238,25 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                node.IsVisible = node.Name.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase);
+                node.IsVisible = node.Name.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase) ||
+                    node.Id.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        private void MakeTreeRows(List<RepositoryNode> rows, List<RepositoryNode> nodes, int depth = 0)
+        {
+            foreach (var node in nodes)
+            {
+                if (!node.IsVisible)
+                    continue;
+
+                node.Depth = depth;
+                rows.Add(node);
+
+                if (node.IsRepository || !node.IsExpanded)
+                    continue;
+
+                MakeTreeRows(rows, node.SubNodes, depth + 1);
             }
         }
 

@@ -13,11 +13,12 @@
       <Color x:Key="Color.Contents">#FFFAFAFA</Color>
       <Color x:Key="Color.Badge">#FFB0CEE8</Color>
       <Color x:Key="Color.BadgeFG">#FF1F1F1F</Color>
-      <Color x:Key="Color.DecoratorIconBG">#FF6F6F6F</Color>
-      <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
-      <Color x:Key="Color.DecoratorBranch">#FFFFB835</Color>
-      <Color x:Key="Color.DecoratorTag">#FF02C302</Color>
-      <Color x:Key="Color.DecoratorFG">Black</Color>
+      <Color x:Key="Color.DecoratorIconBG">#A0A0A0</Color>
+      <Color x:Key="Color.DecoratorIcon">White</Color>
+      <Color x:Key="Color.DecoratorBranch">#008585</Color>
+      <Color x:Key="Color.DecoratorHead">#0C0E21</Color>
+      <Color x:Key="Color.DecoratorTag">#79855f</Color>
+      <Color x:Key="Color.DecoratorFG">White</Color>
       <Color x:Key="Color.Conflict">#FF836C2E</Color>
       <Color x:Key="Color.ConflictForeground">#FFFFFFFF</Color>
       <Color x:Key="Color.Border0">#FFCFCFCF</Color>
@@ -50,7 +51,8 @@
       <Color x:Key="Color.DecoratorIconBG">#FF505050</Color>
       <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
       <Color x:Key="Color.DecoratorBranch">#FFFFB835</Color>
-      <Color x:Key="Color.DecoratorTag">#FF02C302</Color>
+      <Color x:Key="Color.DecoratorHead">#f4f1de</Color>
+      <Color x:Key="Color.DecoratorTag">#84c88a</Color>
       <Color x:Key="Color.DecoratorFG">Black</Color>
       <Color x:Key="Color.Conflict">#FFFAFAD2</Color>
       <Color x:Key="Color.ConflictForeground">#FF252525</Color>
@@ -84,6 +86,7 @@
   <SolidColorBrush x:Key="Brush.DecoratorIconBG" Color="{DynamicResource Color.DecoratorIconBG}"/>
   <SolidColorBrush x:Key="Brush.DecoratorIcon" Color="{DynamicResource Color.DecoratorIcon}"/>
   <SolidColorBrush x:Key="Brush.DecoratorBranch" Color="{DynamicResource Color.DecoratorBranch}"/>
+  <SolidColorBrush x:Key="Brush.DecoratorHead" Color="{DynamicResource Color.DecoratorHead}"/>
   <SolidColorBrush x:Key="Brush.DecoratorTag" Color="{DynamicResource Color.DecoratorTag}"/>
   <SolidColorBrush x:Key="Brush.DecoratorFG" Color="{DynamicResource Color.DecoratorFG}"/>
   <SolidColorBrush x:Key="Brush.Conflict" Color="{DynamicResource Color.Conflict}"/>
@@ -103,4 +106,8 @@
   <SolidColorBrush x:Key="Brush.Diff.AddedHighlight" Color="{DynamicResource Color.Diff.AddedHighlight}"/>
   <SolidColorBrush x:Key="Brush.Diff.DeletedHighlight" Color="{DynamicResource Color.Diff.DeletedHighlight}"/>
   <SolidColorBrush x:Key="Brush.Link" Color="{DynamicResource Color.Link}"/>
+
+  <FontFamily x:Key="Fonts.Default">$Default</FontFamily>
+  <FontFamily x:Key="Fonts.Monospace">fonts:SourceGit#JetBrains Mono,$Default</FontFamily>
+  <FontFamily x:Key="Fonts.Primary">fonts:SourceGit#JetBrains Mono,$Default</FontFamily>
 </ResourceDictionary>

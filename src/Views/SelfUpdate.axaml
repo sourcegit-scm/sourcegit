@@ -9,6 +9,7 @@
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.SelfUpdate"
                     x:DataType="vm:SelfUpdate"
+                    x:Name="ThisControl"
                     Title="{DynamicResource Text.SelfUpdate.Title}"
                     Icon="/App.ico"
                     SizeToContent="WidthAndHeight"
@@ -16,7 +17,7 @@
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"

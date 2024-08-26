@@ -282,6 +282,7 @@ namespace SourceGit.Views
             var tags = Tags;
             if (tags == null || tags.Count == 0)
             {
+                Rows = 0;
                 Content = null;
                 return;
             }

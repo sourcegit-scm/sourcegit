@@ -9,20 +9,20 @@
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.FileHistories"
                     x:DataType="vm:FileHistories"
-                    x:Name="me"
+                    x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.FileHistory}"
                     MinWidth="1280" MinHeight="720">
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="30"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <!-- Bottom border -->
-      <Border Grid.Column="0" Grid.ColumnSpan="5"
+      <Border Grid.Column="0" Grid.ColumnSpan="4"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               DoubleTapped="MaximizeOrRestoreWindow"
@@ -79,7 +79,14 @@
                     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
                       <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                       <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                      <TextBlock Grid.Column="2" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="2" 
+                                 Classes="primary" 
+                                 Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                                 Background="Transparent"
+                                 Foreground="DarkOrange"
+                                 TextDecorations="Underline"
+                                 Margin="8,0,0,0"
+                                 PointerPressed="OnPressCommitSHA"/>
                       <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                     </Grid>
 
@@ -104,41 +111,122 @@
                      HorizontalAlignment="Center" VerticalAlignment="Center"
                      IsVisible="{Binding IsLoading}"/>
 
-      <Grid Grid.Column="2" RowDefinitions="*,3,*" IsVisible="{Binding !IsLoading}">
-        <ContentControl Grid.Row="0" Margin="4,4,8,0" Content="{Binding DiffContext}">
+      <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto" IsVisible="{Binding !IsLoading}">
+        <ListBox Grid.Row="0"
+                 Margin="0,8"
+                 SelectedIndex="{Binding ViewMode, Mode=TwoWay}"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Background="Transparent"
+                 BorderThickness="1"
+                 BorderBrush="{DynamicResource Brush.Border2}"
+                 CornerRadius="14"
+                 Padding="3,0">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+
+          <ListBox.Styles>
+            <Style Selector="ListBoxItem">
+              <Setter Property="Height" Value="28"/>
+              <Setter Property="Padding" Value="0"/>
+              <Setter Property="Background" Value="Transparent"/>
+            </Style>
+
+            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+              <Setter Property="Background" Value="Transparent"/>
+            </Style>
+
+            <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+              <Setter Property="Background" Value="Transparent"/>
+            </Style>
+
+            <Style Selector="ListBoxItem Border.switcher_bg">
+              <Setter Property="Height" Value="22"/>
+              <Setter Property="CornerRadius" Value="11"/>
+              <Setter Property="Background" Value="Transparent"/>
+              <Setter Property="VerticalAlignment" Value="Center"/>
+              <Setter Property="Padding" Value="16,0"/>
+            </Style>
+
+            <Style Selector="ListBoxItem:selected Border.switcher_bg">
+              <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
+            </Style>
+
+            <Style Selector="TextBlock.view_mode_switcher">
+              <Setter Property="FontWeight" Value="Bold"/>
+              <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
+            </Style>
+
+            <Style Selector="ListBoxItem:pointerover TextBlock.view_mode_switcher">
+              <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+            </Style>
+
+            <Style Selector="ListBoxItem:selected TextBlock.view_mode_switcher">
+              <Setter Property="Foreground" Value="White"/>
+            </Style>
+          </ListBox.Styles>
+
+          <ListBoxItem>
+            <Border Classes="switcher_bg">
+              <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.FileHistory.FileChange}"/>
+            </Border>
+          </ListBoxItem>
+
+          <ListBoxItem>
+            <Border Classes="switcher_bg">
+              <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.FileHistory.FileContent}"/>
+            </Border>
+          </ListBoxItem>
+        </ListBox>
+        
+        <ContentControl Grid.Row="1" Margin="4,4,8,8" Content="{Binding ViewContent}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:DiffContext">
               <v:DiffView/>
             </DataTemplate>
+            
+            <DataTemplate DataType="vm:FileHistoriesRevisionFile">
+              <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+                <Grid RowDefinitions="26,*">
+                  <Border Grid.Row="0" 
+                          BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}" 
+                          Background="{DynamicResource Brush.Window}">
+                    <Grid ColumnDefinitions="Auto,*">
+                      <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="1" 
+                                 Classes="primary" 
+                                 Margin="4,0,0,0" 
+                                 Text="{Binding Path}" 
+                                 FontSize="11" 
+                                 TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                  </Border>
+                  
+                  <v:RevisionFileContentViewer Grid.Row="1" Content="{Binding Content}"/>
+                </Grid>
+              </Border>
+            </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>
-
-        <GridSplitter Grid.Row="1"
-                      MinHeight="1"
-                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      Background="Transparent"/>
-
-        <Border Grid.Row="2" Margin="0,0,4,4">
-          <ContentControl>
-            <ContentControl.Content>
-              <Binding Path="DetailContext">
-                <Binding.TargetNullValue>
-                  <Path Width="128" Height="128"
-                        Data="{StaticResource Icons.Detail}"
-                        HorizontalAlignment="Center"
-                        Fill="{DynamicResource Brush.FG2}"/>
-                </Binding.TargetNullValue>
-              </Binding>
-            </ContentControl.Content>
-            
-            <ContentControl.DataTemplates>
-              <DataTemplate DataType="vm:CommitDetail">
-                <v:CommitDetail/>
-              </DataTemplate>
-            </ContentControl.DataTemplates>
-          </ContentControl>
-        </Border>
+        
+        <Button Grid.Row="2"
+                Classes="flat primary"
+                Margin="0,0,0,8"
+                HorizontalAlignment="Center"
+                Content="{DynamicResource Text.ChangeCM.CheckoutThisRevision}"
+                Click="OnResetToSelectedRevision"/>
       </Grid>
     </Grid>
+    
+    <Border Grid.Row="1" x:Name="NotifyDonePanel" Background="Transparent" IsVisible="False" PointerPressed="OnCloseNotifyPanel">
+      <Border HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #80000000)">
+        <Border CornerRadius="8" Background="{DynamicResource Brush.Popup}" Padding="32">
+          <Path Width="52" Height="52" Data="{StaticResource Icons.Check}" Fill="Green"/>
+        </Border>
+      </Border>
+    </Border>
   </Grid>
 </v:ChromelessWindow>

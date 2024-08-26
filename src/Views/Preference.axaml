@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:m="using:SourceGit.Models"
                     xmlns:c="using:SourceGit.Converters"
                     xmlns:vm="using:SourceGit.ViewModels"
@@ -13,12 +12,12 @@
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Preference}"
-                    Width="600" SizeToContent="Height"
+                    SizeToContent="WidthAndHeight"
                     CanResize="False"
                     WindowStartupLocation="CenterScreen">
-  <Grid RowDefinitions="Auto,Auto">
+  <Grid RowDefinitions="Auto,Auto" MinWidth="600">
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
@@ -57,7 +56,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.Locale}"
                        HorizontalAlignment="Right"
@@ -71,23 +70,10 @@
                       SelectedItem="{Binding Locale, Mode=TwoWay, Converter={x:Static c:StringConverters.ToLocale}}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.General.VisibleDiffContextLines}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
-            <NumericUpDown Grid.Row="1" Grid.Column="1"
-                           Minimum="4" Maximum="10000" Increment="1"
-                           Height="28"
-                           Padding="4"
-                           ShowButtonSpinner="False"
-                           BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
-                           CornerRadius="3"
-                           Value="{Binding DiffViewVisualLineNumbers, Mode=TwoWay}"/>
-
-            <TextBlock Grid.Row="2" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.SubjectGuideLength}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <NumericUpDown Grid.Row="2" Grid.Column="1"
+            <NumericUpDown Grid.Row="1" Grid.Column="1"
                            Minimum="50" Maximum="1000" Increment="1"
                            Height="28"
                            Padding="4"
@@ -96,11 +82,11 @@
                            CornerRadius="3"
                            Value="{Binding SubjectGuideLength, Mode=TwoWay}"/>
 
-            <TextBlock Grid.Row="3" Grid.Column="0"
+            <TextBlock Grid.Row="2" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.MaxHistoryCommits}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,64">
+            <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,64">
               <Slider Grid.Column="0"
                       Minimum="20000" Maximum="100000"
                       TickPlacement="BottomRight" TickFrequency="5000"
@@ -115,16 +101,11 @@
                          Text="{Binding MaxHistoryCommits}"/>
             </Grid>
 
-            <CheckBox Grid.Row="4" Grid.Column="1"
+            <CheckBox Grid.Row="3" Grid.Column="1"
                       Content="{DynamicResource Text.Preference.General.RestoreTabs}"
                       IsChecked="{Binding RestoreTabs, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="5" Grid.Column="1"
-                      Height="32"
-                      Content="{DynamicResource Text.Preference.General.UseFixedTabWidth}"
-                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Mode=TwoWay}"/>
-
-            <CheckBox Grid.Row="6" Grid.Column="1"
+            <CheckBox Grid.Row="4" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preference.General.Check4UpdatesOnStartup}"
                       IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=Check4UpdatesOnStartup, Mode=TwoWay}"/>
@@ -135,7 +116,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.Theme}"
                        HorizontalAlignment="Right"
@@ -157,39 +138,19 @@
                        Text="{DynamicResource Text.Preference.Appearance.DefaultFont}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="1" Grid.Column="1"
-                      MinHeight="28"
-                      Padding="8,0"
-                      HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding #ThisControl.InstalledFonts}"
-                      SelectedItem="{Binding DefaultFont, Mode=TwoWay}">
-              <ComboBox.ItemTemplate>
-                <DataTemplate DataType="FontFamily">
-                  <Border Height="24">
-                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" FontFamily="{Binding}"/>
-                  </Border>
-                </DataTemplate>
-              </ComboBox.ItemTemplate>
-            </ComboBox>
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     Height="28"
+                     CornerRadius="3"
+                     Text="{Binding DefaultFontFamily, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.MonospaceFont}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="2" Grid.Column="1"
-                      MinHeight="28"
-                      Padding="8,0"
-                      HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding #ThisControl.InstalledMonospaceFonts}"
-                      SelectedItem="{Binding MonospaceFont, Mode=TwoWay}">
-              <ComboBox.ItemTemplate>
-                <DataTemplate DataType="FontFamily">
-                  <Border Height="24">
-                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" FontFamily="{Binding}"/>
-                  </Border>
-                </DataTemplate>
-              </ComboBox.ItemTemplate>
-            </ComboBox>
+            <TextBox Grid.Row="2" Grid.Column="1"
+                     Height="28"
+                     CornerRadius="3"
+                     Text="{Binding MonospaceFontFamily, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.DefaultFontSize}"
@@ -221,6 +182,18 @@
             <CheckBox Grid.Row="5" Grid.Column="1"
                       Content="{DynamicResource Text.Preference.Appearance.OnlyUseMonoFontInEditor}"
                       IsChecked="{Binding OnlyUseMonoFontInEditor, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="6" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preference.Appearance.UseFixedTabWidth}"
+                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="7" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preference.Appearance.UseNativeWindowFrame}"
+                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSystemWindowFrame, Mode=OneTime}"
+                      IsVisible="{OnPlatform False, Linux=True}"
+                      IsCheckedChanged="OnUseNativeWindowFrameChanged"/>
           </Grid>
         </TabItem>
 

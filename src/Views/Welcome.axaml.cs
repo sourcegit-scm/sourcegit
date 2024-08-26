@@ -1,13 +1,31 @@
+using System;
 using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
+    public class RepositoryTreeNodeToggleButton : ToggleButton
+    {
+        protected override Type StyleKeyOverride => typeof(ToggleButton);
+
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
+                DataContext is ViewModels.RepositoryNode { IsRepository: false } node)
+            {
+                ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
+            }
+
+            e.Handled = true;
+        }
+    }
+
     public partial class Welcome : UserControl
     {
         public Welcome()
@@ -15,9 +33,29 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (!e.Handled)
+            {
+                if (e.Key == Key.Down && ViewModels.Welcome.Instance.Rows.Count > 0)
+                {
+                    TreeContainer.SelectedIndex = 0;
+                    TreeContainer.Focus(NavigationMethod.Directional);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Escape)
+                {
+                    ViewModels.Welcome.Instance.ClearSearchFilter();
+                    e.Handled = true;
+                }
+            }
+        }
+
         private void SetupTreeViewDragAndDrop(object sender, RoutedEventArgs _)
         {
-            if (sender is TreeView view)
+            if (sender is ListBox view)
             {
                 DragDrop.SetAllowDrop(view, true);
                 view.AddHandler(DragDrop.DragOverEvent, DragOverTreeView);
@@ -35,11 +73,30 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnTreeViewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (TreeContainer.SelectedItem is ViewModels.RepositoryNode node && e.Key == Key.Enter)
+            {
+                if (node.IsRepository)
+                {
+                    var parent = this.FindAncestorOfType<Launcher>();
+                    if (parent is { DataContext: ViewModels.Launcher launcher })
+                        launcher.OpenRepositoryInTab(node, null);
+                }
+                else
+                {
+                    ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
+                }
+
+                e.Handled = true;
+            }
+        }
+
         private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is Grid grid)
+            if (sender is Grid { DataContext: ViewModels.RepositoryNode node } grid)
             {
-                var menu = ViewModels.Welcome.Instance.CreateContextMenu(grid.DataContext as ViewModels.RepositoryNode);
+                var menu = ViewModels.Welcome.Instance.CreateContextMenu(node);
                 grid.OpenContextMenu(menu);
                 e.Handled = true;
             }
@@ -195,16 +252,21 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedTreeNode(object sender, TappedEventArgs e)
         {
-            var grid = sender as Grid;
-            var to = grid?.DataContext as ViewModels.RepositoryNode;
-            if (to is not { IsRepository: true })
-                return;
+            if (sender is Grid { DataContext: ViewModels.RepositoryNode node })
+            {
+                if (node.IsRepository)
+                {
+                    var parent = this.FindAncestorOfType<Launcher>();
+                    if (parent is { DataContext: ViewModels.Launcher launcher })
+                        launcher.OpenRepositoryInTab(node, null);
+                }
+                else
+                {
+                    ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
+                }
 
-            var parent = this.FindAncestorOfType<Launcher>();
-            if (parent?.DataContext is ViewModels.Launcher launcher)
-                launcher.OpenRepositoryInTab(to, null);
-
-            e.Handled = true;
+                e.Handled = true;
+            }
         }
 
         private void OpenOrInitRepository(string path, ViewModels.RepositoryNode parent = null)
@@ -226,6 +288,8 @@ namespace SourceGit.Views
 
             var normalizedPath = root.Replace("\\", "/");
             var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
+            ViewModels.Welcome.Instance.Refresh();
+
             var launcher = this.FindAncestorOfType<Launcher>()?.DataContext as ViewModels.Launcher;
             launcher?.OpenRepositoryInTab(node, launcher.ActivePage);
         }

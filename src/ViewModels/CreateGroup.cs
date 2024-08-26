@@ -29,6 +29,7 @@ namespace SourceGit.ViewModels
                 IsExpanded = false,
             }, _parent);
 
+            Welcome.Instance.Refresh();
             return null;
         }
 

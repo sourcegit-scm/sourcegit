@@ -141,6 +141,11 @@ namespace SourceGit.ViewModels
             _repo?.NavigateToCommit(commitSHA);
         }
 
+        public List<Models.Decorator> GetRefsContainsThisCommit()
+        {
+            return new Commands.QueryRefsContainsCommit(_repo.FullPath, _commit.SHA).Result();
+        }
+
         public void ClearSearchChangeFilter()
         {
             SearchChangeFilter = string.Empty;
@@ -380,12 +385,12 @@ namespace SourceGit.ViewModels
             saveAs.IsEnabled = file.Type == Models.ObjectType.Blob;
             saveAs.Click += async (_, ev) =>
             {
-                var topLevel = App.GetTopLevel();
-                if (topLevel == null)
+                var storageProvider = App.GetStorageProvider();
+                if (storageProvider == null)
                     return;
 
                 var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
+                var selected = await storageProvider.OpenFolderPickerAsync(options);
                 if (selected.Count == 1)
                 {
                     var saveTo = Path.Combine(selected[0].Path.LocalPath, Path.GetFileName(file.Path));
@@ -460,14 +465,18 @@ namespace SourceGit.ViewModels
             if (_commit == null)
                 return;
 
+            Task.Run(() =>
+            {
+                var fullMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).Result();
+                Dispatcher.UIThread.Invoke(() => FullMessage = fullMessage);
+            });
+
             if (_cancelToken != null)
                 _cancelToken.Requested = true;
 
             _cancelToken = new Commands.Command.CancelToken();
-
             Task.Run(() =>
             {
-                var fullMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).Result();
                 var parent = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];
                 var cmdChanges = new Commands.CompareRevisions(_repo.FullPath, parent, _commit.SHA) { Cancel = _cancelToken };
                 var changes = cmdChanges.Result();
@@ -486,7 +495,6 @@ namespace SourceGit.ViewModels
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        FullMessage = fullMessage;
                         Changes = changes;
                         VisibleChanges = visible;
                     });

@@ -5,16 +5,9 @@ namespace SourceGit.ViewModels
 {
     public class Squash : Popup
     {
-        public Models.Commit Head
+        public Models.Commit Target
         {
-            get;
-            private set;
-        }
-
-        public Models.Commit Parent
-        {
-            get;
-            private set;
+            get => _target;
         }
 
         [Required(ErrorMessage = "Commit message is required!!!")]
@@ -24,13 +17,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _message, value, true);
         }
 
-        public Squash(Repository repo, Models.Commit head, Models.Commit parent)
+        public Squash(Repository repo, Models.Commit target, string shaToGetPreferMessage)
         {
             _repo = repo;
-            _message = new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).Result();
-
-            Head = head;
-            Parent = parent;
+            _target = target;
+            _message = new Commands.QueryCommitFullMessage(_repo.FullPath, shaToGetPreferMessage).Result();
+            
             View = new Views.Squash() { DataContext = this };
         }
 
@@ -41,7 +33,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Reset(_repo.FullPath, Parent.SHA, "--soft").Exec();
+                var succ = new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Exec();
                 if (succ)
                     succ = new Commands.Commit(_repo.FullPath, _message, true).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
@@ -50,6 +42,7 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo;
+        private Models.Commit _target;
         private string _message;
     }
 }

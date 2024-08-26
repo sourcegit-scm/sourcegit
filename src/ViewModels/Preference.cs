@@ -4,9 +4,6 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-using Avalonia.Collections;
-using Avalonia.Media;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -20,6 +17,7 @@ namespace SourceGit.ViewModels
             {
                 if (_instance == null)
                 {
+                    _isLoading = true;
                     if (!File.Exists(_savePath))
                     {
                         _instance = new Preference();
@@ -35,13 +33,8 @@ namespace SourceGit.ViewModels
                             _instance = new Preference();
                         }
                     }
+                    _isLoading = false;
                 }
-
-                if (_instance.DefaultFont == null)
-                    _instance.DefaultFont = FontManager.Current.DefaultFontFamily;
-
-                if (_instance.MonospaceFont == null)
-                    _instance.MonospaceFont = new FontFamily("fonts:SourceGit#JetBrains Mono");
 
                 if (!_instance.IsGitConfigured())
                     _instance.GitInstallPath = Native.OS.FindGitExecutable();
@@ -55,7 +48,7 @@ namespace SourceGit.ViewModels
             get => _locale;
             set
             {
-                if (SetProperty(ref _locale, value))
+                if (SetProperty(ref _locale, value) && !_isLoading)
                     App.SetLocale(value);
             }
         }
@@ -65,7 +58,7 @@ namespace SourceGit.ViewModels
             get => _theme;
             set
             {
-                if (SetProperty(ref _theme, value))
+                if (SetProperty(ref _theme, value) && !_isLoading)
                     App.SetTheme(_theme, _themeOverrides);
             }
         }
@@ -75,35 +68,29 @@ namespace SourceGit.ViewModels
             get => _themeOverrides;
             set
             {
-                if (SetProperty(ref _themeOverrides, value))
+                if (SetProperty(ref _themeOverrides, value) && !_isLoading)
                     App.SetTheme(_theme, value);
             }
         }
 
-        public FontFamily DefaultFont
+        public string DefaultFontFamily
         {
-            get => _defaultFont;
+            get => _defaultFontFamily;
             set
             {
-                if (SetProperty(ref _defaultFont, value) && _onlyUseMonoFontInEditor)
-                    OnPropertyChanged(nameof(PrimaryFont));
+                if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
+                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
 
-        public FontFamily MonospaceFont
+        public string MonospaceFontFamily
         {
-            get => _monospaceFont;
+            get => _monospaceFontFamily;
             set
             {
-                if (SetProperty(ref _monospaceFont, value) && !_onlyUseMonoFontInEditor)
-                    OnPropertyChanged(nameof(PrimaryFont));
+                if (SetProperty(ref _monospaceFontFamily, value) && !_isLoading)
+                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
-        }
-
-        [JsonIgnore]
-        public FontFamily PrimaryFont
-        {
-            get => _onlyUseMonoFontInEditor ? _defaultFont : _monospaceFont;
         }
 
         public bool OnlyUseMonoFontInEditor
@@ -111,9 +98,15 @@ namespace SourceGit.ViewModels
             get => _onlyUseMonoFontInEditor;
             set
             {
-                if (SetProperty(ref _onlyUseMonoFontInEditor, value))
-                    OnPropertyChanged(nameof(PrimaryFont));
+                if (SetProperty(ref _onlyUseMonoFontInEditor, value) && !_isLoading)
+                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
+        }
+
+        public bool UseSystemWindowFrame
+        {
+            get => _useSystemWindowFrame;
+            set => SetProperty(ref _useSystemWindowFrame, value);
         }
 
         public double DefaultFontSize
@@ -204,12 +197,6 @@ namespace SourceGit.ViewModels
         {
             get => _showHiddenSymbolsInDiffView;
             set => SetProperty(ref _showHiddenSymbolsInDiffView, value);
-        }
-
-        public int DiffViewVisualLineNumbers
-        {
-            get => _diffViewVisualLineNumbers;
-            set => SetProperty(ref _diffViewVisualLineNumbers, value);
         }
 
         public Models.ChangeViewMode UnstagedChangeViewMode
@@ -311,11 +298,11 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _externalMergeToolPath, value);
         }
 
-        public AvaloniaList<RepositoryNode> RepositoryNodes
+        public List<RepositoryNode> RepositoryNodes
         {
-            get => _repositoryNodes;
-            set => SetProperty(ref _repositoryNodes, value);
-        }
+            get;
+            set;
+        } = [];
 
         public List<string> OpenedTabs
         {
@@ -358,21 +345,15 @@ namespace SourceGit.ViewModels
 
         public void AddNode(RepositoryNode node, RepositoryNode to = null)
         {
-            var collection = to == null ? _repositoryNodes : to.SubNodes;
-            var list = new List<RepositoryNode>();
-            list.AddRange(collection);
-            list.Add(node);
-            list.Sort((l, r) =>
+            var collection = to == null ? RepositoryNodes : to.SubNodes;
+            collection.Add(node);
+            collection.Sort((l, r) =>
             {
                 if (l.IsRepository != r.IsRepository)
                     return l.IsRepository ? 1 : -1;
 
                 return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
-
-            collection.Clear();
-            foreach (var one in list)
-                collection.Add(one);
         }
 
         public RepositoryNode FindNode(string id)
@@ -405,7 +386,7 @@ namespace SourceGit.ViewModels
 
         public void MoveNode(RepositoryNode node, RepositoryNode to = null)
         {
-            if (to == null && _repositoryNodes.Contains(node))
+            if (to == null && RepositoryNodes.Contains(node))
                 return;
             if (to != null && to.SubNodes.Contains(node))
                 return;
@@ -416,28 +397,19 @@ namespace SourceGit.ViewModels
 
         public void RemoveNode(RepositoryNode node)
         {
-            RemoveNodeRecursive(node, _repositoryNodes);
+            RemoveNodeRecursive(node, RepositoryNodes);
         }
 
         public void SortByRenamedNode(RepositoryNode node)
         {
-            var container = FindNodeContainer(node, _repositoryNodes);
-            if (container == null)
-                return;
-
-            var list = new List<RepositoryNode>();
-            list.AddRange(container);
-            list.Sort((l, r) =>
+            var container = FindNodeContainer(node, RepositoryNodes);
+            container?.Sort((l, r) =>
             {
                 if (l.IsRepository != r.IsRepository)
                     return l.IsRepository ? 1 : -1;
 
                 return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
-
-            container.Clear();
-            foreach (var one in list)
-                container.Add(one);
         }
 
         public void Save()
@@ -446,7 +418,7 @@ namespace SourceGit.ViewModels
             File.WriteAllText(_savePath, data);
         }
 
-        private RepositoryNode FindNodeRecursive(string id, AvaloniaList<RepositoryNode> collection)
+        private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
         {
             foreach (var node in collection)
             {
@@ -461,7 +433,7 @@ namespace SourceGit.ViewModels
             return null;
         }
 
-        private AvaloniaList<RepositoryNode> FindNodeContainer(RepositoryNode node, AvaloniaList<RepositoryNode> collection)
+        private List<RepositoryNode> FindNodeContainer(RepositoryNode node, List<RepositoryNode> collection)
         {
             foreach (var sub in collection)
             {
@@ -476,7 +448,7 @@ namespace SourceGit.ViewModels
             return null;
         }
 
-        private bool RemoveNodeRecursive(RepositoryNode node, AvaloniaList<RepositoryNode> collection)
+        private bool RemoveNodeRecursive(RepositoryNode node, List<RepositoryNode> collection)
         {
             if (collection.Contains(node))
             {
@@ -494,14 +466,16 @@ namespace SourceGit.ViewModels
         }
 
         private static Preference _instance = null;
+        private static bool _isLoading = false;
         private static readonly string _savePath = Path.Combine(Native.OS.DataDir, "preference.json");
 
         private string _locale = "en_US";
         private string _theme = "Default";
         private string _themeOverrides = string.Empty;
-        private FontFamily _defaultFont = null;
-        private FontFamily _monospaceFont = null;
+        private string _defaultFontFamily = string.Empty;
+        private string _monospaceFontFamily = string.Empty;
         private bool _onlyUseMonoFontInEditor = false;
+        private bool _useSystemWindowFrame = false;
         private double _defaultFontSize = 13;
         private LayoutInfo _layout = new LayoutInfo();
 
@@ -518,7 +492,6 @@ namespace SourceGit.ViewModels
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;
-        private int _diffViewVisualLineNumbers = 4;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
@@ -528,7 +501,5 @@ namespace SourceGit.ViewModels
 
         private int _externalMergeToolType = 0;
         private string _externalMergeToolPath = string.Empty;
-
-        private AvaloniaList<RepositoryNode> _repositoryNodes = new AvaloniaList<RepositoryNode>();
     }
 }
