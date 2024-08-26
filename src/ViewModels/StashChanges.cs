@@ -57,7 +57,11 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 new Commands.Stash(_repo.FullPath).Push(jobs, Message);
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.MarkWorkingCopyDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+                });
                 return true;
             });
         }
