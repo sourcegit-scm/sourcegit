@@ -196,6 +196,7 @@ namespace SourceGit.Views
                 if (rules == null || rules.Count == 0)
                 {
                     Inlines.Add(new Run(subject));
+                    InvalidateTextLayout();
                     return;
                 }
 
@@ -206,6 +207,7 @@ namespace SourceGit.Views
                 if (matches.Count == 0)
                 {
                     Inlines.Add(new Run(subject));
+                    InvalidateTextLayout();
                     return;
                 }
 

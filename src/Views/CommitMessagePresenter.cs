@@ -83,6 +83,7 @@ namespace SourceGit.Views
                 if (matches.Count == 0)
                 {
                     Inlines.Add(new Run(message));
+                    InvalidateTextLayout();
                     return;
                 }
 
