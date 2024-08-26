@@ -1320,7 +1320,7 @@ namespace SourceGit.ViewModels
                             PopupHost.ShowAndStartPopup(new Push(_repo, null));
                     }
 
-                    _repo.MarkWorkingCopyDirtyManually();
+                    _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);
                     IsCommitting = false;
                 });
