@@ -331,7 +331,15 @@ namespace SourceGit.ViewModels
                 _settings = new Models.RepositorySettings();
             }
 
-            _watcher = new Models.Watcher(this);
+            try
+            {
+                _watcher = new Models.Watcher(this);
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to start watcher for repository: '{_fullpath}'. You may need to press 'F5' to refresh repository manually!\n\nReason: {ex.Message}");
+            }
+
             _histories = new Histories(this);
             _workingCopy = new WorkingCopy(this);
             _stashesPage = new StashesPage(this);
@@ -351,7 +359,7 @@ namespace SourceGit.ViewModels
             File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
             _settings = null;
 
-            _watcher.Dispose();
+            _watcher?.Dispose();
             _histories.Cleanup();
             _workingCopy.Cleanup();
             _stashesPage.Cleanup();
@@ -580,19 +588,33 @@ namespace SourceGit.ViewModels
 
         public void SetWatcherEnabled(bool enabled)
         {
-            if (_watcher != null)
-                _watcher.SetEnabled(enabled);
+            _watcher?.SetEnabled(enabled);
         }
 
         public void MarkBranchesDirtyManually()
         {
-            if (_watcher != null)
+            if (_watcher == null)
+            {
+                Task.Run(() =>
+                {
+                    RefreshBranches();
+                    RefreshCommits();
+                });
+
+                Task.Run(RefreshWorkingCopyChanges);
+                Task.Run(RefreshWorktrees);
+            }                
+            else
+            {
                 _watcher.MarkBranchDirtyManually();
+            }
         }
 
         public void MarkWorkingCopyDirtyManually()
         {
-            if (_watcher != null)
+            if (_watcher == null)
+                Task.Run(RefreshWorkingCopyChanges);
+            else
                 _watcher.MarkWorkingCopyDirtyManually();
         }
 
@@ -787,9 +809,7 @@ namespace SourceGit.ViewModels
         public void RefreshSubmodules()
         {
             var submodules = new Commands.QuerySubmodules(_fullpath).Result();
-            if (_watcher != null)
-                _watcher.SetSubmodules(submodules);
-
+            _watcher?.SetSubmodules(submodules);
             Dispatcher.UIThread.Invoke(() => Submodules = submodules);
         }
 
