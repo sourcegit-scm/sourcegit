@@ -83,6 +83,9 @@ namespace SourceGit.Views
             if (vm == null)
                 return;
 
+            // We should clear all unhandled key modifiers.
+            _unhandledModifiers = KeyModifiers.None;
+
             // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift) && e.Key == Key.P)
             {
