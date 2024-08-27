@@ -83,14 +83,13 @@ namespace SourceGit.Views
                 if (matches.Count == 0)
                 {
                     Inlines.Add(new Run(message));
-                    InvalidateTextLayout();
                     return;
                 }
 
                 matches.Sort((l, r) => l.Start - r.Start);
                 _matches = matches;
 
-                var inlines = new List<Run>();
+                var inlines = new List<Inline>();
                 var pos = 0;
                 foreach (var match in matches)
                 {
@@ -108,7 +107,6 @@ namespace SourceGit.Views
                     inlines.Add(new Run(message.Substring(pos)));
 
                 Inlines.AddRange(inlines);
-                InvalidateTextLayout();
             }
         }
 
