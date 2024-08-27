@@ -172,11 +172,8 @@ namespace SourceGit.Views
                     switch (decorator.Type)
                     {
                         case Models.DecoratorType.CurrentBranchHead:
-                            item.LabelBG = headBG;
-                            geo = this.FindResource("Icons.Check") as StreamGeometry;
-                            break;
                         case Models.DecoratorType.CurrentCommitHead:
-                            item.LabelBG = branchBG;
+                            item.LabelBG = headBG;
                             geo = this.FindResource("Icons.Check") as StreamGeometry;
                             break;
                         case Models.DecoratorType.RemoteBranchHead:
