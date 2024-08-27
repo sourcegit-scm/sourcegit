@@ -35,8 +35,8 @@ namespace SourceGit.ViewModels
             var pref = Preference.Instance;
             if (!string.IsNullOrEmpty(startupRepo))
             {
-                var root = new Commands.QueryRepositoryRootPath(startupRepo).Result();
-                if (string.IsNullOrEmpty(root))
+                var test = new Commands.QueryRepositoryRootPath(startupRepo).ReadToEnd();
+                if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
                 {
                     Pages[0].Notifications.Add(new Models.Notification
                     {
@@ -46,7 +46,7 @@ namespace SourceGit.ViewModels
                     return;
                 }
 
-                var normalized = root.Replace("\\", "/");
+                var normalized = test.StdOut.Trim().Replace("\\", "/");
                 var node = pref.FindOrAddNodeByRepositoryPath(normalized, null, false);
                 Welcome.Instance.Refresh();
                 OpenRepositoryInTab(node, null);

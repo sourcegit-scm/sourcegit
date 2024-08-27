@@ -10,11 +10,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _targetPath, value);
         }
 
-        public Init(string path, RepositoryNode parent)
+        public string Reason
+        {
+            get;
+            private set;
+        }
+
+        public Init(string path, RepositoryNode parent, string reason)
         {
             _targetPath = path;
             _parentNode = parent;
 
+            Reason = string.IsNullOrEmpty(reason) ? "Invalid repository detected!" : reason;
             View = new Views.Init() { DataContext = this };
         }
 

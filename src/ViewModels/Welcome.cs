@@ -82,7 +82,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void InitRepository(string path, RepositoryNode parent)
+        public void InitRepository(string path, RepositoryNode parent, string reason)
         {
             if (!Preference.Instance.IsGitConfigured())
             {
@@ -91,7 +91,7 @@ namespace SourceGit.ViewModels
             }
 
             if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new Init(path, parent));
+                PopupHost.ShowPopup(new Init(path, parent, reason));
         }
 
         public void Clone()

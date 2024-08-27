@@ -10,16 +10,22 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Init}"/>
-    <Grid Margin="0,16,8,0" RowDefinitions="28,28" ColumnDefinitions="120,*">
+    <Grid Margin="0,16,8,0" ColumnDefinitions="100,*">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="32"/>
+        <RowDefinition Height="Auto" MinHeight="32"/>
+      </Grid.RowDefinitions>
+      
       <TextBlock Grid.Row="0" Grid.Column="0"
-             Text="{DynamicResource Text.Init.Path}"
-             HorizontalAlignment="Right" VerticalAlignment="Center"
-             Margin="0,0,8,0"/>
+                 Text="{DynamicResource Text.Init.Path}"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"/>
       <TextBlock Grid.Row="0" Grid.Column="1"
-             Text="{Binding TargetPath}"/>
+                 Text="{Binding TargetPath}"/>
       <TextBlock Grid.Row="1" Grid.Column="1"
-             Text="{DynamicResource Text.Init.Tip}"
-             Foreground="{DynamicResource Brush.FG2}"/>
+                 Foreground="{DynamicResource Brush.FG2}"
+                 Text="{Binding Reason}"
+                 TextWrapping="Wrap"/>
     </Grid>
   </StackPanel>
 </UserControl>

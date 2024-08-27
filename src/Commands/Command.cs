@@ -17,8 +17,9 @@ namespace SourceGit.Commands
 
         public class ReadToEndResult
         {
-            public bool IsSuccess { get; set; }
-            public string StdOut { get; set; }
+            public bool IsSuccess { get; set; } = false;
+            public string StdOut { get; set; } = "";
+            public string StdErr { get; set; } = "";
         }
 
         public enum EditorType
@@ -198,18 +199,20 @@ namespace SourceGit.Commands
             {
                 proc.Start();
             }
-            catch
+            catch (Exception e)
             {
                 return new ReadToEndResult()
                 {
                     IsSuccess = false,
                     StdOut = string.Empty,
+                    StdErr = e.Message,
                 };
             }
 
             var rs = new ReadToEndResult()
             {
                 StdOut = proc.StandardOutput.ReadToEnd(),
+                StdErr = proc.StandardError.ReadToEnd(),
             };
 
             proc.WaitForExit();

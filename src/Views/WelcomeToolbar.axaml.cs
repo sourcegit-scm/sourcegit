@@ -55,14 +55,14 @@ namespace SourceGit.Views
                     return;
             }
 
-            var root = new Commands.QueryRepositoryRootPath(path).Result();
-            if (string.IsNullOrEmpty(root))
+            var test = new Commands.QueryRepositoryRootPath(path).ReadToEnd();
+            if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
             {
-                ViewModels.Welcome.Instance.InitRepository(path, parent);
+                ViewModels.Welcome.Instance.InitRepository(path, parent, test.StdErr);
                 return;
             }
 
-            var normalizedPath = root.Replace("\\", "/");
+            var normalizedPath = test.StdOut.Trim().Replace("\\", "/");
             var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, parent, false);
             ViewModels.Welcome.Instance.Refresh();
 
