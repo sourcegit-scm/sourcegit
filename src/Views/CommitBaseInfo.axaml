@@ -117,6 +117,7 @@
                                     Classes="primary" 
                                     Message="{Binding #ThisControl.Message}"
                                     IssueTrackerRules="{Binding #ThisControl.IssueTrackerRules}"
+                                    HorizontalAlignment="Stretch"
                                     TextWrapping="Wrap"/>
         </Grid>
       </StackPanel>
