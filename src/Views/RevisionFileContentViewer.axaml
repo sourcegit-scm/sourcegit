@@ -48,10 +48,12 @@
     </DataTemplate>
 
     <DataTemplate DataType="m:RevisionSubmodule">
-      <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="8,8,8,0">
-        <TextBlock Text="{DynamicResource Text.CommitDetail.Files.Submodule}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
-        <v:CommitBaseInfo Margin="0,16,0,0" Content="{Binding Commit}" Message="{Binding FullMessage}"/>
-      </StackPanel>
+      <Grid RowDefinitions="Auto,*" Margin="8,0">
+        <TextBlock Grid.Row="0" Margin="0,8,0,0" Text="{DynamicResource Text.CommitDetail.Files.Submodule}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
+        <ScrollViewer Grid.Row="1" Margin="0,16,0,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+          <v:CommitBaseInfo Content="{Binding Commit}" Message="{Binding FullMessage}"/>
+        </ScrollViewer>
+      </Grid>
     </DataTemplate>
   </UserControl.DataTemplates>
 </UserControl>

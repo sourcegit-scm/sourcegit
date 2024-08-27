@@ -114,7 +114,23 @@ namespace SourceGit.Views
         {
             base.OnPointerMoved(e);
 
-            if (e.Pointer.Captured == null && _matches != null)
+            if (e.Pointer.Captured == this)
+            {
+                var relativeSelfY = e.GetPosition(this).Y;
+                if (relativeSelfY <= 0 || relativeSelfY > Bounds.Height)
+                    return;
+
+                var scrollViewer = this.FindAncestorOfType<ScrollViewer>();
+                if (scrollViewer != null)
+                {
+                    var relativeY = e.GetPosition(scrollViewer).Y;
+                    if (relativeY <= 8)
+                        scrollViewer.LineUp();
+                    else if (relativeY >= scrollViewer.Bounds.Height - 8)
+                        scrollViewer.LineDown();
+                }
+            }
+            else if (_matches != null)
             {
                 var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
                 var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
