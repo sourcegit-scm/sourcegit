@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 using Avalonia.Controls;
@@ -30,9 +31,16 @@ namespace SourceGit.Views
                 options.SuggestedStartLocation = folder;
             }
 
-            var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
-            if (selected.Count == 1)
-                OpenOrInitRepository(selected[0].Path.LocalPath);
+            try
+            {
+                var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
+                if (selected.Count == 1)
+                    OpenOrInitRepository(selected[0].Path.LocalPath);
+            }
+            catch (Exception exception)
+            {
+                App.RaiseException(string.Empty, $"Failed to open repository: {exception.Message}");
+            }
 
             e.Handled = true;
         }

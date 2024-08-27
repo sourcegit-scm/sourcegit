@@ -454,12 +454,19 @@ namespace SourceGit.ViewModels
                     return;
 
                 var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                var selected = await storageProvider.OpenFolderPickerAsync(options);
-                if (selected.Count == 1)
+                try
                 {
-                    var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, selected[0].Path.LocalPath).Exec();
-                    if (succ)
-                        App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                    var selected = await storageProvider.OpenFolderPickerAsync(options);
+                    if (selected.Count == 1)
+                    {
+                        var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, selected[0].Path.LocalPath).Exec();
+                        if (succ)
+                            App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(_repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
                 e.Handled = true;

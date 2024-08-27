@@ -186,10 +186,17 @@ namespace SourceGit.Views
         private async void SelectDefaultCloneDir(object _1, RoutedEventArgs _2)
         {
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-            var selected = await StorageProvider.OpenFolderPickerAsync(options);
-            if (selected.Count == 1)
+            try
             {
-                ViewModels.Preference.Instance.GitDefaultCloneDir = selected[0].Path.LocalPath;
+                var selected = await StorageProvider.OpenFolderPickerAsync(options);
+                if (selected.Count == 1)
+                {
+                    ViewModels.Preference.Instance.GitDefaultCloneDir = selected[0].Path.LocalPath;
+                }
+            }
+            catch (Exception e)
+            {
+                App.RaiseException(string.Empty, $"Failed to select default clone directory: {e.Message}");
             }
         }
 

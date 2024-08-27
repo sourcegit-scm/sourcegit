@@ -390,11 +390,18 @@ namespace SourceGit.ViewModels
                     return;
 
                 var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                var selected = await storageProvider.OpenFolderPickerAsync(options);
-                if (selected.Count == 1)
+                try
                 {
-                    var saveTo = Path.Combine(selected[0].Path.LocalPath, Path.GetFileName(file.Path));
-                    Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, saveTo);
+                    var selected = await storageProvider.OpenFolderPickerAsync(options);
+                    if (selected.Count == 1)
+                    {
+                        var saveTo = Path.Combine(selected[0].Path.LocalPath, Path.GetFileName(file.Path));
+                        Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, saveTo);
+                    }
+                }
+                catch (Exception e)
+                {
+                    App.RaiseException(_repo.FullPath, $"Failed to save file: {e.Message}");
                 }
 
                 ev.Handled = true;

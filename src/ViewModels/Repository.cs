@@ -356,7 +356,14 @@ namespace SourceGit.ViewModels
             SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
 
             var settingsSerialized = JsonSerializer.Serialize(_settings, JsonCodeGen.Default.RepositorySettings);
-            File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
+            try
+            {
+                File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // Ignore
+            }
             _settings = null;
 
             _watcher?.Dispose();
