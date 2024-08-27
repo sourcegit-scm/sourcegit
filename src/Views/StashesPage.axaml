@@ -66,39 +66,42 @@
       </Border>
 
       <!-- Stash List -->
-      <DataGrid Grid.Row="2"
-                Background="{DynamicResource Brush.Contents}"
-                ItemsSource="{Binding VisibleStashes}"
-                SelectedItem="{Binding SelectedStash, Mode=TwoWay}"
-                SelectionMode="Single"
-                CanUserReorderColumns="False"
-                CanUserResizeColumns="False"
-                CanUserSortColumns="False"
-                IsReadOnly="True"
-                HeadersVisibility="None"
-                Focusable="False"
-                RowHeight="50"
-                HorizontalScrollBarVisibility="Disabled"
-                VerticalScrollBarVisibility="Auto">
-        <DataGrid.Columns>
-          <DataGridTemplateColumn Width="*">
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate DataType="m:Stash">
-                <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4" Background="Transparent" ContextRequested="OnStashContextRequested">
-                  <Grid RowDefinitions="Auto,*" >
-                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
-                      <TextBlock Grid.Column="0" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" TextDecorations="Underline" Cursor="Hand"/>
-                      <TextBlock Grid.Column="1" Classes="primary" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
-                    </Grid>
+      <ListBox Grid.Row="2"
+               Background="{DynamicResource Brush.Contents}"
+               ItemsSource="{Binding VisibleStashes}"
+               SelectedItem="{Binding SelectedStash, Mode=TwoWay}"
+               SelectionMode="Single"
+               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+               ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Height" Value="50"/>
+          </Style>
+        </ListBox.Styles>
 
-                    <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Message}" VerticalAlignment="Bottom"/>
-                  </Grid>
-                </Border>
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
-        </DataGrid.Columns>
-      </DataGrid>
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <VirtualizingStackPanel Orientation="Vertical"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="m:Stash">
+            <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4" Background="Transparent" ContextRequested="OnStashContextRequested">
+              <Grid RowDefinitions="Auto,*" >
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                  <TextBlock Grid.Column="0" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" TextDecorations="Underline" Cursor="Hand"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                </Grid>
+
+                <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Message}" VerticalAlignment="Bottom"/>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
 
       <!-- Changes Bar -->
       <Border Grid.Row="3" BorderThickness="0,1" BorderBrush="{DynamicResource Brush.Border0}">
@@ -110,38 +113,36 @@
       </Border>
 
       <!-- View Changes -->
-      <DataGrid Grid.Row="4"
-                Background="{DynamicResource Brush.Contents}"
-                ItemsSource="{Binding Changes}"
-                SelectedItem="{Binding SelectedChange, Mode=TwoWay}"
-                SelectionMode="Single"
-                CanUserReorderColumns="False"
-                CanUserResizeColumns="False"
-                CanUserSortColumns="False"
-                IsReadOnly="True"
-                HeadersVisibility="None"
-                Focusable="False"
-                RowHeight="26"
-                HorizontalScrollBarVisibility="Auto"
-                VerticalScrollBarVisibility="Auto">
-        <DataGrid.Columns>
-          <DataGridTemplateColumn Header="ICON">
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate>
-                <v:ChangeStatusIcon Width="14" Height="14" Change="{Binding}"/>
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
+      <ListBox Grid.Row="4"
+               Background="{DynamicResource Brush.Contents}"
+               ItemsSource="{Binding Changes}"
+               SelectedItem="{Binding SelectedChange, Mode=TwoWay}"
+               SelectionMode="Single"
+               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+               ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Height" Value="26"/>
+          </Style>
+        </ListBox.Styles>
 
-          <DataGridTemplateColumn Width="*" Header="PATH">
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate>
-                <TextBlock Classes="primary" Text="{Binding Path}" Margin="4,0,0,0"/>
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
-        </DataGrid.Columns>
-      </DataGrid>
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <VirtualizingStackPanel Orientation="Vertical"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="m:Change">
+            <Grid ColumnDefinitions="24,*">
+              <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" Change="{Binding}"/>
+              <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Path}" Margin="4,0,0,0"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
     </Grid>
 
     <GridSplitter Grid.Column="1"

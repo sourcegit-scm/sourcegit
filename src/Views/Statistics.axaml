@@ -134,46 +134,43 @@
           <Grid ColumnDefinitions="256,*" Margin="8,8,8,16">
             <Grid Grid.Column="0" RowDefinitions="*,16">
               <!-- Table By Committer -->
-              <DataGrid Grid.Row="0"
-                        ItemsSource="{Binding ByCommitter}"
-                        SelectionMode="Single"
-                        CanUserReorderColumns="False"
-                        CanUserResizeColumns="False"
-                        CanUserSortColumns="False"
-                        HeadersVisibility="Column"
-                        GridLinesVisibility="All"
-                        BorderThickness="1"
-                        BorderBrush="{DynamicResource Brush.Border2}"
-                        Background="{DynamicResource Brush.Contents}"
-                        HorizontalGridLinesBrush="{DynamicResource Brush.Border2}"
-                        VerticalGridLinesBrush="{DynamicResource Brush.Border2}"
-                        IsReadOnly="True"
-                        RowHeight="26"
-                        HorizontalScrollBarVisibility="Disabled"
-                        VerticalScrollBarVisibility="Auto">
-                <DataGrid.Styles>
-                  <Style Selector="DataGridColumnHeader">
-                    <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
-                    <Setter Property="Padding" Value="8,0,0,0"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
-                    <Setter Property="SeparatorBrush" Value="{DynamicResource Brush.Border2}" />
-
-                    <Style Selector="^:pointerover /template/ Grid#PART_ColumnHeaderRoot">
-                      <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
-                    </Style>
-
-                    <Style Selector="^:pressed /template/ Grid#PART_ColumnHeaderRoot">
-                      <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
-                    </Style>
+              <ListBox Grid.Column="0"
+                       ItemsSource="{Binding ByCommitter}"
+                       SelectionMode="Single"
+                       BorderThickness="1"
+                       BorderBrush="{DynamicResource Brush.Border2}"
+                       Background="{DynamicResource Brush.Contents}"
+                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                       ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.Styles>
+                  <Style Selector="ListBoxItem">
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Height" Value="26"/>
                   </Style>
-                </DataGrid.Styles>
-                
-                <DataGrid.Columns>
-                  <DataGridTextColumn Width="150" Header="{DynamicResource Text.Statistics.Committer}" Binding="{Binding Name}"/>
-                  <DataGridTextColumn Width="*" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
-                </DataGrid.Columns>
-              </DataGrid>
+                </ListBox.Styles>
+
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="m:StatisticsSample">
+                    <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
+                      <Grid ColumnDefinitions="*,150">
+                        <Border Grid.Column="0" Padding="8,0" ClipToBounds="True">
+                          <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                        </Border>
+                        <Border Grid.Column="1" Padding="8,0" ClipToBounds="True">
+                          <TextBlock Text="{Binding Count}" HorizontalAlignment="Right"/>
+                        </Border>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
 
               <!-- Summary -->
               <Grid Grid.Row="1" ColumnDefinitions="*,*">

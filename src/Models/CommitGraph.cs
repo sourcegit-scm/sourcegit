@@ -275,7 +275,7 @@ namespace SourceGit.Models
                     unsolved.Remove(l);
                 }
 
-                // Margins & merge state (used by datagrid).
+                // Margins & merge state (used by Views.Histories).
                 commit.IsMerged = isMerged;
                 commit.Margin = new Thickness(Math.Max(offsetX + HALF_WIDTH, oldCount * UNIT_WIDTH + H_MARGIN) + H_MARGIN, 0, 0, 0);
 

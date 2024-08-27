@@ -88,9 +88,9 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDataGridKeyDown(object sender, KeyEventArgs e)
+        private void OnItemsListBoxKeyDown(object sender, KeyEventArgs e)
         {
-            var item = (sender as DataGrid)?.SelectedItem as ViewModels.InteractiveRebaseItem;
+            var item = (sender as ListBox)?.SelectedItem as ViewModels.InteractiveRebaseItem;
             if (item == null)
                 return;
 

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.DeleteMultipleBranches"
@@ -17,56 +18,37 @@
             BorderBrush="{DynamicResource Brush.Border1}"
             CornerRadius="4"
             Padding="4">
-      <DataGrid MaxHeight="200"
-                Background="Transparent"
-                BorderThickness="0"
-                ItemsSource="{Binding Targets}"
-                SelectionMode="Single"
-                CanUserReorderColumns="False"
-                CanUserResizeColumns="False"
-                CanUserSortColumns="False"
-                IsReadOnly="True"
-                HeadersVisibility="None"
-                Focusable="False"
-                RowHeight="26"
-                HorizontalScrollBarVisibility="Auto"
-                VerticalScrollBarVisibility="Auto">
-        <DataGrid.Styles>
-          <Style Selector="DataGridRow">
-            <Setter Property="CornerRadius" Value="4" />
+      <ListBox MaxHeight="200"
+               BorderThickness="0"
+               Background="Transparent"
+               ItemsSource="{Binding Targets}"
+               SelectionMode="Single"
+               ScrollViewer.HorizontalScrollBarVisibility="Auto"
+               ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="CornerRadius" Value="4"/>
           </Style>
+        </ListBox.Styles>
 
-          <Style Selector="DataGridRow /template/ Border#RowBorder">
-            <Setter Property="ClipToBounds" Value="True" />
-          </Style>
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <VirtualizingStackPanel Orientation="Vertical"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
 
-          <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
-            <Setter Property="Fill" Value="{DynamicResource Brush.AccentHovered}" />
-          </Style>
-
-          <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
-            <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-          </Style>
-        </DataGrid.Styles>
-
-        <DataGrid.Columns>
-          <DataGridTemplateColumn Header="ICON">
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate>
-                <Path Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Branch}" />
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
-
-          <DataGridTemplateColumn Width="*" Header="NAME">
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate>
-                <TextBlock Text="{Binding FriendlyName}" ClipToBounds="True" Classes="primary" />
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
-        </DataGrid.Columns>
-      </DataGrid>
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="m:Branch">
+            <Grid Height="26" ColumnDefinitions="22,*">
+              <Path Grid.Column="0" Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Branch}" />
+              <TextBlock Grid.Column="1" Text="{Binding FriendlyName}" Classes="primary" />
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
     </Border>
 
     <TextBlock Margin="4,8,0,0"

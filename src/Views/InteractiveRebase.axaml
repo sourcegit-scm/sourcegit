@@ -66,203 +66,172 @@
     <!-- Body -->
     <Border Grid.Row="2" Margin="8,0,8,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
       <Grid RowDefinitions="*,3,*">
-        <DataGrid Grid.Row="0"
-                  Background="{DynamicResource Brush.Contents}"
-                  ItemsSource="{Binding Items}"
-                  SelectionMode="Single"
-                  SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"
-                  CanUserReorderColumns="False"
-                  CanUserResizeColumns="False"
-                  CanUserSortColumns="False"
-                  IsReadOnly="True"
-                  HeadersVisibility="None"
-                  Focusable="False"
-                  RowHeight="28"
-                  HorizontalScrollBarVisibility="Disabled"
-                  VerticalScrollBarVisibility="Auto"
-                  KeyDown="OnDataGridKeyDown">          
-          <DataGrid.Columns>
-            <DataGridTemplateColumn Width="16" Header="DragHandler">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
-                  <Border Background="Transparent" 
-                          Margin="4,0,0,0"
-                          Loaded="OnSetupRowHeaderDragDrop"
-                          PointerPressed="OnRowHeaderPointerPressed">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Move}" Fill="{DynamicResource Brush.FG2}"/>
-                  </Border>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-            
-            <DataGridTemplateColumn Header="Option">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
-                  <Button Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent">
-                    <Button.Flyout>
-                      <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-4">
-                        <MenuItem InputGesture="P" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Pick}">
-                          <MenuItem.Icon>
-                            <Ellipse Width="14" Height="14" Fill="Green"/>
-                          </MenuItem.Icon>
-                          <MenuItem.Header>
-                            <Grid ColumnDefinitions="64,240">
-                              <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Pick"/>
-                              <TextBlock Grid.Column="1" Text="Use this commit" Foreground="{DynamicResource Brush.FG2}"/>
-                            </Grid>
-                          </MenuItem.Header>
-                        </MenuItem>
+        <ListBox Grid.Row="0"
+                 Background="{DynamicResource Brush.Contents}"
+                 ItemsSource="{Binding Items}"
+                 SelectionMode="Single"
+                 SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 KeyDown="OnItemsListBoxKeyDown">
+          <ListBox.Styles>
+            <Style Selector="ListBoxItem">
+              <Setter Property="Margin" Value="0"/>
+              <Setter Property="Padding" Value="0"/>
+              <Setter Property="Height" Value="28"/>
+            </Style>
+          </ListBox.Styles>
 
-                        <MenuItem InputGesture="E" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Edit}">
-                          <MenuItem.Icon>
-                            <Ellipse Width="14" Height="14" Fill="Orange"/>
-                          </MenuItem.Icon>
-                          <MenuItem.Header>
-                            <Grid ColumnDefinitions="64,240">
-                              <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Edit"/>
-                              <TextBlock Grid.Column="1" Text="Stop for amending" Foreground="{DynamicResource Brush.FG2}"/>
-                            </Grid>
-                          </MenuItem.Header>
-                        </MenuItem>
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <VirtualizingStackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
 
-                        <MenuItem InputGesture="R" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Reword}">
-                          <MenuItem.Icon>
-                            <Ellipse Width="14" Height="14" Fill="Orange"/>
-                          </MenuItem.Icon>
-                          <MenuItem.Header>
-                            <Grid ColumnDefinitions="64,240">
-                              <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Reword"/>
-                              <TextBlock Grid.Column="1" Text="Edit the commit message" Foreground="{DynamicResource Brush.FG2}"/>
-                            </Grid>
-                          </MenuItem.Header>
-                        </MenuItem>
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="vm:InteractiveRebaseItem">
+              <Grid ColumnDefinitions="16,110,*,40,100,96,156,32,32">
+                <!-- Drag & Drop Anchor -->
+                <Border Grid.Column="0" Background="Transparent"
+                        Margin="4,0,0,0"
+                        Loaded="OnSetupRowHeaderDragDrop"
+                        PointerPressed="OnRowHeaderPointerPressed">
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.Move}" Fill="{DynamicResource Brush.FG2}"/>
+                </Border>
 
-                        <MenuItem InputGesture="S" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Squash}">
-                          <MenuItem.Icon>
-                            <Ellipse Width="14" Height="14" Fill="LightGray"/>
-                          </MenuItem.Icon>
-                          <MenuItem.Header>
-                            <Grid ColumnDefinitions="64,240">
-                              <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Squash"/>
-                              <TextBlock Grid.Column="1" Text="Meld into previous commit" Foreground="{DynamicResource Brush.FG2}"/>
-                            </Grid>
-                          </MenuItem.Header>
-                        </MenuItem>
+                <!-- Action -->
+                <Button Grid.Column="1" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent">
+                  <Button.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-4">
+                      <MenuItem InputGesture="P" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Pick}">
+                        <MenuItem.Icon>
+                          <Ellipse Width="14" Height="14" Fill="Green"/>
+                        </MenuItem.Icon>
+                        <MenuItem.Header>
+                          <Grid ColumnDefinitions="64,240">
+                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Pick"/>
+                            <TextBlock Grid.Column="1" Text="Use this commit" Foreground="{DynamicResource Brush.FG2}"/>
+                          </Grid>
+                        </MenuItem.Header>
+                      </MenuItem>
 
-                        <MenuItem InputGesture="F" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Fixup}">
-                          <MenuItem.Icon>
-                            <Ellipse Width="14" Height="14" Fill="LightGray"/>
-                          </MenuItem.Icon>
-                          <MenuItem.Header>
-                            <Grid ColumnDefinitions="64,240">
-                              <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Fixup"/>
-                              <TextBlock Grid.Column="1" Text="Like 'Squash' but discard message" Foreground="{DynamicResource Brush.FG2}"/>
-                            </Grid>
-                          </MenuItem.Header>
-                        </MenuItem>
+                      <MenuItem InputGesture="E" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Edit}">
+                        <MenuItem.Icon>
+                          <Ellipse Width="14" Height="14" Fill="Orange"/>
+                        </MenuItem.Icon>
+                        <MenuItem.Header>
+                          <Grid ColumnDefinitions="64,240">
+                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Edit"/>
+                            <TextBlock Grid.Column="1" Text="Stop for amending" Foreground="{DynamicResource Brush.FG2}"/>
+                          </Grid>
+                        </MenuItem.Header>
+                      </MenuItem>
 
-                        <MenuItem InputGesture="D" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Drop}">
-                          <MenuItem.Icon>
-                            <Ellipse Width="14" Height="14" Fill="Red"/>
-                          </MenuItem.Icon>
-                          <MenuItem.Header>
-                            <Grid ColumnDefinitions="64,240">
-                              <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Drop"/>
-                              <TextBlock Grid.Column="1" Text="Remove commit" Foreground="{DynamicResource Brush.FG2}"/>
-                            </Grid>
-                          </MenuItem.Header>
-                        </MenuItem>
-                      </MenuFlyout>
-                    </Button.Flyout>
-                    
-                    <StackPanel Orientation="Horizontal">
-                      <Ellipse Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
-                      <TextBlock Classes="primary" Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
-                    </StackPanel>
-                  </Button>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                      <MenuItem InputGesture="R" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Reword}">
+                        <MenuItem.Icon>
+                          <Ellipse Width="14" Height="14" Fill="Orange"/>
+                        </MenuItem.Icon>
+                        <MenuItem.Header>
+                          <Grid ColumnDefinitions="64,240">
+                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Reword"/>
+                            <TextBlock Grid.Column="1" Text="Edit the commit message" Foreground="{DynamicResource Brush.FG2}"/>
+                          </Grid>
+                        </MenuItem.Header>
+                      </MenuItem>
 
-            <DataGridTemplateColumn Width="*" Header="SUBJECT">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
+                      <MenuItem InputGesture="S" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Squash}">
+                        <MenuItem.Icon>
+                          <Ellipse Width="14" Height="14" Fill="LightGray"/>
+                        </MenuItem.Icon>
+                        <MenuItem.Header>
+                          <Grid ColumnDefinitions="64,240">
+                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Squash"/>
+                            <TextBlock Grid.Column="1" Text="Meld into previous commit" Foreground="{DynamicResource Brush.FG2}"/>
+                          </Grid>
+                        </MenuItem.Header>
+                      </MenuItem>
+
+                      <MenuItem InputGesture="F" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Fixup}">
+                        <MenuItem.Icon>
+                          <Ellipse Width="14" Height="14" Fill="LightGray"/>
+                        </MenuItem.Icon>
+                        <MenuItem.Header>
+                          <Grid ColumnDefinitions="64,240">
+                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Fixup"/>
+                            <TextBlock Grid.Column="1" Text="Like 'Squash' but discard message" Foreground="{DynamicResource Brush.FG2}"/>
+                          </Grid>
+                        </MenuItem.Header>
+                      </MenuItem>
+
+                      <MenuItem InputGesture="D" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Drop}">
+                        <MenuItem.Icon>
+                          <Ellipse Width="14" Height="14" Fill="Red"/>
+                        </MenuItem.Icon>
+                        <MenuItem.Header>
+                          <Grid ColumnDefinitions="64,240">
+                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Drop"/>
+                            <TextBlock Grid.Column="1" Text="Remove commit" Foreground="{DynamicResource Brush.FG2}"/>
+                          </Grid>
+                        </MenuItem.Header>
+                      </MenuItem>
+                    </MenuFlyout>
+                  </Button.Flyout>
+
                   <StackPanel Orientation="Horizontal">
-                    <Button Classes="icon_button" IsVisible="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.CanEditMessage}}">
-                      <Button.Flyout>
-                        <Flyout Placement="BottomEdgeAlignedLeft">
-                          <Panel Width="600" Height="120">
-                            <v:CommitMessageTextBox Text="{Binding FullMessage, Mode=TwoWay}"/>
-                          </Panel>
-                        </Flyout>
-                      </Button.Flyout>
-                      <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Edit}"/>
-                    </Button>
-                    <TextBlock Classes="primary" Text="{Binding Subject}" Margin="8,0,0,0"/>
-                  </StackPanel>                  
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                    <Ellipse Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
+                    <TextBlock Classes="primary" Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
+                  </StackPanel>
+                </Button>
 
-            <DataGridTemplateColumn Header="AVATAR">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
-                  <v:Avatar Width="16" Height="16"
-                            Margin="16,0,8,0"
-                            VerticalAlignment="Center"
-                            IsHitTestVisible="False"
-                            User="{Binding Commit.Author}"/>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-
-            <DataGridTemplateColumn MaxWidth="100" Header="AUTHOR">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
-                  <TextBlock Classes="primary" Text="{Binding Commit.Author.Name}" Margin="0,0,8,0"/>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-
-            <DataGridTemplateColumn Header="SHA">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
-                  <TextBlock Classes="primary"
-                             Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
-                             Margin="12,0"/>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-
-            <DataGridTemplateColumn Header="TIME">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
-                  <TextBlock Classes="primary" Text="{Binding Commit.CommitterTimeStr}" Margin="8,0"/>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-
-            <DataGridTemplateColumn Width="32" Header="MOVE UP">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
-                  <Button Classes="icon_button" Click="OnMoveItemUp" ToolTip.Tip="{DynamicResource Text.InteractiveRebase.MoveUp}">
-                    <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Up}"/>
+                <!-- Subject -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" ClipToBounds="True">
+                  <Button Classes="icon_button" IsVisible="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.CanEditMessage}}">
+                    <Button.Flyout>
+                      <Flyout Placement="BottomEdgeAlignedLeft">
+                        <Panel Width="600" Height="120">
+                          <v:CommitMessageTextBox Text="{Binding FullMessage, Mode=TwoWay}"/>
+                        </Panel>
+                      </Flyout>
+                    </Button.Flyout>
+                    <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Edit}"/>
                   </Button>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                  <TextBlock Classes="primary" Text="{Binding Subject}" Margin="8,0,0,0"/>
+                </StackPanel>
 
-            <DataGridTemplateColumn Width="32" Header="MOVE DOWN">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate x:DataType="{x:Type vm:InteractiveRebaseItem}">
-                  <Button Classes="icon_button" Click="OnMoveItemDown" ToolTip.Tip="{DynamicResource Text.InteractiveRebase.MoveDown}">
-                    <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Down}"/>
-                  </Button>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-          </DataGrid.Columns>
-        </DataGrid>
+                <!-- Avatar -->
+                <v:Avatar Grid.Column="3"
+                          Width="16" Height="16"
+                          Margin="16,0,8,0"
+                          VerticalAlignment="Center"
+                          IsHitTestVisible="False"
+                          User="{Binding Commit.Author}"/>
+
+                <!-- Author -->
+                <Border Grid.Column="4" ClipToBounds="True">
+                  <TextBlock Classes="primary" Text="{Binding Commit.Author.Name}" HorizontalAlignment="Left"/>
+                </Border>
+                
+                <!-- Commit SHA -->
+                <TextBlock Grid.Column="5" Classes="primary"
+                           Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                           Margin="12,0"/>
+
+                <!-- Commit Time -->
+                <TextBlock Grid.Column="6" Classes="primary" Text="{Binding Commit.CommitterTimeStr}" Margin="8,0"/>
+
+                <!-- MoveUp Button -->
+                <Button Grid.Column="7" Classes="icon_button" Click="OnMoveItemUp" ToolTip.Tip="{DynamicResource Text.InteractiveRebase.MoveUp}">
+                  <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Up}"/>
+                </Button>
+                
+                <!-- MoveDown Button -->
+                <Button Grid.Column="8" Classes="icon_button" Click="OnMoveItemDown" ToolTip.Tip="{DynamicResource Text.InteractiveRebase.MoveDown}">
+                  <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Down}"/>
+                </Button>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
 
         <v:LoadingIcon Grid.Row="0" Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
 
