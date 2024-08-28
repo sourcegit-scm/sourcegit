@@ -79,10 +79,9 @@
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
-  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick This Commit</x:String>
-  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit:</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit all changes</x:String>
-  <x:String x:Key="Text.CherryPick.Title" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Clear Stashes</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">You are trying to clear all stashes. Are you sure to continue?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">Clone Remote Repository</x:String>
@@ -95,6 +94,7 @@
   <x:String x:Key="Text.Close" xml:space="preserve">CLOSE</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick This Commit</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>

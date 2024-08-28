@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-using Avalonia.VisualTree;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -182,12 +182,72 @@ namespace SourceGit.ViewModels
 
         public ContextMenu MakeContextMenu(ListBox list)
         {
-            if (list.SelectedItems.Count != 1)
-                return null;
-
             var current = _repo.CurrentBranch;
             if (current == null)
                 return null;
+
+            if (list.SelectedItems.Count > 1)
+            {
+                var selected = new List<Models.Commit>();
+                var canCherryPick = true;
+                foreach (var item in list.SelectedItems)
+                {
+                    if (item is Models.Commit c)
+                    {
+                        selected.Add(c);
+
+                        if (c.IsMerged || c.Parents.Count > 1)
+                            canCherryPick = false;
+                    }
+                }
+
+                var multipleMenu = new ContextMenu();
+
+                if (canCherryPick)
+                {
+                    var cherryPickMultiple = new MenuItem();
+                    cherryPickMultiple.Header = App.Text("CommitCM.CherryPickMultiple");
+                    cherryPickMultiple.Icon = App.CreateMenuIcon("Icons.CherryPick");
+                    cherryPickMultiple.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowPopup(new CherryPick(_repo, selected));
+                        e.Handled = true;
+                    };
+                    multipleMenu.Items.Add(cherryPickMultiple);
+                    multipleMenu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
+                var copyMultipleSHAs = new MenuItem();
+                copyMultipleSHAs.Header = App.Text("CommitCM.CopySHA");
+                copyMultipleSHAs.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyMultipleSHAs.Click += (_, e) =>
+                {
+                    var builder = new StringBuilder();
+                    foreach (var c in selected)
+                        builder.AppendLine(c.SHA);
+
+                    App.CopyText(builder.ToString());
+                    e.Handled = true;
+                };
+                multipleMenu.Items.Add(copyMultipleSHAs);
+
+                var copyMultipleInfo = new MenuItem();
+                copyMultipleInfo.Header = App.Text("CommitCM.CopyInfo");
+                copyMultipleInfo.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyMultipleInfo.Click += (_, e) =>
+                {
+                    var builder = new StringBuilder();
+                    foreach (var c in selected)
+                        builder.AppendLine($"{c.SHA.Substring(0, 10)} - {c.Subject}");
+
+                    App.CopyText(builder.ToString());
+                    e.Handled = true;
+                };
+                multipleMenu.Items.Add(copyMultipleInfo);
+
+                return multipleMenu;
+            }
 
             var commit = (list.SelectedItem as Models.Commit)!;
             var menu = new ContextMenu();
@@ -324,7 +384,7 @@ namespace SourceGit.ViewModels
                 cherryPick.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new CherryPick(_repo, commit));
+                        PopupHost.ShowPopup(new CherryPick(_repo, [commit]));
                     e.Handled = true;
                 };
                 menu.Items.Add(cherryPick);

@@ -82,10 +82,9 @@
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">不做處理</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
-  <x:String x:Key="Text.CherryPick" xml:space="preserve">揀選 (cherry-pick) 此提交</x:String>
-  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交編號:</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">揀選提交</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交列表:</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">提交變更</x:String>
-  <x:String x:Key="Text.CherryPick.Title" xml:space="preserve">揀選提交</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">捨棄擱置變更確認</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">您正在捨棄所有的擱置變更，一經操作便無法復原，是否繼續?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">複製 (clone) 遠端存放庫</x:String>
@@ -98,6 +97,7 @@
   <x:String x:Key="Text.Close" xml:space="preserve">關閉</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交訊息編輯器</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">揀選 (cherry-pick) 此提交</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">揀選 (cherry-pick) ...</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">簽出 (checkout) 此提交</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">與目前 HEAD 比較</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">與本機工作區比較</x:String>

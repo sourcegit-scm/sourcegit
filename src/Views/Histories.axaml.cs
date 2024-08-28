@@ -661,7 +661,7 @@ namespace SourceGit.Views
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is ListBox list)
+            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems: { Count: > 0 } } list)
             {
                 var menu = histories.MakeContextMenu(list);
                 list.OpenContextMenu(menu);

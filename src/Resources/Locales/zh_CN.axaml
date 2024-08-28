@@ -82,10 +82,9 @@
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">不做处理</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">贮藏并自动恢复</x:String>
-  <x:String x:Key="Text.CherryPick" xml:space="preserve">挑选(cherry-pick)此提交</x:String>
-  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交ID ：</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">挑选提交</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交列表 ：</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">提交变化</x:String>
-  <x:String x:Key="Text.CherryPick.Title" xml:space="preserve">挑选提交</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">丢弃贮藏确认</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">您正在丢弃所有的贮藏，一经操作，无法回退，是否继续？</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">克隆远程仓库</x:String>
@@ -98,6 +97,7 @@
   <x:String x:Key="Text.Close" xml:space="preserve">关闭</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交信息编辑器</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">挑选(cherry-pick)此提交</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">挑选(cherry-pick)...</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">检出此提交</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">与当前HEAD比较</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">与本地工作树比较</x:String>

@@ -83,10 +83,9 @@
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Rejeter</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Ne rien faire</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash et Réappliquer</x:String>
-  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick ce commit</x:String>
-  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit :</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s) :</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit tous les changements</x:String>
-  <x:String x:Key="Text.CherryPick.Title" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Vider les Stashes</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Voulez-vous vider tous les stashes. Êtes-vous sûr de vouloir continuer ?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">Cloner le dépôt distant</x:String>
