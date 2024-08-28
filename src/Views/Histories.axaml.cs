@@ -439,6 +439,10 @@ namespace SourceGit.Views
         {
             base.Render(context);
 
+            var graph = Graph;
+            if (graph == null)
+                return;
+
             var histories = this.FindAncestorOfType<Histories>();
             if (histories == null)
                 return;
@@ -447,25 +451,20 @@ namespace SourceGit.Views
             if (list == null)
                 return;
 
-            var graph = Graph;
-            if (graph == null)
-                return;
-
-            double rowHeight = 28;
+            // Calculate drawing area.
+            double width = Bounds.Width - 156 - 96 - histories.AuthorNameColumnWidth.Value;
+            double height = Bounds.Height;
             double startY = list.Scroll?.Offset.Y ?? 0;
-            double maxWidth = Bounds.Width - 156 - 96 - histories.AuthorNameColumnWidth.Value; 
+            double endY = startY + height + 28;
 
-            // Apply scroll offset.
-            context.PushClip(new Rect(Bounds.Left, Bounds.Top, maxWidth, Bounds.Height));
-            context.PushTransform(Matrix.CreateTranslation(0, -startY));
-
-            // Calculate bounds.
-            var top = startY;
-            var bottom = startY + Bounds.Height + rowHeight * 2;
-
-            // Draw contents
-            DrawCurves(context, graph, top, bottom);
-            DrawAnchors(context, graph, top, bottom);
+            // Apply scroll offset and clip.
+            using (context.PushClip(new Rect(0, 0, width, height)))
+            using (context.PushTransform(Matrix.CreateTranslation(0, -startY)))
+            {
+                // Draw contents
+                DrawCurves(context, graph, startY, endY);
+                DrawAnchors(context, graph, startY, endY);
+            }
         }
 
         private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom)
