@@ -13,34 +13,34 @@ namespace SourceGit.Models
     {
         public int Total { get; set; } = 0;
         public List<StatisticsSample> Samples { get; set; } = new List<StatisticsSample>();
-        public List<StatisticsSample> ByCommitter { get; set; } = new List<StatisticsSample>();
+        public List<StatisticsSample> ByAuthor { get; set; } = new List<StatisticsSample>();
 
-        public void AddCommit(int index, string committer)
+        public void AddCommit(int index, string author)
         {
             Total++;
             Samples[index].Count++;
 
-            if (_mapByCommitter.TryGetValue(committer, out var value))
+            if (_mapUsers.TryGetValue(author, out var value))
             {
                 value.Count++;
             }
             else
             {
-                var sample = new StatisticsSample(committer);
+                var sample = new StatisticsSample(author);
                 sample.Count++;
 
-                _mapByCommitter.Add(committer, sample);
-                ByCommitter.Add(sample);
+                _mapUsers.Add(author, sample);
+                ByAuthor.Add(sample);
             }
         }
 
         public void Complete()
         {
-            ByCommitter.Sort((l, r) => r.Count - l.Count);
-            _mapByCommitter.Clear();
+            ByAuthor.Sort((l, r) => r.Count - l.Count);
+            _mapUsers.Clear();
         }
 
-        private readonly Dictionary<string, StatisticsSample> _mapByCommitter = new Dictionary<string, StatisticsSample>();
+        private readonly Dictionary<string, StatisticsSample> _mapUsers = new Dictionary<string, StatisticsSample>();
     }
 
     public class Statistics
@@ -72,16 +72,16 @@ namespace SourceGit.Models
             return _today.AddMonths(-11).ToString("yyyy-MM-01 00:00:00");
         }
 
-        public void AddCommit(string committer, double timestamp)
+        public void AddCommit(string author, double timestamp)
         {
             var time = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
             if (time.CompareTo(_thisWeekStart) >= 0 && time.CompareTo(_thisWeekEnd) < 0)
-                Week.AddCommit((int)time.DayOfWeek, committer);
+                Week.AddCommit((int)time.DayOfWeek, author);
 
             if (time.Month == _today.Month)
-                Month.AddCommit(time.Day - 1, committer);
+                Month.AddCommit(time.Day - 1, author);
 
-            Year.AddCommit(time.Month - 1, committer);
+            Year.AddCommit(time.Month - 1, author);
         }
 
         public void Complete()

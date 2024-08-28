@@ -110,7 +110,7 @@
 
       <ListBoxItem>
         <Border Classes="switcher_bg">
-          <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.ThisYear}"/>
+          <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.MostRecentYear}"/>
         </Border>
       </ListBoxItem>
 
@@ -135,7 +135,7 @@
             <Grid Grid.Column="0" RowDefinitions="*,16">
               <!-- Table By Committer -->
               <ListBox Grid.Column="0"
-                       ItemsSource="{Binding ByCommitter}"
+                       ItemsSource="{Binding ByAuthor}"
                        SelectionMode="Single"
                        BorderThickness="1"
                        BorderBrush="{DynamicResource Brush.Border2}"
@@ -176,8 +176,8 @@
               <Grid Grid.Row="1" ColumnDefinitions="*,*">
                 <!-- Total Committers -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Statistics.TotalCommitters}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Classes="primary" Text="{Binding ByCommitter.Count}" FontSize="11" Margin="4,0,0,0"/>
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Classes="primary" Text="{Binding ByAuthor.Count}" FontSize="11" Margin="4,0,0,0"/>
                 </StackPanel>
 
                 <!-- Total Commits -->
