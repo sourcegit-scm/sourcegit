@@ -139,7 +139,7 @@ namespace SourceGit.ViewModels
                 else if (latest.IsBinary)
                 {
                     var oldPath = string.IsNullOrEmpty(_option.OrgPath) ? _option.Path : _option.OrgPath;
-                    var ext = Path.GetExtension(oldPath);
+                    var ext = Path.GetExtension(_option.Path);
 
                     if (IMG_EXTS.Contains(ext))
                     {
@@ -147,13 +147,14 @@ namespace SourceGit.ViewModels
                         if (_option.Revisions.Count == 2)
                         {
                             (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
-                            (imgDiff.New, imgDiff.NewFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[1], oldPath);
+                            (imgDiff.New, imgDiff.NewFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[1], _option.Path);
                         }
                         else
                         {
-                            var fullPath = Path.Combine(_repo, _option.Path);
-                            (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
+                            if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
+                                (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
 
+                            var fullPath = Path.Combine(_repo, _option.Path);
                             if (File.Exists(fullPath))
                             {
                                 imgDiff.New = new Bitmap(fullPath);
@@ -226,7 +227,7 @@ namespace SourceGit.ViewModels
 
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
         {
-            ".ico", ".bmp", ".jpg", ".png", ".jpeg"
+            ".ico", ".bmp", ".jpg", ".png", ".jpeg", ".webp"
         };
 
         private readonly string _repo;

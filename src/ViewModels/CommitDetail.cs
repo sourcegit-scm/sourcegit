@@ -536,7 +536,7 @@ namespace SourceGit.ViewModels
 
         private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
         {
-            ".ico", ".bmp", ".jpg", ".png", ".jpeg"
+            ".ico", ".bmp", ".jpg", ".png", ".jpeg", ".webp"
         };
 
         private Repository _repo = null;
