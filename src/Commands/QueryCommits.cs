@@ -14,17 +14,22 @@ namespace SourceGit.Commands
             _findFirstMerged = needFindHead;
         }
 
-        public QueryCommits(string repo, int maxCount, string messageFilter, bool isFile)
+        public QueryCommits(string repo, string filter, Models.CommitSearchMethod method)
         {
             string search;
-            if (isFile)
+
+            if (method == Models.CommitSearchMethod.ByUser)
             {
-                search = $"-- \"{messageFilter}\"";
+                search = $"-i --author=\"{filter}\" --committer=\"{filter}\"";
+            }
+            else if (method == Models.CommitSearchMethod.ByFile)
+            {
+                search = $"-- \"{filter}\"";
             }
             else
             {
                 var argsBuilder = new StringBuilder();
-                var words = messageFilter.Split(new[] { ' ', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                var words = filter.Split(new[] { ' ', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var word in words)
                 {
                     var escaped = word.Trim().Replace("\"", "\\\"", StringComparison.Ordinal);
@@ -36,7 +41,7 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log -{maxCount} --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s --branches --remotes " + search;
+            Args = $"log -1000 --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s --branches --remotes " + search;
             _findFirstMerged = false;
         }
 

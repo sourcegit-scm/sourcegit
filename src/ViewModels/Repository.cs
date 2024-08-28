@@ -548,6 +548,7 @@ namespace SourceGit.ViewModels
                 return;
 
             IsSearchLoadingVisible = true;
+            SearchResultSelectedCommit = null;
             IsSearchCommitSuggestionOpen = false;
             SearchCommitFilterSuggestion.Clear();
 
@@ -558,29 +559,18 @@ namespace SourceGit.ViewModels
                 switch (_searchCommitFilterType)
                 {
                     case 0:
-                        foreach (var c in _histories.Commits)
-                        {
-                            if (c.SHA.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
-                                visible.Add(c);
-                        }
-
+                        var commit = new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).Result();
+                        if (commit != null)
+                            visible.Add(commit);
                         break;
                     case 1:
-                        foreach (var c in _histories.Commits)
-                        {
-                            if (c.Author.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                                || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                                || c.Author.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                                || c.Committer.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
-                                visible.Add(c);
-                        }
-
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByUser).Result();
                         break;
                     case 2:
-                        visible = new Commands.QueryCommits(_fullpath, 1000, _searchCommitFilter, false).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage).Result();
                         break;
                     case 3:
-                        visible = new Commands.QueryCommits(_fullpath, 1000, _searchCommitFilter, true).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByFile).Result();
                         break;
                 }
 
