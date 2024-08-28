@@ -180,16 +180,16 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public ContextMenu MakeContextMenu(DataGrid datagrid)
+        public ContextMenu MakeContextMenu(ListBox list)
         {
-            if (datagrid.SelectedItems.Count != 1)
+            if (list.SelectedItems.Count != 1)
                 return null;
 
             var current = _repo.CurrentBranch;
             if (current == null)
                 return null;
 
-            var commit = (datagrid.SelectedItem as Models.Commit)!;
+            var commit = (list.SelectedItem as Models.Commit)!;
             var menu = new ContextMenu();
             var tags = new List<Models.Tag>();
 
@@ -354,12 +354,11 @@ namespace SourceGit.ViewModels
                         return;
                     }
 
-                    var toplevel = datagrid.FindAncestorOfType<Views.Launcher>();
-                    if (toplevel == null)
-                        return;
+                    App.OpenDialog(new Views.InteractiveRebase()
+                    {
+                        DataContext = new InteractiveRebase(_repo, current, commit)
+                    });
 
-                    var dialog = new Views.InteractiveRebase() { DataContext = new InteractiveRebase(_repo, current, commit) };
-                    dialog.ShowDialog(toplevel);
                     e.Handled = true;
                 };
                 menu.Items.Add(interactiveRebase);
@@ -398,7 +397,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        datagrid.SelectedItems.Add(head);
+                        list.SelectedItems.Add(head);
                     }
 
                     e.Handled = true;

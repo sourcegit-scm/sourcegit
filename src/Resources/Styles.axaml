@@ -1328,22 +1328,6 @@
     <Setter Property="Opacity" Value="1"/>
   </Style>
 
-  <Style Selector="DataGrid /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
-    <Setter Property="IsVisible" Value="False"/>
-  </Style>
-  <Style Selector="DataGridCell">
-    <Setter Property="MinHeight" Value="24"/>
-  </Style>
-  <Style Selector="DataGridCell:focus /template/ Grid#FocusVisual">
-    <Setter Property="IsVisible" Value="False"/>
-  </Style>
-  <Style Selector="DataGridRow /template/ Rectangle#PART_BottomGridLine">
-    <Setter Property="IsVisible" Value="False"/>
-  </Style>
-  <Style Selector="DataGridRow /template/ DataGridDetailsPresenter#PART_DetailsPresenter">
-    <Setter Property="IsVisible" Value="False"/>
-  </Style>
-
   <Style Selector="NumericUpDown">
     <Style Selector="^ /template/ ButtonSpinner#PART_Spinner">
       <Setter Property="MinHeight" Value="0"/>

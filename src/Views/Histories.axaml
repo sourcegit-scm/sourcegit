@@ -8,162 +8,158 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Histories"
-             x:DataType="vm:Histories">
+             x:DataType="vm:Histories"
+             x:Name="ThisControl">
   <v:LayoutableGrid RowDefinitions="*,3,*" ColumnDefinitions="*,3,*"
                     UseHorizontal="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories}">
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-      <DataGrid x:Name="CommitDataGrid"
-                Background="{DynamicResource Brush.Contents}"
-                ItemsSource="{Binding Commits}"
-                SelectionMode="Extended"
-                SelectedItem="{Binding AutoSelectedCommit, Mode=OneWay}"
-                CanUserReorderColumns="False"
-                CanUserResizeColumns="True"
-                CanUserSortColumns="False"
-                IsReadOnly="True"
-                HeadersVisibility="Column"
-                Focusable="False"
-                RowHeight="28"
-                ColumnHeaderHeight="24"
-                HorizontalScrollBarVisibility="Disabled"
-                VerticalScrollBarVisibility="Auto"
-                ClipboardCopyMode="None"
-                LayoutUpdated="OnCommitDataGridLayoutUpdated"
-                SelectionChanged="OnCommitDataGridSelectionChanged"
-                ContextRequested="OnCommitDataGridContextRequested"
-                DoubleTapped="OnCommitDataGridDoubleTapped"
-                KeyDown="OnCommitDataGridKeyDown">
-        <DataGrid.Styles>
-          <Style Selector="DataGridColumnHeader">
-            <Setter Property="MinHeight" Value="24"/>
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Template">
-              <ControlTemplate>
-                <Border Background="{DynamicResource Brush.Window}"
-                        BorderBrush="{DynamicResource Brush.Border0}"
-                        BorderThickness="0,0,1,1">
-                  <ContentPresenter x:Name="PART_ContentPresenter"
-                                    Content="{TemplateBinding Content}"
-                                    HorizontalAlignment="Center"/>
-                </Border>        
-              </ControlTemplate>
-            </Setter>
-          </Style>
-        </DataGrid.Styles>
-        
-        <DataGrid.Columns>
-          <DataGridTemplateColumn Width="*" CanUserResize="True">
-            <DataGridTemplateColumn.Header>
-              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}"/>
-            </DataGridTemplateColumn.Header>
-            
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate x:DataType="{x:Type m:Commit}">
-                <Border Margin="{Binding Margin}">
-                  <StackPanel Orientation="Horizontal" Margin="2,0,0,0">
-                    <v:CommitStatusIndicator CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
-                                             AheadBrush="{DynamicResource Brush.Accent}"
-                                             BehindBrush="{DynamicResource Brush.FG1}"
-                                             VerticalAlignment="Center"/>
+      <Grid RowDefinitions="24,*">
+        <!-- Headers -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource Brush.Window}"
+                BorderThickness="0,0,0,1"
+                BorderBrush="{DynamicResource Brush.Border0}">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" MinWidth="100"/>
+              <ColumnDefinition Width="1"/>
+              <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=TwoWay}" MinWidth="80"/>
+              <ColumnDefinition Width="96" MaxWidth="96" MinWidth="96"/>
+              <ColumnDefinition Width="156" MaxWidth="156" MinWidth="156"/>
+            </Grid.ColumnDefinitions>
 
-                    <v:CommitRefsPresenter IconBackground="{DynamicResource Brush.DecoratorIconBG}"
-                                           IconForeground="{DynamicResource Brush.DecoratorIcon}"
-                                           BranchNameBackground="{DynamicResource Brush.DecoratorBranch}"
-                                           HeadBranchNameBackground="{DynamicResource Brush.DecoratorHead}"
-                                           TagNameBackground="{DynamicResource Brush.DecoratorTag}"
-                                           LabelForeground="{DynamicResource Brush.DecoratorFG}"
-                                           FontFamily="{DynamicResource Fonts.Primary}"
-                                           FontSize="11"
-                                           VerticalAlignment="Center"
-                                           Refs="{Binding Decorators}"/>
+            <TextBlock Grid.Column="0" Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
+            <GridSplitter Grid.Column="1" Width="1" MinWidth="0.5" Background="{DynamicResource Brush.Border0}" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+            <TextBlock Grid.Column="2" Classes="table_header" Text="{DynamicResource Text.Histories.Header.Author}" HorizontalAlignment="Center"/>
+            <Border Grid.Column="3" BorderThickness="1,0" BorderBrush="{DynamicResource Brush.Border0}" ClipToBounds="True">
+              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.SHA}" HorizontalAlignment="Center"/>
+            </Border>
+            <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Center">
+              <ToggleButton Classes="time_display_mode"
+                            Width="10" Height="10"
+                            IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"/>
+              <TextBlock Classes="table_header" Margin="6,0,0,0" Text="{DynamicResource Text.Histories.Header.Time}"/>
+            </StackPanel>
+          </Grid>
+        </Border>
 
-                    <v:CommitSubjectPresenter Classes="primary"
-                                              Subject="{Binding Subject}"
-                                              IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
-                                              Opacity="{Binding Opacity}"
-                                              FontWeight="{Binding FontWeight}"/>
-                  </StackPanel>
-                </Border>
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
+        <!-- Commit Lists & Graph -->
+        <Grid Grid.Row="1">
+          <ListBox x:Name="CommitListContainer"
+                   Background="{DynamicResource Brush.Contents}"
+                   ItemsSource="{Binding Commits}"
+                   SelectionMode="Multiple"
+                   SelectedItem="{Binding AutoSelectedCommit, Mode=OneWay}"
+                   LayoutUpdated="OnCommitListLayoutUpdated"
+                   SelectionChanged="OnCommitListSelectionChanged"
+                   ContextRequested="OnCommitListContextRequested"
+                   DoubleTapped="OnCommitListDoubleTapped"
+                   KeyDown="OnCommitListKeyDown">
+            <ListBox.Styles>
+              <Style Selector="ListBoxItem">
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Height" Value="28"/>
+              </Style>
+            </ListBox.Styles>
 
-          <DataGridTemplateColumn CanUserResize="True" Width="120">
-            <DataGridTemplateColumn.Header>
-              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Author}"/>
-            </DataGridTemplateColumn.Header>
-            
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate x:DataType="{x:Type m:Commit}">
-                <Grid ColumnDefinitions="Auto,*" Margin="8,0">
-                  <v:Avatar Grid.Column="0"
-                            Width="16" Height="16"
-                            VerticalAlignment="Center"
-                            IsHitTestVisible="False"
-                            User="{Binding Author}"
-                            Opacity="{Binding Opacity}"/>
-                  <TextBlock Grid.Column="1" 
-                             Classes="primary"
-                             Text="{Binding Author.Name}"
-                             Margin="8,0,0,0"
-                             Opacity="{Binding Opacity}"
-                             FontWeight="{Binding FontWeight}"/>
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel Orientation="Vertical"/>
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="m:Commit">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=OneWay}"/>
+                    <ColumnDefinition Width="96" MaxWidth="96" MinWidth="96"/>
+                    <ColumnDefinition Width="156" MaxWidth="156" MinWidth="156"/>
+                  </Grid.ColumnDefinitions>
+
+                  <!-- Subject & REFS -->
+                  <Border Grid.Column="0" Padding="{Binding Margin}" ClipToBounds="True">
+                    <Grid ColumnDefinitions="Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
+                      <v:CommitStatusIndicator Grid.Column="0" 
+                                               CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
+                                               AheadBrush="{DynamicResource Brush.Accent}"
+                                               BehindBrush="{DynamicResource Brush.FG1}"
+                                               VerticalAlignment="Center"/>
+
+                      <v:CommitRefsPresenter Grid.Column="1"
+                                             IconBackground="{DynamicResource Brush.DecoratorIconBG}"
+                                             IconForeground="{DynamicResource Brush.DecoratorIcon}"
+                                             BranchNameBackground="{DynamicResource Brush.DecoratorBranch}"
+                                             HeadBranchNameBackground="{DynamicResource Brush.DecoratorHead}"
+                                             TagNameBackground="{DynamicResource Brush.DecoratorTag}"
+                                             LabelForeground="{DynamicResource Brush.DecoratorFG}"
+                                             FontFamily="{DynamicResource Fonts.Primary}"
+                                             FontSize="11"
+                                             VerticalAlignment="Center"
+                                             Refs="{Binding Decorators}"/>
+
+                      <v:CommitSubjectPresenter Grid.Column="2"
+                                                Classes="primary"
+                                                Subject="{Binding Subject}"
+                                                IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
+                                                FontWeight="{Binding FontWeight}"
+                                                Opacity="{Binding Opacity}"/>
+                    </Grid>
+                  </Border>
+
+                  <!-- Author -->
+                  <Grid Grid.Column="1" ColumnDefinitions="16,*" Margin="8,0">
+                    <v:Avatar Grid.Column="0"
+                              Width="16" Height="16"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              IsHitTestVisible="False"
+                              User="{Binding Author}"
+                              Opacity="{Binding Opacity}"/>
+
+                    <Border Grid.Column="1" Padding="8,0,0,0" ClipToBounds="True">
+                      <TextBlock Classes="primary" 
+                                 Text="{Binding Author.Name}"
+                                 FontWeight="{Binding FontWeight}"
+                                 HorizontalAlignment="Left"
+                                 Opacity="{Binding Opacity}"/>
+                    </Border>
+                  </Grid>
+
+                  <!-- SHA -->
+                  <Border Grid.Column="2" Padding="8,0" ClipToBounds="True">
+                    <TextBlock Classes="primary"
+                               Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                               HorizontalAlignment="Center"
+                               FontWeight="{Binding FontWeight}"
+                               Opacity="{Binding Opacity}"/>
+                  </Border>
+
+                  <!-- COMMIT TIME -->
+                  <Border Grid.Column="3" Padding="8,0" ClipToBounds="True">
+                    <v:CommitTimeTextBlock Classes="primary"
+                                           HorizontalAlignment="Center"
+                                           FontWeight="{Binding FontWeight}"
+                                           Opacity="{Binding Opacity}"
+                                           Timestamp="{Binding CommitterTime}"
+                                           ShowAsDateTime="{Binding Source={x:Static vm:Preference.Instance}, Path=!DisplayTimeAsPeriodInHistories}"/>
+                  </Border>
                 </Grid>
               </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
+            </ListBox.ItemTemplate>
+          </ListBox>
 
-          <DataGridTemplateColumn CanUserResize="False" MinWidth="96">
-            <DataGridTemplateColumn.Header>
-              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.SHA}"/>
-            </DataGridTemplateColumn.Header>
-            
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate x:DataType="{x:Type m:Commit}">
-                <TextBlock Classes="primary" 
-                           Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
-                           Margin="8,0"
-                           HorizontalAlignment="Center"
-                           Opacity="{Binding Opacity}"
-                           FontWeight="{Binding FontWeight}"/>
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
-
-          <DataGridTemplateColumn CanUserResize="False" MinWidth="156">
-            <DataGridTemplateColumn.Header>
-              <StackPanel Orientation="Horizontal">
-                <ToggleButton Classes="time_display_mode" 
-                              Width="10" Height="10"
-                              IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"/>
-                <TextBlock Classes="table_header" Margin="6,0,0,0" Text="{DynamicResource Text.Histories.Header.Time}"/>
-              </StackPanel>
-
-            </DataGridTemplateColumn.Header>
-            
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate x:DataType="{x:Type m:Commit}">
-                <v:CommitTimeTextBlock Classes="primary"
-                                       Margin="8,0"
-                                       HorizontalAlignment="Center"
-                                       Opacity="{Binding Opacity}"
-                                       FontWeight="{Binding FontWeight}"
-                                       Timestamp="{Binding CommitterTime}"
-                                       ShowAsDateTime="{Binding Source={x:Static vm:Preference.Instance}, Path=!DisplayTimeAsPeriodInHistories}"/>
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
-        </DataGrid.Columns>
-      </DataGrid>
-
-      <v:CommitGraph x:Name="CommitGraph"
-                     Graph="{Binding Graph}"
-                     DotBrush="{DynamicResource Brush.Contents}"
-                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                     IsHitTestVisible="False"
-                     ClipToBounds="True"/>
-
+          <v:CommitGraph x:Name="CommitGraph"
+                         Graph="{Binding Graph}"
+                         DotBrush="{DynamicResource Brush.Contents}"
+                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                         IsHitTestVisible="False"
+                         ClipToBounds="True"/>
+        </Grid>
+      </Grid>
+      
       <!-- Fix memory leak -->
       <v:LoadingIcon Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
     </Grid>
