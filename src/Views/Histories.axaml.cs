@@ -637,6 +637,11 @@ namespace SourceGit.Views
                 if (list != null && list.SelectedItems.Count == 1)
                     list.ScrollIntoView(list.SelectedIndex);
             });
+
+            AuthorNameColumnWidthProperty.Changed.AddClassHandler<Histories>((h, _) =>
+            {
+                h.CommitGraph.InvalidateVisual();
+            });
         }
 
         public Histories()
