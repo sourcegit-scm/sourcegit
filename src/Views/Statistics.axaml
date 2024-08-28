@@ -10,7 +10,7 @@
                     x:DataType="vm:Statistics"
                     x:Name="ThisControl"
                     Title="{DynamicResource Text.Statistics}"
-                    Width="800" Height="450"
+                    Width="860" Height="500"
                     WindowStartupLocation="CenterOwner"
                     CanResize="False">
   <Grid RowDefinitions="Auto,Auto,*">
@@ -159,7 +159,7 @@
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="m:StatisticsSample">
                     <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
-                      <Grid ColumnDefinitions="*,150">
+                      <Grid ColumnDefinitions="*,100">
                         <Border Grid.Column="0" Padding="8,0" ClipToBounds="True">
                           <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
                         </Border>
@@ -190,7 +190,7 @@
 
             <!-- Graph -->
             <v:Chart Grid.Column="1"
-                     Margin="16,0,0,0"
+                     Margin="16"
                      LabelBrush="{DynamicResource Brush.FG1}"
                      LineBrush="{DynamicResource Brush.Border2}"
                      ShapeBrush="{DynamicResource Brush.Accent}"

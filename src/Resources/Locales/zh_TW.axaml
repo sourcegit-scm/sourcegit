@@ -558,7 +558,7 @@
   <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">本月</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">本週</x:String>
-  <x:String x:Key="Text.Statistics.ThisYear" xml:space="preserve">本年</x:String>
+  <x:String x:Key="Text.Statistics.ThisYear" xml:space="preserve">最近一年</x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">提交次數:</x:String>
   <x:String x:Key="Text.Statistics.TotalCommitters" xml:space="preserve">提交者:</x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模組</x:String>

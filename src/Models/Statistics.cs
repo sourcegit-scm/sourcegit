@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace SourceGit.Models
 {
-    public class StatisticsSample
+    public class StatisticsSample(string name)
     {
-        public string Name { get; set; }
-        public int Count { get; set; }
+        public string Name { get; set; } = name;
+        public int Count { get; set; } = 0;
     }
 
     public class StatisticsReport
@@ -26,7 +26,9 @@ namespace SourceGit.Models
             }
             else
             {
-                var sample = new StatisticsSample() { Name = committer, Count = 1 };
+                var sample = new StatisticsSample(committer);
+                sample.Count++;
+
                 _mapByCommitter.Add(committer, sample);
                 ByCommitter.Add(sample);
             }
@@ -53,77 +55,31 @@ namespace SourceGit.Models
             _thisWeekStart = _today.AddSeconds(-(int)_today.DayOfWeek * 3600 * 24 - _today.Hour * 3600 - _today.Minute * 60 - _today.Second);
             _thisWeekEnd = _thisWeekStart.AddDays(7);
 
-            string[] monthNames = [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec",
-            ];
-
-            for (int i = 0; i < monthNames.Length; i++)
-            {
-                Year.Samples.Add(new StatisticsSample
-                {
-                    Name = monthNames[i],
-                    Count = 0,
-                });
-            }
+            for (int i = 0; i < 12; i++)
+                Year.Samples.Add(new StatisticsSample(""));
 
             var monthDays = DateTime.DaysInMonth(_today.Year, _today.Month);
             for (int i = 0; i < monthDays; i++)
-            {
-                Month.Samples.Add(new StatisticsSample
-                {
-                    Name = $"{i + 1}",
-                    Count = 0,
-                });
-            }
+                Month.Samples.Add(new StatisticsSample($"{i + 1}"));
 
-            string[] weekDayNames = [
-                "SUN",
-                "MON",
-                "TUE",
-                "WED",
-                "THU",
-                "FRI",
-                "SAT",
-            ];
-
+            string[] weekDayNames = [ "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" ];
             for (int i = 0; i < weekDayNames.Length; i++)
-            {
-                Week.Samples.Add(new StatisticsSample
-                {
-                    Name = weekDayNames[i],
-                    Count = 0,
-                });
-            }
+                Week.Samples.Add(new StatisticsSample(weekDayNames[i]));
         }
 
         public string Since()
         {
-            return _today.ToString("yyyy-01-01 00:00:00");
+            return _today.AddMonths(-11).ToString("yyyy-MM-01 00:00:00");
         }
 
         public void AddCommit(string committer, double timestamp)
         {
             var time = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
             if (time.CompareTo(_thisWeekStart) >= 0 && time.CompareTo(_thisWeekEnd) < 0)
-            {
                 Week.AddCommit((int)time.DayOfWeek, committer);
-            }
 
             if (time.Month == _today.Month)
-            {
                 Month.AddCommit(time.Day - 1, committer);
-            }
 
             Year.AddCommit(time.Month - 1, committer);
         }
@@ -133,6 +89,30 @@ namespace SourceGit.Models
             Year.Complete();
             Month.Complete();
             Week.Complete();
+
+            // Year is start from 11 months ago from now.
+            var thisYear = _today.Year;
+            var start = _today.AddMonths(-11);
+            if (start.Month == 1)
+            {
+                for (int i = 0; i < 12; i++)
+                    Year.Samples[i].Name = $"{thisYear}/{i + 1:00}";
+            }
+            else
+            {
+                var lastYearIdx = start.Month - 1;
+                var lastYearMonths = Year.Samples.GetRange(lastYearIdx, 12 - lastYearIdx);
+                for (int i = 0; i < lastYearMonths.Count; i++)
+                    lastYearMonths[i].Name = $"{thisYear - 1}/{lastYearIdx + i + 1:00}";
+
+                var thisYearMonths = Year.Samples.GetRange(0, lastYearIdx);
+                for (int i = 0; i < thisYearMonths.Count; i++)
+                    thisYearMonths[i].Name = $"{thisYear}/{i + 1:00}";
+
+                Year.Samples.Clear();
+                Year.Samples.AddRange(lastYearMonths);
+                Year.Samples.AddRange(thisYearMonths);
+            }
         }
 
         private readonly DateTime _today;

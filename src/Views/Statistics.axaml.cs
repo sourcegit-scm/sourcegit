@@ -86,21 +86,18 @@ namespace SourceGit.Views
             else
                 maxV = (int)Math.Ceiling(maxV / 500.0) * 500;
 
-            var fontFamily = this.FindResource("Fonts.Monospace") as FontFamily;
-            var typeface = new Typeface(fontFamily);
+            var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
             var pen = new Pen(LineBrush);
             var width = Bounds.Width;
             var height = Bounds.Height;
-
-            // Transparent background to block mouse move events.
-            context.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, width, height));
 
             // Draw coordinate
             var maxLabel = new FormattedText($"{maxV}", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 12.0, LabelBrush);
             var horizonStart = maxLabel.Width + 8;
             var labelHeight = maxLabel.Height;
+            var bg = this.FindResource("Brush.Contents") as IBrush;
             context.DrawText(maxLabel, new Point(0, -maxLabel.Height * 0.5));
-            context.DrawRectangle(pen, new Rect(horizonStart, 0, width - horizonStart, height - labelHeight));
+            context.DrawRectangle(bg, pen, new Rect(horizonStart, 0, width - horizonStart, height - labelHeight));
 
             if (samples.Count == 0)
                 return;
@@ -158,15 +155,12 @@ namespace SourceGit.Views
 
                 context.DrawRectangle(ShapeBrush, null, rect);
 
-                if (stepX < 32)
+                var test = (stepX - 4) / hLabel.Width;
+                if (test < 1.0)
                 {
-                    var matrix = Matrix.CreateTranslation(hLabel.Width * 0.5, -hLabel.Height * 0.5) // Center of label
-                        * Matrix.CreateRotation(Math.PI * 0.25) // Rotate
-                        * Matrix.CreateTranslation(xLabel, yLabel); // Move
+                    var matrix = Matrix.CreateRotation(Math.Acos(test)) * Matrix.CreateTranslation(xLabel + hLabel.Width * 0.5, yLabel);
                     using (context.PushTransform(matrix))
-                    {
                         context.DrawText(hLabel, new Point(0, 0));
-                    }
                 }
                 else
                 {
