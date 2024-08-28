@@ -647,7 +647,12 @@ namespace SourceGit.Views
 
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
         {
-            CommitGraph.InvalidateVisual();
+            var y = CommitListContainer.Scroll?.Offset.Y ?? 0;
+            if (y != _lastScrollY)
+            {
+                _lastScrollY = y;
+                CommitGraph.InvalidateVisual();
+            }
         }
 
         private void OnCommitListSelectionChanged(object _, SelectionChangedEventArgs e)
@@ -695,5 +700,7 @@ namespace SourceGit.Views
                 e.Handled = true;
             }
         }
+
+        private double _lastScrollY = 0;
     }
 }
