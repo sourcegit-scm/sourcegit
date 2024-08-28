@@ -60,6 +60,35 @@
                 <Setter Property="Margin" Value="0"/>
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="Height" Value="28"/>
+                <Setter Property="Template">
+                  <ControlTemplate>
+                    <Grid>
+                      <Border Name="PART_Background"
+                              Background="Transparent"
+                              CornerRadius="{TemplateBinding CornerRadius}"
+                              Opacity="0"/>
+
+                      <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        Content="{TemplateBinding Content}"
+                                        Padding="{TemplateBinding Padding}"
+                                        VerticalContentAlignment="Center"
+                                        HorizontalContentAlignment="Stretch" />
+                    </Grid>
+                  </ControlTemplate>
+                </Setter>
+
+                <Style Selector="^:pointerover /template/ Border#PART_Background">
+                  <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+                  <Setter Property="Opacity" Value=".5"/>
+                </Style>
+                <Style Selector="^:selected /template/ Border#PART_Background">
+                  <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                  <Setter Property="Opacity" Value=".65"/>
+                </Style>
+                <Style Selector="^:selected:pointerover /template/ Border#PART_Background">
+                  <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+                  <Setter Property="Opacity" Value=".8"/>
+                </Style>
               </Style>
             </ListBox.Styles>
 
@@ -71,7 +100,7 @@
 
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Commit">
-                <Grid>
+                <Grid Height="26">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=OneWay}"/>
@@ -110,7 +139,7 @@
                   </Border>
 
                   <!-- Author -->
-                  <Grid Grid.Column="1" ColumnDefinitions="16,*" Margin="8,0">
+                  <Grid Grid.Column="1" ColumnDefinitions="16,*" Margin="8,0" IsHitTestVisible="False">
                     <v:Avatar Grid.Column="0"
                               Width="16" Height="16"
                               HorizontalAlignment="Center"
@@ -129,7 +158,7 @@
                   </Grid>
 
                   <!-- SHA -->
-                  <Border Grid.Column="2" Padding="8,0" ClipToBounds="True">
+                  <Border Grid.Column="2" Padding="8,0" IsHitTestVisible="False" ClipToBounds="True">
                     <TextBlock Classes="primary"
                                Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                                HorizontalAlignment="Center"
@@ -138,7 +167,7 @@
                   </Border>
 
                   <!-- COMMIT TIME -->
-                  <Border Grid.Column="3" Padding="8,0" ClipToBounds="True">
+                  <Border Grid.Column="3" Padding="8,0" ClipToBounds="True" IsHitTestVisible="False">
                     <v:CommitTimeTextBlock Classes="primary"
                                            HorizontalAlignment="Center"
                                            FontWeight="{Binding FontWeight}"
