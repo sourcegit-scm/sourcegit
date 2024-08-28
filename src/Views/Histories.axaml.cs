@@ -680,7 +680,7 @@ namespace SourceGit.Views
 
         private void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
-            if (sender is ListBox { SelectedItems: { Count : 1 } selected } &&
+            if (sender is ListBox { SelectedItems: { Count : > 0 } selected } &&
                 e.Key == Key.C &&
                 e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
