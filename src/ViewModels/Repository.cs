@@ -614,7 +614,7 @@ namespace SourceGit.ViewModels
 
                 Task.Run(RefreshWorkingCopyChanges);
                 Task.Run(RefreshWorktrees);
-            }                
+            }
             else
             {
                 _watcher.MarkBranchDirtyManually();

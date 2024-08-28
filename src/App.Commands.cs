@@ -43,7 +43,7 @@ namespace SourceGit
 
             private Action<object> _action = null;
         }
-        
+
         public static readonly SimpleCommand OpenPreferenceCommand = new SimpleCommand(() => OpenDialog(new Views.Preference()));
         public static readonly SimpleCommand OpenHotkeysCommand = new SimpleCommand(() => OpenDialog(new Views.Hotkeys()));
         public static readonly SimpleCommand OpenAppDataDirCommand = new SimpleCommand(() => Native.OS.OpenInFileManager(Native.OS.DataDir));

@@ -28,7 +28,7 @@ namespace SourceGit.ViewModels
         {
             _node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
             _data = Welcome.Instance;
-            
+
             // New welcome page will clear the search filter before.
             Welcome.Instance.ClearSearchFilter();
         }

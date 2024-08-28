@@ -302,7 +302,7 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(reset);
-                
+
                 var squash = new MenuItem();
                 squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
                 squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
@@ -314,7 +314,7 @@ namespace SourceGit.ViewModels
                         App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
                         return;
                     }
-                    
+
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Squash(_repo, commit, commit.SHA));
 

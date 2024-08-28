@@ -213,7 +213,7 @@ namespace SourceGit.Models
                         unsolved.Add(major);
                         temp.Paths.Add(major.Path);
                     }
-                    
+
                     colorIdx = (colorIdx + 1) % _penCount;
                 }
 

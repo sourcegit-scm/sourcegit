@@ -6,7 +6,6 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -689,7 +688,7 @@ namespace SourceGit.Views
 
         private void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
-            if (sender is ListBox { SelectedItems: { Count : > 0 } selected } &&
+            if (sender is ListBox { SelectedItems: { Count: > 0 } selected } &&
                 e.Key == Key.C &&
                 e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {

@@ -27,7 +27,7 @@ namespace SourceGit.Views
             }
             catch (Exception exception)
             {
-               App.RaiseException(string.Empty, $"Failed to select location: {exception.Message}");
+                App.RaiseException(string.Empty, $"Failed to select location: {exception.Message}");
             }
 
             e.Handled = true;
