@@ -46,7 +46,7 @@
             <ToolTip.Tip>
               <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="{DynamicResource Text.WorkingCopy.Unstaged.Stage}" VerticalAlignment="Center"/>
-                <TextBlock Margin="16,0,0,0" Text="{OnPlatform Space, macOS=␣}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Margin="16,0,0,0" Text="{OnPlatform 'Space\/Enter', macOS='␣\/Enter'}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
               </StackPanel>
             </ToolTip.Tip>
             <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
@@ -85,7 +85,7 @@
             <ToolTip.Tip>
               <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="{DynamicResource Text.WorkingCopy.Staged.Unstage}" VerticalAlignment="Center"/>
-                <TextBlock Margin="16,0,0,0" Text="{OnPlatform Space, macOS=␣}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Margin="16,0,0,0" Text="{OnPlatform 'Space\/Enter', macOS='␣\/Enter'}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
               </StackPanel>
             </ToolTip.Tip>
             <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>

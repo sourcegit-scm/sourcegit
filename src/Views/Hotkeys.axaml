@@ -101,7 +101,7 @@
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+3, macOS=⌘+3}"/>
           <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewStashes}" />
 
-          <TextBlock Grid.Row="5" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Space, macOS=␣}"/>
+          <TextBlock Grid.Row="5" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Space/Enter, macOS=␣/Enter}"/>
           <TextBlock Grid.Row="5" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
 
           <TextBlock Grid.Row="6" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
