@@ -139,10 +139,11 @@
                   </Border>
 
                   <!-- Author -->
-                  <Grid Grid.Column="1" ColumnDefinitions="16,*" Margin="8,0" IsHitTestVisible="False">
+                  <Grid Grid.Column="1" ColumnDefinitions="20,*" IsHitTestVisible="False">
                     <v:Avatar Grid.Column="0"
                               Width="16" Height="16"
-                              HorizontalAlignment="Center"
+                              Margin="4,0,0,0"
+                              HorizontalAlignment="Left"
                               VerticalAlignment="Center"
                               IsHitTestVisible="False"
                               User="{Binding Author}"
