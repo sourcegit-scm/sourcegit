@@ -609,6 +609,7 @@
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Histories">
             <v:Histories CurrentBranch="{Binding Repo.CurrentBranch}"
+                         AuthorNameColumnWidth="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.HistoriesAuthorColumnWidth, Mode=TwoWay}"
                          IssueTrackerRules="{Binding Repo.Settings.IssueTrackerRules}"
                          NavigationId="{Binding NavigationId}"/>
           </DataTemplate>
