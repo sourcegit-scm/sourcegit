@@ -85,7 +85,7 @@
                    FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"
                    Margin="0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
+        <Grid RowDefinitions="20,20,20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+H, macOS=⌘+⇧+H}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.GoHome}" />
           
@@ -103,15 +103,18 @@
 
           <TextBlock Grid.Row="5" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Space/Enter, macOS=␣/Enter}"/>
           <TextBlock Grid.Row="5" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
+          
+          <TextBlock Grid.Row="6" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Delete/Backspace, macOS=⌫}"/>
+          <TextBlock Grid.Row="6" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.DiscardSelected}" />
 
-          <TextBlock Grid.Row="6" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
-          <TextBlock Grid.Row="6" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Commit}" />
+          <TextBlock Grid.Row="7" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
+          <TextBlock Grid.Row="7" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Commit}" />
 
-          <TextBlock Grid.Row="7" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
-          <TextBlock Grid.Row="7" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.CommitAndPush}" />
+          <TextBlock Grid.Row="8" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
+          <TextBlock Grid.Row="8" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.CommitAndPush}" />
 
-          <TextBlock Grid.Row="8" Grid.Column="0" Classes="primary bold" Text="F5"/>
-          <TextBlock Grid.Row="8" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
+          <TextBlock Grid.Row="9" Grid.Column="0" Classes="primary bold" Text="F5"/>
+          <TextBlock Grid.Row="9" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
         </Grid>
 
         <TextBlock Text="{DynamicResource Text.Hotkeys.TextEditor}"
