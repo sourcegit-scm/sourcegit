@@ -56,11 +56,11 @@
           <TextBlock Grid.Column="1"
                       Text="{Binding Name}"
                       Classes="primary"
-                      FontWeight="{Binding NameFontWeight}"/>
+                      FontWeight="{Binding NameFontWeight}"
+                      TextTrimming="CharacterEllipsis"/>
 
           <!-- Tracking status -->
           <v:BranchTreeNodeTrackStatusPresenter Grid.Column="2"
-                                                Margin="8,0"
                                                 VerticalAlignment="Center"
                                                 FontFamily="{DynamicResource Fonts.Monospace}"
                                                 FontSize="10"
