@@ -58,7 +58,7 @@ namespace SourceGit.Commands
 
         public bool FileWithRevision(string file, string revision)
         {
-            Args = $"checkout {revision} -- \"{file}\"";
+            Args = $"checkout --no-overlay {revision} -- \"{file}\"";
             return Exec();
         }
 
