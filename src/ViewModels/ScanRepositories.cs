@@ -46,7 +46,8 @@ namespace SourceGit.ViewModels
 
                     foreach (var f in founded)
                     {
-                        var relative = Path.GetDirectoryName(f).Substring(prefixLen);
+                        var fullpath = new DirectoryInfo(f);
+                        var relative = fullpath.Parent!.FullName.Replace("\\", "/").Substring(prefixLen);
                         var group = FindOrCreateGroupRecursive(Preference.Instance.RepositoryNodes, relative);
                         Preference.Instance.FindOrAddNodeByRepositoryPath(f, group, false);
                     }
