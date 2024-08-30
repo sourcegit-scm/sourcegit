@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -30,8 +31,9 @@ namespace SourceGit.ViewModels
                 // If it is too fast, the panel will dispear very quickly, the we'll have a bad experience.
                 Task.Delay(500).Wait();
 
+                var rootDir = new DirectoryInfo(RootDir);
                 var founded = new List<string>();
-                GetUnmanagedRepositories(new DirectoryInfo(RootDir), founded, new EnumerationOptions()
+                GetUnmanagedRepositories(rootDir, founded, new EnumerationOptions()
                 {
                     AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
                     IgnoreInaccessible = true,
@@ -39,8 +41,16 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
+                    var normalizedRoot = rootDir.FullName.Replace("\\", "/");
+                    var prefixLen = normalizedRoot.EndsWith('/') ? normalizedRoot.Length : normalizedRoot.Length + 1;
+
                     foreach (var f in founded)
-                        Preference.Instance.FindOrAddNodeByRepositoryPath(f, null, false);
+                    {
+                        var relative = Path.GetDirectoryName(f).Substring(prefixLen);
+                        var group = FindOrCreateGroupRecursive(Preference.Instance.RepositoryNodes, relative);
+                        Preference.Instance.FindOrAddNodeByRepositoryPath(f, group, false);
+                    }
+
                     Welcome.Instance.Refresh();
                 });
 
@@ -87,6 +97,45 @@ namespace SourceGit.ViewModels
                 if (depth < 8)
                     GetUnmanagedRepositories(subdir, outs, opts, depth + 1);
             }
+        }
+
+        private RepositoryNode FindOrCreateGroupRecursive(List<RepositoryNode> collection, string path)
+        {
+            var idx = path.IndexOf('/');
+            if (idx < 0)
+                return FindOrCreateGroup(collection, path);
+
+            var name = path.Substring(0, idx);
+            var tail = path.Substring(idx + 1);
+            var parent = FindOrCreateGroup(collection, name);
+            return FindOrCreateGroupRecursive(parent.SubNodes, tail);
+        }
+
+        private RepositoryNode FindOrCreateGroup(List<RepositoryNode> collection, string name)
+        {
+            foreach (var node in collection)
+            {
+                if (node.Name.Equals(name, StringComparison.Ordinal))
+                    return node;
+            }
+
+            var added = new RepositoryNode()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = name,
+                IsRepository = false,
+                IsExpanded = true,
+            };
+            collection.Add(added);
+            collection.Sort((l, r) =>
+            {
+                if (l.IsRepository != r.IsRepository)
+                    return l.IsRepository ? 1 : -1;
+
+                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
+            });
+
+            return added;
         }
 
         private HashSet<string> _managed = new HashSet<string>();
