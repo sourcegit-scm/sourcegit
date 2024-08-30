@@ -21,9 +21,15 @@
       </Button>      
     </StackPanel>
 
-    <Button Grid.Column="2" Classes="icon_button" Width="32" Command="{Binding AddRootNode}" ToolTip.Tip="{DynamicResource Text.Welcome.AddRootFolder}">
-      <Path Width="14" Height="14" Margin="0,2,0,0" Data="{StaticResource Icons.Folder.Add}"/>
-    </Button>
+    <StackPanel Grid.Column="2" Orientation="Horizontal">
+      <Button Classes="icon_button" Width="32" Command="{Binding AddRootNode}" ToolTip.Tip="{DynamicResource Text.Welcome.AddRootFolder}">
+        <Path Width="14" Height="14" Margin="0,2,0,0" Data="{StaticResource Icons.Folder.Add}"/>
+      </Button>
+      
+      <Button Classes="icon_button" Width="32" Command="{Binding ScanDefaultCloneDir}" ToolTip.Tip="{DynamicResource Text.Welcome.ScanDefaultCloneDir}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Scan}"/>
+      </Button>
+    </StackPanel>
   </Grid>
 </UserControl>
 
