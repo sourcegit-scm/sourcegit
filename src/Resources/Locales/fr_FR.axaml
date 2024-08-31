@@ -209,7 +209,7 @@
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Ouvrir dans l'outil de merge</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Réduit le nombre de ligne visibles</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Augmente le nombre de ligne visibles</x:String>
-  <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SELECTIONNER UN FICHIER POUR VOIR LES CHANGEMENTS</x:String>
+  <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SÉLECTIONNER UN FICHIER POUR VOIR LES CHANGEMENTS</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Afficher les caractères invisibles</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Permuter</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Ouvrir dans l'outil de merge</x:String>
@@ -298,16 +298,16 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Track files named '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">Histories</x:String>
-  <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Switch Horizontal/Vertical Layout</x:String>
-  <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Switch Curve/Polyline Graph Mode</x:String>
-  <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
-  <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPH &amp; SUBJECT</x:String>
+  <x:String x:Key="Text.Histories" xml:space="preserve">Historique</x:String>
+  <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Basculer entre dispositions Horizontal/Vertical</x:String>
+  <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Basculer en un graph courbe ou polyligne</x:String>
+  <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTEUR</x:String>
+  <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPHE &amp; SUJET</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">COMMIT TIME</x:String>
-  <x:String x:Key="Text.Histories.Search" xml:space="preserve">SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT</x:String>
-  <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">CLEAR</x:String>
-  <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
+  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">HEURE DE COMMIT</x:String>
+  <x:String x:Key="Text.Histories.Search" xml:space="preserve">CHERCHER UN SHA/SUJET/AUTEUR. ENTRÉE POUR CHERCHER, ESC POUR QUITTER</x:String>
+  <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">EFFACER</x:String>
+  <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS SÉLECTIONNÉS</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Référence des raccourcis clavier</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Annuler le popup en cours</x:String>
