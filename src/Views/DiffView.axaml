@@ -58,7 +58,7 @@
                           Padding="9,6"
                           IsChecked="{Binding ExpandEntireFile}"
                           IsVisible="{Binding IsTextDiff}"
-                          ToolTip.Tip="{DynamicResource Text.Diff.ExpandEntireFile}">
+                          ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Expand}">
               <Path Width="13" Height="13" Data="{StaticResource Icons.Lines.Expand}" Margin="0,3,0,0"/>
             </ToggleButton>
             
