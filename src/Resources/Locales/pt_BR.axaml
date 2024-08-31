@@ -205,6 +205,7 @@
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Abrir na Ferramenta de Mesclagem</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Diminuir Número de Linhas Visíveis</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Aumentar Número de Linhas Visíveis</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Expand" xml:space="preserve">Visualizar Todo o Arquivo</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SELECIONE O ARQUIVO PARA VISUALIZAR AS MUDANÇAS</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Mostrar símbolos ocultos</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Trocar</x:String>

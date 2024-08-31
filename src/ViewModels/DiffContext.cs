@@ -7,6 +7,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Commands;
 
 namespace SourceGit.ViewModels
 {
@@ -40,6 +41,45 @@ namespace SourceGit.ViewModels
             get => _content;
             private set => SetProperty(ref _content, value);
         }
+        
+        public bool IsIncUnifiedEnabled
+        {
+            get
+            {
+                return _isIncUnifiedEnabled;
+            }
+            private set
+            {
+                SetProperty(ref _isIncUnifiedEnabled, value && !_expandEntireFile);
+            }
+        }
+
+        public bool IsDecUnifiedEnabled
+        {
+            get
+            {
+                return _isDecUnifiedEnabled;
+            }
+            private set
+            {
+                SetProperty(ref _isDecUnifiedEnabled, value && _unifiedLines > 4 && !_expandEntireFile );
+            }
+        }
+
+        public bool ExpandEntireFile
+        {
+            get
+            {
+                return _expandEntireFile;
+            }
+            set
+            {
+                _expandEntireFile = value;
+                IsIncUnifiedEnabled = !_expandEntireFile;
+                IsDecUnifiedEnabled = !_expandEntireFile;
+                LoadDiffContent();
+            }
+        }
 
         public int UnifiedLines
         {
@@ -70,12 +110,14 @@ namespace SourceGit.ViewModels
         public void IncrUnified()
         {
             UnifiedLines = _unifiedLines + 1;
+            IsDecUnifiedEnabled = UnifiedLines >= 4;
             LoadDiffContent();
         }
 
         public void DecrUnified()
         {
             UnifiedLines = Math.Max(4, _unifiedLines - 1);
+            IsDecUnifiedEnabled = UnifiedLines >= 4;
             LoadDiffContent();
         }
 
@@ -96,9 +138,10 @@ namespace SourceGit.ViewModels
                 return;
             }
 
+            var unified = _expandEntireFile ? Diff.MaxDiffUnified : _unifiedLines;
             Task.Run(() =>
             {
-                var latest = new Commands.Diff(_repo, _option, _unifiedLines).Result();
+                var latest = new Commands.Diff(_repo, _option, unified).Result();
                 var rs = null as object;
 
                 if (latest.TextDiff != null)
@@ -230,11 +273,14 @@ namespace SourceGit.ViewModels
             ".ico", ".bmp", ".jpg", ".png", ".jpeg", ".webp"
         };
 
+        private bool _isIncUnifiedEnabled = true;
+        private bool _isDecUnifiedEnabled = false;
         private readonly string _repo;
         private readonly Models.DiffOption _option = null;
         private string _title;
         private string _fileModeChange = string.Empty;
         private int _unifiedLines = 4;
+        private bool _expandEntireFile = false;
         private bool _isLoading = true;
         private bool _isTextDiff = false;
         private object _content = null;

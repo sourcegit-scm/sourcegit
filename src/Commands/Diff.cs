@@ -8,6 +8,9 @@ namespace SourceGit.Commands
     {
         [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
         private static partial Regex REG_INDICATOR();
+        // NOTE: Git documentation doesn't explicitly tell the max value for "unified" property.
+        // We're assuming that a Diff File couldn't be more than 4000 for each change.
+        public  const int MaxDiffUnified = 4000;
         private const string PREFIX_LFS_NEW = "+version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";

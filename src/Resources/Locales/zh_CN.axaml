@@ -211,6 +211,7 @@
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">使用外部合并工具查看</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">减少可见的行数</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可见的行数</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Expand" xml:space="preserve">可视化整个文件</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">请选择需要对比的文件</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">显示隐藏符号</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">交换比对双方</x:String>
