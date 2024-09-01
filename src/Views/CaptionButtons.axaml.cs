@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
@@ -6,6 +7,15 @@ namespace SourceGit.Views
 {
     public partial class CaptionButtons : UserControl
     {
+        public static readonly StyledProperty<bool> IsCloseButtonOnlyProperty =
+            AvaloniaProperty.Register<CaptionButtons, bool>(nameof(IsCloseButtonOnly));
+
+        public bool IsCloseButtonOnly
+        {
+            get => GetValue(IsCloseButtonOnlyProperty);
+            set => SetValue(IsCloseButtonOnlyProperty, value);
+        }
+        
         public CaptionButtons()
         {
             InitializeComponent();

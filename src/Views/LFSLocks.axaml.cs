@@ -16,11 +16,6 @@ namespace SourceGit.Views
             BeginMoveDrag(e);
         }
 
-        private void CloseWindow(object _1, RoutedEventArgs _2)
-        {
-            Close();
-        }
-
         private void OnUnlockButtonClicked(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.LFSLocks vm && sender is Button button)

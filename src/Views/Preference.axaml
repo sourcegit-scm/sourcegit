@@ -29,14 +29,10 @@
             Margin="10,0,0,0"
             IsVisible="{OnPlatform True, macOS=False}"/>
 
-      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
-        <Button Classes="caption_button_macos close" Click="CloseWindow">
-          <Grid>
-            <Ellipse/>
-            <Path/>
-          </Grid>
-        </Button>
-      </Grid>
+      <v:CaptionButtonsMacOS Grid.Column="0"
+                             Margin="0,2,0,0"
+                             IsCloseButtonOnly="True"
+                             IsVisible="{OnPlatform False, macOS=True}"/>
 
       <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
                  Classes="bold"
@@ -44,9 +40,9 @@
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
 
-      <Button Grid.Column="2" Classes="caption_button" Click="CloseWindow" IsVisible="{OnPlatform True, macOS=False}">
-        <Path Data="{StaticResource Icons.Window.Close}"/>
-      </Button>
+      <v:CaptionButtons Grid.Column="2"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
     <!-- Body -->

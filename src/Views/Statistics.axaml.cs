@@ -5,7 +5,6 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Media;
 
 namespace SourceGit.Views
@@ -226,11 +225,6 @@ namespace SourceGit.Views
         private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
-        }
-
-        private void CloseWindow(object _1, RoutedEventArgs _2)
-        {
-            Close();
         }
     }
 }

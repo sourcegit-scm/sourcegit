@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 using Avalonia.Input;
@@ -33,22 +34,25 @@ namespace SourceGit.Views
             }
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            App.Quit(_exitCode);
+        }
+
         private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
         }
 
-        private void CloseWindow(object _1, RoutedEventArgs _2)
-        {
-            App.Quit(-1);
-        }
-
         private void SaveAndClose(object _1, RoutedEventArgs _2)
         {
             File.WriteAllText(_file, Editor.Text);
-            App.Quit(0);
+            _exitCode = 0;
+            Close();
         }
 
         private readonly string _file;
+        private int _exitCode = -1;
     }
 }
