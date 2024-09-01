@@ -6,22 +6,22 @@
              x:Class="SourceGit.Views.CaptionButtonsMacOS">
   <Grid Classes="caption_button_box">
     <StackPanel Orientation="Horizontal">
-      <Button Classes="caption_button_macos" Click="CloseWindow" Margin="10,0,0,0">
+      <Button Classes="caption_button_macos close" Click="CloseWindow" Margin="10,0,0,0">
         <Grid>
-          <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
-          <Path Height="6" Width="6" Stretch="Fill" Fill="#505050" Data="{StaticResource Icons.MacOS.Close}"/>
+          <Ellipse/>
+          <Path/>
         </Grid>
       </Button>
-      <Button Classes="caption_button_macos" Click="MinimizeWindow">
+      <Button Classes="caption_button_macos minimize" Click="MinimizeWindow">
         <Grid>
-          <Ellipse Fill="{DynamicResource Brush.MacOS.Minimize}"/>
-          <Path Height="2" Width="8" Stretch="Fill" Fill="#404040" Data="{StaticResource Icons.MacOS.Minimize}"/>
+          <Ellipse/>
+          <Path/>
         </Grid>
       </Button>
-      <Button Classes="caption_button_macos" Click="MaximizeOrRestoreWindow">
+      <Button Classes="caption_button_macos maximize" Click="MaximizeOrRestoreWindow">
         <Grid>
-          <Ellipse Fill="{DynamicResource Brush.MacOS.Maximize}"/>
-          <Path Height="6" Width="6" Stretch="Fill" Fill="#404040" Data="{StaticResource Icons.MacOS.Maximize}"/>
+          <Ellipse/>
+          <Path/>
         </Grid>
       </Button>
     </StackPanel>

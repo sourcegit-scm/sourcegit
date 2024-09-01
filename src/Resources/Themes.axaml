@@ -2,9 +2,18 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.ThemeDictionaries>
     <ResourceDictionary x:Key="Light">
-      <Color x:Key="Color.MacOS.Close">#FFFF6059</Color>
-      <Color x:Key="Color.MacOS.Minimize">#FFFFBE2F</Color>
-      <Color x:Key="Color.MacOS.Maximize">#FF29c941</Color>
+      <Color x:Key="Color.MacOS.Close">#FFED6A5E</Color>
+      <Color x:Key="Color.MacOS.CloseFG">#FF69110A</Color>
+      <Color x:Key="Color.MacOS.ClosePressed">#FFB24F46</Color>
+      <Color x:Key="Color.MacOS.ClosePressedFG">#FF2E0402</Color>
+      <Color x:Key="Color.MacOS.Minimize">#FFF4BF4F</Color>
+      <Color x:Key="Color.MacOS.MinimizeFG">#FF8F591D</Color>
+      <Color x:Key="Color.MacOS.MinimizePressed">#FFB78F3A</Color>
+      <Color x:Key="Color.MacOS.MinimizePressedFG">#FF522A0A</Color>
+      <Color x:Key="Color.MacOS.Maximize">#FF61C554</Color>
+      <Color x:Key="Color.MacOS.MaximizeFG">#FF296017</Color>
+      <Color x:Key="Color.MacOS.MaximizePressed">#FF48943F</Color>
+      <Color x:Key="Color.MacOS.MaximizePressedFG">#FF102F07</Color>
       <Color x:Key="Color.Window">#FFF0F5F9</Color>
       <Color x:Key="Color.WindowBorder">#00000000</Color>
       <Color x:Key="Color.TitleBar">#FFCFDEEA</Color>
@@ -37,9 +46,18 @@
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
-      <Color x:Key="Color.MacOS.Close">#FFFF5E56</Color>
-      <Color x:Key="Color.MacOS.Minimize">#FFFCBB2D</Color>
-      <Color x:Key="Color.MacOS.Maximize">#FF25C53C</Color>
+      <Color x:Key="Color.MacOS.Close">#FFED6A5E</Color>
+      <Color x:Key="Color.MacOS.CloseFG">#FF8C1A10</Color>
+      <Color x:Key="Color.MacOS.ClosePressed">#FFF09389</Color>
+      <Color x:Key="Color.MacOS.ClosePressedFG">#FF69120A</Color>
+      <Color x:Key="Color.MacOS.Minimize">#FFF4BF4F</Color>
+      <Color x:Key="Color.MacOS.MinimizeFG">#FF8F591D</Color>
+      <Color x:Key="Color.MacOS.MinimizePressed">#FFFBEB74</Color>
+      <Color x:Key="Color.MacOS.MinimizePressedFG">#FF705F1B</Color>
+      <Color x:Key="Color.MacOS.Maximize">#FF61C554</Color>
+      <Color x:Key="Color.MacOS.MaximizeFG">#FF296017</Color>
+      <Color x:Key="Color.MacOS.MaximizePressed">#FF86F37F</Color>
+      <Color x:Key="Color.MacOS.MaximizePressedFG">#FF2C681A</Color>
       <Color x:Key="Color.Window">#FF252525</Color>
       <Color x:Key="Color.WindowBorder">#FF444444</Color>
       <Color x:Key="Color.TitleBar">#FF1F1F1F</Color>
@@ -73,8 +91,17 @@
   </ResourceDictionary.ThemeDictionaries>
 
   <SolidColorBrush x:Key="Brush.MacOS.Close" Color="{DynamicResource Color.MacOS.Close}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.CloseFG" Color="{DynamicResource Color.MacOS.CloseFG}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.ClosePressed" Color="{DynamicResource Color.MacOS.ClosePressed}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.ClosePressedFG" Color="{DynamicResource Color.MacOS.ClosePressedFG}"/>
   <SolidColorBrush x:Key="Brush.MacOS.Minimize" Color="{DynamicResource Color.MacOS.Minimize}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.MinimizeFG" Color="{DynamicResource Color.MacOS.MinimizeFG}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.MinimizePressed" Color="{DynamicResource Color.MacOS.MinimizePressed}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.MinimizePressedFG" Color="{DynamicResource Color.MacOS.MinimizePressedFG}"/>
   <SolidColorBrush x:Key="Brush.MacOS.Maximize" Color="{DynamicResource Color.MacOS.Maximize}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.MaximizeFG" Color="{DynamicResource Color.MacOS.MaximizeFG}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.MaximizePressed" Color="{DynamicResource Color.MacOS.MaximizePressed}"/>
+  <SolidColorBrush x:Key="Brush.MacOS.MaximizePressedFG" Color="{DynamicResource Color.MacOS.MaximizePressedFG}"/>
   <SolidColorBrush x:Key="Brush.Window" Color="{DynamicResource Color.Window}"/>
   <SolidColorBrush x:Key="Brush.WindowBorder" Color="{DynamicResource Color.WindowBorder}"/>
   <SolidColorBrush x:Key="Brush.TitleBar" Color="{DynamicResource Color.TitleBar}"/>
