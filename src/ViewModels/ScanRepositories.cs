@@ -12,7 +12,7 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = string.Empty;
+        }
 
         public ScanRepositories(string rootDir)
         {
@@ -28,7 +28,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                // If it is too fast, the panel will dispear very quickly, the we'll have a bad experience.
+                // If it is too fast, the panel will disappear very quickly, then we'll have a bad experience.
                 Task.Delay(500).Wait();
 
                 var rootDir = new DirectoryInfo(RootDir);
@@ -42,14 +42,24 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     var normalizedRoot = rootDir.FullName.Replace("\\", "/");
-                    var prefixLen = normalizedRoot.EndsWith('/') ? normalizedRoot.Length : normalizedRoot.Length + 1;
-
+                    
                     foreach (var f in founded)
                     {
-                        var fullpath = new DirectoryInfo(f);
-                        var relative = fullpath.Parent!.FullName.Replace("\\", "/").Substring(prefixLen);
-                        var group = FindOrCreateGroupRecursive(Preference.Instance.RepositoryNodes, relative);
-                        Preference.Instance.FindOrAddNodeByRepositoryPath(f, group, false);
+                        var parent = new DirectoryInfo(f).Parent!.FullName.Replace("\\", "/");
+                        if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
+                        {
+                            Preference.Instance.FindOrAddNodeByRepositoryPath(f, null, false);
+                        }
+                        else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
+                        {
+                            var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
+                            var group = FindOrCreateGroupRecursive(Preference.Instance.RepositoryNodes, relative);
+                            Preference.Instance.FindOrAddNodeByRepositoryPath(f, group, false);
+                        }
+                        else
+                        {
+                            // Should not happen.
+                        }
                     }
 
                     Welcome.Instance.Refresh();
@@ -61,7 +71,7 @@ namespace SourceGit.ViewModels
 
         private void GetManagedRepositories(List<RepositoryNode> group, HashSet<string> repos)
         {
-            foreach (RepositoryNode node in group)
+            foreach (var node in group)
             {
                 if (node.IsRepository)
                     repos.Add(node.Id);
