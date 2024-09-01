@@ -28,10 +28,10 @@
             IsVisible="{OnPlatform True, macOS=False}"/>
 
       <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
-        <Button Classes="caption_button_macos" Click="CloseWindow">
+        <Button Classes="caption_button_macos close" Click="CloseWindow">
           <Grid>
-            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
-            <Path Height="6" Width="6" Stretch="Fill" Fill="#505050" Data="{StaticResource Icons.MacOS.Close}"/>
+            <Ellipse/>
+            <Path/>
           </Grid>
         </Button>
       </Grid>
