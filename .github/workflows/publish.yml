@@ -1,0 +1,25 @@
+name: Publish
+on:
+  release:
+    types: [published]
+jobs:
+  osx-app:
+    name: Publish OSX app to Homebrew
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        runtime: [osx-x64, osx-arm64]
+    steps:
+      - name: Release to Homebrew Private Tap
+        env:
+          VERSION: ${{ github.event.release.tag_name }}
+          RUNTIME: ${{ matrix.runtime }}
+        id: homebrew-releaser
+        # env:
+        #   # TODO: use a secret if needed because this push to the other repo
+        #   HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GH_TOKEN }}
+
+        # TODO: replace "ChiahongHong/sourcegit" with "sourcegit-scm/sourcegit" in two places
+        run: |
+          brew tap ChiahongHong/sourcegit
+          brew bump-cask-pr --dry-run --no-fork --version $VERSION --no-browse --message "Update SourceGit to version $VERSION" --no-pull-request sourcegit --tap ChiahongHong/sourcegit
