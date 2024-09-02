@@ -24,8 +24,8 @@
               <ColumnDefinition Width="*" MinWidth="100"/>
               <ColumnDefinition Width="3"/>
               <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=TwoWay}" MinWidth="80"/>
-              <ColumnDefinition Width="96" MaxWidth="96" MinWidth="96"/>
-              <ColumnDefinition Width="156" MaxWidth="156" MinWidth="156"/>
+              <ColumnDefinition Width="100" MaxWidth="100" MinWidth="100"/>
+              <ColumnDefinition Width="170" MaxWidth="170" MinWidth="170"/>
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
@@ -106,8 +106,8 @@
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=OneWay}"/>
-                    <ColumnDefinition Width="96" MaxWidth="96" MinWidth="96"/>
-                    <ColumnDefinition Width="156" MaxWidth="156" MinWidth="156"/>
+                    <ColumnDefinition Width="100" MaxWidth="100" MinWidth="100"/>
+                    <ColumnDefinition Width="170" MaxWidth="170" MinWidth="170"/>
                   </Grid.ColumnDefinitions>
 
                   <!-- Subject & REFS -->
@@ -161,7 +161,7 @@
                   </Grid>
 
                   <!-- SHA -->
-                  <Border Grid.Column="2" Padding="8,0" IsHitTestVisible="False" ClipToBounds="True">
+                  <Border Grid.Column="2" Padding="4,0" IsHitTestVisible="False" ClipToBounds="True">
                     <TextBlock Classes="primary"
                                Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                                HorizontalAlignment="Center"
@@ -170,7 +170,7 @@
                   </Border>
 
                   <!-- COMMIT TIME -->
-                  <Border Grid.Column="3" Padding="8,0" ClipToBounds="True" IsHitTestVisible="False">
+                  <Border Grid.Column="3" Padding="4,0" ClipToBounds="True" IsHitTestVisible="False">
                     <v:CommitTimeTextBlock Classes="primary"
                                            HorizontalAlignment="Center"
                                            FontWeight="{Binding FontWeight}"
