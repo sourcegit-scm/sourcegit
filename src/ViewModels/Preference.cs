@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -155,9 +153,9 @@ namespace SourceGit.ViewModels
 
         public string IgnoreUpdateTag
         {
-            get;
-            set;
-        } = string.Empty;
+            get => _ignoreUpdateTag;
+            set => SetProperty(ref _ignoreUpdateTag, value);
+        }
 
         public bool ShowTagsAsTree
         {
@@ -320,9 +318,9 @@ namespace SourceGit.ViewModels
 
         public double LastCheckUpdateTime
         {
-            get;
-            set;
-        } = 0;
+            get => _lastCheckUpdateTime;
+            set => SetProperty(ref _lastCheckUpdateTime, value);
+        }
 
         public bool IsGitConfigured()
         {
@@ -356,9 +354,8 @@ namespace SourceGit.ViewModels
 
                 return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
-#pragma warning disable CS4014
-            SaveAsync();
-#pragma warning restore CS4014
+
+            Save();
         }
 
         public RepositoryNode FindNode(string id)
@@ -398,14 +395,13 @@ namespace SourceGit.ViewModels
 
             RemoveNode(node);
             AddNode(node, to);
+            Save();
         }
 
         public void RemoveNode(RepositoryNode node)
         {
             RemoveNodeRecursive(node, RepositoryNodes);
-#pragma warning disable CS4014
-            SaveAsync();
-#pragma warning restore CS4014
+            Save();
         }
 
         public void SortByRenamedNode(RepositoryNode node)
@@ -418,41 +414,14 @@ namespace SourceGit.ViewModels
 
                 return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
-#pragma warning disable CS4014
-            SaveAsync();
-#pragma warning restore CS4014
+
+            Save();
         }
 
         public void Save()
         {
-            lock (_saveCtsLock)
-            {
-                _saveCts.Cancel();
-                _saveCts = new CancellationTokenSource();
-            }
             var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
             File.WriteAllText(_savePath, data);
-        }
-
-        public async Task SaveAsync()
-        {
-            lock (_saveCtsLock)
-            {
-                _saveCts.Cancel();
-                _saveCts = new CancellationTokenSource();
-            }
-
-            try
-            {
-                await Task.Delay(3000, _saveCts.Token);
-            }
-            catch (TaskCanceledException)
-            {
-                return;
-            }
-
-            var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
-            await File.WriteAllTextAsync(_savePath, data);
         }
 
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
@@ -505,8 +474,6 @@ namespace SourceGit.ViewModels
         private static Preference _instance = null;
         private static bool _isLoading = false;
         private static readonly string _savePath = Path.Combine(Native.OS.DataDir, "preference.json");
-        private static CancellationTokenSource _saveCts = new();
-        private static readonly object _saveCtsLock = new();
 
         private string _locale = "en_US";
         private string _theme = "Default";
@@ -522,7 +489,10 @@ namespace SourceGit.ViewModels
         private int _subjectGuideLength = 50;
         private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
+
         private bool _check4UpdatesOnStartup = true;
+        private double _lastCheckUpdateTime = 0;
+        private string _ignoreUpdateTag = string.Empty;
 
         private bool _showTagsAsTree = false;
         private bool _useTwoColumnsLayoutInHistories = false;
