@@ -42,7 +42,7 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     var normalizedRoot = rootDir.FullName.Replace("\\", "/");
-                    
+
                     foreach (var f in founded)
                     {
                         var parent = new DirectoryInfo(f).Parent!.FullName.Replace("\\", "/");

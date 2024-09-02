@@ -27,10 +27,11 @@ namespace SourceGit.ViewModels
         public MoveRepositoryNode(RepositoryNode target)
         {
             Target = target;
-            Rows.Add(new RepositoryNode() { 
-                Name = "ROOT", 
-                Depth = 0, 
-                Id = Guid.NewGuid().ToString() 
+            Rows.Add(new RepositoryNode()
+            {
+                Name = "ROOT",
+                Depth = 0,
+                Id = Guid.NewGuid().ToString()
             });
             MakeRows(Preference.Instance.RepositoryNodes, 1);
 

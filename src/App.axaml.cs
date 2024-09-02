@@ -318,6 +318,17 @@ namespace SourceGit
             }
         }
 
+        private static void CopyTextBlock(TextBlock textBlock)
+        {
+            if (textBlock == null)
+                return;
+
+            if (textBlock.Inlines is { Count: > 0 } inlines)
+                CopyText(inlines.Text);
+            else if (!string.IsNullOrEmpty(textBlock.Text))
+                CopyText(textBlock.Text);
+        }
+
         private static void LogException(Exception ex)
         {
             if (ex == null)

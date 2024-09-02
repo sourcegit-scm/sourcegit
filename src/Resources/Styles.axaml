@@ -339,7 +339,7 @@
           </MenuItem>
           
           <MenuItem Header="{DynamicResource Text.CopyAllText}"
-                    Command="{x:Static s:App.CopyTextCommand}"
+                    Command="{x:Static s:App.CopyTextBlockCommand}"
                     CommandParameter="{Binding $parent[SelectableTextBlock]}">
             <MenuItem.Icon>
               <Path Width="11" Height="11" Data="{StaticResource Icons.Copy}" VerticalAlignment="Center"/>
