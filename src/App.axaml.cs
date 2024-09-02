@@ -522,7 +522,6 @@ namespace SourceGit
             var pref = ViewModels.Preference.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
             {
-                pref.Save();
                 Check4Update();
             }
         }

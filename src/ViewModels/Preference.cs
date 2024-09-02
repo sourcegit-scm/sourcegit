@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-
+using System.Threading;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -414,8 +416,42 @@ namespace SourceGit.ViewModels
 
         public void Save()
         {
+            lock (_saveCtsLock)
+            {
+                _saveCts.Cancel();
+                _saveCts = new CancellationTokenSource();
+            }
             var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
             File.WriteAllText(_savePath, data);
+        }
+
+        public async Task SaveAsync()
+        {
+            lock (_saveCtsLock)
+            {
+                _saveCts.Cancel();
+                _saveCts = new CancellationTokenSource();
+            }
+
+            try
+            {
+                await Task.Delay(3000, _saveCts.Token);
+            }
+            catch (TaskCanceledException)
+            {
+                return;
+            }
+
+            var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
+            await File.WriteAllTextAsync(_savePath, data);
+        }
+
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+#pragma warning disable CS4014
+            SaveAsync();
+#pragma warning restore CS4014
         }
 
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
@@ -468,6 +504,8 @@ namespace SourceGit.ViewModels
         private static Preference _instance = null;
         private static bool _isLoading = false;
         private static readonly string _savePath = Path.Combine(Native.OS.DataDir, "preference.json");
+        private static CancellationTokenSource _saveCts = new();
+        private static readonly object _saveCtsLock = new();
 
         private string _locale = "en_US";
         private string _theme = "Default";
