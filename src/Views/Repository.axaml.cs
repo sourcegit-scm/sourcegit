@@ -154,16 +154,6 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnSearchResultDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is DataGrid { SelectedItem: Models.Commit commit } && DataContext is ViewModels.Repository repo)
-            {
-                repo.NavigateToCommit(commit.SHA);
-            }
-
-            e.Handled = true;
-        }
-
         private void OnBranchTreeRowsChanged(object _, RoutedEventArgs e)
         {
             UpdateLeftSidebarLayout();
@@ -236,7 +226,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnLeftSidebarDataGridPropertyChanged(object _, AvaloniaPropertyChangedEventArgs e)
+        private void OnLeftSidebarListBoxPropertyChanged(object _, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property == ListBox.ItemsSourceProperty || e.Property == ListBox.IsVisibleProperty)
                 UpdateLeftSidebarLayout();

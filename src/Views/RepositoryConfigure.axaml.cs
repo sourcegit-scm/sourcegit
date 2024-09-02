@@ -1,5 +1,5 @@
+using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -10,15 +10,15 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnClosing(WindowClosingEventArgs e)
+        {
+            (DataContext as ViewModels.RepositoryConfigure)?.Save();
+            base.OnClosing(e);
+        }
+
         private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
-        }
-
-        private void CloseWindow(object _1, RoutedEventArgs _2)
-        {
-            (DataContext as ViewModels.RepositoryConfigure)?.Save();
-            Close();
         }
     }
 }

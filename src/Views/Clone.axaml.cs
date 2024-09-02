@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -18,9 +19,16 @@ namespace SourceGit.Views
             if (toplevel == null)
                 return;
 
-            var selected = await toplevel.StorageProvider.OpenFolderPickerAsync(options);
-            if (selected.Count == 1)
-                TxtParentFolder.Text = selected[0].Path.LocalPath;
+            try
+            {
+                var selected = await toplevel.StorageProvider.OpenFolderPickerAsync(options);
+                if (selected.Count == 1)
+                    TxtParentFolder.Text = selected[0].Path.LocalPath;
+            }
+            catch (Exception exception)
+            {
+                App.RaiseException(string.Empty, $"Failed to select parent folder: {exception.Message}");
+            }
 
             e.Handled = true;
         }

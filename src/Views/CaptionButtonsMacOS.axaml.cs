@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
@@ -6,6 +7,15 @@ namespace SourceGit.Views
 {
     public partial class CaptionButtonsMacOS : UserControl
     {
+        public static readonly StyledProperty<bool> IsCloseButtonOnlyProperty =
+            AvaloniaProperty.Register<CaptionButtonsMacOS, bool>(nameof(IsCloseButtonOnly));
+
+        public bool IsCloseButtonOnly
+        {
+            get => GetValue(IsCloseButtonOnlyProperty);
+            set => SetValue(IsCloseButtonOnlyProperty, value);
+        }
+        
         public CaptionButtonsMacOS()
         {
             InitializeComponent();
@@ -32,9 +42,7 @@ namespace SourceGit.Views
         private void CloseWindow(object _, RoutedEventArgs e)
         {
             var window = this.FindAncestorOfType<Window>();
-            if (window != null)
-                window.Close();
-
+            window?.Close();
             e.Handled = true;
         }
     }

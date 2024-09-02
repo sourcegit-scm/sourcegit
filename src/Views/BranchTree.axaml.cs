@@ -161,8 +161,8 @@ namespace SourceGit.Views
 
             if (_label != null)
             {
-                context.DrawRectangle(Background, null, new RoundedRect(new Rect(0, 0, _label.Width + 18, 18), new CornerRadius(9)));
-                context.DrawText(_label, new Point(9, 9 - _label.Height * 0.5));
+                context.DrawRectangle(Background, null, new RoundedRect(new Rect(8, 0, _label.Width + 18, 18), new CornerRadius(9)));
+                context.DrawText(_label, new Point(17, 9 - _label.Height * 0.5));
             }
         }
 
@@ -192,7 +192,7 @@ namespace SourceGit.Views
                 }
             }
 
-            return _label != null ? new Size(_label.Width + 18, 18) : new Size(0, 0);
+            return _label != null ? new Size(_label.Width + 18 /* Padding */ + 16 /* Margin */, 18) : new Size(0, 0);
         }
 
         private FormattedText _label = null;

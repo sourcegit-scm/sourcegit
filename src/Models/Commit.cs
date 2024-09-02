@@ -6,6 +6,13 @@ using Avalonia.Media;
 
 namespace SourceGit.Models
 {
+    public enum CommitSearchMethod
+    {
+        ByUser,
+        ByMessage,
+        ByFile,
+    }
+
     public class Commit
     {
         public static double OpacityForNotMerged

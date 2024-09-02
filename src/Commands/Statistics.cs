@@ -10,7 +10,7 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --branches --remotes --since=\"{_statistics.Since()}\" --pretty=format:\"%ct$%cn\"";
+            Args = $"log --date-order --branches --remotes --since=\"{_statistics.Since()}\" --pretty=format:\"%ct$%an\"";
         }
 
         public Models.Statistics Result()

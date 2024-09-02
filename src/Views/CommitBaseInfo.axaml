@@ -55,20 +55,23 @@
           <!-- SHA -->
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
           <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-            <SelectableTextBlock Classes="primary" 
-                                 Text="{Binding SHA}" 
-                                 Margin="12,0,4,0" 
-                                 VerticalAlignment="Center"/>
+            <TextBlock Classes="primary" 
+                       Text="{Binding SHA}" 
+                       Margin="12,0,4,0" 
+                       VerticalAlignment="Center"/>
 
-            <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenWebLink" IsVisible="{Binding #ThisControl.WebLinks, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.Link}" Fill="{DynamicResource Brush.Link}"/>
+            <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnCopyCommitSHA" ToolTip.Tip="{DynamicResource Text.Copy}">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
             </Button>
 
             <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenContainsIn" IsVisible="{Binding #ThisControl.SupportsContainsIn}" ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.ContainsIn}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Relation}"/>
             </Button>
-          </StackPanel>
 
+            <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenWebLink" IsVisible="{Binding #ThisControl.WebLinks, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}" ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.WebLinks}">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Link}" Fill="{DynamicResource Brush.Link}"/>
+            </Button>
+          </StackPanel>
 
           <!-- PARENTS -->
           <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Parents}" IsVisible="{Binding Parents.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
@@ -114,6 +117,7 @@
                                     Classes="primary" 
                                     Message="{Binding #ThisControl.Message}"
                                     IssueTrackerRules="{Binding #ThisControl.IssueTrackerRules}"
+                                    HorizontalAlignment="Stretch"
                                     TextWrapping="Wrap"/>
         </Grid>
       </StackPanel>

@@ -49,6 +49,14 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private void OnCopyCommitSHA(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: Models.Commit commit })
+                App.CopyText(commit.SHA);
+
+            e.Handled = true;
+        }
+
         private void OnOpenWebLink(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.CommitDetail detail)

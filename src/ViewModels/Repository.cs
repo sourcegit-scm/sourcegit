@@ -309,7 +309,11 @@ namespace SourceGit.ViewModels
         public Models.Commit SearchResultSelectedCommit
         {
             get => _searchResultSelectedCommit;
-            set => SetProperty(ref _searchResultSelectedCommit, value);
+            set
+            {
+                if (SetProperty(ref _searchResultSelectedCommit, value) && value != null)
+                    NavigateToCommit(value.SHA);
+            }
         }
 
         public void Open()
@@ -331,7 +335,15 @@ namespace SourceGit.ViewModels
                 _settings = new Models.RepositorySettings();
             }
 
-            _watcher = new Models.Watcher(this);
+            try
+            {
+                _watcher = new Models.Watcher(this);
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to start watcher for repository: '{_fullpath}'. You may need to press 'F5' to refresh repository manually!\n\nReason: {ex.Message}");
+            }
+
             _histories = new Histories(this);
             _workingCopy = new WorkingCopy(this);
             _stashesPage = new StashesPage(this);
@@ -348,10 +360,17 @@ namespace SourceGit.ViewModels
             SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
 
             var settingsSerialized = JsonSerializer.Serialize(_settings, JsonCodeGen.Default.RepositorySettings);
-            File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
+            try
+            {
+                File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // Ignore
+            }
             _settings = null;
 
-            _watcher.Dispose();
+            _watcher?.Dispose();
             _histories.Cleanup();
             _workingCopy.Cleanup();
             _stashesPage.Cleanup();
@@ -529,6 +548,7 @@ namespace SourceGit.ViewModels
                 return;
 
             IsSearchLoadingVisible = true;
+            SearchResultSelectedCommit = null;
             IsSearchCommitSuggestionOpen = false;
             SearchCommitFilterSuggestion.Clear();
 
@@ -539,29 +559,18 @@ namespace SourceGit.ViewModels
                 switch (_searchCommitFilterType)
                 {
                     case 0:
-                        foreach (var c in _histories.Commits)
-                        {
-                            if (c.SHA.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
-                                visible.Add(c);
-                        }
-
+                        var commit = new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).Result();
+                        if (commit != null)
+                            visible.Add(commit);
                         break;
                     case 1:
-                        foreach (var c in _histories.Commits)
-                        {
-                            if (c.Author.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                                || c.Committer.Name.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                                || c.Author.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase)
-                                || c.Committer.Email.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase))
-                                visible.Add(c);
-                        }
-
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByUser).Result();
                         break;
                     case 2:
-                        visible = new Commands.QueryCommits(_fullpath, 1000, _searchCommitFilter, false).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage).Result();
                         break;
                     case 3:
-                        visible = new Commands.QueryCommits(_fullpath, 1000, _searchCommitFilter, true).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByFile).Result();
                         break;
                 }
 
@@ -580,19 +589,33 @@ namespace SourceGit.ViewModels
 
         public void SetWatcherEnabled(bool enabled)
         {
-            if (_watcher != null)
-                _watcher.SetEnabled(enabled);
+            _watcher?.SetEnabled(enabled);
         }
 
         public void MarkBranchesDirtyManually()
         {
-            if (_watcher != null)
+            if (_watcher == null)
+            {
+                Task.Run(() =>
+                {
+                    RefreshBranches();
+                    RefreshCommits();
+                });
+
+                Task.Run(RefreshWorkingCopyChanges);
+                Task.Run(RefreshWorktrees);
+            }
+            else
+            {
                 _watcher.MarkBranchDirtyManually();
+            }
         }
 
         public void MarkWorkingCopyDirtyManually()
         {
-            if (_watcher != null)
+            if (_watcher == null)
+                Task.Run(RefreshWorkingCopyChanges);
+            else
                 _watcher.MarkWorkingCopyDirtyManually();
         }
 
@@ -787,9 +810,7 @@ namespace SourceGit.ViewModels
         public void RefreshSubmodules()
         {
             var submodules = new Commands.QuerySubmodules(_fullpath).Result();
-            if (_watcher != null)
-                _watcher.SetSubmodules(submodules);
-
+            _watcher?.SetSubmodules(submodules);
             Dispatcher.UIThread.Invoke(() => Submodules = submodules);
         }
 

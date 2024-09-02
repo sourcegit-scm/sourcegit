@@ -125,12 +125,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            BeginMoveDrag(e);
-        }
-
-        private void CloseWindow(object _1, RoutedEventArgs _2)
+        protected override void OnClosing(WindowClosingEventArgs e)
         {
             var config = new Commands.Config(null).ListAll();
             SetIfChanged(config, "user.name", DefaultUser);
@@ -143,8 +138,13 @@ namespace SourceGit.Views
 
             if (!GPGFormat.Value.Equals("ssh", StringComparison.Ordinal))
                 SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
+            
+            base.OnClosing(e);
+        }
 
-            Close();
+        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
+        {
+            BeginMoveDrag(e);
         }
 
         private async void SelectThemeOverrideFile(object _, RoutedEventArgs e)
@@ -186,10 +186,17 @@ namespace SourceGit.Views
         private async void SelectDefaultCloneDir(object _1, RoutedEventArgs _2)
         {
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-            var selected = await StorageProvider.OpenFolderPickerAsync(options);
-            if (selected.Count == 1)
+            try
             {
-                ViewModels.Preference.Instance.GitDefaultCloneDir = selected[0].Path.LocalPath;
+                var selected = await StorageProvider.OpenFolderPickerAsync(options);
+                if (selected.Count == 1)
+                {
+                    ViewModels.Preference.Instance.GitDefaultCloneDir = selected[0].Path.LocalPath;
+                }
+            }
+            catch (Exception e)
+            {
+                App.RaiseException(string.Empty, $"Failed to select default clone directory: {e.Message}");
             }
         }
 

@@ -16,11 +16,6 @@ namespace SourceGit.Views
             BeginMoveDrag(e);
         }
 
-        private void CloseWindow(object _1, RoutedEventArgs _2)
-        {
-            Close();
-        }
-
         private void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.AssumeUnchangedManager vm && sender is Button button)

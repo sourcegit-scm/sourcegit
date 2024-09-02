@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -18,9 +19,16 @@ namespace SourceGit.Views
                 return;
 
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-            var selected = await toplevel.StorageProvider.OpenFolderPickerAsync(options);
-            if (selected.Count == 1)
-                TxtLocation.Text = selected[0].Path.LocalPath;
+            try
+            {
+                var selected = await toplevel.StorageProvider.OpenFolderPickerAsync(options);
+                if (selected.Count == 1)
+                    TxtLocation.Text = selected[0].Path.LocalPath;
+            }
+            catch (Exception exception)
+            {
+                App.RaiseException(string.Empty, $"Failed to select location: {exception.Message}");
+            }
 
             e.Handled = true;
         }

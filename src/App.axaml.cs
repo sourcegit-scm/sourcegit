@@ -98,7 +98,7 @@ namespace SourceGit
 
         public static void OpenDialog(Window window)
         {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner})
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
                 window.ShowDialog(owner);
         }
 

@@ -62,16 +62,27 @@ namespace SourceGit.Views
 
         private void OnUnstagedKeyDown(object _, KeyEventArgs e)
         {
-            if (DataContext is ViewModels.WorkingCopy vm && e.Key == Key.Space)
+            if (DataContext is ViewModels.WorkingCopy vm)
             {
-                vm.StageSelected();
-                e.Handled = true;
+                if (e.Key is Key.Space or Key.Enter)
+                {
+                    vm.StageSelected();
+                    e.Handled = true;
+                    return;
+                }
+
+                if (e.Key is Key.Delete or Key.Back && vm.SelectedUnstaged is { Count: > 0 } selected)
+                {
+                    vm.Discard(selected);
+                    e.Handled = true;
+                    return;
+                }
             }
         }
 
         private void OnStagedKeyDown(object _, KeyEventArgs e)
         {
-            if (DataContext is ViewModels.WorkingCopy vm && e.Key == Key.Space)
+            if (DataContext is ViewModels.WorkingCopy vm && e.Key is Key.Space or Key.Enter)
             {
                 vm.UnstageSelected();
                 e.Handled = true;

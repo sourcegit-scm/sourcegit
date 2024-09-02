@@ -6,7 +6,6 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -212,23 +211,24 @@ namespace SourceGit.Views
                 matches.Sort((l, r) => l.Start - r.Start);
                 _matches = matches;
 
-                int pos = 0;
+                var inlines = new List<Inline>();
+                var pos = 0;
                 foreach (var match in matches)
                 {
                     if (match.Start > pos)
-                        Inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
+                        inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
 
                     var link = new Run(subject.Substring(match.Start, match.Length));
                     link.Classes.Add("issue_link");
-                    Inlines.Add(link);
+                    inlines.Add(link);
 
                     pos = match.Start + match.Length;
                 }
 
                 if (pos < subject.Length)
-                    Inlines.Add(new Run(subject.Substring(pos)));
+                    inlines.Add(new Run(subject.Substring(pos)));
 
-                InvalidateTextLayout();
+                Inlines.AddRange(inlines);
             }
         }
 
@@ -438,45 +438,32 @@ namespace SourceGit.Views
         {
             base.Render(context);
 
-            var grid = this.FindAncestorOfType<Histories>()?.CommitDataGrid;
-            if (grid == null)
-                return;
-
             var graph = Graph;
             if (graph == null)
                 return;
 
-            var rowsPresenter = grid.FindDescendantOfType<DataGridRowsPresenter>();
-            if (rowsPresenter == null)
+            var histories = this.FindAncestorOfType<Histories>();
+            if (histories == null)
                 return;
 
-            // Find the content display offset Y of binding DataGrid.
-            double rowHeight = grid.RowHeight;
-            double startY = 0;
-            foreach (var child in rowsPresenter.Children)
+            var list = histories.CommitListContainer;
+            if (list == null)
+                return;
+
+            // Calculate drawing area.
+            double width = Bounds.Width - 156 - 96 - histories.AuthorNameColumnWidth.Value;
+            double height = Bounds.Height;
+            double startY = list.Scroll?.Offset.Y ?? 0;
+            double endY = startY + height + 28;
+
+            // Apply scroll offset and clip.
+            using (context.PushClip(new Rect(0, 0, width, height)))
+            using (context.PushTransform(Matrix.CreateTranslation(0, -startY)))
             {
-                if (child is DataGridRow { IsVisible: true, Bounds.Top: <= 0 } row && row.Bounds.Top > -rowHeight)
-                {
-                    var test = rowHeight * row.GetIndex() - row.Bounds.Top;
-                    if (startY < test)
-                        startY = test;
-                }
+                // Draw contents
+                DrawCurves(context, graph, startY, endY);
+                DrawAnchors(context, graph, startY, endY);
             }
-
-            var headerHeight = grid.ColumnHeaderHeight;
-            startY -= headerHeight;
-
-            // Apply scroll offset.
-            context.PushClip(new Rect(Bounds.Left, Bounds.Top + headerHeight, grid.Columns[0].ActualWidth, Bounds.Height));
-            context.PushTransform(Matrix.CreateTranslation(0, -startY));
-
-            // Calculate bounds.
-            var top = startY;
-            var bottom = startY + grid.Bounds.Height + rowHeight * 2;
-
-            // Draw contents
-            DrawCurves(context, graph, top, bottom);
-            DrawAnchors(context, graph, top, bottom);
         }
 
         private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom)
@@ -601,6 +588,15 @@ namespace SourceGit.Views
 
     public partial class Histories : UserControl
     {
+        public static readonly StyledProperty<GridLength> AuthorNameColumnWidthProperty =
+            AvaloniaProperty.Register<Histories, GridLength>(nameof(AuthorNameColumnWidth), new GridLength(120));
+
+        public GridLength AuthorNameColumnWidth
+        {
+            get => GetValue(AuthorNameColumnWidthProperty);
+            set => SetValue(AuthorNameColumnWidthProperty, value);
+        }
+
         public static readonly StyledProperty<Models.Branch> CurrentBranchProperty =
             AvaloniaProperty.Register<Histories, Models.Branch>(nameof(CurrentBranch));
 
@@ -636,9 +632,14 @@ namespace SourceGit.Views
                     return;
 
                 // Force scroll selected item (current head) into view. see issue #58
-                var datagrid = h.CommitDataGrid;
-                if (datagrid != null && datagrid.SelectedItems.Count == 1)
-                    datagrid.ScrollIntoView(datagrid.SelectedItems[0], null);
+                var list = h.CommitListContainer;
+                if (list != null && list.SelectedItems.Count == 1)
+                    list.ScrollIntoView(list.SelectedIndex);
+            });
+
+            AuthorNameColumnWidthProperty.Changed.AddClassHandler<Histories>((h, _) =>
+            {
+                h.CommitGraph.InvalidateVisual();
             });
         }
 
@@ -647,43 +648,47 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnCommitDataGridLayoutUpdated(object _1, EventArgs _2)
+        private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
         {
-            CommitGraph.InvalidateVisual();
+            var y = CommitListContainer.Scroll?.Offset.Y ?? 0;
+            if (y != _lastScrollY)
+            {
+                _lastScrollY = y;
+                CommitGraph.InvalidateVisual();
+            }
         }
 
-        private void OnCommitDataGridSelectionChanged(object _, SelectionChangedEventArgs e)
+        private void OnCommitListSelectionChanged(object _, SelectionChangedEventArgs e)
         {
             if (DataContext is ViewModels.Histories histories)
             {
-                histories.Select(CommitDataGrid.SelectedItems);
+                histories.Select(CommitListContainer.SelectedItems);
             }
             e.Handled = true;
         }
 
-        private void OnCommitDataGridContextRequested(object sender, ContextRequestedEventArgs e)
+        private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is DataGrid datagrid)
+            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems: { Count: > 0 } } list)
             {
-                var menu = histories.MakeContextMenu(datagrid);
-                datagrid.OpenContextMenu(menu);
+                var menu = histories.MakeContextMenu(list);
+                list.OpenContextMenu(menu);
             }
             e.Handled = true;
         }
 
-        private void OnCommitDataGridDoubleTapped(object sender, TappedEventArgs e)
+        private void OnCommitListDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is DataGrid datagrid && datagrid.SelectedItems is { Count: 1 } selectedItems)
+            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems: { Count: 1 } selected })
             {
-                histories.DoubleTapped(selectedItems[0] as Models.Commit);
+                histories.DoubleTapped(selected[0] as Models.Commit);
             }
             e.Handled = true;
         }
 
-        private void OnCommitDataGridKeyDown(object sender, KeyEventArgs e)
+        private void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
-            if (sender is DataGrid grid &&
-                grid.SelectedItems is { Count: > 0 } selected &&
+            if (sender is ListBox { SelectedItems: { Count: > 0 } selected } &&
                 e.Key == Key.C &&
                 e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
@@ -698,5 +703,7 @@ namespace SourceGit.Views
                 e.Handled = true;
             }
         }
+
+        private double _lastScrollY = 0;
     }
 }

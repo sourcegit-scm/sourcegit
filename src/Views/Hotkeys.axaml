@@ -27,14 +27,10 @@
             Data="{StaticResource Icons.Hotkeys}"
             IsVisible="{OnPlatform True, macOS=False}"/>
 
-      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
-        <Button Classes="caption_button_macos" Click="CloseWindow">
-          <Grid>
-            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
-            <Path Height="6" Width="6" Stretch="Fill" Fill="#505050" Data="{StaticResource Icons.MacOS.Close}"/>
-          </Grid>
-        </Button>
-      </Grid>
+      <v:CaptionButtonsMacOS Grid.Column="0"
+                             Margin="0,2,0,0"
+                             IsCloseButtonOnly="True"
+                             IsVisible="{OnPlatform False, macOS=True}"/>
 
       <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
                  Classes="bold"
@@ -42,12 +38,9 @@
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
 
-      <Button Grid.Column="2"
-              Classes="caption_button"
-              Click="CloseWindow"
-              IsVisible="{OnPlatform True, macOS=False}">
-        <Path Data="{StaticResource Icons.Window.Close}"/>
-      </Button>
+      <v:CaptionButtons Grid.Column="2"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
     <!-- Body -->
@@ -85,7 +78,7 @@
                    FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"
                    Margin="0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
+        <Grid RowDefinitions="20,20,20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+H, macOS=⌘+⇧+H}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.GoHome}" />
           
@@ -101,17 +94,20 @@
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+3, macOS=⌘+3}"/>
           <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewStashes}" />
 
-          <TextBlock Grid.Row="5" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Space, macOS=␣}"/>
+          <TextBlock Grid.Row="5" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Space/Enter, macOS=␣/Enter}"/>
           <TextBlock Grid.Row="5" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.StageOrUnstageSelected}" />
+          
+          <TextBlock Grid.Row="6" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Delete/Backspace, macOS=⌫}"/>
+          <TextBlock Grid.Row="6" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.DiscardSelected}" />
 
-          <TextBlock Grid.Row="6" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
-          <TextBlock Grid.Row="6" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Commit}" />
+          <TextBlock Grid.Row="7" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
+          <TextBlock Grid.Row="7" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Commit}" />
 
-          <TextBlock Grid.Row="7" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
-          <TextBlock Grid.Row="7" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.CommitAndPush}" />
+          <TextBlock Grid.Row="8" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
+          <TextBlock Grid.Row="8" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.CommitAndPush}" />
 
-          <TextBlock Grid.Row="8" Grid.Column="0" Classes="primary bold" Text="F5"/>
-          <TextBlock Grid.Row="8" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
+          <TextBlock Grid.Row="9" Grid.Column="0" Classes="primary bold" Text="F5"/>
+          <TextBlock Grid.Row="9" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
         </Grid>
 
         <TextBlock Text="{DynamicResource Text.Hotkeys.TextEditor}"

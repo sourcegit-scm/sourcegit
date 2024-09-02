@@ -83,10 +83,9 @@
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Rejeter</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Ne rien faire</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash et Réappliquer</x:String>
-  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick ce commit</x:String>
-  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit :</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s) :</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit tous les changements</x:String>
-  <x:String x:Key="Text.CherryPick.Title" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Vider les Stashes</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Voulez-vous vider tous les stashes. Êtes-vous sûr de vouloir continuer ?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">Cloner le dépôt distant</x:String>
@@ -337,7 +336,6 @@
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Rejeter</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Initialize Repository</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Path:</x:String>
-  <x:String x:Key="Text.Init.Tip" xml:space="preserve">Invalid repository detected. Run `git init` under this path?</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick in progress. Press 'Abort' to restore original HEAD.</x:String>
   <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge request in progress. Press 'Abort' to restore original HEAD.</x:String>
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase in progress. Press 'Abort' to restore original HEAD.</x:String>
@@ -556,9 +554,9 @@
   <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">MONTH</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">WEEK</x:String>
-  <x:String x:Key="Text.Statistics.ThisYear" xml:space="preserve">YEAR</x:String>
+  <x:String x:Key="Text.Statistics.MostRecentYear" xml:space="preserve">YEAR</x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
-  <x:String x:Key="Text.Statistics.TotalCommitters" xml:space="preserve">COMMITTERS: </x:String>
+  <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTHORS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULES</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Add Submodule</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copy Relative Path</x:String>

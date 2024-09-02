@@ -82,10 +82,9 @@
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Nichts tun</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
-  <x:String x:Key="Text.CherryPick" xml:space="preserve">Diesen Commit cherry-picken</x:String>
-  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit:</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Alle Änderungen committen</x:String>
-  <x:String x:Key="Text.CherryPick.Title" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Stashes löschen</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Du versuchst alle Stashes zu löschen. Möchtest du wirklich fortfahren?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">Remote Repository klonen</x:String>
@@ -109,7 +108,8 @@
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Commit rückgängig machen</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Umformulieren</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Als Patch speichern...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash Commits</x:String>
+  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash in den Vorgänger</x:String>
+  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Nachfolger Commits bis hier</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ÄNDERUNGEN</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Änderungen durchsuchen...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">DATEIEN</x:String>
@@ -148,6 +148,7 @@
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Benutzername</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Benutzername für dieses Repository</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Kopieren</x:String>
+  <x:String x:Key="Text.CopyAllText" xml:space="preserve">Kopiere gesamten Text</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">COMMIT-NACHRICHT KOPIEREN</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Pfad kopieren</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">Dateinamen kopieren</x:String>
@@ -246,6 +247,8 @@
   <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">"Ihre" verwenden (checkout --theirs)</x:String>
   <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">"Meine" verwenden (checkout --ours)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">Datei Historie</x:String>
+  <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">INHALT</x:String>
+  <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">ÄNDERUNGEN</x:String>
   <x:String x:Key="Text.Filter" xml:space="preserve">FILTER</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-Flow</x:String>
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Development-Branch:</x:String>
@@ -334,7 +337,6 @@
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Verwerfen</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Initialisiere Repository</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Pfad:</x:String>
-  <x:String x:Key="Text.Init.Tip" xml:space="preserve">Ungültiges Repository erkannt. `git init` auf diesem Pfad ausführen?</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick wird durchgeführt. Drücke 'Abbrechen' um den originalen HEAD wiederherzustellen.</x:String>
   <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge request wird durchgeführt. Drücke 'Abbrechen' um den originalen HEAD wiederherzustellen.</x:String>
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase wird durchgeführt. Drücke 'Abbrechen' um den originalen HEAD wiederherzustellen.</x:String>
@@ -381,7 +383,7 @@
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Standardschriftart</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Standardschriftgröße</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Monospace-Schriftart</x:String>
-  <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Verwende nur die Monospace-Schriftart im Texteditor</x:String>
+  <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Verwende die Monospace-Schriftart nur im Texteditor</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Design</x:String>
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Design-Anpassungen</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Fixe Tab-Breite in Titelleiste</x:String>
@@ -531,7 +533,7 @@
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Diese Version überspringen</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Software Update</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Es sind momentan kein Updates verfügbar.</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Squash HEAD in Vorgänger</x:String>
+  <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH privater Schlüssel:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Pfad zum privaten SSH Schlüssel</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
@@ -553,9 +555,9 @@
   <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">MONAT</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">WOCHE</x:String>
-  <x:String x:Key="Text.Statistics.ThisYear" xml:space="preserve">JAHR</x:String>
+  <x:String x:Key="Text.Statistics.MostRecentYear" xml:space="preserve">JAHR</x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
-  <x:String x:Key="Text.Statistics.TotalCommitters" xml:space="preserve">COMMITTERS: </x:String>
+  <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTOREN: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULE</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Submodul hinzufügen</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Relativen Pfad kopieren</x:String>

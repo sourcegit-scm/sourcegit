@@ -43,6 +43,7 @@ namespace SourceGit.Views
         private void OnRowHeaderDragOver(object sender, DragEventArgs e)
         {
             if (DataContext is ViewModels.InteractiveRebase vm &&
+                e.Data.Contains("InteractiveRebaseItem") &&
                 e.Data.Get("InteractiveRebaseItem") is ViewModels.InteractiveRebaseItem src &&
                 sender is Border { DataContext: ViewModels.InteractiveRebaseItem dst } border &&
                 src != dst)
@@ -88,9 +89,9 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDataGridKeyDown(object sender, KeyEventArgs e)
+        private void OnItemsListBoxKeyDown(object sender, KeyEventArgs e)
         {
-            var item = (sender as DataGrid)?.SelectedItem as ViewModels.InteractiveRebaseItem;
+            var item = (sender as ListBox)?.SelectedItem as ViewModels.InteractiveRebaseItem;
             if (item == null)
                 return;
 

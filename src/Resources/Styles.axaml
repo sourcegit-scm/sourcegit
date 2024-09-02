@@ -191,6 +191,38 @@
   <Style Selector="FlyoutPresenter">
     <Setter Property="MaxWidth" Value="1024"/>
     <Setter Property="MaxHeight" Value="768"/>
+    <Setter Property="Padding" Value="0"/>
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid>
+          <Border Background="{DynamicResource Brush.Popup}" BorderThickness="0" Margin="4" CornerRadius="{TemplateBinding CornerRadius}">
+            <Border.Effect>
+              <DropShadowEffect OffsetX="0" OffsetY="0" BlurRadius="4" Color="Black" Opacity=".6"/>
+            </Border.Effect>
+          </Border>
+          
+          <Border Name="LayoutRoot"
+                  Margin="4"
+                  Padding="12"
+                  Background="{DynamicResource Brush.Popup}"
+                  BorderThickness="0"
+                  CornerRadius="{TemplateBinding CornerRadius}">
+            <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                          VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+              <ContentPresenter x:Name="PART_ContentPresenter"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Margin="0"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch" />
+            </ScrollViewer>
+          </Border>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
   </Style>
 
   <Style Selector="Path">
@@ -395,39 +427,6 @@
   <Style Selector="DataValidationErrors Path">
     <Setter Property="Fill" Value="Transparent" />
     <Setter Property="Stroke" Value="Red"/>
-  </Style>
-
-  <Style Selector="Button.caption_button_macos">
-    <Setter Property="Width" Value="24"/>
-    <Setter Property="Height" Value="24"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="VerticalAlignment" Value="Center"/>
-  </Style>
-  <Style Selector="Button.caption_button_macos:nth-child(1)">
-    <Setter Property="Margin" Value="6,0,0,0"/>
-  </Style>
-  <Style Selector="Button.caption_button_macos Ellipse">
-    <Setter Property="Width" Value="14"/>
-    <Setter Property="Height" Value="14"/>
-    <Setter Property="VerticalAlignment" Value="Center"/>
-    <Setter Property="StrokeThickness" Value=".5"/>
-    <Setter Property="Stroke" Value="#40000000"/>
-  </Style>
-  <Style Selector="Button.caption_button_macos Path">
-    <Setter Property="Width" Value="8"/>
-    <Setter Property="Height" Value="8"/>
-    <Setter Property="Fill" Value="Black"/>
-    <Setter Property="IsVisible" Value="False"/>
-    <Setter Property="VerticalAlignment" Value="Center"/>
-  </Style>
-  <Style Selector="Grid.caption_button_box:pointerover Button.caption_button_macos Path">
-    <Setter Property="IsVisible" Value="True"/>
-  </Style>
-  <Style Selector="Button.caption_button_macos /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
-  <Style Selector="Button.caption_button_macos:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="Transparent"/>
   </Style>
 
   <Style Selector="Button.caption_button">
@@ -1294,22 +1293,6 @@
   <Style Selector="TabItem:selected TextBlock.tab_header">
     <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}"/>
     <Setter Property="Opacity" Value="1"/>
-  </Style>
-
-  <Style Selector="DataGrid /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
-    <Setter Property="IsVisible" Value="False"/>
-  </Style>
-  <Style Selector="DataGridCell">
-    <Setter Property="MinHeight" Value="24"/>
-  </Style>
-  <Style Selector="DataGridCell:focus /template/ Grid#FocusVisual">
-    <Setter Property="IsVisible" Value="False"/>
-  </Style>
-  <Style Selector="DataGridRow /template/ Rectangle#PART_BottomGridLine">
-    <Setter Property="IsVisible" Value="False"/>
-  </Style>
-  <Style Selector="DataGridRow /template/ DataGridDetailsPresenter#PART_DetailsPresenter">
-    <Setter Property="IsVisible" Value="False"/>
   </Style>
 
   <Style Selector="NumericUpDown">

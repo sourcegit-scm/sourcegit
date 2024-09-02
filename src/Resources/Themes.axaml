@@ -2,9 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.ThemeDictionaries>
     <ResourceDictionary x:Key="Light">
-      <Color x:Key="Color.MacOS.Close">#FFFF6059</Color>
-      <Color x:Key="Color.MacOS.Minimize">#FFFFBE2F</Color>
-      <Color x:Key="Color.MacOS.Maximize">#FF29c941</Color>
       <Color x:Key="Color.Window">#FFF0F5F9</Color>
       <Color x:Key="Color.WindowBorder">#00000000</Color>
       <Color x:Key="Color.TitleBar">#FFCFDEEA</Color>
@@ -37,9 +34,6 @@
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
-      <Color x:Key="Color.MacOS.Close">#FFFF5E56</Color>
-      <Color x:Key="Color.MacOS.Minimize">#FFFCBB2D</Color>
-      <Color x:Key="Color.MacOS.Maximize">#FF25C53C</Color>
       <Color x:Key="Color.Window">#FF252525</Color>
       <Color x:Key="Color.WindowBorder">#FF444444</Color>
       <Color x:Key="Color.TitleBar">#FF1F1F1F</Color>
@@ -71,10 +65,7 @@
       <Color x:Key="Color.Link">#4DAAFC</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
-
-  <SolidColorBrush x:Key="Brush.MacOS.Close" Color="{DynamicResource Color.MacOS.Close}"/>
-  <SolidColorBrush x:Key="Brush.MacOS.Minimize" Color="{DynamicResource Color.MacOS.Minimize}"/>
-  <SolidColorBrush x:Key="Brush.MacOS.Maximize" Color="{DynamicResource Color.MacOS.Maximize}"/>
+  
   <SolidColorBrush x:Key="Brush.Window" Color="{DynamicResource Color.Window}"/>
   <SolidColorBrush x:Key="Brush.WindowBorder" Color="{DynamicResource Color.WindowBorder}"/>
   <SolidColorBrush x:Key="Brush.TitleBar" Color="{DynamicResource Color.TitleBar}"/>

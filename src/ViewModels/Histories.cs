@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-using Avalonia.VisualTree;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -180,16 +180,76 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public ContextMenu MakeContextMenu(DataGrid datagrid)
+        public ContextMenu MakeContextMenu(ListBox list)
         {
-            if (datagrid.SelectedItems.Count != 1)
-                return null;
-
             var current = _repo.CurrentBranch;
             if (current == null)
                 return null;
 
-            var commit = (datagrid.SelectedItem as Models.Commit)!;
+            if (list.SelectedItems.Count > 1)
+            {
+                var selected = new List<Models.Commit>();
+                var canCherryPick = true;
+                foreach (var item in list.SelectedItems)
+                {
+                    if (item is Models.Commit c)
+                    {
+                        selected.Add(c);
+
+                        if (c.IsMerged || c.Parents.Count > 1)
+                            canCherryPick = false;
+                    }
+                }
+
+                var multipleMenu = new ContextMenu();
+
+                if (canCherryPick)
+                {
+                    var cherryPickMultiple = new MenuItem();
+                    cherryPickMultiple.Header = App.Text("CommitCM.CherryPickMultiple");
+                    cherryPickMultiple.Icon = App.CreateMenuIcon("Icons.CherryPick");
+                    cherryPickMultiple.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowPopup(new CherryPick(_repo, selected));
+                        e.Handled = true;
+                    };
+                    multipleMenu.Items.Add(cherryPickMultiple);
+                    multipleMenu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
+                var copyMultipleSHAs = new MenuItem();
+                copyMultipleSHAs.Header = App.Text("CommitCM.CopySHA");
+                copyMultipleSHAs.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyMultipleSHAs.Click += (_, e) =>
+                {
+                    var builder = new StringBuilder();
+                    foreach (var c in selected)
+                        builder.AppendLine(c.SHA);
+
+                    App.CopyText(builder.ToString());
+                    e.Handled = true;
+                };
+                multipleMenu.Items.Add(copyMultipleSHAs);
+
+                var copyMultipleInfo = new MenuItem();
+                copyMultipleInfo.Header = App.Text("CommitCM.CopyInfo");
+                copyMultipleInfo.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyMultipleInfo.Click += (_, e) =>
+                {
+                    var builder = new StringBuilder();
+                    foreach (var c in selected)
+                        builder.AppendLine($"{c.SHA.Substring(0, 10)} - {c.Subject}");
+
+                    App.CopyText(builder.ToString());
+                    e.Handled = true;
+                };
+                multipleMenu.Items.Add(copyMultipleInfo);
+
+                return multipleMenu;
+            }
+
+            var commit = (list.SelectedItem as Models.Commit)!;
             var menu = new ContextMenu();
             var tags = new List<Models.Tag>();
 
@@ -242,7 +302,7 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(reset);
-                
+
                 var squash = new MenuItem();
                 squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
                 squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
@@ -254,7 +314,7 @@ namespace SourceGit.ViewModels
                         App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
                         return;
                     }
-                    
+
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Squash(_repo, commit, commit.SHA));
 
@@ -324,7 +384,7 @@ namespace SourceGit.ViewModels
                 cherryPick.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new CherryPick(_repo, commit));
+                        PopupHost.ShowPopup(new CherryPick(_repo, [commit]));
                     e.Handled = true;
                 };
                 menu.Items.Add(cherryPick);
@@ -354,12 +414,11 @@ namespace SourceGit.ViewModels
                         return;
                     }
 
-                    var toplevel = datagrid.FindAncestorOfType<Views.Launcher>();
-                    if (toplevel == null)
-                        return;
+                    App.OpenDialog(new Views.InteractiveRebase()
+                    {
+                        DataContext = new InteractiveRebase(_repo, current, commit)
+                    });
 
-                    var dialog = new Views.InteractiveRebase() { DataContext = new InteractiveRebase(_repo, current, commit) };
-                    dialog.ShowDialog(toplevel);
                     e.Handled = true;
                 };
                 menu.Items.Add(interactiveRebase);
@@ -398,7 +457,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        datagrid.SelectedItems.Add(head);
+                        list.SelectedItems.Add(head);
                     }
 
                     e.Handled = true;
@@ -454,12 +513,19 @@ namespace SourceGit.ViewModels
                     return;
 
                 var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                var selected = await storageProvider.OpenFolderPickerAsync(options);
-                if (selected.Count == 1)
+                try
                 {
-                    var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, selected[0].Path.LocalPath).Exec();
-                    if (succ)
-                        App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                    var selected = await storageProvider.OpenFolderPickerAsync(options);
+                    if (selected.Count == 1)
+                    {
+                        var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, selected[0].Path.LocalPath).Exec();
+                        if (succ)
+                            App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(_repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
                 e.Handled = true;

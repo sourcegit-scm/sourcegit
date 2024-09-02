@@ -79,10 +79,9 @@
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
-  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick This Commit</x:String>
-  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit:</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit all changes</x:String>
-  <x:String x:Key="Text.CherryPick.Title" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Clear Stashes</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">You are trying to clear all stashes. Are you sure to continue?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">Clone Remote Repository</x:String>
@@ -95,6 +94,7 @@
   <x:String x:Key="Text.Close" xml:space="preserve">CLOSE</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick This Commit</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>
@@ -124,6 +124,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">PARENTS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">REFS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Open in Browser</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Enter commit subject</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Description</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository Configure</x:String>
@@ -318,6 +319,7 @@
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit staged changes</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit and push staged changes</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Discard selected changes</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Dashboard mode (Default)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Force to reload this repository</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Stage/Unstage selected changes</x:String>
@@ -335,7 +337,6 @@
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Discard</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Initialize Repository</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Path:</x:String>
-  <x:String x:Key="Text.Init.Tip" xml:space="preserve">Invalid repository detected. Run `git init` under this path?</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick in progress. Press 'Abort' to restore original HEAD.</x:String>
   <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge request in progress. Press 'Abort' to restore original HEAD.</x:String>
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase in progress. Press 'Abort' to restore original HEAD.</x:String>
@@ -525,6 +526,8 @@
   <x:String x:Key="Text.Save" xml:space="preserve">SAVE</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Save As...</x:String>
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Patch has been saved successfully!</x:String>
+  <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Scan Repositories</x:String>
+  <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Root Dir:</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Check for Updates...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">New version of this software is available: </x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Check for updates failed!</x:String>
@@ -555,9 +558,9 @@
   <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">MONTH</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">WEEK</x:String>
-  <x:String x:Key="Text.Statistics.ThisYear" xml:space="preserve">YEAR</x:String>
+  <x:String x:Key="Text.Statistics.MostRecentYear" xml:space="preserve">YEAR</x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
-  <x:String x:Key="Text.Statistics.TotalCommitters" xml:space="preserve">COMMITTERS: </x:String>
+  <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTHORS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULES</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Add Submodule</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copy Relative Path</x:String>
@@ -588,6 +591,7 @@
   <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Open All Repositories</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Open Repository</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Open Terminal</x:String>
+  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Rescan Repositories in Default Clone Dir</x:String>  
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Search Repositories...</x:String>
   <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Sort</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Changes</x:String>

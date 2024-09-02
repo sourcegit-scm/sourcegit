@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -82,7 +83,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void InitRepository(string path, RepositoryNode parent)
+        public void InitRepository(string path, RepositoryNode parent, string reason)
         {
             if (!Preference.Instance.IsGitConfigured())
             {
@@ -91,7 +92,7 @@ namespace SourceGit.ViewModels
             }
 
             if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new Init(path, parent));
+                PopupHost.ShowPopup(new Init(path, parent, reason));
         }
 
         public void Clone()
@@ -112,6 +113,17 @@ namespace SourceGit.ViewModels
                 App.RaiseException(PopupHost.Active.GetId(), App.Text("NotConfigured"));
             else
                 Native.OS.OpenTerminal(null);
+        }
+
+        public void ScanDefaultCloneDir()
+        {
+            var defaultCloneDir = Preference.Instance.GitDefaultCloneDir;
+            if (string.IsNullOrEmpty(defaultCloneDir))
+                App.RaiseException(PopupHost.Active.GetId(), "The default clone dir haven't been configured!");
+            else if (!Directory.Exists(defaultCloneDir))
+                App.RaiseException(PopupHost.Active.GetId(), $"The default clone dir '{defaultCloneDir}' is not exists!");
+            else if (PopupHost.CanCreatePopup())
+                PopupHost.ShowAndStartPopup(new ScanRepositories(defaultCloneDir));
         }
 
         public void ClearSearchFilter()

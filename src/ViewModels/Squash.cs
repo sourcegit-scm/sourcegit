@@ -22,7 +22,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _target = target;
             _message = new Commands.QueryCommitFullMessage(_repo.FullPath, shaToGetPreferMessage).Result();
-            
+
             View = new Views.Squash() { DataContext = this };
         }
 

@@ -10,7 +10,7 @@
                     x:DataType="vm:Statistics"
                     x:Name="ThisControl"
                     Title="{DynamicResource Text.Statistics}"
-                    Width="800" Height="450"
+                    Width="860" Height="500"
                     WindowStartupLocation="CenterOwner"
                     CanResize="False">
   <Grid RowDefinitions="Auto,Auto,*">
@@ -27,14 +27,10 @@
             Data="{StaticResource Icons.Statistics}"
             IsVisible="{OnPlatform True, macOS=False}"/>
 
-      <Grid Grid.Column="0" Classes="caption_button_box" Margin="2,4,0,0" IsVisible="{OnPlatform False, macOS=True}">
-        <Button Classes="caption_button_macos" Click="CloseWindow">
-          <Grid>
-            <Ellipse Fill="{DynamicResource Brush.MacOS.Close}"/>
-            <Path Height="6" Width="6" Stretch="Fill" Fill="#505050" Data="{StaticResource Icons.MacOS.Close}"/>
-          </Grid>
-        </Button>
-      </Grid>
+      <v:CaptionButtonsMacOS Grid.Column="0"
+                             Margin="0,2,0,0"
+                             IsCloseButtonOnly="True"
+                             IsVisible="{OnPlatform False, macOS=True}"/>
 
       <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
                  Classes="bold"
@@ -42,12 +38,9 @@
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
 
-      <Button Grid.Column="2"
-              Classes="caption_button"
-              Click="CloseWindow"
-              IsVisible="{OnPlatform True, macOS=False}">
-        <Path Data="{StaticResource Icons.Window.Close}"/>
-      </Button>
+      <v:CaptionButtons Grid.Column="2"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
     <!-- View mode switcher -->
@@ -110,7 +103,7 @@
 
       <ListBoxItem>
         <Border Classes="switcher_bg">
-          <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.ThisYear}"/>
+          <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.MostRecentYear}"/>
         </Border>
       </ListBoxItem>
 
@@ -134,53 +127,50 @@
           <Grid ColumnDefinitions="256,*" Margin="8,8,8,16">
             <Grid Grid.Column="0" RowDefinitions="*,16">
               <!-- Table By Committer -->
-              <DataGrid Grid.Row="0"
-                        ItemsSource="{Binding ByCommitter}"
-                        SelectionMode="Single"
-                        CanUserReorderColumns="False"
-                        CanUserResizeColumns="False"
-                        CanUserSortColumns="False"
-                        HeadersVisibility="Column"
-                        GridLinesVisibility="All"
-                        BorderThickness="1"
-                        BorderBrush="{DynamicResource Brush.Border2}"
-                        Background="{DynamicResource Brush.Contents}"
-                        HorizontalGridLinesBrush="{DynamicResource Brush.Border2}"
-                        VerticalGridLinesBrush="{DynamicResource Brush.Border2}"
-                        IsReadOnly="True"
-                        RowHeight="26"
-                        HorizontalScrollBarVisibility="Disabled"
-                        VerticalScrollBarVisibility="Auto">
-                <DataGrid.Styles>
-                  <Style Selector="DataGridColumnHeader">
-                    <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
-                    <Setter Property="Padding" Value="8,0,0,0"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
-                    <Setter Property="SeparatorBrush" Value="{DynamicResource Brush.Border2}" />
-
-                    <Style Selector="^:pointerover /template/ Grid#PART_ColumnHeaderRoot">
-                      <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
-                    </Style>
-
-                    <Style Selector="^:pressed /template/ Grid#PART_ColumnHeaderRoot">
-                      <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
-                    </Style>
+              <ListBox Grid.Column="0"
+                       ItemsSource="{Binding ByAuthor}"
+                       SelectionMode="Single"
+                       BorderThickness="1"
+                       BorderBrush="{DynamicResource Brush.Border2}"
+                       Background="{DynamicResource Brush.Contents}"
+                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                       ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.Styles>
+                  <Style Selector="ListBoxItem">
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Height" Value="26"/>
                   </Style>
-                </DataGrid.Styles>
-                
-                <DataGrid.Columns>
-                  <DataGridTextColumn Width="150" Header="{DynamicResource Text.Statistics.Committer}" Binding="{Binding Name}"/>
-                  <DataGridTextColumn Width="*" Header="{DynamicResource Text.Statistics.CommitAmount}" Binding="{Binding Count}"/>
-                </DataGrid.Columns>
-              </DataGrid>
+                </ListBox.Styles>
+
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="m:StatisticsSample">
+                    <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
+                      <Grid ColumnDefinitions="*,100">
+                        <Border Grid.Column="0" Padding="8,0" ClipToBounds="True">
+                          <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                        </Border>
+                        <Border Grid.Column="1" Padding="8,0" ClipToBounds="True">
+                          <TextBlock Text="{Binding Count}" HorizontalAlignment="Right"/>
+                        </Border>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
 
               <!-- Summary -->
               <Grid Grid.Row="1" ColumnDefinitions="*,*">
                 <!-- Total Committers -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Statistics.TotalCommitters}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Classes="primary" Text="{Binding ByCommitter.Count}" FontSize="11" Margin="4,0,0,0"/>
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Classes="primary" Text="{Binding ByAuthor.Count}" FontSize="11" Margin="4,0,0,0"/>
                 </StackPanel>
 
                 <!-- Total Commits -->
@@ -193,7 +183,7 @@
 
             <!-- Graph -->
             <v:Chart Grid.Column="1"
-                     Margin="16,0,0,0"
+                     Margin="16"
                      LabelBrush="{DynamicResource Brush.FG1}"
                      LineBrush="{DynamicResource Brush.Border2}"
                      ShapeBrush="{DynamicResource Brush.Accent}"

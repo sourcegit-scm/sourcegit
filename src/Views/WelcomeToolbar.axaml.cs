@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 using Avalonia.Controls;
@@ -30,9 +31,16 @@ namespace SourceGit.Views
                 options.SuggestedStartLocation = folder;
             }
 
-            var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
-            if (selected.Count == 1)
-                OpenOrInitRepository(selected[0].Path.LocalPath);
+            try
+            {
+                var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
+                if (selected.Count == 1)
+                    OpenOrInitRepository(selected[0].Path.LocalPath);
+            }
+            catch (Exception exception)
+            {
+                App.RaiseException(string.Empty, $"Failed to open repository: {exception.Message}");
+            }
 
             e.Handled = true;
         }
@@ -47,14 +55,14 @@ namespace SourceGit.Views
                     return;
             }
 
-            var root = new Commands.QueryRepositoryRootPath(path).Result();
-            if (string.IsNullOrEmpty(root))
+            var test = new Commands.QueryRepositoryRootPath(path).ReadToEnd();
+            if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
             {
-                ViewModels.Welcome.Instance.InitRepository(path, parent);
+                ViewModels.Welcome.Instance.InitRepository(path, parent, test.StdErr);
                 return;
             }
 
-            var normalizedPath = root.Replace("\\", "/");
+            var normalizedPath = test.StdOut.Trim().Replace("\\", "/");
             var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, parent, false);
             ViewModels.Welcome.Instance.Refresh();
 

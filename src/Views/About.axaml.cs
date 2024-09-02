@@ -1,7 +1,5 @@
 using System.Reflection;
-
 using Avalonia.Input;
-using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -26,11 +24,6 @@ namespace SourceGit.Views
         private void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             BeginMoveDrag(e);
-        }
-
-        private void CloseWindow(object _1, RoutedEventArgs _2)
-        {
-            Close();
         }
 
         private void OnVisitAvaloniaUI(object _, PointerPressedEventArgs e)

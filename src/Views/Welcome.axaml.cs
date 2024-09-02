@@ -73,7 +73,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTreeViewKeyDown(object sender, KeyEventArgs e)
+        private void OnTreeViewKeyDown(object _, KeyEventArgs e)
         {
             if (TreeContainer.SelectedItem is ViewModels.RepositoryNode node && e.Key == Key.Enter)
             {
@@ -163,7 +163,7 @@ namespace SourceGit.Views
 
         private void DropOnTreeView(object sender, DragEventArgs e)
         {
-            if (e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
+            if (e.Data.Contains("MovedRepositoryTreeNode") && e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
             {
                 e.Handled = true;
                 ViewModels.Welcome.Instance.MoveNode(moved, null);
@@ -224,7 +224,8 @@ namespace SourceGit.Views
                 return;
             }
 
-            if (e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
+            if (e.Data.Contains("MovedRepositoryTreeNode") && 
+                e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
             {
                 e.Handled = true;
 
@@ -279,14 +280,14 @@ namespace SourceGit.Views
                     return;
             }
 
-            var root = new Commands.QueryRepositoryRootPath(path).Result();
-            if (string.IsNullOrEmpty(root))
+            var test = new Commands.QueryRepositoryRootPath(path).ReadToEnd();
+            if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
             {
-                ViewModels.Welcome.Instance.InitRepository(path, parent);
+                ViewModels.Welcome.Instance.InitRepository(path, parent, test.StdErr);
                 return;
             }
 
-            var normalizedPath = root.Replace("\\", "/");
+            var normalizedPath = test.StdOut.Trim().Replace("\\", "/");
             var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
             ViewModels.Welcome.Instance.Refresh();
 

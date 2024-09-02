@@ -89,21 +89,24 @@ namespace SourceGit.Views
                 matches.Sort((l, r) => l.Start - r.Start);
                 _matches = matches;
 
-                int pos = 0;
+                var inlines = new List<Inline>();
+                var pos = 0;
                 foreach (var match in matches)
                 {
                     if (match.Start > pos)
-                        Inlines.Add(new Run(message.Substring(pos, match.Start - pos)));
+                        inlines.Add(new Run(message.Substring(pos, match.Start - pos)));
 
                     var link = new Run(message.Substring(match.Start, match.Length));
                     link.Classes.Add(match.IsCommitSHA ? "commit_link" : "issue_link");
-                    Inlines.Add(link);
+                    inlines.Add(link);
 
                     pos = match.Start + match.Length;
                 }
 
                 if (pos < message.Length)
-                    Inlines.Add(new Run(message.Substring(pos)));
+                    inlines.Add(new Run(message.Substring(pos)));
+
+                Inlines.AddRange(inlines);
             }
         }
 
@@ -111,7 +114,23 @@ namespace SourceGit.Views
         {
             base.OnPointerMoved(e);
 
-            if (e.Pointer.Captured == null && _matches != null)
+            if (e.Pointer.Captured == this)
+            {
+                var relativeSelfY = e.GetPosition(this).Y;
+                if (relativeSelfY <= 0 || relativeSelfY > Bounds.Height)
+                    return;
+
+                var scrollViewer = this.FindAncestorOfType<ScrollViewer>();
+                if (scrollViewer != null)
+                {
+                    var relativeY = e.GetPosition(scrollViewer).Y;
+                    if (relativeY <= 8)
+                        scrollViewer.LineUp();
+                    else if (relativeY >= scrollViewer.Bounds.Height - 8)
+                        scrollViewer.LineDown();
+                }
+            }
+            else if (_matches != null)
             {
                 var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
                 var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));

@@ -257,7 +257,7 @@
                    SelectionMode="Single"
                    ContextRequested="OnSubmoduleContextRequested"
                    DoubleTapped="OnDoubleTappedSubmodule"
-                   PropertyChanged="OnLeftSidebarDataGridPropertyChanged"
+                   PropertyChanged="OnLeftSidebarListBoxPropertyChanged"
                    IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}">
             <ListBox.Styles>
               <Style Selector="ListBoxItem">
@@ -312,7 +312,7 @@
                    SelectionMode="Single"
                    ContextRequested="OnWorktreeContextRequested"
                    DoubleTapped="OnDoubleTappedWorktree"
-                   PropertyChanged="OnLeftSidebarDataGridPropertyChanged"
+                   PropertyChanged="OnLeftSidebarListBoxPropertyChanged"
                    IsVisible="{Binding IsWorktreeGroupExpanded, Mode=OneWay}">
             <ListBox.Styles>
               <Style Selector="ListBoxItem">
@@ -444,49 +444,54 @@
             </ComboBox.Items>
           </ComboBox>
         </Grid>
+        
+        <ListBox Grid.Row="2"
+                 ItemsSource="{Binding SearchedCommits}"
+                 SelectionMode="Single"
+                 SelectedItem="{Binding SearchResultSelectedCommit, Mode=TwoWay}"
+                 BorderThickness="1"
+                 BorderBrush="{DynamicResource Brush.Border2}"
+                 Background="{DynamicResource Brush.Contents}"
+                 CornerRadius="4"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+          <ListBox.Styles>
+            <Style Selector="ListBoxItem">
+              <Setter Property="Margin" Value="0"/>
+              <Setter Property="Padding" Value="0"/>
+              <Setter Property="Height" Value="50"/>
+            </Style>
+            <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+              <Setter Property="Background" Value="Transparent" />
+            </Style>
+            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+              <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
+            </Style>
+          </ListBox.Styles>
 
-        <DataGrid Grid.Row="2"
-                  ItemsSource="{Binding SearchedCommits}"
-                  SelectionMode="Single"
-                  SelectedItem="{Binding SearchResultSelectedCommit, Mode=OneWay}"
-                  CanUserReorderColumns="False"
-                  CanUserResizeColumns="False"
-                  CanUserSortColumns="False"
-                  IsReadOnly="True"
-                  HeadersVisibility="None"
-                  Focusable="False"
-                  RowHeight="50"
-                  BorderThickness="1"
-                  BorderBrush="{DynamicResource Brush.Border2}"
-                  Background="{DynamicResource Brush.Contents}"
-                  CornerRadius="4"
-                  HorizontalScrollBarVisibility="Disabled"
-                  VerticalScrollBarVisibility="Auto"
-                  SelectionChanged="OnSearchResultDataGridSelectionChanged">
-          <DataGrid.Columns>
-            <DataGridTemplateColumn Width="*">
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate DataType="m:Commit">
-                  <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4">
-                    <Grid RowDefinitions="Auto,*">
-                      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
-                        <v:Avatar Width="16" Height="16"
-                                  VerticalAlignment="Center"
-                                  IsHitTestVisible="False"
-                                  User="{Binding Author}"/>
-                        <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                        <TextBlock Grid.Column="2" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-                        <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
-                      </Grid>
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <VirtualizingStackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
 
-                      <TextBlock Grid.Row="1" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
-                    </Grid>
-                  </Border>
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-          </DataGrid.Columns>
-        </DataGrid>
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="m:Commit">
+              <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4" Background="Transparent">
+                <Grid RowDefinitions="Auto,*">
+                  <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
+                    <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
+                    <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0" ClipToBounds="True"/>
+                    <TextBlock Grid.Column="2" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+                    <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                  </Grid>
+
+                  <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
 
         <Path Grid.Row="2"
               HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -604,6 +609,7 @@
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Histories">
             <v:Histories CurrentBranch="{Binding Repo.CurrentBranch}"
+                         AuthorNameColumnWidth="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.HistoriesAuthorColumnWidth, Mode=TwoWay}"
                          IssueTrackerRules="{Binding Repo.Settings.IssueTrackerRules}"
                          NavigationId="{Binding NavigationId}"/>
           </DataTemplate>
