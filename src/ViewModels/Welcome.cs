@@ -172,6 +172,18 @@ namespace SourceGit.ViewModels
             };
             menu.Items.Add(edit);
 
+            var move = new MenuItem();
+            move.Header = App.Text("Welcome.Move");
+            move.Icon = App.CreateMenuIcon("Icons.Move");
+            move.Click += (_, e) =>
+            {
+                if (PopupHost.CanCreatePopup())
+                    PopupHost.ShowPopup(new MoveRepositoryNode(node));
+
+                e.Handled = true;
+            };
+            menu.Items.Add(move);
+
             if (node.IsRepository)
             {
                 var explore = new MenuItem();

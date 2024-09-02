@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace SourceGit.ViewModels
+{
+    public class MoveRepositoryNode : Popup
+    {
+        public RepositoryNode Target
+        {
+            get;
+            private set;
+        } = null;
+
+        public List<RepositoryNode> Rows
+        {
+            get;
+            private set;
+        } = [];
+
+        public RepositoryNode Selected
+        {
+            get => _selected;
+            set => SetProperty(ref _selected, value);
+        }
+
+        public MoveRepositoryNode(RepositoryNode target)
+        {
+            Target = target;
+            Rows.Add(new RepositoryNode() { 
+                Name = "ROOT", 
+                Depth = 0, 
+                Id = Guid.NewGuid().ToString() 
+            });
+            MakeRows(Preference.Instance.RepositoryNodes, 1);
+
+            View = new Views.MoveRepositoryNode() { DataContext = this };
+        }
+
+        public override Task<bool> Sure()
+        {
+            if (_selected != null)
+            {
+                var node = Preference.Instance.FindNode(_selected.Id);
+                Preference.Instance.MoveNode(Target, node, true);
+                Welcome.Instance.Refresh();
+            }
+
+            return null;
+        }
+
+        private void MakeRows(List<RepositoryNode> collection, int depth)
+        {
+            foreach (var node in collection)
+            {
+                if (node.IsRepository || node.Id == Target.Id)
+                    continue;
+
+                var dump = new RepositoryNode()
+                {
+                    Name = node.Name,
+                    Depth = depth,
+                    Id = node.Id
+                };
+                Rows.Add(dump);
+                MakeRows(node.SubNodes, depth + 1);
+            }
+        }
+
+        private RepositoryNode _selected = null;
+    }
+}

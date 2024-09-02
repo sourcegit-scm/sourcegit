@@ -1,0 +1,89 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.MoveRepositoryNode"
+             x:DataType="vm:MoveRepositoryNode">
+  <StackPanel Orientation="Vertical" Margin="8,0,0,0">
+    <TextBlock FontSize="18"
+               Classes="bold"
+               Text="{DynamicResource Text.MoveRepositoryNode}"/>
+
+    <StackPanel Height="28" Margin="4,16,4,0" Orientation="Horizontal">
+      <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" Text="{DynamicResource Text.MoveRepositoryNode.Target}"/>
+      <TextBlock VerticalAlignment="Center" Text="{Binding Target.Name, Mode=OneTime}"/>
+    </StackPanel>
+
+    <ListBox x:Name="TreeContainer"
+             Margin="4,0"
+             Padding="4"
+             MinHeight="28"
+             MaxHeight="100"
+             Focusable="True"
+             BorderThickness="1"
+             BorderBrush="{DynamicResource Brush.Border2}"
+             CornerRadius="4"
+             Background="{DynamicResource Brush.Contents}"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Auto"
+             ItemsSource="{Binding Rows}"
+             SelectionMode="Single"
+             SelectedItem="{Binding Selected, Mode=TwoWay}">
+      <ListBox.Styles>
+        <Style Selector="ListBox">
+          <Setter Property="FocusAdorner">
+            <FocusAdornerTemplate>
+              <Border Background="Transparent" BorderThickness="0"/>
+            </FocusAdornerTemplate>
+          </Setter>
+        </Style>
+
+        <Style Selector="ListBoxItem" x:DataType="vm:RepositoryNode">
+          <Setter Property="Margin" Value="0"/>
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="Height" Value="30"/>
+          <Setter Property="CornerRadius" Value="4"/>
+          <Setter Property="FocusAdorner">
+            <FocusAdornerTemplate>
+              <Border Background="Transparent" BorderThickness="0"/>
+            </FocusAdornerTemplate>
+          </Setter>
+        </Style>
+      </ListBox.Styles>
+
+      <ListBox.ItemTemplate>
+        <DataTemplate DataType="vm:RepositoryNode">
+          <Grid Background="Transparent"
+                Height="30"
+                ColumnDefinitions="16,18,Auto,*"
+                Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+                ClipToBounds="True">
+            <ToggleButton Grid.Column="0"
+                          Classes="tree_expander"
+                          Focusable="False"
+                          HorizontalAlignment="Center"
+                          IsChecked="True"
+                          IsHitTestVisible="False"/>
+
+            <ToggleButton Grid.Column="1"
+                          Classes="folder"
+                          Focusable="False"
+                          Width="14" Height="14"
+                          HorizontalAlignment="Left"
+                          Foreground="{DynamicResource Brush.FG1}"
+                          IsChecked="True"/>
+
+            <TextBlock Grid.Column="2"
+                       Classes="primary"
+                       VerticalAlignment="Center"
+                       Text="{Binding Name}"/>
+          </Grid>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </StackPanel>
+</UserControl>

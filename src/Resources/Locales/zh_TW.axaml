@@ -357,6 +357,8 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合併方式:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合併分支:</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">調整存放庫分組</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">請選擇目標分組：</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">名稱:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">尚未設定 Git。請開啟 [偏好設定] 以設定 Git 路徑。</x:String>
   <x:String x:Key="Text.Notice" xml:space="preserve">系統提示</x:String>
@@ -591,6 +593,7 @@
   <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">刪除</x:String>
   <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">支援拖放以新增目錄與自訂群組。</x:String>
   <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">編輯</x:String>
+  <x:String x:Key="Text.Welcome.Move" xml:space="preserve">調整存放庫分組</x:String>
   <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">開啟所有包含存放庫</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">開啟本機存放庫</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">開啟終端機</x:String>
