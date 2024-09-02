@@ -75,6 +75,12 @@ namespace SourceGit
             AvaloniaXamlLoader.Load(this);
 
             var pref = ViewModels.Preference.Instance;
+            pref.PropertyChanged += (_1, _2) =>
+            {
+#pragma warning disable CS4014
+                pref.SaveAsync();
+#pragma warning restore CS4014
+            };
             SetLocale(pref.Locale);
             SetTheme(pref.Theme, pref.ThemeOverrides);
             SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
@@ -522,7 +528,6 @@ namespace SourceGit
             var pref = ViewModels.Preference.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
             {
-                pref.Save();
                 Check4Update();
             }
         }
