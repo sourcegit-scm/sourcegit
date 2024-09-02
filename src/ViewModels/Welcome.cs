@@ -162,30 +162,17 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
-            var edit = new MenuItem();
-            edit.Header = App.Text("Welcome.Edit");
-            edit.Icon = App.CreateMenuIcon("Icons.Edit");
-            edit.Click += (_, e) =>
-            {
-                node.Edit();
-                e.Handled = true;
-            };
-            menu.Items.Add(edit);
-
-            var move = new MenuItem();
-            move.Header = App.Text("Welcome.Move");
-            move.Icon = App.CreateMenuIcon("Icons.MoveToAnthorGroup");
-            move.Click += (_, e) =>
-            {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new MoveRepositoryNode(node));
-
-                e.Handled = true;
-            };
-            menu.Items.Add(move);
-
             if (node.IsRepository)
             {
+                var open = new MenuItem();
+                open.Header = App.Text("Welcome.OpenOrInit");
+                open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                open.Click += (_, e) =>
+                {
+                    App.GetLauncer()?.OpenRepositoryInTab(node, null);
+                    e.Handled = true;
+                };
+
                 var explore = new MenuItem();
                 explore.Header = App.Text("Repository.Explore");
                 explore.Icon = App.CreateMenuIcon("Icons.Explore");
@@ -194,7 +181,6 @@ namespace SourceGit.ViewModels
                     node.OpenInFileManager();
                     e.Handled = true;
                 };
-                menu.Items.Add(explore);
 
                 var terminal = new MenuItem();
                 terminal.Header = App.Text("Repository.Terminal");
@@ -204,7 +190,12 @@ namespace SourceGit.ViewModels
                     node.OpenTerminal();
                     e.Handled = true;
                 };
+
+                menu.Items.Add(open);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(explore);
                 menu.Items.Add(terminal);
+                menu.Items.Add(new MenuItem() { Header = "-" });
             }
             else
             {
@@ -219,6 +210,26 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(addSubFolder);
             }
 
+            var edit = new MenuItem();
+            edit.Header = App.Text("Welcome.Edit");
+            edit.Icon = App.CreateMenuIcon("Icons.Edit");
+            edit.Click += (_, e) =>
+            {
+                node.Edit();
+                e.Handled = true;
+            };
+
+            var move = new MenuItem();
+            move.Header = App.Text("Welcome.Move");
+            move.Icon = App.CreateMenuIcon("Icons.MoveToAnthorGroup");
+            move.Click += (_, e) =>
+            {
+                if (PopupHost.CanCreatePopup())
+                    PopupHost.ShowPopup(new MoveRepositoryNode(node));
+
+                e.Handled = true;
+            };
+
             var delete = new MenuItem();
             delete.Header = App.Text("Welcome.Delete");
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
@@ -227,6 +238,10 @@ namespace SourceGit.ViewModels
                 node.Delete();
                 e.Handled = true;
             };
+
+            menu.Items.Add(edit);
+            menu.Items.Add(move);
+            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(delete);
 
             return menu;
