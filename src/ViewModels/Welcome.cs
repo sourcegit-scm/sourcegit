@@ -174,7 +174,7 @@ namespace SourceGit.ViewModels
 
             var move = new MenuItem();
             move.Header = App.Text("Welcome.Move");
-            move.Icon = App.CreateMenuIcon("Icons.Move");
+            move.Icon = App.CreateMenuIcon("Icons.MoveToAnthorGroup");
             move.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
