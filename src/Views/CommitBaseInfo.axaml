@@ -65,7 +65,7 @@
             </Button>
 
             <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenContainsIn" IsVisible="{Binding #ThisControl.SupportsContainsIn}" ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.ContainsIn}">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.Relation}"/>
+              <Path Width="14" Height="14" Margin="0,1,0,0" Data="{StaticResource Icons.Relation}"/>
             </Button>
 
             <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenWebLink" IsVisible="{Binding #ThisControl.WebLinks, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}" ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.WebLinks}">
