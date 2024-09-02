@@ -22,15 +22,17 @@
           <Grid>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" MinWidth="100"/>
-              <ColumnDefinition Width="1"/>
+              <ColumnDefinition Width="3"/>
               <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=TwoWay}" MinWidth="80"/>
               <ColumnDefinition Width="96" MaxWidth="96" MinWidth="96"/>
               <ColumnDefinition Width="156" MaxWidth="156" MinWidth="156"/>
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
-            <GridSplitter Grid.Column="1" Width="1" MinWidth="0.5" Background="{DynamicResource Brush.Border0}" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
-            <TextBlock Grid.Column="2" Classes="table_header" Text="{DynamicResource Text.Histories.Header.Author}" HorizontalAlignment="Center"/>
+            <GridSplitter Grid.Column="1" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Border Grid.Column="2" BorderThickness="1,0,0,0" BorderBrush="{DynamicResource Brush.Border0}" ClipToBounds="True">
+              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Author}" HorizontalAlignment="Center"/>
+            </Border>
             <Border Grid.Column="3" BorderThickness="1,0" BorderBrush="{DynamicResource Brush.Border0}" ClipToBounds="True">
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.SHA}" HorizontalAlignment="Center"/>
             </Border>
