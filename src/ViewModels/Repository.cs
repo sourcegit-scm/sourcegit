@@ -1990,7 +1990,7 @@ namespace SourceGit.ViewModels
         private bool _isSearching = false;
         private bool _isSearchLoadingVisible = false;
         private bool _isSearchCommitSuggestionOpen = false;
-        private int _searchCommitFilterType = 0;
+        private int _searchCommitFilterType = 2;
         private bool _enableFirstParentInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
