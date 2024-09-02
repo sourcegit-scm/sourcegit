@@ -139,7 +139,7 @@ namespace SourceGit.ViewModels
 
         public void MoveNode(RepositoryNode from, RepositoryNode to)
         {
-            Preference.Instance.MoveNode(from, to);
+            Preference.Instance.MoveNode(from, to, true);
             Refresh();
         }
 
