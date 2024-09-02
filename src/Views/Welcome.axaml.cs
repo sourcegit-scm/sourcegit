@@ -73,7 +73,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTreeViewKeyDown(object sender, KeyEventArgs e)
+        private void OnTreeViewKeyDown(object _, KeyEventArgs e)
         {
             if (TreeContainer.SelectedItem is ViewModels.RepositoryNode node && e.Key == Key.Enter)
             {
@@ -163,7 +163,7 @@ namespace SourceGit.Views
 
         private void DropOnTreeView(object sender, DragEventArgs e)
         {
-            if (e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
+            if (e.Data.Contains("MovedRepositoryTreeNode") && e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
             {
                 e.Handled = true;
                 ViewModels.Welcome.Instance.MoveNode(moved, null);
@@ -224,7 +224,8 @@ namespace SourceGit.Views
                 return;
             }
 
-            if (e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
+            if (e.Data.Contains("MovedRepositoryTreeNode") && 
+                e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
             {
                 e.Handled = true;
 

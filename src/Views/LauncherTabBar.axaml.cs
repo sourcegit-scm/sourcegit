@@ -216,7 +216,8 @@ namespace SourceGit.Views
 
         private void DropTab(object sender, DragEventArgs e)
         {
-            if (e.Data.Get("MovedTab") is ViewModels.LauncherPage moved &&
+            if (e.Data.Contains("MovedTab") &&
+                e.Data.Get("MovedTab") is ViewModels.LauncherPage moved &&
                 sender is Border { DataContext: ViewModels.LauncherPage to } &&
                 to != moved)
             {
