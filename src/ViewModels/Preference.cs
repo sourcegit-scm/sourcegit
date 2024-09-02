@@ -356,6 +356,9 @@ namespace SourceGit.ViewModels
 
                 return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
+#pragma warning disable CS4014
+            SaveAsync();
+#pragma warning restore CS4014
         }
 
         public RepositoryNode FindNode(string id)
@@ -400,6 +403,9 @@ namespace SourceGit.ViewModels
         public void RemoveNode(RepositoryNode node)
         {
             RemoveNodeRecursive(node, RepositoryNodes);
+#pragma warning disable CS4014
+            SaveAsync();
+#pragma warning restore CS4014
         }
 
         public void SortByRenamedNode(RepositoryNode node)
@@ -412,6 +418,9 @@ namespace SourceGit.ViewModels
 
                 return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
+#pragma warning disable CS4014
+            SaveAsync();
+#pragma warning restore CS4014
         }
 
         public void Save()
@@ -444,14 +453,6 @@ namespace SourceGit.ViewModels
 
             var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
             await File.WriteAllTextAsync(_savePath, data);
-        }
-
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            base.OnPropertyChanged(e);
-#pragma warning disable CS4014
-            SaveAsync();
-#pragma warning restore CS4014
         }
 
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)

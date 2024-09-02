@@ -261,9 +261,6 @@ namespace SourceGit.Views
             if (sender is CheckBox box)
             {
                 ViewModels.Preference.Instance.UseSystemWindowFrame = box.IsChecked == true;
-#pragma warning disable CS4014
-                ViewModels.Preference.Instance.SaveAsync();
-#pragma warning restore CS4014
 
                 var dialog = new ConfirmRestart();
                 App.OpenDialog(dialog);
