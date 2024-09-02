@@ -267,10 +267,31 @@ namespace SourceGit.ViewModels
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
             explore.Icon = App.CreateMenuIcon("Icons.Explore");
-            explore.IsVisible = File.Exists(fullPath);
+            explore.IsEnabled = File.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
                 Native.OS.OpenInFileManager(fullPath, true);
+                ev.Handled = true;
+            };
+
+            var history = new MenuItem();
+            history.Header = App.Text("FileHistory");
+            history.Icon = App.CreateMenuIcon("Icons.Histories");
+            history.Click += (_, ev) =>
+            {
+                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
+                window.Show();
+                ev.Handled = true;
+            };
+
+            var blame = new MenuItem();
+            blame.Header = App.Text("Blame");
+            blame.Icon = App.CreateMenuIcon("Icons.Blame");
+            blame.IsEnabled = change.Index != Models.ChangeState.Deleted;
+            blame.Click += (_, ev) =>
+            {
+                var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, change.Path, _commit.SHA) };
+                window.Show();
                 ev.Handled = true;
             };
 
@@ -278,33 +299,9 @@ namespace SourceGit.ViewModels
             menu.Items.Add(diffWithMerger);
             menu.Items.Add(explore);
             menu.Items.Add(new MenuItem { Header = "-" });
-
-            if (change.Index != Models.ChangeState.Deleted)
-            {
-                var history = new MenuItem();
-                history.Header = App.Text("FileHistory");
-                history.Icon = App.CreateMenuIcon("Icons.Histories");
-                history.Click += (_, ev) =>
-                {
-                    var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
-                    window.Show();
-                    ev.Handled = true;
-                };
-
-                var blame = new MenuItem();
-                blame.Header = App.Text("Blame");
-                blame.Icon = App.CreateMenuIcon("Icons.Blame");
-                blame.Click += (_, ev) =>
-                {
-                    var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, change.Path, _commit.SHA) };
-                    window.Show();
-                    ev.Handled = true;
-                };
-
-                menu.Items.Add(history);
-                menu.Items.Add(blame);
-                menu.Items.Add(new MenuItem { Header = "-" });
-            }
+            menu.Items.Add(history);
+            menu.Items.Add(blame);
+            menu.Items.Add(new MenuItem { Header = "-" });
 
             var resetToThisRevision = new MenuItem();
             resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");

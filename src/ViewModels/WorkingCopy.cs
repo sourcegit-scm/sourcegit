@@ -952,6 +952,16 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
 
+                var history = new MenuItem();
+                history.Header = App.Text("FileHistory");
+                history.Icon = App.CreateMenuIcon("Icons.Histories");
+                history.Click += (_, e) =>
+                {
+                    var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
+                    window.Show();
+                    e.Handled = true;
+                };
+
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -976,6 +986,8 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(unstage);
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(history);
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
                 var lfsEnabled = new Commands.LFS(_repo.FullPath).IsEnabled();
