@@ -437,6 +437,7 @@
   <Style Selector="Button.caption_button > Path">
     <Setter Property="Width" Value="10"/>
     <Setter Property="Height" Value="10"/>
+    <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
   </Style>
   <Style Selector="Button.caption_button /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
