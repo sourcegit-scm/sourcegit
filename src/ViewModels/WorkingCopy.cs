@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -322,8 +323,9 @@ namespace SourceGit.ViewModels
 
         public void StageSelected()
         {
+            var nextSelection = CalculateNextSelection(_selectedUnstaged, Unstaged);
             StageChanges(_selectedUnstaged);
-            SelectedUnstaged = [];
+            SelectedUnstaged = nextSelection;
         }
 
         public void StageAll()
@@ -359,8 +361,9 @@ namespace SourceGit.ViewModels
 
         public void UnstageSelected()
         {
+            var nextSelection = CalculateNextSelection(_selectedStaged, Staged);
             UnstageChanges(_selectedStaged);
-            SelectedStaged = [];
+            SelectedStaged = nextSelection;
         }
 
         public void UnstageAll()
@@ -1355,6 +1358,19 @@ namespace SourceGit.ViewModels
             }
 
             return false;
+        }
+
+        private static List<Models.Change> CalculateNextSelection(List<Models.Change> selected, List<Models.Change> all)
+        {
+            var indices = selected.Select(x => all.IndexOf(x)).ToArray();
+            var min = indices.Min();
+            var next = min + 1;
+            while (indices.Contains(next))
+                next++;
+            if (next >= all.Count)
+                next = min - 1;
+            List<Models.Change> nextSelection = next >= 0 ? [all[next]] : [];
+            return nextSelection;
         }
 
         private Repository _repo = null;
