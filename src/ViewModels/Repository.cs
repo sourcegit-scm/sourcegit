@@ -83,17 +83,18 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public string SearchBranchFilter
+        public string Filter
         {
-            get => _searchBranchFilter;
+            get => _filter;
             set
             {
-                if (SetProperty(ref _searchBranchFilter, value))
+                if (SetProperty(ref _filter, value))
                 {
                     var builder = BuildBranchTree(_branches, _remotes);
                     LocalBranchTrees = builder.Locals;
                     RemoteBranchTrees = builder.Remotes;
                     VisibleTags = BuildVisibleTags();
+                    VisibleSubmodules = BuildVisibleSubmodules();
                 }
             }
         }
@@ -150,6 +151,12 @@ namespace SourceGit.ViewModels
         {
             get => _submodules;
             private set => SetProperty(ref _submodules, value);
+        }
+
+        public List<Models.Submodule> VisibleSubmodules
+        {
+            get => _visibleSubmodules;
+            private set => SetProperty(ref _visibleSubmodules, value);
         }
 
         public int LocalChangesCount
@@ -391,6 +398,7 @@ namespace SourceGit.ViewModels
             _tags.Clear();
             _visibleTags.Clear();
             _submodules.Clear();
+            _visibleSubmodules.Clear();
             _searchedCommits.Clear();
 
             _revisionFiles.Clear();
@@ -525,6 +533,11 @@ namespace SourceGit.ViewModels
             PopupHost.ShowAndStartPopup(new Cleanup(this));
         }
 
+        public void ClearFilter()
+        {
+            Filter = string.Empty;
+        }
+
         public void ClearHistoriesFilter()
         {
             _settings.Filters.Clear();
@@ -580,11 +593,6 @@ namespace SourceGit.ViewModels
                     IsSearchLoadingVisible = false;
                 });
             });
-        }
-
-        public void ClearSearchBranchFilter()
-        {
-            SearchBranchFilter = string.Empty;
         }
 
         public void SetWatcherEnabled(bool enabled)
@@ -811,7 +819,12 @@ namespace SourceGit.ViewModels
         {
             var submodules = new Commands.QuerySubmodules(_fullpath).Result();
             _watcher?.SetSubmodules(submodules);
-            Dispatcher.UIThread.Invoke(() => Submodules = submodules);
+
+            Dispatcher.UIThread.Invoke(() =>
+            {
+                Submodules = submodules;
+                VisibleSubmodules = BuildVisibleSubmodules();
+            });
         }
 
         public void RefreshWorkingCopyChanges()
@@ -1919,7 +1932,7 @@ namespace SourceGit.ViewModels
             var builder = new BranchTreeNode.Builder();
             builder.SetFilters(_settings.Filters);
 
-            if (string.IsNullOrEmpty(_searchBranchFilter))
+            if (string.IsNullOrEmpty(_filter))
             {
                 builder.CollectExpandedNodes(_localBranchTrees, true);
                 builder.CollectExpandedNodes(_remoteBranchTrees, false);
@@ -1930,7 +1943,7 @@ namespace SourceGit.ViewModels
                 var visibles = new List<Models.Branch>();
                 foreach (var b in branches)
                 {
-                    if (b.FullName.Contains(_searchBranchFilter, StringComparison.OrdinalIgnoreCase))
+                    if (b.FullName.Contains(_filter, StringComparison.OrdinalIgnoreCase))
                         visibles.Add(b);
                 }
 
@@ -1943,7 +1956,7 @@ namespace SourceGit.ViewModels
         private List<Models.Tag> BuildVisibleTags()
         {
             var visible = new List<Models.Tag>();
-            if (string.IsNullOrEmpty(_searchBranchFilter))
+            if (string.IsNullOrEmpty(_filter))
             {
                 visible.AddRange(_tags);
             }
@@ -1951,11 +1964,29 @@ namespace SourceGit.ViewModels
             {
                 foreach (var t in _tags)
                 {
-                    if (t.Name.Contains(_searchBranchFilter, StringComparison.OrdinalIgnoreCase))
+                    if (t.Name.Contains(_filter, StringComparison.OrdinalIgnoreCase))
                         visible.Add(t);
                 }
             }
 
+            return visible;
+        }
+
+        private List<Models.Submodule> BuildVisibleSubmodules()
+        {
+            var visible = new List<Models.Submodule>();
+            if (string.IsNullOrEmpty(_filter))
+            {
+                visible.AddRange(_submodules);
+            }
+            else
+            {
+                foreach (var s in _submodules)
+                {
+                    if (s.Path.Contains(_filter, StringComparison.OrdinalIgnoreCase))
+                        visible.Add(s);
+                }
+            }
             return visible;
         }
 
@@ -2002,8 +2033,7 @@ namespace SourceGit.ViewModels
         private bool _isSubmoduleGroupExpanded = false;
         private bool _isWorktreeGroupExpanded = false;
 
-        private string _searchBranchFilter = string.Empty;
-
+        private string _filter = string.Empty;
         private List<Models.Remote> _remotes = new List<Models.Remote>();
         private List<Models.Branch> _branches = new List<Models.Branch>();
         private Models.Branch _currentBranch = null;
@@ -2013,8 +2043,9 @@ namespace SourceGit.ViewModels
         private List<Models.Tag> _tags = new List<Models.Tag>();
         private List<Models.Tag> _visibleTags = new List<Models.Tag>();
         private List<Models.Submodule> _submodules = new List<Models.Submodule>();
-        private bool _includeUntracked = true;
+        private List<Models.Submodule> _visibleSubmodules = new List<Models.Submodule>();
 
+        private bool _includeUntracked = true;
         private InProgressContext _inProgressContext = null;
         private bool _hasUnsolvedConflicts = false;
         private Models.Commit _searchResultSelectedCommit = null;
