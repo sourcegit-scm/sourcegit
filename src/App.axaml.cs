@@ -75,7 +75,7 @@ namespace SourceGit
             AvaloniaXamlLoader.Load(this);
 
             var pref = ViewModels.Preference.Instance;
-            pref.PropertyChanged += (_1, _2) => pref.Save();
+            pref.PropertyChanged += (_, _) => pref.Save();
 
             SetLocale(pref.Locale);
             SetTheme(pref.Theme, pref.ThemeOverrides);
