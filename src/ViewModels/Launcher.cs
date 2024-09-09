@@ -35,36 +35,38 @@ namespace SourceGit.ViewModels
 
         public Launcher(string startupRepo)
         {
-            var pref = Preference.Instance;
-
             Pages = new AvaloniaList<LauncherPage>();
-            ActiveWorkspace = pref.GetActiveWorkspace();
             AddNewTab();
 
-            var repos = _activeWorkspace.Repositories.ToArray();
-            foreach (var repo in repos)
-            {
-                var node = pref.FindNode(repo);
-                if (node == null)
-                {
-                    node = new RepositoryNode()
-                    {
-                        Id = repo,
-                        Name = Path.GetFileName(repo),
-                        Bookmark = 0,
-                        IsRepository = true,
-                    };
-                }
-
-                OpenRepositoryInTab(node, null);
-            }
-
+            var pref = Preference.Instance;
             if (string.IsNullOrEmpty(startupRepo))
             {
+                ActiveWorkspace = pref.GetActiveWorkspace();
+
+                var repos = ActiveWorkspace.Repositories.ToArray();
+                foreach (var repo in repos)
+                {
+                    var node = pref.FindNode(repo);
+                    if (node == null)
+                    {
+                        node = new RepositoryNode()
+                        {
+                            Id = repo,
+                            Name = Path.GetFileName(repo),
+                            Bookmark = 0,
+                            IsRepository = true,
+                        };
+                    }
+
+                    OpenRepositoryInTab(node, null);
+                }
+
                 ActivePage = Pages[0];
             }
             else
             {
+                ActiveWorkspace = new Workspace() { Name = "Unnamed", Color = 4278221015 };
+
                 var test = new Commands.QueryRepositoryRootPath(startupRepo).ReadToEnd();
                 if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
                 {
