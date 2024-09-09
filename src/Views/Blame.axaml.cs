@@ -234,7 +234,6 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
             TextArea.LayoutUpdated += OnTextAreaLayoutUpdated;
-            TextArea.Caret.PositionChanged += OnCaretPositionChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.Margin = new Thickness(4, 0);
@@ -279,8 +278,7 @@ namespace SourceGit.Views
             base.OnUnloaded(e);
 
             TextArea.LeftMargins.Clear();
-            TextArea.LayoutUpdated += OnTextAreaLayoutUpdated;
-            TextArea.Caret.PositionChanged -= OnCaretPositionChanged;
+            TextArea.LayoutUpdated -= OnTextAreaLayoutUpdated;
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
@@ -315,16 +313,11 @@ namespace SourceGit.Views
 
         private void OnTextAreaLayoutUpdated(object sender, EventArgs e)
         {
-            InvalidateVisual();
-        }
-
-        private void OnCaretPositionChanged(object sender, EventArgs e)
-        {
             if (!TextArea.IsFocused)
                 return;
 
             var caret = TextArea.Caret;
-            if (caret.Line >= BlameData.LineInfos.Count)
+            if (caret == null || caret.Line >= BlameData.LineInfos.Count)
                 return;
 
             var info = BlameData.LineInfos[caret.Line - 1];
@@ -332,7 +325,12 @@ namespace SourceGit.Views
             {
                 _highlight = info.CommitSHA;
                 InvalidateVisual();
+                return;
             }
+
+            var offset = TextArea.TextView.VerticalOffset;
+            if (_lastOffsetY != offset)
+                InvalidateVisual();                
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -380,6 +378,7 @@ namespace SourceGit.Views
 
         private TextMate.Installation _textMate = null;
         private string _highlight = string.Empty;
+        private double _lastOffsetY = 0;
     }
 
     public partial class Blame : ChromelessWindow
