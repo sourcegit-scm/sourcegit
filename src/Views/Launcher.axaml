@@ -70,7 +70,13 @@
       </Button>
 
       <!-- Workspace Switcher -->
-      <Button Grid.Column="1" Classes="icon_button" VerticalAlignment="Bottom" Click="OnOpenWorkspaceMenu" ToolTip.Tip="{Binding ActiveWorkspace.Name}">
+      <Button Grid.Column="1" Classes="icon_button" VerticalAlignment="Bottom" Click="OnOpenWorkspaceMenu">
+        <ToolTip.Tip>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{DynamicResource Text.Workspace}" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}"/>
+            <TextBlock Text="{Binding ActiveWorkspace.Name}"/>
+          </StackPanel>
+        </ToolTip.Tip>
         <Path Width="14" Height="14" 
               Data="{StaticResource Icons.Workspace}"
               Fill="{Binding ActiveWorkspace.Brush}"/>

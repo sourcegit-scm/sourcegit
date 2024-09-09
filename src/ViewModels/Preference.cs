@@ -18,7 +18,9 @@ namespace SourceGit.ViewModels
                 if (_instance == null)
                 {
                     _isLoading = true;
-                    if (!File.Exists(_savePath))
+
+                    var path = Path.Combine(Native.OS.DataDir, "preference.json");
+                    if (!File.Exists(path))
                     {
                         _instance = new Preference();
                     }
@@ -26,7 +28,7 @@ namespace SourceGit.ViewModels
                     {
                         try
                         {
-                            _instance = JsonSerializer.Deserialize(File.ReadAllText(_savePath), JsonCodeGen.Default.Preference);
+                            _instance = JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preference);
                         }
                         catch
                         {
@@ -429,8 +431,9 @@ namespace SourceGit.ViewModels
 
         public void Save()
         {
+            var file = Path.Combine(Native.OS.DataDir, "preference.json");
             var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
-            File.WriteAllText(_savePath, data);
+            File.WriteAllText(file, data);
         }
 
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
@@ -482,7 +485,6 @@ namespace SourceGit.ViewModels
 
         private static Preference _instance = null;
         private static bool _isLoading = false;
-        private static readonly string _savePath = Path.Combine(Native.OS.DataDir, "preference.json");
 
         private string _locale = "en_US";
         private string _theme = "Default";

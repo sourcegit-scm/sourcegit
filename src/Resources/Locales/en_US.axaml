@@ -626,6 +626,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VIEW ASSUME UNCHANGED</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Template: ${0}$</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Right-click the selected file(s), and make your choice to resolve conflicts.</x:String>
+  <x:String x:Key="Text.Workspace" xml:space="preserve">WORKSPACE: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Configure...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">WORKTREE</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">Copy Path</x:String>

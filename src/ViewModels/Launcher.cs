@@ -125,6 +125,7 @@ namespace SourceGit.ViewModels
                 var last = Pages[0];
                 if (last.Data is Repository repo)
                 {
+                    ActiveWorkspace.Repositories.Remove(repo.FullPath);
                     Models.AutoFetchManager.Instance.RemoveRepository(repo.FullPath);
                     repo.Close();
 

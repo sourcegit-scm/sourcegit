@@ -629,6 +629,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">檢視不追蹤變更的檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">範本: ${0}$</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">請選擇發生衝突的檔案，開啟右鍵選單，選擇合適的解決方式</x:String>
+  <x:String x:Key="Text.Workspace" xml:space="preserve">工作區：</x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">配置工作區...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本機工作區</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">複製工作區路徑</x:String>
