@@ -138,7 +138,7 @@ namespace SourceGit.Views
 
             if (!GPGFormat.Value.Equals("ssh", StringComparison.Ordinal))
                 SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
-            
+
             base.OnClosing(e);
         }
 
@@ -261,7 +261,6 @@ namespace SourceGit.Views
             if (sender is CheckBox box)
             {
                 ViewModels.Preference.Instance.UseSystemWindowFrame = box.IsChecked == true;
-                ViewModels.Preference.Instance.Save();
 
                 var dialog = new ConfirmRestart();
                 App.OpenDialog(dialog);

@@ -339,7 +339,7 @@
           </MenuItem>
           
           <MenuItem Header="{DynamicResource Text.CopyAllText}"
-                    Command="{x:Static s:App.CopyTextCommand}"
+                    Command="{x:Static s:App.CopyTextBlockCommand}"
                     CommandParameter="{Binding $parent[SelectableTextBlock]}">
             <MenuItem.Icon>
               <Path Width="11" Height="11" Data="{StaticResource Icons.Copy}" VerticalAlignment="Center"/>
@@ -437,6 +437,7 @@
   <Style Selector="Button.caption_button > Path">
     <Setter Property="Width" Value="10"/>
     <Setter Property="Height" Value="10"/>
+    <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
   </Style>
   <Style Selector="Button.caption_button /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>

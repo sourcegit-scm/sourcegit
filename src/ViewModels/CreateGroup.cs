@@ -27,7 +27,7 @@ namespace SourceGit.ViewModels
                 Name = _name,
                 IsRepository = false,
                 IsExpanded = false,
-            }, _parent);
+            }, _parent, true);
 
             Welcome.Instance.Refresh();
             return null;

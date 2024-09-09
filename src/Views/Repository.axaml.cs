@@ -252,7 +252,7 @@ namespace SourceGit.Views
             var remoteBranchRows = vm.IsRemoteGroupExpanded ? RemoteBranchTree.Rows.Count : 0;
             var desiredBranches = (localBranchRows + remoteBranchRows) * 24.0;
             var desiredTag = vm.IsTagGroupExpanded ? 24.0 * TagsList.Rows : 0;
-            var desiredSubmodule = vm.IsSubmoduleGroupExpanded ? 24.0 * vm.Submodules.Count : 0;
+            var desiredSubmodule = vm.IsSubmoduleGroupExpanded ? 24.0 * vm.VisibleSubmodules.Count : 0;
             var desiredWorktree = vm.IsWorktreeGroupExpanded ? 24.0 * vm.Worktrees.Count : 0;
             var desiredOthers = desiredTag + desiredSubmodule + desiredWorktree;
             var hasOverflow = (desiredBranches + desiredOthers > leftHeight);

@@ -354,6 +354,8 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Source Branch:</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Move Repository Node</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Select parent node for:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git has NOT been configured. Please to go [Preference] and configure it first.</x:String>
   <x:String x:Key="Text.Notice" xml:space="preserve">NOTICE</x:String>
@@ -482,6 +484,7 @@
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Open In File Browser</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Search Branches &amp; Tags &amp; Submodules</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTERED BY:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOCAL BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigate To HEAD</x:String>
@@ -499,7 +502,6 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Message</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">Author &amp; Committer</x:String>
-  <x:String x:Key="Text.Repository.SearchBranchTag" xml:space="preserve">Search Branches &amp; Tags</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Show Tags as Tree</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistics</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMODULES</x:String>
@@ -588,6 +590,7 @@
   <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">Delete</x:String>
   <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">DRAG &amp; DROP FOLDER SUPPORTED. CUSTOM GROUPING SUPPORTED.</x:String>
   <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">Edit</x:String>
+  <x:String x:Key="Text.Welcome.Move" xml:space="preserve">Move to Another Group</x:String>
   <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Open All Repositories</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Open Repository</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Open Terminal</x:String>

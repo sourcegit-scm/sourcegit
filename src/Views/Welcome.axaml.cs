@@ -224,7 +224,7 @@ namespace SourceGit.Views
                 return;
             }
 
-            if (e.Data.Contains("MovedRepositoryTreeNode") && 
+            if (e.Data.Contains("MovedRepositoryTreeNode") &&
                 e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
             {
                 e.Handled = true;

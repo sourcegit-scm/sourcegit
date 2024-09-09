@@ -40,6 +40,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.1.3" />
     <PackageReference Include="Avalonia.Desktop" Version="11.1.3" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.3" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.3" />
     <PackageReference Include="Avalonia.Diagnostics" Version="11.1.3" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
@@ -55,6 +56,6 @@
   </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-    <LinkerArg Include="-mmacosx-version-min=11.0" Condition="'$(Configuration)' == 'Release'"/>
+    <LinkerArg Include="-mmacosx-version-min=11.0" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
 </Project>

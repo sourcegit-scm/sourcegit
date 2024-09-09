@@ -262,7 +262,7 @@ namespace SourceGit.ViewModels
                 Task.Run(() => Commands.MergeTool.OpenForDiff(_repo.FullPath, toolType, toolPath, opt));
                 ev.Handled = true;
             };
-            
+
             var fullPath = Path.Combine(_repo.FullPath, change.Path);
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
@@ -320,11 +320,11 @@ namespace SourceGit.ViewModels
             {
                 if (change.Index == Models.ChangeState.Renamed)
                     new Commands.Checkout(_repo.FullPath).FileWithRevision(change.OriginalPath, $"{_commit.SHA}~1");
-                
+
                 new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}~1");
                 ev.Handled = true;
             };
-            
+
             menu.Items.Add(resetToThisRevision);
             menu.Items.Add(resetToFirstParent);
             menu.Items.Add(new MenuItem { Header = "-" });
@@ -413,7 +413,7 @@ namespace SourceGit.ViewModels
                 window.Show();
                 ev.Handled = true;
             };
-            
+
             var resetToThisRevision = new MenuItem();
             resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
             resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");

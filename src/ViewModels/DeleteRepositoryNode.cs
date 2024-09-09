@@ -18,7 +18,7 @@ namespace SourceGit.ViewModels
 
         public override Task<bool> Sure()
         {
-            Preference.Instance.RemoveNode(_node);
+            Preference.Instance.RemoveNode(_node, true);
             Welcome.Instance.Refresh();
             return null;
         }

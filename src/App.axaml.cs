@@ -58,6 +58,7 @@ namespace SourceGit
             var builder = AppBuilder.Configure<App>();
             builder.UsePlatformDetect();
             builder.LogToTrace();
+            builder.WithInterFont();
             builder.ConfigureFonts(manager =>
             {
                 var monospace = new EmbeddedFontCollection(
@@ -75,6 +76,8 @@ namespace SourceGit
             AvaloniaXamlLoader.Load(this);
 
             var pref = ViewModels.Preference.Instance;
+            pref.PropertyChanged += (_, _) => pref.Save();
+
             SetLocale(pref.Locale);
             SetTheme(pref.Theme, pref.ThemeOverrides);
             SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
@@ -217,9 +220,18 @@ namespace SourceGit
                 resDic.Add("Fonts.Monospace", new FontFamily(monospaceFont));
             }
 
-            var primary = onlyUseMonospaceFontInEditor ? defaultFont : monospaceFont;
-            if (!string.IsNullOrEmpty(primary))
-                resDic.Add("Fonts.Primary", new FontFamily(primary));
+            if (onlyUseMonospaceFontInEditor)
+            {
+                if (string.IsNullOrEmpty(defaultFont))
+                    resDic.Add("Fonts.Primary", new FontFamily("fonts:Inter#Inter, $Default"));
+                else
+                    resDic.Add("Fonts.Primary", new FontFamily(defaultFont));
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(monospaceFont))
+                    resDic.Add("Fonts.Primary", new FontFamily(monospaceFont));
+            }
 
             if (resDic.Count > 0)
             {
@@ -314,6 +326,17 @@ namespace SourceGit
             {
                 Environment.Exit(exitCode);
             }
+        }
+
+        private static void CopyTextBlock(TextBlock textBlock)
+        {
+            if (textBlock == null)
+                return;
+
+            if (textBlock.Inlines is { Count: > 0 } inlines)
+                CopyText(inlines.Text);
+            else if (!string.IsNullOrEmpty(textBlock.Text))
+                CopyText(textBlock.Text);
         }
 
         private static void LogException(Exception ex)
@@ -521,10 +544,7 @@ namespace SourceGit
 
             var pref = ViewModels.Preference.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
-            {
-                pref.Save();
                 Check4Update();
-            }
         }
 
         private ViewModels.Launcher _launcher = null;

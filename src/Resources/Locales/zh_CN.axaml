@@ -357,6 +357,8 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合并分支 ：</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">调整仓库分组</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">请选择目标分组：</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">名称 ：</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">GIT尚未配置。请打开【偏好设置】配置GIT路径。</x:String>
   <x:String x:Key="Text.Notice" xml:space="preserve">系统提示</x:String>
@@ -484,6 +486,7 @@
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">配置本仓库</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在文件浏览器中打开</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速查找分支、标签、子模块</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">过滤规则 ：</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本地分支</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">定位HEAD</x:String>
@@ -501,7 +504,6 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交信息</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">作者及提交者</x:String>
-  <x:String x:Key="Text.Repository.SearchBranchTag" xml:space="preserve">快速查找分支、标签</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以树型结构展示</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交统计</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模块列表</x:String>
@@ -590,6 +592,7 @@
   <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">删除</x:String>
   <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">支持拖放目录添加。支持自定义分组。</x:String>
   <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">编辑</x:String>
+  <x:String x:Key="Text.Welcome.Move" xml:space="preserve">调整分组</x:String>
   <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">打开所有包含仓库</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">打开本地仓库</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">打开终端</x:String>

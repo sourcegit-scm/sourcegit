@@ -15,7 +15,7 @@ namespace SourceGit.Views
             get => GetValue(IsCloseButtonOnlyProperty);
             set => SetValue(IsCloseButtonOnlyProperty, value);
         }
-        
+
         public CaptionButtonsMacOS()
         {
             InitializeComponent();

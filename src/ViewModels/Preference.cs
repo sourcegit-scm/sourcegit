@@ -153,9 +153,9 @@ namespace SourceGit.ViewModels
 
         public string IgnoreUpdateTag
         {
-            get;
-            set;
-        } = string.Empty;
+            get => _ignoreUpdateTag;
+            set => SetProperty(ref _ignoreUpdateTag, value);
+        }
 
         public bool ShowTagsAsTree
         {
@@ -318,9 +318,9 @@ namespace SourceGit.ViewModels
 
         public double LastCheckUpdateTime
         {
-            get;
-            set;
-        } = 0;
+            get => _lastCheckUpdateTime;
+            set => SetProperty(ref _lastCheckUpdateTime, value);
+        }
 
         public bool IsGitConfigured()
         {
@@ -343,7 +343,7 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        public void AddNode(RepositoryNode node, RepositoryNode to = null)
+        public void AddNode(RepositoryNode node, RepositoryNode to, bool save)
         {
             var collection = to == null ? RepositoryNodes : to.SubNodes;
             collection.Add(node);
@@ -354,6 +354,9 @@ namespace SourceGit.ViewModels
 
                 return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
+
+            if (save)
+                Save();
         }
 
         public RepositoryNode FindNode(string id)
@@ -374,30 +377,36 @@ namespace SourceGit.ViewModels
                     IsRepository = true,
                 };
 
-                AddNode(node, parent);
+                AddNode(node, parent, true);
             }
             else if (shouldMoveNode)
             {
-                MoveNode(node, parent);
+                MoveNode(node, parent, true);
             }
 
             return node;
         }
 
-        public void MoveNode(RepositoryNode node, RepositoryNode to = null)
+        public void MoveNode(RepositoryNode node, RepositoryNode to, bool save)
         {
             if (to == null && RepositoryNodes.Contains(node))
                 return;
             if (to != null && to.SubNodes.Contains(node))
                 return;
 
-            RemoveNode(node);
-            AddNode(node, to);
+            RemoveNode(node, false);
+            AddNode(node, to, false);
+
+            if (save)
+                Save();
         }
 
-        public void RemoveNode(RepositoryNode node)
+        public void RemoveNode(RepositoryNode node, bool save)
         {
             RemoveNodeRecursive(node, RepositoryNodes);
+
+            if (save)
+                Save();
         }
 
         public void SortByRenamedNode(RepositoryNode node)
@@ -410,6 +419,8 @@ namespace SourceGit.ViewModels
 
                 return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
+
+            Save();
         }
 
         public void Save()
@@ -483,7 +494,10 @@ namespace SourceGit.ViewModels
         private int _subjectGuideLength = 50;
         private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
+
         private bool _check4UpdatesOnStartup = true;
+        private double _lastCheckUpdateTime = 0;
+        private string _ignoreUpdateTag = string.Empty;
 
         private bool _showTagsAsTree = false;
         private bool _useTwoColumnsLayoutInHistories = false;

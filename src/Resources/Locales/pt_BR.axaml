@@ -474,6 +474,7 @@
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configurar este repositório</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUAR</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Abrir no Navegador de Arquivos</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Pesquisar Branches &amp; Tags &amp; Submódulos</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTRADO POR:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCHES LOCAIS</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navegar para HEAD</x:String>
@@ -491,7 +492,6 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Mensagem</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">Autor &amp; Committer</x:String>
-  <x:String x:Key="Text.Repository.SearchBranchTag" xml:space="preserve">Pesquisar Branches &amp; Tags</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Mostrar Tags como Árvore</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Estatísticas</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMÓDULOS</x:String>

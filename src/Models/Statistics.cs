@@ -62,7 +62,7 @@ namespace SourceGit.Models
             for (int i = 0; i < monthDays; i++)
                 Month.Samples.Add(new StatisticsSample($"{i + 1}"));
 
-            string[] weekDayNames = [ "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" ];
+            string[] weekDayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
             for (int i = 0; i < weekDayNames.Length; i++)
                 Week.Samples.Add(new StatisticsSample(weekDayNames[i]));
         }

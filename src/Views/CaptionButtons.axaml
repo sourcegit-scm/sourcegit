@@ -13,7 +13,7 @@
       <Path/>
     </Button>
     <Button Classes="caption_button" Click="CloseWindow">
-      <Path Data="{StaticResource Icons.Window.Close}" Width="9" Height="9"/>
+      <Path Data="{StaticResource Icons.Window.Close}"/>
     </Button>
   </StackPanel>
 </UserControl>
