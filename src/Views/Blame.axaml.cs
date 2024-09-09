@@ -234,6 +234,7 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
             TextArea.LayoutUpdated += OnTextAreaLayoutUpdated;
+            TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.Margin = new Thickness(4, 0);
@@ -331,6 +332,12 @@ namespace SourceGit.Views
             var offset = TextArea.TextView.VerticalOffset;
             if (_lastOffsetY != offset)
                 InvalidateVisual();
+        }
+
+        private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
+        {
+            if (!TextArea.IsFocused)
+                Focus();
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
