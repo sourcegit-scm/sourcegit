@@ -29,12 +29,19 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _activePage, value))
+                {
                     PopupHost.Active = value;
+
+                    if (!_ignoreIndexChange && value is { Data: Repository })
+                        ActiveWorkspace.ActiveIdx = Pages.IndexOf(value);
+                }
             }
         }
 
         public Launcher(string startupRepo)
         {
+            _ignoreIndexChange = true;
+
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
 
@@ -61,7 +68,16 @@ namespace SourceGit.ViewModels
                     OpenRepositoryInTab(node, null);
                 }
 
-                ActivePage = Pages[0];
+                var activeIdx = ActiveWorkspace.ActiveIdx;
+                if (activeIdx >= 0 && activeIdx < Pages.Count)
+                {
+                    ActivePage = Pages[activeIdx];
+                }
+                else
+                {
+                    ActivePage = Pages[0];
+                    ActiveWorkspace.ActiveIdx = 0;
+                }
             }
             else
             {
@@ -75,14 +91,17 @@ namespace SourceGit.ViewModels
                         IsError = true,
                         Message = $"Given path: '{startupRepo}' is NOT a valid repository!"
                     });
-                    return;
                 }
-
-                var normalized = test.StdOut.Trim().Replace("\\", "/");
-                var node = pref.FindOrAddNodeByRepositoryPath(normalized, null, false);
-                Welcome.Instance.Refresh();
-                OpenRepositoryInTab(node, null);
+                else
+                {
+                    var normalized = test.StdOut.Trim().Replace("\\", "/");
+                    var node = pref.FindOrAddNodeByRepositoryPath(normalized, null, false);
+                    Welcome.Instance.Refresh();
+                    OpenRepositoryInTab(node, null);
+                }
             }
+
+            _ignoreIndexChange = false;
         }
 
         public void AddNewTab()
@@ -398,6 +417,8 @@ namespace SourceGit.ViewModels
 
         private void SwitchWorkspace(Workspace to)
         {
+            _ignoreIndexChange = true;
+
             var pref = Preference.Instance;
             foreach (var w in pref.Workspaces)
                 w.IsActive = false;
@@ -409,7 +430,6 @@ namespace SourceGit.ViewModels
                 CloseRepositoryInTab(one, false);
 
             Pages.Clear();
-            ActivePage = null;
             AddNewTab();
 
             var repos = to.Repositories.ToArray();
@@ -430,6 +450,18 @@ namespace SourceGit.ViewModels
                 OpenRepositoryInTab(node, null);
             }
 
+            var activeIdx = to.ActiveIdx;
+            if (activeIdx >= 0 && activeIdx < Pages.Count)
+            {
+                ActivePage = Pages[activeIdx];
+            }
+            else
+            {
+                ActivePage = Pages[0];
+                to.ActiveIdx = 0;
+            }
+
+            _ignoreIndexChange = false;
             GC.Collect();
         }
 
@@ -449,5 +481,6 @@ namespace SourceGit.ViewModels
 
         private Workspace _activeWorkspace = null;
         private LauncherPage _activePage = null;
+        private bool _ignoreIndexChange = false;
     }
 }

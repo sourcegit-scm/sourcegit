@@ -31,6 +31,12 @@ namespace SourceGit.ViewModels
             set;
         } = new List<string>();
 
+        public int ActiveIdx
+        {
+            get;
+            set;
+        } = 0;
+
         public bool IsActive
         {
             get => _isActive;
@@ -52,7 +58,7 @@ namespace SourceGit.ViewModels
 
         private string _name = string.Empty;
         private uint _color = 0;
-        private IBrush _brush = null;
         private bool _isActive = false;
+        private IBrush _brush = null;
     }
 }
