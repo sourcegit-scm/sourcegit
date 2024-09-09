@@ -336,7 +336,7 @@ namespace SourceGit.Views
 
         private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (!TextArea.IsFocused)
+            if (!TextArea.IsFocused && !string.IsNullOrEmpty(_highlight))
                 Focus();
         }
 
