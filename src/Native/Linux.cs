@@ -5,7 +5,6 @@ using System.IO;
 using System.Runtime.Versioning;
 
 using Avalonia;
-using Avalonia.Media;
 
 namespace SourceGit.Native
 {
@@ -36,13 +35,7 @@ namespace SourceGit.Native
         }
 
         public void SetupApp(AppBuilder builder)
-        {
-            // Fix issue https://github.com/sourcegit-scm/sourcegit/issues/447
-            builder.With(new FontManagerOptions()
-            {
-                DefaultFamilyName = "fonts:SourceGit#JetBrains Mono",
-            });
-            
+        {            
             builder.With(new X11PlatformOptions()
             {
                 EnableIme = true,

@@ -98,7 +98,7 @@
   <SolidColorBrush x:Key="Brush.Diff.DeletedHighlight" Color="{DynamicResource Color.Diff.DeletedHighlight}"/>
   <SolidColorBrush x:Key="Brush.Link" Color="{DynamicResource Color.Link}"/>
 
-  <FontFamily x:Key="Fonts.Default">$Default</FontFamily>
+  <FontFamily x:Key="Fonts.Default">fonts:Inter#Inter, $Default</FontFamily>
   <FontFamily x:Key="Fonts.Monospace">fonts:SourceGit#JetBrains Mono</FontFamily>
   <FontFamily x:Key="Fonts.Primary">fonts:SourceGit#JetBrains Mono</FontFamily>
 </ResourceDictionary>
