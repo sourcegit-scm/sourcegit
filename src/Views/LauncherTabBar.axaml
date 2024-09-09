@@ -52,7 +52,7 @@
                 <Grid Width="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
                   <Path Grid.Column="0"
                         Width="12" Height="12" Margin="12,0"
-                        Fill="{Binding Node.Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
+                        Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
                         Data="{StaticResource Icons.Bookmark}"
                         IsVisible="{Binding Node.IsRepository}"
                         IsHitTestVisible="False"/>

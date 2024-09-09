@@ -149,6 +149,9 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP网络代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">用户名</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">应用于本仓库的用户名</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作区</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名称</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">颜色</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">复制</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">复制全部文本</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">复制内容</x:String>
@@ -397,7 +400,6 @@
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">启动时检测软件更新</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">显示语言</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">最大历史提交数</x:String>
-  <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">启动时恢复上次打开的仓库</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">SUBJECT字数检测</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">启用定时自动拉取远程更新</x:String>
@@ -626,6 +628,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">查看忽略变更文件</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">模板：${0}$</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">请选中冲突文件，打开右键菜单，选择合适的解决方式</x:String>
+  <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">配置工作区...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本地工作树</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">复制工作树路径</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">锁定工作树</x:String>

@@ -17,6 +17,12 @@ namespace SourceGit.ViewModels
             private set;
         }
 
+        public Workspace ActiveWorkspace
+        {
+            get => _activeWorkspace;
+            private set => SetProperty(ref _activeWorkspace, value);
+        }
+
         public LauncherPage ActivePage
         {
             get => _activePage;
@@ -29,11 +35,35 @@ namespace SourceGit.ViewModels
 
         public Launcher(string startupRepo)
         {
+            var pref = Preference.Instance;
+
             Pages = new AvaloniaList<LauncherPage>();
+            ActiveWorkspace = pref.GetActiveWorkspace();
             AddNewTab();
 
-            var pref = Preference.Instance;
-            if (!string.IsNullOrEmpty(startupRepo))
+            var repos = _activeWorkspace.Repositories.ToArray();
+            foreach (var repo in repos)
+            {
+                var node = pref.FindNode(repo);
+                if (node == null)
+                {
+                    node = new RepositoryNode()
+                    {
+                        Id = repo,
+                        Name = Path.GetFileName(repo),
+                        Bookmark = 0,
+                        IsRepository = true,
+                    };
+                }
+
+                OpenRepositoryInTab(node, null);
+            }
+
+            if (string.IsNullOrEmpty(startupRepo))
+            {
+                ActivePage = Pages[0];
+            }
+            else
             {
                 var test = new Commands.QueryRepositoryRootPath(startupRepo).ReadToEnd();
                 if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
@@ -50,53 +80,6 @@ namespace SourceGit.ViewModels
                 var node = pref.FindOrAddNodeByRepositoryPath(normalized, null, false);
                 Welcome.Instance.Refresh();
                 OpenRepositoryInTab(node, null);
-            }
-            else if (pref.RestoreTabs)
-            {
-                foreach (var id in pref.OpenedTabs)
-                {
-                    var node = pref.FindNode(id);
-                    if (node == null)
-                    {
-                        node = new RepositoryNode()
-                        {
-                            Id = id,
-                            Name = Path.GetFileName(id),
-                            Bookmark = 0,
-                            IsRepository = true,
-                        };
-                    }
-
-                    OpenRepositoryInTab(node, null);
-                }
-
-                var lastActiveIdx = pref.LastActiveTabIdx;
-                if (lastActiveIdx >= 0 && lastActiveIdx < Pages.Count)
-                    ActivePage = Pages[lastActiveIdx];
-            }
-        }
-
-        public void Quit()
-        {
-            var pref = Preference.Instance;
-            pref.OpenedTabs.Clear();
-
-            if (pref.RestoreTabs)
-            {
-                foreach (var page in Pages)
-                {
-                    if (page.Node.IsRepository)
-                        pref.OpenedTabs.Add(page.Node.Id);
-                }
-            }
-
-            pref.LastActiveTabIdx = Pages.IndexOf(ActivePage);
-            pref.Save();
-
-            foreach (var page in Pages)
-            {
-                if (page.Data is Repository repo)
-                    repo.Close();
             }
         }
 
@@ -247,6 +230,7 @@ namespace SourceGit.ViewModels
             };
 
             repo.Open();
+            ActiveWorkspace.AddRepository(repo.FullPath);
             Models.AutoFetchManager.Instance.AddRepository(repo.FullPath);
 
             if (page == null)
@@ -292,6 +276,46 @@ namespace SourceGit.ViewModels
 
             if (_activePage != null)
                 _activePage.Notifications.Add(notification);
+        }
+
+        public ContextMenu CreateContextForWorkspace()
+        {
+            var pref = Preference.Instance;
+            var menu = new ContextMenu();
+
+            for (var i = 0; i < pref.Workspaces.Count; i++)
+            {
+                var workspace = pref.Workspaces[i];
+
+                var icon = App.CreateMenuIcon(workspace.IsActive ? "Icons.Check" : "Icons.Workspace");
+                icon.Fill = workspace.Brush;
+
+                var item = new MenuItem();
+                item.Header = workspace.Name;
+                item.Icon = icon;
+                item.Click += (_, e) =>
+                {
+                    if (!workspace.IsActive)
+                        SwitchWorkspace(workspace);
+
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(item);
+            }
+
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            var configure = new MenuItem();
+            configure.Header = App.Text("Workspace.Configure");
+            configure.Click += (_, e) =>
+            {
+                App.OpenDialog(new Views.ConfigureWorkspace() { DataContext = new ConfigureWorkspace() });
+                e.Handled = true;
+            };
+            menu.Items.Add(configure);
+
+            return menu;
         }
 
         public ContextMenu CreateContextForPageTab(LauncherPage page)
@@ -369,10 +393,50 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        private void CloseRepositoryInTab(LauncherPage page)
+        private void SwitchWorkspace(Workspace to)
+        {
+            var pref = Preference.Instance;
+            foreach (var w in pref.Workspaces)
+                w.IsActive = false;
+
+            ActiveWorkspace = to;
+            to.IsActive = true;
+
+            foreach (var one in Pages)
+                CloseRepositoryInTab(one, false);
+
+            Pages.Clear();
+            ActivePage = null;
+            AddNewTab();
+
+            var repos = to.Repositories.ToArray();
+            foreach (var repo in repos)
+            {
+                var node = pref.FindNode(repo);
+                if (node == null)
+                {
+                    node = new RepositoryNode()
+                    {
+                        Id = repo,
+                        Name = Path.GetFileName(repo),
+                        Bookmark = 0,
+                        IsRepository = true,
+                    };
+                }
+
+                OpenRepositoryInTab(node, null);
+            }
+
+            GC.Collect();
+        }
+
+        private void CloseRepositoryInTab(LauncherPage page, bool removeFromWorkspace = true)
         {
             if (page.Data is Repository repo)
             {
+                if (removeFromWorkspace)
+                    ActiveWorkspace.Repositories.Remove(repo.FullPath);
+
                 Models.AutoFetchManager.Instance.RemoveRepository(repo.FullPath);
                 repo.Close();
             }
@@ -380,6 +444,7 @@ namespace SourceGit.ViewModels
             page.Data = null;
         }
 
+        private Workspace _activeWorkspace = null;
         private LauncherPage _activePage = null;
     }
 }

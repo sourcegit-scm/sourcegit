@@ -1,0 +1,122 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    xmlns:c="using:SourceGit.Converters"
+                    mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.ConfigureWorkspace"
+                    x:DataType="vm:ConfigureWorkspace"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.ConfigureWorkspace}"
+                    Width="600" SizeToContent="Height"
+                    CanResize="False"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Grid.Column="0" Grid.ColumnSpan="3"
+              Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Grid.Column="0"
+            Width="14" Height="14"
+            Data="{StaticResource Icons.Workspace}"
+            Margin="10,0,0,0"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <v:CaptionButtonsMacOS Grid.Column="0"
+                             Margin="0,2,0,0"
+                             IsCloseButtonOnly="True"
+                             IsVisible="{OnPlatform False, macOS=True}"/>
+
+      <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                 Classes="bold"
+                 Text="{DynamicResource Text.ConfigureWorkspace}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <v:CaptionButtons Grid.Column="2"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <!-- BODY -->
+    <Grid Grid.Row="1" ColumnDefinitions="200,*" Height="250" Margin="8">
+      <Border Grid.Column="0"
+              BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+              Background="{DynamicResource Brush.Contents}">
+        <Grid RowDefinitions="*,1,Auto">
+          <ListBox Grid.Row="0"
+                   Background="Transparent"
+                   ItemsSource="{Binding Workspaces}"
+                   SelectedItem="{Binding Selected, Mode=TwoWay}"
+                   SelectionMode="Single">
+            <ListBox.Styles>
+              <Style Selector="ListBoxItem">
+                <Setter Property="MinHeight" Value="0"/>
+                <Setter Property="Height" Value="26"/>
+                <Setter Property="Padding" Value="4,2"/>
+              </Style>
+            </ListBox.Styles>
+
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Vertical"/>
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="vm:Workspace">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <Path Grid.Column="0" Margin="4,0" Width="14" Height="14" Data="{StaticResource Icons.Workspace}" Fill="{Binding Brush}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="4,0" TextTrimming="CharacterEllipsis"/>
+                  <Path Grid.Column="2" 
+                        Margin="4,0" 
+                        Width="14" Height="14" 
+                        Data="{StaticResource Icons.Check}" 
+                        Fill="{DynamicResource Brush.FG1}" 
+                        IsVisible="{Binding IsActive}"/>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+
+          <StackPanel Grid.Row="2" Orientation="Horizontal" Background="{DynamicResource Brush.ToolBar}">
+            <Button Classes="icon_button" Command="{Binding Add}">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
+            </Button>
+
+            <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+
+            <Button Classes="icon_button" Command="{Binding Delete}" IsEnabled="{Binding CanDeleteSelected}">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
+            </Button>
+
+            <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <ContentControl Grid.Column="1" Margin="16,0,0,0" Content="{Binding Selected}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="vm:Workspace">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto">
+              <TextBlock Grid.Row="0" Text="{DynamicResource Text.ConfigureWorkspace.Name}"/>
+              <TextBox Grid.Row="1" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
+
+              <TextBlock Grid.Row="2" Margin="0,12,0,0" Text="{DynamicResource Text.ConfigureWorkspace.Color}"/>
+              <ColorPicker Grid.Row="3" Margin="0,4,0,0" Width="100" HorizontalAlignment="Left" Color="{Binding Color, Converter={x:Static c:IntConverters.ToColor}, Mode=TwoWay}"/>
+            </Grid>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+    </Grid>
+  </Grid>
+</v:ChromelessWindow>

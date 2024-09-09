@@ -330,7 +330,7 @@ namespace SourceGit.Views
 
             var offset = TextArea.TextView.VerticalOffset;
             if (_lastOffsetY != offset)
-                InvalidateVisual();                
+                InvalidateVisual();
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)

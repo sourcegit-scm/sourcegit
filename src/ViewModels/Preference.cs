@@ -39,6 +39,9 @@ namespace SourceGit.ViewModels
                 if (!_instance.IsGitConfigured())
                     _instance.GitInstallPath = Native.OS.FindGitExecutable();
 
+                if (_instance.Workspaces.Count == 0)
+                    _instance.Workspaces.Add(new Workspace() { Name = "Default", Color = 4278221015 });
+
                 return _instance;
             }
         }
@@ -131,12 +134,6 @@ namespace SourceGit.ViewModels
         {
             get => _subjectGuideLength;
             set => SetProperty(ref _subjectGuideLength, value);
-        }
-
-        public bool RestoreTabs
-        {
-            get => _restoreTabs;
-            set => SetProperty(ref _restoreTabs, value);
         }
 
         public bool UseFixedTabWidth
@@ -304,17 +301,11 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
-        public List<string> OpenedTabs
+        public List<Workspace> Workspaces
         {
             get;
             set;
         } = [];
-
-        public int LastActiveTabIdx
-        {
-            get;
-            set;
-        } = 0;
 
         public double LastCheckUpdateTime
         {
@@ -341,6 +332,19 @@ namespace SourceGit.ViewModels
 
             LastCheckUpdateTime = now.Subtract(DateTime.UnixEpoch.ToLocalTime()).TotalSeconds;
             return true;
+        }
+
+        public Workspace GetActiveWorkspace()
+        {
+            foreach (var w in Workspaces)
+            {
+                if (w.IsActive)
+                    return w;
+            }
+
+            var first = Workspaces[0];
+            first.IsActive = true;
+            return first;
         }
 
         public void AddNode(RepositoryNode node, RepositoryNode to, bool save)
@@ -492,7 +496,6 @@ namespace SourceGit.ViewModels
 
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
-        private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
 
         private bool _check4UpdatesOnStartup = true;
