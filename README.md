@@ -34,6 +34,7 @@ Opensource Git GUI client.
 * GitFlow
 * Git LFS
 * Issue Link
+* Workspace
 
 > [!WARNING]
 > **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
