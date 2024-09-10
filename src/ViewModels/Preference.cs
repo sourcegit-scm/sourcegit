@@ -431,6 +431,9 @@ namespace SourceGit.ViewModels
 
         public void Save()
         {
+            if (_isLoading)
+                return;
+
             var file = Path.Combine(Native.OS.DataDir, "preference.json");
             var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
             File.WriteAllText(file, data);
