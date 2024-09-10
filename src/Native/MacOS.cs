@@ -53,21 +53,17 @@ namespace SourceGit.Native
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var dir = string.IsNullOrEmpty(workdir) ? home : workdir;
-            var terminal = DetectTerminal();
+
+            var terminal = "Terminal";
+            if (Directory.Exists("/Applications/iTerm.app"))
+                terminal = "iTerm";
+
             Process.Start("open", $"-a {terminal} \"{dir}\"");
         }
 
         public void OpenWithDefaultEditor(string file)
         {
             Process.Start("open", $"\"{file}\"");
-        }
-
-        private static string DetectTerminal()
-        {
-            if (Directory.Exists("/Applications/iTerm.app"))
-                return "iTerm";
-
-            return "Terminal";
         }
     }
 }
