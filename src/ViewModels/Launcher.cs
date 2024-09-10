@@ -83,6 +83,9 @@ namespace SourceGit.ViewModels
             {
                 ActiveWorkspace = new Workspace() { Name = "Unnamed", Color = 4278221015 };
 
+                foreach (var w in pref.Workspaces)
+                    w.IsActive = false;
+
                 var test = new Commands.QueryRepositoryRootPath(startupRepo).ReadToEnd();
                 if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
                 {
