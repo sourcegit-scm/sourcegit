@@ -115,13 +115,13 @@ namespace SourceGit.Views
                 var y = 6 * 32 + 8;
                 var x = 0;
 
-                context.FillRectangle(new SolidColorBrush(_darkestColor), new Rect(x, y, 32, 32)); x += 32;
+                context.DrawRectangle(new SolidColorBrush(_darkestColor), null, new RoundedRect(new Rect(x, y, 32, 32), new CornerRadius(4, 0, 0, 4))); x += 32;
                 context.FillRectangle(new SolidColorBrush(_darkerColor), new Rect(x, y, 32, 32)); x += 32;
                 context.FillRectangle(new SolidColorBrush(_darkColor), new Rect(x, y, 32, 32)); x += 32;
                 context.FillRectangle(new SolidColorBrush(_color), new Rect(x, y - 4, 64, 40), 4); x += 64;
                 context.FillRectangle(new SolidColorBrush(_lightColor), new Rect(x, y, 32, 32)); x += 32;
                 context.FillRectangle(new SolidColorBrush(_lighterColor), new Rect(x, y, 32, 32)); x += 32;
-                context.FillRectangle(new SolidColorBrush(_lightestColor), new Rect(x, y, 32, 32));
+                context.DrawRectangle(new SolidColorBrush(_lightestColor), null, new RoundedRect(new Rect(x, y, 32, 32), new CornerRadius(0, 4, 4, 0)));
             }
         }
 
