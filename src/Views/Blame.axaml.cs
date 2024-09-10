@@ -233,6 +233,7 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
             TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
+            TextArea.Caret.PositionChanged += OnTextAreaCaretPositionChanged;
             TextArea.LayoutUpdated += OnTextAreaLayoutUpdated;
             TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
@@ -279,7 +280,9 @@ namespace SourceGit.Views
             base.OnUnloaded(e);
 
             TextArea.LeftMargins.Clear();
+            TextArea.Caret.PositionChanged -= OnTextAreaCaretPositionChanged;
             TextArea.LayoutUpdated -= OnTextAreaLayoutUpdated;
+            TextArea.PointerWheelChanged -= OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
@@ -312,7 +315,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTextAreaLayoutUpdated(object sender, EventArgs e)
+        private void OnTextAreaCaretPositionChanged(object sender, EventArgs e)
         {
             if (!TextArea.IsFocused)
                 return;
@@ -323,6 +326,12 @@ namespace SourceGit.Views
 
             _highlight = BlameData.LineInfos[caret.Line - 1].CommitSHA;
             InvalidateVisual();
+        }
+
+        private void OnTextAreaLayoutUpdated(object sender, EventArgs e)
+        {
+            if (TextArea.IsFocused)
+                InvalidateVisual();
         }
 
         private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
