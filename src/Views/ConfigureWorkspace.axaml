@@ -46,7 +46,7 @@
     </Grid>
 
     <!-- BODY -->
-    <Grid Grid.Row="1" ColumnDefinitions="200,*" Height="320" Margin="8">
+    <Grid Grid.Row="1" ColumnDefinitions="200,*" Height="324" Margin="8">
       <Border Grid.Column="0"
               BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
               Background="{DynamicResource Brush.Contents}">

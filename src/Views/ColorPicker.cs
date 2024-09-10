@@ -112,16 +112,16 @@ namespace SourceGit.Views
 
             // Palette picker
             {
-                var y = 6 * 32 + 8;
-                var x = 0;
+                context.DrawRectangle(Brushes.Transparent, null, new Rect(0, 200, 256, 32), 4, 4, _shadow);
 
-                context.DrawRectangle(new SolidColorBrush(_darkestColor), null, new RoundedRect(new Rect(x, y, 32, 32), new CornerRadius(4, 0, 0, 4))); x += 32;
-                context.FillRectangle(new SolidColorBrush(_darkerColor), new Rect(x, y, 32, 32)); x += 32;
-                context.FillRectangle(new SolidColorBrush(_darkColor), new Rect(x, y, 32, 32)); x += 32;
-                context.FillRectangle(new SolidColorBrush(_color), new Rect(x, y - 4, 64, 40), 4); x += 64;
-                context.FillRectangle(new SolidColorBrush(_lightColor), new Rect(x, y, 32, 32)); x += 32;
-                context.FillRectangle(new SolidColorBrush(_lighterColor), new Rect(x, y, 32, 32)); x += 32;
-                context.DrawRectangle(new SolidColorBrush(_lightestColor), null, new RoundedRect(new Rect(x, y, 32, 32), new CornerRadius(0, 4, 4, 0)));
+                context.DrawRectangle(new SolidColorBrush(_darkestColor), null, _darkestRect);
+                context.FillRectangle(new SolidColorBrush(_darkerColor), _darkerRect);
+                context.FillRectangle(new SolidColorBrush(_darkColor), _darkRect);
+                context.FillRectangle(new SolidColorBrush(_lightColor), _lightRect);
+                context.FillRectangle(new SolidColorBrush(_lighterColor), _lighterRect);
+                context.DrawRectangle(new SolidColorBrush(_lightestColor), null, _lightestRect);
+
+                context.DrawRectangle(new SolidColorBrush(_color), null, new Rect(96, 200 - 4, 64, 40), 4, 4, _shadow);
             }
         }
 
@@ -138,9 +138,7 @@ namespace SourceGit.Views
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            var w = 32 * 8;
-            var h = 32 * 6 + 16 + 36;
-            return new Size(w, h);
+            return new Size(256, 256);
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -162,7 +160,7 @@ namespace SourceGit.Views
                 return;
             }
 
-            if (_darkestRect.Contains(p))
+            if (_darkestRect.Rect.Contains(p))
             {
                 _hightlightedTableElement = -1;
                 SetCurrentValue(ValueProperty, _darkestColor.ToUInt32());
@@ -187,7 +185,7 @@ namespace SourceGit.Views
                 _hightlightedTableElement = -1;
                 SetCurrentValue(ValueProperty, _lighterColor.ToUInt32());
             }
-            else if (_lightestRect.Contains(p))
+            else if (_lightestRect.Rect.Contains(p))
             {
                 _hightlightedTableElement = -1;
                 SetCurrentValue(ValueProperty, _lightestColor.ToUInt32());
@@ -217,13 +215,15 @@ namespace SourceGit.Views
             return newColor.ToRgb();
         }
 
+        private BoxShadows _shadow = BoxShadows.Parse("0 0 6 0 #A9000000");
+
         private Rect _colorTableRect = new Rect(0, 0, 32 * 8, 32 * 6);
-        private Rect _darkestRect = new Rect(0, 200, 32, 32);
+        private RoundedRect _darkestRect = new RoundedRect(new Rect(0, 200, 32, 32), new CornerRadius(4, 0, 0, 4));
         private Rect _darkerRect = new Rect(32, 200, 32, 32);
         private Rect _darkRect = new Rect(64, 200, 32, 32);
         private Rect _lightRect = new Rect(160, 200, 32, 32);
         private Rect _lighterRect = new Rect(192, 200, 32, 32);
-        private Rect _lightestRect = new Rect(224, 200, 32, 32);
+        private RoundedRect _lightestRect = new RoundedRect(new Rect(224, 200, 32, 32), new CornerRadius(0, 4, 4, 0));
 
         private int _hightlightedTableElement = -1;
 
