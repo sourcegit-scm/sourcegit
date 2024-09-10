@@ -1,9 +1,5 @@
-﻿using System;
-using System.Globalization;
-
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 
@@ -43,28 +39,5 @@ namespace SourceGit.Converters
                 else
                     return Models.Bookmarks.Brushes[bookmark];
             });
-
-        public class ToColorHexStringConverter : IValueConverter
-        {
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                return Color.FromUInt32((uint)value).ToString();
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                try
-                {
-                    var color = Color.Parse(value as string);
-                    return color.ToUInt32();
-                }
-                catch
-                {
-                    return BindingOperations.DoNothing;
-                }
-            }
-        }
-
-        public static readonly ToColorHexStringConverter ToColorHexString = new ToColorHexStringConverter();
     }
 }
