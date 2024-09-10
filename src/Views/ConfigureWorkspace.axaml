@@ -12,7 +12,7 @@
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.ConfigureWorkspace}"
-                    Width="600" SizeToContent="Height"
+                    Width="494" SizeToContent="Height"
                     CanResize="False"
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,Auto">
@@ -109,7 +109,7 @@
           <DataTemplate DataType="vm:Workspace">
             <Grid RowDefinitions="Auto,Auto,Auto,Auto">
               <TextBlock Grid.Row="0" Text="{DynamicResource Text.ConfigureWorkspace.Name}"/>
-              <TextBox Grid.Row="1" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
+              <TextBox Grid.Row="1" Margin="-4,4,0,0" CornerRadius="3" Height="28" Width="256" Text="{Binding Name, Mode=TwoWay}"/>
 
               <TextBlock Grid.Row="2" Margin="0,12,0,4" Text="{DynamicResource Text.ConfigureWorkspace.Color}"/>
               <v:ColorPicker Grid.Row="3" HorizontalAlignment="Left" Value="{Binding Color, Mode=TwoWay}"/>
