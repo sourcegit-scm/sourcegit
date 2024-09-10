@@ -321,17 +321,8 @@ namespace SourceGit.Views
             if (caret == null || caret.Line >= BlameData.LineInfos.Count)
                 return;
 
-            var info = BlameData.LineInfos[caret.Line - 1];
-            if (_highlight != info.CommitSHA)
-            {
-                _highlight = info.CommitSHA;
-                InvalidateVisual();
-                return;
-            }
-
-            var offset = TextArea.TextView.VerticalOffset;
-            if (_lastOffsetY != offset)
-                InvalidateVisual();
+            _highlight = BlameData.LineInfos[caret.Line - 1].CommitSHA;
+            InvalidateVisual();
         }
 
         private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
@@ -385,7 +376,6 @@ namespace SourceGit.Views
 
         private TextMate.Installation _textMate = null;
         private string _highlight = string.Empty;
-        private double _lastOffsetY = 0;
     }
 
     public partial class Blame : ChromelessWindow
