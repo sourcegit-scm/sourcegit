@@ -431,9 +431,6 @@ namespace SourceGit.ViewModels
 
         public void Save()
         {
-            if (!Native.OS.DataDir.Contains("AppData"))
-                throw new Exception("xxx");
-
             var file = Path.Combine(Native.OS.DataDir, "preference.json");
             var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
             File.WriteAllText(file, data);
