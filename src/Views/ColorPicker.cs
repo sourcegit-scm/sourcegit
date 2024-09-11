@@ -94,26 +94,24 @@ namespace SourceGit.Views
 
             // Color table.
             {
+                // Colors
                 for (int i = 0; i < 6; i++)
                 {
                     for (int j = 0; j < 8; j++)
-                    {
-                        var idx = i * 8 + j;
-                        var x = j * 32.0;
-                        var y = i * 32.0;
-                        context.FillRectangle(new SolidColorBrush(COLOR_TABLE[i, j]), new Rect(x, y, 32, 32));
-
-                        if (idx == _hightlightedTableElement)
-                            context.DrawRectangle(new Pen(Brushes.White, 2), new Rect(x + 2, y + 2, 28, 28));
-                    }
+                        context.FillRectangle(new SolidColorBrush(COLOR_TABLE[i, j]), new Rect(j * 32, i * 32, 32, 32));
                 }
 
+                // Borders
                 var border = this.FindResource("Brush.Border0") as IBrush;
                 var pen = new Pen(border, 0.4);
                 for (int i = 1; i < 6; i++)
                     context.DrawLine(pen, new Point(0, i * 32), new Point(256, i * 32));
                 for (int j = 1; j < 8; j++)
                     context.DrawLine(pen, new Point(j * 32, 0), new Point(j * 32, 192));
+
+                // Selected
+                if (_hightlightedTableRect is { } rect)
+                    context.DrawRectangle(new Pen(Brushes.White, 2), rect);
             }
 
             // Palette picker
@@ -142,6 +140,12 @@ namespace SourceGit.Views
             }
         }
 
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+            _hightlightedTableRect = null;
+        }
+
         protected override Size MeasureOverride(Size availableSize)
         {
             return new Size(256, 256);
@@ -154,12 +158,12 @@ namespace SourceGit.Views
             var p = e.GetPosition(this);
             if (_colorTableRect.Contains(p))
             {
-                int col = (int)Math.Floor(p.X / 32.0);
-                int row = (int)Math.Floor(p.Y / 32.0);
-                int idx = row * 8 + col;
-                if (_hightlightedTableElement != idx)
+                var col = (int)Math.Floor(p.X / 32.0);
+                var row = (int)Math.Floor(p.Y / 32.0);
+                var rect = new Rect(col * 32 + 2, row * 32 + 2, 28, 28);
+                if (!rect.Equals(_hightlightedTableRect))
                 {
-                    _hightlightedTableElement = idx;
+                    _hightlightedTableRect = rect;
                     SetCurrentValue(ValueProperty, COLOR_TABLE[row, col].ToUInt32());
                 }
 
@@ -168,32 +172,32 @@ namespace SourceGit.Views
 
             if (_darkestRect.Rect.Contains(p))
             {
-                _hightlightedTableElement = -1;
+                _hightlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _darkestColor.ToUInt32());
             }
             else if (_darkerRect.Contains(p))
             {
-                _hightlightedTableElement = -1;
+                _hightlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _darkerColor.ToUInt32());
             }
             else if (_darkRect.Contains(p))
             {
-                _hightlightedTableElement = -1;
+                _hightlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _darkColor.ToUInt32());
             }
             else if (_lightRect.Contains(p))
             {
-                _hightlightedTableElement = -1;
+                _hightlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _lightColor.ToUInt32());
             }
             else if (_lighterRect.Contains(p))
             {
-                _hightlightedTableElement = -1;
+                _hightlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _lighterColor.ToUInt32());
             }
             else if (_lightestRect.Rect.Contains(p))
             {
-                _hightlightedTableElement = -1;
+                _hightlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _lightestColor.ToUInt32());
             }
         }
@@ -230,8 +234,7 @@ namespace SourceGit.Views
         private Rect _lightRect = new Rect(160, 200, 32, 32);
         private Rect _lighterRect = new Rect(192, 200, 32, 32);
         private RoundedRect _lightestRect = new RoundedRect(new Rect(224, 200, 32, 32), new CornerRadius(0, 4, 4, 0));
-
-        private int _hightlightedTableElement = -1;
+        private Rect? _hightlightedTableRect = null;
 
         private Color _darkestColor;
         private Color _darkerColor;
