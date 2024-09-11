@@ -111,12 +111,9 @@ namespace SourceGit.Views
                 var border = this.FindResource("Brush.Border0") as IBrush;
                 var pen = new Pen(border, 0.4);
                 for (int i = 1; i < 6; i++)
-                {
-                    for (int j = 1; j < 8; j++)
-                        context.DrawLine(pen, new Point(j * 32, 0), new Point(j * 32, 192));
-
                     context.DrawLine(pen, new Point(0, i * 32), new Point(256, i * 32));
-                }
+                for (int j = 1; j < 8; j++)
+                    context.DrawLine(pen, new Point(j * 32, 0), new Point(j * 32, 192));
             }
 
             // Palette picker
