@@ -12,10 +12,10 @@
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.ConfigureWorkspace}"
-                    Width="494" SizeToContent="Height"
+                    SizeToContent="WidthAndHeight"
                     CanResize="False"
                     WindowStartupLocation="CenterOwner">
-  <Grid RowDefinitions="Auto,Auto">
+  <Grid RowDefinitions="Auto,Auto" MinWidth="494">
     <!-- TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
