@@ -93,8 +93,6 @@ namespace SourceGit.Views
             base.Render(context);
 
             // Color table.
-            var border = this.FindResource("Brush.Border0") as IBrush;
-            var pen = new Pen(border, 0.2);
             {
                 for (int i = 0; i < 6; i++)
                 {
@@ -103,10 +101,21 @@ namespace SourceGit.Views
                         var idx = i * 8 + j;
                         var x = j * 32.0;
                         var y = i * 32.0;
-                        context.DrawRectangle(new SolidColorBrush(COLOR_TABLE[i, j]), pen, new Rect(x, y, 32, 32));
+                        context.FillRectangle(new SolidColorBrush(COLOR_TABLE[i, j]), new Rect(x, y, 32, 32));
+
                         if (idx == _hightlightedTableElement)
                             context.DrawRectangle(new Pen(Brushes.White, 2), new Rect(x + 2, y + 2, 28, 28));
                     }
+                }
+
+                var border = this.FindResource("Brush.Border0") as IBrush;
+                var pen = new Pen(border, 0.4);
+                for (int i = 1; i < 6; i++)
+                {
+                    for (int j = 1; j < 8; j++)
+                        context.DrawLine(pen, new Point(j * 32, 0), new Point(j * 32, 192));
+
+                    context.DrawLine(pen, new Point(0, i * 32), new Point(256, i * 32));
                 }
             }
 
