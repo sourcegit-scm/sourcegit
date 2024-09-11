@@ -107,6 +107,21 @@ namespace SourceGit.ViewModels
             _ignoreIndexChange = false;
         }
 
+        public void Quit(double width, double height)
+        {
+            var pref = Preference.Instance;
+            pref.Layout.LauncherWidth = width;
+            pref.Layout.LauncherHeight = height;
+            pref.Save();
+
+            _ignoreIndexChange = true;
+
+            foreach (var one in Pages)
+                CloseRepositoryInTab(one, false);
+
+            _ignoreIndexChange = false;
+        }
+
         public void AddNewTab()
         {
             var page = new LauncherPage();

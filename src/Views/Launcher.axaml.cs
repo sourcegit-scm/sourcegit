@@ -221,11 +221,7 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
-            var pref = ViewModels.Preference.Instance;
-            pref.Layout.LauncherWidth = Width;
-            pref.Layout.LauncherHeight = Height;
-            pref.Save();
-
+            (DataContext as ViewModels.Launcher)?.Quit(Width, Height);
             base.OnClosing(e);
         }
 
