@@ -5,7 +5,7 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="SourceGit.Views.WorkingCopy"
              x:DataType="vm:WorkingCopy">
   <Grid>
@@ -173,34 +173,41 @@
       <v:CommitMessageTextBox Grid.Row="2" Text="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
+      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
         <Button Grid.Column="0"
-                Classes="no_border"
+                Classes="icon_button"
                 Margin="4,0,0,0" Padding="0"
-                Click="OnOpenCommitMessagePicker">
-          <Grid ColumnDefinitions="Auto,*">
-            <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
-            <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{DynamicResource Text.WorkingCopy.CommitMessageHelper}"/>
-          </Grid>
+                Click="OnOpenCommitMessagePicker"
+                ToolTip.Tip="{DynamicResource Text.WorkingCopy.CommitMessageHelper}">
+          <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
         </Button>
 
-        <CheckBox Grid.Column="1"
+        <Button Grid.Column="1"
+                Classes="icon_button"
+                Width="32"
+                Margin="4,0,0,0"
+                Click="OnOpenAIAssist"
+                ToolTip.Tip="{DynamicResource Text.AIAssistant.Tip}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.AIAssist}"/>
+        </Button>
+
+        <CheckBox Grid.Column="2"
                   Height="24"
-                  Margin="12,0,0,0"
+                  Margin="8,0,0,0"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding AutoStageBeforeCommit, Mode=TwoWay}"
                   Content="{DynamicResource Text.WorkingCopy.AutoStage}"/>
 
-        <CheckBox Grid.Column="2"
+        <CheckBox Grid.Column="3"
                   Height="24"
-                  Margin="12,0,0,0"
+                  Margin="8,0,0,0"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding UseAmend, Mode=TwoWay}"
                   Content="{DynamicResource Text.WorkingCopy.Amend}"/>
 
-        <v:LoadingIcon Grid.Column="4" Width="18" Height="18" IsVisible="{Binding IsCommitting}"/>
+        <v:LoadingIcon Grid.Column="5" Width="18" Height="18" IsVisible="{Binding IsCommitting}"/>
 
-        <Button Grid.Column="5"
+        <Button Grid.Column="6"
                 Classes="flat primary"
                 Content="{DynamicResource Text.WorkingCopy.Commit}"
                 Height="28"
@@ -210,7 +217,7 @@
                 HotKey="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
                 ToolTip.Tip="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
 
-        <Button Grid.Column="6"
+        <Button Grid.Column="7"
                 Classes="flat"
                 Content="{DynamicResource Text.WorkingCopy.CommitAndPush}"
                 Height="28"

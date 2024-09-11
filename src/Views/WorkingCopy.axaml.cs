@@ -88,5 +88,23 @@ namespace SourceGit.Views
                 e.Handled = true;
             }
         }
+
+        private void OnOpenAIAssist(object _, RoutedEventArgs e)
+        {
+            if (!Models.OpenAI.IsValid)
+            {
+                App.RaiseException(null, $"Bad configuration for OpenAI");
+                return;
+            }
+
+            if (DataContext is ViewModels.WorkingCopy vm && vm.Staged is { Count: > 0 })
+            {
+                var dialog = new AIAssistant() { DataContext = vm };
+                dialog.GenerateCommitMessage();
+                App.OpenDialog(dialog);
+            }
+            
+            e.Handled = true;
+        }
     }
 }

@@ -33,6 +33,11 @@ namespace SourceGit.ViewModels
 
     public class WorkingCopy : ObservableObject
     {
+        public string RepoPath
+        {
+            get => _repo.FullPath;
+        }
+
         public bool IncludeUntracked
         {
             get => _repo.IncludeUntracked;
