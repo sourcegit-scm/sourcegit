@@ -18,10 +18,10 @@ namespace SourceGit.Views
             set => SetValue(ValueProperty, value);
         }
 
+        // Values are copied from Avalonia: src/Avalonia.Controls.ColorPicker/ColorPalettes/FluentColorPalette.cs
         private static readonly Color[,] COLOR_TABLE = new Color[,]
         {
             {
-                // Ordering reversed for this section only
                 Color.FromArgb(255, 255,  67,  67), /* #FF4343 */
                 Color.FromArgb(255, 209,  52,  56), /* #D13438 */
                 Color.FromArgb(255, 239, 105,  80), /* #EF6950 */
