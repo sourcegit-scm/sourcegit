@@ -182,7 +182,9 @@
                 Classes="icon_button"
                 Margin="4,0,0,0" Padding="0"
                 Click="OnOpenCommitMessagePicker"
-                ToolTip.Tip="{DynamicResource Text.WorkingCopy.CommitMessageHelper}">
+                ToolTip.Tip="{DynamicResource Text.WorkingCopy.CommitMessageHelper}"
+                ToolTip.Placement="Top"
+                ToolTip.VerticalOffset="0">
           <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
         </Button>
 
@@ -191,7 +193,9 @@
                 Width="32"
                 Margin="4,2,0,0"
                 Click="OnOpenAIAssist"
-                ToolTip.Tip="{DynamicResource Text.AIAssistant.Tip}">
+                ToolTip.Tip="{DynamicResource Text.AIAssistant.Tip}"
+                ToolTip.Placement="Top"
+                ToolTip.VerticalOffset="0">
           <Path Width="15" Height="15" Data="{StaticResource Icons.AIAssist}"/>
         </Button>
 
@@ -219,7 +223,9 @@
                 Padding="8,0"
                 Command="{Binding Commit}"
                 HotKey="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
-                ToolTip.Tip="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
+                ToolTip.Tip="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
+                ToolTip.Placement="Top"
+                ToolTip.VerticalOffset="0"/>
 
         <Button Grid.Column="7"
                 Classes="flat"
@@ -230,6 +236,8 @@
                 Command="{Binding CommitWithPush}"
                 HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"
                 ToolTip.Tip="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"
+                ToolTip.Placement="Top"
+                ToolTip.VerticalOffset="0"
                 IsVisible="{Binding IsCommitWithPushVisible}"/>
       </Grid>
     </Grid>
