@@ -350,6 +350,41 @@
 
         <TabItem>
           <TabItem.Header>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.AI}"/>
+          </TabItem.Header>
+
+          <Grid Margin="8" RowDefinitions="32,32,32" ColumnDefinitions="Auto,*">
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       Text="{DynamicResource Text.Preference.AI.Server}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <TextBox Grid.Row="0" Grid.Column="1"
+                     Height="28"
+                     CornerRadius="3"
+                     Text="{Binding OpenAIServer, Mode=TwoWay}"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       Text="{DynamicResource Text.Preference.AI.ApiKey}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     Height="28"
+                     CornerRadius="3"
+                     Text="{Binding OpenAIApiKey, Mode=TwoWay}"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0"
+                       Text="{DynamicResource Text.Preference.AI.Model}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <TextBox Grid.Row="2" Grid.Column="1"
+                     Height="28"
+                     CornerRadius="3"
+                     Text="{Binding OpenAIModel, Mode=TwoWay}"/>
+          </Grid>
+        </TabItem>
+
+        <TabItem>
+          <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.GPG}"/>
           </TabItem.Header>
 

@@ -274,6 +274,45 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public string OpenAIServer
+        {
+            get => Models.OpenAI.Server;
+            set
+            {
+                if (value != Models.OpenAI.Server)
+                {
+                    Models.OpenAI.Server = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string OpenAIApiKey
+        {
+            get => Models.OpenAI.ApiKey;
+            set
+            {
+                if (value != Models.OpenAI.ApiKey)
+                {
+                    Models.OpenAI.ApiKey = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string OpenAIModel
+        {
+            get => Models.OpenAI.Model;
+            set
+            {
+                if (value != Models.OpenAI.Model)
+                {
+                    Models.OpenAI.Model = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public int ExternalMergeToolType
         {
             get => _externalMergeToolType;

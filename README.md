@@ -35,6 +35,7 @@ Opensource Git GUI client.
 * Git LFS
 * Issue Link
 * Workspace
+* Using AI to generate commit message (C# port of [anjerodev/commitollama](https://github.com/anjerodev/commitollama))
 
 > [!WARNING]
 > **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
