@@ -185,15 +185,15 @@
         <Button Grid.Column="1"
                 Classes="icon_button"
                 Width="32"
-                Margin="4,0,0,0"
+                Margin="4,2,0,0"
                 Click="OnOpenAIAssist"
                 ToolTip.Tip="{DynamicResource Text.AIAssistant.Tip}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.AIAssist}"/>
+          <Path Width="15" Height="15" Data="{StaticResource Icons.AIAssist}"/>
         </Button>
 
         <CheckBox Grid.Column="2"
                   Height="24"
-                  Margin="8,0,0,0"
+                  Margin="4,0,0,0"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding AutoStageBeforeCommit, Mode=TwoWay}"
                   Content="{DynamicResource Text.WorkingCopy.AutoStage}"/>
