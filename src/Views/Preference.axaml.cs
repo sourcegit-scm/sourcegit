@@ -128,16 +128,16 @@ namespace SourceGit.Views
         protected override void OnClosing(WindowClosingEventArgs e)
         {
             var config = new Commands.Config(null).ListAll();
-            SetIfChanged(config, "user.name", DefaultUser);
-            SetIfChanged(config, "user.email", DefaultEmail);
-            SetIfChanged(config, "user.signingkey", GPGUserKey);
-            SetIfChanged(config, "core.autocrlf", CRLFMode != null ? CRLFMode.Value : null);
-            SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false");
-            SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false");
-            SetIfChanged(config, "gpg.format", GPGFormat.Value);
+            SetIfChanged(config, "user.name", DefaultUser, "");
+            SetIfChanged(config, "user.email", DefaultEmail, "");
+            SetIfChanged(config, "user.signingkey", GPGUserKey, "");
+            SetIfChanged(config, "core.autocrlf", CRLFMode != null ? CRLFMode.Value : null, null);
+            SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false", "false");
+            SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false", "false");
+            SetIfChanged(config, "gpg.format", GPGFormat.Value, "opengpg");
 
             if (!GPGFormat.Value.Equals("ssh", StringComparison.Ordinal))
-                SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
+                SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGExecutableFile, "");
 
             base.OnClosing(e);
         }
@@ -244,12 +244,12 @@ namespace SourceGit.Views
             }
         }
 
-        private void SetIfChanged(Dictionary<string, string> cached, string key, string value)
+        private void SetIfChanged(Dictionary<string, string> cached, string key, string value, string defValue)
         {
             bool changed = false;
             if (cached.TryGetValue(key, out var old))
                 changed = old != value;
-            else if (!string.IsNullOrEmpty(value))
+            else if (!string.IsNullOrEmpty(value) && value != defValue)
                 changed = true;
 
             if (changed)
