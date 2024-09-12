@@ -96,6 +96,7 @@ namespace SourceGit.Views
 
         public ChangeCollectionView()
         {
+            Focusable = true;
             InitializeComponent();
         }
 
@@ -130,6 +131,69 @@ namespace SourceGit.Views
                     tree.Rows.RemoveRange(idx + 1, removeCount);
                 }
             }
+        }
+
+        public Models.Change GetNextChangeWithoutSelection()
+        {
+            var selected = SelectedChanges;
+            var changes = Changes;
+            if (selected == null || selected.Count == 0)
+                return changes.Count > 0 ? changes[0] : null;
+            if (selected.Count == changes.Count)
+                return null;
+
+            var set = new HashSet<string>();
+            foreach (var c in selected)
+                set.Add(c.Path);
+
+            if (Content is ViewModels.ChangeCollectionAsTree tree)
+            {
+                var lastUnselected = -1;
+                for (int i = tree.Rows.Count - 1; i >= 0; i--)
+                {
+                    var row = tree.Rows[i];
+                    if (!row.IsFolder)
+                    {
+                        if (set.Contains(row.FullPath))
+                        {
+                            if (lastUnselected == -1)
+                                continue;
+                            else
+                                break;
+                        }
+                        else
+                        {
+                            lastUnselected = i;
+                        }
+                    }
+                }
+
+                if (lastUnselected != -1)
+                    return tree.Rows[lastUnselected].Change;
+            }
+            else
+            {
+                var lastUnselected = -1;
+                for (int i = changes.Count - 1; i >= 0; i--)
+                {
+                    if (set.Contains(changes[i].Path))
+                    {
+                        if (lastUnselected == -1)
+                            continue;
+                        else
+                            break;
+                    }
+                    else
+                    {
+                        lastUnselected = i;
+                    }
+                }
+
+                if (lastUnselected != -1)
+                    return changes[lastUnselected];
+            }
+
+            return null;
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

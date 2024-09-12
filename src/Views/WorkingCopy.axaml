@@ -42,7 +42,7 @@
                   Classes="icon_button"
                   Width="26" Height="14"
                   Padding="0"
-                  Command="{Binding StageSelected}">
+                  Click="OnStageSelectedButtonClicked">
             <ToolTip.Tip>
               <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="{DynamicResource Text.WorkingCopy.Unstaged.Stage}" VerticalAlignment="Center"/>
@@ -64,6 +64,7 @@
 
       <!-- Unstaged Changes -->
       <v:ChangeCollectionView Grid.Row="1"
+                              x:Name="UnstagedChangesView"
                               IsUnstagedChange="True"
                               SelectionMode="Multiple"
                               Background="{DynamicResource Brush.Contents}"
@@ -81,7 +82,7 @@
           <TextBlock Grid.Column="1" Text="{DynamicResource Text.WorkingCopy.Staged}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
           <TextBlock Grid.Column="2" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Staged, Converter={x:Static c:ListConverters.ToCount}}"/>
           <v:LoadingIcon Grid.Column="3" Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsUnstaging}"/>
-          <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" Command="{Binding UnstageSelected}">
+          <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" Click="OnUnstageSelectedButtonClicked">
             <ToolTip.Tip>
               <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="{DynamicResource Text.WorkingCopy.Staged.Unstage}" VerticalAlignment="Center"/>
@@ -98,6 +99,7 @@
 
       <!-- Staged Changes -->
       <v:ChangeCollectionView Grid.Row="3"
+                              x:Name="StagedChangesView"
                               SelectionMode="Multiple"
                               Background="{DynamicResource Brush.Contents}"
                               ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode}"

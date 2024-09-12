@@ -325,22 +325,23 @@ namespace SourceGit.ViewModels
                 PopupHost.ShowPopup(new StashChanges(_repo, _cached, true));
         }
 
-        public void StageSelected()
+        public void StageSelected(Models.Change next)
         {
-            StageChanges(_selectedUnstaged);
-            SelectedUnstaged = [];
+            StageChanges(_selectedUnstaged, next);
         }
 
         public void StageAll()
         {
-            StageChanges(_unstaged);
-            SelectedUnstaged = [];
+            StageChanges(_unstaged, null);
         }
 
-        public async void StageChanges(List<Models.Change> changes)
+        public async void StageChanges(List<Models.Change> changes, Models.Change next)
         {
             if (_unstaged.Count == 0 || changes.Count == 0)
                 return;
+
+            // Use `_selectedUnstaged` instead of `SelectedUnstaged` to avoid UI refresh.
+            _selectedUnstaged = next != null ? [next] : [];
 
             IsStaging = true;
             _repo.SetWatcherEnabled(false);
@@ -362,22 +363,23 @@ namespace SourceGit.ViewModels
             IsStaging = false;
         }
 
-        public void UnstageSelected()
+        public void UnstageSelected(Models.Change next)
         {
-            UnstageChanges(_selectedStaged);
-            SelectedStaged = [];
+            UnstageChanges(_selectedStaged, next);
         }
 
         public void UnstageAll()
         {
-            UnstageChanges(_staged);
-            SelectedStaged = [];
+            UnstageChanges(_staged, null);
         }
 
-        public async void UnstageChanges(List<Models.Change> changes)
+        public async void UnstageChanges(List<Models.Change> changes, Models.Change next)
         {
             if (_staged.Count == 0 || changes.Count == 0)
                 return;
+
+            // Use `_selectedStaged` instead of `SelectedStaged` to avoid UI refresh.
+            _selectedStaged = next != null ? [next] : [];
 
             IsUnstaging = true;
             _repo.SetWatcherEnabled(false);
@@ -499,7 +501,7 @@ namespace SourceGit.ViewModels
                     stage.Icon = App.CreateMenuIcon("Icons.File.Add");
                     stage.Click += (_, e) =>
                     {
-                        StageChanges(_selectedUnstaged);
+                        StageChanges(_selectedUnstaged, null);
                         e.Handled = true;
                     };
 
@@ -823,7 +825,7 @@ namespace SourceGit.ViewModels
                 stage.Icon = App.CreateMenuIcon("Icons.File.Add");
                 stage.Click += (_, e) =>
                 {
-                    StageChanges(_selectedUnstaged);
+                    StageChanges(_selectedUnstaged, null);
                     e.Handled = true;
                 };
 
@@ -917,7 +919,7 @@ namespace SourceGit.ViewModels
                 unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
                 unstage.Click += (_, e) =>
                 {
-                    UnstageChanges(_selectedStaged);
+                    UnstageChanges(_selectedStaged, null);
                     e.Handled = true;
                 };
 
@@ -1086,7 +1088,7 @@ namespace SourceGit.ViewModels
                 unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
                 unstage.Click += (_, e) =>
                 {
-                    UnstageChanges(_selectedStaged);
+                    UnstageChanges(_selectedStaged, null);
                     e.Handled = true;
                 };
 
