@@ -134,7 +134,7 @@ namespace SourceGit.Views
             SetIfChanged(config, "core.autocrlf", CRLFMode != null ? CRLFMode.Value : null, null);
             SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false", "false");
             SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false", "false");
-            SetIfChanged(config, "gpg.format", GPGFormat.Value, "opengpg");
+            SetIfChanged(config, "gpg.format", GPGFormat.Value, "openpgp");
 
             if (!GPGFormat.Value.Equals("ssh", StringComparison.Ordinal))
                 SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGExecutableFile, "");
