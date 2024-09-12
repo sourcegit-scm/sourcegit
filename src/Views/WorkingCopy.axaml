@@ -65,6 +65,7 @@
       <!-- Unstaged Changes -->
       <v:ChangeCollectionView Grid.Row="1"
                               x:Name="UnstagedChangesView"
+                              Focusable="True"
                               IsUnstagedChange="True"
                               SelectionMode="Multiple"
                               Background="{DynamicResource Brush.Contents}"
@@ -100,6 +101,7 @@
       <!-- Staged Changes -->
       <v:ChangeCollectionView Grid.Row="3"
                               x:Name="StagedChangesView"
+                              Focusable="True"
                               SelectionMode="Multiple"
                               Background="{DynamicResource Brush.Contents}"
                               ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode}"

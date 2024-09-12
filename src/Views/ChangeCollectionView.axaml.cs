@@ -96,7 +96,6 @@ namespace SourceGit.Views
 
         public ChangeCollectionView()
         {
-            Focusable = true;
             InitializeComponent();
         }
 
