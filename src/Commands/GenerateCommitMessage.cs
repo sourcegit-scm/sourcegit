@@ -78,7 +78,7 @@ namespace SourceGit.Commands
             prompt.AppendLine("- Simply describe the MAIN GOAL of the changes.");
             prompt.AppendLine("- Output directly the summary in plain text.`");
 
-            var rsp = Models.OpenAI.Chat(prompt.ToString(), $"Here is the `git diff` output: {diff}");
+            var rsp = Models.OpenAI.Chat(prompt.ToString(), $"Here is the `git diff` output: {diff}", _cancelToken);
             if (rsp != null && rsp.Choices.Count > 0)
                 return rsp.Choices[0].Message.Content;
 
@@ -104,7 +104,7 @@ namespace SourceGit.Commands
             prompt.AppendLine("- Output directly only one commit message in plain text with the next format: {type}: {commit_message}.");
             prompt.AppendLine("- Be as concise as possible, keep the message under 50 characters.");
 
-            var rsp = Models.OpenAI.Chat(prompt.ToString(), $"Here are the summaries changes: {summary}");
+            var rsp = Models.OpenAI.Chat(prompt.ToString(), $"Here are the summaries changes: {summary}", _cancelToken);
             if (rsp != null && rsp.Choices.Count > 0)
                 return rsp.Choices[0].Message.Content;
 

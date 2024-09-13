@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 
 namespace SourceGit.Models
 {
@@ -97,7 +98,7 @@ namespace SourceGit.Models
             get => !string.IsNullOrEmpty(Server) && !string.IsNullOrEmpty(ApiKey) && !string.IsNullOrEmpty(Model);
         }
 
-        public static OpenAIChatResponse Chat(string prompt, string question)
+        public static OpenAIChatResponse Chat(string prompt, string question, CancellationToken cancellation)
         {
             var chat = new OpenAIChatRequest() { Model = Model };
             chat.AddMessage("system", prompt);
@@ -107,17 +108,27 @@ namespace SourceGit.Models
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
 
             var req = new StringContent(JsonSerializer.Serialize(chat, JsonCodeGen.Default.OpenAIChatRequest));
-            var task = client.PostAsync(Server, req);
-            task.Wait();
+            try
+            {
+                var task = client.PostAsync(Server, req, cancellation);
+                task.Wait();
 
-            var rsp = task.Result;
-            if (!rsp.IsSuccessStatusCode)
-                throw new Exception($"AI service returns error code {rsp.StatusCode}");
+                var rsp = task.Result;
+                if (!rsp.IsSuccessStatusCode)
+                    throw new Exception($"AI service returns error code {rsp.StatusCode}");
 
-            var reader = rsp.Content.ReadAsStringAsync();
-            reader.Wait();
+                var reader = rsp.Content.ReadAsStringAsync(cancellation);
+                reader.Wait();
 
-            return JsonSerializer.Deserialize(reader.Result, JsonCodeGen.Default.OpenAIChatResponse);
+                return JsonSerializer.Deserialize(reader.Result, JsonCodeGen.Default.OpenAIChatResponse);
+            } 
+            catch
+            {
+                if (cancellation.IsCancellationRequested)
+                    return null;
+
+                throw;
+            }
         }
     }
 }
