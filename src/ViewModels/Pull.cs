@@ -210,7 +210,7 @@ namespace SourceGit.ViewModels
             }
 
             if (!autoSelectedBranch)
-                SelectedBranch = branches.Count > 0 ? branches[0] : null;
+                SelectedBranch = null;
         }
 
         private readonly Repository _repo = null;

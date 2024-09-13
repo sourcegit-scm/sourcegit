@@ -490,10 +490,11 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (autoStart)
-                PopupHost.ShowAndStartPopup(new Pull(this, null));
+            var pull = new Pull(this, null);
+            if (autoStart && pull.SelectedBranch != null)
+                PopupHost.ShowAndStartPopup(pull);
             else
-                PopupHost.ShowPopup(new Pull(this, null));
+                PopupHost.ShowPopup(pull);
         }
 
         public void Push(bool autoStart)
