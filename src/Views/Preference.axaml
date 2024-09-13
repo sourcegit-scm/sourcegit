@@ -364,22 +364,22 @@
                      Text="{Binding OpenAIServer, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.AI.ApiKey}"
+                       Text="{DynamicResource Text.Preference.AI.Model}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="1" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
-                     Text="{Binding OpenAIApiKey, Mode=TwoWay}"/>
+                     Text="{Binding OpenAIModel, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.AI.Model}"
+                       Text="{DynamicResource Text.Preference.AI.ApiKey}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="2" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
-                     Text="{Binding OpenAIModel, Mode=TwoWay}"/>
+                     Text="{Binding OpenAIApiKey, Mode=TwoWay}"/>
           </Grid>
         </TabItem>
 

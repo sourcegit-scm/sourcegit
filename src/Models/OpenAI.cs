@@ -95,7 +95,7 @@ namespace SourceGit.Models
 
         public static bool IsValid
         {
-            get => !string.IsNullOrEmpty(Server) && !string.IsNullOrEmpty(ApiKey) && !string.IsNullOrEmpty(Model);
+            get => !string.IsNullOrEmpty(Server) && !string.IsNullOrEmpty(Model);
         }
 
         public static OpenAIChatResponse Chat(string prompt, string question, CancellationToken cancellation)
@@ -105,7 +105,8 @@ namespace SourceGit.Models
             chat.AddMessage("user", question);
 
             var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(60) };
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
+            if (!string.IsNullOrEmpty(ApiKey))
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
 
             var req = new StringContent(JsonSerializer.Serialize(chat, JsonCodeGen.Default.OpenAIChatRequest));
             try

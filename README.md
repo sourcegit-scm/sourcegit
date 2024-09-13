@@ -87,6 +87,19 @@ For **Linux** users:
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
 
+## OpenAI
+
+This software supports using OpenAI or other AI service that has an OpenAI comaptible HTTP API to generate commit message. You need configurate the service in `Preference` window.
+
+For `OpenAI`:
+
+* `Server` must be `https://api.openai.com/v1/chat/completions`
+
+For other AI service:
+
+* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1/chat/completions`
+* The `API Key` is optional that depends on the service
+
 ## External Tools
 
 This app supports open repository in external tools listed in the table below.
