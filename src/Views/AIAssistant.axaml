@@ -11,7 +11,7 @@
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.AIAssistant}"
-                    Width="400" Height="120"
+                    Width="400" SizeToContent="Height"
                     CanResize="False"
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,Auto,Auto">
