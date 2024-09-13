@@ -105,6 +105,7 @@ namespace SourceGit.Models
             chat.AddMessage("user", question);
 
             var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(60) };
+            client.DefaultRequestHeaders.Add("Content-Type", "application/json");
             if (!string.IsNullOrEmpty(ApiKey))
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
 
