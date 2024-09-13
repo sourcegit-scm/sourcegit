@@ -125,15 +125,22 @@ namespace SourceGit.Views
         {
             if (!Models.OpenAI.IsValid)
             {
-                App.RaiseException(null, $"Bad configuration for OpenAI");
+                App.RaiseException(null, "Bad configuration for OpenAI");
                 return;
             }
 
-            if (DataContext is ViewModels.WorkingCopy vm && vm.Staged is { Count: > 0 })
+            if (DataContext is ViewModels.WorkingCopy vm)
             {
-                var dialog = new AIAssistant() { DataContext = vm };
-                dialog.GenerateCommitMessage();
-                App.OpenDialog(dialog);
+                if (vm.Staged is { Count: > 0 })
+                {
+                    var dialog = new AIAssistant() { DataContext = vm };
+                    dialog.GenerateCommitMessage();
+                    App.OpenDialog(dialog);
+                }
+                else
+                {
+                    App.RaiseException(null, "No files added to commit!");
+                }
             }
             
             e.Handled = true;
