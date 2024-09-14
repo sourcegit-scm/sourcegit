@@ -11,29 +11,6 @@ namespace SourceGit.Native
     [SupportedOSPlatform("linux")]
     internal class Linux : OS.IBackend
     {
-        class Terminal
-        {
-            public string FilePath { get; set; }
-            public string OpenArgFormat { get; set; }
-
-            public Terminal(string exec, string fmt)
-            {
-                FilePath = exec;
-                OpenArgFormat = fmt;
-            }
-
-            public void Open(string dir)
-            {
-                Process.Start(FilePath, string.Format(OpenArgFormat, dir));
-            }
-        }
-
-        public Linux()
-        {
-            _xdgOpenPath = FindExecutable("xdg-open");
-            _terminal = FindTerminal();
-        }
-
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new X11PlatformOptions()
@@ -45,6 +22,20 @@ namespace SourceGit.Native
         public string FindGitExecutable()
         {
             return FindExecutable("git");
+        }
+
+        public string FindTerminal(Models.ShellOrTerminal shell)
+        {
+            var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
+            var pathes = pathVariable.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var path in pathes)
+            {
+                var test = Path.Combine(path, shell.Exec);
+                if (File.Exists(test))
+                    return test;
+            }
+
+            return string.Empty;
         }
 
         public List<Models.ExternalTool> FindExternalTools()
@@ -61,50 +52,40 @@ namespace SourceGit.Native
 
         public void OpenBrowser(string url)
         {
-            if (string.IsNullOrEmpty(_xdgOpenPath))
-                App.RaiseException("", $"Can NOT find `xdg-open` command!!!");
-            else
-                Process.Start(_xdgOpenPath, $"\"{url}\"");
+            Process.Start("xdg-open", $"\"{url}\"");
         }
 
         public void OpenInFileManager(string path, bool select)
         {
-            if (string.IsNullOrEmpty(_xdgOpenPath))
-            {
-                App.RaiseException("", $"Can NOT find `xdg-open` command!!!");
-                return;
-            }
-
             if (Directory.Exists(path))
             {
-                Process.Start(_xdgOpenPath, $"\"{path}\"");
+                Process.Start("xdg-open", $"\"{path}\"");
             }
             else
             {
                 var dir = Path.GetDirectoryName(path);
                 if (Directory.Exists(dir))
-                    Process.Start(_xdgOpenPath, $"\"{dir}\"");
+                    Process.Start("xdg-open", $"\"{dir}\"");
             }
         }
 
         public void OpenTerminal(string workdir)
         {
-            var dir = string.IsNullOrEmpty(workdir) ? "~" : workdir;
-            if (_terminal == null)
-                App.RaiseException(dir, $"Only supports gnome-terminal/konsole/xfce4-terminal/lxterminal/deepin-terminal/mate-terminal/foot!");
-            else
-                _terminal.Open(dir);
+            if (string.IsNullOrEmpty(OS.ShellOrTerminal) || !File.Exists(OS.ShellOrTerminal))
+            {
+                App.RaiseException(workdir, $"Can not found terminal! Please confirm that the correct shell/terminal has been configured.");
+                return;
+            }
+
+            var startInfo = new ProcessStartInfo();
+            startInfo.WorkingDirectory = string.IsNullOrEmpty(workdir) ? "~" : workdir;
+            startInfo.FileName = OS.ShellOrTerminal;
+            Process.Start(startInfo);
         }
 
         public void OpenWithDefaultEditor(string file)
         {
-            if (string.IsNullOrEmpty(_xdgOpenPath))
-            {
-                App.RaiseException("", $"Can NOT find `xdg-open` command!!!");
-                return;
-            }
-
-            var proc = Process.Start(_xdgOpenPath, $"\"{file}\"");
+            var proc = Process.Start("xdg-open", $"\"{file}\"");
             if (proc != null)
             {
                 proc.WaitForExit();
@@ -130,51 +111,10 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
-        private Terminal FindTerminal()
-        {
-            var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
-            var pathes = pathVariable.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var path in pathes)
-            {
-                var test = Path.Combine(path, "gnome-terminal");
-                if (File.Exists(test))
-                    return new Terminal(test, "--working-directory=\"{0}\"");
-
-                test = Path.Combine(path, "konsole");
-                if (File.Exists(test))
-                    return new Terminal(test, "--workdir \"{0}\"");
-
-                test = Path.Combine(path, "xfce4-terminal");
-                if (File.Exists(test))
-                    return new Terminal(test, "--working-directory=\"{0}\"");
-
-                test = Path.Combine(path, "lxterminal");
-                if (File.Exists(test))
-                    return new Terminal(test, "--working-directory=\"{0}\"");
-
-                test = Path.Combine(path, "deepin-terminal");
-                if (File.Exists(test))
-                    return new Terminal(test, "--work-directory \"{0}\"");
-
-                test = Path.Combine(path, "mate-terminal");
-                if (File.Exists(test))
-                    return new Terminal(test, "--working-directory=\"{0}\"");
-
-                test = Path.Combine(path, "foot");
-                if (File.Exists(test))
-                    return new Terminal(test, "--working-directory=\"{0}\"");
-            }
-
-            return null;
-        }
-
         private string FindJetBrainsFleet()
         {
             var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox/apps/fleet/bin/Fleet";
             return File.Exists(path) ? path : FindExecutable("fleet");
         }
-
-        private string _xdgOpenPath = null;
-        private Terminal _terminal = null;
     }
 }

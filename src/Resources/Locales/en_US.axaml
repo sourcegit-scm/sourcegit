@@ -399,6 +399,10 @@
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Theme Overrides</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">Use native window frame</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Install Path</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Input path for diff/merge tool</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Tool</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">GENERAL</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Language</x:String>
@@ -413,7 +417,6 @@
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">User Email</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Global git user email</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Install Path</x:String>
-  <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">Shell</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Global git user name</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git version</x:String>
@@ -426,10 +429,10 @@
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Input path for installed gpg program</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">User Signing Key</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">User's gpg signing key</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Install Path</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Input path for diff/merge tool</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Tool</x:String>
+  <x:String x:Key="Text.Preference.Integration" xml:space="preserve">INTEGRATION</x:String>
+  <x:String x:Key="Text.Preference.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
+  <x:String x:Key="Text.Preference.Shell.Type" xml:space="preserve">Shell/Terminal</x:String>
+  <x:String x:Key="Text.Preference.Shell.Path" xml:space="preserve">Path</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Prune Worktrees</x:String>

@@ -53,12 +53,6 @@ namespace SourceGit.Native
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
 
-        public Models.Shell Shell
-        {
-            get;
-            set;
-        } = Models.Shell.Default;
-
         public void SetupApp(AppBuilder builder)
         {
             // Fix drop shadow issue on Windows 10
@@ -98,6 +92,51 @@ namespace SourceGit.Native
             return null;
         }
 
+        public string FindTerminal(Models.ShellOrTerminal shell)
+        {
+            switch (shell.Type)
+            {
+                case "git-bash":
+                    if (string.IsNullOrEmpty(OS.GitExecutable))
+                        break;
+
+                    var binDir = Path.GetDirectoryName(OS.GitExecutable)!;
+                    var bash = Path.Combine(binDir, "bash.exe");
+                    if (!File.Exists(bash))
+                        break;
+
+                    return bash;
+                case "pwsh":
+                    var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                            Microsoft.Win32.RegistryHive.LocalMachine,
+                            Microsoft.Win32.RegistryView.Registry64);
+
+                    var pwsh = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\pwsh.exe");
+                    if (pwsh != null)
+                    {
+                        var path = pwsh.GetValue(null) as string;
+                        if (File.Exists(path))
+                            return path;
+                    }
+
+                    var pwshFinder = new StringBuilder("powershell.exe", 512);
+                    if (PathFindOnPath(pwshFinder, null))
+                        return pwshFinder.ToString();
+
+                    break;
+                case "cmd":
+                    return "C:\\Windows\\System32\\cmd.exe";
+                case "wt":
+                    var wtFinder = new StringBuilder("wt.exe", 512);
+                    if (PathFindOnPath(wtFinder, null))
+                        return wtFinder.ToString();
+
+                    break;
+            }
+
+            return string.Empty;
+        }
+
         public List<Models.ExternalTool> FindExternalTools()
         {
             var finder = new Models.ExternalToolsFinder();
@@ -119,56 +158,15 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            if (string.IsNullOrEmpty(workdir) || !Path.Exists(workdir))
+            if (string.IsNullOrEmpty(OS.ShellOrTerminal) || !File.Exists(OS.ShellOrTerminal))
             {
-                workdir = ".";
+                App.RaiseException(workdir, $"Can not found terminal! Please confirm that the correct shell/terminal has been configured.");
+                return;
             }
 
             var startInfo = new ProcessStartInfo();
             startInfo.WorkingDirectory = workdir;
-
-            switch (Shell)
-            {
-                case Models.Shell.Default:
-                    if (string.IsNullOrEmpty(OS.GitExecutable))
-                    {
-                        App.RaiseException(workdir, $"Can NOT found bash.exe");
-                        return;
-                    }
-
-                    var binDir = Path.GetDirectoryName(OS.GitExecutable)!;
-                    var bash = Path.Combine(binDir, "bash.exe");
-                    if (!File.Exists(bash))
-                    {
-                        App.RaiseException(workdir, $"Can NOT found bash.exe under '{binDir}'");
-                        return;
-                    }
-
-                    startInfo.FileName = bash;
-                    break;
-                case Models.Shell.PowerShell:
-                    startInfo.FileName = ChoosePowerShell();
-                    startInfo.Arguments = startInfo.FileName.EndsWith("pwsh.exe") ? $"-WorkingDirectory \"{workdir}\" -Nologo" : "-Nologo";
-                    break;
-                case Models.Shell.CommandPrompt:
-                    startInfo.FileName = "cmd";
-                    break;
-                case Models.Shell.DefaultShellOfWindowsTerminal:
-                    var wt = FindWindowsTerminalApp();
-                    if (!File.Exists(wt))
-                    {
-                        App.RaiseException(workdir, $"Can NOT found wt.exe on your system!");
-                        return;
-                    }
-
-                    startInfo.FileName = wt;
-                    startInfo.Arguments = $"-d \"{workdir}\"";
-                    break;
-                default:
-                    App.RaiseException(workdir, $"Bad shell configuration!");
-                    return;
-            }
-
+            startInfo.FileName = OS.ShellOrTerminal;
             Process.Start(startInfo);
         }
 
@@ -216,52 +214,6 @@ namespace SourceGit.Native
 
             var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
             DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
-        }
-
-        // There are two versions of PowerShell : pwsh.exe (preferred) and powershell.exe (system default)
-        private string ChoosePowerShell()
-        {
-            if (!string.IsNullOrEmpty(_powershellPath))
-                return _powershellPath;
-
-            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
-                    Microsoft.Win32.RegistryHive.LocalMachine,
-                    Microsoft.Win32.RegistryView.Registry64);
-
-            var pwsh = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\pwsh.exe");
-            if (pwsh != null)
-            {
-                var path = pwsh.GetValue(null) as string;
-                if (File.Exists(path))
-                {
-                    _powershellPath = path;
-                    return _powershellPath;
-                }
-            }
-
-            var finder = new StringBuilder("powershell.exe", 512);
-            if (PathFindOnPath(finder, null))
-            {
-                _powershellPath = finder.ToString();
-                return _powershellPath;
-            }
-
-            return string.Empty;
-        }
-
-        private string FindWindowsTerminalApp()
-        {
-            if (!string.IsNullOrEmpty(_wtPath))
-                return _wtPath;
-
-            var finder = new StringBuilder("wt.exe", 512);
-            if (PathFindOnPath(finder, null))
-            {
-                _wtPath = finder.ToString();
-                return _wtPath;
-            }
-
-            return string.Empty;
         }
 
         #region EXTERNAL_EDITOR_FINDER
@@ -385,8 +337,5 @@ namespace SourceGit.Native
                 ILFree(pidl);
             }
         }
-
-        private string _powershellPath = string.Empty;
-        private string _wtPath = string.Empty;
     }
 }

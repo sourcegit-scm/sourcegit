@@ -108,7 +108,7 @@ namespace SourceGit.Commands
             if (rsp != null && rsp.Choices.Count > 0)
                 return rsp.Choices[0].Message.Content;
 
-            return string.Empty;           
+            return string.Empty;
         }
 
         private string _repo;

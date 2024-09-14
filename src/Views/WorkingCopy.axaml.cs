@@ -142,7 +142,7 @@ namespace SourceGit.Views
                     App.RaiseException(null, "No files added to commit!");
                 }
             }
-            
+
             e.Handled = true;
         }
     }

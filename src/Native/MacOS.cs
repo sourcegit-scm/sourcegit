@@ -24,6 +24,19 @@ namespace SourceGit.Native
             return File.Exists("/usr/bin/git") ? "/usr/bin/git" : string.Empty;
         }
 
+        public string FindTerminal(Models.ShellOrTerminal shell)
+        {
+            switch (shell.Type)
+            {
+                case "mac-terminal":
+                    return "Terminal";
+                case "iterm2":
+                    return "iTerm";
+            }
+
+            return "InvalidTerminal";
+        }
+
         public List<Models.ExternalTool> FindExternalTools()
         {
             var finder = new Models.ExternalToolsFinder();
@@ -53,12 +66,7 @@ namespace SourceGit.Native
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var dir = string.IsNullOrEmpty(workdir) ? home : workdir;
-
-            var terminal = "Terminal";
-            if (Directory.Exists("/Applications/iTerm.app"))
-                terminal = "iTerm";
-
-            Process.Start("open", $"-a {terminal} \"{dir}\"");
+            Process.Start("open", $"-a {OS.ShellOrTerminal} \"{dir}\"");
         }
 
         public void OpenWithDefaultEditor(string file)

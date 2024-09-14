@@ -183,7 +183,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void SelectDefaultCloneDir(object _1, RoutedEventArgs _2)
+        private async void SelectDefaultCloneDir(object _, RoutedEventArgs e)
         {
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
             try
@@ -194,13 +194,15 @@ namespace SourceGit.Views
                     ViewModels.Preference.Instance.GitDefaultCloneDir = selected[0].Path.LocalPath;
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                App.RaiseException(string.Empty, $"Failed to select default clone directory: {e.Message}");
+                App.RaiseException(string.Empty, $"Failed to select default clone directory: {ex.Message}");
             }
+
+            e.Handled = true;
         }
 
-        private async void SelectGPGExecutable(object _1, RoutedEventArgs _2)
+        private async void SelectGPGExecutable(object _, RoutedEventArgs e)
         {
             var patterns = new List<string>();
             if (OperatingSystem.IsWindows())
@@ -219,14 +221,39 @@ namespace SourceGit.Views
             {
                 GPGExecutableFile = selected[0].Path.LocalPath;
             }
+
+            e.Handled = true;
         }
 
-        private async void SelectExternalMergeTool(object _1, RoutedEventArgs _2)
+        private async void SelectShellOrTerminal(object _, RoutedEventArgs e)
+        {
+            var type = ViewModels.Preference.Instance.ShellOrTerminal;
+            if (type == -1)
+                return;
+
+            var shell = Models.ShellOrTerminal.Supported[type];
+            var options = new FilePickerOpenOptions()
+            {
+                FileTypeFilter = [new FilePickerFileType(shell.Name) { Patterns = [shell.Exec] }],
+                AllowMultiple = false,
+            };
+
+            var selected = await StorageProvider.OpenFilePickerAsync(options);
+            if (selected.Count == 1)
+            {
+                ViewModels.Preference.Instance.ShellOrTerminalPath = selected[0].Path.LocalPath;
+            }
+
+            e.Handled = true;
+        }
+
+        private async void SelectExternalMergeTool(object _, RoutedEventArgs e)
         {
             var type = ViewModels.Preference.Instance.ExternalMergeToolType;
             if (type < 0 || type >= Models.ExternalMerger.Supported.Count)
             {
                 ViewModels.Preference.Instance.ExternalMergeToolType = 0;
+                e.Handled = true;
                 return;
             }
 
@@ -242,6 +269,8 @@ namespace SourceGit.Views
             {
                 ViewModels.Preference.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
             }
+
+            e.Handled = true;
         }
 
         private void SetIfChanged(Dictionary<string, string> cached, string key, string value, string defValue)

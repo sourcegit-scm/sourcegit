@@ -398,6 +398,10 @@
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">自訂主題</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">使用固定寬度的分頁標籤</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系統原生預設視窗樣式</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">對比/合併工具</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">安裝路徑</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">填寫可執行檔案所在路徑</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">工具</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">一般設定</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">啟動時檢查軟體更新</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">顯示語言</x:String>
@@ -412,7 +416,6 @@
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">電子郵件</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">預設 Git 使用者電子郵件</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">安裝路徑</x:String>
-  <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">終端 Shell</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">使用者名稱</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">預設 Git 使用者名稱</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git 版本</x:String>
@@ -425,10 +428,10 @@
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">填寫 gpg.exe 所在路徑</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">使用者簽章金鑰</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">填寫簽章提交所使用的金鑰</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">對比/合併工具</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">安裝路徑</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">填寫可執行檔案所在路徑</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">工具</x:String>
+  <x:String x:Key="Text.Preference.Integration" xml:space="preserve">第三方工具集成</x:String>
+  <x:String x:Key="Text.Preference.Shell" xml:space="preserve">終端/SHELL</x:String>
+  <x:String x:Key="Text.Preference.Shell.Type" xml:space="preserve">終端/SHELL</x:String>
+  <x:String x:Key="Text.Preference.Shell.Path" xml:space="preserve">安裝路徑</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">清理遠端已刪除分支</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">目標:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">清理工作區</x:String>

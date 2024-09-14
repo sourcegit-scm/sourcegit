@@ -229,16 +229,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public Models.Shell GitShell
-        {
-            get => Native.OS.GetShell();
-            set
-            {
-                if (Native.OS.SetShell(value))
-                    OnPropertyChanged();
-            }
-        }
-
         public string GitDefaultCloneDir
         {
             get => _gitDefaultCloneDir;
@@ -272,6 +262,59 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged();
                 }
             }
+        }
+
+        public int ShellOrTerminal
+        {
+            get => _shellOrTerminal;
+            set
+            {
+                if (SetProperty(ref _shellOrTerminal, value))
+                {
+                    if (value >= 0 && value < Models.ShellOrTerminal.Supported.Count)
+                        Native.OS.SetShellOrTerminal(Models.ShellOrTerminal.Supported[value]);
+                    else
+                        Native.OS.SetShellOrTerminal(null);
+
+                    OnPropertyChanged(nameof(ShellOrTerminalPath));
+                }
+            }
+        }
+
+        public string ShellOrTerminalPath
+        {
+            get => Native.OS.ShellOrTerminal;
+            set
+            {
+                if (value != Native.OS.ShellOrTerminal)
+                {
+                    Native.OS.ShellOrTerminal = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int ExternalMergeToolType
+        {
+            get => _externalMergeToolType;
+            set
+            {
+                var changed = SetProperty(ref _externalMergeToolType, value);
+                if (changed && !OperatingSystem.IsWindows() && value > 0 && value < Models.ExternalMerger.Supported.Count)
+                {
+                    var tool = Models.ExternalMerger.Supported[value];
+                    if (File.Exists(tool.Exec))
+                        ExternalMergeToolPath = tool.Exec;
+                    else
+                        ExternalMergeToolPath = string.Empty;
+                }
+            }
+        }
+
+        public string ExternalMergeToolPath
+        {
+            get => _externalMergeToolPath;
+            set => SetProperty(ref _externalMergeToolPath, value);
         }
 
         public string OpenAIServer
@@ -311,29 +354,6 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged();
                 }
             }
-        }
-
-        public int ExternalMergeToolType
-        {
-            get => _externalMergeToolType;
-            set
-            {
-                var changed = SetProperty(ref _externalMergeToolType, value);
-                if (changed && !OperatingSystem.IsWindows() && value > 0 && value < Models.ExternalMerger.Supported.Count)
-                {
-                    var tool = Models.ExternalMerger.Supported[value];
-                    if (File.Exists(tool.Exec))
-                        ExternalMergeToolPath = tool.Exec;
-                    else
-                        ExternalMergeToolPath = string.Empty;
-                }
-            }
-        }
-
-        public string ExternalMergeToolPath
-        {
-            get => _externalMergeToolPath;
-            set => SetProperty(ref _externalMergeToolPath, value);
         }
 
         public List<RepositoryNode> RepositoryNodes
@@ -560,6 +580,7 @@ namespace SourceGit.ViewModels
 
         private string _gitDefaultCloneDir = string.Empty;
 
+        private int _shellOrTerminal = -1;
         private int _externalMergeToolType = 0;
         private string _externalMergeToolPath = string.Empty;
     }

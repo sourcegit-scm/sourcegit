@@ -394,6 +394,10 @@
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Design-Anpassungen</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Fixe Tab-Breite in Titelleiste</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">Verwende nativen Fensterrahmen</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Installationspfad</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Installationspfad zum Diff/Merge Tool</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Tool</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">ALLGEMEIN</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Beim Starten nach Updates suchen</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Sprache</x:String>
@@ -408,7 +412,6 @@
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">Benutzer Email</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Globale Git Benutzer Email</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Installationspfad</x:String>
-  <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">Shell</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">Benutzername</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Globaler Git Benutzername</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git Version</x:String>
@@ -421,10 +424,6 @@
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Installationspfad zum GPG Programm</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">Benutzer Signierungsschlüssel</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">GPG Benutzer Signierungsschlüssel</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Installationspfad</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Installationspfad zum Diff/Merge Tool</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Tool</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Remote löschen</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Ziel:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Worktrees löschen</x:String>

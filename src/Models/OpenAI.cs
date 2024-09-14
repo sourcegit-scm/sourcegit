@@ -123,7 +123,7 @@ namespace SourceGit.Models
                 reader.Wait();
 
                 return JsonSerializer.Deserialize(reader.Result, JsonCodeGen.Default.OpenAIChatResponse);
-            } 
+            }
             catch
             {
                 if (cancellation.IsCancellationRequested)

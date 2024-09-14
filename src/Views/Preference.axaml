@@ -194,7 +194,7 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Git}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,Auto,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Git.Path}"
                        HorizontalAlignment="Right"
@@ -226,50 +226,11 @@
               </Border>
             </StackPanel>
 
-            <Border Grid.Row="2" Grid.Column="0"
-                    Height="32"
-                    IsVisible="{OnPlatform False, Windows=True}">
-              <TextBlock Text="{DynamicResource Text.Preference.Git.Shell}"
-                         HorizontalAlignment="Right"
-                         Margin="0,0,16,0"/>
-            </Border>
-            <ComboBox Grid.Row="2" Grid.Column="1"
-                      MinHeight="28"
-                      Padding="8,0"
-                      HorizontalAlignment="Stretch"
-                      HorizontalContentAlignment="Left"
-                      RenderOptions.BitmapInterpolationMode="HighQuality"
-                      FontSize="{Binding DefaultFontSize, Mode=OneWay}"
-                      SelectedIndex="{Binding GitShell, Mode=TwoWay}"
-                      IsVisible="{OnPlatform False, Windows=True}">
-              <ComboBox.Items>
-                <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/git-bash.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
-                  <TextBlock Grid.Column="1" Text="Git Bash" Margin="6,0,0,0"/>
-                </Grid>
-                
-                <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/pwsh.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
-                  <TextBlock Grid.Column="1" Text="PowerShell" Margin="6,0,0,0"/>
-                </Grid>
-
-                <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/cmd.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
-                  <TextBlock Grid.Column="1" Text="Command Prompt" Margin="6,0,0,0"/>
-                </Grid>
-
-                <Grid ColumnDefinitions="Auto,*">
-                  <Image Grid.Column="0" Width="16" Height="16" Source="/Resources/Images/ShellIcons/wt.png" RenderOptions.BitmapInterpolationMode="HighQuality"/>
-                  <TextBlock Grid.Column="1" Text="Default Shell in Windows Terminal" Margin="6,0,0,0"/>
-                </Grid>
-              </ComboBox.Items>
-            </ComboBox>
-
-            <TextBlock Grid.Row="3" Grid.Column="0"
+            <TextBlock Grid.Row="2" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Git.DefaultCloneDir}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="3" Grid.Column="1"
+            <TextBox Grid.Row="2" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding GitDefaultCloneDir, Mode=TwoWay}">
@@ -280,31 +241,31 @@
               </TextBox.InnerRightContent>
             </TextBox>
 
-            <TextBlock Grid.Row="4" Grid.Column="0"
+            <TextBlock Grid.Row="3" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Git.User}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="4" Grid.Column="1"
+            <TextBox Grid.Row="3" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.DefaultUser, Mode=TwoWay}"
                      Watermark="{DynamicResource Text.Preference.Git.User.Placeholder}"/>
 
-            <TextBlock Grid.Row="5" Grid.Column="0"
+            <TextBlock Grid.Row="4" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Git.Email}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="5" Grid.Column="1"
+            <TextBox Grid.Row="4" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.DefaultEmail, Mode=TwoWay}"
                      Watermark="{DynamicResource Text.Preference.Git.Email.Placeholder}"/>
 
-            <TextBlock Grid.Row="6" Grid.Column="0"
+            <TextBlock Grid.Row="5" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Git.CRLF}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="6" Grid.Column="1"
+            <ComboBox Grid.Row="5" Grid.Column="1"
                       MinHeight="28"
                       Padding="8,0"
                       HorizontalAlignment="Stretch"
@@ -320,16 +281,16 @@
               </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <CheckBox Grid.Row="7" Grid.Column="1"
+            <CheckBox Grid.Row="6" Grid.Column="1"
                       Content="{DynamicResource Text.Preference.Git.AutoFetch}"
                       IsChecked="{Binding GitAutoFetch, Mode=TwoWay}"/>
 
-            <TextBlock Grid.Row="8" Grid.Column="0"
+            <TextBlock Grid.Row="7" Grid.Column="0"
                        IsVisible="{Binding GitAutoFetch}"
                        Text="{DynamicResource Text.Preference.Git.AutoFetchInterval}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <Grid Grid.Row="8" Grid.Column="1" Height="32" ColumnDefinitions="*,Auto" IsVisible="{Binding GitAutoFetch}">
+            <Grid Grid.Row="7" Grid.Column="1" Height="32" ColumnDefinitions="*,Auto" IsVisible="{Binding GitAutoFetch}">
               <NumericUpDown Grid.Column="0"
                              Minimum="1" Maximum="60" Increment="1"
                              Height="28"
@@ -345,41 +306,6 @@
                          Margin="5,0,0,0"
                          Text="{DynamicResource Text.Preference.Git.AutoFetchIntervalSuffix}" />
             </Grid>
-          </Grid>
-        </TabItem>
-
-        <TabItem>
-          <TabItem.Header>
-            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.AI}"/>
-          </TabItem.Header>
-
-          <Grid Margin="8" RowDefinitions="32,32,32" ColumnDefinitions="Auto,*">
-            <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.AI.Server}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
-            <TextBox Grid.Row="0" Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3"
-                     Text="{Binding OpenAIServer, Mode=TwoWay}"/>
-
-            <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.AI.Model}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
-            <TextBox Grid.Row="1" Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3"
-                     Text="{Binding OpenAIModel, Mode=TwoWay}"/>
-
-            <TextBlock Grid.Row="2" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.AI.ApiKey}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
-            <TextBox Grid.Row="2" Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3"
-                     Text="{Binding OpenAIApiKey, Mode=TwoWay}"/>
           </Grid>
         </TabItem>
 
@@ -449,51 +375,142 @@
 
         <TabItem>
           <TabItem.Header>
-            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.DiffMerge}"/>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Integration}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,Auto" ColumnDefinitions="Auto,*">
-            <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.DiffMerge.Type}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="0" Grid.Column="1"
-                      MinHeight="28"
-                      Padding="8,0"
-                      HorizontalAlignment="Stretch"
-                      HorizontalContentAlignment="Left"
-                      RenderOptions.BitmapInterpolationMode="HighQuality"
-                      FontSize="{Binding DefaultFontSize}"
-                      ItemsSource="{Binding Source={x:Static m:ExternalMerger.Supported}}"
-                      SelectedIndex="{Binding ExternalMergeToolType, Mode=TwoWay}">
-              <ComboBox.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type m:ExternalMerger}">
-                  <Grid ColumnDefinitions="Auto,*">
-                    <Image Grid.Column="0" Width="16" Height="16" Source="{Binding IconImage}" RenderOptions.BitmapInterpolationMode="HighQuality"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="6,0,0,0"/>
-                  </Grid>
-                </DataTemplate>
-              </ComboBox.ItemTemplate>
-            </ComboBox>
+          <StackPanel Margin="8" MaxWidth="580" Orientation="Vertical" Grid.IsSharedSizeScope="True">
+            <TextBlock Classes="bold" Text="{DynamicResource Text.Preference.Shell}"/>
+            <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
+            <Grid Margin="8,0,0,0" RowDefinitions="32,Auto">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              
+              <TextBlock Grid.Row="0" Grid.Column="0"
+                         Text="{DynamicResource Text.Preference.Shell.Type}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+              <ComboBox Grid.Row="0" Grid.Column="1"
+                        MinHeight="28"
+                        Padding="8,0"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding Source={x:Static m:ShellOrTerminal.Supported}}"
+                        SelectedIndex="{Binding ShellOrTerminal, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate x:DataType="{x:Type m:ShellOrTerminal}">
+                    <Grid ColumnDefinitions="Auto,*">
+                      <Image Grid.Column="0" Width="16" Height="16" Source="{Binding Icon}" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                      <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="6,0,0,0"/>
+                    </Grid>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
 
-            <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.DiffMerge.Path}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"
-                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
-            <TextBox Grid.Row="1" Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3"
-                     Text="{Binding ExternalMergeToolPath, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preference.DiffMerge.Path.Placeholder}"
-                     IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-              <TextBox.InnerRightContent>
-                <Button Classes="icon_button" Width="30" Height="30" Click="SelectExternalMergeTool">
-                  <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
-                </Button>
-              </TextBox.InnerRightContent>
-            </TextBox>
-          </Grid>
+              <TextBlock Grid.Row="1" Grid.Column="0"
+                         Text="{DynamicResource Text.Preference.Shell.Path}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"
+                         IsVisible="{OnPlatform True, macOS=False}"/>
+              <TextBox Grid.Row="1" Grid.Column="1"
+                       Height="28"
+                       CornerRadius="3"
+                       Text="{Binding ShellOrTerminalPath, Mode=TwoWay}"
+                       IsVisible="{OnPlatform True, macOS=False}">
+                <TextBox.InnerRightContent>
+                  <Button Classes="icon_button" Width="30" Height="30" Click="SelectShellOrTerminal">
+                    <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                  </Button>
+                </TextBox.InnerRightContent>
+              </TextBox>
+            </Grid>            
+
+            <TextBlock Classes="bold" Margin="0,24,0,0" Text="{DynamicResource Text.Preference.DiffMerge}"/>
+            <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
+            <Grid Margin="8,0,0,0" RowDefinitions="32,Auto">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              
+              <TextBlock Grid.Row="0" Grid.Column="0"
+                         Text="{DynamicResource Text.Preference.DiffMerge.Type}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+              <ComboBox Grid.Row="0" Grid.Column="1"
+                        MinHeight="28"
+                        Padding="8,0"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
+                        RenderOptions.BitmapInterpolationMode="HighQuality"
+                        FontSize="{Binding DefaultFontSize}"
+                        ItemsSource="{Binding Source={x:Static m:ExternalMerger.Supported}}"
+                        SelectedIndex="{Binding ExternalMergeToolType, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate x:DataType="{x:Type m:ExternalMerger}">
+                    <Grid ColumnDefinitions="Auto,*">
+                      <Image Grid.Column="0" Width="16" Height="16" Source="{Binding IconImage}" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                      <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="6,0,0,0"/>
+                    </Grid>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+
+              <TextBlock Grid.Row="1" Grid.Column="0"
+                         Text="{DynamicResource Text.Preference.DiffMerge.Path}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"
+                         IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
+              <TextBox Grid.Row="1" Grid.Column="1"
+                       Height="28"
+                       CornerRadius="3"
+                       Text="{Binding ExternalMergeToolPath, Mode=TwoWay}"
+                       Watermark="{DynamicResource Text.Preference.DiffMerge.Path.Placeholder}"
+                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                <TextBox.InnerRightContent>
+                  <Button Classes="icon_button" Width="30" Height="30" Click="SelectExternalMergeTool">
+                    <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                  </Button>
+                </TextBox.InnerRightContent>
+              </TextBox>
+            </Grid>
+
+            <TextBlock Classes="bold" Margin="0,24,0,0" Text="{DynamicResource Text.Preference.AI}"/>
+            <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
+            <Grid Margin="8,0,0,0" RowDefinitions="32,32,32">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              
+              <TextBlock Grid.Row="0" Grid.Column="0"
+                         Text="{DynamicResource Text.Preference.AI.Server}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+              <TextBox Grid.Row="0" Grid.Column="1"
+                       Height="28"
+                       CornerRadius="3"
+                       Text="{Binding OpenAIServer, Mode=TwoWay}"/>
+
+              <TextBlock Grid.Row="1" Grid.Column="0"
+                         Text="{DynamicResource Text.Preference.AI.Model}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+              <TextBox Grid.Row="1" Grid.Column="1"
+                       Height="28"
+                       CornerRadius="3"
+                       Text="{Binding OpenAIModel, Mode=TwoWay}"/>
+
+              <TextBlock Grid.Row="2" Grid.Column="0"
+                         Text="{DynamicResource Text.Preference.AI.ApiKey}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+              <TextBox Grid.Row="2" Grid.Column="1"
+                       Height="28"
+                       CornerRadius="3"
+                       Text="{Binding OpenAIApiKey, Mode=TwoWay}"/>
+            </Grid>
+          </StackPanel>          
         </TabItem>
       </TabControl>
     </Border>    
