@@ -15,9 +15,9 @@ namespace SourceGit.Commands
         public Dictionary<string, string> ListAll()
         {
             if (string.IsNullOrEmpty(WorkingDirectory))
-                Args = "config --global -l";
+                Args = ["config", "--global", "-l"];
             else
-                Args = "config -l";
+                Args = ["config", "-l"];
 
             var output = ReadToEnd();
             var rs = new Dictionary<string, string>();
@@ -41,7 +41,7 @@ namespace SourceGit.Commands
 
         public string Get(string key)
         {
-            Args = $"config {key}";
+            Args = ["config", key];
             return ReadToEnd().StdOut.Trim();
         }
 
@@ -50,16 +50,16 @@ namespace SourceGit.Commands
             if (!allowEmpty && string.IsNullOrWhiteSpace(value))
             {
                 if (string.IsNullOrEmpty(WorkingDirectory))
-                    Args = $"config --global --unset {key}";
+                    Args = ["config", "--global", "--unset", key];
                 else
-                    Args = $"config --unset {key}";
+                    Args = ["config", "--unset", key];
             }
             else
             {
                 if (string.IsNullOrWhiteSpace(WorkingDirectory))
-                    Args = $"config --global {key} \"{value}\"";
+                    Args = ["config", "--global", key, value];
                 else
-                    Args = $"config {key} \"{value}\"";
+                    Args = ["config", key, value];
             }
 
             return Exec();

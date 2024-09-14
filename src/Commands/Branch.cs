@@ -7,7 +7,7 @@
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"branch {name} {basedOn}";
+            cmd.Args = ["branch", name, basedOn];
             return cmd.Exec();
         }
 
@@ -16,7 +16,7 @@
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"branch -M {name} {to}";
+            cmd.Args = ["branch", "-M", name, to];
             return cmd.Exec();
         }
 
@@ -27,9 +27,9 @@
             cmd.Context = repo;
 
             if (string.IsNullOrEmpty(upstream))
-                cmd.Args = $"branch {name} --unset-upstream";
+                cmd.Args = ["branch", name, "--unset-upstream"];
             else
-                cmd.Args = $"branch {name} -u {upstream}";
+                cmd.Args = ["branch", name, "-u", upstream];
 
             return cmd.Exec();
         }
@@ -39,7 +39,7 @@
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"branch -D {name}";
+            cmd.Args = ["branch", "-D", name];
             return cmd.Exec();
         }
 
@@ -49,7 +49,7 @@
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            cmd.Args = $"push {remote} --delete {name}";
+            cmd.Args = ["push", remote, "--delete", name];
             return cmd.Exec();
         }
     }

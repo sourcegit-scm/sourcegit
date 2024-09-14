@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -14,24 +15,22 @@ namespace SourceGit.Commands
             if (isLFSFiltered)
             {
                 var tmpFile = saveTo + ".tmp";
-                if (ExecCmd(repo, $"show {revision}:\"{file}\"", tmpFile))
+                if (ExecCmd(repo, ["show", $"{revision}:{file}"], tmpFile))
                 {
-                    ExecCmd(repo, $"lfs smudge", saveTo, tmpFile);
+                    ExecCmd(repo, ["lfs", "smudge"], saveTo, tmpFile);
                 }
                 File.Delete(tmpFile);
             }
             else
             {
-                ExecCmd(repo, $"show {revision}:\"{file}\"", saveTo);
+                ExecCmd(repo, ["show", $"{revision}:{file}"], saveTo);
             }
         }
 
-        private static bool ExecCmd(string repo, string args, string outputFile, string inputFile = null)
+        private static bool ExecCmd(string repo, IEnumerable<string> args, string outputFile, string inputFile = null)
         {
-            var starter = new ProcessStartInfo();
+            var starter = new ProcessStartInfo(Native.OS.GitExecutable, args);
             starter.WorkingDirectory = repo;
-            starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = args;
             starter.UseShellExecute = false;
             starter.CreateNoWindow = true;
             starter.WindowStyle = ProcessWindowStyle.Hidden;

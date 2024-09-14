@@ -17,7 +17,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "submodule status";
+            Args = ["submodule", "status"];
         }
 
         public List<Models.Submodule> Result()
@@ -27,7 +27,7 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess)
                 return submodules;
 
-            var builder = new StringBuilder();
+            var extra = new List<string>();
             var lines = rs.StdOut.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
@@ -35,7 +35,7 @@ namespace SourceGit.Commands
                 if (match.Success)
                 {
                     var path = match.Groups[1].Value;
-                    builder.Append($"\"{path}\" ");
+                    extra.Add(path);
                     submodules.Add(new Models.Submodule() { Path = path });
                     continue;
                 }
@@ -44,14 +44,14 @@ namespace SourceGit.Commands
                 if (match.Success)
                 {
                     var path = match.Groups[1].Value;
-                    builder.Append($"\"{path}\" ");
+                    extra.Add(path);
                     submodules.Add(new Models.Submodule() { Path = path });
                 }
             }
 
             if (submodules.Count > 0)
             {
-                Args = $"status -uno --porcelain -- {builder}";
+                Args = ["status", "-uno", "--porcelain", "--", ..extra];
                 rs = ReadToEnd();
                 if (!rs.IsSuccess)
                     return submodules;

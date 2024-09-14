@@ -60,7 +60,7 @@ namespace SourceGit.Commands
             var init = new Command();
             init.WorkingDirectory = repo;
             init.Context = repo;
-            init.Args = "flow init -d";
+            init.Args = ["flow", "init", "-d"];
             return init.Exec();
         }
 
@@ -128,7 +128,7 @@ namespace SourceGit.Commands
             var start = new Command();
             start.WorkingDirectory = repo;
             start.Context = repo;
-            start.Args = $"flow {type} start {name}";
+            start.Args = ["flow", type, "start", name];
             return start.Exec();
         }
 
@@ -148,7 +148,7 @@ namespace SourceGit.Commands
             var finish = new Command();
             finish.WorkingDirectory = repo;
             finish.Context = repo;
-            finish.Args = $"flow {type} finish {option} {name}";
+            finish.Args = ["flow", type, "finish", option, name];
             return finish.Exec();
         }
 

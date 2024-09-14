@@ -1,47 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SourceGit.Commands
 {
     public class QueryCommits : Command
     {
-        public QueryCommits(string repo, string limits, bool needFindHead = true)
+        public QueryCommits(string repo, IEnumerable<string> limits, bool needFindHead = true)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "log --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s " + limits;
+            Args = [
+                "log", "--date-order", "--no-show-signature", "--decorate=full",
+                "--pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s",
+                ..limits
+            ];
             _findFirstMerged = needFindHead;
         }
 
         public QueryCommits(string repo, string filter, Models.CommitSearchMethod method)
         {
-            string search;
+            var search = new List<string>();
 
             if (method == Models.CommitSearchMethod.ByUser)
             {
-                search = $"-i --author=\"{filter}\" --committer=\"{filter}\"";
+                search = ["-i", $"--author={filter}", $"--commiter={filter}"];
             }
             else if (method == Models.CommitSearchMethod.ByFile)
             {
-                search = $"-- \"{filter}\"";
+                search = ["--", filter];
             }
             else
             {
-                var argsBuilder = new StringBuilder();
                 var words = filter.Split(new[] { ' ', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var word in words)
                 {
-                    var escaped = word.Trim().Replace("\"", "\\\"", StringComparison.Ordinal);
-                    argsBuilder.Append($"--grep=\"{escaped}\" ");
+                    search.Add($"--grep={word.Trim()}");
                 }
-                argsBuilder.Append("--all-match -i");
-                search = argsBuilder.ToString();
+                search.AddRange(["--all-match", "-i"]);
             }
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log -1000 --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s --branches --remotes " + search;
+            Args = [
+                "log", "-1000", "--date-order", "--no-show-signature", "--decorate=full",
+                "--pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s",
+                "--branches", "--remotes", ..search
+            ];
             _findFirstMerged = false;
         }
 
@@ -122,7 +126,7 @@ namespace SourceGit.Commands
 
         private void MarkFirstMerged()
         {
-            Args = $"log --since=\"{_commits[^1].CommitterTimeStr}\" --format=\"%H\"";
+            Args = ["log", $"--since={_commits[^1].CommitterTimeStr}", "--format=%H"];
 
             var rs = ReadToEnd();
             var shas = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);

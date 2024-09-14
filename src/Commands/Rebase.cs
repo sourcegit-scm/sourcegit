@@ -6,10 +6,10 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "rebase ";
+            Args = ["rebase"];
             if (autoStash)
-                Args += "--autostash ";
-            Args += basedOn;
+                Args.Add("--autostash");
+            Args.Add(basedOn);
         }
     }
 
@@ -20,7 +20,7 @@
             WorkingDirectory = repo;
             Context = repo;
             Editor = EditorType.RebaseEditor;
-            Args = $"rebase -i --autosquash {basedOn}";
+            Args = ["rebase", "-i", "--autosquash", basedOn];
         }
     }
 }

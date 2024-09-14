@@ -6,7 +6,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"check-attr -z filter \"{path}\"";
+            Args = ["check-attr", "-z", "filter", path];
             RaiseError = false;
         }
 
@@ -14,7 +14,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"check-attr --source {sha} -z filter \"{path}\"";
+            Args = ["check-attr", "--source", sha, "-z", "filter", path];
             RaiseError = false;
         }
 

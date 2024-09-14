@@ -10,7 +10,7 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
-            Args = "gc --prune";
+            Args = ["gc", "--prune"];
         }
 
         protected override void OnReadline(string line)

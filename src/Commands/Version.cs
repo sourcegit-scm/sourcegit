@@ -4,7 +4,7 @@
     {
         public Version()
         {
-            Args = "--version";
+            Args = ["--version"];
             RaiseError = false;
         }
 

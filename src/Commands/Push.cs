@@ -12,18 +12,18 @@ namespace SourceGit.Commands
             Context = repo;
             TraitErrorAsOutput = true;
             SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            Args = "push --progress --verbose ";
+            Args = ["push", "--progress", "--verbose"];
 
             if (withTags)
-                Args += "--tags ";
+                Args.Add("--tags");
             if (checkSubmodules)
-                Args += "--recurse-submodules=check ";
+                Args.Add("--recurse-submodules=check");
             if (track)
-                Args += "-u ";
+                Args.Add("-u");
             if (force)
-                Args += "--force-with-lease ";
+                Args.Add("--force-with-lease");
 
-            Args += $"{remote} {local}:{remoteBranch}";
+            Args.AddRange([remote, $"{local}:{remoteBranch}"]);
         }
 
         public Push(string repo, string remote, string tag, bool isDelete)
@@ -31,12 +31,12 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            Args = "push ";
+            Args = ["push"];
 
             if (isDelete)
-                Args += "--delete ";
+                Args.Add("--delete");
 
-            Args += $"{remote} refs/tags/{tag}";
+            Args.AddRange([remote, $"refs/tags/{tag}"]);
         }
 
         protected override void OnReadline(string line)

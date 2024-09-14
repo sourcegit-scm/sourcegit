@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _local, value);
         }
 
-        public string ExtraArgs
+        public IEnumerable<string> ExtraArgs
         {
             get => _extraArgs;
             set => SetProperty(ref _extraArgs, value);
@@ -154,6 +155,6 @@ namespace SourceGit.ViewModels
         private string _sshKey = string.Empty;
         private string _parentFolder = Preference.Instance.GitDefaultCloneDir;
         private string _local = string.Empty;
-        private string _extraArgs = string.Empty;
+        private IEnumerable<string> _extraArgs = [];
     }
 }

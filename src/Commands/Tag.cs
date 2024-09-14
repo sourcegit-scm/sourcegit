@@ -10,27 +10,27 @@ namespace SourceGit.Commands
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"tag {name} {basedOn}";
+            cmd.Args = ["tag", name, basedOn];
             return cmd.Exec();
         }
 
         public static bool Add(string repo, string name, string basedOn, string message, bool sign)
         {
-            var param = sign ? "-s -a" : "-a";
+            IEnumerable<string> param = sign ? ["-s", "-a"] : ["-a"];
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"tag {param} {name} {basedOn} ";
+            cmd.Args = ["tag", ..param, name, basedOn];
 
             if (!string.IsNullOrEmpty(message))
             {
                 string tmp = Path.GetTempFileName();
                 File.WriteAllText(tmp, message);
-                cmd.Args += $"-F \"{tmp}\"";
+                cmd.Args.AddRange(["-F", tmp]);
             }
             else
             {
-                cmd.Args += $"-m {name}";
+                cmd.Args.AddRange(["-m", name]);
             }
 
             return cmd.Exec();
@@ -41,7 +41,7 @@ namespace SourceGit.Commands
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"tag --delete {name}";
+            cmd.Args = ["tag", "--delete", name];
             if (!cmd.Exec())
                 return false;
 

@@ -53,10 +53,11 @@ namespace SourceGit.Commands
 
         public bool Exec()
         {
-            var starter = new ProcessStartInfo();
+            var starter = new ProcessStartInfo(
+                Native.OS.GitExecutable,
+                ["-c", "core.editor=true", "update-index", "--index-info"]
+            );
             starter.WorkingDirectory = _repo;
-            starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = "-c core.editor=true update-index --index-info";
             starter.UseShellExecute = false;
             starter.CreateNoWindow = true;
             starter.WindowStyle = ProcessWindowStyle.Hidden;

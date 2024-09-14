@@ -12,10 +12,10 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree {sha}";
+            Args = ["ls-tree", sha];
 
             if (!string.IsNullOrEmpty(parentFolder))
-                Args += $" -- \"{parentFolder}\"";
+                Args.AddRange(["--", parentFolder]);
         }
 
         public List<Models.Object> Result()

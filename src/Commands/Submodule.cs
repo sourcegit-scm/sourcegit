@@ -13,34 +13,34 @@ namespace SourceGit.Commands
         public bool Add(string url, string relativePath, bool recursive, Action<string> outputHandler)
         {
             _outputHandler = outputHandler;
-            Args = $"submodule add {url} \"{relativePath}\"";
+            Args = ["submodule", "add", url, relativePath];
             if (!Exec())
                 return false;
 
             if (recursive)
             {
-                Args = $"submodule update --init --recursive -- \"{relativePath}\"";
+                Args = ["submodule", "update", "--init", "--recursive", "--", relativePath];
                 return Exec();
             }
             else
             {
-                Args = $"submodule update --init -- \"{relativePath}\"";
+                Args = ["submodule", "update", "--init", "--", relativePath];
                 return true;
             }
         }
 
         public bool Update(string module, bool init, bool recursive, bool useRemote, Action<string> outputHandler)
         {
-            Args = "submodule update";
+            Args = ["submodule", "update"];
 
             if (init)
-                Args += " --init";
+                Args.Add("--init");
             if (recursive)
-                Args += " --recursive";
+                Args.Add("--recursive");
             if (useRemote)
-                Args += " --remote";
+                Args.Add("--remote");
             if (!string.IsNullOrEmpty(module))
-                Args += $" -- \"{module}\"";
+                Args.AddRange(["--", module]);
 
             _outputHandler = outputHandler;
             return Exec();
@@ -48,11 +48,11 @@ namespace SourceGit.Commands
 
         public bool Delete(string relativePath)
         {
-            Args = $"submodule deinit -f \"{relativePath}\"";
+            Args = ["submodule", "deinit", "-f", relativePath];
             if (!Exec())
                 return false;
 
-            Args = $"rm -rf \"{relativePath}\"";
+            Args = ["rm", "-rf", relativePath];
             return Exec();
         }
 

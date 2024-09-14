@@ -9,7 +9,7 @@ namespace SourceGit.Commands
         {
             Context = repo;
             WorkingDirectory = repo;
-            Args = "tag -l --sort=-creatordate --format=\"$%(refname)$%(objectname)$%(*objectname)\"";
+            Args = ["tag", "-l", "--sort=-creatordate", "--format=$%(refname)$%(objectname)$%(*objectname)"];
         }
 
         public List<Models.Tag> Result()

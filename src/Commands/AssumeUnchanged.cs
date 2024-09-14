@@ -13,7 +13,7 @@ namespace SourceGit.Commands
             public ViewCommand(string repo)
             {
                 WorkingDirectory = repo;
-                Args = "ls-files -v";
+                Args = ["ls-files", "-v"];
                 RaiseError = false;
             }
 
@@ -46,7 +46,7 @@ namespace SourceGit.Commands
 
                 WorkingDirectory = repo;
                 Context = repo;
-                Args = $"update-index {mode} -- \"{file}\"";
+                Args = ["update-index", mode, "--", file];
             }
         }
 

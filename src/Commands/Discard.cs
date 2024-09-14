@@ -33,7 +33,7 @@ namespace SourceGit.Commands
             for (int i = 0; i < needCheckout.Count; i += 10)
             {
                 var count = Math.Min(10, needCheckout.Count - i);
-                new Restore(repo, needCheckout.GetRange(i, count), "--worktree --recurse-submodules").Exec();
+                new Restore(repo, needCheckout.GetRange(i, count), ["--worktree", "--recurse-submodules"]).Exec();
             }
         }
     }

@@ -10,7 +10,7 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
-            Args = $"merge --progress {source} {mode}";
+            Args = ["merge", "--progress", source, mode];
         }
 
         protected override void OnReadline(string line)

@@ -14,7 +14,10 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "branch -l --all -v --format=\"%(refname)$%(objectname)$%(HEAD)$%(upstream)$%(upstream:trackshort)\"";
+            Args = [
+                "branch", "-l", "--all", "-v",
+                "--format=%(refname)$%(objectname)$%(HEAD)$%(upstream)$%(upstream:trackshort)"
+            ];
         }
 
         public List<Models.Branch> Result()

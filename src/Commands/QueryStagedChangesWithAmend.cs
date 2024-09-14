@@ -15,7 +15,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "diff-index --cached -M HEAD^";
+            Args = ["diff-index", "--cached", "-M", "HEAD^"];
         }
 
         public List<Models.Change> Result()

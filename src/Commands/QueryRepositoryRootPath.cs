@@ -5,7 +5,7 @@
         public QueryRepositoryRootPath(string path)
         {
             WorkingDirectory = path;
-            Args = "rev-parse --show-toplevel";
+            Args = ["rev-parse", "--show-toplevel"];
         }
     }
 }

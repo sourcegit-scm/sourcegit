@@ -5,13 +5,17 @@ namespace SourceGit.Commands
 {
     public class QueryCommitsWithFullMessage : Command
     {
-        public QueryCommitsWithFullMessage(string repo, string args)
+        public QueryCommitsWithFullMessage(string repo, IEnumerable<string> args)
         {
             _boundary = $"----- BOUNDARY OF COMMIT {Guid.NewGuid()} -----";
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --no-show-signature --decorate=full --pretty=format:\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_boundary}\" {args}";
+            Args = [
+                "log", "--date-order", "--no-show-signature", "--decorate=full",
+                $"--pretty=format:\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_boundary}",
+                ..args
+            ];
         }
 
         public List<Models.CommitWithMessage> Result()

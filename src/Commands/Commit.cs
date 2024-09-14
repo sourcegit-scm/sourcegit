@@ -12,11 +12,11 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
-            Args = $"commit --file=\"{file}\"";
+            Args = ["commit", $"--file={file}"];
             if (amend)
-                Args += " --amend --no-edit";
+                Args.AddRange(["--amend", "--no-edit"]);
             if (allowEmpty)
-                Args += " --allow-empty";
+                Args.Add("--allow-empty");
         }
     }
 }

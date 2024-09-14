@@ -52,20 +52,20 @@ namespace SourceGit.Native
 
         public void OpenBrowser(string url)
         {
-            Process.Start("xdg-open", $"\"{url}\"");
+            Process.Start("xdg-open", [url]);
         }
 
         public void OpenInFileManager(string path, bool select)
         {
             if (Directory.Exists(path))
             {
-                Process.Start("xdg-open", $"\"{path}\"");
+                Process.Start("xdg-open", [path]);
             }
             else
             {
                 var dir = Path.GetDirectoryName(path);
                 if (Directory.Exists(dir))
-                    Process.Start("xdg-open", $"\"{dir}\"");
+                    Process.Start("xdg-open", [dir]);
             }
         }
 
@@ -85,7 +85,7 @@ namespace SourceGit.Native
 
         public void OpenWithDefaultEditor(string file)
         {
-            var proc = Process.Start("xdg-open", $"\"{file}\"");
+            var proc = Process.Start("xdg-open", [file]);
             if (proc != null)
             {
                 proc.WaitForExit();

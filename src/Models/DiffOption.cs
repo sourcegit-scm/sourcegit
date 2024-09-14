@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace SourceGit.Models
 {
@@ -27,7 +26,7 @@ namespace SourceGit.Models
                 {
                     case ChangeState.Added:
                     case ChangeState.Untracked:
-                        _extra = "--no-index";
+                        _extra = ["--no-index"];
                         _path = change.Path;
                         _orgPath = "/dev/null";
                         break;
@@ -40,9 +39,9 @@ namespace SourceGit.Models
             else
             {
                 if (change.DataForAmend != null)
-                    _extra = "--cached HEAD^";
+                    _extra = ["--cached", "HEAD^"];
                 else
-                    _extra = "--cached";
+                    _extra = ["--cached"];
 
                 _path = change.Path;
                 _orgPath = change.OriginalPath;
@@ -94,27 +93,25 @@ namespace SourceGit.Models
         ///     Converts to diff command arguments.
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
+        public List<string> ToArgs()
         {
-            var builder = new StringBuilder();
-            if (!string.IsNullOrEmpty(_extra))
-                builder.Append($"{_extra} ");
-            foreach (var r in _revisions)
-                builder.Append($"{r} ");
+            var args = new List<string>();
+            args.AddRange(_extra);
+            args.AddRange(_revisions);
 
-            builder.Append("-- ");
+            args.Add("--");
             if (!string.IsNullOrEmpty(_orgPath))
-                builder.Append($"\"{_orgPath}\" ");
-            builder.Append($"\"{_path}\"");
+                args.Add(_orgPath);
+            args.Add(_path);
 
-            return builder.ToString();
+            return args;
         }
 
         private readonly Change _workingCopyChange = null;
         private readonly bool _isUnstaged = false;
         private readonly string _path;
         private readonly string _orgPath = string.Empty;
-        private readonly string _extra = string.Empty;
+        private readonly IEnumerable<string> _extra = [];
         private readonly List<string> _revisions = new List<string>();
     }
 }

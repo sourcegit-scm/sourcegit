@@ -12,7 +12,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff --name-status --pretty=format: {sha}^ {sha}";
+            Args = ["diff", "--name-status", "--pretty=format:", $"{sha}^", sha];
         }
 
         public List<Models.Change> Result()

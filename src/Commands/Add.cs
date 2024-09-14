@@ -12,19 +12,14 @@ namespace SourceGit.Commands
 
             if (changes == null || changes.Count == 0)
             {
-                Args = "add .";
+                Args = ["add", "."];
             }
             else
             {
-                var builder = new StringBuilder();
-                builder.Append("add --");
+                Args.AddRange(["add", "--"]);
+
                 foreach (var c in changes)
-                {
-                    builder.Append(" \"");
-                    builder.Append(c.Path);
-                    builder.Append("\"");
-                }
-                Args = builder.ToString();
+                    Args.Add(c.Path);
             }
         }
     }

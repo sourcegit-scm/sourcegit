@@ -8,7 +8,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"archive --format=zip --verbose --output=\"{saveTo}\" {revision}";
+            Args = ["archive", "--format=zip", "--verbose", "-o", saveTo, revision];
             TraitErrorAsOutput = true;
             _outputHandler = outputHandler;
         }

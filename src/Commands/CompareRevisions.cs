@@ -15,7 +15,7 @@ namespace SourceGit.Commands
             Context = repo;
 
             var based = string.IsNullOrEmpty(start) ? "-R" : start;
-            Args = $"diff --name-status {based} {end}";
+            Args = ["diff", "--name-status", based, end];
         }
 
         public List<Models.Change> Result()

@@ -6,7 +6,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "ls-tree -r --name-only HEAD";
+            Args = ["ls-tree", "-r", "--name-only", "HEAD"];
         }
 
         public string[] Result()

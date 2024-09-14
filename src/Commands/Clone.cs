@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SourceGit.Commands
 {
@@ -6,21 +7,20 @@ namespace SourceGit.Commands
     {
         private readonly Action<string> _notifyProgress;
 
-        public Clone(string ctx, string path, string url, string localName, string sshKey, string extraArgs, Action<string> ouputHandler)
+        public Clone(string ctx, string path, string url, string localName, string sshKey, IEnumerable<string> extraArgs, Action<string> ouputHandler)
         {
             Context = ctx;
             WorkingDirectory = path;
             TraitErrorAsOutput = true;
             SSHKey = sshKey;
-            Args = "clone --progress --verbose --recurse-submodules ";
+            Args = ["clone", "--progress", "--verbose", "--recurse-submodules"];
 
-            if (!string.IsNullOrEmpty(extraArgs))
-                Args += $"{extraArgs} ";
+            Args.AddRange(extraArgs);
 
-            Args += $"{url} ";
+            Args.Add(url);
 
             if (!string.IsNullOrEmpty(localName))
-                Args += localName;
+                Args.Add(localName);
 
             _notifyProgress = ouputHandler;
         }

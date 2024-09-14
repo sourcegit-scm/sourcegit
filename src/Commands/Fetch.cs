@@ -11,17 +11,17 @@ namespace SourceGit.Commands
             Context = repo;
             TraitErrorAsOutput = true;
             SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            Args = "fetch --progress --verbose ";
+            Args = ["fetch", "--progress", "--verbose"];
 
             if (prune)
-                Args += "--prune ";
+                Args.Add("--prune");
 
             if (noTags)
-                Args += "--no-tags ";
+                Args.Add("--no-tags");
             else
-                Args += "--force ";
+                Args.Add("--force");
 
-            Args += remote;
+            Args.Add(remote);
 
             Models.AutoFetchManager.Instance.MarkFetched(repo);
         }
@@ -33,7 +33,7 @@ namespace SourceGit.Commands
             Context = repo;
             TraitErrorAsOutput = true;
             SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            Args = $"fetch --progress --verbose {remote} {remoteBranch}:{localBranch}";
+            Args = ["fetch", "--progress", "--verbose", remote, $"{remoteBranch}:{localBranch}"];
         }
 
         protected override void OnReadline(string line)

@@ -15,7 +15,7 @@ namespace SourceGit.Commands
 
             if (toolType == 0)
             {
-                cmd.Args = $"mergetool \"{file}\"";
+                cmd.Args = ["mergetool", file];
                 return cmd.Exec();
             }
 
@@ -32,7 +32,13 @@ namespace SourceGit.Commands
                 return false;
             }
 
-            cmd.Args = $"-c mergetool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.Cmd}\" -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit \"{file}\"";
+            cmd.Args = [
+                "-c", $"mergetool.sourcegit.cmd=\"{toolPath}\" {supported.Cmd}",
+                "-c", "mergetool.writeToTemp=true",
+                "-c", "mergetool.keepBackup=false",
+                "-c", "mergetool.trustExitCode=true",
+                "mergetool", "--tool=sourcegit", file
+            ];
             return cmd.Exec();
         }
 
@@ -45,7 +51,7 @@ namespace SourceGit.Commands
 
             if (toolType == 0)
             {
-                cmd.Args = $"difftool -g --no-prompt {option}";
+                cmd.Args = ["difftool", "-g", "--no-prompt", ..option.ToArgs()];
                 return cmd.Exec();
             }
 
@@ -62,7 +68,11 @@ namespace SourceGit.Commands
                 return false;
             }
 
-            cmd.Args = $"-c difftool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.DiffCmd}\" difftool --tool=sourcegit --no-prompt {option}";
+            cmd.Args = [
+                "-c", $"difftool.sourcegit.cmd=\"{toolPath}\" {supported.DiffCmd}",
+                "difftool", "--tool=sourcegit", "--no-prompt"
+            ];
+            cmd.Args.AddRange(option.ToArgs());
             return cmd.Exec();
         }
     }

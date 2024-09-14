@@ -7,7 +7,7 @@
             var mode = noCommit ? "-n" : "--ff";
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"cherry-pick {mode} {commits}";
+            Args = ["cherry-pick", mode, commits];
         }
     }
 }

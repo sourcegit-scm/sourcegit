@@ -1211,7 +1211,7 @@ namespace SourceGit.Views
                     diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
                 }
 
-                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index").Exec();
+                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", ["--cache", "--index"]).Exec();
                 File.Delete(tmpFile);
             }
 
@@ -1265,7 +1265,7 @@ namespace SourceGit.Views
                 else
                     diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
 
-                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index --reverse").Exec();
+                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", ["--cache", "--index", "--reverse"]).Exec();
                 File.Delete(tmpFile);
             }
 
@@ -1323,7 +1323,7 @@ namespace SourceGit.Views
                     diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
                 }
 
-                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--reverse").Exec();
+                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", ["--reverse"]).Exec();
                 File.Delete(tmpFile);
             }
 

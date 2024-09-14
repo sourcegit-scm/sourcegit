@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace SourceGit.Commands
 {
@@ -9,22 +8,15 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "restore . --source=HEAD --staged --worktree --recurse-submodules";
+            Args = ["restore", ".", "--source=HEAD", "--staged", "--worktree", "--recurse-submodules"];
         }
 
-        public Restore(string repo, List<string> files, string extra)
+        public Restore(string repo, IEnumerable<string> files, IEnumerable<string> extra)
         {
             WorkingDirectory = repo;
             Context = repo;
 
-            StringBuilder builder = new StringBuilder();
-            builder.Append("restore ");
-            if (!string.IsNullOrEmpty(extra))
-                builder.Append(extra).Append(" ");
-            builder.Append("--");
-            foreach (var f in files)
-                builder.Append(' ').Append('"').Append(f).Append('"');
-            Args = builder.ToString();
+            Args = ["restore", ..extra, "--", ..files];
         }
     }
 }

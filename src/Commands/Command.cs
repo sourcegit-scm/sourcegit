@@ -34,15 +34,15 @@ namespace SourceGit.Commands
         public string WorkingDirectory { get; set; } = null;
         public EditorType Editor { get; set; } = EditorType.CoreEditor; // Only used in Exec() mode
         public string SSHKey { get; set; } = string.Empty;
-        public string Args { get; set; } = string.Empty;
+        public List<string> Args { get; set; } = [];
         public bool RaiseError { get; set; } = true;
         public bool TraitErrorAsOutput { get; set; } = false;
 
         public bool Exec()
         {
-            var start = new ProcessStartInfo();
-            start.FileName = Native.OS.GitExecutable;
-            start.Arguments = "--no-pager -c core.quotepath=off ";
+            List<string> gitArgs = ["--no-pager", "-c", "core.quotepath=off"];
+
+            var start = new ProcessStartInfo(Native.OS.GitExecutable);
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
             start.RedirectStandardOutput = true;
@@ -61,7 +61,7 @@ namespace SourceGit.Commands
             if (!string.IsNullOrEmpty(SSHKey))
                 start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new -i '{SSHKey}'");
             else
-                start.Arguments += "-c credential.helper=manager ";
+                gitArgs.AddRange(["-c", "credential.helper=manager"]);
 
             // Force using en_US.UTF-8 locale to avoid GCM crash
             if (OperatingSystem.IsLinux())
@@ -71,18 +71,28 @@ namespace SourceGit.Commands
             switch (Editor)
             {
                 case EditorType.CoreEditor:
-                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --core-editor\" ";
+                    gitArgs.AddRange(["-c", $"core.editor=\"{selfExecFile}\" --core-editor"]);
                     break;
                 case EditorType.RebaseEditor:
-                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --rebase-message-editor\" -c sequence.editor=\"\\\"{selfExecFile}\\\" --rebase-todo-editor\" -c rebase.abbreviateCommands=true ";
+                    gitArgs.AddRange([
+                        "-c", $"core.editor=\"{selfExecFile}\" --rebase-message-editor",
+                        "-c", $"sequence.editor=\"{selfExecFile}\" --rebase-todo-editor",
+                        "-c", "rebase.abbreviateCommands=true"
+                    ]);
                     break;
                 default:
-                    start.Arguments += "-c core.editor=true ";
+                    gitArgs.AddRange(["-c", "core.editor=true"]);
                     break;
             }
 
             // Append command args
-            start.Arguments += Args;
+            gitArgs.AddRange(Args);
+
+            // Append git args
+            foreach (var arg in gitArgs)
+            {
+                start.ArgumentList.Add(arg);
+            }
 
             // Working directory
             if (!string.IsNullOrEmpty(WorkingDirectory))
@@ -181,9 +191,8 @@ namespace SourceGit.Commands
 
         public ReadToEndResult ReadToEnd()
         {
-            var start = new ProcessStartInfo();
-            start.FileName = Native.OS.GitExecutable;
-            start.Arguments = "--no-pager -c core.quotepath=off " + Args;
+            List<string> gitArgs = ["--no-pager", "-c", "core.quotepath=off", ..Args];
+            var start = new ProcessStartInfo(Native.OS.GitExecutable, gitArgs);
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
             start.RedirectStandardOutput = true;

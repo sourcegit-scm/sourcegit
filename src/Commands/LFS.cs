@@ -12,11 +12,11 @@ namespace SourceGit.Commands
 
         class SubCmd : Command
         {
-            public SubCmd(string repo, string args, Action<string> onProgress)
+            public SubCmd(string repo, IEnumerable<string> args, Action<string> onProgress)
             {
                 WorkingDirectory = repo;
                 Context = repo;
-                Args = args;
+                Args = new List<string>(args);
                 TraitErrorAsOutput = true;
                 _outputHandler = onProgress;
             }
@@ -46,39 +46,43 @@ namespace SourceGit.Commands
 
         public bool Install()
         {
-            return new SubCmd(_repo, "lfs install --local", null).Exec();
+            return new SubCmd(_repo, ["lfs", "install", "--local"], null).Exec();
         }
 
         public bool Track(string pattern, bool isFilenameMode = false)
         {
             var opt = isFilenameMode ? "--filename" : "";
-            return new SubCmd(_repo, $"lfs track {opt} \"{pattern}\"", null).Exec();
+            List<string> args = ["lfs", "track"];
+            if (isFilenameMode)
+                args.Add("--filename");
+            args.Add(pattern);
+            return new SubCmd(_repo, args, null).Exec();
         }
 
         public void Fetch(string remote, Action<string> outputHandler)
         {
-            new SubCmd(_repo, $"lfs fetch {remote}", outputHandler).Exec();
+            new SubCmd(_repo, ["lfs", "fetch", remote], outputHandler).Exec();
         }
 
         public void Pull(string remote, Action<string> outputHandler)
         {
-            new SubCmd(_repo, $"lfs pull {remote}", outputHandler).Exec();
+            new SubCmd(_repo, ["lfs", "pull", remote], outputHandler).Exec();
         }
 
         public void Push(string remote, Action<string> outputHandler)
         {
-            new SubCmd(_repo, $"lfs push {remote}", outputHandler).Exec();
+            new SubCmd(_repo, ["lfs", "push", remote], outputHandler).Exec();
         }
 
         public void Prune(Action<string> outputHandler)
         {
-            new SubCmd(_repo, "lfs prune", outputHandler).Exec();
+            new SubCmd(_repo, ["lfs", "prune"], outputHandler).Exec();
         }
 
         public List<Models.LFSLock> Locks(string remote)
         {
             var locks = new List<Models.LFSLock>();
-            var cmd = new SubCmd(_repo, $"lfs locks --remote={remote}", null);
+            var cmd = new SubCmd(_repo, ["lfs", "locks", $"--remote={remote}"], null);
             var rs = cmd.ReadToEnd();
             if (rs.IsSuccess)
             {
@@ -103,19 +107,25 @@ namespace SourceGit.Commands
 
         public bool Lock(string remote, string file)
         {
-            return new SubCmd(_repo, $"lfs lock --remote={remote} \"{file}\"", null).Exec();
+            return new SubCmd(_repo, ["lfs", "lock", $"--remote={remote}", file], null).Exec();
         }
 
         public bool Unlock(string remote, string file, bool force)
         {
-            var opt = force ? "-f" : "";
-            return new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} \"{file}\"", null).Exec();
+            List<string> args = ["lfs", "unlock", $"--remote={remote}"];
+            if (force)
+                args.Add("-f");
+            args.Add(file);
+            return new SubCmd(_repo, args, null).Exec();
         }
 
         public bool Unlock(string remote, long id, bool force)
         {
-            var opt = force ? "-f" : "";
-            return new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} --id={id}", null).Exec();
+            List<string> args = ["lfs", "unlock", $"--remote={remote}"];
+            if (force)
+                args.Add("-f");
+            args.Add($"--id={id}");
+            return new SubCmd(_repo, args, null).Exec();
         }
 
         private readonly string _repo;

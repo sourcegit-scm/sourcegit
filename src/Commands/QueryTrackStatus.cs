@@ -8,7 +8,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"rev-list --left-right {local}...{upstream}";
+            Args = ["rev-list", "--left-right", $"{local}...{upstream}"];
         }
 
         public Models.BranchTrackStatus Result()

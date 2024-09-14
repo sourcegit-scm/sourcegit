@@ -1,19 +1,20 @@
-﻿namespace SourceGit.Commands
+﻿using System.Collections.Generic;
+
+namespace SourceGit.Commands
 {
     public class Apply : Command
     {
-        public Apply(string repo, string file, bool ignoreWhitespace, string whitespaceMode, string extra)
+        public Apply(string repo, string file, bool ignoreWhitespace, string whitespaceMode, IEnumerable<string> extra)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "apply ";
+            Args = ["apply"];
             if (ignoreWhitespace)
-                Args += "--ignore-whitespace ";
+                Args.Add("--ignore-whitespace");
             else
-                Args += $"--whitespace={whitespaceMode} ";
-            if (!string.IsNullOrEmpty(extra))
-                Args += $"{extra} ";
-            Args += $"\"{file}\"";
+                Args.Add($"--whitespace={whitespaceMode}");
+            Args.AddRange(extra);
+            Args.Add(file);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "remote -v";
+            Args = ["remote", "-v"];
         }
 
         public List<Models.Remote> Result()

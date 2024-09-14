@@ -16,7 +16,7 @@ namespace SourceGit.Commands
             {
                 WorkingDirectory = repo;
                 Context = repo;
-                Args = $"diff --diff-algorithm=minimal {opt}";
+                Args = ["diff", "--diff-algorithm=minimal", ..opt.ToArgs()];
             }
         }
 

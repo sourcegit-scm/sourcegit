@@ -51,27 +51,27 @@ namespace SourceGit.Native
 
         public void OpenBrowser(string url)
         {
-            Process.Start("open", url);
+            Process.Start("open", [url]);
         }
 
         public void OpenInFileManager(string path, bool select)
         {
             if (Directory.Exists(path))
-                Process.Start("open", $"\"{path}\"");
+                Process.Start("open", [path]);
             else if (File.Exists(path))
-                Process.Start("open", $"\"{path}\" -R");
+                Process.Start("open", [path]);
         }
 
         public void OpenTerminal(string workdir)
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var dir = string.IsNullOrEmpty(workdir) ? home : workdir;
-            Process.Start("open", $"-a {OS.ShellOrTerminal} \"{dir}\"");
+            Process.Start("open", ["-a", OS.ShellOrTerminal, dir]);
         }
 
         public void OpenWithDefaultEditor(string file)
         {
-            Process.Start("open", $"\"{file}\"");
+            Process.Start("open", [file]);
         }
     }
 }

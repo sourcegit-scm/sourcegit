@@ -13,17 +13,17 @@ namespace SourceGit.Commands
 
         public bool Push(string message)
         {
-            Args = $"stash push -m \"{message}\"";
+            Args = ["stash", "push", "-m", message];
             return Exec();
         }
 
         public bool Push(List<Models.Change> changes, string message)
         {
-            var pathsBuilder = new StringBuilder();
+            Args = ["stash", "push", "-m", message, "--"];
             var needAdd = new List<Models.Change>();
             foreach (var c in changes)
             {
-                pathsBuilder.Append($"\"{c.Path}\" ");
+                Args.Add(c.Path);
 
                 if (c.WorkTree == Models.ChangeState.Added || c.WorkTree == Models.ChangeState.Untracked)
                 {
@@ -41,32 +41,30 @@ namespace SourceGit.Commands
                 needAdd.Clear();
             }
 
-            var paths = pathsBuilder.ToString();
-            Args = $"stash push -m \"{message}\" -- {paths}";
             return Exec();
         }
 
         public bool Apply(string name)
         {
-            Args = $"stash apply -q {name}";
+            Args = ["stash", "apply", "-q", name];
             return Exec();
         }
 
         public bool Pop(string name)
         {
-            Args = $"stash pop -q {name}";
+            Args = ["stash", "pop", "-q", name];
             return Exec();
         }
 
         public bool Drop(string name)
         {
-            Args = $"stash drop -q {name}";
+            Args = ["stash", "drop", "-q", name];
             return Exec();
         }
 
         public bool Clear()
         {
-            Args = "stash clear";
+            Args = ["stash", "clear"];
             return Exec();
         }
     }

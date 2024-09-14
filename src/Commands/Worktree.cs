@@ -13,7 +13,7 @@ namespace SourceGit.Commands
 
         public List<Models.Worktree> List()
         {
-            Args = "worktree list --porcelain";
+            Args = ["worktree", "list", "--porcelain"];
 
             var rs = ReadToEnd();
             var worktrees = new List<Models.Worktree>();
@@ -56,23 +56,23 @@ namespace SourceGit.Commands
 
         public bool Add(string fullpath, string name, bool createNew, string tracking, Action<string> outputHandler)
         {
-            Args = "worktree add ";
+            Args = ["worktree", "add"];
 
             if (!string.IsNullOrEmpty(tracking))
-                Args += "--track ";
+                Args.Add("--track");
 
             if (!string.IsNullOrEmpty(name))
             {
                 if (createNew)
-                    Args += $"-b {name} ";
+                    Args.AddRange(["-b", name]);
                 else
-                    Args += $"-B {name} ";
+                    Args.AddRange(["-B", name]);
             }
 
-            Args += $"\"{fullpath}\" ";
+            Args.Add(fullpath);
 
             if (!string.IsNullOrEmpty(tracking))
-                Args += tracking;
+                Args.Add(tracking);
 
             _outputHandler = outputHandler;
             return Exec();
@@ -80,29 +80,29 @@ namespace SourceGit.Commands
 
         public bool Prune(Action<string> outputHandler)
         {
-            Args = "worktree prune -v";
+            Args = ["worktree", "prune", "-v"];
             _outputHandler = outputHandler;
             return Exec();
         }
 
         public bool Lock(string fullpath)
         {
-            Args = $"worktree lock \"{fullpath}\"";
+            Args = ["worktree", "lock", fullpath];
             return Exec();
         }
 
         public bool Unlock(string fullpath)
         {
-            Args = $"worktree unlock \"{fullpath}\"";
+            Args = ["worktree", "unlock", fullpath];
             return Exec();
         }
 
         public bool Remove(string fullpath, bool force, Action<string> outputHandler)
         {
             if (force)
-                Args = $"worktree remove -f \"{fullpath}\"";
+                Args = ["worktree", "remove", "-f", fullpath];
             else
-                Args = $"worktree remove \"{fullpath}\"";
+                Args = ["worktree", "remove", fullpath];
 
             _outputHandler = outputHandler;
             return Exec();

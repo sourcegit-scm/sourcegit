@@ -8,7 +8,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "stash list --pretty=format:%H%n%ct%n%gd%n%s";
+            Args = ["stash", "list", "--pretty=format:%H%n%ct%n%gd%n%s"];
         }
 
         public List<Models.Stash> Result()

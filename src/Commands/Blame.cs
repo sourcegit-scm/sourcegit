@@ -13,7 +13,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"blame -t {revision} -- \"{file}\"";
+            Args = ["blame", "-t", revision, "--", file];
             RaiseError = false;
 
             _result.File = file;

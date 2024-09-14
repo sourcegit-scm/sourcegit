@@ -765,9 +765,9 @@ namespace SourceGit.ViewModels
         {
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
-            var limits = $"-{Preference.Instance.MaxHistoryCommits} ";
+            List<string> limits = [$"-{Preference.Instance.MaxHistoryCommits}"];
             if (_enableFirstParentInHistories)
-                limits += "--first-parent ";
+                limits.Add("--first-parent");
 
             var validFilters = new List<string>();
             foreach (var filter in _settings.Filters)
@@ -786,7 +786,7 @@ namespace SourceGit.ViewModels
 
             if (validFilters.Count > 0)
             {
-                limits += string.Join(" ", validFilters);
+                limits.AddRange(validFilters);
 
                 if (_settings.Filters.Count != validFilters.Count)
                 {
@@ -799,7 +799,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                limits += "--exclude=refs/stash --all";
+                limits.AddRange(["--exclude=refs/stash", "-all"]);
             }
 
             var commits = new Commands.QueryCommits(_fullpath, limits).Result();

@@ -6,7 +6,7 @@
         {
             Context = ctx;
             WorkingDirectory = dir;
-            Args = "init -q";
+            Args = ["init", "-q"];
         }
     }
 }

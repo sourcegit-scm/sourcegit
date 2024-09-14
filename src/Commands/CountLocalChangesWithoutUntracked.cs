@@ -8,7 +8,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "status -uno --ignore-submodules=dirty --porcelain";
+            Args = ["status", "-uno", "--ignore-submodules=dirty", "--porcelain"];
         }
 
         public int Result()

@@ -8,10 +8,8 @@ namespace SourceGit.Commands
     {
         public static Stream Run(string repo, string revision, string file)
         {
-            var starter = new ProcessStartInfo();
+            var starter = new ProcessStartInfo(Native.OS.GitExecutable, ["show", $"{revision}:{file}"]);
             starter.WorkingDirectory = repo;
-            starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = $"show {revision}:\"{file}\"";
             starter.UseShellExecute = false;
             starter.CreateNoWindow = true;
             starter.WindowStyle = ProcessWindowStyle.Hidden;

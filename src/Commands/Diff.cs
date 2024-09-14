@@ -22,7 +22,7 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff --ignore-cr-at-eol --unified={unified} {opt}";
+            Args = ["diff", "--ignore-cr-at-eol", $"--unified={unified}", ..opt.ToArgs()];
         }
 
         public Models.DiffResult Result()

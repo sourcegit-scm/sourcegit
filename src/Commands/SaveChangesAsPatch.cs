@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-
 using Avalonia.Threading;
 
 namespace SourceGit.Commands
@@ -25,10 +24,11 @@ namespace SourceGit.Commands
 
         private static bool ProcessSingleChange(string repo, Models.DiffOption opt, FileStream writer)
         {
-            var starter = new ProcessStartInfo();
+            var starter = new ProcessStartInfo(
+                Native.OS.GitExecutable,
+                ["diff", "--ignore-cr-at-eol", "--unified=4", ..opt.ToArgs()]
+            );
             starter.WorkingDirectory = repo;
-            starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = $"diff --ignore-cr-at-eol --unified=4 {opt}";
             starter.UseShellExecute = false;
             starter.CreateNoWindow = true;
             starter.WindowStyle = ProcessWindowStyle.Hidden;

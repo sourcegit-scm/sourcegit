@@ -9,23 +9,15 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "clean -qfd";
+            Args = ["clean", "-qfd"];
         }
 
         public Clean(string repo, List<string> files)
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append("clean -qfd --");
-            foreach (var f in files)
-            {
-                builder.Append(" \"");
-                builder.Append(f);
-                builder.Append("\"");
-            }
+            Args = ["clean", "-qfd", "--", ..files];
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = builder.ToString();
         }
     }
 }

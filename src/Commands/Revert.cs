@@ -6,9 +6,9 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"revert -m 1 {commit} --no-edit";
+            Args = ["revert", "-m", "1", commit, "--no-edit"];
             if (!autoCommit)
-                Args += " --no-commit";
+                Args.Add("--no-commit");
         }
     }
 }

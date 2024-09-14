@@ -12,12 +12,14 @@ namespace SourceGit.Models
 {
     public class ExternalTool
     {
+        public const string ARG_PLACEHOLDER = "$ARG";
+
         public string Name { get; private set; }
         public string Executable { get; private set; }
-        public string OpenCmdArgs { get; private set; }
+        public IEnumerable<string> OpenCmdArgs { get; private set; }
         public Bitmap IconImage { get; private set; } = null;
 
-        public ExternalTool(string name, string icon, string executable, string openCmdArgs)
+        public ExternalTool(string name, string icon, string executable, IEnumerable<string> openCmdArgs)
         {
             Name = name;
             Executable = executable;
@@ -37,11 +39,15 @@ namespace SourceGit.Models
 
         public void Open(string repo)
         {
-            Process.Start(new ProcessStartInfo()
+            var args = new List<string>(OpenCmdArgs);
+            int i = args.IndexOf(ARG_PLACEHOLDER);
+            if (i != -1) {
+                args[i] = repo;
+            }
+
+            Process.Start(new ProcessStartInfo(Executable, args)
             {
                 WorkingDirectory = repo,
-                FileName = Executable,
-                Arguments = string.Format(OpenCmdArgs, repo),
                 UseShellExecute = false,
             });
         }
@@ -110,7 +116,7 @@ namespace SourceGit.Models
                 _customPaths = new ExternalToolPaths();
         }
 
-        public void TryAdd(string name, string icon, string args, string key, Func<string> finder)
+        public void TryAdd(string name, string icon, IEnumerable<string> args, string key, Func<string> finder)
         {
             if (_customPaths.Tools.TryGetValue(key, out var customPath) && File.Exists(customPath))
             {
@@ -126,27 +132,27 @@ namespace SourceGit.Models
 
         public void VSCode(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code", "vscode", "\"{0}\"", "VSCODE", platformFinder);
+            TryAdd("Visual Studio Code", "vscode", [ExternalTool.ARG_PLACEHOLDER], "VSCODE", platformFinder);
         }
 
         public void VSCodeInsiders(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", "\"{0}\"", "VSCODE_INSIDERS", platformFinder);
+            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", [ExternalTool.ARG_PLACEHOLDER], "VSCODE_INSIDERS", platformFinder);
         }
 
         public void VSCodium(Func<string> platformFinder)
         {
-            TryAdd("VSCodium", "codium", "\"{0}\"", "VSCODIUM", platformFinder);
+            TryAdd("VSCodium", "codium", [ExternalTool.ARG_PLACEHOLDER], "VSCODIUM", platformFinder);
         }
 
         public void Fleet(Func<string> platformFinder)
         {
-            TryAdd("Fleet", "fleet", "\"{0}\"", "FLEET", platformFinder);
+            TryAdd("Fleet", "fleet", [ExternalTool.ARG_PLACEHOLDER], "FLEET", platformFinder);
         }
 
         public void SublimeText(Func<string> platformFinder)
         {
-            TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT", platformFinder);
+            TryAdd("Sublime Text", "sublime_text", [ExternalTool.ARG_PLACEHOLDER], "SUBLIME_TEXT", platformFinder);
         }
 
         public void FindJetBrainsFromToolbox(Func<string> platformFinder)
@@ -166,7 +172,7 @@ namespace SourceGit.Models
                         $"{tool.DisplayName} {tool.DisplayVersion}",
                         supported_icons.Contains(tool.ProductCode) ? $"JetBrains/{tool.ProductCode}" : "JetBrains/JB",
                         Path.Combine(tool.InstallLocation, tool.LaunchCommand),
-                        "\"{0}\""));
+                        [ExternalTool.ARG_PLACEHOLDER]));
                 }
             }
         }

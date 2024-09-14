@@ -9,7 +9,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "reset";
+            Args = ["reset"];
         }
 
         public Reset(string repo, List<Models.Change> changes)
@@ -17,22 +17,18 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
 
-            var builder = new StringBuilder();
-            builder.Append("reset --");
+            Args = ["reset", "--"];
             foreach (var c in changes)
             {
-                builder.Append(" \"");
-                builder.Append(c.Path);
-                builder.Append("\"");
+                Args.Add(c.Path);
             }
-            Args = builder.ToString();
         }
 
         public Reset(string repo, string revision, string mode)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"reset {mode} {revision}";
+            Args = ["reset", mode, revision];
         }
     }
 }

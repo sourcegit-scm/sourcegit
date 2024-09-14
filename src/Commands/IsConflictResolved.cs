@@ -8,7 +8,7 @@
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff -a --ignore-cr-at-eol --check {opt}";
+            Args = ["diff", "-a", "--ignore-cr-at-eol", "--check", ..opt.ToArgs()];
         }
     }
 }

@@ -28,7 +28,7 @@ namespace SourceGit.ViewModels
             {
                 WorkingDirectory = Repository,
                 Context = Repository,
-                Args = $"{Cmd} --abort",
+                Args = [Cmd, "--abort"],
             }.Exec();
         }
 
@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
                 WorkingDirectory = Repository,
                 Context = Repository,
                 Editor = Commands.Command.EditorType.None,
-                Args = $"{Cmd} --continue",
+                Args = [Cmd, "--continue"],
             }.Exec();
         }
     }
@@ -63,7 +63,7 @@ namespace SourceGit.ViewModels
                 WorkingDirectory = Repository,
                 Context = Repository,
                 Editor = Commands.Command.EditorType.RebaseEditor,
-                Args = $"rebase --continue",
+                Args = ["rebase", "--continue"],
             }.Exec();
 
             if (succ)
