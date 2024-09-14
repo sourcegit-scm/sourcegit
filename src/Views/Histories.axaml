@@ -10,8 +10,19 @@
              x:Class="SourceGit.Views.Histories"
              x:DataType="vm:Histories"
              x:Name="ThisControl">
-  <v:LayoutableGrid RowDefinitions="*,3,*" ColumnDefinitions="*,3,*"
-                    UseHorizontal="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories}">
+  <v:LayoutableGrid UseHorizontal="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories}">
+    <v:LayoutableGrid.RowDefinitions>
+      <RowDefinition Height="{Binding TopArea, Mode=TwoWay}"/>
+      <RowDefinition Height="3"/>
+      <RowDefinition Height="{Binding BottomArea, Mode=TwoWay}"/>
+    </v:LayoutableGrid.RowDefinitions>
+
+    <v:LayoutableGrid.ColumnDefinitions>
+      <ColumnDefinition Width="{Binding LeftArea, Mode=TwoWay}"/>
+      <ColumnDefinition Width="3"/>
+      <ColumnDefinition Width="{Binding RightArea, Mode=TwoWay}"/>
+    </v:LayoutableGrid.ColumnDefinitions>
+    
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
       <Grid RowDefinitions="24,*">
         <!-- Headers -->

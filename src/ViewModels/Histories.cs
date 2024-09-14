@@ -61,6 +61,30 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _detailContext, value);
         }
 
+        public GridLength LeftArea
+        {
+            get => _leftArea;
+            set => SetProperty(ref _leftArea, value);
+        }
+
+        public GridLength RightArea
+        {
+            get => _rightArea;
+            set => SetProperty(ref _rightArea, value);
+        }
+
+        public GridLength TopArea
+        {
+            get => _topArea;
+            set => SetProperty(ref _topArea, value);
+        }
+
+        public GridLength BottomArea
+        {
+            get => _bottomArea;
+            set => SetProperty(ref _bottomArea, value);
+        }
+
         public Histories(Repository repo)
         {
             _repo = repo;
@@ -800,5 +824,10 @@ namespace SourceGit.ViewModels
         private Models.Commit _autoSelectedCommit = null;
         private long _navigationId = 0;
         private object _detailContext = null;
+
+        private GridLength _leftArea = new GridLength(1, GridUnitType.Star);
+        private GridLength _rightArea = new GridLength(1, GridUnitType.Star);
+        private GridLength _topArea = new GridLength(1, GridUnitType.Star);
+        private GridLength _bottomArea = new GridLength(1, GridUnitType.Star);
     }
 }
