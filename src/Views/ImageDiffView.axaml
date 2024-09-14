@@ -75,7 +75,7 @@
           </Border>
 
           <TextBlock Grid.Column="1" Classes="primary" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0" HorizontalAlignment="Right"/>
+          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
           <TextBlock Grid.Column="3" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
 
           <Border Grid.Column="4" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
@@ -83,7 +83,7 @@
           </Border>
 
           <TextBlock Grid.Column="5" Classes="primary" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="6" Classes="primary" Text="{Binding NewFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0" HorizontalAlignment="Right"/>
+          <TextBlock Grid.Column="6" Classes="primary" Text="{Binding NewFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
           <TextBlock Grid.Column="7" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
         </Grid>
         
@@ -111,7 +111,7 @@
           </Border>
 
           <TextBlock Grid.Column="1" Classes="primary" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0" HorizontalAlignment="Right"/>
+          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
           <TextBlock Grid.Column="3" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
 
           <Border Grid.Column="4" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
@@ -119,7 +119,7 @@
           </Border>
 
           <TextBlock Grid.Column="5" Classes="primary" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="6" Classes="primary" Text="{Binding NewFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0" HorizontalAlignment="Right"/>
+          <TextBlock Grid.Column="6" Classes="primary" Text="{Binding NewFileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
           <TextBlock Grid.Column="7" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
         </Grid>
 
