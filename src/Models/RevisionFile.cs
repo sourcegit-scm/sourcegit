@@ -10,6 +10,9 @@ namespace SourceGit.Models
     public class RevisionImageFile
     {
         public Bitmap Image { get; set; } = null;
+        public long FileSize { get; set; } = 0;
+        public string ImageType { get; set; } = string.Empty;
+        public string ImageSize => Image != null ? $"{Image.PixelSize.Width} x {Image.PixelSize.Height}" : "0 x 0";
     }
 
     public class RevisionTextFile

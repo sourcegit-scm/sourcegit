@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -176,19 +177,17 @@ namespace SourceGit.ViewModels
                             if (IMG_EXTS.Contains(ext))
                             {
                                 var stream = Commands.QueryFileContent.Run(_repo.FullPath, _commit.SHA, file.Path);
-                                var bitmap = stream.Length > 0 ? new Bitmap(stream) : null;
-                                Dispatcher.UIThread.Invoke(() =>
-                                {
-                                    ViewRevisionFileContent = new Models.RevisionImageFile() { Image = bitmap };
-                                });
+                                var fileSize = stream.Length;
+                                var bitmap = fileSize > 0 ? new Bitmap(stream) : null;
+                                var imageType = Path.GetExtension(file.Path).TrimStart('.').ToUpper(CultureInfo.CurrentCulture);
+                                var image = new Models.RevisionImageFile() { Image = bitmap, FileSize = fileSize, ImageType = imageType };
+                                Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = image);
                             }
                             else
                             {
                                 var size = new Commands.QueryFileSize(_repo.FullPath, file.Path, _commit.SHA).Result();
-                                Dispatcher.UIThread.Invoke(() =>
-                                {
-                                    ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
-                                });
+                                var binary = new Models.RevisionBinaryFile() { Size = size };
+                                Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = binary);
                             }
 
                             return;
@@ -202,7 +201,6 @@ namespace SourceGit.ViewModels
                             var obj = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
                             obj.Object.Oid = matchLFS.Groups[1].Value;
                             obj.Object.Size = long.Parse(matchLFS.Groups[2].Value);
-
                             Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = obj);
                         }
                         else
@@ -220,14 +218,8 @@ namespace SourceGit.ViewModels
                         if (commit != null)
                         {
                             var body = new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).Result();
-                            Dispatcher.UIThread.Invoke(() =>
-                            {
-                                ViewRevisionFileContent = new Models.RevisionSubmodule()
-                                {
-                                    Commit = commit,
-                                    FullMessage = body,
-                                };
-                            });
+                            var submodule = new Models.RevisionSubmodule() { Commit = commit, FullMessage = body };
+                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = submodule);
                         }
                         else
                         {
