@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq.Expressions;
 using System.Runtime.Versioning;
 
 using Avalonia;
@@ -27,6 +26,11 @@ namespace SourceGit.Native
 
         public string FindTerminal(Models.ShellOrTerminal shell)
         {
+            if (string.IsNullOrEmpty(shell.Exec))
+            {
+                return string.Empty;
+            }
+
             var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
             var pathes = pathVariable.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
             foreach (var path in pathes)

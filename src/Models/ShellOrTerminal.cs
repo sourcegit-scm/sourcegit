@@ -54,6 +54,7 @@ namespace SourceGit.Models
                     new ShellOrTerminal("deepin-terminal", "Deepin Terminal", "deepin-terminal"),
                     new ShellOrTerminal("mate-terminal", "MATE Terminal", "mate-terminal"),
                     new ShellOrTerminal("foot", "Foot", "foot"),
+                    new ShellOrTerminal("custom", "Custom", ""),
                 };
             }
         }
