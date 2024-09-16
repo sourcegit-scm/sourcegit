@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -105,11 +106,10 @@ namespace SourceGit.Models
             chat.AddMessage("user", question);
 
             var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(60) };
-            client.DefaultRequestHeaders.Add("Content-Type", "application/json");
             if (!string.IsNullOrEmpty(ApiKey))
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
 
-            var req = new StringContent(JsonSerializer.Serialize(chat, JsonCodeGen.Default.OpenAIChatRequest));
+            var req = new StringContent(JsonSerializer.Serialize(chat, JsonCodeGen.Default.OpenAIChatRequest), Encoding.UTF8, "application/json");
             try
             {
                 var task = client.PostAsync(Server, req, cancellation);
