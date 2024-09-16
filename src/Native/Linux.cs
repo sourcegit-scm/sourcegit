@@ -78,7 +78,8 @@ namespace SourceGit.Native
             }
 
             var startInfo = new ProcessStartInfo();
-            startInfo.WorkingDirectory = string.IsNullOrEmpty(workdir) ? "~" : workdir;
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            startInfo.WorkingDirectory = string.IsNullOrEmpty(workdir) ? home : workdir;
             startInfo.FileName = OS.ShellOrTerminal;
             Process.Start(startInfo);
         }
