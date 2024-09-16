@@ -3,6 +3,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -220,13 +221,7 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
-            var pref = ViewModels.Preference.Instance;
-            pref.Layout.LauncherWidth = Width;
-            pref.Layout.LauncherHeight = Height;
-
-            var vm = DataContext as ViewModels.Launcher;
-            vm?.Quit();
-
+            (DataContext as ViewModels.Launcher)?.Quit(Width, Height);
             base.OnClosing(e);
         }
 
@@ -244,6 +239,17 @@ namespace SourceGit.Views
         {
             if (e.ClickCount == 1)
                 BeginMoveDrag(e);
+
+            e.Handled = true;
+        }
+
+        private void OnOpenWorkspaceMenu(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && DataContext is ViewModels.Launcher launcher)
+            {
+                var menu = launcher.CreateContextForWorkspace();
+                btn.OpenContextMenu(menu);
+            }
 
             e.Handled = true;
         }

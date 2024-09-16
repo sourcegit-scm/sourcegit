@@ -174,7 +174,11 @@ namespace SourceGit.Views
                         var rect = new Rect(0, y, shaLink.Width, shaLink.Height);
                         if (rect.Contains(pos))
                         {
-                            _editor.OnCommitSHAClicked(info.CommitSHA);
+                            if (DataContext is ViewModels.Blame blame)
+                            {
+                                blame.NavigateToCommit(info.CommitSHA);
+                            }
+
                             e.Handled = true;
                             break;
                         }
@@ -229,6 +233,9 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
             TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
+            TextArea.Caret.PositionChanged += OnTextAreaCaretPositionChanged;
+            TextArea.LayoutUpdated += OnTextAreaLayoutUpdated;
+            TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.Margin = new Thickness(4, 0);
@@ -236,11 +243,35 @@ namespace SourceGit.Views
             TextArea.TextView.Options.EnableEmailHyperlinks = false;
         }
 
-        public void OnCommitSHAClicked(string sha)
+        public override void Render(DrawingContext context)
         {
-            if (DataContext is ViewModels.Blame blame)
+            base.Render(context);
+
+            if (string.IsNullOrEmpty(_highlight))
+                return;
+
+            var view = TextArea.TextView;
+            if (view == null || !view.VisualLinesValid)
+                return;
+
+            var color = (Color)this.FindResource("SystemAccentColor")!;
+            var brush = new SolidColorBrush(color, 0.4);
+            foreach (var line in view.VisualLines)
             {
-                blame.NavigateToCommit(sha);
+                if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                    continue;
+
+                var lineNumber = line.FirstDocumentLine.LineNumber;
+                if (lineNumber >= BlameData.LineInfos.Count)
+                    break;
+
+                var info = BlameData.LineInfos[lineNumber - 1];
+                if (info.CommitSHA != _highlight)
+                    continue;
+
+                var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset;
+                var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset;
+                context.FillRectangle(brush, new Rect(0, startY, Bounds.Width, endY - startY));
             }
         }
 
@@ -249,6 +280,9 @@ namespace SourceGit.Views
             base.OnUnloaded(e);
 
             TextArea.LeftMargins.Clear();
+            TextArea.Caret.PositionChanged -= OnTextAreaCaretPositionChanged;
+            TextArea.LayoutUpdated -= OnTextAreaLayoutUpdated;
+            TextArea.PointerWheelChanged -= OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
@@ -279,6 +313,31 @@ namespace SourceGit.Views
             {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             }
+        }
+
+        private void OnTextAreaCaretPositionChanged(object sender, EventArgs e)
+        {
+            if (!TextArea.IsFocused)
+                return;
+
+            var caret = TextArea.Caret;
+            if (caret == null || caret.Line >= BlameData.LineInfos.Count)
+                return;
+
+            _highlight = BlameData.LineInfos[caret.Line - 1].CommitSHA;
+            InvalidateVisual();
+        }
+
+        private void OnTextAreaLayoutUpdated(object sender, EventArgs e)
+        {
+            if (TextArea.IsFocused)
+                InvalidateVisual();
+        }
+
+        private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
+        {
+            if (!TextArea.IsFocused && !string.IsNullOrEmpty(_highlight))
+                Focus();
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -325,6 +384,7 @@ namespace SourceGit.Views
         }
 
         private TextMate.Installation _textMate = null;
+        private string _highlight = string.Empty;
     }
 
     public partial class Blame : ChromelessWindow

@@ -225,7 +225,7 @@
 
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="m:IssueTrackerRule">
-                    <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding Name}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                   </DataTemplate>
                 </ListBox.ItemTemplate>
               </ListBox>

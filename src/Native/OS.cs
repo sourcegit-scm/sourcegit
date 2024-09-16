@@ -13,6 +13,7 @@ namespace SourceGit.Native
             void SetupApp(AppBuilder builder);
 
             string FindGitExecutable();
+            string FindTerminal(Models.ShellOrTerminal shell);
             List<Models.ExternalTool> FindExternalTools();
 
             void OpenTerminal(string workdir);
@@ -23,6 +24,7 @@ namespace SourceGit.Native
 
         public static string DataDir { get; private set; } = string.Empty;
         public static string GitExecutable { get; set; } = string.Empty;
+        public static string ShellOrTerminal { get; set; } = string.Empty;
         public static List<Models.ExternalTool> ExternalTools { get; set; } = [];
 
         static OS()
@@ -43,29 +45,6 @@ namespace SourceGit.Native
             {
                 throw new Exception("Platform unsupported!!!");
             }
-        }
-
-        public static Models.Shell GetShell()
-        {
-            if (OperatingSystem.IsWindows())
-                return (_backend as Windows)!.Shell;
-
-            return Models.Shell.Default;
-        }
-
-        public static bool SetShell(Models.Shell shell)
-        {
-            if (OperatingSystem.IsWindows())
-            {
-                var windows = (_backend as Windows)!;
-                if (windows.Shell != shell)
-                {
-                    windows.Shell = shell;
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public static void SetupApp(AppBuilder builder)
@@ -95,6 +74,14 @@ namespace SourceGit.Native
             return _backend.FindGitExecutable();
         }
 
+        public static void SetShellOrTerminal(Models.ShellOrTerminal shellOrTerminal)
+        {
+            if (shellOrTerminal == null)
+                ShellOrTerminal = string.Empty;
+            else
+                ShellOrTerminal = _backend.FindTerminal(shellOrTerminal);
+        }
+
         public static void OpenInFileManager(string path, bool select = false)
         {
             _backend.OpenInFileManager(path, select);
@@ -107,7 +94,10 @@ namespace SourceGit.Native
 
         public static void OpenTerminal(string workdir)
         {
-            _backend.OpenTerminal(workdir);
+            if (string.IsNullOrEmpty(ShellOrTerminal))
+                App.RaiseException(workdir, $"Can not found terminal! Please confirm that the correct shell/terminal has been configured.");
+            else
+                _backend.OpenTerminal(workdir);
         }
 
         public static void OpenWithDefaultEditor(string file)

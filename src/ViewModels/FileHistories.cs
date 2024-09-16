@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -120,8 +121,10 @@ namespace SourceGit.ViewModels
                             if (IMG_EXTS.Contains(ext))
                             {
                                 var stream = Commands.QueryFileContent.Run(_repo.FullPath, _selectedCommit.SHA, _file);
-                                var bitmap = stream.Length > 0 ? new Bitmap(stream) : null;
-                                var image = new Models.RevisionImageFile() { Image = bitmap };
+                                var fileSize = stream.Length;
+                                var bitmap = fileSize > 0 ? new Bitmap(stream) : null;
+                                var imageType = Path.GetExtension(_file).TrimStart('.').ToUpper(CultureInfo.CurrentCulture);
+                                var image = new Models.RevisionImageFile() { Image = bitmap, FileSize = fileSize, ImageType = imageType };
                                 Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, image));
                             }
                             else

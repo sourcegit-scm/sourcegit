@@ -138,22 +138,22 @@ namespace SourceGit.ViewModels
 
         public void Save()
         {
-            SetIfChanged("user.name", UserName);
-            SetIfChanged("user.email", UserEmail);
-            SetIfChanged("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false");
-            SetIfChanged("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false");
-            SetIfChanged("user.signingkey", GPGUserSigningKey);
-            SetIfChanged("http.proxy", HttpProxy);
+            SetIfChanged("user.name", UserName, "");
+            SetIfChanged("user.email", UserEmail, "");
+            SetIfChanged("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false", "false");
+            SetIfChanged("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false", "false");
+            SetIfChanged("user.signingkey", GPGUserSigningKey, "");
+            SetIfChanged("http.proxy", HttpProxy, "");
         }
 
-        private void SetIfChanged(string key, string value)
+        private void SetIfChanged(string key, string value, string defValue)
         {
             bool changed = false;
             if (_cached.TryGetValue(key, out var old))
             {
                 changed = old != value;
             }
-            else if (!string.IsNullOrEmpty(value))
+            else if (!string.IsNullOrEmpty(value) && value != defValue)
             {
                 changed = true;
             }

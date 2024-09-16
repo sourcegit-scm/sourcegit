@@ -117,7 +117,7 @@
                 
                 <Path Grid.Column="1"
                       Width="14" Height="14"
-                      Fill="{Binding Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
+                      Fill="{Binding Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
                       HorizontalAlignment="Center"
                       Data="{StaticResource Icons.Bookmark}"
                       IsVisible="{Binding IsRepository}"/>

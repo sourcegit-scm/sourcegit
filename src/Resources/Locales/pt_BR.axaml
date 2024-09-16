@@ -381,11 +381,14 @@
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Tema</x:String>
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Sobrescrever Tema</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Usar largura fixa da aba na barra de título</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">FERRAMENTA DE DIF/MERGE</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Caminho de Instalação</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Insira o caminho para a ferramenta de dif/merge</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Ferramenta</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">GERAL</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Verificar atualizações na inicialização</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Idioma</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Commits do Histórico</x:String>
-  <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">Restaurar as últimas abas abertas na inicialização</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Comprimento do Guia de Assunto</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Buscar remotos automaticamente</x:String>
@@ -396,7 +399,6 @@
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">E-mail do Usuário</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">E-mail global do usuário git</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Caminho de Instalação</x:String>
-  <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">Shell</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">Nome do Usuário</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Nome global do usuário git</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Versão do Git</x:String>
@@ -409,10 +411,6 @@
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Insira o caminho do programa gpg instalado</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">Chave de Assinatura do Usuário</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">Chave de assinatura gpg do usuário</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">FERRAMENTA DE DIF/MERGE</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Caminho de Instalação</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Insira o caminho para a ferramenta de dif/merge</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Ferramenta</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prunar Remoto</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Alvo:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Podar Worktrees</x:String>

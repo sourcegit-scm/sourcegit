@@ -46,7 +46,9 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
-                vm.StageSelected();
+                var next = UnstagedChangesView.GetNextChangeWithoutSelection();
+                vm.StageSelected(next);
+                UnstagedChangesView.Focus();
                 e.Handled = true;
             }
         }
@@ -55,7 +57,9 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
-                vm.UnstageSelected();
+                var next = StagedChangesView.GetNextChangeWithoutSelection();
+                vm.UnstageSelected(next);
+                StagedChangesView.Focus();
                 e.Handled = true;
             }
         }
@@ -66,7 +70,9 @@ namespace SourceGit.Views
             {
                 if (e.Key is Key.Space or Key.Enter)
                 {
-                    vm.StageSelected();
+                    var next = UnstagedChangesView.GetNextChangeWithoutSelection();
+                    vm.StageSelected(next);
+                    UnstagedChangesView.Focus();
                     e.Handled = true;
                     return;
                 }
@@ -84,9 +90,60 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm && e.Key is Key.Space or Key.Enter)
             {
-                vm.UnstageSelected();
+                var next = StagedChangesView.GetNextChangeWithoutSelection();
+                vm.UnstageSelected(next);
+                StagedChangesView.Focus();
                 e.Handled = true;
             }
+        }
+
+        private void OnStageSelectedButtonClicked(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+            {
+                var next = UnstagedChangesView.GetNextChangeWithoutSelection();
+                vm.StageSelected(next);
+                UnstagedChangesView.Focus();
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnUnstageSelectedButtonClicked(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+            {
+                var next = StagedChangesView.GetNextChangeWithoutSelection();
+                vm.UnstageSelected(next);
+                StagedChangesView.Focus();
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnOpenAIAssist(object _, RoutedEventArgs e)
+        {
+            if (!Models.OpenAI.IsValid)
+            {
+                App.RaiseException(null, "Bad configuration for OpenAI");
+                return;
+            }
+
+            if (DataContext is ViewModels.WorkingCopy vm)
+            {
+                if (vm.Staged is { Count: > 0 })
+                {
+                    var dialog = new AIAssistant() { DataContext = vm };
+                    dialog.GenerateCommitMessage();
+                    App.OpenDialog(dialog);
+                }
+                else
+                {
+                    App.RaiseException(null, "No files added to commit!");
+                }
+            }
+
+            e.Handled = true;
         }
     }
 }

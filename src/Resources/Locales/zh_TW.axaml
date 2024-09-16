@@ -20,6 +20,8 @@
   <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">選填。預設使用目標資料夾名稱。</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">追蹤分支</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">設定遠端追蹤分支</x:String>
+  <x:String x:Key="Text.AIAssistant" xml:space="preserve">OpenAI 助理</x:String>
+  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用 OpenAI 產生提交訊息</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">套用修補檔 (apply patch)</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">錯誤</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">輸出錯誤，並中止套用修補檔</x:String>
@@ -149,6 +151,9 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP 網路代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">使用者名稱</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">用於本存放庫的使用者名稱</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作區</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名稱</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">顏色</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">複製全部內容</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">複製內容</x:String>
@@ -358,7 +363,7 @@
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合併方式:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合併分支:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">調整存放庫分組</x:String>
-  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">請選擇目標分組：</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">請選擇目標分組:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">名稱:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">尚未設定 Git。請開啟 [偏好設定] 以設定 Git 路徑。</x:String>
   <x:String x:Key="Text.Notice" xml:space="preserve">系統提示</x:String>
@@ -384,6 +389,10 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} 年前</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好設定</x:String>
+  <x:String x:Key="Text.Preference.AI" xml:space="preserve">OpenAI</x:String>
+  <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">伺服器</x:String>
+  <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API 金鑰</x:String>
+  <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外觀設定</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">預設字型大小</x:String>
@@ -393,11 +402,14 @@
   <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">自訂主題</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">使用固定寬度的分頁標籤</x:String>
   <x:String x:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系統原生預設視窗樣式</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">對比/合併工具</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">安裝路徑</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">填寫可執行檔案所在路徑</x:String>
+  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">工具</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">一般設定</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">啟動時檢查軟體更新</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">顯示語言</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">最大歷史提交數</x:String>
-  <x:String x:Key="Text.Preference.General.RestoreTabs" xml:space="preserve">啟動時還原上次開啟的存放庫</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">提交標題字數偵測</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">Git 設定</x:String>
   <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
@@ -408,7 +420,6 @@
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">電子郵件</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">預設 Git 使用者電子郵件</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">安裝路徑</x:String>
-  <x:String x:Key="Text.Preference.Git.Shell" xml:space="preserve">終端 Shell</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">使用者名稱</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">預設 Git 使用者名稱</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git 版本</x:String>
@@ -421,10 +432,10 @@
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">填寫 gpg.exe 所在路徑</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">使用者簽章金鑰</x:String>
   <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">填寫簽章提交所使用的金鑰</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">對比/合併工具</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">安裝路徑</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">填寫可執行檔案所在路徑</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">工具</x:String>
+  <x:String x:Key="Text.Preference.Integration" xml:space="preserve">第三方工具整合</x:String>
+  <x:String x:Key="Text.Preference.Shell" xml:space="preserve">終端機/Shell</x:String>
+  <x:String x:Key="Text.Preference.Shell.Type" xml:space="preserve">終端機/Shell</x:String>
+  <x:String x:Key="Text.Preference.Shell.Path" xml:space="preserve">安裝路徑</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">清理遠端已刪除分支</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">目標:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">清理工作區</x:String>
@@ -627,6 +638,8 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">檢視不追蹤變更的檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">範本: ${0}$</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">請選擇發生衝突的檔案，開啟右鍵選單，選擇合適的解決方式</x:String>
+  <x:String x:Key="Text.Workspace" xml:space="preserve">工作區:</x:String>
+  <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">設定工作區...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本機工作區</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">複製工作區路徑</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">鎖定工作區</x:String>

@@ -20,7 +20,7 @@
     <RepositoryType>Public</RepositoryType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and '$(SourceGitNoAot)' != 'true'">
     <PublishAot>true</PublishAot>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>link</TrimMode>

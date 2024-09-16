@@ -24,7 +24,7 @@
                  Text="{DynamicResource Text.DeleteRepositoryNode.Target}"/>
       <StackPanel Grid.Column="1" Orientation="Horizontal">
         <Path Width="12" Height="12" Margin="0,0,8,0"
-              Fill="{Binding Node.Bookmark, Converter={x:Static c:BookmarkConverters.ToBrush}}"
+              Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
               HorizontalAlignment="Left" VerticalAlignment="Center"
               Data="{StaticResource Icons.Bookmark}"
               IsVisible="{Binding Node.IsRepository}"/>

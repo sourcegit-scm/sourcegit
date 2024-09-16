@@ -20,9 +20,9 @@
     </Grid.RowDefinitions>
 
     <!-- Custom TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto">
       <!-- Bottom border -->
-      <Border Grid.Column="0" Grid.ColumnSpan="3"
+      <Border Grid.Column="0" Grid.ColumnSpan="4"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               DoubleTapped="OnTitleBarDoubleTapped"
@@ -69,11 +69,24 @@
         <Path Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
       </Button>
 
+      <!-- Workspace Switcher -->
+      <Button Grid.Column="1" Classes="icon_button" VerticalAlignment="Bottom" Click="OnOpenWorkspaceMenu">
+        <ToolTip.Tip>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{DynamicResource Text.Workspace}" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}"/>
+            <TextBlock Text="{Binding ActiveWorkspace.Name}"/>
+          </StackPanel>
+        </ToolTip.Tip>
+        <Path Width="14" Height="14" 
+              Data="{StaticResource Icons.Workspace}"
+              Fill="{Binding ActiveWorkspace.Brush}"/>
+      </Button>
+
       <!-- Pages Tabs-->
-      <v:LauncherTabBar Grid.Column="1" Height="30" VerticalAlignment="Bottom"/>
+      <v:LauncherTabBar Grid.Column="2" Height="30" VerticalAlignment="Bottom"/>
 
       <!-- Caption Buttons (Windows/Linux)-->
-      <Border Grid.Column="2" Margin="32,0,0,0" IsVisible="{Binding #ThisControl.IsRightCaptionButtonsVisible}">
+      <Border Grid.Column="3" Margin="32,0,0,0" IsVisible="{Binding #ThisControl.IsRightCaptionButtonsVisible}">
         <v:CaptionButtons Height="30" VerticalAlignment="Top"/>
       </Border>
     </Grid>

@@ -18,7 +18,9 @@ namespace SourceGit.ViewModels
                 if (_instance == null)
                 {
                     _isLoading = true;
-                    if (!File.Exists(_savePath))
+
+                    var path = Path.Combine(Native.OS.DataDir, "preference.json");
+                    if (!File.Exists(path))
                     {
                         _instance = new Preference();
                     }
@@ -26,7 +28,7 @@ namespace SourceGit.ViewModels
                     {
                         try
                         {
-                            _instance = JsonSerializer.Deserialize(File.ReadAllText(_savePath), JsonCodeGen.Default.Preference);
+                            _instance = JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preference);
                         }
                         catch
                         {
@@ -38,6 +40,9 @@ namespace SourceGit.ViewModels
 
                 if (!_instance.IsGitConfigured())
                     _instance.GitInstallPath = Native.OS.FindGitExecutable();
+
+                if (_instance.Workspaces.Count == 0)
+                    _instance.Workspaces.Add(new Workspace() { Name = "Default", Color = 4278221015 });
 
                 return _instance;
             }
@@ -133,12 +138,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _subjectGuideLength, value);
         }
 
-        public bool RestoreTabs
-        {
-            get => _restoreTabs;
-            set => SetProperty(ref _restoreTabs, value);
-        }
-
         public bool UseFixedTabWidth
         {
             get => _useFixedTabWidth;
@@ -230,16 +229,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public Models.Shell GitShell
-        {
-            get => Native.OS.GetShell();
-            set
-            {
-                if (Native.OS.SetShell(value))
-                    OnPropertyChanged();
-            }
-        }
-
         public string GitDefaultCloneDir
         {
             get => _gitDefaultCloneDir;
@@ -275,6 +264,36 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public int ShellOrTerminal
+        {
+            get => _shellOrTerminal;
+            set
+            {
+                if (SetProperty(ref _shellOrTerminal, value))
+                {
+                    if (value >= 0 && value < Models.ShellOrTerminal.Supported.Count)
+                        Native.OS.SetShellOrTerminal(Models.ShellOrTerminal.Supported[value]);
+                    else
+                        Native.OS.SetShellOrTerminal(null);
+
+                    OnPropertyChanged(nameof(ShellOrTerminalPath));
+                }
+            }
+        }
+
+        public string ShellOrTerminalPath
+        {
+            get => Native.OS.ShellOrTerminal;
+            set
+            {
+                if (value != Native.OS.ShellOrTerminal)
+                {
+                    Native.OS.ShellOrTerminal = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public int ExternalMergeToolType
         {
             get => _externalMergeToolType;
@@ -298,23 +317,56 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _externalMergeToolPath, value);
         }
 
+        public string OpenAIServer
+        {
+            get => Models.OpenAI.Server;
+            set
+            {
+                if (value != Models.OpenAI.Server)
+                {
+                    Models.OpenAI.Server = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string OpenAIApiKey
+        {
+            get => Models.OpenAI.ApiKey;
+            set
+            {
+                if (value != Models.OpenAI.ApiKey)
+                {
+                    Models.OpenAI.ApiKey = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string OpenAIModel
+        {
+            get => Models.OpenAI.Model;
+            set
+            {
+                if (value != Models.OpenAI.Model)
+                {
+                    Models.OpenAI.Model = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public List<RepositoryNode> RepositoryNodes
         {
             get;
             set;
         } = [];
 
-        public List<string> OpenedTabs
+        public List<Workspace> Workspaces
         {
             get;
             set;
         } = [];
-
-        public int LastActiveTabIdx
-        {
-            get;
-            set;
-        } = 0;
 
         public double LastCheckUpdateTime
         {
@@ -341,6 +393,19 @@ namespace SourceGit.ViewModels
 
             LastCheckUpdateTime = now.Subtract(DateTime.UnixEpoch.ToLocalTime()).TotalSeconds;
             return true;
+        }
+
+        public Workspace GetActiveWorkspace()
+        {
+            foreach (var w in Workspaces)
+            {
+                if (w.IsActive)
+                    return w;
+            }
+
+            var first = Workspaces[0];
+            first.IsActive = true;
+            return first;
         }
 
         public void AddNode(RepositoryNode node, RepositoryNode to, bool save)
@@ -425,8 +490,12 @@ namespace SourceGit.ViewModels
 
         public void Save()
         {
+            if (_isLoading)
+                return;
+
+            var file = Path.Combine(Native.OS.DataDir, "preference.json");
             var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
-            File.WriteAllText(_savePath, data);
+            File.WriteAllText(file, data);
         }
 
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
@@ -478,7 +547,6 @@ namespace SourceGit.ViewModels
 
         private static Preference _instance = null;
         private static bool _isLoading = false;
-        private static readonly string _savePath = Path.Combine(Native.OS.DataDir, "preference.json");
 
         private string _locale = "en_US";
         private string _theme = "Default";
@@ -492,7 +560,6 @@ namespace SourceGit.ViewModels
 
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
-        private bool _restoreTabs = false;
         private bool _useFixedTabWidth = true;
 
         private bool _check4UpdatesOnStartup = true;
@@ -513,6 +580,7 @@ namespace SourceGit.ViewModels
 
         private string _gitDefaultCloneDir = string.Empty;
 
+        private int _shellOrTerminal = -1;
         private int _externalMergeToolType = 0;
         private string _externalMergeToolPath = string.Empty;
     }

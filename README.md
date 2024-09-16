@@ -34,6 +34,8 @@ Opensource Git GUI client.
 * GitFlow
 * Git LFS
 * Issue Link
+* Workspace
+* Using AI to generate commit message (C# port of [anjerodev/commitollama](https://github.com/anjerodev/commitollama))
 
 > [!WARNING]
 > **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
@@ -83,6 +85,20 @@ For **Linux** users:
 
 * `xdg-open` must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
+* Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
+
+## OpenAI
+
+This software supports using OpenAI or other AI service that has an OpenAI comaptible HTTP API to generate commit message. You need configurate the service in `Preference` window.
+
+For `OpenAI`:
+
+* `Server` must be `https://api.openai.com/v1/chat/completions`
+
+For other AI service:
+
+* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1/chat/completions`
+* The `API Key` is optional that depends on the service
 
 ## External Tools
 

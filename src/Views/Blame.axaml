@@ -50,14 +50,14 @@
     </Border>
 
     <!-- Body -->
-    <Grid Grid.Row="2">
+    <Grid Grid.Row="2" Background="{DynamicResource Brush.Contents}">
       <!-- Blame View -->
       <v:BlameTextEditor HorizontalScrollBarVisibility="Auto"
                          VerticalScrollBarVisibility="Auto"
                          Margin="4,0,4,4"
                          BorderBrush="{DynamicResource Brush.Border2}"
                          BorderThickness="1"
-                         Background="{DynamicResource Brush.Contents}"
+                         Background="Transparent"
                          Foreground="{DynamicResource Brush.FG1}"
                          FontFamily="{DynamicResource Fonts.Monospace}"
                          BlameData="{Binding Data}"/>
