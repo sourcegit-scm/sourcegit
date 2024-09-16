@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq.Expressions;
 using System.Runtime.Versioning;
 
 using Avalonia;
@@ -71,9 +72,9 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            if (string.IsNullOrEmpty(OS.ShellOrTerminal) || !File.Exists(OS.ShellOrTerminal))
+            if (string.IsNullOrEmpty(OS.ShellOrTerminal))
             {
-                App.RaiseException(workdir, $"Can not found terminal! Please confirm that the correct shell/terminal has been configured.");
+                App.RaiseException(workdir, $"Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
                 return;
             }
 
@@ -81,7 +82,14 @@ namespace SourceGit.Native
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             startInfo.WorkingDirectory = string.IsNullOrEmpty(workdir) ? home : workdir;
             startInfo.FileName = OS.ShellOrTerminal;
-            Process.Start(startInfo);
+            try
+            {
+                Process.Start(startInfo);
+            }
+            catch (Exception e)
+            {
+                App.RaiseException(workdir, e.Message);
+            }
         }
 
         public void OpenWithDefaultEditor(string file)
