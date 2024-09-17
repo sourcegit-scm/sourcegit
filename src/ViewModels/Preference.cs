@@ -41,6 +41,22 @@ namespace SourceGit.ViewModels
                 if (!_instance.IsGitConfigured())
                     _instance.GitInstallPath = Native.OS.FindGitExecutable();
 
+                if (!_instance.IsTerminalConfigured())
+                {
+                    for (var i = 0; i < Models.ShellOrTerminal.Supported.Count; i++)
+                    {
+                        _instance.ShellOrTerminal = i;
+                        if (string.IsNullOrEmpty(_instance.ShellOrTerminalPath))
+                        {
+                            _instance.ShellOrTerminal = -1;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+
                 if (_instance.Workspaces.Count == 0)
                     _instance.Workspaces.Add(new Workspace() { Name = "Default", Color = 4278221015 });
 
@@ -378,6 +394,11 @@ namespace SourceGit.ViewModels
         {
             var path = GitInstallPath;
             return !string.IsNullOrEmpty(path) && File.Exists(path);
+        }
+
+        public bool IsTerminalConfigured()
+        {
+            return ShellOrTerminal != -1;
         }
 
         public bool ShouldCheck4UpdateOnStartup()

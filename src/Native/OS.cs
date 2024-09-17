@@ -95,7 +95,7 @@ namespace SourceGit.Native
         public static void OpenTerminal(string workdir)
         {
             if (string.IsNullOrEmpty(ShellOrTerminal))
-                App.RaiseException(workdir, $"Can not found terminal! Please confirm that the correct shell/terminal has been configured.");
+                App.RaiseException(workdir, $"Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
             else
                 _backend.OpenTerminal(workdir);
         }

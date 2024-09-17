@@ -160,7 +160,7 @@ namespace SourceGit.Native
         {
             if (string.IsNullOrEmpty(OS.ShellOrTerminal) || !File.Exists(OS.ShellOrTerminal))
             {
-                App.RaiseException(workdir, $"Can not found terminal! Please confirm that the correct shell/terminal has been configured.");
+                App.RaiseException(workdir, $"Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
                 return;
             }
 
