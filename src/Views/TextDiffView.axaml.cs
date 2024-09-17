@@ -519,7 +519,17 @@ namespace SourceGit.Views
         private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
         {
             if (EnableChunkSelection && sender is TextView view)
+            {
+                var chunk = SelectedChunk;
+                if (chunk != null)
+                {
+                    var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
+                    if (rect.Contains(e.GetPosition(this)))
+                        return;
+                }
+
                 UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+            }
         }
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
