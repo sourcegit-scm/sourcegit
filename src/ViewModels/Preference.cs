@@ -18,44 +18,15 @@ namespace SourceGit.ViewModels
                 if (_instance == null)
                 {
                     _isLoading = true;
-
-                    var path = Path.Combine(Native.OS.DataDir, "preference.json");
-                    if (!File.Exists(path))
-                    {
-                        _instance = new Preference();
-                    }
-                    else
-                    {
-                        try
-                        {
-                            _instance = JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preference);
-                        }
-                        catch
-                        {
-                            _instance = new Preference();
-                        }
-                    }
+                    _instance = Load();
                     _isLoading = false;
                 }
 
                 if (!_instance.IsGitConfigured())
                     _instance.GitInstallPath = Native.OS.FindGitExecutable();
 
-                if (!_instance.IsTerminalConfigured())
-                {
-                    for (var i = 0; i < Models.ShellOrTerminal.Supported.Count; i++)
-                    {
-                        _instance.ShellOrTerminal = i;
-                        if (string.IsNullOrEmpty(_instance.ShellOrTerminalPath))
-                        {
-                            _instance.ShellOrTerminal = -1;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
+                if (_instance._shellOrTerminal == -1)
+                    _instance.AutoSelectShellOrTerminal();
 
                 if (_instance.Workspaces.Count == 0)
                     _instance.Workspaces.Add(new Workspace() { Name = "Default", Color = 4278221015 });
@@ -396,11 +367,6 @@ namespace SourceGit.ViewModels
             return !string.IsNullOrEmpty(path) && File.Exists(path);
         }
 
-        public bool IsTerminalConfigured()
-        {
-            return ShellOrTerminal != -1;
-        }
-
         public bool ShouldCheck4UpdateOnStartup()
         {
             if (!_check4UpdatesOnStartup)
@@ -519,6 +485,35 @@ namespace SourceGit.ViewModels
             File.WriteAllText(file, data);
         }
 
+        private static Preference Load()
+        {
+            var path = Path.Combine(Native.OS.DataDir, "preference.json");
+            if (!File.Exists(path))
+                return new Preference();
+
+            try
+            {
+                return JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preference);
+            }
+            catch
+            {
+                return new Preference();
+            }
+        }
+
+        private void AutoSelectShellOrTerminal()
+        {
+            for (int i = 0; i < Models.ShellOrTerminal.Supported.Count; i++)
+            {
+                var shell = Models.ShellOrTerminal.Supported[i];
+                if (Native.OS.TestShellOrTerminal(shell))
+                {
+                    ShellOrTerminal = i;
+                    break;
+                }
+            }
+        }
+
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
         {
             foreach (var node in collection)
@@ -557,7 +552,7 @@ namespace SourceGit.ViewModels
                 return true;
             }
 
-            foreach (RepositoryNode one in collection)
+            foreach (var one in collection)
             {
                 if (RemoveNodeRecursive(node, one.SubNodes))
                     return true;

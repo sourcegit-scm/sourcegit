@@ -158,7 +158,7 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            if (string.IsNullOrEmpty(OS.ShellOrTerminal) || !File.Exists(OS.ShellOrTerminal))
+            if (!File.Exists(OS.ShellOrTerminal))
             {
                 App.RaiseException(workdir, $"Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
                 return;

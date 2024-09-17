@@ -27,9 +27,7 @@ namespace SourceGit.Native
         public string FindTerminal(Models.ShellOrTerminal shell)
         {
             if (string.IsNullOrEmpty(shell.Exec))
-            {
                 return string.Empty;
-            }
 
             var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
             var pathes = pathVariable.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
@@ -76,23 +74,18 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            if (string.IsNullOrEmpty(OS.ShellOrTerminal))
-            {
-                App.RaiseException(workdir, $"Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
-                return;
-            }
-
             var startInfo = new ProcessStartInfo();
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             startInfo.WorkingDirectory = string.IsNullOrEmpty(workdir) ? home : workdir;
             startInfo.FileName = OS.ShellOrTerminal;
+
             try
             {
                 Process.Start(startInfo);
             }
             catch (Exception e)
             {
-                App.RaiseException(workdir, e.Message);
+                App.RaiseException(workdir, $"Failed to start '{OS.ShellOrTerminal}'. Reason: {e.Message}");
             }
         }
 
