@@ -38,6 +38,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Dictionaries\en_GB.aff" />
+    <Content Include="Resources\Dictionaries\en_GB.dic" />
+    <Content Include="Resources\Dictionaries\es_MX.aff" />
+    <Content Include="Resources\Dictionaries\es_MX.dic" />
+    <Content Include="Resources\Dictionaries\pt_BR.aff" />
+    <Content Include="Resources\Dictionaries\pt_BR.dic" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.1.3" />
     <PackageReference Include="Avalonia.Desktop" Version="11.1.3" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.3" />
@@ -46,6 +55,7 @@
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
     <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="GHSoftware.Avalonia.SpellChecker" Version="0.2.0" />
     <PackageReference Include="TextMateSharp" Version="1.0.63" />
     <PackageReference Include="TextMateSharp.Grammars" Version="1.0.63" />
   </ItemGroup>
@@ -58,4 +68,14 @@
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
     <LinkerArg Include="-mmacosx-version-min=11.0" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
+
+  <!-- Add a target to copy the files to the bin/Dictionaries folder -->
+  <Target Name="CopyDictionaries" AfterTargets="Build">
+    <ItemGroup>
+      <DictionaryFiles Include="Resources\Dictionaries\*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(DictionaryFiles)" DestinationFolder="$(OutputPath)Dictionaries\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+
 </Project>

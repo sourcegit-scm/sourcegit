@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.SpellChecker;
 
 namespace SourceGit.Views
 {
@@ -49,6 +50,8 @@ namespace SourceGit.Views
 
     public partial class CommitMessageTextBox : UserControl
     {
+        private readonly TextBoxSpellChecker _textBoxSpellChecker;
+
         public enum TextChangeWay
         {
             None,
@@ -86,6 +89,9 @@ namespace SourceGit.Views
         public CommitMessageTextBox()
         {
             InitializeComponent();
+            _textBoxSpellChecker = new TextBoxSpellChecker(SpellCheckerConfig.Create("en_GB"));
+            _textBoxSpellChecker.Initialize(SubjectEditor);
+            _textBoxSpellChecker.Initialize(DescriptionEditor);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
