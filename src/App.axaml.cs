@@ -521,6 +521,9 @@ namespace SourceGit
                 return false;
 
             var param = args[0];
+            if (Directory.Exists(param))
+                return false;
+
             if (!param.StartsWith("enter passphrase", StringComparison.OrdinalIgnoreCase) &&
                 !param.Contains(" password", StringComparison.OrdinalIgnoreCase))
                 return false;
