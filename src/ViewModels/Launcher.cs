@@ -271,7 +271,7 @@ namespace SourceGit.ViewModels
 
             repo.Open();
             ActiveWorkspace.AddRepository(repo.FullPath);
-            Models.AutoFetchManager.Instance.AddRepository(repo.FullPath);
+            Models.AutoFetchManager.Instance.AddRepository(repo.FullPath, repo.GitDir);
 
             if (page == null)
             {
