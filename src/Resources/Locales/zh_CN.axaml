@@ -153,7 +153,6 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">应用于本仓库的用户名</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作区</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">颜色</x:String>
-  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名称</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">启动时恢复打开的仓库</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">复制</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">复制全部文本</x:String>
