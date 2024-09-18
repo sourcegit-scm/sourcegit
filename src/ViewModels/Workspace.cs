@@ -43,6 +43,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isActive, value);
         }
 
+        public bool RestoreOnStartup
+        {
+            get => _restoreOnStartup;
+            set => SetProperty(ref _restoreOnStartup, value);
+        }
+
         [JsonIgnore]
         public IBrush Brush
         {
@@ -57,8 +63,9 @@ namespace SourceGit.ViewModels
         }
 
         private string _name = string.Empty;
-        private uint _color = 0;
+        private uint _color = 4278221015;
         private bool _isActive = false;
-        private IBrush _brush = null;
+        private bool _restoreOnStartup = true;
+        private IBrush _brush = new SolidColorBrush(4278221015);
     }
 }

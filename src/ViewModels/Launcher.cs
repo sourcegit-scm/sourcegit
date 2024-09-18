@@ -81,7 +81,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                ActiveWorkspace = new Workspace() { Name = "Unnamed", Color = 4278221015 };
+                ActiveWorkspace = new Workspace() { Name = "Unnamed" };
 
                 foreach (var w in pref.Workspaces)
                     w.IsActive = false;

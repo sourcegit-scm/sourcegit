@@ -36,10 +36,7 @@ namespace SourceGit.ViewModels
 
         public void Add()
         {
-            var workspace = new Workspace();
-            workspace.Name = $"Unnamed {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
-            workspace.Color = 4278221015;
-
+            var workspace = new Workspace() { Name = $"Unnamed {DateTime.Now:yyyy-MM-dd HH:mm:ss}" };
             Preference.Instance.Workspaces.Add(workspace);
             Workspaces.Add(workspace);
             Selected = workspace;

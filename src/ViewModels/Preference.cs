@@ -22,15 +22,9 @@ namespace SourceGit.ViewModels
                     _isLoading = false;
                 }
 
-                if (!_instance.IsGitConfigured())
-                    _instance.GitInstallPath = Native.OS.FindGitExecutable();
-
-                if (_instance._shellOrTerminal == -1)
-                    _instance.AutoSelectShellOrTerminal();
-
-                if (_instance.Workspaces.Count == 0)
-                    _instance.Workspaces.Add(new Workspace() { Name = "Default", Color = 4278221015 });
-
+                _instance.PrepareGit();
+                _instance.PrepareShellOrTerminal();
+                _instance.PrepareWorkspaces();
                 return _instance;
             }
         }
@@ -501,8 +495,18 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void AutoSelectShellOrTerminal()
+        private void PrepareGit()
         {
+            var path = Native.OS.GitExecutable;
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+                GitInstallPath = Native.OS.FindGitExecutable();
+        }
+
+        private void PrepareShellOrTerminal()
+        {
+            if (_shellOrTerminal >= 0)
+                return;
+
             for (int i = 0; i < Models.ShellOrTerminal.Supported.Count; i++)
             {
                 var shell = Models.ShellOrTerminal.Supported[i];
@@ -510,6 +514,24 @@ namespace SourceGit.ViewModels
                 {
                     ShellOrTerminal = i;
                     break;
+                }
+            }
+        }
+
+        private void PrepareWorkspaces()
+        {
+            if (Workspaces.Count == 0)
+            {
+                Workspaces.Add(new Workspace() { Name = "Default" });
+                return;
+            }
+
+            foreach (var workspace in Workspaces)
+            {
+                if (!workspace.RestoreOnStartup)
+                {
+                    workspace.Repositories.Clear();
+                    workspace.ActiveIdx = 0;
                 }
             }
         }

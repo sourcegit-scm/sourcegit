@@ -150,8 +150,9 @@
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Benutzername</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Benutzername für dieses Repository</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Arbeitsplätze</x:String>
-  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Name</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Farbe</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Name</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Zuletzt geöffnete Tabs beim Starten wiederherstellen</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Kopieren</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Kopiere gesamten Text</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">COMMIT-NACHRICHT KOPIEREN</x:String>
