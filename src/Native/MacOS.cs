@@ -34,7 +34,7 @@ namespace SourceGit.Native
                     return "iTerm";
             }
 
-            return "InvalidTerminal";
+            return string.Empty;
         }
 
         public List<Models.ExternalTool> FindExternalTools()
