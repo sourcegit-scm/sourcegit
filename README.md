@@ -97,7 +97,7 @@ For `OpenAI`:
 
 For other AI service:
 
-* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1/chat/completions`
+* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1/chat/completions`. For example, when using `Ollama`, it should be `http://localhost:11434/v1/chat/completions` instead of `http://localhost:11434/api/generate`
 * The `API Key` is optional that depends on the service
 
 ## External Tools
