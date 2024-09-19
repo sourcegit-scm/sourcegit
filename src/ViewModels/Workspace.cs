@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
-
 using Avalonia.Media;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -21,7 +18,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _color, value))
-                    Brush = new SolidColorBrush(value);
+                    OnPropertyChanged(nameof(Brush));
             }
         }
 
@@ -49,11 +46,9 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _restoreOnStartup, value);
         }
 
-        [JsonIgnore]
         public IBrush Brush
         {
-            get => _brush;
-            private set => SetProperty(ref _brush, value);
+            get => new SolidColorBrush(_color);
         }
 
         public void AddRepository(string repo)
@@ -66,6 +61,5 @@ namespace SourceGit.ViewModels
         private uint _color = 4278221015;
         private bool _isActive = false;
         private bool _restoreOnStartup = true;
-        private IBrush _brush = new SolidColorBrush(4278221015);
     }
 }
