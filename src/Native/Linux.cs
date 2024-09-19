@@ -41,7 +41,7 @@ namespace SourceGit.Native
             finder.Fleet(FindJetBrainsFleet);
             finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox");
             finder.SublimeText(() => FindExecutable("subl"));
-            finder.Zed(() => FindExecutable("zed"));
+            finder.Zed(() => FindExecutable("zeditor"));
             return finder.Founded;
         }
 
