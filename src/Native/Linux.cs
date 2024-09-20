@@ -71,6 +71,9 @@ namespace SourceGit.Native
             startInfo.WorkingDirectory = string.IsNullOrEmpty(workdir) ? home : workdir;
             startInfo.FileName = OS.ShellOrTerminal;
 
+            if (OS.ShellOrTerminal.EndsWith("wezterm", StringComparison.OrdinalIgnoreCase))
+                startInfo.Arguments = $"start --cwd \"{workdir}\"";
+
             try
             {
                 Process.Start(startInfo);
