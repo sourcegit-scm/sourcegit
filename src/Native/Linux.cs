@@ -66,13 +66,15 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            var startInfo = new ProcessStartInfo();
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            startInfo.WorkingDirectory = string.IsNullOrEmpty(workdir) ? home : workdir;
+            var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
+
+            var startInfo = new ProcessStartInfo();
+            startInfo.WorkingDirectory = cwd;
             startInfo.FileName = OS.ShellOrTerminal;
 
             if (OS.ShellOrTerminal.EndsWith("wezterm", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"start --cwd \"{workdir}\"";
+                startInfo.Arguments = $"start --cwd \"{cwd}\"";
 
             try
             {
