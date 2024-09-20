@@ -155,6 +155,11 @@ namespace SourceGit.Native
             var startInfo = new ProcessStartInfo();
             startInfo.WorkingDirectory = workdir;
             startInfo.FileName = OS.ShellOrTerminal;
+
+            // Directly launching `Windows Terminal` need to specify the `-d` parameter
+            if (OS.ShellOrTerminal.EndsWith("wt.exe", StringComparison.OrdinalIgnoreCase))
+                startInfo.Arguments = $"-d \"{workdir}\"";
+
             Process.Start(startInfo);
         }
 
