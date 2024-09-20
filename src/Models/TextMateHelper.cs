@@ -24,7 +24,7 @@ namespace SourceGit.Models
             _backend = new RegistryOptions(defaultTheme);
             _extraGrammars = new List<IRawGrammar>();
 
-            string[] extraGrammarFiles = ["toml.json"];
+            string[] extraGrammarFiles = ["toml.json", "kotlin.json"];
             foreach (var file in extraGrammarFiles)
             {
                 var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Grammars/{file}",
@@ -71,16 +71,18 @@ namespace SourceGit.Models
         public string GetScopeByFileName(string filename)
         {
             var extension = Path.GetExtension(filename);
-            var grammar = _extraGrammars.Find(x => x.GetScopeName().EndsWith(extension, StringComparison.OrdinalIgnoreCase));
-            if (grammar != null)
-                return grammar.GetScopeName();
-
             if (extension == ".h")
                 extension = ".cpp";
             else if (extension == ".resx" || extension == ".plist" || extension == ".manifest")
                 extension = ".xml";
             else if (extension == ".command")
                 extension = ".sh";
+            else if (extension == ".kt" || extension == ".kts")
+                extension = ".kotlin";
+
+            var grammar = _extraGrammars.Find(x => x.GetScopeName().EndsWith(extension, StringComparison.OrdinalIgnoreCase));
+            if (grammar != null)
+                return grammar.GetScopeName();
 
             return _backend.GetScopeByExtension(extension);
         }
