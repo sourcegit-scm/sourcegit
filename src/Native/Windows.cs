@@ -202,7 +202,7 @@ namespace SourceGit.Native
         private void FixWindowFrameOnWin10(Window w)
         {
             if (w.WindowState != WindowState.Normal)
-                w.SystemDecorations = SystemDecorations.Full;                
+                w.SystemDecorations = SystemDecorations.Full;
             else
                 w.SystemDecorations = SystemDecorations.BorderOnly;
         }

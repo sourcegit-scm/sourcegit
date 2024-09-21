@@ -17,31 +17,75 @@ using TextMateSharp.Themes;
 
 namespace SourceGit.Models
 {
-    public class RegistryOptionsWrapper : IRegistryOptions
+    public static class GrammarUtility
     {
-        public RegistryOptionsWrapper(ThemeName defaultTheme)
+        private static readonly ExtraGrammar[] s_extraGrammas =
+        [
+            new ExtraGrammar("source.toml", ".toml", "toml.json"),
+            new ExtraGrammar("source.kotlin", ".kotlin", "kotlin.json"),
+            new ExtraGrammar("source.hx", ".hx", "haxe.json"),
+            new ExtraGrammar("source.hxml", ".hxml", "hxml.json"),
+        ];
+
+        public static string GetExtension(string file)
         {
-            _backend = new RegistryOptions(defaultTheme);
-            _extraGrammars = new List<IRawGrammar>();
+            var extension = Path.GetExtension(file);
+            if (extension == ".h")
+                extension = ".cpp";
+            else if (extension == ".resx" || extension == ".plist" || extension == ".manifest")
+                extension = ".xml";
+            else if (extension == ".command")
+                extension = ".sh";
+            else if (extension == ".kt" || extension == ".kts")
+                extension = ".kotlin";
 
-            string[] extraGrammarFiles = ["toml.json", "kotlin.json", "haxe.json", "hxml.json"];
-            foreach (var file in extraGrammarFiles)
-            {
-                var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Grammars/{file}",
-                    UriKind.RelativeOrAbsolute));
-
-                try
-                {
-                    var grammar = GrammarReader.ReadGrammarSync(new StreamReader(asset));
-                    _extraGrammars.Add(grammar);
-                }
-                catch
-                {
-                    // ignore
-                }
-            }
+            return extension;
         }
 
+        public static string GetScopeByExtension(string extension)
+        {
+            foreach (var grammar in s_extraGrammas)
+            {
+                if (grammar.Extension.Equals(extension, StringComparison.OrdinalIgnoreCase))
+                    return grammar.Scope;
+            }
+
+            return null;
+        }
+
+        public static IRawGrammar Load(string scopeName)
+        {
+            foreach (var grammar in s_extraGrammas)
+            {
+                if (grammar.Scope.Equals(scopeName, StringComparison.OrdinalIgnoreCase))
+                {
+                    var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Grammars/{grammar.File}",
+                        UriKind.RelativeOrAbsolute));
+
+                    try
+                    {
+                        return GrammarReader.ReadGrammarSync(new StreamReader(asset));
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private record ExtraGrammar(string Scope, string Extension, string File)
+        {
+            public readonly string Scope = Scope;
+            public readonly string Extension = Extension;
+            public readonly string File = File;
+        }
+    }
+
+    public class RegistryOptionsWrapper(ThemeName defaultTheme) : IRegistryOptions
+    {
         public IRawTheme GetTheme(string scopeName)
         {
             return _backend.GetTheme(scopeName);
@@ -49,8 +93,7 @@ namespace SourceGit.Models
 
         public IRawGrammar GetGrammar(string scopeName)
         {
-            var grammar = _extraGrammars.Find(x => x.GetScopeName().Equals(scopeName, StringComparison.Ordinal));
-            return grammar ?? _backend.GetGrammar(scopeName);
+            return GrammarUtility.Load(scopeName) ?? _backend.GetGrammar(scopeName);
         }
 
         public ICollection<string> GetInjections(string scopeName)
@@ -70,25 +113,11 @@ namespace SourceGit.Models
 
         public string GetScopeByFileName(string filename)
         {
-            var extension = Path.GetExtension(filename);
-            if (extension == ".h")
-                extension = ".cpp";
-            else if (extension == ".resx" || extension == ".plist" || extension == ".manifest")
-                extension = ".xml";
-            else if (extension == ".command")
-                extension = ".sh";
-            else if (extension == ".kt" || extension == ".kts")
-                extension = ".kotlin";
-
-            var grammar = _extraGrammars.Find(x => x.GetScopeName().EndsWith(extension, StringComparison.OrdinalIgnoreCase));
-            if (grammar != null)
-                return grammar.GetScopeName();
-
-            return _backend.GetScopeByExtension(extension);
+            var ext = GrammarUtility.GetExtension(filename);
+            return GrammarUtility.GetScopeByExtension(ext) ?? _backend.GetScopeByExtension(ext);
         }
 
-        private readonly RegistryOptions _backend;
-        private readonly List<IRawGrammar> _extraGrammars;
+        private readonly RegistryOptions _backend = new(defaultTheme);
     }
 
     public static class TextMateHelper
