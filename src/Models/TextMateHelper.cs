@@ -24,7 +24,7 @@ namespace SourceGit.Models
             _backend = new RegistryOptions(defaultTheme);
             _extraGrammars = new List<IRawGrammar>();
 
-            string[] extraGrammarFiles = ["toml.json", "kotlin.json"];
+            string[] extraGrammarFiles = ["toml.json", "kotlin.json", "haxe.json", "hxml.json"];
             foreach (var file in extraGrammarFiles)
             {
                 var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Grammars/{file}",
