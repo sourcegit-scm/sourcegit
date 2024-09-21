@@ -19,7 +19,7 @@ namespace SourceGit.Models
 {
     public static class GrammarUtility
     {
-        private static readonly ExtraGrammar[] s_extraGrammas =
+        private static readonly ExtraGrammar[] s_extraGrammars =
         [
             new ExtraGrammar("source.toml", ".toml", "toml.json"),
             new ExtraGrammar("source.kotlin", ".kotlin", "kotlin.json"),
@@ -39,7 +39,7 @@ namespace SourceGit.Models
             else if (extension == ".kt" || extension == ".kts")
                 extension = ".kotlin";
             
-            foreach (var grammar in s_extraGrammas)
+            foreach (var grammar in s_extraGrammars)
             {
                 if (grammar.Extension.Equals(extension, StringComparison.OrdinalIgnoreCase))
                     return grammar.Scope;
@@ -50,7 +50,7 @@ namespace SourceGit.Models
 
         public static IRawGrammar GetGrammar(string scopeName, RegistryOptions reg)
         {
-            foreach (var grammar in s_extraGrammas)
+            foreach (var grammar in s_extraGrammars)
             {
                 if (grammar.Scope.Equals(scopeName, StringComparison.OrdinalIgnoreCase))
                 {
