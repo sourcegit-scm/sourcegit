@@ -13,7 +13,7 @@
                     Title="{DynamicResource Text.GitLFS.Locks.Title}"
                     Width="600" Height="400"
                     WindowStartupLocation="CenterOwner">
-  <Grid RowDefinitions="Auto,*">
+  <Grid RowDefinitions="Auto,Auto,*">
     <!-- TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
@@ -43,11 +43,19 @@
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
+    <!-- Filter and Unlock All -->
+    <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" Margin="8,0,0,0">
+      <CheckBox Grid.Column="0"
+                Content="Show only my locks"
+                IsChecked="{Binding ShowOnlyMyLocks}"
+                VerticalAlignment="Center" />
+    </Grid>
+
     <!-- Locked Files -->
-    <Grid Grid.Row="1">
-      <ListBox Margin="8"
+    <Grid Grid.Row="2">
+      <ListBox Margin="8,0,8,8"
                Background="{DynamicResource Brush.Contents}"
-               ItemsSource="{Binding Locks}"
+               ItemsSource="{Binding FilteredLocks}"
                SelectionMode="Single"
                BorderThickness="1"
                BorderBrush="{DynamicResource Brush.Border2}"

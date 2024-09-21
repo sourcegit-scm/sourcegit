@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 using Avalonia.Collections;
 using Avalonia.Threading;
@@ -20,11 +22,31 @@ namespace SourceGit.ViewModels
             get => _isEmpty;
             private set => SetProperty(ref _isEmpty, value);
         }
+        
+        public bool ShowOnlyMyLocks
+        {
+            get => _showOnlyMyLocks;
+            set
+            {
+                if (!SetProperty(ref _showOnlyMyLocks, value))
+                    return;
 
-        public AvaloniaList<Models.LFSLock> Locks
+                OnPropertyChanged(nameof(FilteredLocks));
+                IsEmpty = !FilteredLocks.Any();
+            }
+        }
+
+        private AvaloniaList<Models.LFSLock> Locks
         {
             get;
-            private set;
+        }
+
+        public IEnumerable<Models.LFSLock> FilteredLocks
+        {
+            get
+            {
+                return ShowOnlyMyLocks ? Locks.Where(@lock => @lock.User == "Mat") : Locks;
+            }
         }
 
         public LFSLocks(string repo, string remote)
@@ -71,5 +93,6 @@ namespace SourceGit.ViewModels
         private string _remote;
         private bool _isLoading = true;
         private bool _isEmpty = false;
+        private bool _showOnlyMyLocks = false;
     }
 }
