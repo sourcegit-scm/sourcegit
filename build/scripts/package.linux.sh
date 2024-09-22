@@ -1,13 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
+set -o
+set -u
+set pipefail
 
-if [ -z "$VERSION" ]; then
+if [[ -z "$VERSION" ]]; then
     echo "Provide the version as environment variable VERSION"
     exit 1
 fi
 
-if [ -z "$RUNTIME" ]; then
+if [[ -z "$RUNTIME" ]]; then
     echo "Provide the runtime as environment variable RUNTIME"
     exit 1
 fi
@@ -33,7 +36,7 @@ APPIMAGETOOL_URL=https://github.com/AppImage/appimagetool/releases/download/cont
 
 cd build
 
-if [ ! -f "appimagetool" ]; then
+if [[ ! -f "appimagetool" ]]; then
     curl -o appimagetool -L "$APPIMAGETOOL_URL"
     chmod +x appimagetool
 fi
