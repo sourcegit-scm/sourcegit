@@ -140,7 +140,7 @@
                            Margin="8,0"
                            HorizontalAlignment="Right" VerticalAlignment="Center"
                            Foreground="{DynamicResource Brush.FG2}"
-                           Text="{Binding Id}"
+                           Text="{Binding Id, Converter={x:Static c:PathConverters.RelativeToHome}}"
                            IsVisible="{Binding IsRepository}"/>
               </Grid>
             </DataTemplate>
