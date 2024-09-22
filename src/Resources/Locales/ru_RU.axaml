@@ -331,7 +331,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Режим поиска фиксаций</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Перекключить на 'Изменения'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Перекключить на 'Истории'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Перекключить на 'Спрятанные'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Перекключить на 'Отложенные'</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">ТЕКСТОВЫЙ РЕДАКТОР</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Закрыть панель поиска</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Найти следующее совпадение</x:String>
@@ -448,7 +448,7 @@
   <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Забрать без тегов</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Внешнее хранилище:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Забрать (Получить и слить)</x:String>
-  <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Используйте перемещение вместо слияния</x:String>
+  <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Использовать перемещение вместо слияния</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">Выложить</x:String>
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Убедитесь, что подмодули были вставлены</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Принудительно выложить</x:String>
@@ -534,7 +534,7 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Фиксация:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Отмена изменений фиксации</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Переформулировать сообщение фиксации</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Используйте "Shift+Enter" для ввода новой строки. "Enter" - это горячая клавиша кнопки OK</x:String>
+  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Использовать "Shift+Enter" для ввода новой строки. "Enter" - это горячая клавиша кнопки OK</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Запуск. Подождите пожалуйста...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">СОХРАНИТЬ</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Сохранить как...</x:String>
