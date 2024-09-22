@@ -32,7 +32,7 @@ namespace SourceGit.Views
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (SelectedItems is [ViewModels.RepositoryNode { IsRepository: false } node] && e.KeyModifiers == KeyModifiers.None)
+            if (SelectedItem is ViewModels.RepositoryNode { IsRepository: false } node && e.KeyModifiers == KeyModifiers.None)
             {
                 if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
                 {
