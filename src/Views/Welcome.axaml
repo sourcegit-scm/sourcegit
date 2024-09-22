@@ -45,18 +45,18 @@
         </TextBox>
 
         <!-- Repository Tree -->
-        <ListBox Grid.Row="1"
-                 x:Name="TreeContainer"
-                 Margin="0,8,8,0"
-                 Focusable="True"
-                 Background="Transparent"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 ItemsSource="{Binding Rows}"
-                 SelectionMode="Single"
-                 Loaded="SetupTreeViewDragAndDrop"
-                 LostFocus="OnTreeViewLostFocus"
-                 KeyDown="OnTreeViewKeyDown">
+        <v:RepositoryListBox Grid.Row="1"
+                             x:Name="TreeContainer"
+                             Margin="0,8,8,0"
+                             Focusable="True"
+                             Background="Transparent"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ItemsSource="{Binding Rows}"
+                             SelectionMode="Single"
+                             Loaded="SetupTreeViewDragAndDrop"
+                             LostFocus="OnTreeViewLostFocus"
+                             KeyDown="OnTreeViewKeyDown">
           <ListBox.Styles>
             <Style Selector="ListBox">
               <Setter Property="FocusAdorner">
@@ -145,7 +145,7 @@
               </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
-        </ListBox>
+        </v:RepositoryListBox>
       </Grid>
     </Grid>
 

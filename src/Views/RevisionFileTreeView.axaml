@@ -8,12 +8,12 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionFileTreeView"
              x:Name="ThisControl">
-  <ListBox ItemsSource="{Binding #ThisControl.Rows}"
-           Background="Transparent"
-           SelectionMode="Single"
-           SelectionChanged="OnRowsSelectionChanged"
-           ScrollViewer.HorizontalScrollBarVisibility="Auto"
-           ScrollViewer.VerticalScrollBarVisibility="Auto">
+  <v:RevisionFileRowsListBox ItemsSource="{Binding #ThisControl.Rows}"
+                             Background="Transparent"
+                             SelectionMode="Single"
+                             SelectionChanged="OnRowsSelectionChanged"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto">
     <ListBox.ItemsPanel>
       <ItemsPanelTemplate>
         <VirtualizingStackPanel Orientation="Vertical"/>
@@ -46,5 +46,5 @@
         </Grid>
       </DataTemplate>
     </ListBox.ItemTemplate>
-  </ListBox>
+  </v:RevisionFileRowsListBox>
 </UserControl>

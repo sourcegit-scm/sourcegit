@@ -25,6 +25,26 @@ namespace SourceGit.Views
             e.Handled = true;
         }
     }
+    
+    public class RepositoryListBox : ListBox
+    {
+        protected override Type StyleKeyOverride => typeof(ListBox);
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (SelectedItems is [ViewModels.RepositoryNode { IsRepository: false } node] && e.KeyModifiers == KeyModifiers.None)
+            {
+                if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
+                {
+                    ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
+                    e.Handled = true;
+                }
+            }
+            
+            if (!e.Handled)
+                base.OnKeyDown(e);
+        }
+    }
 
     public partial class Welcome : UserControl
     {

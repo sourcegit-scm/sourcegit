@@ -103,6 +103,26 @@ namespace SourceGit.Views
         }
     }
 
+    public class RevisionFileRowsListBox : ListBox
+    {
+        protected override Type StyleKeyOverride => typeof(ListBox);
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (SelectedItems is [ViewModels.RevisionFileTreeNode { IsFolder: true } node] && e.KeyModifiers == KeyModifiers.None)
+            {
+                if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
+                {
+                    this.FindAncestorOfType<RevisionFileTreeView>()?.ToggleNodeIsExpanded(node);
+                    e.Handled = true;
+                }
+            }
+            
+            if (!e.Handled)
+                base.OnKeyDown(e);
+        }
+    }
+
     public partial class RevisionFileTreeView : UserControl
     {
         public static readonly StyledProperty<string> RevisionProperty =
@@ -285,8 +305,8 @@ namespace SourceGit.Views
             }
         }
 
-        private List<ViewModels.RevisionFileTreeNode> _tree = new List<ViewModels.RevisionFileTreeNode>();
-        private AvaloniaList<ViewModels.RevisionFileTreeNode> _rows = new AvaloniaList<ViewModels.RevisionFileTreeNode>();
+        private List<ViewModels.RevisionFileTreeNode> _tree = [];
+        private AvaloniaList<ViewModels.RevisionFileTreeNode> _rows = [];
         private bool _disableSelectionChangingEvent = false;
     }
 }
