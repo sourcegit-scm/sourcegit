@@ -7,7 +7,7 @@ Opensource Git GUI client.
 * Supports Windows/macOS/Linux
 * Opensource/Free
 * Fast
-* English/Français/Deutsch/Português/简体中文/繁體中文
+* English/Français/Deutsch/Português/Русский/简体中文/繁體中文
 * Built-in light/dark themes
 * Customize theme
 * Visual commit graph
