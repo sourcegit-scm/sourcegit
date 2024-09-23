@@ -48,6 +48,7 @@
       <CheckBox Grid.Column="0"
                 Content="Show only my locks"
                 IsChecked="{Binding ShowOnlyMyLocks}"
+                IsEnabled="{Binding !IsLoading}"
                 VerticalAlignment="Center" />
     </Grid>
 
