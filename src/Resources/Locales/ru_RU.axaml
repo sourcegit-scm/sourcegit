@@ -292,7 +292,7 @@
   <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">Блокировки ХБФ</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Разблокировка</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Принудительная разблокировка</x:String>
-  <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Обрезка</x:String>
+  <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Обрезать</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Запустите `git lfs prune", чтобы удалить старые файлы ХБФ из локального хранилища</x:String>
   <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Забрать</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">Забрать объекты ХБФ</x:String>
@@ -523,7 +523,7 @@
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Открыть в терминале</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">РАБОЧИЕ ДЕРЕВЬЯ</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ДОБАВИТЬ РАБОЧЕЕ ДЕРЕВО</x:String>
-  <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">ОБРЕЗКА</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">ОБРЕЗАТЬ</x:String>
   <x:String x:Key="Text.RepositoryURL" xml:space="preserve">Адрес хранилища Git</x:String>
   <x:String x:Key="Text.Reset" xml:space="preserve">Сбросить текущую втеку до версии</x:String>
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Режим сброса:</x:String>
@@ -573,6 +573,7 @@
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">НЕДЕЛЯ</x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">ФИКСАЦИИ: </x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">АВТОРЫ: </x:String>
+   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">ОБЗОР</x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">ПОДМОДУЛИ</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Добавить  подмодули</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Копировать относительный путь</x:String>
