@@ -47,7 +47,7 @@ namespace SourceGit.ViewModels
             {
                 if (string.IsNullOrEmpty(_userName))
                 {
-                    //todo: add an error popup
+                    App.RaiseException(_repo, "Username is empty");
                     return Locks;
                 }
 
