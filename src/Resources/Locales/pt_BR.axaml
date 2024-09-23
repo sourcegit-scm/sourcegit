@@ -545,7 +545,6 @@
   <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">MÊS</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">SEMANA</x:String>
-  <x:String x:Key="Text.Statistics.MostRecentYear" xml:space="preserve">ANO</x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTORES: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMÓDULOS</x:String>

@@ -5,6 +5,7 @@
                     xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.Statistics"
                     x:DataType="vm:Statistics"
@@ -62,6 +63,7 @@
 
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
+          <Setter Property="Width" Value="110"/>
           <Setter Property="Height" Value="28"/>
           <Setter Property="Padding" Value="0"/>
           <Setter Property="Background" Value="Transparent"/>
@@ -90,6 +92,7 @@
         <Style Selector="TextBlock.view_mode_switcher">
           <Setter Property="FontWeight" Value="Bold"/>
           <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
+          <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
         <Style Selector="ListBoxItem:pointerover TextBlock.view_mode_switcher">
@@ -103,7 +106,7 @@
 
       <ListBoxItem>
         <Border Classes="switcher_bg">
-          <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.MostRecentYear}"/>
+          <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.Statistics.Overview}"/>
         </Border>
       </ListBoxItem>
 
@@ -128,7 +131,7 @@
             <Grid Grid.Column="0" RowDefinitions="*,16">
               <!-- Table By Committer -->
               <ListBox Grid.Column="0"
-                       ItemsSource="{Binding ByAuthor}"
+                       ItemsSource="{Binding Authors}"
                        SelectionMode="Single"
                        BorderThickness="1"
                        BorderBrush="{DynamicResource Brush.Border2}"
@@ -150,7 +153,7 @@
                 </ListBox.ItemsPanel>
 
                 <ListBox.ItemTemplate>
-                  <DataTemplate DataType="m:StatisticsSample">
+                  <DataTemplate DataType="m:StaticsticsAuthor">
                     <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
                       <Grid ColumnDefinitions="*,100">
                         <Border Grid.Column="0" Padding="8,0" ClipToBounds="True">
@@ -170,7 +173,7 @@
                 <!-- Total Committers -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
                   <TextBlock Classes="primary" Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Classes="primary" Text="{Binding ByAuthor.Count}" FontSize="11" Margin="4,0,0,0"/>
+                  <TextBlock Classes="primary" Text="{Binding Authors.Count}" FontSize="11" Margin="4,0,0,0"/>
                 </StackPanel>
 
                 <!-- Total Commits -->
@@ -182,12 +185,7 @@
             </Grid>
 
             <!-- Graph -->
-            <v:Chart Grid.Column="1"
-                     Margin="16"
-                     LabelBrush="{DynamicResource Brush.FG1}"
-                     LineBrush="{DynamicResource Brush.Border2}"
-                     ShapeBrush="{DynamicResource Brush.Accent}"
-                     Samples="{Binding Samples}"/>
+            <lvc:CartesianChart Grid.Column="1" Margin="16" Series="{Binding Series}" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" ZoomMode="X"/>
           </Grid>
         </DataTemplate>
       </ContentControl.DataTemplates>

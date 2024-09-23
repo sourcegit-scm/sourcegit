@@ -50,7 +50,7 @@ namespace SourceGit.ViewModels
             switch (_selectedIndex)
             {
                 case 0:
-                    SelectedReport = _data.Year;
+                    SelectedReport = _data.All;
                     break;
                 case 1:
                     SelectedReport = _data.Month;
