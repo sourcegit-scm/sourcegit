@@ -56,7 +56,7 @@
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Быстрая перемотка вперёд к ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Поток Git - Завершение ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Слить ${0}$ в ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Вытащить ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Забрать ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Перетащить ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Выложить ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Переместить ${0}$ на ${1}$...</x:String>
@@ -92,7 +92,7 @@
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Локальное имя:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Имя хранилища. Необязательно.</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Родительский каталог:</x:String>
-  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Сетевой адрес хранилища:</x:String>
+  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Адрес хранилища:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">ЗАКРЫТЬ</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Редактор</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Выбрать из списка эту фиксацию</x:String>
@@ -142,7 +142,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Новое правило</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Проблема с регулярным выражением:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Имя правила:</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">Сетевой адрес результата:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">Адрес результата:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Пожалуйста, используйте $1, $2 для доступа к значениям групп регулярных выражений.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP-прокси</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP-прокси, используемый этим хранилищем</x:String>
@@ -258,7 +258,7 @@
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Ветка разработчика:</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Свойство:</x:String>
   <x:String x:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">Свойство префикса:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">ПОТОК - Finish Feature</x:String>
+  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">ПОТОК - Свойства завершения</x:String>
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">ПОТОК - Закончить исправление</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">ПОТОК - Завершить выпуск</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Цель:</x:String>
@@ -377,14 +377,14 @@
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Хранилища</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Вставить</x:String>
   <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Сейчас</x:String>
-  <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} минут спустя</x:String>
-  <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">{0} часов спустя</x:String>
+  <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} минут назад</x:String>
+  <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">{0} часов назад</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Вчера</x:String>
-  <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} дней спустя</x:String>
+  <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} дней назад</x:String>
   <x:String x:Key="Text.Period.LastMonth" xml:space="preserve">Последний месяц</x:String>
-  <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} месяцев спустя</x:String>
-  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Последние годы</x:String>
-  <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} лет спустя</x:String>
+  <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} месяцев назад</x:String>
+  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">В пролому году</x:String>
+  <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} лет назад</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">Параметры</x:String>
   <x:String x:Key="Text.Preference.AI" xml:space="preserve">ОТКРЫТЬ ВИ</x:String>
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Сервер</x:String>
@@ -416,7 +416,7 @@
   <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Каталог клонирования по-умолчанию</x:String>
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">Электроная почта пользователя</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Общая электроная почта пользователя git</x:String>
-  <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">путь установки</x:String>
+  <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Путь установки</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">Имя пользователя</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">общее имя пользователя git</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Версия Git</x:String>
@@ -472,9 +472,9 @@
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Редактировать внешнее хранилище</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Имя внешнего хранилища</x:String>
-  <x:String x:Key="Text.Remote.URL" xml:space="preserve">Сетевой адрес хранилища:</x:String>
-  <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">Сетевой адрес внешнего хранилища git</x:String>
-  <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Копировать сетевой адрес</x:String>
+  <x:String x:Key="Text.Remote.URL" xml:space="preserve">Адрес хранилища:</x:String>
+  <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">Адрес внешнего хранилища git</x:String>
+  <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Копировать адрес</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Удалить...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Редактировать...</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Извлечь</x:String>
@@ -524,7 +524,7 @@
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">РАБОЧИЕ ДЕРЕВЬЯ</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ДОБАВИТЬ РАБОЧЕЕ ДЕРЕВО</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">ОБРЕЗКА</x:String>
-  <x:String x:Key="Text.RepositoryURL" xml:space="preserve">Сетевой адрес хранилища Git</x:String>
+  <x:String x:Key="Text.RepositoryURL" xml:space="preserve">Адрес хранилища Git</x:String>
   <x:String x:Key="Text.Reset" xml:space="preserve">Сбросить текущую втеку до версии</x:String>
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Режим сброса:</x:String>
   <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">Переместить в:</x:String>
@@ -592,7 +592,7 @@
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Инициализировать по необходимости</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Рекурсивно</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Подмодуль:</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Используйте опцию --remote</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Использовать опцию --remote</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Предупреждение</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">Приветствие</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Создать группу</x:String>
