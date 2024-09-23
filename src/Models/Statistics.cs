@@ -103,6 +103,7 @@ namespace SourceGit.Models
                 {
                     Values = samples,
                     Stroke = new SolidColorPaint(SKColors.Green) { StrokeThickness = 1 },
+                    Fill = new SolidColorPaint(SKColors.SkyBlue.WithAlpha(90)),
                     GeometrySize = 8,
                     GeometryStroke = new SolidColorPaint(SKColors.Green) { StrokeThickness = 2 }
                 }
