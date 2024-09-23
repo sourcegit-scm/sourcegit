@@ -451,7 +451,7 @@ namespace SourceGit.Views
                 return;
 
             // Calculate drawing area.
-            double width = Bounds.Width - 156 - 96 - histories.AuthorNameColumnWidth.Value;
+            double width = Bounds.Width - 273 - histories.AuthorNameColumnWidth.Value;
             double height = Bounds.Height;
             double startY = list.Scroll?.Offset.Y ?? 0;
             double endY = startY + height + 28;

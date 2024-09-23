@@ -17,94 +17,92 @@ using TextMateSharp.Themes;
 
 namespace SourceGit.Models
 {
-    public class RegistryOptionsWrapper : IRegistryOptions
+    public static class GrammarUtility
     {
-        public RegistryOptionsWrapper(ThemeName defaultTheme)
+        private static readonly ExtraGrammar[] s_extraGrammars =
+        [
+            new ExtraGrammar("source.toml", ".toml", "toml.json"),
+            new ExtraGrammar("source.kotlin", ".kotlin", "kotlin.json"),
+            new ExtraGrammar("source.hx", ".hx", "haxe.json"),
+            new ExtraGrammar("source.hxml", ".hxml", "hxml.json"),
+        ];
+
+        public static string GetScope(string file, RegistryOptions reg)
         {
-            _backend = new RegistryOptions(defaultTheme);
-            _extraGrammars = new List<IRawGrammar>();
-
-            string[] extraGrammarFiles = ["toml.json"];
-            foreach (var file in extraGrammarFiles)
-            {
-                var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Grammars/{file}",
-                    UriKind.RelativeOrAbsolute));
-
-                try
-                {
-                    var grammar = GrammarReader.ReadGrammarSync(new StreamReader(asset));
-                    _extraGrammars.Add(grammar);
-                }
-                catch
-                {
-                    // ignore
-                }
-            }
-        }
-
-        public IRawTheme GetTheme(string scopeName)
-        {
-            return _backend.GetTheme(scopeName);
-        }
-
-        public IRawGrammar GetGrammar(string scopeName)
-        {
-            var grammar = _extraGrammars.Find(x => x.GetScopeName().Equals(scopeName, StringComparison.Ordinal));
-            return grammar ?? _backend.GetGrammar(scopeName);
-        }
-
-        public ICollection<string> GetInjections(string scopeName)
-        {
-            return _backend.GetInjections(scopeName);
-        }
-
-        public IRawTheme GetDefaultTheme()
-        {
-            return _backend.GetDefaultTheme();
-        }
-
-        public IRawTheme LoadTheme(ThemeName name)
-        {
-            return _backend.LoadTheme(name);
-        }
-
-        public string GetScopeByFileName(string filename)
-        {
-            var extension = Path.GetExtension(filename);
-            var grammar = _extraGrammars.Find(x => x.GetScopeName().EndsWith(extension, StringComparison.OrdinalIgnoreCase));
-            if (grammar != null)
-                return grammar.GetScopeName();
-
+            var extension = Path.GetExtension(file);
             if (extension == ".h")
                 extension = ".cpp";
             else if (extension == ".resx" || extension == ".plist" || extension == ".manifest")
                 extension = ".xml";
             else if (extension == ".command")
                 extension = ".sh";
+            else if (extension == ".kt" || extension == ".kts")
+                extension = ".kotlin";
+            
+            foreach (var grammar in s_extraGrammars)
+            {
+                if (grammar.Extension.Equals(extension, StringComparison.OrdinalIgnoreCase))
+                    return grammar.Scope;
+            }
 
-            return _backend.GetScopeByExtension(extension);
+            return reg.GetScopeByExtension(extension);
         }
 
-        private readonly RegistryOptions _backend;
-        private readonly List<IRawGrammar> _extraGrammars;
+        public static IRawGrammar GetGrammar(string scopeName, RegistryOptions reg)
+        {
+            foreach (var grammar in s_extraGrammars)
+            {
+                if (grammar.Scope.Equals(scopeName, StringComparison.OrdinalIgnoreCase))
+                {
+                    var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Grammars/{grammar.File}",
+                        UriKind.RelativeOrAbsolute));
+
+                    try
+                    {
+                        return GrammarReader.ReadGrammarSync(new StreamReader(asset));
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return reg.GetGrammar(scopeName);
+        }
+
+        private record ExtraGrammar(string Scope, string Extension, string File)
+        {
+            public readonly string Scope = Scope;
+            public readonly string Extension = Extension;
+            public readonly string File = File;
+        }
+    }
+
+    public class RegistryOptionsWrapper(ThemeName defaultTheme) : IRegistryOptions
+    {
+        public IRawTheme GetTheme(string scopeName) => _backend.GetTheme(scopeName);
+        public IRawTheme GetDefaultTheme() => _backend.GetDefaultTheme();
+        public IRawTheme LoadTheme(ThemeName name) => _backend.LoadTheme(name);
+        public ICollection<string> GetInjections(string scopeName) => _backend.GetInjections(scopeName);
+        public IRawGrammar GetGrammar(string scopeName) => GrammarUtility.GetGrammar(scopeName, _backend);
+        public string GetScope(string filename) => GrammarUtility.GetScope(filename, _backend);
+        
+        private readonly RegistryOptions _backend = new(defaultTheme);
     }
 
     public static class TextMateHelper
     {
         public static TextMate.Installation CreateForEditor(TextEditor editor)
         {
-            if (Application.Current?.ActualThemeVariant == ThemeVariant.Dark)
-                return editor.InstallTextMate(new RegistryOptionsWrapper(ThemeName.DarkPlus));
-
-            return editor.InstallTextMate(new RegistryOptionsWrapper(ThemeName.LightPlus));
+            return editor.InstallTextMate(Application.Current?.ActualThemeVariant == ThemeVariant.Dark ? 
+                new RegistryOptionsWrapper(ThemeName.DarkPlus) : 
+                new RegistryOptionsWrapper(ThemeName.LightPlus));
         }
 
         public static void SetThemeByApp(TextMate.Installation installation)
         {
-            if (installation == null)
-                return;
-
-            if (installation.RegistryOptions is RegistryOptionsWrapper reg)
+            if (installation is { RegistryOptions: RegistryOptionsWrapper reg })
             {
                 var isDark = Application.Current?.ActualThemeVariant == ThemeVariant.Dark;
                 installation.SetTheme(reg.LoadTheme(isDark ? ThemeName.DarkPlus : ThemeName.LightPlus));
@@ -115,7 +113,7 @@ namespace SourceGit.Models
         {
             if (installation is { RegistryOptions: RegistryOptionsWrapper reg })
             {
-                installation.SetGrammar(reg.GetScopeByFileName(filePath));
+                installation.SetGrammar(reg.GetScope(filePath));
                 GC.Collect();
             }
         }

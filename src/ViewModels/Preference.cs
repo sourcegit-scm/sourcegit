@@ -18,32 +18,13 @@ namespace SourceGit.ViewModels
                 if (_instance == null)
                 {
                     _isLoading = true;
-
-                    var path = Path.Combine(Native.OS.DataDir, "preference.json");
-                    if (!File.Exists(path))
-                    {
-                        _instance = new Preference();
-                    }
-                    else
-                    {
-                        try
-                        {
-                            _instance = JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preference);
-                        }
-                        catch
-                        {
-                            _instance = new Preference();
-                        }
-                    }
+                    _instance = Load();
                     _isLoading = false;
                 }
 
-                if (!_instance.IsGitConfigured())
-                    _instance.GitInstallPath = Native.OS.FindGitExecutable();
-
-                if (_instance.Workspaces.Count == 0)
-                    _instance.Workspaces.Add(new Workspace() { Name = "Default", Color = 4278221015 });
-
+                _instance.PrepareGit();
+                _instance.PrepareShellOrTerminal();
+                _instance.PrepareWorkspaces();
                 return _instance;
             }
         }
@@ -498,6 +479,63 @@ namespace SourceGit.ViewModels
             File.WriteAllText(file, data);
         }
 
+        private static Preference Load()
+        {
+            var path = Path.Combine(Native.OS.DataDir, "preference.json");
+            if (!File.Exists(path))
+                return new Preference();
+
+            try
+            {
+                return JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preference);
+            }
+            catch
+            {
+                return new Preference();
+            }
+        }
+
+        private void PrepareGit()
+        {
+            var path = Native.OS.GitExecutable;
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+                GitInstallPath = Native.OS.FindGitExecutable();
+        }
+
+        private void PrepareShellOrTerminal()
+        {
+            if (_shellOrTerminal >= 0)
+                return;
+
+            for (int i = 0; i < Models.ShellOrTerminal.Supported.Count; i++)
+            {
+                var shell = Models.ShellOrTerminal.Supported[i];
+                if (Native.OS.TestShellOrTerminal(shell))
+                {
+                    ShellOrTerminal = i;
+                    break;
+                }
+            }
+        }
+
+        private void PrepareWorkspaces()
+        {
+            if (Workspaces.Count == 0)
+            {
+                Workspaces.Add(new Workspace() { Name = "Default" });
+                return;
+            }
+
+            foreach (var workspace in Workspaces)
+            {
+                if (!workspace.RestoreOnStartup)
+                {
+                    workspace.Repositories.Clear();
+                    workspace.ActiveIdx = 0;
+                }
+            }
+        }
+
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
         {
             foreach (var node in collection)
@@ -536,7 +574,7 @@ namespace SourceGit.ViewModels
                 return true;
             }
 
-            foreach (RepositoryNode one in collection)
+            foreach (var one in collection)
             {
                 if (RemoveNodeRecursive(node, one.SubNodes))
                     return true;

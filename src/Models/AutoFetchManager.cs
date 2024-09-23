@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace SourceGit.Models
 
         public class Job
         {
+            public string IndexLockFile = string.Empty;
             public Commands.Fetch Cmd = null;
             public DateTime NextRunTimepoint = DateTime.MinValue;
         }
@@ -75,8 +77,11 @@ namespace SourceGit.Models
 
                     foreach (var job in uptodate)
                     {
-                        job.Cmd.Exec();
-                        job.NextRunTimepoint = DateTime.Now.AddMinutes(Convert.ToDouble(Interval));
+                        if (!File.Exists(job.IndexLockFile))
+                        {
+                            job.Cmd.Exec();
+                            job.NextRunTimepoint = DateTime.Now.AddMinutes(Convert.ToDouble(Interval));
+                        }
                     }
 
                     Thread.Sleep(2000);
@@ -86,10 +91,11 @@ namespace SourceGit.Models
             });
         }
 
-        public void AddRepository(string repo)
+        public void AddRepository(string repo, string gitDir)
         {
             var job = new Job
             {
+                IndexLockFile = Path.Combine(gitDir, "index.lock"),
                 Cmd = new Commands.Fetch(repo, "--all", true, false, null) { RaiseError = false },
                 NextRunTimepoint = DateTime.Now.AddMinutes(Convert.ToDouble(Interval)),
             };

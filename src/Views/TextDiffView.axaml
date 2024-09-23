@@ -45,7 +45,7 @@
                                            IndicatorForeground="{DynamicResource Brush.FG2}"
                                            FontFamily="{DynamicResource Fonts.Monospace}"
                                            UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                           WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
+                                           WordWrap="False"
                                            ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
                                            EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
                                            SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
@@ -65,7 +65,7 @@
                                            IndicatorForeground="{DynamicResource Brush.FG2}"
                                            FontFamily="{DynamicResource Fonts.Monospace}"
                                            UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                           WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
+                                           WordWrap="False"
                                            ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
                                            EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
                                            SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>

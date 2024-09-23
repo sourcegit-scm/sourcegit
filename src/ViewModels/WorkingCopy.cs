@@ -780,13 +780,9 @@ namespace SourceGit.ViewModels
                 foreach (var change in _selectedUnstaged)
                 {
                     if (change.IsConflit)
-                    {
                         hasConflicts = true;
-                    }
                     else
-                    {
                         hasNoneConflicts = true;
-                    }
                 }
 
                 if (hasConflicts)
@@ -1160,7 +1156,7 @@ namespace SourceGit.ViewModels
                     item.Icon = App.CreateMenuIcon("Icons.Code");
                     item.Click += (_, e) =>
                     {
-                        CommitMessage = template.Content;
+                        CommitMessage = template.Apply(_staged);
                         e.Handled = true;
                     };
                     menu.Items.Add(item);

@@ -7,7 +7,7 @@ Opensource Git GUI client.
 * Supports Windows/macOS/Linux
 * Opensource/Free
 * Fast
-* English/Français/Deutsch/Português/简体中文/繁體中文
+* English/Français/Deutsch/Português/Русский/简体中文/繁體中文
 * Built-in light/dark themes
 * Customize theme
 * Visual commit graph
@@ -97,7 +97,7 @@ For `OpenAI`:
 
 For other AI service:
 
-* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1/chat/completions`
+* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1/chat/completions`. For example, when using `Ollama`, it should be `http://localhost:11434/v1/chat/completions` instead of `http://localhost:11434/api/generate`
 * The `API Key` is optional that depends on the service
 
 ## External Tools
@@ -111,6 +111,7 @@ This app supports open repository in external tools listed in the table below.
 | VSCodium                      | YES     | YES   | YES   | VSCODIUM                       |
 | JetBrains Fleet               | YES     | YES   | YES   | FLEET                          |
 | Sublime Text                  | YES     | YES   | YES   | SUBLIME_TEXT                   |
+| Zed                           | NO      | YES   | YES   | ZED                            |
 
 > [!NOTE]
 > This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.

@@ -15,6 +15,7 @@
       <ResourceInclude x:Key="en_US" Source="/Resources/Locales/en_US.axaml"/>
       <ResourceInclude x:Key="fr_FR" Source="/Resources/Locales/fr_FR.axaml"/>
       <ResourceInclude x:Key="pt_BR" Source="/Resources/Locales/pt_BR.axaml"/>
+      <ResourceInclude x:Key="ru_RU" Source="/Resources/Locales/ru_RU.axaml"/>
       <ResourceInclude x:Key="zh_CN" Source="/Resources/Locales/zh_CN.axaml"/>
       <ResourceInclude x:Key="zh_TW" Source="/Resources/Locales/zh_TW.axaml"/>
     </ResourceDictionary>
