@@ -6,21 +6,35 @@ namespace SourceGit.Commands
     {
         public Statistics(string repo)
         {
-            _statistics = new Models.Statistics();
-
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --branches --remotes --since=\"{_statistics.Since()}\" --pretty=format:\"%ct$%an\"";
+            Args = $"log --date-order --branches --remotes -20000 --pretty=format:\"%ct$%aN\"";
         }
 
         public Models.Statistics Result()
         {
-            Exec();
-            _statistics.Complete();
-            return _statistics;
+            var statistics = new Models.Statistics();
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return statistics;
+
+            var start = 0;
+            var end = rs.StdOut.IndexOf('\n', start);
+            while (end > 0)
+            {
+                ParseLine(statistics, rs.StdOut.Substring(start, end - start));
+                start = end + 1;
+                end = rs.StdOut.IndexOf('\n', start);
+            }
+
+            if (start < rs.StdOut.Length)
+                ParseLine(statistics, rs.StdOut.Substring(start));
+
+            statistics.Complete();
+            return statistics;
         }
 
-        protected override void OnReadline(string line)
+        private void ParseLine(Models.Statistics statistics, string line)
         {
             var dateEndIdx = line.IndexOf('$', StringComparison.Ordinal);
             if (dateEndIdx == -1)
@@ -28,9 +42,7 @@ namespace SourceGit.Commands
 
             var dateStr = line.Substring(0, dateEndIdx);
             if (double.TryParse(dateStr, out var date))
-                _statistics.AddCommit(line.Substring(dateEndIdx + 1), date);
+                statistics.AddCommit(line.Substring(dateEndIdx + 1), date);
         }
-
-        private readonly Models.Statistics _statistics = null;
     }
 }
