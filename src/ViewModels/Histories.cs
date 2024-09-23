@@ -113,11 +113,19 @@ namespace SourceGit.ViewModels
         public void NavigateTo(string commitSHA)
         {
             var commit = _commits.Find(x => x.SHA.StartsWith(commitSHA, StringComparison.Ordinal));
-            if (commit != null)
+            if (commit == null)
+            {
+                AutoSelectedCommit = null;
+                commit = new Commands.QuerySingleCommit(_repo.FullPath, commitSHA).Result();
+            }
+            else
             {
                 AutoSelectedCommit = commit;
                 NavigationId = _navigationId + 1;
+            }
 
+            if (commit != null)
+            {
                 if (_detailContext is CommitDetail detail)
                 {
                     detail.Commit = commit;
@@ -128,6 +136,10 @@ namespace SourceGit.ViewModels
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }
+            }
+            else
+            {
+                DetailContext = null;
             }
         }
 

@@ -26,23 +26,11 @@ namespace SourceGit.Native
             internal string szCSDVersion;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct MARGINS
-        {
-            public int cxLeftWidth;
-            public int cxRightWidth;
-            public int cyTopHeight;
-            public int cyBottomHeight;
-        }
-
-        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
-        private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
-
         [DllImport("ntdll")]
         private static extern int RtlGetVersion(ref RTL_OSVERSIONINFOEX lpVersionInformation);
 
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
+        private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern IntPtr ILCreateFromPathW(string pszPath);
@@ -60,8 +48,8 @@ namespace SourceGit.Native
             v.dwOSVersionInfoSize = (uint)Marshal.SizeOf<RTL_OSVERSIONINFOEX>();
             if (RtlGetVersion(ref v) == 0 && (v.dwMajorVersion < 10 || v.dwBuildNumber < 22000))
             {
-                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => ExtendWindowFrame(w));
-                Control.LoadedEvent.AddClassHandler<Window>((w, _) => ExtendWindowFrame(w));
+                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
+                Control.LoadedEvent.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
             }
         }
 
@@ -158,15 +146,20 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir)
         {
-            if (string.IsNullOrEmpty(OS.ShellOrTerminal) || !File.Exists(OS.ShellOrTerminal))
+            if (!File.Exists(OS.ShellOrTerminal))
             {
-                App.RaiseException(workdir, $"Can not found terminal! Please confirm that the correct shell/terminal has been configured.");
+                App.RaiseException(workdir, $"Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
                 return;
             }
 
             var startInfo = new ProcessStartInfo();
             startInfo.WorkingDirectory = workdir;
             startInfo.FileName = OS.ShellOrTerminal;
+
+            // Directly launching `Windows Terminal` need to specify the `-d` parameter
+            if (OS.ShellOrTerminal.EndsWith("wt.exe", StringComparison.OrdinalIgnoreCase))
+                startInfo.Arguments = $"-d \"{workdir}\"";
+
             Process.Start(startInfo);
         }
 
@@ -206,14 +199,12 @@ namespace SourceGit.Native
             Process.Start(start);
         }
 
-        private void ExtendWindowFrame(Window w)
+        private void FixWindowFrameOnWin10(Window w)
         {
-            var platformHandle = w.TryGetPlatformHandle();
-            if (platformHandle == null)
-                return;
-
-            var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
-            DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
+            if (w.WindowState == WindowState.Maximized || w.WindowState == WindowState.FullScreen)
+                w.SystemDecorations = SystemDecorations.Full;
+            else if (w.WindowState == WindowState.Normal)
+                w.SystemDecorations = SystemDecorations.BorderOnly;
         }
 
         #region EXTERNAL_EDITOR_FINDER

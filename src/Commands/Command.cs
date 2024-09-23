@@ -59,9 +59,14 @@ namespace SourceGit.Commands
 
             // If an SSH private key was provided, sets the environment.
             if (!string.IsNullOrEmpty(SSHKey))
+            {
                 start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new -i '{SSHKey}'");
+            }
             else
+            {
+                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new");
                 start.Arguments += "-c credential.helper=manager ";
+            }
 
             // Force using en_US.UTF-8 locale to avoid GCM crash
             if (OperatingSystem.IsLinux())

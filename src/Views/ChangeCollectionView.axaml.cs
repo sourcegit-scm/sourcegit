@@ -33,7 +33,16 @@ namespace SourceGit.Views
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (e.Key != Key.Space)
+            if (SelectedItems is [ViewModels.ChangeTreeNode { IsFolder: true } node] && e.KeyModifiers == KeyModifiers.None)
+            {
+                if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
+                {
+                    this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
+                    e.Handled = true;
+                }
+            }
+            
+            if (!e.Handled && e.Key != Key.Space)
                 base.OnKeyDown(e);
         }
     }
@@ -157,13 +166,11 @@ namespace SourceGit.Views
                         {
                             if (lastUnselected == -1)
                                 continue;
-                            else
-                                break;
+                            
+                            break;
                         }
-                        else
-                        {
-                            lastUnselected = i;
-                        }
+                        
+                        lastUnselected = i;
                     }
                 }
 
@@ -179,13 +186,11 @@ namespace SourceGit.Views
                     {
                         if (lastUnselected == -1)
                             continue;
-                        else
-                            break;
+                        
+                        break;
                     }
-                    else
-                    {
-                        lastUnselected = i;
-                    }
+                    
+                    lastUnselected = i;
                 }
 
                 if (lastUnselected != -1)
@@ -239,9 +244,9 @@ namespace SourceGit.Views
             _disableSelectionChangingEvent = true;
 
             var selected = new List<Models.Change>();
-            if (sender is ListBox list)
+            if (sender is ListBox { SelectedItems: {} selectedItems })
             {
-                foreach (var item in list.SelectedItems)
+                foreach (var item in selectedItems)
                 {
                     if (item is Models.Change c)
                         selected.Add(c);

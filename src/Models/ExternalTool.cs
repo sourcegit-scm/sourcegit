@@ -149,6 +149,11 @@ namespace SourceGit.Models
             TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT", platformFinder);
         }
 
+        public void Zed(Func<string> platformFinder)
+        {
+            TryAdd("Zed", "zed", "\"{0}\"", "ZED", platformFinder);
+        }
+
         public void FindJetBrainsFromToolbox(Func<string> platformFinder)
         {
             var exclude = new List<string> { "fleet", "dotmemory", "dottrace", "resharper-u", "androidstudio" };

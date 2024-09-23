@@ -148,7 +148,7 @@ namespace SourceGit.Views
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            return new Size(256, 256);
+            return new Size(256, 240);
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)

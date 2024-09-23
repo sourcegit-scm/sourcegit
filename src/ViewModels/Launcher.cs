@@ -81,7 +81,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                ActiveWorkspace = new Workspace() { Name = "Unnamed", Color = 4278221015 };
+                ActiveWorkspace = new Workspace() { Name = "Unnamed" };
 
                 foreach (var w in pref.Workspaces)
                     w.IsActive = false;
@@ -271,7 +271,7 @@ namespace SourceGit.ViewModels
 
             repo.Open();
             ActiveWorkspace.AddRepository(repo.FullPath);
-            Models.AutoFetchManager.Instance.AddRepository(repo.FullPath);
+            Models.AutoFetchManager.Instance.AddRepository(repo.FullPath, repo.GitDir);
 
             if (page == null)
             {

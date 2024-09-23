@@ -120,7 +120,7 @@ namespace SourceGit.ViewModels
             private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, Dictionary<string, BranchTreeNode> folders, string prefix, bool isFiltered, bool bForceExpanded)
             {
                 var sepIdx = branch.Name.IndexOf('/', StringComparison.Ordinal);
-                if (sepIdx == -1)
+                if (sepIdx == -1 || branch.IsDetachedHead)
                 {
                     roots.Add(new BranchTreeNode()
                     {
