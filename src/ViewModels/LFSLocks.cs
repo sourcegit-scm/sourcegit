@@ -45,7 +45,13 @@ namespace SourceGit.ViewModels
         {
             get
             {
-                return ShowOnlyMyLocks ? Locks.Where(@lock => @lock.User == "Mat") : Locks;
+                if (string.IsNullOrEmpty(_userName))
+                {
+                    //todo: add an error popup
+                    return Locks;
+                }
+
+                return ShowOnlyMyLocks ? Locks.Where(@lock => @lock.User == _userName) : Locks;
             }
         }
 
@@ -54,6 +60,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _remote = remote;
             Locks = new AvaloniaList<Models.LFSLock>();
+            new Commands.Config(repo).ListAll().TryGetValue("user.name", out _userName);
 
             Task.Run(() =>
             {
@@ -94,5 +101,6 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private bool _isEmpty = false;
         private bool _showOnlyMyLocks = false;
+        private string _userName;
     }
 }
