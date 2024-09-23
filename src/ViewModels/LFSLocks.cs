@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -41,7 +40,7 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public IEnumerable<Models.LFSLock> FilteredLocks
+        public AvaloniaList<Models.LFSLock> FilteredLocks
         {
             get
             {
@@ -51,7 +50,9 @@ namespace SourceGit.ViewModels
                     return Locks;
                 }
 
-                return ShowOnlyMyLocks ? Locks.Where(@lock => @lock.User == _userName) : Locks;
+                return _showOnlyMyLocks ?
+                    new AvaloniaList<Models.LFSLock>(Locks.Where(@lock => @lock.User == _userName)) :
+                    Locks;
             }
         }
 
