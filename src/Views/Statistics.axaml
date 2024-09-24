@@ -11,7 +11,7 @@
                     x:DataType="vm:Statistics"
                     x:Name="ThisControl"
                     Title="{DynamicResource Text.Statistics}"
-                    Width="860" Height="500"
+                    Width="800" Height="500"
                     WindowStartupLocation="CenterOwner"
                     CanResize="False">
   <Grid RowDefinitions="Auto,Auto,*">
@@ -63,7 +63,7 @@
 
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
-          <Setter Property="Width" Value="110"/>
+          <Setter Property="Width" Value="100"/>
           <Setter Property="Height" Value="28"/>
           <Setter Property="Padding" Value="0"/>
           <Setter Property="Background" Value="Transparent"/>
@@ -82,7 +82,6 @@
           <Setter Property="CornerRadius" Value="11"/>
           <Setter Property="Background" Value="Transparent"/>
           <Setter Property="VerticalAlignment" Value="Center"/>
-          <Setter Property="Padding" Value="16,0"/>
         </Style>
 
         <Style Selector="ListBoxItem:selected Border.switcher_bg">

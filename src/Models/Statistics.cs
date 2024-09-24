@@ -46,7 +46,7 @@ namespace SourceGit.Models
             YAxes = [new Axis() {
                 TextSize = 10,
                 MinLimit = 0,
-                SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray) { StrokeThickness = .6f }
+                SeparatorsPaint = new SolidColorPaint(new SKColor(0x40808080)) { StrokeThickness = 1 }
             }];
             
             if (mode == StaticsticsMode.ThisWeek)
