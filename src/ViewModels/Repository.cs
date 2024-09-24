@@ -855,14 +855,6 @@ namespace SourceGit.ViewModels
             {
                 inProgress = new MergeInProgress(_fullpath);
             }
-            else
-            {
-                if (Directory.Exists(rebaseMergeFolder))
-                    Directory.Delete(rebaseMergeFolder, true);
-
-                if (Directory.Exists(rebaseApplyFolder))
-                    Directory.Delete(rebaseApplyFolder, true);
-            }
 
             Dispatcher.UIThread.Invoke(() =>
             {
