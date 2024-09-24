@@ -521,7 +521,7 @@ namespace SourceGit
                 return false;
 
             var args = desktop.Args;
-            if (args.Length > 0)
+            if (args?.Length > 0)
             {
                 desktop.MainWindow = new Views.Askpass(args[0]);
                 return true;
