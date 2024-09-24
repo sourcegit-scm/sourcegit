@@ -105,7 +105,8 @@ namespace SourceGit.Models
                     Stroke = new SolidColorPaint(SKColors.Green) { StrokeThickness = 1 },
                     Fill = new SolidColorPaint(SKColors.SkyBlue.WithAlpha(90)),
                     GeometrySize = 8,
-                    GeometryStroke = new SolidColorPaint(SKColors.Green) { StrokeThickness = 2 }
+                    GeometryStroke = new SolidColorPaint(SKColors.Green) { StrokeThickness = 2 },
+                    LineSmoothness = 0,
                 }
             );
 
