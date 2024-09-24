@@ -123,11 +123,26 @@
       </ListBoxItem>
     </ListBox>
 
+    <!-- Color Picker -->
+    <Border Grid.Row="1" HorizontalAlignment="Right">
+      <Button Background="Transparent" BorderThickness="0" Width="28" Height="28" Margin="0,0,24,0" VerticalAlignment="Center">
+        <Button.Flyout>
+          <Flyout>
+            <Border Padding="8">
+              <v:ColorPicker Value="{Binding SampleColor, Mode=TwoWay}"/>
+            </Border>
+          </Flyout>
+        </Button.Flyout>
+
+        <Path Width="14" Height="14" Data="{StaticResource Icons.ColorPicker}" Fill="{Binding SampleBrush}"/>
+      </Button>
+    </Border>
+
     <!-- Contents -->
-    <ContentControl Grid.Row="2" Content="{Binding SelectedReport, Mode=OneWay}">
+    <ContentControl Grid.Row="2" Content="{Binding SelectedReport, Mode=OneWay}" Margin="8,8,8,16">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="m:StatisticsReport">
-          <Grid ColumnDefinitions="256,*" Margin="8,8,8,16">
+          <Grid ColumnDefinitions="256,*">
             <Grid Grid.Column="0" RowDefinitions="*,16">
               <!-- Table By Committer -->
               <ListBox Grid.Column="0"
@@ -185,25 +200,12 @@
             </Grid>
 
             <!-- Graph -->
-            <Grid Grid.Column="1" RowDefinitions="28,*" Margin="16,0">
-              <Button Grid.Row="0" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center">
-                <Button.Flyout>
-                  <Flyout>
-                    <Border Padding="8">
-                      <v:ColorPicker Value="{Binding #ThisControl.SampleFillColor, Mode=TwoWay}"/>
-                    </Border>
-                  </Flyout>
-                </Button.Flyout>
-                
-                <Path Width="20" Height="20" Data="{StaticResource Icons.ColorPicker}" Fill="{Binding #ThisControl.SampleFillBrush}"/>
-              </Button>
-              
-              <lvc:CartesianChart Grid.Row="1"
-                                  Series="{Binding Series}"
-                                  XAxes="{Binding XAxes}" YAxes="{Binding YAxes}"
-                                  ZoomMode="X"
-                                  DataContextChanged="OnReportChanged"/>
-            </Grid>
+            <lvc:CartesianChart Grid.Column="1"
+                                Margin="0"
+                                Padding="0"
+                                Series="{Binding Series}"
+                                XAxes="{Binding XAxes}" YAxes="{Binding YAxes}"
+                                ZoomMode="X"/>
           </Grid>
         </DataTemplate>
       </ContentControl.DataTemplates>
