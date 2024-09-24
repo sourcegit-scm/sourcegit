@@ -185,7 +185,25 @@
             </Grid>
 
             <!-- Graph -->
-            <lvc:CartesianChart Grid.Column="1" Margin="16" Series="{Binding Series}" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" ZoomMode="X"/>
+            <Grid Grid.Column="1" RowDefinitions="28,*" Margin="16,0">
+              <Button Grid.Row="0" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center">
+                <Button.Flyout>
+                  <Flyout>
+                    <Border Padding="8">
+                      <v:ColorPicker Value="{Binding #ThisControl.SampleFillColor, Mode=TwoWay}"/>
+                    </Border>
+                  </Flyout>
+                </Button.Flyout>
+                
+                <Path Width="20" Height="20" Data="{StaticResource Icons.ColorPicker}" Fill="{Binding #ThisControl.SampleFillBrush}"/>
+              </Button>
+              
+              <lvc:CartesianChart Grid.Row="1"
+                                  Series="{Binding Series}"
+                                  XAxes="{Binding XAxes}" YAxes="{Binding YAxes}"
+                                  ZoomMode="X"
+                                  DataContextChanged="OnReportChanged"/>
+            </Grid>
           </Grid>
         </DataTemplate>
       </ContentControl.DataTemplates>

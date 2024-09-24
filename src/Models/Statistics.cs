@@ -103,7 +103,7 @@ namespace SourceGit.Models
                 {
                     Values = samples,
                     Stroke = null,
-                    Fill = new SolidColorPaint(SKColors.Green),
+                    Fill = null,
                     Padding = 1,
                 }
             );
@@ -115,6 +115,12 @@ namespace SourceGit.Models
 
             _mapUsers.Clear();
             _mapSamples.Clear();
+        }
+
+        public void ChangeColor(uint color)
+        {
+            if (Series is [ColumnSeries<DateTimePoint> series])
+                series.Fill = new SolidColorPaint(new SKColor(color));
         }
 
         private StaticsticsMode _mode = StaticsticsMode.All;

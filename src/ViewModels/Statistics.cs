@@ -47,18 +47,12 @@ namespace SourceGit.ViewModels
             if (_data == null)
                 return;
 
-            switch (_selectedIndex)
+            SelectedReport = _selectedIndex switch
             {
-                case 0:
-                    SelectedReport = _data.All;
-                    break;
-                case 1:
-                    SelectedReport = _data.Month;
-                    break;
-                default:
-                    SelectedReport = _data.Week;
-                    break;
-            }
+                0 => _data.All,
+                1 => _data.Month,
+                _ => _data.Week,
+            };
         }
 
         private bool _isLoading = true;
