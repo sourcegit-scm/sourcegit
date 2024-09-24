@@ -8,7 +8,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --branches --remotes -20000 --pretty=format:\"%ct$%aN\"";
+            Args = $"log --date-order --branches --remotes -40000 --pretty=format:\"%ct$%aN\"";
         }
 
         public Models.Statistics Result()

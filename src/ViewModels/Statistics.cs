@@ -1,5 +1,8 @@
 ﻿using System.Threading.Tasks;
+
+using Avalonia.Media;
 using Avalonia.Threading;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -28,6 +31,25 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _selectedReport, value);
         }
 
+        public uint SampleColor
+        {
+            get => Preference.Instance.StatisticsSampleColor;
+            set
+            {
+                if (value != Preference.Instance.StatisticsSampleColor)
+                {
+                    Preference.Instance.StatisticsSampleColor = value;
+                    OnPropertyChanged(nameof(SampleBrush));
+                    _selectedReport?.ChangeColor(value);
+                }
+            }
+        }
+
+        public IBrush SampleBrush
+        {
+            get => new SolidColorBrush(SampleColor);
+        }
+
         public Statistics(string repo)
         {
             Task.Run(() =>
@@ -47,18 +69,15 @@ namespace SourceGit.ViewModels
             if (_data == null)
                 return;
 
-            switch (_selectedIndex)
+            var report = _selectedIndex switch
             {
-                case 0:
-                    SelectedReport = _data.All;
-                    break;
-                case 1:
-                    SelectedReport = _data.Month;
-                    break;
-                default:
-                    SelectedReport = _data.Week;
-                    break;
-            }
+                0 => _data.All,
+                1 => _data.Month,
+                _ => _data.Week,
+            };
+
+            report.ChangeColor(SampleColor);
+            SelectedReport = report;
         }
 
         private bool _isLoading = true;

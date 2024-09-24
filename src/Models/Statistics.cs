@@ -46,7 +46,7 @@ namespace SourceGit.Models
             YAxes = [new Axis() {
                 TextSize = 10,
                 MinLimit = 0,
-                SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray) { StrokeThickness = .6f }
+                SeparatorsPaint = new SolidColorPaint(new SKColor(0x40808080)) { StrokeThickness = 1 }
             }];
             
             if (mode == StaticsticsMode.ThisWeek)
@@ -67,7 +67,7 @@ namespace SourceGit.Models
             }
             else
             {
-                XAxes.Add(new DateTimeAxis(TimeSpan.FromDays(365), v => $"{v:yyyy/MM}") { TextSize = 10 });
+                XAxes.Add(new DateTimeAxis(TimeSpan.FromDays(30), v => $"{v:yyyy/MM}") { TextSize = 10 });
             }
         }
 
@@ -99,13 +99,12 @@ namespace SourceGit.Models
                 samples.Add(new DateTimePoint(kv.Key, kv.Value));
 
             Series.Add(
-                new LineSeries<DateTimePoint>()
+                new ColumnSeries<DateTimePoint>()
                 {
                     Values = samples,
-                    Stroke = new SolidColorPaint(SKColors.Green) { StrokeThickness = 1 },
-                    Fill = new SolidColorPaint(SKColors.SkyBlue.WithAlpha(90)),
-                    GeometrySize = 8,
-                    GeometryStroke = new SolidColorPaint(SKColors.Green) { StrokeThickness = 2 }
+                    Stroke = null,
+                    Fill = null,
+                    Padding = 1,
                 }
             );
 
@@ -116,6 +115,12 @@ namespace SourceGit.Models
 
             _mapUsers.Clear();
             _mapSamples.Clear();
+        }
+
+        public void ChangeColor(uint color)
+        {
+            if (Series is [ColumnSeries<DateTimePoint> series])
+                series.Fill = new SolidColorPaint(new SKColor(color));
         }
 
         private StaticsticsMode _mode = StaticsticsMode.All;

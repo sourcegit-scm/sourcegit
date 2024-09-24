@@ -337,6 +337,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public uint StatisticsSampleColor
+        {
+            get => _statisticsSampleColor;
+            set => SetProperty(ref _statisticsSampleColor, value);
+        }
+
         public List<RepositoryNode> RepositoryNodes
         {
             get;
@@ -621,5 +627,7 @@ namespace SourceGit.ViewModels
         private int _shellOrTerminal = -1;
         private int _externalMergeToolType = 0;
         private string _externalMergeToolPath = string.Empty;
+
+        private uint _statisticsSampleColor = 0xFF00FF00;
     }
 }

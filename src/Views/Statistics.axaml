@@ -11,7 +11,7 @@
                     x:DataType="vm:Statistics"
                     x:Name="ThisControl"
                     Title="{DynamicResource Text.Statistics}"
-                    Width="860" Height="500"
+                    Width="800" Height="500"
                     WindowStartupLocation="CenterOwner"
                     CanResize="False">
   <Grid RowDefinitions="Auto,Auto,*">
@@ -63,7 +63,7 @@
 
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
-          <Setter Property="Width" Value="110"/>
+          <Setter Property="Width" Value="100"/>
           <Setter Property="Height" Value="28"/>
           <Setter Property="Padding" Value="0"/>
           <Setter Property="Background" Value="Transparent"/>
@@ -82,7 +82,6 @@
           <Setter Property="CornerRadius" Value="11"/>
           <Setter Property="Background" Value="Transparent"/>
           <Setter Property="VerticalAlignment" Value="Center"/>
-          <Setter Property="Padding" Value="16,0"/>
         </Style>
 
         <Style Selector="ListBoxItem:selected Border.switcher_bg">
@@ -123,11 +122,26 @@
       </ListBoxItem>
     </ListBox>
 
+    <!-- Color Picker -->
+    <Border Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+      <Button Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" Width="28" Height="28" CornerRadius="14" Margin="0,0,24,0">
+        <Button.Flyout>
+          <Flyout>
+            <Border Padding="8">
+              <v:ColorPicker Value="{Binding SampleColor, Mode=TwoWay}"/>
+            </Border>
+          </Flyout>
+        </Button.Flyout>
+
+        <Path Width="14" Height="14" Data="{StaticResource Icons.ColorPicker}" Fill="{Binding SampleBrush}"/>
+      </Button>
+    </Border>
+
     <!-- Contents -->
-    <ContentControl Grid.Row="2" Content="{Binding SelectedReport, Mode=OneWay}">
+    <ContentControl Grid.Row="2" Content="{Binding SelectedReport, Mode=OneWay}" Margin="8,8,8,16">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="m:StatisticsReport">
-          <Grid ColumnDefinitions="256,*" Margin="8,8,8,16">
+          <Grid ColumnDefinitions="256,*">
             <Grid Grid.Column="0" RowDefinitions="*,16">
               <!-- Table By Committer -->
               <ListBox Grid.Column="0"
@@ -185,7 +199,12 @@
             </Grid>
 
             <!-- Graph -->
-            <lvc:CartesianChart Grid.Column="1" Margin="16" Series="{Binding Series}" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" ZoomMode="X"/>
+            <lvc:CartesianChart Grid.Column="1"
+                                Margin="0"
+                                Padding="0"
+                                Series="{Binding Series}"
+                                XAxes="{Binding XAxes}" YAxes="{Binding YAxes}"
+                                ZoomMode="X"/>
           </Grid>
         </DataTemplate>
       </ContentControl.DataTemplates>

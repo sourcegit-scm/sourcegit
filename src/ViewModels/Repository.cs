@@ -837,32 +837,14 @@ namespace SourceGit.ViewModels
             var hasUnsolvedConflict = _workingCopy.SetData(changes);
             var inProgress = null as InProgressContext;
 
-            var rebaseMergeFolder = Path.Combine(_gitDir, "rebase-merge");
-            var rebaseApplyFolder = Path.Combine(_gitDir, "rebase-apply");
             if (File.Exists(Path.Combine(_gitDir, "CHERRY_PICK_HEAD")))
-            {
                 inProgress = new CherryPickInProgress(_fullpath);
-            }
-            else if (File.Exists(Path.Combine(_gitDir, "REBASE_HEAD")) && Directory.Exists(rebaseMergeFolder))
-            {
+            else if (File.Exists(Path.Combine(_gitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_gitDir, "rebase-merge")))
                 inProgress = new RebaseInProgress(this);
-            }
             else if (File.Exists(Path.Combine(_gitDir, "REVERT_HEAD")))
-            {
                 inProgress = new RevertInProgress(_fullpath);
-            }
             else if (File.Exists(Path.Combine(_gitDir, "MERGE_HEAD")))
-            {
                 inProgress = new MergeInProgress(_fullpath);
-            }
-            else
-            {
-                if (Directory.Exists(rebaseMergeFolder))
-                    Directory.Delete(rebaseMergeFolder, true);
-
-                if (Directory.Exists(rebaseApplyFolder))
-                    Directory.Delete(rebaseApplyFolder, true);
-            }
 
             Dispatcher.UIThread.Invoke(() =>
             {
