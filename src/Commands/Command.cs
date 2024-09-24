@@ -42,7 +42,7 @@ namespace SourceGit.Commands
         {
             var start = new ProcessStartInfo();
             start.FileName = Native.OS.GitExecutable;
-            start.Arguments = "--no-pager -c core.quotepath=off ";
+            start.Arguments = "--no-pager -c core.quotepath=off -c credential.helper=manager ";
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
             start.RedirectStandardOutput = true;
@@ -56,17 +56,13 @@ namespace SourceGit.Commands
                 start.Environment.Add("DISPLAY", "required");
             start.Environment.Add("SSH_ASKPASS", selfExecFile); // Can not use parameter here, because it invoked by SSH with `exec`
             start.Environment.Add("SSH_ASKPASS_REQUIRE", "prefer");
+            start.Environment.Add("SOURCEGIT_LAUNCH_AS_ASKPASS", "TRUE");
 
             // If an SSH private key was provided, sets the environment.
             if (!string.IsNullOrEmpty(SSHKey))
-            {
                 start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new -i '{SSHKey}'");
-            }
             else
-            {
                 start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new");
-                start.Arguments += "-c credential.helper=manager ";
-            }
 
             // Force using en_US.UTF-8 locale to avoid GCM crash
             if (OperatingSystem.IsLinux())
