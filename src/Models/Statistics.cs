@@ -67,7 +67,7 @@ namespace SourceGit.Models
             }
             else
             {
-                XAxes.Add(new DateTimeAxis(TimeSpan.FromDays(365), v => $"{v:yyyy/MM}") { TextSize = 10 });
+                XAxes.Add(new DateTimeAxis(TimeSpan.FromDays(30), v => $"{v:yyyy/MM}") { TextSize = 10 });
             }
         }
 
@@ -99,14 +99,12 @@ namespace SourceGit.Models
                 samples.Add(new DateTimePoint(kv.Key, kv.Value));
 
             Series.Add(
-                new LineSeries<DateTimePoint>()
+                new ColumnSeries<DateTimePoint>()
                 {
                     Values = samples,
-                    Stroke = new SolidColorPaint(SKColors.Green) { StrokeThickness = 1 },
-                    Fill = new SolidColorPaint(SKColors.SkyBlue.WithAlpha(90)),
-                    GeometrySize = 8,
-                    GeometryStroke = new SolidColorPaint(SKColors.Green) { StrokeThickness = 2 },
-                    LineSmoothness = 0,
+                    Stroke = null,
+                    Fill = new SolidColorPaint(SKColors.Green),
+                    Padding = 1,
                 }
             );
 
