@@ -258,7 +258,7 @@ namespace SourceGit.Views
                     target = tag;
 
                 if (target != null)
-                    repo.UpdateFilter(target.Name, toggle.IsChecked == true);
+                    repo.UpdateFilters([target.Name], toggle.IsChecked == true);
             }
 
             e.Handled = true;

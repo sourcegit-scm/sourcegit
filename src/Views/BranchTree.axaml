@@ -54,10 +54,10 @@
 
           <!-- Name -->
           <TextBlock Grid.Column="1"
-                      Text="{Binding Name}"
-                      Classes="primary"
-                      FontWeight="{Binding NameFontWeight}"
-                      TextTrimming="CharacterEllipsis"/>
+                     Text="{Binding Name}"
+                     Classes="primary"
+                     FontWeight="{Binding NameFontWeight}"
+                     TextTrimming="CharacterEllipsis"/>
 
           <!-- Tracking status -->
           <v:BranchTreeNodeTrackStatusPresenter Grid.Column="2"
@@ -72,9 +72,9 @@
                         Classes="filter"
                         Margin="0,0,8,0"
                         Background="Transparent"
-                        IsCheckedChanged="OnToggleFilter"
                         IsVisible="{Binding IsBranch}"
                         IsChecked="{Binding IsFiltered}"
+                        Click="OnToggleFilterClicked"
                         ToolTip.Tip="{DynamicResource Text.Filter}"/>
           </Grid>
         </Grid>

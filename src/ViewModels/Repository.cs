@@ -643,20 +643,24 @@ namespace SourceGit.ViewModels
                 NavigateToCommit(_currentBranch.Head);
         }
 
-        public void UpdateFilter(string filter, bool toggle)
+        public void UpdateFilters(List<string> filters, bool toggle)
         {
             var changed = false;
             if (toggle)
             {
-                if (!_settings.Filters.Contains(filter))
+                foreach (var filter in filters)
                 {
-                    _settings.Filters.Add(filter);
-                    changed = true;
+                    if (!_settings.Filters.Contains(filter))
+                    {
+                        _settings.Filters.Add(filter);
+                        changed = true;
+                    }
                 }
             }
             else
             {
-                changed = _settings.Filters.Remove(filter);
+                foreach (var filter in filters)
+                    changed |= _settings.Filters.Remove(filter);
             }
 
             if (changed)
