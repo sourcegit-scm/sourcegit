@@ -68,6 +68,10 @@ namespace SourceGit.Commands
             if (OperatingSystem.IsLinux())
                 start.Environment.Add("LANG", "en_US.UTF-8");
 
+            // Fix sometimes `LSEnvironment` not working on macOS
+            if (OperatingSystem.IsMacOS())
+                start.Environment.Add("PATH", "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin");
+
             // Force using this app as git editor.
             switch (Editor)
             {
