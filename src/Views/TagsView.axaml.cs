@@ -247,7 +247,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnToggleFilter(object sender, RoutedEventArgs e)
+        private void OnToggleFilterClicked(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton toggle && DataContext is ViewModels.Repository repo)
             {

@@ -47,8 +47,9 @@
                             Classes="filter"
                             Margin="0,0,8,0"
                             Background="Transparent"
-                            IsCheckedChanged="OnToggleFilter"
-                            IsChecked="{Binding IsFiltered}"
+                            Click="OnToggleFilterClicked"
+                            IsChecked="{Binding IsFiltered, Mode=TwoWay}"
+                            IsVisible="{Binding !IsFolder}"
                             ToolTip.Tip="{DynamicResource Text.Filter}"/>
             </Grid>
           </DataTemplate>
@@ -78,8 +79,8 @@
                             Classes="filter"
                             Margin="0,0,8,0"
                             Background="Transparent"
-                            IsCheckedChanged="OnToggleFilter"
-                            IsChecked="{Binding IsFiltered}"
+                            Click="OnToggleFilterClicked"
+                            IsChecked="{Binding IsFiltered, Mode=TwoWay}"
                             ToolTip.Tip="{DynamicResource Text.Filter}"/>
             </Grid>
           </DataTemplate>
