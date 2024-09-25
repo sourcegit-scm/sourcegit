@@ -32,7 +32,7 @@ namespace SourceGit.ViewModels
                 {
                     PopupHost.Active = value;
 
-                    if (!_ignoreIndexChange && value is { Data: Repository repo})
+                    if (!_ignoreIndexChange && value is { Data: Repository repo })
                         ActiveWorkspace.ActiveIdx = ActiveWorkspace.Repositories.IndexOf(repo.FullPath);
                 }
             }

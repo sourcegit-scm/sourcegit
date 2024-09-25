@@ -43,12 +43,13 @@ namespace SourceGit.Models
         {
             _mode = mode;
 
-            YAxes = [new Axis() {
+            YAxes = [new Axis()
+            {
                 TextSize = 10,
                 MinLimit = 0,
                 SeparatorsPaint = new SolidColorPaint(new SKColor(0x40808080)) { StrokeThickness = 1 }
             }];
-            
+
             if (mode == StaticsticsMode.ThisWeek)
             {
                 for (int i = 0; i < 7; i++)

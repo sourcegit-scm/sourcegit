@@ -117,7 +117,7 @@ namespace SourceGit.Views
                     e.Handled = true;
                 }
             }
-            
+
             if (!e.Handled)
                 base.OnKeyDown(e);
         }
