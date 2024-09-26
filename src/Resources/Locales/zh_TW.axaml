@@ -139,6 +139,8 @@
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">電子郵件</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">電子郵件地址</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">Git 設定</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增符合 GitHub Issue 規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增符合 Jira 規則</x:String>
@@ -412,9 +414,6 @@
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">最大歷史提交數</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">提交標題字數偵測</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">Git 設定</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">自動提取間隔</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">自動換行轉換</x:String>
   <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">預設複製 (clone) 路徑</x:String>
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">電子郵件</x:String>
@@ -492,6 +491,7 @@
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">新的分支名稱不能與現有分支名稱相同</x:String>
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">分支:</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">中止</x:String>
+  <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">自動提取遠端變更中...</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">清理本存放庫 (GC)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">本操作將執行 `git gc` 命令。</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">清空篩選規則</x:String>

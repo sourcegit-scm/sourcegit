@@ -179,7 +179,6 @@ namespace SourceGit.ViewModels
                     ActiveWorkspace.Repositories.Clear();
                     ActiveWorkspace.ActiveIdx = 0;
 
-                    Models.AutoFetchManager.Instance.RemoveRepository(repo.FullPath);
                     repo.Close();
 
                     Welcome.Instance.ClearSearchFilter();
@@ -293,7 +292,6 @@ namespace SourceGit.ViewModels
             };
 
             repo.Open();
-            Models.AutoFetchManager.Instance.AddRepository(repo.FullPath, repo.GitDir);
 
             if (page == null)
             {
@@ -522,7 +520,6 @@ namespace SourceGit.ViewModels
                 if (removeFromWorkspace)
                     ActiveWorkspace.Repositories.Remove(repo.FullPath);
 
-                Models.AutoFetchManager.Instance.RemoveRepository(repo.FullPath);
                 repo.Close();
             }
 

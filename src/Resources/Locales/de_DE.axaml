@@ -137,6 +137,8 @@
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Adresse</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email Adresse</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Remotes automatisch fetchen</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(n)</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">TICKETSYSTEM</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Beispiel für Github-Regel hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Beispiel für Jira-Regel hinzufügen</x:String>
@@ -410,9 +412,6 @@
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Commit-Historie</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Längenvorgabe für Commit-Nachrichten</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Remotes automatisch fetchen</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">Auto-Fetch Intervall</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(n)</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Aktiviere Auto-CRLF</x:String>
   <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Clone Standardordner</x:String>
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">Benutzer Email</x:String>

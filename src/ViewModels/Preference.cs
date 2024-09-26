@@ -216,35 +216,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDefaultCloneDir, value);
         }
 
-        public bool GitAutoFetch
-        {
-            get => Models.AutoFetchManager.Instance.IsEnabled;
-            set
-            {
-                if (Models.AutoFetchManager.Instance.IsEnabled != value)
-                {
-                    Models.AutoFetchManager.Instance.IsEnabled = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public int? GitAutoFetchInterval
-        {
-            get => Models.AutoFetchManager.Instance.Interval;
-            set
-            {
-                if (value is null || value < 1)
-                    return;
-
-                if (Models.AutoFetchManager.Instance.Interval != value)
-                {
-                    Models.AutoFetchManager.Instance.Interval = (int)value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         public int ShellOrTerminal
         {
             get => _shellOrTerminal;

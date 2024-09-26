@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -323,6 +324,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool IsAutoFetching
+        {
+            get;
+            private set;
+        }
+
         public void Open()
         {
             var settingsFile = Path.Combine(_gitDir, "sourcegit.settings");
@@ -359,6 +366,7 @@ namespace SourceGit.ViewModels
             _inProgressContext = null;
             _hasUnsolvedConflicts = false;
 
+            _autoFetchTimer = new Timer(AutoFetchImpl, null, 5000, 5000);
             RefreshAll();
         }
 
@@ -376,6 +384,9 @@ namespace SourceGit.ViewModels
                 // Ignore
             }
             _settings = null;
+
+            _autoFetchTimer.Dispose();
+            _autoFetchTimer = null;
 
             _watcher?.Dispose();
             _histories.Cleanup();
@@ -626,6 +637,11 @@ namespace SourceGit.ViewModels
                 Task.Run(RefreshWorkingCopyChanges);
             else
                 _watcher.MarkWorkingCopyDirtyManually();
+        }
+
+        public void MarkFetched()
+        {
+            _lastFetchTime = DateTime.Now;
         }
 
         public void NavigateToCommit(string sha)
@@ -1991,6 +2007,28 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private void AutoFetchImpl(object sender)
+        {
+            if (!_settings.EnableAutoFetch || IsAutoFetching)
+                return;
+
+            var lockFile = Path.Combine(_gitDir, "index.lock");
+            if (File.Exists(lockFile))
+                return;
+
+            var now = DateTime.Now;
+            var desire = _lastFetchTime.AddMinutes(_settings.AutoFetchInterval);
+            if (desire > now)
+                return;
+
+            IsAutoFetching = true;
+            Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
+            new Commands.Fetch(_fullpath, "--all", true, false, null) { RaiseError = false }.Exec();
+            _lastFetchTime = DateTime.Now;
+            IsAutoFetching = false;
+            Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
+        }
+
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.RepositorySettings _settings = null;
@@ -2036,5 +2074,8 @@ namespace SourceGit.ViewModels
         private InProgressContext _inProgressContext = null;
         private bool _hasUnsolvedConflicts = false;
         private Models.Commit _searchResultSelectedCommit = null;
+
+        private Timer _autoFetchTimer = null;
+        private DateTime _lastFetchTime = DateTime.MinValue;
     }
 }

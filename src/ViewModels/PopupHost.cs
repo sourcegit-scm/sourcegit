@@ -18,7 +18,7 @@ namespace SourceGit.ViewModels
 
         public static bool CanCreatePopup()
         {
-            return Active != null && (Active._popup == null || !Active._popup.InProgress);
+            return Active?.IsInProgress() != true;
         }
 
         public static void ShowPopup(Popup popup)
@@ -38,6 +38,11 @@ namespace SourceGit.ViewModels
         public virtual string GetId()
         {
             return string.Empty;
+        }
+
+        public virtual bool IsInProgress()
+        {
+            return _popup is { InProgress: true };
         }
 
         public async void ProcessPopup()

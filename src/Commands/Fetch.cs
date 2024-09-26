@@ -22,8 +22,6 @@ namespace SourceGit.Commands
                 Args += "--force ";
 
             Args += remote;
-
-            Models.AutoFetchManager.Instance.MarkFetched(repo);
         }
 
         public Fetch(string repo, string remote, string localBranch, string remoteBranch, Action<string> outputHandler)

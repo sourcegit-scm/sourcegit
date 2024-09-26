@@ -44,6 +44,14 @@ namespace SourceGit.ViewModels
             return _node.Id;
         }
 
+        public override bool IsInProgress()
+        {
+            if (_data is Repository { IsAutoFetching: true })
+                return true;
+
+            return base.IsInProgress();
+        }
+
         public void CopyPath()
         {
             if (_node.IsRepository)

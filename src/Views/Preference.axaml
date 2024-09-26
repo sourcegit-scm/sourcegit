@@ -52,7 +52,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">            
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32" ColumnDefinitions="Auto,*">            
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.Locale}"
                        HorizontalAlignment="Right"
@@ -116,32 +116,6 @@
                       Height="32"
                       Content="{DynamicResource Text.Preference.General.Check4UpdatesOnStartup}"
                       IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=Check4UpdatesOnStartup, Mode=TwoWay}"/>
-
-            <CheckBox Grid.Row="5" Grid.Column="1"
-                      Content="{DynamicResource Text.Preference.Git.AutoFetch}"
-                      IsChecked="{Binding GitAutoFetch, Mode=TwoWay}"/>
-
-            <TextBlock Grid.Row="6" Grid.Column="0"
-                       IsVisible="{Binding GitAutoFetch}"
-                       Text="{DynamicResource Text.Preference.Git.AutoFetchInterval}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
-            <Grid Grid.Row="6" Grid.Column="1" Height="32" ColumnDefinitions="*,Auto" IsVisible="{Binding GitAutoFetch}">
-              <NumericUpDown Grid.Column="0"
-                             Minimum="1" Maximum="60" Increment="1"
-                             Height="28"
-                             Padding="4"
-                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
-                             CornerRadius="3"
-                             ParsingNumberStyle="Integer"
-                             FormatString="0"
-                             Value="{Binding GitAutoFetchInterval, Mode=TwoWay, FallbackValue=10}"/>
-
-              <TextBlock Grid.Column="1"
-                         VerticalAlignment="Center"
-                         Margin="5,0,0,0"
-                         Text="{DynamicResource Text.Preference.Git.AutoFetchIntervalSuffix}" />
-            </Grid>
           </Grid>
         </TabItem>
 
