@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 using Avalonia.Collections;
 using Avalonia.Threading;
@@ -20,11 +21,39 @@ namespace SourceGit.ViewModels
             get => _isEmpty;
             private set => SetProperty(ref _isEmpty, value);
         }
+        
+        public bool ShowOnlyMyLocks
+        {
+            get => _showOnlyMyLocks;
+            set
+            {
+                if (!SetProperty(ref _showOnlyMyLocks, value))
+                    return;
 
-        public AvaloniaList<Models.LFSLock> Locks
+                OnPropertyChanged(nameof(FilteredLocks));
+                IsEmpty = !FilteredLocks.Any();
+            }
+        }
+
+        private AvaloniaList<Models.LFSLock> Locks
         {
             get;
-            private set;
+        }
+
+        public AvaloniaList<Models.LFSLock> FilteredLocks
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_userName))
+                {
+                    App.RaiseException(_repo, "Username is empty");
+                    return Locks;
+                }
+
+                return _showOnlyMyLocks ?
+                    new AvaloniaList<Models.LFSLock>(Locks.Where(@lock => @lock.User == _userName)) :
+                    Locks;
+            }
         }
 
         public LFSLocks(string repo, string remote)
@@ -32,6 +61,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _remote = remote;
             Locks = new AvaloniaList<Models.LFSLock>();
+            new Commands.Config(repo).ListAll().TryGetValue("user.name", out _userName);
 
             Task.Run(() =>
             {
@@ -71,5 +101,7 @@ namespace SourceGit.ViewModels
         private string _remote;
         private bool _isLoading = true;
         private bool _isEmpty = false;
+        private bool _showOnlyMyLocks = false;
+        private string _userName;
     }
 }
