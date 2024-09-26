@@ -47,7 +47,7 @@
     <!-- Filter and Unlock All -->
     <CheckBox Grid.Row="1"
               Margin="8,0,0,0"
-              Content="Show only my locks"
+              Content="{DynamicResource Text.GitLFS.Locks.OnlyMine}"
               IsChecked="{Binding ShowOnlyMyLocks, Mode=TwoWay}"
               VerticalAlignment="Center">
       <CheckBox.IsEnabled>

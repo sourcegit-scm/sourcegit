@@ -294,6 +294,7 @@
   <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">顯示 LFS 物件鎖</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">沒有鎖定的 LFS 物件</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Lock" xml:space="preserve">鎖定</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">僅顯示被我鎖定的檔案</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS 物件鎖</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">解鎖</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">強制解鎖</x:String>
