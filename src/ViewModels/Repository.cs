@@ -659,6 +659,31 @@ namespace SourceGit.ViewModels
                 NavigateToCommit(_currentBranch.Head);
         }
 
+        public void AutoAddBranchFilterPostCheckout(Models.Branch local)
+        {
+            if (_settings.Filters.Count == 0 || _settings.Filters.Contains(local.FullName))
+                return;
+
+            var hasLeft = false;
+            foreach (var b in _branches)
+            {
+                if (!b.FullName.Equals(local.FullName, StringComparison.Ordinal) && 
+                    !b.FullName.Equals(local.Upstream, StringComparison.Ordinal) && 
+                    !_settings.Filters.Contains(b.FullName))
+                {
+                    hasLeft = true;
+                    break;
+                }
+            }
+
+            if (!hasLeft)
+                _settings.Filters.Clear();
+            else if (string.IsNullOrEmpty(local.Upstream) || _settings.Filters.Contains(local.Upstream))
+                _settings.Filters.Add(local.FullName);
+            else
+                _settings.Filters.AddRange([local.FullName, local.Upstream]);
+        }
+
         public void UpdateFilters(List<string> filters, bool toggle)
         {
             var changed = false;
