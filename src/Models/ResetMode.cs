@@ -9,6 +9,8 @@ namespace SourceGit.Models
             new ResetMode("Soft", "Keep all changes. Stage differences", "--soft", Brushes.Green),
             new ResetMode("Mixed", "Keep all changes. Unstage differences", "--mixed", Brushes.Orange),
             new ResetMode("Hard", "Discard all changes", "--hard", Brushes.Red),
+            new ResetMode("Merge", "Reset to a commit, keeping unmerged changes", "--merge", Brushes.Green),
+            new ResetMode("Keep", "Reset while keeping local modifications", "--keep", Brushes.Green),
         ];
 
         public string Name { get; set; }
