@@ -19,31 +19,22 @@
     <!-- Left Panel -->
     <Grid Grid.Column="0" RowDefinitions="Auto,*">
       <!-- Page Switcher for Left Contents (Dashboard or CommitSearch) -->
-      <Grid Grid.Row="0" Height="24" Margin="0,6" HorizontalAlignment="Center" ColumnDefinitions="48,1,48">
-        <Border Grid.Column="0" Grid.ColumnSpan="3"
-                Height="24"
-                BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
-                CornerRadius="12"/>
-
-        <RadioButton Grid.Column="0"
-                     Classes="icon_button"
-                     Width="48"
+      <StackPanel Grid.Row="0" Margin="0,6" Height="24" HorizontalAlignment="Center" Orientation="Horizontal">
+        <RadioButton Classes="switch_button"
+                     Margin="4,0,0,0"
                      GroupName="SearchGroup"
                      IsChecked="{Binding !IsSearching, Mode=OneWay}">
-          <Path Width="14" Height="14" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
+          <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
         </RadioButton>
 
-        <Rectangle Grid.Column="1" Width="0.65" HorizontalAlignment="Center" VerticalAlignment="Stretch" Fill="{DynamicResource Brush.Border2}"/>
-
-        <RadioButton Grid.Column="2"
-                     Width="48"
-                     Classes="icon_button"
+        <RadioButton Classes="switch_button"
+                     Margin="0,0,4,0"
                      GroupName="SearchGroup"
                      IsChecked="{Binding IsSearching, Mode=TwoWay}">
-          <Path Width="14" Height="14" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
+          <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
         </RadioButton>
-      </Grid>
-      
+      </StackPanel>
+
       <!-- Dashboard -->
       <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearching}">
         <!-- Page Switcher for Right Panel -->
@@ -138,6 +129,12 @@
                  Watermark="{DynamicResource Text.Repository.Filter}"
                  Text="{Binding Filter, Mode=TwoWay}"
                  VerticalContentAlignment="Center">
+          <TextBox.Styles>
+            <Style Selector="TextBox /template/ TextBlock#PART_Watermark">
+              <Setter Property="FontSize" Value="12"/>
+            </Style>
+          </TextBox.Styles>
+          
           <TextBox.InnerLeftContent>
             <Path Width="14" Height="14"
                   Margin="6,0,0,0"
@@ -343,9 +340,9 @@
       </Grid>
 
       <!-- Commit Search Panel -->
-      <Grid Grid.Row="1" RowDefinitions="26,26,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
+      <Grid Grid.Row="1" RowDefinitions="Auto,26,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
         <!-- Search Input Box -->
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Height="26" Margin="0,4,0,0">
           <TextBox x:Name="TxtSearchCommitsBox"
                    Height="24"
                    BorderThickness="1"
@@ -446,10 +443,10 @@
 
           <CheckBox Height="24"
                     Margin="4,0,0,0"
-                    FontSize="12"
-                    Content="{DynamicResource Text.Repository.Search.InCurrentBranch}"
                     IsChecked="{Binding OnlySearchCommitsInCurrentBranch, Mode=TwoWay}"
-                    IsVisible="{Binding SearchCommitFilterType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
+                    IsVisible="{Binding SearchCommitFilterType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+            <TextBlock Text="{DynamicResource Text.Repository.Search.InCurrentBranch}" FontSize="12"/>
+          </CheckBox>
         </StackPanel>
 
         <ListBox Grid.Row="2"

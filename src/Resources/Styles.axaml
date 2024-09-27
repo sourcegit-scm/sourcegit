@@ -962,12 +962,14 @@
     </Style>
   </Style>
 
-  <Style Selector="RadioButton.icon_button">
+  <Style Selector="RadioButton.switch_button">
+    <Setter Property="Width" Value="48"/>
+    <Setter Property="Height" Value="24"/>
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Background="Transparent">
+        <Border CornerRadius="12" Background="{TemplateBinding Background}">
           <ContentPresenter x:Name="PART_ContentPresenter"
                             Margin="0"
                             HorizontalAlignment="Center"
@@ -980,9 +982,11 @@
       </ControlTemplate>
     </Setter>
 
+    <Style Selector="^:checked">
+      <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
+    </Style>
     <Style Selector="^:checked Path">
-      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
-      <Setter Property="Opacity" Value="0.65"/>
+      <Setter Property="Fill" Value="White"/>
     </Style>
   </Style>
 
