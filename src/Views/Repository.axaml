@@ -348,7 +348,7 @@
                    BorderThickness="1"
                    BorderBrush="{DynamicResource Brush.Border2}"
                    Background="{DynamicResource Brush.Contents}"
-                   CornerRadius="4"
+                   CornerRadius="12"
                    Watermark="{DynamicResource Text.Repository.Search}"
                    Text="{Binding SearchCommitFilter, Mode=TwoWay}"
                    VerticalContentAlignment="Center"

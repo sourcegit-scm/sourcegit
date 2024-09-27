@@ -177,7 +177,7 @@
       <v:CommitMessageTextBox Grid.Row="2" Text="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
+      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
         <Button Grid.Column="0"
                 Classes="icon_button"
                 Margin="4,0,0,0" Padding="0"
@@ -247,13 +247,13 @@
         </Button>
         
         <!-- Invisible button just to add another hotkey `Ctrl+Alt+Enter` to commit with auto-stage -->
-        <Button Grid.Column="6"
+        <Button Grid.Column="7"
                 Width="0" Height="0"
                 Background="Transparent"
                 Command="{Binding CommitWithAutoStage}"
                 HotKey="Alt+Enter"/>
 
-        <Button Grid.Column="7"
+        <Button Grid.Column="8"
                 Classes="flat"
                 Content="{DynamicResource Text.WorkingCopy.CommitAndPush}"
                 Height="28"
