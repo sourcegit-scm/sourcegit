@@ -21,12 +21,14 @@
       <!-- Page Switcher for Left Contents (Dashboard or CommitSearch) -->
       <StackPanel Grid.Row="0" Margin="0,6" Height="24" HorizontalAlignment="Center" Orientation="Horizontal">
         <RadioButton Classes="switch_button"
+                     Width="48"
                      GroupName="SearchGroup"
                      IsChecked="{Binding !IsSearching, Mode=OneWay}">
           <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
         </RadioButton>
 
         <RadioButton Classes="switch_button"
+                     Width="48"
                      GroupName="SearchGroup"
                      IsChecked="{Binding IsSearching, Mode=TwoWay}">
           <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
