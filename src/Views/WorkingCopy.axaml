@@ -246,7 +246,7 @@
           </ToolTip.Tip>
         </Button>
         
-        <!-- Invisible button just to add another hotkey `Ctrl+Alt+Enter` to commit with auto-stage -->
+        <!-- Invisible button just to add another hotkey `Alt+Enter/⌥+Enter` to commit with auto-stage -->
         <Button Grid.Column="7"
                 Width="0" Height="0"
                 Background="Transparent"
