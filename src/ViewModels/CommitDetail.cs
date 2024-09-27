@@ -550,41 +550,6 @@ namespace SourceGit.ViewModels
             lfs.Header = App.Text("GitLFS");
             lfs.Icon = App.CreateMenuIcon("Icons.LFS");
 
-            var isLFSFiltered = new Commands.IsLFSFiltered(_repo.FullPath, path).Result();
-            if (!isLFSFiltered)
-            {
-                var filename = Path.GetFileName(path);
-                var lfsTrackThisFile = new MenuItem();
-                lfsTrackThisFile.Header = App.Text("GitLFS.Track", filename);
-                lfsTrackThisFile.Click += async (_, e) =>
-                {
-                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track(filename, true));
-                    if (succ)
-                        App.SendNotification(_repo.FullPath, $"Tracking file named {filename} successfully!");
-
-                    e.Handled = true;
-                };
-                lfs.Items.Add(lfsTrackThisFile);
-
-                var extension = Path.GetExtension(path);
-                if (!string.IsNullOrEmpty(extension))
-                {
-                    var lfsTrackByExtension = new MenuItem();
-                    lfsTrackByExtension.Header = App.Text("GitLFS.TrackByExtension", extension);
-                    lfsTrackByExtension.Click += async (_, e) =>
-                    {
-                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track("*" + extension));
-                        if (succ)
-                            App.SendNotification(_repo.FullPath, $"Tracking all *{extension} files successfully!");
-
-                        e.Handled = true;
-                    };
-                    lfs.Items.Add(lfsTrackByExtension);
-                }
-
-                lfs.Items.Add(new MenuItem() { Header = "-" });
-            }
-
             var lfsLock = new MenuItem();
             lfsLock.Header = App.Text("GitLFS.Locks.Lock");
             lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
