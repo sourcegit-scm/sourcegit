@@ -65,7 +65,7 @@ namespace SourceGit.ViewModels
                 CallUIThread(() =>
                 {
                     _repo.MarkFetched();
-                    _repo.SetWatcherEnabled(true); 
+                    _repo.SetWatcherEnabled(true);
                 });
 
                 return true;

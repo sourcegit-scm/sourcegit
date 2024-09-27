@@ -210,6 +210,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isSearchLoadingVisible, value);
         }
 
+        public bool OnlySearchCommitsInCurrentBranch
+        {
+            get => _onlySearchCommitsInCurrentBranch;
+            set => SetProperty(ref _onlySearchCommitsInCurrentBranch, value);
+        }
+
         public int SearchCommitFilterType
         {
             get => _searchCommitFilterType;
@@ -589,13 +595,13 @@ namespace SourceGit.ViewModels
                             visible.Add(commit);
                         break;
                     case 1:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByUser).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByUser, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                     case 2:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                     case 3:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByFile).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByFile, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                 }
 
@@ -667,8 +673,8 @@ namespace SourceGit.ViewModels
             var hasLeft = false;
             foreach (var b in _branches)
             {
-                if (!b.FullName.Equals(local.FullName, StringComparison.Ordinal) && 
-                    !b.FullName.Equals(local.Upstream, StringComparison.Ordinal) && 
+                if (!b.FullName.Equals(local.FullName, StringComparison.Ordinal) &&
+                    !b.FullName.Equals(local.Upstream, StringComparison.Ordinal) &&
                     !_settings.Filters.Contains(b.FullName))
                 {
                     hasLeft = true;
@@ -2072,6 +2078,7 @@ namespace SourceGit.ViewModels
         private bool _isSearchLoadingVisible = false;
         private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 2;
+        private bool _onlySearchCommitsInCurrentBranch = false;
         private bool _enableFirstParentInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();

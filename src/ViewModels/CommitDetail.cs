@@ -544,7 +544,8 @@ namespace SourceGit.ViewModels
         private void TryToAddContextMenuItemsForGitLFS(ContextMenu menu, string path)
         {
             var lfsEnabled = new Commands.LFS(_repo.FullPath).IsEnabled();
-            if (!lfsEnabled) return;
+            if (!lfsEnabled)
+                return;
 
             var lfs = new MenuItem();
             lfs.Header = App.Text("GitLFS");

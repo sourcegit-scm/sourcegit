@@ -430,7 +430,7 @@ namespace SourceGit.Views
 
         private void OnToggleFilterClicked(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository repo && 
+            if (DataContext is ViewModels.Repository repo &&
                 sender is ToggleButton toggle &&
                 toggle.DataContext is ViewModels.BranchTreeNode { Backend: Models.Branch branch } node)
             {

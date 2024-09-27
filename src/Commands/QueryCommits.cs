@@ -14,21 +14,23 @@ namespace SourceGit.Commands
             _findFirstMerged = needFindHead;
         }
 
-        public QueryCommits(string repo, string filter, Models.CommitSearchMethod method)
+        public QueryCommits(string repo, string filter, Models.CommitSearchMethod method, bool onlyCurrentBranch)
         {
-            string search;
+            string search = onlyCurrentBranch ? string.Empty : "--branches --remotes ";
 
             if (method == Models.CommitSearchMethod.ByUser)
             {
-                search = $"-i --author=\"{filter}\" --committer=\"{filter}\"";
+                search += $"-i --author=\"{filter}\" --committer=\"{filter}\"";
             }
             else if (method == Models.CommitSearchMethod.ByFile)
             {
-                search = $"-- \"{filter}\"";
+                search += $"-- \"{filter}\"";
             }
             else
             {
                 var argsBuilder = new StringBuilder();
+                argsBuilder.Append(search);
+
                 var words = filter.Split(new[] { ' ', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var word in words)
                 {
@@ -36,12 +38,13 @@ namespace SourceGit.Commands
                     argsBuilder.Append($"--grep=\"{escaped}\" ");
                 }
                 argsBuilder.Append("--all-match -i");
+
                 search = argsBuilder.ToString();
             }
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log -1000 --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s --branches --remotes " + search;
+            Args = $"log -1000 --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s " + search;
             _findFirstMerged = false;
         }
 

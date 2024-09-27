@@ -20,7 +20,7 @@ namespace SourceGit.ViewModels
             get => _isLoading;
             private set => SetProperty(ref _isLoading, value);
         }
-        
+
         public bool ShowOnlyMyLocks
         {
             get => _showOnlyMyLocks;

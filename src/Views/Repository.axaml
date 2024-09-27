@@ -343,7 +343,7 @@
       </Grid>
 
       <!-- Commit Search Panel -->
-      <Grid Grid.Row="1" RowDefinitions="24,32,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
+      <Grid Grid.Row="1" RowDefinitions="26,26,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
         <!-- Search Input Box -->
         <Grid Grid.Row="0">
           <TextBox x:Name="TxtSearchCommitsBox"
@@ -430,18 +430,11 @@
           </Popup>
         </Grid>
 
-        <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
-          <TextBlock Grid.Column="0"
-                     Text="{DynamicResource Text.Repository.Search.By}"
-                     Foreground="{DynamicResource Brush.FG2}"
-                     Margin="2,0,0,0"/>
-
-          <ComboBox Grid.Column="1"
-                    MinHeight="24" Height="24"
-                    Padding="8,0"
-                    Background="{DynamicResource Brush.Contents}"
-                    BorderBrush="{DynamicResource Brush.Border2}"
-                    HorizontalAlignment="Right"
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+          <ComboBox MinHeight="24" Height="24"
+                    Padding="4,0"
+                    Background="Transparent"
+                    BorderThickness="0"
                     SelectedIndex="{Binding SearchCommitFilterType, Mode=TwoWay}">
             <ComboBox.Items>
               <TextBlock Text="{DynamicResource Text.Repository.Search.BySHA}" FontSize="12"/>
@@ -450,9 +443,17 @@
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByFile}" FontSize="12"/>
             </ComboBox.Items>
           </ComboBox>
-        </Grid>
-        
+
+          <CheckBox Height="24"
+                    Margin="4,0,0,0"
+                    FontSize="12"
+                    Content="{DynamicResource Text.Repository.Search.InCurrentBranch}"
+                    IsChecked="{Binding OnlySearchCommitsInCurrentBranch, Mode=TwoWay}"
+                    IsVisible="{Binding SearchCommitFilterType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
+        </StackPanel>
+
         <ListBox Grid.Row="2"
+                 Margin="0,8,0,0"
                  ItemsSource="{Binding SearchedCommits}"
                  SelectionMode="Single"
                  SelectedItem="{Binding SearchResultSelectedCommit, Mode=TwoWay}"

@@ -512,7 +512,6 @@
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">REMOTE HINZUFÜGEN</x:String>
   <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">KONFLIKTE BEHEBEN</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Commit suchen</x:String>
-  <x:String x:Key="Text.Repository.Search.By" xml:space="preserve">Suche über</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">Dateiname</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Commit-Nachricht</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
