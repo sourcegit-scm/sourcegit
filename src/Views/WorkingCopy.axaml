@@ -233,7 +233,7 @@
                          Foreground="{DynamicResource Brush.FG2}">
                 <TextBlock.Text>
                   <OnPlatform>
-                    <On Options="Default">
+                    <On Options="Windows, Linux">
                       <DynamicResource ResourceKey="Text.WorkingCopy.CommitWithAutoStage"/>
                     </On>
                     <On Options="macOS">
