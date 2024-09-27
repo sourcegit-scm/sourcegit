@@ -185,7 +185,7 @@
                 ToolTip.Tip="{DynamicResource Text.WorkingCopy.CommitMessageHelper}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">
-          <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
+          <Path Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
         </Button>
 
         <Button Grid.Column="1"
@@ -223,9 +223,35 @@
                 Padding="8,0"
                 Command="{Binding Commit}"
                 HotKey="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
-                ToolTip.Tip="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
                 ToolTip.Placement="Top"
-                ToolTip.VerticalOffset="0"/>
+                ToolTip.VerticalOffset="0">
+          <ToolTip.Tip>
+            <StackPanel Orientation="Vertical">
+              <TextBlock Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
+              <TextBlock Classes="small italic" 
+                         Margin="0,4,0,0"
+                         Foreground="{DynamicResource Brush.FG2}">
+                <TextBlock.Text>
+                  <OnPlatform>
+                    <On Options="Default">
+                      <DynamicResource ResourceKey="Text.WorkingCopy.CommitWithAutoStage"/>
+                    </On>
+                    <On Options="macOS">
+                      <DynamicResource ResourceKey="Text.WorkingCopy.CommitWithAutoStage.MacOS"/>
+                    </On>
+                  </OnPlatform>
+                </TextBlock.Text>
+              </TextBlock>
+            </StackPanel>
+          </ToolTip.Tip>
+        </Button>
+        
+        <!-- Invisible button just to add another hotkey `Ctrl+Alt+Enter` to commit with auto-stage -->
+        <Button Grid.Column="6"
+                Width="0" Height="0"
+                Background="Transparent"
+                Command="{Binding CommitWithAutoStage}"
+                HotKey="Alt+Enter"/>
 
         <Button Grid.Column="7"
                 Classes="flat"

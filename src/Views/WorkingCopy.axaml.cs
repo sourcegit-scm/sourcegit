@@ -81,7 +81,6 @@ namespace SourceGit.Views
                 {
                     vm.Discard(selected);
                     e.Handled = true;
-                    return;
                 }
             }
         }

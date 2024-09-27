@@ -330,6 +330,7 @@
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">仓库页面快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">提交暂存区更改</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">提交暂存区更改并推送</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">自动暂存全部变更并提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">丢弃选中的更改</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">切换左边栏为分支/标签等显示模式（默认）</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">重新加载仓库状态</x:String>
@@ -620,6 +621,8 @@
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交并推送</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">历史输入/模板</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">CTRL + Enter</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">使用 Alt+Enter 自动暂存所有变更并提交</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage.MacOS" xml:space="preserve">使用 ⌥+Enter 自动暂存所有变更并提交</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">检测到冲突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">文件冲突已解决</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">显示未跟踪文件</x:String>

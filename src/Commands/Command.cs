@@ -126,10 +126,8 @@ namespace SourceGit.Commands
                 }
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            
+            return true;
         }
 
         public ReadToEndResult ReadToEnd()
