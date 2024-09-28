@@ -226,32 +226,21 @@
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">
           <ToolTip.Tip>
-            <StackPanel Orientation="Vertical">
-              <TextBlock Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
-              <TextBlock Classes="small italic" 
-                         Margin="0,4,0,0"
-                         Foreground="{DynamicResource Brush.FG2}">
-                <TextBlock.Text>
-                  <OnPlatform>
-                    <On Options="Windows, Linux">
-                      <DynamicResource ResourceKey="Text.WorkingCopy.CommitWithAutoStage"/>
-                    </On>
-                    <On Options="macOS">
-                      <DynamicResource ResourceKey="Text.WorkingCopy.CommitWithAutoStage.MacOS"/>
-                    </On>
-                  </OnPlatform>
-                </TextBlock.Text>
-              </TextBlock>
-            </StackPanel>
+            <TextBlock TextWrapping="Wrap" TextAlignment="Left">
+              <Run Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
+              <Run Foreground="{DynamicResource Brush.FG2}"
+                   FontSize="12"
+                   Text="{DynamicResource Text.WorkingCopy.CommitWithAutoStage}"/>
+            </TextBlock>
           </ToolTip.Tip>
         </Button>
         
-        <!-- Invisible button just to add another hotkey `Alt+Enter/⌥+Enter` to commit with auto-stage -->
+        <!-- Invisible button just to add another hotkey `Ctrl+Shift+Enter` to commit with auto-stage -->
         <Button Grid.Column="7"
                 Width="0" Height="0"
                 Background="Transparent"
                 Command="{Binding CommitWithAutoStage}"
-                HotKey="Alt+Enter"/>
+                HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"/>
 
         <Button Grid.Column="8"
                 Classes="flat"
@@ -260,8 +249,8 @@
                 Margin="8,0,0,0"
                 Padding="8,0"
                 Command="{Binding CommitWithPush}"
-                HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"
-                ToolTip.Tip="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"
+                HotKey="Alt+Enter"
+                ToolTip.Tip="{OnPlatform Alt+Enter, macOS=⌥+Enter}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0"
                 IsVisible="{Binding IsCommitWithPushVisible}"/>

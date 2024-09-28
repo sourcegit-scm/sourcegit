@@ -103,10 +103,10 @@
           <TextBlock Grid.Row="7" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
           <TextBlock Grid.Row="7" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Commit}" />
           
-          <TextBlock Grid.Row="8" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Alt+Enter, macOS=⌥+Enter}"/>
+          <TextBlock Grid.Row="8" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
           <TextBlock Grid.Row="8" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.CommitWithAutoStage}" />
 
-          <TextBlock Grid.Row="9" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
+          <TextBlock Grid.Row="9" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Alt+Enter, macOS=⌥+Enter}"/>
           <TextBlock Grid.Row="9" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.CommitAndPush}" />
 
           <TextBlock Grid.Row="10" Grid.Column="0" Classes="primary bold" Text="F5"/>

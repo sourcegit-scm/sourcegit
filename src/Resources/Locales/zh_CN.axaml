@@ -621,8 +621,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交并推送</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">历史输入/模板</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">CTRL + Enter</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">使用 Alt+Enter 自动暂存所有变更并提交</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage.MacOS" xml:space="preserve">使用 ⌥+Enter 自动暂存所有变更并提交</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">使用 Ctrl(⌘)+Shift+Enter 自动暂存所有变更并提交</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">检测到冲突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">文件冲突已解决</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">显示未跟踪文件</x:String>
