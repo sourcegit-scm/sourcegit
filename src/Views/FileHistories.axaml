@@ -87,6 +87,7 @@
                   <TextBlock Grid.Column="2"
                              Classes="primary"
                              Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                             Cursor="Hand"
                              Background="Transparent"
                              Foreground="DarkOrange"
                              TextDecorations="Underline"
