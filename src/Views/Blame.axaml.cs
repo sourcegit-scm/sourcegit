@@ -158,7 +158,7 @@ namespace SourceGit.Views
                             continue;
 
                         var lineNumber = line.FirstDocumentLine.LineNumber;
-                        if (lineNumber >= _editor.BlameData.LineInfos.Count)
+                        if (lineNumber > _editor.BlameData.LineInfos.Count)
                             break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
@@ -199,7 +199,7 @@ namespace SourceGit.Views
                             continue;
 
                         var lineNumber = line.FirstDocumentLine.LineNumber;
-                        if (lineNumber >= _editor.BlameData.LineInfos.Count)
+                        if (lineNumber > _editor.BlameData.LineInfos.Count)
                             break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
@@ -303,7 +303,7 @@ namespace SourceGit.Views
                     continue;
 
                 var lineNumber = line.FirstDocumentLine.LineNumber;
-                if (lineNumber >= BlameData.LineInfos.Count)
+                if (lineNumber > BlameData.LineInfos.Count)
                     break;
 
                 var info = BlameData.LineInfos[lineNumber - 1];
@@ -362,7 +362,7 @@ namespace SourceGit.Views
                 return;
 
             var caret = TextArea.Caret;
-            if (caret == null || caret.Line >= BlameData.LineInfos.Count)
+            if (caret == null || caret.Line > BlameData.LineInfos.Count)
                 return;
 
             _highlight = BlameData.LineInfos[caret.Line - 1].CommitSHA;
