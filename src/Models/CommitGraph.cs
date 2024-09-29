@@ -86,7 +86,11 @@ namespace SourceGit.Models
                 }
                 else if (x < LastX)
                 {
-                    Add(LastX, y - halfHeight);
+                    var minY = y - halfHeight;
+                    if (minY > LastY)
+                        minY -= halfHeight;
+
+                    Add(LastX, minY);
                     Add(x, y);
                 }
 
