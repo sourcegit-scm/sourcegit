@@ -126,7 +126,7 @@ namespace SourceGit.Commands
                 }
                 return false;
             }
-            
+
             return true;
         }
 

@@ -145,7 +145,7 @@ namespace SourceGit.Views
             protected override void OnPointerMoved(PointerEventArgs e)
             {
                 base.OnPointerMoved(e);
-                
+
                 var view = TextView;
                 if (!e.Handled && view is { VisualLinesValid: true })
                 {
