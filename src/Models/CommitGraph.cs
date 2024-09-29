@@ -146,7 +146,6 @@ namespace SourceGit.Models
 
             var temp = new CommitGraph();
             var unsolved = new List<PathHelper>();
-            var mapUnsolved = new Dictionary<string, PathHelper>();
             var ended = new List<PathHelper>();
             var offsetY = -HALF_HEIGHT;
             var colorIdx = 0;
@@ -174,19 +173,17 @@ namespace SourceGit.Models
                             if (commit.Parents.Count > 0)
                             {
                                 major.Next = commit.Parents[0];
-                                if (!mapUnsolved.ContainsKey(major.Next))
-                                    mapUnsolved.Add(major.Next, major);
+                                major.Add(offsetX, offsetY, HALF_HEIGHT);
                             }
                             else
                             {
-                                major.Next = "ENDED";
+                                major.Add(offsetX, offsetY, HALF_HEIGHT, true);
                                 ended.Add(l);
                             }
-
-                            major.Add(offsetX, offsetY, HALF_HEIGHT);
                         }
                         else
                         {
+                            l.Add(major.LastX, offsetY, HALF_HEIGHT, true);
                             ended.Add(l);
                         }
 
@@ -195,12 +192,15 @@ namespace SourceGit.Models
                     }
                     else
                     {
-                        if (!mapUnsolved.ContainsKey(l.Next))
-                            mapUnsolved.Add(l.Next, l);
                         offsetX += UNIT_WIDTH;
                         l.Add(offsetX, offsetY, HALF_HEIGHT);
                     }
                 }
+
+                // Remove ended curves from unsolved
+                foreach (var l in ended)
+                    unsolved.Remove(l);
+                ended.Clear();
 
                 // Create new curve for branch head
                 if (major == null)
@@ -218,13 +218,8 @@ namespace SourceGit.Models
                 }
 
                 // Calculate link position of this commit.
-                Point position = new Point(offsetX, offsetY);
-                int dotColor = 0;
-                if (major != null)
-                {
-                    position = new Point(major.LastX, offsetY);
-                    dotColor = major.Path.Color;
-                }
+                Point position = new Point(major?.LastX ?? offsetX, offsetY);
+                int dotColor = major?.Path.Color ?? 0;
                 Dot anchor = new Dot() { Center = position, Color = dotColor };
                 if (commit.IsCurrentHead)
                     anchor.Type = DotType.Head;
@@ -239,11 +234,12 @@ namespace SourceGit.Models
                 {
                     for (int j = 1; j < commit.Parents.Count; j++)
                     {
-                        var parent = commit.Parents[j];
-                        if (mapUnsolved.TryGetValue(parent, out var value))
+                        var parentSHA = commit.Parents[j];
+                        var parent = unsolved.Find(x => x.Next.Equals(parentSHA, StringComparison.Ordinal));
+                        if (parent != null)
                         {
                             // Try to change the merge state of linked graph
-                            var l = value;
+                            var l = parent;
                             if (isMerged)
                                 l.IsMerged = true;
 
@@ -260,7 +256,7 @@ namespace SourceGit.Models
                             offsetX += UNIT_WIDTH;
 
                             // Create new curve for parent commit that not includes before
-                            var l = new PathHelper(parent, isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT));
+                            var l = new PathHelper(parentSHA, isMerged, colorIdx, position, new Point(offsetX, position.Y + HALF_HEIGHT));
                             unsolved.Add(l);
                             temp.Paths.Add(l.Path);
                             colorIdx = (colorIdx + 1) % _penCount;
@@ -268,20 +264,9 @@ namespace SourceGit.Models
                     }
                 }
 
-                // Remove ended curves from unsolved
-                foreach (var l in ended)
-                {
-                    l.Add(position.X, position.Y, HALF_HEIGHT, true);
-                    unsolved.Remove(l);
-                }
-
                 // Margins & merge state (used by Views.Histories).
                 commit.IsMerged = isMerged;
                 commit.Margin = new Thickness(Math.Max(offsetX + HALF_WIDTH, oldCount * UNIT_WIDTH + H_MARGIN) + H_MARGIN, 0, 0, 0);
-
-                // Clean up
-                ended.Clear();
-                mapUnsolved.Clear();
             }
 
             // Deal with curves haven't ended yet.
