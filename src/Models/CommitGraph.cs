@@ -20,7 +20,6 @@ namespace SourceGit.Models
             public bool IsMerged;
             public double LastX;
             public double LastY;
-            public double EndY;
             public Path Path;
 
             public PathHelper(string next, bool isMerged, int color, Point start)
@@ -29,7 +28,6 @@ namespace SourceGit.Models
                 IsMerged = isMerged;
                 LastX = start.X;
                 LastY = start.Y;
-                EndY = LastY;
 
                 Path = new Path();
                 Path.Color = color;
@@ -42,7 +40,6 @@ namespace SourceGit.Models
                 IsMerged = isMerged;
                 LastX = to.X;
                 LastY = to.Y;
-                EndY = LastY;
 
                 Path = new Path();
                 Path.Color = color;
@@ -50,43 +47,87 @@ namespace SourceGit.Models
                 Path.Points.Add(to);
             }
 
-            public void Add(double x, double y, double halfHeight, bool isEnd = false)
+            /// <summary>
+            ///     A path that just passed this row.
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <param name="halfHeight"></param>
+            public void Pass(double x, double y, double halfHeight)
             {
                 if (x > LastX)
                 {
-                    Add(new Point(LastX, LastY));
-                    Add(new Point(x, y - halfHeight));
-                    if (isEnd)
-                        Add(new Point(x, y));
+                    Add(LastX, LastY);
+                    Add(x, y - halfHeight);
                 }
                 else if (x < LastX)
                 {
-                    var testY = LastY + halfHeight;
-                    if (y > testY)
-                        Add(new Point(LastX, testY));
-
-                    if (!isEnd)
-                        y += halfHeight;
-
-                    Add(new Point(x, y));
-                }
-                else if (isEnd)
-                {
-                    Add(new Point(x, y));
+                    Add(LastX, y - halfHeight);
+                    y += halfHeight;
+                    Add(x, y);
                 }
 
                 LastX = x;
                 LastY = y;
             }
 
-            private void Add(Point p)
+            /// <summary>
+            ///     A path that has commit in this row but not ended
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <param name="halfHeight"></param>
+            public void Goto(double x, double y, double halfHeight)
             {
-                if (EndY < p.Y)
+                if (x > LastX)
                 {
-                    Path.Points.Add(p);
-                    EndY = p.Y;
+                    Add(LastX, LastY);
+                    Add(x, y - halfHeight);
+                }
+                else if (x < LastX)
+                {
+                    Add(LastX, y - halfHeight);
+                    Add(x, y);
+                }
+
+                LastX = x;
+                LastY = y;
+            }
+
+            /// <summary>
+            ///     A path that has commit in this row and end.
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <param name="halfHeight"></param>
+            public void End(double x, double y, double halfHeight)
+            {
+                if (x > LastX)
+                {
+                    Add(LastX, LastY);
+                    Add(x, y - halfHeight);
+                }                    
+                else if (x < LastX)
+                {
+                    Add(LastX, y - halfHeight);
+                }                    
+
+                Add(x, y);
+
+                LastX = x;
+                LastY = y;
+            }
+
+            private void Add(double x, double y)
+            {
+                if (_endY < y)
+                {
+                    Path.Points.Add(new Point(x, y));
+                    _endY = y;
                 }
             }
+
+            private double _endY = 0;
         }
 
         public class Link
@@ -173,17 +214,17 @@ namespace SourceGit.Models
                             if (commit.Parents.Count > 0)
                             {
                                 major.Next = commit.Parents[0];
-                                major.Add(offsetX, offsetY, HALF_HEIGHT);
+                                major.Goto(offsetX, offsetY, HALF_HEIGHT);
                             }
                             else
                             {
-                                major.Add(offsetX, offsetY, HALF_HEIGHT, true);
+                                major.End(offsetX, offsetY, HALF_HEIGHT);
                                 ended.Add(l);
                             }
                         }
                         else
                         {
-                            l.Add(major.LastX, offsetY, HALF_HEIGHT, true);
+                            l.End(major.LastX, offsetY, HALF_HEIGHT);
                             ended.Add(l);
                         }
 
@@ -193,7 +234,7 @@ namespace SourceGit.Models
                     else
                     {
                         offsetX += UNIT_WIDTH;
-                        l.Add(offsetX, offsetY, HALF_HEIGHT);
+                        l.Pass(offsetX, offsetY, HALF_HEIGHT);
                     }
                 }
 
@@ -278,7 +319,7 @@ namespace SourceGit.Models
                 if (path.Path.Points.Count == 1 && Math.Abs(path.Path.Points[0].Y - endY) < 0.0001)
                     continue;
 
-                path.Add((i + 0.5) * UNIT_WIDTH + H_MARGIN, endY + HALF_HEIGHT, HALF_HEIGHT, true);
+                path.End((i + 0.5) * UNIT_WIDTH + H_MARGIN, endY + HALF_HEIGHT, HALF_HEIGHT);
             }
             unsolved.Clear();
 
