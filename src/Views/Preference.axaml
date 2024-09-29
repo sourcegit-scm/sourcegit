@@ -99,7 +99,7 @@
                        Margin="0,0,16,0"/>
             <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,64">
               <Slider Grid.Column="0"
-                      Minimum="20000" Maximum="100000"
+                      Minimum="5000" Maximum="100000"
                       TickPlacement="BottomRight" TickFrequency="5000"
                       IsSnapToTickEnabled="True"
                       VerticalAlignment="Center"
