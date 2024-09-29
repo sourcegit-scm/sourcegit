@@ -192,6 +192,7 @@
     <Setter Property="MaxWidth" Value="1024"/>
     <Setter Property="MaxHeight" Value="768"/>
     <Setter Property="Padding" Value="0"/>
+    <Setter Property="Cursor" Value="Arrow"/>
 
     <Setter Property="Template">
       <ControlTemplate>
