@@ -437,8 +437,8 @@ namespace SourceGit.Views
             base.OnLoaded(e);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            TextArea.TextView.PointerEntered += OnTextViewPointerEntered;
-            TextArea.TextView.PointerMoved += OnTextViewPointerMoved;
+            TextArea.TextView.PointerEntered += OnTextViewPointerChanged;
+            TextArea.TextView.PointerMoved += OnTextViewPointerChanged;
             TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
 
             UpdateTextMate();
@@ -449,8 +449,8 @@ namespace SourceGit.Views
             base.OnUnloaded(e);
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-            TextArea.TextView.PointerEntered -= OnTextViewPointerEntered;
-            TextArea.TextView.PointerMoved -= OnTextViewPointerMoved;
+            TextArea.TextView.PointerEntered -= OnTextViewPointerChanged;
+            TextArea.TextView.PointerMoved -= OnTextViewPointerChanged;
             TextArea.TextView.PointerWheelChanged -= OnTextViewPointerWheelChanged;
 
             if (_textMate != null)
@@ -510,35 +510,43 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnTextViewPointerEntered(object sender, PointerEventArgs e)
+        private void OnTextViewPointerChanged(object sender, PointerEventArgs e)
         {
             if (EnableChunkSelection && sender is TextView view)
             {
-                var chunk = SelectedChunk;
-                if (chunk != null)
+                var selection = TextArea.Selection;
+                if (selection == null || selection.IsEmpty)
                 {
-                    var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
-                    if (rect.Contains(e.GetPosition(this)))
-                        return;
+                    if (_lastSelectStart != _lastSelectEnd)
+                    {
+                        _lastSelectStart = TextLocation.Empty;
+                        _lastSelectEnd = TextLocation.Empty;
+                    }
+
+                    var chunk = SelectedChunk;
+                    if (chunk != null)
+                    {
+                        var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
+                        if (rect.Contains(e.GetPosition(this)))
+                            return;
+                    }
+
+                    UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+                    return;
                 }
 
-                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
-            }
-        }
-
-        private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
-        {
-            if (EnableChunkSelection && sender is TextView view)
-            {
-                var chunk = SelectedChunk;
-                if (chunk != null)
+                var start = selection.StartPosition.Location;
+                var end = selection.EndPosition.Location;
+                if (_lastSelectStart != start || _lastSelectEnd != end)
                 {
-                    var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
-                    if (rect.Contains(e.GetPosition(this)))
-                        return;
+                    _lastSelectStart = start;
+                    _lastSelectEnd = end;
+                    UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+                    return;
                 }
 
-                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+                if (SelectedChunk == null)
+                    UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
             }
         }
 
@@ -657,7 +665,9 @@ namespace SourceGit.Views
         }
 
         private TextMate.Installation _textMate = null;
-        protected LineStyleTransformer _lineStyleTransformer = null;
+        private TextLocation _lastSelectStart = TextLocation.Empty;
+        private TextLocation _lastSelectEnd = TextLocation.Empty;
+        private LineStyleTransformer _lineStyleTransformer = null;
     }
 
     public class CombinedTextDiffPresenter : ThemedTextDiffPresenter
