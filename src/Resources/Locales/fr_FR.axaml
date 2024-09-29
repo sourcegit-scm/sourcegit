@@ -597,7 +597,6 @@
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Modèles/Historiques</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">CTRL + Entrée</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLITS DÉTECTÉS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">LES CONFLITS DE FICHIER SONT RÉSOLUS</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLURE LES FICHIERS NON-SUIVIS</x:String>

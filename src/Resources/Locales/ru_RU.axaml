@@ -621,7 +621,6 @@
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">ФИКСАЦИЯ</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">ФИКСАЦИЯ и ОТПРАВКА</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Шаблон/Истории</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">CTRL + Enter</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">ОБНАРУЖЕНЫ КОНФЛИКТЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">КОНФЛИКТЫ ФАЙЛОВ РАЗРЕШЕНЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">ВКЛЮЧИТЬ НЕОТСЛЕЖИВАЕМЫЕ ФАЙЛЫ</x:String>

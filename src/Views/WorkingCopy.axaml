@@ -226,12 +226,16 @@
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">
           <ToolTip.Tip>
-            <TextBlock TextWrapping="Wrap" TextAlignment="Left">
-              <Run Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
-              <Run Foreground="{DynamicResource Brush.FG2}"
-                   FontSize="12"
-                   Text="{DynamicResource Text.WorkingCopy.CommitWithAutoStage}"/>
-            </TextBlock>
+            <StackPanel Orientation="Vertical">
+              <TextBlock TextAlignment="Left" TextWrapping="Wrap">
+                <Run Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
+                <Run Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.WorkingCopy.CommitTip}"/>
+              </TextBlock>
+              <TextBlock TextAlignment="Left" TextWrapping="Wrap" Margin="0,4,0,0">
+                <Run Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
+                <Run Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.WorkingCopy.CommitWithAutoStage}"/>
+              </TextBlock>
+            </StackPanel>
           </ToolTip.Tip>
         </Button>
         
