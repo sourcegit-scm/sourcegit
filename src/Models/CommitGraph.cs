@@ -199,13 +199,13 @@ namespace SourceGit.Models
             {
                 var major = null as PathHelper;
                 var isMerged = commit.IsMerged;
-                var oldCount = unsolved.Count;
 
                 // Update current y offset
                 offsetY += UNIT_HEIGHT;
 
                 // Find first curves that links to this commit and marks others that links to this commit ended.
-                double offsetX = H_MARGIN - HALF_WIDTH;
+                var offsetX = 4 - HALF_WIDTH;
+                var maxOffsetOld = unsolved.Count > 0 ? unsolved[^1].LastX : offsetX + UNIT_WIDTH;
                 foreach (var l in unsolved)
                 {
                     if (l.Next == commit.SHA)
@@ -311,7 +311,7 @@ namespace SourceGit.Models
 
                 // Margins & merge state (used by Views.Histories).
                 commit.IsMerged = isMerged;
-                commit.Margin = new Thickness(Math.Max(offsetX + HALF_WIDTH, oldCount * UNIT_WIDTH + H_MARGIN) + H_MARGIN, 0, 0, 0);
+                commit.Margin = new Thickness(Math.Max(offsetX, maxOffsetOld) + HALF_WIDTH + H_MARGIN, 0, 0, 0);
             }
 
             // Deal with curves haven't ended yet.
@@ -323,7 +323,7 @@ namespace SourceGit.Models
                 if (path.Path.Points.Count == 1 && Math.Abs(path.Path.Points[0].Y - endY) < 0.0001)
                     continue;
 
-                path.End((i + 0.5) * UNIT_WIDTH + H_MARGIN, endY + HALF_HEIGHT, HALF_HEIGHT);
+                path.End((i + 0.5) * UNIT_WIDTH + 4, endY + HALF_HEIGHT, HALF_HEIGHT);
             }
             unsolved.Clear();
 
