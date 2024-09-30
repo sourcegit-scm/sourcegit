@@ -210,17 +210,17 @@
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Nächste Änderung</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">KEINE ÄNDERUNG ODER NUR ZEILEN-ENDE ÄNDERUNGEN</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Vorherige Änderung</x:String>
+  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Zeige versteckte Symbole</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Nebeneinander</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMODUL</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NEU</x:String>
+  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Seiten wechseln</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Hervorhebung</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Zeilenumbruch</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Öffne in Merge Tool</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Weniger Zeilen anzeigen</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Mehr Zeilen anzeigen</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">WÄHLE EINE DATEI AUS UM ÄNDERUNGEN ANZUZEIGEN</x:String>
-  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Zeige versteckte Symbole</x:String>
-  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Seiten wechseln</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Öffne in Merge Tool</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">Änderungen verwerfen</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Alle Änderungen in der Arbeitskopie.</x:String>

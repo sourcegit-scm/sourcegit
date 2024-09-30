@@ -206,21 +206,22 @@
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">原始大小</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">檔案權限已變更</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符號變化</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS 物件變更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一個差異</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">沒有變更或僅有換行字元差異</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">上一個差異</x:String>
+  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">顯示隱藏符號</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">並排對比</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">子模組</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">新增</x:String>
+  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">交換比對雙方</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">語法上色</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">自動換行</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">使用外部合併工具檢視</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">減少可見的行數</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可見的行數</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">請選擇需要對比的檔案</x:String>
-  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">顯示隱藏符號</x:String>
-  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">交換比對雙方</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">使用外部比對工具檢視</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">捨棄變更</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本機未提交的變更。</x:String>

@@ -79,10 +79,17 @@
 
             <ToggleButton Classes="line_path"
                           Width="32"
+                          IsChecked="{Binding IgnoreWhitespace, Mode=TwoWay}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.IgnoreWhitespace}">
+              <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.Whitespace}"/>
+            </ToggleButton>
+
+            <ToggleButton Classes="line_path"
+                          Width="32"
                           IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.ShowHiddenSymbols}">
-              <Path Width="11" Height="11" Stretch="Uniform" Data="{StaticResource Icons.Whitespace}" Margin="0,1,0,0"/>
+              <Path Width="11" Height="11" Stretch="Uniform" Data="{StaticResource Icons.HiddenSymbol}" Margin="0,1,0,0"/>
             </ToggleButton>
 
             <ToggleButton Classes="line_path"

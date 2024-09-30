@@ -206,6 +206,7 @@
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">СТАРЫЙ</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Режим файла изменён</x:String>
+  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Показать скрытые символы</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">ИЗМЕНЕНИЕ ОБЪЕКТА ХБФ</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Следующее различие</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">НИКАКИХ ИЗМЕНЕНИЙ ИЛИ МЕНЯЕТСЯ ТОЛЬКО EOL</x:String>
@@ -213,14 +214,13 @@
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Различие бок о бок</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">ПОДМОДУЛЬ</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">НОВЫЙ</x:String>
+  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Обмен</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Подсветка синтаксиса </x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Перенос слов в строке</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Открыть в инструменте слияния </x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Уменьшить количество видимых линий</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Увеличить количество видимых линий</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">ВЫБРАТЬ ФАЙЛ ДЛЯ ПРОСМОТРА ИЗМЕНЕНИЙ</x:String>
-  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Показать скрытые символы</x:String>
-  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Обмен</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Открыть в инструменте слияния</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">Отклонить изменения</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Все локальные изменения в рабочей копии.</x:String>

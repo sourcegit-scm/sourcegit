@@ -17,6 +17,16 @@ namespace SourceGit.ViewModels
             get => _title;
         }
 
+        public bool IgnoreWhitespace
+        {
+            get => _ignoreWhitespace;
+            set
+            {
+                if (SetProperty(ref _ignoreWhitespace, value))
+                    LoadDiffContent();
+            }
+        }
+
         public string FileModeChange
         {
             get => _fileModeChange;
@@ -57,6 +67,7 @@ namespace SourceGit.ViewModels
                 _isTextDiff = previous._isTextDiff;
                 _content = previous._content;
                 _unifiedLines = previous._unifiedLines;
+                _ignoreWhitespace = previous._ignoreWhitespace;
             }
 
             if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
@@ -98,7 +109,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var latest = new Commands.Diff(_repo, _option, _unifiedLines).Result();
+                var latest = new Commands.Diff(_repo, _option, _unifiedLines, _ignoreWhitespace).Result();
                 var rs = null as object;
 
                 if (latest.TextDiff != null)
@@ -237,6 +248,7 @@ namespace SourceGit.ViewModels
         private int _unifiedLines = 4;
         private bool _isLoading = true;
         private bool _isTextDiff = false;
+        private bool _ignoreWhitespace = false;
         private object _content = null;
     }
 }
