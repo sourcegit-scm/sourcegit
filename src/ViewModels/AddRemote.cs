@@ -104,6 +104,7 @@ namespace SourceGit.ViewModels
                 }
                 CallUIThread(() =>
                 {
+                    _repo.MarkFetched();
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });

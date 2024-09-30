@@ -58,7 +58,7 @@ namespace SourceGit.Views
 
             var geo = new StreamGeometry();
             var angle = Math.PI / 2;
-            var y = height + 0.1;
+            var y = height + 0.5;
             using (var ctx = geo.Open())
             {
                 double x;
@@ -94,17 +94,17 @@ namespace SourceGit.Views
                     x = drawRightX;
                     y = 6;
                     ctx.ArcTo(new Point(x, y), new Size(6, 6), angle, false, SweepDirection.Clockwise);
-                    y = height + 0.1 - 5;
+                    y = height + 0.5 - 5;
                     ctx.LineTo(new Point(x, y));
                     x += 5;
-                    y = height + 0.1;
+                    y = height + 0.5;
                     ctx.ArcTo(new Point(x, y), new Size(5, 5), angle, false, SweepDirection.CounterClockwise);
                 }
                 else
                 {
                     x = LauncherTabsScroller.Bounds.Right;
                     ctx.LineTo(new Point(x, y));
-                    y = height + 0.1;
+                    y = height + 0.5;
                     ctx.LineTo(new Point(x, y));
                 }
             }

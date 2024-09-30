@@ -32,8 +32,8 @@ namespace SourceGit.ViewModels
                 {
                     PopupHost.Active = value;
 
-                    if (!_ignoreIndexChange && value is { Data: Repository })
-                        ActiveWorkspace.ActiveIdx = Pages.IndexOf(value);
+                    if (!_ignoreIndexChange && value is { Data: Repository repo })
+                        ActiveWorkspace.ActiveIdx = ActiveWorkspace.Repositories.IndexOf(repo.FullPath);
                 }
             }
         }
@@ -131,10 +131,22 @@ namespace SourceGit.ViewModels
 
         public void MoveTab(LauncherPage from, LauncherPage to)
         {
+            _ignoreIndexChange = true;
+
             var fromIdx = Pages.IndexOf(from);
             var toIdx = Pages.IndexOf(to);
             Pages.Move(fromIdx, toIdx);
             ActivePage = from;
+
+            ActiveWorkspace.Repositories.Clear();
+            foreach (var p in Pages)
+            {
+                if (p.Data is Repository r)
+                    ActiveWorkspace.Repositories.Add(r.FullPath);
+            }
+            ActiveWorkspace.ActiveIdx = ActiveWorkspace.Repositories.IndexOf(from.Node.Id);
+
+            _ignoreIndexChange = false;
         }
 
         public void GotoNextTab()
@@ -164,8 +176,9 @@ namespace SourceGit.ViewModels
                 var last = Pages[0];
                 if (last.Data is Repository repo)
                 {
-                    ActiveWorkspace.Repositories.Remove(repo.FullPath);
-                    Models.AutoFetchManager.Instance.RemoveRepository(repo.FullPath);
+                    ActiveWorkspace.Repositories.Clear();
+                    ActiveWorkspace.ActiveIdx = 0;
+
                     repo.Close();
 
                     Welcome.Instance.ClearSearchFilter();
@@ -180,6 +193,7 @@ namespace SourceGit.ViewModels
                     App.Quit(0);
                 }
 
+                _ignoreIndexChange = false;
                 return;
             }
 
@@ -213,6 +227,8 @@ namespace SourceGit.ViewModels
             if (Pages.Count == 1)
                 return;
 
+            _ignoreIndexChange = true;
+
             var id = ActivePage.Node.Id;
             foreach (var one in Pages)
             {
@@ -221,12 +237,17 @@ namespace SourceGit.ViewModels
             }
 
             Pages = new AvaloniaList<LauncherPage> { ActivePage };
+            ActiveWorkspace.ActiveIdx = 0;
             OnPropertyChanged(nameof(Pages));
+
+            _ignoreIndexChange = false;
             GC.Collect();
         }
 
         public void CloseRightTabs()
         {
+            _ignoreIndexChange = true;
+
             var endIdx = Pages.IndexOf(ActivePage);
             for (var i = Pages.Count - 1; i > endIdx; i--)
             {
@@ -234,6 +255,7 @@ namespace SourceGit.ViewModels
                 Pages.Remove(Pages[i]);
             }
 
+            _ignoreIndexChange = false;
             GC.Collect();
         }
 
@@ -270,8 +292,6 @@ namespace SourceGit.ViewModels
             };
 
             repo.Open();
-            ActiveWorkspace.AddRepository(repo.FullPath);
-            Models.AutoFetchManager.Instance.AddRepository(repo.FullPath, repo.GitDir);
 
             if (page == null)
             {
@@ -294,6 +314,16 @@ namespace SourceGit.ViewModels
             }
 
             ActivePage = page;
+
+            ActiveWorkspace.Repositories.Clear();
+            foreach (var p in Pages)
+            {
+                if (p.Data is Repository r)
+                    ActiveWorkspace.Repositories.Add(r.FullPath);
+            }
+
+            if (!_ignoreIndexChange)
+                ActiveWorkspace.ActiveIdx = ActiveWorkspace.Repositories.IndexOf(node.Id);
         }
 
         public void DispatchNotification(string pageId, string message, bool isError)
@@ -490,7 +520,6 @@ namespace SourceGit.ViewModels
                 if (removeFromWorkspace)
                     ActiveWorkspace.Repositories.Remove(repo.FullPath);
 
-                Models.AutoFetchManager.Instance.RemoveRepository(repo.FullPath);
                 repo.Close();
             }
 

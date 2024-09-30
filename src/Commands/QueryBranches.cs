@@ -19,29 +19,35 @@ namespace SourceGit.Commands
 
         public List<Models.Branch> Result()
         {
-            Exec();
+            var branches = new List<Models.Branch>();
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return branches;
 
-            foreach (var b in _needQueryTrackStatus)
-                b.TrackStatus = new QueryTrackStatus(WorkingDirectory, b.Name, b.Upstream).Result();
+            var lines = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
+            {
+                var b = ParseLine(line);
+                if (b != null)
+                    branches.Add(b);
+            }
 
-            return _branches;
+            return branches;
         }
 
-        protected override void OnReadline(string line)
+        private Models.Branch ParseLine(string line)
         {
             var parts = line.Split('$');
             if (parts.Length != 5)
-                return;
+                return null;
 
             var branch = new Models.Branch();
             var refName = parts[0];
             if (refName.EndsWith("/HEAD", StringComparison.Ordinal))
-                return;
+                return null;
 
-            if (refName.StartsWith(PREFIX_DETACHED_AT, StringComparison.Ordinal) || refName.StartsWith(PREFIX_DETACHED_FROM, StringComparison.Ordinal))
-            {
-                branch.IsDetachedHead = true;
-            }
+            branch.IsDetachedHead = refName.StartsWith(PREFIX_DETACHED_AT, StringComparison.Ordinal) ||
+                refName.StartsWith(PREFIX_DETACHED_FROM, StringComparison.Ordinal);
 
             if (refName.StartsWith(PREFIX_LOCAL, StringComparison.Ordinal))
             {
@@ -53,7 +59,7 @@ namespace SourceGit.Commands
                 var name = refName.Substring(PREFIX_REMOTE.Length);
                 var shortNameIdx = name.IndexOf('/', StringComparison.Ordinal);
                 if (shortNameIdx < 0)
-                    return;
+                    return null;
 
                 branch.Remote = name.Substring(0, shortNameIdx);
                 branch.Name = name.Substring(branch.Remote.Length + 1);
@@ -71,14 +77,11 @@ namespace SourceGit.Commands
             branch.Upstream = parts[3];
 
             if (branch.IsLocal && !string.IsNullOrEmpty(parts[4]) && !parts[4].Equals("=", StringComparison.Ordinal))
-                _needQueryTrackStatus.Add(branch);
+                branch.TrackStatus = new QueryTrackStatus(WorkingDirectory, branch.Name, branch.Upstream).Result();
             else
                 branch.TrackStatus = new Models.BranchTrackStatus();
 
-            _branches.Add(branch);
+            return branch;
         }
-
-        private readonly List<Models.Branch> _branches = new List<Models.Branch>();
-        private List<Models.Branch> _needQueryTrackStatus = new List<Models.Branch>();
     }
 }

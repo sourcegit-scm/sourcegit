@@ -33,7 +33,7 @@ namespace SourceGit.Views
                     return;
 
                 var view = TextView;
-                if (view != null && view.VisualLinesValid)
+                if (view is { VisualLinesValid: true })
                 {
                     var typeface = view.CreateTypeface();
                     var underlinePen = new Pen(Brushes.DarkOrange);
@@ -142,12 +142,12 @@ namespace SourceGit.Views
                 return new Size(maxWidth, 0);
             }
 
-            protected override void OnPointerPressed(PointerPressedEventArgs e)
+            protected override void OnPointerMoved(PointerEventArgs e)
             {
-                base.OnPointerPressed(e);
+                base.OnPointerMoved(e);
 
                 var view = TextView;
-                if (!e.Handled && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed && view != null && view.VisualLinesValid)
+                if (!e.Handled && view is { VisualLinesValid: true })
                 {
                     var pos = e.GetPosition(this);
                     var typeface = view.CreateTypeface();
@@ -158,7 +158,48 @@ namespace SourceGit.Views
                             continue;
 
                         var lineNumber = line.FirstDocumentLine.LineNumber;
-                        if (lineNumber >= _editor.BlameData.LineInfos.Count)
+                        if (lineNumber > _editor.BlameData.LineInfos.Count)
+                            break;
+
+                        var info = _editor.BlameData.LineInfos[lineNumber - 1];
+                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
+                        var shaLink = new FormattedText(
+                            info.CommitSHA,
+                            CultureInfo.CurrentCulture,
+                            FlowDirection.LeftToRight,
+                            typeface,
+                            _editor.FontSize,
+                            Brushes.DarkOrange);
+
+                        var rect = new Rect(0, y, shaLink.Width, shaLink.Height);
+                        if (rect.Contains(pos))
+                        {
+                            Cursor = Cursor.Parse("Hand");
+                            return;
+                        }
+                    }
+                }
+
+                Cursor = Cursor.Default;
+            }
+
+            protected override void OnPointerPressed(PointerPressedEventArgs e)
+            {
+                base.OnPointerPressed(e);
+
+                var view = TextView;
+                if (!e.Handled && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed && view is { VisualLinesValid: true })
+                {
+                    var pos = e.GetPosition(this);
+                    var typeface = view.CreateTypeface();
+
+                    foreach (var line in view.VisualLines)
+                    {
+                        if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                            continue;
+
+                        var lineNumber = line.FirstDocumentLine.LineNumber;
+                        if (lineNumber > _editor.BlameData.LineInfos.Count)
                             break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
@@ -262,7 +303,7 @@ namespace SourceGit.Views
                     continue;
 
                 var lineNumber = line.FirstDocumentLine.LineNumber;
-                if (lineNumber >= BlameData.LineInfos.Count)
+                if (lineNumber > BlameData.LineInfos.Count)
                     break;
 
                 var info = BlameData.LineInfos[lineNumber - 1];
@@ -321,7 +362,7 @@ namespace SourceGit.Views
                 return;
 
             var caret = TextArea.Caret;
-            if (caret == null || caret.Line >= BlameData.LineInfos.Count)
+            if (caret == null || caret.Line > BlameData.LineInfos.Count)
                 return;
 
             _highlight = BlameData.LineInfos[caret.Line - 1].CommitSHA;

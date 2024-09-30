@@ -216,35 +216,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDefaultCloneDir, value);
         }
 
-        public bool GitAutoFetch
-        {
-            get => Models.AutoFetchManager.Instance.IsEnabled;
-            set
-            {
-                if (Models.AutoFetchManager.Instance.IsEnabled != value)
-                {
-                    Models.AutoFetchManager.Instance.IsEnabled = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public int? GitAutoFetchInterval
-        {
-            get => Models.AutoFetchManager.Instance.Interval;
-            set
-            {
-                if (value is null || value < 1)
-                    return;
-
-                if (Models.AutoFetchManager.Instance.Interval != value)
-                {
-                    Models.AutoFetchManager.Instance.Interval = (int)value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         public int ShellOrTerminal
         {
             get => _shellOrTerminal;
@@ -335,6 +306,12 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged();
                 }
             }
+        }
+
+        public uint StatisticsSampleColor
+        {
+            get => _statisticsSampleColor;
+            set => SetProperty(ref _statisticsSampleColor, value);
         }
 
         public List<RepositoryNode> RepositoryNodes
@@ -621,5 +598,7 @@ namespace SourceGit.ViewModels
         private int _shellOrTerminal = -1;
         private int _externalMergeToolType = 0;
         private string _externalMergeToolPath = string.Empty;
+
+        private uint _statisticsSampleColor = 0xFF00FF00;
     }
 }

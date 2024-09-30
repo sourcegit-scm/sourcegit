@@ -25,7 +25,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
     }
-    
+
     public class RepositoryListBox : ListBox
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
@@ -40,7 +40,7 @@ namespace SourceGit.Views
                     e.Handled = true;
                 }
             }
-            
+
             if (!e.Handled)
                 base.OnKeyDown(e);
         }

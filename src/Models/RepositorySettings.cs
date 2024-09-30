@@ -94,6 +94,18 @@ namespace SourceGit.Models
             set;
         } = new AvaloniaList<IssueTrackerRule>();
 
+        public bool EnableAutoFetch
+        {
+            get;
+            set;
+        } = false;
+
+        public int AutoFetchInterval
+        {
+            get;
+            set;
+        } = 10;
+
         public void PushCommitMessage(string message)
         {
             var existIdx = CommitMessages.IndexOf(message);

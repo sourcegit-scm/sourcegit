@@ -62,7 +62,12 @@ namespace SourceGit.ViewModels
                     new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, Prune, NoTags, SetProgressDescription).Exec();
                 }
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.MarkFetched();
+                    _repo.SetWatcherEnabled(true);
+                });
+
                 return true;
             });
         }

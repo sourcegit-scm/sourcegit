@@ -5,6 +5,7 @@
                     xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.LFSLocks"
                     x:DataType="vm:LFSLocks"
@@ -13,7 +14,7 @@
                     Title="{DynamicResource Text.GitLFS.Locks.Title}"
                     Width="600" Height="400"
                     WindowStartupLocation="CenterOwner">
-  <Grid RowDefinitions="Auto,*">
+  <Grid RowDefinitions="Auto,Auto,*">
     <!-- TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Grid.Column="0" Grid.ColumnSpan="3"
@@ -43,11 +44,25 @@
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
+    <!-- Filter and Unlock All -->
+    <CheckBox Grid.Row="1"
+              Margin="8,0,0,0"
+              Content="{DynamicResource Text.GitLFS.Locks.OnlyMine}"
+              IsChecked="{Binding ShowOnlyMyLocks, Mode=TwoWay}"
+              VerticalAlignment="Center">
+      <CheckBox.IsEnabled>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="HasValidUserName"/>
+          <Binding Path="!IsLoading"/>
+        </MultiBinding>
+      </CheckBox.IsEnabled>
+    </CheckBox>
+
     <!-- Locked Files -->
-    <Grid Grid.Row="1">
-      <ListBox Margin="8"
+    <Grid Grid.Row="2">
+      <ListBox Margin="8,0,8,8"
                Background="{DynamicResource Brush.Contents}"
-               ItemsSource="{Binding Locks}"
+               ItemsSource="{Binding VisibleLocks}"
                SelectionMode="Single"
                BorderThickness="1"
                BorderBrush="{DynamicResource Brush.Border2}"
@@ -89,9 +104,14 @@
       </ListBox>
 
       <!-- Empty -->
-      <StackPanel Orientation="Vertical"
-                  HorizontalAlignment="Center" VerticalAlignment="Center"
-                  IsVisible="{Binding IsEmpty}">
+      <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel.IsVisible>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="!IsLoading"/>
+            <Binding Path="VisibleLocks" Converter="{x:Static c:ListConverters.IsNullOrEmpty}"/>
+          </MultiBinding>
+        </StackPanel.IsVisible>
+        
         <Path Width="48" Height="48" Data="{StaticResource Icons.Empty}" Fill="{DynamicResource Brush.FG2}"/>
         <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.GitLFS.Locks.Empty}" Foreground="{DynamicResource Brush.FG2}"/>
       </StackPanel>

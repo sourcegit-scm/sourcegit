@@ -41,12 +41,12 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public int ViewMode
+        public bool IsViewContent
         {
-            get => _viewMode;
+            get => _isViewContent;
             set
             {
-                if (SetProperty(ref _viewMode, value))
+                if (SetProperty(ref _isViewContent, value))
                     RefreshViewContent();
             }
         }
@@ -93,10 +93,10 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (_viewMode == 0)
-                SetViewContentAsDiff();
-            else
+            if (_isViewContent)
                 SetViewContentAsRevisionFile();
+            else
+                SetViewContentAsDiff();
         }
 
         private void SetViewContentAsRevisionFile()
@@ -197,7 +197,7 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private List<Models.Commit> _commits = null;
         private Models.Commit _selectedCommit = null;
-        private int _viewMode = 0;
+        private bool _isViewContent = false;
         private object _viewContent = null;
     }
 }

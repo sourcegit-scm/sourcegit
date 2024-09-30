@@ -62,7 +62,16 @@ namespace SourceGit.ViewModels
                     rs = new Commands.Stash(_repo.FullPath).Pop("stash@{0}");
                 }
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
+                    if (b != null)
+                        _repo.AutoAddBranchFilterPostCheckout(b);
+
+                    _repo.MarkBranchesDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+                });
+
                 return rs;
             });
         }

@@ -14,31 +14,43 @@ namespace SourceGit.Commands
 
         public List<Models.Tag> Result()
         {
-            Exec();
-            return _loaded;
+            var tags = new List<Models.Tag>();
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return tags;
+
+            var lines = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
+            {
+                var tag = ParseLine(line);
+                if (tag != null)
+                    tags.Add(tag);
+            }
+
+            return tags;
         }
 
-        protected override void OnReadline(string line)
+        private Models.Tag ParseLine(string line)
         {
             var subs = line.Split('$', StringSplitOptions.RemoveEmptyEntries);
             if (subs.Length == 2)
             {
-                _loaded.Add(new Models.Tag()
+                return new Models.Tag()
                 {
                     Name = subs[0].Substring(10),
                     SHA = subs[1],
-                });
+                };
             }
             else if (subs.Length == 3)
             {
-                _loaded.Add(new Models.Tag()
+                return new Models.Tag()
                 {
                     Name = subs[0].Substring(10),
                     SHA = subs[2],
-                });
+                };
             }
-        }
 
-        private readonly List<Models.Tag> _loaded = new List<Models.Tag>();
+            return null;
+        }
     }
 }

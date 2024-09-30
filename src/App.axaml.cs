@@ -516,27 +516,24 @@ namespace SourceGit
 
         private bool TryLaunchedAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
         {
+            var launchAsAskpass = Environment.GetEnvironmentVariable("SOURCEGIT_LAUNCH_AS_ASKPASS");
+            if (launchAsAskpass is not "TRUE")
+                return false;
+
             var args = desktop.Args;
-            if (args == null || args.Length != 1)
-                return false;
+            if (args?.Length > 0)
+            {
+                desktop.MainWindow = new Views.Askpass(args[0]);
+                return true;
+            }
 
-            var param = args[0];
-            if (Directory.Exists(param))
-                return false;
-
-            if (!param.StartsWith("enter passphrase", StringComparison.OrdinalIgnoreCase) &&
-                !param.Contains(" password", StringComparison.OrdinalIgnoreCase))
-                return false;
-
-            desktop.MainWindow = new Views.Askpass(param);
-            return true;
+            return false;
         }
 
         private void TryLaunchedAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
         {
             Native.OS.SetupEnternalTools();
             Models.AvatarManager.Instance.Start();
-            Models.AutoFetchManager.Instance.Start();
 
             string startupRepo = null;
             if (desktop.Args != null && desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]))

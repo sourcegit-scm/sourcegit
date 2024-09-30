@@ -132,6 +132,8 @@
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Endereço de Email</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Endereço de email</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Buscar remotos automaticamente</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto(s)</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">RASTREADOR DE PROBLEMAS</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Adicionar Regra de Exemplo do Github</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Adicionar Regra de Exemplo do Jira</x:String>
@@ -391,9 +393,6 @@
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Commits do Histórico</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Comprimento do Guia de Assunto</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetch" xml:space="preserve">Buscar remotos automaticamente</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetchInterval" xml:space="preserve">Intervalo de Busca Automática</x:String>
-  <x:String x:Key="Text.Preference.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto(s)</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Habilitar Auto CRLF</x:String>
   <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Diretório Padrão de Clone</x:String>
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">E-mail do Usuário</x:String>
@@ -485,7 +484,6 @@
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">ADICIONAR REMOTO</x:String>
   <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">RESOLVER</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Pesquisar Commit</x:String>
-  <x:String x:Key="Text.Repository.Search.By" xml:space="preserve">Pesquisar Por</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">Arquivo</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Mensagem</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
@@ -545,7 +543,6 @@
   <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">MÊS</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">SEMANA</x:String>
-  <x:String x:Key="Text.Statistics.MostRecentYear" xml:space="preserve">ANO</x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTORES: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMÓDULOS</x:String>
@@ -592,7 +589,6 @@
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/Histories</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">CTRL + Enter</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLITOS DETECTADOS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">CONFLITOS DE ARQUIVOS RESOLVIDOS</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUIR ARQUIVOS NÃO RASTREADOS</x:String>
