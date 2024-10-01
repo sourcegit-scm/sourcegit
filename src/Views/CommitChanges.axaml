@@ -16,7 +16,7 @@
 
     <Grid Grid.Column="0" RowDefinitions="26,*">
       <!-- Search & Display Mode -->
-      <Grid Grid.Row="0" ColumnDefinitions="*,18">
+      <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
         <TextBox Grid.Column="0"
                  Height="26"
                  BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
@@ -38,8 +38,8 @@
         </TextBox>
 
         <v:ChangeViewModeSwitcher Grid.Column="1"
-                                  Width="14" Height="14"
-                                  HorizontalAlignment="Right"
+                                  Width="18" Height="18"
+                                  Margin="4,0,0,0"
                                   ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
       </Grid>
 

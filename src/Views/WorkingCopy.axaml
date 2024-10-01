@@ -19,9 +19,9 @@
     <Grid Grid.Column="0" RowDefinitions="28,*,28,*">
       <!-- Unstaged Toolbar -->
       <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
-          <v:ChangeViewModeSwitcher Grid.Column="0" Width="12" Height="12" Margin="8,0,0,0" ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"/>
-          <TextBlock Grid.Column="1" Text="{DynamicResource Text.WorkingCopy.Unstaged}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
+        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto">
+          <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
+          <TextBlock Grid.Column="1" Text="{DynamicResource Text.WorkingCopy.Unstaged}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0"/>
           <TextBlock Grid.Column="2" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Unstaged, Converter={x:Static c:ListConverters.ToCount}}"/>
           <v:LoadingIcon Grid.Column="3" Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsStaging}"/>
 
@@ -59,6 +59,10 @@
                   Command="{Binding StageAll}">
             <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleDown}"/>
           </Button>
+          <v:ChangeViewModeSwitcher Grid.Column="9"
+                                    Width="26" Height="14"
+                                    Margin="0,1,0,0"
+                                    ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"/>
         </Grid>
       </Border>
 
@@ -78,9 +82,9 @@
 
       <!-- Staged Toolbar -->
       <Border Grid.Row="2" BorderThickness="0,1" BorderBrush="{DynamicResource Brush.Border0}">
-        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto">
-          <v:ChangeViewModeSwitcher Grid.Column="0" Width="12" Height="12" Margin="8,0,0,0" ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"/>
-          <TextBlock Grid.Column="1" Text="{DynamicResource Text.WorkingCopy.Staged}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
+        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
+          <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
+          <TextBlock Grid.Column="1" Text="{DynamicResource Text.WorkingCopy.Staged}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0"/>
           <TextBlock Grid.Column="2" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Staged, Converter={x:Static c:ListConverters.ToCount}}"/>
           <v:LoadingIcon Grid.Column="3" Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsUnstaging}"/>
           <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" Click="OnUnstageSelectedButtonClicked">
@@ -95,6 +99,10 @@
           <Button Grid.Column="6" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}" Command="{Binding UnstageAll}">
             <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleUp}"/>
           </Button>
+          <v:ChangeViewModeSwitcher Grid.Column="7" 
+                                    Width="26" Height="14"
+                                    Margin="0,1,0,0"
+                                    ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"/>
         </Grid>
       </Border>
 

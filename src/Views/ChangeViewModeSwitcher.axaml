@@ -4,11 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:v="using:SourceGit.Views"
-             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ChangeViewModeSwitcher"
              x:DataType="v:ChangeViewModeSwitcher">
-  <Button Classes="icon_button" Padding="0" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip.Tip="{DynamicResource Text.ChangeDisplayMode}">
+  <Button Classes="icon_button" ToolTip.Tip="{DynamicResource Text.ChangeDisplayMode}">
     <Button.Flyout>
       <MenuFlyout Placement="BottomEdgeAlignedLeft">
         <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.List}" Command="{Binding SwitchMode}" CommandParameter="{x:Static m:ChangeViewMode.List}">
@@ -28,7 +27,17 @@
         </MenuItem>
       </MenuFlyout>
     </Button.Flyout>
-
-    <Path Classes="change_mode_switcher_icon" Stretch="Uniform" Data="{Binding ViewMode, Converter={x:Static c:ChangeViewModeConverters.ToIcon}}"/>
+    
+    <Grid Width="14" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Path Width="14" Height="14"
+            Data="{StaticResource Icons.List}"
+            IsVisible="{Binding ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.List}}"/>
+      <Path Width="14" Height="14"
+            Data="{StaticResource Icons.Grid}"
+            IsVisible="{Binding ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Grid}}"/>
+      <Path Width="14" Height="14"
+            Data="{StaticResource Icons.Tree}"
+            IsVisible="{Binding ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Tree}}"/>
+    </Grid>
   </Button>
 </UserControl>
