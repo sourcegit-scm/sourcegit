@@ -353,7 +353,10 @@
           </TabItem.Header>
 
           <StackPanel Margin="8" MaxWidth="580" Orientation="Vertical" Grid.IsSharedSizeScope="True">
-            <TextBlock Classes="bold" Text="{DynamicResource Text.Preference.Shell}"/>
+            <StackPanel Orientation="Horizontal">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Terminal}"/>
+              <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preference.Shell}"/>
+            </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
             <Grid Margin="8,0,0,0" RowDefinitions="32,Auto">
               <Grid.ColumnDefinitions>
@@ -399,7 +402,10 @@
               </TextBox>
             </Grid>            
 
-            <TextBlock Classes="bold" Margin="0,24,0,0" Text="{DynamicResource Text.Preference.DiffMerge}"/>
+            <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Diff}"/>
+              <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preference.DiffMerge}"/>
+            </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
             <Grid Margin="8,0,0,0" RowDefinitions="32,Auto">
               <Grid.ColumnDefinitions>
@@ -449,7 +455,10 @@
               </TextBox>
             </Grid>
 
-            <TextBlock Classes="bold" Margin="0,24,0,0" Text="{DynamicResource Text.Preference.AI}"/>
+            <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.AIAssist}"/>
+              <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preference.AI}"/>
+            </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
             <Grid Margin="8,0,0,0" RowDefinitions="32,32,32">
               <Grid.ColumnDefinitions>
