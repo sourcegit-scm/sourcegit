@@ -1271,7 +1271,6 @@ namespace SourceGit.ViewModels
                 var discard = new MenuItem();
                 discard.Header = App.Text("BranchCM.DiscardAll");
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                discard.IsEnabled = _localChangesCount > 0;
                 discard.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())

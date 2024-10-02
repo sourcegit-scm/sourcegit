@@ -3,19 +3,45 @@ using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
+    public class DiscardAllMode
+    {
+        public bool IncludeIgnored
+        {
+            get;
+            set;
+        } = false;
+    }
+
+    public class DiscardSingleFile
+    {
+        public string Path
+        {
+            get;
+            set;
+        } = string.Empty;
+    }
+
+    public class DiscardMultipleFiles
+    {
+        public int Count
+        {
+            get;
+            set;
+        } = 0;
+    }
+    
     public class Discard : Popup
     {
         public object Mode
         {
             get;
-            private set;
         }
 
         public Discard(Repository repo)
         {
             _repo = repo;
 
-            Mode = new Models.Null();
+            Mode = new DiscardAllMode();
             View = new Views.Discard { DataContext = this };
         }
 
@@ -25,11 +51,11 @@ namespace SourceGit.ViewModels
             _changes = changes;
 
             if (_changes == null)
-                Mode = new Models.Null();
+                Mode = new DiscardAllMode();
             else if (_changes.Count == 1)
-                Mode = _changes[0].Path;
+                Mode = new DiscardSingleFile() { Path = _changes[0].Path };
             else
-                Mode = _changes.Count;
+                Mode = new DiscardMultipleFiles() { Count = _changes.Count };
 
             View = new Views.Discard() { DataContext = this };
         }
@@ -41,8 +67,8 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                if (_changes == null)
-                    Commands.Discard.All(_repo.FullPath);
+                if (Mode is DiscardAllMode all)
+                    Commands.Discard.All(_repo.FullPath, all.IncludeIgnored);
                 else
                     Commands.Discard.Changes(_repo.FullPath, _changes);
 

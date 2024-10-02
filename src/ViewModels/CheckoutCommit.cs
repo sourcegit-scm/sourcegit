@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public Models.Commit Commit
         {
             get;
-            private set;
         }
 
         public bool AutoStash
@@ -49,7 +48,7 @@ namespace SourceGit.ViewModels
                     else
                     {
                         SetProgressDescription("Discard local changes ...");
-                        Commands.Discard.All(_repo.FullPath);
+                        Commands.Discard.All(_repo.FullPath, false);
                     }
                 }
 

@@ -5,10 +5,10 @@ namespace SourceGit.Commands
 {
     public static class Discard
     {
-        public static void All(string repo)
+        public static void All(string repo, bool includeIgnored)
         {
             new Restore(repo).Exec();
-            new Clean(repo).Exec();
+            new Clean(repo, includeIgnored).Exec();
         }
 
         public static void Changes(string repo, List<Models.Change> changes)
