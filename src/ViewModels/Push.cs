@@ -137,9 +137,15 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            // Set default remote to the first if haven't been set.
+            // Set default remote to the first if it has not been set.
             if (_selectedRemote == null)
-                _selectedRemote = repo.Remotes[0];
+            {
+                var remote = null as Models.Remote;
+                if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
+                    remote = repo.Remotes.Find(x => x.Name == _repo.Settings.DefaultRemote);
+
+                _selectedRemote = remote ?? repo.Remotes[0];
+            }
 
             // Auto select preferred remote branch.
             AutoSelectBranchByRemote();

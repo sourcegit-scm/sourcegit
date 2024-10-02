@@ -4,6 +4,12 @@ namespace SourceGit.Models
 {
     public class RepositorySettings
     {
+        public string DefaultRemote
+        {
+            get;
+            set;
+        } = string.Empty;
+        
         public DealWithLocalChanges DealWithLocalChangesOnCheckoutBranch
         {
             get;
