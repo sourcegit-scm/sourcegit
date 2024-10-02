@@ -95,7 +95,18 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                _selectedRemote = autoSelectedRemote ?? repo.Remotes[0];
+                if (autoSelectedRemote == null)
+                {
+                    var remote = null as Models.Remote;
+                    if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
+                        remote = _repo.Remotes.Find(x => x.Name == _repo.Settings.DefaultRemote);
+                    _selectedRemote = remote ?? _repo.Remotes[0];
+                }
+                else
+                {
+                    _selectedRemote = autoSelectedRemote;
+                }
+
                 PostRemoteSelected();
                 HasSpecifiedRemoteBranch = false;
             }
@@ -132,7 +143,7 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                var rs = false;
+                bool rs;
                 if (FetchAllBranches)
                 {
                     SetProgressDescription($"Fetching remote: {_selectedRemote.Name}...");
