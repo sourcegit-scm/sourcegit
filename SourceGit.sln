@@ -41,11 +41,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_common", "_common", "{04FD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "usr", "usr", "{76639799-54BC-45E8-BD90-F45F63ACD11D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bin", "bin", "{2E27E952-846B-4D75-A426-D22151277864}"
-	ProjectSection(SolutionItems) = preProject
-		build\resources\_common\usr\bin\sourcegit = build\resources\_common\usr\bin\sourcegit
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "share", "share", "{A3ABAA7C-EE14-4448-B466-6E69C1347E7D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "applications", "applications", "{2AF28D3B-14A8-46A8-B828-157FAAB1B06F}"
