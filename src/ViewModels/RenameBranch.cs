@@ -8,7 +8,6 @@ namespace SourceGit.ViewModels
         public Models.Branch Target
         {
             get;
-            private set;
         }
 
         [Required(ErrorMessage = "Branch name is required!!!")]
@@ -54,8 +53,19 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
+                var oldName = Target.FullName;
                 var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, _name);
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    if (succ && _repo.Settings.Filters.Contains(oldName))
+                    {
+                        _repo.Settings.Filters.Remove(oldName);
+                        _repo.Settings.Filters.Add($"refs/heads/{_name}");
+                    }
+                    
+                    _repo.MarkBranchesDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+                });
                 return succ;
             });
         }

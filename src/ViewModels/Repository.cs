@@ -841,7 +841,7 @@ namespace SourceGit.ViewModels
 
                 if (_settings.Filters.Count != validFilters.Count)
                 {
-                    Dispatcher.UIThread.Post(() =>
+                    Dispatcher.UIThread.Invoke(() =>
                     {
                         _settings.Filters.Clear();
                         _settings.Filters.AddRange(validFilters);
@@ -850,6 +850,9 @@ namespace SourceGit.ViewModels
             }
             else
             {
+                if (_settings.Filters.Count != 0)
+                    Dispatcher.UIThread.Invoke(() => _settings.Filters.Clear());
+                    
                 limits += "--exclude=refs/stash --all";
             }
 
