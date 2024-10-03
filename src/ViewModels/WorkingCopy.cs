@@ -318,9 +318,9 @@ namespace SourceGit.ViewModels
                 return;
 
             if (autoStart)
-                PopupHost.ShowAndStartPopup(new StashChanges(_repo, _cached, true));
+                PopupHost.ShowAndStartPopup(new StashChanges(_repo, _cached, false, true));
             else
-                PopupHost.ShowPopup(new StashChanges(_repo, _cached, true));
+                PopupHost.ShowPopup(new StashChanges(_repo, _cached, false, true));
         }
 
         public void StageSelected(Models.Change next)
@@ -524,7 +524,7 @@ namespace SourceGit.ViewModels
                     {
                         if (PopupHost.CanCreatePopup())
                         {
-                            PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, false));
+                            PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, false, false));
                         }
                         e.Handled = true;
                     };
@@ -843,7 +843,7 @@ namespace SourceGit.ViewModels
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, false));
+                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, false, false));
 
                     e.Handled = true;
                 };
@@ -928,7 +928,7 @@ namespace SourceGit.ViewModels
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, false));
+                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true, false));
 
                     e.Handled = true;
                 };
@@ -1097,7 +1097,7 @@ namespace SourceGit.ViewModels
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, false));
+                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true, false));
 
                     e.Handled = true;
                 };
@@ -1202,20 +1202,16 @@ namespace SourceGit.ViewModels
         private List<Models.Change> GetStagedChanges()
         {
             if (_useAmend)
-            {
                 return new Commands.QueryStagedChangesWithAmend(_repo.FullPath).Result();
-            }
-            else
+            
+            var rs = new List<Models.Change>();
+            foreach (var c in _cached)
             {
-                var rs = new List<Models.Change>();
-                foreach (var c in _cached)
-                {
-                    if (c.Index != Models.ChangeState.None &&
-                        c.Index != Models.ChangeState.Untracked)
-                        rs.Add(c);
-                }
-                return rs;
+                if (c.Index != Models.ChangeState.None &&
+                    c.Index != Models.ChangeState.Untracked)
+                    rs.Add(c);
             }
+            return rs;
         }
 
         private void SetDetail(Models.Change change, bool isUnstaged)

@@ -17,32 +17,45 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool Push(List<Models.Change> changes, string message)
+        public bool Push(List<Models.Change> changes, string message, bool onlyStaged)
         {
             var pathsBuilder = new StringBuilder();
-            var needAdd = new List<Models.Change>();
-            foreach (var c in changes)
-            {
-                pathsBuilder.Append($"\"{c.Path}\" ");
 
-                if (c.WorkTree == Models.ChangeState.Added || c.WorkTree == Models.ChangeState.Untracked)
+            if (onlyStaged)
+            {
+                foreach (var c in changes)
+                    pathsBuilder.Append($"\"{c.Path}\" ");
+                
+                var paths = pathsBuilder.ToString();
+                Args = $"stash push --staged -m \"{message}\" -- {paths}";
+            }
+            else
+            {
+                var needAdd = new List<Models.Change>();
+                foreach (var c in changes)
                 {
-                    needAdd.Add(c);
-                    if (needAdd.Count > 10)
+                    pathsBuilder.Append($"\"{c.Path}\" ");
+
+                    if (c.WorkTree == Models.ChangeState.Added || c.WorkTree == Models.ChangeState.Untracked)
                     {
-                        new Add(WorkingDirectory, needAdd).Exec();
-                        needAdd.Clear();
+                        needAdd.Add(c);
+                        if (needAdd.Count > 10)
+                        {
+                            new Add(WorkingDirectory, needAdd).Exec();
+                            needAdd.Clear();
+                        }
                     }
                 }
+                if (needAdd.Count > 0)
+                {
+                    new Add(WorkingDirectory, needAdd).Exec();
+                    needAdd.Clear();
+                }
+                
+                var paths = pathsBuilder.ToString();
+                Args = $"stash push -m \"{message}\" -- {paths}";
             }
-            if (needAdd.Count > 0)
-            {
-                new Add(WorkingDirectory, needAdd).Exec();
-                needAdd.Clear();
-            }
-
-            var paths = pathsBuilder.ToString();
-            Args = $"stash push -m \"{message}\" -- {paths}";
+            
             return Exec();
         }
 
