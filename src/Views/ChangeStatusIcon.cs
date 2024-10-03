@@ -62,6 +62,7 @@ namespace SourceGit.Views
         ];
 
         private static readonly string[] INDICATOR = ["?", "±", "T", "+", "−", "➜", "❏", "U", "★"];
+        private static readonly string[] TIPS = ["Unknown", "Modified", "Type Changed", "Added", "Deleted", "Renamed", "Copied", "Unmerged", "Untracked" ];
 
         public static readonly StyledProperty<bool> IsUnstagedChangeProperty =
             AvaloniaProperty.Register<ChangeStatusIcon, bool>(nameof(IsUnstagedChange));
@@ -79,11 +80,6 @@ namespace SourceGit.Views
         {
             get => GetValue(ChangeProperty);
             set => SetValue(ChangeProperty, value);
-        }
-
-        static ChangeStatusIcon()
-        {
-            AffectsRender<ChangeStatusIcon>(IsUnstagedChangeProperty, ChangeProperty);
         }
 
         public override void Render(DrawingContext context)
@@ -122,10 +118,33 @@ namespace SourceGit.Views
                 Bounds.Width * 0.8,
                 Brushes.White);
 
-            float corner = (float)Math.Max(2, Bounds.Width / 16);
-            Point textOrigin = new Point((Bounds.Width - txt.Width) * 0.5, (Bounds.Height - txt.Height) * 0.5);
+            var corner = (float)Math.Max(2, Bounds.Width / 16);
+            var textOrigin = new Point((Bounds.Width - txt.Width) * 0.5, (Bounds.Height - txt.Height) * 0.5);
             context.DrawRectangle(background, null, new Rect(0, 0, Bounds.Width, Bounds.Height), corner, corner);
             context.DrawText(txt, textOrigin);
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == IsUnstagedChangeProperty || change.Property == ChangeProperty)
+            {
+                var isUnstaged = IsUnstagedChange;
+                var c = Change;
+                if (c == null)
+                {
+                    ToolTip.SetTip(this, null);
+                    return;
+                }
+
+                if (isUnstaged)
+                    ToolTip.SetTip(this, c.IsConflit ? "Conflict" : TIPS[(int)c.WorkTree]);
+                else
+                    ToolTip.SetTip(this, TIPS[(int)c.Index]);
+                
+                InvalidateVisual();
+            }
         }
     }
 }
