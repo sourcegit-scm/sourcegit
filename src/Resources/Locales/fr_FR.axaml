@@ -441,6 +441,8 @@
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Push Changes To Remote</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Remote Branch:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Set as tracking branch</x:String>
+  <x:String x:Key="Text.Push.IsNewBranch" xml:space="preserve">Nouvelle branche:</x:String>
+  <x:String x:Key="Text.Push.NewBranch" xml:space="preserve">Nouvelle branche</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Push all tags</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">Push Tag To Remote</x:String>
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push to all remotes</x:String>

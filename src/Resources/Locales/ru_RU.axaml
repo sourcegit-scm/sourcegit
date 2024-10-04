@@ -457,6 +457,8 @@
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Выложить изменения на внешнее хранилище</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Ветка внешнего хранилища:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Установить в качестве ветки отслеживания</x:String>
+  <x:String x:Key="Text.Push.IsNewBranch" xml:space="preserve">Новая ветвь: </x:String>
+  <x:String x:Key="Text.Push.NewBranch" xml:space="preserve">Новая ветвь </x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Выложить все теги</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">Выложить тег на внешнее хранилище</x:String>
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Выложить на все внешние хранилища</x:String>

@@ -74,6 +74,17 @@ namespace SourceGit.ViewModels
             set;
         } = true;
 
+        public bool IsNewBranch
+        {
+            get=> _isNewBranch;
+            set=> SetProperty(ref _isNewBranch, value);
+        } 
+        public Models.Branch NewBranch
+        {
+            get => _newBranch;
+            private set => SetProperty(ref _newBranch, value);
+        }
+
         public bool IsCheckSubmodulesVisible
         {
             get => _repo.Submodules.Count > 0;
@@ -152,6 +163,10 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
 
             var remoteBranchName = _selectedRemoteBranch.Name.Replace(" (new)", "");
+            if (_isNewBranch&&!string.IsNullOrEmpty(_newBranch.Name))
+            {
+                remoteBranchName = _newBranch.Name; 
+            }
             ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...";
 
             return Task.Run(() =>
@@ -223,5 +238,7 @@ namespace SourceGit.ViewModels
         private List<Models.Branch> _remoteBranches = new List<Models.Branch>();
         private Models.Branch _selectedRemoteBranch = null;
         private bool _isSetTrackOptionVisible = false;
+        private bool _isNewBranch = false;
+        private Models.Branch _newBranch = new Models.Branch();
     }
 }
