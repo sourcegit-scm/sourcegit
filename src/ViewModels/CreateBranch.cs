@@ -126,6 +126,15 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
+                    if (CheckoutAfterCreated)
+                    {
+                        _repo.AutoAddBranchFilterPostCheckout(new Models.Branch()
+                        {
+                            FullName = $"refs/heads/{_name}",
+                            Upstream = BasedOn is Models.Branch { IsLocal: false } remoteBranch ? remoteBranch.FullName : string.Empty,
+                        });
+                    }
+
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });

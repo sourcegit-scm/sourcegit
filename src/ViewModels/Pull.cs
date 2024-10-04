@@ -140,6 +140,8 @@ namespace SourceGit.ViewModels
                     if (!rs)
                         return false;
 
+                    _repo.MarkFetched();
+
                     // Use merge/rebase instead of pull as fetch is done manually.
                     if (UseRebase)
                     {

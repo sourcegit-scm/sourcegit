@@ -177,7 +177,7 @@
       <v:CommitMessageTextBox Grid.Row="2" Text="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
+      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
         <Button Grid.Column="0"
                 Classes="icon_button"
                 Margin="4,0,0,0" Padding="0"
@@ -185,7 +185,7 @@
                 ToolTip.Tip="{DynamicResource Text.WorkingCopy.CommitMessageHelper}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">
-          <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
+          <Path Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
         </Button>
 
         <Button Grid.Column="1"
@@ -223,19 +223,38 @@
                 Padding="8,0"
                 Command="{Binding Commit}"
                 HotKey="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
-                ToolTip.Tip="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
                 ToolTip.Placement="Top"
-                ToolTip.VerticalOffset="0"/>
-
+                ToolTip.VerticalOffset="0">
+          <ToolTip.Tip>
+            <StackPanel Orientation="Vertical">
+              <TextBlock TextAlignment="Left" TextWrapping="Wrap">
+                <Run Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
+                <Run Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.WorkingCopy.CommitTip}"/>
+              </TextBlock>
+              <TextBlock TextAlignment="Left" TextWrapping="Wrap" Margin="0,4,0,0">
+                <Run Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
+                <Run Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.WorkingCopy.CommitWithAutoStage}"/>
+              </TextBlock>
+            </StackPanel>
+          </ToolTip.Tip>
+        </Button>
+        
+        <!-- Invisible button just to add another hotkey `Ctrl+Shift+Enter` to commit with auto-stage -->
         <Button Grid.Column="7"
+                Width="0" Height="0"
+                Background="Transparent"
+                Command="{Binding CommitWithAutoStage}"
+                HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"/>
+
+        <Button Grid.Column="8"
                 Classes="flat"
                 Content="{DynamicResource Text.WorkingCopy.CommitAndPush}"
                 Height="28"
                 Margin="8,0,0,0"
                 Padding="8,0"
                 Command="{Binding CommitWithPush}"
-                HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"
-                ToolTip.Tip="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"
+                HotKey="Alt+Enter"
+                ToolTip.Tip="{OnPlatform Alt+Enter, macOS=⌥+Enter}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0"
                 IsVisible="{Binding IsCommitWithPushVisible}"/>

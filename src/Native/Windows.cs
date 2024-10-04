@@ -201,9 +201,9 @@ namespace SourceGit.Native
 
         private void FixWindowFrameOnWin10(Window w)
         {
-            if (w.WindowState != WindowState.Normal)
+            if (w.WindowState == WindowState.Maximized || w.WindowState == WindowState.FullScreen)
                 w.SystemDecorations = SystemDecorations.Full;
-            else
+            else if (w.WindowState == WindowState.Normal)
                 w.SystemDecorations = SystemDecorations.BorderOnly;
         }
 

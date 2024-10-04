@@ -321,6 +321,9 @@ namespace SourceGit.ViewModels
             menu.Items.Add(resetToFirstParent);
             menu.Items.Add(new MenuItem { Header = "-" });
 
+            if (File.Exists(Path.Combine(fullPath)))
+                TryToAddContextMenuItemsForGitLFS(menu, change.Path);
+
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -346,6 +349,7 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateRevisionFileContextMenu(Models.Object file)
         {
+            var menu = new ContextMenu();
             var fullPath = Path.Combine(_repo.FullPath, file.Path);
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
@@ -385,6 +389,10 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            menu.Items.Add(explore);
+            menu.Items.Add(saveAs);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
             var history = new MenuItem();
             history.Header = App.Text("FileHistory");
             history.Icon = App.CreateMenuIcon("Icons.Histories");
@@ -405,6 +413,10 @@ namespace SourceGit.ViewModels
                 window.Show();
                 ev.Handled = true;
             };
+
+            menu.Items.Add(history);
+            menu.Items.Add(blame);
+            menu.Items.Add(new MenuItem() { Header = "-" });
 
             var resetToThisRevision = new MenuItem();
             resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
@@ -428,6 +440,13 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            menu.Items.Add(resetToThisRevision);
+            menu.Items.Add(resetToFirstParent);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            if (File.Exists(Path.Combine(fullPath)))
+                TryToAddContextMenuItemsForGitLFS(menu, file.Path);
+
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -446,16 +465,6 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
 
-            var menu = new ContextMenu();
-            menu.Items.Add(explore);
-            menu.Items.Add(saveAs);
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(history);
-            menu.Items.Add(blame);
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(resetToThisRevision);
-            menu.Items.Add(resetToFirstParent);
-            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copyPath);
             menu.Items.Add(copyFileName);
             return menu;
@@ -530,6 +539,90 @@ namespace SourceGit.ViewModels
 
                 VisibleChanges = visible;
             }
+        }
+
+        private void TryToAddContextMenuItemsForGitLFS(ContextMenu menu, string path)
+        {
+            var lfsEnabled = new Commands.LFS(_repo.FullPath).IsEnabled();
+            if (!lfsEnabled)
+                return;
+
+            var lfs = new MenuItem();
+            lfs.Header = App.Text("GitLFS");
+            lfs.Icon = App.CreateMenuIcon("Icons.LFS");
+
+            var lfsLock = new MenuItem();
+            lfsLock.Header = App.Text("GitLFS.Locks.Lock");
+            lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
+            lfsLock.IsEnabled = _repo.Remotes.Count > 0;
+            if (_repo.Remotes.Count == 1)
+            {
+                lfsLock.Click += async (_, e) =>
+                {
+                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, path));
+                    if (succ)
+                        App.SendNotification(_repo.FullPath, $"Lock file \"{path}\" successfully!");
+
+                    e.Handled = true;
+                };
+            }
+            else
+            {
+                foreach (var remote in _repo.Remotes)
+                {
+                    var remoteName = remote.Name;
+                    var lockRemote = new MenuItem();
+                    lockRemote.Header = remoteName;
+                    lockRemote.Click += async (_, e) =>
+                    {
+                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, path));
+                        if (succ)
+                            App.SendNotification(_repo.FullPath, $"Lock file \"{path}\" successfully!");
+
+                        e.Handled = true;
+                    };
+                    lfsLock.Items.Add(lockRemote);
+                }
+            }
+            lfs.Items.Add(lfsLock);
+
+            var lfsUnlock = new MenuItem();
+            lfsUnlock.Header = App.Text("GitLFS.Locks.Unlock");
+            lfsUnlock.Icon = App.CreateMenuIcon("Icons.Unlock");
+            lfsUnlock.IsEnabled = _repo.Remotes.Count > 0;
+            if (_repo.Remotes.Count == 1)
+            {
+                lfsUnlock.Click += async (_, e) =>
+                {
+                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, path, false));
+                    if (succ)
+                        App.SendNotification(_repo.FullPath, $"Unlock file \"{path}\" successfully!");
+
+                    e.Handled = true;
+                };
+            }
+            else
+            {
+                foreach (var remote in _repo.Remotes)
+                {
+                    var remoteName = remote.Name;
+                    var unlockRemote = new MenuItem();
+                    unlockRemote.Header = remoteName;
+                    unlockRemote.Click += async (_, e) =>
+                    {
+                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, path, false));
+                        if (succ)
+                            App.SendNotification(_repo.FullPath, $"Unlock file \"{path}\" successfully!");
+
+                        e.Handled = true;
+                    };
+                    lfsUnlock.Items.Add(unlockRemote);
+                }
+            }
+            lfs.Items.Add(lfsUnlock);
+
+            menu.Items.Add(lfs);
+            menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
         [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]

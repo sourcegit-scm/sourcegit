@@ -42,6 +42,26 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _httpProxy, value);
         }
 
+        public bool EnableAutoFetch
+        {
+            get => _repo.Settings.EnableAutoFetch;
+            set => _repo.Settings.EnableAutoFetch = value;
+        }
+
+        public int? AutoFetchInterval
+        {
+            get => _repo.Settings.AutoFetchInterval;
+            set
+            {
+                if (value is null || value < 1)
+                    return;
+
+                var interval = (int)value;
+                if (_repo.Settings.AutoFetchInterval != interval)
+                    _repo.Settings.AutoFetchInterval = interval;
+            }
+        }
+
         public AvaloniaList<Models.CommitTemplate> CommitTemplates
         {
             get => _repo.Settings.CommitTemplates;

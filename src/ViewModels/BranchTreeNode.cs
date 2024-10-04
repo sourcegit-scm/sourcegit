@@ -15,9 +15,14 @@ namespace SourceGit.ViewModels
         public string Name { get; private set; } = string.Empty;
         public object Backend { get; private set; } = null;
         public int Depth { get; set; } = 0;
-        public bool IsFiltered { get; set; } = false;
         public bool IsSelected { get; set; } = false;
         public List<BranchTreeNode> Children { get; private set; } = new List<BranchTreeNode>();
+
+        public bool IsFiltered
+        {
+            get => _isFiltered;
+            set => SetProperty(ref _isFiltered, value);
+        }
 
         public bool IsExpanded
         {
@@ -46,6 +51,7 @@ namespace SourceGit.ViewModels
             get => Backend is Models.Branch b ? b.FriendlyName : null;
         }
 
+        private bool _isFiltered = false;
         private bool _isExpanded = false;
         private CornerRadius _cornerRadius = new CornerRadius(4);
 

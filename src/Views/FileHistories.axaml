@@ -87,6 +87,7 @@
                   <TextBlock Grid.Column="2"
                              Classes="primary"
                              Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                             Cursor="Hand"
                              Background="Transparent"
                              Foreground="DarkOrange"
                              TextDecorations="Underline"
@@ -115,75 +116,19 @@
                      IsVisible="{Binding IsLoading}"/>
 
       <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto" IsVisible="{Binding !IsLoading}">
-        <ListBox Grid.Row="0"
-                 Margin="0,8"
-                 SelectedIndex="{Binding ViewMode, Mode=TwoWay}"
-                 HorizontalAlignment="Center"
-                 VerticalAlignment="Center"
-                 Background="Transparent"
-                 BorderThickness="1"
-                 BorderBrush="{DynamicResource Brush.Border2}"
-                 CornerRadius="14"
-                 Padding="3,0">
-          <ListBox.ItemsPanel>
-            <ItemsPanelTemplate>
-              <StackPanel Orientation="Horizontal"/>
-            </ItemsPanelTemplate>
-          </ListBox.ItemsPanel>
+        <StackPanel Grid.Row="0" Margin="0,8" Height="28" HorizontalAlignment="Center" Orientation="Horizontal">
+          <RadioButton Classes="switch_button"
+                       GroupName="SearchGroup"
+                       IsChecked="{Binding !IsViewContent, Mode=OneWay}">
+            <TextBlock Margin="16,0" Text="{DynamicResource Text.FileHistory.FileChange}" FontWeight="Bold"/>
+          </RadioButton>
 
-          <ListBox.Styles>
-            <Style Selector="ListBoxItem">
-              <Setter Property="Height" Value="28"/>
-              <Setter Property="Padding" Value="0"/>
-              <Setter Property="Background" Value="Transparent"/>
-            </Style>
-
-            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-              <Setter Property="Background" Value="Transparent"/>
-            </Style>
-
-            <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-              <Setter Property="Background" Value="Transparent"/>
-            </Style>
-
-            <Style Selector="ListBoxItem Border.switcher_bg">
-              <Setter Property="Height" Value="22"/>
-              <Setter Property="CornerRadius" Value="11"/>
-              <Setter Property="Background" Value="Transparent"/>
-              <Setter Property="VerticalAlignment" Value="Center"/>
-              <Setter Property="Padding" Value="16,0"/>
-            </Style>
-
-            <Style Selector="ListBoxItem:selected Border.switcher_bg">
-              <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
-            </Style>
-
-            <Style Selector="TextBlock.view_mode_switcher">
-              <Setter Property="FontWeight" Value="Bold"/>
-              <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
-            </Style>
-
-            <Style Selector="ListBoxItem:pointerover TextBlock.view_mode_switcher">
-              <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
-            </Style>
-
-            <Style Selector="ListBoxItem:selected TextBlock.view_mode_switcher">
-              <Setter Property="Foreground" Value="White"/>
-            </Style>
-          </ListBox.Styles>
-
-          <ListBoxItem>
-            <Border Classes="switcher_bg">
-              <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.FileHistory.FileChange}"/>
-            </Border>
-          </ListBoxItem>
-
-          <ListBoxItem>
-            <Border Classes="switcher_bg">
-              <TextBlock Classes="view_mode_switcher" Text="{DynamicResource Text.FileHistory.FileContent}"/>
-            </Border>
-          </ListBoxItem>
-        </ListBox>
+          <RadioButton Classes="switch_button"
+                       GroupName="SearchGroup"
+                       IsChecked="{Binding IsViewContent, Mode=TwoWay}">
+            <TextBlock Margin="16,0" Text="{DynamicResource Text.FileHistory.FileContent}" FontWeight="Bold"/>
+          </RadioButton>
+        </StackPanel>
         
         <ContentControl Grid.Row="1" Margin="4,4,8,8" Content="{Binding ViewContent}">
           <ContentControl.DataTemplates>

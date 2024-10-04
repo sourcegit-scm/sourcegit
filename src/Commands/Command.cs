@@ -40,59 +40,7 @@ namespace SourceGit.Commands
 
         public bool Exec()
         {
-            var start = new ProcessStartInfo();
-            start.FileName = Native.OS.GitExecutable;
-            start.Arguments = "--no-pager -c core.quotepath=off ";
-            start.UseShellExecute = false;
-            start.CreateNoWindow = true;
-            start.RedirectStandardOutput = true;
-            start.RedirectStandardError = true;
-            start.StandardOutputEncoding = Encoding.UTF8;
-            start.StandardErrorEncoding = Encoding.UTF8;
-
-            // Force using this app as SSH askpass program
-            var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;
-            if (!OperatingSystem.IsLinux())
-                start.Environment.Add("DISPLAY", "required");
-            start.Environment.Add("SSH_ASKPASS", selfExecFile); // Can not use parameter here, because it invoked by SSH with `exec`
-            start.Environment.Add("SSH_ASKPASS_REQUIRE", "prefer");
-
-            // If an SSH private key was provided, sets the environment.
-            if (!string.IsNullOrEmpty(SSHKey))
-            {
-                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new -i '{SSHKey}'");
-            }
-            else
-            {
-                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new");
-                start.Arguments += "-c credential.helper=manager ";
-            }
-
-            // Force using en_US.UTF-8 locale to avoid GCM crash
-            if (OperatingSystem.IsLinux())
-                start.Environment.Add("LANG", "en_US.UTF-8");
-
-            // Force using this app as git editor.
-            switch (Editor)
-            {
-                case EditorType.CoreEditor:
-                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --core-editor\" ";
-                    break;
-                case EditorType.RebaseEditor:
-                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --rebase-message-editor\" -c sequence.editor=\"\\\"{selfExecFile}\\\" --rebase-todo-editor\" -c rebase.abbreviateCommands=true ";
-                    break;
-                default:
-                    start.Arguments += "-c core.editor=true ";
-                    break;
-            }
-
-            // Append command args
-            start.Arguments += Args;
-
-            // Working directory
-            if (!string.IsNullOrEmpty(WorkingDirectory))
-                start.WorkingDirectory = WorkingDirectory;
-
+            var start = CreateGitStartInfo();
             var errs = new List<string>();
             var proc = new Process() { StartInfo = start };
             var isCancelled = false;
@@ -178,28 +126,15 @@ namespace SourceGit.Commands
                 }
                 return false;
             }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
 
         public ReadToEndResult ReadToEnd()
         {
-            var start = new ProcessStartInfo();
-            start.FileName = Native.OS.GitExecutable;
-            start.Arguments = "--no-pager -c core.quotepath=off " + Args;
-            start.UseShellExecute = false;
-            start.CreateNoWindow = true;
-            start.RedirectStandardOutput = true;
-            start.RedirectStandardError = true;
-            start.StandardOutputEncoding = Encoding.UTF8;
-            start.StandardErrorEncoding = Encoding.UTF8;
-
-            if (!string.IsNullOrEmpty(WorkingDirectory))
-                start.WorkingDirectory = WorkingDirectory;
-
+            var start = CreateGitStartInfo();
             var proc = new Process() { StartInfo = start };
+
             try
             {
                 proc.Start();
@@ -227,7 +162,68 @@ namespace SourceGit.Commands
             return rs;
         }
 
-        protected virtual void OnReadline(string line) { }
+        protected virtual void OnReadline(string line)
+        {
+            // Implemented by derived class
+        }
+
+        private ProcessStartInfo CreateGitStartInfo()
+        {
+            var start = new ProcessStartInfo();
+            start.FileName = Native.OS.GitExecutable;
+            start.Arguments = "--no-pager -c core.quotepath=off -c credential.helper=manager ";
+            start.UseShellExecute = false;
+            start.CreateNoWindow = true;
+            start.RedirectStandardOutput = true;
+            start.RedirectStandardError = true;
+            start.StandardOutputEncoding = Encoding.UTF8;
+            start.StandardErrorEncoding = Encoding.UTF8;
+
+            // Force using this app as SSH askpass program
+            var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;
+            if (!OperatingSystem.IsLinux())
+                start.Environment.Add("DISPLAY", "required");
+            start.Environment.Add("SSH_ASKPASS", selfExecFile); // Can not use parameter here, because it invoked by SSH with `exec`
+            start.Environment.Add("SSH_ASKPASS_REQUIRE", "prefer");
+            start.Environment.Add("SOURCEGIT_LAUNCH_AS_ASKPASS", "TRUE");
+
+            // If an SSH private key was provided, sets the environment.
+            if (!string.IsNullOrEmpty(SSHKey))
+                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new -i '{SSHKey}'");
+            else
+                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new");
+
+            // Force using en_US.UTF-8 locale to avoid GCM crash
+            if (OperatingSystem.IsLinux())
+                start.Environment.Add("LANG", "en_US.UTF-8");
+
+            // Fix sometimes `LSEnvironment` not working on macOS
+            if (OperatingSystem.IsMacOS())
+                start.Environment.Add("PATH", "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin");
+
+            // Force using this app as git editor.
+            switch (Editor)
+            {
+                case EditorType.CoreEditor:
+                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --core-editor\" ";
+                    break;
+                case EditorType.RebaseEditor:
+                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --rebase-message-editor\" -c sequence.editor=\"\\\"{selfExecFile}\\\" --rebase-todo-editor\" -c rebase.abbreviateCommands=true ";
+                    break;
+                default:
+                    start.Arguments += "-c core.editor=true ";
+                    break;
+            }
+
+            // Append command args
+            start.Arguments += Args;
+
+            // Working directory
+            if (!string.IsNullOrEmpty(WorkingDirectory))
+                start.WorkingDirectory = WorkingDirectory;
+
+            return start;
+        }
 
         [GeneratedRegex(@"\d+%")]
         private static partial Regex REG_PROGRESS();

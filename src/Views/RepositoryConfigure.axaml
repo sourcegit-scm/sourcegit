@@ -51,7 +51,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -106,6 +106,26 @@
           <CheckBox Grid.Row="5" Grid.Column="1"
                     Content="{DynamicResource Text.Preference.GPG.TagEnabled}"
                     IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
+
+          <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+            <CheckBox x:Name="AutoFetchCheckBox"
+                      Content="{DynamicResource Text.Configure.Git.AutoFetch}"
+                      IsChecked="{Binding EnableAutoFetch, Mode=TwoWay}"/>
+
+            <NumericUpDown Minimum="1" Maximum="60" Increment="1"
+                           Height="26" Width="110"
+                           Margin="8,0,0,0" Padding="4"
+                           BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                           CornerRadius="3"
+                           ParsingNumberStyle="Integer"
+                           FormatString="0"
+                           Value="{Binding AutoFetchInterval, Mode=TwoWay, FallbackValue=10}"
+                           IsEnabled="{Binding #AutoFetchCheckBox.IsChecked}"/>
+
+            <TextBlock VerticalAlignment="Center"
+                       Margin="5,0,0,0"
+                       Text="{DynamicResource Text.Configure.Git.AutoFetchIntervalSuffix}" />
+          </StackPanel>
         </Grid>
       </TabItem>
 
@@ -186,7 +206,11 @@
                   <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CommitMessageTemplate.Content}"/>
-                  <v:CommitMessageTextBox Height="150" Text="{Binding Content, Mode=TwoWay}"/>
+                  <v:CommitMessageTextBox Margin="0,4,0,0" Height="100" Text="{Binding Content, Mode=TwoWay}"/>
+                  <TextBlock Margin="0,2,0,0"
+                             Text="You can use ${files_num}, ${files} and ${files:N} where N is the max number of file paths to output."
+                             Foreground="{DynamicResource Brush.FG2}"
+                             TextWrapping="Wrap"/>
                 </StackPanel>
               </DataTemplate>
             </ContentControl.DataTemplates>

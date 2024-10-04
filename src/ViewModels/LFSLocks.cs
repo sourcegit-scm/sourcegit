@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
-using Avalonia.Collections;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -9,40 +9,49 @@ namespace SourceGit.ViewModels
 {
     public class LFSLocks : ObservableObject
     {
+        public bool HasValidUserName
+        {
+            get;
+            private set;
+        } = false;
+
         public bool IsLoading
         {
             get => _isLoading;
             private set => SetProperty(ref _isLoading, value);
         }
 
-        public bool IsEmpty
+        public bool ShowOnlyMyLocks
         {
-            get => _isEmpty;
-            private set => SetProperty(ref _isEmpty, value);
+            get => _showOnlyMyLocks;
+            set
+            {
+                if (SetProperty(ref _showOnlyMyLocks, value))
+                    UpdateVisibleLocks();
+            }
         }
 
-        public AvaloniaList<Models.LFSLock> Locks
+        public List<Models.LFSLock> VisibleLocks
         {
-            get;
-            private set;
+            get => _visibleLocks;
+            private set => SetProperty(ref _visibleLocks, value);
         }
 
         public LFSLocks(string repo, string remote)
         {
             _repo = repo;
             _remote = remote;
-            Locks = new AvaloniaList<Models.LFSLock>();
+            _userName = new Commands.Config(repo).Get("user.name");
+
+            HasValidUserName = !string.IsNullOrEmpty(_userName);
 
             Task.Run(() =>
             {
-                var collect = new Commands.LFS(_repo).Locks(_remote);
+                _cachedLocks = new Commands.LFS(_repo).Locks(_remote);
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    if (collect.Count > 0)
-                        Locks.AddRange(collect);
-
+                    UpdateVisibleLocks();
                     IsLoading = false;
-                    IsEmpty = collect.Count == 0;
                 });
             });
         }
@@ -59,17 +68,41 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (succ)
-                        Locks.Remove(lfsLock);
+                    {
+                        _cachedLocks.Remove(lfsLock);
+                        UpdateVisibleLocks();
+                    }
 
                     IsLoading = false;
-                    IsEmpty = Locks.Count == 0;
                 });
             });
+        }
+
+        private void UpdateVisibleLocks()
+        {
+            if (!_showOnlyMyLocks)
+            {
+                VisibleLocks = _cachedLocks;
+            }
+            else
+            {
+                var visible = new List<Models.LFSLock>();
+                foreach (var lfsLock in _cachedLocks)
+                {
+                    if (lfsLock.User == _userName)
+                        visible.Add(lfsLock);
+                }
+
+                VisibleLocks = visible;
+            }
         }
 
         private string _repo;
         private string _remote;
         private bool _isLoading = true;
-        private bool _isEmpty = false;
+        private List<Models.LFSLock> _cachedLocks = [];
+        private List<Models.LFSLock> _visibleLocks = [];
+        private bool _showOnlyMyLocks = false;
+        private string _userName;
     }
 }

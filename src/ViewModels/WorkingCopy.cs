@@ -240,11 +240,6 @@ namespace SourceGit.ViewModels
             _cached = changes;
             _count = _cached.Count;
 
-            var unstaged = new List<Models.Change>();
-            var staged = new List<Models.Change>();
-            var selectedUnstaged = new List<Models.Change>();
-            var selectedStaged = new List<Models.Change>();
-
             var lastSelectedUnstaged = new HashSet<string>();
             var lastSelectedStaged = new HashSet<string>();
             if (_selectedUnstaged != null && _selectedUnstaged.Count > 0)
@@ -258,6 +253,8 @@ namespace SourceGit.ViewModels
                     lastSelectedStaged.Add(c.Path);
             }
 
+            var unstaged = new List<Models.Change>();
+            var selectedUnstaged = new List<Models.Change>();
             var hasConflict = false;
             foreach (var c in changes)
             {
@@ -271,7 +268,8 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            staged = GetStagedChanges();
+            var staged = GetStagedChanges();
+            var selectedStaged = new List<Models.Change>();
             foreach (var c in staged)
             {
                 if (lastSelectedStaged.Contains(c.Path))
@@ -418,12 +416,17 @@ namespace SourceGit.ViewModels
 
         public void Commit()
         {
-            DoCommit(false);
+            DoCommit(AutoStageBeforeCommit, false);
+        }
+
+        public void CommitWithAutoStage()
+        {
+            DoCommit(true, false);
         }
 
         public void CommitWithPush()
         {
-            DoCommit(true);
+            DoCommit(AutoStageBeforeCommit, true);
         }
 
         public ContextMenu CreateContextMenuForUnstagedChanges()
@@ -1276,7 +1279,7 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(true);
         }
 
-        private void DoCommit(bool autoPush)
+        private void DoCommit(bool autoStage, bool autoPush)
         {
             if (!PopupHost.CanCreatePopup())
             {
@@ -1290,7 +1293,6 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var autoStage = AutoStageBeforeCommit;
             if (!_useAmend)
             {
                 if (autoStage)

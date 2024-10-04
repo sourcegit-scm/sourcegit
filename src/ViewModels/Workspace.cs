@@ -51,12 +51,6 @@ namespace SourceGit.ViewModels
             get => new SolidColorBrush(_color);
         }
 
-        public void AddRepository(string repo)
-        {
-            if (!Repositories.Contains(repo))
-                Repositories.Add(repo);
-        }
-
         private string _name = string.Empty;
         private uint _color = 4278221015;
         private bool _isActive = false;

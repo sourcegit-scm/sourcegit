@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -209,6 +210,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isSearchLoadingVisible, value);
         }
 
+        public bool OnlySearchCommitsInCurrentBranch
+        {
+            get => _onlySearchCommitsInCurrentBranch;
+            set => SetProperty(ref _onlySearchCommitsInCurrentBranch, value);
+        }
+
         public int SearchCommitFilterType
         {
             get => _searchCommitFilterType;
@@ -323,6 +330,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool IsAutoFetching
+        {
+            get;
+            private set;
+        }
+
         public void Open()
         {
             var settingsFile = Path.Combine(_gitDir, "sourcegit.settings");
@@ -359,6 +372,7 @@ namespace SourceGit.ViewModels
             _inProgressContext = null;
             _hasUnsolvedConflicts = false;
 
+            _autoFetchTimer = new Timer(AutoFetchImpl, null, 5000, 5000);
             RefreshAll();
         }
 
@@ -376,6 +390,9 @@ namespace SourceGit.ViewModels
                 // Ignore
             }
             _settings = null;
+
+            _autoFetchTimer.Dispose();
+            _autoFetchTimer = null;
 
             _watcher?.Dispose();
             _histories.Cleanup();
@@ -578,13 +595,13 @@ namespace SourceGit.ViewModels
                             visible.Add(commit);
                         break;
                     case 1:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByUser).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByUser, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                     case 2:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                     case 3:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByFile).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByFile, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                 }
 
@@ -628,6 +645,11 @@ namespace SourceGit.ViewModels
                 _watcher.MarkWorkingCopyDirtyManually();
         }
 
+        public void MarkFetched()
+        {
+            _lastFetchTime = DateTime.Now;
+        }
+
         public void NavigateToCommit(string sha)
         {
             if (_histories != null)
@@ -643,20 +665,49 @@ namespace SourceGit.ViewModels
                 NavigateToCommit(_currentBranch.Head);
         }
 
-        public void UpdateFilter(string filter, bool toggle)
+        public void AutoAddBranchFilterPostCheckout(Models.Branch local)
+        {
+            if (_settings.Filters.Count == 0 || _settings.Filters.Contains(local.FullName))
+                return;
+
+            var hasLeft = false;
+            foreach (var b in _branches)
+            {
+                if (!b.FullName.Equals(local.FullName, StringComparison.Ordinal) &&
+                    !b.FullName.Equals(local.Upstream, StringComparison.Ordinal) &&
+                    !_settings.Filters.Contains(b.FullName))
+                {
+                    hasLeft = true;
+                    break;
+                }
+            }
+
+            if (!hasLeft)
+                _settings.Filters.Clear();
+            else if (string.IsNullOrEmpty(local.Upstream) || _settings.Filters.Contains(local.Upstream))
+                _settings.Filters.Add(local.FullName);
+            else
+                _settings.Filters.AddRange([local.FullName, local.Upstream]);
+        }
+
+        public void UpdateFilters(List<string> filters, bool toggle)
         {
             var changed = false;
             if (toggle)
             {
-                if (!_settings.Filters.Contains(filter))
+                foreach (var filter in filters)
                 {
-                    _settings.Filters.Add(filter);
-                    changed = true;
+                    if (!_settings.Filters.Contains(filter))
+                    {
+                        _settings.Filters.Add(filter);
+                        changed = true;
+                    }
                 }
             }
             else
             {
-                changed = _settings.Filters.Remove(filter);
+                foreach (var filter in filters)
+                    changed |= _settings.Filters.Remove(filter);
             }
 
             if (changed)
@@ -837,32 +888,14 @@ namespace SourceGit.ViewModels
             var hasUnsolvedConflict = _workingCopy.SetData(changes);
             var inProgress = null as InProgressContext;
 
-            var rebaseMergeFolder = Path.Combine(_gitDir, "rebase-merge");
-            var rebaseApplyFolder = Path.Combine(_gitDir, "rebase-apply");
             if (File.Exists(Path.Combine(_gitDir, "CHERRY_PICK_HEAD")))
-            {
                 inProgress = new CherryPickInProgress(_fullpath);
-            }
-            else if (File.Exists(Path.Combine(_gitDir, "REBASE_HEAD")) && Directory.Exists(rebaseMergeFolder))
-            {
+            else if (File.Exists(Path.Combine(_gitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_gitDir, "rebase-merge")))
                 inProgress = new RebaseInProgress(this);
-            }
             else if (File.Exists(Path.Combine(_gitDir, "REVERT_HEAD")))
-            {
                 inProgress = new RevertInProgress(_fullpath);
-            }
             else if (File.Exists(Path.Combine(_gitDir, "MERGE_HEAD")))
-            {
                 inProgress = new MergeInProgress(_fullpath);
-            }
-            else
-            {
-                if (Directory.Exists(rebaseMergeFolder))
-                    Directory.Delete(rebaseMergeFolder, true);
-
-                if (Directory.Exists(rebaseApplyFolder))
-                    Directory.Delete(rebaseApplyFolder, true);
-            }
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -2005,6 +2038,28 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private void AutoFetchImpl(object sender)
+        {
+            if (!_settings.EnableAutoFetch || IsAutoFetching)
+                return;
+
+            var lockFile = Path.Combine(_gitDir, "index.lock");
+            if (File.Exists(lockFile))
+                return;
+
+            var now = DateTime.Now;
+            var desire = _lastFetchTime.AddMinutes(_settings.AutoFetchInterval);
+            if (desire > now)
+                return;
+
+            IsAutoFetching = true;
+            Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
+            new Commands.Fetch(_fullpath, "--all", true, false, null) { RaiseError = false }.Exec();
+            _lastFetchTime = DateTime.Now;
+            IsAutoFetching = false;
+            Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
+        }
+
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.RepositorySettings _settings = null;
@@ -2023,6 +2078,7 @@ namespace SourceGit.ViewModels
         private bool _isSearchLoadingVisible = false;
         private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 2;
+        private bool _onlySearchCommitsInCurrentBranch = false;
         private bool _enableFirstParentInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
@@ -2050,5 +2106,8 @@ namespace SourceGit.ViewModels
         private InProgressContext _inProgressContext = null;
         private bool _hasUnsolvedConflicts = false;
         private Models.Commit _searchResultSelectedCommit = null;
+
+        private Timer _autoFetchTimer = null;
+        private DateTime _lastFetchTime = DateTime.MinValue;
     }
 }

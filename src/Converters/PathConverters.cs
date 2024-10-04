@@ -18,7 +18,7 @@ namespace SourceGit.Converters
             {
                 if (OperatingSystem.IsWindows())
                     return v;
-                
+
                 var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
                 if (v.StartsWith(home, StringComparison.Ordinal))

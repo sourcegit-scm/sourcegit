@@ -9,9 +9,9 @@
              x:DataType="vm:CommitDetail">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.CommitDetailFilesLeftWidth, Mode=TwoWay}" MinWidth="200" MaxWidth="480"/>
+      <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.CommitDetailFilesLeftWidth, Mode=TwoWay}" MinWidth="200"/>
       <ColumnDefinition Width="4"/>
-      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*" MinWidth="100"/>
     </Grid.ColumnDefinitions>
 
     <!-- File Tree -->

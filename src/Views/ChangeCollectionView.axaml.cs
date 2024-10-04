@@ -41,7 +41,7 @@ namespace SourceGit.Views
                     e.Handled = true;
                 }
             }
-            
+
             if (!e.Handled && e.Key != Key.Space)
                 base.OnKeyDown(e);
         }
@@ -166,10 +166,10 @@ namespace SourceGit.Views
                         {
                             if (lastUnselected == -1)
                                 continue;
-                            
+
                             break;
                         }
-                        
+
                         lastUnselected = i;
                     }
                 }
@@ -186,10 +186,10 @@ namespace SourceGit.Views
                     {
                         if (lastUnselected == -1)
                             continue;
-                        
+
                         break;
                     }
-                    
+
                     lastUnselected = i;
                 }
 
@@ -244,7 +244,7 @@ namespace SourceGit.Views
             _disableSelectionChangingEvent = true;
 
             var selected = new List<Models.Change>();
-            if (sender is ListBox { SelectedItems: {} selectedItems })
+            if (sender is ListBox { SelectedItems: { } selectedItems })
             {
                 foreach (var item in selectedItems)
                 {

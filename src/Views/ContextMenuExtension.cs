@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-
 using Avalonia.Controls;
 
 namespace SourceGit.Views
@@ -15,7 +14,7 @@ namespace SourceGit.Views
             menu.Closing += OnContextMenuClosing; // Clear context menu because it is dynamic.
 
             control.ContextMenu = menu;
-            control.ContextMenu.Open();
+            control.ContextMenu?.Open();
         }
 
         private static void OnContextMenuClosing(object sender, CancelEventArgs e)

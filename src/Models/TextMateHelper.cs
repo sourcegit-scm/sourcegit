@@ -38,7 +38,7 @@ namespace SourceGit.Models
                 extension = ".sh";
             else if (extension == ".kt" || extension == ".kts")
                 extension = ".kotlin";
-            
+
             foreach (var grammar in s_extraGrammars)
             {
                 if (grammar.Extension.Equals(extension, StringComparison.OrdinalIgnoreCase))
@@ -87,7 +87,7 @@ namespace SourceGit.Models
         public ICollection<string> GetInjections(string scopeName) => _backend.GetInjections(scopeName);
         public IRawGrammar GetGrammar(string scopeName) => GrammarUtility.GetGrammar(scopeName, _backend);
         public string GetScope(string filename) => GrammarUtility.GetScope(filename, _backend);
-        
+
         private readonly RegistryOptions _backend = new(defaultTheme);
     }
 
@@ -95,8 +95,8 @@ namespace SourceGit.Models
     {
         public static TextMate.Installation CreateForEditor(TextEditor editor)
         {
-            return editor.InstallTextMate(Application.Current?.ActualThemeVariant == ThemeVariant.Dark ? 
-                new RegistryOptionsWrapper(ThemeName.DarkPlus) : 
+            return editor.InstallTextMate(Application.Current?.ActualThemeVariant == ThemeVariant.Dark ?
+                new RegistryOptionsWrapper(ThemeName.DarkPlus) :
                 new RegistryOptionsWrapper(ThemeName.LightPlus));
         }
 
