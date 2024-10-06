@@ -12,10 +12,19 @@
                Classes="bold"
                Text="{DynamicResource Text.Discard}"/>
     
+    <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+      <Path Width="14" Height="14" 
+            Data="{StaticResource Icons.Error}" 
+            Fill="DarkOrange"/>
+      <TextBlock Margin="4,0,0,0"
+                 Text="{DynamicResource Text.Discard.Warning}"
+                 Foreground="{DynamicResource Brush.FG2}"/>
+    </StackPanel>
+    
     <ContentControl Margin="0,16,0,8" Content="{Binding Mode}">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="vm:DiscardAllMode">
-          <Grid RowDefinitions="Auto,Auto,36" ColumnDefinitions="120,*">
+          <Grid RowDefinitions="32,32" ColumnDefinitions="120,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Margin="0,0,8,0"
                        HorizontalAlignment="Right"
@@ -26,51 +35,33 @@
             <CheckBox Grid.Row="1" Grid.Column="1"
                       Content="{DynamicResource Text.Discard.IncludeIgnored}"
                       IsChecked="{Binding IncludeIgnored, Mode=TwoWay}"/>
-            
-            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-              <Path Width="14" Height="14" 
-                    Data="{StaticResource Icons.Error}" 
-                    Fill="DarkOrange"/>
-              <TextBlock Margin="4,0,0,0"
-                         Text="{DynamicResource Text.Discard.Warning}"
-                         Foreground="{DynamicResource Brush.FG2}"/>
-            </StackPanel>
           </Grid>
         </DataTemplate>
         
         <DataTemplate DataType="vm:DiscardSingleFile">
-          <Grid RowDefinitions="32,32" ColumnDefinitions="120,*">
-            <TextBlock Grid.Row="0" Grid.Column="0"
+          <Grid Height="32" ColumnDefinitions="120,*">
+            <TextBlock Grid.Column="0"
                        Margin="0,0,8,0"
                        HorizontalAlignment="Right"
                        Text="{DynamicResource Text.Discard.Changes}"/>
-            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
               <TextBlock Text="{Binding Path}" Margin="4,0,0,0"/>
             </StackPanel>
-            
-            <TextBlock Grid.Row="1" Grid.Column="1" 
-                       VerticalAlignment="Center"
-                       Text="{DynamicResource Text.Discard.Warning}"
-                       Foreground="{DynamicResource Brush.FG2}"/>
           </Grid>
         </DataTemplate>
         
         <DataTemplate DataType="vm:DiscardMultipleFiles">
-          <Grid RowDefinitions="32,32" ColumnDefinitions="120,*">
-            <TextBlock Grid.Row="0" Grid.Column="0"
+          <Grid Height="32" ColumnDefinitions="120,*">
+            <TextBlock Grid.Column="0"
                        Margin="0,0,8,0"
                        HorizontalAlignment="Right"
                        Text="{DynamicResource Text.Discard.Changes}"/>
-            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
-              <TextBlock Text="{Binding Count, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Discard.Total'}" Margin="4,0,0,0"/>
+              <TextBlock Text="{Binding Count, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Discard.Total'}" 
+                         Margin="4,0,0,0"/>
             </StackPanel>
-            
-            <TextBlock Grid.Row="1" Grid.Column="1" 
-                       VerticalAlignment="Center"
-                       Text="{DynamicResource Text.Discard.Warning}"
-                       Foreground="{DynamicResource Brush.FG2}"/>
           </Grid>
         </DataTemplate>
       </ContentControl.DataTemplates>
