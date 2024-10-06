@@ -65,7 +65,15 @@
           <DataTemplate x:DataType="{x:Type m:Branch}">
             <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
               <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-              <TextBlock Text="{Binding Name}"/>
+              <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+              <Border Height="14"
+                      CornerRadius="7"
+                      Margin="4,0,0,0" Padding="6,0" 
+                      VerticalAlignment="Center" 
+                      Background="Green"
+                      IsVisible="{Binding Head, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+                <TextBlock Text="NEW" FontSize="9" FontFamily="{DynamicResource Fonts.Monospace}" Foreground="White" VerticalAlignment="Center"/>
+              </Border>
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
