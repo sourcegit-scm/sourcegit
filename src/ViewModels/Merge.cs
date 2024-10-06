@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -7,13 +8,11 @@ namespace SourceGit.ViewModels
         public string Source
         {
             get;
-            private set;
         }
 
         public string Into
         {
             get;
-            private set;
         }
 
         public Models.MergeMode SelectedMode
@@ -27,7 +26,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Source = source;
             Into = into;
-            SelectedMode = Models.MergeMode.Supported[0];
+            SelectedMode = AutoSelectMergeMode();
             View = new Views.Merge() { DataContext = this };
         }
 
@@ -42,6 +41,21 @@ namespace SourceGit.ViewModels
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
+        }
+
+        private Models.MergeMode AutoSelectMergeMode()
+        {
+            var config = new Commands.Config(_repo.FullPath).Get($"branch.{Into}.mergeoptions");
+            if (string.IsNullOrEmpty(config))
+                return Models.MergeMode.Supported[0];
+            if (config.Equals("--no-ff", StringComparison.Ordinal))
+                return Models.MergeMode.Supported[1];
+            if (config.Equals("--squash", StringComparison.Ordinal))
+                return Models.MergeMode.Supported[2];
+            if (config.Equals("--no-commit", StringComparison.Ordinal) || config.Equals("--no-ff --no-commit", StringComparison.Ordinal))
+                return Models.MergeMode.Supported[3];
+            
+            return Models.MergeMode.Supported[0];
         }
 
         private readonly Repository _repo = null;
