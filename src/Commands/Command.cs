@@ -199,7 +199,17 @@ namespace SourceGit.Commands
 
             // Fix sometimes `LSEnvironment` not working on macOS
             if (OperatingSystem.IsMacOS())
-                start.Environment.Add("PATH", "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin");
+            {
+                if (start.Environment.TryGetValue("PATH", out var path))
+                {
+                    path = "/opt/homebrew/bin:/opt/homebrew/sbin:" + path;
+                }
+                else
+                {
+                    path = "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin";
+                }
+                start.Environment.Add("PATH", path);
+            }
 
             // Force using this app as git editor.
             switch (Editor)
