@@ -199,17 +199,17 @@
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Próxima Diferença</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">SEM MUDANÇAS OU APENAS MUDANÇAS DE EOL</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Diferença Anterior</x:String>
+  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Mostrar símbolos ocultos</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Diferença Lado a Lado</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMÓDULO</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NOVO</x:String>
+  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Trocar</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Realce de Sintaxe</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Quebra de Linha</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Abrir na Ferramenta de Mesclagem</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Diminuir Número de Linhas Visíveis</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Aumentar Número de Linhas Visíveis</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SELECIONE O ARQUIVO PARA VISUALIZAR AS MUDANÇAS</x:String>
-  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Mostrar símbolos ocultos</x:String>
-  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Trocar</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Abrir na Ferramenta de Mesclagem</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">Descartar Alterações</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Todas as alterações locais na cópia de trabalho.</x:String>

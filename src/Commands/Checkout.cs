@@ -14,7 +14,7 @@ namespace SourceGit.Commands
 
         public bool Branch(string branch, Action<string> onProgress)
         {
-            Args = $"checkout --progress {branch}";
+            Args = $"checkout --recurse-submodules --progress {branch}";
             TraitErrorAsOutput = true;
             _outputHandler = onProgress;
             return Exec();
@@ -22,7 +22,7 @@ namespace SourceGit.Commands
 
         public bool Branch(string branch, string basedOn, Action<string> onProgress)
         {
-            Args = $"checkout --progress -b {branch} {basedOn}";
+            Args = $"checkout --recurse-submodules --progress -b {branch} {basedOn}";
             TraitErrorAsOutput = true;
             _outputHandler = onProgress;
             return Exec();
@@ -30,7 +30,7 @@ namespace SourceGit.Commands
 
         public bool UseTheirs(List<string> files)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append("checkout --theirs --");
             foreach (var f in files)
             {
@@ -44,7 +44,7 @@ namespace SourceGit.Commands
 
         public bool UseMine(List<string> files)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append("checkout --ours --");
             foreach (var f in files)
             {
@@ -67,20 +67,6 @@ namespace SourceGit.Commands
             Args = $"checkout --detach --progress {commitId}";
             TraitErrorAsOutput = true;
             _outputHandler = onProgress;
-            return Exec();
-        }
-
-        public bool Files(List<string> files)
-        {
-            StringBuilder builder = new StringBuilder();
-            builder.Append("checkout -f -q --");
-            foreach (var f in files)
-            {
-                builder.Append(" \"");
-                builder.Append(f);
-                builder.Append("\"");
-            }
-            Args = builder.ToString();
             return Exec();
         }
 

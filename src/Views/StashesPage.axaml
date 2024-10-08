@@ -21,7 +21,7 @@
       <!-- Stash Bar -->
       <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
         <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Stashes}"/>
-        <TextBlock Grid.Column="1" Text="{DynamicResource Text.Stashes.Stashes}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
+        <TextBlock Grid.Column="1" Text="{DynamicResource Text.Stashes.Stashes}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0"/>
         <TextBlock Grid.Column="2" Text="{Binding Stashes, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
         <Button Grid.Column="4"
                 Classes="icon_button"
@@ -107,7 +107,7 @@
       <Border Grid.Row="3" BorderThickness="0,1" BorderBrush="{DynamicResource Brush.Border0}">
         <Grid ColumnDefinitions="Auto,Auto,*">
           <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
-          <TextBlock Grid.Column="1" Text="{DynamicResource Text.Stashes.Changes}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="1" Text="{DynamicResource Text.Stashes.Changes}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0"/>
           <TextBlock Grid.Column="2" Text="{Binding Changes, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
         </Grid>
       </Border>

@@ -841,7 +841,7 @@ namespace SourceGit.ViewModels
 
                 if (_settings.Filters.Count != validFilters.Count)
                 {
-                    Dispatcher.UIThread.Post(() =>
+                    Dispatcher.UIThread.Invoke(() =>
                     {
                         _settings.Filters.Clear();
                         _settings.Filters.AddRange(validFilters);
@@ -850,6 +850,9 @@ namespace SourceGit.ViewModels
             }
             else
             {
+                if (_settings.Filters.Count != 0)
+                    Dispatcher.UIThread.Invoke(() => _settings.Filters.Clear());
+                    
                 limits += "--exclude=refs/stash --all";
             }
 
@@ -1271,7 +1274,6 @@ namespace SourceGit.ViewModels
                 var discard = new MenuItem();
                 discard.Header = App.Text("BranchCM.DiscardAll");
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                discard.IsEnabled = _localChangesCount > 0;
                 discard.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())

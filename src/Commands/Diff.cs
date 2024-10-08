@@ -12,7 +12,7 @@ namespace SourceGit.Commands
         private const string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
 
-        public Diff(string repo, Models.DiffOption opt, int unified)
+        public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace)
         {
             _result.TextDiff = new Models.TextDiff()
             {
@@ -22,7 +22,11 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff --ignore-cr-at-eol --unified={unified} {opt}";
+
+            if (ignoreWhitespace)
+                Args = $"diff --ignore-cr-at-eol --ignore-all-space --unified={unified} {opt}";
+            else
+                Args = $"diff --ignore-cr-at-eol --unified={unified} {opt}";
         }
 
         public Models.DiffResult Result()

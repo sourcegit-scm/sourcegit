@@ -14,7 +14,6 @@ namespace SourceGit.ViewModels
         public bool CanIgnoreUntracked
         {
             get;
-            private set;
         }
 
         public bool IncludeUntracked
@@ -23,10 +22,11 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public StashChanges(Repository repo, List<Models.Change> changes, bool canIgnoreUntracked)
+        public StashChanges(Repository repo, List<Models.Change> changes, bool onlyStaged, bool canIgnoreUntracked)
         {
             _repo = repo;
             _changes = changes;
+            _onlyStaged = onlyStaged;
 
             CanIgnoreUntracked = canIgnoreUntracked;
             IncludeUntracked = true;
@@ -56,17 +56,18 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                new Commands.Stash(_repo.FullPath).Push(jobs, Message);
+                var succ = new Commands.Stash(_repo.FullPath).Push(jobs, Message, _onlyStaged);
                 CallUIThread(() =>
                 {
                     _repo.MarkWorkingCopyDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });
-                return true;
+                return succ;
             });
         }
 
         private readonly Repository _repo = null;
         private readonly List<Models.Change> _changes = null;
+        private readonly bool _onlyStaged = false;
     }
 }

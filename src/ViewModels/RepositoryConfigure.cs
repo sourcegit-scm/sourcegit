@@ -18,6 +18,24 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public List<string> Remotes
+        {
+            get;
+        }
+
+        public string DefaultRemote
+        {
+            get => _repo.Settings.DefaultRemote;
+            set
+            {
+                if (_repo.Settings.DefaultRemote != value)
+                {
+                    _repo.Settings.DefaultRemote = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool GPGCommitSigningEnabled
         {
             get;
@@ -87,6 +105,10 @@ namespace SourceGit.ViewModels
         public RepositoryConfigure(Repository repo)
         {
             _repo = repo;
+
+            Remotes = new List<string>();
+            foreach (var remote in _repo.Remotes)
+                Remotes.Add(remote.Name);
 
             _cached = new Commands.Config(repo.FullPath).ListAll();
             if (_cached.TryGetValue("user.name", out var name))

@@ -56,7 +56,7 @@
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Удалить выбранные {0} ветки</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Отклонить все изменения.</x:String>
-  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Быстрая перемотка вперёд к ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Перемотать вперёд к ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Поток Git - Завершение ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Слить ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Забрать ${0}$</x:String>
@@ -141,6 +141,7 @@
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Автоматическое извлечение внешних хранилищ</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Минут(а/ы)</x:String>
+  <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Удалённое хранилище по-умолчанию</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ОТСЛЕЖИВАНИЕ ПРОБЛЕМ</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Добавить пример правила для Git</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Добавить пример правила Jira</x:String>
@@ -171,15 +172,15 @@
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Имя новой ветки:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Ввести имя ветки.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Создать локальную ветку</x:String>
-  <x:String x:Key="Text.CreateTag" xml:space="preserve">Создать тег...</x:String>
-  <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Новый тег у:</x:String>
+  <x:String x:Key="Text.CreateTag" xml:space="preserve">Создать метку...</x:String>
+  <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Новая метка у:</x:String>
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">Подпись GPG</x:String>
-  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Сообщение с тегом:</x:String>
+  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Сообщение с меткой:</x:String>
   <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Необязательно.</x:String>
-  <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Имя тега:</x:String>
+  <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Имя метки:</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Рекомендуемый формат: v1.0.0-alpha</x:String>
   <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Выложить на все внешние хранилища после создания</x:String>
-  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">Создать новый тег</x:String>
+  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">Создать новую метку</x:String>
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Добрый:</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">Аннотированный</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">Лёгкий</x:String>
@@ -198,14 +199,16 @@
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Подтвердите удаление хранилища</x:String>
   <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">Удалить подмодуль</x:String>
   <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">Путь подмодуля:</x:String>
-  <x:String x:Key="Text.DeleteTag" xml:space="preserve">Удалить тег</x:String>
-  <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Тег:</x:String>
+  <x:String x:Key="Text.DeleteTag" xml:space="preserve">Удалить метку</x:String>
+  <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Метка:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Удалить из внешнего хранилища</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">РАЗНИЦА БИНАРНИКОВ</x:String>
   <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">НОВЫЙ</x:String>
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">СТАРЫЙ</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Режим файла изменён</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменение пробелов</x:String>
+  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Показать скрытые символы</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">ИЗМЕНЕНИЕ ОБЪЕКТА ХБФ</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Следующее различие</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">НИКАКИХ ИЗМЕНЕНИЙ ИЛИ МЕНЯЕТСЯ ТОЛЬКО EOL</x:String>
@@ -213,18 +216,18 @@
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Различие бок о бок</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">ПОДМОДУЛЬ</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">НОВЫЙ</x:String>
+  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Обмен</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Подсветка синтаксиса </x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Перенос слов в строке</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Открыть в инструменте слияния </x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Уменьшить количество видимых линий</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Увеличить количество видимых линий</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">ВЫБРАТЬ ФАЙЛ ДЛЯ ПРОСМОТРА ИЗМЕНЕНИЙ</x:String>
-  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Показать скрытые символы</x:String>
-  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Обмен</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Открыть в инструменте слияния</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">Отклонить изменения</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Все локальные изменения в рабочей копии.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Изменения:</x:String>
+  <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Включить игнорируемые файлы</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">Всего {0} изменений будут отменены</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">Вы не можете отменить это действие!!!</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Закладка:</x:String>
@@ -235,7 +238,7 @@
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Быстрая перемотка вперёд (без проверки)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Извлечь</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Извлечь все внешние хранилища</x:String>
-  <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Извлечь без тегов</x:String>
+  <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Извлечь без меток</x:String>
   <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">Удалить внешние мёртвые ветки</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Внешнее хранилище:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Извлечь внешние изменения</x:String>
@@ -281,7 +284,7 @@
   <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">Ввести имя</x:String>
   <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">Запуск выпуска...</x:String>
   <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">ПОТОК - Запуск выпуска</x:String>
-  <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Префикс тега версии:</x:String>
+  <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Префикс метки версии:</x:String>
   <x:String x:Key="Text.GitLFS" xml:space="preserve">Git хранилища больших файлов</x:String>
   <x:String x:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">Добавить шаблон отслеживания...</x:String>
   <x:String x:Key="Text.GitLFS.AddTrackPattern.IsFilename" xml:space="preserve">Шаблон — это имя файла</x:String>
@@ -328,17 +331,17 @@
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Создать новую страницу</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">Открыть диалоговое окно настроек</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">ХРАНИЛИЩЕ</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Фиксация подготовленных изменений</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Фиксировать и выложить подготовленные изменения</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Зафиксировать подготовленные изменения</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Зафиксировать и выложить подготовленные изменения</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Подготовить все изменения и зафиксировать</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Отклонить выбранные изменения</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Режим доски (по-умолчанию)</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Принудительно перезагрузить этот репозиторий</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Подгтовленные/Неподготовленные выбранные изменения</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Принудительно перезагрузить этот хранилище</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Подготовленные/Неподготовленные выбранные изменения</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Режим поиска фиксаций</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Перекключить на 'Изменения'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Перекключить на 'Истории'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Перекключить на 'Отложенные'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Переключить на 'Изменения'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Переключить на 'Истории'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Переключить на 'Отложенные'</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">ТЕКСТОВЫЙ РЕДАКТОР</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Закрыть панель поиска</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Найти следующее совпадение</x:String>
@@ -354,7 +357,7 @@
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Выполняется перенос. Нажмите 'Отказ' для восстановления заголовка.</x:String>
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Выполняется возврат. Нажмите 'Отказ' для восстановления заголовка.</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Интерактивное перемещение</x:String>
-  <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">целевая ветка:</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Целевая ветка:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">На:</x:String>
   <x:String x:Key="Text.InteractiveRebase.MoveUp" xml:space="preserve">Вверх</x:String>
   <x:String x:Key="Text.InteractiveRebase.MoveDown" xml:space="preserve">Вниз</x:String>
@@ -393,7 +396,7 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">В пролому году</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} лет назад</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">Параметры</x:String>
-  <x:String x:Key="Text.Preference.AI" xml:space="preserve">ОТКРЫТЬ ВИ</x:String>
+  <x:String x:Key="Text.Preference.AI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Сервер</x:String>
   <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">Ключ API</x:String>
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">Модель</x:String>
@@ -427,7 +430,7 @@
   <x:String x:Key="Text.Preference.Git.Invalid" xml:space="preserve">Git (>= 2.23.0) требуется для этого приложения</x:String>
   <x:String x:Key="Text.Preference.GPG" xml:space="preserve">ПОДПИСЬ GPG</x:String>
   <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">Фиксация подписи GPG</x:String>
-  <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">Тег подписи GPG</x:String>
+  <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">Метка подписи GPG</x:String>
   <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">Формат GPG</x:String>
   <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">Путь установки программы</x:String>
   <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Введите путь для установленной программы GPG</x:String>
@@ -449,7 +452,7 @@
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Ничего не делать</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Отложить и применить повторно</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Забрать без тегов</x:String>
+  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Забрать без меток</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Внешнее хранилище:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Забрать (Получить и слить)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Использовать перемещение вместо слияния</x:String>
@@ -461,11 +464,11 @@
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Выложить изменения на внешнее хранилище</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Ветка внешнего хранилища:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Установить в качестве ветки отслеживания</x:String>
-  <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Выложить все теги</x:String>
-  <x:String x:Key="Text.PushTag" xml:space="preserve">Выложить тег на внешнее хранилище</x:String>
+  <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Выложить все метки</x:String>
+  <x:String x:Key="Text.PushTag" xml:space="preserve">Выложить метку на внешнее хранилище</x:String>
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Выложить на все внешние хранилища</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Внешнее хранилище:</x:String>
-  <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Тег:</x:String>
+  <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Метка:</x:String>
   <x:String x:Key="Text.Quit" xml:space="preserve">Выйти</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">Перемещение текущей ветки</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Отложить и применить повторно локальные изменения</x:String>
@@ -494,13 +497,13 @@
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Ветка:</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">Отказ</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Автоматическое извлечение изменений с внешних хранилищ...</x:String>
-  <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Очистка (Сбор мусора и удаление) </x:String>
+  <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Очистить (Сбор мусора и удаление) </x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Запустить команду `git gc` для данного хранилища.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Очистить всё</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Настройка этого хранилища</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">ПРОДОЛЖИТЬ</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Открыть в файловом менеджере</x:String>
-  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Поиск веток, тегов и подмодулей</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Поиск веток, меток и подмодулей</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">ОТФИЛЬТРОВАНО ОТ:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">ЛОКАЛЬНЫЕ ВЕТКИ</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Навигация по заголовку</x:String>
@@ -518,13 +521,13 @@
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">Автор и исполнитель</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Текущая ветка</x:String>
-  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Показать теги как дерево</x:String>
+  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Показать метки как дерево</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Статистики </x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">ПОДМОДУЛИ</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">ДОБАВИТЬ ПОДМОДУЛЬ</x:String>
   <x:String x:Key="Text.Repository.Submodules.Update" xml:space="preserve">ОБНОВИТЬ ПОДМОДУЛЬ</x:String>
-  <x:String x:Key="Text.Repository.Tags" xml:space="preserve">ТЕГИ</x:String>
-  <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">НОВЫЙ ТЕГ</x:String>
+  <x:String x:Key="Text.Repository.Tags" xml:space="preserve">МЕТКИ</x:String>
+  <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">НОВАЯ МЕТКА</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Открыть в терминале</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">РАБОЧИЕ ДЕРЕВЬЯ</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ДОБАВИТЬ РАБОЧЕЕ ДЕРЕВО</x:String>
@@ -588,7 +591,7 @@
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Относительный каталог для хранения подмодуля.</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Удалить подмодуль</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">ОК</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Копировать имя тега</x:String>
+  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Копировать имя метки</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Выложить ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">Сетевой адрес:</x:String>
@@ -625,7 +628,7 @@
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">ЗАФИКСИРОВАТЬ</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">ЗАФИКСИРОВАТЬ и ОТПРАВИТЬ</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Шаблон/Истории</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Запуск события щелчка</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Запустить событие щелчка</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Подготовить все изменения и зафиксировать</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">ОБНАРУЖЕНЫ КОНФЛИКТЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">КОНФЛИКТЫ ФАЙЛОВ РАЗРЕШЕНЫ</x:String>

@@ -5,16 +5,16 @@ namespace SourceGit.Commands
 {
     public class Clean : Command
     {
-        public Clean(string repo)
+        public Clean(string repo, bool includeIgnored)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "clean -qfd";
+            Args = includeIgnored ? "clean -qfdx" : "clean -qfd";
         }
 
         public Clean(string repo, List<string> files)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append("clean -qfd --");
             foreach (var f in files)
             {

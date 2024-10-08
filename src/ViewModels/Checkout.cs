@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public string Branch
         {
             get;
-            private set;
         }
 
         public Models.DealWithLocalChanges PreAction
@@ -49,7 +48,7 @@ namespace SourceGit.ViewModels
                     else if (PreAction == Models.DealWithLocalChanges.Discard)
                     {
                         SetProgressDescription("Discard local changes ...");
-                        Commands.Discard.All(_repo.FullPath);
+                        Commands.Discard.All(_repo.FullPath, false);
                     }
                 }
 
