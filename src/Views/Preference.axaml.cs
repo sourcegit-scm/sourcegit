@@ -137,7 +137,22 @@ namespace SourceGit.Views
             SetIfChanged(config, "gpg.format", GPGFormat.Value, "openpgp");
 
             if (!GPGFormat.Value.Equals("ssh", StringComparison.Ordinal))
-                SetIfChanged(config, $"gpg.{GPGFormat.Value}.program", GPGExecutableFile, "");
+            {
+                var oldGPG = string.Empty;
+                if (GPGFormat.Value == "openpgp" && config.TryGetValue("gpg.program", out var openpgp))
+                    oldGPG = openpgp;
+                else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
+                    oldGPG = gpgProgram;
+
+                bool changed = false;
+                if (!string.IsNullOrEmpty(oldGPG))
+                    changed = oldGPG != GPGExecutableFile;
+                else if (!string.IsNullOrEmpty(GPGExecutableFile))
+                    changed = true;
+
+                if (changed)
+                    new Commands.Config(null).Set($"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
+            }
 
             base.OnClosing(e);
         }
