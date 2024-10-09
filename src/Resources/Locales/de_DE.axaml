@@ -141,6 +141,7 @@
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Remotes automatisch fetchen</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(n)</x:String>
+  <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Standard Remote</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">TICKETSYSTEM</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Beispiel für Github-Regel hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Beispiel für Jira-Regel hinzufügen</x:String>
@@ -496,7 +497,6 @@
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">ABBRECHEN</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Änderungen automatisch von Remote fetchen...</x:String>
-  <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Standard Remote</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Aufräumen (GC &amp; Prune)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Führt `git gc` auf diesem Repository aus.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Alles löschen</x:String>
@@ -520,7 +520,7 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Commit-Nachricht</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">Autor &amp; Committer</x:String>
-  <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Aktueller Branch</x:String>|
+  <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Aktueller Branch</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Zeige Tags als Baum</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistiken</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMODULE</x:String>
