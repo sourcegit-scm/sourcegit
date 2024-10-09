@@ -15,16 +15,17 @@ namespace SourceGit.ViewModels
         {
             get
             {
-                if (_instance == null)
-                {
-                    _isLoading = true;
-                    _instance = Load();
-                    _isLoading = false;
-                }
+                if (_instance != null)
+                    return _instance;
+
+                _isLoading = true;
+                _instance = Load();
+                _isLoading = false;
 
                 _instance.PrepareGit();
                 _instance.PrepareShellOrTerminal();
                 _instance.PrepareWorkspaces();
+
                 return _instance;
             }
         }
