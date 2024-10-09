@@ -18,7 +18,7 @@
             Fill="DarkOrange"/>
       <TextBlock Margin="4,0,0,0"
                  Text="{DynamicResource Text.Discard.Warning}"
-                 Foreground="{DynamicResource Brush.FG2}"/>
+                 Foreground="DarkOrange"/>
     </StackPanel>
     
     <ContentControl Margin="0,16,0,8" Content="{Binding Mode}">

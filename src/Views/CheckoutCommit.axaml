@@ -43,7 +43,8 @@
               Fill="DarkOrange"/>
         <TextBlock Grid.Column="1" Margin="8,0,0,0"
                    Text="{DynamicResource Text.Checkout.Commit.Warning}"
-                   TextWrapping="Wrap"/>
+                   TextWrapping="Wrap"
+                   Foreground="DarkOrange"/>
       </Grid>
     </Grid>
   </StackPanel>
