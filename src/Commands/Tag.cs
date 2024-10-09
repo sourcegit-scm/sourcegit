@@ -16,7 +16,7 @@ namespace SourceGit.Commands
 
         public static bool Add(string repo, string name, string basedOn, string message, bool sign)
         {
-            var param = sign ? "-s -a" : "-a";
+            var param = sign ? "--sign -a" : "--no-sign -a";
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
