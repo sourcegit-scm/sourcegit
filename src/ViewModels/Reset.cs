@@ -27,7 +27,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Current = current;
             To = to;
-            SelectedMode = Models.ResetMode.Supported[0];
+            SelectedMode = Models.ResetMode.Supported[1];
             View = new Views.Reset() { DataContext = this };
         }
 
