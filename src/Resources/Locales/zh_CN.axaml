@@ -560,6 +560,8 @@
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">包含未跟踪的文件</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">信息 ：</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">选填，用于命名此贮藏</x:String>
+  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">仅贮藏暂存区的变更</x:String>
+  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">选中文件的所有变更均会被贮藏！</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">贮藏本地变更</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">应用(apply)</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">删除(drop)</x:String>
