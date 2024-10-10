@@ -477,7 +477,9 @@
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Remote name</x:String>
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">Repository URL:</x:String>
+  <x:String x:Key="Text.Remote.PushURL" xml:space="preserve">Push URL:</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">Remote git repository URL</x:String>
+  <x:String x:Key="Text.Remote.PushURL.Placeholder" xml:space="preserve">Leave empty if same as URL</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Copy URL</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Delete...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Edit...</x:String>
