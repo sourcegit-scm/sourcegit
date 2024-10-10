@@ -35,6 +35,24 @@
         public bool SetURL(string name, string url)
         {
             Args = $"remote set-url {name} {url}";
+            var first = Exec();
+            Args = $"remote set-url {name} {url} --push";
+            return Exec() && first;
+        }
+
+        public bool SetPushURL(string name, string oldUrl, string newUrl)
+        {
+            if (oldUrl == newUrl)
+                return true;
+
+            if (string.IsNullOrEmpty(newUrl) && !string.IsNullOrEmpty(oldUrl))
+            {
+                Args = $"remote set-url --push --delete {name} {oldUrl}";
+            }
+            else
+            {
+                Args = $"remote set-url --push {name} {newUrl}";
+            }
             return Exec();
         }
     }

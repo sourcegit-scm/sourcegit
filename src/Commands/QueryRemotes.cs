@@ -30,10 +30,16 @@ namespace SourceGit.Commands
             var remote = new Models.Remote()
             {
                 Name = match.Groups[1].Value,
-                URL = match.Groups[2].Value,
+                URL = match.Groups[0].Value.Contains("fetch") ? match.Groups[2].Value : "",
+                PushURL = match.Groups[0].Value.Contains("push") ? match.Groups[2].Value : "",
             };
+            var alreadyFound = _loaded.Find(x => x.Name == remote.Name);
+            if (alreadyFound != null && !string.IsNullOrEmpty(remote.PushURL))
+            {
+                alreadyFound.PushURL = alreadyFound.URL != remote.PushURL ? remote.PushURL : "";
+            }
 
-            if (_loaded.Find(x => x.Name == remote.Name) != null)
+            if (alreadyFound != null)
                 return;
             _loaded.Add(remote);
         }

@@ -27,6 +27,17 @@ namespace SourceGit.ViewModels
             }
         }
 
+        [CustomValidation(typeof(EditRemote), nameof(ValidatePushUrl))]
+        public string PushUrl
+        {
+            get => _pushUrl;
+            set
+            {
+                if (SetProperty(ref _pushUrl, value, true))
+                    UseSSH = Models.Remote.IsSSH(value);
+            }
+        }
+
         public bool UseSSH
         {
             get => _useSSH;
@@ -50,6 +61,7 @@ namespace SourceGit.ViewModels
             _remote = remote;
             _name = remote.Name;
             _url = remote.URL;
+            _pushUrl = remote.PushURL;
             _useSSH = Models.Remote.IsSSH(remote.URL);
 
             if (_useSSH)
@@ -91,6 +103,28 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
+        public static ValidationResult ValidatePushUrl(string pushUrl, ValidationContext ctx)
+        {
+            if (ctx.ObjectInstance is EditRemote edit)
+            {
+                if (string.IsNullOrEmpty(pushUrl))
+                {
+                    return ValidationResult.Success;
+                }
+
+                if (!Models.Remote.IsValidURL(pushUrl))
+                    return new ValidationResult("Bad remote URL format!!!");
+
+                foreach (var remote in edit._repo.Remotes)
+                {
+                    if (remote != edit._remote && pushUrl == remote.PushURL)
+                        return new ValidationResult("A remote with the same url already exists!!!");
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+
         public static ValidationResult ValidateSSHKey(string sshkey, ValidationContext ctx)
         {
             if (ctx.ObjectInstance is EditRemote { _useSSH: true } && !string.IsNullOrEmpty(sshkey))
@@ -123,6 +157,18 @@ namespace SourceGit.ViewModels
                         _remote.URL = _url;
                 }
 
+                if (_pushUrl == _url)
+                {
+                    _pushUrl = "";
+                }
+
+                if (_remote.PushURL != _pushUrl)
+                {
+                    var succ = new Commands.Remote(_repo.FullPath).SetPushURL(_name, _remote.PushURL, _pushUrl);
+                    if (succ)
+                        _remote.PushURL = _pushUrl;
+                }
+
                 SetProgressDescription("Post processing ...");
                 new Commands.Config(_repo.FullPath).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
 
@@ -135,6 +181,7 @@ namespace SourceGit.ViewModels
         private readonly Models.Remote _remote = null;
         private string _name = null;
         private string _url = null;
+        private string _pushUrl = null;
         private bool _useSSH = false;
         private string _sshkey = string.Empty;
     }

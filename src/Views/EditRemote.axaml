@@ -35,13 +35,24 @@
                CornerRadius="2"
                Watermark="{DynamicResource Text.Remote.URL.Placeholder}"
                Text="{Binding Url, Mode=TwoWay}"/>
-
+      
       <TextBlock Grid.Row="2" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Remote.PushURL}"/>
+      <TextBox Grid.Row="2" Grid.Column="1"
+               Height="26"
+               VerticalAlignment="Center"
+               CornerRadius="2"
+               Watermark="{DynamicResource Text.Remote.PushURL.Placeholder}"
+               Text="{Binding PushUrl, Mode=TwoWay}"/>
+
+      <TextBlock Grid.Row="3" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.SSHKey}"
                  IsVisible="{Binding UseSSH}"/>
-      <TextBox Grid.Row="2" Grid.Column="1"
+      <TextBox Grid.Row="3" Grid.Column="1"
                x:Name="TxtSshKey"
                Height="26"
                CornerRadius="3"
