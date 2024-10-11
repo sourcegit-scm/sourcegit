@@ -465,6 +465,15 @@ namespace SourceGit.ViewModels
 
         private void SwitchWorkspace(Workspace to)
         {
+            foreach (var one in Pages)
+            {
+                if (one.IsInProgress())
+                {
+                    App.RaiseException(null, "You have unfinished task(s) in opened pages. Please wait!!!");
+                    return;
+                }
+            }
+
             _ignoreIndexChange = true;
 
             var pref = Preference.Instance;
