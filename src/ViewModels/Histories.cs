@@ -153,7 +153,11 @@ namespace SourceGit.ViewModels
             else if (commits.Count == 1)
             {
                 var commit = commits[0] as Models.Commit;
-                _repo.SearchResultSelectedCommit = commit;
+
+                if (_repo.SearchResultSelectedCommit == null || _repo.SearchResultSelectedCommit.SHA != commit.SHA)
+                {
+                    _repo.SearchResultSelectedCommit = _repo.SearchedCommits.Find(x => x.SHA == commit.SHA);   
+                }
 
                 AutoSelectedCommit = commit;
                 NavigationId = _navigationId + 1;

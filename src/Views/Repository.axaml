@@ -460,12 +460,6 @@
               <Setter Property="Padding" Value="0"/>
               <Setter Property="Height" Value="50"/>
             </Style>
-            <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-              <Setter Property="Background" Value="Transparent" />
-            </Style>
-            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-              <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
-            </Style>
           </ListBox.Styles>
 
           <ListBox.ItemsPanel>
