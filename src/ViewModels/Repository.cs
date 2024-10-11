@@ -213,7 +213,12 @@ namespace SourceGit.ViewModels
         public bool OnlySearchCommitsInCurrentBranch
         {
             get => _onlySearchCommitsInCurrentBranch;
-            set => SetProperty(ref _onlySearchCommitsInCurrentBranch, value);
+            set
+            {
+                if (SetProperty(ref _onlySearchCommitsInCurrentBranch, value) &&
+                    !string.IsNullOrEmpty(_searchCommitFilter))
+                    StartSearchCommits();
+            }
         }
 
         public int SearchCommitFilterType
@@ -222,7 +227,12 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchCommitFilterType, value))
+                {
                     UpdateCurrentRevisionFilesForSearchSuggestion();
+
+                    if (!string.IsNullOrEmpty(_searchCommitFilter))
+                        StartSearchCommits();
+                }
             }
         }
 
