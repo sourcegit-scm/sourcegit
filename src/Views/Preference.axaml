@@ -114,13 +114,13 @@
 
             <CheckBox Grid.Row="4" Grid.Column="1"
                       Height="32"
-                      Content="{DynamicResource Text.Preference.General.Check4UpdatesOnStartup}"
-                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=Check4UpdatesOnStartup, Mode=TwoWay}"/>
+                      Content="{DynamicResource Text.Preference.General.ShowAuthorTime}"
+                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Mode=TwoWay}"/>
 
             <CheckBox Grid.Row="5" Grid.Column="1"
                       Height="32"
-                      Content="{DynamicResource Text.Preference.General.ShowAuthorTime}"
-                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Mode=TwoWay}"/>
+                      Content="{DynamicResource Text.Preference.General.Check4UpdatesOnStartup}"
+                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=Check4UpdatesOnStartup, Mode=TwoWay}"/>
           </Grid>
         </TabItem>
 
