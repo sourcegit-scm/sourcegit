@@ -31,6 +31,7 @@ Opensource Git GUI client.
   * Revision Diffs
   * Branch Diff
   * Image Diff - Side-By-Side/Swipe/Blend
+* Search commits
 * GitFlow
 * Git LFS
 * Issue Link
