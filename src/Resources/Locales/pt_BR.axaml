@@ -340,8 +340,6 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase Interativo</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Ramo Alvo:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Em:</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveUp" xml:space="preserve">Mover Para Cima</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveDown" xml:space="preserve">Mover Para Baixo</x:String>
   <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERRO</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">AVISO</x:String>

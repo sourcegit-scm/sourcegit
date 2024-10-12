@@ -359,8 +359,6 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Интерактивное перемещение</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Целевая ветка:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">На:</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveUp" xml:space="preserve">Вверх</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveDown" xml:space="preserve">Вниз</x:String>
   <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ОШИБКА</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">УВЕДОМЛЕНИЕ</x:String>
