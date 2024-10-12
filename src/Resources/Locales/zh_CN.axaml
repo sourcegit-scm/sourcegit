@@ -316,6 +316,7 @@
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">切换横向/纵向显示</x:String>
   <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">切换曲线/折线显示</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
+  <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改时间</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路线图与主题</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">提交时间</x:String>
@@ -413,6 +414,7 @@
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">启动时检测软件更新</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">显示语言</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">最大历史提交数</x:String>
+  <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">在提交路线图中显示修改时间而非提交时间</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">SUBJECT字数检测</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">自动换行转换</x:String>
