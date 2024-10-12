@@ -5,6 +5,7 @@
   <x:String x:Key="Text.About" xml:space="preserve">關於</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">關於 SourceGit</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• 專案依賴於 </x:String>
+  <x:String x:Key="Text.About.Chart" xml:space="preserve">• 圖表繪製元件來自 </x:String>
   <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• 文字編輯器使用 </x:String>
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• 等寬字型來自於 </x:String>

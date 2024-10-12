@@ -44,6 +44,12 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnVisitLiveCharts2(object _, PointerPressedEventArgs e)
+        {
+            Native.OS.OpenBrowser("https://livecharts.dev/");
+            e.Handled = true;
+        }
+
         private void OnVisitSourceCode(object _, PointerPressedEventArgs e)
         {
             Native.OS.OpenBrowser("https://github.com/sourcegit-scm/sourcegit");
