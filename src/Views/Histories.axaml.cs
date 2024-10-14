@@ -303,13 +303,13 @@ namespace SourceGit.Views
             set => SetValue(ShowAsDateTimeProperty, value);
         }
 
-        public static readonly StyledProperty<ulong> TimestampProperty =
-            AvaloniaProperty.Register<CommitTimeTextBlock, ulong>(nameof(Timestamp));
+        public static readonly StyledProperty<bool> UseAuthorTimeProperty =
+            AvaloniaProperty.Register<CommitTimeTextBlock, bool>(nameof(UseAuthorTime), true);
 
-        public ulong Timestamp
+        public bool UseAuthorTime
         {
-            get => GetValue(TimestampProperty);
-            set => SetValue(TimestampProperty, value);
+            get => GetValue(UseAuthorTimeProperty);
+            set => SetValue(UseAuthorTimeProperty, value);
         }
 
         protected override Type StyleKeyOverride => typeof(TextBlock);
@@ -318,7 +318,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == TimestampProperty)
+            if (change.Property == UseAuthorTimeProperty)
             {
                 SetCurrentValue(TextProperty, GetDisplayText());
             }
@@ -345,6 +345,12 @@ namespace SourceGit.Views
         {
             base.OnUnloaded(e);
             StopTimer();
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+            SetCurrentValue(TextProperty, GetDisplayText());
         }
 
         private void StartTimer()
@@ -376,30 +382,35 @@ namespace SourceGit.Views
 
         private string GetDisplayText()
         {
+            var commit = DataContext as Models.Commit;
+            if (commit == null)
+                return string.Empty;
+
+            var timestamp = UseAuthorTime ? commit.AuthorTime : commit.CommitterTime;
             if (ShowAsDateTime)
-                return DateTime.UnixEpoch.AddSeconds(Timestamp).ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss");
+                return DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss");
 
             var today = DateTime.Today;
-            var committerTime = DateTime.UnixEpoch.AddSeconds(Timestamp).ToLocalTime();
+            var localTime = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
 
-            if (committerTime >= today)
+            if (localTime >= today)
             {
                 var now = DateTime.Now;
-                var timespan = now - committerTime;
+                var timespan = now - localTime;
                 if (timespan.TotalHours > 1)
                     return App.Text("Period.HoursAgo", (int)timespan.TotalHours);
 
                 return timespan.TotalMinutes < 1 ? App.Text("Period.JustNow") : App.Text("Period.MinutesAgo", (int)timespan.TotalMinutes);
             }
 
-            var diffYear = today.Year - committerTime.Year;
+            var diffYear = today.Year - localTime.Year;
             if (diffYear == 0)
             {
-                var diffMonth = today.Month - committerTime.Month;
+                var diffMonth = today.Month - localTime.Month;
                 if (diffMonth > 0)
                     return diffMonth == 1 ? App.Text("Period.LastMonth") : App.Text("Period.MonthsAgo", diffMonth);
 
-                var diffDay = today.Day - committerTime.Day;
+                var diffDay = today.Day - localTime.Day;
                 return diffDay == 1 ? App.Text("Period.Yesterday") : App.Text("Period.DaysAgo", diffDay);
             }
 

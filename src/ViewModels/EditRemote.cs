@@ -118,10 +118,14 @@ namespace SourceGit.ViewModels
 
                 if (_remote.URL != _url)
                 {
-                    var succ = new Commands.Remote(_repo.FullPath).SetURL(_name, _url);
+                    var succ = new Commands.Remote(_repo.FullPath).SetURL(_name, _url, false);
                     if (succ)
                         _remote.URL = _url;
                 }
+
+                var pushURL = new Commands.Remote(_repo.FullPath).GetURL(_name, true);
+                if (pushURL != _url)
+                    new Commands.Remote(_repo.FullPath).SetURL(_name, _url, true);
 
                 SetProgressDescription("Post processing ...");
                 new Commands.Config(_repo.FullPath).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);

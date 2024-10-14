@@ -2,6 +2,7 @@
   <x:String x:Key="Text.About" xml:space="preserve">About</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">About SourceGit</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Build with </x:String>
+  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Chart is rendered by </x:String>
   <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• TextEditor from </x:String>
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace fonts come from </x:String>
@@ -313,6 +314,7 @@
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Switch Horizontal/Vertical Layout</x:String>
   <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Switch Curve/Polyline Graph Mode</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
+  <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTHOR TIME</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPH &amp; SUBJECT</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">COMMIT TIME</x:String>
@@ -356,8 +358,6 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interactive Rebase</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Target Branch:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">On:</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveUp" xml:space="preserve">Move Up</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveDown" xml:space="preserve">Move Down</x:String>
   <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">NOTICE</x:String>
@@ -414,6 +414,7 @@
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Language</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
+  <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Show author time intead of commit time in graph</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Subject Guide Length</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Enable Auto CRLF</x:String>
@@ -500,7 +501,7 @@
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Open In File Browser</x:String>
-  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Search Branches &amp; Tags &amp; Submodules</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Search Branches/Tags/Submodules</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTERED BY:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOCAL BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigate To HEAD</x:String>
@@ -562,6 +563,8 @@
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Include untracked files</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Message:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Name of this stash</x:String>
+  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Only staged changes</x:String>
+  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Both staged and unstaged changes of selected file(s) will be stashed!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Local Changes</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Apply</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Drop</x:String>

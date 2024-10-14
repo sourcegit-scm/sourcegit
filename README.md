@@ -31,6 +31,7 @@ Opensource Git GUI client.
   * Revision Diffs
   * Branch Diff
   * Image Diff - Side-By-Side/Swipe/Blend
+* Search commits
 * GitFlow
 * Git LFS
 * Issue Link
@@ -80,6 +81,7 @@ For **macOS** users:
 * Make sure your mac trusts all software from anywhere. For more information, search `spctl --master-disable`.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your mac.
 * You may need to run `sudo xattr -cr /Applications/SourceGit.app` to make sure the software works.
+* You may need to start this app from commandline by using `open -a SourceGit` to introduce the `PATH` environment variable from your shell.
 
 For **Linux** users:
 

@@ -15,16 +15,17 @@ namespace SourceGit.ViewModels
         {
             get
             {
-                if (_instance == null)
-                {
-                    _isLoading = true;
-                    _instance = Load();
-                    _isLoading = false;
-                }
+                if (_instance != null)
+                    return _instance;
+
+                _isLoading = true;
+                _instance = Load();
+                _isLoading = false;
 
                 _instance.PrepareGit();
                 _instance.PrepareShellOrTerminal();
                 _instance.PrepareWorkspaces();
+
                 return _instance;
             }
         }
@@ -129,6 +130,12 @@ namespace SourceGit.ViewModels
         {
             get => _check4UpdatesOnStartup;
             set => SetProperty(ref _check4UpdatesOnStartup, value);
+        }
+
+        public bool ShowAuthorTimeInGraph
+        {
+            get => _showAuthorTimeInGraph;
+            set => SetProperty(ref _showAuthorTimeInGraph, value);
         }
 
         public string IgnoreUpdateTag
@@ -576,6 +583,7 @@ namespace SourceGit.ViewModels
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
+        private bool _showAuthorTimeInGraph = false;
 
         private bool _check4UpdatesOnStartup = true;
         private double _lastCheckUpdateTime = 0;

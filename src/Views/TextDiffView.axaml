@@ -74,7 +74,7 @@
       </ContentControl.DataTemplates>
     </ContentControl>
 
-    <StackPanel x:Name="Popup" IsVisible="False" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Effect="drop-shadow(0 0 6 #40000000)">
+    <StackPanel x:Name="Popup" IsVisible="False" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Effect="drop-shadow(0 0 8 #80000000)">
       <Button Classes="flat" Content="{DynamicResource Text.Hunk.Stage}" Click="OnStageChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange}"/>
       <Button Classes="flat" Content="{DynamicResource Text.Hunk.Unstage}" Click="OnUnstageChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange, Converter={x:Static BoolConverters.Not}}"/>
       <Button Classes="flat" Content="{DynamicResource Text.Hunk.Discard}" Margin="8,0,0,0" Click="OnDiscardChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange}"/>

@@ -51,7 +51,14 @@
               <ToggleButton Classes="time_display_mode"
                             Width="10" Height="10"
                             IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"/>
-              <TextBlock Classes="table_header" Margin="6,0,0,0" Text="{DynamicResource Text.Histories.Header.Time}"/>
+              <TextBlock Classes="table_header"
+                         Margin="6,0,0,0"
+                         Text="{DynamicResource Text.Histories.Header.Time}"
+                         IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Converter={x:Static BoolConverters.Not}, Mode=OneWay}"/>
+              <TextBlock Classes="table_header"
+                         Margin="6,0,0,0"
+                         Text="{DynamicResource Text.Histories.Header.AuthorTime}"
+                         IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"/>
             </StackPanel>
           </Grid>
         </Border>
@@ -180,13 +187,13 @@
                                Opacity="{Binding Opacity}"/>
                   </Border>
 
-                  <!-- COMMIT TIME -->
+                  <!-- TIME -->
                   <Border Grid.Column="3" Padding="4,0" ClipToBounds="True" IsHitTestVisible="False">
                     <v:CommitTimeTextBlock Classes="primary"
                                            HorizontalAlignment="Center"
                                            FontWeight="{Binding FontWeight}"
                                            Opacity="{Binding Opacity}"
-                                           Timestamp="{Binding CommitterTime}"
+                                           UseAuthorTime="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
                                            ShowAsDateTime="{Binding Source={x:Static vm:Preference.Instance}, Path=!DisplayTimeAsPeriodInHistories}"/>
                   </Border>
                 </Grid>

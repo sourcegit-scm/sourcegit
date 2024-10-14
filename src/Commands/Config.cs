@@ -7,17 +7,23 @@ namespace SourceGit.Commands
     {
         public Config(string repository)
         {
-            WorkingDirectory = repository;
-            Context = repository;
+            if (string.IsNullOrEmpty(repository))
+            {
+                WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            }
+            else
+            {
+                WorkingDirectory = repository;
+                Context = repository;
+                _isLocal = true;
+            }
+
             RaiseError = false;
         }
 
         public Dictionary<string, string> ListAll()
         {
-            if (string.IsNullOrEmpty(WorkingDirectory))
-                Args = "config --global -l";
-            else
-                Args = "config -l";
+            Args = "config -l";
 
             var output = ReadToEnd();
             var rs = new Dictionary<string, string>();
@@ -47,22 +53,16 @@ namespace SourceGit.Commands
 
         public bool Set(string key, string value, bool allowEmpty = false)
         {
+            var scope = _isLocal ? "--local" : "--global";
+
             if (!allowEmpty && string.IsNullOrWhiteSpace(value))
-            {
-                if (string.IsNullOrEmpty(WorkingDirectory))
-                    Args = $"config --global --unset {key}";
-                else
-                    Args = $"config --unset {key}";
-            }
+                Args = $"config {scope} --unset {key}";
             else
-            {
-                if (string.IsNullOrWhiteSpace(WorkingDirectory))
-                    Args = $"config --global {key} \"{value}\"";
-                else
-                    Args = $"config {key} \"{value}\"";
-            }
+                Args = $"config {scope} {key} \"{value}\"";
 
             return Exec();
         }
+
+        private bool _isLocal = false;
     }
 }

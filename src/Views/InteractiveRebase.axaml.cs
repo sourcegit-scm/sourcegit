@@ -1,9 +1,79 @@
+using System;
+
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
+    public class InteractiveRebaseListBox : ListBox
+    {
+        protected override Type StyleKeyOverride => typeof(ListBox);
+
+        /// <summary>
+        ///     Prevent ListBox handle the arrow keys.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            var vm = DataContext as ViewModels.InteractiveRebase;
+            if (vm == null)
+                return;
+
+            var item = vm.SelectedItem;
+            if (item == null)
+            {
+                base.OnKeyDown(e); 
+                return;
+            }
+
+            if (e.Key == Key.P)
+            {
+                item.SetAction(Models.InteractiveRebaseAction.Pick);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.E)
+            {
+                item.SetAction(Models.InteractiveRebaseAction.Edit);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.R)
+            {
+                item.SetAction(Models.InteractiveRebaseAction.Reword);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.S)
+            {
+                item.SetAction(Models.InteractiveRebaseAction.Squash);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.F)
+            {
+                item.SetAction(Models.InteractiveRebaseAction.Fixup);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.D)
+            {
+                item.SetAction(Models.InteractiveRebaseAction.Drop);
+                e.Handled = true;
+            }
+            else if (e.KeyModifiers == KeyModifiers.Alt && e.Key == Key.Up)
+            {
+                vm.MoveItemUp(item);
+                e.Handled = true;
+            }
+            else if (e.KeyModifiers == KeyModifiers.Alt && e.Key == Key.Down)
+            {
+                vm.MoveItemDown(item);
+                e.Handled = true;
+            }
+            else
+            {
+                base.OnKeyDown(e);
+            }
+        }
+    }
+
     public partial class InteractiveRebase : ChromelessWindow
     {
         public InteractiveRebase()
@@ -87,26 +157,6 @@ namespace SourceGit.Views
                 vm.MoveItemDown(control.DataContext as ViewModels.InteractiveRebaseItem);
                 e.Handled = true;
             }
-        }
-
-        private void OnItemsListBoxKeyDown(object sender, KeyEventArgs e)
-        {
-            var item = (sender as ListBox)?.SelectedItem as ViewModels.InteractiveRebaseItem;
-            if (item == null)
-                return;
-
-            if (e.Key == Key.P)
-                item.SetAction(Models.InteractiveRebaseAction.Pick);
-            else if (e.Key == Key.E)
-                item.SetAction(Models.InteractiveRebaseAction.Edit);
-            else if (e.Key == Key.R)
-                item.SetAction(Models.InteractiveRebaseAction.Reword);
-            else if (e.Key == Key.S)
-                item.SetAction(Models.InteractiveRebaseAction.Squash);
-            else if (e.Key == Key.F)
-                item.SetAction(Models.InteractiveRebaseAction.Fixup);
-            else if (e.Key == Key.D)
-                item.SetAction(Models.InteractiveRebaseAction.Drop);
         }
 
         private async void StartJobs(object _1, RoutedEventArgs _2)

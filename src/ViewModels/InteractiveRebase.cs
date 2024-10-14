@@ -140,6 +140,7 @@ namespace SourceGit.ViewModels
                 var prev = Items[idx - 1];
                 Items.RemoveAt(idx - 1);
                 Items.Insert(idx, prev);
+                SelectedItem = item;
             }
         }
 
@@ -151,6 +152,7 @@ namespace SourceGit.ViewModels
                 var next = Items[idx + 1];
                 Items.RemoveAt(idx + 1);
                 Items.Insert(idx, next);
+                SelectedItem = item;
             }
         }
 

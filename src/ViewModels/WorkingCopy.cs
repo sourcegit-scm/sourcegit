@@ -318,9 +318,9 @@ namespace SourceGit.ViewModels
                 return;
 
             if (autoStart)
-                PopupHost.ShowAndStartPopup(new StashChanges(_repo, _cached, false, true));
+                PopupHost.ShowAndStartPopup(new StashChanges(_repo, _cached, false));
             else
-                PopupHost.ShowPopup(new StashChanges(_repo, _cached, false, true));
+                PopupHost.ShowPopup(new StashChanges(_repo, _cached, false));
         }
 
         public void StageSelected(Models.Change next)
@@ -523,9 +523,8 @@ namespace SourceGit.ViewModels
                     stash.Click += (_, e) =>
                     {
                         if (PopupHost.CanCreatePopup())
-                        {
-                            PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, false, false));
-                        }
+                            PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
+
                         e.Handled = true;
                     };
 
@@ -843,7 +842,7 @@ namespace SourceGit.ViewModels
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, false, false));
+                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
 
                     e.Handled = true;
                 };
@@ -928,7 +927,7 @@ namespace SourceGit.ViewModels
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true, false));
+                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
 
                     e.Handled = true;
                 };
@@ -1097,7 +1096,7 @@ namespace SourceGit.ViewModels
                 stash.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true, false));
+                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
 
                     e.Handled = true;
                 };

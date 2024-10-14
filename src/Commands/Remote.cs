@@ -32,9 +32,17 @@
             return Exec();
         }
 
-        public bool SetURL(string name, string url)
+        public string GetURL(string name, bool isPush)
         {
-            Args = $"remote set-url {name} {url}";
+            Args = "remote get-url" + (isPush ? " --push " : " ") + name;
+
+            var rs = ReadToEnd();
+            return rs.IsSuccess ? rs.StdOut.Trim() : string.Empty;
+        }
+
+        public bool SetURL(string name, string url, bool isPush)
+        {
+            Args = "remote set-url" + (isPush ? " --push " : " ") + $"{name} {url}";
             return Exec();
         }
     }

@@ -128,13 +128,7 @@
                  BorderBrush="{DynamicResource Brush.Border2}"
                  Watermark="{DynamicResource Text.Repository.Filter}"
                  Text="{Binding Filter, Mode=TwoWay}"
-                 VerticalContentAlignment="Center">
-          <TextBox.Styles>
-            <Style Selector="TextBox /template/ TextBlock#PART_Watermark">
-              <Setter Property="FontSize" Value="12"/>
-            </Style>
-          </TextBox.Styles>
-          
+                 VerticalContentAlignment="Center">          
           <TextBox.InnerLeftContent>
             <Path Width="14" Height="14"
                   Margin="6,0,0,0"
@@ -465,12 +459,6 @@
               <Setter Property="Margin" Value="0"/>
               <Setter Property="Padding" Value="0"/>
               <Setter Property="Height" Value="50"/>
-            </Style>
-            <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-              <Setter Property="Background" Value="Transparent" />
-            </Style>
-            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-              <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}" />
             </Style>
           </ListBox.Styles>
 

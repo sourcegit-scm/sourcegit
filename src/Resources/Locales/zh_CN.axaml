@@ -5,6 +5,7 @@
   <x:String x:Key="Text.About" xml:space="preserve">关于软件</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">关于本软件</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• 项目依赖于 </x:String>
+  <x:String x:Key="Text.About.Chart" xml:space="preserve">• 图表绘制组件来自 </x:String>
   <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• 文本编辑器使用 </x:String>
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• 等宽字体来自于 </x:String>
@@ -316,6 +317,7 @@
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">切换横向/纵向显示</x:String>
   <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">切换曲线/折线显示</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
+  <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改时间</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路线图与主题</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">提交时间</x:String>
@@ -359,8 +361,6 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">交互式变基</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">起始提交 ：</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveUp" xml:space="preserve">向上移动</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveDown" xml:space="preserve">向下移动</x:String>
   <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出错了</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系统提示</x:String>
@@ -413,6 +413,7 @@
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">启动时检测软件更新</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">显示语言</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">最大历史提交数</x:String>
+  <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">在提交路线图中显示修改时间而非提交时间</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">SUBJECT字数检测</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">自动换行转换</x:String>
@@ -498,7 +499,7 @@
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">配置本仓库</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在文件浏览器中打开</x:String>
-  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速查找分支、标签、子模块</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速查找分支/标签/子模块</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">过滤规则 ：</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本地分支</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">定位HEAD</x:String>
@@ -560,6 +561,8 @@
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">包含未跟踪的文件</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">信息 ：</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">选填，用于命名此贮藏</x:String>
+  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">仅贮藏暂存区的变更</x:String>
+  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">选中文件的所有变更均会被贮藏！</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">贮藏本地变更</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">应用(apply)</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">删除(drop)</x:String>

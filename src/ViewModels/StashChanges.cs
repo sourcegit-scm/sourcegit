@@ -11,7 +11,7 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public bool CanIgnoreUntracked
+        public bool HasSelectedFiles
         {
             get;
         }
@@ -22,21 +22,28 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public StashChanges(Repository repo, List<Models.Change> changes, bool onlyStaged, bool canIgnoreUntracked)
+        public bool OnlyStaged
+        {
+            get;
+            set;
+        }
+
+        public StashChanges(Repository repo, List<Models.Change> changes, bool hasSelectedFiles)
         {
             _repo = repo;
             _changes = changes;
-            _onlyStaged = onlyStaged;
 
-            CanIgnoreUntracked = canIgnoreUntracked;
+            HasSelectedFiles = hasSelectedFiles;
             IncludeUntracked = true;
+            OnlyStaged = false;
+
             View = new Views.StashChanges() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
             var jobs = _changes;
-            if (CanIgnoreUntracked && !IncludeUntracked)
+            if (!HasSelectedFiles && !IncludeUntracked)
             {
                 jobs = new List<Models.Change>();
                 foreach (var job in _changes)
@@ -56,7 +63,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Stash(_repo.FullPath).Push(jobs, Message, _onlyStaged);
+                var succ = new Commands.Stash(_repo.FullPath).Push(jobs, Message, !HasSelectedFiles && OnlyStaged);
                 CallUIThread(() =>
                 {
                     _repo.MarkWorkingCopyDirtyManually();
@@ -68,6 +75,5 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private readonly List<Models.Change> _changes = null;
-        private readonly bool _onlyStaged = false;
     }
 }

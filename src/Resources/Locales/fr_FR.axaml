@@ -2,7 +2,6 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
-
   <x:String x:Key="Text.About" xml:space="preserve">À propos</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Compilé avec </x:String>
   <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
@@ -346,8 +345,6 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interactive Rebase</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Target Branch:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">On:</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveUp" xml:space="preserve">Move Up</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveDown" xml:space="preserve">Move Down</x:String>
   <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">NOTICE</x:String>
@@ -479,7 +476,7 @@
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Ouvrir dans l'explorateur Windows</x:String>
-  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Search Branches &amp; Tags &amp; Submodules</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Search Branches/Tags/Submodules</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTERED BY:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOCAL BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigate To HEAD</x:String>

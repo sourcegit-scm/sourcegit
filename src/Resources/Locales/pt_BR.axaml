@@ -340,8 +340,6 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase Interativo</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Ramo Alvo:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Em:</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveUp" xml:space="preserve">Mover Para Cima</x:String>
-  <x:String x:Key="Text.InteractiveRebase.MoveDown" xml:space="preserve">Mover Para Baixo</x:String>
   <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERRO</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">AVISO</x:String>
@@ -471,7 +469,7 @@
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configurar este repositório</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUAR</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Abrir no Navegador de Arquivos</x:String>
-  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Pesquisar Branches &amp; Tags &amp; Submódulos</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Pesquisar Branches/Tags/Submódulos</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTRADO POR:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCHES LOCAIS</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navegar para HEAD</x:String>

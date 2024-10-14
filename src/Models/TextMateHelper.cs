@@ -81,6 +81,8 @@ namespace SourceGit.Models
 
     public class RegistryOptionsWrapper(ThemeName defaultTheme) : IRegistryOptions
     {
+        public string LastScope { get; set; } = string.Empty;
+
         public IRawTheme GetTheme(string scopeName) => _backend.GetTheme(scopeName);
         public IRawTheme GetDefaultTheme() => _backend.GetDefaultTheme();
         public IRawTheme LoadTheme(ThemeName name) => _backend.LoadTheme(name);
@@ -111,10 +113,15 @@ namespace SourceGit.Models
 
         public static void SetGrammarByFileName(TextMate.Installation installation, string filePath)
         {
-            if (installation is { RegistryOptions: RegistryOptionsWrapper reg })
+            if (installation is { RegistryOptions: RegistryOptionsWrapper reg } && !string.IsNullOrEmpty(filePath))
             {
-                installation.SetGrammar(reg.GetScope(filePath));
-                GC.Collect();
+                var scope = reg.GetScope(filePath);
+                if (reg.LastScope != scope)
+                {
+                    reg.LastScope = scope;
+                    installation.SetGrammar(reg.GetScope(filePath));
+                    GC.Collect();
+                }
             }
         }
     }

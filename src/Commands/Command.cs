@@ -188,10 +188,8 @@ namespace SourceGit.Commands
             start.Environment.Add("SOURCEGIT_LAUNCH_AS_ASKPASS", "TRUE");
 
             // If an SSH private key was provided, sets the environment.
-            if (!string.IsNullOrEmpty(SSHKey))
-                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new -i '{SSHKey}'");
-            else
-                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -o StrictHostKeyChecking=accept-new");
+            if (!start.Environment.ContainsKey("GIT_SSH_COMMAND") && !string.IsNullOrEmpty(SSHKey))
+                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -i '{SSHKey}'");
 
             // Force using en_US.UTF-8 locale to avoid GCM crash
             if (OperatingSystem.IsLinux())
@@ -199,7 +197,12 @@ namespace SourceGit.Commands
 
             // Fix sometimes `LSEnvironment` not working on macOS
             if (OperatingSystem.IsMacOS())
-                start.Environment.Add("PATH", "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin");
+            {
+                if (start.Environment.TryGetValue("PATH", out var path))
+                    start.Environment.Add("PATH", $"/opt/homebrew/bin:/opt/homebrew/sbin:{path}");
+                else
+                    start.Environment.Add("PATH", "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin");
+            }
 
             // Force using this app as git editor.
             switch (Editor)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -50,6 +51,7 @@ namespace SourceGit.ViewModels
             _basedOn = branch.Head;
 
             BasedOn = branch;
+            SignTag = new Commands.Config(repo.FullPath).Get("tag.gpgsign").Equals("true", StringComparison.OrdinalIgnoreCase);
             View = new Views.CreateTag() { DataContext = this };
         }
 
@@ -59,6 +61,7 @@ namespace SourceGit.ViewModels
             _basedOn = commit.SHA;
 
             BasedOn = commit;
+            SignTag = new Commands.Config(repo.FullPath).Get("tag.gpgsign").Equals("true", StringComparison.OrdinalIgnoreCase);
             View = new Views.CreateTag() { DataContext = this };
         }
 
