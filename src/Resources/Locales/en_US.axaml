@@ -83,8 +83,11 @@
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
+  <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Append source to commit message</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit all changes</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Mainline:</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Usually you cannot cherry-pick a merge because you do not know which side of the merge should be considered the mainline. This option allows cherry-pick to replay the change relative to the specified parent.</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Clear Stashes</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">You are trying to clear all stashes. Are you sure to continue?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">Clone Remote Repository</x:String>

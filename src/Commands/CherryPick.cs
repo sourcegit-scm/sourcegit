@@ -2,12 +2,19 @@
 {
     public class CherryPick : Command
     {
-        public CherryPick(string repo, string commits, bool noCommit)
+        public CherryPick(string repo, string commits, bool noCommit, bool appendSourceToMessage, string extraParams)
         {
-            var mode = noCommit ? "-n" : "--ff";
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"cherry-pick {mode} {commits}";
+
+            Args = "cherry-pick ";
+            if (noCommit)
+                Args += "-n ";
+            if (appendSourceToMessage)
+                Args += "-x ";
+            if (!string.IsNullOrEmpty(extraParams))
+                Args += $"{extraParams} ";
+            Args += commits;
         }
     }
 }
