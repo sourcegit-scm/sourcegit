@@ -98,16 +98,11 @@
           <!-- REFS -->
           <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
           <Border Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" Height="24" IsVisible="{Binding HasDecorators}">
-            <v:CommitRefsPresenter IconBackground="{DynamicResource Brush.DecoratorIconBG}"
-                                   IconForeground="{DynamicResource Brush.DecoratorIcon}"
-                                   BranchNameBackground="{DynamicResource Brush.DecoratorBranch}"
-                                   HeadBranchNameBackground="{DynamicResource Brush.DecoratorHead}"
-                                   TagNameBackground="{DynamicResource Brush.DecoratorTag}"
-                                   LabelForeground="{DynamicResource Brush.DecoratorFG}"
+            <v:CommitRefsPresenter TagBackground="{DynamicResource Brush.DecoratorTag}"
+                                   Foreground="{DynamicResource Brush.FG1}"
                                    FontFamily="{DynamicResource Fonts.Primary}"
                                    FontSize="11"
-                                   VerticalAlignment="Center"
-                                   Refs="{Binding Decorators}"/>
+                                   VerticalAlignment="Center"/>
           </Border>
           
           <!-- Messages -->

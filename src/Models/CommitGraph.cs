@@ -186,6 +186,7 @@ namespace SourceGit.Models
                 // Margins & merge state (used by Views.Histories).
                 commit.IsMerged = isMerged;
                 commit.Margin = new Thickness(Math.Max(offsetX, maxOffsetOld) + halfWidth + 2, 0, 0, 0);
+                commit.Color = dotColor;
             }
 
             // Deal with curves haven't ended yet.
