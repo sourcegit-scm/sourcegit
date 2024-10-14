@@ -89,7 +89,7 @@
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">提交資訊中追加來源資訊</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交列表:</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">提交變更</x:String>
-  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">作為對比的父提交：</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">對比的父提交：</x:String>
   <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">通常你不能對一個合併進行揀選，因為你不知道合併的哪一邊應該被視為主線。這個選項指定了作為主線的父提交，允許揀選相對於該提交的修改。</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">捨棄擱置變更確認</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">您正在捨棄所有的擱置變更，一經操作便無法復原，是否繼續?</x:String>
