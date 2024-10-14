@@ -55,7 +55,7 @@ namespace SourceGit.Models
                 {
                     var count = Math.Min(int.Parse(countStr.Substring(1)), changes.Count);
                     for (int j = 0; j < count; j++)
-                        paths.Add(changes[i].Path);
+                        paths.Add(changes[j].Path);
 
                     if (count < changes.Count)
                         more = $" and {changes.Count - count} other files";
