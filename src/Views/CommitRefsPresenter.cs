@@ -59,9 +59,8 @@ namespace SourceGit.Views
         {
             AffectsMeasure<CommitRefsPresenter>(
                 FontFamilyProperty,
-                FontSizeProperty);
-
-            AffectsRender<CommitRefsPresenter>(
+                FontSizeProperty,
+                ForegroundProperty,
                 TagBackgroundProperty);
         }
 
