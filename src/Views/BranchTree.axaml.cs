@@ -52,7 +52,7 @@ namespace SourceGit.Views
 
             if (node.Backend is Models.Remote)
             {
-                CreateContent(new Thickness(0, 2, 0, 0), "Icons.Remote");
+                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Remote");
             }
             else if (node.Backend is Models.Branch branch)
             {
