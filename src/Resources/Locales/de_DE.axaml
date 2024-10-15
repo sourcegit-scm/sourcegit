@@ -5,7 +5,7 @@
   <x:String x:Key="Text.About" xml:space="preserve">Info</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Über SourceGit</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Erstellt mit </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Grafik gerendered durch </x:String>
+  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Grafik gerendert durch </x:String>
   <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• Texteditor von </x:String>
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace-Schriftarten von </x:String>
@@ -181,8 +181,8 @@
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">Mit GPG signieren</x:String>
   <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Anmerkung:</x:String>
   <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Optional.</x:String>
-  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Nur staged Änderungen</x:String>
-  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Staged und unstaged Änderungen der ausgewähleten Datei(en) werden gestashed!!!</x:String>
+  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Nur gestagte Änderungen</x:String>
+  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Gestagte und unstagte Änderungen der ausgewähleten Datei(en) werden gestasht!!!</x:String>
   <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Tag-Name:</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Empfohlenes Format: v1.0.0-alpha</x:String>
   <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Nach Erstellung auf alle Remotes pushen</x:String>
