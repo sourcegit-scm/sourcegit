@@ -77,12 +77,9 @@ namespace SourceGit.Views
                 var iconRect = new RoundedRect(new Rect(x, 0, 16, 16), new CornerRadius(2, 0, 0, 2));
                 var entireRect = new RoundedRect(new Rect(x, 0, item.Width, 16), new CornerRadius(2));
 
-                using (context.PushTransform(Matrix.CreateTranslation(x + 3, 3)))
-                    context.DrawGeometry(fg, null, item.Icon);
-
                 if (item.IsHead)
                 {
-                    using (context.PushOpacity(.4))
+                    using (context.PushOpacity(.6))
                         context.DrawRectangle(item.Brush, null, entireRect);
 
                     context.DrawText(item.Label, new Point(x + 16, 8.0 - item.Label.Height * 0.5));
@@ -98,6 +95,9 @@ namespace SourceGit.Views
                     context.DrawText(item.Label, new Point(x + 20, 8.0 - item.Label.Height * 0.5));
                     context.DrawRectangle(null, new Pen(item.Brush), entireRect);
                 }
+
+                using (context.PushTransform(Matrix.CreateTranslation(x + 3, 3)))
+                    context.DrawGeometry(fg, null, item.Icon);
 
                 x += item.Width + 4;
             }
