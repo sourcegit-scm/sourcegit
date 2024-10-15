@@ -32,25 +32,14 @@ namespace SourceGit.Commands
 
         private Models.Tag ParseLine(string line)
         {
-            var subs = line.Split('\0', StringSplitOptions.RemoveEmptyEntries);
-            if (subs.Length == 2)
-            {
-                return new Models.Tag()
-                {
-                    Name = subs[0].Substring(10),
-                    SHA = subs[1],
-                };
-            }
-            else if (subs.Length == 3)
-            {
-                return new Models.Tag()
-                {
-                    Name = subs[0].Substring(10),
-                    SHA = subs[2],
-                };
-            }
+            var subs = line.Split('\0');
+            if (subs.Length != 3)
+                return null;
 
-            return null;
+            var tag = new Models.Tag();
+            tag.Name = subs[0].Substring(10);
+            tag.SHA = string.IsNullOrEmpty(subs[2]) ? subs[1] : subs[2];
+            return tag;
         }
     }
 }
