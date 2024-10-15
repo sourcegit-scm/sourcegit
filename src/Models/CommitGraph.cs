@@ -327,11 +327,11 @@ namespace SourceGit.Models
         private static readonly List<Color> s_defaultPenColors = [
             Colors.Orange,
             Colors.ForestGreen,
-            Colors.Magenta,
-            Colors.Red,
             Colors.Gray,
             Colors.Turquoise,
             Colors.Olive,
+            Colors.Magenta,
+            Colors.Red,
             Colors.Khaki,
             Colors.Lime,
             Colors.RoyalBlue,
