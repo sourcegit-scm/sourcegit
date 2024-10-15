@@ -14,7 +14,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "branch -l --all -v --format=\"%(refname)$%(objectname)$%(HEAD)$%(upstream)$%(upstream:trackshort)\"";
+            Args = "branch -l --all -v --format=\"%(refname)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)\"";
         }
 
         public List<Models.Branch> Result()
@@ -37,7 +37,7 @@ namespace SourceGit.Commands
 
         private Models.Branch ParseLine(string line)
         {
-            var parts = line.Split('$');
+            var parts = line.Split('\0');
             if (parts.Length != 5)
                 return null;
 

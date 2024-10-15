@@ -9,7 +9,7 @@ namespace SourceGit.Commands
         {
             Context = repo;
             WorkingDirectory = repo;
-            Args = "tag -l --sort=-creatordate --format=\"$%(refname)$%(objectname)$%(*objectname)\"";
+            Args = "tag -l --sort=-creatordate --format=\"%(refname)%00%(objectname)%00%(*objectname)\"";
         }
 
         public List<Models.Tag> Result()
@@ -32,7 +32,7 @@ namespace SourceGit.Commands
 
         private Models.Tag ParseLine(string line)
         {
-            var subs = line.Split('$', StringSplitOptions.RemoveEmptyEntries);
+            var subs = line.Split('\0', StringSplitOptions.RemoveEmptyEntries);
             if (subs.Length == 2)
             {
                 return new Models.Tag()
