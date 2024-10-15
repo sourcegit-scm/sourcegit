@@ -37,6 +37,15 @@ namespace SourceGit.Views
             set => SetValue(FontSizeProperty, value);
         }
 
+        public static readonly StyledProperty<IBrush> BackgroundProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(Background), null);
+
+        public IBrush Background
+        {
+            get => GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
+        }
+
         public static readonly StyledProperty<IBrush> ForegroundProperty =
             AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(Foreground), Brushes.White);
 
@@ -71,6 +80,9 @@ namespace SourceGit.Views
                 FontSizeProperty,
                 ForegroundProperty,
                 TagBackgroundProperty);
+
+            AffectsRender<CommitRefsPresenter>(
+                BackgroundProperty);
         }
 
         public override void Render(DrawingContext context)
@@ -80,6 +92,7 @@ namespace SourceGit.Views
 
             var useGraphColor = UseGraphColor;
             var fg = Foreground;
+            var bg = Background;
             var x = 1.0;
             foreach (var item in _items)
             {
@@ -98,6 +111,9 @@ namespace SourceGit.Views
                 }
                 else
                 {
+                    if (bg != null)
+                        context.DrawRectangle(bg, null, entireRect);
+
                     var labelRect = new RoundedRect(new Rect(x + 16, 0, item.Label.Width + 8, 16), new CornerRadius(0, 2, 2, 0));
                     using (context.PushOpacity(.2))
                         context.DrawRectangle(item.Brush, null, labelRect);

@@ -138,6 +138,7 @@
                                                VerticalAlignment="Center"/>
 
                       <v:CommitRefsPresenter Grid.Column="1"
+                                             Background="{DynamicResource Brush.Contents}"
                                              TagBackground="{DynamicResource Brush.DecoratorTag}"
                                              Foreground="{DynamicResource Brush.FG1}"
                                              FontFamily="{DynamicResource Fonts.Primary}"
