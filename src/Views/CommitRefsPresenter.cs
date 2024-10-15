@@ -78,6 +78,7 @@ namespace SourceGit.Views
             if (_items.Count == 0)
                 return;
 
+            var useGraphColor = UseGraphColor;
             var fg = Foreground;
             var x = 1.0;
             foreach (var item in _items)
@@ -87,8 +88,11 @@ namespace SourceGit.Views
 
                 if (item.IsHead)
                 {
-                    using (context.PushOpacity(.6))
-                        context.DrawRectangle(item.Brush, null, entireRect);
+                    if (useGraphColor)
+                    {
+                        using (context.PushOpacity(.6))
+                            context.DrawRectangle(item.Brush, null, entireRect);
+                    }
 
                     context.DrawText(item.Label, new Point(x + 16, 8.0 - item.Label.Height * 0.5));
                 }
