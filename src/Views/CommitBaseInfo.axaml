@@ -102,7 +102,8 @@
                                    Foreground="{DynamicResource Brush.FG1}"
                                    FontFamily="{DynamicResource Fonts.Primary}"
                                    FontSize="11"
-                                   VerticalAlignment="Center"/>
+                                   VerticalAlignment="Center"
+                                   UseGraphColor="False"/>
           </Border>
           
           <!-- Messages -->

@@ -142,7 +142,8 @@
                                              Foreground="{DynamicResource Brush.FG1}"
                                              FontFamily="{DynamicResource Fonts.Primary}"
                                              FontSize="11"
-                                             VerticalAlignment="Center"/>
+                                             VerticalAlignment="Center"
+                                             UseGraphColor="True"/>
 
                       <v:CommitSubjectPresenter Grid.Column="2"
                                                 Classes="primary"

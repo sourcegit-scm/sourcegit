@@ -10,7 +10,7 @@
       <Color x:Key="Color.Contents">#FFFAFAFA</Color>
       <Color x:Key="Color.Badge">#FFB0CEE8</Color>
       <Color x:Key="Color.BadgeFG">#FF1F1F1F</Color>
-      <Color x:Key="Color.DecoratorTag">#79855f</Color>
+      <Color x:Key="Color.DecoratorTag">DarkGreen</Color>
       <Color x:Key="Color.Conflict">#FF836C2E</Color>
       <Color x:Key="Color.ConflictForeground">#FFFFFFFF</Color>
       <Color x:Key="Color.Border0">#FFCFCFCF</Color>

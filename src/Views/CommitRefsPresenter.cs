@@ -46,6 +46,15 @@ namespace SourceGit.Views
             set => SetValue(ForegroundProperty, value);
         }
 
+        public static readonly StyledProperty<bool> UseGraphColorProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(UseGraphColor), false);
+
+        public bool UseGraphColor
+        {
+            get => GetValue(UseGraphColorProperty);
+            set => SetValue(UseGraphColorProperty, value);
+        }
+
         public static readonly StyledProperty<IBrush> TagBackgroundProperty =
             AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(TagBackground), Brushes.White);
 
@@ -122,6 +131,7 @@ namespace SourceGit.Views
                 var typeface = new Typeface(FontFamily);
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
                 var fg = Foreground;
+                var normalBG = UseGraphColor ? commit.Brush : Brushes.Gray;
                 var tagBG = TagBackground;
                 var labelSize = FontSize;
                 var requiredWidth = 0.0;
@@ -139,7 +149,13 @@ namespace SourceGit.Views
                         isHead ? labelSize + 1 : labelSize,
                         fg);
 
-                    var item = new RenderItem() { Label = label, Brush = commit.Brush, IsHead = isHead };
+                    var item = new RenderItem()
+                    {
+                        Label = label,
+                        Brush = normalBG,
+                        IsHead = isHead
+                    };
+
                     StreamGeometry geo;
                     switch (decorator.Type)
                     {
