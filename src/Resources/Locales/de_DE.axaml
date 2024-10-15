@@ -181,8 +181,6 @@
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">Mit GPG signieren</x:String>
   <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Anmerkung:</x:String>
   <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Optional.</x:String>
-  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Nur gestagte Änderungen</x:String>
-  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Gestagte und unstagte Änderungen der ausgewähleten Datei(en) werden gestasht!!!</x:String>
   <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Tag-Name:</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Empfohlenes Format: v1.0.0-alpha</x:String>
   <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Nach Erstellung auf alle Remotes pushen</x:String>
@@ -571,6 +569,8 @@
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Inklusive nicht-verfolgter Dateien</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Name dieses Stashes</x:String>
+  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Nur gestagte Änderungen</x:String>
+  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Gestagte und unstagte Änderungen der ausgewähleten Datei(en) werden gestasht!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Lokale Änderungen stashen</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Anwenden</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Entfernen</x:String>
