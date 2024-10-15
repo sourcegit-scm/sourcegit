@@ -81,7 +81,7 @@ namespace SourceGit.ViewModels
                         Targets[0].SHA,
                         !AutoCommit,
                         AppendSourceToMessage,
-                        $"-m {MainlineForMergeCommit+1}").Exec();
+                        $"-m {MainlineForMergeCommit + 1}").Exec();
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace SourceGit.ViewModels
                         AppendSourceToMessage,
                         string.Empty).Exec();
                 }
-                
+
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

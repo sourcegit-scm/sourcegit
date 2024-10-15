@@ -27,7 +27,7 @@ namespace SourceGit.Native
                 startInfo.CreateNoWindow = true;
                 startInfo.RedirectStandardOutput = true;
                 startInfo.StandardOutputEncoding = Encoding.UTF8;
-            
+
                 try
                 {
                     var proc = new Process() { StartInfo = startInfo };

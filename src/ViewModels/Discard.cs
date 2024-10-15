@@ -29,7 +29,7 @@ namespace SourceGit.ViewModels
             set;
         } = 0;
     }
-    
+
     public class Discard : Popup
     {
         public object Mode

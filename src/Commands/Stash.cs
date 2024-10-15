@@ -25,7 +25,7 @@ namespace SourceGit.Commands
             {
                 foreach (var c in changes)
                     pathsBuilder.Append($"\"{c.Path}\" ");
-                
+
                 var paths = pathsBuilder.ToString();
                 Args = $"stash push --staged -m \"{message}\" -- {paths}";
             }
@@ -51,11 +51,11 @@ namespace SourceGit.Commands
                     new Add(WorkingDirectory, needAdd).Exec();
                     needAdd.Clear();
                 }
-                
+
                 var paths = pathsBuilder.ToString();
                 Args = $"stash push -m \"{message}\" -- {paths}";
             }
-            
+
             return Exec();
         }
 

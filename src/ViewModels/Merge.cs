@@ -54,7 +54,7 @@ namespace SourceGit.ViewModels
                 return Models.MergeMode.Supported[2];
             if (config.Equals("--no-commit", StringComparison.Ordinal) || config.Equals("--no-ff --no-commit", StringComparison.Ordinal))
                 return Models.MergeMode.Supported[3];
-            
+
             return Models.MergeMode.Supported[0];
         }
 

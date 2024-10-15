@@ -862,7 +862,7 @@ namespace SourceGit.ViewModels
             {
                 if (_settings.Filters.Count != 0)
                     Dispatcher.UIThread.Invoke(() => _settings.Filters.Clear());
-                    
+
                 limits += "--exclude=refs/stash --all";
             }
 

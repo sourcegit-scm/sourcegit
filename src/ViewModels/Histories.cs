@@ -156,7 +156,7 @@ namespace SourceGit.ViewModels
 
                 if (_repo.SearchResultSelectedCommit == null || _repo.SearchResultSelectedCommit.SHA != commit.SHA)
                 {
-                    _repo.SearchResultSelectedCommit = _repo.SearchedCommits.Find(x => x.SHA == commit.SHA);   
+                    _repo.SearchResultSelectedCommit = _repo.SearchedCommits.Find(x => x.SHA == commit.SHA);
                 }
 
                 AutoSelectedCommit = commit;
@@ -445,7 +445,7 @@ namespace SourceGit.ViewModels
                             PopupHost.ShowPopup(new CherryPick(_repo, commit, parents));
                         }
                     }
-                        
+
                     e.Handled = true;
                 };
                 menu.Items.Add(cherryPick);

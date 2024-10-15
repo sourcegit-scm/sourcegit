@@ -83,7 +83,6 @@ namespace SourceGit.Views
                         context.DrawRectangle(item.Brush, null, entireRect);
 
                     context.DrawText(item.Label, new Point(x + 16, 8.0 - item.Label.Height * 0.5));
-                    context.DrawRectangle(null, new Pen(item.Brush), entireRect);
                 }
                 else
                 {
@@ -93,8 +92,9 @@ namespace SourceGit.Views
 
                     context.DrawLine(new Pen(item.Brush), new Point(x + 16, 0), new Point(x + 16, 16));
                     context.DrawText(item.Label, new Point(x + 20, 8.0 - item.Label.Height * 0.5));
-                    context.DrawRectangle(null, new Pen(item.Brush), entireRect);
                 }
+
+                context.DrawRectangle(null, new Pen(item.Brush), entireRect);
 
                 using (context.PushTransform(Matrix.CreateTranslation(x + 3, 3)))
                     context.DrawGeometry(fg, null, item.Icon);

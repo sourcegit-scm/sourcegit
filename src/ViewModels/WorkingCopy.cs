@@ -1202,7 +1202,7 @@ namespace SourceGit.ViewModels
         {
             if (_useAmend)
                 return new Commands.QueryStagedChangesWithAmend(_repo.FullPath).Result();
-            
+
             var rs = new List<Models.Change>();
             foreach (var c in _cached)
             {
