@@ -11,7 +11,7 @@
              x:DataType="vm:Repository">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.RepositorySidebarWidth, Mode=TwoWay}" MinWidth="200" MaxWidth="400"/>
+      <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.RepositorySidebarWidth, Mode=TwoWay}" MinWidth="200" MaxWidth="500"/>
       <ColumnDefinition Width="3"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
