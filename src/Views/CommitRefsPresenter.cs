@@ -103,6 +103,9 @@ namespace SourceGit.Views
                 {
                     if (useGraphColor)
                     {
+                        if (bg != null)
+                            context.DrawRectangle(bg, null, entireRect);
+
                         using (context.PushOpacity(.6))
                             context.DrawRectangle(item.Brush, null, entireRect);
                     }
