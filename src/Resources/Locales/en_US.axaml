@@ -315,15 +315,15 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Histories</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Switch Horizontal/Vertical Layout</x:String>
-  <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Switch Curve/Polyline Graph Mode</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTHOR TIME</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPH &amp; SUBJECT</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">COMMIT TIME</x:String>
-  <x:String x:Key="Text.Histories.Search" xml:space="preserve">SEARCH SHA/SUBJECT/AUTHOR. PRESS ENTER TO SEARCH, ESC TO QUIT</x:String>
-  <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">CLEAR</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Holding 'Ctrl' or 'Shift' to select multiple commits.</x:String>
+  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Holding '⌘' or '⇧' to select multiple commits.</x:String>
+  <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">TIPS:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Keyboard Shortcuts Reference</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Cancel current popup</x:String>

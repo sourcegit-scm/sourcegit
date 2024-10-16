@@ -222,10 +222,19 @@
         <ContentControl.Content>
           <Binding Path="DetailContext">
             <Binding.TargetNullValue>
-              <Path Width="128" Height="128"
-                    Data="{StaticResource Icons.Detail}"
-                    HorizontalAlignment="Center"
-                    Fill="{DynamicResource Brush.FG2}"/>
+              <Grid>
+                <Path Width="128" Height="128"
+                      Data="{StaticResource Icons.Detail}"
+                      HorizontalAlignment="Center"
+                      Fill="{DynamicResource Brush.FG2}"/>
+
+                <StackPanel Margin="0,8" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                  <Path Width="12" Height="12" VerticalAlignment="Center" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Margin="4,0" Text="{DynamicResource Text.Histories.Tips.Prefix}" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Text="{DynamicResource Text.Histories.Tips}" Foreground="{DynamicResource Brush.FG2}" IsVisible="{OnPlatform True, macOS=False}"/>
+                  <TextBlock Text="{DynamicResource Text.Histories.Tips.MacOS}" Foreground="{DynamicResource Brush.FG2}" IsVisible="{OnPlatform False, macOS=True}"/>
+                </StackPanel>
+              </Grid>
             </Binding.TargetNullValue>
           </Binding>
         </ContentControl.Content>

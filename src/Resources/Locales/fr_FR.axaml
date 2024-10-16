@@ -302,13 +302,10 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Historique</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Basculer entre dispositions Horizontal/Vertical</x:String>
-  <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Basculer en un graph courbe ou polyligne</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTEUR</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPHE &amp; SUJET</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">HEURE DE COMMIT</x:String>
-  <x:String x:Key="Text.Histories.Search" xml:space="preserve">CHERCHER UN SHA/SUJET/AUTEUR. ENTRÉE POUR CHERCHER, ESC POUR QUITTER</x:String>
-  <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">EFFACER</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS SÉLECTIONNÉS</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Référence des raccourcis clavier</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>

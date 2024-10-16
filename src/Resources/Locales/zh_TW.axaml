@@ -318,15 +318,15 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">追蹤所有 *{0} 檔案</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">歷史記錄</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">切換橫向/縱向顯示</x:String>
-  <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">切換曲線/折線顯示</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改時間</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路線圖與訊息標題</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">提交時間</x:String>
-  <x:String x:Key="Text.Histories.Search" xml:space="preserve">搜尋提交編號、訊息、作者。按下 Enter 鍵以搜尋，ESC 鍵取消</x:String>
-  <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">清空</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已選取 {0} 項提交</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">可以按住Ctrl或Shift鍵選擇多個提交</x:String>
+  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">可以按住⌘或⇧鍵選擇多個提交</x:String>
+  <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">小提示:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">快速鍵參考</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">全域快速鍵</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">取消彈出面板</x:String>

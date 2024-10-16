@@ -297,13 +297,10 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Rastrear todos os arquivos *{0}</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Históricos</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Alternar Layout Horizontal/Vertical</x:String>
-  <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Alternar Modo de Gráfico Curvo/Polilinha</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRÁFICO &amp; ASSUNTO</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">HORA DO COMMIT</x:String>
-  <x:String x:Key="Text.Histories.Search" xml:space="preserve">PROCURAR SHA/ASSUNTO/AUTOR. PRESSIONE ENTER PARA PROCURAR, ESC PARA SAIR</x:String>
-  <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">LIMPAR</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECIONADO {0} COMMITS</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Referência de Atalhos de Teclado</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>

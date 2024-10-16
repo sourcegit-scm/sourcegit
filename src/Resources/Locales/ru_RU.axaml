@@ -315,14 +315,11 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Отслеживать все *{0} файлов</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Истории</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Переключение горизонтального/вертикального расположения</x:String>
-  <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Переключение режима построения кривой/полилинии</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">АВТОР</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ВРЕМЯ АВТОРА</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">ГРАФ И СУБЪЕКТ</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">ВРЕМЯ ФИКСАЦИИ</x:String>
-  <x:String x:Key="Text.Histories.Search" xml:space="preserve">ПОИСК SHA/СУБЪЕКТ/АВТОР. НАЖМИТЕ ВВОД ДЛЯ ПОИСКА, ESC ДЛЯ ВЫХОДА</x:String>
-  <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">ОЧИСТИТЬ</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">ВЫБРАННЫЕ {0} ФИКСАЦИИ</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Ссылка на сочетания клавиш</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">ОБЩЕЕ</x:String>
