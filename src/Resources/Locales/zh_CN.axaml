@@ -593,6 +593,7 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">删除子模块</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">确    定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">复制标签名</x:String>
+  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">复制标签信息</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">仓库地址 ：</x:String>

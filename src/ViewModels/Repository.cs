@@ -1829,6 +1829,16 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var copyMessage = new MenuItem();
+            copyMessage.Header = App.Text("TagCM.CopyMessage");
+            copyMessage.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyMessage.IsEnabled = !string.IsNullOrEmpty(tag.Message);
+            copyMessage.Click += (_, ev) =>
+            {
+                App.CopyText(tag.Message);
+                ev.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Items.Add(createBranch);
             menu.Items.Add(new MenuItem() { Header = "-" });
@@ -1838,6 +1848,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(archive);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copy);
+            menu.Items.Add(copyMessage);
             return menu;
         }
 

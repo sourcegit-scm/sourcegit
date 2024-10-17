@@ -598,6 +598,7 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">刪除子模組</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">確  定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">複製標籤名稱</x:String>
+  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">複製標籤訊息</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">刪除 ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">存放庫網址:</x:String>
