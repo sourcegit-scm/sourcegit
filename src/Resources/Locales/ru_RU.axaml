@@ -86,8 +86,11 @@
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Ничего не делать</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Отложить и примненить повторно</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve"> Частичный выбор</x:String>
+  <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Добавить источник для фиксации сообщения</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Фиксация(и):</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Фиксировать все изменения.</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Основной:</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Обычно вы не можете выделить слияние, потому что не знаете, какую сторону слияния следует считать основной. Эта опция позволяет отобразить изменение относительно указанного родительского элемента.</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Очистить отложенные</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Вы пытаетесь очистить все отложенные. Вы уверены, что будете продолжать?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">Клонировать внешнее хранилище</x:String>
@@ -182,7 +185,7 @@
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Рекомендуемый формат: v1.0.0-alpha</x:String>
   <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Выложить на все внешние хранилища после создания</x:String>
   <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">Создать новую метку</x:String>
-  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Добрый:</x:String>
+  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Вид:</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">Аннотированный</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">Лёгкий</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Удерживайте Ctrl, чтобы начать непосредственно</x:String>
@@ -293,7 +296,7 @@
   <x:String x:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">Добавить шаблон отслеживания в ХБФ Git</x:String>
   <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Извлечь</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Извлечь объекты ХБФ</x:String>
-  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Запустите `git lfs fetch", чтобы загрузить объекты ХБФ Git. При этом рабочая копия не обновляется.</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Запустить `git lfs fetch", чтобы загрузить объекты ХБФ Git. При этом рабочая копия не обновляется.</x:String>
   <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">Установить перехват ХБФ Git</x:String>
   <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">Показать блокировки</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">Нет заблокированных файлов</x:String>
@@ -321,6 +324,9 @@
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">ВРЕМЯ ФИКСАЦИИ</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">ВЫБРАННЫЕ {0} ФИКСАЦИИ</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Удерживайте 'Ctrl' или 'Shift', чтобы выбрать несколько фиксаций.</x:String>
+  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Удерживайте ⌘ или ⇧, чтобы выбрать несколько фиксаций.</x:String>
+  <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">ПОДСКАЗКИ:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Ссылка на сочетания клавиш</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">ОБЩЕЕ</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Отменить текущее всплывающее окно</x:String>
@@ -592,6 +598,7 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Удалить подмодуль</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">ОК</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Копировать имя метки</x:String>
+  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Копировать сообщение с метки</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Выложить ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">Сетевой адрес:</x:String>
