@@ -18,5 +18,15 @@ namespace SourceGit.Views
             }
             e.Handled = true;
         }
+
+        private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e) 
+        {
+            if (DataContext is ViewModels.StashesPage vm && sender is Grid grid)
+            {
+                var menu = vm.MakeContextMenuForChange(grid.DataContext as Models.Change);
+                grid.OpenContextMenu(menu);
+            }
+            e.Handled = true;
+        }
     }
 }
