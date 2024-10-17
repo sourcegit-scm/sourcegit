@@ -12,6 +12,11 @@ namespace SourceGit.ViewModels
         public Models.Tag Tag { get; private set; } = null;
         public List<TagTreeNode> Children { get; private set; } = [];
 
+        public object ToolTip
+        {
+            get => Tag?.Message;
+        }
+
         public bool IsFolder
         {
             get => Tag == null;

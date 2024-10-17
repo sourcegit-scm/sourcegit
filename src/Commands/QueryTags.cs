@@ -7,9 +7,11 @@ namespace SourceGit.Commands
     {
         public QueryTags(string repo)
         {
+            _boundary = $"----- BOUNDARY OF TAGS {Guid.NewGuid()} -----";
+
             Context = repo;
             WorkingDirectory = repo;
-            Args = "tag -l --sort=-creatordate --format=\"%(refname)%00%(objectname)%00%(*objectname)\"";
+            Args = $"tag -l --sort=-creatordate --format=\"{_boundary}%(refname)%00%(objectname)%00%(*objectname)%00%(contents:subject)%0a%0a%(contents:body)\"";
         }
 
         public List<Models.Tag> Result()
@@ -19,27 +21,25 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess)
                 return tags;
 
-            var lines = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
+            var records = rs.StdOut.Split(_boundary, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var record in records)
             {
-                var tag = ParseLine(line);
-                if (tag != null)
-                    tags.Add(tag);
+                var subs = record.Split('\0', StringSplitOptions.None);
+                if (subs.Length != 4)
+                    continue;
+
+                var message = subs[3].Trim();
+                tags.Add(new Models.Tag()
+                {
+                    Name = subs[0].Substring(10),
+                    SHA = string.IsNullOrEmpty(subs[2]) ? subs[1] : subs[2],
+                    Message = string.IsNullOrEmpty(message) ? null : message,
+                });
             }
 
             return tags;
         }
 
-        private Models.Tag ParseLine(string line)
-        {
-            var subs = line.Split('\0');
-            if (subs.Length != 3)
-                return null;
-
-            var tag = new Models.Tag();
-            tag.Name = subs[0].Substring(10);
-            tag.SHA = string.IsNullOrEmpty(subs[2]) ? subs[1] : subs[2];
-            return tag;
-        }
+        private string _boundary = string.Empty;
     }
 }
