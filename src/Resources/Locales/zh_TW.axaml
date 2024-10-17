@@ -324,8 +324,8 @@
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">提交時間</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已選取 {0} 項提交</x:String>
-  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">可以按住Ctrl或Shift鍵選擇多個提交</x:String>
-  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">可以按住⌘或⇧鍵選擇多個提交</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">可以按住 Ctrl 或 Shift 鍵選擇多個提交</x:String>
+  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">可以按住 ⌘ 或 ⇧ 鍵選擇多個提交</x:String>
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">小提示:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">快速鍵參考</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">全域快速鍵</x:String>
