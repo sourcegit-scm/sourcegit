@@ -59,10 +59,10 @@
                 SelectedItem="{Binding Type, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:ConventionalCommitType}">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <TextBlock Text="{Binding Type}"/>
-              <TextBlock Margin="6,0,0,0" Text="{Binding Description}" Foreground="{DynamicResource Brush.FG2}"/>
-            </StackPanel>
+            <Grid Height="20" ColumnDefinitions="64,Auto" VerticalAlignment="Center">
+              <TextBlock Grid.Column="0" Text="{Binding Type}"/>
+              <TextBlock Grid.Column="1" Text="{Binding Description}" Foreground="{DynamicResource Brush.FG2}"/>
+            </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
