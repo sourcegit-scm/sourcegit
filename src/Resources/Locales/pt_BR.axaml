@@ -337,10 +337,8 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase Interativo</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Ramo Alvo:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Em:</x:String>
-  <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERRO</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">AVISO</x:String>
-  <x:String x:Key="Text.Launcher.Menu" xml:space="preserve">Abrir Menu Principal</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Mesclar Ramo</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Para:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opção de Mesclagem:</x:String>

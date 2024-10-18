@@ -361,10 +361,8 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interaktiver Rebase</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Ziel Branch:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Auf:</x:String>
-  <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">FEHLER</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">INFO</x:String>
-  <x:String x:Key="Text.Launcher.Menu" xml:space="preserve">Hauptmenü öffnen</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Branch mergen</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Ziel-Branch:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>

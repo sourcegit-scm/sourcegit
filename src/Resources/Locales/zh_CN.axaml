@@ -364,10 +364,8 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">交互式变基</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">起始提交 ：</x:String>
-  <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出错了</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系统提示</x:String>
-  <x:String x:Key="Text.Launcher.Menu" xml:space="preserve">主菜单</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合并分支</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
