@@ -158,6 +158,13 @@
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Color</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Restore tabs on startup</x:String>
+  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Conventional Commit Helper</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Closed Issue:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Detail Changes:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Scope:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Short Description:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Type of Change:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Copy</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copy All Text</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">COPY MESSAGE</x:String>

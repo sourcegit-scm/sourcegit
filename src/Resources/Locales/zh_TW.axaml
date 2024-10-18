@@ -161,6 +161,13 @@
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作區</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">顏色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">啟動時還原上次開啟的存放庫</x:String>
+  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">規範化提交資訊生成工具</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">破坏性更新：</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">关闭的ISSUE：</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">详细说明：</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">变更模块：</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">变更简述：</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">变更类型：</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">複製全部內容</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">複製內容</x:String>
