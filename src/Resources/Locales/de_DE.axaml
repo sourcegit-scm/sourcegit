@@ -371,9 +371,7 @@
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Wähle Vorgänger-Knoten für:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git wurde NICHT konfiguriert. Gehe bitte zuerst in die [Einstellungen] und konfiguriere Git.</x:String>
-  <x:String x:Key="Text.Notice" xml:space="preserve">BENACHRICHTIGUNG</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">App-Daten Ordner öffnen</x:String>
-  <x:String x:Key="Text.OpenFolder" xml:space="preserve">ORDNER AUSWÄHLEN</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">Öffne mit...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Optional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Neue Seite erstellen</x:String>

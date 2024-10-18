@@ -345,9 +345,7 @@
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Ramo de Origem:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nome:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">O Git NÃO foi configurado. Por favor, vá para [Preferências] e configure primeiro.</x:String>
-  <x:String x:Key="Text.Notice" xml:space="preserve">AVISO</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Abrir Pasta de Dados do Aplicativo</x:String>
-  <x:String x:Key="Text.OpenFolder" xml:space="preserve">SELECIONAR PASTA</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">Abrir Com...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Opcional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Criar Nova Página</x:String>

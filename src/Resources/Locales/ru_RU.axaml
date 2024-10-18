@@ -374,9 +374,7 @@
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Выбрать родительский узел для:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git НЕ был настроен. Пожалуйста, перейдите в [Настройки] и сначала настройте его.</x:String>
-  <x:String x:Key="Text.Notice" xml:space="preserve">УВЕДОМЛЕНИЕ</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Открыть приложение каталогов данных</x:String>
-  <x:String x:Key="Text.OpenFolder" xml:space="preserve">ВЫБОР КАТАЛОГА</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">Окрыть с...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Необязательно.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Создать новую страницу</x:String>
