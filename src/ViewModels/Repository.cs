@@ -74,6 +74,16 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedView, value);
         }
 
+        public bool EnableReflog
+        {
+            get => _enableReflog;
+            set
+            {
+                if (SetProperty(ref _enableReflog, value))
+                    Task.Run(RefreshCommits);
+            }
+        }
+
         public bool EnableFirstParentInHistories
         {
             get => _enableFirstParentInHistories;
@@ -827,6 +837,8 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
             var limits = $"-{Preference.Instance.MaxHistoryCommits} ";
+            if (_enableReflog)
+                limits += "--reflog ";
             if (_enableFirstParentInHistories)
                 limits += "--first-parent ";
 
@@ -2126,6 +2138,7 @@ namespace SourceGit.ViewModels
         private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 2;
         private bool _onlySearchCommitsInCurrentBranch = false;
+        private bool _enableReflog = false;
         private bool _enableFirstParentInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
