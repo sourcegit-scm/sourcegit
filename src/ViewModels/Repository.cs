@@ -2056,7 +2056,31 @@ namespace SourceGit.ViewModels
                 Task.Run(() =>
                 {
                     var files = new Commands.QueryCurrentRevisionFiles(_fullpath).Result();
-                    Dispatcher.UIThread.Invoke(() => _revisionFiles.AddRange(files));
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (_searchCommitFilterType != 3)
+                            return;
+
+                        _revisionFiles.AddRange(files);
+
+                        if (!string.IsNullOrEmpty(_searchCommitFilter) && _searchCommitFilter.Length > 2 && _revisionFiles.Count > 0)
+                        {
+                            var suggestion = new List<string>();
+                            foreach (var file in _revisionFiles)
+                            {
+                                if (file.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase) && file.Length != _searchCommitFilter.Length)
+                                {
+                                    suggestion.Add(file);
+                                    if (suggestion.Count > 100)
+                                        break;
+                                }
+                            }
+
+                            SearchCommitFilterSuggestion.Clear();
+                            SearchCommitFilterSuggestion.AddRange(suggestion);
+                            IsSearchCommitSuggestionOpen = SearchCommitFilterSuggestion.Count > 0;
+                        }
+                    });
                 });
             }
         }
