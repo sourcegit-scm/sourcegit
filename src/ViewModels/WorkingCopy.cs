@@ -343,7 +343,18 @@ namespace SourceGit.ViewModels
 
             IsStaging = true;
             _repo.SetWatcherEnabled(false);
-            if (changes.Count == _unstaged.Count)
+
+            var canAddAll = changes.Count == _unstaged.Count;
+            if (canAddAll && !IncludeUntracked) {
+                // If the user chose to hide untracked files, we have to make sure to not
+                // add those by mistake when performing `git add <repo path>`, otherwise those
+                // untracked files will be added as well
+                var hasUntracked = new Commands.QueryHasUntrackedFiles(_repo.FullPath).Exec();
+
+                canAddAll = !hasUntracked;
+            }
+
+            if (canAddAll)
             {
                 await Task.Run(() => new Commands.Add(_repo.FullPath).Exec());
             }
