@@ -89,8 +89,8 @@
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">提交資訊中追加來源資訊</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交列表:</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">提交變更</x:String>
-  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">對比的父提交：</x:String>
-  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">通常你不能對一個合併進行揀選，因為你不知道合併的哪一邊應該被視為主線。這個選項指定了作為主線的父提交，允許揀選相對於該提交的修改。</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">對比的父提交:</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">通常您不能對一個合併進行揀選 (cherry-pick)，因為您不知道合併的哪一邊應該被視為主線。這個選項指定了作為主線的父提交，允許揀選相對於該提交的修改。</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">捨棄擱置變更確認</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">您正在捨棄所有的擱置變更，一經操作便無法復原，是否繼續?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">複製 (clone) 遠端存放庫</x:String>
@@ -161,13 +161,13 @@
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作區</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">顏色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">啟動時還原上次開啟的存放庫</x:String>
-  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">規範化提交資訊生成</x:String>
-  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">破壞性變更說明：</x:String>
-  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">關閉的ISSUE：</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">詳細資訊：</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">模組：</x:String>
-  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">簡述：</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">類型：</x:String>
+  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">產生約定式提交訊息</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">破壞性變更:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">關閉的 Issue:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">詳細資訊:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">模組:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">簡述:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">類型:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">複製全部內容</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">複製內容</x:String>
@@ -528,7 +528,7 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交訊息</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">作者及提交者</x:String>
-  <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">僅搜尋當前分支</x:String>
+  <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">僅搜尋目前分支</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以樹型結構展示</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交統計</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模組列表</x:String>
@@ -574,7 +574,7 @@
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">擱置變更訊息:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">選填，用於命名此擱置變更</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">僅擱置已暫存的變更</x:String>
-  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">選中檔案的所有變更均會被擱置！</x:String>
+  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">已選取的檔案中的變更均會被擱置!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">擱置本機變更</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">套用 (apply)</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">刪除 (drop)</x:String>
