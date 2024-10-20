@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.Json.Serialization;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -46,6 +47,12 @@ namespace SourceGit.ViewModels
         {
             get => _isVisible;
             set => SetProperty(ref _isVisible, value);
+        }
+
+        [JsonIgnore]
+        public bool IsInvalid
+        {
+            get => _isRepository && !Directory.Exists(_id);
         }
 
         [JsonIgnore]
