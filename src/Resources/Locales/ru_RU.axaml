@@ -161,6 +161,14 @@
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Рабочие пространства</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Имя</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Цвет</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Восстанавливать вкладки при запуске</x:String>
+  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Общепринятый помощник по фиксации изменений</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Кардинальные изменения:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Закрытая тема:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Детали изменений:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Область:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Коротнкое описание:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Тип изменения:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Копировать весь текст</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">КОПИРОВАТЬ СООБЩЕНИЕ</x:String>
