@@ -345,7 +345,7 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             if (changes.Count == _unstaged.Count)
             {
-                await Task.Run(() => new Commands.Add(_repo.FullPath).Exec());
+                await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec());
             }
             else
             {
@@ -1316,7 +1316,7 @@ namespace SourceGit.ViewModels
             {
                 var succ = true;
                 if (autoStage && _unstaged.Count > 0)
-                    succ = new Commands.Add(_repo.FullPath).Exec();
+                    succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec();
 
                 if (succ)
                     succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend).Exec();
