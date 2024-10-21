@@ -81,7 +81,7 @@ For **macOS** users:
 * Make sure your mac trusts all software from anywhere. For more information, search `spctl --master-disable`.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your mac.
 * You may need to run `sudo xattr -cr /Applications/SourceGit.app` to make sure the software works.
-* You man need to run `echo $PATH > ~/Library/Application\ Support/SourceGit/PATH` to introduce `PATH` env to SourceGit.
+* You can run `echo $PATH > ~/Library/Application\ Support/SourceGit/PATH` to generate a custom PATH env file to introduce `PATH` env to SourceGit.
 
 For **Linux** users:
 
